@@ -1,0 +1,37 @@
+---
+ip: "192.168.10.20"
+memory: 2048
+cpus: 1
+hostname: todayemichedu
+name: todayemichedu
+provider: virtualbox
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: "/Users/dbeaman/SITES/Code/todayemichedu/emutoday"
+      to: "/home/vagrant/emutoday"
+
+sites:
+    - map: homestead.app
+      to: "/home/vagrant/emutoday/public"
+
+databases:
+    - homestead
+    - emutoday
+
+# blackfire:
+#     - id: foo
+#       token: bar
+#       client-id: foo
+#       client-token: bar
+
+# ports:
+#     - send: 50000
+#       to: 5000
+#     - send: 7777
+#       to: 777
+#       protocol: udp
