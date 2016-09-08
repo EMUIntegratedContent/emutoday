@@ -94,8 +94,8 @@ elixir(function(mix) {
  |--------------------------------------------------------------------------
  |
   */
-elixir(function(mix) {
-    mix.version(['css/public-styles.css','js/public-scripts.js']);
-
-    // mix.version(['css/public-styles.css','js/public-scripts.js','css/admin-styles.css', 'js/vendor-scripts.js','js/admin-scripts.js']);
-});
+// elixir(function(mix) {
+//     mix.version(['css/public-styles.css','js/public-scripts.js']);
+//
+//     // mix.version(['css/public-styles.css','js/public-scripts.js','css/admin-styles.css', 'js/vendor-scripts.js','js/admin-scripts.js']);
+// });
