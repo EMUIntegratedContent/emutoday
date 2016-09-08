@@ -1,6 +1,6 @@
 <?php
 
-namespace Emutoday\Emutoday\Filters;
+namespace Emutoday\Today\Filters;
 
 use Intervention\Image\Image;
 use Intervention\Image\Filters\FilterInterface;

@@ -1,11 +1,12 @@
 <?php
-namespace emutoday\Http\Controllers\EmuToday;
+namespace Emutoday\Http\Controllers\Today;
 
-use emutoday\Http\Controllers\Controller;
+use Emutoday\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
-use emutoday\Event;
+use Emutoday\Event;
 use Carbon\Carbon;
 use JavaScript;
+
 class CalendarController extends Controller
 {
 

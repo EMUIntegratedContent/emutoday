@@ -59,13 +59,13 @@ return array(
         'small' => 'Intervention\Image\Templates\Small',
         'medium' => 'Intervention\Image\Templates\Medium',
         'large' => 'Intervention\Image\Templates\Large',
-        'betterthumb' => 'emutoday\Emutoday\Filters\BetterThumb',
-        'smallthumb' => 'emutoday\Emutoday\Filters\SmallThumb',
-        'ddsmall' => 'emutoday\Emutoday\Filters\DDSmall',
-        'ddfront' => 'emutoday\Emutoday\Filters\DDFront',
-        'avatar160' => 'emutoday\Emutoday\Filters\Avatar160',
-        'magazinecover' => 'emutoday\Emutoday\Filters\MagazineCover',
-        'featuredevent' => 'emutoday\Emutoday\Filters\FeaturedEvent'
+        'betterthumb' => 'Emutoday\Today\Filters\BetterThumb',
+        'smallthumb' => 'Emutoday\Today\Filters\SmallThumb',
+        'ddsmall' => 'Emutoday\Today\Filters\DDSmall',
+        'ddfront' => 'Emutoday\Today\Filters\DDFront',
+        'avatar160' => 'Emutoday\Today\Filters\Avatar160',
+        'magazinecover' => 'Emutoday\Today\Filters\MagazineCover',
+        'featuredevent' => 'Emutoday\Today\Filters\FeaturedEvent'
 
     ),
 

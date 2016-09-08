@@ -1,5 +1,5 @@
 var elixir = require('laravel-elixir');
-
+require('laravel-elixir-vueify');
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -83,6 +83,9 @@ elixir(function(mix) {
                 | Public Script Concat Mix
                 |---------------------------
                  */
+
+    mix.browserify('vue-caleventview.js', 'public/js/vue-caleventview.js');
+
 
 
     // mix.sass('app.scss');
