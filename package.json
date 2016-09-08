@@ -8,5 +8,9 @@
     "gulp": "^3.9.1",
     "laravel-elixir": "^5.0.0",
     "bootstrap-sass": "^3.0.0"
+  },
+  "dependencies": {
+    "font-awesome": "^4.6.3",
+    "foundation-sites": "^6.2.3"
   }
 }

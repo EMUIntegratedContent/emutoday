@@ -1,0 +1,319 @@
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+	#tier1-nav	.icon-menu {
+		margin-top: 0;
+			padding-left: 0;
+			float:left;
+			margin-bottom: 0.3rem;
+	}
+
+	#logo-box{
+		padding: .1rem .6rem 0rem;
+	}
+	#logo-box img.emu{
+		display: block;
+		padding-top: 1.05rem;
+	}
+	#logo-box img.full-logo{
+		display: none;
+	}
+	ul.social-icons {
+		float:left;
+	}
+
+	#news-story-bar.magazine-story {
+		padding: 0;
+	}
+	#issue-grouping .addthis {
+		float:left;
+		padding-top: 0;
+	}
+	#story-listing {
+		padding-top:0.3rem;
+	}
+
+	.article-text-teaser{
+		margin-top: 1rem;
+		/*padding-left: 0;*/
+	}
+	#profile-text-over-image-box{
+		width: 50%;
+		top: 45%;
+		padding: 0.4rem 0.8rem 0;
+	}
+
+}
+
+/* Medium and up */
+@media screen and (min-width: 40em) {
+
+	.icon-menu {
+		float:right;
+	}
+
+	.centered-main-title{
+		padding: 0 10%;
+	}
+	#magazine-text-over-image-box {
+		position: absolute;
+		width: 100%;
+		right: 0;
+		top: 41%;
+		padding: 1.2rem 1.5rem 1rem;
+		z-index: 800;
+		text-align: center;
+	}
+
+	#magazine-text-over-image-box h2,
+	#magazine-text-over-image-box p
+	{
+		color: #fff;
+		font-weight: 600;
+		margin-bottom: .5rem;
+		text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
+	}
+
+	#magazine-text-over-image-box a{
+		text-decoration: none;
+		color: #fff;
+	}
+
+
+
+	/*
+	#profile-text-over-image-box p{
+		margin-bottom: .5rem;
+		font-size: .9rem;
+		line-height: 1.1rem;
+	}*/
+}
+
+/* Medium only */
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+
+
+
+
+	.featurepadding{
+		padding-left: 0;
+	}
+	#four-stories-bar{
+		padding-left: .5rem;
+		padding-right: .5rem;
+	}
+	/*#four-stories-bar .manageleftpadding{
+		padding-left: 0;
+	}*/
+	#tier2-nav ul{
+		font-size: .73rem;
+	}
+
+	#tier3-nav ul{
+		font-size: .72rem;
+	}
+	#tier3-nav ul li a{
+		padding: 0 .1rem;
+	}
+
+	#logo-box {
+		background-color: #0f654a;
+		height: auto;
+		padding: 1.4rem 1rem 1.9rem;
+		position: absolute;
+		z-index: 200;
+	}
+	#tier1-nav ul {
+		padding-right: 1rem;
+		font-size: 1rem;
+	}
+	/*#tier1-nav ul li:not(.search-area){
+	display: none;
+}
+
+#tier2-nav ul{
+}
+*/
+#tier2-nav ul li a{
+	/*padding: 0 .1rem 0 .5rem;*/
+}
+#featured-text{
+	padding-top: 1rem;
+}
+#featured-text p{
+	font-size: .9rem;
+	line-height: 1.3rem;
+}
+#featured-text h3 {
+	font-size: 1.2rem;
+	line-height: 1.3rem;
+	margin-top: 0;
+}
+#base-bar .row, #base-message-bar .row{
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+#newshub-headlines-front ul li a{
+	font-size: .9rem;
+	line-height: 1.3rem;
+}
+ul.social-icons {
+	float:left;
+}
+/*.featured-content-block span.truemu{
+display: none;
+}*/
+#news-story-bar, #listing-bar {
+	padding-left: .5rem;
+	padding-right: .5rem;
+	margin: 0;
+}
+#five-events-bar li:nth-child(n+4){
+	display: none;
+}
+/*.manageleftpadding{
+padding-left: .6rem;
+}*/
+.managehorizontalpadding{
+	padding-left: .6rem;
+	padding-right: .6rem;
+}
+/*#profile-text-over-image-box{
+	width: 50%;
+	top: 38%;
+	padding: 1.3rem 1.2rem 1rem;
+}
+#profile-text-over-image-box p{
+	margin-bottom: .5rem;
+	font-size: .9rem;
+	line-height: 1.1rem;
+}*/
+#student-feature h4{
+	line-height: 1.2rem;
+	margin-top: 1rem;
+}
+#student-feature p{
+	line-height: 1.2rem;
+	font-size: .9rem;
+}
+/*Magazine*/
+
+
+
+
+#magazine-text-over-image-box{
+	top: 41%;
+}
+
+/*Added by drew*/
+#magazine-text-over-image-box h2{
+	font-size: 3.2rem;
+	line-height: 3.8rem;
+}
+
+#magazine-text-over-image-box p{
+	font-size: 1.3rem;
+	line-height: 1.6rem;
+	margin: 0 0rem;
+
+}
+/*#magazine-text-over-image-box h2{
+	font-size: 4.0rem;
+	font-weight: 600;
+	text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
+	line-height: 4.3rem;
+}
+#magazine-text-over-image-box p{
+	font-size: 1.3rem;
+	line-height: 1.6rem;
+	margin: 0 0rem;
+	font-weight: 600;
+	text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.4);
+}*/
+.magazine-details p.button-container {
+	width: 50%;
+}
+.row.collapse > .columns.cover-box {
+	padding-right: 1rem;
+}
+.panel.image-caption{
+	width: 48%;
+	max-width: 48%;
+}
+#connection-bar.magazine-block #tier2-nav ul, #connection-bar.magazine-block #tier3-nav ul {
+	float: left;
+}
+
+
+#tier1-nav h3.magazine-main-title{
+	display: block;
+	font-size: 2.3rem;
+}
+#tier1-nav h3.magazine-main-title span.magazine-descriptor{
+	display: inline-block;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 1rem;
+}
+/*.magazine-descriptor-small{
+display: none;
+}*/
+#story-content #story-listing p{
+	font-size: .9rem;
+	line-height: 1.2rem;
+}
+/*.current-issue-padding{
+	padding: .8rem 1rem 1rem;
+}*/
+
+
+}
+
+/* Large and up */
+@media screen and (min-width: 64em) {
+
+
+	#magazine-text-over-image-box {
+		top: 50%;
+	}
+
+
+	#magazine-text-over-image-box h2{
+		color: #fff;
+		font-size: 4.6rem;
+		line-height: 5.0rem;
+	}
+
+	#magazine-text-over-image-box p{
+		font-size: 1.8rem;
+		line-height: 2.1rem;
+		margin: 0 3rem;
+
+	}
+
+	#profiles-list {
+		padding: 0.8rem 0.6rem;
+	}
+	#news-story-bar, #listing-bar{
+		padding: .8rem .6rem 0 .6rem;
+	}
+
+}
+
+
+
+/* Large only */
+@media screen and (min-width: 64em) and (max-width: 74.9375em) {
+}
+
+
+
+// XLarge screens
+@media only screen and (min-width: 90.063em) { } /* min-width 1441px, xlarge screens */
+
+@media only screen and (min-width: 90.063em) and (max-width: 120em) {
+
+} /* min-width 1441px and max-width 1920px, use when QAing xlarge screen-only issues */
+
+// XXLarge screens
+@media only screen and (min-width: 120.063em) {
+
+} /* min-width 1921px, xxlarge screens */

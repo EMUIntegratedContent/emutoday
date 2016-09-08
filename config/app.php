@@ -153,15 +153,17 @@ return [
          */
 
         Collective\Html\HtmlServiceProvider::class,
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
+
 
 
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        Emutoday\Providers\AppServiceProvider::class,
+        Emutoday\Providers\AuthServiceProvider::class,
+        Emutoday\Providers\EventServiceProvider::class,
+        Emutoday\Providers\RouteServiceProvider::class,
 
     ],
 

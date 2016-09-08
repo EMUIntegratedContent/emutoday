@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace Emutoday\Jobs;
 
 use Illuminate\Bus\Queueable;
 

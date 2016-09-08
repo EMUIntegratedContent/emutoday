@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace Emutoday\Events;
 
 abstract class Event
 {

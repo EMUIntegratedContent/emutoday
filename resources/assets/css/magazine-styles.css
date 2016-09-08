@@ -1,0 +1,306 @@
+/* Magazine */
+/*Magazine Style Sheet Load position ___ */
+
+
+
+#tier1-nav h3.magazine-main-title {
+		display: inline-block;
+		font-family: serif;
+	  margin-bottom: 0;
+    font-size: 2.3rem;
+		font-style: normal;
+		font-weight: normal;
+		color: #0f654a;
+    }
+
+#tier1-nav  span.magazine-descriptor,
+#tier1-nav  span.magazine-descriptor-small {
+			font-family: 'Open Sans', sans-serif;
+		    font-size: 1rem;
+		}
+
+
+/* medium */
+/*#tier1-nav h3.magazine-main-title{
+    display: block;
+    font-size: 2.3rem;
+		color: #0f654a;
+    }
+#tier1-nav h3.magazine-main-title span.magazine-descriptor{
+    display: inline-block;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    }
+.magazine-descriptor-small{
+    display: none;
+    }*/
+
+/* small */
+		/*#tier1-nav h3.magazine-main-title{
+		    display: inline-block;
+		    color: #fff;
+		    font-size: 2.3rem;
+		}
+		#tier1-nav h3.magazine-main-title span.magazine-descriptor{
+		    display: none;
+		    }
+		.magazine-descriptor-small{
+		    display: inline-block;
+		    font-family: 'Open Sans', sans-serif;
+		    font-size: 1rem;
+		    }
+		#logo-box-magazine a img{
+		   display: none;
+		    }
+#tier1-nav h3.magazine-main-title{
+    display: block;
+    font-size: 2.3rem;
+    }*/
+
+
+/*#tier1-nav h3.magazine-main-title{
+    display: none;
+    font-family: serif;
+    margin-bottom: 0;
+    }
+.magazine-descriptor-small{
+    display: none;
+    }
+
+		#tier1-nav h3.magazine-main-title span.magazine-descriptor{
+				display: inline-block;
+				font-family: 'Open Sans', sans-serif;
+				font-size: 1rem;
+				}
+
+		h3.magazine-main-title{
+		    display: none;
+		}*/
+
+
+		/************   SMALL ********************/
+		#magazine-text-over-image-box{
+		    /*top: 4%;*/
+		    position: relative;
+		    text-align:left;
+				padding-top: .5rem;
+		    /*padding-left: 1rem;
+		    padding-top: .5rem;
+		     padding-bottom: .0;*/
+		}
+		#magazine-text-over-image-box a{
+		         color: #333;
+		    }
+		#magazine-text-over-image-box h2{
+		    font-size: 1.7rem;
+		    font-weight: 600;
+		    text-shadow: none;
+		    line-height: 2rem;
+		    color: #333;
+		}
+		#magazine-text-over-image-box p{
+		    font-size: 1rem;
+		    line-height: 1.3rem;
+		    margin: 0 0rem;
+		    font-weight: normal;
+		    color: #333;
+		    text-shadow: none;
+		}
+		.centered-main-title {
+		    padding: 0;
+		}
+
+
+
+#logo-box-magazine{
+   background-color: #0f654a;
+    position: absolute;
+    z-index: 200;
+    box-sizing: border-box;
+    /*left: 0;*/
+    width: 100%;
+    padding: 1rem;
+    margin-right: 1rem;
+}
+
+
+
+#magazine-feature .row{
+    background-color: #ebedef;
+		padding: 0.8rem 0;
+    /*padding: .8rem;*/
+    box-sizing: border-box;
+}
+#magazine-feature img {
+	padding-bottom: 0.8rem;
+}
+
+/*.photo-feature-text{
+    padding: 0 0 0 .3rem;
+}*/
+.photo-feature-text p{
+    font-size: .8rem;
+    line-height: 1.1rem;
+    margin-bottom: .5rem;
+}
+.photo-feature-text h1, .photo-feature-text h2, .photo-feature-text h3, .photo-feature-text h4, .photo-feature-text h5 {
+    font-size: 1.1rem;
+    margin-top: 0;
+    line-height: 1.3rem;
+}
+.photo-feature-text .author{
+    font-style: italic;
+}
+.button.magazine-button {
+    background-color: #829788;
+    border-color: #829788;
+    margin-bottom: .5rem;
+    padding-top: .6rem;
+    padding-bottom: .6rem;
+    text-transform: uppercase;
+    font-size: .9rem;
+    text-decoration: none;
+}
+.button.magazine-button:hover {
+    background-color: #0f654a;
+    border-color: #0f654a;
+}
+.magazine-details p.button-container {
+    margin-bottom: .1rem;
+}
+.magazine-details p{
+    font-size: .9rem;
+    line-height: 1.2rem;
+    margin-bottom: .6rem;
+}
+.row.collapse > .columns.cover-box{
+    padding-right: 2rem;
+}
+.row.collapse > .columns.photo-feature-text{
+    padding-left: .9rem;
+}
+h2.issue-date {
+    /*padding-left: 1rem;*/
+    color: #666;
+    font-size: 2rem;
+		line-height:2rem;
+		font-weight: normal;
+}
+/*.addthis.magazine-top{
+    padding-top: .8rem
+}*/
+#news-story-bar.magazine-story .magazine-titlebar{
+    width: 100%;
+    clear: both;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem;
+    padding-top: .7rem;
+}
+#news-story-bar.magazine-story .magazine-titlebar+h3{
+
+		font-size: 1.5rem;
+    line-height: 1.8rem;
+    color: #333;
+    margin-bottom: 1.25rem;
+}
+.featured-content-block.magazine-block {
+    padding: 0;
+     background-color: #fff;
+    /*margin-top: .6rem;*/
+}
+.featured-content-block.magazine-block:first-child{
+    /*margin-top: .6rem;*/
+}
+.featured-content-block.magazine-block h6.headline-block {
+    background-color: #829788;
+    color: #fff;
+    display: block;
+    left: 0;
+    padding: 0.5rem 1rem;
+    margin: 0 0 .8rem 0;
+    position: relative;
+    text-transform: uppercase;
+    top: 0;
+}
+.featured-content-block.magazine-block ul.feature-list{
+    margin-left: 1rem;
+}
+.featured-content-block.magazine-block ul.feature-list li {
+    border-bottom: 1px dotted #ccc;
+    line-height: 1.2rem;
+    padding: 0rem 0 .2rem;
+}
+.featured-content-block.magazine-block ul.feature-list li:last-child {
+    border-bottom: none;
+}
+div.featured-content-block.magazine-block + div.featured-content-block.magazine-block{
+    margin-top: .6rem;
+    margin-bottom: .6rem;
+}
+.panel.image-caption{
+    float: right;
+    width: 38%;
+    max-width: 38%;
+    margin: .5rem 0 .5rem 1.5rem;
+    background-color: #fff;
+    padding: 0;
+    border: none;
+}
+.panel.image-caption img{
+    width: 100%;
+    margin-bottom: .5rem;
+}
+#story-content .panel.image-caption p{
+    font-size: .9rem;
+    line-height: 1.2rem;
+}
+
+#cover-grouping p, #cover-grouping a{
+    text-align: center;
+    padding-top: .5rem;
+    color: #666;
+    text-decoration: none;
+}
+#cover-grouping a:hover {
+    color: #666;
+    text-decoration: none;
+}
+/*#story-listing ul {
+    list-style: none;
+}*/
+/*#story-listing ul li {
+    margin-bottom: 3rem;
+    display: block;
+}*/
+/*#story-listing .thumbnail img{
+    width: 100%;
+    }*/
+
+		#story-listing .article-listing {
+			margin-bottom:3rem;
+		}
+
+		.article-listing .article-text-teaser h3 {
+			font-weight: normal;
+		}
+
+		.article-listing .article-img {
+			padding-right:0;
+		}
+/*#story-content #story-listing h3{
+    margin-top: -.4rem;
+    }*/
+/*.current-issue-padding{
+    padding: .7rem 2.6rem 1rem;
+}*/
+.current-issue-info img{
+    width: 100%;
+}
+img.magazine-logo {
+    width: 100%;
+}
+
+#issue-grouping {
+	margin-bottom:0.3rem;
+
+}
