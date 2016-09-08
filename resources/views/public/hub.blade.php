@@ -29,7 +29,7 @@
                 <p>{{$barImgs[$i]->caption}}</p>
               </div>
               <p class="button-group">
-                <a href="/{{$barImgs[$i]->story->story_folder}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fi-play"></i></a>
+                <a href="/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fa fa-play"></i></a>
               </p>
             </div>
           </div>
@@ -53,7 +53,7 @@
                       @foreach ($currentStorysBasic as $basicstory)
                       <li><a href="/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
                       @endforeach
-                                            <li><a href="/news" class="bottom-tab-link">More Headlines</a></li>
+                        <li><a href="/news" class="bottom-tab-link">More Headlines</a></li>
                     </ul>
                   </div>
                   <div class="tabs-panel newshub-tab-front" id="newshub-announcements-front">

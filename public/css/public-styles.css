@@ -6057,6 +6057,9 @@ img.news-icon{
     padding: .5rem .8rem .8rem;
     background-color: #fff;
 }
+#four-stories-bar i.fa-play{
+    padding-left: .2rem;
+}
 .stories-text-content p {
     text-align: left;
 }
