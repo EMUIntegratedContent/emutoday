@@ -9,7 +9,9 @@
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "5.2.*",
         "laracasts/presenter": "^0.2.1",
-        "laracasts/utilities": "~2.0"
+        "laracasts/utilities": "~2.0",
+        "intervention/image": "^2.3",
+        "intervention/imagecache": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
