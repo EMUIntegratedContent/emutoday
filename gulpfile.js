@@ -13,6 +13,8 @@ require('laravel-elixir-vueify');
 
 elixir(function(mix) {
 
+    //copy vendor files to public css folder
+    mix.copy('node_modules/flatpickr/dist/flatpickr.min.css','public/css/flatpickr.min.css')
 
     //Copy the fonts to build folder:
     mix.copy('node_modules/font-awesome/fonts','public/build/fonts')
@@ -85,6 +87,8 @@ elixir(function(mix) {
                  */
 
     mix.browserify('vue-caleventview.js', 'public/js/vue-caleventview.js');
+    mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
+    mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
 
 
 

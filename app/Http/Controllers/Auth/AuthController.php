@@ -39,7 +39,7 @@ class AuthController extends Controller
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
-
+    
     /**
      * Get a validator for an incoming registration request.
      *
@@ -54,7 +54,14 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
     }
+    public function authenticate()
+    {
+        if(Auth::attempt(['email'=> $email, 'password'=> $password])){
+            //Authenticate passed
+            return redirect()->intended('admin.dashboard');
 
+        }
+    }
     /**
      * Create a new user instance after a valid registration.
      *

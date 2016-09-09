@@ -35,4 +35,33 @@ class AnnouncementController extends Controller
 
   }
 
+  public function announcementForm(Announcement $announcement)
+    {
+        $cdate = Carbon::now();
+        $cdate_format = $cdate->format('m-d-Y');
+        JavaScript::put([
+            'jsis'=> 'hi',
+            'currentDate' => $cdate_format
+            ]);
+            if (\Auth::check()) {
+    // The user is logged in...
+         $user = \Auth::user();
+        } else {
+            // return 'Need to Connect to LDAP';
+            return redirect(route('auth.login'));
+        }
+
+        // $announcements = $user->announcements;//$this->announcement->where('is_approved', '0')->orderBy('start_date', 'dsc')->paginate(4);
+        $approveditems = $user->announcements()->where('is_approved', '1')->get();;
+
+        $submitteditems = $user->announcements()->where('is_approved', '0')->get();
+        // dd($submitteditems);
+        return view('public.announcement.form', compact('announcement','approveditems','submitteditems'));
+
+
+        // return redirect(route('emu-today.announcement.edit',$announcement->id ));
+        // return view('public.announcement.edit', compact('announcement'));
+    }
+
+
 }

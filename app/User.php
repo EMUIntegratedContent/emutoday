@@ -46,7 +46,7 @@ class User extends Authenticatable
     *
     *  RELATIONSHIPS
     *
-    ******** / 
+    ******** /
 
     /**
      * [storys description]
@@ -60,34 +60,34 @@ class User extends Authenticatable
      * [mediaFiles description]
      * @return [type] [description]
      */
-    // public function mediaFiles()
-    // {
-    //     return $this->belongsToMany('emutoday\Mediafile');
-    // }
+    public function mediaFiles()
+    {
+        return $this->belongsToMany('Emutoday\Mediafile');
+    }
     /**
      * [announcements description]
      * @return [type] [description]
      */
-    // public function announcements()
-    // {
-    //     return $this->hasMany('emutoday\Announcement', 'user_id');
-    // }
+    public function announcements()
+    {
+        return $this->hasMany('Emutoday\Announcement', 'user_id');
+    }
 
     /**
      * [events description]
      * @return [type] [description]
      */
-    // public function events() {
-    //     return $this->hasMany('emutoday\Event', 'user_id');
-    // }
+    public function events() {
+        return $this->hasMany('Emutoday\Event', 'user_id');
+    }
 
     /**
      * [bugztracked description]
      * @return [type] [description]
      */
-    // public function bugztracked(){
-    //     return $this->hasMany('emutoday\Bugz', 'user_id');
-    // }
+    public function bugztracked(){
+        return $this->hasMany('Emutoday\Bugz', 'user_id');
+    }
 
 
 

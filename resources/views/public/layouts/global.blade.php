@@ -33,8 +33,8 @@
             <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
               <li><a href="http://www.emich.edu/media_highlights/">Media Highlights</a></li>
               <li><a href="/magazine">Eastern Magazine</a></li>
-              <li><a href="/event/create">Submit an Event</a></li>
-              <li><a href="/announcement/create">Submit an Announcement</a></li>
+              <li><a href="/calendar/event/form">Submit an Event</a></li>
+              <li><a href="/announcement/form">Submit an Announcement</a></li>
           </ul>
            @show
         </div> <!-- off-canvas position-right -->
@@ -117,8 +117,8 @@
                                                 <!-- '/admin/php/secondary_nav.php'); -->
                                                 <li><a href="http://www.emich.edu/communications/media/">For the Media</a></li>
                                                 <li><a href="/magazine">Eastern Magazine</a></li>
-                                                <li><a href="/event/create">Submit an Event</a></li>
-                                                <li><a href="/announcement/create">Submit an Announcement</a></li>
+                                                <li><a href="/calendar/event/form">Submit an Event</a></li>
+                                                <li><a href="/announcement/form">Submit an Announcement</a></li>
                                             </ul>
                                         </div>
                                         </div>

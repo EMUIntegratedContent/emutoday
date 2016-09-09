@@ -9,7 +9,7 @@ use Emutoday\Http\Requests;
 use Emutoday\Story;
 use Emutoday\Page;
 use Emutoday\Announcement;
-// use Emutoday\Event;
+use Emutoday\Event;
 // use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
@@ -36,6 +36,7 @@ class MainController extends Controller
 
     public function index()
     {
+        // \Log::info('User failed to login.', ['id' => $user->id]);
         $currentDateTimeStart = Carbon::now()->startOfDay();
         $currentDateTimeEnd = Carbon::now()->endOfDay();
 

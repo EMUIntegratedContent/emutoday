@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('*', \Emutoday\Http\ViewComposers\AddCurrentUser::class);
+
+        // $this->app['view']->composer(['*'], Composers\AddCurrentUser::class);
+
     }
 
     /**
