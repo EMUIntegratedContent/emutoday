@@ -17,5 +17,5 @@
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-    # changing to overwrite htaccess on server again
+    # changing to overwrite htaccess on server again and again
 </IfModule>
