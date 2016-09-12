@@ -1,0 +1,156 @@
+/*
+
+Darko Bunic
+http://www.redips.net/
+Apr, 2013.
+
+*/
+
+body {
+    font-family: arial;
+    margin: 0px;
+}
+
+/* drag container*/
+#redips-drag {
+    /*border: 2px dashed LightBlue;*/
+    /*width: 1200px;*/
+    /*margin: auto;*/
+}
+/* left container */
+#redips-drag #left {
+    /*float: left;
+    width: 600px;*/
+}
+/* right container */
+#redips-drag #right {
+    /*width: 440px;*/
+     display: table;
+    table-layout: auto;
+    /* align div to the right */
+    margin-left: auto;
+
+}
+/* right container */
+/*#redips-drag #right .four-stories-bar {
+    height: 100px;
+
+
+}*/
+
+/* DIV object */
+.redips-drag {
+    margin: auto;
+    text-align: center;
+    width: 77px;
+    height: 25px;
+    line-height: 25px;
+    background-color: white;
+    font-size: 10pt; /* needed for cloned object */
+    /* round corners */
+    border-radius: 4px; /* Opera, Chrome */
+    -moz-border-radius: 4px; /* FF */
+    /*margin-bottom: 2px;*/
+}
+
+/* tables */
+div#redips-drag table {
+
+    border-collapse: collapse;
+    margin: 0;
+}
+    /* table cells */
+    div#redips-drag td {
+        /*border: 1px solid white;*/
+        text-align: center;
+        font-size: 10pt;
+        padding: 0px;
+    }
+    table#table1 td {
+        height: 40px;
+        border: 1px solid black;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    table#table1 td.redips-mark.story-title {
+        text-align: left;
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+    table#table2 td {
+        background-color: #eee;
+        /*height: 122px;*/
+    }
+    table#front-story-table0 td.front-story-view {
+        background-color: #eee;
+        background-position:center top;
+        height: 100px;
+        width: "100%";
+        text-align: right;
+        vertical-align:top;
+
+    }
+    table#front-story-table0 td.front-story-btn {
+        background-color: #009900;
+        height: 30px;
+        width: "100%";
+    }
+    table.small-story-table {
+        border-collapse: collapse;
+    }
+
+    table#small-story-table-group  td.small-story-view {
+        background-color: #eee;
+        height: 100px;
+        width: "100%";
+        vertical-align: top;
+        text-align: right;
+    }
+    table.small-story-table td.small-story-btn {
+        background-color: #eee;
+        height: 30px;
+        width: "100%";
+    }
+    div.redips-drag {
+        border: 1px solid  #001F3F;
+    }
+    table.small-story-table {
+        border: 1px solid #666666;
+    }
+    table.front-story-table {
+        border: 1px solid #666666;
+    }
+    .smallstory-btn
+    {
+        color: #fff;
+        background-color: #001F3F;
+    }
+    .frontstory-btn
+    {
+        background-color: #00a7d0;
+        /*background-color: #3D9970;*/
+        /*#db690b;*/
+        color: #001F3F;
+    }
+
+
+
+/* message below tables */
+#message {
+    padding-left: 10px;
+    color: #6A93D4;
+    height: 100px;
+    padding-top: 20px;
+}
+
+/* single content cells (with clone objects on the left) */
+.redips-single {
+    background-color: #e0e0e0;
+}
+
+/* trash cell */
+.redips-trash {
+    color: white;
+    background-color: SteelBlue;
+    height: 26px;
+}

@@ -89,11 +89,83 @@ elixir(function(mix) {
     mix.browserify('vue-caleventview.js', 'public/js/vue-caleventview.js');
     mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
+    mix.browserify('vue-search-form.js', 'public/js/vue-search-form.js');
 
 
 
     // mix.sass('app.scss');
 });
+/*
+     |--------------------------------------------------------------------------
+     | Admin Asset Management
+     |--------------------------------------------------------------------------
+     |
+      */
+
+      elixir(function(mix) {
+          /*
+          * Files for AdminLte Template
+           */
+         mix.copy('node_modules/admin-lte/dist/js/app.js', 'public/themes/admin-lte/js/app.js');
+         mix.copy('node_modules/admin-lte/plugins', 'public/themes/admin-lte/plugins');
+         // moving css and less to combine in admin-styles
+         mix.copy('node_modules/admin-lte', 'resources/assets/themes/admin-lte');
+         mix.copy('node_modules/bootstrap', 'resources/assets/vendor/bootstrap');
+         mix.copy('node_modules/jquery', 'resources/assets/vendor/jquery');
+
+
+
+
+        //  mix.copy('node_modules/bootstrap/fonts', 'public/build/fonts');
+         mix.copy('node_modules/font-awesome', 'resources/assets/vendor/font-awesome');
+        //
+        mix.less('admin.less',
+                    'resources/assets/css/admin-less.css',
+                    {
+                        includePaths: [
+                            'node_modules/bootstrap/less',
+                            'node_modules/admin-lte/less'
+                        ],
+                        outputStyles: 'expanded'
+                    }
+                );
+
+                /*
+    |---------------------------
+    | Admin StyleSheet mix
+    |---------------------------
+     */
+        mix.styles([
+                    'admin-less.css',
+                    'admin.css'
+                ], 'public/css/admin-styles.css');
+
+    /*
+        |---------------------------
+        | Vendor Script Concat Mix
+        |---------------------------
+         */
+
+        mix.scripts([
+            '../vendor/jquery/dist/jquery.min.js',
+            '../vendor/bootstrap/dist/js/bootstrap.js',
+            '../themes/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js',
+            '../themes/admin-lte/plugins/fastclick/fastclick.min.js'
+        ], 'public/js/vendor-scripts.js');
+
+
+        mix.browserify('vue-announcement-queue.js', 'public/js/vue-announcement-queue.js');
+        mix.browserify('vue-event-queue.js', 'public/js/vue-event-queue.js');
+
+        // mix.browserify('vue-story-app.js', 'public/js/vue-story-app.js');
+        mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
+
+        mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
+
+        mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
+
+});
+        /*
 
 /*
  |--------------------------------------------------------------------------

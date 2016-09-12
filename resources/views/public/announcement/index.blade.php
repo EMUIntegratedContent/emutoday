@@ -18,9 +18,12 @@
                   {{-- <li class="accordion-item" data-accordion-item> --}}
                     <a href="#" class="accordion-title">{{$announcement->title}}</a>
                     <div class="accordion-content" data-tab-content>
-                        <p>{{ $announcement->announcement }}</p>
+                        <p>{!! $announcement->announcement !!}</p>
                         @if($announcement->link)
                             <p>For more information click: <a href="http://{{$announcement->link}}" class="accordion-link" target="_blank">{{$announcement->link_txt or 'More Info'}}</a></p>
+                        @endif
+                        @if($announcement->email_link)
+                            <p>For more information click: <a href="mailto://{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt or $announcement->email_link}}</a></p>
                         @endif
                         <p>Posted {{$announcement->present()->prettyDate}}</p>
                     </div>
@@ -29,7 +32,7 @@
               </ul>
               <div id="base-grouping" class="row">
                 <div class="large-5 medium-7 hide-for-small columns">&nbsp;</div>
-                <div class="large-7 medium-5 small-12 columns"><h6>{!! $announcements->links() !!}</h6>                </div>
+                <div class="large-7 medium-5 small-12 columns"><h6>{!! $announcements->links() !!}</h6></div>
               </div>
             </div>
           </div>

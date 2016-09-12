@@ -5,6 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Carbon\Carbon;
+use Sofa\Eloquence\Eloquence;
 
 use Emutoday\Category;
 class Event extends Model
@@ -18,8 +19,6 @@ class Event extends Model
   protected $table = 'cea_events';
 
 
-  use PresentableTrait;
-  protected $presenter = 'Emutoday\Presenters\EventPresenter';
 
   /**
    * [$fillable description]
@@ -63,6 +62,14 @@ class Event extends Model
         //       'lbc_reviewed' =>  'boolean',
         //         'ensemble' =>  'boolean',
         //           'mba' =>  'boolean'
+    ];
+    use PresentableTrait;
+    protected $presenter = 'Emutoday\Presenters\EventPresenter';
+
+    use Eloquence;
+    protected $searchableColumns = [
+        'title', 'short_title',
+        'description'
     ];
 
 

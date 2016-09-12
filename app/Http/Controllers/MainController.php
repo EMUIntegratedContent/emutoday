@@ -10,40 +10,34 @@ use Emutoday\Story;
 use Emutoday\Page;
 use Emutoday\Announcement;
 use Emutoday\Event;
-// use Emutoday\Tweet;
+use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
 
 class MainController extends Controller
 {
     protected $pages;
+    //how many news stories and announcements to show on hub
+    protected $recordLimitNews = 4;
+    protected $recordLimitAnnouncements = 4;
+    protected $recordLimitEvents = 4;
 
-    // public function __construct(Page $page, Story $story, Announcement $announcement, Event $event)
-    public function __construct(Page $page, Story $story, Announcement $announcement)
+    public function __construct(Page $page, Story $story, Announcement $announcement, Event $event)
 
     {
         $this->page = $page;
         $this->story = $story;
         $this->announcement = $announcement;
-        // $this->event = $event;
-
+        $this->event = $event;
 
     }
-        public function preview($stype, Story $story)
-        {
-            return 'need to recreate or reroute to correct preview page' . $stype . $story;
-        }
 
     public function index()
     {
-        // \Log::info('User failed to login.', ['id' => $user->id]);
+        //Set current date time to begining of day and end of day
         $currentDateTimeStart = Carbon::now()->startOfDay();
         $currentDateTimeEnd = Carbon::now()->endOfDay();
 
-        // $page = $this->page->where([
-        //     ['start_date', '<=', $currentDateTime],
-        //     ['end_date', '>=', $currentDateTime],
-        // ])->first();
         $page = $this->page->where([
             ['is_ready', 1],
             ['is_archived', 0],
@@ -51,6 +45,16 @@ class MainController extends Controller
             ['end_date', '>=',  $currentDateTimeEnd]
         ])->first();
 
+        //in case no new page has been set
+        //pull last one to expire
+        if(is_null($page)){
+            $page = $this->page->where([
+                ['is_ready', 1],
+                ['is_archived', 0],
+                ['start_date', '<=', $currentDateTimeStart]
+            ])->first();
+
+        }
 
         $currentStorysBasic = $this->story->where([
             ['story_type', 'news'],
@@ -61,26 +65,58 @@ class MainController extends Controller
             ])
             ->orderBy('priority','desc')
             ->orderBy('start_date','asc')
-            ->paginate(3);
+            ->take($this->recordLimitNews)->get();
+
+            //make sure there are enough announcements with a priority over 0
+            //if not requery with out priority limitation
+        if($currentStorysBasic->count() < $this->recordLimitNews ){
+            $currentStorysBasic = $this->story->where([
+                ['story_type', 'news'],
+                ['is_approved', 1],
+                ['is_archived', 0],
+                ['start_date', '<=', $currentDateTimeStart]
+                ])
+                ->orderBy('priority','desc')
+                ->orderBy('start_date','asc')
+                ->take($this->recordLimitNews)->get();
+            }
+
 
         $currentAnnouncements = $this->announcement->where([
             ['is_approved', 1],
             ['is_archived', 0],
             ['start_date', '<=', $currentDateTimeStart],
-            ['end_date', '>=', $currentDateTimeEnd]
+            ['end_date', '>=', $currentDateTimeEnd],
+            ['priority', '>', 0]
+        ])
+        ->orderBy('priority','desc')
+        ->orderBy('start_date','asc')
+        ->take($this->recordLimitAnnouncements)->get();
+
+        //make sure there are enough announcements with a priority over 0
+        //if not requery with out priority limitation
+        if($currentAnnouncements->count() < $this->recordLimitAnnouncements ){
+            $currentAnnouncements = $this->announcement->where([
+                ['is_approved', 1],
+                ['is_archived', 0],
+                ['start_date', '<=', $currentDateTimeStart],
+                ['end_date', '>=', $currentDateTimeEnd]
+            ])
+            ->orderBy('priority','desc')
+            ->orderBy('start_date','asc')
+            ->take($this->recordLimitAnnouncements)->get();
+        }
+
+
+
+        $events = $this->event->where([
+            ['is_approved', 1],
+            ['priority', '>', 0],
+            ['end_date', '>=', $currentDateTimeStart]
         ])
         ->orderBy('priority','desc')
         ->orderBy('start_date','desc')
-        ->paginate(3);
-        //
-        // $events = $this->event->where([
-        //     ['is_approved', 1],
-        //     ['priority', '>', 0],
-        //     ['end_date', '>=', $currentDateTimeStart]
-        // ])
-        // ->orderBy('priority','desc')
-
-        // ->paginate(4);
+        ->take($this->recordLimitEvents)->get();
 
 
 
@@ -102,26 +138,25 @@ class MainController extends Controller
     //   $fakeDate = Carbon::now()->subYear();
 
 
-        // $storyImages = $page->storyImages();
+        $storyImages = $page->storyImages;
 
-        // $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
+        $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 
-        // $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
-        //     $query->where('name', 'video');
-        // })->where([
-        //     ['is_approved',1],
-        //     ['story_type', 'external'],
-        //     ['start_date', '>=', Carbon::now()->startOfDay()]
-        // ])
-        // ->with('storyImages')->get();
-        //
-        // if(count($allStorysWithVideoTag)> 0) {
-        //     $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
-        //     $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
-        // } else {
-        //     $currentStoryImageWithVideoTag = null;
-        // }
+        $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
+            $query->where('name', 'video');
+        })->where([
+            ['is_approved',1],
+            ['story_type', 'external'],
+            ['start_date', '>=', Carbon::now()->startOfDay()]
+        ])
+        ->with('storyImages')->get();
 
+        if(count($allStorysWithVideoTag)> 0) {
+            $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
+            $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
+        } else {
+            $currentStoryImageWithVideoTag = null;
+        }
         JavaScript::put([
             'jsis' => 'hi',
             'cdnow' => Carbon::now(),
@@ -129,8 +164,8 @@ class MainController extends Controller
             'cdend' => Carbon::now()->addDays(7),
             'currentPage' => $page
         ]);
-        // return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements'));
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
+        // return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements'));
 
     }
 
@@ -143,7 +178,10 @@ class MainController extends Controller
             ['story_type', 'story'],
             ['id', '<>', $id],
             ['is_approved', 1],
-            ])->orderBy('created_at', 'desc')->take(3)->get();
+            ])
+            ->orderBy('start_date', 'desc')
+            ->orderBy('priority', 'desc')
+            ->take(3)->get();
 
         // Remove All reference to Student until Further notice
         $sideStorysStudent = null;
@@ -165,10 +203,10 @@ class MainController extends Controller
     }
 
 
-    // public function search(Request $request)
-    // {
-    //     $searchTerm =  $request->input('searchterm');
-    //     $searchResults = Story::search($searchTerm)->select('title','subtitle','teaser','id')->paginate(10);
-    //     return view('public.searchresults', compact('searchTerm', 'searchResults'));
-    // }
+    public function search(Request $request)
+    {
+        $searchTerm =  $request->input('searchterm');
+        $searchResults = Story::search($searchTerm)->select('title','subtitle','teaser','id')->paginate(10);
+        return view('public.searchresults', compact('searchTerm', 'searchResults'));
+    }
 }

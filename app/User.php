@@ -3,9 +3,12 @@
 namespace Emutoday;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Emutoday\Mediafile;
+use Sofa\Eloquence\Eloquence;
 
 class User extends Authenticatable
 {
+    use HasRoles;
     /**
     * The attributes that are mass assignable.
     *
@@ -24,6 +27,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    use Eloquence;
+    protected $searchableColumns = ['last_name', 'first_name', 'email'];
 
     /**
      * [setPasswordAttribute description]

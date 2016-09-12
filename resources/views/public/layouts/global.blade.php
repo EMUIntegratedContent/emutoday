@@ -55,13 +55,13 @@
                                                     <div class="icon-menu float-right">
 
                                                         <div id="vue-search-form">
-                                                            {{-- <search-form>
+                                                            <search-form>
                                                                 <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                            </search-form> --}}
+                                                            </search-form>
                                                         </div><!-- /#vue-event-form -->
 
-                                                        {{-- <span class="search-area"><a>Search <i class="fi-magnifying-glass"></i></a></span> --}}
-                                                        <span class="menu-area show-for-small-only"><a data-toggle="offCanvasRight">Menu <i class="fi-list"></i></a></span>
+                                                        {{-- <span class="search-area"><a>Search <i class="fa fa-magnifying-glass"></i></a></span> --}}
+                                                        <span class="menu-area show-for-small-only"><a data-toggle="offCanvasRight">Menu <i class="fa fa-list"></i></a></span>
 
                                                     </div> <!-- .icon-menu -->
 
@@ -94,11 +94,11 @@
                                             <div class="large-12 medium-12 show-for-medium columns">
                                                 <!-- '/admin/php/top_nav.php'); -->
                                                 <ul id="tier2-nav-main">
-                                                    <li><a class="{{ set_active('hub')}}" href="/hub"><i class="fi-play"></i>Today</a></li>
-                                                    <li ><a class="{{ set_active('calendar')}}" href="/calendar"><i class="fi-play"></i>Calendar</a></li>
-                                                    <li ><a class="{{ set_active('announcement')}}" href="/announcement"><i class="fi-play"></i>Announcements</a></li>
-                                                    <li ><a class="{{ set_active('news')}}" href="/news"><i class="fi-play"></i>News</a></li>
-                                                    <li ><a href="http://www.wemu.org"><i class="fi-play"></i>WEMU</a></li>
+                                                    <li><a class="{{ set_active('hub')}}" href="/hub"><i class="fa fa-play"></i>Today</a></li>
+                                                    <li ><a class="{{ set_active('calendar')}}" href="/calendar"><i class="fa fa-play"></i>Calendar</a></li>
+                                                    <li ><a class="{{ set_active('announcement')}}" href="/announcement"><i class="fa fa-play"></i>Announcements</a></li>
+                                                    <li ><a class="{{ set_active('news')}}" href="/news"><i class="fa fa-play"></i>News</a></li>
+                                                    <li ><a href="http://www.wemu.org"><i class="fa fa-play"></i>WEMU</a></li>
                                                     <li><a href="http://www.emueagles.com/">Athletics</a></li>
                                                 </ul>
                                             </div>

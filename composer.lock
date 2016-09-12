@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "db3e16a1cca2ae10a731bf479d1dfea1",
-    "content-hash": "75a8137ef4859892cfe9ebd6a7a32ef9",
+    "hash": "2f9407fdccc3cac590de5855ce8f6cdc",
+    "content-hash": "26f1aede92dc410176e7e3b214b55626",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -534,6 +534,49 @@
             "time": "2015-12-05 17:17:57"
         },
         {
+            "name": "laracasts/flash",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/flash.git",
+                "reference": "03eec812fd6ae948664ff51b4320785f6d15ee5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/flash/zipball/03eec812fd6ae948664ff51b4320785f6d15ee5d",
+                "reference": "03eec812fd6ae948664ff51b4320785f6d15ee5d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Laracasts\\Flash": "src/"
+                },
+                "files": [
+                    "src/Laracasts/Flash/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Easy flash notifications",
+            "time": "2016-07-11 20:46:02"
+        },
+        {
             "name": "laracasts/presenter",
             "version": "0.2.1",
             "source": {
@@ -889,6 +932,69 @@
                 "storage"
             ],
             "time": "2016-08-10 08:55:11"
+        },
+        {
+            "name": "league/fractal",
+            "version": "0.14.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/fractal.git",
+                "reference": "56ad8933fbb40328ca3321c84143b2c16186eebf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/56ad8933fbb40328ca3321c84143b2c16186eebf",
+                "reference": "56ad8933fbb40328ca3321c84143b2c16186eebf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "illuminate/contracts": "~5.0",
+                "mockery/mockery": "~0.9",
+                "pagerfanta/pagerfanta": "~1.0.0",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5",
+                "zendframework/zend-paginator": "~2.3"
+            },
+            "suggest": {
+                "illuminate/pagination": "The Illuminate Pagination component.",
+                "pagerfanta/pagerfanta": "Pagerfanta Paginator",
+                "zendframework/zend-paginator": "Zend Framework Paginator"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.13-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\Fractal\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phil Sturgeon",
+                    "email": "me@philsturgeon.uk",
+                    "homepage": "http://philsturgeon.uk/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Handle the output of complex data structures ready for API output.",
+            "homepage": "http://fractal.thephpleague.com/",
+            "keywords": [
+                "api",
+                "json",
+                "league",
+                "rest"
+            ],
+            "time": "2016-07-21 09:56:14"
         },
         {
             "name": "maximebf/debugbar",
@@ -1378,6 +1484,108 @@
                 "shell"
             ],
             "time": "2016-03-09 05:03:14"
+        },
+        {
+            "name": "sofa/eloquence",
+            "version": "v5.2.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jarektkaczyk/eloquence.git",
+                "reference": "7d52943463b6ae135d638c80c0e7e270a5ca6df6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jarektkaczyk/eloquence/zipball/7d52943463b6ae135d638c80c0e7e270a5ca6df6",
+                "reference": "7d52943463b6ae135d638c80c0e7e270a5ca6df6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.2.*",
+                "php": ">=5.5.9",
+                "sofa/hookable": "5.2.*"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.4",
+                "phpunit/phpunit": "4.5.0",
+                "squizlabs/php_codesniffer": "2.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sofa\\Eloquence\\": "src"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jarek Tkaczyk",
+                    "email": "jarek@softonsofa.com",
+                    "homepage": "http://softonsofa.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Flexible Searchable, Mappable, Metable, Validation and more extensions for Laravel Eloquent ORM.",
+            "keywords": [
+                "eloquent",
+                "laravel",
+                "mappable",
+                "metable",
+                "mutable",
+                "searchable"
+            ],
+            "time": "2016-08-25 03:25:46"
+        },
+        {
+            "name": "sofa/hookable",
+            "version": "v5.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jarektkaczyk/hookable.git",
+                "reference": "ae87508e072737a602832acdd62272867152c775"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jarektkaczyk/hookable/zipball/ae87508e072737a602832acdd62272867152c775",
+                "reference": "ae87508e072737a602832acdd62272867152c775",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "5.2.*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "crysalead/kahlan": "~1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sofa\\Hookable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jarek Tkaczyk",
+                    "email": "jarek@softonsofa.com",
+                    "homepage": "http://softonsofa.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel Eloquent hooks system.",
+            "keywords": [
+                "eloquent",
+                "laravel"
+            ],
+            "time": "2016-01-14 21:06:40"
         },
         {
             "name": "swiftmailer/swiftmailer",

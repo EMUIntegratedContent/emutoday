@@ -4,16 +4,34 @@ namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
-
+use Sofa\Eloquence\Eloquence;
+ 
 class Story extends Model
 {
+
+
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'storys';
+     protected $table = 'storys';
+
+
+     protected $fillable = [
+         'user_id', 'title',
+         'slug','subtitle',
+         'teaser','content',
+         'external_link',
+         'start_date','end_date',
+         'is_featured','is_ready',
+         'is_approved', 'is_live' ,
+         'story_type',
+         'author_id', 'author_info',
+         'priority'
+     ];
+     protected $dates = ['start_date', 'end_date'];
 
     /**
      * Vendor Package
@@ -21,20 +39,8 @@ class Story extends Model
     use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\StoryPresenter';
 
-    protected $fillable = [
-        'user_id', 'title',
-        'slug','subtitle',
-        'teaser','content',
-        'external_link',
-        'start_date','end_date',
-        'is_featured','is_ready',
-        'is_approved', 'is_live' ,
-        'story_type',
-        'author_id', 'author_info',
-        'priority'
-    ];
-
-    protected $dates = ['start_date', 'end_date'];
+    use Eloquence;
+    protected $searchableColumns = ['title', 'subtitle', 'teaser', 'content'];
 
     /**
     *

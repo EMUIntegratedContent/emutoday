@@ -2,10 +2,13 @@
 
 namespace Emutoday\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 
 use Emutoday\Story;
+use Emutoday\Event;
+use Emutoday\Announcement;
 use Emutoday\User;
-// use emutoday\Tweet;
+use Emutoday\Tweet;
 
 class DashboardController extends Controller
 {
@@ -23,4 +26,18 @@ class DashboardController extends Controller
         return view('admin.dashboard');
 
     }
+
+    public function search(Request $request)
+    {
+        $searchTerm =  $request->input('searchterm');
+        $searchStorys = Story::search($searchTerm)
+        ->select('title','subtitle','teaser','id')->paginate(5);
+        $searchEvents = Event::search($searchTerm)
+        ->select('title','description','location','id')->paginate(5);
+        $searchAnnouncements = Announcement::search($searchTerm)
+        ->select('title','announcement','id')->paginate(5);
+
+        return view('admin.searchresults', compact('searchTerm', 'searchStorys','searchEvents','searchAnnouncements'));
+    }
+
 }

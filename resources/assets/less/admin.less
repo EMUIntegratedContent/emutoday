@@ -1,0 +1,30 @@
+
+/**
+ * Application.less
+ *
+ * This file compiles to /public/assets/css/app.css
+ * You should use it to import all your less components
+ */
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic);
+
+// Vendor
+@import '../vendor/font-awesome/less/font-awesome.less';
+// @import 'admin-lte/bootstrap-less/custom-variables.less';
+// @import 'admin-lte/bootstrap-less/mixins.less';
+
+
+@import '../vendor/bootstrap/less/bootstrap.less';
+
+@import 'Custom-AdminLTE.less';
+// Theme
+//@import 'base.less';
+@import 'custom-skin-purple.less';
+// @import 'custom-bs-variables.less';
+@gray-base:              #000;
+@gray-darker:            lighten(@gray-base, 13.5%); // #222
+//** Text color for `<input>`s
+@input-color:          @gray-darker;
+// Partials
+//@import 'partials/_nav.less';
+//@import 'partials/_form.less';
+//@import 'partials/_footer.less';

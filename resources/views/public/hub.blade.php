@@ -61,8 +61,8 @@
                       @foreach ($currentAnnouncements as $announcement)
                       <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
                       @endforeach
-                                            <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
-                                            </ul>
+                    <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
+                    </ul>
                   </div>
 
                 </div>
@@ -70,14 +70,14 @@
          <div class="large-3 medium-4 small-12 columns">
               <div class="featured-content-block">
                   <h6 class="headline-block">Featured video</h6>
-                  {{-- @if(isset($currentStoryImageWithVideoTag))
+                  @if(isset($currentStoryImageWithVideoTag))
                       <a href="{{$currentStoryImageWithVideoTag->link}}" target="blank"><img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}" alt="featured video"></a>
                       <p><a href="{{$currentStoryImageWithVideoTag->link}}" target="blank">{{$currentStoryImageWithVideoTag->caption}}</a></p>
 
                   @else
                       <a href="https://www.youtube.com/user/emichigan08" target="blank"><img src="/assets/imgs/placeholder/external_video.jpg" alt="featured video"></a>
                       <p><a href="https://www.youtube.com/user/emichigan08" target="blank">Welcome to Education First, the official Eastern Michigan University YouTube Channel.</a></p>
-                  @endif --}}
+                  @endif
 
             </div>
          </div>
@@ -96,7 +96,7 @@
                 </div>
                 <div id="newshub-calendar-front">
                    <ul class="calendar-event-group">
-                     {{-- @foreach ($events as $event)
+                     @foreach ($events as $event)
                         <li class="row calendar-unit">
                           <div class="large-2 medium-2 small-2 columns nopadding date-box">
                             <p>{{$event->present()->eventStartDateMonth}}</p>
@@ -106,7 +106,7 @@
                            <p class="datecontent-box"><a href="/calendar/{{$event->present()->eventStartDateYear}}/{{$event->present()->eventStartDateMonthUnit}}/{{$event->present()->eventStartDateDay}}">{{$event->title}}</a></p>
                           </div>
                         </li>
-                     @endforeach --}}
+                     @endforeach
                     </ul>
                     <p><a href="/calendar/">More Events</a></p>
                     </div>
@@ -122,9 +122,9 @@
                 </div>
                 <div class="twitter-feed">
                   <ul class="twitter-content">
-                        {{-- @foreach($tweets as $tweet)
+                        @foreach($tweets as $tweet)
                           <li><a href="https://twitter.com/{{ $tweet->user_screen_name }}/status/{{ $tweet->id }}">{{ '@' . $tweet->user_screen_name }}</a> {{ $tweet->tweet_text }}</li>
-                        @endforeach --}}
+                        @endforeach
                     </ul>
                     <div class="twitterlink">
                         <p><a href="http://emich.edu/twitter">See all EMU Twitter Feeds</a></p>
@@ -132,9 +132,6 @@
                     </div>
                </div>
            </div>
-
-
-
            <!--Working at EMU-->
            <div id="working-info" class="large-3 medium-12 small-12 columns">
              <div class="featured-content-block">
@@ -145,7 +142,6 @@
                  <li><a href="http://www.emich.edu/hr/documents/home_page/gctwf2015results_presentation_apmeeting_04-19-2016.pdf">Great Colleges to Work For survey results are now online</a></a></li>
                  <!-- <li><a href="">Health care sign up in going on now. For more information contact Joan Johnson.</a></li> -->
                </ul>
-
              </div>
              <div class="working-link">
                  <p><a href="http://www.emich.edu/hr">Visit Human Resources</a></p>
