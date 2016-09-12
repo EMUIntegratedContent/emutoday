@@ -16,8 +16,8 @@ return [
     |
     */
 
-    // 'driver' => env('MAIL_DRIVER', 'log'),
-    'driver' => "log",
+    'driver' => env('MAIL_DRIVER', 'smtp'),
+
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Address
@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+    'from' => ['address' => 'ext_dbeaman@emich.edu', 'name' => 'Ext Dbeaman'],
 
     /*
     |--------------------------------------------------------------------------
