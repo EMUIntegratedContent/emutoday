@@ -1,4 +1,4 @@
-@extends('admin.layouts.master')
+@extends('admin.layouts.adminlte')
 
 @section('title', 'Delete '.$user->name)
 

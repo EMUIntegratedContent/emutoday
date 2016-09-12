@@ -42,7 +42,7 @@ class StoryImageController extends Controller
         //return redirect(route('backend.users.index'))->with('status', 'User has been created.');
     }
 
-    public function addNewStoryImage(Request $request)
+    public function addNewStoryImage($qtype,$gtype,$stype,$id,Request $request)
     {
         $story_id = $request->story_id;
         $story = $this->story->findOrFail($story_id);
@@ -60,13 +60,21 @@ class StoryImageController extends Controller
         //     $story->save();
         // }
         flash()->success('New Image Added.');
-        return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
+        $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
+
+
+        return redirect($rurl);
+        //return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
 
         // return redirect(route('admin.story.edit', $story->id));
     }
 
     public function update($id, Requests\StoryImage_UpdateRequest $request)
     {
+
+        $qtype = $request->get('qtype');
+        $gtype = $request->get('gtype');
+        $stype = $request->get('stype');
        //create new instance of model to save from form
        $storyImage = $this->storyImages->findOrFail($id);
 
@@ -113,8 +121,11 @@ class StoryImageController extends Controller
         $story = $storyImage->story;
         $stype = $story->story_type;
         flash()->success('Image has been updated.');
+        $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
 
-        return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
+
+        return redirect($rurl);
+    //    return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
 
         // return redirect(route('admin.story.edit', $story->id ));
     }

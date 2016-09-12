@@ -37,6 +37,16 @@ text-align: right;
 import { getRecordId, getRecordIsDirty, getRecordState } from '../vuex/getters'
 
 export default  {
+    props: [
+        'viewtype',
+        'recordId',
+        'currentUser',
+        'role',
+        'stype',
+        'sroute',
+        'gtype',
+        'qtype'
+    ],
     vuex: {
         getters: {
             // note that you're passing the function itself, and not the value 'getCount()'
@@ -48,15 +58,7 @@ export default  {
         },
     },
 
-    props: [
-        'viewtype',
-        'recordId',
-        'currentUser',
-        'role',
-        'stype',
-        'sroute',
-        'qtype'
-    ],
+
     ready() {
         console.log('BoxTools')
     },
@@ -104,10 +106,11 @@ export default  {
         },
 
         previewLink:function() {
-            return '/preview/' + this.sroute +  '/' +this.stype +  '/' +this.thisRecordId;
+            let ftype = 'form'+ this.qtype + '/';
+            return '/preview/'+ ftype + this.gtype +  '/' +this.stype +  '/' +this.thisRecordId;
         },
         listLink:function() {
-             return '/admin/'+ this.sroute + '/'+ this.stype + '/'+ this.qtype;
+             return '/admin/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
 
             // if(this.sroute === 'magazine'){
             //     return '/admin/'+ this.sroute + '/'+ this.stype + '/queue';
@@ -117,7 +120,7 @@ export default  {
             // }
         },
         createNewLink:function() {
-            return '/admin/'+ this.sroute +'/' + this.stype +  '/setup'
+            return '/admin/'+ this.gtype +'/' + this.stype +  '/setup'
         },
     },
 

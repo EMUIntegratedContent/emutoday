@@ -11,7 +11,7 @@
     @parent
 @endsection
 @section('bodytop')
-    @include('preview.includes.previewstory',['stype'=> $story->story_type, 'sroute'=> $sroute, 'recordid' => $story->id, 'form'=> $form] )
+    @include('preview.includes.previewstory',['stype'=> $stype, 'gtype'=> $gtype, 'recordid' => $story->id, 'qtype'=> $qtype] )
 @endsection
 @section('offcanvaslist')
     @include('preview.includes.offcanvaslist')
@@ -37,7 +37,7 @@
         <div id="story-content" class="row">
                     {!! Form::model($story,[
                         'method' => 'put',
-                        'route' => ['admin_story_update_from_preview', $story->id],
+                        'route' => ['admin_preview_story_update', $story->id],
                         'files' => true
                     ]) !!}
                     {{-- {!! Form::model($story, [

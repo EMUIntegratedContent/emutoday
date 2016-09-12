@@ -30,7 +30,7 @@ class StoryController extends Controller
     }
 
 
-    public function queue(Story $story) {
+    public function queueAll(Story $story) {
         $storys = $this->story;
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
         $sroute = 'story';
@@ -79,13 +79,15 @@ class StoryController extends Controller
             $story->story_type = $request->new_story_type;
             $story->save();
             $storyGroup = $story->storyType->group;
-
+            $qtype = $request->qtype;
+            $gtype = $request->gtype;
+            $stype = $request->stype;
 
             $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
             $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
             $stypelist = StoryType::where('level', 1)->lists('name','shortname');
             $stypes = $story->story_type;
-
+            $stype = $story->story_type;
             foreach ($requiredImages as $img) {
                 $story->storyImages()->create([
                     'imagetype_id'=> $img->id,
@@ -98,10 +100,13 @@ class StoryController extends Controller
 
 
             flash()->success('Story has been Promoted.');
+            $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
             // return view('admin.story.form', compact('story', 'stypes', 'tags','stypelist','requiredImages','otherImages'));
             // Route::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
 
-            return redirect()->route('admin_storytype_edit',['stype'=> $stypes, 'story'=> $story]);
+
+            return redirect($rurl);
+            // return redirect()->route('admin_storytype_edit',['stype'=> $stypes, 'story'=> $story]);
 
         }
 

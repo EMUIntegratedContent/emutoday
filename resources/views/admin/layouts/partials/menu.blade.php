@@ -24,15 +24,18 @@
     <ul class="treeview-menu">
 
         @can('story_approve', $currentUser)
+{{-- Route::get('{group}/{stype}/{qtype}','Admin\StoryTypeController@queue' ); --}}
+        <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
 
-        <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/queue"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
+        {{-- <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li> --}}
         @endcan
         @can('story_promote', $currentUser)
 
-        <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queue"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
+        <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
         @endcan
         {{-- <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all"><i class="fa fa-list"></i> <span>List All</span></a></li> --}}
-        <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/new/setup"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+        <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+        <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/story/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
 
     </ul>
 </li>
@@ -63,8 +66,8 @@
     <ul class="treeview-menu">
         <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine"><i class="fa fa-list"></i> <span>List</span></a></li>
         <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-        <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine/article/queue"><i class="fa fa-rocket"></i><span>Articles</span></a></li>
-        <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine/article/setup"><i class="fa fa-plus-square"></i><span>Add Article</span></a></li>
+        <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine/article/queuearticle"><i class="fa fa-rocket"></i><span>Articles</span></a></li>
+        <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/queuearticle/magazine/article/form"><i class="fa fa-plus-square"></i><span>Add Article</span></a></li>
     </ul>
 </li>
 @endcan

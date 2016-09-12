@@ -22,6 +22,8 @@
                 <story-pod
                     pid="items-unapproved"
                     :sroute="sroute"
+                    :stype="stype"
+                    :gtype="gtype"
                     :qtype="qtype"
                     v-for="item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType"
                     @item-change="moveToApproved"
@@ -48,6 +50,8 @@
             <story-pod
                 pid="items-approved"
                 :sroute="sroute"
+                :stype="stype"
+                :gtype="gtype"
                 :qtype="qtype"
                 v-for="item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType"
                 @item-change="moveToUnApproved"
@@ -77,6 +81,8 @@
             <story-pod
                 pid="items-live"
                 :sroute="sroute"
+                :stype="stype"
+                :gtype="gtype"
                 :qtype="qtype"
                 v-for="item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType"
                 @item-change="moveToUnApproved"
@@ -131,7 +137,7 @@ import iconradio from '../directives/iconradio.js'
 export default  {
     directives: {iconradio},
     components: {StoryPod,IconToggleBtn},
-    props: ['allrecords','stypes','cuser','role','sroute','qtype'],
+    props: ['stypes','stype','sroute','qtype','gtype','cuser','role'],
     created(){
         // this.currentDate = moment().format();
     },
@@ -170,10 +176,10 @@ export default  {
 
         checkRoleAndQueueType:function() {
             if (this.role === 'admin' || this.role === 'admin_super'){
-                if(this.singleStype){
-                    return false
-                } else {
+                if(this.qtype === 'queueall'){
                     return true
+                } else {
+                    return false
                 }
             } else {
                 return false
@@ -182,10 +188,10 @@ export default  {
         s_types:function(){
            // var data = localStorage[key];
               try {
-                  this.singleStype = false;
+                //   this.singleStype = false;
                   return JSON.parse(this.stypes);
               } catch(e) {
-                  this.singleStype = true;
+                //   this.singleStype = true;
                   // this.record.story_type = this.stypes;
                   return this.stypes;
               }
@@ -403,12 +409,13 @@ export default  {
     },
 
         fetchAllRecords: function() {
-            let routeurl;
-            if (this.isString(this.s_types)){
-                routeurl = '/api/story/queueload/'+ this.stypes;
-            } else {
-                routeurl = '/api/story/queueload/all';
-            }
+            let routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
+
+            // if (this.isString(this.s_types)){
+            //     routeurl = '/api/story/queueload/'+ this.stypes;
+            // } else {
+            //     routeurl = '/api/story/queueload/all';
+            // }
             this.$http.get(routeurl)
 
             .then((response) =>{

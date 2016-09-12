@@ -6,17 +6,7 @@
 
     @section('style-plugin')
         @parent
-        <link rel="stylesheet" href="/themes/admin-lte/plugins/daterangepicker/daterangepicker-bs3.css">
-        <!-- bootstrap datepicker -->
-        <link rel="stylesheet" href="/themes/admin-lte/plugins/datepicker/datepicker3.css">
-        <!-- iCheck for checkboxes and radio inputs -->
-        <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css">
-        <!-- Bootstrap Color Picker -->
-        <link rel="stylesheet" href="/themes/admin-lte/plugins/colorpicker/bootstrap-colorpicker.min.css">
-        <!-- Bootstrap time Picker -->
-        <link rel="stylesheet" href="/themes/admin-lte/plugins/timepicker/bootstrap-timepicker.min.css">
-        <!-- Select2 -->
-        <link rel="stylesheet" href="/themes/admin-lte/plugins/select2/select2.min.css">
+
     @endsection
 
     @section('style-app')
@@ -39,7 +29,7 @@
 
                         {!! Form::model($user,[
                             'method' => $user->exists ? 'put' : 'post',
-                            'route' => $user->exists ? ['admin_user_update', $user->id] : ['admin_user_store']
+                            'route' => $user->exists ? ['admin.user.update', $user->id] : ['admin.user.store']
                             ]) !!}
                             <div class="row">
                                 <div class="col-md-6">
@@ -120,7 +110,7 @@
                         <div class="box-body">
                             {!! Form::model($avatar,[
                                 'method' => 'patch',
-                                'route' => ['admin_mediafile_update', $avatar->id],
+                                'route' => ['admin.mediafile.update', $avatar->id],
                                 'files' => true
                             ]) !!}
 
@@ -221,7 +211,7 @@
     <!-- AdminLTE App -->
     {{-- <script src="/themes/admin-lte/js/app.min.js"></script> --}}
     <!-- AdminLTE for demo purposes -->
-    {{-- <script src="/themes/admin-lte/js/demo.js"></script> --}} --}}
+    {{-- <script src="/themes/admin-lte/js/demo.js"></script> --}}
 @endsection
 @section('footer-app')
     @parent
@@ -239,5 +229,6 @@
                     else
                             return false;
             }
-        
+            </script>
+
     @endsection

@@ -290,7 +290,7 @@ import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
     directives: {},
     components: {VuiFlipSwitch},
-    props: ['item','pid','sroute','qtype'],
+    props: ['item','pid','sroute','qtype','gtype','stype'],
     data: function() {
         return {
             response_msg: '',
@@ -402,10 +402,10 @@ module.exports  = {
             return this.item.is_approved;
         },
         itemEditPath: function(){
-            return '/admin/'+ this.sroute + '/' + this.item.story_type+'/'+this.item.id + '/edit'
+            return '/admin/'+ this.qtype + '/'+ this.gtype + '/' + this.item.story_type+'/'+this.item.id + '/edit'
         },
         itemPreviewPath: function(){
-            return '/preview/'+ this.sroute + '/'+ this.item.story_type+'/'+this.item.id
+            return '/preview/'+ this.qtype + '/'+ this.gtype + '/'+ this.item.story_type+'/'+this.item.id
         },
         typeClass: function() {
 

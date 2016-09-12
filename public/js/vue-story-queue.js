@@ -16740,7 +16740,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
     directives: {},
     components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
-    props: ['item', 'pid', 'sroute', 'qtype'],
+    props: ['item', 'pid', 'sroute', 'qtype', 'gtype', 'stype'],
     data: function data() {
         return {
             response_msg: '',
@@ -16850,10 +16850,10 @@ module.exports = {
             return this.item.is_approved;
         },
         itemEditPath: function itemEditPath() {
-            return '/admin/' + this.sroute + '/' + this.item.story_type + '/' + this.item.id + '/edit';
+            return '/admin/' + this.qtype + '/' + this.gtype + '/' + this.item.story_type + '/' + this.item.id + '/edit';
         },
         itemPreviewPath: function itemPreviewPath() {
-            return '/preview/' + this.sroute + '/' + this.item.story_type + '/' + this.item.id;
+            return '/preview/' + this.qtype + '/' + this.gtype + '/' + this.item.story_type + '/' + this.item.id;
         },
         typeClass: function typeClass() {},
         readyIcon: function readyIcon() {
@@ -17198,7 +17198,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
     directives: { iconradio: _iconradio2.default },
     components: { StoryPod: _StoryPod2.default, IconToggleBtn: _IconToggleBtn2.default },
-    props: ['allrecords', 'stypes', 'cuser', 'role', 'sroute', 'qtype'],
+    props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
     created: function created() {
         // this.currentDate = moment().format();
     },
@@ -17238,10 +17238,10 @@ exports.default = {
 
         checkRoleAndQueueType: function checkRoleAndQueueType() {
             if (this.role === 'admin' || this.role === 'admin_super') {
-                if (this.singleStype) {
-                    return false;
-                } else {
+                if (this.qtype === 'queueall') {
                     return true;
+                } else {
+                    return false;
                 }
             } else {
                 return false;
@@ -17250,10 +17250,10 @@ exports.default = {
         s_types: function s_types() {
             // var data = localStorage[key];
             try {
-                this.singleStype = false;
+                //   this.singleStype = false;
                 return JSON.parse(this.stypes);
             } catch (e) {
-                this.singleStype = true;
+                //   this.singleStype = true;
                 // this.record.story_type = this.stypes;
                 return this.stypes;
             }
@@ -17463,12 +17463,13 @@ exports.default = {
     }), (0, _defineProperty3.default)(_methods, 'fetchAllRecords', function fetchAllRecords() {
         var _this = this;
 
-        var routeurl = void 0;
-        if (this.isString(this.s_types)) {
-            routeurl = '/api/story/queueload/' + this.stypes;
-        } else {
-            routeurl = '/api/story/queueload/all';
-        }
+        var routeurl = '/api/' + this.gtype + '/' + this.stype + '/' + this.qtype;
+
+        // if (this.isString(this.s_types)){
+        //     routeurl = '/api/story/queueload/'+ this.stypes;
+        // } else {
+        //     routeurl = '/api/story/queueload/all';
+        // }
         this.$http.get(routeurl).then(function (response) {
             _this.$set('allitems', response.data.data);
         }, function (response) {
@@ -17514,7 +17515,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-fa0ebd48=\"\">\n        <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n            <h4 _v-fa0ebd48=\"\">Unapproved<p _v-fa0ebd48=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                    <label _v-fa0ebd48=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-fa0ebd48=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                    </template>\n              </div>\n              <!-- <div class=\"btn-group btn-group-xs\" @click=\"changeFilterByReadyStatus\" role=\"group\" aria-label=\"isReadyLabel\" data-toggle=\"buttons\" v-iconradio=\"readyStatus\">\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"ready\"><input type=\"radio\" autocomplete=\"off\" value=\"1\" /><span class=\"item-type-icon-shrt fa fa-circle\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"not ready\"><input type=\"radio\" autocomplete=\"off\" value=\"0\" /><span class=\"item-type-icon-shrt fa fa-circle-o\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"reset\"><input type=\"radio\" autocomplete=\"off\" value=\"\" /><span class=\"item-type-icon-shrt fa fa-asterisk\"></span></label>\n\n              </div> -->\n            </div>\n            <div id=\"items-unapproved\" _v-fa0ebd48=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-fa0ebd48=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n        <h4 _v-fa0ebd48=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                <label _v-fa0ebd48=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-fa0ebd48=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-fa0ebd48=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-fa0ebd48=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n        <h4 _v-fa0ebd48=\"\">Live <small _v-fa0ebd48=\"\">Approved and StartDate is past</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                <label _v-fa0ebd48=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-fa0ebd48=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-fa0ebd48=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-fa0ebd48=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-fa0ebd48=\"\">\n        <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n            <h4 _v-fa0ebd48=\"\">Unapproved<p _v-fa0ebd48=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                    <label _v-fa0ebd48=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-fa0ebd48=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                    </template>\n              </div>\n              <!-- <div class=\"btn-group btn-group-xs\" @click=\"changeFilterByReadyStatus\" role=\"group\" aria-label=\"isReadyLabel\" data-toggle=\"buttons\" v-iconradio=\"readyStatus\">\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"ready\"><input type=\"radio\" autocomplete=\"off\" value=\"1\" /><span class=\"item-type-icon-shrt fa fa-circle\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"not ready\"><input type=\"radio\" autocomplete=\"off\" value=\"0\" /><span class=\"item-type-icon-shrt fa fa-circle-o\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"reset\"><input type=\"radio\" autocomplete=\"off\" value=\"\" /><span class=\"item-type-icon-shrt fa fa-asterisk\"></span></label>\n\n              </div> -->\n            </div>\n            <div id=\"items-unapproved\" _v-fa0ebd48=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-fa0ebd48=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n        <h4 _v-fa0ebd48=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                <label _v-fa0ebd48=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-fa0ebd48=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-fa0ebd48=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-fa0ebd48=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n        <h4 _v-fa0ebd48=\"\">Live <small _v-fa0ebd48=\"\">Approved and StartDate is past</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                <label _v-fa0ebd48=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-fa0ebd48=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-fa0ebd48=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-fa0ebd48=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

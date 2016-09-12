@@ -51,7 +51,7 @@ class UserController extends Controller
                 $avatar = $user->mediaFiles->where('type', 'avatar')->first();
 
                 $mediafiles = $user->mediaFiles;
-        return view('admin.users.form', compact('user', 'userRoles','mediafiles', 'avatar'));
+        return view('admin.user.form', compact('user', 'userRoles','mediafiles', 'avatar'));
     }
 
     public function update(Requests\User_UpdateRequest $request, $id)
@@ -61,7 +61,7 @@ class UserController extends Controller
         $rolesList = $request->input('role_list') == null ? [] : $request->input('role_list');
         $user->roles()->sync($rolesList);
         flash()->success('User has been updated.');
-        return redirect(route('admin_user_edit', $user->id));//->with('status', 'User has been updated.');
+        return redirect(route('admin.user.edit', $user->id));//->with('status', 'User has been updated.');
     }
     public function confirm(Requests\User_DeleteRequest $request, $id)
     {

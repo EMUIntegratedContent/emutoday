@@ -31,11 +31,40 @@ class StoryController extends ApiController
     //     $this->middleware('web', ['only' => [
     //        'appLoad','listType','queueload'
     //    ]]);
-        $this->middleware('web', ['only' => ['queueload'
+        $this->middleware('web', ['only' => ['queueload','queue'
        ]]);
        }
 
 
+       public function queue($gtype, $stype, $qtype)
+       {
+
+           if (\Auth::check()) {
+               $user = \Auth::user();
+               // $storys = $this->story->newQuery();
+               // dd($user->roles);
+               if ($user->hasRole('contributor_1')){
+                   // dd($user->id);
+                   $storys = $user->storys()->get();
+               } else {
+
+                   if($qtype === 'queueall'){
+                   $storys  = Story::get();
+                   } else {
+                      $storys = Story::where('story_type', $stype)->get();
+                   }
+
+               }
+               $fractal = new Manager();
+               // $storys = Story::all();
+               $resource = new Fractal\Resource\Collection($storys->all(), new FractalStoryTransformerModel);
+               // Turn all of that into a Array string
+               return $fractal->createData($resource)->toArray();
+           } else {
+               return $this->setStatusCode(501)->respondWithError('Error');
+
+           }
+       }
 
     // this.$http.get('/api/story/appLoad')
     public function queueload($stype)
@@ -231,11 +260,12 @@ class StoryController extends ApiController
      */
     public function edit($id)
     {
+
+
         $fractal = new Manager();
         // $fractal->setSerializer(new ArraySerializer());
         // $fractal->setSerializer(new DataArraySerializer());
         $story = Story::findOrFail($id);
-
         $resource = new Fractal\Resource\Item($story, new FractalStoryTransformerModel);
             // Turn all of that into a JSON string
             return $fractal->createData($resource)->toArray();

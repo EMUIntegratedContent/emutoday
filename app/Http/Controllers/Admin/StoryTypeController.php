@@ -30,6 +30,33 @@ class StoryTypeController extends Controller
 
     }
 
+    public function queue($gtype, $stype, $qtype) {
+
+        //$storys = \Story::
+        //gtype is the story group route (either story or magazine)
+        $gtype = $gtype;
+        //stype is the actual story type : 'story', 'news', 'article', 'external', etc..
+        $stype = $stype;
+        //qtype is the queue type, it's for
+        //tracking what queue->edit->preview pathway
+        // 'queueall' = all story types, 'queuenews' = just news, 'queuearticle'=>magazine articles
+        $qtype = $qtype;
+
+        //dd('group= ' .$group . ' stype= ' . $stype. ' qtype= ' . $qtype);
+        $sroute = 'story';
+        if ($qtype === 'queueall') {
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        } else {
+            $stypes  = $stype;
+        }
+
+        // $qtype  = 'queuenews';
+        // \JavaScript::put([
+        //     'records' => $storys
+        // ]);
+        return view('admin.story.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
+    }
+
     public function list($stype)
     {
         //$storys = $this->story->where('story_type', $stype)->get();
@@ -43,7 +70,52 @@ class StoryTypeController extends Controller
         // return view('admin.story.index', compact('stype'));
 
     }
+    public function storyTypeForm($qtype,$gtype,$stype){
+        // dd('$qtype= '. $qtype . ' $gtype= '.$gtype .' $stype= ' . $stype);
 
+        $sroute = 'x';
+        $story = new Story;
+
+            $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+
+
+        // dd($stypelist,$stypelist1);
+        $user = \Auth::user();
+            if ($user->hasRole('contributor_1')){
+                // dd($user->id);
+                $stypelist = 'news';
+                $stype = 'news';
+                $stypes = 'news';
+                $qtype = 'queuenews';
+            } else {
+                if($gtype === 'story'){
+                    $stypelist =  $stypelist;
+                    $stypes = $stypes;
+
+                } elseif ($gtype === 'magazine') {
+                    $stypelist = 'article';
+                    $stype = 'article';
+                    $stypes = 'article';
+
+                } else {
+                    $stypes = $stype;
+                    $stypelist =  $stypelist;
+                }
+
+
+            }
+            JavaScript::put([
+                'cuser' => $user,
+                'stypes' => $stypes,
+                'storytype' => $stype,
+                'stypelist' => $stypelist
+            ]);
+            //dd($stypelist,$stypelist1,$stypelist2,$stypelist3);
+
+            return view('admin.story.form', compact('story','qtype', 'sroute','gtype','stype' ,'stypes', 'stypelist' ));
+
+    }
 
     /**
     * [storyTypeSetUp description]
@@ -57,34 +129,34 @@ class StoryTypeController extends Controller
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
         //$stypelist = \Emutoday\StoryType::all();
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
-    //    $stypelist2 = collect(\Emutoday\StoryType::select('name','shortname')->get())->toJson();
+        //$stypelist2 = collect(\Emutoday\StoryType::select('name','shortname')->get())->toJson();
 
         // dd($stypelist,$stypelist1);
         $user = \Auth::user();
-        if ($user->hasRole('contributor_1')){
-            // dd($user->id);
-            $stypelist = 'news';
-            $stype = 'news';
-            $stypes = 'news';
-        } else {
-            if($stype == 'new') {
-                $stypelist =  $stypelist;
-                $stypes = $stypes;
+            if ($user->hasRole('contributor_1')){
+                // dd($user->id);
+                $stypelist = 'news';
+                $stype = 'news';
+                $stypes = 'news';
             } else {
-                $stypes = $stype;
-                $stypelist =  $stypelist;
+                if($stype == 'new') {
+                    $stypelist =  $stypelist;
+                    $stypes = $stypes;
+                } else {
+                    $stypes = $stype;
+                    $stypelist =  $stypelist;
+                }
+
             }
+            JavaScript::put([
+                'cuser' => $user,
+                'stypes' => $stypes,
+                'storytype' => $stype,
+                'stypelist' => $stypelist
+            ]);
+            //dd($stypelist,$stypelist1,$stypelist2,$stypelist3);
 
-        }
-        JavaScript::put([
-            'cuser' => $user,
-            'stypes' => $stypes,
-            'storytype' => $stype,
-            'stypelist' => $stypelist
-        ]);
-        // dd($stypelist,$stypelist1,$stypelist2,$stypelist3);
-
-        return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ));
+            return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ));
 
     }
 
@@ -96,7 +168,7 @@ class StoryTypeController extends Controller
     public function articleSetup()
     {
         $user = \Auth::user();
-        $story = new Story;
+        $story = null;
         // $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
         $sroute = 'magazine';
         $stypelist = 'article';
@@ -117,11 +189,17 @@ class StoryTypeController extends Controller
     }
 
     // storyTypeEditRoute::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryController@storyTypeEdit']);
-
-    public function storyTypeEdit($stype, Story $story)
+    // public function storyTypeEdit2($gtype, $stype, Story $story)
+    // {
+    //     dd('gtype= ' .$gtype . ' stype= ' . $stype. ' $story= ' . $story);
+    //
+    // }
+    public function storyTypeEdit($qtype, $gtype,$stype, Story $story)
     {
         $urlprev = \URL::previous();
 
+
+        // dd($urlprev);
         if(str_contains($urlprev, 'magazine')) {
             $sroute = 'magazine';
         } else {
@@ -198,7 +276,7 @@ class StoryTypeController extends Controller
                 // dd('$remainingRequiredImagesNeeded='. $remainingRequiredImagesNeeded);
 
 
-                return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+                return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
 
             } else {
 
@@ -216,12 +294,12 @@ class StoryTypeController extends Controller
                         $currentOtherImagesIdsListArray = $currentOtherImagesIdsList->toArray();
                         $stillNeedTheseImgs = $otherImageListCollection->except($currentOtherImagesIdsListArray);
 
-                        return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+                        return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
 
 
                 } else {
                     $stillNeedTheseImgs = null;
-                    return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+                    return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
 
                 }
 
@@ -232,7 +310,7 @@ class StoryTypeController extends Controller
         $currentOtherImages = null;
         $stillNeedTheseImgs = null;
 
-        return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+        return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
     }
 
 

@@ -4,6 +4,9 @@
         'route' => ['admin_storyimage_update', $storyImage->id],
         'files' => true
     ]) !!}
+    {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
+    {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
+    {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
         <div class="box-header with-border">
             <div class="box-head-info pull-left">
                 @if($storyImage->is_active != 0)

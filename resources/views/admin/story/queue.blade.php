@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title','StoryApp')
+@section('title','Story Queue')
 @section('style-vendor')
     @parent
 @endsection
@@ -20,7 +20,7 @@
 @section('content')
 
     <div id="vue-story-queue">
-        <story-queue sroute="{{$sroute}}" qtype="{{$qtype}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
+        <story-queue sroute="{{$sroute}}" gtype="{{$gtype}}" stype="{{$stype}}" qtype="{{$qtype}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
         </story-queue>
     </div><!-- /.vue-story-app -->
 

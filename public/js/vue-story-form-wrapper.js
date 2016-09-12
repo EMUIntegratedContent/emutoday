@@ -20399,6 +20399,7 @@ Object.defineProperty(exports, "__esModule", {
 var _getters = require('../vuex/getters');
 
 exports.default = {
+    props: ['viewtype', 'recordId', 'currentUser', 'role', 'stype', 'sroute', 'gtype', 'qtype'],
     vuex: {
         getters: {
             // note that you're passing the function itself, and not the value 'getCount()'
@@ -20410,7 +20411,6 @@ exports.default = {
         }
     },
 
-    props: ['viewtype', 'recordId', 'currentUser', 'role', 'stype', 'sroute', 'qtype'],
     ready: function ready() {
         console.log('BoxTools');
     },
@@ -20454,10 +20454,11 @@ exports.default = {
         },
 
         previewLink: function previewLink() {
-            return '/preview/' + this.sroute + '/' + this.stype + '/' + this.thisRecordId;
+            var ftype = 'form' + this.qtype + '/';
+            return '/preview/' + ftype + this.gtype + '/' + this.stype + '/' + this.thisRecordId;
         },
         listLink: function listLink() {
-            return '/admin/' + this.sroute + '/' + this.stype + '/' + this.qtype;
+            return '/admin/' + this.gtype + '/' + this.stype + '/' + this.qtype;
 
             // if(this.sroute === 'magazine'){
             //     return '/admin/'+ this.sroute + '/'+ this.stype + '/queue';
@@ -20467,7 +20468,7 @@ exports.default = {
             // }
         },
         createNewLink: function createNewLink() {
-            return '/admin/' + this.sroute + '/' + this.stype + '/setup';
+            return '/admin/' + this.gtype + '/' + this.stype + '/setup';
         }
     },
 
@@ -20577,7 +20578,10 @@ module.exports = {
         cuser: { default: {} },
         recordexists: { default: false },
         editid: { default: '' },
-        stypes: { default: {} }
+        stypes: { default: {} },
+        gtype: { default: '' },
+        qtype: { default: '' },
+        stype: { default: '' }
         // stypelist: {},
         // stypelist1: {},
         // stypelist2: {}
@@ -20771,7 +20775,11 @@ module.exports = {
         },
 
         nowOnReload: function nowOnReload() {
-            var newurl = '/admin/story/' + this.response_stype + '/' + this.response_record_id + '/edit';
+
+            //   {qtype}/{gtype}/{stype}/{story}/edit'
+            var newurl = '/admin/' + this.qtype + '/' + this.gtype + '/' + this.response_stype + '/' + this.response_record_id + '/edit';
+
+            //   let newurl = '/admin/story/' + this.response_stype +'/'+ this.response_record_id+'/edit';
             console.log(newurl);
             document.location = newurl;
         },

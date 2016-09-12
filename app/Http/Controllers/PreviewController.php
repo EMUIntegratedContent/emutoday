@@ -43,21 +43,50 @@ class PreviewController extends Controller
 
     }
 
-        public function story( $stype, Story $story)
-        {
+    // Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@return');
 
-            $url =  \URL::previous();
-            //$url = 'http://www.domain.com/page?s=194&client=151678&m=a4a&v=1&g=54';
-            $remove_http = str_replace('http://', '', $url);
-            $split_url = explode('/', $remove_http);
-
-            //$flast  = last($split_url);
+    public function return($gtype, $stype,$qtype, $id = null){
+        $val = 'form';
+        $isqueue = strpos($qtype,$val);
+        //dd($qtype .'----$isqueue '.$isqueue);
+        if($isqueue === false){
 
 
-            //check if user is coming from queue or edit form
-            $form = array_pop($split_url);
-            //check what queue or form they are coming from
-            $sroute = array_pop($split_url);
+            $rurl = '/admin/'.$gtype.'/'.$stype.'/'.$qtype;
+
+            // return redirect($rurl);
+            // Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
+
+        } else {
+
+            //it's from form
+            $qtype = str_replace($val, '', $qtype);
+            $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$id.'/edit';
+            // return redirect('admin/{gtype}/{stype}/{qtype}');
+            // Route::get('{gtype}/{stype}/{qtype}','Admin\StoryTypeController@queue' );
+
+        }
+
+        return redirect($rurl);
+    }
+
+
+        // public function story( $stype, Story $story)
+        // {
+            public function story($qtype,$gtype, $stype, Story $story)
+            {
+            // $url =  \URL::previous();
+            // //$url = 'http://www.domain.com/page?s=194&client=151678&m=a4a&v=1&g=54';
+            // $remove_http = str_replace('http://', '', $url);
+            // $split_url = explode('/', $remove_http);
+            //
+            // //$flast  = last($split_url);
+            //
+            //
+            // //check if user is coming from queue or edit form
+            // $form = array_pop($split_url);
+            // //check what queue or form they are coming from
+            // $sroute = array_pop($split_url);
 
             // dd($url,$split_url,$form,$sroute);
             // $story =  $this->story->findOrFail($id);
@@ -87,12 +116,12 @@ class PreviewController extends Controller
             if($stype == 'story' || $stype == 'emutoday' || $stype == 'news'){
                 $sideStoryBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
 
-                return view('preview.story.story', compact('story','sroute', 'form', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));
+                return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));
 
             } else if($stype == 'student'){
                 $sideStudentBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
                 // $sroute = 'student';
-                return view('preview.student.story', compact('story', 'sroute','form','mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));
+                return view('preview.student.story', compact('story', 'gtype', 'qtype', 'stype','mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));
 
 
             } else if($stype == 'article'){
@@ -104,7 +133,7 @@ class PreviewController extends Controller
 
 
 
-            return view('preview.magazine.story', compact('magazine','story','sroute','form', 'mainImage','sideStoryBlurbs','sideNewsStorys', 'authorInfo'));
+            return view('preview.magazine.story', compact('magazine','story', 'gtype', 'qtype', 'stype', 'mainImage','sideStoryBlurbs','sideNewsStorys', 'authorInfo'));
 
 
             } else if($stype == 'external') {
@@ -118,7 +147,7 @@ class PreviewController extends Controller
                 $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
                 $currentStoryImageWithVideoTag = $story->storyImages()->where('image_type','small')->first();
 
-                return view('preview.story.external', compact('story','sroute', 'form','currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
+                return view('preview.story.external', compact('story', 'gtype', 'qtype', 'stype','currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
 
             } else {
 
@@ -159,9 +188,18 @@ class PreviewController extends Controller
         ])
         ->with('storyImages')->get();
 
-        $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
+        if(count($allStorysWithVideoTag)> 0) {
+            $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
+            $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
+        } else {
+            $currentStoryImageWithVideoTag = null;
+        }
 
-        $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
+
+
+        // $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
+        //
+        // $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
 
         $events = $this->event->where([
                 ['is_approved',1],
@@ -170,7 +208,7 @@ class PreviewController extends Controller
                 ->paginate(4);
 
 
-        $storyImages = $page->storyImages();
+        $storyImages = $page->storyImages;
       //  $tweets = Tweet::orderBy('created_at','desc')->paginate(4);
         $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 

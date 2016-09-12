@@ -44,7 +44,7 @@
                 <div class="box box-primary">
                         <div class="box-header with-border">
                             <div id="vue-box-tools">
-                                <box-tools v-ref:boxtools sroute="{{$sroute}}" qtype="{{$qtype}}" stype="{{$stype}}" viewtype="form"
+                                <box-tools v-ref:boxtools sroute="{{$sroute}}" gtype="{{$gtype}}" qtype="{{$qtype}}" stype="{{$stype}}" viewtype="form"
                                 :current-user="{{$currentUser}}"
                                 :record-id="{{$story->exists ? $story->id: null}}"
                                 ></box-tools>
@@ -56,7 +56,9 @@
                             recordexists="{{$story->exists ? true: false}}"
 
                             stypes="{{$stypes}}"
-
+                            stype="{{$stype}}"
+                            gtype="{{$gtype}}"
+                            qtype="{{$qtype}}"
                             editid="{{$story->exists ? $story->id : null }}">
                             <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                         </story-form>
@@ -75,6 +77,10 @@
 
                                         <form action="{{ route('admin_promotestory',['id' => $story->id])}}" method="POST">
                                             {{ csrf_field() }}
+                                            {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
+                                            {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
+                                            {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
+
                                             {!! Form::select('new_story_type', $stypelist, 'story', ['class' => 'form-control']) !!}
                                             <button class="btn btn-primary" href="#">Promote Story</button>
                                         </form>
@@ -89,11 +95,11 @@
                                         so loop thru the required images collection and display form --}}
                                     @foreach($currentRequiredImages as $currentRequiredImage)
                                         @if($currentRequiredImage->image_type == 'small')
-                                            @include('admin.storyimage.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimage.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @elseif($currentRequiredImage->image_type == 'story')
-                                            @include('admin.storyimage.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimage.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
-                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @endif
                                     @endforeach
                                 @endif
@@ -105,9 +111,9 @@
 
                                     @foreach($currentOtherImages as $currentOtherImage)
                                         @if($currentOtherImage->image_type == 'front')
-                                            @include('admin.storyimage.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimage.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
-                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
 
                                         @endif
                                     @endforeach
@@ -117,7 +123,7 @@
 
                                 @if($stillNeedTheseImgs->count() > 0)
                                     @foreach($stillNeedTheseImgs as $stillNeedTheseImg)
-                                        @include('admin.storyimage.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id ])
+                                        @include('admin.storyimage.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                     @endforeach
                                 @endif
                             @endif

@@ -269,7 +269,10 @@ module.exports  = {
                     cuser: {default: {}},
                     recordexists: {default: false},
                     editid: {default: ''},
-                    stypes: {default: {}}
+                    stypes: {default: {}},
+                    gtype:{default: ''},
+                    qtype:{default: ''},
+                    stype:{default: ''}
                     // stypelist: {},
                     // stypelist1: {},
                     // stypelist2: {}
@@ -467,7 +470,11 @@ module.exports  = {
                       console.log('this.record.tags= '+ this.record.tags)
                   },
                   nowOnReload:function() {
-                      let newurl = '/admin/story/' + this.response_stype +'/'+ this.response_record_id+'/edit';
+
+                    //   {qtype}/{gtype}/{stype}/{story}/edit'
+                    let newurl = '/admin/' + this.qtype + '/'+this.gtype+'/'+ this.response_stype +'/'+ this.response_record_id+'/edit';
+
+                    //   let newurl = '/admin/story/' + this.response_stype +'/'+ this.response_record_id+'/edit';
                       console.log(newurl);
                       document.location = newurl;
                   },
@@ -579,6 +586,7 @@ module.exports  = {
 
                         this.$http.get('/api/story/'+ this.currentRecordId +'/edit')
 
+
                             .then((response) =>{
                                     //response.status;
                                     // console.log('response.status=' + response.status);
@@ -607,7 +615,7 @@ module.exports  = {
                             this.content = this.record.content;
                             // console.log('this.record.start_date='+ this.record.start_date)
                             if (this.record.tags){
-                                
+
                                 this.tags = this.record.tags;
                                 this.record.tags = null;
                             }
