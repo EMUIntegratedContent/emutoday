@@ -158,6 +158,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Sofa\Eloquence\ServiceProvider::class,
+        // Krenor\LdapAuth\LdapAuthServiceProvider::class,
 
 
 

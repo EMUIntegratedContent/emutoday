@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2f9407fdccc3cac590de5855ce8f6cdc",
-    "content-hash": "26f1aede92dc410176e7e3b214b55626",
+    "hash": "0da4ecd762b18afcffda5740319fa7ec",
+    "content-hash": "9200ee973b12afea477c6b2585f9e971",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -532,6 +532,58 @@
                 "tokenizer"
             ],
             "time": "2015-12-05 17:17:57"
+        },
+        {
+            "name": "krenor/ldap-auth",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/krenor/ldap-auth.git",
+                "reference": "fcf9cc477acb2cc0a4444a3558882a3a578df1f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/krenor/ldap-auth/zipball/fcf9cc477acb2cc0a4444a3558882a3a578df1f9",
+                "reference": "fcf9cc477acb2cc0a4444a3558882a3a578df1f9",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.2",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Krenor\\LdapAuth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stanislav Goldmann",
+                    "email": "stanislav.goldmann@gmail.com",
+                    "homepage": "https://github.com/krenor",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Basic readonly authentication via LDAP for Laravel 5.2",
+            "keywords": [
+                "LDAP Authentication",
+                "Laravel 5.2",
+                "Laravel Auth",
+                "active directory",
+                "krenor",
+                "laravel",
+                "laravel authentication",
+                "ldap"
+            ],
+            "time": "2016-03-31 15:34:45"
         },
         {
             "name": "laracasts/flash",

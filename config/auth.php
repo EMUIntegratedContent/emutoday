@@ -69,6 +69,10 @@ return [
             'driver' => 'eloquent',
             'model' => Emutoday\User::class,
         ],
+        // 'ldap-users' => [
+        //     'driver' => 'ldap',
+        //     'model'  => \Krenor\LdapAuth\Objects\LdapUser::class,
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',
