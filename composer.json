@@ -15,7 +15,8 @@
         "intervention/imagecache": "^2.3",
         "barryvdh/laravel-debugbar": "^2.2",
         "league/fractal": "^0.14.0",
-        "sofa/eloquence": "~5.2"
+        "sofa/eloquence": "~5.2",
+	"adldap2/adldap2-laravel": "2.1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
