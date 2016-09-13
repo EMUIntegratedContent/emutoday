@@ -13,7 +13,6 @@
         "laracasts/flash": "^2.0",
         "intervention/image": "^2.3",
         "intervention/imagecache": "^2.3",
-        "barryvdh/laravel-debugbar": "^2.2",
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
         "adldap/adldap": "5.0.*"
