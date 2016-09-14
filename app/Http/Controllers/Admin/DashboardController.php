@@ -30,8 +30,8 @@ class DashboardController extends Controller
         return redirect()->route('emich-login');
         }
         $cas_user = cas()->user();
-        $cas_attributes = cas()->getAttributes();
-        dd($user->id . '------'.$cas_user . '____'. $cas_attributes);
+    
+        dd($user->id . '------'.$cas_user);
 
         return view('admin.dashboard');
 
