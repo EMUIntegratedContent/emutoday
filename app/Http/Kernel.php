@@ -49,5 +49,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \Emutoday\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'cas.auth'  => \Subfission\Cas\Middleware\CASAuth::class,
+        'cas.guest' => \Subfission\Cas\Middleware\RedirectCASAuthenticated::class,
     ];
 }
