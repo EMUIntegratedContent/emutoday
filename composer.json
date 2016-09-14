@@ -16,7 +16,7 @@
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
         "barryvdh/laravel-debugbar": "^2.2",
-        "subfission/cas": "dev-master"
+ 	"subfission/cas": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -59,6 +59,8 @@
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "cafile": "/usr/local/ssl/cert.pem",
+        "capath": "/usr/local/ssl/certs",
+         "preferred-install": "dist"
     }
 }
