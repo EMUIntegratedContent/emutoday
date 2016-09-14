@@ -23,8 +23,9 @@ class DashboardController extends Controller
         //flash()->info("butttttttttt");
         //        return view('admin.dashboard', compact('tweets'));
         $cas_user = cas()->user();
+        $cas_attributes = cas()->getAttributes();
+        dd($cas_user . '____'. $cas_attributes);
 
-        dd($cas_user);
         return view('admin.dashboard');
 
     }
