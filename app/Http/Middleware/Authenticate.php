@@ -4,6 +4,7 @@ namespace Emutoday\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Emutoday\User;
 
 class Authenticate
 {
