@@ -24,8 +24,8 @@ class Authenticate
         }
         cas()->authenticate();
         }
-    session()->put('cas_user', cas()->user() );
-    return $next($request);
+        session()->put('cas_user', cas()->user() );
+        return $next($request);
         // if (Auth::guard($guard)->guest()) {
         //     if ($request->ajax() || $request->wantsJson()) {
         //         return response('Unauthorized.', 401);

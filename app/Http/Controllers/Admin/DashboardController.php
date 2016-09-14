@@ -22,7 +22,9 @@ class DashboardController extends Controller
         // $users = $users->whereNotNull('last_login_at')->orderBy('last_login_at', 'desc')->take(5)->get();
         //flash()->info("butttttttttt");
         //        return view('admin.dashboard', compact('tweets'));
+        $cas_user = cas()->user();
 
+        dd($cas_user);
         return view('admin.dashboard');
 
     }
