@@ -24,6 +24,9 @@ class Authenticate
         }
         cas()->authenticate();
         }
+        $username = cas()->user() . '@emich.edu';
+        $user = User::where('email', $username)->first();
+        Auth::login($user, true);
         session()->put('cas_user', cas()->user() );
         return $next($request);
         // if (Auth::guard($guard)->guest()) {
