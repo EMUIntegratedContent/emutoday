@@ -17,14 +17,23 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->guest()) {
-            if ($request->ajax() || $request->wantsJson()) {
-                return response('Unauthorized.', 401);
-            } else {
-                return redirect()->guest('login');
-            }
+        if( ! cas()->isAuthenticated() )
+        {
+        if ($request->ajax()) {
+            return response('Unauthorized.', 401);
         }
-
-        return $next($request);
+        cas()->authenticate();
+        }
+    session()->put('cas_user', cas()->user() );
+    return $next($request);
+        // if (Auth::guard($guard)->guest()) {
+        //     if ($request->ajax() || $request->wantsJson()) {
+        //         return response('Unauthorized.', 401);
+        //     } else {
+        //         return redirect()->guest('login');
+        //     }
+        // }
+        //
+        // return $next($request);
     }
 }

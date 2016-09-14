@@ -158,6 +158,8 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Sofa\Eloquence\ServiceProvider::class,
+        Subfission\Cas\CasServiceProvider::class,
+
         // Krenor\LdapAuth\LdapAuthServiceProvider::class,
 
 
@@ -221,6 +223,8 @@ return [
         'Flash' => Laracasts\Flash\Flash::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Cas' => Subfission\Cas\Facades\Cas::class,
+
 
     ],
 
