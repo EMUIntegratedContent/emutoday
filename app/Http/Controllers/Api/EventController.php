@@ -113,6 +113,7 @@ class EventController extends ApiController
                 {
                     $event = new Event;
                     $event->user_id       	= $request->get('user_id');
+                    $event->submitter       	= cas()->user();
                     $event->title           	= $request->get('title');
                     $event->short_title     	= $request->get('short_title');
                     // $templocation = $request->get('location');serialize($templocation);

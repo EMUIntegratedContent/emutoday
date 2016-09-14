@@ -58,7 +58,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
     Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
     Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
-    Route::get('event', ['as' => 'api.event', 'uses' => 'Api\EventController@index']);
+    // Route::get('event', ['as' => 'api.event', 'uses' => 'Api\EventController@index']);
     Route::patch('event/archiveitem/{id}', ['as' => 'api_event_archiveitem', 'uses' => 'Api\EventController@archiveItem']);
     Route::patch('event/updateitem/{id}', ['as' => 'api_event_updateitem', 'uses' =>'Api\EventController@updateItem']);
 
