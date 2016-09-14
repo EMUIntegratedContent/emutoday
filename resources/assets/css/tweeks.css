@@ -14,6 +14,10 @@
 .article-link a:hover p{
   text-decoration: none;
 }
+
+#vue-caleventview {
+      background-color: #f2f2f3;
+}
 #calendar-content-bar{
     padding: 0;
     margin: 0;

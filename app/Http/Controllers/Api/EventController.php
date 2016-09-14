@@ -2,9 +2,9 @@
 
 namespace Emutoday\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Input as Input;
+
+use Illuminate\Support\Facades\Input;
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManagerStatic as Image;
 use League\Fractal\Manager;
@@ -27,7 +27,7 @@ use Carbon\Carbon;
 
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 
-
+use Illuminate\Http\Request;
 
 class EventController extends ApiController
 {
@@ -166,9 +166,16 @@ class EventController extends ApiController
                 }
 
             }
+            public function mediaFileAdd($id, Request $request)
+            {
+                $group = 'event';
+                $type = 'small';
+                dd(Input::all());
+            }
 
             public function addMediaFile(Request $request)
             {
+                // dd($request->all(), $request->hasFile('eventimg'), $request->file('eventimg'));
 
                 $group = 'event';
                 $type = 'small';
@@ -176,65 +183,55 @@ class EventController extends ApiController
                 // dd($imgFile);
                 $event_id = $request->input('event_id');
                 // $imgFile = $request->file('attachment');
-
                 $event = Event::findOrFail($event_id);
                 //define the image paths
                 $destinationFolder = '/imgs/'.$group.'/';
-
                 $mediafile = new Mediafile();
                 //Find mediatype for this type of media file
                 $mediatype = Mediatype::where([
-                    ['group',$group],
-                    ['type', $type]
+                        ['group',$group],
+                        ['type', $type]
                     ])->first();
-                    //Define mediatype to mediafile relationship
-                    $mediafile->mediatype()->associate($mediatype);
-
-                    $mediafile->group = $group;
-                    $mediafile->type = $type;
-                    $mediafile->path = $destinationFolder;
-
-                    $imgFile = Input::file('eventimg');
-                    $imgFilePath = $imgFile->getRealPath();
-                    $imgFileOriginalExtension = strtolower($imgFile->getClientOriginalExtension());
-
-                    switch ($imgFileOriginalExtension) {
+                        //Define mediatype to mediafile relationship
+                $mediafile->mediatype()->associate($mediatype);
+                $mediafile->group = $group;
+                $mediafile->type = $type;
+                $mediafile->path = $destinationFolder;
+                $imgFile = Input::file('eventimg');
+                $imgFilePath = $imgFile->getRealPath();
+                $imgFileOriginalExtension = strtolower($imgFile->getClientOriginalExtension());
+                switch ($imgFileOriginalExtension) {
                         case 'jpg':
                         case 'jpeg':
-                        $imgFileExtension = 'jpg';
-                        break;
-                        default:
-                        $imgFileExtension = $imgFileOriginalExtension;
-                    }
-                    $mediafile->name = 'event'. '-' .$event->id;
-                    $mediafile->ext = $imgFileExtension;
-
-                    $imgFileName = $mediafile->name . '.' . $mediafile->ext;
-
-
-
-                    $image = Image::make($imgFilePath)
-                    ->save(public_path() . $destinationFolder . $imgFileName);
-                    //  ->fit(100)
-                    //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
-
-                    // 	}
-                    //
-                    $mediafile->filename = $imgFileName;
-                    $mediafile->save();
-
-
-                    $event->mediaFile()->associate($mediafile);
-                    $event->is_promoted = 1;
-
+                         $imgFileExtension = 'jpg';
+                         break;
+                         default:
+                         $imgFileExtension = $imgFileOriginalExtension;
+                     }
+                     $mediafile->name = 'event'. '-' .$event->id;
+                     $mediafile->ext = $imgFileExtension;
+                     $imgFileName = $mediafile->name . '.' . $mediafile->ext;
+                $image = Image::make($imgFilePath)
+                 ->save(public_path() . $destinationFolder . $imgFileName);
+                //  ->fit(100)
+                //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
+                // 	}
+                //
+                $mediafile->filename = $imgFileName;
+                $mediafile->save();
+                $event->mediaFile()->associate($mediafile);
+                $event->is_promoted = 1;
                     if($event->save()) {
                         $returnData = ['eventimage' => $event->mediaFile->filename , 'is_approved' => $event->is_approved,'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
                         return $this->setStatusCode(201)
                         ->respondUpdatedWithData('event updated',$returnData );
-                        // return $this->setStatusCode(201)
-                        //             ->respondCreated('Event successfully updated');
+                            // return $this->setStatusCode(201)
+                            //             ->respondCreated('Event successfully updated');
                     }
-                }
+            }
+
+
+
                 /**
                 * Update the specified resource in storage.
                 *

@@ -15,6 +15,7 @@ class CalendarController extends Controller
     public function __construct(Event $events)
     {
         $this->events = $events;
+        // $this->middleware('auth', ['except'=>'index']);
     }
 
     // Route::get('calendar', 'EmuToday\CalendarController@index');
@@ -107,11 +108,11 @@ class CalendarController extends Controller
                 // The user is logged in...
                 $user = \Auth::user();
             } else {
-                return redirect(route('auth.login'));
+                // return view('public.emichlogin')
+                return redirect()->route('emich-login');
             }
-
-$approveditems = null;
-$submitteditems = null;
+            $approveditems = null;
+            $submitteditems = null;
             // $approveditems = $this->event->where([
             //     ['user_id', $user->id],
             //     ['is_approved',1]

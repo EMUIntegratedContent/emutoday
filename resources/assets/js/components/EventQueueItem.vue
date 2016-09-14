@@ -54,20 +54,20 @@
             Dates: {{item.start_date}} - {{item.end_date}}
             </div>
 
-        <template v-if="canHaveImage">
-            <img v-if="hasEventImage" :src="imageUrl" />
-            <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
-            <div v-show="showPanel" class="panel">
-                <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data">
-                    <input class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
-                    <div class="form-group">
-                        <label for="event-image">Event Image</label><br>
-                        <input v-el:eventimg type="file" name="eventimg" id="eventimg">
-                    </div>
-                    <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
-                </form>
-            </div><!-- /.panel mediaform -->
-        </template>
+            <template v-if="canHaveImage">
+                   <img v-if="hasEventImage" :src="imageUrl" />
+                   <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
+                   <div v-show="showPanel" class="panel">
+                       <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
+                           <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
+                           <div class="form-group">
+                               <label for="event-image">Event Image</label><br>
+                               <input v-el:eventimg type="file" name="eventimg" id="eventimg">
+                           </div>
+                           <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
+                       </form>
+                   </div><!-- /.panel mediaform -->
+               </template>
 
         </div><!-- /.box-body -->
 
@@ -209,7 +209,6 @@
 <script>
 import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
-
 module.exports  = {
     components: {VuiFlipSwitch},
     props: ['item','pid','index'],
@@ -421,7 +420,8 @@ module.exports  = {
     methods:{
         // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
             // onFileChange(event) {
-            //     console.log("event.target.file" + event.target.file)
+            //     var files = this.$els.eventimg.files;
+            //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
             //     this.formInputs.attachment = event.target.file;
             // },
             // Handle the form submission here
@@ -441,40 +441,36 @@ module.exports  = {
             priorityChange(event){
                 console.log('priority=' + this.item.priority)
             },
-
-           addMediaFile(event) {
-               event.preventDefault();
-               event.stopPropagation();
-
-               var files = this.$els.eventimg.files;
-               var data = new FormData();
-               data.append('event_id', this.formInputs.event_id);
-
-               // Since we have multiple files, we will loop through them and add them to an array in our form object.
-            //    for(var key in this.formInputs.attachment) {
-                data.append('eventimg', files[0]);
-            //    }
-                // var formid = '#form-mediafile-upload'+this.item.id;
-                // var action =  $(formid).action;
-            var action = '/api/event/addmediafile/'+ this.formInputs.event_id;
-               this.$http.post(action, data , {
-                    method: 'PUT'
-               } )
-               .then((response) => {
-                   console.log('good?'+ response)
-                   this.checkAfterUpdate(response.data.newdata)
-               }, (response) => {
-                   console.log('bad?'+ response)
-               });
-            //    var action = $('#form-submit-ticket').action;
-               // POST the data to our Laravel controller
-            //    this.$http.post(action, form, function(response) {
-            //        console.log('Success:', response)
-            //    })
-           },
+            addMediaFile(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                var files = this.$els.eventimg.files;
+                var data = new FormData();
+                data.append('event_id', this.formInputs.event_id);
+                // Since we have multiple files, we will loop through them and add them to an array in our form object.
+             //    for(var key in this.formInputs.attachment) {
+                 data.append('eventimg', files[0]);
+             //    }
+                 // var formid = '#form-mediafile-upload'+this.item.id;
+                 // var action =  $(formid).action;
+             var action = '/api/event/addMediaFile/'+ this.formInputs.event_id;
+                this.$http.post(action, data)
+                .then((response) => {
+                    console.log('good?'+ response)
+                    this.checkAfterUpdate(response.data.newdata)
+                }, (response) => {
+                    console.log('bad?'+ response)
+                });
+             //    var action = $('#form-submit-ticket').action;
+                // POST the data to our Laravel controller
+             //    this.$http.post(action, form, function(response) {
+             //        console.log('Success:', response)
+             //    })
+            },
            updateItem: function(){
             //    this.patchRecord.is_approved = this.item.is_approved;
             //    this.patchRecord.priority = this.item.priority;
+
                this.patchRecord.is_canceled = this.item.is_canceled;
 
                this.$http.patch('/api/event/updateitem/' + this.item.id , this.patchRecord , {

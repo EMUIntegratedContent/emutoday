@@ -1,9 +1,5 @@
 <template>
-  <div class="calendar-bar row">
-    <div class="small-12 columns">
-      <h4>Upcoming Events</h4>
-    </div>
-  </div>
+
   <div class="calendar-content">
     <div class="calendar-content-title row">
       <div class="small-12 column">
@@ -40,12 +36,13 @@
 
     .calendar-content-title {
       padding-top: 0.8rem;
+       background: #fff;
     }
 
     .calendar-content-title h4{
       text-transform: uppercase;
       color: #fff;
-        margin-top: 0.5rem;
+      margin-top: 0.5rem;
     }
     .calendar-content-content{
       background: #fff;
@@ -55,7 +52,9 @@
       font-size: 1.3rem;
       font-weight: 600;
     }
-
+    .calendar-content{
+      background: #fff;
+    }
     .event-day {
         margin: 0.8rem 0 0 0;
     }

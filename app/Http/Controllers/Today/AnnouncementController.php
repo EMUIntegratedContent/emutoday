@@ -19,7 +19,7 @@ class AnnouncementController extends Controller
   public function __construct(Announcement $announcement)
   {
     $this->announcement = $announcement;
-    $this->middleware('auth', ['except'=>'index']);
+    // $this->middleware('auth', ['except'=>'index']);
   }
 
   // public function index($id = null)
@@ -37,19 +37,23 @@ class AnnouncementController extends Controller
 
   public function announcementForm(Announcement $announcement)
     {
+
+        if (\Auth::check()) {
+            // The user is logged in...
+            $user = \Auth::user();
+        } else {
+        // return 'Need to Connect to LDAP';
+        return redirect()->route('emich-login');
+        }
+
+
         $cdate = Carbon::now();
         $cdate_format = $cdate->format('m-d-Y');
         JavaScript::put([
             'jsis'=> 'hi',
             'currentDate' => $cdate_format
             ]);
-            if (\Auth::check()) {
-    // The user is logged in...
-         $user = \Auth::user();
-        } else {
-            // return 'Need to Connect to LDAP';
-            return redirect(route('auth.login'));
-        }
+
 
         // $announcements = $user->announcements;//$this->announcement->where('is_approved', '0')->orderBy('start_date', 'dsc')->paginate(4);
         $approveditems = $user->announcements()->where('is_approved', '1')->get();;

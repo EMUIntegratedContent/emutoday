@@ -1,9 +1,5 @@
 <template>
-  <div class="calendar-bar row">
-    <div class="small-12 column">
-        <h4>Calendar</h4>
-    </div>
-  </div>
+
 <div class="calendar-box row">
     <div class="small-12 columns">
       <div class="calendar small-12 columns" data-equalizer>

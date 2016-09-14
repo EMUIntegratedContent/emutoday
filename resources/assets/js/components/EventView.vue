@@ -1,4 +1,14 @@
 <template>
+    <div id="graybar">
+        <div class="calendar-bar row">
+      <div class="medium-3 show-for-medium columns">
+          <h4>Calendar</h4>
+      </div>
+      <div class="medium-9 small-12 columns">
+              <h4>Upcoming Events</h4>
+        </div>
+    </div>
+    </div>
     <div class="row">
       <div id="calendar-content-bar">
         <div class="medium-3 show-for-medium columns">
@@ -12,6 +22,11 @@
   </div>
 </template>
 <style scoped>
+#graybar{
+    width: 100%;
+    padding: .3rem 0;
+    background-color: #bebdbd;
+}
 #calendar-content-bar {
     background-color: #bebdbd;
 }

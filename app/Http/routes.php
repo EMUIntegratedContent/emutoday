@@ -1,12 +1,10 @@
 <?php
 
-
-use Emutoday\MiniCalendar;
 use Emutoday\Building;
 use Emutoday\Event;
 use Emutoday\Category;
 use Emutoday\Tag;
-
+use Emutoday\MiniCalendar;
 use Illuminate\Support\Facades\Input;
 /*
 |--------------------------------------------------------------------------
@@ -53,18 +51,33 @@ Route::group(['prefix' => 'api'], function() {
         return Tag::select('name', 'id as value')->get();
     });
 
+    Route::patch('event/updateItem/{event}', 'Api\EventController@updateItem');
+    Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
+
+    Route::get('event/queueload', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
+    Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
+    Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
+    Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
+    Route::get('event', ['as' => 'api.event', 'uses' => 'Api\EventController@index']);
+    Route::patch('event/archiveitem/{id}', ['as' => 'api_event_archiveitem', 'uses' => 'Api\EventController@archiveItem']);
+    Route::patch('event/updateitem/{id}', ['as' => 'api_event_updateitem', 'uses' =>'Api\EventController@updateItem']);
+
+
+    Route::resource('event', 'Api\EventController');
+
 
     Route::get('announcement/queueload', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
     Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
     Route::resource('announcement', 'Api\AnnouncementController');
 
+    // Route::patch('event/updateitem/{event}', 'Api\EventController@updateItem');
+    // Route::put('event/{event}/addMediaFile', 'Api\EventController@addMediaFile');
+    //
+    // Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
 
 
-    Route::get('event/queueload', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
-    Route::patch('event/updateitem/{event}', 'Api\EventController@updateItem');
-    Route::post('event/addmediafile/{event}', 'Api\EventController@addMediaFile');
-    Route::resource('event', 'Api\EventController');
+
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
@@ -116,7 +129,14 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('hub', 'MainController@index');
     Route::get('search','MainController@search' );
 
-    Route::auth();
+
+
+    Route::get('emichlogin', ['as' => 'emich-login', function() {
+        return view('public.emichlogin', ['form' => 'event']);
+        //return Building::ofMapType('illustrated')->get();
+    }]);
+
+        Route::auth();
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview' ], function()
     {
@@ -145,7 +165,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('event/queue', ['as' => 'admin.event.queue', 'uses' => 'Admin\EventController@queue']);
         Route::get('event/form', ['as' => 'admin.event.form', 'uses' => 'Admin\EventController@form']);
         Route::resource('event', 'Admin\EventController');
-        
+
         Route::get('page/form', ['as' => 'admin_page_form', 'uses' => 'Admin\PageController@form']);
         Route::get('page/{page}/edit', ['as' => 'admin_page_edit', 'uses' => 'Admin\PageController@edit']);
         Route::post('page/delete', ['as' => 'admin_page_delete', 'uses' => 'Admin\PageController@delete'] );
