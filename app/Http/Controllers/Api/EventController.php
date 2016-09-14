@@ -40,6 +40,25 @@ class EventController extends ApiController
             ]]);
         }
 
+                /**
+         * Display a listing of the resource.
+         *
+         * @return \Illuminate\Http\Response
+         */
+        public function index()
+        {
+                $currentDate = Carbon::now();
+                $DateMinus2 =  $currentDate->subYears(2);
+                $fractal = new Manager();
+
+                $events = Event::orderBy('start_date', 'desc')->take(500);
+                $resource = new Collection($events->get(), new FractalEventTransformerModelFull);
+                    // Turn all of that into a JSON string
+                    return $fractal->createData($resource)->toJson();
+
+
+        }
+
         public function queueLoad()
         {
             $currentDate = Carbon::now();
