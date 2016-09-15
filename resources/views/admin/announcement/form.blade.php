@@ -5,8 +5,10 @@
 @endsection
 @section('style-plugin')
     @parent
+    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
 <!-- iCheck for checkboxes and radio inputs -->
 {{-- <link rel="stylesheet" type="text/css" href="/themes/plugins/flatpickr.min.css">
+
 
 <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css"> --}}
 {{-- <link rel="stylesheet" href="/themes/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"> --}}
@@ -25,11 +27,11 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{$announcement->exists ? 'Edit Announcement' : 'New Announcement'}}</h3>
-                    @include('admin.components.boxtools', ['rte' => 'announcement', 'path' => 'admin/announcement'])
+                    @include('admin.components.boxtools', ['rte' => 'announcement', 'path' => 'admin/announcement/{{$atype}}', 'atype'=> $atype])
                 </div>	<!-- /.box-header -->
                 <div class="box-body">
                     <div id="vue-announcements">
-                            <announcement-form framework="bootstrap" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}">
+                            <announcement-form framework="bootstrap" type="{{$atype}}" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}">
                                 <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                             </announcement-form>
                     </div><!-- /#vue-event-form -->

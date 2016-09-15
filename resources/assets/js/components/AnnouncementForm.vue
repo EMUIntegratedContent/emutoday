@@ -18,15 +18,15 @@
                     <label>Title <span v-bind:class="iconStar" class="reqstar"></span></label>
                     <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
                     <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text">
-                    <p v-if="formErrors.title" class="help-text invalid"> Please Include a Title!</p>
+                    <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
                 </div>
-                <div v-bind:class="formGroup">
+                <div v-if="generalForm" v-bind:class="formGroup">
                     <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span></i>
                         <p class="help-text" id="announcement-helptext">({{descriptionChars}} characters left)</p>
 
                         <textarea v-model="record.announcement" class="form-control" v-bind:class="[formErrors.announcement ? 'invalid-input' : '']" name="announcement" type="textarea" rows="8"></textarea>
                     </label>
-                    <p v-if="formErrors.announcement" class="help-text invalid">Need a Description!</p>
+                    <p v-if="formErrors.announcement" class="help-text invalid">{{formErrors.announcement}}</p>
                 </div>
             </div>
             <!-- /.small-12 columns -->
@@ -46,7 +46,7 @@
                 </div>
             </div><!-- /.col-md-4 -->
         </div><!-- /.row -->
-        <div class="row">
+        <div v-if="generalForm"  class="row">
             <div :class="md4col">
                 <div v-bind:class="formGroup">
                     <label>External Link Text</label>
@@ -65,7 +65,7 @@
                 </template>
             </div><!-- /.md6col -->
         </div>
-        <div class="row">
+        <div v-if="generalForm"  class="row">
             <div :class="md12col">
                 <div v-bind:class="formGroup">
                     <label>Email Link</label>
@@ -78,7 +78,7 @@
                 </div>
             </div><!-- /.col-md-4 -->
         </div><!-- /.row -->
-        <div class="row">
+        <div v-if="generalForm"  class="row">
             <div :class="md4col">
                 <div v-bind:class="formGroup">
                     <label>Email Link Text</label>
@@ -246,91 +246,7 @@
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     }
-    /*h5.ext-example {
-        border: 1px solid #ccc;
-    }*/
 
-    /*
-    input[type='email'],
-    input[type='number'],
-    input[type='password'],
-    input[type='search'],
-    input[type='tel'],
-    input[type='text'],
-    input[type='url'],
-    textarea,
-    select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background-color: transparent;
-        border: 0.1rem solid #d1d1d1;
-        border-radius: 0.4rem;
-        box-shadow: none;
-        height: 3.8rem;
-        padding: 0.6rem 1rem;
-        width: 100%;
-    }
-    input[type='email']:focus,
-    input[type='number']:focus,
-    input[type='password']:focus,
-    input[type='search']:focus,
-    input[type='tel']:focus,
-    input[type='text']:focus,
-    input[type='url']:focus,
-    textarea:focus,
-    select:focus {
-        border: 0.1rem solid #9b4dca;
-        outline: 0;
-    }*/
-
-
-    /*select {
-        padding: 0.6rem 3rem 0.6rem 1rem;
-        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiICAgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjkgMTQiICAgaGVpZ2h0PSIxNHB4IiAgIGlkPSJMYXllcl8xIiAgIHZlcnNpb249IjEuMSIgICB2aWV3Qm94PSIwIDAgMjkgMTQiICAgd2lkdGg9IjI5cHgiICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjQ4LjQgcjk5MzkiICAgc29kaXBvZGk6ZG9jbmFtZT0iY2FyZXQtZ3JheS5zdmciPjxtZXRhZGF0YSAgICAgaWQ9Im1ldGFkYXRhMzAzOSI+PHJkZjpSREY+PGNjOldvcmsgICAgICAgICByZGY6YWJvdXQ9IiI+PGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+PGRjOnR5cGUgICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+PC9jYzpXb3JrPjwvcmRmOlJERj48L21ldGFkYXRhPjxkZWZzICAgICBpZD0iZGVmczMwMzciIC8+PHNvZGlwb2RpOm5hbWVkdmlldyAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiICAgICBib3JkZXJvcGFjaXR5PSIxIiAgICAgb2JqZWN0dG9sZXJhbmNlPSIxMCIgICAgIGdyaWR0b2xlcmFuY2U9IjEwIiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSI5MDMiICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI1OTQiICAgICBpZD0ibmFtZWR2aWV3MzAzNSIgICAgIHNob3dncmlkPSJ0cnVlIiAgICAgaW5rc2NhcGU6em9vbT0iMTIuMTM3OTMxIiAgICAgaW5rc2NhcGU6Y3g9Ii00LjExOTMxODJlLTA4IiAgICAgaW5rc2NhcGU6Y3k9IjciICAgICBpbmtzY2FwZTp3aW5kb3cteD0iNTAyIiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjMwMiIgICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjAiICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJMYXllcl8xIj48aW5rc2NhcGU6Z3JpZCAgICAgICB0eXBlPSJ4eWdyaWQiICAgICAgIGlkPSJncmlkMzA0MSIgLz48L3NvZGlwb2RpOm5hbWVkdmlldz48cG9seWdvbiAgICAgcG9pbnRzPSIwLjE1LDAgMTQuNSwxNC4zNSAyOC44NSwwICIgICAgIGlkPSJwb2x5Z29uMzAzMyIgICAgIHRyYW5zZm9ybT0ibWF0cml4KDAuMzU0MTEzODcsMCwwLDAuNDgzMjkxMSw5LjMyNDE1NDUsMy42MjQ5OTkyKSIgICAgIHN0eWxlPSJmaWxsOiNkMWQxZDE7ZmlsbC1vcGFjaXR5OjEiIC8+PC9zdmc+) center right no-repeat;
-    }
-    select:focus {
-        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiICAgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjkgMTQiICAgaGVpZ2h0PSIxNHB4IiAgIGlkPSJMYXllcl8xIiAgIHZlcnNpb249IjEuMSIgICB2aWV3Qm94PSIwIDAgMjkgMTQiICAgd2lkdGg9IjI5cHgiICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjQ4LjQgcjk5MzkiICAgc29kaXBvZGk6ZG9jbmFtZT0iY2FyZXQuc3ZnIj48bWV0YWRhdGEgICAgIGlkPSJtZXRhZGF0YTMwMzkiPjxyZGY6UkRGPjxjYzpXb3JrICAgICAgICAgcmRmOmFib3V0PSIiPjxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0PjxkYzp0eXBlICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPjwvY2M6V29yaz48L3JkZjpSREY+PC9tZXRhZGF0YT48ZGVmcyAgICAgaWQ9ImRlZnMzMDM3IiAvPjxzb2RpcG9kaTpuYW1lZHZpZXcgICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIgICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2IiAgICAgYm9yZGVyb3BhY2l0eT0iMSIgICAgIG9iamVjdHRvbGVyYW5jZT0iMTAiICAgICBncmlkdG9sZXJhbmNlPSIxMCIgICAgIGd1aWRldG9sZXJhbmNlPSIxMCIgICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwIiAgICAgaW5rc2NhcGU6cGFnZXNoYWRvdz0iMiIgICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iOTAzIiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNTk0IiAgICAgaWQ9Im5hbWVkdmlldzMwMzUiICAgICBzaG93Z3JpZD0idHJ1ZSIgICAgIGlua3NjYXBlOnpvb209IjEyLjEzNzkzMSIgICAgIGlua3NjYXBlOmN4PSItNC4xMTkzMTgyZS0wOCIgICAgIGlua3NjYXBlOmN5PSI3IiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjUwMiIgICAgIGlua3NjYXBlOndpbmRvdy15PSIzMDIiICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIwIiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0iTGF5ZXJfMSI+PGlua3NjYXBlOmdyaWQgICAgICAgdHlwZT0ieHlncmlkIiAgICAgICBpZD0iZ3JpZDMwNDEiIC8+PC9zb2RpcG9kaTpuYW1lZHZpZXc+PHBvbHlnb24gICAgIHBvaW50cz0iMjguODUsMCAwLjE1LDAgMTQuNSwxNC4zNSAiICAgICBpZD0icG9seWdvbjMwMzMiICAgICB0cmFuc2Zvcm09Im1hdHJpeCgwLjM1NDExMzg3LDAsMCwwLjQ4MzI5MTEsOS4zMjQxNTUzLDMuNjI1KSIgICAgIHN0eWxlPSJmaWxsOiM5YjRkY2Y7ZmlsbC1vcGFjaXR5OjEiIC8+PC9zdmc+);
-    }*/
-
-
-    /*textarea {
-        padding-bottom: 0.6rem;
-        padding-top: 0.6rem;
-        min-height: 8rem;
-    }
-
-    label,
-    legend {
-        font-size: 1.6rem;
-        font-weight: 700;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    fieldset {
-        border-width: 0;
-        padding: 0;
-    }
-
-    input[type='checkbox'],
-    input[type='radio'] {
-        display: inline;
-    }
-
-    .label-inline {
-        font-weight: normal;
-        display: inline-block;
-        margin-left: 0.5rem;
-    }
-
-    .container {
-        margin: 0 auto;
-        max-width: 112rem;
-        padding: 0 2rem;
-        position: relative;
-        width: 100%;
-    }*/
 
 </style>
 
@@ -355,6 +271,9 @@ module.exports = {
         },
         framework: {
             default: 'foundation'
+        },
+        type: {
+            default: 'general'
         }
     },
     data: function() {
@@ -382,7 +301,8 @@ module.exports = {
                 link_txt: '',
                 link: '',
                 email_link_txt: '',
-                email_link: ''
+                email_link: '',
+                type: ''
             },
             // dateOptions: {
             //     minDate: "today",
@@ -395,6 +315,7 @@ module.exports = {
             totalChars: {
                 start: 0,
                 title: 50,
+                hr: 80,
                 announcement: 255
             },
             response: {
@@ -414,11 +335,16 @@ module.exports = {
     },
     ready() {
         this.record.user_id = this.authorid;
+        this.record.type = this.type;
         if(this.recordexists){
             console.log('recordid'+ this.recordid)
             this.fetchCurrentRecord(this.recordid)
         } else {
             //this.record.start_date = this.currentDate;
+
+            if(this.type == 'hr') {
+                this.record.announcement = "HR";
+            }
             this.setupDatePickers();
         }
 
@@ -441,6 +367,13 @@ module.exports = {
 
 
     computed: {
+        generalForm: function() {
+            if (this.type != 'general') {
+                return false;
+            } else {
+                return true;
+            }
+        },
         md6col: function() {
             return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
         },
@@ -503,18 +436,22 @@ module.exports = {
         },
         titleChars: function() {
             var str = this.record.title;
+            var totalchars = (this.type === 'hr')?this.totalChars.hr:this.totalChars.title;
+
 
 
             console.log(str.length);
             var cclength = str.length;
-            return this.totalChars.title - cclength;
+            return totalchars- cclength;
             // this.totalChars.title - (this.newevent.title).length
         },
         descriptionChars: function() {
+
             var str = this.record.announcement;
             console.log(str.length);
             var cclength = str.length;
-            return this.totalChars.announcement - cclength;
+            var totalchars = this.totalChars.announcement;
+            return totalchars - cclength;
             // this.totalChars.title - (this.newevent.title).length
         }
 
@@ -625,7 +562,9 @@ module.exports = {
             // this.newevent.start_date = this.sdate;
             // this.newevent.end_date = this.edate;
             // this.newevent.reg_deadline = this.rdate;
+
             this.record.user_id = this.authorid;
+            this.record.type = this.type;
             let tempid;
             if (typeof this.currentRecordId != 'undefined'){
                 tempid = this.currentRecordId;

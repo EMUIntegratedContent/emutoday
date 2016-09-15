@@ -34,10 +34,15 @@ class Announcement extends Model
     protected $presenter = 'Emutoday\Presenters\AnnouncementPresenter';
 
     use Eloquence;
-    protected $searchableColumns = ['title', 'announcement'];
+    protected $searchableColumns = ['title', 'announcement', 'submitter'];
 
     public function user()
     {
         return $this->belongsTo('Emutoday\User');
+    }
+
+    public function announcementType()
+    {
+        return $this->belongsTo('Emutoday\AnnouncementType', 'shortname', 'type');
     }
 }

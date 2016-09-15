@@ -65,7 +65,7 @@ import AnnouncementQueueItem from './AnnouncementQueueItem.vue'
     // import EventViewContent from './EventViewContent.vue'
 export default {
     components: {AnnouncementQueueItem},
-    props: ['annrecords'],
+    props: ['atype','cuser'],
     data: function() {
         return {
             resource: {},
@@ -98,7 +98,9 @@ export default {
 
     methods: {
         fetchAllRecords: function() {
-            this.$http.get('/api/announcement/queueload')
+            let route = '/api/announcement/queueload/' + this.atype;
+
+            this.$http.get(route)
 
             .then((response) => {
                 //response.status;

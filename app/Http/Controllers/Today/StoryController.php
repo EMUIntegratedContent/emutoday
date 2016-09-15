@@ -23,6 +23,71 @@ class StoryController extends Controller
                 $this->imagetype = $imagetype;
     }
 
+
+    public function story($stype, $id)
+    {
+        // dd($stype . 'story==== '.$id );
+        if ($stype == 'article'){
+
+            $rurl = '/magazine/article/'.$id;
+            // return view('admin.story.form', compact('story', 'stypes', 'tags','stypelist','requiredImages','otherImages'));
+            // Route::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
+
+
+            return redirect($rurl);
+        } else {
+            $story = $this->storys->findOrFail($id);
+            // $mainStoryImage = $story->storyImages()->ofType('imagemain')->first();
+            $mainStoryImage = null;
+            $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
+            // dd($mainStoryImage);
+            foreach($mainStoryImages as $mainimg){
+                if($mainimg->imgtype->type == 'story') {
+                    $mainStoryImage = $mainimg;
+                    break;
+                }
+            }
+            $sideFeaturedStorys = $this->storys->where([
+                ['story_type', 'story'],
+                ['id', '<>', $id],
+                ['is_approved', 1],
+                ])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
+                    $query->where('image_type', 'small');
+                }])->take(3)->get();
+                $sideStoryBlurbs = collect();
+                foreach ($sideFeaturedStorys as $sideFeaturedStory) {
+                        $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
+                }
+
+
+            //Removed Student Side Bar until firther notice
+            $sideStudentBlurbs = null;
+
+            //   $sideStudentStorys = $this->storys->where([
+            // 		['story_type', 'student'],
+            // 		['id', '<>', $id],
+            // 		['is_approved', 1],
+            // 		])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
+            // 			$query->where('image_type', 'small');
+            // 		}])->take(3)->get();
+              //
+            // 		$sideStudentBlurbs = collect();
+            // 		foreach ($sideStudentStorys as $sideStudentStory) {
+            // 		    $sideStudentBlurbs->push($sideStudentStory->storyImages()->where('image_type', 'small')->first());
+            // 		}
+
+            JavaScript::put([
+                    'jsis' => 'hi',
+                    'mainStoryImage' => $mainStoryImage,
+                    'sidestudentblurbs' => $sideStudentBlurbs,
+                    'sideStoryBlurbs' => $sideStoryBlurbs,
+                    ]);
+                $storyview = 'public.'.$stype.'.story';
+          return view($storyview, compact('story', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs'));
+        }
+
+
+    }
     public function index($id = null)
     {
         if ($id == null) {

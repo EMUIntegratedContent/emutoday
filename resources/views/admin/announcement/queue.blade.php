@@ -25,8 +25,9 @@
                             is="event-view">
     </component>
 </div><!-- vue-app --> --}}
+
     <div id="vue-announcement-queue">
-            <announcement-queue>
+            <announcement-queue atype="{{$atype}}" cuser="{{$currentUser}}">
             </announcement-queue>
     </div><!-- /.vue-announcement-app -->
 

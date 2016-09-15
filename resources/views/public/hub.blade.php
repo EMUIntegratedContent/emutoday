@@ -137,11 +137,10 @@
              <div class="featured-content-block">
                <h6 class="headline-block">Working @ EMU</h6>
                <ul class="feature-list">
-                 <li><a href="http://www.emich.edu/hr/benefits/documents/2016_service_award_honorees.pdf">Congratulations to the 2016 service award honorees</a></li>
-                 <li><a href="http://etraining.emich.edu">Looking for professional development? Visit our eTraining website</a></li>
-                 <li><a href="http://www.emich.edu/hr/documents/home_page/gctwf2015results_presentation_apmeeting_04-19-2016.pdf">Great Colleges to Work For survey results are now online</a></a></li>
-                 <!-- <li><a href="">Health care sign up in going on now. For more information contact Joan Johnson.</a></li> -->
-               </ul>
+                   @foreach($currentHRAnnouncements as $currentHRAnnouncement)
+                     <li><a href="http://{{ $currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a></li>
+                   @endforeach
+            </ul>
              </div>
              <div class="working-link">
                  <p><a href="http://www.emich.edu/hr">Visit Human Resources</a></p>

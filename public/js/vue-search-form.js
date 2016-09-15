@@ -12116,10 +12116,10 @@ module.exports = {
         },
         closeSearchForm: function closeSearchForm(evt) {
             this.searchFormIsOpen = false;
+        },
+        submitSearch: function submitSearch(e) {
+            this.$http.get('/search', this.searchterm);
         }
-        // submitSearch: function (e) {
-        //     this.$http.get('/emu-today/search', this.searchterm);
-        // },
 
     },
     watch: {},
@@ -12127,7 +12127,7 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-6b63bacc=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"search\" method=\"get\" class=\"search-form\" _v-6b63bacc=\"\">\n            <slot name=\"csrf\" _v-6b63bacc=\"\"></slot>\n        <label _v-6b63bacc=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-6b63bacc=\"\"><button type=\"submit\" _v-6b63bacc=\"\"><i class=\"fa fa-search\" _v-6b63bacc=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-6b63bacc=\"\"><i class=\"fa fa-x\" _v-6b63bacc=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-6b63bacc=\"\"><a @click.prevent=\"openSearchForm\" _v-6b63bacc=\"\">Search <i class=\"fa fa-search\" _v-6b63bacc=\"\"></i></a></span>\n    </template>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-6b63bacc=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" class=\"search-form\" _v-6b63bacc=\"\">\n            <slot name=\"csrf\" _v-6b63bacc=\"\"></slot>\n        <label _v-6b63bacc=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-6b63bacc=\"\"><button type=\"submit\" _v-6b63bacc=\"\"><i class=\"fa fa-search\" _v-6b63bacc=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-6b63bacc=\"\"><i class=\"fa fa-x\" _v-6b63bacc=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-6b63bacc=\"\"><a @click.prevent=\"openSearchForm\" _v-6b63bacc=\"\">Search <i class=\"fa fa-search\" _v-6b63bacc=\"\"></i></a></span>\n    </template>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

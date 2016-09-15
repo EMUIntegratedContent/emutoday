@@ -37,12 +37,19 @@ class AnnouncementController extends Controller
     public function edit($id)
     {
         $announcement = $this->announcement->findOrFail($id);
+        $atype = $announcement->type;
 
-        return view('admin.announcement.form', compact('announcement'));
+        return view('admin.announcement.form', compact('announcement','atype'));
     }
-    
-    public function queue(Announcement $announcement) {
-        return view('admin.announcement.queue', compact('announcements'));
+
+    public function queue($atype = null) {
+        if (is_null($atype)) {
+            $atype = 'general';
+        } else {
+            $atype = $atype;
+        }
+        $announcement = $this->announcement;
+        return view('admin.announcement.queue', compact('announcements', 'atype'));
     }
 
     /**
@@ -50,9 +57,17 @@ class AnnouncementController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function form(Announcement $announcement)
+    public function form($atype = null)
     {
-        return view('admin.announcement.form', compact('announcement'));
+
+        // dd($atype);
+        if (is_null($atype)) {
+            $atype = 'general';
+        } else {
+            $atype = $atype;
+        }
+        $announcement = $this->announcement;
+        return view('admin.announcement.form', compact('announcement', 'atype'));
     }
 
 }

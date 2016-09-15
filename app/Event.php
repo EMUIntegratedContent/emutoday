@@ -69,7 +69,7 @@ class Event extends Model
     use Eloquence;
     protected $searchableColumns = [
         'title', 'short_title',
-        'description'
+        'description', 'submitter'
     ];
 
 

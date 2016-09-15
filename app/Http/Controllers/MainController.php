@@ -21,6 +21,7 @@ class MainController extends Controller
     protected $recordLimitNews = 4;
     protected $recordLimitAnnouncements = 4;
     protected $recordLimitEvents = 4;
+    protected $recordLimitHR = 3;
 
     public function __construct(Page $page, Story $story, Announcement $announcement, Event $event)
 
@@ -85,6 +86,7 @@ class MainController extends Controller
         $currentAnnouncements = $this->announcement->where([
             ['is_approved', 1],
             ['is_archived', 0],
+            ['type', 'general'],
             ['start_date', '<=', $currentDateTimeStart],
             ['end_date', '>=', $currentDateTimeEnd],
             ['priority', '>', 0]
@@ -99,6 +101,7 @@ class MainController extends Controller
             $currentAnnouncements = $this->announcement->where([
                 ['is_approved', 1],
                 ['is_archived', 0],
+                ['type', 'general'],
                 ['start_date', '<=', $currentDateTimeStart],
                 ['end_date', '>=', $currentDateTimeEnd]
             ])
@@ -117,6 +120,33 @@ class MainController extends Controller
         ->orderBy('priority','desc')
         ->orderBy('start_date','desc')
         ->take($this->recordLimitEvents)->get();
+
+        $currentHRAnnouncements = $this->announcement->where([
+            ['is_approved', 1],
+            ['is_archived', 0],
+            ['type', 'hr'],
+            ['start_date', '<=', $currentDateTimeStart],
+            ['end_date', '>=', $currentDateTimeEnd],
+            ['priority', '>', 0]
+        ])
+        ->orderBy('priority','desc')
+        ->orderBy('start_date','asc')
+        ->take($this->recordLimitHR)->get();
+
+        //make sure there are enough announcements with a priority over 0
+        //if not requery with out priority limitation
+        if($currentHRAnnouncements->count() < $this->recordLimitHR ){
+            $currentHRAnnouncements = $this->announcement->where([
+                ['is_approved', 1],
+                ['is_archived', 0],
+                ['type', 'hr'],
+                ['start_date', '<=', $currentDateTimeStart],
+                ['end_date', '>=', $currentDateTimeEnd]
+            ])
+            ->orderBy('priority','desc')
+            ->orderBy('start_date','asc')
+            ->take($this->recordLimitHR)->get();
+        }
 
 
 
@@ -157,6 +187,8 @@ class MainController extends Controller
         } else {
             $currentStoryImageWithVideoTag = null;
         }
+
+
         JavaScript::put([
             'jsis' => 'hi',
             'cdnow' => Carbon::now(),
@@ -164,7 +196,7 @@ class MainController extends Controller
             'cdend' => Carbon::now()->addDays(7),
             'currentPage' => $page
         ]);
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag','currentHRAnnouncements'));
         // return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements'));
 
     }
@@ -206,7 +238,13 @@ class MainController extends Controller
     public function search(Request $request)
     {
         $searchTerm =  $request->input('searchterm');
-        $searchResults = Story::search($searchTerm)->select('title','subtitle','teaser','id')->paginate(10);
-        return view('public.searchresults', compact('searchTerm', 'searchResults'));
+        $searhTermWild = $searchTerm  . '*';
+        $searchStoryResults = Story::search($searhTermWild, false)->select('title','subtitle','story_type','teaser','id')->paginate(10);
+        $searchEventResults = Event::search($searhTermWild, false)->select('title','description','submitter','id')->paginate(10);
+        $searchAnnouncementResults = Announcement::search($searhTermWild, false)->select('title','announcement','submitter','id')->paginate(10);
+
+
+
+        return view('public.searchresults', compact('searchTerm', 'searchStoryResults','searchEventResults','searchAnnouncementResults'));
     }
 }

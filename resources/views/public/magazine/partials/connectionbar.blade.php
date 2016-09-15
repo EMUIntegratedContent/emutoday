@@ -9,9 +9,17 @@
                                 <h3 class="magazine-main-title hide-for-large"><a href="/magazine">Eastern <span class="magazine-descriptor-small hide-for-large">Magazine</span></a></h3>
                             </div>
                             <div class="large-7 medium-3 small-12 columns">
-                                <div class="icon-menu">
-                                    <span class="search-area"><a href="#">Search <i class="fa fa-search"></i></a></span>
-                                    <span class="menu-area show-for-small-only"><a href="#" data-toggle="offCanvasRight">Menu <i class="fa fa-bars"></i></a></span>
+                                <div class="icon-menu float-right">
+
+                                    <div id="vue-search-form">
+                                        <search-form>
+                                            <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        </search-form>
+                                    </div><!-- /#vue-event-form -->
+
+                                    {{-- <span class="search-area"><a>Search <i class="fa fa-magnifying-glass"></i></a></span> --}}
+                                    <span class="menu-area show-for-small-only"><a data-toggle="offCanvasRight">Menu <i class="fa fa-list"></i></a></span>
+
                                 </div> <!-- .icon-menu -->
                             </div>
                         </div>

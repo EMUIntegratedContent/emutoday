@@ -29,7 +29,7 @@ class AnnouncementController extends ApiController
         ]]);
 
     }
-    public function queueLoad()
+    public function queueLoad($atype)
     {
         $currentDate = Carbon::now();
         if (\Auth::check()) {
@@ -37,12 +37,13 @@ class AnnouncementController extends ApiController
 
             if ($user->hasRole('contributor_1')){
                 // dd($user->id);
-                $announcements = $user->announcements()->get();
+                $announcements = $user->announcements()->where('type',$atype)->get();
             } else {
                 // $announcements = Announcement::where('end_date', '>=', $currentDate)->get();
 
                 $announcements = Announcement::where([
-                    ['end_date', '>', $currentDate->subDay(2)]
+                    ['end_date', '>', $currentDate->subDay(2)],
+                    ['type', $atype]
                     ])->get();
                     // Announcement::all();
                 }
@@ -58,6 +59,24 @@ class AnnouncementController extends ApiController
 
 
         }
+        // public function queueLoadhr()
+        // {
+        //     $currentDate = Carbon::now();
+        //     $announcements = Announcement::where([
+        //         ['end_date', '>', $currentDate->subDay(2)],
+        //         ['type', 'hr']
+        //         ])->get();
+        //         // Announcement::all();
+        //     }
+        //     $fractal = new Manager();
+        //     // $storys = Story::all();
+        //     $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
+        //     // Turn all of that into a Array string
+        //     return $fractal->createData($resource)->toArray();
+        //
+        //
+        //
+        //     }
 
         /**
        * [API Call from AnnouncementItem to change some variables]
@@ -89,7 +108,7 @@ class AnnouncementController extends ApiController
         {
 
         $validation = \Validator::make( Input::all(), [
-                    'title'           => 'required|max:50',
+                    'title'           => 'required|max:80',
                     'start_date'      => 'required|date',
                     'end_date'        => 'required|date',
                     'announcement'     => 'required|max:255'
@@ -118,6 +137,7 @@ class AnnouncementController extends ApiController
             $announcement->is_approved      	= $request->get('is_approved', 0);
             $announcement->approved_date     =  null;
             $announcement->is_promoted     	=  0;
+            $announcement->type             = $request->get('type', 'general');
 
             $announcement->priority     	    = $request->get('priority', 0);
             $announcement->is_archived     	= $request->get('is_archived', 0);
@@ -189,6 +209,7 @@ class AnnouncementController extends ApiController
 
                $announcement->priority     	    = $request->get('priority', 0);
                $announcement->is_archived     	= $request->get('is_archived', 0);
+               $announcement->type             = $request->get('type', 'general');
 
 
 

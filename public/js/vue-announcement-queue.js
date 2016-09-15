@@ -16524,7 +16524,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // import EventViewContent from './EventViewContent.vue'
 exports.default = {
     components: { AnnouncementQueueItem: _AnnouncementQueueItem2.default },
-    props: ['annrecords'],
+    props: ['atype', 'cuser'],
     data: function data() {
         return {
             resource: {},
@@ -16558,7 +16558,9 @@ exports.default = {
         fetchAllRecords: function fetchAllRecords() {
             var _this = this;
 
-            this.$http.get('/api/announcement/queueload').then(function (response) {
+            var route = '/api/announcement/queueload/' + this.atype;
+
+            this.$http.get(route).then(function (response) {
                 //response.status;
                 console.log('response.status=' + response.status);
                 console.log('response.ok=' + response.ok);

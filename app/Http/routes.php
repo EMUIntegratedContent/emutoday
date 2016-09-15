@@ -66,7 +66,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::resource('event', 'Api\EventController');
 
 
-    Route::get('announcement/queueload', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
+    Route::get('announcement/queueload/{atype}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
     Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
     Route::resource('announcement', 'Api\AnnouncementController');
@@ -115,27 +115,34 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
     Route::get('announcement/{id?}', 'Today\AnnouncementController@index');
-    Route::get('story/{id?}', 'Today\StoryController@index');
-    Route::get('news/{id?}', 'Today\StoryController@index');
+
+
+
+    // Route::get('news/{id?}', 'Today\StoryController@index');
+
+
     Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
     Route::get('calendar/{year?}/{month?}/{day?}', 'Today\CalendarController@index');
 
 
-    Route::get('article/{id?}', 'Today\MagazineController@article');
+    // Route::get('article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
 
     Route::get('hub', 'MainController@index');
-    Route::get('search','MainController@search' );
 
+    Route::get('search','SearchController@search' );
+    Route::get('search/story/{id}','SearchController@story' );
+    Route::get('search/event/{id}','SearchController@event' );
+    Route::get('search/announcement/{id}','SearchController@announcement' );
 
 
     Route::get('emichlogin', ['as' => 'emich-login', function() {
         return view('public.emichlogin', ['form' => 'event']);
         //return Building::ofMapType('illustrated')->get();
     }]);
-
+Route::get('{stype}/{id?}', 'Today\StoryController@story');
         Route::auth();
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview' ], function()
@@ -158,8 +165,8 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('dashboard', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
         Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);
 
-        Route::get('announcement/queue', ['as' => 'admin.announcement.queue', 'uses' => 'Admin\AnnouncementController@queue']);
-        Route::get('announcement/form', ['as' => 'admin.announcement.form', 'uses' => 'Admin\AnnouncementController@form']);
+        Route::get('announcement/queue/{atype?}', ['as' => 'admin.announcement.queue', 'uses' => 'Admin\AnnouncementController@queue']);
+        Route::get('announcement/form/{atype?}', ['as' => 'admin.announcement.form', 'uses' => 'Admin\AnnouncementController@form']);
         Route::resource('announcement', 'Admin\AnnouncementController');
 
         Route::get('event/queue', ['as' => 'admin.event.queue', 'uses' => 'Admin\EventController@queue']);

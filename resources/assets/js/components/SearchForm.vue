@@ -1,7 +1,7 @@
 <template>
     <div class="search-form-wrapper">
         <template v-if="searchFormIsOpen">
-            <form action="search" method="get" class="search-form">
+            <form action="/search" method="get" class="search-form">
                 <slot name="csrf"></slot>
             <label>Search:</label><input type="text" name="searchterm" placeholder="Search" v-model="searchterm"><button type="submit"><i class="fa fa-search"></i></button><button @click.prevent="closeSearchForm"><i class="fa fa-x"></i></button>
         </form>
@@ -68,10 +68,10 @@ module.exports = {
         },
         closeSearchForm:function(evt){
             this.searchFormIsOpen = false;
+        },
+        submitSearch: function (e) {
+            this.$http.get('/search', this.searchterm);
         }
-        // submitSearch: function (e) {
-        //     this.$http.get('/emu-today/search', this.searchterm);
-        // },
 
         },
     watch: {},
