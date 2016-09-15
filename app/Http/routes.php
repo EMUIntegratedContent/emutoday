@@ -137,12 +137,14 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('search/event/{id}','SearchController@event' );
     Route::get('search/announcement/{id}','SearchController@announcement' );
 
+    Route::get('story/{stype}/{id?}', 'Today\StoryController@story');
+
 
     Route::get('emichlogin', ['as' => 'emich-login', function() {
         return view('public.emichlogin', ['form' => 'event']);
         //return Building::ofMapType('illustrated')->get();
     }]);
-Route::get('{stype}/{id?}', 'Today\StoryController@story');
+    //Route::get('{stype}/{id?}', 'Today\StoryController@story');
         Route::auth();
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview' ], function()

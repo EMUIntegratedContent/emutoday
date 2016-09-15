@@ -15,7 +15,7 @@
 
               <ul class="news-headlines">
                 @foreach($storys as $story)
-                  <li><div class="publish-date">{{$story->present()->publishedDate}}</div><a href="/story/{{$story->id}}">{{$story->title}}</a></li>
+                  <li><div class="publish-date">{{$story->present()->publishedDate}}</div><a href="/story/{{$story->story_type}}/{{$story->id}}">{{$story->title}}</a></li>
                 @endforeach
               </ul>
               <div id="base-grouping" class="row">

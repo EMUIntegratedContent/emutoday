@@ -26,7 +26,7 @@
               <li><a href="/hub">Today</a></li>
               <li><a href="/calendar">Calendar</a></li>
               <li><a href="/announcement">Announcements</a></li>
-              <li><a href="/news">News</a></li>
+              <li><a href="/story/news">News</a></li>
               <li><a href="http://www.wemu.org">WEMU</a></li>
               <li><a href="#">Athletics</a></li>
             </ul>
@@ -97,7 +97,7 @@
                                                     <li><a class="{{ set_active('hub')}}" href="/hub"><i class="fa fa-play"></i>Today</a></li>
                                                     <li ><a class="{{ set_active('calendar')}}" href="/calendar"><i class="fa fa-play"></i>Calendar</a></li>
                                                     <li ><a class="{{ set_active('announcement')}}" href="/announcement"><i class="fa fa-play"></i>Announcements</a></li>
-                                                    <li ><a class="{{ set_active('news')}}" href="/news"><i class="fa fa-play"></i>News</a></li>
+                                                    <li ><a class="{{ set_active('news')}}" href="/story/news"><i class="fa fa-play"></i>News</a></li>
                                                     <li ><a href="http://www.wemu.org"><i class="fa fa-play"></i>WEMU</a></li>
                                                     <li><a href="http://www.emueagles.com/">Athletics</a></li>
                                                 </ul>
