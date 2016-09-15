@@ -9,7 +9,7 @@
                                 <div class="box-header with-border">
                                     <h3 class="box-title">User Table</h3>
                                     @can('super', $currentUser)
-                                    @include('admin.components.boxtools', ['rte' => 'users', 'path' => 'admin/user'])
+                                    @include('admin.components.boxtools', ['rte' => 'user', 'path' => 'admin/user'])
                                 @endcan
                                 </div>
                                 <!-- /.box-header -->
@@ -40,7 +40,7 @@
                                         <td>{{ $user->phone }}</td>
                                                             <td>{{ $user->roles->pluck('name') }}</td>
                                         <td>
-                                            <a href="/admin/user/{{ $user->id}}">
+                                            <a href="/admin/user/{{ $user->id}}/edit">
                                                                         <i class="fa fa-pencil"></i>
 
                                             </a>

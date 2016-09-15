@@ -37,22 +37,46 @@
 <li class="treeview {{ set_active('admin/story*') }}">
     <a href="#"><i class="fa fa-file-text-o"></i> <span>Stories</span> <i class="fa fa-angle-left pull-right"></i></a>
     <ul class="treeview-menu">
+        <li><a href="#"><i class="fa fa-circle-o"></i>News <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span></a>
+        <ul class="treeview-menu {{ set_active('admin/story/news*') }}">
+                @can('story_promote', $currentUser)
+            <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
+    @endcan
+            {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
+            <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/story/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
+        </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>All Stories <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span></a>
+        <ul class="treeview-menu {{ set_active('admin/story/all') }}">
+            @can('story_approve', $currentUser)
+            <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
+    @endcan
+            {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
+            <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+        </ul>
+        </li>
+    </ul>
 
+
+{{-- 
+    <ul class="treeview-menu">
         @can('story_approve', $currentUser)
-{{-- Route::get('{group}/{stype}/{qtype}','Admin\StoryTypeController@queue' ); --}}
         <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-
-        {{-- <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li> --}}
         @endcan
+        <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+
+
         @can('story_promote', $currentUser)
 
         <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
         @endcan
-        {{-- <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all"><i class="fa fa-list"></i> <span>List All</span></a></li> --}}
-        <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
         <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/story/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
 
-    </ul>
+    </ul> --}}
 </li>
 @endcan
 

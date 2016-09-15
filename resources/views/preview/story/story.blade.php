@@ -107,7 +107,7 @@
                     <div class="medium-6 columns">
                         <div class="button-group">
                                 {!! Form::submit('Update Story', ['class' => 'button']) !!}
-                                <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a>
+                                {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
 
                         </div><!-- /.button-group -->
 

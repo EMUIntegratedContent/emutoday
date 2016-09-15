@@ -75,6 +75,8 @@ class PreviewController extends Controller
         // {
             public function story($qtype,$gtype, $stype, Story $story)
             {
+
+                // dd($qtype . ' '. $gtype. ''. $stype.''. $story);
             // $url =  \URL::previous();
             // //$url = 'http://www.domain.com/page?s=194&client=151678&m=a4a&v=1&g=54';
             // $remove_http = str_replace('http://', '', $url);
