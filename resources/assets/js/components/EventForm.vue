@@ -38,6 +38,7 @@
                         <div :class="md8col">
                             <label>Building</label>
                             <v-select
+                                :class="dropDownSelect"
                                 is="bldg"
                                 :debounce="250"
                                 :value.sync="building"
@@ -485,6 +486,9 @@
         form {
             padding-bottom: 320px;
         }
+        
+
+
 </style>
 <script>
     import flatpickr from "flatpickr"
@@ -593,6 +597,10 @@
 
 
             computed: {
+                dropDownSelect: function(){
+                    return (this.framework == 'foundation')? 'fdropdown':''
+
+                },
                 md6col: function () {
                     return (this.framework == 'foundation')? 'medium-6 columns':'col-md-6'
                 },

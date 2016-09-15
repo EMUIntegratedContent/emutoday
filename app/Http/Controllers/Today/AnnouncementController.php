@@ -43,7 +43,8 @@ class AnnouncementController extends Controller
             $user = \Auth::user();
         } else {
         // return 'Need to Connect to LDAP';
-        return redirect()->route('emich-login');
+    //    return redirect()->route('emich-login');
+            return redirect()->guest('/login');
         }
 
 

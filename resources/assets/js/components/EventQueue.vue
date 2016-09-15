@@ -1,11 +1,5 @@
 <template>
-    <div class="row">
-        <div class="col-md-12">
-            <p>
-                Today is:{{currentDateAndTime}}
-            </p>
-        </div><!-- /.col-md-12 -->
-    </div><!-- /.row -->
+
     <div class="row">
             <div class="col-md-4">
             <h3>Unapproved Events</h3>
@@ -37,10 +31,10 @@
             </div><!-- /.col-md-6 -->
             <div class="col-md-4">
                     <h3>Live Events</h3>
-                <div id="items-other">
+                <div id="items-live">
                 <event-queue-item
 
-                    pid="items-other"
+                    pid="items-live"
                     v-for="item in itemsLive | orderBy 'priority' -1"
                     @item-change="moveToUnApproved"
                     :item="item"

@@ -103,7 +103,8 @@ class AnnouncementController extends ApiController
          if($validation->passes())
         {
             $announcement = new Announcement;
-            $announcement->user_id       	= $request->get('user_id');
+            $announcement->user_id       	= $request->get('user_id', 0);
+            $announcement->submitter       	= cas()->getCurrentUser();
             $announcement->title           	= $request->get('title');
             $announcement->start_date      	= \Carbon\Carbon::parse($request->get('start_date'));
             $announcement->end_date      		= \Carbon\Carbon::parse($request->get('end_date'))->endOfDay();
@@ -112,6 +113,8 @@ class AnnouncementController extends ApiController
 
             $announcement->link              = $request->get('link', null);
             $announcement->link_txt          = $request->get('link_txt', null);
+            $announcement->email_link              = $request->get('email_link', null);
+            $announcement->email_link_txt          = $request->get('email_link_txt', null);
             $announcement->is_approved      	= $request->get('is_approved', 0);
             $announcement->approved_date     =  null;
             $announcement->is_promoted     	=  0;
@@ -176,6 +179,9 @@ class AnnouncementController extends ApiController
                $announcement->announcement     	= $request->get('announcement');
                $announcement->link              = $request->get('link', null);
                $announcement->link_txt          = $request->get('link_txt', null);
+               $announcement->email_link              = $request->get('email_link', null);
+               $announcement->email_link_txt          = $request->get('email_link_txt', null);
+
                $announcement->submission_date   = $request->get('submission_date');
                $announcement->is_approved      	= $request->get('is_approved', 0);
                $announcement->approved_date     = $request->get('approved_date', null);
@@ -208,10 +214,7 @@ class AnnouncementController extends ApiController
               $announcement->is_approved = $request->get('is_approved',0);
               $announcement->priority = $request->get('priority', 0);
               $announcement->is_archived = 1;
-
-
               if($announcement->save()) {
-
                   $returnData = ['is_approved' => $announcement->is_approved,'priority'=> $announcement->priority, 'is_archived'=> $announcement->is_archived];
                   return $this->setStatusCode(201)
                   ->respondUpdatedWithData('announcement archived',$returnData );

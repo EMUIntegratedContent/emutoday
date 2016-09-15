@@ -109,7 +109,8 @@ class CalendarController extends Controller
                 $user = \Auth::user();
             } else {
                 // return view('public.emichlogin')
-                return redirect()->route('emich-login');
+                //return redirect()->route('auth.login');
+                return redirect()->guest('/login');
             }
             $approveditems = null;
             $submitteditems = null;

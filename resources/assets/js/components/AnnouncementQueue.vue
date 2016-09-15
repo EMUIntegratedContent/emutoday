@@ -42,7 +42,7 @@
     </div>
     <div class="col-md-4">
         <h3>Live</h3>
-        <div id="items-other">
+        <div id="items-live">
             <announcement-queue-item
                 pid="items-live"
                 v-for="item in itemsLive | orderBy 'priority' -1"

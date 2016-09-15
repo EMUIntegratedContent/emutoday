@@ -1,4 +1,5 @@
 <template>
+        <div :class="specialItem">
     <div :class="liveTimeStatusClass" class="box box-solid">
       <div class="box-header with-border" >
           <div class="row">
@@ -68,6 +69,7 @@
           </div><!-- /.row -->
       </div><!-- /.box-footer -->
   </div><!-- /.box- -->
+  </div>
 </template>
 <style scoped>
     .box {
@@ -151,7 +153,7 @@
         border: 2px solid #9B59B6;
     }
     .ongoing {
-        background-color: #bfff00;
+        background-color: #ffcc33;
         border: 1px solid #999999
     }
     .event-positive {
@@ -161,7 +163,7 @@
     }
     .event-negative {
 
-        background-color: #ffcc33;
+        background-color: #999999;
         border: 1px solid #999999;
     }
     .is-promoted {
@@ -178,8 +180,21 @@
     .time-is-over {
         color: #9B59B6;
     }
-    .last-special-event {
-        margin-bottom: 50px;
+
+    .special-item {
+        border-left: 6px solid #bfff00;
+
+        padding-left: 3px;
+        border-top-left-radius:3px;
+        border-bottom-left-radius: 3px;
+        margin-left: -10px;
+
+    }
+    .special-item-last {
+        /*border-bottom: 6px solid #bfff00;
+        border-bottom-right-radius:3px;
+        border-bottom-left-radius: 3px;*/
+        margin-bottom: 30px;
     }
 </style>
 <script>
@@ -235,6 +250,21 @@ module.exports  = {
             this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
     },
     computed: {
+        specialItem: function(){
+            let extrasep;
+        // if (this.pid == 'items-live' && this.index === 3) {
+            if (this.pid == 'items-live' && this.index < 5) {
+                if(this.index === 4) {
+                    extrasep = 'special-item special-item-last'
+                } else {
+                    extrasep = 'special-item'
+                }
+
+            } else {
+            extrasep = ''
+        }
+        return extrasep;
+        },
         timefromNow:function() {
             return moment(this.item.start_date).fromNow()
         },

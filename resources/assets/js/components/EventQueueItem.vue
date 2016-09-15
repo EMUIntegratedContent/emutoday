@@ -1,6 +1,8 @@
 <template>
 
     <!-- <div class="box box-default box-solid"> -->
+    <div :class="specialItem">
+
     <div :class="liveTimeStatusClass" class="box box-solid">
 
         <div class="box-header with-border">
@@ -75,9 +77,9 @@
         <div :class="addSeperator" class="box-footer list-footer">
             <div class="row">
                 <div class="col-sm-12 col-md-9">
-                    <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span>
+                    <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->
 
-                    <span :class="timeFromNowStatus">Live {{timefromNow}}</span> <span :class="timeLeftStatus">{{timeLeft}}</span>
+                    <span v-if="itemCurrent" :class="timeFromNowStatus">Live {{timefromNow}}</span> <span :class="timeLeftStatus">{{timeLeft}}</span>
 
 
 
@@ -94,7 +96,7 @@
             </div><!-- /.row -->
         </div><!-- /.box-footer -->
 </div><!-- /.box- -->
-
+</div>
 </template>
 <style scoped>
     .box {
@@ -168,7 +170,7 @@
         border: 2px solid #9B59B6;
     }
     .ongoing {
-        background-color: #bfff00;
+        background-color: #ffcc33;
         border: 1px solid #999999
     }
     .event-positive {
@@ -178,7 +180,7 @@
     }
     .event-negative {
 
-        background-color: #ffcc33;
+        background-color: #999999;
         border: 1px solid #999999;
     }
     .is-promoted {
@@ -195,10 +197,22 @@
     .time-is-over {
         color: #9B59B6;
     }
-    .last-special-event {
-        margin-bottom: 50px;
-    }
 
+    .special-item {
+        border-left: 6px solid #bfff00;
+
+        padding-left: 3px;
+        border-top-left-radius:3px;
+        border-bottom-left-radius: 3px;
+        margin-left: -10px;
+
+    }
+    .special-item-last {
+        /*border-bottom: 6px solid #bfff00;
+        border-bottom-right-radius:3px;
+        border-bottom-left-radius: 3px;*/
+        margin-bottom: 30px;
+    }
     /*.box.box-solid.box-default {
     border: 1px solid #999999;
     }
@@ -248,6 +262,7 @@ module.exports  = {
                 is_canceled: 0,
                 eventimage: ''
             },
+            itemCurrent: 1,
             currentDate: {},
             record: {
             }
@@ -267,7 +282,7 @@ module.exports  = {
     computed: {
         addSeperator: function(){
             let asclass = 'box-footer-normal';
-            if(this.pid == 'items-other' && this.index == 3) {
+            if(this.pid == 'items-live' && this.index == 3) {
                 asclass = 'box-footer-last-special';
             }
             return asclass;
@@ -319,8 +334,10 @@ module.exports  = {
                 let tlft = this.timeDiffNow(this.item.end_date_time);
                 console.log('id='+ this.item.id + ' timeLeft'+tlft)
                 if (tlft < 0) {
+                    this.itemCurrent = 0;
                     return 'Event Ended ' + moment(this.item.end_date_time).fromNow()
                 } else {
+                    this.itemCurrent = 1;
                     return  ' and Ends ' + moment(this.item.end_date_time).fromNow()
                 }
 
@@ -330,9 +347,24 @@ module.exports  = {
 
 
         },
+        specialItem: function(){
+            let extrasep;
+        // if (this.pid == 'items-live' && this.index === 3) {
+            if (this.pid == 'items-live' && this.index < 5) {
+                if(this.index === 4) {
+                    extrasep = 'special-item special-item-last'
+                } else {
+                    extrasep = 'special-item'
+                }
+
+            } else {
+            extrasep = ''
+        }
+        return extrasep;
+        },
         liveTimeStatusClass: function(){
             let timepartstatus;
-            let extrasep;
+
             if (moment().isBetween(this.item.start_date_time, this.item.end_date_time)){
                 timepartstatus=  'ongoing';
             } else {
@@ -345,13 +377,7 @@ module.exports  = {
 
             }
 
-            if (this.pid == 'items-other' && this.index === 3) {
-                extrasep = 'last-special-event'
-            } else {
-                extrasep = ''
-            }
-
-            return timepartstatus + ' ' + extrasep;
+            return timepartstatus;
 
 
         },
@@ -359,7 +385,7 @@ module.exports  = {
             let sclass = 'box-default';
 
             // console.log('pid' + this.pid + ' index='+ this.index);
-            if (this.pid == 'items-other'){
+            if (this.pid == 'items-live'){
                 if(this.index < 4){
                     console.log('topitems');
                     sclass = 'topitems';

@@ -4,6 +4,7 @@
          <span class="Alert__close" @click="itemMsgStatus.show = false">X</span>
         <h5>{{itemMsgStatus.msg}}</h5>
     </div>
+    <div :class="specialItem">
     <div class="box box-solid {{item.group}}">
         <div class="box-header with-border">
                 <div class="row">
@@ -114,6 +115,7 @@
             </div><!-- /.box-footer -->
 
     </div><!-- /.box- -->
+</div>
 </div>
 </template>
 <style scoped>
@@ -278,6 +280,22 @@
         .form-group label{
             margin-bottom: 0;
         }
+
+        .special-item {
+            border-left: 6px solid #bfff00;
+
+            padding-left: 3px;
+            border-top-left-radius:3px;
+            border-bottom-left-radius: 3px;
+            margin-left: -10px;
+
+        }
+        .special-item-last {
+            /*border-bottom: 6px solid #bfff00;
+            border-bottom-right-radius:3px;
+            border-bottom-left-radius: 3px;*/
+            margin-bottom: 30px;
+        }
         /*.box.box-solid.box-default {
         border: 1px solid #999999;
         }*/
@@ -290,7 +308,7 @@ import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
     directives: {},
     components: {VuiFlipSwitch},
-    props: ['item','pid','sroute','qtype','gtype','stype'],
+    props: ['item','pid','sroute','qtype','gtype','stype','index'],
     data: function() {
         return {
             response_msg: '',
@@ -333,6 +351,21 @@ module.exports  = {
         this.initRecord.eventimage = this.patchRecord.eventimage = this.item.eventimage;
     },
     computed: {
+        specialItem: function(){
+            let extrasep;
+            if(this.qtype == 'queuenews' && this.pid == 'items-live' && this.index < 5) {
+
+                if(this.index === 4) {
+                    extrasep = 'special-item special-item-last'
+                } else {
+                    extrasep = 'special-item'
+                }
+
+            } else {
+            extrasep = ''
+            }
+        return extrasep;
+        },
         isLiveColumn:function(){
             if(this.pid === 'items-live'){
                 return true;

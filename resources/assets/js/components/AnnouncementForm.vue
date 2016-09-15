@@ -69,7 +69,7 @@
             <div :class="md12col">
                 <div v-bind:class="formGroup">
                     <label>Email Link</label>
-                    <p class="help-text" id="title-helptext">Please enter the url for your external web page. (www.yourlink.com)</p>
+                    <p class="help-text" id="title-helptext">Please enter the contact person's email address. (contact@yourlink.com)</p>
                     <div class="input-group">
                         <span :class="inputGroupLabel">mailto:</span>
                         <input v-model="record.email_link" class="form-control" v-bind:class="[formErrors.email_link ? 'invalid-input' : '']" name="email_link" type="text">
@@ -91,7 +91,7 @@
                 <div v-bind:class="formGroup">
                     <label>Example of Email Link</label>
                     <p class="help-text">Below is how it may look. </p>
-                    <h5 class="form-control">To request more information click: <a href="#"> {{record.email_link_txt}}</a>.</h5>
+                    <h5 class="form-control">Contact: <a href="#"> {{record.email_link_txt}}</a>.</h5>
                 </div>
                 </template>
             </div><!-- /.md6col -->
@@ -380,7 +380,9 @@ module.exports = {
                 is_archived: 0,
                 is_promoted: 0,
                 link_txt: '',
-                link: ''
+                link: '',
+                email_link_txt: '',
+                email_link: ''
             },
             // dateOptions: {
             //     minDate: "today",

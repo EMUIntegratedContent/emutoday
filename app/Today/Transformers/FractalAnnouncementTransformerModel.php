@@ -23,6 +23,8 @@ class FractalAnnouncementTransformerModel extends Fractal\TransformerAbstract
             'end_date'   => $announcement->end_date ? $announcement->end_date->toDateTimeString() : $announcement->start_date->addDays(1)->toDateString(),
             'link'      => $announcement->link,
             'link_txt' => $announcement->link_txt,
+            'email_link'      => $announcement->link,
+            'email_link_txt' => $announcement->link_txt,
             'is_archived' => $announcement->is_archived,
             'user_id'  => $announcement->user_id,
             'user_name'  => $announcement->user->full_name,

@@ -11,6 +11,7 @@ class Announcement extends Model
 
     protected $fillable = [
         'user_id',
+        'submitter',
         'title',
         'announcement',
         'start_date',
