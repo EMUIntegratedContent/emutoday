@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSubmitterColForNonAdminUsers extends Migration
+class CreateAnnouncementTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,11 @@ class AddSubmitterColForNonAdminUsers extends Migration
      */
     public function up()
     {
-        Schema::table('announcements', function (Blueprint $table) {
-            $table->string('submitter')->after('user_id');
+        Schema::create('announcement_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('shortname');
+            $table->timestamps();
         });
     }
 
@@ -24,9 +27,6 @@ class AddSubmitterColForNonAdminUsers extends Migration
      */
     public function down()
     {
-        Schema::table('announcements', function (Blueprint $table) {
-            $table->dropColumn('submitter');
-
-        });
+        Schema::drop('announcement_types');
     }
 }
