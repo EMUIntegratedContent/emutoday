@@ -103,7 +103,7 @@
                               <p>{{$event->present()->eventStartDateDay}}</p>
                           </div>
                           <div class="large-10 medium-10 small-10 columns">
-                           <p class="datecontent-box"><a href="/calendar/{{$event->present()->eventStartDateYear}}/{{$event->present()->eventStartDateMonthUnit}}/{{$event->present()->eventStartDateDay}}">{{$event->title}}</a></p>
+                           <p class="datecontent-box"><a href="/calendar/{{$event->present()->eventStartDateYear}}/{{$event->present()->eventStartDateMonthUnit}}/{{$event->present()->eventStartDateDay}}/{{$event->id}}">{{$event->title}}</a></p>
                           </div>
                         </li>
                      @endforeach

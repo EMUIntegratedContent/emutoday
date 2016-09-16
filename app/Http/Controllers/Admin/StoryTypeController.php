@@ -77,7 +77,25 @@ class StoryTypeController extends Controller
         // ]);
         return view('admin.story.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
     }
+    /**
+     * Route to setup article specific queue
+     * @param  Story  $story [description]
+     * @return [type]        [description]
+     */
+        public function queueArticle(Story $story) {
+            // $storys = $this->story;
+            $sroute = 'magazine';
+            $gtype = 'magazine';
+            $stypes  = 'article';
+            $stype= 'article';
+            $qtype  = 'queuearticle';
+            // \JavaScript::put([
+            //     'records' => $storys
+            // ]);
+            return view('admin.magazine.article.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
 
+            // return view('admin.magazine.article.queue', compact('storys','sroute', 'stypes', 'qtype'));
+        }
     // public function list($stype)
     // {
     //     //$storys = $this->story->where('story_type', $stype)->get();

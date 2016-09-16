@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label>Content <i class="fi-star reqstar"></i></label>
                     <p class="help-text" id="content-helptext">Enter the story content</p>
-                    <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :content="content" :fresh="isFresh" rows="200"></textarea>
+                    <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType" :content="content" :fresh="isFresh" rows="200"></textarea>
                     <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
                 </div>
                 <div class="form-group user-display">
@@ -393,6 +393,13 @@ module.exports  = {
                   },
                   isAdmin:function(){
                       return (this.userRoles.indexOf('admin') != -1)?true:false;
+                  },
+                  editorType:function(){
+                      if(this.isAdmin){
+                          return 'admin'
+                      } else {
+                          return 'simple'
+                      }
                   },
                   s_types:function(){
                      // var data = localStorage[key];

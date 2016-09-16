@@ -45,6 +45,7 @@
 
                 <div class="form-group">
                     {!! Form::label('teaser') !!}
+
                     {!! Form::textarea('teaser', null, ['class' => 'form-control', 'class'=>'ckeditor']) !!}
                     @if($mediafile->type == 'cover')
                         <span class="help-block">Small to Medium size text for a brief paragraph about magazine.</span>

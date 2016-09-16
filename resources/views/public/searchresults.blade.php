@@ -56,7 +56,7 @@
             <ul class="search-result-list">
         @foreach($searchEventResults as $searchEventResult)
           <li class="search-result-item">
-            <a href="/search/event/{{$searchEventResult->id}}"><h5>{{$searchEventResult->title}}</h5></a>
+            <a href="/calendar/event/{{$searchEventResult->id}}"><h5>{{$searchEventResult->title}}</h5></a>
             <div class="search-result-content">
                 @if($searchEventResult->description)
                 <p>{{ $searchEventResult->description }}</p>

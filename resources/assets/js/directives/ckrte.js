@@ -1,7 +1,7 @@
 module.exports = {
     twoWay: true,
      priority: 1000,
-    params: ['content'],
+    params: ['content', 'type'],
       bind: function () {
 
        console.log(this.setupEditor);
@@ -9,9 +9,12 @@ module.exports = {
 
      },
      setupEditor: function setUpEditor() {
+         var editorConfigType = (this.params.type == undefined || this.params.type == null || this.params.type == "")?'admin':this.params.type;
+         var editorConfig = '/themes/ckeditor_config_'+editorConfigType+'.js'
          var self = this;
          CKEDITOR.replace(this.el.id, {
-             customConfig: '/themes/ckeditor_config.js'
+              customConfig: editorConfig
+            //  customConfig: '/themes/ckeditor_config_admin.js'
          });
         //      filebrowserWindowFeatures: 'resizable=no',
         //      filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',

@@ -194,7 +194,7 @@ getContent = function (id) {
     for (i = 0; i < td.childNodes.length; i++) {
         // set reference to the child node
         cn = td.childNodes[i];
-        //console.log('>'+ cn.id);
+        console.log('>'+ cn.id);
 
         // childNode should be DIV with containing "drag" class name
         if (cn.nodeName === 'DIV' && cn.className.indexOf('drag') > -1) { // and yes, it should be uppercase
@@ -219,7 +219,7 @@ getContent = function (id) {
     if (content.length === 0){
         content = 0;
         tddivid = td.id;
-        console.log("td.id" + td.id)
+        console.log("td.id " + td.id)
         if (tddivid.replace('emuhome','') == 0){
             td.style.backgroundColor =  "#00a7d0";
         } else {

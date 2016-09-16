@@ -128,6 +128,7 @@
                             </div><!-- /.col-md-6 -->
                             <div class="col-md-4">
                                 <div class="form-group">
+                                    {!! Form::text('original_story_ids', $original_story_ids, ['id'=> 'original_story_ids',  'class' => 'form-control']) !!}
                                     {!! Form::label('story_ids') !!}
                                     {!! Form::text('story_ids', null, ['id'=> 'story_ids',  'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                 </div>
@@ -269,8 +270,18 @@
                     // $('#start-date').datetimepicker({
                     //     format: 'YYYY-MM-DD HH:mm:ss'
                     // });
+                    // CKEDITOR.replace(this.el.id, {
+                    //      customConfig: editorConfig
+                    //    //  customConfig: '/themes/ckeditor_config_admin.js'
+                    // });
 
-                    CKEDITOR.replaceAll('.ckeditor');
+
+                    CKEDITOR.replaceAll('.ckeditor',{
+                        customConfig: '/themes/ckeditor_config_simple.js',
+                        removePlugins:'Image'
+                    });
+                    // CKEDITOR.config.removeButtons= 'Image,Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source';
+
                 // 	CKEDITOR.replace( 'story-content', {
                 // 		// Define changes to default configuration here. For example:
               // filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',

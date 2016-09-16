@@ -1,7 +1,7 @@
 <template>
   <div class="eventview">
     <a v-on:click.prevent="toggleBody" href="#">
-        <h6>{{item.title}}<small>{{item.id}}</small></h6>
+        <h6>{{item.title}}</h6>
     </a>
     <template v-if="item.all_day">
       <p>All Day</p>
@@ -45,6 +45,9 @@
       <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
       <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
     </template>
+    <p>
+        <small>{{item.id}}</small>
+    </p>
     </div>
   </div>
 
@@ -89,14 +92,22 @@
 <script>
 module.exports  = {
     components: {},
-    props:['item','$index'],
+    props:['item','$index','targeteventid'],
     data: function() {
         return {
             showBody: false,
             eventRange: {}
         }
     },
+    ready() {
+        if(this.item.id == this.targeteventid){
+            this.showBody = true;
+        } else {
+            this.showBody = false;
+        }
+    },
     computed: {
+
         isOnCampus:function(){
             if(this.item.building === null || this.item.building === "undefined"){
                 return false

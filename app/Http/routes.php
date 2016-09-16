@@ -122,7 +122,8 @@ Route::group(['prefix' => 'api'], function() {
 
 
     Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
-    Route::get('calendar/{year?}/{month?}/{day?}', 'Today\CalendarController@index');
+    Route::get('calendar/event/{id}', 'Today\CalendarController@show');
+    Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
 
 
     // Route::get('article/{id?}', 'Today\MagazineController@article');
@@ -210,7 +211,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::post('promotestory', ['as'=> 'admin_promotestory', 'uses'=> 'Admin\StoryController@promoteStory']);
         Route::put('story/{id}/updatefrompreview', ['as'=> 'admin_preview_story_update', 'uses'=> 'Admin\StoryController@updateFromPreview']);
 
-        Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryController@queueArticle']);
+        // Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryController@queueArticle']);
 
 
 
@@ -233,6 +234,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('imagetype', 'Admin\ImagetypeController');
 
         Route::get('story/queueall', ['as' => 'admin_story_queue', 'uses' => 'Admin\StoryTypeController@queueAll']);
+         Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryTypeController@queueArticle']);
 
         Route::get('story/{stype}/queueall', ['as' => 'admin_storytype_queueall', 'uses' => 'Admin\StoryTypeController@queueAll']);
         //Route::get('story/{stype}/queuenews', ['as' => 'admin_storytype_queuenews', 'uses' => 'Admin\StoryTypeController@queueNews']);

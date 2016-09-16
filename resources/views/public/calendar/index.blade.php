@@ -35,6 +35,7 @@
         <component  :var-year-unit="{!! $varYearUnit !!}"
                     :var-month-unit="{!! $varMonthUnit !!}"
                     :var-day-unit="{!! $varDayUnit !!}"
+                    :eventid="{!!$eventid!!}"
                     is="event-view">
         </component>
       </div><!-- end calendar-bar -->

@@ -54,14 +54,6 @@ redipsInit = function () {
     };
     // when DIV element is double clicked return it to the initial position
     rd.event.dblClicked = function (e) {
-        //     console.log('e');
-        //     if (e.stopPropagation){
-        //         console.log('e.stopPropagation');
-        //         e.stopPropagation();
-        //     }
-        // else if(window.event){
-        //     window.event.cancelBubble=true;
-        // }
         // set dblclicked DIV id
         var id = rd.obj.id;
         // move DIV element to initial position
@@ -75,39 +67,7 @@ redipsInit = function () {
     };
 
     checkAndSetStoryPositions();
-
-    // define jQuery dialog
-    // $('#myModal').modal();
-
-            // $('#dialog').dialog({
-            //     autoOpen: false,
-            //     resizable: false,
-            //     modal: true,
-            //     width: 400,
-            //     height: 170,
-            //     // define Shift, Switch and Overwrite buttons
-            //     buttons: {
-            //         'SaveAs': function () {
-            //
-            //             $(this).dialog('close');
-            //         },
-            //         'Cancel': function () {
-            //
-            //             // close dialog
-            //             $(this).dialog('close');
-            //         }
-            //
-            //     },
-            //     // action when dialog is closed
-            //     close: function (event, ui) {
-            //         // return dragged DIV element to the source cell only if X button is clicked
-            //         // (in this case event.which property exists)
-            //     }
-            // });
 };
-
-
-
 // show TD content
 showContent = function () {
     // get content of TD cells in right table
@@ -262,6 +222,7 @@ getContent = function (id) {
     if (content.length === 0){
         content = 0;
         tddivid = td.id;
+        console.log("td.id " + td.id)
         // var divposnum = tddivid.replace('magstory','');
         if (tddivid.replace('magstory','') == 0){
             td.style.backgroundColor =  "#00a7d0";

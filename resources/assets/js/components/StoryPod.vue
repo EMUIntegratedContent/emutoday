@@ -33,16 +33,25 @@
                                 </select>
                           </div>
                           </template>
-                            <div id="applabel" class="form-group">
-                                <label>approved:</label>
-                            </div><!-- /.form-group -->
-                            <div class="form-group">
+                          <template v-if="recordIsReady">
+                              <div id="applabel" class="form-group">
+                                  <label>approved:</label>
+                              </div><!-- /.form-group -->
+                              <div class="form-group">
 
-                                <vui-flip-switch id="switch-{{item.id}}"
-                                v-on:click.prevent="changeIsApproved"
-                                :value.sync="patchRecord.is_approved" >
-                                </vui-flip-switch>
-                            </div>
+                                  <vui-flip-switch id="switch-{{item.id}}"
+
+                                  v-on:click.prevent="changeIsApproved"
+                                  :value.sync="patchRecord.is_approved" >
+                                  </vui-flip-switch>
+                              </div>
+                          </template>
+                          <template v-else>
+                              <div class="form-group">
+                                  <label>Not ready for approval</label>
+                              </div><!-- /.form-group -->
+                          </template>
+
                         </div><!-- /.pull-right -->
                     </div><!-- /.col-md-12-->
                 </div><!-- /.row -->
@@ -560,6 +569,9 @@ module.exports  = {
                           default:
                             return true;
                         }
+                    },
+                    recordNotReady:function(){
+                        return (this.recordIsReady)?false:true;
                     },
                 disabledArchive:function(){
                     if(this.isPartOfHubOrMag){

@@ -16307,7 +16307,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   components: { EventViewSideBar: _EventViewSideBar2.default, EventViewContent: _EventViewContent2.default },
-  props: ['varYearUnit', 'varMonthUnit', 'varDayUnit'],
+  props: ['varYearUnit', 'varMonthUnit', 'varDayUnit', 'eventid'],
   data: function data() {
     return {
       startEventObject: {},
@@ -16352,7 +16352,7 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div id=\"graybar\" _v-36f13ecf=\"\">\n      <div class=\"calendar-bar row\" _v-36f13ecf=\"\">\n    <div class=\"medium-3 show-for-medium columns\" _v-36f13ecf=\"\">\n        <h4 _v-36f13ecf=\"\">Calendar</h4>\n    </div>\n    <div class=\"medium-9 small-12 columns\" _v-36f13ecf=\"\">\n            <h4 _v-36f13ecf=\"\">Upcoming Events</h4>\n      </div>\n  </div>\n  </div>\n  <div class=\"row\" _v-36f13ecf=\"\">\n    <div id=\"calendar-content-bar\" _v-36f13ecf=\"\">\n      <div class=\"medium-3 show-for-medium columns\" _v-36f13ecf=\"\">\n        <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-36f13ecf=\"\"></event-view-side-bar>\n    </div>\n    <div class=\"medium-9 small-12 columns\" _v-36f13ecf=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :elist.sync=\"eventlist\" _v-36f13ecf=\"\"></event-view-content>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div id=\"graybar\" _v-36f13ecf=\"\">\n      <div class=\"calendar-bar row\" _v-36f13ecf=\"\">\n    <div class=\"medium-3 show-for-medium columns\" _v-36f13ecf=\"\">\n        <h4 _v-36f13ecf=\"\">Calendar</h4>\n    </div>\n    <div class=\"medium-9 small-12 columns\" _v-36f13ecf=\"\">\n            <h4 _v-36f13ecf=\"\">Upcoming Events</h4>\n      </div>\n  </div>\n  </div>\n  <div class=\"row\" _v-36f13ecf=\"\">\n    <div id=\"calendar-content-bar\" _v-36f13ecf=\"\">\n      <div class=\"medium-3 show-for-medium columns\" _v-36f13ecf=\"\">\n        <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-36f13ecf=\"\"></event-view-side-bar>\n    </div>\n    <div class=\"medium-9 small-12 columns\" _v-36f13ecf=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-36f13ecf=\"\"></event-view-content>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16386,7 +16386,8 @@ module.exports = {
     components: { EventViewSingle: _EventViewSingle2.default },
     props: {
         elist: {},
-        eventlist: []
+        eventlist: [],
+        eventid: null
     },
     data: function data() {
         return {
@@ -16460,7 +16461,7 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"calendar-content\">\n  <div class=\"calendar-content-title row\">\n    <div class=\"small-12 column\">\n        <h6>From {{firstDate}} thru {{lastDate}}</h6>\n    </div>\n  </div>\n  <div class=\"calendar-content-content row\">\n    <div class=\"small-12 columns\">\n      <div v-for=\"eitem in elist\">\n        <div class=\"event-day\">\n            <h4>{{$key | titleDateLongWithYear }}</h4>\n            <event-view-single v-for=\"item in eitem\" :item=\"item\" :index=\"$index\">\n              </event-view-single>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"calendar-content\">\n  <div class=\"calendar-content-title row\">\n    <div class=\"small-12 column\">\n        <h6>From {{firstDate}} thru {{lastDate}}</h6>\n    </div>\n  </div>\n  <div class=\"calendar-content-content row\">\n    <div class=\"small-12 columns\">\n      <div v-for=\"eitem in elist\">\n        <div class=\"event-day\">\n            <h4>{{$key | titleDateLongWithYear }}</h4>\n            <event-view-single v-for=\"item in eitem\" :item=\"item\" :index=\"$index\" :targeteventid=\"eventid\">\n              </event-view-single>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16700,14 +16701,23 @@ var __vueify_style__ = __vueify_insert__.insert("\n.eventview {\n  padding-top: 
 
 module.exports = {
     components: {},
-    props: ['item', '$index'],
+    props: ['item', '$index', 'targeteventid'],
     data: function data() {
         return {
             showBody: false,
             eventRange: {}
         };
     },
+    ready: function ready() {
+        if (this.item.id == this.targeteventid) {
+            this.showBody = true;
+        } else {
+            this.showBody = false;
+        }
+    },
+
     computed: {
+
         isOnCampus: function isOnCampus() {
             if (this.item.building === null || this.item.building === "undefined") {
                 return false;
@@ -16763,7 +16773,7 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n      <h6>{{item.title}}<small>{{item.id}}</small></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n      <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n      <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <p>{{item.description}}</p>\n      <p>Contact</p>\n      <ul>\n          <li>{{item.contact_person}}</li>\n          <li>Email: {{item.contact_email}}</li>\n          <li>Phone: {{item.contact_phone}}</li>\n      </ul>\n  <template v-if=\"item.related_link_1\">\n    <p>Additional Information</p>\n    <ul>\n      <li><a href=\"{{item.related_link_1}}\" target=\"_blank\">More Info</a></li>\n      <li v-if=\"item.related_link_2\">{{item.related_link_2}}</li>\n    <li v-if=\"item.related_link_3\">{{item.related_link_3}}</li>\n    </ul>\n  </template>\n  <p v-if=\"item.free\">Cost: Free</p>\n  <p v-else=\"\">Cost: {{item.cost | currency }}</p>\n  <p>{{eventParticipation}}</p>\n  <p>LBC Approved:{{item.lbc_approved | yesNo }}</p>\n  <template v-if=\"item.tickets\">\n    <p v-if=\"item.ticket_details_online\">For Tickets Visit: {{item.ticket_details_online}}</p>\n    <p v-if=\"item.ticket_details_phone\">For Tickets Call: {{item.ticket_details_phone}}</p>\n    <p v-if=\"item.ticket_details_office\">For Tickets Office: {{item.ticket_details_office}}</p>\n    <p v-if=\"item.ticket_details_other\">Or: {{item.ticket_details_other}}</p>\n  </template>\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n      <h6>{{item.title}}</h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n      <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n      <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <p>{{item.description}}</p>\n      <p>Contact</p>\n      <ul>\n          <li>{{item.contact_person}}</li>\n          <li>Email: {{item.contact_email}}</li>\n          <li>Phone: {{item.contact_phone}}</li>\n      </ul>\n  <template v-if=\"item.related_link_1\">\n    <p>Additional Information</p>\n    <ul>\n      <li><a href=\"{{item.related_link_1}}\" target=\"_blank\">More Info</a></li>\n      <li v-if=\"item.related_link_2\">{{item.related_link_2}}</li>\n    <li v-if=\"item.related_link_3\">{{item.related_link_3}}</li>\n    </ul>\n  </template>\n  <p v-if=\"item.free\">Cost: Free</p>\n  <p v-else=\"\">Cost: {{item.cost | currency }}</p>\n  <p>{{eventParticipation}}</p>\n  <p>LBC Approved:{{item.lbc_approved | yesNo }}</p>\n  <template v-if=\"item.tickets\">\n    <p v-if=\"item.ticket_details_online\">For Tickets Visit: {{item.ticket_details_online}}</p>\n    <p v-if=\"item.ticket_details_phone\">For Tickets Call: {{item.ticket_details_phone}}</p>\n    <p v-if=\"item.ticket_details_office\">For Tickets Office: {{item.ticket_details_office}}</p>\n    <p v-if=\"item.ticket_details_other\">Or: {{item.ticket_details_other}}</p>\n  </template>\n  <p>\n      <small>{{item.id}}</small>\n  </p>\n  </div>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

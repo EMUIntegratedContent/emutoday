@@ -261,17 +261,17 @@ class MagazineController extends Controller
                 ['story_type', 'article'],
                 ['is_approved',1]
                 ])
-                            ->with(['images' => function($query){
-                                    $query->where('group','=','article');
-                                    }])->get();
+                ->with(['images' => function($query){
+                    $query->where('group','=','article');
+                    }])->get();
 
 
 
             $storyimgs = $this->storyImage->where([
-                                                ['group','article'],
-                                                ['image_type', 'small'],
-                                                ])
-                                                ->orderBy('updated_at', 'desc')->get();
+                        ['group','article'],
+                        ['image_type', 'small'],
+                        ])
+                        ->orderBy('updated_at', 'desc')->get();
       // $storys =  $this->story->where('story_type', 'article')->orderBy('updated_at', 'desc')->get();
             $mediatypes = Mediatype::where('group','magazine')->pluck('type','id');
 
@@ -290,11 +290,9 @@ class MagazineController extends Controller
 
             $mediafile = $this->mediafile;
             $mediafiles = $magazine->mediafiles;
-
-
-
-            $magazineStorys = $magazine->storys()->get();
+            $magazineStorys = $magazine->storys;
             $original_story_ids = $magazineStorys->pluck('id');
+            // dd($original_story_ids);
 
             JavaScript::put([
                     'mainrecordid' => $magazine->id,
@@ -307,7 +305,7 @@ class MagazineController extends Controller
 
 
 
-      return view('admin.magazine.edit', compact('magazine', 'storys','storyimgs','mediatypes', 'mediafiles','mediafile'));
+      return view('admin.magazine.edit', compact('magazine', 'storys','storyimgs','mediatypes', 'mediafiles','mediafile','original_story_ids'));
     }
 
     /**

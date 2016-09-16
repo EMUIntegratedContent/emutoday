@@ -16975,7 +16975,8 @@ exports.default = {
     props: {
         disabled: Boolean,
         checked: [Boolean, Number],
-        value: Number
+        value: Number,
+        readonly: Boolean
     },
     ready: function ready() {
         this.value == !!this.checked;
@@ -16994,7 +16995,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :readonly=\"readonly\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

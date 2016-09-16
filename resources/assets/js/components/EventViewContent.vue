@@ -14,7 +14,8 @@
               <event-view-single
                 v-for="item in eitem"
                   :item="item"
-                  :index="$index">
+                  :index="$index"
+                  :targeteventid="eventid">
                 </event-view-single>
           </div>
         </div>
@@ -66,7 +67,8 @@ module.exports  = {
     components: {EventViewSingle},
     props:  {
         elist: {},
-        eventlist: []
+        eventlist: [],
+        eventid: null
     },
     data: function() {
         return {

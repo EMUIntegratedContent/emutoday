@@ -20,8 +20,10 @@
 @section('content')
 
     <div id="vue-story-queue">
-        <story-queue sroute="{{$sroute}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
+        <story-queue sroute="{{$sroute}}" gtype="{{$gtype}}" stype="{{$stype}}" qtype="{{$qtype}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
         </story-queue>
+        {{-- <story-queue sroute="{{$sroute}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
+        </story-queue> --}}
     </div><!-- /.vue-story-app -->
 
 @endsection

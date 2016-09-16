@@ -16,7 +16,7 @@
       </div>
       <div class="medium-9 small-12 columns">
         <!-- <event-view-content :elist.sync="eventlist"></event-view-content> -->
-        <event-view-content :elist.sync="eventlist"></event-view-content>
+        <event-view-content :eventid.once="eventid" :elist.sync="eventlist"></event-view-content>
       </div>
     </div>
   </div>
@@ -36,7 +36,7 @@
     import EventViewContent from './EventViewContent.vue'
       export default  {
         components: { EventViewSideBar, EventViewContent},
-        props: [ 'varYearUnit', 'varMonthUnit','varDayUnit', ],
+        props: [ 'varYearUnit', 'varMonthUnit','varDayUnit','eventid' ],
         data: function() {
           return {
             startEventObject: {},

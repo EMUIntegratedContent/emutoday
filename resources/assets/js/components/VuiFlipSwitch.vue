@@ -1,6 +1,6 @@
 <template>
     <div class="vuiflipswitch">
-        <input v-model="value" type="checkbox" @change="vuiValueChange" name="vuiflipswitch" class="vuiflipswitch-checkbox" :disabled="disabled" lazy>
+        <input v-model="value" type="checkbox" @change="vuiValueChange" name="vuiflipswitch" class="vuiflipswitch-checkbox" :readonly="readonly" :disabled="disabled" lazy>
         <label class="vuiflipswitch-label" :class="{checked:value}">
                 <span class="vuiflipswitch-inner"></span>
                 <span class="vuiflipswitch-switch"></span>
@@ -12,7 +12,8 @@
         props: {
             disabled: Boolean,
             checked: [Boolean, Number],
-            value: Number
+            value: Number,
+            readonly: Boolean
         },
         ready() {
             this.value == !!this.checked
