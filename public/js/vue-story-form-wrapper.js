@@ -20698,7 +20698,15 @@ module.exports = {
             return this.taglist;
         },
         isAdmin: function isAdmin() {
-            return this.userRoles.indexOf('admin') != -1 ? true : false;
+            if (this.userRoles.indexOf('admin') != -1) {
+                return true;
+            } else {
+                if (this.userRoles.indexOf('admin_super') != -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         editorType: function editorType() {
             if (this.isAdmin) {

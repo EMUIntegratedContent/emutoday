@@ -12,8 +12,6 @@
 @section('bodytop')
     @include('preview.includes.previewstory',['stype'=> $stype, 'gtype'=> $gtype, 'recordid' => $story->id, 'qtype'=> $qtype] )
 
-    {{-- @include('preview.includes.previewstory',['stype'=> $story->story_type, 'sroute'=> $sroute, 'recordid' => $story->id, 'form'=> $form] ) --}}
-
 @endsection
 @section('offcanvaslist')
     @include('preview.includes.offcanvaslist')

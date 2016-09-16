@@ -392,7 +392,15 @@ module.exports  = {
                       return this.taglist;
                   },
                   isAdmin:function(){
-                      return (this.userRoles.indexOf('admin') != -1)?true:false;
+                      if(this.userRoles.indexOf('admin')!= -1) {
+                          return true;
+                      } else {
+                          if (this.userRoles.indexOf('admin_super') != -1) {
+                              return true;
+                          } else {
+                              return false;
+                          }
+                      }
                   },
                   editorType:function(){
                       if(this.isAdmin){

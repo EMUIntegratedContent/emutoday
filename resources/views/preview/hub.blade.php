@@ -23,7 +23,7 @@
         <div id="featured-text" class="large-5 medium-12 small-12 columns">
           <h3>{{$heroImg->title}}</h3>
           <p>{{$heroImg->caption}}</p>
-          <p class="button-group"><a href="/emu-today/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}" class="button">{{$heroImg->moretext}}</a></p>
+          <p class="button-group"><a href="/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}" class="button">{{$heroImg->moretext}}</a></p>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
                 <p>{{$barImgs[$i]->caption}}</p>
               </div>
               <p class="button-group">
-                <a href="/emu-today/{{$barImgs[$i]->story->story_folder}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fa fa-play"></i></a>
+                <a href="/{{$barImgs[$i]->story->story_folder}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fa fa-play"></i></a>
               </p>
             </div>
           </div>
@@ -64,17 +64,17 @@
                   <div class="tabs-panel newshub-tab-front is-active" id="newshub-headlines-front">
                     <ul>
                       @foreach ($currentStorysBasic as $basicstory)
-                      <li><a href="/emu-today/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
+                      <li><a href="/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
                       @endforeach
-                                    <li><a href="/emu-today/news" class="bottom-tab-link">More Headlines</a></li>
+                                    <li><a href="/news" class="bottom-tab-link">More Headlines</a></li>
                     </ul>
                   </div>
                   <div class="tabs-panel newshub-tab-front" id="newshub-announcements-front">
                     <ul>
                       @foreach ($currentAnnouncements as $announcement)
-                      <li><a href="/emu-today/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
+                      <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
                       @endforeach
-                                            <li><a href="/emu-today/announcement" class="bottom-tab-link">More Announcement</a></li>
+                                            <li><a href="/announcement" class="bottom-tab-link">More Announcement</a></li>
                                             </ul>
                   </div>
 
@@ -114,12 +114,12 @@
                               <p>{{$event->present()->eventStartDateDay}}</p>
                           </div>
                           <div class="large-10 medium-10 small-10 columns">
-                           <p class="datecontent-box"><a href="/emu-today/calendar/{{$event->present()->eventStartDateYear}}/{{$event->present()->eventStartDateMonthUnit}}/{{$event->present()->eventStartDateDay}}">{{$event->title}}</a></p>
+                           <p class="datecontent-box"><a href="/calendar/{{$event->present()->eventStartDateYear}}/{{$event->present()->eventStartDateMonthUnit}}/{{$event->present()->eventStartDateDay}}">{{$event->title}}</a></p>
                           </div>
                         </li>
                      @endforeach
                     </ul>
-                    <p><a href="/emu-today/calendar/">More Events</a></p>
+                    <p><a href="/calendar/">More Events</a></p>
                     </div>
                 </div>
 

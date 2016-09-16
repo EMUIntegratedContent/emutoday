@@ -45,30 +45,30 @@ class PreviewController extends Controller
 
     // Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@return');
 
-    // public function goBack($gtype, $stype,$qtype, $id = null){
-    //     $val = 'form';
-    //     $isqueue = strpos($qtype,$val);
-    //     //dd($qtype .'----$isqueue '.$isqueue);
-    //     if($isqueue === false){
-    //
-    //
-    //         $rurl = '/admin/'.$gtype.'/'.$stype.'/'.$qtype;
-    //
-    //         // return redirect($rurl);
-    //         // Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
-    //
-    //     } else {
-    //
-    //         //it's from form
-    //         $qtype = str_replace($val, '', $qtype);
-    //         $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$id.'/edit';
-    //         // return redirect('admin/{gtype}/{stype}/{qtype}');
-    //         // Route::get('{gtype}/{stype}/{qtype}','Admin\StoryTypeController@queue' );
-    //
-    //     }
-    //
-    //     return redirect($rurl);
-    // }
+    public function goBack($gtype, $stype,$qtype, $id = null){
+        $val = 'form';
+        $isqueue = strpos($qtype,$val);
+        //dd($qtype .'----$isqueue '.$isqueue);
+        if($isqueue === false){
+
+
+            $rurl = '/admin/'.$gtype.'/'.$stype.'/'.$qtype;
+
+            // return redirect($rurl);
+            // Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
+
+        } else {
+
+            //it's from form
+            $qtype = str_replace($val, '', $qtype);
+            $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$id.'/edit';
+            // return redirect('admin/{gtype}/{stype}/{qtype}');
+            // Route::get('{gtype}/{stype}/{qtype}','Admin\StoryTypeController@queue' );
+
+        }
+
+        return redirect($rurl);
+    }
 
 
         // public function story( $stype, Story $story)

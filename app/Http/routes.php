@@ -268,7 +268,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
 
         Route::get('magazine/{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
-        Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@return');
+        Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
 
         Route::get('{qtype}/{gtype}/{stype}/{story}', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
         // Route::get('story/{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);

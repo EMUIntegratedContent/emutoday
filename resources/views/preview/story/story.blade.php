@@ -30,7 +30,7 @@
             <p class="story-publish-date">{{ $story->present()->publishedDate }}</p>
           </div>
           <div class="large-5 medium-4 hide-for-small columns">
-            <p class="small-return-news"><a href="/emu-today/news">News Home</a></p>
+            <p class="small-return-news"><a href="/news">News Home</a></p>
           </div>
         </div>
         <!-- Story Page Content -->
