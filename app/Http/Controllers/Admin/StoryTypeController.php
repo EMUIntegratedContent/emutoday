@@ -78,19 +78,19 @@ class StoryTypeController extends Controller
         return view('admin.story.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
     }
 
-    public function list($stype)
-    {
-        //$storys = $this->story->where('story_type', $stype)->get();
-        $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
-        $stypes = $stype;
-        \JavaScript::put([
-            'stype' => $stype,
-            'storyTypeList' => $stypelist
-        ]);
-        return view('admin.story.index', compact('stype', 'stypes'));
-        // return view('admin.story.index', compact('stype'));
-
-    }
+    // public function list($stype)
+    // {
+    //     //$storys = $this->story->where('story_type', $stype)->get();
+    //     $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
+    //     $stypes = $stype;
+    //     \JavaScript::put([
+    //         'stype' => $stype,
+    //         'storyTypeList' => $stypelist
+    //     ]);
+    //     return view('admin.story.index', compact('stype', 'stypes'));
+    //     // return view('admin.story.index', compact('stype'));
+    //
+    // }
     public function storyTypeForm($qtype,$gtype,$stype){
         // dd('$qtype= '. $qtype . ' $gtype= '.$gtype .' $stype= ' . $stype);
 
