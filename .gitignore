@@ -1,0 +1,8 @@
+.DS_Store
+.env
+.env-forge
+/vendor
+/node_modules
+/bower_components
+/public/imgs
+Homestead.yaml

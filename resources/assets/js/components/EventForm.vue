@@ -53,7 +53,6 @@
                         <div :class="md4col">
                             <label>Room</label>
                             <input v-model="record.room" :class="[formErrors.room ? 'invalid-input' : '']" name="room" type="text">
-
                         </div><!-- /.md4col -->
                     </div><!-- /.row -->
                 </template>
@@ -85,7 +84,6 @@
                     <input id="end-date" :class="[formErrors.end_date ? 'invalid-input' : '']" type="text" v-model="record.end_date"  aria-describedby="errorEndDate" />
                     <!-- <datepicker id="end-date" :readonly="true" format="YYYY-MM-DD" name="end-date" :value.sync="edate"></datepicker> -->
                     <p v-if="formErrors.end_date" class="help-text invalid">Need an End Date</p>
-
                 </div><!--form-group -->
             </div><!-- /.md6col -->
         </div><!-- /.row -->
@@ -99,10 +97,10 @@
                 </div>
             </div><!-- /.small-6 column -->
             <div :class="md6col">
-                <div v-show="hasEndTime" class="form-group">
+                <div class="form-group">
                     <label for="no-end-time">No End Time:
                         <input id="no-end-time" name="no_end_time" type="checkbox" value="1" v-model="record.no_end_time"/>
-                        <!-- <label for="no-end-time-no" class="radiobtns">no</label><input id="no-end-time-no"  name="no_end_time" type="radio" value="0" v-model="record.no_end_time"/> -->
+                        <!-- <label v-show="hasEndTime" for="no-end-time-no" class="radiobtns">no</label><input id="no-end-time-no"  name="no_end_time" type="radio" value="0" v-model="record.no_end_time"/> -->
                     </div>
                 </div><!-- /.small-6 column -->
             </div><!-- /.row -->
@@ -486,7 +484,7 @@
         form {
             padding-bottom: 320px;
         }
-        
+
 
 
 </style>
