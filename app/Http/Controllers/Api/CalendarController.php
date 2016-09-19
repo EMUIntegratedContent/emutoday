@@ -58,7 +58,9 @@ class CalendarController extends ApiController
 
       $eventlist = Event::where([
         ['start_date', '>=' , $cdate_start],
-        ['start_date', '<=', $cdate_end]
+        ['start_date', '<=', $cdate_end],
+        ['is_approved', '1']
+        //['is_approved', '==', $approved]
         ])->orderBy('start_date')->get();
 
       $groupedByDay =  $eventlist->groupBy(function ($date){
