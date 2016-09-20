@@ -1,5 +1,5 @@
 <?php
-
+// Why are we storing TWEETS in a database? Just pull the timeline. - bk
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;

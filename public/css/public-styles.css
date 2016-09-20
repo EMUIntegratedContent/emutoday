@@ -6311,6 +6311,13 @@ ul.calendar-event-group a{
     padding-top:.6rem;
     margin-bottom: .6rem;
 }
+#base-message-bar #feedback-email {
+    float: left;
+}
+#base-message-bar #today-login {
+    float: right;
+    color: #666;
+}
 #base-bar {
     background-color: #a9a9a9;
     width: 100%;

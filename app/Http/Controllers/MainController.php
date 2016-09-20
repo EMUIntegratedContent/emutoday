@@ -170,7 +170,7 @@ class MainController extends Controller
 
         $storyImages = $page->storyImages;
 
-        $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
+        // $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 
         $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
             $query->where('name', 'video');
@@ -196,7 +196,7 @@ class MainController extends Controller
             'cdend' => Carbon::now()->addDays(7),
             'currentPage' => $page
         ]);
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag','currentHRAnnouncements'));
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
         // return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements'));
 
     }
