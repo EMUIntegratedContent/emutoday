@@ -122,13 +122,13 @@
                 </div>
                 <div class="twitter-feed">
                   <ul class="twitter-content">
-                        @foreach($tweets as $tweet)
-                          <li><a href="https://twitter.com/{{ $tweet->user_screen_name }}/status/{{ $tweet->id }}">{{ '@' . $tweet->user_screen_name }}</a> {{ $tweet->tweet_text }}</li>
-                        @endforeach
-                    </ul>
+                    <?php include(app_path().'/Http/Requests/Twitter_Get.php'); ?>
+                    @foreach($tweets as $tweet)
+                      <li><a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> {{ $tweet['text'] }}</li>
+                    @endforeach
+                  </ul>
                     <div class="twitterlink">
                         <p><a href="http://emich.edu/twitter">See all EMU Twitter Feeds</a></p>
-
                     </div>
                </div>
            </div>

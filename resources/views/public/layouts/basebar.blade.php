@@ -1,7 +1,7 @@
 <!-- ******* base-message-bar and base-bar content -->
 <div id="base-message-bar">
 	<div class="row column">
-		<p><a href="http://www.emich.edu/tobaccofree/">Eastern Michigan University is a tobacco-free campus.</a></p>
+		<p id="feedback-email">Send feedback to: <a href="mailto:emu_today@email.edu">emu_today@emich.edu</a></p><p><a id="today-login" aria-hidden="true" href="/admin/dashboard">e</a></p>
 	</div>
 </div>  <!-- END base-message-bar -->
 <div id="base-bar">
