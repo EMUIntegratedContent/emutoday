@@ -33,7 +33,6 @@
                     <h3>Live Events</h3>
                 <div id="items-live">
                 <event-queue-item
-
                     pid="items-live"
                     v-for="item in itemsLive | orderBy 'priority' -1"
                     @item-change="moveToUnApproved"
@@ -51,7 +50,6 @@
 }
 #items-approved .box {
     margin-bottom: 4px;
-
 }
 </style>
 <script>
@@ -78,7 +76,6 @@ import moment from 'moment';
         },
         computed: {
             top4:function(){
-
             },
             currentDateAndTime:function(){
                 return moment()

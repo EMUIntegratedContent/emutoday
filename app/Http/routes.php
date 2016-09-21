@@ -163,8 +163,6 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::group(['prefix' => 'admin' ], function()
     {
-
-
         Route::get('dashboard', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
         Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);
 
@@ -190,23 +188,17 @@ Route::group(['prefix' => 'api'], function() {
         Route::post('page/delete', ['as' => 'admin_page_delete', 'uses' => 'Admin\PageController@delete'] );
         Route::resource('page', 'Admin\PageController');
 
-
-
-
         Route::get('magazine/form', ['as' => 'admin_magazine_form', 'uses' => 'Admin\MagazineController@form']);
         Route::get('magazine/{magazine}/edit', ['as' => 'admin_magazine_edit', 'uses' => 'Admin\MagazineController@edit']);
         Route::post('magazine/delete', ['as' => 'admin_magazine_delete', 'uses' => 'Admin\MagazineController@delete'] );
-
         Route::post('magazine/{magazine}/addCoverImage', ['as' => 'store_magazine_cover', 'uses' => 'Admin\MagazineController@addCoverImage']);
         Route::put('magazine/{mediafile}/updateCoverImage/', ['as' => 'update_magazine_cover', 'uses' => 'Admin\MagazineController@updateCoverImage']);
         Route::resource('magazine', 'Admin\MagazineController');
 
-
-
         Route::patch('storyimage/{storyimage}/update',['as' => 'admin_storyimage_update', 'uses' => 'Admin\StoryImageController@update']);
         Route::post('storyimage//{storyimage}/delete', ['as' => 'admin_storyimage_destroy', 'uses' => 'Admin\StoryImageController@destroy'] );
 
-        Route::resource('storyimage', 'Admin\StoryImageController');
+        Route::resource('storyimages', 'Admin\StoryImageController');
 
         Route::post('promotestory', ['as'=> 'admin_promotestory', 'uses'=> 'Admin\StoryController@promoteStory']);
         Route::put('story/{id}/updatefrompreview', ['as'=> 'admin_preview_story_update', 'uses'=> 'Admin\StoryController@updateFromPreview']);

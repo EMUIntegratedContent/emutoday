@@ -12092,7 +12092,7 @@ exports.insert = function (css) {
 
 },{}],6:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.search-form-wrapper[_v-6b63bacc] {\n    /*display: inline;\n    float:right;*/\n}\nform.search-form[_v-6b63bacc]  {\n    /*width: 100%;*/\n    display: inline;\n    float:right;\n}\nlabel[_v-6b63bacc]{\n    display: inline;\n    padding-right: 5px;\n}\nbutton[_v-6b63bacc]{\n    display: inline;\n    padding-left: 5px;\n}\ninput[type=text][_v-6b63bacc] {\n        display: inline;\n        width: 150px;\n        height: 1rem;\n        font-size: 0.8rem;\n        margin-bottom: 0;\n}\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.search-form-wrapper[_v-707add7e] {\n    /*display: inline;\n    float:right;*/\n}\nform.search-form[_v-707add7e]  {\n    /*width: 100%;*/\n    display: inline;\n    float:right;\n}\nlabel[_v-707add7e]{\n    display: inline;\n    padding-right: 5px;\n}\nbutton[_v-707add7e]{\n    display: inline;\n    padding-left: 5px;\n}\ninput[type=text][_v-707add7e] {\n        display: inline;\n        width: 150px;\n        height: 1rem;\n        font-size: 0.8rem;\n        margin-bottom: 0;\n}\n\n")
 'use strict';
 
 module.exports = {
@@ -12127,19 +12127,19 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-6b63bacc=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" class=\"search-form\" _v-6b63bacc=\"\">\n            <slot name=\"csrf\" _v-6b63bacc=\"\"></slot>\n        <label _v-6b63bacc=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-6b63bacc=\"\"><button type=\"submit\" _v-6b63bacc=\"\"><i class=\"fa fa-search\" _v-6b63bacc=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-6b63bacc=\"\"><i class=\"fa fa-x\" _v-6b63bacc=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-6b63bacc=\"\"><a @click.prevent=\"openSearchForm\" _v-6b63bacc=\"\">Search <i class=\"fa fa-search\" _v-6b63bacc=\"\"></i></a></span>\n    </template>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-707add7e=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" class=\"search-form\" _v-707add7e=\"\">\n            <slot name=\"csrf\" _v-707add7e=\"\"></slot>\n        <label _v-707add7e=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-707add7e=\"\"><button type=\"submit\" _v-707add7e=\"\"><i class=\"fa fa-search\" _v-707add7e=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-707add7e=\"\"><i class=\"fa fa-x\" _v-707add7e=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-707add7e=\"\"><a @click.prevent=\"openSearchForm\" _v-707add7e=\"\">Search <i class=\"fa fa-search\" _v-707add7e=\"\"></i></a></span>\n    </template>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.search-form-wrapper[_v-6b63bacc] {\n    /*display: inline;\n    float:right;*/\n}\nform.search-form[_v-6b63bacc]  {\n    /*width: 100%;*/\n    display: inline;\n    float:right;\n}\nlabel[_v-6b63bacc]{\n    display: inline;\n    padding-right: 5px;\n}\nbutton[_v-6b63bacc]{\n    display: inline;\n    padding-left: 5px;\n}\ninput[type=text][_v-6b63bacc] {\n        display: inline;\n        width: 150px;\n        height: 1rem;\n        font-size: 0.8rem;\n        margin-bottom: 0;\n}\n\n"] = false
+    __vueify_insert__.cache["\n.search-form-wrapper[_v-707add7e] {\n    /*display: inline;\n    float:right;*/\n}\nform.search-form[_v-707add7e]  {\n    /*width: 100%;*/\n    display: inline;\n    float:right;\n}\nlabel[_v-707add7e]{\n    display: inline;\n    padding-right: 5px;\n}\nbutton[_v-707add7e]{\n    display: inline;\n    padding-left: 5px;\n}\ninput[type=text][_v-707add7e] {\n        display: inline;\n        width: 150px;\n        height: 1rem;\n        font-size: 0.8rem;\n        margin-bottom: 0;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6b63bacc", module.exports)
+    hotAPI.createRecord("_v-707add7e", module.exports)
   } else {
-    hotAPI.update("_v-6b63bacc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-707add7e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":4,"vue-hot-reload-api":2,"vueify/lib/insert-css":5}],7:[function(require,module,exports){

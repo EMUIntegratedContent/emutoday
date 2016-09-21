@@ -4404,7 +4404,7 @@ class ResponsiveToggle {
     var _this = this;
 
     this._updateMqHandler = this._update.bind(this);
-    
+
     $(window).on('changed.zf.mediaquery', this._updateMqHandler);
 
     this.$toggler.on('click.zf.responsiveToggle', this.toggleMenu.bind(this));
@@ -4434,7 +4434,7 @@ class ResponsiveToggle {
    * @function
    * @fires ResponsiveToggle#toggled
    */
-  toggleMenu() {   
+  toggleMenu() {
     if (!Foundation.MediaQuery.atLeast(this.options.hideFor)) {
       this.$targetMenu.toggle(0);
 
@@ -4449,9 +4449,9 @@ class ResponsiveToggle {
   destroy() {
     this.$element.off('.zf.responsiveToggle');
     this.$toggler.off('.zf.responsiveToggle');
-    
+
     $(window).off('changed.zf.mediaquery', this._updateMqHandler);
-    
+
     Foundation.unregisterPlugin(this);
   }
 }
@@ -6192,10 +6192,10 @@ class Tabs {
     this._addKeyHandler();
     this._addClickHandler();
     this._setHeightMqHandler = null;
-    
+
     if (this.options.matchHeight) {
       this._setHeightMqHandler = this._setHeight.bind(this);
-      
+
       $(window).on('changed.zf.mediaquery', this._setHeightMqHandler);
     }
   }
@@ -6230,7 +6230,7 @@ class Tabs {
 
     this.$tabTitles.off('keydown.zf.tabs').on('keydown.zf.tabs', function(e){
       if (e.which === 9) return;
-      
+
 
       var $element = $(this),
         $elements = $element.parent('ul').children('li'),

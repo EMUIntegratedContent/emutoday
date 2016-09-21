@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 //! moment.js
-//! version : 2.14.1
+//! version : 2.15.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -28,7 +28,9 @@
     }
 
     function isObject(input) {
-        return Object.prototype.toString.call(input) === '[object Object]';
+        // IE8 will treat undefined and null as object if it wasn't for
+        // input != null
+        return input != null && Object.prototype.toString.call(input) === '[object Object]';
     }
 
     function isObjectEmpty(obj) {
@@ -127,7 +129,7 @@
             var parsedParts = some.call(flags.parsedDateParts, function (i) {
                 return i != null;
             });
-            m._isValid = !isNaN(m._d.getTime()) &&
+            var isNowValid = !isNaN(m._d.getTime()) &&
                 flags.overflow < 0 &&
                 !flags.empty &&
                 !flags.invalidMonth &&
@@ -138,10 +140,17 @@
                 (!flags.meridiem || (flags.meridiem && parsedParts));
 
             if (m._strict) {
-                m._isValid = m._isValid &&
+                isNowValid = isNowValid &&
                     flags.charsLeftOver === 0 &&
                     flags.unusedTokens.length === 0 &&
                     flags.bigHour === undefined;
+            }
+
+            if (Object.isFrozen == null || !Object.isFrozen(m)) {
+                m._isValid = isNowValid;
+            }
+            else {
+                return isNowValid;
             }
         }
         return m._isValid;
@@ -283,7 +292,22 @@
                 utils_hooks__hooks.deprecationHandler(null, msg);
             }
             if (firstTime) {
-                warn(msg + '\nArguments: ' + Array.prototype.slice.call(arguments).join(', ') + '\n' + (new Error()).stack);
+                var args = [];
+                var arg;
+                for (var i = 0; i < arguments.length; i++) {
+                    arg = '';
+                    if (typeof arguments[i] === 'object') {
+                        arg += '\n[' + i + '] ';
+                        for (var key in arguments[0]) {
+                            arg += key + ': ' + arguments[0][key] + ', ';
+                        }
+                        arg = arg.slice(0, -2); // Remove trailing comma and space
+                    } else {
+                        arg = arguments[i];
+                    }
+                    args.push(arg);
+                }
+                warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + (new Error()).stack);
                 firstTime = false;
             }
             return fn.apply(this, arguments);
@@ -810,12 +834,18 @@
     var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s+)+MMMM?/;
     var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
     function localeMonths (m, format) {
+        if (!m) {
+            return this._months;
+        }
         return isArray(this._months) ? this._months[m.month()] :
             this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
     }
 
     var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
     function localeMonthsShort (m, format) {
+        if (!m) {
+            return this._monthsShort;
+        }
         return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
             this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
     }
@@ -1312,18 +1342,21 @@
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
+        if (!m) {
+            return this._weekdays;
+        }
         return isArray(this._weekdays) ? this._weekdays[m.day()] :
             this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return this._weekdaysShort[m.day()];
+        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return this._weekdaysMin[m.day()];
+        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function day_of_week__handleStrictParse(weekdayName, format, strict) {
@@ -1759,10 +1792,10 @@
         var oldLocale = null;
         // TODO: Find a better way to register and load all the locales in Node
         if (!locales[name] && (typeof module !== 'undefined') &&
-                module && module.exports) {
+                module && module.require) {
             try {
                 oldLocale = globalLocale._abbr;
-                require('./locale/' + name);
+                module.require('./locale/' + name);
                 // because defineLocale currently also sets the global locale, we
                 // want to undo that for lazy loaded locales
                 locale_locales__getSetGlobalLocale(oldLocale);
@@ -2018,9 +2051,9 @@
     }
 
     utils_hooks__hooks.createFromInputFallback = deprecate(
-        'moment construction falls back to js Date. This is ' +
-        'discouraged and will be removed in upcoming major ' +
-        'release. Please refer to ' +
+        'value provided is not in a recognized ISO format. moment construction falls back to js Date(), ' +
+        'which is not reliable across all browsers and versions. Non ISO date formats are ' +
+        'discouraged and will be removed in an upcoming major release. Please refer to ' +
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
@@ -2519,6 +2552,14 @@
         return obj instanceof Duration;
     }
 
+    function absRound (number) {
+        if (number < 0) {
+            return Math.round(-1 * number) * -1;
+        } else {
+            return Math.round(number);
+        }
+    }
+
     // FORMATTING
 
     function offset (token, separator) {
@@ -2669,7 +2710,13 @@
         if (this._tzm) {
             this.utcOffset(this._tzm);
         } else if (typeof this._i === 'string') {
-            this.utcOffset(offsetFromString(matchOffset, this._i));
+            var tZone = offsetFromString(matchOffset, this._i);
+
+            if (tZone === 0) {
+                this.utcOffset(0, true);
+            } else {
+                this.utcOffset(offsetFromString(matchOffset, this._i));
+            }
         }
         return this;
     }
@@ -2724,7 +2771,7 @@
     }
 
     // ASP.NET json date format regex
-    var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?\d*)?$/;
+    var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
     // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
     // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
@@ -2756,11 +2803,11 @@
             sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y  : 0,
-                d  : toInt(match[DATE])        * sign,
-                h  : toInt(match[HOUR])        * sign,
-                m  : toInt(match[MINUTE])      * sign,
-                s  : toInt(match[SECOND])      * sign,
-                ms : toInt(match[MILLISECOND]) * sign
+                d  : toInt(match[DATE])                         * sign,
+                h  : toInt(match[HOUR])                         * sign,
+                m  : toInt(match[MINUTE])                       * sign,
+                s  : toInt(match[SECOND])                       * sign,
+                ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
             sign = (match[1] === '-') ? -1 : 1;
@@ -2833,14 +2880,6 @@
         }
 
         return res;
-    }
-
-    function absRound (number) {
-        if (number < 0) {
-            return Math.round(-1 * number) * -1;
-        } else {
-            return Math.round(number);
-        }
     }
 
     // TODO: remove 'name' arg after deprecation is removed
@@ -4157,7 +4196,7 @@
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.14.1';
+    utils_hooks__hooks.version = '2.15.0';
 
     setHookCallback(local__createLocal);
 
@@ -16288,7 +16327,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-c0299d52] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-c0299d52] {\n    margin-bottom: 4px;\n\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16549,24 +16588,24 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"row\" _v-c0299d52=\"\">\n            <div class=\"col-md-4\" _v-c0299d52=\"\">\n            <h3 _v-c0299d52=\"\">Unapproved Events</h3>\n                <div id=\"items-unapproved\" _v-c0299d52=\"\">\n                    <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-c0299d52=\"\">\n                </event-queue-item>\n                </div>\n            </div><!-- /.col-md-6 -->\n            <div class=\"col-md-4\" _v-c0299d52=\"\">\n                    <h3 _v-c0299d52=\"\">Approved Events</h3>\n                <div id=\"items-approved\" _v-c0299d52=\"\">\n                    <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-c0299d52=\"\">\n                </event-queue-item>\n                    </div>\n            </div><!-- /.col-md-6 -->\n            <div class=\"col-md-4\" _v-c0299d52=\"\">\n                    <h3 _v-c0299d52=\"\">Live Events</h3>\n                <div id=\"items-live\" _v-c0299d52=\"\">\n                <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-c0299d52=\"\">\n                </event-queue-item>\n                    </div>\n            </div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"row\" _v-b5fb57ee=\"\">\n            <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n            <h3 _v-b5fb57ee=\"\">Unapproved Events</h3>\n                <div id=\"items-unapproved\" _v-b5fb57ee=\"\">\n                    <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-b5fb57ee=\"\">\n                </event-queue-item>\n                </div>\n            </div><!-- /.col-md-6 -->\n            <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n                    <h3 _v-b5fb57ee=\"\">Approved Events</h3>\n                <div id=\"items-approved\" _v-b5fb57ee=\"\">\n                    <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-b5fb57ee=\"\">\n                </event-queue-item>\n                    </div>\n            </div><!-- /.col-md-6 -->\n            <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n                    <h3 _v-b5fb57ee=\"\">Live Events</h3>\n                <div id=\"items-live\" _v-b5fb57ee=\"\">\n                <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-b5fb57ee=\"\">\n                </event-queue-item>\n                    </div>\n            </div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#items-unapproved .box[_v-c0299d52] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-c0299d52] {\n    margin-bottom: 4px;\n\n}\n"] = false
+    __vueify_insert__.cache["\n#items-unapproved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-c0299d52", module.exports)
+    hotAPI.createRecord("_v-b5fb57ee", module.exports)
   } else {
-    hotAPI.update("_v-c0299d52", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-b5fb57ee", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventQueueItem.vue":8,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-4c3c50ec] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-4c3c50ec] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-4c3c50ec] {\n    padding: 3px;\n}\n.box-footer[_v-4c3c50ec] {\n    padding: 3px;\n}\nh5.box-footer[_v-4c3c50ec] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-4c3c50ec] {\n    border-color: #999999;\n\n}\nh6.box-title[_v-4c3c50ec] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\nform[_v-4c3c50ec] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-4c3c50ec] {\n    margin-bottom: 2px;\n}\n#applabel[_v-4c3c50ec]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-4c3c50ec],\n.btn-group-vertical[_v-4c3c50ec] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nselect.form-control[_v-4c3c50ec] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\nh6[_v-4c3c50ec] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-4c3c50ec] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\n.form-group[_v-4c3c50ec] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-4c3c50ec]{\n    margin-bottom: 0;\n}\n.topitems[_v-4c3c50ec] {\n    /*background-color: #9B59B6;*/\n    background-color: #76D7EA;\n    border: 2px solid #9B59B6;\n}\n.ongoing[_v-4c3c50ec] {\n    background-color: #ffcc33;\n    border: 1px solid #999999\n}\n.event-positive[_v-4c3c50ec] {\n\n    background-color: #D8D8D8;\n    border: 1px solid #999999;\n}\n.event-negative[_v-4c3c50ec] {\n\n    background-color: #999999;\n    border: 1px solid #999999;\n}\n.is-promoted[_v-4c3c50ec] {\n\n    background-color: #76D7EA;\n    /*border: 1px solid #999999*/\n}\n.time-is-short[_v-4c3c50ec] {\n    color: #F39C12;\n}\n.time-is-long[_v-4c3c50ec] {\n    color: #999999;\n}\n.time-is-over[_v-4c3c50ec] {\n    color: #9B59B6;\n}\n\n.special-item[_v-4c3c50ec] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-4c3c50ec] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-6464513c] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-6464513c] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-6464513c] {\n    padding: 3px;\n}\n.box-footer[_v-6464513c] {\n    padding: 3px;\n}\nh5.box-footer[_v-6464513c] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-6464513c] {\n    border-color: #999999;\n\n}\nh6.box-title[_v-6464513c] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\nform[_v-6464513c] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-6464513c] {\n    margin-bottom: 2px;\n}\n#applabel[_v-6464513c]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-6464513c],\n.btn-group-vertical[_v-6464513c] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nselect.form-control[_v-6464513c] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\nh6[_v-6464513c] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-6464513c] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\n.form-group[_v-6464513c] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-6464513c]{\n    margin-bottom: 0;\n}\n.topitems[_v-6464513c] {\n    /*background-color: #9B59B6;*/\n    background-color: #76D7EA;\n    border: 2px solid #9B59B6;\n}\n.ongoing[_v-6464513c] {\n    background-color: #ffcc33;\n    border: 1px solid #999999\n}\n.event-positive[_v-6464513c] {\n\n    background-color: #D8D8D8;\n    border: 1px solid #999999;\n}\n.event-negative[_v-6464513c] {\n\n    background-color: #999999;\n    border: 1px solid #999999;\n}\n.is-promoted[_v-6464513c] {\n\n    background-color: #76D7EA;\n    /*border: 1px solid #999999*/\n}\n.time-is-short[_v-6464513c] {\n    color: #F39C12;\n}\n.time-is-long[_v-6464513c] {\n    color: #999999;\n}\n.time-is-over[_v-6464513c] {\n    color: #9B59B6;\n}\n\n.special-item[_v-6464513c] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-6464513c] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n")
 'use strict';
 
 var _moment = require('moment');
@@ -16948,19 +16987,19 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <!-- <div class=\"box box-default box-solid\"> -->\n    <div :class=\"specialItem\" _v-4c3c50ec=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-4c3c50ec=\"\">\n\n        <div class=\"box-header with-border\" _v-4c3c50ec=\"\">\n            <div class=\"row\" _v-4c3c50ec=\"\">\n                <div class=\"col-sm 12 col-md-4\" _v-4c3c50ec=\"\">\n                    <div class=\"box-date-top pull-left\" _v-4c3c50ec=\"\">{{item.start_date | titleDateLong}}</div>\n                    <div class=\"pull-right\" _v-4c3c50ec=\"\">\n                        <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-4c3c50ec=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-4c3c50ec=\"\"></span></label>\n                    </div><!-- /.pull-right -->\n                </div><!-- /.col-sm-6 -->\n                <div class=\"col-sm 12 col-md-8\" _v-4c3c50ec=\"\">\n                    <form class=\"form-inline pull-right\" _v-4c3c50ec=\"\">\n                        <div class=\"form-group\" _v-4c3c50ec=\"\">\n                            <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-4c3c50ec=\"\"><span class=\"fa fa-floppy-o\" _v-4c3c50ec=\"\"></span></button>\n                        </div><!-- /.form-group -->\n                      <div class=\"form-group\" _v-4c3c50ec=\"\">\n                        <label class=\"sr-only\" for=\"priority-number\" _v-4c3c50ec=\"\">Priority</label>\n                            <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" class=\"form-control\" number=\"\" _v-4c3c50ec=\"\">\n                                <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-4c3c50ec=\"\">\n                                    {{option.text}}\n                                </option>\n                            </select>\n                      </div>\n                      <div id=\"applabel\" class=\"form-group\" _v-4c3c50ec=\"\">\n                              <label _v-4c3c50ec=\"\">approved:</label>\n                          </div><!-- /.form-group -->\n                         <div class=\"form-group\" _v-4c3c50ec=\"\">\n                              <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-4c3c50ec=\"\">\n                              </vui-flip-switch>\n                          </div>\n                      </form>\n                </div><!-- /.col-sm-6 -->\n            </div><!-- /.row -->\n\n            <div class=\"row\" _v-4c3c50ec=\"\">\n              <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-4c3c50ec=\"\">\n                <div class=\"col-sm-12\" _v-4c3c50ec=\"\">\n                    <h6 class=\"box-title\" _v-4c3c50ec=\"\">{{item.title}}</h6>\n                </div><!-- /.col-md-12 -->\n              </a>\n            </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-4c3c50ec=\"\">\n\n            <p _v-4c3c50ec=\"\">From: {{item.start_time}} to {{item.end_time}}</p>\n            <p _v-4c3c50ec=\"\">{{item.description}}</p>\n            <div class=\"item-info\" _v-4c3c50ec=\"\">\n            Dates: {{item.start_date}} - {{item.end_date}}\n            </div>\n\n            <template v-if=\"canHaveImage\">\n                   <img v-if=\"hasEventImage\" :src=\"imageUrl\" _v-4c3c50ec=\"\">\n                   <a v-on:click.prevent=\"togglePanel\" class=\"btn bg-olive btn-sm\" href=\"#\" _v-4c3c50ec=\"\">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>\n                   <div v-show=\"showPanel\" class=\"panel\" _v-4c3c50ec=\"\">\n                       <form id=\"form-mediafile-upload{{item.id}}\" @submit.prevent=\"addMediaFile\" class=\"m-t\" role=\"form\" action=\"/api/event/addMediaFile/{{item.id}}\" enctype=\"multipart/form-data\" files=\"true\" _v-4c3c50ec=\"\">\n                           <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-4c3c50ec=\"\">\n                           <div class=\"form-group\" _v-4c3c50ec=\"\">\n                               <label for=\"event-image\" _v-4c3c50ec=\"\">Event Image</label><br _v-4c3c50ec=\"\">\n                               <input v-el:eventimg=\"\" type=\"file\" name=\"eventimg\" id=\"eventimg\" _v-4c3c50ec=\"\">\n                           </div>\n                           <button id=\"btn-mediafile-upload\" type=\"submit\" class=\"btn btn-primary block m-b\" _v-4c3c50ec=\"\">Submit</button>\n                       </form>\n                   </div><!-- /.panel mediaform -->\n               </template>\n\n        </div><!-- /.box-body -->\n\n\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-4c3c50ec=\"\">\n            <div class=\"row\" _v-4c3c50ec=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-4c3c50ec=\"\">\n                    <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n                    <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-4c3c50ec=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-4c3c50ec=\"\">{{timeLeft}}</span>\n\n\n\n                </div><!-- /.col-md-7 -->\n                <div class=\"col-sm-12 col-md-3\" _v-4c3c50ec=\"\">\n                    {{item.id}}\n                    <div class=\"btn-group pull-right\" _v-4c3c50ec=\"\">\n\n                            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" _v-4c3c50ec=\"\"><i class=\"fa fa-pencil\" _v-4c3c50ec=\"\"></i></button>\n                            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n                    </div><!-- /.btn-toolbar -->\n\n                </div><!-- /.col-md-7 -->\n            </div><!-- /.row -->\n        </div><!-- /.box-footer -->\n</div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <!-- <div class=\"box box-default box-solid\"> -->\n    <div :class=\"specialItem\" _v-6464513c=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-6464513c=\"\">\n\n        <div class=\"box-header with-border\" _v-6464513c=\"\">\n            <div class=\"row\" _v-6464513c=\"\">\n                <div class=\"col-sm 12 col-md-4\" _v-6464513c=\"\">\n                    <div class=\"box-date-top pull-left\" _v-6464513c=\"\">{{item.start_date | titleDateLong}}</div>\n                    <div class=\"pull-right\" _v-6464513c=\"\">\n                        <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-6464513c=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-6464513c=\"\"></span></label>\n                    </div><!-- /.pull-right -->\n                </div><!-- /.col-sm-6 -->\n                <div class=\"col-sm 12 col-md-8\" _v-6464513c=\"\">\n                    <form class=\"form-inline pull-right\" _v-6464513c=\"\">\n                        <div class=\"form-group\" _v-6464513c=\"\">\n                            <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-6464513c=\"\"><span class=\"fa fa-floppy-o\" _v-6464513c=\"\"></span></button>\n                        </div><!-- /.form-group -->\n                      <div class=\"form-group\" _v-6464513c=\"\">\n                        <label class=\"sr-only\" for=\"priority-number\" _v-6464513c=\"\">Priority</label>\n                            <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" class=\"form-control\" number=\"\" _v-6464513c=\"\">\n                                <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-6464513c=\"\">\n                                    {{option.text}}\n                                </option>\n                            </select>\n                      </div>\n                      <div id=\"applabel\" class=\"form-group\" _v-6464513c=\"\">\n                              <label _v-6464513c=\"\">approved:</label>\n                          </div><!-- /.form-group -->\n                         <div class=\"form-group\" _v-6464513c=\"\">\n                              <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-6464513c=\"\">\n                              </vui-flip-switch>\n                          </div>\n                      </form>\n                </div><!-- /.col-sm-6 -->\n            </div><!-- /.row -->\n\n            <div class=\"row\" _v-6464513c=\"\">\n              <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-6464513c=\"\">\n                <div class=\"col-sm-12\" _v-6464513c=\"\">\n                    <h6 class=\"box-title\" _v-6464513c=\"\">{{item.title}}</h6>\n                </div><!-- /.col-md-12 -->\n              </a>\n            </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-6464513c=\"\">\n\n            <p _v-6464513c=\"\">From: {{item.start_time}} to {{item.end_time}}</p>\n            <p _v-6464513c=\"\">{{item.description}}</p>\n            <div class=\"item-info\" _v-6464513c=\"\">\n            Dates: {{item.start_date}} - {{item.end_date}}\n            </div>\n\n            <template v-if=\"canHaveImage\">\n                   <img v-if=\"hasEventImage\" :src=\"imageUrl\" _v-6464513c=\"\">\n                   <a v-on:click.prevent=\"togglePanel\" class=\"btn bg-olive btn-sm\" href=\"#\" _v-6464513c=\"\">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>\n                   <div v-show=\"showPanel\" class=\"panel\" _v-6464513c=\"\">\n                       <form id=\"form-mediafile-upload{{item.id}}\" @submit.prevent=\"addMediaFile\" class=\"m-t\" role=\"form\" action=\"/api/event/addMediaFile/{{item.id}}\" enctype=\"multipart/form-data\" files=\"true\" _v-6464513c=\"\">\n                           <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-6464513c=\"\">\n                           <div class=\"form-group\" _v-6464513c=\"\">\n                               <label for=\"event-image\" _v-6464513c=\"\">Event Image</label><br _v-6464513c=\"\">\n                               <input v-el:eventimg=\"\" type=\"file\" name=\"eventimg\" id=\"eventimg\" _v-6464513c=\"\">\n                           </div>\n                           <button id=\"btn-mediafile-upload\" type=\"submit\" class=\"btn btn-primary block m-b\" _v-6464513c=\"\">Submit</button>\n                       </form>\n                   </div><!-- /.panel mediaform -->\n               </template>\n\n        </div><!-- /.box-body -->\n\n\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-6464513c=\"\">\n            <div class=\"row\" _v-6464513c=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-6464513c=\"\">\n                    <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n                    <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-6464513c=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-6464513c=\"\">{{timeLeft}}</span>\n\n\n\n                </div><!-- /.col-md-7 -->\n                <div class=\"col-sm-12 col-md-3\" _v-6464513c=\"\">\n                    {{item.id}}\n                    <div class=\"btn-group pull-right\" _v-6464513c=\"\">\n\n                            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" _v-6464513c=\"\"><i class=\"fa fa-pencil\" _v-6464513c=\"\"></i></button>\n                            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n                    </div><!-- /.btn-toolbar -->\n\n                </div><!-- /.col-md-7 -->\n            </div><!-- /.row -->\n        </div><!-- /.box-footer -->\n</div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-4c3c50ec] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-4c3c50ec] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-4c3c50ec] {\n    padding: 3px;\n}\n.box-footer[_v-4c3c50ec] {\n    padding: 3px;\n}\nh5.box-footer[_v-4c3c50ec] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-4c3c50ec] {\n    border-color: #999999;\n\n}\nh6.box-title[_v-4c3c50ec] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\nform[_v-4c3c50ec] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-4c3c50ec] {\n    margin-bottom: 2px;\n}\n#applabel[_v-4c3c50ec]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-4c3c50ec],\n.btn-group-vertical[_v-4c3c50ec] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nselect.form-control[_v-4c3c50ec] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\nh6[_v-4c3c50ec] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-4c3c50ec] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\n.form-group[_v-4c3c50ec] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-4c3c50ec]{\n    margin-bottom: 0;\n}\n.topitems[_v-4c3c50ec] {\n    /*background-color: #9B59B6;*/\n    background-color: #76D7EA;\n    border: 2px solid #9B59B6;\n}\n.ongoing[_v-4c3c50ec] {\n    background-color: #ffcc33;\n    border: 1px solid #999999\n}\n.event-positive[_v-4c3c50ec] {\n\n    background-color: #D8D8D8;\n    border: 1px solid #999999;\n}\n.event-negative[_v-4c3c50ec] {\n\n    background-color: #999999;\n    border: 1px solid #999999;\n}\n.is-promoted[_v-4c3c50ec] {\n\n    background-color: #76D7EA;\n    /*border: 1px solid #999999*/\n}\n.time-is-short[_v-4c3c50ec] {\n    color: #F39C12;\n}\n.time-is-long[_v-4c3c50ec] {\n    color: #999999;\n}\n.time-is-over[_v-4c3c50ec] {\n    color: #9B59B6;\n}\n\n.special-item[_v-4c3c50ec] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-4c3c50ec] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n"] = false
+    __vueify_insert__.cache["\n.box[_v-6464513c] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-6464513c] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-6464513c] {\n    padding: 3px;\n}\n.box-footer[_v-6464513c] {\n    padding: 3px;\n}\nh5.box-footer[_v-6464513c] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-6464513c] {\n    border-color: #999999;\n\n}\nh6.box-title[_v-6464513c] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\nform[_v-6464513c] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-6464513c] {\n    margin-bottom: 2px;\n}\n#applabel[_v-6464513c]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-6464513c],\n.btn-group-vertical[_v-6464513c] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nselect.form-control[_v-6464513c] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\nh6[_v-6464513c] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-6464513c] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\n.form-group[_v-6464513c] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-6464513c]{\n    margin-bottom: 0;\n}\n.topitems[_v-6464513c] {\n    /*background-color: #9B59B6;*/\n    background-color: #76D7EA;\n    border: 2px solid #9B59B6;\n}\n.ongoing[_v-6464513c] {\n    background-color: #ffcc33;\n    border: 1px solid #999999\n}\n.event-positive[_v-6464513c] {\n\n    background-color: #D8D8D8;\n    border: 1px solid #999999;\n}\n.event-negative[_v-6464513c] {\n\n    background-color: #999999;\n    border: 1px solid #999999;\n}\n.is-promoted[_v-6464513c] {\n\n    background-color: #76D7EA;\n    /*border: 1px solid #999999*/\n}\n.time-is-short[_v-6464513c] {\n    color: #F39C12;\n}\n.time-is-long[_v-6464513c] {\n    color: #999999;\n}\n.time-is-over[_v-6464513c] {\n    color: #9B59B6;\n}\n\n.special-item[_v-6464513c] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-6464513c] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4c3c50ec", module.exports)
+    hotAPI.createRecord("_v-6464513c", module.exports)
   } else {
-    hotAPI.update("_v-4c3c50ec", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6464513c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./VuiFlipSwitch.vue":9,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],9:[function(require,module,exports){
@@ -17005,9 +17044,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-645830ca", module.exports)
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
   } else {
-    hotAPI.update("_v-645830ca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],10:[function(require,module,exports){

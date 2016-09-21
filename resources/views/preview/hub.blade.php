@@ -133,9 +133,9 @@
                 </div>
                 <div class="twitter-feed">
                   <ul class="twitter-content">
-                        @foreach($tweets as $tweet)
+                        <!-- @foreach($tweets as $tweet)
                           <li><a href="https://twitter.com/{{ $tweet->user_screen_name }}/status/{{ $tweet->id }}">{{ '@' . $tweet->user_screen_name }}</a> {{ $tweet->tweet_text }}</li>
-                        @endforeach
+                        @endforeach -->
                     </ul>
                     <div class="twitterlink">
                         <p><a href="http://emich.edu/twitter">See all EMU Twitter Feeds</a></p>

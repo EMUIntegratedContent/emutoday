@@ -1,9 +1,9 @@
 ---
-ip: "192.168.10.20"
+ip: "192.168.10.10"
 memory: 2048
 cpus: 1
-hostname: todayemichedu
-name: todayemichedu
+hostname: emutoday
+name: emutoday
 provider: virtualbox
 
 authorize: ~/.ssh/id_rsa.pub
@@ -12,7 +12,7 @@ keys:
     - ~/.ssh/id_rsa
 
 folders:
-    - map: "/Users/dbeaman/SITES/Code/todayemichedu/emutoday"
+    - map: "/Users/bkosciel/Projects/emutoday"
       to: "/home/vagrant/emutoday"
 
 sites:
@@ -20,7 +20,6 @@ sites:
       to: "/home/vagrant/emutoday/public"
 
 databases:
-    - homestead
     - emutoday
 
 # blackfire:

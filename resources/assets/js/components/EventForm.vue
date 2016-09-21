@@ -74,7 +74,7 @@
             <div :class="md6col">
                 <div class="form-group">
                     <label for="start-date">Start Date: <span :class="iconStar" class="reqstar"></span></label>
-                    <input id="start-date" :class="[formErrors.start_date ? 'invalid-input' : '']" type="text" v-model="record.start_date" aria-describedby="errorStartDate" />
+                    <input id="start-date" :class="[formErrors_date ? 'invalid-input' : '']" type="text" v-model="record.start_date" aria-describedby="errorStartDate" />
                     <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
                 </div><!--form-group -->
             </div><!-- /.md6col -->
@@ -97,7 +97,7 @@
                 </div>
             </div><!-- /.small-6 column -->
             <div :class="md6col">
-                <div class="form-group">
+                <div v-show="hasStartTime" class="form-group">
                     <label for="no-end-time">No End Time:
                         <input id="no-end-time" name="no_end_time" type="checkbox" value="1" v-model="record.no_end_time"/>
                         <!-- <label v-show="hasEndTime" for="no-end-time-no" class="radiobtns">no</label><input id="no-end-time-no"  name="no_end_time" type="radio" value="0" v-model="record.no_end_time"/> -->
@@ -593,11 +593,9 @@
                 this.fetchMiniCalsList();
             },
 
-
             computed: {
                 dropDownSelect: function(){
                     return (this.framework == 'foundation')? 'fdropdown':''
-
                 },
                 md6col: function () {
                     return (this.framework == 'foundation')? 'medium-6 columns':'col-md-6'
@@ -624,18 +622,14 @@
                     return (this.framework == 'foundation')? 'form-group':'form-group'
                 },
                 inputGroupLabel:function(){
-                        return (this.framework=='foundation')?'input-group-label':'input-group-addon'
+                    return (this.framework=='foundation')?'input-group-label':'input-group-addon'
                 },
                 iconStar: function() {
                     return (this.framework == 'foundation')? 'fi-star':'fa fa-star'
                 },
                 calloutSuccess:function(){
                     return (this.framework == 'foundation')? 'callout success':'alert alert-success'
-
                 },
-
-
-
                 computedLocation: function() {
                     let bldg,room;
 
@@ -716,7 +710,6 @@
             },
             methods: {
                 fetchMiniCalsList: function() {
-
                     this.$http.get('/api/minicalslist')
                         .then((response) =>{
                           //   let taglistraw = response.data;
@@ -815,7 +808,6 @@
                             self.record.reg_deadline = dateString;
                             self.regdeadlinePicker.value = dateString;
                         }
-
                     });
                 },
 
@@ -912,50 +904,53 @@
                     //  console.log('this.eventform=' + this.eventform.$valid);
                     e.preventDefault();
 
-                    this.record.author_id = this.authorid;
-                    //this.record.related_link_1 = this.relatedLink1;
-                    if(this.record.on_campus == true) {
-                        this.record.location = this.convertToSlug(this.computedLocation);
-                    } else {
-                        this.record.location = this.record.locationoffcampus;
-                    }
-                    // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
-                    // this.record.categories = this.zcategories;
-                    // console.log("cats="+ this.record.categories);
-                    //
-                    //
-                    this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
-                    this.record.categories = this.record.eventcategories;
-                    // let tempid;
-                    // if (typeof this.currentRecordId != 'undefined'){
-                    //     tempid = this.currentRecordId;
+                    $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+                    // this.record.author_id = this.authorid;
+                    // //this.record.related_link_1 = this.relatedLink1;
+                    // if(this.record.on_campus == true) {
+                    //     this.record.location = this.convertToSlug(this.computedLocation);
                     // } else {
-                    //     tempid =this.record.id;
+                    //     this.record.location = this.record.locationoffcampus;
                     // }
-                    let method = (this.recordexists) ? 'put' : 'post'
-                    let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event/';
-
-                    //   this.$http.post('/api/story', this.record)
-                    this.$http[method](route, this.record)
-
-
-                    // this.$http.post('/api/event', this.record)
+                    // // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
+                    // // this.record.categories = this.zcategories;
+                    // // console.log("cats="+ this.record.categories);
+                    // //
+                    // //
+                    // this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
+                    // this.record.categories = this.record.eventcategories;
+                    // // let tempid;
+                    // // if (typeof this.currentRecordId != 'undefined'){
+                    // //     tempid = this.currentRecordId;
+                    // // } else {
+                    // //     tempid =this.record.id;
+                    // // }
+                    // let method = (this.recordexists) ? 'put' : 'post'
+                    // let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event/';
+                    //
+                    // //   this.$http.post('/api/story', this.record)
+                    // this.$http[method](route, this.record)
+                    //
+                    //
+                    // // this.$http.post('/api/event', this.record)
 
                     .then((response) =>{
                         //response.status;
-                        console.log('response.status=' + response.status);
-                        console.log('response.ok=' + response.ok);
-                        console.log('response.statusText=' + response.statusText);
-                        console.log('response.data=' + response.data.message);
-                        this.formMessage.msg = response.data.message;
-                        this.formMessage.isOk = response.ok;
-                        this.recordexists = true;
+                        // console.log('response.status=' + response.status);
+                        // console.log('response.ok=' + response.ok);
+                        // console.log('response.statusText=' + response.statusText);
+                        // console.log('response.data=' + response.data.message);
+                        // this.formMessage.msg = response.data.message;
+                        // this.formMessage.isOk = response.ok;
+                        // this.recordexists = true;
+
                     }, (response) => {
                         //error callback
-                        // console.log("FORM ERRORS     "+ response.json() );
+                        // console.log("FORM ERRORS     " + response.json());
 
-                        this.formErrors =  response.data.error.message;
-
+                        this.formErrors = response.data.error.message;
+                        console.log(response.data.error.message);
                     }).bind(this);
                 },
                 convertToSlug:function(value){

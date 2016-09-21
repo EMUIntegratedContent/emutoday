@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'ext_dbeaman@emich.edu', 'name' => 'Ext Dbeaman'],
+    'from' => ['address' => 'emu_today@emich.edu', 'name' => 'EMU Today'],
 
     /*
     |--------------------------------------------------------------------------

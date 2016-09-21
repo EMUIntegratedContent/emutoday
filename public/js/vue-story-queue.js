@@ -372,7 +372,7 @@ require('./_object-sap')('keys', function(){
 });
 },{"./_object-keys":26,"./_object-sap":27,"./_to-object":35}],40:[function(require,module,exports){
 //! moment.js
-//! version : 2.14.1
+//! version : 2.15.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -400,7 +400,9 @@ require('./_object-sap')('keys', function(){
     }
 
     function isObject(input) {
-        return Object.prototype.toString.call(input) === '[object Object]';
+        // IE8 will treat undefined and null as object if it wasn't for
+        // input != null
+        return input != null && Object.prototype.toString.call(input) === '[object Object]';
     }
 
     function isObjectEmpty(obj) {
@@ -499,7 +501,7 @@ require('./_object-sap')('keys', function(){
             var parsedParts = some.call(flags.parsedDateParts, function (i) {
                 return i != null;
             });
-            m._isValid = !isNaN(m._d.getTime()) &&
+            var isNowValid = !isNaN(m._d.getTime()) &&
                 flags.overflow < 0 &&
                 !flags.empty &&
                 !flags.invalidMonth &&
@@ -510,10 +512,17 @@ require('./_object-sap')('keys', function(){
                 (!flags.meridiem || (flags.meridiem && parsedParts));
 
             if (m._strict) {
-                m._isValid = m._isValid &&
+                isNowValid = isNowValid &&
                     flags.charsLeftOver === 0 &&
                     flags.unusedTokens.length === 0 &&
                     flags.bigHour === undefined;
+            }
+
+            if (Object.isFrozen == null || !Object.isFrozen(m)) {
+                m._isValid = isNowValid;
+            }
+            else {
+                return isNowValid;
             }
         }
         return m._isValid;
@@ -655,7 +664,22 @@ require('./_object-sap')('keys', function(){
                 utils_hooks__hooks.deprecationHandler(null, msg);
             }
             if (firstTime) {
-                warn(msg + '\nArguments: ' + Array.prototype.slice.call(arguments).join(', ') + '\n' + (new Error()).stack);
+                var args = [];
+                var arg;
+                for (var i = 0; i < arguments.length; i++) {
+                    arg = '';
+                    if (typeof arguments[i] === 'object') {
+                        arg += '\n[' + i + '] ';
+                        for (var key in arguments[0]) {
+                            arg += key + ': ' + arguments[0][key] + ', ';
+                        }
+                        arg = arg.slice(0, -2); // Remove trailing comma and space
+                    } else {
+                        arg = arguments[i];
+                    }
+                    args.push(arg);
+                }
+                warn(msg + '\nArguments: ' + Array.prototype.slice.call(args).join('') + '\n' + (new Error()).stack);
                 firstTime = false;
             }
             return fn.apply(this, arguments);
@@ -1182,12 +1206,18 @@ require('./_object-sap')('keys', function(){
     var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s+)+MMMM?/;
     var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
     function localeMonths (m, format) {
+        if (!m) {
+            return this._months;
+        }
         return isArray(this._months) ? this._months[m.month()] :
             this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
     }
 
     var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
     function localeMonthsShort (m, format) {
+        if (!m) {
+            return this._monthsShort;
+        }
         return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
             this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
     }
@@ -1684,18 +1714,21 @@ require('./_object-sap')('keys', function(){
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
+        if (!m) {
+            return this._weekdays;
+        }
         return isArray(this._weekdays) ? this._weekdays[m.day()] :
             this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return this._weekdaysShort[m.day()];
+        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return this._weekdaysMin[m.day()];
+        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function day_of_week__handleStrictParse(weekdayName, format, strict) {
@@ -2131,10 +2164,10 @@ require('./_object-sap')('keys', function(){
         var oldLocale = null;
         // TODO: Find a better way to register and load all the locales in Node
         if (!locales[name] && (typeof module !== 'undefined') &&
-                module && module.exports) {
+                module && module.require) {
             try {
                 oldLocale = globalLocale._abbr;
-                require('./locale/' + name);
+                module.require('./locale/' + name);
                 // because defineLocale currently also sets the global locale, we
                 // want to undo that for lazy loaded locales
                 locale_locales__getSetGlobalLocale(oldLocale);
@@ -2390,9 +2423,9 @@ require('./_object-sap')('keys', function(){
     }
 
     utils_hooks__hooks.createFromInputFallback = deprecate(
-        'moment construction falls back to js Date. This is ' +
-        'discouraged and will be removed in upcoming major ' +
-        'release. Please refer to ' +
+        'value provided is not in a recognized ISO format. moment construction falls back to js Date(), ' +
+        'which is not reliable across all browsers and versions. Non ISO date formats are ' +
+        'discouraged and will be removed in an upcoming major release. Please refer to ' +
         'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
         function (config) {
             config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
@@ -2891,6 +2924,14 @@ require('./_object-sap')('keys', function(){
         return obj instanceof Duration;
     }
 
+    function absRound (number) {
+        if (number < 0) {
+            return Math.round(-1 * number) * -1;
+        } else {
+            return Math.round(number);
+        }
+    }
+
     // FORMATTING
 
     function offset (token, separator) {
@@ -3041,7 +3082,13 @@ require('./_object-sap')('keys', function(){
         if (this._tzm) {
             this.utcOffset(this._tzm);
         } else if (typeof this._i === 'string') {
-            this.utcOffset(offsetFromString(matchOffset, this._i));
+            var tZone = offsetFromString(matchOffset, this._i);
+
+            if (tZone === 0) {
+                this.utcOffset(0, true);
+            } else {
+                this.utcOffset(offsetFromString(matchOffset, this._i));
+            }
         }
         return this;
     }
@@ -3096,7 +3143,7 @@ require('./_object-sap')('keys', function(){
     }
 
     // ASP.NET json date format regex
-    var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?\d*)?$/;
+    var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
     // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
     // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
@@ -3128,11 +3175,11 @@ require('./_object-sap')('keys', function(){
             sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y  : 0,
-                d  : toInt(match[DATE])        * sign,
-                h  : toInt(match[HOUR])        * sign,
-                m  : toInt(match[MINUTE])      * sign,
-                s  : toInt(match[SECOND])      * sign,
-                ms : toInt(match[MILLISECOND]) * sign
+                d  : toInt(match[DATE])                         * sign,
+                h  : toInt(match[HOUR])                         * sign,
+                m  : toInt(match[MINUTE])                       * sign,
+                s  : toInt(match[SECOND])                       * sign,
+                ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
             sign = (match[1] === '-') ? -1 : 1;
@@ -3205,14 +3252,6 @@ require('./_object-sap')('keys', function(){
         }
 
         return res;
-    }
-
-    function absRound (number) {
-        if (number < 0) {
-            return Math.round(-1 * number) * -1;
-        } else {
-            return Math.round(number);
-        }
     }
 
     // TODO: remove 'name' arg after deprecation is removed
@@ -4529,7 +4568,7 @@ require('./_object-sap')('keys', function(){
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.14.1';
+    utils_hooks__hooks.version = '2.15.0';
 
     setHookCallback(local__createLocal);
 
@@ -16715,14 +16754,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-97888742", module.exports)
+    hotAPI.createRecord("_v-138a446d", module.exports)
   } else {
-    hotAPI.update("_v-97888742", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-138a446d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],47:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3e057150] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3e057150] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3e057150] {\n    padding: 3px;\n}\n.box-footer[_v-3e057150] {\n    padding: 3px;\n}\n\n#storyform[_v-3e057150] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3e057150] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3e057150]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3e057150],\n.btn-group-vertical[_v-3e057150] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3e057150] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3e057150] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3e057150] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3e057150] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3e057150] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3e057150] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3e057150] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3e057150] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3e057150] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3e057150] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3e057150]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3e057150]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3e057150]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3e057150] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3e057150] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3e057150] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3e057150] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3e057150] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3e057150] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3e057150] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3e057150] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3e057150]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3e057150] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3e057150] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-d8eccefc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-d8eccefc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-d8eccefc] {\n    padding: 3px;\n}\n.box-footer[_v-d8eccefc] {\n    padding: 3px;\n}\n\n#storyform[_v-d8eccefc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-d8eccefc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-d8eccefc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-d8eccefc],\n.btn-group-vertical[_v-d8eccefc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-d8eccefc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-d8eccefc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-d8eccefc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-d8eccefc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-d8eccefc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-d8eccefc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-d8eccefc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-d8eccefc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-d8eccefc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-d8eccefc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-d8eccefc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-d8eccefc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-d8eccefc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-d8eccefc] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-d8eccefc] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-d8eccefc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-d8eccefc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-d8eccefc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-d8eccefc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-d8eccefc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-d8eccefc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-d8eccefc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-d8eccefc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-d8eccefc] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
 'use strict';
 
 var _moment = require('moment');
@@ -17157,24 +17196,24 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div _v-3e057150=\"\">\n        <div v-show=\"itemMsgStatus.show\" class=\"callout callout-{{itemMsgStatus.level}}\" _v-3e057150=\"\">\n         <span class=\"Alert__close\" @click=\"itemMsgStatus.show = false\" _v-3e057150=\"\">X</span>\n        <h5 _v-3e057150=\"\">{{itemMsgStatus.msg}}</h5>\n    </div>\n    <div :class=\"specialItem\" _v-3e057150=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-3e057150=\"\">\n        <div class=\"box-header with-border\" _v-3e057150=\"\">\n                <div class=\"row\" _v-3e057150=\"\">\n                    <div class=\"col-sm-12 col-md-6\" _v-3e057150=\"\">\n                        <div class=\"pull-left\" _v-3e057150=\"\">\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-3e057150=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-3e057150=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" :title=\"isReadyStatus\" _v-3e057150=\"\"><span class=\"item-featured-icon\" :class=\"readyIcon\" _v-3e057150=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-3e057150=\"\"><span class=\"item-featured-icon\" :class=\"promotedIcon\" _v-3e057150=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Featured\" _v-3e057150=\"\"><span class=\"item-featured-icon\" :class=\"featuredIcon\" _v-3e057150=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"on HomePage\" _v-3e057150=\"\"><span class=\"item-featured-icon\" :class=\"homeIcon\" _v-3e057150=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"linked\" _v-3e057150=\"\"><span class=\"item-featured-icon\" :class=\"linkedIcon\" _v-3e057150=\"\"></span></label>\n                        </div><!-- /.pull-left -->\n                    </div>\n                        <div class=\"col-sm-12 col-md-6\" _v-3e057150=\"\">\n                        <div id=\"storyform\" class=\"form-inline pull-right\" _v-3e057150=\"\">\n                            <template v-if=\"isLiveColumn\">\n                            <div class=\"form-group\" _v-3e057150=\"\">\n                                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-3e057150=\"\"><span class=\"fa fa-floppy-o\" _v-3e057150=\"\"></span></button>\n                            </div><!-- /.form-group -->\n                          <div class=\"form-group\" _v-3e057150=\"\">\n                            <label class=\"sr-only\" for=\"priority-number\" _v-3e057150=\"\">Priority</label>\n                                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" class=\"form-control\" number=\"\" _v-3e057150=\"\">\n                                    <option v-for=\"option in priorityOptions\" v-bind:value=\"option.value\" _v-3e057150=\"\">\n                                        {{option.text}}\n                                    </option>\n                                </select>\n                          </div>\n                          </template>\n                          <template v-if=\"recordIsReady\">\n                              <div id=\"applabel\" class=\"form-group\" _v-3e057150=\"\">\n                                  <label _v-3e057150=\"\">approved:</label>\n                              </div><!-- /.form-group -->\n                              <div class=\"form-group\" _v-3e057150=\"\">\n\n                                  <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-3e057150=\"\">\n                                  </vui-flip-switch>\n                              </div>\n                          </template>\n                          <template v-else=\"\">\n                              <div class=\"form-group\" _v-3e057150=\"\">\n                                  <label _v-3e057150=\"\">Not ready for approval</label>\n                              </div><!-- /.form-group -->\n                          </template>\n\n                        </div><!-- /.pull-right -->\n                    </div><!-- /.col-md-12-->\n                </div><!-- /.row -->\n                <div class=\"row\" _v-3e057150=\"\">\n                        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-3e057150=\"\">\n                    <div class=\"col-md-12\" _v-3e057150=\"\">\n                        <h6 class=\"box-title\" _v-3e057150=\"\">{{item.title}}</h6>\n                    </div><!-- /.col-md-12 -->\n  </a>\n                </div><!-- /.row -->\n\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-3e057150=\"\">\n            <p _v-3e057150=\"\">ID: {{item.id}}</p>\n            <p _v-3e057150=\"\">Type: {{item.story_type}}</p>\n            <p _v-3e057150=\"\">Title: {{item.title}}</p>\n            <p _v-3e057150=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-3e057150=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-3e057150=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-3e057150=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-3e057150=\"\">Live: {{item.is_live}}</p>\n            <p _v-3e057150=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-3e057150=\"\">Tags: {{item.tags | json}}</p>\n            <p _v-3e057150=\"\">Start Date: {{item.start_date}}</p>\n            <p _v-3e057150=\"\">User: {{item.user | json}}</p>\n            <p _v-3e057150=\"\">Author: {{item.author | json}}</p>\n            <template v-if=\"isPartOfHub\">\n                <div class=\"btn-group btn-xs form-inline\" _v-3e057150=\"\">\n                    <div class=\"form-group\" _v-3e057150=\"\">\n                        <label _v-3e057150=\"\">Hubs: </label>\n                    </div>\n                    <div class=\"form-group\" _v-3e057150=\"\">\n                        <button v-for=\"hub in connectedHubs\" v-on:click.prevent=\"gotoHub(hub.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Hub Id: {{hub.id}}\" _v-3e057150=\"\"><i class=\"fa fa-newspaper-o\" _v-3e057150=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n            <template v-if=\"isPartOfMag\">\n                <div class=\"btn-group btn-xs form-inline\" _v-3e057150=\"\">\n                    <div class=\"form-group\" _v-3e057150=\"\">\n                        <label _v-3e057150=\"\">Mags: </label>\n                    </div>\n                    <div class=\"form-group\" _v-3e057150=\"\">\n                        <button v-for=\"mag in connectedMags\" v-on:click.prevent=\"gotoMag(mag.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Mag Id: {{mag.id}}\" _v-3e057150=\"\"><i class=\"fa fa-book\" _v-3e057150=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n\n\n\n\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-3e057150=\"\">\n                <div class=\"row\" _v-3e057150=\"\">\n                    <div class=\"col-sm-12 col-md-7\" _v-3e057150=\"\">\n                        <h5 _v-3e057150=\"\">Live {{timefromNow}}</h5>\n                    </div><!-- /.col-md-7 -->\n                    <div class=\"col-sm-12 col-md-5\" _v-3e057150=\"\">\n                        <div class=\"btn-group pull-right\" _v-3e057150=\"\">\n                            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledArchive\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-3e057150=\"\"><i class=\"fa fa-archive\" _v-3e057150=\"\"></i></button>\n                            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-3e057150=\"\"><i class=\"fa fa-pencil\" _v-3e057150=\"\"></i></button>\n                            <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledPreview\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"preview\" _v-3e057150=\"\"><i class=\"fa fa-eye\" _v-3e057150=\"\"></i></button>\n\n                        </div><!-- /.btn-toolbar -->\n\n                    </div><!-- /.col-md-7 -->\n                </div><!-- /.row -->\n\n\n            </div><!-- /.box-footer -->\n\n    </div><!-- /.box- -->\n</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div _v-d8eccefc=\"\">\n        <div v-show=\"itemMsgStatus.show\" class=\"callout callout-{{itemMsgStatus.level}}\" _v-d8eccefc=\"\">\n         <span class=\"Alert__close\" @click=\"itemMsgStatus.show = false\" _v-d8eccefc=\"\">X</span>\n        <h5 _v-d8eccefc=\"\">{{itemMsgStatus.msg}}</h5>\n    </div>\n    <div :class=\"specialItem\" _v-d8eccefc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-d8eccefc=\"\">\n        <div class=\"box-header with-border\" _v-d8eccefc=\"\">\n                <div class=\"row\" _v-d8eccefc=\"\">\n                    <div class=\"col-sm-12 col-md-6\" _v-d8eccefc=\"\">\n                        <div class=\"pull-left\" _v-d8eccefc=\"\">\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-d8eccefc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-d8eccefc=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" :title=\"isReadyStatus\" _v-d8eccefc=\"\"><span class=\"item-featured-icon\" :class=\"readyIcon\" _v-d8eccefc=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-d8eccefc=\"\"><span class=\"item-featured-icon\" :class=\"promotedIcon\" _v-d8eccefc=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Featured\" _v-d8eccefc=\"\"><span class=\"item-featured-icon\" :class=\"featuredIcon\" _v-d8eccefc=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"on HomePage\" _v-d8eccefc=\"\"><span class=\"item-featured-icon\" :class=\"homeIcon\" _v-d8eccefc=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"linked\" _v-d8eccefc=\"\"><span class=\"item-featured-icon\" :class=\"linkedIcon\" _v-d8eccefc=\"\"></span></label>\n                        </div><!-- /.pull-left -->\n                    </div>\n                        <div class=\"col-sm-12 col-md-6\" _v-d8eccefc=\"\">\n                        <div id=\"storyform\" class=\"form-inline pull-right\" _v-d8eccefc=\"\">\n                            <template v-if=\"isLiveColumn\">\n                            <div class=\"form-group\" _v-d8eccefc=\"\">\n                                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-d8eccefc=\"\"><span class=\"fa fa-floppy-o\" _v-d8eccefc=\"\"></span></button>\n                            </div><!-- /.form-group -->\n                          <div class=\"form-group\" _v-d8eccefc=\"\">\n                            <label class=\"sr-only\" for=\"priority-number\" _v-d8eccefc=\"\">Priority</label>\n                                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" class=\"form-control\" number=\"\" _v-d8eccefc=\"\">\n                                    <option v-for=\"option in priorityOptions\" v-bind:value=\"option.value\" _v-d8eccefc=\"\">\n                                        {{option.text}}\n                                    </option>\n                                </select>\n                          </div>\n                          </template>\n                          <template v-if=\"recordIsReady\">\n                              <div id=\"applabel\" class=\"form-group\" _v-d8eccefc=\"\">\n                                  <label _v-d8eccefc=\"\">approved:</label>\n                              </div><!-- /.form-group -->\n                              <div class=\"form-group\" _v-d8eccefc=\"\">\n\n                                  <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-d8eccefc=\"\">\n                                  </vui-flip-switch>\n                              </div>\n                          </template>\n                          <template v-else=\"\">\n                              <div class=\"form-group\" _v-d8eccefc=\"\">\n                                  <label _v-d8eccefc=\"\">Not ready for approval</label>\n                              </div><!-- /.form-group -->\n                          </template>\n\n                        </div><!-- /.pull-right -->\n                    </div><!-- /.col-md-12-->\n                </div><!-- /.row -->\n                <div class=\"row\" _v-d8eccefc=\"\">\n                        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-d8eccefc=\"\">\n                    <div class=\"col-md-12\" _v-d8eccefc=\"\">\n                        <h6 class=\"box-title\" _v-d8eccefc=\"\">{{item.title}}</h6>\n                    </div><!-- /.col-md-12 -->\n  </a>\n                </div><!-- /.row -->\n\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-d8eccefc=\"\">\n            <p _v-d8eccefc=\"\">ID: {{item.id}}</p>\n            <p _v-d8eccefc=\"\">Type: {{item.story_type}}</p>\n            <p _v-d8eccefc=\"\">Title: {{item.title}}</p>\n            <p _v-d8eccefc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-d8eccefc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-d8eccefc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-d8eccefc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-d8eccefc=\"\">Live: {{item.is_live}}</p>\n            <p _v-d8eccefc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-d8eccefc=\"\">Tags: {{item.tags | json}}</p>\n            <p _v-d8eccefc=\"\">Start Date: {{item.start_date}}</p>\n            <p _v-d8eccefc=\"\">User: {{item.user | json}}</p>\n            <p _v-d8eccefc=\"\">Author: {{item.author | json}}</p>\n            <template v-if=\"isPartOfHub\">\n                <div class=\"btn-group btn-xs form-inline\" _v-d8eccefc=\"\">\n                    <div class=\"form-group\" _v-d8eccefc=\"\">\n                        <label _v-d8eccefc=\"\">Hubs: </label>\n                    </div>\n                    <div class=\"form-group\" _v-d8eccefc=\"\">\n                        <button v-for=\"hub in connectedHubs\" v-on:click.prevent=\"gotoHub(hub.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Hub Id: {{hub.id}}\" _v-d8eccefc=\"\"><i class=\"fa fa-newspaper-o\" _v-d8eccefc=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n            <template v-if=\"isPartOfMag\">\n                <div class=\"btn-group btn-xs form-inline\" _v-d8eccefc=\"\">\n                    <div class=\"form-group\" _v-d8eccefc=\"\">\n                        <label _v-d8eccefc=\"\">Mags: </label>\n                    </div>\n                    <div class=\"form-group\" _v-d8eccefc=\"\">\n                        <button v-for=\"mag in connectedMags\" v-on:click.prevent=\"gotoMag(mag.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Mag Id: {{mag.id}}\" _v-d8eccefc=\"\"><i class=\"fa fa-book\" _v-d8eccefc=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n\n\n\n\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-d8eccefc=\"\">\n                <div class=\"row\" _v-d8eccefc=\"\">\n                    <div class=\"col-sm-12 col-md-7\" _v-d8eccefc=\"\">\n                        <h5 _v-d8eccefc=\"\">Live {{timefromNow}}</h5>\n                    </div><!-- /.col-md-7 -->\n                    <div class=\"col-sm-12 col-md-5\" _v-d8eccefc=\"\">\n                        <div class=\"btn-group pull-right\" _v-d8eccefc=\"\">\n                            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledArchive\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-d8eccefc=\"\"><i class=\"fa fa-archive\" _v-d8eccefc=\"\"></i></button>\n                            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-d8eccefc=\"\"><i class=\"fa fa-pencil\" _v-d8eccefc=\"\"></i></button>\n                            <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledPreview\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"preview\" _v-d8eccefc=\"\"><i class=\"fa fa-eye\" _v-d8eccefc=\"\"></i></button>\n\n                        </div><!-- /.btn-toolbar -->\n\n                    </div><!-- /.col-md-7 -->\n                </div><!-- /.row -->\n\n\n            </div><!-- /.box-footer -->\n\n    </div><!-- /.box- -->\n</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-3e057150] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3e057150] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3e057150] {\n    padding: 3px;\n}\n.box-footer[_v-3e057150] {\n    padding: 3px;\n}\n\n#storyform[_v-3e057150] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3e057150] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3e057150]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3e057150],\n.btn-group-vertical[_v-3e057150] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3e057150] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3e057150] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3e057150] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3e057150] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3e057150] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3e057150] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3e057150] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3e057150] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3e057150] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3e057150] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3e057150]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3e057150]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3e057150]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3e057150] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3e057150] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3e057150] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3e057150] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3e057150] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3e057150] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3e057150] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3e057150] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3e057150]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3e057150] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3e057150] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n"] = false
+    __vueify_insert__.cache["\n.box[_v-d8eccefc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-d8eccefc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-d8eccefc] {\n    padding: 3px;\n}\n.box-footer[_v-d8eccefc] {\n    padding: 3px;\n}\n\n#storyform[_v-d8eccefc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-d8eccefc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-d8eccefc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-d8eccefc],\n.btn-group-vertical[_v-d8eccefc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-d8eccefc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-d8eccefc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-d8eccefc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-d8eccefc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-d8eccefc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-d8eccefc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-d8eccefc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-d8eccefc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-d8eccefc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-d8eccefc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-d8eccefc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-d8eccefc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-d8eccefc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-d8eccefc] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-d8eccefc] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-d8eccefc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-d8eccefc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-d8eccefc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-d8eccefc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-d8eccefc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-d8eccefc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-d8eccefc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-d8eccefc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-d8eccefc] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3e057150", module.exports)
+    hotAPI.createRecord("_v-d8eccefc", module.exports)
   } else {
-    hotAPI.update("_v-3e057150", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-d8eccefc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./VuiFlipSwitch.vue":49,"moment":40,"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],48:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-fa0ebd48] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-fa0ebd48]:active, .btn-default.active[_v-fa0ebd48], .open > .dropdown-toggle.btn-default[_v-fa0ebd48] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-fa0ebd48]:active, .btn-default.active[_v-fa0ebd48], .open > .dropdown-toggle.btn-default[_v-fa0ebd48] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-fa0ebd48]:active, span.item-type-icon.active[_v-fa0ebd48]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-fa0ebd48] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-fa0ebd48] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-fa0ebd48] {\n    margin-bottom: 4px;\n\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-efe077e4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-efe077e4]:active, .btn-default.active[_v-efe077e4], .open > .dropdown-toggle.btn-default[_v-efe077e4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-efe077e4]:active, .btn-default.active[_v-efe077e4], .open > .dropdown-toggle.btn-default[_v-efe077e4] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-efe077e4]:active, span.item-type-icon.active[_v-efe077e4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-efe077e4] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-efe077e4] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-efe077e4] {\n    margin-bottom: 4px;\n\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17530,19 +17569,19 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-fa0ebd48=\"\">\n        <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n            <h4 _v-fa0ebd48=\"\">Unapproved<p _v-fa0ebd48=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                    <label _v-fa0ebd48=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-fa0ebd48=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                    </template>\n              </div>\n              <!-- <div class=\"btn-group btn-group-xs\" @click=\"changeFilterByReadyStatus\" role=\"group\" aria-label=\"isReadyLabel\" data-toggle=\"buttons\" v-iconradio=\"readyStatus\">\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"ready\"><input type=\"radio\" autocomplete=\"off\" value=\"1\" /><span class=\"item-type-icon-shrt fa fa-circle\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"not ready\"><input type=\"radio\" autocomplete=\"off\" value=\"0\" /><span class=\"item-type-icon-shrt fa fa-circle-o\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"reset\"><input type=\"radio\" autocomplete=\"off\" value=\"\" /><span class=\"item-type-icon-shrt fa fa-asterisk\"></span></label>\n\n              </div> -->\n            </div>\n            <div id=\"items-unapproved\" _v-fa0ebd48=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-fa0ebd48=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n        <h4 _v-fa0ebd48=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                <label _v-fa0ebd48=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-fa0ebd48=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-fa0ebd48=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-fa0ebd48=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-fa0ebd48=\"\">\n        <h4 _v-fa0ebd48=\"\">Live <small _v-fa0ebd48=\"\">Approved and StartDate is past</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-fa0ebd48=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-fa0ebd48=\"\">\n                <label _v-fa0ebd48=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-fa0ebd48=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-fa0ebd48=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-fa0ebd48=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-fa0ebd48=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-fa0ebd48=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-fa0ebd48=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-efe077e4=\"\">\n        <div class=\"col-md-4\" _v-efe077e4=\"\">\n            <h4 _v-efe077e4=\"\">Unapproved<p _v-efe077e4=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-efe077e4=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-efe077e4=\"\">\n                    <label _v-efe077e4=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-efe077e4=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-efe077e4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-efe077e4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-efe077e4=\"\"></span></label>\n                    </template>\n              </div>\n              <!-- <div class=\"btn-group btn-group-xs\" @click=\"changeFilterByReadyStatus\" role=\"group\" aria-label=\"isReadyLabel\" data-toggle=\"buttons\" v-iconradio=\"readyStatus\">\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"ready\"><input type=\"radio\" autocomplete=\"off\" value=\"1\" /><span class=\"item-type-icon-shrt fa fa-circle\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"not ready\"><input type=\"radio\" autocomplete=\"off\" value=\"0\" /><span class=\"item-type-icon-shrt fa fa-circle-o\"></span></label>\n                  <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"reset\"><input type=\"radio\" autocomplete=\"off\" value=\"\" /><span class=\"item-type-icon-shrt fa fa-asterisk\"></span></label>\n\n              </div> -->\n            </div>\n            <div id=\"items-unapproved\" _v-efe077e4=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-efe077e4=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-efe077e4=\"\">\n        <h4 _v-efe077e4=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-efe077e4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-efe077e4=\"\">\n                <label _v-efe077e4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-efe077e4=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-efe077e4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-efe077e4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-efe077e4=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-efe077e4=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-efe077e4=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-efe077e4=\"\">\n        <h4 _v-efe077e4=\"\">Live <small _v-efe077e4=\"\">Approved and StartDate is past</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-efe077e4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-efe077e4=\"\">\n                <label _v-efe077e4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-efe077e4=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-efe077e4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-efe077e4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-efe077e4=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-efe077e4=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-efe077e4=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\nh4[_v-fa0ebd48] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-fa0ebd48]:active, .btn-default.active[_v-fa0ebd48], .open > .dropdown-toggle.btn-default[_v-fa0ebd48] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-fa0ebd48]:active, .btn-default.active[_v-fa0ebd48], .open > .dropdown-toggle.btn-default[_v-fa0ebd48] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-fa0ebd48]:active, span.item-type-icon.active[_v-fa0ebd48]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-fa0ebd48] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-fa0ebd48] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-fa0ebd48] {\n    margin-bottom: 4px;\n\n}\n"] = false
+    __vueify_insert__.cache["\n\nh4[_v-efe077e4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-efe077e4]:active, .btn-default.active[_v-efe077e4], .open > .dropdown-toggle.btn-default[_v-efe077e4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-efe077e4]:active, .btn-default.active[_v-efe077e4], .open > .dropdown-toggle.btn-default[_v-efe077e4] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-efe077e4]:active, span.item-type-icon.active[_v-efe077e4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-efe077e4] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-efe077e4] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-efe077e4] {\n    margin-bottom: 4px;\n\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-fa0ebd48", module.exports)
+    hotAPI.createRecord("_v-efe077e4", module.exports)
   } else {
-    hotAPI.update("_v-fa0ebd48", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-efe077e4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/iconradio.js":50,"./IconToggleBtn.vue":46,"./StoryPod.vue":47,"babel-runtime/core-js/object/keys":2,"babel-runtime/helpers/defineProperty":3,"moment":40,"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],49:[function(require,module,exports){
@@ -17587,9 +17626,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-645830ca", module.exports)
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
   } else {
-    hotAPI.update("_v-645830ca", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],50:[function(require,module,exports){
