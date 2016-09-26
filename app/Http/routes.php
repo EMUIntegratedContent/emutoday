@@ -172,6 +172,7 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('user/{user}/edit', ['as' => 'admin_user_edit', 'uses' => 'Admin\UserController@edit']);
         Route::get('user/{user}/confirm', ['as' => 'admin_user_confirm', 'uses' => 'Admin\UserController@confirm']);
+        Route::get('user/form', 'Admin\UserController@form');
         Route::resource('user', 'Admin\UserController');
 
         Route::resource('mediafile', 'Admin\MediafileController');
