@@ -8,7 +8,7 @@ class Tweet extends Model
   public function get_feed()
   {
     // keys from your app
-    include(app_path().'/Http/requests/Twitter_Get.php');
+    include(app_path().'/Http/Requests/Twitter_Get.php');
 
     // we are going to use "user_timeline"
     $twitter_timeline = "user_timeline";
