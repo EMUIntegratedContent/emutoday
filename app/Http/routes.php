@@ -114,7 +114,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('/', ['as' => '/', 'uses' => 'MainController@index']);
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
-    Route::get('announcement/{id?}', 'Today\AnnouncementController@index');
+    Route::get('announcement/{id?}', 'Today\MainController@index');
 
 
 

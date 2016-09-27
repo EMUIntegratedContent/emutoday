@@ -122,10 +122,9 @@
                 </div>
                 <div class="twitter-feed">
                   <ul class="twitter-content">
-                    <?php //include(app_path().'/Http/Requests/Twitter_Get.php'); ?>
-                    <!-- @foreach($tweets as $tweet)
+                    @foreach($tweets as $tweet)
                       <li><a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> {{ $tweet['text'] }}</li>
-                    @endforeach -->
+                    @endforeach
                   </ul>
                     <div class="twitterlink">
                         <p><a href="http://emich.edu/twitter">See all EMU Twitter Feeds</a></p>

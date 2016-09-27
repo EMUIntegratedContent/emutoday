@@ -23,14 +23,14 @@ class MainController extends Controller
     protected $recordLimitEvents = 4;
     protected $recordLimitHR = 3;
 
-    public function __construct(Page $page, Story $story, Announcement $announcement, Event $event)
+    public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets)
 
     {
         $this->page = $page;
         $this->story = $story;
         $this->announcement = $announcement;
         $this->event = $event;
-
+        $this->tweets = $tweets;
     }
 
     public function index()
@@ -188,6 +188,8 @@ class MainController extends Controller
             $currentStoryImageWithVideoTag = null;
         }
 
+        $tweets = $this->tweets->get_feed();
+        // $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 
         JavaScript::put([
             'jsis' => 'hi',
@@ -196,7 +198,7 @@ class MainController extends Controller
             'cdend' => Carbon::now()->addDays(7),
             'currentPage' => $page
         ]);
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
         // return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements'));
 
     }
