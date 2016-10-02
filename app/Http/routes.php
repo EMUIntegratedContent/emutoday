@@ -114,8 +114,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('/', ['as' => '/', 'uses' => 'MainController@index']);
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
-    Route::get('announcement/{id?}', 'Today\MainController@index');
+    Route::get('announcement/{id?}', 'Today\MainController@index'); // Does not exist?
 
+    Route::post('announcement/form', 'Today\AnnouncementController@store'); // submit form
 
 
     // Route::get('news/{id?}', 'Today\StoryController@index');

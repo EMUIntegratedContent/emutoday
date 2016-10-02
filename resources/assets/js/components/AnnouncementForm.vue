@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form method="POST" action="/announcement/form">
         <slot name="csrf"></slot>
         <!-- <slot name="author_id" v-model="newevent.author_id"></slot> -->
         <div class="row">
@@ -260,6 +260,9 @@ module.exports = {
     directives: {},
     components: {},
     props: {
+        errors: {
+            default: ''
+        },
         authorid: {
             default: '0'
         },
@@ -330,6 +333,8 @@ module.exports = {
         }
     },
     created: function() {
+        this.errors = JSON.parse(this.errors);
+        console.log(this.errors);
         this.currentDate = moment();
         console.log('this.currentDate=' + this.currentDate)
     },
@@ -558,7 +563,7 @@ module.exports = {
 
         submitForm: function(e) {
             //  console.log('this.eventform=' + this.eventform.$valid);
-            e.preventDefault();
+            //e.preventDefault();
             // this.newevent.start_date = this.sdate;
             // this.newevent.end_date = this.edate;
             // this.newevent.reg_deadline = this.rdate;
@@ -630,7 +635,6 @@ module.exports = {
         },
     },
     events: {
-
         // 'building-change':function(name) {
         // 	this.newbuilding = '';
         // 	this.newbuilding = name;

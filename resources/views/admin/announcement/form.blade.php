@@ -31,7 +31,7 @@
                 </div>	<!-- /.box-header -->
                 <div class="box-body">
                     <div id="vue-announcements">
-                            <announcement-form framework="bootstrap" type="{{$atype}}" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}">
+                            <announcement-form errors="{{ json_encode($errors) }}" framework="bootstrap" type="{{$atype}}" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}">
                                 <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                             </announcement-form>
                     </div><!-- /#vue-event-form -->
