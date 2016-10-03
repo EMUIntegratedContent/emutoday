@@ -67,8 +67,9 @@ Route::group(['prefix' => 'api'], function() {
 
 
     Route::get('announcement/queueload/{atype}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
-    Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
+    Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
+    Route::post('announcement/', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
     // Route::patch('event/updateitem/{event}', 'Api\EventController@updateItem');
@@ -114,9 +115,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('/', ['as' => '/', 'uses' => 'MainController@index']);
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
-    Route::get('announcement/{id?}', 'Today\MainController@index'); // Does not exist?
+    Route::get('announcement/{id?}', 'Today\AnnouncementController@index'); // Does not exist
 
-    Route::post('announcement/form', 'Today\AnnouncementController@store'); // submit form
 
 
     // Route::get('news/{id?}', 'Today\StoryController@index');

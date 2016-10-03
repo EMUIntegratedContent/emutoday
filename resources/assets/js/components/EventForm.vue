@@ -906,34 +906,34 @@
 
                     $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-                    // this.record.author_id = this.authorid;
-                    // //this.record.related_link_1 = this.relatedLink1;
-                    // if(this.record.on_campus == true) {
-                    //     this.record.location = this.convertToSlug(this.computedLocation);
-                    // } else {
-                    //     this.record.location = this.record.locationoffcampus;
-                    // }
-                    // // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
-                    // // this.record.categories = this.zcategories;
-                    // // console.log("cats="+ this.record.categories);
-                    // //
-                    // //
-                    // this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
-                    // this.record.categories = this.record.eventcategories;
-                    // // let tempid;
-                    // // if (typeof this.currentRecordId != 'undefined'){
-                    // //     tempid = this.currentRecordId;
-                    // // } else {
-                    // //     tempid =this.record.id;
-                    // // }
-                    // let method = (this.recordexists) ? 'put' : 'post'
-                    // let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event/';
-                    //
-                    // //   this.$http.post('/api/story', this.record)
-                    // this.$http[method](route, this.record)
-                    //
-                    //
-                    // // this.$http.post('/api/event', this.record)
+                     this.record.author_id = this.authorid;
+                     //this.record.related_link_1 = this.relatedLink1;
+                     if(this.record.on_campus == true) {
+                         this.record.location = this.convertToSlug(this.computedLocation);
+                     } else {
+                         this.record.location = this.record.locationoffcampus;
+                     }
+                     // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
+                     // this.record.categories = this.zcategories;
+                     // console.log("cats="+ this.record.categories);
+                     //
+                     //
+                     this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
+                     this.record.categories = this.record.eventcategories;
+                     // let tempid;
+                     // if (typeof this.currentRecordId != 'undefined'){
+                     //     tempid = this.currentRecordId;
+                     // } else {
+                     //     tempid =this.record.id;
+                     // }
+                     let method = (this.recordexists) ? 'put' : 'post'
+                     let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event/';
+
+                     this.$http.post('/api/story', this.record)
+                     this.$http[method](route, this.record)
+
+
+                    // this.$http.post('/api/event', this.record)
 
                     .then((response) =>{
                         //response.status;

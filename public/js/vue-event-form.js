@@ -15964,7 +15964,7 @@ module.exports = {
             var method = this.recordexists ? 'put' : 'post';
             var route = this.recordexists ? '/api/event/' + this.record.id : '/api/event/';
 
-            //   this.$http.post('/api/story', this.record)
+            this.$http.post('/api/story', this.record);
             this.$http[method](route, this.record)
 
             // this.$http.post('/api/event', this.record)
