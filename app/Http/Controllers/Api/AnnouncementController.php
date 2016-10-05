@@ -32,9 +32,8 @@ class AnnouncementController extends ApiController
       $user = \Auth::user();
 
       // if ($user->hasRole('contributor_1')){
-      // THE hasRole() CALL DOES NOT WORK ON PRODUCITON SERVER
         // dd($user->id);
-        // $announcements = $user->announcements()->where('type',$atype)->get();
+        $announcements = $user->announcements()->where('type',$atype)->get();
       // } else {
         $announcements = Announcement::where([ ['end_date', '>', $currentDate->subDay(2)], ['type', $atype] ])->get();
         // Announcement::all();
