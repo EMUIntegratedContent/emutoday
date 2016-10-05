@@ -15962,14 +15962,12 @@ module.exports = {
             //     tempid =this.record.id;
             // }
             var method = this.recordexists ? 'put' : 'post';
-            var route = this.recordexists ? '/api/event/' + this.record.id : '/api/event/';
+            var route = this.recordexists ? '/api/event/' + this.record.id : '/api/event';
 
             this.$http.post('/api/story', this.record);
-            this.$http[method](route, this.record)
+            this.$http[method](route, this.record);
 
-            // this.$http.post('/api/event', this.record)
-
-            .then(function (response) {
+            this.$http.post('/api/event', this.record).then(function (response) {
                 //response.status;
                 // console.log('response.status=' + response.status);
                 // console.log('response.ok=' + response.ok);

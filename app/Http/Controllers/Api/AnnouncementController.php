@@ -114,10 +114,9 @@ class AnnouncementController extends ApiController
       $announcement->user_id          	= $request->get('user_id', 0);
       $announcement->submitter         	= cas()->getCurrentUser();
       $announcement->title             	= $request->get('title');
-      $announcement->start_date        	= \Carbon\Carbon::parse($request->get('start_date'));
-      $announcement->end_date      	  	= \Carbon\Carbon::parse($request->get('end_date'))->endOfDay();
+      $announcement->start_date        	= Carbon::parse($request->get('start_date'));
+      $announcement->end_date      	  	= Carbon::parse($request->get('end_date'))->endOfDay();
       $announcement->announcement     	= $request->get('announcement');
-      $announcement->submission_date  	= \Carbon\Carbon::now();
 
       $announcement->link               = $request->get('link', null);
       $announcement->link_txt           = $request->get('link_txt', null);

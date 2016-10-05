@@ -18,7 +18,6 @@
         @parent
         @endsection
         @section('scripthead')
-                    {{-- @include('admin.layouts.scriptshead') --}}
         @parent
     @endsection
 @section('content')

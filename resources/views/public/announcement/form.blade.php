@@ -39,13 +39,11 @@
                     <td>{{ $item->title }}</td>
                     <td>{{ $item->start_date }}</td>
                     <td>{{ $item->end_date }}</td>
-                    <td>{{ $item->submission_date }}</td>
+                    <td>{{ $item->created_at }}</td>
                   </tr>
                   @endforeach
                 </tbody>
               </table>
-              {{-- {!! $storys->render() !!} --}}
-              {{-- {{ $storys->links() }} --}}
             </div><!-- /.small-12 column -->
           </div><!-- /.row -->
           <div class="row">
@@ -71,8 +69,6 @@
                   @endforeach
                 </tbody>
               </table>
-              {{-- {!! $storys->render() !!} --}}
-              {{-- {{ $storys->links() }} --}}
             </div><!-- /.small-12 column -->
           </div><!-- /.row -->
 

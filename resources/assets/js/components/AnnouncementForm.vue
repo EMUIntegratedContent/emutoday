@@ -518,7 +518,7 @@ module.exports = {
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/announcement/' + tempid : '/api/announcement/';
+      let route =  (this.recordexists) ? '/api/announcement/' + tempid : '/api/announcement';
 
       // Submit form.
       this.$http[method](route, this.record) //

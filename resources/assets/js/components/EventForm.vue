@@ -927,13 +927,13 @@
                      //     tempid =this.record.id;
                      // }
                      let method = (this.recordexists) ? 'put' : 'post'
-                     let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event/';
+                     let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event';
 
                      this.$http.post('/api/story', this.record)
                      this.$http[method](route, this.record)
 
 
-                    // this.$http.post('/api/event', this.record)
+                     this.$http.post('/api/event', this.record)
 
                     .then((response) =>{
                         //response.status;
