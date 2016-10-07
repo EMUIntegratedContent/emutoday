@@ -118,14 +118,11 @@
         <li class="{{ set_active('admin/storyimages*') }}"><a href="/admin/storyimages/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
     </ul>
 </li>
-<hr/>
-<!--
-<li class="header">
-    Other
-</li>
--->
-<li class="{{ set_active('admin/user*') }}"><a href="/admin/user"><i class="fa fa-users"></i> <span>Users</span></a></li>
 
+<hr/> <!-- //////////////////////////////// -->
+
+<li class="{{ set_active('admin/user*') }}"><a href="/admin/user"><i class="fa fa-users"></i> <span>Users</span></a></li>
+{{--
 <li class="treeview {{ set_active('admin/twitter*') }}"><a href="/admin/twitter"><i class="fa fa-twitter"></i> <span>Tweets</span></a></li>
 
 <li class="treeview {{ set_active('admin/bugz*') }}">
@@ -136,4 +133,5 @@
         <li class="{{ set_active('admin/bugz*') }}"><a href="/admin/bugz/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
     </ul>
 </li>
+--}}
 @endcan

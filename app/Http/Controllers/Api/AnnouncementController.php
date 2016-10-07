@@ -31,13 +31,15 @@ class AnnouncementController extends ApiController
     if (\Auth::check()) {
       $user = \Auth::user();
 
-      // if ($user->hasRole('contributor_1')){
-        // dd($user->id);
+      if ($user->hasRole('contributor_1')){
+        // User can see only their own announcements
         $announcements = $user->announcements()->where('type',$atype)->get();
-      // } else {
-        $announcements = Announcement::where([ ['end_date', '>', $currentDate->subDay(2)], ['type', $atype] ])->get();
-        // Announcement::all();
-      // }
+      } else {
+        // User can see all announcements
+        $announcements = $user->announcements()->where('type',$atype)->get();
+        // $announcements = Announcement::where([ ['end_date', '>', $currentDate->subDay(2)], ['type', $atype] ])->get(); // this works fine... (i think)
+      }
+      // ... but somewhere in this fractal bit, 500 ERROR if all announcments are passed. (only on production server)
       $fractal = new Manager();
       $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
 
@@ -47,24 +49,6 @@ class AnnouncementController extends ApiController
       return $this->setStatusCode(501)->respondWithError('Error');
     }
   }
-  // public function queueLoadhr()
-  // {
-  //     $currentDate = Carbon::now();
-  //     $announcements = Announcement::where([
-  //         ['end_date', '>', $currentDate->subDay(2)],
-  //         ['type', 'hr']
-  //         ])->get();
-  //         // Announcement::all();
-  //     }
-  //     $fractal = new Manager();
-  //     // $storys = Story::all();
-  //     $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
-  //     // Turn all of that into a Array string
-  //     return $fractal->createData($resource)->toArray();
-  //
-  //
-  //
-  //     }
 
   /**
   * [API Call from AnnouncementItem to change some variables]
@@ -96,7 +80,7 @@ class AnnouncementController extends ApiController
   { // Validate and store announcement request submission
     $validation = \Validator::make( Input::all(), [
       // Give validator request input, and rule to check against
-      'title'           => 'required|max:80',
+      'title'           => 'required|max:80|min:10',
       'start_date'      => 'required|date',
       'end_date'        => 'required|date',
       'announcement'     => 'required|max:255'
@@ -112,7 +96,7 @@ class AnnouncementController extends ApiController
     { // Okay validation passes. create the announcement
       $announcement = new Announcement;
       $announcement->user_id          	= $request->get('user_id', 0);
-      $announcement->submitter         	= cas()->getCurrentUser();
+      // $announcement->submitter         	= cas()->getCurrentUser(); // don't work so well on production
       $announcement->title             	= $request->get('title');
       $announcement->start_date        	= Carbon::parse($request->get('start_date'));
       $announcement->end_date      	  	= Carbon::parse($request->get('end_date'))->endOfDay();
@@ -162,7 +146,7 @@ class AnnouncementController extends ApiController
     $announcement = Announcement::findOrFail($id);
 
     $validation = \Validator::make( Input::all(), [
-      'title'           => 'required|max:50',
+      'title'           => 'required|max:80|min:10',
       'start_date'      => 'required|date',
       'end_date'        => 'required|date',
       'announcement'     => 'required|max:255'
@@ -175,7 +159,6 @@ class AnnouncementController extends ApiController
     }
     if($validation->passes())
     {
-
       $announcement->user_id       	= $request->get('user_id');
       $announcement->title           	= $request->get('title');
       $announcement->start_date      	= $request->get('start_date');
@@ -195,16 +178,12 @@ class AnnouncementController extends ApiController
       $announcement->is_archived     	= $request->get('is_archived', 0);
       $announcement->type             = $request->get('type', 'general');
 
-
-
-
       if($announcement->save()) {
         return $this->setStatusCode(201)
         ->respondSavedWithData('Announcement successfully Updated!',[ 'record_id' => $announcement->id ]);
         // ->respondUpdated('Announcement Successfully Updated!');
       }
     }
-
   }
 
   /**

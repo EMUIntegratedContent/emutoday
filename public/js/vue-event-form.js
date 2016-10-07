@@ -15528,7 +15528,7 @@ exports.insert = function (css) {
 
 },{}],108:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\np[_v-66e6a87c] {\n    margin:0;\n}\nlabel[_v-66e6a87c] {\n    margin-top: 3px;\n    margin-bottom: 3px;\n    display: block;\n    /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-66e6a87c] {\n    display: inline-block;\n    /*width: 8em;*/\n    vertical-align: top;\n}\n/*input[type='text'], [type='password'],\n[type='date'], [type='datetime'],\n[type='datetime-local'], [type='month'],\n[type='week'], [type='email'],\n[type='number'], [type='search'],\n[type='tel'], [type='time'],\n[type='url'], [type='color'],\ntextarea {\nmarging-bottom: 0;\n}*/\n\n.input-group input[type='text'][_v-66e6a87c] {\n    marging-bottom: 0;\n}\n\ninput[type='number'][_v-66e6a87c] {\n    marging-bottom: 0;\n}\n.valid-titleField[_v-66e6a87c] {\n    background-color: #fefefe;\n    border-color: #cacaca;\n}\n.no-input[_v-66e6a87c] {\n    background-color: #fefefe;\n    border-color: #cacaca;\n}\n.invalid-input[_v-66e6a87c] {\n    background-color: rgba(236, 88, 64, 0.1);\n    border: 1px dotted red;\n}\n.invalid[_v-66e6a87c] {\n    color: #ff0000;\n}\n.reqstar[_v-66e6a87c] {\n    font-size: .7rem;\n    color: #E33100;\n    vertical-align:text-top;\n}\n\nselect[_v-66e6a87c] {\n    margin: 0;\n}\n\n[type='submit'][_v-66e6a87c], [type='button'][_v-66e6a87c] {\n    margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-66e6a87c]{\n    margin: 0;\n}\ninput[type=\"text\"][_v-66e6a87c]{\n    margin: 0;\n}\nform[_v-66e6a87c] {\n    padding-bottom: 320px;\n}\n\n\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\np[_v-66e6a87c] {\n  margin:0;\n}\nlabel[_v-66e6a87c] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-66e6a87c] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n/*input[type='text'], [type='password'],\n[type='date'], [type='datetime'],\n[type='datetime-local'], [type='month'],\n[type='week'], [type='email'],\n[type='number'], [type='search'],\n[type='tel'], [type='time'],\n[type='url'], [type='color'],\ntextarea {\nmarging-bottom: 0;\n}*/\n\n.input-group input[type='text'][_v-66e6a87c] {\n  marging-bottom: 0;\n}\n\ninput[type='number'][_v-66e6a87c] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-66e6a87c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-66e6a87c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-66e6a87c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-66e6a87c] {\n  color: #ff0000;\n}\n.reqstar[_v-66e6a87c] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-66e6a87c] {\n  margin: 0;\n}\n\n[type='submit'][_v-66e6a87c], [type='button'][_v-66e6a87c] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-66e6a87c]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-66e6a87c]{\n  margin: 0;\n}\nform[_v-66e6a87c] {\n  padding-bottom: 320px;\n}\n\n\n\n")
 "use strict";
 
 var _flatpickr = require("flatpickr");
@@ -15542,483 +15542,482 @@ var _vueSelect2 = _interopRequireDefault(_vueSelect);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
-    directives: {},
-    components: { vSelect: _vueSelect2.default },
-    props: {
-        authorid: { default: '0' },
-        recordexists: { default: false },
-        recordid: { default: '' },
-        framework: { default: 'foundation' }
-    },
-    data: function data() {
-        return {
-            minicalslist: [],
-            dateObject: {
-                startDateMin: '',
-                startDateDefault: '',
-                endDateMin: '',
-                endDateDefault: '',
-                regDateMin: '',
-                regDateDefault: ''
-            },
-            linkText1: '',
-            linkUrl1: '',
-            linkText2: '',
-            linkUrl2: '',
-            linkText3: '',
-            linkUrl3: '',
-            startdatePicker: null,
-            enddatePicker: null,
-            starttimePicker: null,
-            endtimePicker: null,
-            regdeadlinePicker: null,
-            sdate: '',
-            edate: '',
-            stime: '',
-            rdate: '',
-            ticketoptions: [{ label: 'Online', value: 'online' }, { label: 'Phone', value: 'phone' }, { label: 'Ticket Office', value: 'office' }, { label: 'Online, Phone and Ticket Office', value: 'all' }, { label: 'Other', value: 'other' }],
-            participants: [{ label: 'Campus Only', value: 'campus' }, { label: 'Open to Public', value: 'public' }, { label: 'Students Only', value: 'students' }, { label: 'Invitation Only', value: 'invite' }, { label: 'Tickets Required', value: 'tickets' }],
-            totalChars: {
-                start: 0,
-                title: 100,
-                description: 255
-            },
-            building_in: [],
-            building: null,
-            buildings: [],
-            // newbuilding: '',
-            //
-            // zbuildings: [],
-            zcategories: [],
-            zcats: [],
-            categories: {},
-            minicals: null,
-            minicalendars: {},
-            record: {
-                user_id: 0,
-                on_campus: 1,
-                all_day: 0,
-                no_end_time: 0,
-                free: 0,
-                title: '',
-                description: '',
-                mini_calendar: '',
-                building: '',
-                categories: []
-            },
-            response: {},
-            formStatus: {},
-            vModelLike: "",
-            formMessage: {
-                isOk: false,
-                msg: ''
-            },
-            formInputs: {},
-            formErrors: {}
-        };
-    },
-    ready: function ready() {
-        this.record.user_id = this.authorid;
-        if (this.recordexists) {
-            console.log('recordid' + this.recordid);
-            this.fetchCurrentRecord(this.recordid);
-        } else {
-            //this.record.start_date = this.currentDate;
-            this.setupDatePickers();
-        }
-        this.fetchMiniCalsList();
-    },
-
-
-    computed: {
-        dropDownSelect: function dropDownSelect() {
-            return this.framework == 'foundation' ? 'fdropdown' : '';
-        },
-        md6col: function md6col() {
-            return this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6';
-        },
-        md12col: function md12col() {
-            return this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12';
-        },
-        md8col: function md8col() {
-            return this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8';
-        },
-        md4col: function md4col() {
-            return this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4';
-        },
-        md2col: function md2col() {
-            return this.framework == 'foundation' ? 'medium-2 columns' : 'col-md-2';
-        },
-        md10col: function md10col() {
-            return this.framework == 'foundation' ? 'medium-10 columns' : 'col-md-10';
-        },
-        btnPrimary: function btnPrimary() {
-            return this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary';
-        },
-        formGroup: function formGroup() {
-            return this.framework == 'foundation' ? 'form-group' : 'form-group';
-        },
-        inputGroupLabel: function inputGroupLabel() {
-            return this.framework == 'foundation' ? 'input-group-label' : 'input-group-addon';
-        },
-        iconStar: function iconStar() {
-            return this.framework == 'foundation' ? 'fi-star' : 'fa fa-star';
-        },
-        calloutSuccess: function calloutSuccess() {
-            return this.framework == 'foundation' ? 'callout success' : 'alert alert-success';
-        },
-        computedLocation: function computedLocation() {
-            var bldg = void 0,
-                room = void 0;
-
-            if (this.building) {
-                this.record.building = this.building.name;
-                bldg = this.record.building;
-                room = this.record.room ? ' - Room:' + this.record.room : '';
-            } else {
-                bldg = '';
-                room = '';
-            }
-            return bldg + room;
-            // let  buildingChoice = 	this.record.building
-            // let room = (this.record.room)?' - Room:' + this.record.room:'';
-            // return this.record.building+ room;
-            // return this.zbuilding[0] + room
-        },
-        isOnCampus: function isOnCampus() {
-            return this.record.on_campus == 1 ? true : false;
-        },
-        realCost: function realCost() {
-            if (this.record.free == 1) {
-                return '0.00';
-            } else {
-                // this.record.cost = '';
-                return '';
-            }
-            // return this.record.free == 1 ? false:true;
-        },
-        hasCost: function hasCost() {
-            if (this.record.free == 1) {
-                this.record.cost = '0.00';
-                return false;
-            } else {
-                // this.record.cost = '';
-                return true;
-            }
-            // return this.record.free == 1 ? false:true;
-        },
-        titleChars: function titleChars() {
-            var str = this.record.title;
-            console.log(str.length);
-            var cclength = str.length;
-            return this.totalChars.title - cclength;
-            // this.totalChars.title - (this.record.title).length
-        },
-        descriptionChars: function descriptionChars() {
-            var str = this.record.description;
-            console.log(str.length);
-            var cclength = str.length;
-            return this.totalChars.description - cclength;
-            // this.totalChars.title - (this.record.title).length
-        },
-        hasStartTime: function hasStartTime() {
-            return this.record.all_day == 1 ? false : true;
-        },
-        hasEndTime: function hasEndTime() {
-            return this.record.all_day == 1 || this.record.no_end_time == 1 ? false : true;
-        },
-        relatedLink1: function relatedLink1() {
-            if (this.linkUrl1 || this.linkText1) {
-                return '<a href="' + this.linkUrl1 + '">' + this.linkText1 + '</a>';
-            }
-        },
-        relatedLink2: function relatedLink2() {
-            if (this.linkUrl2 || this.linkText2) {
-                return '<a href="' + this.linkUrl2 + '">' + this.linkText2 + '</a>';
-            }
-        },
-        relatedLink3: function relatedLink3() {
-            if (this.linkUrl3 || this.linkText3) {
-                return '<a href="' + this.linkUrl3 + '">' + this.linkText3 + '</a>';
-            }
-        }
-
-    },
-    methods: {
-        fetchMiniCalsList: function fetchMiniCalsList() {
-            var _this = this;
-
-            this.$http.get('/api/minicalslist').then(function (response) {
-                //   let taglistraw = response.data;
-                //   let taglistformat = this.foreachTagListRaw(response.data);
-
-
-                _this.$set('minicalslist', response.data);
-            }, function (response) {
-                //error callback
-                console.log("ERRORS");
-                _this.formErrors = response.data.error.message;
-            }).bind(this);
-        },
-        setupDatePickers: function setupDatePickers() {
-            var self = this;
-            console.log("setupDatePickers");
-            if (this.record.start_date === '') {
-                this.dateObject.startDateMin = this.currentDate;
-                this.dateObject.startDateDefault = null;
-
-                this.dateObject.endDateMin = null;
-                this.dateObject.endDateDefault = null;
-            } else {
-                this.dateObject.startDateMin = this.record.start_date;
-                this.dateObject.startDateDefault = this.record.start_date;
-                this.dateObject.endDateMin = this.record.start_date;
-                this.dateObject.endDateDefault = this.record.end_date;
-                this.dateObject.startTimeDefault = this.record.end_time;
-                this.dateObject.regDateMin = this.record.start_date;
-                this.dateObject.regDateDefault = this.record.reg_deadline;
-            }
-            this.startdatePicker = (0, _flatpickr2.default)(document.getElementById("start-date"), {
-                minDate: self.dateObject.startDateMin,
-                defaultDate: self.dateObject.startDateDefault,
-                enableTime: false,
-                altFormat: "m-d-Y",
-                altInput: true,
-                altInputClass: "form-control",
-                dateFormat: "Y-m-d",
-                // minDate: new Date(),
-                onChange: function onChange(dateObject, dateString) {
-                    self.enddatePicker.set("minDate", dateObject);
-                    self.record.start_date = dateString;
-                    self.startdatePicker.value = dateString;
-                }
-            });
-
-            this.enddatePicker = (0, _flatpickr2.default)(document.getElementById("end-date"), {
-                minDate: self.dateObject.endDateMin,
-                defaultDate: self.dateObject.endDateDefault,
-                enableTime: false,
-                altFormat: "m-d-Y",
-                altInput: true,
-                altInputClass: "form-control",
-                dateFormat: "Y-m-d",
-                // minDate: new Date(),
-                onChange: function onChange(dateObject, dateString) {
-                    self.startdatePicker.set("maxDate", dateObject);
-                    self.record.end_date = dateString;
-                    self.enddatePicker.value = dateString;
-                }
-            });
-
-            this.starttimePicker = (0, _flatpickr2.default)(document.getElementById("start-time"), {
-                noCalendar: true,
-                enableTime: true,
-                defaultDate: self.dateObject.endDateDefault,
-                onChange: function onChange(timeObject, timeString) {
-                    self.record.start_time = timeString;
-                    self.starttimePicker.value = timeString;
-                }
-            });
-            this.endtimePicker = (0, _flatpickr2.default)(document.getElementById("end-time"), {
-                noCalendar: true,
-                enableTime: true,
-                onChange: function onChange(timeObject, timeString) {
-                    self.record.end_time = timeString;
-                    self.endtimePicker.value = timeString;
-                }
-            });
-
-            this.regdeadlinePicker = (0, _flatpickr2.default)(document.getElementById("reg-deadline"), {
-                minDate: self.dateObject.regDateMin,
-                defaultDate: self.dateObject.regDateDefault,
-                enableTime: false,
-                altFormat: "m-d-Y",
-                altInput: true,
-                altInputClass: "form-control",
-                dateFormat: "Y-m-d",
-                onChange: function onChange(dateObject, dateString) {
-                    self.record.reg_deadline = dateString;
-                    self.regdeadlinePicker.value = dateString;
-                }
-            });
-        },
-
-        fetchCurrentRecord: function fetchCurrentRecord() {
-            var _this2 = this;
-
-            this.$http.get('/api/event/' + this.recordid + '/edit').then(function (response) {
-                //response.status;
-                console.log('response.status=' + response.status);
-                console.log('response.ok=' + response.ok);
-                console.log('response.statusText=' + response.statusText);
-                // console.log('response.data=' + response.data.json());
-                // this.record = response.data.data;
-                _this2.$set('record', response.data.data);
-
-                _this2.checkOverData();
-            }, function (response) {
-                //error callback
-                console.log("ERRORS");
-
-                // this.formErrors =  response.data.error.message;
-            }).bind(this);
-        },
-        checkOverData: function checkOverData() {
-            if (this.record.location != null) {
-                if (this.record.building != null) {
-                    this.record.on_campus = 1;
-
-                    this.building = { id: 0, name: this.convertFromSlug(this.record.building) };
-                    //this.building = this.record.building;
-                } else {
-                    this.record.on_campus = 0;
-                    this.record.locationoffcampus = this.record.location;
-                }
-            }
-
-            // if (this.record.eventcategories){
-            //     for (var i= 0; i < this.record.eventcategories.length ; i++){
-            //         var reduceobj = this.record.eventcategories[i].id;
-            //         this.zcats.push(reduceobj)
-            //
-            //     }
-            //
-            //     console.log('this.zcats'+ this.zcats.length)
-            //
-            //
-            // }
-            this.setupDatePickers();
-            // this.newbuilding = this.record.building;
-            // this.zbuilding.push(this.record.building);
-        },
-        fetchForSelectCategoriesList: function fetchForSelectCategoriesList(search, loading) {
-            var _this3 = this;
-
-            loading(true);
-            this.$http.get('/api/categorylist', {
-                q: search
-            }).then(function (resp) {
-                _this3.zcats = resp.data;
-                loading(false);
-            });
-        },
-        fetchForSelectBuildingList: function fetchForSelectBuildingList(search, loading) {
-            var _this4 = this;
-
-            loading(true);
-            this.$http.get('/api/buildinglist', {
-                q: search
-            }).then(function (resp) {
-                _this4.buildings = resp.data;
-                loading(false);
-            });
-        },
-
-        // fetchForSelectMiniCalendarList(search,loading) {
-        //     loading(true)
-        //     this.$http.get('/api/minicals',{
-        //         q: search
-        //     }).then(resp => {
-        //         this.minicals = resp.data;
-        //         loading(false)
-        //     })
-        // },
-        fetchMiniCalendarList: function fetchMiniCalendarList() {
-            this.$http.get('/api/minicalendars').then(function (response) {
-                // console.log('response->minicalendars=' + JSON.stringify(response.data));
-                this.minicalendars = response.data.data;
-            }, function (response) {
-                //  this.$set(this.formErrors, response.data);
-                console.log(response);
-            });
-        },
-
-        submitForm: function submitForm(e) {
-            var _this5 = this;
-
-            //  console.log('this.eventform=' + this.eventform.$valid);
-            e.preventDefault();
-
-            $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-            this.record.author_id = this.authorid;
-            //this.record.related_link_1 = this.relatedLink1;
-            if (this.record.on_campus == true) {
-                this.record.location = this.convertToSlug(this.computedLocation);
-            } else {
-                this.record.location = this.record.locationoffcampus;
-            }
-            // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
-            // this.record.categories = this.zcategories;
-            // console.log("cats="+ this.record.categories);
-            //
-            //
-            this.record.minicals = this.record.minicalendars ? this.record.minicalendars : null;
-            this.record.categories = this.record.eventcategories;
-            // let tempid;
-            // if (typeof this.currentRecordId != 'undefined'){
-            //     tempid = this.currentRecordId;
-            // } else {
-            //     tempid =this.record.id;
-            // }
-            var method = this.recordexists ? 'put' : 'post';
-            var route = this.recordexists ? '/api/event/' + this.record.id : '/api/event';
-
-            this.$http.post('/api/story', this.record);
-            this.$http[method](route, this.record);
-
-            this.$http.post('/api/event', this.record).then(function (response) {
-                //response.status;
-                // console.log('response.status=' + response.status);
-                // console.log('response.ok=' + response.ok);
-                // console.log('response.statusText=' + response.statusText);
-                // console.log('response.data=' + response.data.message);
-                // this.formMessage.msg = response.data.message;
-                // this.formMessage.isOk = response.ok;
-                // this.recordexists = true;
-
-            }, function (response) {
-                //error callback
-                // console.log("FORM ERRORS     " + response.json());
-
-                _this5.formErrors = response.data.error.message;
-                console.log(response.data.error.message);
-            }).bind(this);
-        },
-        convertToSlug: function convertToSlug(value) {
-            return value.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
-        },
-        convertFromSlug: function convertFromSlug(value) {
-            return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
-                return arguments[0].toUpperCase();
-            });
-        }
-    },
-
-    watch: {},
-
-    events: {
-
-        // 'building-change':function(name) {
-        // 	this.newbuilding = '';
-        // 	this.newbuilding = name;
-        // 	console.log(this.newbuilding);
-        // },
-        // 'categories-change':function(list) {
-        // 	this.categories = '';
-        // 	this.categories = list;
-        // 	console.log(this.categories);
-        // }
+  directives: {},
+  components: { vSelect: _vueSelect2.default },
+  props: {
+    authorid: { default: '0' },
+    recordexists: { default: false },
+    recordid: { default: '' },
+    framework: { default: 'foundation' }
+  },
+  data: function data() {
+    return {
+      minicalslist: [],
+      dateObject: {
+        startDateMin: '',
+        startDateDefault: '',
+        endDateMin: '',
+        endDateDefault: '',
+        regDateMin: '',
+        regDateDefault: ''
+      },
+      linkText1: '',
+      linkUrl1: '',
+      linkText2: '',
+      linkUrl2: '',
+      linkText3: '',
+      linkUrl3: '',
+      startdatePicker: null,
+      enddatePicker: null,
+      starttimePicker: null,
+      endtimePicker: null,
+      regdeadlinePicker: null,
+      sdate: '',
+      edate: '',
+      stime: '',
+      rdate: '',
+      ticketoptions: [{ label: 'Online', value: 'online' }, { label: 'Phone', value: 'phone' }, { label: 'Ticket Office', value: 'office' }, { label: 'Online, Phone and Ticket Office', value: 'all' }, { label: 'Other', value: 'other' }],
+      participants: [{ label: 'Campus Only', value: 'campus' }, { label: 'Open to Public', value: 'public' }, { label: 'Students Only', value: 'students' }, { label: 'Invitation Only', value: 'invite' }, { label: 'Tickets Required', value: 'tickets' }],
+      totalChars: {
+        start: 0,
+        title: 100,
+        description: 255
+      },
+      building_in: [],
+      building: null,
+      buildings: [],
+      // newbuilding: '',
+      //
+      // zbuildings: [],
+      zcategories: [],
+      zcats: [],
+      categories: {},
+      minicals: null,
+      minicalendars: {},
+      record: {
+        user_id: 0,
+        on_campus: 1,
+        all_day: 0,
+        no_end_time: 0,
+        free: 0,
+        title: '',
+        description: '',
+        mini_calendar: '',
+        building: '',
+        categories: []
+      },
+      response: {},
+      formStatus: {},
+      vModelLike: "",
+      formMessage: {
+        isOk: false,
+        msg: ''
+      },
+      formInputs: {},
+      formErrors: {}
+    };
+  },
+  ready: function ready() {
+    this.record.user_id = this.authorid;
+    if (this.recordexists) {
+      console.log('recordid' + this.recordid);
+      this.fetchCurrentRecord(this.recordid);
+    } else {
+      //this.record.start_date = this.currentDate;
+      this.setupDatePickers();
     }
+    this.fetchMiniCalsList();
+  },
+
+
+  computed: {
+    dropDownSelect: function dropDownSelect() {
+      return this.framework == 'foundation' ? 'fdropdown' : '';
+    },
+    md6col: function md6col() {
+      return this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6';
+    },
+    md12col: function md12col() {
+      return this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12';
+    },
+    md8col: function md8col() {
+      return this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8';
+    },
+    md4col: function md4col() {
+      return this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4';
+    },
+    md2col: function md2col() {
+      return this.framework == 'foundation' ? 'medium-2 columns' : 'col-md-2';
+    },
+    md10col: function md10col() {
+      return this.framework == 'foundation' ? 'medium-10 columns' : 'col-md-10';
+    },
+    btnPrimary: function btnPrimary() {
+      return this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary';
+    },
+    formGroup: function formGroup() {
+      return this.framework == 'foundation' ? 'form-group' : 'form-group';
+    },
+    inputGroupLabel: function inputGroupLabel() {
+      return this.framework == 'foundation' ? 'input-group-label' : 'input-group-addon';
+    },
+    iconStar: function iconStar() {
+      return this.framework == 'foundation' ? 'fi-star' : 'fa fa-star';
+    },
+    calloutSuccess: function calloutSuccess() {
+      return this.framework == 'foundation' ? 'callout success' : 'alert alert-success';
+    },
+    computedLocation: function computedLocation() {
+      var bldg = void 0,
+          room = void 0;
+
+      if (this.building) {
+        this.record.building = this.building.name;
+        bldg = this.record.building;
+        room = this.record.room ? ' - Room:' + this.record.room : '';
+      } else {
+        bldg = '';
+        room = '';
+      }
+      return bldg + room;
+      // let  buildingChoice = 	this.record.building
+      // let room = (this.record.room)?' - Room:' + this.record.room:'';
+      // return this.record.building+ room;
+      // return this.zbuilding[0] + room
+    },
+    isOnCampus: function isOnCampus() {
+      return this.record.on_campus == 1 ? true : false;
+    },
+    realCost: function realCost() {
+      if (this.record.free == 1) {
+        return '0.00';
+      } else {
+        // this.record.cost = '';
+        return '';
+      }
+      // return this.record.free == 1 ? false:true;
+    },
+    hasCost: function hasCost() {
+      if (this.record.free == 1) {
+        this.record.cost = '0.00';
+        return false;
+      } else {
+        // this.record.cost = '';
+        return true;
+      }
+      // return this.record.free == 1 ? false:true;
+    },
+    titleChars: function titleChars() {
+      var str = this.record.title;
+      console.log(str.length);
+      var cclength = str.length;
+      return this.totalChars.title - cclength;
+      // this.totalChars.title - (this.record.title).length
+    },
+    descriptionChars: function descriptionChars() {
+      var str = this.record.description;
+      console.log(str.length);
+      var cclength = str.length;
+      return this.totalChars.description - cclength;
+      // this.totalChars.title - (this.record.title).length
+    },
+    hasStartTime: function hasStartTime() {
+      return this.record.all_day == 1 ? false : true;
+    },
+    hasEndTime: function hasEndTime() {
+      return this.record.all_day == 1 || this.record.no_end_time == 1 ? false : true;
+    },
+    relatedLink1: function relatedLink1() {
+      if (this.linkUrl1 || this.linkText1) {
+        return '<a href="' + this.linkUrl1 + '">' + this.linkText1 + '</a>';
+      }
+    },
+    relatedLink2: function relatedLink2() {
+      if (this.linkUrl2 || this.linkText2) {
+        return '<a href="' + this.linkUrl2 + '">' + this.linkText2 + '</a>';
+      }
+    },
+    relatedLink3: function relatedLink3() {
+      if (this.linkUrl3 || this.linkText3) {
+        return '<a href="' + this.linkUrl3 + '">' + this.linkText3 + '</a>';
+      }
+    }
+
+  },
+  methods: {
+    fetchMiniCalsList: function fetchMiniCalsList() {
+      var _this = this;
+
+      this.$http.get('/api/minicalslist').then(function (response) {
+        //   let taglistraw = response.data;
+        //   let taglistformat = this.foreachTagListRaw(response.data);
+
+
+        _this.$set('minicalslist', response.data);
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+        _this.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+    setupDatePickers: function setupDatePickers() {
+      var self = this;
+      console.log("setupDatePickers");
+      if (this.record.start_date === '') {
+        this.dateObject.startDateMin = this.currentDate;
+        this.dateObject.startDateDefault = null;
+
+        this.dateObject.endDateMin = null;
+        this.dateObject.endDateDefault = null;
+      } else {
+        this.dateObject.startDateMin = this.record.start_date;
+        this.dateObject.startDateDefault = this.record.start_date;
+        this.dateObject.endDateMin = this.record.start_date;
+        this.dateObject.endDateDefault = this.record.end_date;
+        this.dateObject.startTimeDefault = this.record.end_time;
+        this.dateObject.regDateMin = this.record.start_date;
+        this.dateObject.regDateDefault = this.record.reg_deadline;
+      }
+      this.startdatePicker = (0, _flatpickr2.default)(document.getElementById("start-date"), {
+        minDate: self.dateObject.startDateMin,
+        defaultDate: self.dateObject.startDateDefault,
+        enableTime: false,
+        altFormat: "m-d-Y",
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        // minDate: new Date(),
+        onChange: function onChange(dateObject, dateString) {
+          self.enddatePicker.set("minDate", dateObject);
+          self.record.start_date = dateString;
+          self.startdatePicker.value = dateString;
+        }
+      });
+
+      this.enddatePicker = (0, _flatpickr2.default)(document.getElementById("end-date"), {
+        minDate: self.dateObject.endDateMin,
+        defaultDate: self.dateObject.endDateDefault,
+        enableTime: false,
+        altFormat: "m-d-Y",
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        // minDate: new Date(),
+        onChange: function onChange(dateObject, dateString) {
+          self.startdatePicker.set("maxDate", dateObject);
+          self.record.end_date = dateString;
+          self.enddatePicker.value = dateString;
+        }
+      });
+
+      this.starttimePicker = (0, _flatpickr2.default)(document.getElementById("start-time"), {
+        noCalendar: true,
+        enableTime: true,
+        defaultDate: self.dateObject.endDateDefault,
+        onChange: function onChange(timeObject, timeString) {
+          self.record.start_time = timeString;
+          self.starttimePicker.value = timeString;
+        }
+      });
+      this.endtimePicker = (0, _flatpickr2.default)(document.getElementById("end-time"), {
+        noCalendar: true,
+        enableTime: true,
+        onChange: function onChange(timeObject, timeString) {
+          self.record.end_time = timeString;
+          self.endtimePicker.value = timeString;
+        }
+      });
+
+      this.regdeadlinePicker = (0, _flatpickr2.default)(document.getElementById("reg-deadline"), {
+        minDate: self.dateObject.regDateMin,
+        defaultDate: self.dateObject.regDateDefault,
+        enableTime: false,
+        altFormat: "m-d-Y",
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange: function onChange(dateObject, dateString) {
+          self.record.reg_deadline = dateString;
+          self.regdeadlinePicker.value = dateString;
+        }
+      });
+    },
+
+    fetchCurrentRecord: function fetchCurrentRecord() {
+      var _this2 = this;
+
+      this.$http.get('/api/event/' + this.recordid + '/edit').then(function (response) {
+        //response.status;
+        console.log('response.status=' + response.status);
+        console.log('response.ok=' + response.ok);
+        console.log('response.statusText=' + response.statusText);
+        // console.log('response.data=' + response.data.json());
+        // this.record = response.data.data;
+        _this2.$set('record', response.data.data);
+
+        _this2.checkOverData();
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+
+        // this.formErrors =  response.data.error.message;
+      }).bind(this);
+    },
+    checkOverData: function checkOverData() {
+      if (this.record.location != null) {
+        if (this.record.building != null) {
+          this.record.on_campus = 1;
+
+          this.building = { id: 0, name: this.convertFromSlug(this.record.building) };
+          //this.building = this.record.building;
+        } else {
+          this.record.on_campus = 0;
+          this.record.locationoffcampus = this.record.location;
+        }
+      }
+
+      // if (this.record.eventcategories){
+      //     for (var i= 0; i < this.record.eventcategories.length ; i++){
+      //         var reduceobj = this.record.eventcategories[i].id;
+      //         this.zcats.push(reduceobj)
+      //
+      //     }
+      //
+      //     console.log('this.zcats'+ this.zcats.length)
+      //
+      //
+      // }
+      this.setupDatePickers();
+      // this.newbuilding = this.record.building;
+      // this.zbuilding.push(this.record.building);
+    },
+    fetchForSelectCategoriesList: function fetchForSelectCategoriesList(search, loading) {
+      var _this3 = this;
+
+      loading(true);
+      this.$http.get('/api/categorylist', {
+        q: search
+      }).then(function (resp) {
+        _this3.zcats = resp.data;
+        loading(false);
+      });
+    },
+    fetchForSelectBuildingList: function fetchForSelectBuildingList(search, loading) {
+      var _this4 = this;
+
+      loading(true);
+      this.$http.get('/api/buildinglist', {
+        q: search
+      }).then(function (resp) {
+        _this4.buildings = resp.data;
+        loading(false);
+      });
+    },
+
+    // fetchForSelectMiniCalendarList(search,loading) {
+    //     loading(true)
+    //     this.$http.get('/api/minicals',{
+    //         q: search
+    //     }).then(resp => {
+    //         this.minicals = resp.data;
+    //         loading(false)
+    //     })
+    // },
+    fetchMiniCalendarList: function fetchMiniCalendarList() {
+      this.$http.get('/api/minicalendars').then(function (response) {
+        // console.log('response->minicalendars=' + JSON.stringify(response.data));
+        this.minicalendars = response.data.data;
+      }, function (response) {
+        //  this.$set(this.formErrors, response.data);
+        console.log(response);
+      });
+    },
+
+    submitForm: function submitForm(e) {
+      var _this5 = this;
+
+      //  console.log('this.eventform=' + this.eventform.$valid);
+      e.preventDefault();
+
+      $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+      this.record.author_id = this.authorid;
+      //this.record.related_link_1 = this.relatedLink1;
+      if (this.record.on_campus == true) {
+        this.record.location = this.convertToSlug(this.computedLocation);
+      } else {
+        this.record.location = this.record.locationoffcampus;
+      }
+      // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
+      // this.record.categories = this.zcategories;
+      // console.log("cats="+ this.record.categories);
+      //
+      //
+      this.record.minicals = this.record.minicalendars ? this.record.minicalendars : null;
+      this.record.categories = this.record.eventcategories;
+      // let tempid;
+      // if (typeof this.currentRecordId != 'undefined'){
+      //     tempid = this.currentRecordId;
+      // } else {
+      //     tempid =this.record.id;
+      // }
+      var method = this.recordexists ? 'put' : 'post';
+      var route = this.recordexists ? '/api/event/' + this.record.id : '/api/event';
+
+      this.$http.post('/api/story', this.record);
+      this.$http[method](route, this.record);
+
+      this.$http.post('/api/event', this.record).then(function (response) {
+        //response.status;
+        // console.log('response.status=' + response.status);
+        // console.log('response.ok=' + response.ok);
+        // console.log('response.statusText=' + response.statusText);
+        // console.log('response.data=' + response.data.message);
+        // this.formMessage.msg = response.data.message;
+        // this.formMessage.isOk = response.ok;
+        // this.recordexists = true;
+
+      }, function (response) {
+        //error callback
+        // console.log("FORM ERRORS     " + response.json());
+
+        _this5.formErrors = response.data.error.message;
+        console.log(response.data.error.message);
+      }).bind(this);
+    },
+    convertToSlug: function convertToSlug(value) {
+      return value.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+    },
+    convertFromSlug: function convertFromSlug(value) {
+      return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
+        return arguments[0].toUpperCase();
+      });
+    }
+  },
+
+  watch: {},
+
+  events: {
+    // 'building-change':function(name) {
+    // 	this.newbuilding = '';
+    // 	this.newbuilding = name;
+    // 	console.log(this.newbuilding);
+    // },
+    // 'categories-change':function(list) {
+    // 	this.categories = '';
+    // 	this.categories = list;
+    // 	console.log(this.categories);
+    // }
+  }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form _v-66e6a87c=\"\">\n    <slot name=\"csrf\" _v-66e6a87c=\"\"></slot>\n    <!-- <slot name=\"author_id\" v-model=\"record.author_id\"></slot> -->\n    <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md12col\" _v-66e6a87c=\"\">\n            <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-66e6a87c=\"\">\n                <h5 _v-66e6a87c=\"\">{{formMessage.msg}}</h5>\n            </div>\n            <div class=\"form-group\" _v-66e6a87c=\"\">\n                <label _v-66e6a87c=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                <p class=\"help-text\" id=\"title-helptext\" _v-66e6a87c=\"\">Please enter a title ({{titleChars}} characters left)</p>\n                <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-66e6a87c=\"\">\n                <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-66e6a87c=\"\">\tPlease Include a Title!</p>\n            </div>\n            <div class=\"form-group\" _v-66e6a87c=\"\">\n                <label _v-66e6a87c=\"\">Short Title\t</label>\n                <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" _v-66e6a87c=\"\">\n            </div>\n        </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <div class=\"form-group\" _v-66e6a87c=\"\">\n                <label _v-66e6a87c=\"\">Is Event on Campus?\n                    <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-66e6a87c=\"\">\n                </label>\n            </div>\n        </div><!-- /.md6col -->\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n\n        </div><!-- /.md6col -->\n    </div><!-- /.row -->\n            <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md12col\" _v-66e6a87c=\"\">\n            <template v-if=\"isOnCampus\">\n                <div class=\"row\" _v-66e6a87c=\"\">\n                    <div :class=\"md8col\" _v-66e6a87c=\"\">\n                        <label _v-66e6a87c=\"\">Building</label>\n                        <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-66e6a87c=\"\">\n                        </v-select>\n                        <!-- <select id=\"select-zbuilding\" class=\"js-example-basic-multiple\" style=\"width: 100%\" v-myselect=\"zbuildings\"  ajaxurl=\"/api/zbuildings\" v-bind:resultvalue=\"buildings\" data-tags=\"false\" multiple=\"multiple\" data-maximum-selection-length=\"1\">\n                        </select> -->\n                    </div><!-- /.md8col -->\n                    <div :class=\"md4col\" _v-66e6a87c=\"\">\n                        <label _v-66e6a87c=\"\">Room</label>\n                        <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" _v-66e6a87c=\"\">\n                    </div><!-- /.md4col -->\n                </div><!-- /.row -->\n            </template>\n            <div class=\"row\" _v-66e6a87c=\"\">\n                <div :class=\"md12col\" _v-66e6a87c=\"\">\n                    <template v-if=\"isOnCampus\">\n                        <label _v-66e6a87c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                        <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-66e6a87c=\"\">\n                    </template>\n                    <template v-else=\"\">\n                        <label _v-66e6a87c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                        <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" _v-66e6a87c=\"\">\n                    </template>\n                </div><!-- /.md12col -->\n            </div><!-- /.row -->\n        </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <div class=\"form-group\" _v-66e6a87c=\"\">\n                <label for=\"start-date\" _v-66e6a87c=\"\">Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                <input id=\"start-date\" :class=\"[formErrors_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-66e6a87c=\"\">\n                <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Start Date</p>\n            </div><!--form-group -->\n        </div><!-- /.md6col -->\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <div class=\"form-group\" _v-66e6a87c=\"\">\n                <label for=\"end-date\" _v-66e6a87c=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-66e6a87c=\"\">\n                <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n                <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need an End Date</p>\n            </div><!--form-group -->\n        </div><!-- /.md6col -->\n    </div><!-- /.row -->\n\n    <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <div class=\"form-group\" _v-66e6a87c=\"\">\n                <label for=\"all-day\" _v-66e6a87c=\"\">All Day Event:\n                    <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-66e6a87c=\"\">\n                </label>\n            </div>\n        </div><!-- /.small-6 column -->\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <div v-show=\"hasStartTime\" class=\"form-group\" _v-66e6a87c=\"\">\n                <label for=\"no-end-time\" _v-66e6a87c=\"\">No End Time:\n                    <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-66e6a87c=\"\">\n                    <!-- <label v-show=\"hasEndTime\" for=\"no-end-time-no\" class=\"radiobtns\">no</label><input id=\"no-end-time-no\"  name=\"no_end_time\" type=\"radio\" value=\"0\" v-model=\"record.no_end_time\"/> -->\n                </label></div>\n            </div><!-- /.small-6 column -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div v-show=\"hasStartTime\" class=\"form-group\" _v-66e6a87c=\"\">\n                    <label for=\"start-time\" _v-66e6a87c=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                    <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" _v-66e6a87c=\"\">\n                </div><!-- /.form-group -->\n            </div><!-- /.md6col -->\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div v-show=\"hasEndTime\" class=\"form-group\" _v-66e6a87c=\"\">\n                    <label for=\"end-time\" _v-66e6a87c=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                    <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" _v-66e6a87c=\"\">\n                </div><!-- /.form-group -->\n            </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <div class=\"form-group\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                    <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-66e6a87c=\"\">\n                    </v-select>\n\n                </div><!-- /.form-group -->\n            </div><!-- /.md12col -->\n            <!-- <div :class=\"md12col\">\n                <div class=\"form-group\">\n                    <label>Categories: <span :class=\"iconStar\" class=\"reqstar\"></span></label>\n                    <select  :class=\"[formErrors.categories ? 'invalid-input' : '']\" id=\"select-zcats\" style=\"width: 100%\" v-myselect=\"zcategories\" v-bind:resultvalue=\"zcats\" ajaxurl=\"/api/zcats\" data-close-on-select=\"false\" data-placeholder=\"zcats\" data-tags=\"false\"  multiple=\"multiple\">\n                        <option value=\"0\">\n                            default\n                        </option>\n                    </select>\n                </div>\n            </div> -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div class=\"form-group\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span><em _v-66e6a87c=\"\">(Jane Doe)</em></label>\n                        <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" _v-66e6a87c=\"\">\n                        <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Contact Person!</p>\n\n                </div>\n            </div><!-- /.md6col -->\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div class=\"form-group\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span><em _v-66e6a87c=\"\">(ex.janedoe@emich.edu)</em></label>\n                        <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" _v-66e6a87c=\"\">\n                        <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Contact Email!</p>\n\n                </div>\n            </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div class=\"form-group\" _v-66e6a87c=\"\">\n\n                    <label _v-66e6a87c=\"\">Contact Phone <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span> <em _v-66e6a87c=\"\">(ex. 734.487.1849)</em>\n                        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" _v-66e6a87c=\"\">\n                        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Contact Phone!</p>\n                    </label>\n                </div>\n            </div><!-- /.md6col -->\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div class=\"form-group\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Contact Fax: <em _v-66e6a87c=\"\">(ex. 734.487.1849)</em>\n                        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" _v-66e6a87c=\"\">\n                    </label>\n                </div>\n            </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Related Link: <em _v-66e6a87c=\"\">(ex. http://www.emich.edu/calendar)</em></label>\n                    <div class=\"row\" _v-66e6a87c=\"\">\n                        <div :class=\"md6col\" _v-66e6a87c=\"\">\n                            <label for=\"related_link_1_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_1_txt\" class=\"form-control\" name=\"related_link_1_txt\" type=\"text\" _v-66e6a87c=\"\">\n                        </div><!-- /.md6col -->\n                    </div><!-- /.row -->\n                    <div class=\"row\" _v-66e6a87c=\"\">\n                        <div :class=\"md12col\" _v-66e6a87c=\"\">\n                            <label for=\"related_link_1\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_1\" class=\"form-control\" name=\"related_link_1_txt\" type=\"text\" _v-66e6a87c=\"\">\n                        </div><!-- /.md12col -->\n                    </div><!-- /.row -->\n                    {{relatedLink1}}\n                    <template v-if=\"record.related_link_1\">\n                        <div class=\"row\" _v-66e6a87c=\"\">\n                            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                                <label for=\"related_link_2_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_2_txt\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n                            </div><!-- /.md6col -->\n                        </div><!-- /.row -->\n                        <div class=\"row\" _v-66e6a87c=\"\">\n                            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                                <label for=\"related_link_2\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_2\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n                            </div><!-- /.md12col -->\n                        </div><!-- /.row -->\n                        {{relatedLink2}}\n\n\n                    </template>\n                    <template v-if=\"record.related_link_1\">\n                        <div class=\"row\" _v-66e6a87c=\"\">\n                            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                                <label for=\"related_link_2_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_2_txt\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n                            </div><!-- /.md6col -->\n                        </div><!-- /.row -->\n                        <div class=\"row\" _v-66e6a87c=\"\">\n                            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                                <label for=\"related_link_2\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_2\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n                            </div><!-- /.md12col -->\n                        </div><!-- /.row -->\n                        {{relatedLink2}}\n                    </template>\n                    <template v-if=\"record.related_link_2\">\n                        <div class=\"row\" _v-66e6a87c=\"\">\n                            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                                <label for=\"related_link_3_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_3_txt\" class=\"form-control\" name=\"related_link_3_txt\" type=\"text\" _v-66e6a87c=\"\">\n                            </div><!-- /.md6col -->\n                        </div><!-- /.row -->\n                        <div class=\"row\" _v-66e6a87c=\"\">\n                            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                                <label for=\"related_link_3\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_3\" class=\"form-control\" name=\"related_link_3_txt\" type=\"text\" _v-66e6a87c=\"\">\n                            </div><!-- /.md12col -->\n                        </div><!-- /.row -->\n                        {{relatedLink3}}\n                    </template>\n                </div>\n\n                    <!-- <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em>\n                        <label for=\"link_text_2\">Link Text</label><input v-model=\"linkText2\"  name=\"link_text_2\" type=\"text\">\n                        <label for=\"link_url_2\">Link URL</label><input v-model=\"linkUrl2\"  name=\"link_url_2\" type=\"text\">\n                    </label>{{relatedLink2}}\n                    <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em>\n                        <label for=\"link_text_3\">Link Text</label><input v-model=\"linkText3\"  name=\"link_text_3\" type=\"text\">\n                        <label for=\"link_url_3\">Link URL</label><input v-model=\"linkUrl3\"  name=\"link_url_3\" type=\"text\">\n                    </label>{{relatedLink3}} -->\n\n            </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div class=\"form-group\" _v-66e6a87c=\"\">\n                    <label for=\"reg-deadline\" _v-66e6a87c=\"\">Registration Deadline</label>\n                    <input id=\"reg-deadline\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-66e6a87c=\"\">\n                </div>\n            </div><!-- /.md6col-->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n\n                <div class=\"row\" _v-66e6a87c=\"\">\n                    <div :class=\"md2col\" _v-66e6a87c=\"\">\n                        <label _v-66e6a87c=\"\">Free</label>\n                        <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                            <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-66e6a87c=\"\">\n                        </div><!-- /.form-group -->\n                    </div><!-- /.md4col -->\n                    <div :class=\"md10col\" _v-66e6a87c=\"\">\n                        <label _v-66e6a87c=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n                        <div v-show=\"hasCost\" class=\"form-group\" _v-66e6a87c=\"\">\n                            <div class=\"input-group\" _v-66e6a87c=\"\">\n                                <span :class=\"inputGroupLabel\" _v-66e6a87c=\"\">$</span>\n                                <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-66e6a87c=\"\">\n                            </div><!-- /. input-group -->\n                        </div>\n                        <div v-else=\"\" :class=\"formGroup\" _v-66e6a87c=\"\">\n                            <div class=\"input-group\" _v-66e6a87c=\"\">\n                                <span :class=\"inputGroupLabel\" _v-66e6a87c=\"\">$</span>\n                                <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-66e6a87c=\"\">\n                            </div><!-- /. input-group -->\n                        </div>\n                    </div><!-- /.md8col -->\n                </div><!-- /.row -->\n\n\n            </div><!-- /.medium-6 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Tickets Available\n                        <select v-model=\"record.tickets\" class=\"form-control\" _v-66e6a87c=\"\">\n                            <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-66e6a87c=\"\">\n                                {{ ticketoption.label }}\n                            </option>\n                        </select>\n                    </label>\n                    <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n                        <label _v-66e6a87c=\"\">Link: <em _v-66e6a87c=\"\">(ex. http://www.emich.edu/calendar)</em>\n                            <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-66e6a87c=\"\">\n                        </label>\n                    </template>\n                    <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n                        <label _v-66e6a87c=\"\">Tickets by Phone <em _v-66e6a87c=\"\">(ex. 734.487.1849)</em>\n                            <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-66e6a87c=\"\">\n                        </label>\n                    </template>\n                    <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n                        <label _v-66e6a87c=\"\">Address\n                            <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-66e6a87c=\"\">\n                        </label>\n                    </template>\n                    <template v-if=\"record.tickets == 'other'\">\n                        <label _v-66e6a87c=\"\">Other\n                            <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-66e6a87c=\"\">\n                        </label>\n                    </template>\n                </div><!-- /.form-group -->\n            </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Participants</label>\n                    <select v-model=\"record.participants\" class=\"form-control\" _v-66e6a87c=\"\">\n                        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-66e6a87c=\"\">\n                            {{ participant.label }}\n                     </option>\n            </select>\n                        <!-- <v-select :value=\"record.participants\"\n                                    :options=\"participants\"\n                                    :searchable=\"false\"\n                        >\n\n                        </v-select> -->\n\n                </div>\n            </div><!--/.md12col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n                <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                    <label for=\"lbc-reviewed\" _v-66e6a87c=\"\">LBC Approved: <em _v-66e6a87c=\"\">(pre-approval required)</em>\n                        <input id=\"lbc-reviewed\" name=\"lbc-reviewed\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_reviewed\" _v-66e6a87c=\"\">\n                    </label>\n                </div>\n            </div><!-- /.md6col -->\n            <div :class=\"md6col\" _v-66e6a87c=\"\">\n\n            </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                    <label _v-66e6a87c=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-66e6a87c=\"\">({{descriptionChars}} characters left)</p>\n\n                        <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" _v-66e6a87c=\"\"></textarea>\n                    </label>\n                    <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Description!</p>\n\n                </div>\n            </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n\n                <!-- <div :class=\"formGroup\">\n                    <label>Group Website Calendar <p class=\"help-text\" id=\"minicalendar-helptext\">If your groups website has a calendar that is fed from this one, and you would like this event to show up on it, please select it from the list below:</p>\n                        <v-select\n                            :debounce=\"250\"\n                            :value.sync=\"record.minicalendars\"\n                            :on-search=\"fetchForSelectMiniCalendarList\"\n                            :multiple=\"true\"\n                            :options=\"minicals\"\n                            placeholder=\"Select a minicalendar...\"\n                            label=\"calendar\">\n                        </v-select>\n                    </label>\n                </div> -->\n            </div><!-- /.md12col -->\n\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <v-select :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-66e6a87c=\"\">\n                </v-select>\n\n                <!-- <div :class=\"formGroup\">\n                    <label>Group Website Calendar <p class=\"help-text\" id=\"minicalendar-helptext\">If your groups website has a calendar that is fed from this one, and you would like this event to show up on it, please select it from the list below:</p>\n                        <select v-model=\"record.mini_calendar\" id=\"mini_calendar\" v-myselect=\"mini_calendar\">\n                            <option v-for=\"minicalendar in minicalendars\" :value=\"minicalendar.id\">\n                                {{minicalendar.calendar}}\n                            </option>\n                        </select>\n                    </label>\n                </div> -->\n            </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md12col\" _v-66e6a87c=\"\">\n                <div :class=\"formGroup\" _v-66e6a87c=\"\">\n                    <button id=\"btn-event\" @click=\"submitForm\" type=\"submit\" :class=\"btnPrimary\" _v-66e6a87c=\"\">Submit For Approval</button>\n                </div>\n            </div></div></form>\n        <!-- /.md12col -->\n\n\n    "
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-66e6a87c=\"\">\n    <slot name=\"csrf\" _v-66e6a87c=\"\"></slot>\n    <!-- <slot name=\"author_id\" v-model=\"record.author_id\"></slot> -->\n    <div class=\"row\" _v-66e6a87c=\"\">\n      <div :class=\"md12col\" _v-66e6a87c=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-66e6a87c=\"\">\n          <h5 _v-66e6a87c=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div class=\"form-group\" _v-66e6a87c=\"\">\n          <label _v-66e6a87c=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-66e6a87c=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-66e6a87c=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-66e6a87c=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-66e6a87c=\"\">\n          <label _v-66e6a87c=\"\">Short Title\t</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" _v-66e6a87c=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-66e6a87c=\"\">\n      <div :class=\"md6col\" _v-66e6a87c=\"\">\n        <div class=\"form-group\" _v-66e6a87c=\"\">\n          <label _v-66e6a87c=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-66e6a87c=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-66e6a87c=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-66e6a87c=\"\">\n      <div :class=\"md12col\" _v-66e6a87c=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-66e6a87c=\"\">\n            <div :class=\"md8col\" _v-66e6a87c=\"\">\n              <label _v-66e6a87c=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-66e6a87c=\"\">\n            </v-select>\n            <!-- <select id=\"select-zbuilding\" class=\"js-example-basic-multiple\" style=\"width: 100%\" v-myselect=\"zbuildings\"  ajaxurl=\"/api/zbuildings\" v-bind:resultvalue=\"buildings\" data-tags=\"false\" multiple=\"multiple\" data-maximum-selection-length=\"1\">\n          </select> -->\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-66e6a87c=\"\">\n          <label _v-66e6a87c=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" _v-66e6a87c=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-66e6a87c=\"\">\n      <div :class=\"md12col\" _v-66e6a87c=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-66e6a87c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-66e6a87c=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-66e6a87c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" _v-66e6a87c=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label for=\"start-date\" _v-66e6a87c=\"\">Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-66e6a87c=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label for=\"end-date\" _v-66e6a87c=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-66e6a87c=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label for=\"all-day\" _v-66e6a87c=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-66e6a87c=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-66e6a87c=\"\">\n      <label for=\"no-end-time\" _v-66e6a87c=\"\">No End Time:\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-66e6a87c=\"\">\n        <!-- <label v-show=\"hasEndTime\" for=\"no-end-time-no\" class=\"radiobtns\">no</label><input id=\"no-end-time-no\"  name=\"no_end_time\" type=\"radio\" value=\"0\" v-model=\"record.no_end_time\"/> -->\n      </label></div>\n    </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-66e6a87c=\"\">\n    <div :class=\"md6col\" _v-66e6a87c=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-66e6a87c=\"\">\n        <label for=\"start-time\" _v-66e6a87c=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" _v-66e6a87c=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-66e6a87c=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-66e6a87c=\"\">\n        <label for=\"end-time\" _v-66e6a87c=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" _v-66e6a87c=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-66e6a87c=\"\">\n    <div :class=\"md12col\" _v-66e6a87c=\"\">\n      <div class=\"form-group\" _v-66e6a87c=\"\">\n        <label _v-66e6a87c=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-66e6a87c=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n  <!-- <div :class=\"md12col\">\n  <div class=\"form-group\">\n  <label>Categories: <span :class=\"iconStar\" class=\"reqstar\"></span></label>\n  <select  :class=\"[formErrors.categories ? 'invalid-input' : '']\" id=\"select-zcats\" style=\"width: 100%\" v-myselect=\"zcategories\" v-bind:resultvalue=\"zcats\" ajaxurl=\"/api/zcats\" data-close-on-select=\"false\" data-placeholder=\"zcats\" data-tags=\"false\"  multiple=\"multiple\">\n  <option value=\"0\">\n  default\n</option>\n</select>\n</div>\n</div> -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span><em _v-66e6a87c=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" _v-66e6a87c=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span><em _v-66e6a87c=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" _v-66e6a87c=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n\n      <label _v-66e6a87c=\"\">Contact Phone <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span> <em _v-66e6a87c=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" _v-66e6a87c=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Contact Fax: <em _v-66e6a87c=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" _v-66e6a87c=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n    <div :class=\"formGroup\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Related Link: <em _v-66e6a87c=\"\">(ex. http://www.emich.edu/calendar)</em></label>\n      <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md6col\" _v-66e6a87c=\"\">\n          <label for=\"related_link_1_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_1_txt\" class=\"form-control\" name=\"related_link_1_txt\" type=\"text\" _v-66e6a87c=\"\">\n        </div><!-- /.md6col -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-66e6a87c=\"\">\n        <div :class=\"md12col\" _v-66e6a87c=\"\">\n          <label for=\"related_link_1\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_1\" class=\"form-control\" name=\"related_link_1_txt\" type=\"text\" _v-66e6a87c=\"\">\n        </div><!-- /.md12col -->\n      </div><!-- /.row -->\n      {{relatedLink1}}\n      <template v-if=\"record.related_link_1\">\n        <div class=\"row\" _v-66e6a87c=\"\">\n          <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <label for=\"related_link_2_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_2_txt\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n          </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n          <div :class=\"md12col\" _v-66e6a87c=\"\">\n            <label for=\"related_link_2\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_2\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n          </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        {{relatedLink2}}\n\n\n      </template>\n      <template v-if=\"record.related_link_1\">\n        <div class=\"row\" _v-66e6a87c=\"\">\n          <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <label for=\"related_link_2_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_2_txt\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n          </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n          <div :class=\"md12col\" _v-66e6a87c=\"\">\n            <label for=\"related_link_2\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_2\" class=\"form-control\" name=\"related_link_2_txt\" type=\"text\" _v-66e6a87c=\"\">\n          </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        {{relatedLink2}}\n      </template>\n      <template v-if=\"record.related_link_2\">\n        <div class=\"row\" _v-66e6a87c=\"\">\n          <div :class=\"md6col\" _v-66e6a87c=\"\">\n            <label for=\"related_link_3_txt\" _v-66e6a87c=\"\">Link Text</label><input v-model=\"record.related_link_3_txt\" class=\"form-control\" name=\"related_link_3_txt\" type=\"text\" _v-66e6a87c=\"\">\n          </div><!-- /.md6col -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-66e6a87c=\"\">\n          <div :class=\"md12col\" _v-66e6a87c=\"\">\n            <label for=\"related_link_3\" _v-66e6a87c=\"\">Link URL</label><input v-model=\"record.related_link_3\" class=\"form-control\" name=\"related_link_3_txt\" type=\"text\" _v-66e6a87c=\"\">\n          </div><!-- /.md12col -->\n        </div><!-- /.row -->\n        {{relatedLink3}}\n      </template>\n    </div>\n\n    <!-- <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em>\n    <label for=\"link_text_2\">Link Text</label><input v-model=\"linkText2\"  name=\"link_text_2\" type=\"text\">\n    <label for=\"link_url_2\">Link URL</label><input v-model=\"linkUrl2\"  name=\"link_url_2\" type=\"text\">\n  </label>{{relatedLink2}}\n  <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em>\n  <label for=\"link_text_3\">Link Text</label><input v-model=\"linkText3\"  name=\"link_text_3\" type=\"text\">\n  <label for=\"link_url_3\">Link URL</label><input v-model=\"linkUrl3\"  name=\"link_url_3\" type=\"text\">\n</label>{{relatedLink3}} -->\n\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div class=\"form-group\" _v-66e6a87c=\"\">\n      <label for=\"reg-deadline\" _v-66e6a87c=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-66e6a87c=\"\">\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n\n    <div class=\"row\" _v-66e6a87c=\"\">\n      <div :class=\"md2col\" _v-66e6a87c=\"\">\n        <label _v-66e6a87c=\"\">Free</label>\n        <div :class=\"formGroup\" _v-66e6a87c=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-66e6a87c=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-66e6a87c=\"\">\n        <label _v-66e6a87c=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-66e6a87c=\"\">\n          <div class=\"input-group\" _v-66e6a87c=\"\">\n            <span :class=\"inputGroupLabel\" _v-66e6a87c=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-66e6a87c=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-66e6a87c=\"\">\n          <div class=\"input-group\" _v-66e6a87c=\"\">\n            <span :class=\"inputGroupLabel\" _v-66e6a87c=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-66e6a87c=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n    <div :class=\"formGroup\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Tickets Available\n        <select v-model=\"record.tickets\" class=\"form-control\" _v-66e6a87c=\"\">\n          <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-66e6a87c=\"\">\n            {{ ticketoption.label }}\n          </option>\n        </select>\n      </label>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-66e6a87c=\"\">Link: <em _v-66e6a87c=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-66e6a87c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-66e6a87c=\"\">Tickets by Phone <em _v-66e6a87c=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-66e6a87c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-66e6a87c=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-66e6a87c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-66e6a87c=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-66e6a87c=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n    <div :class=\"formGroup\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-66e6a87c=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-66e6a87c=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n      <!-- <v-select :value=\"record.participants\"\n      :options=\"participants\"\n      :searchable=\"false\"\n      >\n\n    </v-select> -->\n\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n    <div :class=\"formGroup\" _v-66e6a87c=\"\">\n      <label for=\"lbc-reviewed\" _v-66e6a87c=\"\">LBC Approved: <em _v-66e6a87c=\"\">(pre-approval required)</em>\n        <input id=\"lbc-reviewed\" name=\"lbc-reviewed\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_reviewed\" _v-66e6a87c=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-66e6a87c=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n    <div :class=\"formGroup\" _v-66e6a87c=\"\">\n      <label _v-66e6a87c=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-66e6a87c=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-66e6a87c=\"\">({{descriptionChars}} characters left)</p>\n\n        <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" _v-66e6a87c=\"\"></textarea>\n      </label>\n      <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-66e6a87c=\"\">Need a Description!</p>\n\n    </div>\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n\n    <!-- <div :class=\"formGroup\">\n    <label>Group Website Calendar <p class=\"help-text\" id=\"minicalendar-helptext\">If your groups website has a calendar that is fed from this one, and you would like this event to show up on it, please select it from the list below:</p>\n    <v-select\n    :debounce=\"250\"\n    :value.sync=\"record.minicalendars\"\n    :on-search=\"fetchForSelectMiniCalendarList\"\n    :multiple=\"true\"\n    :options=\"minicals\"\n    placeholder=\"Select a minicalendar...\"\n    label=\"calendar\">\n  </v-select>\n</label>\n</div> -->\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-66e6a87c=\"\">\n  <v-select :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-66e6a87c=\"\">\n</v-select>\n\n<!-- <div :class=\"formGroup\">\n<label>Group Website Calendar <p class=\"help-text\" id=\"minicalendar-helptext\">If your groups website has a calendar that is fed from this one, and you would like this event to show up on it, please select it from the list below:</p>\n<select v-model=\"record.mini_calendar\" id=\"mini_calendar\" v-myselect=\"mini_calendar\">\n<option v-for=\"minicalendar in minicalendars\" :value=\"minicalendar.id\">\n{{minicalendar.calendar}}\n</option>\n</select>\n</label>\n</div> -->\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-66e6a87c=\"\">\n  <div :class=\"md12col\" _v-66e6a87c=\"\">\n    <div :class=\"formGroup\" _v-66e6a87c=\"\">\n      <button id=\"btn-event\" @click=\"submitForm\" type=\"submit\" :class=\"btnPrimary\" _v-66e6a87c=\"\">Submit For Approval</button>\n    </div>\n  </div></div></form>\n<!-- /.md12col -->\n\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\np[_v-66e6a87c] {\n    margin:0;\n}\nlabel[_v-66e6a87c] {\n    margin-top: 3px;\n    margin-bottom: 3px;\n    display: block;\n    /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-66e6a87c] {\n    display: inline-block;\n    /*width: 8em;*/\n    vertical-align: top;\n}\n/*input[type='text'], [type='password'],\n[type='date'], [type='datetime'],\n[type='datetime-local'], [type='month'],\n[type='week'], [type='email'],\n[type='number'], [type='search'],\n[type='tel'], [type='time'],\n[type='url'], [type='color'],\ntextarea {\nmarging-bottom: 0;\n}*/\n\n.input-group input[type='text'][_v-66e6a87c] {\n    marging-bottom: 0;\n}\n\ninput[type='number'][_v-66e6a87c] {\n    marging-bottom: 0;\n}\n.valid-titleField[_v-66e6a87c] {\n    background-color: #fefefe;\n    border-color: #cacaca;\n}\n.no-input[_v-66e6a87c] {\n    background-color: #fefefe;\n    border-color: #cacaca;\n}\n.invalid-input[_v-66e6a87c] {\n    background-color: rgba(236, 88, 64, 0.1);\n    border: 1px dotted red;\n}\n.invalid[_v-66e6a87c] {\n    color: #ff0000;\n}\n.reqstar[_v-66e6a87c] {\n    font-size: .7rem;\n    color: #E33100;\n    vertical-align:text-top;\n}\n\nselect[_v-66e6a87c] {\n    margin: 0;\n}\n\n[type='submit'][_v-66e6a87c], [type='button'][_v-66e6a87c] {\n    margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-66e6a87c]{\n    margin: 0;\n}\ninput[type=\"text\"][_v-66e6a87c]{\n    margin: 0;\n}\nform[_v-66e6a87c] {\n    padding-bottom: 320px;\n}\n\n\n\n"] = false
+    __vueify_insert__.cache["\np[_v-66e6a87c] {\n  margin:0;\n}\nlabel[_v-66e6a87c] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-66e6a87c] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n/*input[type='text'], [type='password'],\n[type='date'], [type='datetime'],\n[type='datetime-local'], [type='month'],\n[type='week'], [type='email'],\n[type='number'], [type='search'],\n[type='tel'], [type='time'],\n[type='url'], [type='color'],\ntextarea {\nmarging-bottom: 0;\n}*/\n\n.input-group input[type='text'][_v-66e6a87c] {\n  marging-bottom: 0;\n}\n\ninput[type='number'][_v-66e6a87c] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-66e6a87c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-66e6a87c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-66e6a87c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-66e6a87c] {\n  color: #ff0000;\n}\n.reqstar[_v-66e6a87c] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-66e6a87c] {\n  margin: 0;\n}\n\n[type='submit'][_v-66e6a87c], [type='button'][_v-66e6a87c] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-66e6a87c]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-66e6a87c]{\n  margin: 0;\n}\nform[_v-66e6a87c] {\n  padding-bottom: 320px;\n}\n\n\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

@@ -31,6 +31,7 @@
                     <th class="text-left">Start Date</th>
                     <th class="text-left">End Date</th>
                     <th class="text-left">Submitted</th>
+                    <th class="text-left">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,7 @@
                     <td>{{ $item->start_date }}</td>
                     <td>{{ $item->end_date }}</td>
                     <td>{{ $item->created_at }}</td>
+                    <td><a href="/api/announcement/{{$item->id}}/edit">EDIT</td> <!-- soon -->
                   </tr>
                   @endforeach
                 </tbody>
