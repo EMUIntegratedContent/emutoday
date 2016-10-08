@@ -36,10 +36,8 @@ class AnnouncementController extends ApiController
         $announcements = $user->announcements()->where('type',$atype)->get();
       } else {
         // User can see all announcements
-        $announcements = $user->announcements()->where('type',$atype)->get();
-        // $announcements = Announcement::where([ ['end_date', '>', $currentDate->subDay(2)], ['type', $atype] ])->get(); // this works fine... (i think)
+        $announcements = Announcement::where([ ['end_date', '>', $currentDate->subDay(2)], ['type', $atype] ])->get();
       }
-      // ... but somewhere in this fractal bit, 500 ERROR if all announcments are passed. (only on production server)
       $fractal = new Manager();
       $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
 

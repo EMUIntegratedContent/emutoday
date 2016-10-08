@@ -16543,11 +16543,11 @@ exports.insert = function (css) {
 
 },{}],26:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n#items-unapproved .box[_v-2f4f93f0] {\n    margin-bottom: 4px;\n}\n\n#items-approved .box[_v-2f4f93f0] {\n    margin-bottom: 4px;\n}\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n#items-unapproved .box[_v-2f4f93f0] {\n  margin-bottom: 4px;\n}\n\n#items-approved .box[_v-2f4f93f0] {\n  margin-bottom: 4px;\n}\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _moment = require('moment');
@@ -16562,206 +16562,204 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import EventViewContent from './EventViewContent.vue'
 exports.default = {
-    components: { AnnouncementQueueItem: _AnnouncementQueueItem2.default },
-    props: ['atype', 'cuser'],
-    data: function data() {
-        return {
-            resource: {},
-            allitems: [],
-            items: [],
-            xitems: [],
-            objs: {}
-        };
+  components: { AnnouncementQueueItem: _AnnouncementQueueItem2.default },
+  props: ['atype', 'cuser'],
+  data: function data() {
+    return {
+      resource: {},
+      allitems: [],
+      items: [],
+      xitems: [],
+      objs: {}
+    };
+  },
+
+  ready: function ready() {
+    // this.resource = this.$resource('/api/announcement/:id');
+    this.fetchAllRecords();
+    // this.fetchUnapprovedRecords();
+  },
+
+
+  computed: {
+    itemsApproved: function itemsApproved() {
+      return this.filterItemsApproved(this.allitems);
     },
-
-    ready: function ready() {
-        // this.resource = this.$resource('/api/announcement/:id');
-        this.fetchAllRecords();
-        // this.fetchUnapprovedRecords();
+    itemsUnapproved: function itemsUnapproved() {
+      return this.filterItemsUnapproved(this.allitems);
     },
-
-
-    computed: {
-        itemsApproved: function itemsApproved() {
-            return this.filterItemsApproved(this.allitems);
-        },
-        itemsUnapproved: function itemsUnapproved() {
-            return this.filterItemsUnapproved(this.allitems);
-        },
-        itemsLive: function itemsLive() {
-            return this.filterItemsLive(this.allitems);
-        }
-    },
-
-    methods: {
-        fetchAllRecords: function fetchAllRecords() {
-            var _this = this;
-
-            var route = '/api/announcement/queueload/' + this.atype;
-
-            this.$http.get(route).then(function (response) {
-                //response.status;
-                console.log('response.status=' + response.status);
-                console.log('response.ok=' + response.ok);
-                console.log('response.statusText=' + response.statusText);
-                console.log('response.data=' + response.data);
-
-                _this.$set('allitems', response.data.data);
-
-                _this.checkOverDataFilter();
-            }, function (response) {
-                //error callback
-                console.log("ERRORS");
-
-                //  this.formErrors =  response.data.error.message;
-            }).bind(this);
-        },
-        checkOverData: function checkOverData() {
-            console.log('this.items=' + this.allitems);
-        },
-        filterItemsApproved: function filterItemsApproved(items) {
-            return items.filter(function (item) {
-                return (0, _moment2.default)(item.start_date).isAfter((0, _moment2.default)()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0;
-            });
-        },
-        filterItemsUnapproved: function filterItemsUnapproved(items) {
-            return items.filter(function (item) {
-                return item.is_approved === 0 && item.is_archived === 0;
-            });
-        },
-        filterItemsLive: function filterItemsLive(items) {
-            return items.filter(function (item) {
-                return (0, _moment2.default)(item.start_date).isSameOrBefore((0, _moment2.default)()) && item.is_approved === 1 && item.is_archived === 0 || item.is_approved === 1 && item.priority > 0 && item.is_archived === 0; // true
-            });
-        },
-        // moveToApproved: function(changeditem) {
-        //
-        //     // this.xitems.pop(changeditem);
-        //     console.log('moveToApproved' + changeditem.priority);
-        //     changeditem.is_approved = 1;
-        //     changeditem.priority = changeditem.priority;
-        //     this.updateRecord(changeditem)
-        // },
-        // moveToUnApproved: function(changeditem) {
-        //
-        //     // this.xitems.pop(changeditem);
-        //     console.log('moveToUnApproved' + changeditem)
-        //     changeditem.is_approved = 0;
-        //
-        //     this.updateRecord(changeditem)
-        // },
-        // itemyes: function(items) {
-        //     return items.filter(function(item) {
-        //         return item.is_approved === 1
-        //     });
-        // },
-        // itemno: function(items) {
-        //     return items.filter(function(item) {
-        //         return item.is_approved === 0
-        //     });
-        // },
-        // itemsByPriority: function(items) {
-        //     return items.sort(function(item) {
-        //         return item.is_approved === 0
-        //     });
-        // },
-        // movedItemIndex: function(mid) {
-        //     return this.xitems.findIndex(item => item.id == mid)
-        // },
-        // updateRecord: function(item) {
-        //     var movedid = item.id;
-        //     var movedRecord = item;
-        //     this.$http.patch('/api/announcement/updateItem/' + item.id, item, {
-        //             method: 'PATCH'
-        //
-        //         })
-        //         .then((response) => {
-        //             console.log('good?' + response)
-        //             var movedIndex = this.movedItemIndex(movedid);
-        //             // this.xitems.pop(movedRecord);
-        //             if (movedRecord.is_approved == 1) {
-        //                 this.xitems.splice(movedIndex, 1);
-        //                 this.items.push(movedRecord);
-        //             } else {
-        //                 this.items.splice(movedIndex, 1);
-        //                 this.xitems.push(movedRecord);
-        //             }
-        //
-        //             console.log('movedIndex===' + movedIndex)
-        //         }, (response) => {
-        //             console.log('bad?' + response)
-        //         });
-        // },
-
-        // fetchUnapprovedRecords: function() {
-        //     this.$http.get('/api/announcement/unapprovedItems')
-        //
-        //     .then((response) => {
-        //         console.log('response.status=' + response.status);
-        //         console.log('response.ok=' + response.ok);
-        //         console.log('response.statusText=' + response.statusText);
-        //         console.log('response.data=' + response.data);
-        //
-        //         this.$set('xitems', response.data.data)
-        //
-        //         this.fetchApprovedRecords();
-        //     }, (response) => {
-        //         //error callback
-        //         console.log("ERRORS");
-        //
-        //         //  this.formErrors =  response.data.error.message;
-        //
-        //     }).bind(this);
-        // },
-        // fetchApprovedRecords: function() {
-        //     this.$http.get('/api/announcement/approvedItems')
-        //
-        //     .then((response) => {
-        //         //response.status;
-        //         console.log('response.status=' + response.status);
-        //         console.log('response.ok=' + response.ok);
-        //         console.log('response.statusText=' + response.statusText);
-        //         console.log('response.data=' + response.data);
-        //         // data = response.data;
-        //         //
-        //         this.$set('items', response.data.data)
-        //
-        //         // this.allitems = response.data.data;
-        //         // console.log('this.record= ' + this.record);
-        //
-        //         this.checkOverDataFilter();
-        //     }, (response) => {
-        //         //error callback
-        //         console.log("ERRORS");
-        //
-        //         //  this.formErrors =  response.data.error.message;
-        //
-        //     }).bind(this);
-        // },
-
-        checkOverDataFilter: function checkOverDataFilter() {
-            console.log('items=' + this.items);
-        }
-    },
-
-    // the `events` option simply calls `$on` for you
-    // when the instance is created
-    events: {
-        // 'child-msg': function (msg) {
-        //   // `this` in event callbacks are automatically bound
-        //   // to the instance that registered it
-        //   this.messages.push(msg)
-        // }
+    itemsLive: function itemsLive() {
+      return this.filterItemsLive(this.allitems);
     }
+  },
+
+  methods: {
+    fetchAllRecords: function fetchAllRecords() {
+      var _this = this;
+
+      var route = '/api/announcement/queueload/' + this.atype;
+
+      this.$http.get(route).then(function (response) {
+        //response.status;
+        console.log('response.status=' + response.status);
+        console.log('response.ok=' + response.ok);
+        console.log('response.statusText=' + response.statusText);
+        console.log('response.data=' + response.data);
+
+        _this.$set('allitems', response.data.data);
+
+        _this.checkOverDataFilter();
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+    checkOverData: function checkOverData() {
+      console.log('this.items=' + this.allitems);
+    },
+    filterItemsApproved: function filterItemsApproved(items) {
+      return items.filter(function (item) {
+        return (0, _moment2.default)(item.start_date).isAfter((0, _moment2.default)()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0;
+      });
+    },
+    filterItemsUnapproved: function filterItemsUnapproved(items) {
+      return items.filter(function (item) {
+        return item.is_approved === 0 && item.is_archived === 0;
+      });
+    },
+    filterItemsLive: function filterItemsLive(items) {
+      return items.filter(function (item) {
+        return (0, _moment2.default)(item.start_date).isSameOrBefore((0, _moment2.default)()) && item.is_approved === 1 && item.is_archived === 0 || item.is_approved === 1 && item.priority > 0 && item.is_archived === 0; // true
+      });
+    },
+    // moveToApproved: function(changeditem) {
+    //
+    //     // this.xitems.pop(changeditem);
+    //     console.log('moveToApproved' + changeditem.priority);
+    //     changeditem.is_approved = 1;
+    //     changeditem.priority = changeditem.priority;
+    //     this.updateRecord(changeditem)
+    // },
+    // moveToUnApproved: function(changeditem) {
+    //
+    //     // this.xitems.pop(changeditem);
+    //     console.log('moveToUnApproved' + changeditem)
+    //     changeditem.is_approved = 0;
+    //
+    //     this.updateRecord(changeditem)
+    // },
+    // itemyes: function(items) {
+    //     return items.filter(function(item) {
+    //         return item.is_approved === 1
+    //     });
+    // },
+    // itemno: function(items) {
+    //     return items.filter(function(item) {
+    //         return item.is_approved === 0
+    //     });
+    // },
+    // itemsByPriority: function(items) {
+    //     return items.sort(function(item) {
+    //         return item.is_approved === 0
+    //     });
+    // },
+    // movedItemIndex: function(mid) {
+    //     return this.xitems.findIndex(item => item.id == mid)
+    // },
+    // updateRecord: function(item) {
+    //     var movedid = item.id;
+    //     var movedRecord = item;
+    //     this.$http.patch('/api/announcement/updateItem/' + item.id, item, {
+    //             method: 'PATCH'
+    //
+    //         })
+    //         .then((response) => {
+    //             console.log('good?' + response)
+    //             var movedIndex = this.movedItemIndex(movedid);
+    //             // this.xitems.pop(movedRecord);
+    //             if (movedRecord.is_approved == 1) {
+    //                 this.xitems.splice(movedIndex, 1);
+    //                 this.items.push(movedRecord);
+    //             } else {
+    //                 this.items.splice(movedIndex, 1);
+    //                 this.xitems.push(movedRecord);
+    //             }
+    //
+    //             console.log('movedIndex===' + movedIndex)
+    //         }, (response) => {
+    //             console.log('bad?' + response)
+    //         });
+    // },
+
+    // fetchUnapprovedRecords: function() {
+    //     this.$http.get('/api/announcement/unapprovedItems')
+    //
+    //     .then((response) => {
+    //         console.log('response.status=' + response.status);
+    //         console.log('response.ok=' + response.ok);
+    //         console.log('response.statusText=' + response.statusText);
+    //         console.log('response.data=' + response.data);
+    //
+    //         this.$set('xitems', response.data.data)
+    //
+    //         this.fetchApprovedRecords();
+    //     }, (response) => {
+    //         //error callback
+    //         console.log("ERRORS");
+    //
+    //         //  this.formErrors =  response.data.error.message;
+    //
+    //     }).bind(this);
+    // },
+    // fetchApprovedRecords: function() {
+    //     this.$http.get('/api/announcement/approvedItems')
+    //
+    //     .then((response) => {
+    //         //response.status;
+    //         console.log('response.status=' + response.status);
+    //         console.log('response.ok=' + response.ok);
+    //         console.log('response.statusText=' + response.statusText);
+    //         console.log('response.data=' + response.data);
+    //         // data = response.data;
+    //         //
+    //         this.$set('items', response.data.data)
+    //
+    //         // this.allitems = response.data.data;
+    //         // console.log('this.record= ' + this.record);
+    //
+    //         this.checkOverDataFilter();
+    //     }, (response) => {
+    //         //error callback
+    //         console.log("ERRORS");
+    //
+    //         //  this.formErrors =  response.data.error.message;
+    //
+    //     }).bind(this);
+    // },
+
+    checkOverDataFilter: function checkOverDataFilter() {
+      console.log('items=' + this.items);
+    }
+  },
+
+  // the `events` option simply calls `$on` for you
+  // when the instance is created
+  events: {
+    // 'child-msg': function (msg) {
+    //   // `this` in event callbacks are automatically bound
+    //   // to the instance that registered it
+    //   this.messages.push(msg)
+    // }
+  }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"row\" _v-2f4f93f0=\"\">\n    <div class=\"col-md-4\" _v-2f4f93f0=\"\">\n        <h3 _v-2f4f93f0=\"\">Unapproved</h3>\n        <div id=\"items-unapproved\" _v-2f4f93f0=\"\">\n            <announcement-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-2f4f93f0=\"\">\n            </announcement-queue-item>\n        </div>\n    </div>\n    <!-- /.col-md-6 -->\n    <div class=\"col-md-4\" _v-2f4f93f0=\"\">\n        <h3 _v-2f4f93f0=\"\">Approved</h3>\n        <div id=\"items-approved\" _v-2f4f93f0=\"\">\n            <announcement-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' -1\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-2f4f93f0=\"\">\n            </announcement-queue-item>\n        </div>\n    </div>\n    <div class=\"col-md-4\" _v-2f4f93f0=\"\">\n        <h3 _v-2f4f93f0=\"\">Live</h3>\n        <div id=\"items-live\" _v-2f4f93f0=\"\">\n            <announcement-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-2f4f93f0=\"\">\n            </announcement-queue-item>\n        </div>\n    </div>\n    <!-- /.col-md-6 -->\n</div>\n<!-- ./row -->\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\" _v-2f4f93f0=\"\">\n    <div class=\"col-md-4\" _v-2f4f93f0=\"\">\n      <h3 _v-2f4f93f0=\"\">Unapproved</h3>\n      <div id=\"items-unapproved\" _v-2f4f93f0=\"\">\n        <announcement-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-2f4f93f0=\"\">\n      </announcement-queue-item>\n    </div>\n  </div>\n  <!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-2f4f93f0=\"\">\n    <h3 _v-2f4f93f0=\"\">Approved</h3>\n    <div id=\"items-approved\" _v-2f4f93f0=\"\">\n      <announcement-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' -1\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-2f4f93f0=\"\">\n    </announcement-queue-item>\n  </div>\n</div>\n<div class=\"col-md-4\" _v-2f4f93f0=\"\">\n  <h3 _v-2f4f93f0=\"\">Live</h3>\n  <div id=\"items-live\" _v-2f4f93f0=\"\">\n    <announcement-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-2f4f93f0=\"\">\n  </announcement-queue-item>\n</div>\n</div>\n<!-- /.col-md-6 -->\n</div>\n<!-- ./row -->\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n#items-unapproved .box[_v-2f4f93f0] {\n    margin-bottom: 4px;\n}\n\n#items-approved .box[_v-2f4f93f0] {\n    margin-bottom: 4px;\n}\n\n"] = false
+    __vueify_insert__.cache["\n\n#items-unapproved .box[_v-2f4f93f0] {\n  margin-bottom: 4px;\n}\n\n#items-approved .box[_v-2f4f93f0] {\n  margin-bottom: 4px;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
