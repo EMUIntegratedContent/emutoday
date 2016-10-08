@@ -20,7 +20,7 @@
                         </div><!-- /.form-group -->
                       <div class="form-group">
                         <label class="sr-only" for="priority-number">Priority</label>
-                            <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" class="form-control" number>
+                            <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" number>
                                 <option v-for="option in options" v-bind:value="option.value">
                                     {{option.text}}
                                 </option>
