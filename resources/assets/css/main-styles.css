@@ -12,6 +12,9 @@ Tags: Gulp, Laravel
 
 /****** General Styles *********/
 
+html, body {
+  background-color: #a9a9a9;
+}
 
 /*a {
 color: #0f654a;
@@ -763,6 +766,17 @@ img.bottom-logo{
 }
 #final-bar {
     padding-bottom: 2rem;
+}
+#base-message-bar #feedback-email {
+    float: left;
+}
+#base-message-bar #today-login {
+/* the admin login element */
+    float: right;
+    color: #888;
+}
+#base-message-bar #today-login:hover {
+    color: skyblue;
 }
 
 /*announcement listing bar*/

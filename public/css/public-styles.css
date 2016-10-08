@@ -5599,6 +5599,9 @@ Tags: Gulp, Laravel
 
 /****** General Styles *********/
 
+html, body {
+  background-color: #a9a9a9;
+}
 
 /*a {
 color: #0f654a;
@@ -6311,13 +6314,6 @@ ul.calendar-event-group a{
     padding-top:.6rem;
     margin-bottom: .6rem;
 }
-#base-message-bar #feedback-email {
-    float: left;
-}
-#base-message-bar #today-login {
-    float: right;
-    color: #666;
-}
 #base-bar {
     background-color: #a9a9a9;
     width: 100%;
@@ -6357,6 +6353,17 @@ img.bottom-logo{
 }
 #final-bar {
     padding-bottom: 2rem;
+}
+#base-message-bar #feedback-email {
+    float: left;
+}
+#base-message-bar #today-login {
+/* the admin login element */
+    float: right;
+    color: #888;
+}
+#base-message-bar #today-login:hover {
+    color: skyblue;
 }
 
 /*announcement listing bar*/

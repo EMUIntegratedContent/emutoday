@@ -1,7 +1,8 @@
 <!-- ******* base-message-bar and base-bar content -->
 <div id="base-message-bar">
 	<div class="row column">
-		<p id="feedback-email">Send feedback to: <a href="mailto:emu_today@email.edu">emu_today@emich.edu</a></p><p><a id="today-login" aria-hidden="true" href="/admin/dashboard">e</a></p>
+		<p id="feedback-email">Send feedback to: <a href="mailto:emu_today@email.edu">emu_today@emich.edu</a></p>
+		<p aria-hidden="true"><a aria-hidden="true" id="today-login" aria-hidden="true" href="/admin/dashboard"><i class="fa fa-lock" aria-hidden="true"></i></a></p>
 	</div>
 </div>  <!-- END base-message-bar -->
 <div id="base-bar">
