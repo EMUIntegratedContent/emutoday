@@ -50,18 +50,18 @@
         <div class="tabs-content" data-tabs-content="newshub-tabs">
           <div class="tabs-panel newshub-tab-front is-active" id="newshub-headlines-front">
             <ul>
-              @foreach ($currentStorysBasic as $basicstory)
-              <li><a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
-              @endforeach
-              <li><a href="/story/news" class="bottom-tab-link">More Headlines</a></li>
-            </ul>
-          </div>
-          <div class="tabs-panel newshub-tab-front" id="newshub-announcements-front">
-            <ul>
               @foreach ($currentAnnouncements as $announcement)
               <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
               @endforeach
               <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
+            </ul>
+          </div>
+          <div class="tabs-panel newshub-tab-front" id="newshub-announcements-front">
+            <ul>
+              @foreach ($currentStorysBasic as $basicstory)
+              <li><a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
+              @endforeach
+              <li><a href="/story/news" class="bottom-tab-link">More Headlines</a></li>
             </ul>
           </div>
 
@@ -112,7 +112,6 @@
       </div>
     </div>
 
-
     <!--Twitter-->
     <div id="twitter-info" class="large-5 medium-6 small-12 columns">
       <div class="row">
@@ -122,9 +121,11 @@
       </div>
       <div class="twitter-feed">
         <ul class="twitter-content">
-          @foreach($tweets as $tweet)
-          <li><a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> {{ $tweet['text'] }}</li>
-          @endforeach
+          @unless(empty($tweets))
+            @foreach($tweets as $tweet)
+            <li><a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> {{ $tweet['text'] }}</li>
+            @endforeach
+          @endunless
         </ul>
         <div class="twitterlink">
           <p><a href="http://emich.edu/twitter">See all EMU Twitter Feeds</a></p>
