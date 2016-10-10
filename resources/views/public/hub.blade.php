@@ -48,7 +48,7 @@
 
         </ul>
         <div class="tabs-content" data-tabs-content="newshub-tabs">
-          <div class="tabs-panel newshub-tab-front is-active" id="newshub-headlines-front">
+          <div class="tabs-panel newshub-tab-front is-active" id="newshub-announcements-front">
             <ul>
               @foreach ($currentAnnouncements as $announcement)
               <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
@@ -56,7 +56,7 @@
               <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
             </ul>
           </div>
-          <div class="tabs-panel newshub-tab-front" id="newshub-announcements-front">
+          <div class="tabs-panel newshub-tab-front" id="newshub-headlines-front">
             <ul>
               @foreach ($currentStorysBasic as $basicstory)
               <li><a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
