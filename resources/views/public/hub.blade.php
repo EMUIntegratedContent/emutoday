@@ -43,8 +43,8 @@
     <div class="row">
       <div class="large-9 medium-8 small-12 columns">
         <ul class="tabs" data-tabs id="newshub-tabs">
-          <li class="tabs-title is-active"><a href="#newshub-headlines-front" aria-selected="true"><p class="subhead-title">News Headlines</p></a></li>
-          <li class="tabs-title"><a href="#newshub-announcements-front"><p class="subhead-title">Announcements</p></a></li>
+          <li class="tabs-title is-active"><a href="#newshub-announcements-front" aria-selected="true"><p class="subhead-title">Announcements</p></a></li>
+          <li class="tabs-title"><a href="#newshub-headlines-front"><p class="subhead-title">News Headlines</p></a></li>
 
         </ul>
         <div class="tabs-content" data-tabs-content="newshub-tabs">
