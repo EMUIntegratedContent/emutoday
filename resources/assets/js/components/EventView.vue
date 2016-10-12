@@ -55,9 +55,11 @@
         },
         methods : {
           handleEventFetch: function(eobject) {
-            this.$http.get('/api/calendar/events/' + eobject.yearVar + '/'+ eobject.monthVar + '/' + eobject.dayVar).then(function(response) {
-             this.$broadcast('responseCalEvent', response.data)
-            console.log('handleEventFetch========' + response.data );
+            eobject.cateid ? route = '/api/calendar/events/' + eobject.yearVar + '/'+ eobject.monthVar + '/' + eobject.dayVar + '/' + eobject.cateid : route = '/api/calendar/events/' + eobject.yearVar + '/'+ eobject.monthVar + '/' + eobject.dayVar;
+
+            this.$http.get(route).then(function(response) {
+            this.$broadcast('responseCalEvent', response.data)
+            console.log('handleEventFetch========' + JSON.stringify(response.data) );
 
             });
           },

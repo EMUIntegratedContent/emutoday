@@ -7,6 +7,9 @@
         <div v-show="formMessage.isOk" :class="calloutSuccess">
           <h5>{{formMessage.msg}}</h5>
         </div>
+        <div v-show="formMessage.isErr"  :class="calloutFail">
+          <h5>There are errors.</h5>
+        </div>
       </div>
       <!-- /.small-12 columns -->
     </div>
@@ -216,8 +219,8 @@ h5.form-control {
   margin: 0;
   display: block;
   width: 100%;
-  height: 34px;
-  padding: 6px 12px;
+  height: 2.4375rem;
+  padding: .5rem;
   font-size: 14px;
   line-height: 1.42857143;
   color: #222222;
@@ -302,6 +305,7 @@ module.exports = {
       response: {},
       formMessage: {
         isOk: false,
+        isErr: false,
         msg: ''
       },
       formInputs: {},
@@ -372,6 +376,9 @@ module.exports = {
     calloutSuccess:function(){
       return (this.framework == 'foundation')? 'callout success':'alert alert-success'
     },
+    calloutFail:function(){
+      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
+    },
     iconStar: function() {
       return (this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star')
     },
@@ -422,6 +429,10 @@ module.exports = {
     //     },
     readyAgain: function() {
 
+    },
+    fetchSubmittedRecord: function(recid){
+      this.recordexists = true;
+      this.fetchCurrentRecord(recid);
     },
     fetchCurrentRecord: function(recid) {
       this.$http.get('/api/announcement/' + recid + '/edit')
@@ -507,6 +518,8 @@ module.exports = {
     submitForm: function(e) {
       e.preventDefault(); // Stop form defualt action
 
+      $('html, body').animate({ scrollTop: 0 }, 'fast');
+
       this.record.user_id = this.authorid;
       this.record.type = this.type;
       let tempid;
@@ -532,11 +545,14 @@ module.exports = {
         this.formMessage.msg = response.data.message;
         this.currentRecordId = response.data.newdata.record_id;
         this.formMessage.isOk = response.ok; // Success message
+        this.formMessage.isErr = false;
         this.recordexists = true;
         this.formErrors = {}; // Clear errors?
         this.fetchCurrentRecord(this.currentRecordId)
 
       }, (response) => { // If invalid. error callback
+        this.formMessage.isOk = false;
+        this.formMessage.isErr = true;
         // Set errors from validation to vue data
         console.log(response.data.error.message);
         this.formErrors = response.data.error.message;

@@ -93,6 +93,10 @@ class Event extends Model
   {
     return $this->belongsToMany('Emutoday\Category', 'cea_category_event', 'event_id', 'category_id');
   }
+  public function doNothing()
+  { //
+      // do nothing
+  }
 
 
   /**

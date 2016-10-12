@@ -6,7 +6,7 @@ Vue.use(VueResource);
 // var moment = require('moment');
 import AnnouncementForm from './components/AnnouncementForm.vue';
 
-new Vue({
+var vm = new Vue({
     el: '#vue-announcements',
     components: {AnnouncementForm},
     // http: {
@@ -20,3 +20,10 @@ new Vue({
       console.log('AnnouncementForm ready');
     }
 });
+
+// Assign events to edit buttons
+var editBtns = document.getElementsByClassName('editBtn'); // Get edit elems
+for (var i=0;i<editBtns.length;i++){
+  // Assign an event listener to call a method within the Vue instance
+  editBtns[i].addEventListener('click', function(e){ vm.$refs.foo.fetchSubmittedRecord(this.id) })
+};

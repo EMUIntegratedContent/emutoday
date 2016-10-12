@@ -59,7 +59,7 @@ class CalendarController extends Controller
                  $events = $this->events->where([
                     ['start_date', '>=', $cd],
                     ['is_approved', 1],
-                    ['is_canceled', 0]
+                    // ['is_canceled', 0]
                     ])->orderBy('start_date', 'asc')->get();
 
                 $groupedevents = $events_this_month->groupBy(function ($item, $key) {
@@ -193,8 +193,7 @@ class CalendarController extends Controller
                 //return redirect()->route('auth.login');
                 return redirect()->guest('/login');
             }
-            $approveditems = null;
-            $submitteditems = null;
+
             // $approveditems = $this->event->where([
             //     ['user_id', $user->id],
             //     ['is_approved',1]
@@ -203,10 +202,10 @@ class CalendarController extends Controller
             //         ['user_id', $user->id],
             //         ['is_approved',0]
             //         ])->get();
+        $approveditems = $user->events()->where('is_approved', '1')->get();;
+        $submitteditems = $user->events()->where('is_approved', '0')->get();
 
         return view('public.calendar.eventform', compact('event', 'approveditems','submitteditems'));
 
-
         }
-
 }

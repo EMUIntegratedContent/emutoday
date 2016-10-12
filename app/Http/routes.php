@@ -21,7 +21,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('active-categories/{year?}/{month?}/{day?}','Api\CategoriesController@activeCategories');
 
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
-    Route::get('calendar/events/{year?}/{month?}/{day?}','Api\CalendarController@eventsByDay');
+    Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
 
     /**
@@ -61,8 +61,8 @@ Route::group(['prefix' => 'api'], function() {
     // Route::get('event', ['as' => 'api.event', 'uses' => 'Api\EventController@index']);
     Route::patch('event/archiveitem/{id}', ['as' => 'api_event_archiveitem', 'uses' => 'Api\EventController@archiveItem']);
     Route::patch('event/updateitem/{id}', ['as' => 'api_event_updateitem', 'uses' =>'Api\EventController@updateItem']);
-
-
+    Route::post('event/{id}/delete', ['as' => 'api_event_deleteitem', 'uses' => 'Api\EventController@delete']);
+    Route::patch('event/{id}/cancel', ['as' => 'api_event_cancelitem', 'uses' => 'Api\EventController@cancel']);
     Route::resource('event', 'Api\EventController');
 
 

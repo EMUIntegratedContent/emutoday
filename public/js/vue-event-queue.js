@@ -16327,11 +16327,11 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _moment = require('moment');
@@ -16346,255 +16346,255 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import EventViewContent from './EventViewContent.vue'
 exports.default = {
-    components: { EventQueueItem: _EventQueueItem2.default },
-    props: ['annrecords'],
-    data: function data() {
-        return {
-            resource: {},
-            allitems: [],
-            otheritems: [],
-            appitems: [],
-            unappitems: [],
-            items: [],
-            xitems: [],
-            objs: {}
-        };
+  components: { EventQueueItem: _EventQueueItem2.default },
+  props: ['annrecords'],
+  data: function data() {
+    return {
+      resource: {},
+      allitems: [],
+      otheritems: [],
+      appitems: [],
+      unappitems: [],
+      items: [],
+      xitems: [],
+      objs: {}
+    };
+  },
+  ready: function ready() {
+    this.fetchAllRecords();
+  },
+
+  computed: {
+    top4: function top4() {},
+    currentDateAndTime: function currentDateAndTime() {
+      return (0, _moment2.default)();
     },
-    ready: function ready() {
-        this.fetchAllRecords();
+    itemsApproved: function itemsApproved() {
+      return this.filterItemsApproved(this.allitems);
     },
-
-    computed: {
-        top4: function top4() {},
-        currentDateAndTime: function currentDateAndTime() {
-            return (0, _moment2.default)();
-        },
-        itemsApproved: function itemsApproved() {
-            return this.filterItemsApproved(this.allitems);
-        },
-        itemsUnapproved: function itemsUnapproved() {
-            return this.filterItemsUnapproved(this.allitems);
-        },
-        itemsPromoted: function itemsPromoted() {
-            return this.filterItemsPromoted(this.itemsApproved);
-        },
-        itemsLive: function itemsLive() {
-            return this.filterItemsLive(this.allitems);
-        }
+    itemsUnapproved: function itemsUnapproved() {
+      return this.filterItemsUnapproved(this.allitems);
     },
-    methods: {
-        fetchAllRecords: function fetchAllRecords() {
-            var _this = this;
-
-            this.$http.get('/api/event/queueload').then(function (response) {
-                //response.status;
-                console.log('response.status=' + response.status);
-                console.log('response.ok=' + response.ok);
-                console.log('response.statusText=' + response.statusText);
-                console.log('response.data=' + response.data);
-                _this.$set('allitems', response.data.data);
-                _this.checkOverDataFilter();
-            }, function (response) {
-                //error callback
-                console.log("ERRORS");
-            }).bind(this);
-        },
-        checkOverDataFilter: function checkOverDataFilter() {
-            console.log('items=' + this.items);
-            // var unapprovedItems = this.allitems.filter(function(item) {
-            // 	return item.approved === 0
-            // });
-            //
-            // this.xitems = unapprovedItems;
-            //
-            //
-            // var approvedItems = this.allitems.filter(function(item) {
-            // 	return item.approved === 1
-            // });
-            //
-            // this.items = approvedItems.sort(function(a,b){
-            // 	return parseFloat(b.priority) - parseFloat(a.priority);
-            // });
-        },
-        filterItemsApproved: function filterItemsApproved(items) {
-            return items.filter(function (item) {
-                return (0, _moment2.default)(item.start_date_time).isAfter((0, _moment2.default)()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0; // true
-
-                // return item.is_approved === 1
-            });
-        },
-        filterItemsUnapproved: function filterItemsUnapproved(items) {
-            return items.filter(function (item) {
-                return item.is_approved === 0;
-            });
-        },
-        filterItemsPromoted: function filterItemsPromoted(items) {
-            return items.filter(function (item) {
-                return item.is_promoted === 1;
-            });
-        },
-        filterItemsLive: function filterItemsLive(items) {
-            return items.filter(function (item) {
-                return (0, _moment2.default)(item.start_date_time).isSameOrBefore((0, _moment2.default)()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1; // true
-
-                // let thisDateTime = item.start_date + ' ' + item.start_time;
-                // return moment(thisDateTime, "YYYY-MM-DD h:mm A").isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1;  // true
-
-                // return moment(item.start_date).isAfter(moment())
-                // return item.live === 1
-            });
-        },
-        // checkIndexWithValue: function (chitem){
-        // 	return
-        // },
-
-        moveToApproved: function moveToApproved(changeditem) {
-
-            // this.xitems.pop(changeditem);
-            console.log('moveToApproved' + changeditem.priority);
-            changeditem.is_approved = 1;
-            changeditem.priority = changeditem.priority;
-            this.updateRecord(changeditem);
-        },
-        moveToUnApproved: function moveToUnApproved(changeditem) {
-
-            // this.xitems.pop(changeditem);
-            console.log('moveToUnApproved' + changeditem);
-            changeditem.is_approved = 0;
-
-            this.updateRecord(changeditem);
-        },
-        movedItemIndex: function movedItemIndex(mid) {
-            return this.xitems.findIndex(function (item) {
-                return item.id == mid;
-            });
-        },
-        updateRecord: function updateRecord(item) {
-            var currentRecordId = item.id;
-
-            var currentRecord = item;
-            this.$http.patch('/api/event/updateItem/' + item.id, item, {
-                method: 'PATCH'
-            }).then(function (response) {
-                console.log('good_eventQueue' + response);
-
-                //var movedIndex = this.movedItemIndex(movedid);
-                // this.xitems.pop(movedRecord);
-                // if (movedRecord.approved == 1) {
-                //         this.xitems.splice(movedIndex, 1);
-                //      this.items.push(movedRecord);
-                //  } else {
-                //      this.items.splice(movedIndex, 1);
-                //     this.xitems.push(movedRecord);
-                //  }
-
-                //console.log('movedIndex==='+ movedIndex)
-            }, function (response) {
-                console.log('bad?' + response);
-            });
-        },
-        // fetchUnapprovedRecords: function(){
-        //     this.$http.get('/api/event/unapprovedItems')
-        //
-        //         .then((response) =>{
-        //             console.log('response.status=' + response.status);
-        //             console.log('response.ok=' + response.ok);
-        //             console.log('response.statusText=' + response.statusText);
-        //             console.log('response.data=' + response.data);
-        //
-        //             this.$set('unappitems', response.data.data)
-        //
-        //             this.fetchApprovedRecords();
-        //         }, (response) => {
-        //             //error callback
-        //             console.log("ERRORS");
-        //
-        //             //  this.formErrors =  response.data.error.message;
-        //
-        //         }).bind(this);
-        // },
-        // fetchApprovedRecords: function() {
-        //     this.$http.get('/api/event/approvedItems')
-        //
-        //         .then((response) =>{
-        //                 //response.status;
-        //                 console.log('response.status=' + response.status);
-        //                 console.log('response.ok=' + response.ok);
-        //                 console.log('response.statusText=' + response.statusText);
-        //                 console.log('response.data=' + response.data);
-        //                 // data = response.data;
-        //                 //
-        //                 this.$set('allitems', response.data.data)
-        //
-        //                 // this.allitems = response.data.data;
-        //                 // console.log('this.record= ' + this.record);
-        //
-        //                 this.checkOverDataFilter();
-        //             }, (response) => {
-        //                 //error callback
-        //                 console.log("ERRORS");
-        //
-        //                 //  this.formErrors =  response.data.error.message;
-        //
-        //             }).bind(this);
-        //     },
-        //
-        // fetchOtherRecords: function() {
-        //     this.$http.get('/api/event/otherItems')
-        //
-        //         .then((response) =>{
-        //                 //response.status;
-        //                 console.log('response.status=' + response.status);
-        //                 console.log('response.ok=' + response.ok);
-        //                 console.log('response.statusText=' + response.statusText);
-        //                 console.log('response.data=' + response.data);
-        //                 // data = response.data;
-        //                 //
-        //                 this.$set('otheritems', response.data.data)
-        //
-        //                 // this.allitems = response.data.data;
-        //                 // console.log('this.record= ' + this.record);
-        //
-        //                 this.checkOverDataFilter();
-        //             }, (response) => {
-        //                 //error callback
-        //                 console.log("ERRORS");
-        //
-        //                 //  this.formErrors =  response.data.error.message;
-        //
-        //             }).bind(this);
-        //         },
-        checkOverData: function checkOverData() {
-            console.log('this.items=' + this.allitems);
-            for (var i = 0; i < this.allitems.length; i++) {
-                if (this.allitems[i].is_approved == 1) {
-                    this.items.push(this.allitems.splice(i, 1));
-                } else {
-                    this.xitems.push(this.allitems.splice(i, 1));
-                }
-            }
-        }
-
+    itemsPromoted: function itemsPromoted() {
+      return this.filterItemsPromoted(this.itemsApproved);
     },
-
-    // the `events` option simply calls `$on` for you
-    // when the instance is created
-    events: {
-        // 'child-msg': function (msg) {
-        //   // `this` in event callbacks are automatically bound
-        //   // to the instance that registered it
-        //   this.messages.push(msg)
-        // }
+    itemsLive: function itemsLive() {
+      return this.filterItemsLive(this.allitems);
     }
+  },
+  methods: {
+    fetchAllRecords: function fetchAllRecords() {
+      var _this = this;
+
+      this.$http.get('/api/event/queueload').then(function (response) {
+        //response.status;
+        console.log('response.status=' + response.status);
+        console.log('response.ok=' + response.ok);
+        console.log('response.statusText=' + response.statusText);
+        console.log('response.data=' + response.data);
+        _this.$set('allitems', response.data.data);
+        _this.checkOverDataFilter();
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+    checkOverDataFilter: function checkOverDataFilter() {
+      console.log('items=' + this.items);
+      // var unapprovedItems = this.allitems.filter(function(item) {
+      // 	return item.approved === 0
+      // });
+      //
+      // this.xitems = unapprovedItems;
+      //
+      //
+      // var approvedItems = this.allitems.filter(function(item) {
+      // 	return item.approved === 1
+      // });
+      //
+      // this.items = approvedItems.sort(function(a,b){
+      // 	return parseFloat(b.priority) - parseFloat(a.priority);
+      // });
+    },
+    filterItemsApproved: function filterItemsApproved(items) {
+      return items.filter(function (item) {
+        return (0, _moment2.default)(item.start_date_time).isAfter((0, _moment2.default)()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0; // true
+
+        // return item.is_approved === 1
+      });
+    },
+    filterItemsUnapproved: function filterItemsUnapproved(items) {
+      return items.filter(function (item) {
+        return item.is_approved === 0;
+      });
+    },
+    filterItemsPromoted: function filterItemsPromoted(items) {
+      return items.filter(function (item) {
+        return item.is_promoted === 1;
+      });
+    },
+    filterItemsLive: function filterItemsLive(items) {
+      return items.filter(function (item) {
+        return (0, _moment2.default)(item.start_date_time).isSameOrBefore((0, _moment2.default)()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1; // true
+
+        // let thisDateTime = item.start_date + ' ' + item.start_time;
+        // return moment(thisDateTime, "YYYY-MM-DD h:mm A").isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1;  // true
+
+        // return moment(item.start_date).isAfter(moment())
+        // return item.live === 1
+      });
+    },
+    // checkIndexWithValue: function (chitem){
+    // 	return
+    // },
+
+    moveToApproved: function moveToApproved(changeditem) {
+
+      // this.xitems.pop(changeditem);
+      console.log('moveToApproved' + changeditem.priority);
+      changeditem.is_approved = 1;
+      changeditem.priority = changeditem.priority;
+      this.updateRecord(changeditem);
+    },
+    moveToUnApproved: function moveToUnApproved(changeditem) {
+
+      // this.xitems.pop(changeditem);
+      console.log('moveToUnApproved' + changeditem);
+      changeditem.is_approved = 0;
+
+      this.updateRecord(changeditem);
+    },
+    movedItemIndex: function movedItemIndex(mid) {
+      return this.xitems.findIndex(function (item) {
+        return item.id == mid;
+      });
+    },
+    updateRecord: function updateRecord(item) {
+      var currentRecordId = item.id;
+
+      var currentRecord = item;
+      this.$http.patch('/api/event/updateItem/' + item.id, item, {
+        method: 'PATCH'
+      }).then(function (response) {
+        console.log('good_eventQueue' + response);
+
+        //var movedIndex = this.movedItemIndex(movedid);
+        // this.xitems.pop(movedRecord);
+        // if (movedRecord.approved == 1) {
+        //         this.xitems.splice(movedIndex, 1);
+        //      this.items.push(movedRecord);
+        //  } else {
+        //      this.items.splice(movedIndex, 1);
+        //     this.xitems.push(movedRecord);
+        //  }
+
+        //console.log('movedIndex==='+ movedIndex)
+      }, function (response) {
+        console.log('bad?' + response);
+      });
+    },
+    // fetchUnapprovedRecords: function(){
+    //     this.$http.get('/api/event/unapprovedItems')
+    //
+    //         .then((response) =>{
+    //             console.log('response.status=' + response.status);
+    //             console.log('response.ok=' + response.ok);
+    //             console.log('response.statusText=' + response.statusText);
+    //             console.log('response.data=' + response.data);
+    //
+    //             this.$set('unappitems', response.data.data)
+    //
+    //             this.fetchApprovedRecords();
+    //         }, (response) => {
+    //             //error callback
+    //             console.log("ERRORS");
+    //
+    //             //  this.formErrors =  response.data.error.message;
+    //
+    //         }).bind(this);
+    // },
+    // fetchApprovedRecords: function() {
+    //     this.$http.get('/api/event/approvedItems')
+    //
+    //         .then((response) =>{
+    //                 //response.status;
+    //                 console.log('response.status=' + response.status);
+    //                 console.log('response.ok=' + response.ok);
+    //                 console.log('response.statusText=' + response.statusText);
+    //                 console.log('response.data=' + response.data);
+    //                 // data = response.data;
+    //                 //
+    //                 this.$set('allitems', response.data.data)
+    //
+    //                 // this.allitems = response.data.data;
+    //                 // console.log('this.record= ' + this.record);
+    //
+    //                 this.checkOverDataFilter();
+    //             }, (response) => {
+    //                 //error callback
+    //                 console.log("ERRORS");
+    //
+    //                 //  this.formErrors =  response.data.error.message;
+    //
+    //             }).bind(this);
+    //     },
+    //
+    // fetchOtherRecords: function() {
+    //     this.$http.get('/api/event/otherItems')
+    //
+    //         .then((response) =>{
+    //                 //response.status;
+    //                 console.log('response.status=' + response.status);
+    //                 console.log('response.ok=' + response.ok);
+    //                 console.log('response.statusText=' + response.statusText);
+    //                 console.log('response.data=' + response.data);
+    //                 // data = response.data;
+    //                 //
+    //                 this.$set('otheritems', response.data.data)
+    //
+    //                 // this.allitems = response.data.data;
+    //                 // console.log('this.record= ' + this.record);
+    //
+    //                 this.checkOverDataFilter();
+    //             }, (response) => {
+    //                 //error callback
+    //                 console.log("ERRORS");
+    //
+    //                 //  this.formErrors =  response.data.error.message;
+    //
+    //             }).bind(this);
+    //         },
+    checkOverData: function checkOverData() {
+      console.log('this.items=' + this.allitems);
+      for (var i = 0; i < this.allitems.length; i++) {
+        if (this.allitems[i].is_approved == 1) {
+          this.items.push(this.allitems.splice(i, 1));
+        } else {
+          this.xitems.push(this.allitems.splice(i, 1));
+        }
+      }
+    }
+
+  },
+
+  // the `events` option simply calls `$on` for you
+  // when the instance is created
+  events: {
+    // 'child-msg': function (msg) {
+    //   // `this` in event callbacks are automatically bound
+    //   // to the instance that registered it
+    //   this.messages.push(msg)
+    // }
+  }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"row\" _v-b5fb57ee=\"\">\n            <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n            <h3 _v-b5fb57ee=\"\">Unapproved Events</h3>\n                <div id=\"items-unapproved\" _v-b5fb57ee=\"\">\n                    <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-b5fb57ee=\"\">\n                </event-queue-item>\n                </div>\n            </div><!-- /.col-md-6 -->\n            <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n                    <h3 _v-b5fb57ee=\"\">Approved Events</h3>\n                <div id=\"items-approved\" _v-b5fb57ee=\"\">\n                    <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-b5fb57ee=\"\">\n                </event-queue-item>\n                    </div>\n            </div><!-- /.col-md-6 -->\n            <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n                    <h3 _v-b5fb57ee=\"\">Live Events</h3>\n                <div id=\"items-live\" _v-b5fb57ee=\"\">\n                <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-b5fb57ee=\"\">\n                </event-queue-item>\n                    </div>\n            </div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\" _v-b5fb57ee=\"\">\n    <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n      <h3 _v-b5fb57ee=\"\">Unapproved Events</h3>\n      <div id=\"items-unapproved\" _v-b5fb57ee=\"\">\n        <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-b5fb57ee=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n    <h3 _v-b5fb57ee=\"\">Approved Events</h3>\n    <div id=\"items-approved\" _v-b5fb57ee=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-b5fb57ee=\"\">\n    </event-queue-item>\n  </div>\n</div><!-- /.col-md-6 -->\n<div class=\"col-md-4\" _v-b5fb57ee=\"\">\n  <h3 _v-b5fb57ee=\"\">Live Events</h3>\n  <div id=\"items-live\" _v-b5fb57ee=\"\">\n    <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-b5fb57ee=\"\">\n  </event-queue-item>\n</div>\n</div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#items-unapproved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n    margin-bottom: 4px;\n}\n"] = false
+    __vueify_insert__.cache["\n#items-unapproved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

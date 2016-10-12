@@ -3,9 +3,12 @@
     <slot name="csrf"></slot>
     <!-- <slot name="author_id" v-model="record.author_id"></slot> -->
     <div class="row">
-      <div :class="md12col">
+      <div v-bind:class="md12col">
         <div v-show="formMessage.isOk"  :class="calloutSuccess">
           <h5>{{formMessage.msg}}</h5>
+        </div>
+        <div v-show="formMessage.isErr"  :class="calloutFail">
+          <h5>There are errors.</h5>
         </div>
         <div class="form-group">
           <label>Title <span :class="iconStar" class="reqstar"></span></label>
@@ -200,27 +203,12 @@
       <template v-if="record.related_link_1">
         <div class="row">
           <div :class="md6col">
-            <label for="related_link_2_txt">Link Text</label><input v-model="record.related_link_2_txt" class="form-control" name="related_link_2_txt" type="text">
+            <label for="related_link_2_txt">Second Link Text</label><input v-model="record.related_link_2_txt" class="form-control" name="related_link_2_txt" type="text">
           </div><!-- /.md6col -->
         </div><!-- /.row -->
         <div class="row">
           <div :class="md12col">
-            <label for="related_link_2">Link URL</label><input v-model="record.related_link_2" class="form-control" name="related_link_2_txt" type="text">
-          </div><!-- /.md12col -->
-        </div><!-- /.row -->
-        {{relatedLink2}}
-
-
-      </template>
-      <template v-if="record.related_link_1">
-        <div class="row">
-          <div :class="md6col">
-            <label for="related_link_2_txt">Link Text</label><input v-model="record.related_link_2_txt" class="form-control" name="related_link_2_txt" type="text">
-          </div><!-- /.md6col -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div :class="md12col">
-            <label for="related_link_2">Link URL</label><input v-model="record.related_link_2" class="form-control" name="related_link_2_txt" type="text">
+            <label for="related_link_2">Second Link URL</label><input v-model="record.related_link_2" class="form-control" name="related_link_2_txt" type="text">
           </div><!-- /.md12col -->
         </div><!-- /.row -->
         {{relatedLink2}}
@@ -228,12 +216,12 @@
       <template v-if="record.related_link_2">
         <div class="row">
           <div :class="md6col">
-            <label for="related_link_3_txt">Link Text</label><input v-model="record.related_link_3_txt" class="form-control" name="related_link_3_txt" type="text">
+            <label for="related_link_3_txt">Third Link Text</label><input v-model="record.related_link_3_txt" class="form-control" name="related_link_3_txt" type="text">
           </div><!-- /.md6col -->
         </div><!-- /.row -->
         <div class="row">
           <div :class="md12col">
-            <label for="related_link_3">Link URL</label><input v-model="record.related_link_3" class="form-control" name="related_link_3_txt" type="text">
+            <label for="related_link_3">Third Link URL</label><input v-model="record.related_link_3" class="form-control" name="related_link_3_txt" type="text">
           </div><!-- /.md12col -->
         </div><!-- /.row -->
         {{relatedLink3}}
@@ -406,7 +394,10 @@
 <div class="row">
   <div :class="md12col">
     <div :class="formGroup">
-      <button id="btn-event" @click="submitForm" type="submit" :class="btnPrimary">Submit For Approval</button>
+    <div v-bind:class="formGroup">
+      <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+      <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based of this information</button>
+      <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Event</button>
     </div>
   </form>
 </div><!-- /.md12col -->
@@ -484,10 +475,14 @@ input[type="text"]{
 form {
   padding-bottom: 320px;
 }
-
-
-
+.yellowBtn {
+  background: hsl(60, 70%, 50%);
+}
+.redBtn {
+  background: hsl(0, 90%, 70%);
+}
 </style>
+
 <script>
 import flatpickr from "flatpickr"
 import vSelect from "vue-select"
@@ -575,6 +570,7 @@ module.exports  = {
       vModelLike: "",
       formMessage: {
         isOk: false,
+        isErr: false,
         msg: ''
       },
       formInputs : {},
@@ -630,6 +626,12 @@ module.exports  = {
     calloutSuccess:function(){
       return (this.framework == 'foundation')? 'callout success':'alert alert-success'
     },
+    calloutFail:function(){
+      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
+    },
+    submitBtnLabel:function(){
+      return (this.recordexists)?'Update Event': 'Submit For Approval'
+    },
     computedLocation: function() {
       let bldg,room;
 
@@ -672,14 +674,14 @@ module.exports  = {
     },
     titleChars: function() {
       var str = this.record.title;
-      console.log(str.length);
+      // console.log(str.length);
       var cclength = str.length;
       return this.totalChars.title - cclength;
       // this.totalChars.title - (this.record.title).length
     },
     descriptionChars: function() {
       var str = this.record.description;
-      console.log(str.length);
+      // console.log(str.length);
       var cclength = str.length;
       return this.totalChars.description - cclength;
       // this.totalChars.title - (this.record.title).length
@@ -811,6 +813,25 @@ module.exports  = {
       });
     },
 
+    fetchSubmittedRecord: function(recid){
+    // Sets params for update record, Passes an id to fetchCurrentRecord
+      this.recordexists = true;
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      this.recordid = recid;
+      this.formErrors = {};
+      this.fetchCurrentRecord();
+    },
+
+    cancelRecord: function(recid){
+    // toggles cancel
+      this.$http.patch('/api/event/'+ recid + '/cancel')
+      .then((response) => {
+        console.log('GOOD:'+JSON.stringify(response))
+      }, (response) => {
+        console.log('BAD:'+JSON.stringify(response))
+      }).bind(this);
+    },
 
     fetchCurrentRecord: function() {
       this.$http.get('/api/event/'+ this.recordid + '/edit')
@@ -900,9 +921,40 @@ module.exports  = {
       });
     },
 
+    delEvent: function(e) {
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+
+      if(confirm('Would you like to delete this Event')==true){
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+        this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+        this.$http.post('/api/event/'+tempid+'/delete')
+
+        .then((response) =>{
+          this.$data = this.resetInital();
+          this.formMessage.isOk = response.ok;
+          this.formMessage.msg = response.body;
+          this.recordexists = false;
+
+        }, (response) => {
+          console.log('Error: '+JSON.stringify(response))
+        }).bind(this);
+      }
+    },
+
+    cloneEvent: function(e) {
+      e.preventDefault();
+      this.recordexists = false;
+      this.submitForm(e);
+    },
+
     submitForm: function(e) {
       //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
@@ -926,26 +978,37 @@ module.exports  = {
       // } else {
       //     tempid =this.record.id;
       // }
+      let tempid;
+      if (typeof this.currentRecordId != 'undefined'){
+        tempid = this.currentRecordId;
+      } else {
+        tempid = this.record.id;
+      }
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/event/' + this.record.id : '/api/event';
+      let route =  (this.recordexists) ? '/api/event/' + tempid : '/api/event';
 
-      this.$http.post('/api/story', this.record)
       this.$http[method](route, this.record)
 
-
-      this.$http.post('/api/event', this.record)
+      // this.$http.post('/api/story', this.record)
+      // this.$http.post('/api/event', this.record)
 
       .then((response) =>{
-        //response.status;
-        // console.log('response.status=' + response.status);
-        // console.log('response.ok=' + response.ok);
-        // console.log('response.statusText=' + response.statusText);
-        // console.log('response.data=' + response.data.message);
-        // this.formMessage.msg = response.data.message;
-        // this.formMessage.isOk = response.ok;
-        // this.recordexists = true;
+        response.status;
+        console.log('response.status=' + response.status);
+        console.log('response.ok=' + response.ok);
+        console.log('response.statusText=' + response.statusText);
+        console.log('response.data=' + response.data.message);
+        this.formMessage.msg = response.data.message;
+        this.formMessage.isOk = response.ok;
+        this.formMessage.isErr = false;
+        this.currentRecordId = response.data.newdata.record_id;
+        this.recordexists = true;
+        this.formErrors = {};
+        this.fetchCurrentRecord(this.currentRecordId)
 
       }, (response) => {
+        this.formMessage.isOk = false;
+        this.formMessage.isErr = true;
         //error callback
         // console.log("FORM ERRORS     " + response.json());
 
@@ -962,6 +1025,89 @@ module.exports  = {
       return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
         return arguments[0].toUpperCase();
       });
+    },
+    resetInital: function(){
+    // oh gosh.. is there a better way?
+      return {
+        minicalslist:[],
+        dateObject:{
+          startDateMin: '',
+          startDateDefault: '',
+          endDateMin: '',
+          endDateDefault: '',
+          regDateMin: '',
+          regDateDefault: ''
+        },
+        linkText1: '',
+        linkUrl1: '',
+        linkText2: '',
+        linkUrl2: '',
+        linkText3: '',
+        linkUrl3:'',
+        startdatePicker:null,
+        enddatePicker:null,
+        starttimePicker:null,
+        endtimePicker:null,
+        regdeadlinePicker:null,
+        sdate: '',
+        edate: '',
+        stime: '',
+        rdate: '',
+        ticketoptions: [
+          { label: 'Online', value: 'online'},
+          { label: 'Phone', value: 'phone'},
+          { label: 'Ticket Office', value: 'office'},
+          { label: 'Online, Phone and Ticket Office', value: 'all'},
+          { label: 'Other', value: 'other'},
+        ],
+        participants: [
+          { label: 'Campus Only', value: 'campus'},
+          { label: 'Open to Public', value: 'public'},
+          { label: 'Students Only', value: 'students'},
+          { label: 'Invitation Only', value: 'invite'},
+          { label: 'Tickets Required', value: 'tickets'},
+        ],
+        totalChars: {
+          start: 0,
+          title: 100,
+          description: 255
+        },
+        building_in: [],
+        building: null,
+        buildings: [],
+        // newbuilding: '',
+        //
+        // zbuildings: [],
+        zcategories: [],
+        zcats: [],
+        categories: {},
+        minicals: null,
+        minicalendars: {},
+        record: {
+          user_id: 0,
+          on_campus: 1,
+          all_day: 0,
+          no_end_time: 0,
+          free: 0,
+          title: '',
+          description: '',
+          mini_calendar: '',
+          building: '',
+          categories:[]
+        },
+        response: {
+
+        },
+        formStatus: {},
+        vModelLike: "",
+        formMessage: {
+          isOk: false,
+          isErr: false,
+          msg: ''
+        },
+        formInputs : {},
+        formErrors : {}
+      }
     }
   },
 
@@ -983,6 +1129,5 @@ module.exports  = {
     // }
   }
 };
-
 
 </script>

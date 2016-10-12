@@ -25,7 +25,7 @@ class CalendarController extends ApiController
      * @param  [type] $day   [description]
      * @return [type]        [description]
      */
-    public function eventsByDay($year = null, $month = null, $day = null)
+    public function eventsByDay($year = null, $month = null, $day = null, $id = null)
     {
       $mondifier;
       if ($year == null) {
@@ -57,13 +57,36 @@ class CalendarController extends ApiController
       }
 
       $eventlist = Event::where([
-        ['start_date', '>=' , $cdate_start],
-        ['start_date', '<=', $cdate_end],
-        ['is_approved', '1']
-        //['is_approved', '==', $approved]
-        ])->orderBy('start_date')->get();
+          ['start_date', '>=' , $cdate_start],
+          ['start_date', '<=', $cdate_end],
+          ['is_approved', '1']
+      ])->orderBy('start_date')->get();
 
-      $groupedByDay =  $eventlist->groupBy(function ($date){
+
+      // it would be better just to not query the event in the first place...
+      if (!empty($id)){ // if id is given.
+        $i = 0;
+        foreach($eventlist as $event){ // filter by category
+          $has_category = false; // sentinel
+
+          // Associate the events category
+          $event['category']=$event->eventcategories()->get();
+
+          foreach($event['category'] as $ev_cat){
+          // Loop through to find if the category matches.
+            if ($ev_cat['id'] == $id){
+              $has_category = true;
+            }
+          }
+          if ($has_category == false){
+            // Destroy event. if it doesn't have the category.
+            unset($eventlist[$i]);
+          }
+          $i++;
+        }
+      }
+
+      $groupedByDay = $eventlist->groupBy(function ($date){
     return Carbon::parse($date->start_date)->format('Y-n-j');                // return Carbon::parse($date->start_date)->timestamp;
               });
               // dd($groupedByDay);

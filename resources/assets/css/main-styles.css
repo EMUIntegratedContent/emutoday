@@ -15,7 +15,9 @@ Tags: Gulp, Laravel
 html, body {
   background-color: #a9a9a9;
 }
-
+.wordbreak {
+  word-break: break-all;
+}
 /*a {
 color: #0f654a;
 }
