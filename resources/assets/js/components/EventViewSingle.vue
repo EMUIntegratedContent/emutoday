@@ -1,7 +1,7 @@
 <template>
   <div class="eventview">
     <a v-on:click.prevent="toggleBody" href="#">
-      <h6>{{item.title}}</h6><span v-if="item.is_canceled">canceled</span>
+      <h6>{{item.title}}<span class="event-cancel" v-if="item.is_canceled"> - canceled</span></h6>
     </a>
     <template v-if="item.all_day">
       <p>All Day</p>
@@ -21,18 +21,20 @@
 
     <div class="event-item" v-if="showBody" transition="expand">
       <p>{{item.description}}</p>
-      <p>Contact</p>
-      <ul>
-        <li>{{item.contact_person}}</li>
-        <li>Email: {{item.contact_email}}</li>
-        <li>Phone: {{item.contact_phone}}</li>
-      </ul>
+      <template v-if="item.contact_person || item.contact_person || item.contact_person">
+        <p>Contact</p>
+        <ul>
+          <li v-if="item.contact_person">{{item.contact_person}}</li>
+          <li v-if="item.contact_email">Email: {{item.contact_email}}</li>
+          <li v-if="item.contact_phone">Phone: {{item.contact_phone}}</li>
+        </ul>
+      </template>
       <template v-if="item.related_link_1">
         <p>Additional Information</p>
         <ul>
-          <li><a href="{{item.related_link_1}}" target="_blank">More Info</a></li>
-          <li v-if="item.related_link_2">{{item.related_link_2}}</li>
-          <li v-if="item.related_link_3">{{item.related_link_3}}</li>
+          <li><a href="{{item.related_link_1}}" target="_blank">{{item.related_link_1_txt}}</a></li>
+          <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">{{item.related_link_2_txt}}</a></li>
+          <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">{{item.related_link_3_txt}}</a></li>
         </ul>
       </template>
       <p v-if="item.free">Cost: Free</p>
@@ -57,6 +59,11 @@
   padding-top: 0.8rem;
   padding-bottom: 0.3rem;
   border-bottom: 1px dotted  #bebdbd;
+}
+.event-cancel {
+  font-size: 90%;
+  font-weight: normal;
+  color: #333;
 }
 h6 {
   color: #0f654a;
