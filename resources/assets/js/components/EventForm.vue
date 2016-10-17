@@ -945,6 +945,7 @@ module.exports  = {
       }, (response) => {
         console.log('BAD:'+JSON.stringify(response))
       }).bind(this);
+      location.reload() // Temporary until submitted events can refresh it'self 
     },
 
     fetchCurrentRecord: function() {
@@ -1055,6 +1056,7 @@ module.exports  = {
         }, (response) => {
           console.log('Error: '+JSON.stringify(response))
         }).bind(this);
+        setTimeout(function(){location.reload();}, 2000); // Temporary until submitted events can refresh it'self
       }
     },
 

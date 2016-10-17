@@ -15855,6 +15855,7 @@ module.exports = {
       }, function (response) {
         console.log('BAD:' + (0, _stringify2.default)(response));
       }).bind(this);
+      location.reload(); // Temporary until submitted events can refresh it'self 
     },
 
     fetchCurrentRecord: function fetchCurrentRecord() {
@@ -15966,6 +15967,9 @@ module.exports = {
         }, function (response) {
           console.log('Error: ' + (0, _stringify2.default)(response));
         }).bind(this);
+        setTimeout(function () {
+          location.reload();
+        }, 2000); // Temporary until submitted events can refresh it'self
       }
     },
 

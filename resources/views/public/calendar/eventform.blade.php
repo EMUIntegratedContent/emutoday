@@ -20,9 +20,6 @@
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
         <div class="medium-6 columns">
-          <div id="vue-event-submitted">
-            test
-          </div>
           @unless(empty($submitteditems[0]))
           <div class="row">
             <div class="small-12 column">
