@@ -130,7 +130,7 @@ class EventController extends ApiController
         {
           $event = new Event;
           $event->user_id       	= $request->get('user_id');
-          $event->submitter       	= cas()->user();
+          // $event->submitter       	= cas()->user();
           $event->title           	= $request->get('title');
           $event->short_title     	= $request->get('short_title');
           // $templocation = $request->get('location');serialize($templocation);
@@ -156,7 +156,7 @@ class EventController extends ApiController
           $event->related_link_1_txt			= $request->get('related_link_1_txt');
           $event->related_link_2_txt			= $request->get('related_link_2_txt');
           $event->related_link_3_txt			= $request->get('related_link_3_txt');
-          $event->reg_deadline						= $request->get('reg_deadline');
+          // $event->reg_deadline						= $request->get('reg_deadline');
           $event->free 										= $request->get('free');
           $event->cost 										= $request->get('cost');
           $event->participants						=$request->get('participants');
@@ -358,7 +358,7 @@ class EventController extends ApiController
             $event->related_link_1_txt			= $request->get('related_link_1_txt');
             $event->related_link_2_txt			= $request->get('related_link_2_txt');
             $event->related_link_3_txt			= $request->get('related_link_3_txt');
-            $event->reg_deadline						= $request->get('reg_deadline');
+            // $event->reg_deadline						= $request->get('reg_deadline');
             $event->free 										= $request->get('free');
             $event->cost 										= $request->get('cost');
             $event->participants						=$request->get('participants');

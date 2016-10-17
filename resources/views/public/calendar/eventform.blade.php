@@ -20,6 +20,10 @@
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
         <div class="medium-6 columns">
+          <div id="vue-event-submitted">
+            test
+          </div>
+          @unless(empty($submitteditems[0]))
           <div class="row">
             <div class="small-12 column">
               <h3 class="cal-caps toptitle">Submitted Events</h3>
@@ -56,6 +60,9 @@
               </table>
             </div><!-- /.small-12 column -->
           </div><!-- /.row -->
+          @endunless
+
+          @unless(empty($approveditems[0]))
           <div class="row">
             <div class="small-12 column">
               <h3 class="cal-caps toptitle">Approved Events</h3>
@@ -91,6 +98,8 @@
               </table>
             </div><!-- /.small-12 column -->
           </div><!-- /.row -->
+          @endunless
+
         </div><!-- /.medium-6 columns -->
       </div><!-- /.row -->
     </div><!-- /.small-12 column -->

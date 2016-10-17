@@ -170,7 +170,6 @@
 <div class="row">
   <div :class="md6col">
     <div class="form-group">
-
       <label>Contact Phone <span :class="iconStar" class="reqstar"></span> <em>(ex. 734.487.1849)</em>
         <input v-model="record.contact_phone" class="form-control" :class="[formErrors.contact_phone ? 'invalid-input' : '']" name="contact-phone" type="text">
         <p v-if="formErrors.contact_phone" class="help-text invalid">Need a Contact Phone!</p>
@@ -185,6 +184,113 @@
     </div>
   </div><!-- /.md6col -->
 </div><!-- /.row -->
+<!-- RELATED LINKS -->
+    <div class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Related Link</label>
+          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (www.yourlink.com)</p>
+          <div class="input-group">
+            <span :class="inputGroupLabel">http://</span>
+            <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text">
+          </div>
+          <p v-if="formErrors.related_link_1" class="help-text invalid">Please make sure url is properly formed.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md4col">
+        <div v-bind:class="formGroup">
+          <label>Related Link Text</label>
+          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
+          <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text">
+          <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+      <div :class="md8col">
+        <template v-if="record.related_link_1_txt">
+          <div v-bind:class="formGroup">
+            <label>Example of Related Link</label>
+            <p class="help-text">Below is how it may look. </p>
+            <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
+          </div>
+        </template>
+      </div><!-- /.md6col -->
+    </div>
+    <!-- Two -->
+    <span v-if="record.related_link_1">
+    <div class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Second related Link</label>
+          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (www.yourlink.com)</p>
+          <div class="input-group">
+            <span :class="inputGroupLabel">http://</span>
+            <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text">
+          </div>
+          <p v-if="formErrors.related_link_2" class="help-text invalid">Please make sure url is properly formed.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md4col">
+        <div v-bind:class="formGroup">
+          <label>Related Link Text</label>
+          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
+          <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text">
+          <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+      <div :class="md8col">
+        <template v-if="record.related_link_2_txt">
+          <div v-bind:class="formGroup">
+            <label>Example of Related Link</label>
+            <p class="help-text">Below is how it may look. </p>
+            <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
+          </div>
+        </template>
+      </div><!-- /.md6col -->
+    </div>
+    </span>
+    <!-- three -->
+    <span v-if="record.related_link_2">
+    <div class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Third related Link</label>
+          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (www.yourlink.com)</p>
+          <div class="input-group">
+            <span :class="inputGroupLabel">http://</span>
+            <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text">
+          </div>
+          <p v-if="formErrors.related_link_3" class="help-text invalid">Please make sure url is properly formed.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md4col">
+        <div v-bind:class="formGroup">
+          <label>Related Link Text</label>
+          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
+          <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text">
+          <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+      <div :class="md8col">
+        <template v-if="record.related_link_3_txt">
+          <div v-bind:class="formGroup">
+            <label>Example of Related Link</label>
+            <p class="help-text">Below is how it may look. </p>
+            <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
+          </div>
+        </template>
+      </div><!-- /.md6col -->
+    </div>
+    </span>
+  </div>
+  <br/>
+<!-- RELATED LINKS -->
+<script> /*
 <div class="row">
   <div :class="md12col">
     <div :class="formGroup">
@@ -199,7 +305,7 @@
           <label for="related_link_1">Link URL</label><input v-model="record.related_link_1" class="form-control" name="related_link_1_txt" type="text">
         </div><!-- /.md12col -->
       </div><!-- /.row -->
-      {{relatedLink1}}
+        <span>{{relatedLink1}}</span>
       <template v-if="record.related_link_1">
         <div class="row">
           <div :class="md6col">
@@ -211,7 +317,7 @@
             <label for="related_link_2">Second Link URL</label><input v-model="record.related_link_2" class="form-control" name="related_link_2_txt" type="text">
           </div><!-- /.md12col -->
         </div><!-- /.row -->
-        {{relatedLink2}}
+        <span>{{relatedLink2}}</span>
       </template>
       <template v-if="record.related_link_2">
         <div class="row">
@@ -224,21 +330,13 @@
             <label for="related_link_3">Third Link URL</label><input v-model="record.related_link_3" class="form-control" name="related_link_3_txt" type="text">
           </div><!-- /.md12col -->
         </div><!-- /.row -->
-        {{relatedLink3}}
+        <span>{{relatedLink3}}</span>
       </template>
     </div>
-
-    <!-- <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em>
-    <label for="link_text_2">Link Text</label><input v-model="linkText2"  name="link_text_2" type="text">
-    <label for="link_url_2">Link URL</label><input v-model="linkUrl2"  name="link_url_2" type="text">
-  </label>{{relatedLink2}}
-  <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em>
-  <label for="link_text_3">Link Text</label><input v-model="linkText3"  name="link_text_3" type="text">
-  <label for="link_url_3">Link URL</label><input v-model="linkUrl3"  name="link_url_3" type="text">
-</label>{{relatedLink3}} -->
-
-</div><!-- /.md12col -->
+  </div><!-- /.md12col -->
 </div><!-- /.row -->
+*/</script>
+
 <div class="row">
   <div :class="md6col">
     <div class="form-group">
@@ -481,6 +579,22 @@ form {
 .redBtn {
   background: hsl(0, 90%, 70%);
 }
+h5.form-control {
+  margin: 0;
+  display: block;
+  width: 100%;
+  height: 2.4375rem;
+  padding: .5rem;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #222222;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
 </style>
 
 <script>
@@ -506,12 +620,12 @@ module.exports  = {
         regDateMin: '',
         regDateDefault: ''
       },
-      linkText1: '',
-      linkUrl1: '',
-      linkText2: '',
-      linkUrl2: '',
-      linkText3: '',
-      linkUrl3:'',
+      // linkText1: '',
+      // linkUrl1: '',
+      // linkText2: '',
+      // linkUrl2: '',
+      // linkText3: '',
+      // linkUrl3:'',
       startdatePicker:null,
       enddatePicker:null,
       starttimePicker:null,
@@ -693,21 +807,21 @@ module.exports  = {
     hasEndTime: function() {
       return (this.record.all_day == 1 || this.record.no_end_time == 1)?false : true;
     },
-    relatedLink1: function() {
-      if (this.linkUrl1 || this.linkText1) {
-        return '<a href="'+ this.linkUrl1 +'">'+ this.linkText1 +'</a>'
-      }
-    },
-    relatedLink2: function() {
-      if (this.linkUrl2 || this.linkText2) {
-        return '<a href="'+ this.linkUrl2 +'">'+ this.linkText2 +'</a>'
-      }
-    },
-    relatedLink3: function() {
-      if (this.linkUrl3 || this.linkText3) {
-        return '<a href="'+ this.linkUrl3 +'">'+ this.linkText3 +'</a>'
-      }
-    },
+    // relatedLink1: function() {
+    //   if (this.record.related_link_1 || this.record.related_link_1_txt) {
+    //     return this.record.related_link_1_txt
+    //   }
+    // },
+    // relatedLink2: function() {
+    //   if (this.record.related_link_2 || this.record.related_link_2) {
+    //     return this.record.related_link_2_txt
+    //   }
+    // },
+    // relatedLink3: function() {
+    //   if (this.record.related_link_3 || this.record.related_link_3) {
+    //     return this.record.related_link_3_txt
+    //   }
+    // },
 
   },
   methods: {
@@ -959,7 +1073,8 @@ module.exports  = {
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       this.record.author_id = this.authorid;
-      //this.record.related_link_1 = this.relatedLink1;
+      // this.record.related_link_1 = this.relatedLink1;
+      // this.record.related_link_1 = this.relatedLink1;
       if(this.record.on_campus == true) {
         this.record.location = this.convertToSlug(this.computedLocation);
       } else {

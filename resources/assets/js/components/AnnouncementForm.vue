@@ -48,7 +48,7 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div v-if="generalForm"  class="row">
+    <div v-if="generalForm" class="row">
       <div :class="md4col">
         <div v-bind:class="formGroup">
           <label>External Link Text</label>
