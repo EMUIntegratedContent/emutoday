@@ -57,13 +57,14 @@ class MagazinePresenter extends Presenter
 
     public function prettyStartDate()
     {
+      if ($this->start_date){
         return $this->start_date->format('m-d-Y');
+      }
     }
     public function prettyEndDate()
     {
-
+      if ($this->end_date){
         return $this->end_date->format('m-d-Y');
+      }
     }
-
-
 }
