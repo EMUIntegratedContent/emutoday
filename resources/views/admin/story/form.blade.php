@@ -95,9 +95,9 @@
                                         so loop thru the required images collection and display form --}}
                                     @foreach($currentRequiredImages as $currentRequiredImage)
                                         @if($currentRequiredImage->image_type == 'small')
-                                            @include('admin.storyimage.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                            @include('admin.storyimages.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @elseif($currentRequiredImage->image_type == 'story')
-                                            @include('admin.storyimage.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                            @include('admin.storyimages.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
                                             @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @endif
@@ -123,7 +123,7 @@
 
                                 @if($stillNeedTheseImgs->count() > 0)
                                     @foreach($stillNeedTheseImgs as $stillNeedTheseImg)
-                                        @include('admin.storyimage.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                        @include('admin.storyimages.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                     @endforeach
                                 @endif
                             @endif
