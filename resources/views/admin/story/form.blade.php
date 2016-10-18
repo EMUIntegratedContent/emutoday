@@ -99,7 +99,7 @@
                                         @elseif($currentRequiredImage->image_type == 'story')
                                             @include('admin.storyimages.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
-                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                            @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @endif
                                     @endforeach
                                 @endif
@@ -111,9 +111,9 @@
 
                                     @foreach($currentOtherImages as $currentOtherImage)
                                         @if($currentOtherImage->image_type == 'front')
-                                            @include('admin.storyimage.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                            @include('admin.storyimages.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
-                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                            @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
 
                                         @endif
                                     @endforeach
@@ -135,13 +135,13 @@
                             {{-- @if ($story->storyImages()->count() > 0)
                                     @foreach($story->storyImages as $storyImage)
                                         @if($storyImage->image_type == 'small')
-                                            @include('admin.storyimage.subviews.smallimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimages.subviews.smallimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
                                         @elseif($storyImage->image_type == 'story')
-                                            @include('admin.storyimage.subviews.storyimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimages.subviews.storyimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
                                         @elseif($storyImage->image_type == 'front')
-                                            @include('admin.storyimage.subviews.frontimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimages.subviews.frontimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
                                         @else
-                                            @include('admin.storyimage.subviews.otherimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
+                                            @include('admin.storyimages.subviews.otherimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
                                         @endif
                                     @endforeach
                             @endif --}}
