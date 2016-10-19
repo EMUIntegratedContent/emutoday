@@ -23,7 +23,7 @@
                             <p>For more information visit: <a href="http://{{$announcement->link}}" class="accordion-link" target="_blank">{{$announcement->link_txt or 'More Info'}}</a></p>
                         @endif
                         @if($announcement->email_link)
-                            <p>For more information click: <a href="mailto://{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt or $announcement->email_link}}</a></p>
+                            <p>Contact: <a href="mailto://{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt or $announcement->email_link}}</a></p>
                         @endif
                         <p>Posted {{$announcement->present()->prettyDate}}</p>
                     </div>

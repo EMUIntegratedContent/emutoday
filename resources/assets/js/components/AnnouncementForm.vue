@@ -38,7 +38,7 @@
     <div class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
-          <label>External Link</label>
+          <label>Related Link</label>
           <p class="help-text" id="title-helptext">Please enter the url for your external web page. (www.yourlink.com)</p>
           <div class="input-group">
             <span :class="inputGroupLabel">http://</span>
@@ -51,8 +51,8 @@
     <div v-if="generalForm" class="row">
       <div :class="md4col">
         <div v-bind:class="formGroup">
-          <label>External Link Text</label>
-          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
+          <label>Related Link Text</label>
+          <p class="help-text" id="link_txt-helptext">Please enter display text</p>
           <input v-model="record.link_txt" class="form-control" v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text">
           <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your external link.</p>
         </div>
@@ -60,13 +60,14 @@
       <div :class="md8col">
         <template v-if="record.link_txt">
           <div v-bind:class="formGroup">
-            <label>Example of External Link</label>
-            <p class="help-text">Below is how it may look. </p>
+            <label>Below is how it may look.</label>
+            <p class="help-text">Example of Related Link</p>
             <h5 class="form-control">For more information visit: <a href="#"> {{record.link_txt}}</a>.</h5>
           </div>
         </template>
       </div><!-- /.md6col -->
     </div>
+    <br/>
     <div v-if="generalForm"  class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
@@ -98,8 +99,9 @@
         </template>
       </div><!-- /.md6col -->
     </div>
+    <br/>
+    
     <div class="row">
-
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
           <label for="start-date">Start Date: <span v-bind:class="iconStar" class="reqstar"></span></label>

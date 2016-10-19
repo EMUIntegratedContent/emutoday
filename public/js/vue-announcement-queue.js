@@ -16770,7 +16770,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./AnnouncementQueueItem.vue":27,"moment":20,"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],27:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-65eb1bbb] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-65eb1bbb] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-65eb1bbb] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-65eb1bbb] {\n    border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-65eb1bbb] {\n    color: #1B1B1B;\n}\n\n\n.zcallout[_v-65eb1bbb] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\nform[_v-65eb1bbb] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-65eb1bbb] {\n    margin-bottom: 2px;\n}\n#applabel[_v-65eb1bbb]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-65eb1bbb],\n.btn-group-vertical[_v-65eb1bbb] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nselect.form-control[_v-65eb1bbb] {\n    height:22px;\n    border: 1px solid #999999;\n}\nh6[_v-65eb1bbb] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-65eb1bbb] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-65eb1bbb] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-65eb1bbb]{\n    margin-bottom: 0;\n}\n\n\n.box-footer[_v-65eb1bbb] {\n    padding: 3px;\n}\n.box.box-solid.box-default[_v-65eb1bbb] {\n    border: 1px solid #999999;\n}\n\n.topitems[_v-65eb1bbb] {\n    /*background-color: #9B59B6;*/\n    background-color: #76D7EA;\n    border: 2px solid #9B59B6;\n}\n.ongoing[_v-65eb1bbb] {\n    background-color: #ffcc33;\n    border: 1px solid #999999\n}\n.event-positive[_v-65eb1bbb] {\n\n    background-color: #D8D8D8;\n    border: 1px solid #999999;\n}\n.event-negative[_v-65eb1bbb] {\n\n    background-color: #999999;\n    border: 1px solid #999999;\n}\n.is-promoted[_v-65eb1bbb] {\n\n    background-color: #76D7EA;\n    /*border: 1px solid #999999*/\n}\n.time-is-short[_v-65eb1bbb] {\n    color: #F39C12;\n}\n.time-is-long[_v-65eb1bbb] {\n    color: #999999;\n}\n.time-is-over[_v-65eb1bbb] {\n    color: #9B59B6;\n}\n\n.special-item[_v-65eb1bbb] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-65eb1bbb] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-65eb1bbb] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-65eb1bbb] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-65eb1bbb] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-65eb1bbb] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-65eb1bbb] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-65eb1bbb] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-65eb1bbb] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-65eb1bbb] {\n  margin-bottom: 2px;\n}\n#applabel[_v-65eb1bbb]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-65eb1bbb],\n.btn-group-vertical[_v-65eb1bbb] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-65eb1bbb] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-65eb1bbb] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-65eb1bbb] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-65eb1bbb] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-65eb1bbb]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-65eb1bbb] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-65eb1bbb] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-65eb1bbb] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-65eb1bbb] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-65eb1bbb] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-65eb1bbb] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-65eb1bbb] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-65eb1bbb] {\n  color: #F39C12;\n}\n.time-is-long[_v-65eb1bbb] {\n  color: #999999;\n}\n.time-is-over[_v-65eb1bbb] {\n  color: #9B59B6;\n}\n\n.special-item[_v-65eb1bbb] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-65eb1bbb] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
@@ -16790,243 +16790,243 @@ var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
-    directives: {},
-    components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
-    props: ['item', 'pid', 'index'],
-    data: function data() {
-        return {
-            options: [{ text: '0', value: 0 }, { text: '1', value: 1 }, { text: '2', value: 2 }, { text: '3', value: 3 }, { text: '4', value: 4 }, { text: '5', value: 5 }, { text: '6', value: 6 }, { text: '7', value: 7 }, { text: '8', value: 8 }, { text: '9', value: 9 }, { text: '10', value: 10 }, { text: '99', value: 99 }],
-            showBody: false,
-            currentDate: {},
-            record: {
-                user_id: '',
-                title: '',
-                announcement: '',
-                start_date: ''
-            },
-            initRecord: {
-                is_approved: 0,
-                priority: 0,
-                is_archived: 0
+  directives: {},
+  components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
+  props: ['item', 'pid', 'index'],
+  data: function data() {
+    return {
+      options: [{ text: '0', value: 0 }, { text: '1', value: 1 }, { text: '2', value: 2 }, { text: '3', value: 3 }, { text: '4', value: 4 }, { text: '5', value: 5 }, { text: '6', value: 6 }, { text: '7', value: 7 }, { text: '8', value: 8 }, { text: '9', value: 9 }, { text: '10', value: 10 }, { text: '99', value: 99 }],
+      showBody: false,
+      currentDate: {},
+      record: {
+        user_id: '',
+        title: '',
+        announcement: '',
+        start_date: ''
+      },
+      initRecord: {
+        is_approved: 0,
+        priority: 0,
+        is_archived: 0
 
-            },
-            patchRecord: {
-                is_approved: 0,
-                priority: 0,
-                is_archived: 0
-            }
-        };
-    },
-    created: function created() {},
-    ready: function ready() {
-        this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
-        this.initRecord.priority = this.patchRecord.priority = this.item.priority;
-        this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
-    },
-    computed: (_computed = {
-        specialItem: function specialItem() {
-            var extrasep = void 0;
-            // if (this.pid == 'items-live' && this.index === 3) {
-            if (this.pid == 'items-live' && this.index < 5) {
-                if (this.index === 4) {
-                    extrasep = 'special-item special-item-last';
-                } else {
-                    extrasep = 'special-item';
-                }
-            } else {
-                extrasep = '';
-            }
-            return extrasep;
-        },
-        timefromNow: function timefromNow() {
-            return (0, _moment2.default)(this.item.start_date).fromNow();
-        },
-        isApproved: function isApproved() {
-            return this.item.is_approved;
-        },
-        itemEditPath: function itemEditPath() {
-            return '/admin/announcement/' + this.item.id + '/edit';
-        },
-        hasPriorityChanged: function hasPriorityChanged() {
-            if (this.initRecord.priority != this.patchRecord.priority) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        hasIsApprovedChanged: function hasIsApprovedChanged() {
-            if (this.initRecord.is_approved != this.patchRecord.is_approved) {
-                console.log('is_approved => initRecord=' + this.initRecord.is_approved + ' patchRecord=>' + this.patchRecord.is_approved);
-                return true;
-            } else {
-                return false;
-            }
-        },
-        liveTimeStatusClass: function liveTimeStatusClass() {
-            var timepartstatus = void 0;
-            var extrasep = void 0;
-            if ((0, _moment2.default)().isBetween(this.item.start_date, this.item.end_date)) {
-                timepartstatus = 'ongoing';
-            } else {
-                if (this.timeDiffNow(this.item.start_date) < 0) {
-                    timepartstatus = 'event-negative';
-                } else {
-                    timepartstatus = 'event-positive';
-                }
-            }
-
-            if (this.pid == 'items-live' && this.index === 3) {
-                extrasep = 'last-special-event';
-            } else {
-                extrasep = '';
-            }
-
-            return timepartstatus + ' ' + extrasep;
-        },
-        timeLeftStatus: function timeLeftStatus() {
-            var diff = this.timeDiffNow(this.item.end_date);
-            if (diff <= 0) {
-                return 'time-is-over';
-            } else if (diff > 0 && diff <= 720) {
-                return 'time-is-short';
-            } else {
-                return 'time-is-long';
-            }
-        },
-
-        timeFromNowStatus: function timeFromNowStatus() {
-            var diff = this.timeDiffNow(this.item.start_date);
-            if (diff <= 0) {
-                return 'time-is-over';
-            } else if (diff > 0 && diff <= 720) {
-                return 'time-is-short';
-            } else {
-                return 'time-is-long';
-            }
-        }
-    }, (0, _defineProperty3.default)(_computed, 'timefromNow', function timefromNow() {
-        return (0, _moment2.default)(this.item.start_date).fromNow();
-    }), (0, _defineProperty3.default)(_computed, 'timeLeft', function timeLeft() {
-
-        if ((0, _moment2.default)(this.item.start_date).isSameOrBefore((0, _moment2.default)())) {
-            var tlft = this.timeDiffNow(this.item.end_date, 'hours');
-            console.log('id=' + this.item.id + '  -' + tlft);
-            if (tlft < 0) {
-                return 'Event Ended ' + (0, _moment2.default)(this.item.end_date).fromNow();
-            } else {
-                return ' and Ends ' + (0, _moment2.default)(this.item.end_date).fromNow();
-            }
+      },
+      patchRecord: {
+        is_approved: 0,
+        priority: 0,
+        is_archived: 0
+      }
+    };
+  },
+  created: function created() {},
+  ready: function ready() {
+    this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
+    this.initRecord.priority = this.patchRecord.priority = this.item.priority;
+    this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
+  },
+  computed: (_computed = {
+    specialItem: function specialItem() {
+      var extrasep = void 0;
+      // if (this.pid == 'items-live' && this.index === 3) {
+      if (this.pid == 'items-live' && this.index < 5) {
+        if (this.index === 4) {
+          extrasep = 'special-item special-item-last';
         } else {
-            return '';
+          extrasep = 'special-item';
         }
-    }), _computed),
-    methods: {
-        timeDiffNow: function timeDiffNow(val) {
-            var mod = arguments.length <= 1 || arguments[1] === undefined ? 'minutes' : arguments[1];
-
-            return (0, _moment2.default)(val).diff((0, _moment2.default)(), mod);
-        },
-        editItem: function editItem(ev) {
-            window.location.href = this.itemEditPath;
-        },
-        previewItem: function previewItem(ev) {
-            window.location.href = this.itemPreviewPath;
-        },
-        toggleBody: function toggleBody(ev) {
-            if (this.showBody == false) {
-                this.showBody = true;
-            } else {
-                this.showBody = false;
-            }
-            console.log('toggleBody' + this.showBody);
-        },
-        // doThis: function(ev) {
-        //     this.$emit('item-change',this.item);
-        //     console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
-        // },
-        changeIsApproved: function changeIsApproved() {
-            this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
-            console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
-            this.updateItem();
-        },
-        archiveItem: function archiveItem() {
-            var _this = this;
-
-            this.patchRecord.is_archived = 1;
-
-            this.$http.patch('/api/announcement/archiveitem/' + this.item.id, this.patchRecord, {
-                method: 'PATCH'
-            }).then(function (response) {
-                console.log('good?' + response);
-
-                _this.checkAfterUpdate(response.data.newdata);
-            }, function (response) {
-                console.log('bad?' + response);
-            });
-        },
-        updateItem: function updateItem() {
-            var _this2 = this;
-
-            //    this.patchRecord.is_approved = this.item.is_approved;
-            //    this.patchRecord.priority = this.item.priority;
-            this.patchRecord.is_archived = this.item.is_archived;
-
-            this.$http.patch('/api/announcement/updateitem/' + this.item.id, this.patchRecord, {
-                method: 'PATCH'
-            }).then(function (response) {
-                console.log('good?' + response);
-                _this2.checkAfterUpdate(response.data.newdata);
-            }, function (response) {
-                console.log('bad?' + response);
-            });
-        },
-        checkAfterUpdate: function checkAfterUpdate(ndata) {
-            this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
-            this.item.priority = this.initRecord.priority = ndata.priority;
-            this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
-            this.hasPriorityChanged = 0;
-
-            console.log(ndata);
-        },
-        priorityChange: function priorityChange(event) {
-            console.log('priority=' + this.item.priority);
-        }
+      } else {
+        extrasep = '';
+      }
+      return extrasep;
     },
-    watch: {
-        'isapproved': function isapproved(val, oldVal) {
-            if (val != oldVal) {
-                console.log('val change');
-            }
-        }
+    timefromNow: function timefromNow() {
+      return (0, _moment2.default)(this.item.start_date).fromNow();
     },
-    events: {},
-    filters: {
-        titleDateLong: function titleDateLong(value) {
-            return (0, _moment2.default)(value).format("ddd MM/DD");
-        },
-        momentPretty: {
-            read: function read(val) {
-                console.log('read-val' + val);
-
-                return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
-            },
-            write: function write(val, oldVal) {
-                console.log('write-val' + val + '--' + oldVal);
-
-                return (0, _moment2.default)(val).format('YYYY-MM-DD');
-            }
+    isApproved: function isApproved() {
+      return this.item.is_approved;
+    },
+    itemEditPath: function itemEditPath() {
+      return '/admin/announcement/' + this.item.id + '/edit';
+    },
+    hasPriorityChanged: function hasPriorityChanged() {
+      if (this.initRecord.priority != this.patchRecord.priority) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    hasIsApprovedChanged: function hasIsApprovedChanged() {
+      if (this.initRecord.is_approved != this.patchRecord.is_approved) {
+        console.log('is_approved => initRecord=' + this.initRecord.is_approved + ' patchRecord=>' + this.patchRecord.is_approved);
+        return true;
+      } else {
+        return false;
+      }
+    },
+    liveTimeStatusClass: function liveTimeStatusClass() {
+      var timepartstatus = void 0;
+      var extrasep = void 0;
+      if ((0, _moment2.default)().isBetween(this.item.start_date, this.item.end_date)) {
+        timepartstatus = 'ongoing';
+      } else {
+        if (this.timeDiffNow(this.item.start_date) < 0) {
+          timepartstatus = 'event-negative';
+        } else {
+          timepartstatus = 'event-positive';
         }
+      }
+
+      if (this.pid == 'items-live' && this.index === 3) {
+        extrasep = 'last-special-event';
+      } else {
+        extrasep = '';
+      }
+
+      return timepartstatus + ' ' + extrasep;
+    },
+    timeLeftStatus: function timeLeftStatus() {
+      var diff = this.timeDiffNow(this.item.end_date);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
+      }
+    },
+
+    timeFromNowStatus: function timeFromNowStatus() {
+      var diff = this.timeDiffNow(this.item.start_date);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
+      }
     }
+  }, (0, _defineProperty3.default)(_computed, 'timefromNow', function timefromNow() {
+    return (0, _moment2.default)(this.item.start_date).fromNow();
+  }), (0, _defineProperty3.default)(_computed, 'timeLeft', function timeLeft() {
+
+    if ((0, _moment2.default)(this.item.start_date).isSameOrBefore((0, _moment2.default)())) {
+      var tlft = this.timeDiffNow(this.item.end_date, 'hours');
+      console.log('id=' + this.item.id + '  -' + tlft);
+      if (tlft < 0) {
+        return 'Event Ended ' + (0, _moment2.default)(this.item.end_date).fromNow();
+      } else {
+        return ' and Ends ' + (0, _moment2.default)(this.item.end_date).fromNow();
+      }
+    } else {
+      return '';
+    }
+  }), _computed),
+  methods: {
+    timeDiffNow: function timeDiffNow(val) {
+      var mod = arguments.length <= 1 || arguments[1] === undefined ? 'minutes' : arguments[1];
+
+      return (0, _moment2.default)(val).diff((0, _moment2.default)(), mod);
+    },
+    editItem: function editItem(ev) {
+      window.location.href = this.itemEditPath;
+    },
+    previewItem: function previewItem(ev) {
+      window.location.href = this.itemPreviewPath;
+    },
+    toggleBody: function toggleBody(ev) {
+      if (this.showBody == false) {
+        this.showBody = true;
+      } else {
+        this.showBody = false;
+      }
+      console.log('toggleBody' + this.showBody);
+    },
+    // doThis: function(ev) {
+    //     this.$emit('item-change',this.item);
+    //     console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
+    // },
+    changeIsApproved: function changeIsApproved() {
+      this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
+      console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
+      this.updateItem();
+    },
+    archiveItem: function archiveItem() {
+      var _this = this;
+
+      this.patchRecord.is_archived = 1;
+
+      this.$http.patch('/api/announcement/archiveitem/' + this.item.id, this.patchRecord, {
+        method: 'PATCH'
+      }).then(function (response) {
+        console.log('good?' + response);
+
+        _this.checkAfterUpdate(response.data.newdata);
+      }, function (response) {
+        console.log('bad?' + response);
+      });
+    },
+    updateItem: function updateItem() {
+      var _this2 = this;
+
+      //    this.patchRecord.is_approved = this.item.is_approved;
+      //    this.patchRecord.priority = this.item.priority;
+      this.patchRecord.is_archived = this.item.is_archived;
+
+      this.$http.patch('/api/announcement/updateitem/' + this.item.id, this.patchRecord, {
+        method: 'PATCH'
+      }).then(function (response) {
+        console.log('good?' + response);
+        _this2.checkAfterUpdate(response.data.newdata);
+      }, function (response) {
+        console.log('bad?' + response);
+      });
+    },
+    checkAfterUpdate: function checkAfterUpdate(ndata) {
+      this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
+      this.item.priority = this.initRecord.priority = ndata.priority;
+      this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
+      this.hasPriorityChanged = 0;
+
+      console.log(ndata);
+    },
+    priorityChange: function priorityChange(event) {
+      console.log('priority=' + this.item.priority);
+    }
+  },
+  watch: {
+    'isapproved': function isapproved(val, oldVal) {
+      if (val != oldVal) {
+        console.log('val change');
+      }
+    }
+  },
+  events: {},
+  filters: {
+    titleDateLong: function titleDateLong(value) {
+      return (0, _moment2.default)(value).format("ddd MM/DD");
+    },
+    momentPretty: {
+      read: function read(val) {
+        console.log('read-val' + val);
+
+        return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
+      },
+      write: function write(val, oldVal) {
+        console.log('write-val' + val + '--' + oldVal);
+
+        return (0, _moment2.default)(val).format('YYYY-MM-DD');
+      }
+    }
+  }
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n      <div :class=\"specialItem\" _v-65eb1bbb=\"\">\n  <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-65eb1bbb=\"\">\n    <div class=\"box-header with-border\" _v-65eb1bbb=\"\">\n        <div class=\"row\" _v-65eb1bbb=\"\">\n            <div class=\"col-sm 12 col-md-4\" _v-65eb1bbb=\"\">\n                <div class=\"box-date-top pull-left\" _v-65eb1bbb=\"\">{{item.start_date | titleDateLong}}</div>\n            </div><!-- /.col-sm-6 -->\n            <div class=\"col-sm 12 col-md-8\" _v-65eb1bbb=\"\">\n                <form class=\"form-inline pull-right\" _v-65eb1bbb=\"\">\n                    <div class=\"form-group\" _v-65eb1bbb=\"\">\n                        <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-65eb1bbb=\"\"><span class=\"fa fa-floppy-o\" _v-65eb1bbb=\"\"></span></button>\n                    </div><!-- /.form-group -->\n                  <div class=\"form-group\" _v-65eb1bbb=\"\">\n                    <label class=\"sr-only\" for=\"priority-number\" _v-65eb1bbb=\"\">Priority</label>\n                        <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" number=\"\" _v-65eb1bbb=\"\">\n                            <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-65eb1bbb=\"\">\n                                {{option.text}}\n                            </option>\n                        </select>\n                  </div>\n                  <div id=\"applabel\" class=\"form-group \" _v-65eb1bbb=\"\">\n                          <label _v-65eb1bbb=\"\">  approved:</label>\n                      </div><!-- /.form-group -->\n                     <div class=\"form-group\" _v-65eb1bbb=\"\">\n                          <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-65eb1bbb=\"\">\n                          </vui-flip-switch>\n                      </div>\n                  </form>\n              </div><!-- /.col-md-12 -->\n          </div><!-- /.row -->\n        <div class=\"row\" _v-65eb1bbb=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-65eb1bbb=\"\">\n            <div class=\"col-sm-12\" _v-65eb1bbb=\"\">\n                <h6 class=\"box-title\" _v-65eb1bbb=\"\">{{item.title}}</h6>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n\n    </div>  <!-- /.box-header -->\n\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-65eb1bbb=\"\">\n                      <p _v-65eb1bbb=\"\">{{item.announcement}}</p>\n                      <div class=\"announcement-info\" _v-65eb1bbb=\"\">\n                          Submitted On: {{item.submission_date}}<br _v-65eb1bbb=\"\">\n                          By: {{item.user_name}}<br _v-65eb1bbb=\"\">\n                          {{item.user_email}} {{item.user_phone}}<br _v-65eb1bbb=\"\">\n                          Dates: {{item.start_date}} - {{item.end_date}}\n\n                      </div>\n\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-65eb1bbb=\"\">\n        <div class=\"row\" _v-65eb1bbb=\"\">\n            <div class=\"col-sm-12 col-md-9 \" _v-65eb1bbb=\"\">\n                <span :class=\"timeFromNowStatus\" _v-65eb1bbb=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-65eb1bbb=\"\">{{timeLeft}}</span>\n            </div><!-- /.col-md-7 -->\n            <div class=\"col-sm-12 col-md-3\" _v-65eb1bbb=\"\">\n                <div class=\"btn-group pull-right\" _v-65eb1bbb=\"\">\n                   <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-65eb1bbb=\"\"><i class=\"fa fa-archive\" _v-65eb1bbb=\"\"></i></button>\n                    <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-65eb1bbb=\"\"><i class=\"fa fa-pencil\" _v-65eb1bbb=\"\"></i></button>\n                        <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n                </div><!-- /.btn-toolbar -->\n\n            </div><!-- /.col-md-7 -->\n        </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n</div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-65eb1bbb=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-65eb1bbb=\"\">\n      <div class=\"box-header with-border\" _v-65eb1bbb=\"\">\n        <div class=\"row\" _v-65eb1bbb=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-65eb1bbb=\"\">\n            <div class=\"box-date-top pull-left\" _v-65eb1bbb=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-65eb1bbb=\"\">\n            <form class=\"form-inline pull-right\" _v-65eb1bbb=\"\">\n              <div class=\"form-group\" _v-65eb1bbb=\"\">\n                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-65eb1bbb=\"\"><span class=\"fa fa-floppy-o\" _v-65eb1bbb=\"\"></span></button>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-65eb1bbb=\"\">\n                <label class=\"sr-only\" for=\"priority-number\" _v-65eb1bbb=\"\">Priority</label>\n                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" number=\"\" _v-65eb1bbb=\"\">\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-65eb1bbb=\"\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>\n              <div id=\"applabel\" class=\"form-group \" _v-65eb1bbb=\"\">\n                <label _v-65eb1bbb=\"\">  approved:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-65eb1bbb=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-65eb1bbb=\"\">\n              </vui-flip-switch>\n            </div>\n          </form>\n        </div><!-- /.col-md-12 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-65eb1bbb=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-65eb1bbb=\"\">\n          <div class=\"col-sm-12\" _v-65eb1bbb=\"\">\n            <h6 class=\"box-title\" _v-65eb1bbb=\"\">{{item.title}}</h6>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n\n    </div>  <!-- /.box-header -->\n\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-65eb1bbb=\"\">\n      <p _v-65eb1bbb=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-65eb1bbb=\"\">\n        Submitted On: {{item.submission_date}}<br _v-65eb1bbb=\"\">\n        By: {{item.user_name}}<br _v-65eb1bbb=\"\">\n        {{item.user_email}} {{item.user_phone}}<br _v-65eb1bbb=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n\n      </div>\n\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-65eb1bbb=\"\">\n      <div class=\"row\" _v-65eb1bbb=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-65eb1bbb=\"\">\n          <span :class=\"timeFromNowStatus\" _v-65eb1bbb=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-65eb1bbb=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-65eb1bbb=\"\">\n          <div class=\"btn-group pull-right\" _v-65eb1bbb=\"\">\n            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-65eb1bbb=\"\"><i class=\"fa fa-archive\" _v-65eb1bbb=\"\"></i></button>\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-65eb1bbb=\"\"><i class=\"fa fa-pencil\" _v-65eb1bbb=\"\"></i></button>\n            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-65eb1bbb] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-65eb1bbb] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-65eb1bbb] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-65eb1bbb] {\n    border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-65eb1bbb] {\n    color: #1B1B1B;\n}\n\n\n.zcallout[_v-65eb1bbb] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\nform[_v-65eb1bbb] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-65eb1bbb] {\n    margin-bottom: 2px;\n}\n#applabel[_v-65eb1bbb]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-65eb1bbb],\n.btn-group-vertical[_v-65eb1bbb] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nselect.form-control[_v-65eb1bbb] {\n    height:22px;\n    border: 1px solid #999999;\n}\nh6[_v-65eb1bbb] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-65eb1bbb] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-65eb1bbb] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-65eb1bbb]{\n    margin-bottom: 0;\n}\n\n\n.box-footer[_v-65eb1bbb] {\n    padding: 3px;\n}\n.box.box-solid.box-default[_v-65eb1bbb] {\n    border: 1px solid #999999;\n}\n\n.topitems[_v-65eb1bbb] {\n    /*background-color: #9B59B6;*/\n    background-color: #76D7EA;\n    border: 2px solid #9B59B6;\n}\n.ongoing[_v-65eb1bbb] {\n    background-color: #ffcc33;\n    border: 1px solid #999999\n}\n.event-positive[_v-65eb1bbb] {\n\n    background-color: #D8D8D8;\n    border: 1px solid #999999;\n}\n.event-negative[_v-65eb1bbb] {\n\n    background-color: #999999;\n    border: 1px solid #999999;\n}\n.is-promoted[_v-65eb1bbb] {\n\n    background-color: #76D7EA;\n    /*border: 1px solid #999999*/\n}\n.time-is-short[_v-65eb1bbb] {\n    color: #F39C12;\n}\n.time-is-long[_v-65eb1bbb] {\n    color: #999999;\n}\n.time-is-over[_v-65eb1bbb] {\n    color: #9B59B6;\n}\n\n.special-item[_v-65eb1bbb] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-65eb1bbb] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n    margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-65eb1bbb] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-65eb1bbb] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-65eb1bbb] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-65eb1bbb] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-65eb1bbb] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-65eb1bbb] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-65eb1bbb] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-65eb1bbb] {\n  margin-bottom: 2px;\n}\n#applabel[_v-65eb1bbb]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-65eb1bbb],\n.btn-group-vertical[_v-65eb1bbb] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-65eb1bbb] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-65eb1bbb] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-65eb1bbb] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-65eb1bbb] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-65eb1bbb]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-65eb1bbb] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-65eb1bbb] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-65eb1bbb] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-65eb1bbb] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-65eb1bbb] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-65eb1bbb] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-65eb1bbb] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-65eb1bbb] {\n  color: #F39C12;\n}\n.time-is-long[_v-65eb1bbb] {\n  color: #999999;\n}\n.time-is-over[_v-65eb1bbb] {\n  color: #9B59B6;\n}\n\n.special-item[_v-65eb1bbb] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-65eb1bbb] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
