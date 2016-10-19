@@ -127,7 +127,7 @@ class MagazineController extends Controller
     public function article($id)
     {
         $story = $this->story->findOrFail($id);
-        
+
         if($story->magazines){
             $magazine = $story->magazines->first();
         }

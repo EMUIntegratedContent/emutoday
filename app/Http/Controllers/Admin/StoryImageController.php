@@ -55,10 +55,10 @@ class StoryImageController extends Controller
             'image_name'=> 'img' . $story->id . '_' . $request->img_type
 
         ]);
-        // if($request->img_type == 'front') {
-        //     $story->is_featured = 1;
-        //     $story->save();
-        // }
+        if($request->img_type == 'front') {
+            $story->is_featured = 1;
+            $story->save();
+        }
         flash()->success('New Image Added.');
         $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
 
