@@ -180,7 +180,7 @@
                         <tr>
                         <td class="text-right">Row colors: </td>
                           <td class="warning text-center"><small>Page with upcoming start date </small></td>
-                          <td class="danger text-center"><small>Current Page Live on site</small></td>
+                          <td class="success text-center"><small>Current Page Live on site</small></td>
                           <td class="active text-center"><small>Page is no longer active</small></td>
                           <td class="text-center"><span class="fa fa-calendar" aria-hidden="true"></span></td>
 
@@ -197,7 +197,7 @@
     <div class="col-md-6">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Not Ready & Past: <small><em>The Pages are  missing critical assets and start and end dates have passed</em></small></h3>
+                <h3 class="box-title">Not Ready &amp; Past: <small><em>The Pages are  missing critical assets and start and end dates have passed</em></small></h3>
 
 
                     <div class="box-tools pull-right">

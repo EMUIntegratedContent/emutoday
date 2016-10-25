@@ -25,7 +25,7 @@ var redipsInit,
     story_ids = [],
     mainrecord_id,
     rd = REDIPS.drag;
-    console.log('rd3');
+    //console.log('rd3');
 // redips initialization
 redipsInit = function () {
     var num = 0,			// number of successfully placed elements
@@ -126,7 +126,7 @@ checkAndSetStoryPositions = function() {
     var sop = JSvars.storysonpage;
     for (sindex = 0; sindex < sop.length ; sindex++ ) {
         var srcCell, tarCell;
-        console.log(sop[sindex].id + '   ' + sop[sindex].pivot.page_position);
+        //console.log(sop[sindex].id + '   ' + sop[sindex].pivot.page_position);
         if (sop[sindex].pivot.page_position == 0) {
             document.getElementById('emuhome0').appendChild(
                 document.getElementById('drag-'+ sop[sindex].id + 'x')
@@ -143,8 +143,8 @@ checkAndSetStoryPositions = function() {
             // srcCell = document.getElementById('drag-'+ sop[sindex].id);
             // tarCell = document.getElementById('emuhome' + sop[sindex].pivot.page_position);
         }
-        console.log('sop[sindex].id='+sop[sindex].id);
-        //console.log('srcCell= '+ srcCell + ' tarCell= '+ tarCell);
+        //console.log('sop[sindex].id='+sop[sindex].id);
+        ////console.log('srcCell= '+ srcCell + ' tarCell= '+ tarCell);
         //srcCell.style.color = "red";
 
         // rd.relocate(srcCell,tarCell,'animation');
@@ -182,30 +182,31 @@ reset = function () {
 };
 editArticle = function(btn)
 {
-    console.log('btn='+ btn);
+    //console.log('btn='+ btn);
 };
 // get content (DIV elements in TD)
 getContent = function (id) {
     var td = document.getElementById(id),
         content = '',
-        imgname,imgtype,imgurl,firstInRow,
+        stype,imgname,imgtype,imgurl,firstInRow,
         cn, i, cnid, tbl;
     // TD can contain many DIV elements
     for (i = 0; i < td.childNodes.length; i++) {
         // set reference to the child node
         cn = td.childNodes[i];
-        console.log('>'+ cn.id);
+        // console.log('>'+ cn.id);
 
         // childNode should be DIV with containing "drag" class name
         if (cn.nodeName === 'DIV' && cn.className.indexOf('drag') > -1) { // and yes, it should be uppercase
             // append DIV id to the result string
             cnid = cn.id;
-            console.log('cnid='+ cnid);
+            //console.log('cnid='+ cnid);
             content += cn.id + '_';
             imgname = cn.dataset.imgname;
             imgtype = 'dd' + cn.dataset.imgtype;
+            stype = cn.dataset.stype;
             imgurl = 'url(/imagecache/'+ imgtype + '/' + imgname + ')';
-            console.log('fnameurl'+ imgurl);
+            //console.log('fnameurl'+ imgurl);
         }
     }
     // cut last '_' from string
@@ -219,7 +220,7 @@ getContent = function (id) {
     if (content.length === 0){
         content = 0;
         tddivid = td.id;
-        console.log("td.id " + td.id)
+        //console.log("td.id " + td.id)
         if (tddivid.replace('emuhome','') == 0){
             td.style.backgroundColor =  "#00a7d0";
         } else {
@@ -245,7 +246,7 @@ getContent = function (id) {
         //find parent table element
         tddivid = td.id;
         tdid = tddivid.replace('emuhome','storyview');
-        console.log('tdid'+tdid);
+        //console.log('tdid'+tdid);
 
         viewtd = document.getElementById(tdid);
         if(!viewtd.hasChildNodes())
@@ -254,14 +255,12 @@ getContent = function (id) {
             viewtd.style.backgroundRepeat = 'no-repeat';
             viewtd.style.backgroundPosition  = "center top";
             viewtd.style.verticalAlign = "top"
-            editbtn = document.createElement("a");
+            var editbtn = document.createElement("a");
             editbtn.setAttribute("type", "button");
             editbtn.classList.add("btn", "bg-orange", "btn-xs", "btn-edit");
             editbtn.setAttribute("data-id", content);
+            editbtn.setAttribute("data-stype", stype);
             editbtn.style.marginTop = 0;
-
-
-
             editbtn.innerHTML = "<i class='fa fa-pencil'></i>";
 
             viewtd.appendChild(editbtn);
@@ -270,15 +269,16 @@ getContent = function (id) {
         // td.style.backgroundImage = imgurl;
         // td.style.backgroundRepeat = 'no-repeat';
         // td.onclick = function(){
-        //     var storypath = '/admin/story/'+ content +'/edit';
-        //     location.assign(storypath);
+
+            // var storypath = '/admin/queueall/story/news/'+ content +'/edit';
+            // location.assign(storypath);
         // }
 
 
-        console.log('content='+ content);
+        //console.log('content='+ content);
     }
     //
-    //console.log('content.length' + content.length);
+    ////console.log('content.length' + content.length);
     // return result
 
     return content;
@@ -346,7 +346,7 @@ enableRows = function (flag) {
     if (!flag) {
         lock++;
     }
-    console.log('enableRows');
+    //console.log('enableRows');
     showContent();
 };
 
@@ -387,7 +387,7 @@ arraysEqual = function(a, b) {
   // the array, you should sort both arrays here.
 
   for (var i = 0; i < a.length; ++i) {
-      console.log('a[i] ' + a[i] + ' b[i]' + b[i]);
+      //console.log('a[i] ' + a[i] + ' b[i]' + b[i]);
     if (a[i] != b[i]) return false;
   }
   return true;
@@ -402,23 +402,26 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
     var parentBtnData = $(this).parent().data();
     var parentBtnId = parentBtnData['id'];
     var parentBtnStype = parentBtnData['stype'];
-    console.log('parentBtnId====='+parentBtnData['id']);
+    // console.log($(this).parent().data());
+    // console.log('parentBtnId====='+parentBtnData['id']);
+    // console.log('parentBtnData====='+JSON.stringify(parentBtnData));
     var dataid = mainrecord_id;
     var modal_message;
     var canSave = false;
     var skipModal = false;
 
-    console.log('original_story_ids=' + original_story_ids);
-    console.log('story_ids=' + story_ids);
+    //console.log('original_story_ids=' + original_story_ids);
+    //console.log('story_ids=' + story_ids);
 
-    var itempath = '/admin/story/'+parentBtnStype+ '/' + parentBtnId +'/edit';
+    // var itempath = '/admin/story/'+parentBtnStype+ '/' + parentBtnId +'/edit';
+    var itempath = '/admin/queueall/story/'+parentBtnStype+ '/' + parentBtnId +'/edit';
 
     if (arraysEqual(original_story_ids,story_ids)) {
-        console.log('arrays are equal');
+        //console.log('arrays are equal');
         skipModal = true;
     } else {
         skipModal = false;
-        console.log('arrays are NOTTTTTTTTT equal');
+        //console.log('arrays are NOTTTTTTTTT equal');
     }
 
 
@@ -452,7 +455,7 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
                 saveasbtn.disabled =false;
                 saveasbtn.addEventListener("click", function(e){
                     var sids =  story_ids.toString();
-                    console.log(sids);
+                    //console.log(sids);
                     e.preventDefault();
                     e.stopPropagation();   //this prevented it from submitting twice i a row
                     $.ajax({
@@ -460,7 +463,7 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
                                type: 'PATCH',
                                data: {story_ids: sids},
                                success: function(res) {
-                                   console.log('success');
+                                   //console.log('success');
                                    //         location.assign(articlepath);
                                    window.location.href = itempath;
 
