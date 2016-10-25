@@ -5,11 +5,11 @@
         <meta id="token" name="token" value="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMU Today</title>
-    <title>@yield('title')</title>
+    <title>EMU Today - @yield('title')</title>
     @include('public.layouts.styles')
     @include('public.layouts.scriptshead')
     @include('include.js')
+    @yield('addthisMeta')
   </head>
   <body>
     @yield('bodytop')

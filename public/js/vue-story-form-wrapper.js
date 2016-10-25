@@ -21019,6 +21019,7 @@ module.exports = {
 
       //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
+      this.formMessage.isOk = '';
       // this.newevent.start_date = this.sdate;
       // this.newevent.end_date = this.edate;
       // this.newevent.reg_deadline = this.rdate;
@@ -21066,6 +21067,7 @@ module.exports = {
         _this4.formMessage.msg = response.data.message;
         _this4.currentRecordId = response.data.newdata.record_id;
         _this4.formMessage.isOk = response.ok;
+        _this4.formErrors = '';
         //  console.log('goooooo'+response.newdata.record_id);
         console.log('newdta' + response.data.newdata.record_id);
         _this4.response_record_id = response.data.newdata.record_id;

@@ -421,3 +421,6 @@ img.better-thumb {
   border-color: #ddd;
   cursor: not-allowed;
 }
+.form-control {
+  padding: 0 12px;
+}

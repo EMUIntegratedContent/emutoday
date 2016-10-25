@@ -681,6 +681,7 @@ module.exports  = {
     submitForm: function(e) {
       //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
+      this.formMessage.isOk = '';
       // this.newevent.start_date = this.sdate;
       // this.newevent.end_date = this.edate;
       // this.newevent.reg_deadline = this.rdate;
@@ -694,7 +695,6 @@ module.exports  = {
       if (this.tags.length > 0) {
         this.record.tags = this.tags;
       }
-
 
       //   this.record.story_type = this.storytype;
       this.record.slug = this.recordSlug;
@@ -731,6 +731,7 @@ module.exports  = {
         this.formMessage.msg = response.data.message;
         this.currentRecordId = response.data.newdata.record_id;
         this.formMessage.isOk = response.ok;
+        this.formErrors = '';
         //  console.log('goooooo'+response.newdata.record_id);
         console.log('newdta'+response.data.newdata.record_id);
         this.response_record_id = response.data.newdata.record_id;
@@ -739,12 +740,7 @@ module.exports  = {
           this.nowOnReload();
         } else {
           this.onRefresh();
-
         }
-
-
-
-
       }, (response) => {
         //error callback
         this.formErrors =  response.data.error.message;

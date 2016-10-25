@@ -1,5 +1,18 @@
-<!-- Main Story Page -->
 @extends('public.layouts.global')
+@section('title'){{ $story->title }}@endsection
+
+@section('addthisMeta')
+<meta property="og:title" content="{{$story->title}}" />
+<meta property="og:description" content="{{$story->subtitle}}" />
+  @if(isset($mainStoryImage))
+  <meta property="og:image" content="http://today.emich.edu{{$mainStoryImage->present()->mainImageURL}}"/>
+  <meta property="og:image:secure_url" content="https://today.emich.edu{{$mainStoryImage->present()->mainImageURL}}"/>
+  <meta property="og:image:type" content="image" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="300" />
+  @endif
+@endsection
+
 @section('content')
   <div id="news-story-bar">
     <div class="row">
@@ -11,7 +24,7 @@
             <p class="story-publish-date">{{ $story->present()->publishedDate }}</p>
           </div>
           <div class="large-5 medium-4 hide-for-small columns">
-            <p class="small-return-news"><a href="/emu-today/news">News Home</a></p>
+            <p class="small-return-news"><a href="/story/news">News Home</a></p>
           </div>
         </div>
         <!-- Story Page Content -->
