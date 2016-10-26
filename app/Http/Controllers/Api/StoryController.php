@@ -5,6 +5,7 @@ namespace Emutoday\Http\Controllers\Api;
 
 use Emutoday\Story;
 use Emutoday\User;
+use Emutoday\Author;
 
 use Illuminate\Support\Facades\Input as Input;
 use Illuminate\Http\Request;
@@ -174,8 +175,6 @@ class StoryController extends ApiController
     }
     public function store(Request $request)
     {
-
-
         //  if (! Input::get('title') or ! Input::get('location'))
         $validation = \Validator::make( Input::all(), [
             'title'           => 'required',
@@ -294,8 +293,6 @@ class StoryController extends ApiController
                   //             ->respondUpdated('Announcement successfully Updated!');
                           }
       }
-
-
     /**
      * Update the specified resource in storage.
      *
@@ -312,7 +309,6 @@ class StoryController extends ApiController
                      'user_id'   => 'required',
                      'content'     => 'required'
              ]);
-
       if( $validation->fails() )
       {
           return $this->setStatusCode(422)
@@ -436,6 +432,59 @@ class StoryController extends ApiController
     {
         //
     }
+    public function getAuthorData(Author $author, $id)
+    { //
+      return $author->findOrFail($id);
+    }
 
+    public function storeAuthor(Request $request)
+    { // new author
+      $validation = \Validator::make( Input::all(), [
+        'first_name' => 'required',
+      ]);
+      if( $validation->fails() )
+      {
+        return $this->setStatusCode(422)
+        ->respondWithError($validation->errors()->getMessages());
+      }
+      if($validation->passes())
+      {
+        $author = new Author;
+        $author->first_name        = $request->get('first_name');
+        $author->last_name         = $request->get('last_name', null);
+        $author->email             = $request->get('email', null);
+        $author->phone             = $request->get('phone', null);
 
+        if($author->save()) {
+          return $this->setStatusCode(201)
+          ->respondSavedWithData("Author has been saved",['author'=>$author] );
+        }
+      }
+    }
+
+    public function saveAuthor(Request $request, $id, Author $a)
+    { // patch author
+      $author = $a->findOrFail($id);
+      $validation = \Validator::make( Input::all(), [
+        'first_name' => 'required',
+      ]);
+      if( $validation->fails() )
+      {
+        return $this->setStatusCode(422)
+        ->respondWithError($validation->errors()->getMessages());
+      }
+      if($validation->passes())
+      {
+        $author->first_name        = $request->get('first_name');
+        $author->last_name         = $request->get('last_name', null);
+        $author->email             = $request->get('email', null);
+        $author->phone             = $request->get('phone', null);
+
+        if($author->save()) {
+          $author->save();
+          return $this->setStatusCode(201)
+          ->respondSavedWithData("Author has been saved",['author'=>$author] );
+        }
+      }
+    }
 }

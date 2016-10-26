@@ -6,7 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
-    public function getFullNameAttribute(){
-        return $this->last_name . ', '. $this->first_name;
-    }
+  protected $fillable = [
+    'first_name',
+    'last_name',
+    'email',
+    'phone',
+  ];
+
+  public function getFullNameAttribute(){
+    return $this->last_name . ', '. $this->first_name;
+  }
+  public function scopeLikeSearch($query, $field, $value){
+    return $query->where($field, 'LIKE', "%$value%");
+  }
 }

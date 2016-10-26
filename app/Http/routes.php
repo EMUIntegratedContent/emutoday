@@ -4,6 +4,7 @@ use Emutoday\Building;
 use Emutoday\Event;
 use Emutoday\Category;
 use Emutoday\Tag;
+use Emutoday\Author;
 use Emutoday\MiniCalendar;
 use Illuminate\Support\Facades\Input;
 /*
@@ -46,8 +47,12 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('minicalslist', function() {
         return MiniCalendar::select('calendar', 'id as value')->get();
     });
-    Route::get('taglist', function() {
 
+    Route::get('authorlist', function() {
+        return Author::select('first_name', 'id as value')->get();
+    });
+
+    Route::get('taglist', function() {
         return Tag::select('name', 'id as value')->get();
     });
 
@@ -88,6 +93,10 @@ Route::group(['prefix' => 'api'], function() {
 
 
     Route::patch('story/updateitem/{id}', ['as' => 'api_story_updateitem', 'uses' => 'Api\StoryController@updateItem']);
+
+    Route::get('author/{id}', 'Api\StoryController@getAuthorData');
+    Route::post('author', ['as' => 'api_story_storeauthor', 'uses' => 'Api\StoryController@storeAuthor']);
+    Route::put('author/{id}', ['as' => 'api_story_saveauthor', 'uses' => 'Api\StoryController@saveAuthor']);
 
     Route::patch('story/archiveitem/{id}', ['as' => 'api_story_archiveitem', 'uses' => 'Api\StoryController@archiveItem']);
 

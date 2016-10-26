@@ -9,7 +9,7 @@
         <h4>{{$sideitems->first()->filename}}</h4> --}}
         <ul class="feature-list">
     @foreach($sideitems as $sideitem)
-        <li><a href="/{{$storytype}}/{{$sideitem->story->id}}">{{ $sideitem->caption }}</a></li>
+        <li><a href="/story/{{$storytype}}/{{$sideitem->story->id}}">{{ $sideitem->caption }}</a></li>
     @endforeach
     </ul>
 </div>

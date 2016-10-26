@@ -8,7 +8,6 @@
           <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
           <h5>{{formMessage.msg}}</h5>
         </div>
-
       </div><!-- /.small-12 columns -->
     </div><!-- /.row -->
     <div class="row">
@@ -55,7 +54,20 @@
       <div class="col-md-12">
         <a v-if="!needAuthor" @click.prevent="changeAuthor" href="#" class="btn btn-primary btn-sm">Change Author</a>
         <a v-if="hasAuthor" @click.prevent="resetAuthor" href="#" class="btn btn-primary btn-sm">Reset Author</a>
+        <div v-if="needAuthor && isAdmin" class="form-inline author">
+            <label>Choose existing Author:</label>
+            <v-select
+            :value.sync="selectedAuthor"
+            :options="optionsAuthorlist"
+            :multiple="false"
+            placeholder="Author"
+            label="first_name"> </v-select>
+        </div>
         <div v-if="needAuthor" class="form-inline author">
+          <!-- <div class="form-group save-author">
+            <button @click.prevent="fetchAuthor('down')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-down"></i></button>
+            <button @click.prevent="fetchAuthor('up')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-up"></i></button>
+          </div> -->
           <div class="form-group">
             <label for="author-last-name">Last Name</label>
             <input v-model="author.last_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="Last Name">
@@ -74,7 +86,8 @@
           </div>
           <div class="form-group save-author">
             <button @click.prevent="saveAuthor" href="#" class="btn btn-warning btn-sm">Save Author</button>
-          </div>
+          </div><!-- /.form-group -->
+        </div>
         </div>
       </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
@@ -226,7 +239,6 @@ button.button-primary{
   padding: 8px 30px 8px 15px;
 }
 .save-author {
-
   vertical-align: bottom;
 }
 </style>
@@ -272,7 +284,7 @@ module.exports  = {
     stypes: {default: {}},
     gtype:{default: ''},
     qtype:{default: ''},
-    stype:{default: ''}
+    stype:{default: ''},
     // stypelist: {},
     // stypelist1: {},
     // stypelist2: {}
@@ -283,6 +295,8 @@ module.exports  = {
     return {
       tags:[],
       taglist:[],
+      authorlist:[],
+      selectedAuthor:null,
       newform: false,
       response_record_id:'',
       response_stype: '',
@@ -385,9 +399,13 @@ module.exports  = {
       this.recordState = 'new';
     }
     this.fetchTagsList();
+    this.fetchAuthorList();
     this.getUserRoles();
   },
   computed: {
+    optionsAuthorlist:function(){
+      return this.authorlist;
+    },
     optionsTaglist:function(){
       return this.taglist;
     },
@@ -477,13 +495,13 @@ module.exports  = {
       console.log('userRoles===='+ this.userRoles)
 
     },
-    formatTagsForRecord(val){
-      console.log(JSON.stringify(val))
-      this.record.tags = val.map(function(item,index){
-        return item.id;
-      })
-      console.log('this.record.tags= '+ this.record.tags)
-    },
+    // formatTagsForRecord(val){
+    //   console.log(JSON.stringify(val))
+    //   this.record.tags = val.map(function(item,index){
+    //     return item.id;
+    //   })
+    //   console.log('this.record.tags= '+ this.record.tags)
+    // },
     nowOnReload:function() {
 
       //   {qtype}/{gtype}/{stype}/{story}/edit'
@@ -568,6 +586,17 @@ module.exports  = {
     //       })
     //   },
 
+    fetchAuthorList: function() {
+      console.log('author list fetch');
+      this.$http.get('/api/authorlist')
+      .then((response) =>{
+        this.$set('authorlist', response.data)
+      }, (response) => {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+
     fetchTagsList: function() {
 
       this.$http.get('/api/taglist')
@@ -629,12 +658,12 @@ module.exports  = {
       this.currentRecordId = this.record.id;
       this.content = this.record.content;
       // console.log('this.record.start_date='+ this.record.start_date)
-      if (this.record.tags){
-
-        this.tags = this.record.tags;
-        this.record.tags = null;
-      }
-
+      // if (this.record.tags){
+      //
+      //   this.tags = this.record.tags;
+      //   this.record.tags = null;
+      // }
+      //
       this.fdate = this.record.start_date;
       console.log('this.fdate'+ this.fdate)
       if (this.record.author_id != 0) {
@@ -654,30 +683,65 @@ module.exports  = {
 
     saveAuthor: function(e) {
       e.preventDefault();
-      let method = (this.record.author_id == 0) ? 'post' : 'put'
-      let route =  (this.record.author_id == 0) ? '/api/author/':'/api/author/' + this.record.author_id ;
+      this.formMessage.isOk = '';
+      console.log('rec.author_id:'+this.author.id);
+      let method = (this.author.id == 0) ? 'post' : 'put'
+      let route =  (this.author.id == 0) ? '/api/author':'/api/author/' + this.author.id ;
 
       //   this.$http.post('/api/story', this.record)
       this.$http[method](route, this.author)
 
       .then((response) =>{
         //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data.message);
+        // console.log('response.status=' + response.status);
+        // console.log('response.ok=' + response.ok);
+        // console.log('response.statusText=' + response.statusText);
+        // console.log('response.data=' + response.data.message);
+        console.log('response.author=' + JSON.stringify(response.data.newdata));
+
+        this.author.id = response.data.newdata.author.id;
+        this.record.author_id = response.data.newdata.author.id;
+        console.log('rec.author_id:'+this.author.id);
+        this.author.first_name = response.data.newdata.author.first_name;
+        this.author.last_name = response.data.newdata.author.last_name;
+        this.author.phone = response.data.newdata.author.phone;
+        this.author.email = response.data.newdata.author.email;
 
         this.formMessage.msg = response.data.message;
-        this.author = response.data.author;
         this.formMessage.isOk = response.ok;
         this.needAuthor = false;
-        this.onRefresh();
+        // this.onRefresh();
 
       }, (response) => {
         //error callback
         //this.formErrors =  response.data.error.message;
       }).bind(this);
     },
+    fetchAuthor: function(){
+      // e == 'up' ? console.log('up'+e,this.author.id+1) : console.log('down'+e,this.author.id-1);
+      // fetchid = this.author.id;
+      // e == 'up' ? fetchid++ : fetchid--;
+
+      this.$http.get('/api/author/'+this.selectedAuthor.value)
+
+      .then((response) =>{
+        // console.log('response=' + json.stringify(response));
+
+        this.author.id = response.body.id;
+        this.record.author_id = response.body.id;
+        this.author.first_name = response.body.first_name;
+        this.author.last_name = response.body.last_name;
+        this.author.phone = response.body.phone;
+        this.author.email = response.body.email;
+      }, (response) => {
+        // err
+      }).bind(this);
+    },
+    ahhh: function(){
+      console.log('author',this.authors, this.authorlist)
+      console.log('tag',this.tags, this.taglist)
+    },
+
     submitForm: function(e) {
       //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
@@ -692,9 +756,9 @@ module.exports  = {
       } else {
         this.record.content = this.content;
       }
-      if (this.tags.length > 0) {
-        this.record.tags = this.tags;
-      }
+      // if (this.tags.length > 0) {
+      //   this.record.tags = this.tags;
+      // }
 
       //   this.record.story_type = this.storytype;
       this.record.slug = this.recordSlug;
@@ -773,6 +837,10 @@ module.exports  = {
     },
   },
   watch: {
+    selectedAuthor: function(){
+      console.log(this.selectedAuthor);
+      this.fetchAuthor();
+    },
     //   'recordState': function(val,oldVal) {
     //       console.log('new: %s, old: %s', val, oldVal)
     //       this.updateRecordState(val)
