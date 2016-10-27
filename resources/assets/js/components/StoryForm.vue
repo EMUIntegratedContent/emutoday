@@ -52,6 +52,10 @@
     </div><!-- /.row -->
     <div class="row">
       <div class="col-md-12">
+        <div v-show="saveAuthorMessage.isOk"  class="alert alert-success alert-dismissible">
+          <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
+          <h5>{{saveAuthorMessage.msg}}</h5>
+        </div>
         <a v-if="!needAuthor" @click.prevent="changeAuthor" href="#" class="btn btn-primary btn-sm">Change Author</a>
         <a v-if="hasAuthor" @click.prevent="resetAuthor" href="#" class="btn btn-primary btn-sm">Reset Author</a>
         <div v-if="needAuthor && isAdmin" class="form-inline author">
@@ -61,7 +65,7 @@
             :options="optionsAuthorlist"
             :multiple="false"
             placeholder="Author"
-            label="first_name"> </v-select>
+            label="name"> </v-select>
         </div>
         <div v-if="needAuthor" class="form-inline author">
           <!-- <div class="form-group save-author">
@@ -69,12 +73,12 @@
             <button @click.prevent="fetchAuthor('up')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-up"></i></button>
           </div> -->
           <div class="form-group">
-            <label for="author-last-name">Last Name</label>
-            <input v-model="author.last_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="Last Name">
+            <label for="author-first-name">First Name <span v-if="authorErrors.first_name" class="help-text invalid"> is Required</span></label>
+            <input v-model="author.first_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="First Name">
           </div>
           <div class="form-group">
-            <label for="author-first-name">First Name</label>
-            <input v-model="author.first_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="First Name">
+            <label for="author-last-name">Last Name</label>
+            <input v-model="author.last_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="Last Name">
           </div>
           <div class="form-group">
             <label for="author-email">Email</label>
@@ -85,7 +89,7 @@
             <input v-model="author.phone" type="phone" class="form-control input-sm" id="author-phone" placeholder="(313)-555-1212">
           </div>
           <div class="form-group save-author">
-            <button @click.prevent="saveAuthor" href="#" class="btn btn-warning btn-sm">Save Author</button>
+            <button @click.prevent="saveAuthor" href="#" class="btn btn-primary btn-sm">{{authorBtnLabel}}</button>
           </div><!-- /.form-group -->
         </div>
         </div>
@@ -295,7 +299,6 @@ module.exports  = {
     return {
       tags:[],
       taglist:[],
-      authorlist:[],
       selectedAuthor:null,
       newform: false,
       response_record_id:'',
@@ -312,7 +315,8 @@ module.exports  = {
       },
       userRoles: [],
       needAuthor: false,
-      hasAuthor: false,
+      hasAuthor:false,
+      authorlist:[],
       author: {
         id: 0,
         last_name: '',
@@ -367,8 +371,13 @@ module.exports  = {
         isOk: false,
         msg: ''
       },
+      saveAuthorMessage: {
+        isOk: false,
+        msg: ''
+      },
       formInputs : {},
-      formErrors : {}
+      formErrors : {},
+      authorErrors : {}
     }
   },
   created: function () {
@@ -399,10 +408,12 @@ module.exports  = {
       this.recordState = 'new';
     }
     this.fetchTagsList();
-    this.fetchAuthorList();
     this.getUserRoles();
   },
   computed: {
+    authorBtnLabel:function(){
+      return (this.hasAuthor) ? 'Update Author' : 'New Author';
+    },
     optionsAuthorlist:function(){
       return this.authorlist;
     },
@@ -530,10 +541,13 @@ module.exports  = {
       });
     },
     changeAuthor:function(evt) {
+      this.fetchAuthorList();
+      this.saveAuthorMessage.isOk = '';
       if (this.record.author_id == 0 ){
         this.author = this.authorNew;
       }
       this.needAuthor = true;
+      this.hasAuthor = true;
     },
     resetAuthor:function(evt){
       if (this.record.author_id !== 0 ){
@@ -542,9 +556,12 @@ module.exports  = {
         this.record.author_id = 0;
       }
       // this.needAuthor = true;
+      this.hasAuthor = false;
+      this.saveAuthorMessage.isOk = '';
     },
     toggleCallout:function(evt){
       this.formMessage.isOk = false
+      this.saveAuthorMessage.isOk = false
     },
 
     onBlur: function(evt){
@@ -683,7 +700,7 @@ module.exports  = {
 
     saveAuthor: function(e) {
       e.preventDefault();
-      this.formMessage.isOk = '';
+      this.saveAuthorMessage.isOk = '';
       console.log('rec.author_id:'+this.author.id);
       let method = (this.author.id == 0) ? 'post' : 'put'
       let route =  (this.author.id == 0) ? '/api/author':'/api/author/' + this.author.id ;
@@ -692,6 +709,8 @@ module.exports  = {
       this.$http[method](route, this.author)
 
       .then((response) =>{
+        this.authorErrors = '';
+        this.fetchAuthorList();
         //response.status;
         // console.log('response.status=' + response.status);
         // console.log('response.ok=' + response.ok);
@@ -707,14 +726,14 @@ module.exports  = {
         this.author.phone = response.data.newdata.author.phone;
         this.author.email = response.data.newdata.author.email;
 
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok;
+        this.saveAuthorMessage.msg = response.data.message;
+        this.saveAuthorMessage.isOk = response.ok;
         this.needAuthor = false;
         // this.onRefresh();
 
       }, (response) => {
         //error callback
-        //this.formErrors =  response.data.error.message;
+        this.authorErrors =  response.data.error.message;
       }).bind(this);
     },
     fetchAuthor: function(){
@@ -838,8 +857,9 @@ module.exports  = {
   },
   watch: {
     selectedAuthor: function(){
-      console.log(this.selectedAuthor);
+      // console.log(this.selectedAuthor);
       this.fetchAuthor();
+      this.hasAuthor = false;
     },
     //   'recordState': function(val,oldVal) {
     //       console.log('new: %s, old: %s', val, oldVal)

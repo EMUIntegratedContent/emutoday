@@ -48,8 +48,8 @@ Route::group(['prefix' => 'api'], function() {
         return MiniCalendar::select('calendar', 'id as value')->get();
     });
 
-    Route::get('authorlist', function() {
-        return Author::select('first_name', 'id as value')->get();
+    Route::get('authorlist', function() { // is there a way to concat first_name and last_name here? 
+        return Author::select('first_name as name', 'id as value')->get();
     });
 
     Route::get('taglist', function() {
