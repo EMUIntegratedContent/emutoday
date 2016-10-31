@@ -70,7 +70,8 @@ class Tweet extends Model
       CURLOPT_HEADER => false,
       CURLOPT_URL => "https://api.twitter.com/1.1/statuses/$twitter_timeline.json?". http_build_query($request),
       CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_SSL_VERIFYPEER => true
+      CURLOPT_SSL_VERIFYPEER => false,
+      CURLOPT_SSL_VERIFYHOST => false
     );
     //////////////////////////////////////
     // retrieve the twitter feed
@@ -81,9 +82,8 @@ class Tweet extends Model
 
     // decode json format tweets
     $tweets=json_decode($json, true);
+    
     //////////////////////////////////////
-    // protected $fillable = ['id','json','tweet_text','user_id','user_screen_name','user_avatar_url','public','approved'];
     return $tweets;
-    // return "Lo' and behold";
   }
 }

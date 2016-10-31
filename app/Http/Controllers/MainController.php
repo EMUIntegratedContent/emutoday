@@ -67,7 +67,7 @@ class MainController extends Controller
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
         ->take($this->recordLimitNews)->get();
-        
+
         //make sure there are enough announcements with a priority over 0
         //if not requery with out priority limitation
         if($currentStorysBasic->count() < $this->recordLimitNews ){
