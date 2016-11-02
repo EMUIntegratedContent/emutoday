@@ -156,6 +156,7 @@ elixir(function(mix) {
 
         mix.browserify('vue-announcement-queue.js', 'public/js/vue-announcement-queue.js');
         mix.browserify('vue-event-queue.js', 'public/js/vue-event-queue.js');
+        mix.browserify('vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js');
 
         // mix.browserify('vue-story-app.js', 'public/js/vue-story-app.js');
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');

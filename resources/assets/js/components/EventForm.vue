@@ -430,8 +430,8 @@
 <div class="row">
   <div :class="md6col">
     <div :class="formGroup">
-      <label for="lbc-reviewed">LBC Approved: <em>(pre-approval required)</em>
-        <input id="lbc-reviewed" name="lbc-reviewed" type="checkbox" value="1" v-model="record.lbc_reviewed"/>
+      <label for="lbc-approved">LBC Approved: <em>(pre-approval required)</em>
+        <input id="lbc-approved" name="lbc-approved" type="checkbox" value="1" v-model="record.lbc_approved"/>
       </label>
     </div>
   </div><!-- /.md6col -->
@@ -945,7 +945,7 @@ module.exports  = {
       }, (response) => {
         console.log('BAD:'+JSON.stringify(response))
       }).bind(this);
-      location.reload() // Temporary until submitted events can refresh it'self 
+      location.reload() // Temporary until submitted events can refresh it'self
     },
 
     fetchCurrentRecord: function() {

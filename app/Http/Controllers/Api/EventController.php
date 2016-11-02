@@ -84,6 +84,19 @@ class EventController extends ApiController
 
 
       }
+      public function lbcQueueLoad()
+      { // Return LBC approved or reviewed events
+          $events = Event::where([
+          ['lbc_approved', '1']
+          ])->orWhere([
+          ['lbc_reviewed', '1'],
+          ])->get();
+
+          $fractal = new Manager();
+          $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
+          return $fractal->createData($resource)->toArray();
+      }
+
       public function edit($id)
       {
         $fractal = new Manager();
@@ -167,7 +180,7 @@ class EventController extends ApiController
           $event->ticket_details_other		=$request->get('ticket_details_other');
 
           $event->mini_calendar						= $request->get('mini_calendar');
-          $event->lbc_reviewed						= $request->get('lbc_reviewed');
+          $event->lbc_approved						= $request->get('lbc_approved');
           $event->submission_date 				= \Carbon\Carbon::now();
 
 
@@ -262,23 +275,30 @@ class EventController extends ApiController
         * @return \Illuminate\Http\Response
         */
         public function updateItem(Request $request, $id)
-        {
+        { // Toggles the events bools
           $event = Event::findOrFail($id);
-          //$event->priority = $request->get('priority');
-          $event->priority = $request->get('priority');
-          $event->is_approved = $request->get('is_approved');
+          if ($request->get('lbc_approved') !== null){
+            // Condition for lbc approval update
+            $event->lbc_approved = $request->get('lbc_approved');
+            $event->lbc_reviewed = $request->get('lbc_reviewed');
 
-          ($event->is_approved == 1) ? $event->approved_date = Carbon::now() : $event->approved_date = null;
+            if($event->save()) {
+              $returnData = ['lbc_reviewed' => $event->lbc_reviewed, 'lbc_approved' => $event->lbc_approved];
+              return $this->setStatusCode(201)
+              ->respondUpdatedWithData('event updated',$returnData );
+            }
+          } else {
+            // Normal update
+            $event->priority = $request->get('priority');
+            $event->is_approved = $request->get('is_approved');
+            ($event->is_approved == 1) ? $event->approved_date = Carbon::now() : $event->approved_date = null;
+            $event->is_canceled = $request->get('is_canceled');
 
-          $event->is_canceled = $request->get('is_canceled');
-
-          if($event->save()) {
-            $returnData = ['is_approved' => $event->is_approved,'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
-            return $this->setStatusCode(201)
-            ->respondUpdatedWithData('event updated',$returnData );
-            // return $this->setStatusCode(201)
-            // ->respond([$event->is_approved]);
-            // ->respondCreated('Event successfully patched');
+            if($event->save()) {
+              $returnData = ['is_approved' => $event->is_approved,'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
+              return $this->setStatusCode(201)
+              ->respondUpdatedWithData('event updated',$returnData );
+            }
           }
         }
         /**
@@ -351,6 +371,7 @@ class EventController extends ApiController
             $event->description     	= $request->get('description');
 
             $event->is_approved       = 0; // events must go back into approver queue when updated
+            $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
 
             $event->related_link_1					= $request->get('related_link_1');
             $event->related_link_2					= $request->get('related_link_2');
@@ -369,7 +390,7 @@ class EventController extends ApiController
             $event->ticket_details_other		=$request->get('ticket_details_other');
 
             $event->mini_calendar						= $request->get('mini_calendar');
-            $event->lbc_reviewed						= $request->get('lbc_reviewed');
+            $event->lbc_approved						= $request->get('lbc_approved');
             // $event->submission_date 				= \Carbon\Carbon::now();
 
             $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');

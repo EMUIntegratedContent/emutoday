@@ -48,7 +48,7 @@ Route::group(['prefix' => 'api'], function() {
         return MiniCalendar::select('calendar', 'id as value')->get();
     });
 
-    Route::get('authorlist', function() { // is there a way to concat first_name and last_name here? 
+    Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
         return Author::select('first_name as name', 'id as value')->get();
     });
 
@@ -60,6 +60,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
 
     Route::get('event/queueload', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
+    Route::get('event/lbcqueueload', ['as' => 'api.event.lbcqueueload', 'uses' => 'Api\EventController@lbcQueueLoad']);
     Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
     Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
     Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
@@ -191,6 +192,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('announcement', 'Admin\AnnouncementController');
 
         Route::get('event/queue', ['as' => 'admin.event.queue', 'uses' => 'Admin\EventController@queue']);
+        Route::get('event/lbcqueue', ['as' => 'admin.event.lbcqueue', 'uses' => 'Admin\EventController@lbcqueue']);
         Route::get('event/form', ['as' => 'admin.event.form', 'uses' => 'Admin\EventController@form']);
         Route::resource('event', 'Admin\EventController');
 

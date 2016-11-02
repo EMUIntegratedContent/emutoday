@@ -27,8 +27,11 @@ class EventController extends Controller
     {
 
     }
-    public function queue(Event $event) {
-        return view('admin.event.queue', compact('events'));
+    public function queue() {
+        return view('admin.event.queue');
+    }
+    public function lbcqueue() {
+        return view('admin.event.lbcqueue');
     }
 
     /**
