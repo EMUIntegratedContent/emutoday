@@ -81,15 +81,18 @@ class EventController extends ApiController
         } else {
           return $this->setStatusCode(501)->respondWithError('Error');
         }
-
-
       }
       public function lbcQueueLoad()
       { // Return LBC approved or reviewed events
+          $currentDate = Carbon::now();
+
           $events = Event::where([
-          ['lbc_approved', '1']
-          ])->orWhere([
-          ['lbc_reviewed', '1'],
+            ['lbc_approved', '1'],
+            ['lbc_reviewed', '0'],
+            ['end_date', '>', $currentDate->subDay(14)]
+          // ])->orWhere([
+          //   ['lbc_reviewed', '0'],
+          //   ['end_date', '>', $currentDate->subDay(14)]
           ])->get();
 
           $fractal = new Manager();

@@ -10,7 +10,23 @@
           <div class="col-sm 12 col-md-4">
             <div class="box-date-top pull-left">{{item.start_date | titleDateLong}}</div>
           </div><!-- /.col-sm-6 -->
-          <div class="col-sm 12 col-md-8">
+          <!-- REVIEWED switch -->
+          <div class="col-sm 12 col-md-4">
+            <form class="form-inline pull-right">
+              <div id="applabel" class="form-group">
+                <label>reviewed:</label>
+              </div><!-- /.form-group -->
+              <div class="form-group">
+                <vui-flip-switch id="switch-{{item.id}}"
+                v-on:click.prevent="changeIsReviewed"
+                :value.sync="patchRecord.lbc_reviewed" >
+                </vui-flip-switch>
+              </div>
+            </form>
+          </div><!-- /.col-sm-6 -->
+
+          <!-- APPROVED switch -->
+          <div class="col-sm 12 col-md-4">
             <form class="form-inline pull-right">
               <div id="applabel" class="form-group">
                 <label>approved:</label>
@@ -19,11 +35,11 @@
                 <vui-flip-switch id="switch-{{item.id}}"
                 v-on:click.prevent="changeIsApproved"
                 :value.sync="patchRecord.lbc_approved" >
-              </vui-flip-switch>
-            </div>
-          </form>
-        </div><!-- /.col-sm-6 -->
-      </div><!-- /.row -->
+                </vui-flip-switch>
+              </div>
+            </form>
+          </div><!-- /.col-sm-6 -->
+        </div><!-- /.row -->
 
       <div class="row">
         <a v-on:click.prevent="toggleBody" href="#">
@@ -275,6 +291,7 @@ module.exports  = {
   },
   ready: function() {
     this.initRecord.lbc_approved = this.patchRecord.lbc_approved = this.item.lbc_approved;
+    this.initRecord.lbc_reviewed = this.patchRecord.lbc_reviewed = this.item.lbc_reviewed;
   },
   computed: {
     addSeperator: function(){
@@ -284,14 +301,14 @@ module.exports  = {
       }
       return asclass;
     },
-    hasIsApprovedChanged: function(){
-      if (this.initRecord.lbc_approved != this.patchRecord.lbc_approved){
-        console.log('lbc_approved => initRecord='+ this.initRecord.lbc_approved  + ' patchRecord=>' +this.patchRecord.lbc_approved );
-        return true
-      } else {
-        return false
-      }
-    },
+    // hasIsApprovedChanged: function(){
+    //   if (this.initRecord.lbc_approved != this.patchRecord.lbc_approved){
+    //     console.log('lbc_approved => initRecord='+ this.initRecord.lbc_approved  + ' patchRecord=>' +this.patchRecord.lbc_approved );
+    //     return true
+    //   } else {
+    //     return false
+    //   }
+    // },
     timeLeftStatus: function(){
       let diff = this.timeDiffNow(this.item.end_date_time)
       if(diff <= 0){
@@ -407,6 +424,10 @@ module.exports  = {
     timeDiffNow:function(val){
       return  moment(val).diff(moment(), 'minutes');
 
+    },
+    changeIsReviewed: function(){
+      this.patchRecord.lbc_reviewed = (this.item.lbc_reviewed === 0)?1:0;
+      this.updateItem();
     },
     changeIsApproved: function(){
       this.patchRecord.lbc_reviewed = 1;

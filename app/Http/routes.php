@@ -192,7 +192,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('announcement', 'Admin\AnnouncementController');
 
         Route::get('event/queue', ['as' => 'admin.event.queue', 'uses' => 'Admin\EventController@queue']);
-        Route::get('event/lbcqueue', ['as' => 'admin.event.lbcqueue', 'uses' => 'Admin\EventController@lbcqueue']);
+        Route::get('/lbcqueue', ['as' => 'admin.event.lbcqueue', 'uses' => 'Admin\EventController@lbcqueue']);
         Route::get('event/form', ['as' => 'admin.event.form', 'uses' => 'Admin\EventController@form']);
         Route::resource('event', 'Admin\EventController');
 

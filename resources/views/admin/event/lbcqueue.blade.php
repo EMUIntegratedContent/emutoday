@@ -19,10 +19,12 @@
     @endsection
 @section('content')
 
+    @can('lbc_approve', $currentUser)
     <div id="vue-event-queue">
             <event-queue>
             </event-queue>
     </div><!-- /.vue-announcement-app -->
+    @endcan
 
 @endsection
 @section('footer-vendor')
