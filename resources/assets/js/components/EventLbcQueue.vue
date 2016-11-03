@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-6">
-      <h3>Unpproved Events</h3>
+      <h3>Unapproved Events</h3>
       <div id="items-approved">
         <event-queue-item
 
