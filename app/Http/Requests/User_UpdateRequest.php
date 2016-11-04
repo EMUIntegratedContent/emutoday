@@ -26,7 +26,7 @@ class User_UpdateRequest extends Request
         return [
             'last_name' => ['required'],
             'email' => ['required', 'email', 'unique:users,email,'.$this->route('user')],
-            'password' => ['required_with:password_confirmation', 'confirmed']
+            // 'password' => ['required_with:password_confirmation', 'confirmed']
         ];
     }
 }

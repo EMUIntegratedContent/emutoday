@@ -26,7 +26,6 @@ class User_StoreRequest extends Request
         return [
             'last_name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'confirmed']
         ];
     }
 }

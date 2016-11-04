@@ -31,14 +31,14 @@ class UserController extends Controller
 
     public function form(User $user, Mediafile $mediafile)
     {
-            $mediafiles = null;
-            $userRoles = \Emutoday\Role::lists('name', 'id');
+        $mediafiles = null;
+        $userRoles = \Emutoday\Role::lists('name', 'id');
         return view('admin.user.form', compact('user','userRoles','mediafiles' ));
     }
 
     public function store(Requests\User_StoreRequest $request)
     {
-        $this->user->create($request->only('last_name', 'first_name', 'phone', 'email', 'password'));
+        $this->user->create($request->only('last_name', 'first_name', 'phone', 'email'));
         flash()->success('User has been created.');
         return redirect(route('admin_user_index'));//->with('status', 'User has been created.');
     }
@@ -57,7 +57,7 @@ class UserController extends Controller
     public function update(Requests\User_UpdateRequest $request, $id)
     {
         $user = $this->user->findOrFail($id);
-        $user->fill($request->only('last_name', 'first_name', 'phone', 'email', 'password'))->save();
+        $user->fill($request->only('last_name', 'first_name', 'phone', 'email'))->save();
         $rolesList = $request->input('role_list') == null ? [] : $request->input('role_list');
         $user->roles()->sync($rolesList);
         flash()->success('User has been updated.');

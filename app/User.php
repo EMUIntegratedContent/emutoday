@@ -15,7 +15,7 @@ class User extends Authenticatable
     * @var array
     */
     protected $fillable = [
-        'last_name', 'first_name', 'phone', 'email', 'password',
+        'last_name', 'first_name', 'phone', 'email',
     ];
     protected $dates = ['last_login_at'];
 
@@ -30,14 +30,14 @@ class User extends Authenticatable
     use Eloquence;
     protected $searchableColumns = ['last_name', 'first_name', 'email'];
 
-    /**
-     * [setPasswordAttribute description]
-     * @param [type] $value [description]
-     */
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
+    // /**
+    //  * [setPasswordAttribute description]
+    //  * @param [type] $value [description]
+    //  */
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = bcrypt($value);
+    // }
 
     /**
      * [getFullNameAttribute description]
