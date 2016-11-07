@@ -121,16 +121,24 @@ Route::group(['prefix' => 'api'], function() {
     //     'getLogin' => 'auth.login',
     //     'getLogout' => 'auth.logout'
     // ]);
+    Route::get('emichlogin', ['as' => 'emich-login', function() {
+        return view('public.emichlogin', ['form' => 'event']);
+    }]);
+
+    Route::group(['prefix' => 'auth' ], function()
+    {
+      // Route::post('/emichlogin', function(){
+      //   return 'login';
+      // });
+      Route::post('/emichlogin', ['as' => 'emich-login', 'uses' => 'Auth\AuthController@guest']);
+    });
 
     Route::get('/', ['as' => '/', 'uses' => 'MainController@index']);
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
-    Route::get('announcement/{id?}', 'Today\AnnouncementController@index'); // Does not exist
-
-
+    Route::get('announcement/{id?}', 'Today\AnnouncementController@index'); // Does not exist??
 
     // Route::get('news/{id?}', 'Today\StoryController@index');
-
 
     Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
     Route::get('calendar/event/{id}', 'Today\CalendarController@show');
@@ -147,17 +155,13 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('search','SearchController@search' );
     Route::get('search/story/{id}','SearchController@story' );
     Route::get('search/event/{id}','SearchController@event' );
-    Route::get('search/announcement/{id}','SearchController@announcement' );
+    Route::get('search/announcement/{id}','SearchController@annou/Authnnncement' );
 
     Route::get('story/{stype}/{id?}', 'Today\StoryController@story');
 
 
-    Route::get('emichlogin', ['as' => 'emich-login', function() {
-        return view('public.emichlogin', ['form' => 'event']);
-        //return Building::ofMapType('illustrated')->get();
-    }]);
     //Route::get('{stype}/{id?}', 'Today\StoryController@story');
-        Route::auth();
+    Route::auth();
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview' ], function()
     {

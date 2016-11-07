@@ -12,10 +12,10 @@
             @include('public.components.errors')
             <div class="row">
                 <div class="small-4 small-centered columns">
-
                     <h3 class="cal-caps toptitle">Emich Login</h3>
 
-                    <form action="/calendar/manage/" method="post">
+                    <form action="/auth/emichlogin" method="POST">
+                        {{ csrf_field() }}
                         <label for="user">My.Emich Username:</label>
                         <input type="text" name="user" id="user">
                         <label for="password">Password:</label>

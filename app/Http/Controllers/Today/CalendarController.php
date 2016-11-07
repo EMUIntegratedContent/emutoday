@@ -191,7 +191,7 @@ class CalendarController extends Controller
             } else {
                 // return view('public.emichlogin')
                 //return redirect()->route('auth.login');
-                return redirect()->guest('/login');
+                return redirect()->guest('/emichlogin');
             }
 
             // $approveditems = $this->event->where([

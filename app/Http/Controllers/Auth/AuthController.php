@@ -8,6 +8,8 @@ use Emutoday\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
+use Illuminate\Http\Request;
+
 class AuthController extends Controller
 {
     /*
@@ -39,7 +41,7 @@ class AuthController extends Controller
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
-    
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -75,5 +77,31 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function guest(Request $request)
+    { // Check LDAP, log in any valid NetId as guest
+      $user = $request['user'];
+      $pass = $request['password'];
+      $base = 'ou=people,o=campus';
+
+        if (empty($user) || empty($pass)) {
+          return 'false inputs missing';
+        } else {
+          // $user = trim(strtolower(array_shift(explode('@', $user))));
+
+          if ($conn = ldap_connect('ldap.emich.edu', 389)) {
+            if (ldap_bind($conn, "cn={$user}," . $base, $pass)) {
+              $search = ldap_search($conn, $base, "cn={$user}", array('EID'));
+
+              if (ldap_count_entries($conn, $search) <= 0) {
+                return 'false no entries';
+              } else {
+                return 'we got a match';//$user;
+              }
+            }
+          }
+        }
+      return 'it didnt even';
     }
 }
