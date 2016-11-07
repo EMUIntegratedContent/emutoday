@@ -134,7 +134,7 @@
     </div>
     <!--Working at EMU-->
     <div id="working-info" class="large-3 medium-12 small-12 columns">
-      @unless(empty($currentHRAnnouncements[1]))
+      @unless(empty($currentHRAnnouncements[0]))
       <div class="featured-content-block">
         <h6 class="headline-block">Working @ EMU</h6>
         <ul class="feature-list">

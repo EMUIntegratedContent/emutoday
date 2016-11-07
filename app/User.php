@@ -93,7 +93,4 @@ class User extends Authenticatable
     public function bugztracked(){
         return $this->hasMany('Emutoday\Bugz', 'user_id');
     }
-
-
-
 }

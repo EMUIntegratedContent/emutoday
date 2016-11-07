@@ -8,7 +8,7 @@ class Tweet extends Model
   public function get_feed()
   {
     // keys from your app
-    include(app_path().'/Http/Requests/Twitter_Get.php');
+    include(app_path().'/Http/Requests/oauth.php');
 
     // we are going to use "user_timeline"
     $twitter_timeline = "user_timeline";
@@ -82,7 +82,7 @@ class Tweet extends Model
 
     // decode json format tweets
     $tweets=json_decode($json, true);
-    
+
     //////////////////////////////////////
     return $tweets;
   }

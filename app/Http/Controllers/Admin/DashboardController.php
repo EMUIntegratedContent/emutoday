@@ -12,7 +12,6 @@ use Emutoday\Tweet;
 
 class DashboardController extends Controller
 {
-
     public function index(Story $storys, User $user)
     {
     //    $tweets = Tweet::orderBy('created_at','desc')->paginate(5);
@@ -20,7 +19,7 @@ class DashboardController extends Controller
 
         // $storys = $storys->orderBy('updated_at', 'desc')->take(5)->get();
         // $users = $users->whereNotNull('last_login_at')->orderBy('last_login_at', 'desc')->take(5)->get();
-        //flash()->info("butttttttttt");
+        //flash()->info("");
         //        return view('admin.dashboard', compact('tweets'));
         if (\Auth::check()) {
             // The user is logged in...
