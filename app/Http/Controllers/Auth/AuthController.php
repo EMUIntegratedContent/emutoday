@@ -61,7 +61,6 @@ class AuthController extends Controller
         if(Auth::attempt(['email'=> $email, 'password'=> $password])){
             //Authenticate passed
             return redirect()->intended('admin.dashboard');
-
         }
     }
     /**
@@ -80,28 +79,33 @@ class AuthController extends Controller
     }
 
     public function guest(Request $request)
-    { // Check LDAP, log in any valid NetId as guest
-      $user = $request['user'];
+    { // Check LDAP login registered user as admin or, login any valid NetId as guest
+      // if(Auth::attempt(['email'=> $email, 'password'=> $password])){
+      //     //Authenticate passed
+      //     return redirect()->intended('admin.dashboard');
+      // }
+      $guest = $request['user'];
       $pass = $request['password'];
       $base = 'ou=people,o=campus';
 
-        if (empty($user) || empty($pass)) {
-          return 'false inputs missing';
+      function login($guest, $pass) {
+        if (empty($guest) || empty($pass)) {
+          return redirect()->guest('/emichlogin', compact(['valid'=>false]));
         } else {
-          // $user = trim(strtolower(array_shift(explode('@', $user))));
+          $guest = trim(strtolower(array_shift(explode('@', $guest))));
 
-          if ($conn = ldap_connect('ldap.emich.edu', 389)) {
-            if (ldap_bind($conn, "cn={$user}," . $base, $pass)) {
-              $search = ldap_search($conn, $base, "cn={$user}", array('EID'));
+          if ($conn = @ldap_connect('ldap.emich.edu', 389)) {
+            if (@ldap_bind($conn, "cn={$guest}," . $base, $pass)) {
+              $search = ldap_search($conn, $base, "cn={$guest}", array('EID'));
 
               if (ldap_count_entries($conn, $search) <= 0) {
-                return 'false no entries';
+                return redirect()->guest('/emichlogin', compact(['valid'=>false]));
               } else {
-                return 'we got a match';//$user;
+                return $guest;
               }
             }
           }
         }
-      return 'it didnt even';
+      }
     }
 }

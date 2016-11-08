@@ -10,7 +10,7 @@
 
         {!! Form::submit('Yes, delete this user!', ['class' => 'button alert']) !!}
 
-        <a href="{{ route('admin_user_index') }}" class="button success">
+        <a href="/admin/user" class="button success">
             <strong>No, get me out of here!</strong>
         </a>
     {!! Form::close() !!}

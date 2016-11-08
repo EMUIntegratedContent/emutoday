@@ -23,7 +23,6 @@
             <th>Phone</th>
             <th>Roles</th>
             <th>Edit</th>
-            <th>Delete</th>
           </tr>
           <tr>
             @foreach($users as $user)
@@ -41,11 +40,6 @@
               <td>
                 <a href="/admin/user/{{ $user->id}}/edit">
                   <i class="fa fa-pencil"></i>
-                </a>
-              </td>
-              <td>
-                <a href="{{ route('admin_user_confirm', $user->id) }}">
-                  <i class="fa fa-trash"></i>
                 </a>
               </td>
             </tr>

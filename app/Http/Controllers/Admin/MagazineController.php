@@ -381,19 +381,21 @@ class MagazineController extends Controller
         $magazine = $this->magazine->findOrFail($id);
         return view('admin.magazine.confirm', compact('magazine'));
     }
-        /**
-         * Remove the specified resource from storage.
-         *
-         * @param  int  $id
-         * @return \Illuminate\Http\Response
-         */
-        public function delete(Request $request)
-        {
-            $magazine = $this->magazine->findOrFail($request->get('id'));
-            $magazine->delete();
-            flash()->warning('Magazine has been deleted.');
-            return redirect(route('admin.magazine.index'));//->with('status', 'Story has been deleted.');
-        }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+      $magazine = $this->magazine->findOrFail($id);
+      $magazine->delete();
+      flash()->warning('Magazine has been deleted.');
+      return redirect(route('admin.magazine.index'));//->with('status', 'Story has been deleted.');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
