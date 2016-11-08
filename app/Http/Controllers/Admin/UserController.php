@@ -70,11 +70,12 @@ class UserController extends Controller
     }
 
     public function destroy(Requests\User_DeleteRequest $request, $id)
-    {
+    { // YOU CAN'T DELETE A USER! Because the users INFORMATION is referenced from the CONTENT they have created!
         $user = $this->user->findOrFail($id);
-        $user->delete();
-        flash()->warning('User has been deleted.');
-        return redirect(route('admin_user_index'));//->with('status', 'User has been deleted.');
+        return $user;
+        // $user->delete();
+        // flash()->warning('User has been deleted.');
+        // return redirect(route('admin_user_index'));//->with('status', 'User has been deleted.');
     }
 
         /**

@@ -187,6 +187,7 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('user/{user}/edit', ['as' => 'admin_user_edit', 'uses' => 'Admin\UserController@edit']);
         Route::get('user/{user}/confirm', ['as' => 'admin_user_confirm', 'uses' => 'Admin\UserController@confirm']);
+        Route::delete('user/{user}/destroy', ['as' => 'admin_user_destroy', 'uses' => 'Admin\UserController@destroy']);
         Route::get('user/form', 'Admin\UserController@form');
         Route::resource('user', 'Admin\UserController');
 
@@ -207,7 +208,7 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('magazine/form', ['as' => 'admin_magazine_form', 'uses' => 'Admin\MagazineController@form']);
         Route::get('magazine/{magazine}/edit', ['as' => 'admin_magazine_edit', 'uses' => 'Admin\MagazineController@edit']);
-        Route::post('magazine/delete', ['as' => 'admin_magazine_delete', 'uses' => 'Admin\MagazineController@delete'] );
+        Route::get('magazine/delete/{id?}', ['as' => 'admin_magazine_delete', 'uses' => 'Admin\MagazineController@delete'] );
         Route::post('magazine/{magazine}/addCoverImage', ['as' => 'store_magazine_cover', 'uses' => 'Admin\MagazineController@addCoverImage']);
         Route::put('magazine/{mediafile}/updateCoverImage/', ['as' => 'update_magazine_cover', 'uses' => 'Admin\MagazineController@updateCoverImage']);
         Route::resource('magazine', 'Admin\MagazineController');

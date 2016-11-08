@@ -22,7 +22,7 @@
   <div class="col-sm-6">
     <div class="box box-primary">
       <div class="box-header">
-        <h3 class="box-title">{{$user->exists ? 'Editing User: '. $user->last_name. ', '.$user->first_name: 'Create New User'}}</h3>
+        <h3 class="box-title">{{$user->exists ? 'Editing User: '. $user->first_name. ' ' .$user->last_name: 'Create New User'}}</h3>
       </div>
       <div class="box-body">
 

@@ -69,7 +69,7 @@
                     </a>
                   </td>
                   <td class="text-center">
-                    <a href="{{ route('admin_magazine_delete', $magazine->id) }}">
+                    <a href="/admin/magazine/delete/{{$magazine->id}}">
                       <span class="fa fa-trash" aria-hidden="true"></span>
                     </a>
                   </td>
