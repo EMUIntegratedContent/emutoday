@@ -29,7 +29,11 @@
             <p>{{$barImgs[$i]->caption}}</p>
           </div>
           <p class="button-group">
-            <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fa fa-play"></i></a>
+            @if($barImgs[$i]->story->story_type == 'external')
+              <a href="{{$barImgs[$i]->link}}" class="button">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
+            @else
+              <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fa fa-play"></i></a>
+            @endif
           </p>
         </div>
       </div>
