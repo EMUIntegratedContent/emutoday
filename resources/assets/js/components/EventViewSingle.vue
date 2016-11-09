@@ -50,6 +50,7 @@
       <p>
         <small>{{item.id}}</small>
       </p>
+      <p><a href="http://emutoday.app/api/calendar/addevent?event={{item.title}}&start={{item.start_time}}&end={{item.end_time}}">+ Add to Calendar</a></p>
     </div>
   </div>
 

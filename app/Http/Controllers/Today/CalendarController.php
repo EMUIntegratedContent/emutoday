@@ -21,6 +21,7 @@ class CalendarController extends Controller
     // Route::get('calendar', 'EmuToday\CalendarController@index');
     public function show($id)
     {
+        
         $event = Event::findOrFail($id);
         $eventid = $id;
         $cd = $event->start_date;

@@ -11,11 +11,6 @@ use Carbon\Carbon;
 
 class CalendarController extends ApiController
 {
-
-
-
-
-
     /**
      * [Creates event list when a date is selected]
      * route calendar/events/{year?}/{month?}/{day?}
@@ -336,5 +331,80 @@ class CalendarController extends ApiController
       return $request->all();
 
     }
+    
+    public function addEventToGoogleCalendar(Request $request){
+        $client = new \Google_Client();
+        $client->setAuthConfig(base_path() . '/client_secret.json');
+        $client->addScope(array(\Google_Service_Calendar::CALENDAR));
+        
+        if ($request->session()->has('access_token')) {
+          $client->setAccessToken(session('access_token'));
+          $calendar_service = new \Google_Service_Calendar($client);
 
+                $optParams = array(
+                        'maxResults' => 10,
+                        'orderBy' => 'startTime',
+                        'singleEvents' => TRUE,
+                        'timeMin' => date('c'),
+                );
+
+          $events_list = $calendar_service->events->listEvents('primary', $optParams);
+          
+          $event = new \Google_Service_Calendar_Event(array(
+            'summary' => $request->get('event'),
+            //'location' => '800 Howard St., San Francisco, CA 94103',
+            //'description' => 'A chance to hear more about Google\'s developer products.',
+            'start' => array(
+              'dateTime' => '2016-11-10T09:00:00-07:00',
+              'timeZone' => 'America/Detroit',
+            ),
+            'end' => array(
+              'dateTime' => '2016-11-10T17:00:00-07:00',
+              'timeZone' => 'America/Detroit',
+            ),
+            'recurrence' => array(
+              //'RRULE:FREQ=DAILY;COUNT=2'
+            ),
+            'attendees' => array(
+              //array('email' => 'lpage@example.com'),
+              //array('email' => 'sbrin@example.com'),
+            ),
+            'reminders' => array(
+              //'useDefault' => FALSE,
+              //'overrides' => array(
+                //array('method' => 'email', 'minutes' => 24 * 60),
+                //array('method' => 'popup', 'minutes' => 10),
+              //),
+            ),
+          ));
+
+          $calendarId = 'primary';
+          $evt = $calendar_service->events->insert($calendarId, $event);
+          
+          $request->session()->flash('alert-success', 'Event successfully added!');
+          return redirect()->back();
+
+        } else {
+          $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/api/oauth2callback';
+          header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        }
+    }
+
+    public function oAuth(Request $request){
+        $client = new \Google_Client();
+        $client->setAuthConfigFile(base_path() . '/client_secret.json');
+        $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/api/oauth2callback');
+        $client->addScope(array(\Google_Service_Calendar::CALENDAR));
+
+        if (!$request->get('code')) {
+          $auth_url = $client->createAuthUrl();
+          header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+        } else {
+          $client->authenticate($request->get('code'));
+          session(['access_token' => $client->getAccessToken()]);
+          $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+          header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        }
+
+    }
 }

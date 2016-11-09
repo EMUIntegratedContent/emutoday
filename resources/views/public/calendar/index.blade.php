@@ -2,6 +2,15 @@
 @extends('public.layouts.global')
 @section('content')
 <div id="content-area">
+    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+        @if(Session::has('alert-' . $msg))
+        <div class="row">
+            <div class="callout success">
+                {{ Session::get('alert-' . $msg) }}
+            </div>
+        </div>
+        @endif
+    @endforeach
   <div id="calendar-bar">
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
@@ -31,12 +40,12 @@
     </div><!--end calendar bar row 1-->
     <div id="vue-caleventview">
       <component  :var-year-unit="{!! $varYearUnit !!}"
-      :var-month-unit="{!! $varMonthUnit !!}"
-      :var-day-unit="{!! $varDayUnit !!}"
-      :eventid="{!!$eventid!!}"
-      is="event-view">
-    </component>
-  </div><!-- end calendar-bar -->
+        :var-month-unit="{!! $varMonthUnit !!}"
+        :var-day-unit="{!! $varDayUnit !!}"
+        :eventid="{!!$eventid!!}"
+        is="event-view">
+      </component>
+    </div><!-- end calendar-bar -->
 </div> <!-- end content-area -->
 @endsection
 
