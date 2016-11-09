@@ -7,6 +7,7 @@
     {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
     {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
     {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
+    {{ Form::hidden('img_type', 'front', array('id' => 'img_type')) }}
         <div class="box-header with-border">
             <div class="box-head-info pull-left">
                 @if($storyImage->is_active != 0)
