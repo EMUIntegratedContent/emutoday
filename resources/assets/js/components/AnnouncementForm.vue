@@ -100,7 +100,7 @@
       </div><!-- /.md6col -->
     </div>
     <br/>
-    
+
     <div class="row">
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">

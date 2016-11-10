@@ -4,10 +4,9 @@ namespace Emutoday\Http\Utilities;
 class PageTemplates
 {
     protected static $pageTemplates = [
-        "EMU Today Home"                              => "homeemutoday",
-        "News Home"                                   => "homenews",
-        "Student Profile Home"                        => "homestudent",
-        "Magazine Home"                               => "homemagazine"
+        "home-emutoday" => "EMU Today Home",
+        // "home-student" => "Student Profile", // DISABLED
+        // "home-news" => "News Home", // DISABLED
     ];
 
     public static function all()

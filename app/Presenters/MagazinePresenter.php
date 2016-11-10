@@ -33,7 +33,7 @@ class MagazinePresenter extends Presenter
         if ($this->start_date && $this->start_date->isFuture()) {
             return 'warning';
         } elseif ($this->start_date && $this->start_date->isPast() && $this->end_date && $this->end_date->isFuture()) {
-            return 'danger';
+            return 'success';
         } elseif ($this->end_date && $this->end_date->isPast()) {
             return 'active';
         } else {

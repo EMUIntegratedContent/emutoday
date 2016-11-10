@@ -98,15 +98,15 @@
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                        {!! Form::label('story_ids') !!}
-                                        {!! Form::text('story_ids', null, ['id'=> 'story_ids',  'class' => 'form-control', 'readonly' => 'readonly']) !!}
+                                      {!! Form::label('story_ids') !!}
+                                      {!! Form::text('story_ids', null, ['id'=> 'story_ids',  'class' => 'form-control', 'readonly' => 'readonly']) !!}
                                 </div>
                             </div>
                                 <div class="col-md-1">
                                     <div class="form-group">
-                                {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
-
-                                {!! Form::close() !!}
+                                    <label>&nbsp;</label><br/>
+                                      {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
+                                      {!! Form::close() !!}
                                 </div>
                             </div>
                         </div><!-- ./row -->
