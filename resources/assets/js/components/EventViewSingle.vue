@@ -50,7 +50,10 @@
       <p>
         <small>{{item.id}}</small>
       </p>
-      <p><a href="http://emutoday.app/api/calendar/addevent?event={{item.title}}&start={{item.start_time}}&end={{item.end_time}}">+ Add to Calendar</a></p>
+      <form method="POST" action="api/calendar/addevent">
+        <input type="hidden" name="eventId" value="{{item.id}}" />
+        <input type="submit" value="+ Add to Calendar" />
+      </form>
     </div>
   </div>
 
@@ -158,7 +161,7 @@ module.exports  = {
     },
     sortKeyInt: function ($key) {
       return parseInt($key);
-    }
+    },
   },
   filters: {
     reformatDate: function (value) {

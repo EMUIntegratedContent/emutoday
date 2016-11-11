@@ -24,7 +24,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
-    Route::get('calendar/addevent', 'Api\CalendarController@addEventToGoogleCalendar')->name('addEventToGoogleCalendar');
+    Route::post('calendar/addevent', 'Api\CalendarController@addEventToGoogleCalendar')->name('addEventToGoogleCalendar');
     Route::get('oauth2callback', 'Api\CalendarController@oAuth');
     Route::get('calendarauth', 'Api\CalendarController@oAuthAPIConfirm');
 

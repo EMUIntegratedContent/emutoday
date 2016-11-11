@@ -23,6 +23,7 @@
     @show
     @section('scripts-app')
         <!-- App related Scripts  that need to be loaded in the header -->
+        
     @show
     @include('include.js')
     <meta name="_token" content="{{ csrf_token() }}">
@@ -56,9 +57,9 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="search" method="GET" class="sidebar-form">
+        <form action="search" method="GET" id="admin-search-form" class="sidebar-form">
             <div class="input-group">
-                <input type="text" name="searchterm" class="form-control" placeholder="Search...">
+                <input type="text" name="searchterm" id="searchterm" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
                     <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                     </button>
@@ -233,6 +234,7 @@ immediately after the control sidebar -->
 </script> --}}
 <script src="/themes/admin-lte/js/app.js"></script>
 {{-- <script src="/js/vue-ajax-form.js" ></script> --}}
+<script src="/js/admin-emucustom.js"></script>
 @show
 
 @section('footer-script')

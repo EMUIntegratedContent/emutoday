@@ -33,12 +33,14 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $searchTerm =  $request->input('searchterm');
-        $searhTermWild = $searchTerm  . '*';
+        
+        var_dump($searchTerm);
+        /*$searhTermWild = $searchTerm  . '*';
         $searchStoryResults = Story::search($searhTermWild, false)->select('title','subtitle','story_type','teaser','id')->paginate(10);
         $searchEventResults = Event::search($searhTermWild, false)->select('title','description','submitter','id')->paginate(10);
         $searchAnnouncementResults = Announcement::search($searhTermWild, false)->select('title','announcement','submitter','id')->paginate(10);
 
-        return view('public.searchresults', compact('searchTerm', 'searchStoryResults','searchEventResults','searchAnnouncementResults'));
+        return view('public.searchresults', compact('searchTerm', 'searchStoryResults','searchEventResults','searchAnnouncementResults'));*/
     }
 
     

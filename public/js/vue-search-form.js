@@ -12274,7 +12274,6 @@ module.exports = {
         return {
             searchFormIsOpen: false,
             searchterm: ''
-
         };
     },
     created: function created() {},
@@ -12289,16 +12288,17 @@ module.exports = {
             this.searchFormIsOpen = false;
         },
         submitSearch: function submitSearch(e) {
-            this.$http.get('/search', this.searchterm);
+            if ($.trim(this.searchterm) != '') {
+                $("#search-form").submit();
+            }
         }
-
     },
     watch: {},
     filters: {},
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-43dc95ce=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" class=\"search-form\" _v-43dc95ce=\"\">\n            <slot name=\"csrf\" _v-43dc95ce=\"\"></slot>\n        <label _v-43dc95ce=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-43dc95ce=\"\"><button type=\"submit\" _v-43dc95ce=\"\"><i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-43dc95ce=\"\"><i class=\"fa fa-x\" _v-43dc95ce=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-43dc95ce=\"\"><a @click.prevent=\"openSearchForm\" _v-43dc95ce=\"\">Search <i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></a></span>\n    </template>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-43dc95ce=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-43dc95ce=\"\">\n            <slot name=\"csrf\" _v-43dc95ce=\"\"></slot>\n        <label _v-43dc95ce=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-43dc95ce=\"\"><button type=\"submit\" _v-43dc95ce=\"\"><i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-43dc95ce=\"\"><i class=\"fa fa-x\" _v-43dc95ce=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-43dc95ce=\"\"><a @click.prevent=\"openSearchForm\" _v-43dc95ce=\"\">Search <i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></a></span>\n    </template>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
