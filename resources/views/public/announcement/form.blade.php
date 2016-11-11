@@ -24,7 +24,7 @@
           @unless(empty($submitteditems[0]))
           <div class="row">
             <div class="small-12 column">
-              <h3 class="cal-caps toptitle">Your Submitted Events</h3>
+              <h3 class="cal-caps toptitle">Submitted Announcements</h3>
               <table id="user-events-submitted-table" class="table table-bordered table-hover">
                 <thead>
                   <tr>
@@ -54,7 +54,7 @@
           @unless(empty($approveditems[0]))
           <div class="row">
             <div class="small-12 column">
-              <h3 class="cal-caps toptitle">Your Approved Announcements</h3>
+              <h3 class="cal-caps toptitle">Approved Announcements</h3>
               <table id="user-events-approved-table" class="table table-bordered table-hover">
                 <thead>
                   <tr>

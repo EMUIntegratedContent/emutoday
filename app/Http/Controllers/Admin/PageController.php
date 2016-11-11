@@ -27,26 +27,25 @@ class PageController extends Controller
     {
         $currentDate = Carbon::now();
 
-
         $pages_notready_current = Page::where([
             ['is_ready', 0],
             ['end_date', '>=' ,$currentDate ]
             ])->orderBy('start_date', 'asc')->get();
 
         $pages_ready_current = Page::where([
-                ['is_ready', 1],
-                ['end_date', '>=' ,$currentDate ]
-                ])->orderBy('start_date', 'asc')->get();
+            ['is_ready', 1],
+            ['end_date', '>=' ,$currentDate ]
+            ])->orderBy('start_date', 'asc')->get();
 
-            $pages_ready_past = Page::where([
-                ['is_ready', 1],
-                ['end_date', '<' ,$currentDate ]
-                ])->orderBy('start_date', 'asc')->get();
+        $pages_ready_past = Page::where([
+            ['is_ready', 1],
+            ['end_date', '<' ,$currentDate ]
+            ])->orderBy('start_date', 'asc')->get();
 
-            $pages_notready_past = Page::where([
-                ['is_ready', 0],
-                ['end_date', '<' ,$currentDate ]
-                ])->orderBy('start_date', 'asc')->get();
+        $pages_notready_past = Page::where([
+            ['is_ready', 0],
+            ['end_date', '<' ,$currentDate ]
+            ])->orderBy('start_date', 'asc')->get();
                 //  dd($pages_notready_current, $pages_ready_current);
 
 //         Page::has('storys', '<', 5)->orderBy('start_date', 'asc')->get();
@@ -77,12 +76,19 @@ class PageController extends Controller
 
     public function store(Request $request)
     {
-        $page = $this->page->create(
-        [ 'user_id' => auth()->user()->id ] + $request->only('template', 'uri', 'start_date', 'end_date')
+      switch($request->template){
+        case 'home-emutoday': $request->template_elements = 5; break;
+        // case 'home-student': $request->template_elements = 5; break;
+        // case 'home-news': $request->template_elements = 5; break;
+        default: return "Could not identify page template: ( $request->template ) is not a known page template"; break;
+      }
 
-    );
-        flash()->success('Page has been created.');
-        return redirect(route('admin.page.edit', $page->id));//->with('status', 'Story has been created.');
+      $page = $this->page->create(
+        [ 'user_id' => auth()->user()->id ] + ['template_elements' => $request->template_elements] + $request->only('template', 'uri', 'start_date', 'end_date')
+      );
+
+      flash()->success('Page has been created.');
+      return redirect(route('admin.page.edit', $page->id));//->with('status', 'Story has been created.');
     }
 
     public function edit($id)
@@ -123,6 +129,7 @@ class PageController extends Controller
     public function update(Request $request, $id)
     {
         $page = $this->page->findOrFail($id);
+
         $storyIDString =  $request->get('story_ids');
         $storyIDarray = explode(",", $storyIDString);
         $storyIDarrayCount = count($storyIDarray);

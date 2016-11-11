@@ -32,9 +32,18 @@
       <template v-if="item.related_link_1">
         <p>Additional Information</p>
         <ul>
-          <li><a href="{{item.related_link_1}}" target="_blank">{{item.related_link_1_txt}}</a></li>
-          <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">{{item.related_link_2_txt}}</a></li>
-          <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">{{item.related_link_3_txt}}</a></li>
+          <li><a href="{{item.related_link_1}}" target="_blank">
+            <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
+            <template v-else>{{item.related_link_1}}</template>
+          </a></li>
+          <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">
+            <template v-if="item.related_link_2_txt">{{item.related_link_2_txt}}</template>
+            <template v-else>{{item.related_link_2}}</template>
+          </a></li>
+          <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">
+            <template v-if="item.related_link_3_txt">{{item.related_link_3_txt}}</template>
+            <template v-else>{{item.related_link_3}}</template>
+          </a></li>
         </ul>
       </template>
       <p v-if="item.free">Cost: Free</p>
@@ -50,10 +59,12 @@
       <p>
         <small>{{item.id}}</small>
       </p>
+
       <form method="POST" action="api/calendar/addevent">
         <input type="hidden" name="eventId" value="{{item.id}}" />
         <input type="submit" value="+ Add to Calendar" />
       </form>
+
     </div>
   </div>
 

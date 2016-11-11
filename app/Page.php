@@ -16,7 +16,9 @@ class Page extends Model
         'uri',
         'start_date',
         'end_date',
-        'user_id'];
+        'user_id',
+        'template_elements',
+      ];
 
     protected $dates = ['end_date', 'start_date'];
 

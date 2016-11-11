@@ -5589,7 +5589,7 @@ table.hover tr:nth-of-type(even):hover {
 Styles For: EMU-Today v.3 Main Styles Content
 Description: Styles for the base elements, navigation, and hub page
 Author: Suzanne Szopo
-URL: http://www.emu-today.com (dev link)
+URL: http://today.emich.edu
 Tags: Gulp, Laravel
 */
 
@@ -7489,6 +7489,18 @@ li.search-result-item {
     margin-bottom:20px;
     padding-bottom: 10px;
     border-bottom: 1px dotted #ccc;
+}
+
+ul.pagination li.active {
+  display: inline-block;
+  padding: 0 10px;
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  background: #efefef;
+}
+
+* {
+  background: blue;
 }
 
 /*# sourceMappingURL=public-styles.css.map */
