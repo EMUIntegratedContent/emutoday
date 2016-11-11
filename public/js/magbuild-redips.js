@@ -431,7 +431,7 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
     console.log('original_story_ids=' + original_story_ids);
     console.log('story_ids=' + story_ids);
 
-    var articlepath = '/admin/magazine/article/'+ parentBtnId +'/edit';
+    var articlepath = '/admin/queuearticle/magazine/article/'+ parentBtnId +'/edit';
 
     if (arraysEqual(original_story_ids,story_ids)) {
         console.log('arrays are equal');

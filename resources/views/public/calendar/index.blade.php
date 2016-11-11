@@ -1,5 +1,5 @@
-<!-- Event Views with Vues -->
 @extends('public.layouts.global')
+@section('title','Calendar')
 @section('content')
 <div id="content-area">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)

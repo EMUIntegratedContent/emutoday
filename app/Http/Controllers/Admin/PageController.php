@@ -172,13 +172,14 @@ class PageController extends Controller
         //return redirect(route('admin.story.edit', $story->id))->with('status', 'Story has been updated.');
     }
 
-        public function delete(Request $request)
-        {
-            $page = $this->page->findOrFail($request->get('id'));
-            $page->delete();
-            flash()->warning('Page has been deleted.');
-            return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
-        }
+    public function delete(Request $request)
+    {
+        $page = $this->page->findOrFail($request->get('id'));
+        $page->delete();
+        flash()->warning('Page has been deleted.');
+        return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
+    }
+
     public function destroy($id)
     {
         $page = $this->page->findOrFail($id);
@@ -186,6 +187,4 @@ class PageController extends Controller
         flash()->warning('Page has been deleted.');
         return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
     }
-
-
 }

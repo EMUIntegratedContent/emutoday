@@ -5,7 +5,13 @@
         <meta id="token" name="token" value="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMU Today - @yield('title')</title>
+
+    @if (array_key_exists('magazine-title', View::getSections())) <!-- Check for Magazine title -->
+      <title>@yield('magazine-title', 'Eastern Magazine') - Eastern Magazine</title>
+    @else
+      <title>@yield('title', 'News Hub') - EMU Today</title>
+    @endif
+
     @include('public.layouts.styles')
     @include('public.layouts.scriptshead')
     @include('include.js')
@@ -13,6 +19,7 @@
   </head>
   <body>
     @yield('bodytop')
+
 
     <div class="off-canvas-wrapper">
 
@@ -29,7 +36,7 @@
               <li><a href="/announcement">Announcements</a></li>
               <li><a href="/story/news">News</a></li>
               <li><a href="http://www.wemu.org">WEMU</a></li>
-              <li><a href="#">Athletics</a></li>
+              <li><a href="http://www.emueagles.com/">Athletics</a></li>
             </ul>
             <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
               <li><a href="http://www.emich.edu/media_highlights/">Media Highlights</a></li>

@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
 @endsection
 
+@section('title','Submit an Event')
 @section('content')
 <div id="calendar-bar">
   <div class="row">

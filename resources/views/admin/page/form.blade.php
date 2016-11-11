@@ -2,10 +2,17 @@
 <!-- inject('storytypes', 'emutoday\Http\Utilities\StoryTypes') -->
     @extends('admin.layouts.adminlte')
     @section('title', 'Create New Hub Page')
+
+    @section('scripts-plugin')
+        <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
+            <script src="/themes/plugins/flatpickr/flatpickr.js"></script>
+        @parent
+    @endsection
+
         @section('style-plugin')
             @parent
             <!-- daterange picker -->
-    <link rel="stylesheet" href="/themes/admin-lte/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- <link rel="stylesheet" href="/themes/admin-lte/plugins/daterangepicker/daterangepicker-bs3.css"> -->
     <!-- bootstrap datepicker -->
     <link rel="stylesheet" href="/themes/admin-lte/plugins/datepicker/datepicker3.css">
     <!-- iCheck for checkboxes and radio inputs -->
@@ -17,10 +24,11 @@
     <!-- Select2 -->
     <link rel="stylesheet" href="/themes/admin-lte/plugins/select2/select2.min.css">
 
-    <link rel="stylesheet" href="/themes/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+    <!-- <link rel="stylesheet" href="/themes/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"> -->
 
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="/themes/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+        <link rel="stylesheet" href="/themes/plugins/flatpickr/flatpickr.min.css" type="text/css" media="screen" />
         @endsection
 
     @section('content')
@@ -46,46 +54,57 @@
                 {!! Form::label('uri') !!}
                 {!! Form::text('uri', null, ['class' => 'form-control']) !!}
             </div>
-        <div class="form-group">
-                {!! Form::label('start_date') !!}
-                {!! Form::text('start_date', null, ['class' => 'form-control']) !!}
-        </div>
-        <div class="form-group">
-                {!! Form::label('end_date') !!}
-                {!! Form::text('end_date', null, ['class' => 'form-control']) !!}
-        </div>
+
+            <div class="row">
+              <div class="col-md-6">
                 <div class="form-group">
-                {!! Form::label('Active?') !!}
-                {!! Form::label('is_active', 'yes') !!}{!! Form::radio('is_active', 1, null) !!}
-                {!! Form::label('is_active', 'no') !!}{!! Form::radio('is_active', 0, null) !!}
+                  {!! Form::label('start_date') !!}
+                  {!! Form::text('start_date', null, ['class' => 'form-control', 'id'=> 'start-date']) !!}
+                </div>
               </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  {!! Form::label('end_date') !!}
+                  {!! Form::text('end_date', null, ['class' => 'form-control', 'id'=> 'end-date']) !!}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              {!! Form::label('Active?') !!}
+              {!! Form::label('is_active', 'yes') !!}{!! Form::radio('is_active', 1, null) !!}
+              {!! Form::label('is_active', 'no') !!}{!! Form::radio('is_active', 0, null) !!}
+            </div>
 
             </div><!-- /box-body -->
 
-        {!! Form::submit('Create New Story', ['class' => 'btn btn-primary']) !!}
+        {!! Form::submit('Create New Page', ['class' => 'btn btn-primary']) !!}
 
         {!! Form::close() !!}
             </div>
     </div> <!-- END Row top page input -->
 @endsection
-@section('scriptsfooter')
+@section('footer-script')
     @parent
     <script>
-    $(function(){
-        $('#start_date').fdatepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            disableDblClickSelection: true,
-            language: 'en',
-            pickTime: true
-        });
-        $('#end_date').fdatepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            disableDblClickSelection: true,
-            language: 'en',
-            pickTime: true
-        });
+    var check_in = document.getElementById("start-date").flatpickr({
+      altInput: true,
+      altInputClass: "form-control",
+      altFormat: "m-d-Y",
+      minDate: new Date(),
+      onChange: function(dateObj, dateStr, instance) {
+        check_out.set("minDate", dateObj.fp_incr(1));
+      }
+    });
 
-
+    var check_out =document.getElementById("end-date").flatpickr({
+      altInput: true,
+      altFormat: "m-d-Y",
+      altInputClass: "form-control",
+      minDate: new Date(),
+      onChange: function(dateObj, dateStr, instance) {
+        check_in.set("maxDate", dateObj.fp_incr(-1));
+      }
     });
     </script>
 @endsection

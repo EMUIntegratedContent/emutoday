@@ -1,4 +1,6 @@
 @extends('public.layouts.global')
+
+@section('title','News')
 @section('content')
   <div id="content-area">
     <div id="listing-bar">

@@ -6,6 +6,8 @@
   @section('connectionbar')
     @include('public.magazine.partials.connectionbar')
   @endsection
+
+@section('magazine-title', 'Eastern Magazine')
 @section('content')
   <div id="content-area">
     <div id="homepage-hero" class="row column">
@@ -61,8 +63,8 @@
                                 <h4>{{$magazineCover->headline}}</h4>
                                 {!! $magazineCover->teaser !!}
                                 <p><a href="{{$magazineCover->link}}">{{$magazineCover->link_text}}</a></p>
-                <p class="button-container"><a class="button expanded magazine-button">Subscribe</a></p>
-                <p class="button-container"><a class="button expanded magazine-button">Submit a story idea</a></p>
+                <p class="button-container"><a class="button expanded magazine-button" href="mailto:dgiffor2@emich.edu">Subscribe</a></p>
+                <p class="button-container"><a class="button expanded magazine-button" href="mailto:dgiffor2@emich.edu">Submit a story idea</a></p>
               </div>
 
             </div>

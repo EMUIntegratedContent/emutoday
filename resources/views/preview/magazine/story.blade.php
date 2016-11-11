@@ -89,8 +89,8 @@
                 </ul>
 
               </div>
-              <a class="button magazine-button expanded">Subscribe</a>
-              <a class="button magazine-button expanded">Submit a Story Idea</a>
+              <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Subscribe</a>
+              <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Submit a Story Idea</a>
 
 
             </div>

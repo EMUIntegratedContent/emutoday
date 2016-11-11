@@ -1,10 +1,11 @@
-<!-- Event Views with Vues -->
 @extends('public.layouts.global')
+<!-- Event Views with Vues -->
 @section('styles')
 @parent
 <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
 @endsection
 
+@section('title', 'Submit an Announcement')
 @section('content')
 <div id="calendar-bar">
   <div class="row">

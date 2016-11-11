@@ -234,98 +234,101 @@
         @endsection
 
         @section('footer-script')
-            @parent
-            <script>
+        @parent
+        <script>
 
-            $(function () {
+        $(function () {
 
-                //Initialize Select2 Elements
-                $(".select2").select2();
-
-
-                    $('input[type="radio"]').iCheck({
-                        checkboxClass: 'icheckbox_flat-blue',
-                        radioClass: 'iradio_flat-blue'
-                    })
-                    $('#is-featured-no').iCheck('check');
-                    $('#is-featured-yes').iCheck('disable');
-
-                //iCheck for checkbox and radio inputs
-                $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                  checkboxClass: 'icheckbox_minimal-blue',
-                  radioClass: 'iradio_minimal-blue'
-                });
-                //Red color scheme for iCheck
-                $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-                  checkboxClass: 'icheckbox_minimal-red',
-                  radioClass: 'iradio_minimal-red'
-                });
-                //Flat red color scheme for iCheck
-                $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-                  checkboxClass: 'icheckbox_flat-green',
-                  radioClass: 'iradio_flat-green'
-                });
-
-                    //Start Date picker
-                    // $('#start-date').datetimepicker({
-                    //     format: 'YYYY-MM-DD HH:mm:ss'
-                    // });
-                    // CKEDITOR.replace(this.el.id, {
-                    //      customConfig: editorConfig
-                    //    //  customConfig: '/themes/ckeditor_config_admin.js'
-                    // });
+          //Initialize Select2 Elements
+          $(".select2").select2();
 
 
-                    CKEDITOR.replaceAll('.ckeditor',{
-                        customConfig: '/themes/ckeditor_config_simple.js',
-                        removePlugins:'Image'
-                    });
-                    // CKEDITOR.config.removeButtons= 'Image,Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source';
+          $('input[type="radio"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+          })
+          $('#is-featured-no').iCheck('check');
+          $('#is-featured-yes').iCheck('disable');
 
-                // 	CKEDITOR.replace( 'story-content', {
-                // 		// Define changes to default configuration here. For example:
-              // filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
-              //   filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
-              //   filebrowserUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-              //   filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
-                //
-                // 				} );
+          //iCheck for checkbox and radio inputs
+          $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
+          });
+          //Red color scheme for iCheck
+          $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+            checkboxClass: 'icheckbox_minimal-red',
+            radioClass: 'iradio_minimal-red'
+          });
+          //Flat red color scheme for iCheck
+          $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+          });
 
-                    //End Date picker
-                    // $('#end-date').datetimepicker({
-                    // 	format: 'YYYY-MM-DD HH:mm:ss',
-                    // 	useCurrent: false //Important! See Issue #1075
-                    // });
-                    // $("#start-date").on("dp.change", function (e) {
-                    // 			$('#end-date').data("DateTimePicker").minDate(e.date);
-                    // 	});
-                    // 	$("#end-date").on("dp.change", function (e) {
-                    // 			$('#start-date').data("DateTimePicker").maxDate(e.date);
-                    // 	});
+          //Start Date picker
+          // $('#start-date').datetimepicker({
+          //     format: 'YYYY-MM-DD HH:mm:ss'
+          // });
+          // CKEDITOR.replace(this.el.id, {
+          //      customConfig: editorConfig
+          //    //  customConfig: '/themes/ckeditor_config_admin.js'
+          // });
+
+
+          CKEDITOR.replaceAll('.ckeditor',{
+            customConfig: '/themes/ckeditor_config_simple.js',
+            removePlugins:'Image'
+          });
+          // CKEDITOR.config.removeButtons= 'Image,Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source';
+
+          // 	CKEDITOR.replace( 'story-content', {
+          // 		// Define changes to default configuration here. For example:
+          // filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
+          //   filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
+          //   filebrowserUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
+          //   filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
+          //
+          // 				} );
+
+          //End Date picker
+          // $('#end-date').datetimepicker({
+          // 	format: 'YYYY-MM-DD HH:mm:ss',
+          // 	useCurrent: false //Important! See Issue #1075
+          // });
+          // $("#start-date").on("dp.change", function (e) {
+          // 			$('#end-date').data("DateTimePicker").minDate(e.date);
+          // 	});
+          // 	$("#end-date").on("dp.change", function (e) {
+          // 			$('#start-date').data("DateTimePicker").maxDate(e.date);
+          // 	});
 
 
 
-              });
-              var check_in = document.getElementById("start-date").flatpickr({
-                                  altInput: true,
-                                   altInputClass: "form-control",
-                                  altFormat: "m-d-Y",
-                                  minDate: new Date(),
-                                  onChange: function(dateObj, dateStr, instance) {
-                                      check_out.set("minDate", dateObj.fp_incr(1));
-                                  }
-                                  });
-              var check_out =document.getElementById("end-date").flatpickr({
-                                 altInput: true,
-                                  altInputClass: "form-control",
-                                    altFormat: "m-d-Y",
-                                       minDate: new Date(),
-                                       onChange: function(dateObj, dateStr, instance) {
-                                           check_in.set("maxDate", dateObj.fp_incr(-1));
-                                       }
-                                   });
+        });
+        var fortnightago = new Date();
+        fortnightago.setDate(fortnightago.getDate()-14);
 
-                </script>
+        var check_in = document.getElementById("start-date").flatpickr({
+          altInput: true,
+          altInputClass: "form-control",
+          altFormat: "m-d-Y",
+          minDate: fortnightago,
+          onChange: function(dateObj, dateStr, instance) {
+            check_out.set("minDate", dateObj.fp_incr(1));
+          }
+        });
+        var check_out =document.getElementById("end-date").flatpickr({
+          altInput: true,
+          altInputClass: "form-control",
+          altFormat: "m-d-Y",
+          minDate: fortnightago,
+          onChange: function(dateObj, dateStr, instance) {
+            check_in.set("maxDate", dateObj.fp_incr(-1));
+          }
+        });
+
+        </script>
 
 
         @endsection

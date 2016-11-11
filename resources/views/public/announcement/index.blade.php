@@ -1,5 +1,7 @@
 {{-- announcement --}}
 @extends('public.layouts.global')
+
+@section('title', 'Announcement')
 @section('content')
   <div id="content-area">
     <div id="listing-bar">

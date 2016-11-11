@@ -6,6 +6,8 @@
   @section('connectionbar')
     @include('public.magazine.partials.connectionbar')
   @endsection
+
+@section('magazine-title'){{$magazine->season}} {{$magazine->year}} @stop
 @section('content')
   <div id="content-area">
     <div id="news-story-bar" class="magazine-story">
@@ -38,10 +40,10 @@
             <div class="large-3 medium-4 small-12 columns current-issue-padding">
               <div class="current-issue-info">
                 <p><img src="/imagecache/magazinecover/{{$magazineCover->filename}}"></p>
-                <p><a href="{{$magazine->ext_url}}">Read the Digital Issue</a></p>
+                <p><a href="{{$magazineCover->link}}">{{$magazineCover->link_text}}</a></p>
               </div>
-              <a class="expanded button magazine-button">Subscribe</a>
-              <a class="expanded button magazine-button">Submit a Story Idea</a>
+              <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Subscribe</a>
+              <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Submit a Story Idea</a>
                         </div>
                     </div>
 

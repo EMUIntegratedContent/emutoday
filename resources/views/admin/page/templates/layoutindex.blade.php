@@ -62,7 +62,7 @@
               </colgroup>
               <tr>
                 <td id="storyview0" class="redips-mark front-story-view">
-                  
+
                 </td>
               </tr>
               <tr>

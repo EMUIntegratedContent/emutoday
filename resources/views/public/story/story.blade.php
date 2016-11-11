@@ -1,5 +1,5 @@
 @extends('public.layouts.global')
-@section('title'){{ $story->title }}@endsection
+@section('title'){{ $story->title }} @stop
 
 @section('addthisMeta')
 <meta property="og:title" content="{{$story->title}}" />

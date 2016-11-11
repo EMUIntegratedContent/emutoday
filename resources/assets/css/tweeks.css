@@ -156,15 +156,10 @@ li.search-result-item {
     padding-bottom: 10px;
     border-bottom: 1px dotted #ccc;
 }
-
 ul.pagination li.active {
   display: inline-block;
   padding: 0 10px;
   border-top: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
   background: #efefef;
-}
-
-* {
-  background: blue;
 }

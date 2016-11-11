@@ -63,8 +63,8 @@
             <div class="large-12 medium-12 small-12 columns">
               <ul>
                 <!-- '/admin/php/secondary_nav.php'); -->
-                <li><a href="#">Subscribe to Eastern Magazine</a></li>
-                <li><a href="#">Submit a Story idea</a></li>
+                <li><a href="mailto:dgiffor2@emich.edu">Subscribe to Eastern Magazine</a></li>
+                <li><a href="mailto:dgiffor2@emich.edu">Submit a Story idea</a></li>
               </ul>
             </div>
           </div>

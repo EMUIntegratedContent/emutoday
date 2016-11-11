@@ -207,6 +207,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('page/form', ['as' => 'admin_page_form', 'uses' => 'Admin\PageController@form']);
         Route::get('page/{page}/edit', ['as' => 'admin_page_edit', 'uses' => 'Admin\PageController@edit']);
         Route::post('page/delete', ['as' => 'admin_page_delete', 'uses' => 'Admin\PageController@delete'] );
+        Route::get('page/destroy/{id?}', ['as' => 'admin_page_destroy', 'uses' => 'Admin\PageController@destroy'] );
         Route::resource('page', 'Admin\PageController');
 
         Route::get('magazine/form', ['as' => 'admin_magazine_form', 'uses' => 'Admin\MagazineController@form']);
