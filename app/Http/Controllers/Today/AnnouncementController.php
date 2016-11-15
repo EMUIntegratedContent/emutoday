@@ -29,7 +29,8 @@ class AnnouncementController extends Controller
     $announcements = $this->announcement->where([
       ['is_approved', 1],
       ['start_date', '<=', $currentDate],
-      ['end_date', '>=', $currentDate]
+      ['end_date', '>=', $currentDate],
+      ['is_archived', 0 ]
       ])->paginate(8);
       return view('public.announcement.index', compact('announcements', 'id'));
 
