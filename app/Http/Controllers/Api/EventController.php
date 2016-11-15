@@ -70,7 +70,8 @@ class EventController extends ApiController
           // dd($user->id);
           $events = $user->events()->get();
         } else {
-          $events = Event::where([
+          $events = Event::limit(40)->where([
+          // $events = Event::where([
             ['end_date', '>', $currentDate->subDay(2)]
             ])->get();
             // Announcement::all();
@@ -293,12 +294,13 @@ class EventController extends ApiController
           } else {
             // Normal update
             $event->priority = $request->get('priority');
+            $event->home_priority = $request->get('home_priority');
             $event->is_approved = $request->get('is_approved');
             ($event->is_approved == 1) ? $event->approved_date = Carbon::now() : $event->approved_date = null;
             $event->is_canceled = $request->get('is_canceled');
 
             if($event->save()) {
-              $returnData = ['is_approved' => $event->is_approved,'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
+              $returnData = ['is_approved' => $event->is_approved,'home_priority'=> $event->home_priority, 'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('event updated',$returnData );
             }

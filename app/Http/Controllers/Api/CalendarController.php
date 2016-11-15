@@ -11,6 +11,13 @@ use Carbon\Carbon;
 
 class CalendarController extends ApiController
 {
+    protected $events;
+
+    public function __construct(Event $events)
+    {
+        $this->events = $events;
+    }
+    
     /**
      * [Creates event list when a date is selected]
      * route calendar/events/{year?}/{month?}/{day?}
@@ -336,47 +343,67 @@ class CalendarController extends ApiController
         $client = new \Google_Client();
         $client->setAuthConfig(base_path() . '/client_secret.json');
         $client->addScope(array(\Google_Service_Calendar::CALENDAR));
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+        
+        $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/api/oauth2callback';
         
         if ($request->session()->has('access_token')) {
-          $client->setAccessToken(session('access_token'));
-          $calendar_service = new \Google_Service_Calendar($client);
-
-                $optParams = array(
-                        'maxResults' => 10,
-                        'orderBy' => 'startTime',
-                        'singleEvents' => TRUE,
-                        'timeMin' => date('c'),
-                );
-
-          $events_list = $calendar_service->events->listEvents('primary', $optParams);
+            
+            $client->setAccessToken(session('access_token'));
+            $calendar_service = new \Google_Service_Calendar($client);
           
-          $event = new \Google_Service_Calendar_Event(array(
-            'summary' => $request->get('event'),
-            //'location' => '800 Howard St., San Francisco, CA 94103',
-            //'description' => 'A chance to hear more about Google\'s developer products.',
-            'start' => array(
-              'dateTime' => '2016-11-10T09:00:00-07:00',
-              'timeZone' => 'America/Detroit',
-            ),
-            'end' => array(
-              'dateTime' => '2016-11-10T17:00:00-07:00',
-              'timeZone' => 'America/Detroit',
-            ),
-            'recurrence' => array(
-              //'RRULE:FREQ=DAILY;COUNT=2'
-            ),
-            'attendees' => array(
-              //array('email' => 'lpage@example.com'),
-              //array('email' => 'sbrin@example.com'),
-            ),
-            'reminders' => array(
-              //'useDefault' => FALSE,
-              //'overrides' => array(
-                //array('method' => 'email', 'minutes' => 24 * 60),
-                //array('method' => 'popup', 'minutes' => 10),
-              //),
-            ),
-          ));
+            $event = $this->events->find($request->input('eventId'));
+          
+            $event_arr = array();
+            $startDate = $event->start_date;
+            $endDate = $event->end_date;
+            $startTime = $event->start_time;
+            $endTime = $event->end_time;
+
+            $timezone = new \DateTimeZone('America/Detroit');
+
+            $startDate = explode(' ', $startDate);
+            $startDate = $startDate[0];
+            $startDateTime = "$startDate $startTime";
+            $startDateTime = new \DateTime($startDateTime, $timezone);
+
+            $endDate = explode(' ', $endDate);
+            $endDate = $endDate[0];
+            $endDateTime = "$endDate $endTime";
+            $endDateTime = new \DateTime($endDateTime, $timezone);
+          
+            if($event->all_day){
+                $dateType = 'date';
+                $finalStartTime = $startDateTime->format('Y-m-d');
+                $finalEndTime = $endDateTime->format('Y-m-d');
+            } else {
+                $dateType = 'dateTime';
+                $finalStartTime = $startDateTime->format(\DateTime::RFC3339);
+
+                // add an hour to the start hour if no end hour is somehow set as being before the start hour
+                if($endDateTime < $startDateTime){
+                    $finalEndTime = clone $startDateTime;
+                    $finalEndTime->add(new \DateInterval('PT1H')); 
+                    $finalEndTime = $finalEndTime->format(\DateTime::RFC3339);
+                } else {
+                    $finalEndTime = $endDateTime->format(\DateTime::RFC3339);
+                }
+            }
+
+            $event = new \Google_Service_Calendar_Event(array(
+                'summary' => $event->title,
+                'location' => $event->location,
+                'description' => $event->description . ' | ' . $event->related_link_1 . ' | ' . $event->related_link_2 . ' | ' . $event->related_link_3,
+                'start' => array(
+                    $dateType => $finalStartTime,
+                    'timeZone' => 'America/Detroit',
+                ),
+                'end' => array(
+                    $dateType => $finalEndTime,
+                    'timeZone' => 'America/Detroit',
+                ),
+            ));
 
           $calendarId = 'primary';
           $evt = $calendar_service->events->insert($calendarId, $event);
@@ -385,9 +412,8 @@ class CalendarController extends ApiController
           return redirect()->back();
 
         } else {
-          $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/api/oauth2callback';
           header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
-        }
+        } 
     }
 
     public function oAuth(Request $request){
@@ -395,16 +421,21 @@ class CalendarController extends ApiController
         $client->setAuthConfigFile(base_path() . '/client_secret.json');
         $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . '/api/oauth2callback');
         $client->addScope(array(\Google_Service_Calendar::CALENDAR));
-
-        if (!$request->get('code')) {
-          $auth_url = $client->createAuthUrl();
-          header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
-        } else {
-          $client->authenticate($request->get('code'));
-          session(['access_token' => $client->getAccessToken()]);
-          $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/';
-          header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+        
+        // If there is an pre-existing access token, and that token has expired, refresh it.
+        if($client->getAccessToken() && $client->isAccessTokenExpired()){
+            $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
         }
-
+        if (!$request->get('code')) {
+            $auth_url = $client->createAuthUrl();
+            header('Location: ' . filter_var($auth_url, FILTER_SANITIZE_URL));
+        } else {
+            $client->authenticate($request->get('code'));
+            session(['access_token' => $client->getAccessToken()]);
+            $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/calendar';
+            header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        }
     }
 }
