@@ -138,7 +138,7 @@
     <template v-else>
       <label>Story Type</label>
       <select v-model="record.story_type">
-        <option v-for="stype in s_types" v-bind:value="stype.shortname">
+        <option v-for="stype in s_types" v-bind:value="stype.shortname" selected="{{ stype.shortname == 'news' }}">
           {{ stype.name }}
         </option>
       </select>
