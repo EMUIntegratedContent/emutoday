@@ -1,4 +1,5 @@
 <template>
+r
   <div class="row">
     <div class="col-md-4">
       <h3>Unapproved Events</h3>
@@ -33,7 +34,7 @@
   <div id="items-live">
     <event-queue-item
     pid="items-live"
-    v-for="item in itemsLive | orderBy 'priority' -1"
+    v-for="item in itemsLive | orderBy 'priority+home_priority' -1"
     @item-change="moveToUnApproved"
     :item="item"
     :index="$index"
@@ -128,7 +129,7 @@ export default  {
     },
     filterItemsApproved: function(items) {
       return items.filter(function(item) {
-        return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0;  // true
+        return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.home_priority === 0 && item.priority === 0 && item.is_promoted === 0;  // true
 
         // return item.is_approved === 1
       });
@@ -145,7 +146,7 @@ export default  {
     },
     filterItemsLive: function(items) {
       return items.filter(function(item) {
-        return moment(item.start_date_time).isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1;  // true
+        return moment(item.start_date_time).isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.home_priority > 0 || item.priority > 0 || item.is_promoted === 1;  // true
 
         // let thisDateTime = item.start_date + ' ' + item.start_time;
         // return moment(thisDateTime, "YYYY-MM-DD h:mm A").isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1;  // true
