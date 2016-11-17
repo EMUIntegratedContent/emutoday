@@ -1148,6 +1148,7 @@ module.exports  = {
         return arguments[0].toUpperCase();
       });
     },
+    
     resetInital: function(){
     // oh gosh.. is there a better way?
       return {

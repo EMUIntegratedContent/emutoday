@@ -29,7 +29,7 @@ class StoryController extends Controller
 
     }
 
-
+    
     public function queueAll(Story $story) {
         $storys = $this->story;
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());

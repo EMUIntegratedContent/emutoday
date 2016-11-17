@@ -6450,6 +6450,34 @@ ul.accordion li{
   margin: 0;
 }
 
+/** Search Filter **/
+#search-filter-list li{
+    float: left;
+    text-align: center;
+    list-style-type: none;
+    color: #555555;
+    margin: 0px 20px 10px 0px;
+    cursor: pointer;
+}
+
+#search-filter-list li:hover{
+    color: #000000;
+    display: inline-block;
+}
+
+#search-filter-list li.active{
+    border-bottom: 3px solid #0f654a;
+    color: #0f654a;
+    font-weight: bold;
+}
+
+#search-filter-list li a{
+    color: inherit;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 10px 5px;
+}
 /*News Headlines*/
 .publish-date {
     float: right;
