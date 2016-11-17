@@ -171,6 +171,7 @@ return [
         Emutoday\Providers\AuthServiceProvider::class,
         Emutoday\Providers\EventServiceProvider::class,
         Emutoday\Providers\RouteServiceProvider::class,
+        Emutoday\Providers\SearchServiceProvider::class,
 
     ],
 

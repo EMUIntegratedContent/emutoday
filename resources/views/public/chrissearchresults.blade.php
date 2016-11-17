@@ -37,33 +37,15 @@
                     <h4><span class="smaller-title">Found {!! $numResults !!} Results</span></h4>
                     
                     <ul class="search-result-list">
-                    @foreach($storiesPaginated as $searchResult)
+                    @foreach($storiesPaginated as $searchEventResult)
                     <li class="search-result-item">
-                        @if($searchResult->getTable() == 'storys')
-                            <a href="/{{$searchResult->story_type}}/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
-                            <div class="search-result-content">
-                                @if($searchResult->subtitle)
-                                <p>{{ $searchResult->subtitle }}</p>
-                            @endif
-                                <p>{!! $searchResult->teaser !!}</p>
-                            </div>
-                        @elseif($searchResult->getTable() == 'cea_events')
-                            <a href="/calendar/event/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
-                            <div class="search-result-content">
-                            @if($searchResult->description)
-                                <p>{{ $searchResult->description }}</p>
-                            @endif
-                                <p>{!! $searchResult->submitter !!}</p>
-                            </div>
-                        @elseif($searchResult->getTable() == 'announcements')
-                            <a href="/search/announcement/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
-                            <div class="search-result-content">
-                                @if($searchResult->announcement)
-                                <p>{{ $searchResult->announcement }}</p>
-                            @endif
-                                <p>{!! $searchResult->submitter !!}</p>
-                            </div>
+                        <a href="/calendar/event/{{$searchEventResult->id}}"><h5>{{$searchEventResult->title}}</h5></a>
+                        <div class="search-result-content">
+                        @if($searchEventResult->description)
+                            <p>{{ $searchEventResult->description }}</p>
                         @endif
+                            <p>{!! $searchEventResult->submitter !!}</p>
+                        </div>
                     </li>
                     @endforeach
                     </ul>
