@@ -21,7 +21,7 @@ class CalendarController extends Controller
     // Route::get('calendar', 'EmuToday\CalendarController@index');
     public function show($id)
     {
-        
+
         $event = Event::findOrFail($id);
         $eventid = $id;
         $cd = $event->start_date;
@@ -207,6 +207,23 @@ class CalendarController extends Controller
         $submitteditems = $user->events()->where('is_approved', '0')->get();
 
         return view('public.calendar.eventform', compact('event', 'approveditems','submitteditems'));
+        }
 
+        public function userEvents(Event $event)
+        {
+          if (\Auth::check()) {
+            $user = \Auth::user();
+          } else {
+            return redirect()->guest('/emichlogin');
+          }
+
+          $approveditems = $user->events()->where('is_approved', '1')->get();;
+          $submitteditems = $user->events()->where('is_approved', '0')->get();
+
+          if(\Request::ajax()) {
+            $view = \View::make('public.calendar.eventform', compact('event', 'approveditems','submitteditems'));
+            $view = $view->renderSections();
+            return json_encode($view['content-middle']);
+          }
         }
 }

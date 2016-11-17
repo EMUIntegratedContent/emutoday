@@ -825,6 +825,14 @@ module.exports  = {
 
   },
   methods: {
+    refreshUserEventTable: function(){
+      $.get('/calendar/user/events', function(data){
+        data = $.parseJSON(data);
+        // console.log(data.content);
+        $('#user-events-tables').html(data);
+      });
+    },
+
     fetchMiniCalsList: function() {
       this.$http.get('/api/minicalslist')
       .then((response) =>{
@@ -938,17 +946,24 @@ module.exports  = {
     },
 
     cancelRecord: function(recid){
-    // toggles cancel
+      // toggles cancel
+      console.log('FROM CANCEL: '+recid);
+      this.formMessage.isOk = false;
+      this.formMessage.msg = false;
+
       this.$http.patch('/api/event/'+ recid + '/cancel')
       .then((response) => {
         console.log('GOOD:'+JSON.stringify(response))
+        this.formMessage.isOk = response.ok;
+        this.formMessage.msg = response.body.message;
       }, (response) => {
         console.log('BAD:'+JSON.stringify(response))
       }).bind(this);
-      location.reload() // Temporary until submitted events can refresh it'self
+      this.refreshUserEventTable();
     },
 
     fetchCurrentRecord: function() {
+      console.log('FROM FETCH: '+this.recordid);
       this.$http.get('/api/event/'+ this.recordid + '/edit')
 
       .then((response) =>{
@@ -961,6 +976,7 @@ module.exports  = {
         this.$set('record', response.data.data)
 
         this.checkOverData();
+        this.refreshUserEventTable();
       }, (response) => {
         //error callback
         console.log("ERRORS");
@@ -1056,7 +1072,7 @@ module.exports  = {
         }, (response) => {
           console.log('Error: '+JSON.stringify(response))
         }).bind(this);
-        setTimeout(function(){location.reload();}, 2000); // Temporary until submitted events can refresh it'self
+        this.refreshUserEventTable();
       }
     },
 
@@ -1089,20 +1105,9 @@ module.exports  = {
       //
       this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
       this.record.categories = this.record.eventcategories;
-      // let tempid;
-      // if (typeof this.currentRecordId != 'undefined'){
-      //     tempid = this.currentRecordId;
-      // } else {
-      //     tempid =this.record.id;
-      // }
-      let tempid;
-      if (typeof this.currentRecordId != 'undefined'){
-        tempid = this.currentRecordId;
-      } else {
-        tempid = this.record.id;
-      }
+
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/event/' + tempid : '/api/event';
+      let route =  (this.recordexists) ? '/api/event/' + this.recordid : '/api/event';
 
       this.$http[method](route, this.record)
 

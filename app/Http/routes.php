@@ -144,6 +144,7 @@ Route::group(['prefix' => 'api'], function() {
     // Route::get('news/{id?}', 'Today\StoryController@index');
 
     Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
+    Route::get('calendar/user/events', 'Today\CalendarController@userEvents');
     Route::get('calendar/event/{id}', 'Today\CalendarController@show');
     Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
 

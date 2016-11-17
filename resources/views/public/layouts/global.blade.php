@@ -141,8 +141,14 @@
                 @show
 <!-- ************* CONTENT-AREA ********** -->
                     <div id="content-area">
+                      @if (array_key_exists('content', View::getSections()))
                         @yield('content')
-                        @include('public.layouts.basebar')
+                      @else
+                        @yield('content-top')
+                        @yield('content-middle')
+                        @yield('content-bottom')
+                      @endif
+                      @include('public.layouts.basebar')
                     </div><!-- #content-area -->
 
              </div> <!-- .off-canvas-content -->
