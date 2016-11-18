@@ -17,7 +17,8 @@
         "sofa/eloquence": "~5.2",
         "barryvdh/laravel-debugbar": "^2.2",
  	"subfission/cas": "dev-master",
-        "google/apiclient": "dev-master"
+        "google/apiclient": "dev-master",
+        "elasticsearch/elasticsearch": "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

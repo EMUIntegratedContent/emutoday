@@ -24,11 +24,10 @@
           <div class="row">
             <div class="large-12 medium-12 small-12 columns" id="vue-search-filter">
                 <ul id="search-filter-list">
-                    <li class="{{ (Request::get('filter') === null || Request::get('filter') == 'all') && ! $isSearchFromMagazine ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=all">All</a></li>
+                    <li class="{{ Request::get('filter') === null || Request::get('filter') == 'all' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=all">All</a></li>
                     <li class="{{ Request::get('filter') == 'stories' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=stories">Stories</a></li>
                     <li class="{{ Request::get('filter') == 'events' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=events">Events</a></li>
                     <li class="{{ Request::get('filter') == 'announcements' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=announcements">Announcements</a></li>
-                    <li class="{{ Request::get('filter') == 'magazine' || $isSearchFromMagazine == true ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=magazine">Magazine</a></li>
                 </ul>
             </div>
           </div>
@@ -40,31 +39,9 @@
                     <ul class="search-result-list">
                     @foreach($storiesPaginated as $searchResult)
                     <li class="search-result-item">
-                        @if($searchResult->getTable() == 'storys')
+                        
                             <a href="/{{$searchResult->story_type}}/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
-                            <div class="search-result-content">
-                                @if($searchResult->subtitle)
-                                <p>{{ $searchResult->subtitle }}</p>
-                                @endif
-                                <p>{!! $searchResult->teaser !!}</p>
-                            </div>
-                        @elseif($searchResult->getTable() == 'cea_events')
-                            <a href="/calendar/event/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
-                            <div class="search-result-content">
-                                @if($searchResult->description)
-                                <p>{{ $searchResult->description }}</p>
-                                @endif
-                                <p>{!! $searchResult->submitter !!}</p>
-                            </div>
-                        @elseif($searchResult->getTable() == 'announcements')
-                            <a href="/announcement/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
-                            <div class="search-result-content">
-                                @if($searchResult->announcement)
-                                <p>{{ $searchResult->announcement }}</p>
-                                @endif
-                                <p>{!! $searchResult->submitter !!}</p>
-                            </div>
-                        @endif
+                            
                     </li>
                     @endforeach
                     </ul>

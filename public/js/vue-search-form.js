@@ -12298,7 +12298,7 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-43dc95ce=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-43dc95ce=\"\">\n            <slot name=\"csrf\" _v-43dc95ce=\"\"></slot>\n        <label _v-43dc95ce=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-43dc95ce=\"\"><button type=\"submit\" _v-43dc95ce=\"\"><i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-43dc95ce=\"\"><i class=\"fa fa-x\" _v-43dc95ce=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-43dc95ce=\"\"><a @click.prevent=\"openSearchForm\" _v-43dc95ce=\"\">Search <i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></a></span>\n    </template>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"search-form-wrapper\" _v-43dc95ce=\"\">\n    <template v-if=\"searchFormIsOpen\">\n        <form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-43dc95ce=\"\">\n            <!--<slot name=\"csrf\"></slot>-->\n        <label _v-43dc95ce=\"\">Search:</label><input type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-43dc95ce=\"\"><button type=\"submit\" _v-43dc95ce=\"\"><i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></button><button @click.prevent=\"closeSearchForm\" _v-43dc95ce=\"\"><i class=\"fa fa-x\" _v-43dc95ce=\"\"></i></button>\n    </form>\n    </template>\n    <template v-else=\"\">\n        <span class=\"search-area\" _v-43dc95ce=\"\"><a @click.prevent=\"openSearchForm\" _v-43dc95ce=\"\">Search <i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></a></span>\n    </template>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12337,7 +12337,7 @@ new Vue({
         headers: {
             // You could also store your token in a global object,
             // and reference it here. APP.token
-            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+            //'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
         }
     }
 });

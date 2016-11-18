@@ -64,7 +64,7 @@
 
                                                         <div id="vue-search-form">
                                                             <search-form>
-                                                                <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                <!--<input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">-->
                                                             </search-form>
                                                         </div><!-- /#vue-event-form -->
 

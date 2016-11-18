@@ -2,7 +2,7 @@
     <div class="search-form-wrapper">
         <template v-if="searchFormIsOpen">
             <form action="/search" method="get" id="search-form" class="search-form" v-on:submit.prevent="submitSearch">
-                <slot name="csrf"></slot>
+                <!--<slot name="csrf"></slot>-->
             <label>Search:</label><input type="text" name="searchterm" placeholder="Search" v-model="searchterm"><button type="submit"><i class="fa fa-search"></i></button><button @click.prevent="closeSearchForm"><i class="fa fa-x"></i></button>
         </form>
         </template>
