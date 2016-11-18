@@ -24,32 +24,40 @@ class MagazineController extends Controller
     {
         $currentDateTime = Carbon::now();
         $currentIssue = false;
+        
         if ($year == null) {
 
           $magazine = $this->magazine->where([
               ['is_published', 1],
               ['is_archived', 0],
-          ])->first();
+          ])->whereDate('start_date', '<', $currentDateTime)->orderBy('start_date', 'DESC')->first();
+
             $currentIssue = true;
         } else {
           if ($season == null) {
             $magazine = $this->magazine->where([
                 ['year', $year],
-            ])->first();
+            ])->whereDate('start_date', '<', $currentDateTime)->orderBy('start_date', 'DESC')->first();
           } else {
             $magazine = $this->magazine->where([
                 ['year', $year],
                 ['season', $season],
-            ])->first();
+            ])->whereDate('start_date', '<', $currentDateTime)->orderBy('start_date', 'DESC')->first();
           }
 
         }
 
+        // If there are no magazines published and set to begin at a past date
+        if(!$magazine){
+            return $this->noCurrentIssue();
+        }
+        
         JavaScript::put([
             'jsis' => 'hi',
         ]);
         // $magazine = $this->magazines->findOrFail($id);
         // $storyImages = $this->magazines->storyImages();
+        
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
                 $magazineCover = $magazine->mediafiles()->where('type','cover')->first();
@@ -93,14 +101,18 @@ class MagazineController extends Controller
           $magazine = $this->magazine->where([
               ['is_published', 1],
               ['is_archived', 0],
-          ])->first();
+          ])->whereDate('start_date', '<', $currentDateTime)->orderBy('start_date', 'DESC')->first();
         } else {
           $magazine = $this->magazine->where([
               ['year', $year],
               ['season', $season],
-          ])->first();
+          ])->whereDate('start_date', '<', $currentDateTime)->orderBy('start_date', 'DESC')->first();
         }
 
+        if(!$magazine){
+            return $this->noCurrentIssue();
+        }
+        
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
 
@@ -169,4 +181,7 @@ class MagazineController extends Controller
     }
 
 
+    private function noCurrentIssue(){
+        return view('public.magazine.noissues');
+    }
 }

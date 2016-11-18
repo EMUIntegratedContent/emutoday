@@ -26,12 +26,12 @@ class DashboardController extends Controller
             $user = \Auth::user();
         } else {
         // return 'Need to Connect to LDAP';
-        return redirect()->route('emich-login');
+            return redirect()->route('emich-login');
         }
         $cas_user = cas()->user();
 
         // dd($user->id . '------'.$cas_user);
-
+        
         return view('admin.dashboard');
 
     }
