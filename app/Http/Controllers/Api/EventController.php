@@ -70,8 +70,8 @@ class EventController extends ApiController
           // dd($user->id);
           $events = $user->events()->get();
         } else {
-          $events = Event::limit(40)->where([
-          // $events = Event::where([
+          // $events = Event::limit(40)->where([
+          $events = Event::where([
             ['end_date', '>', $currentDate->subDay(2)]
             ])->get();
             // Announcement::all();
@@ -325,7 +325,7 @@ class EventController extends ApiController
           ($event->is_canceled == 1) ? $event->is_canceled = 0 : $event->is_canceled = 1;
           if($event->save()) {
             return $this->setStatusCode(201)
-            ->respondSavedWithData('Event cancel toggle',[ 'record_id' => $event->id ]);
+            ->respondSavedWithData('Event cancel status changed',[ 'record_id' => $event->id ]);
           }
         }
         public function update(Request $request, $id)
@@ -408,7 +408,7 @@ class EventController extends ApiController
               $event->minicalendars()->sync($minicalsRequest);
               $event->save();
               return $this->setStatusCode(201)
-              ->respondSavedWithData('Event successfully Updated!',[ 'record_id' => $event->id ]);
+              ->respondSavedWithData('Event successfully updated!',[ 'record_id' => $event->id ]);
               // ->respondCreated('Event updated.');
             }
           }

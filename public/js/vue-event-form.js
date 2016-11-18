@@ -15911,6 +15911,14 @@ module.exports = {
     }
   },
   methods: {
+    refreshUserEventTable: function refreshUserEventTable() {
+      $.get('/calendar/user/events', function (data) {
+        data = $.parseJSON(data);
+        // console.log(data.content);
+        $('#user-events-tables').html(data);
+      });
+    },
+
     fetchMiniCalsList: function fetchMiniCalsList() {
       var _this = this;
 
@@ -16020,18 +16028,27 @@ module.exports = {
     },
 
     cancelRecord: function cancelRecord(recid) {
+      var _this2 = this;
+
       // toggles cancel
+      console.log('FROM CANCEL: ' + recid);
+      this.formMessage.isOk = false;
+      this.formMessage.msg = false;
+
       this.$http.patch('/api/event/' + recid + '/cancel').then(function (response) {
         console.log('GOOD:' + (0, _stringify2.default)(response));
+        _this2.formMessage.isOk = response.ok;
+        _this2.formMessage.msg = response.body.message;
       }, function (response) {
         console.log('BAD:' + (0, _stringify2.default)(response));
       }).bind(this);
-      location.reload(); // Temporary until submitted events can refresh it'self
+      this.refreshUserEventTable();
     },
 
     fetchCurrentRecord: function fetchCurrentRecord() {
-      var _this2 = this;
+      var _this3 = this;
 
+      console.log('FROM FETCH: ' + this.recordid);
       this.$http.get('/api/event/' + this.recordid + '/edit').then(function (response) {
         //response.status;
         console.log('response.status=' + response.status);
@@ -16039,9 +16056,10 @@ module.exports = {
         console.log('response.statusText=' + response.statusText);
         // console.log('response.data=' + response.data.json());
         // this.record = response.data.data;
-        _this2.$set('record', response.data.data);
+        _this3.$set('record', response.data.data);
 
-        _this2.checkOverData();
+        _this3.checkOverData();
+        _this3.refreshUserEventTable();
       }, function (response) {
         //error callback
         console.log("ERRORS");
@@ -16078,24 +16096,24 @@ module.exports = {
       // this.zbuilding.push(this.record.building);
     },
     fetchForSelectCategoriesList: function fetchForSelectCategoriesList(search, loading) {
-      var _this3 = this;
+      var _this4 = this;
 
       loading(true);
       this.$http.get('/api/categorylist', {
         q: search
       }).then(function (resp) {
-        _this3.zcats = resp.data;
+        _this4.zcats = resp.data;
         loading(false);
       });
     },
     fetchForSelectBuildingList: function fetchForSelectBuildingList(search, loading) {
-      var _this4 = this;
+      var _this5 = this;
 
       loading(true);
       this.$http.get('/api/buildinglist', {
         q: search
       }).then(function (resp) {
-        _this4.buildings = resp.data;
+        _this5.buildings = resp.data;
         loading(false);
       });
     },
@@ -16120,7 +16138,7 @@ module.exports = {
     },
 
     delEvent: function delEvent(e) {
-      var _this5 = this;
+      var _this6 = this;
 
       e.preventDefault();
       this.formMessage.isOk = false;
@@ -16131,16 +16149,14 @@ module.exports = {
 
         this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
         this.$http.post('/api/event/' + tempid + '/delete').then(function (response) {
-          _this5.$data = _this5.resetInital();
-          _this5.formMessage.isOk = response.ok;
-          _this5.formMessage.msg = response.body;
-          _this5.recordexists = false;
+          _this6.$data = _this6.resetInital();
+          _this6.formMessage.isOk = response.ok;
+          _this6.formMessage.msg = response.body;
+          _this6.recordexists = false;
         }, function (response) {
           console.log('Error: ' + (0, _stringify2.default)(response));
         }).bind(this);
-        setTimeout(function () {
-          location.reload();
-        }, 2000); // Temporary until submitted events can refresh it'self
+        this.refreshUserEventTable();
       }
     },
 
@@ -16151,7 +16167,7 @@ module.exports = {
     },
 
     submitForm: function submitForm(e) {
-      var _this6 = this;
+      var _this7 = this;
 
       //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
@@ -16175,20 +16191,9 @@ module.exports = {
       //
       this.record.minicals = this.record.minicalendars ? this.record.minicalendars : null;
       this.record.categories = this.record.eventcategories;
-      // let tempid;
-      // if (typeof this.currentRecordId != 'undefined'){
-      //     tempid = this.currentRecordId;
-      // } else {
-      //     tempid =this.record.id;
-      // }
-      var tempid = void 0;
-      if (typeof this.currentRecordId != 'undefined') {
-        tempid = this.currentRecordId;
-      } else {
-        tempid = this.record.id;
-      }
+
       var method = this.recordexists ? 'put' : 'post';
-      var route = this.recordexists ? '/api/event/' + tempid : '/api/event';
+      var route = this.recordexists ? '/api/event/' + this.recordid : '/api/event';
 
       this.$http[method](route, this.record)
 
@@ -16201,20 +16206,20 @@ module.exports = {
         console.log('response.ok=' + response.ok);
         console.log('response.statusText=' + response.statusText);
         console.log('response.data=' + response.data.message);
-        _this6.formMessage.msg = response.data.message;
-        _this6.formMessage.isOk = response.ok;
-        _this6.formMessage.isErr = false;
-        _this6.currentRecordId = response.data.newdata.record_id;
-        _this6.recordexists = true;
-        _this6.formErrors = {};
-        _this6.fetchCurrentRecord(_this6.currentRecordId);
+        _this7.formMessage.msg = response.data.message;
+        _this7.formMessage.isOk = response.ok;
+        _this7.formMessage.isErr = false;
+        _this7.currentRecordId = response.data.newdata.record_id;
+        _this7.recordexists = true;
+        _this7.formErrors = {};
+        _this7.fetchCurrentRecord(_this7.currentRecordId);
       }, function (response) {
-        _this6.formMessage.isOk = false;
-        _this6.formMessage.isErr = true;
+        _this7.formMessage.isOk = false;
+        _this7.formMessage.isErr = true;
         //error callback
         // console.log("FORM ERRORS     " + response.json());
 
-        _this6.formErrors = response.data.error.message;
+        _this7.formErrors = response.data.error.message;
         console.log(response.data.error.message);
       }).bind(this);
     },
@@ -16226,6 +16231,7 @@ module.exports = {
         return arguments[0].toUpperCase();
       });
     },
+
     resetInital: function resetInital() {
       // oh gosh.. is there a better way?
       return {
@@ -16348,35 +16354,21 @@ Vue.use(_vueResource2.default);
 var vm = new Vue({
   el: '#vue-event-form',
   components: { EventForm: _EventForm2.default },
-  // http: {
-  //     headers: {
-  //         // You could also store your token in a global object,
-  //         // and reference it here. APP.token
-  //         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-  //     }
-  // },
   ready: function ready() {
     console.log('vue ready');
   }
 });
 
-// Assign events to edit buttons
-var editBtns = document.getElementsByClassName('editBtn'); // Get edit elems
-for (var i = 0; i < editBtns.length; i++) {
-  // Assign an event listener to call a method within the Vue instance
-  editBtns[i].addEventListener('click', function (e) {
+function assignEventListeners() {
+  // Cancel and edit buttons need to call vue object methods
+  $("#calendar-bar").on("click", ".editBtn", function (event) {
     vm.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
   });
-};
-
-// Assign events to cancel buttons
-var cancelBtns = document.getElementsByClassName('cancelBtn'); // Get edit elems
-for (var i = 0; i < cancelBtns.length; i++) {
-  // Assign an event listener to call a method within the Vue instance
-  cancelBtns[i].addEventListener('click', function (e) {
+  $("#calendar-bar").on("click", ".cancelBtn", function (event) {
     vm.$refs.foo.cancelRecord(this.parentNode.id);
   });
-};
+}
+assignEventListeners();
 
 },{"./components/EventForm.vue":108,"vue":106,"vue-resource":104}]},{},[109]);
 

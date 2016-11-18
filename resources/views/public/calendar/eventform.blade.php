@@ -6,7 +6,7 @@
 @endsection
 
 @section('title','Submit an Event')
-@section('content')
+@section('content-top')
 <div id="calendar-bar">
   <div class="row">
     <div class="medium-12 column">
@@ -20,12 +20,15 @@
             </event-form>
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
-        <div class="medium-6 columns">
+        <div class="medium-6 columns" id="user-events-tables">
+        @endsection
+
+        @section('content-middle')
           @unless(empty($submitteditems[0]))
           <div class="row">
             <div class="small-12 column">
               <h3 class="cal-caps toptitle">Submitted Events</h3>
-              <table id="user-events-table" class="table table-bordered table-hover">
+              <table id="user-events-submitted" class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th class="text-left">Title</th>
@@ -64,7 +67,7 @@
           <div class="row">
             <div class="small-12 column">
               <h3 class="cal-caps toptitle">Approved Events</h3>
-              <table style="max-width: 50%" id="user-events-table" class="table table-bordered table-hover">
+              <table style="max-width: 50%" id="user-events-approved" class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <th class="text-left">Title</th>
@@ -95,9 +98,11 @@
                 </tbody>
               </table>
             </div><!-- /.small-12 column -->
-          </div><!-- /.row -->
           @endunless
+          @endsection
 
+          @section('content-bottom')
+          </div><!-- /.row -->
         </div><!-- /.medium-6 columns -->
       </div><!-- /.row -->
     </div><!-- /.small-12 column -->
