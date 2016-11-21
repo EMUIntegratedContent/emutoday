@@ -12,7 +12,7 @@ use Emutoday\Tweet;
 
 class DashboardController extends Controller
 {
-    public function index(Story $storys, User $user)
+    public function index(Request $request, Story $storys, User $user)
     {
     //    $tweets = Tweet::orderBy('created_at','desc')->paginate(5);
       //  $tweetsApproved = emutoday\Tweet::where('approved',1)->orderBy('created_at','desc')->take(5)->get();
@@ -29,7 +29,6 @@ class DashboardController extends Controller
             return redirect()->route('emich-login');
         }
         $cas_user = cas()->user();
-
         // dd($user->id . '------'.$cas_user);
         
         return view('admin.dashboard');

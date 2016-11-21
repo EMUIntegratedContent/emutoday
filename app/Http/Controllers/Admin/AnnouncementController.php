@@ -59,13 +59,10 @@ class AnnouncementController extends Controller
     */
     public function form($atype = null)
     {
-
-        // dd($atype);
         if (is_null($atype)) {
             $atype = 'general';
-        } else {
-            $atype = $atype;
-        }
+        } 
+        
         $announcement = $this->announcement;
         return view('admin.announcement.form', compact('announcement', 'atype'));
     }

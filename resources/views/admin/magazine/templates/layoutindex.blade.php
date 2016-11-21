@@ -184,7 +184,7 @@
 <div id="buttons">
 
     <input type="button" value="Reset" class="btn bg-olive" onclick="javascript:reset()"/>
-    <input type="button" value="Relocate" class="btn bg-olive" onclick="javascript:reloc()"/>
+    <!--<input type="button" value="Relocate" class="btn bg-olive" onclick="javascript:reloc()"/>-->
 
 </div>
 <!-- display block content -->

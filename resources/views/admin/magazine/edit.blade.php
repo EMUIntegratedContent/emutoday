@@ -46,7 +46,8 @@
     <div class="row">
         {!! Form::model($magazine, [
             'method' =>  'put',
-            'route' => ['admin.magazine.update', $magazine->id]
+            'route' => ['admin.magazine.update', $magazine->id],
+            'id' => 'edit_magazine_form'
             ]) !!}
             <div class="col-sm-6">
                 <div class="box box-primary">

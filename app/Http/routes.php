@@ -27,6 +27,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('calendar/addevent', 'Api\CalendarController@addEventToGoogleCalendar')->name('addEventToGoogleCalendar');
     Route::get('oauth2callback', 'Api\CalendarController@oAuth');
     Route::get('calendarauth', 'Api\CalendarController@oAuthAPIConfirm');
+    
 
     /**
      * List of Buildings for EventForm

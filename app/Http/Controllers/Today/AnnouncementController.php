@@ -19,7 +19,7 @@ class AnnouncementController extends Controller
   public function __construct(Announcement $announcement)
   {
     $this->announcement = $announcement;
-    // $this->middleware('auth', ['except'=>'index']);
+    //$this->middleware('guest', ['except'=>'index']);
   }
 
   // public function index($id = null)
@@ -46,6 +46,7 @@ class AnnouncementController extends Controller
         // return 'Need to Connect to LDAP';
         //    return redirect()->route('emich-login');
         return redirect()->guest('/emichlogin');
+        //cas()->authenticate();
       }
 
 

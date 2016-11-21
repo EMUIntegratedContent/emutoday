@@ -35,6 +35,7 @@ redipsInit = function () {
         rd.init();
         original_story_ids = JSvars.original_story_ids;
         mainrecord_id = JSvars.mainrecordid;
+     
     // enable shift animation
     //rd.shift.animation = true;
     // save initial DIV positions to "pos" object (it should go after initialization)
@@ -416,6 +417,16 @@ arraysEqual = function(a, b) {
 };
 
 $('#table2 table').on('click', '.fa-pencil', function (ev) {
+    var parentBtnData = $(this).parent().data();
+    var parentBtnId = parentBtnData['id'];
+    var articlepath = '/admin/queuearticle/magazine/article/'+ parentBtnId +'/edit';
+    ev.stopPropagation(); //prevent more than one tab from opening
+    window.open(articlepath); //open the article in a new tab
+    
+    /***
+     *  Convoluted code from the original developer to display a pop-up window 
+     *  with an option to save the form before going to the edit screen of the story
+     * /
     ev.preventDefault();
     ev.stopPropagation();
     // var data = table.row( $(this).parents('tr') ).data();
@@ -471,6 +482,15 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
             if (canSave){
                 saveasbtn.disabled =false;
                 saveasbtn.addEventListener("click", function(e){
+                    
+                    //Take all of the exsiting magazine data, and throw it into a serialized object
+                    //http://stackoverflow.com/questions/23287067/converting-serialized-forms-data-to-json-object
+                    var data = $("#edit_magazine_form").serialize().split("&");
+                    var obj={};
+                    for(var key in data){
+                        obj[data[key].split("=")[0]] = data[key].split("=")[1];
+                    }
+                    
                     var sids =  story_ids.toString();
                     console.log(sids);
                     e.preventDefault();
@@ -478,12 +498,14 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
                     $.ajax({
                                url: '/api/magazine/saveas/'+mainrecord_id,
                                type: 'PATCH',
-                               data: {story_ids: sids},
+                               data: {
+                                   story_ids: sids,
+                                   magazine_data: obj
+                               },
+                               dataType: 'json',
                                success: function(res) {
-                                   console.log('success');
-                                   //         location.assign(articlepath);
-                                   window.location.href = articlepath;
-
+                                   console.log(res);
+                                   location.assign(articlepath);
                                }
                        });
                 });
@@ -491,6 +513,7 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
                 saveasbtn.disabled = true;
             }
         }
+        */
 });
 //
 // $('#myModal').on('show.bs.modal', function (event) {

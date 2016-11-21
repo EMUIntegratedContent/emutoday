@@ -26,7 +26,7 @@
                             </div><!-- /.form-group -->
                           <div class="form-group">
                             <label class="sr-only" for="priority-number">Priority</label>
-                                <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" class="form-control" number>
+                                <select id="priority-{{item.id}}" v-show="this.item.story_type != 'article'" v-model="patchRecord.priority" @change="priorityChange($event)" class="form-control" number>
                                     <option v-for="option in priorityOptions" v-bind:value="option.value">
                                         {{option.text}}
                                     </option>

@@ -66,7 +66,7 @@
 
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4>Live <small>Approved and StartDate is past</small></h4>
+        <h4>Live <small>Approved and StartDate has passed</small></h4>
         <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
                 <label>Filter: </label>
@@ -148,13 +148,6 @@ export default  {
         return {
             readyStatus: '',
             singleStype: false,
-            // storytypes: [
-            //     { type: 'news'},
-            //     { type: 'student'},
-            //     { type: 'emutoday'},
-            //     { type: 'article'},
-            //     { type: 'external'}
-            // ],
             storytype:'',
             items_unapproved_filter_storytype: '',
             items_approved_filter_storytype: '',

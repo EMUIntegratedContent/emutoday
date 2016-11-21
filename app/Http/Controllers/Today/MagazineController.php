@@ -180,7 +180,11 @@ class MagazineController extends Controller
 
     }
 
-
+    /**
+     * Display this view when there are no current, unarchived issues found.
+     * 
+     * @return view
+     */
     private function noCurrentIssue(){
         return view('public.magazine.noissues');
     }

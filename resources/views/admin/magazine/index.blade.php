@@ -58,7 +58,7 @@
                 @foreach($magazines_incomplete as $magazine)
                 <tr class="{{ $magazine->present()->magazineScheduleStatus }}">
                   <td class="text-center">{{ $magazine->id }}</td>
-                  <td>{{ $magazine->title }}</td>
+                  <td>{{ $magazine->title }} @if($magazine->is_archived == 1)<span class="archived-magazine">&#8211; Archived</span>@endif</td>
                   <td>{{ $magazine->present()->prettyStartDate }}</td>
                   <td>{{ $magazine->present()->prettyEndDate }}</td>
                   <td>{{ $magazine->present()->magazineLiveIn }}</td>
@@ -110,7 +110,7 @@
                 <tr class="{{ $magazine->present()->magazineScheduleStatus }}">
 
                   <td class="text-center">{{ $magazine->id }}</td>
-                  <td>{{ $magazine->title }}</td>
+                  <td>{{ $magazine->title }} @if($magazine->is_archived == 1)<span class="archived-magazine">&#8211; Archived</span>@endif</td>
                   <td>{{ $magazine->present()->prettyStartDate }}</td>
                   <td>{{ $magazine->present()->prettyEndDate }}</td>
                   <td>{{ $magazine->present()->magazineLiveIn }}</td>
