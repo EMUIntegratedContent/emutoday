@@ -12,6 +12,11 @@ use Emutoday\Tweet;
 
 class DashboardController extends Controller
 {
+    public function __construct(Announcement $announcement)
+    {
+      $this->middleware('auth', ['only'=>'index']);
+    }
+    
     public function index(Request $request, Story $storys, User $user)
     {
     //    $tweets = Tweet::orderBy('created_at','desc')->paginate(5);
@@ -25,11 +30,14 @@ class DashboardController extends Controller
             // The user is logged in...
             $user = \Auth::user();
         } else {
-        // return 'Need to Connect to LDAP';
-            return redirect()->route('emich-login');
+            // return 'Need to Connect to LDAP';
+            //return redirect()->route('tacos');
+            if(cas()->isAuthenticated()){
+                abort(403, 'You do not have administrative privileges.');
+            } else {
+                cas()->authenticate();
+            }
         }
-        $cas_user = cas()->user();
-        // dd($user->id . '------'.$cas_user);
         
         return view('admin.dashboard');
 

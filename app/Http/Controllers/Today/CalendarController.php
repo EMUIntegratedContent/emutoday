@@ -15,7 +15,7 @@ class CalendarController extends Controller
     public function __construct(Event $events)
     {
         $this->events = $events;
-        // $this->middleware('auth', ['except'=>'index']);
+        $this->middleware('auth', ['only'=>'eventForm']);
     }
 
     // Route::get('calendar', 'EmuToday\CalendarController@index');
@@ -187,26 +187,25 @@ class CalendarController extends Controller
         public function eventForm(Event $event)
         {
             if (\Auth::check()) {
-                // The user is logged in...
-                $user = \Auth::user();
+              // The user is logged in...
+              $user = \Auth::user();
+
+              return redirect()->action('Admin\EventController@form');
             } else {
-                // return view('public.emichlogin')
-                //return redirect()->route('auth.login');
-                return redirect()->guest('/emichlogin');
+              $user = cas()->user();
+
+              $approveditems = $this->events->where([
+                  ['is_approved', 1],
+                  ['submitter', $user]
+                  ])->get();
+
+              $submitteditems = $this->events->where([
+                  ['is_approved', 0],
+                  ['submitter', $user]
+                  ])->get();
+
+              return view('public.calendar.eventform', compact('event','approveditems','submitteditems'));
             }
-
-            // $approveditems = $this->event->where([
-            //     ['user_id', $user->id],
-            //     ['is_approved',1]
-            //     ])->get();
-            // $submitteditems = $this->event->where([
-            //         ['user_id', $user->id],
-            //         ['is_approved',0]
-            //         ])->get();
-        $approveditems = $user->events()->where('is_approved', '1')->get();;
-        $submitteditems = $user->events()->where('is_approved', '0')->get();
-
-        return view('public.calendar.eventform', compact('event', 'approveditems','submitteditems'));
         }
 
         public function userEvents(Event $event)

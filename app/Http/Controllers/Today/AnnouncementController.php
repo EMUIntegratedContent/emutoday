@@ -19,7 +19,7 @@ class AnnouncementController extends Controller
   public function __construct(Announcement $announcement)
   {
     $this->announcement = $announcement;
-    //$this->middleware('guest', ['except'=>'index']);
+    $this->middleware('auth', ['only'=>'announcementForm']);
   }
 
   // public function index($id = null)
@@ -36,18 +36,30 @@ class AnnouncementController extends Controller
 
     }
 
-    public function announcementForm(Announcement $announcement)
+    public function announcementForm(Request $request, Announcement $announcement)
     {
-
       if (\Auth::check()) {
         // The user is logged in...
         $user = \Auth::user();
+        
+        return redirect()->action('Admin\AnnouncementController@form');
       } else {
-        // return 'Need to Connect to LDAP';
-        //    return redirect()->route('emich-login');
-        return redirect()->guest('/emichlogin');
-        //cas()->authenticate();
+        $user = cas()->user();
+
+        $approveditems = $this->announcement->where([
+            ['is_approved', 1],
+            ['submitter', $user]
+            ])->get();
+            
+        $submitteditems = $this->announcement->where([
+            ['is_approved', 0],
+            ['submitter', $user]
+            ])->get();
+        
+        return view('public.announcement.form', compact('announcement','approveditems','submitteditems'));
       }
+
+      //return $request->session()->get('today_admin');
 
 
       $cdate = Carbon::now();
@@ -59,13 +71,13 @@ class AnnouncementController extends Controller
 
 
       // $announcements = $user->announcements;//$this->announcement->where('is_approved', '0')->orderBy('start_date', 'dsc')->paginate(4);
+/*
       $approveditems = $user->announcements()->where('is_approved', '1')->get();;
 
       $submitteditems = $user->announcements()->where('is_approved', '0')->get();
-      // dd($submitteditems);
+
       return view('public.announcement.form', compact('announcement','approveditems','submitteditems'));
-
-
+*/
       // return redirect(route('emu-today.announcement.edit',$announcement->id ));
       // return view('public.announcement.edit', compact('announcement'));
     }

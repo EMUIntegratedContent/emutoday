@@ -20,7 +20,7 @@ class AuthController extends Controller
         // $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
         $this->middleware('guest', ['except' => 'getLogout']);
     }
-
+/*
         public function authenticate()
         {
             if(Auth::attempt(['email'=> $email, 'password'=> $password])){
@@ -29,4 +29,5 @@ class AuthController extends Controller
 
             }
         }
+ */
 }

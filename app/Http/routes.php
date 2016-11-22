@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Input;
 |
 */
 
+Route::get('/cas/logout', function(){
+    Auth::logout();
+    Session::flush();
+    cas()->logout();
+})->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
+
 Route::group(['prefix' => 'api'], function() {
     Route::get('active-categories/{year?}/{month?}/{day?}','Api\CategoriesController@activeCategories');
 
@@ -68,7 +74,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
     Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
     Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
-    // Route::get('event', ['as' => 'api.event', 'uses' => 'Api\EventController@index']);
+ 
     Route::patch('event/archiveitem/{id}', ['as' => 'api_event_archiveitem', 'uses' => 'Api\EventController@archiveItem']);
     Route::patch('event/updateitem/{id}', ['as' => 'api_event_updateitem', 'uses' =>'Api\EventController@updateItem']);
     Route::post('event/{id}/delete', ['as' => 'api_event_deleteitem', 'uses' => 'Api\EventController@delete']);
@@ -82,20 +88,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('announcement', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
-    // Route::patch('event/updateitem/{event}', 'Api\EventController@updateItem');
-    // Route::put('event/{event}/addMediaFile', 'Api\EventController@addMediaFile');
-    //
-    // Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
-
-
-
-
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
     Route::get('{gtype}/{stype}/{qtype}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
-    // Route::get('story/queueload/{stype}', ['as'=> 'api_story_queueload', 'uses'=> 'Api\StoryController@queueLoad']);
-
-
 
     Route::patch('story/updateitem/{id}', ['as' => 'api_story_updateitem', 'uses' => 'Api\StoryController@updateItem']);
 
@@ -114,17 +109,6 @@ Route::group(['prefix' => 'api'], function() {
 
 });
 
-// Route::group(['middleware' => ['web']], function() {
-
-    // Route::controller('auth/password', 'Auth\PasswordController', [
-    //         'getEmail' => 'auth.password.email',
-    //         'getReset' => 'auth.password.reset'
-    //     ]);
-    //
-    // Route::controller('auth', 'Auth\AuthController', [
-    //     'getLogin' => 'auth.login',
-    //     'getLogout' => 'auth.logout'
-    // ]);
     Route::get('emichlogin', ['as' => 'emich-login', function() {
         return view('public.emichlogin', ['form' => 'event']);
     }]);
@@ -246,8 +230,8 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('mediafile', 'Admin\MediafileController');
         Route::resource('role', 'Admin\RoleController');
         Route::resource('permission', 'Admin\PermissionController');
-        Route::resource('mediatype', 'Admin\MediatypeController');
-        Route::resource('imagetype', 'Admin\ImagetypeController');
+        //Route::resource('mediatype', 'Admin\MediatypeController');
+        //Route::resource('imagetype', 'Admin\ImagetypeController');
 
         Route::get('story/queueall', ['as' => 'admin_story_queue', 'uses' => 'Admin\StoryTypeController@queueAll']);
          Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryTypeController@queueArticle']);

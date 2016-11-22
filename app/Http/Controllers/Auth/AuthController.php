@@ -79,33 +79,7 @@ class AuthController extends Controller
     }
 
     public function guest(Request $request)
-    { // Check LDAP login registered user as admin or, login any valid NetId as guest
-      // if(Auth::attempt(['email'=> $email, 'password'=> $password])){
-      //     //Authenticate passed
-      //     return redirect()->intended('admin.dashboard');
-      // }
-      $guest = $request['user'];
-      $pass = $request['password'];
-      $base = 'ou=people,o=campus';
-
-      function login($guest, $pass) {
-        if (empty($guest) || empty($pass)) {
-          return redirect()->guest('/emichlogin', compact(['valid'=>false]));
-        } else {
-          $guest = trim(strtolower(array_shift(explode('@', $guest))));
-
-          if ($conn = @ldap_connect('ldap.emich.edu', 389)) {
-            if (@ldap_bind($conn, "cn={$guest}," . $base, $pass)) {
-              $search = ldap_search($conn, $base, "cn={$guest}", array('EID'));
-
-              if (ldap_count_entries($conn, $search) <= 0) {
-                return redirect()->guest('/emichlogin', compact(['valid'=>false]));
-              } else {
-                return $guest;
-              }
-            }
-          }
-        }
-      }
+    { 
+      
     }
 }

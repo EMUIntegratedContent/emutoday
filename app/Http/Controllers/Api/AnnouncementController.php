@@ -92,12 +92,14 @@ class AnnouncementController extends ApiController
 
     if($validation->passes())
     { // Okay validation passes. create the announcement
+      cas()->authenticate(); //run authentication before calling cas->user
+      
       $announcement = new Announcement;
-      $announcement->user_id          	= $request->get('user_id', 0);
-      // $announcement->submitter         	= cas()->getCurrentUser(); // don't work so well on production
+      $announcement->user_id          	= $request->get('user_id', null);
+      $announcement->submitter         	= cas()->user(); // don't work so well on production
       $announcement->title             	= $request->get('title');
       $announcement->start_date        	= Carbon::parse($request->get('start_date'));
-      $announcement->end_date      	  	= Carbon::parse($request->get('end_date'))->endOfDay();
+      $announcement->end_date      	= Carbon::parse($request->get('end_date'))->endOfDay();
       $announcement->announcement     	= $request->get('announcement');
 
       $announcement->link               = $request->get('link', null);

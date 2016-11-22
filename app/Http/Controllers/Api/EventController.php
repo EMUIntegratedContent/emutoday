@@ -145,8 +145,9 @@ class EventController extends ApiController
 
         if($validation->passes())
         {
+            cas()->authenticate(); //run authentication before calling cas->user
           $event = new Event;
-          $event->user_id       	= $request->get('user_id');
+          $event->user_id       	= $request->get('user_id', nullValue());
           // $event->submitter       	= cas()->user();
           $event->title           	= $request->get('title');
           $event->short_title     	= $request->get('short_title');
@@ -166,7 +167,7 @@ class EventController extends ApiController
           $event->contact_email     = $request->get('contact_email');
           $event->contact_fax				= $request->get('contact_fax');
           $event->description     	= $request->get('description');
-
+          $event->submitter         = cas()->user();
           $event->related_link_1					= $request->get('related_link_1');
           $event->related_link_2					= $request->get('related_link_2');
           $event->related_link_3					= $request->get('related_link_3');

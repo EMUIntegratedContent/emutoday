@@ -18,26 +18,28 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        
         if( ! cas()->isAuthenticated() )
         {
-        if ($request->ajax()) {
+          if ($request->ajax()) {
             return response('Unauthorized.', 401);
+          }
+          cas()->authenticate();
         }
-        cas()->authenticate();
-        }
+        
         $username = cas()->user() . '@emich.edu';
+        
         $user = User::where('email', $username)->first();
-        Auth::login($user, true);
+
+        if( $user ){
+          Auth::login($user, true);
+        } 
         session()->put('cas_user', cas()->user() );
+
         return $next($request);
-        // if (Auth::guard($guard)->guest()) {
-        //     if ($request->ajax() || $request->wantsJson()) {
-        //         return response('Unauthorized.', 401);
-        //     } else {
-        //         return redirect()->guest('login');
-        //     }
-        // }
-        //
-        // return $next($request);
+    }
+    
+    public function logout(){
+        cas()->logout();
     }
 }

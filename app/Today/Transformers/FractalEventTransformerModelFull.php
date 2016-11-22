@@ -10,9 +10,15 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
 {
   public function transform(Event $event)
   {
+      
+        $user_id    = null;
+
+        if($event->user_id != null){
+            $user_id    = $event->user_id; 
+        }
     return [
       'id'                => (int) $event->id,
-      'user_id'           => $event->user_id,
+      'user_id'           => $user_id,
       'title'             => $event->title,
       'short_title'       => $event->short_title,
       'description'       => $event->description,
@@ -46,7 +52,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'is_approved'           => $event->is_approved,
       'is_canceled'           => $event->is_canceled,
       'homepage'           => $event->homepage,
-      'submitter'           => $event->submitter,
+      'submitter'           => cas()->user(),
       'tickets'           => $event->tickets,
       'ticket_details_online'     => $event->ticket_details_online,
       'ticket_details_phone'           => $event->ticket_details_phone,
