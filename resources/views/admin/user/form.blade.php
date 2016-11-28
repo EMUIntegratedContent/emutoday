@@ -133,6 +133,7 @@
           </div> <!-- /.box -->
           @else
 
+          @if($user->exists) 
           <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Add User Image</h3>
@@ -161,6 +162,8 @@
             </div> <!-- /.box-body -->
 
           </div> <!-- /.box -->
+          @endif 
+          
           @endif
 
           {{-- @each('admin.magazine.subviews.coverimage',$mediafiles, 'mediafile', 'admin.magazine.subviews.addcoverimage') --}}

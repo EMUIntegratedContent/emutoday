@@ -127,9 +127,8 @@ class MediafileController extends Controller
                 $mediafile->filename = $mediafile->name . '.' . $mediafile->ext;
                 $user->mediaFiles()->save($mediafile);
                 flash()->success('Mediafile has been updated');
-                // return redirect()->back();//->with('status', 'Story has been created.');
-                return redirect()->back();
-                // return redirect(route('admin.users.edit', $user->id));//->with('status', 'Story has been created.');
+
+                return redirect(route('admin.user.edit', $user->id));
 
             }
             public function removeMediafileUser($id)

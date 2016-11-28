@@ -31,7 +31,7 @@
                 <a href="#">{{ $user->id }}</a>
               </td>
               <td>
-                <a href="/admin/user/{{ $user->id}}">{{ $user->email }}</a>
+                <a href="/admin/user/{{ $user->id}}/edit">{{ $user->email }}</a>
               </td>
               <td>{{ $user->last_name }}</td>
               <td>{{ $user->first_name }}</td>

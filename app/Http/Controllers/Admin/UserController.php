@@ -38,9 +38,15 @@ class UserController extends Controller
 
     public function store(Requests\User_StoreRequest $request)
     {
+        // Create user.
         $this->user->create($request->only('last_name', 'first_name', 'phone', 'email'));
+        
+        // Save user roles.
+        $newUser = User::orderBy('created_at', 'desc')->first();
+
+        $newUser->roles()->sync($request->input('role_list'));
         flash()->success('User has been created.');
-        return redirect(route('admin_user_index'));//->with('status', 'User has been created.');
+        return redirect(route('admin.user.index'));//->with('status', 'User has been created.');
     }
 
 
