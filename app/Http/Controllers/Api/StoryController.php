@@ -153,26 +153,7 @@ class StoryController extends ApiController
                 // Turn all of that into a JSON string
                 return $fractal->createData($resource)->toArray();
         }
-        // public function index()
-        // {
-        //
-        //
-        // 		$storys = Story::all();
-        //
-        // 		return $this->respond([
-        // 				'data' => $this->storyTransformer->transformCollection($storys->all())
-        // 		]);
-        // }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
     public function store(Request $request)
     {
         //  if (! Input::get('title') or ! Input::get('location'))
@@ -199,36 +180,23 @@ class StoryController extends ApiController
                 $story->user_id     = $request->get('user_id');
                 $story->content     = $request->get('content');
                 $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
-                $story->author_id   = $request->get('author_id', 0);
+                $story->author_id   = $request->get('author_id', $request->user()->id);
+
+                $tags = array_pluck($request->input('tags'),'value');
+
                 if($story->save()) {
                     $record_id  = $story->id;
+                    
+                    $newStory = Story::find($record_id);
+                    $newStory->tags()->sync($tags);
+                    
+                    $newStory->save();
+                    
                     return $this->setStatusCode(201)
-                    ->respondSavedWithData('Story successfully created!',[ 'record_id' => $story->id, 'stype'=> $story->story_type] );
-
-
-                        // return $this->setStatusCode(201)
-                        //     ->respondCreatedWithId('Story successfully created!', $record_id);
+                    ->respondSavedWithData('Story has been created.',[ 'record_id' => $story->id, 'stype'=> $story->story_type] );
                 }
             }
     }
-
-    // $stype = $story->story_type;
-    //     return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
-    // }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request Request $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(Story_StoreRequest $request)
-    // {
-    //     return $this->setStatusCode(422)->respondWithError('Parameters failed validation for a story');
-    //     // if ( ! $request->input('title') or ! $request->input('body'))
-    //     // {
-    //     //     return $this->setStatusCode(422)->respondWithError('Parameters failed validation for a story');
-    //     // }
-    // }
 
     /**
      * Display the specified resource.
@@ -267,7 +235,7 @@ class StoryController extends ApiController
         $story = Story::findOrFail($id);
         $resource = new Fractal\Resource\Item($story, new FractalStoryTransformerModel);
             // Turn all of that into a JSON string
-            return $fractal->createData($resource)->toArray();
+        return $fractal->createData($resource)->toArray();
     }
 
     /**
@@ -302,8 +270,8 @@ class StoryController extends ApiController
      */
      public function update(Request $request, $id)
      {
-    $story = $this->story->findOrFail($id);
-     $validation = \Validator::make( Input::all(), [
+        $story = $this->story->findOrFail($id);
+        $validation = \Validator::make( Input::all(), [
                      'title'           => 'required',
                      'start_date'      => 'required',
                      'user_id'   => 'required',
@@ -315,7 +283,7 @@ class StoryController extends ApiController
                                   ->respondWithError($validation->errors()->getMessages());
       }
       if($validation->passes())
-     {
+      {
         //  $story = new Story;
         $story->user_id       	= $request->get('user_id');
         $story->title           	= $request->get('title');
@@ -323,7 +291,7 @@ class StoryController extends ApiController
         $story->subtitle           = $request->get('subtitle');
         $story->teaser           	= $request->get('teaser');
         $story->story_type         = $request->get('story_type');
-        $story->author_id        = $request->get('author_id',0);
+        $story->author_id        = $request->get('author_id', $request->user()->id);
         $story->author_info        = $request->get('author_info', null);
         $story->content     	    = $request->get('content');
         $story->is_approved     	= $request->get('is_approved', 0);
@@ -334,19 +302,15 @@ class StoryController extends ApiController
         $story->is_archived         = $request->get('is_archived', 0);
         $story->start_date      	= $request->get('start_date');
         $story->end_date      	= \Carbon\Carbon::parse($request->get('end_date', null));
-
-        // $arrayDot = array_dot($request->input('tags'));
-        // $arrayPluck = array_pluck($request->input('tags'),'id');
-        // dd($arrayDot,$arrayPluck);
-        // $taglistRequest = $request->input('tags') == null ? [] : $request->input('tags');
-        $taglistRequest = $request->input('tags') == null ? [] : array_pluck($request->input('tags'),'value');
-
-        if($story->save()) {
+        
+        $tags = array_pluck($request->input('tags'),'value');
+        $story->tags()->sync($tags);
+        
+        if($story->update()) {
              $record_id = $story->id;
-             $story->tags()->sync($taglistRequest);
-             $story->save();
+             
              return $this->setStatusCode(201)
-             ->respondSavedWithData('Story successfully updated!',[ 'record_id' => $story->id, 'stype'=> $story->story_type] );
+             ->respondSavedWithData('Story updated.',[ 'record_id' => $record_id, 'stype'=> $story->story_type] );
 
              }
          }

@@ -21,6 +21,7 @@
 
     <div id="vue-story-queue">
         <story-queue sroute="{{$sroute}}" gtype="{{$gtype}}" stype="{{$stype}}" qtype="{{$qtype}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
+            <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
         </story-queue>
     </div><!-- /.vue-story-app -->
 

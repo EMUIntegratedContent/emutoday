@@ -11,14 +11,24 @@ use Emutoday\Mediafile;
 use Intervention\Image\ImageManagerStatic as Image;
 // use Illuminate\Routing\Route;
 
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
+
 class MediafileController extends Controller
 {
       protected $mediafile;
+      protected $bugService;
 
-            public function __construct(Mediafile $mediafile, User $user)
+            public function __construct(Mediafile $mediafile, User $user, IBug $bugService)
             {
                     $this->mediafile = $mediafile;
                     $this->user = $user;
+                    
+                    $this->bugService = $bugService;
+                    View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+                    View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+                    View::share('bugStories', $this->bugService->getUnapprovedStories());
+                    
                     parent::__construct();
             }
             public function index()

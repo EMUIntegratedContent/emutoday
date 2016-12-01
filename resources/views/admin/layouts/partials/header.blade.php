@@ -17,7 +17,7 @@
 
             <!-- /.messages-menu -->
             @can('super', $currentUser)
-                @include('admin.layouts.partials.notifications.bugz')
+                {{--@include('admin.layouts.partials.notifications.bugz')--}}
 
                 @include('admin.layouts.partials.notifications.events')
                 @include('admin.layouts.partials.notifications.announcements')
@@ -26,9 +26,9 @@
         @include('admin.layouts.partials.usermenu')
 
 <!-- Control Sidebar Toggle Button -->
-<li>
+<!--<li>
     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-</li>
+</li>-->
 </ul>
 </div>
 </nav>

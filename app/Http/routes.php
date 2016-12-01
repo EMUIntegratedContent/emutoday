@@ -3,6 +3,7 @@
 use Emutoday\Building;
 use Emutoday\Event;
 use Emutoday\Category;
+use Emutoday\Story;
 use Emutoday\Tag;
 use Emutoday\Author;
 use Emutoday\MiniCalendar;
@@ -49,7 +50,6 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('categorylist', function() {
         $text = Input::get('q');
         return Category::likeSearch('category', $text)->select('category', 'id as value')->get();
-        //return Building::ofMapType('illustrated')->get();
     });
     /**
      * List of MiniCalendars for EventForm
@@ -62,6 +62,12 @@ Route::group(['prefix' => 'api'], function() {
         return Author::select('first_name as name', 'id as value')->get();
     });
 
+    Route::get('taglist/{id}', function($id) {
+        $tags = Story::find($id)->tags()->select('name', 'id as value')->get();
+        
+        return $tags;
+    });
+    
     Route::get('taglist', function() {
         return Tag::select('name', 'id as value')->get();
     });

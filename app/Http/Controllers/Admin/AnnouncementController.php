@@ -7,15 +7,24 @@ use Emutoday\Announcement;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
+use Emutoday\Helpers\Interfaces\IBug;
+
+use Illuminate\Support\Facades\View;
 
 class AnnouncementController extends Controller
 {
 
     protected $announcement;
+    protected $bugService;
 
-    public function __construct(Announcement $announcement)
+    public function __construct(Announcement $announcement, IBug $bugService)
     {
         $this->announcement = $announcement;
+        $this->bugService = $bugService;
+        
+        View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+        View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+        View::share('bugStories', $this->bugService->getUnapprovedStories());
     }
 
     /**
@@ -49,6 +58,7 @@ class AnnouncementController extends Controller
             $atype = $atype;
         }
         $announcement = $this->announcement;
+
         return view('admin.announcement.queue', compact('announcements', 'atype'));
     }
 
@@ -64,6 +74,7 @@ class AnnouncementController extends Controller
         } 
         
         $announcement = $this->announcement;
+        
         return view('admin.announcement.form', compact('announcement', 'atype'));
     }
 

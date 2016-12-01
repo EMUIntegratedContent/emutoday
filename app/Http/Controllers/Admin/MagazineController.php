@@ -19,19 +19,27 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use JavaScript;
 use Emutoday\Http\Requests;
 
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
 
 class MagazineController extends Controller
 {
 
   protected $magazines;
   protected $articleCount = 6;
+  protected $bugService;
 
-  public function __construct(Magazine $magazine, Story $story,StoryImage $storyImage, Mediafile $mediafile)
+  public function __construct(Magazine $magazine, Story $story,StoryImage $storyImage, Mediafile $mediafile, IBug $bugService)
   {
       $this->magazine = $magazine;
       $this->story = $story;
       $this->storyImage = $storyImage;
       $this->mediafile = $mediafile;
+      
+      $this->bugService = $bugService;
+        View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+        View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+        View::share('bugStories', $this->bugService->getUnapprovedStories());
   }
 
     /**

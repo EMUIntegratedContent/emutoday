@@ -19,14 +19,22 @@ use Emutoday\Http\Requests;
 use DB;
 use JavaScript;
 
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
+
 class StoryTypeController extends Controller
 {
     private $story;
 
-    public function __construct(Story $story, StoryType $storyType)
+    public function __construct(Story $story, StoryType $storyType, IBug $bugService)
     {
         $this->story = $story;
         $this->storyType = $storyType;
+        
+        $this->bugService = $bugService;
+        View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+        View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+        View::share('bugStories', $this->bugService->getUnapprovedStories());
 
     }
     public function queueAll(Story $story) {

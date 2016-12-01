@@ -8,11 +8,23 @@ use Emutoday\Mediafile;
 use Illuminate\Http\Request;
 use Emutoday\Http\Requests;
 
+use Emutoday\Announcement;
+
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
+
 class UserController extends Controller
 {
     protected $user;
-    public function __construct(User $user, Role $role, Permission $permission)
+    protected $bugService; 
+    
+    public function __construct(User $user, Role $role, Permission $permission, IBug $bugService)
     {
+        $this->bugService = $bugService;
+        View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+        View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+        View::share('bugStories', $this->bugService->getUnapprovedStories());
+        
         $this->user = $user;
         $this->permission = $permission;
         $this->role = $role;
@@ -25,8 +37,7 @@ class UserController extends Controller
         $permissions = $this->permission->get();
         $roles = $this->role->get();
 
-
-        return view('admin.user.index', compact('users','permissions','roles'));
+        return view('admin.user.index', compact('users','permissions','roles','bugAnnouncements'));
     }
 
     public function form(User $user, Mediafile $mediafile)

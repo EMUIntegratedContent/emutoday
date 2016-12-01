@@ -138,16 +138,6 @@
 
     </div><!-- /.form-group -->
   </div><!-- /.md12col -->
-  <!-- <div :class="md12col">
-  <div class="form-group">
-  <label>Categories: <span :class="iconStar" class="reqstar"></span></label>
-  <select  :class="[formErrors.categories ? 'invalid-input' : '']" id="select-zcats" style="width: 100%" v-myselect="zcategories" v-bind:resultvalue="zcats" ajaxurl="/api/zcats" data-close-on-select="false" data-placeholder="zcats" data-tags="false"  multiple="multiple">
-  <option value="0">
-  default
-</option>
-</select>
-</div>
-</div> -->
 </div><!-- /.row -->
 <div class="row">
   <div :class="md6col">
@@ -981,8 +971,6 @@ module.exports  = {
         //error callback
         console.log("ERRORS");
 
-        // this.formErrors =  response.data.error.message;
-
       }).bind(this);
     },
     checkOverData: function() {
@@ -998,20 +986,7 @@ module.exports  = {
         }
       }
 
-      // if (this.record.eventcategories){
-      //     for (var i= 0; i < this.record.eventcategories.length ; i++){
-      //         var reduceobj = this.record.eventcategories[i].id;
-      //         this.zcats.push(reduceobj)
-      //
-      //     }
-      //
-      //     console.log('this.zcats'+ this.zcats.length)
-      //
-      //
-      // }
       this.setupDatePickers();
-      // this.newbuilding = this.record.building;
-      // this.zbuilding.push(this.record.building);
 
     },
     fetchForSelectCategoriesList(search,loading){

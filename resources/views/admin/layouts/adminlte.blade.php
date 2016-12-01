@@ -33,7 +33,7 @@
     <div class="wrapper">
     <!-- Main Header -->
     <header class="main-header">
-        @include('admin.layouts.partials.header', ['currentUser' => $currentUser])
+        @include('admin.layouts.partials.header', ['currentUser' => $currentUser, 'bugAnnouncements' => $bugAnnouncements])
 
     </header>
     <!-- Left side column. contains the logo and sidebar -->

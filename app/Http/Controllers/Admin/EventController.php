@@ -8,14 +8,23 @@ use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
 
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
+
 class EventController extends Controller
 {
 
     protected $event;
+    protected $bugService; 
 
-    public function __construct(Event $event)
+    public function __construct(Event $event, IBug $bugService)
     {
         $this->event = $event;
+        
+        $this->bugService = $bugService;
+        View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+        View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+        View::share('bugStories', $this->bugService->getUnapprovedStories());
     }
 
     /**

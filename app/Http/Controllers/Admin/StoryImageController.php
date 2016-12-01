@@ -14,15 +14,28 @@ use Illuminate\Support\Facades\File;
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManagerStatic as Image;
 
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
+
 class StoryImageController extends Controller
 {
 
   protected $storyImages;
-  public function __construct(StoryImage $storyImages, Story $story)
+  protected $bugService;
+  
+  public function __construct(StoryImage $storyImages, Story $story, IBug $bugService)
   {
     $this->storyImages = $storyImages;
     $this->story= $story;
+    
+    $this->bugService = $bugService;
+    View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+    View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+    View::share('bugStories', $this->bugService->getUnapprovedStories());
+        
     parent::__construct();
+    
+        
   }
 
   public function index()

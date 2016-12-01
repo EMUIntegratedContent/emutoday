@@ -64,7 +64,7 @@
             :value.sync="selectedAuthor"
             :options="optionsAuthorlist"
             :multiple="false"
-            placeholder="Author"
+            placeholder="Author (leaving this blank will set you as the author)"
             label="name"> </v-select>
         </div>
         <div v-if="needAuthor" class="form-inline author">
@@ -105,11 +105,11 @@
       </div><!-- /.small-6 columns -->
       <div class="col-md-6">
         <div v-if="isAdmin" class="form-group">
-          <label>Tags:</label>
+          <label for="tags">Tags:</label>
           <v-select
           :class="[formErrors.tags ? 'invalid-input' : '']"
           :value.sync="tags"
-          :options="optionsTaglist"
+          :options="taglist"
           :multiple="true"
           placeholder="Select tags"
           label="name">
@@ -326,8 +326,8 @@ module.exports  = {
       },
       authorNew: {
         id: 0,
-        last_name: 'LastName',
-        first_name: 'FirstName',
+        last_name: '',
+        first_name: '',
         email: '',
         phone: ''
       },
@@ -352,7 +352,8 @@ module.exports  = {
         title: '',
         story_type: '',
         content: '',
-        start_date: ''
+        start_date: '',
+        tags: []
       },
       fdate: null,
       dateOptions: {
@@ -408,6 +409,7 @@ module.exports  = {
       this.recordState = 'new';
     }
     this.fetchTagsList();
+    this.fetchCurrentTags();
     this.getUserRoles();
   },
   computed: {
@@ -416,9 +418,6 @@ module.exports  = {
     },
     optionsAuthorlist:function(){
       return this.authorlist;
-    },
-    optionsTaglist:function(){
-      return this.taglist;
     },
     isAdmin:function(){
       if(this.userRoles.indexOf('admin')!= -1) {
@@ -506,13 +505,7 @@ module.exports  = {
       console.log('userRoles===='+ this.userRoles)
 
     },
-    // formatTagsForRecord(val){
-    //   console.log(JSON.stringify(val))
-    //   this.record.tags = val.map(function(item,index){
-    //     return item.id;
-    //   })
-    //   console.log('this.record.tags= '+ this.record.tags)
-    // },
+
     nowOnReload:function() {
 
       //   {qtype}/{gtype}/{stype}/{story}/edit'
@@ -555,8 +548,8 @@ module.exports  = {
         this.author.id = 0;
         this.record.author_id = 0;
       }
-      // this.needAuthor = true;
-      this.hasAuthor = false;
+      this.needAuthor = false;
+      this.hasAuthor = true;
       this.saveAuthorMessage.isOk = '';
     },
     toggleCallout:function(evt){
@@ -593,15 +586,6 @@ module.exports  = {
     jsonEquals: function(a,b) {
       return JSON.stringify(a) === JSON.stringify(b);
     },
-    //   fetchForSelectTagsList(){
-    //       loading(true)
-    //       this.$http.get('/api/taglist',{
-    //           q: search
-    //       }).then(resp => {
-    //           this.tags = resp.data;
-    //           loading(false)
-    //       })
-    //   },
 
     fetchAuthorList: function() {
       console.log('author list fetch');
@@ -614,51 +598,35 @@ module.exports  = {
       }).bind(this);
     },
 
+    // Fetch the tags that match THIS record
     fetchTagsList: function() {
-
-      this.$http.get('/api/taglist')
-      .then((response) =>{
-        //   let taglistraw = response.data;
-        //   let taglistformat = this.foreachTagListRaw(response.data);
-
-
-        this.$set('taglist', response.data)
-      }, (response) => {
-        //error callback
-        console.log("ERRORS");
-        this.formErrors =  response.data.error.message;
-
-      }).bind(this);
+        this.$http.get('/api/taglist/')
+          .then((response) =>{
+            console.log(response.data);
+            this.$set('taglist', response.data);
+        });
     },
-    //   foreachTagListRaw: function(myarray) {
-    //       let newarray = [];
-    //       myarray.forEach(function(item,index){
-    //           let tobject = {};
-    //           tobject.name = item.name;
-    //           tobject.value = item.id;
-    //
-    //           newarray.push(tobject);
-    //       });
-    //
-    //       return newarray;
-    //
-    //   },
+    
+    fetchCurrentTags(){
+        this.$http.get('/api/taglist/'+ this.currentRecordId)
+            .then((response) => {
+                console.log(response.data);
+                this.$set('tags', response.data);
+            }, (response) => {
+
+            });
+    },
+
     fetchCurrentRecord: function() {
 
       this.$http.get('/api/story/'+ this.currentRecordId +'/edit')
 
 
       .then((response) =>{
-        //response.status;
-        // console.log('response.status=' + response.status);
-        // console.log('response.ok=' + response.ok);
-        // console.log('response.statusText=' + response.statusText);
-        // console.log('response.data=' + response.data);
-        // data = response.data;
+        console.log("DATAAAAA!")
+        console.log(response.data)
         this.$set('record', response.data.data)
         this.$set('recordOld', response.data.data)
-        // this.record = response.data.data;
-        // console.log('this.record= ' + this.record);
 
         this.checkOverData();
       }, (response) => {
@@ -668,19 +636,14 @@ module.exports  = {
         this.formErrors =  response.data.error.message;
 
       }).bind(this);
+
     },
     checkOverData: function() {
       this.hasContent = true;
-      // console.log('this.record'+ this.record.id)
+
       this.currentRecordId = this.record.id;
       this.content = this.record.content;
-      // console.log('this.record.start_date='+ this.record.start_date)
-      // if (this.record.tags){
-      //
-      //   this.tags = this.record.tags;
-      //   this.record.tags = null;
-      // }
-      //
+
       this.fdate = this.record.start_date;
       console.log('this.fdate'+ this.fdate)
       if (this.record.author_id != 0) {
@@ -692,7 +655,6 @@ module.exports  = {
       this.recordexists = true;
 
       this.recordState = "edit"
-      // this.updateRecordState("edit");
       this.recordIsDirty = false;
       this.updateRecordId(this.currentRecordId);
       this.updateRecordIsDirty(false);
@@ -705,17 +667,11 @@ module.exports  = {
       let method = (this.author.id == 0) ? 'post' : 'put'
       let route =  (this.author.id == 0) ? '/api/author':'/api/author/' + this.author.id ;
 
-      //   this.$http.post('/api/story', this.record)
       this.$http[method](route, this.author)
 
       .then((response) =>{
         this.authorErrors = '';
         this.fetchAuthorList();
-        //response.status;
-        // console.log('response.status=' + response.status);
-        // console.log('response.ok=' + response.ok);
-        // console.log('response.statusText=' + response.statusText);
-        // console.log('response.data=' + response.data.message);
         console.log('response.author=' + JSON.stringify(response.data.newdata));
 
         this.author.id = response.data.newdata.author.id;
@@ -729,7 +685,6 @@ module.exports  = {
         this.saveAuthorMessage.msg = response.data.message;
         this.saveAuthorMessage.isOk = response.ok;
         this.needAuthor = false;
-        // this.onRefresh();
 
       }, (response) => {
         //error callback
@@ -737,24 +692,32 @@ module.exports  = {
       }).bind(this);
     },
     fetchAuthor: function(){
-      // e == 'up' ? console.log('up'+e,this.author.id+1) : console.log('down'+e,this.author.id-1);
-      // fetchid = this.author.id;
-      // e == 'up' ? fetchid++ : fetchid--;
+      if(this.selectedAuthor){
+        this.$http.get('/api/author/'+this.selectedAuthor.value)
 
-      this.$http.get('/api/author/'+this.selectedAuthor.value)
+        .then(
+          (response) => {
+              this.author.id = response.body.id;
+              this.record.author_id = response.body.id;
+              this.author.first_name = response.body.first_name;
+              this.author.last_name = response.body.last_name;
+              this.author.phone = response.body.phone;
+              this.author.email = response.body.email;
+          }, 
+          (response) => {
+              //err
+          }
+        )
 
-      .then((response) =>{
-        // console.log('response=' + json.stringify(response));
-
-        this.author.id = response.body.id;
-        this.record.author_id = response.body.id;
-        this.author.first_name = response.body.first_name;
-        this.author.last_name = response.body.last_name;
-        this.author.phone = response.body.phone;
-        this.author.email = response.body.email;
-      }, (response) => {
-        // err
-      }).bind(this);
+        .bind(this);
+      } else {
+            this.author.id = '';
+            this.record.author_id = '';
+            this.author.first_name = '';
+            this.author.last_name = '';
+            this.author.phone = '';
+            this.author.email = '';
+      }
     },
     ahhh: function(){
       console.log('author',this.authors, this.authorlist)
@@ -762,31 +725,26 @@ module.exports  = {
     },
 
     submitForm: function(e) {
-      //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
       this.formMessage.isOk = '';
-      // this.newevent.start_date = this.sdate;
-      // this.newevent.end_date = this.edate;
-      // this.newevent.reg_deadline = this.rdate;
       this.record.user_id = this.cuser.id;
-      // this.record.user_id = this.currentUser.id;
       if(this.record.story_type === 'external'){
         this.record.content = 'not used';
       } else {
         this.record.content = this.content;
       }
-      // if (this.tags.length > 0) {
-      //   this.record.tags = this.tags;
-      // }
+      if (this.tags.length > 0) {
+         this.record.tags = this.tags;
+      } else {
+         this.record.tags = [];
+      }
 
-      //   this.record.story_type = this.storytype;
       this.record.slug = this.recordSlug;
       if (moment(this.fdate).isValid()){
         this.record.start_date = this.fdate;
       }
-      //this.record.start_date = this.fdate;
-      //   this.record.start_date =  moment(this.fdate,"MM-DD-YYYY").format("YYYY-MM-DD HH:mm:ss");
-      if (this.author.id !== 0) {
+      
+if (this.author.id !== 0) {
         this.record.author_id = this.author.id;
       }
 
@@ -801,21 +759,15 @@ module.exports  = {
       let method = (this.recordexists) ? 'put' : 'post'
       let route =  (this.recordexists) ? '/api/story/' + tempid : '/api/story';
 
-      //   this.$http.post('/api/story', this.record)
       this.$http[method](route, this.record)
 
       .then((response) =>{
-        //response.status;
-        // console.log('response.status=' + response.status);
-        // console.log('response.ok=' + response.ok);
-        // console.log('response.statusText=' + response.statusText);
-        // console.log('response.data=' + response.data.message);
 
         this.formMessage.msg = response.data.message;
         this.currentRecordId = response.data.newdata.record_id;
         this.formMessage.isOk = response.ok;
         this.formErrors = '';
-        //  console.log('goooooo'+response.newdata.record_id);
+
         console.log('newdta'+response.data.newdata.record_id);
         this.response_record_id = response.data.newdata.record_id;
         this.response_stype = response.data.newdata.stype;
@@ -861,27 +813,9 @@ module.exports  = {
       this.fetchAuthor();
       this.hasAuthor = false;
     },
-    //   'recordState': function(val,oldVal) {
-    //       console.log('new: %s, old: %s', val, oldVal)
-    //       this.updateRecordState(val)
-
-    //
-    //   },
-    //   deep: true
-
   },
   events: {
 
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
   }
 };
 

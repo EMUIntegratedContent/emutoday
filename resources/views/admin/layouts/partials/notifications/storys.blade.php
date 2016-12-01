@@ -3,23 +3,20 @@
     <!-- Menu Toggle Button -->
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-files-o"></i>
-        <span class="label label-success">2</span>
+        <span class="label label-success">{{ count($bugStories) }}</span>
     </a>
     <ul class="dropdown-menu">
-        <li class="header">You have 2 Stories to approve</li>
+        <li class="header">There are {{ count($bugStories) }} unapproved stories.</li>
         <li>
             <!-- Inner menu: contains the tasks -->
             <ul class="menu">
-                <li><!-- start notification -->
-                    <a href="#">
-                        <i class="fa fa-file-text text-green"></i> Story 1
+                @foreach ($bugStories as $story)
+                <li><!-- start message -->
+                    <a href="/admin/story/{{ $story->id }}/edit">
+                        <i class="fa fa-file-text text-green"></i> {{ $story->title }}
                     </a>
                 </li>
-                <li><!-- start notification -->
-                    <a href="#">
-                        <i class="fa fa-file-text text-green"></i> Story 2
-                    </a>
-                </li>
+                @endforeach
             </ul>
         </li>
         <li class="footer">

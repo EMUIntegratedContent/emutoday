@@ -11,16 +11,25 @@ use Illuminate\Http\Request;
 use JavaScript;
 use Carbon\Carbon;
 
+use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Support\Facades\View;
+
 class PageController extends Controller
 {
 
     protected $page;
+    protected $bugService;
 
-    public function __construct(Page $page, Story $story, StoryImage $storyImage)
+    public function __construct(Page $page, Story $story, StoryImage $storyImage, IBug $bugService)
     {
         $this->page = $page;
         $this->story = $story;
         $this->storyImage = $storyImage;
+        
+        $this->bugService = $bugService;
+        View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
+        View::share('bugEvents', $this->bugService->getUnapprovedEvents());
+        View::share('bugStories', $this->bugService->getUnapprovedStories());
     }
 
     public function index()

@@ -172,6 +172,7 @@ return [
         Emutoday\Providers\EventServiceProvider::class,
         Emutoday\Providers\RouteServiceProvider::class,
         Emutoday\Providers\SearchServiceProvider::class,
+        Emutoday\Providers\BugServiceProvider::class,
         //Emutoday\Providers\ObserverServiceProvider::class,
         //Emutoday\Providers\RepositoriesServiceProvider::class,
 
