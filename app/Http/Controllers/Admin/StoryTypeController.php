@@ -97,37 +97,17 @@ class StoryTypeController extends Controller
             $stypes  = 'article';
             $stype= 'article';
             $qtype  = 'queuearticle';
-            // \JavaScript::put([
-            //     'records' => $storys
-            // ]);
+            
             return view('admin.magazine.article.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
-
-            // return view('admin.magazine.article.queue', compact('storys','sroute', 'stypes', 'qtype'));
         }
-    // public function list($stype)
-    // {
-    //     //$storys = $this->story->where('story_type', $stype)->get();
-    //     $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
-    //     $stypes = $stype;
-    //     \JavaScript::put([
-    //         'stype' => $stype,
-    //         'storyTypeList' => $stypelist
-    //     ]);
-    //     return view('admin.story.index', compact('stype', 'stypes'));
-    //     // return view('admin.story.index', compact('stype'));
-    //
-    // }
-    public function storyTypeForm($qtype,$gtype,$stype){
-        // dd('$qtype= '. $qtype . ' $gtype= '.$gtype .' $stype= ' . $stype);
 
+    public function storyTypeForm($qtype,$gtype,$stype){
         $sroute = 'x';
         $story = new Story;
 
             $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
             $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
 
-
-        // dd($stypelist,$stypelist1);
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
                 // dd($user->id);
@@ -158,7 +138,6 @@ class StoryTypeController extends Controller
                 'storytype' => $stype,
                 'stypelist' => $stypelist
             ]);
-            //dd($stypelist,$stypelist1,$stypelist2,$stypelist3);
 
             return view('admin.story.form', compact('story','qtype', 'sroute','gtype','stype' ,'stypes', 'stypelist' ));
 
@@ -174,11 +153,9 @@ class StoryTypeController extends Controller
         $sroute = 'story';
         $story = new Story;
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
-        //$stypelist = \Emutoday\StoryType::all();
-        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
-        //$stypelist2 = collect(\Emutoday\StoryType::select('name','shortname')->get())->toJson();
 
-        // dd($stypelist,$stypelist1);
+        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
                 // dd($user->id);
@@ -193,7 +170,6 @@ class StoryTypeController extends Controller
                     $stypes = $stype;
                     $stypelist =  $stypelist;
                 }
-
             }
             JavaScript::put([
                 'cuser' => $user,
@@ -201,7 +177,6 @@ class StoryTypeController extends Controller
                 'storytype' => $stype,
                 'stypelist' => $stypelist
             ]);
-            //dd($stypelist,$stypelist1,$stypelist2,$stypelist3);
 
             return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ));
 
@@ -235,18 +210,10 @@ class StoryTypeController extends Controller
 
     }
 
-    // storyTypeEditRoute::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryController@storyTypeEdit']);
-    // public function storyTypeEdit2($gtype, $stype, Story $story)
-    // {
-    //     dd('gtype= ' .$gtype . ' stype= ' . $stype. ' $story= ' . $story);
-    //
-    // }
     public function storyTypeEdit($qtype, $gtype,$stype, Story $story)
     {
         $urlprev = \URL::previous();
 
-
-        // dd($urlprev);
         if(str_contains($urlprev, 'magazine')) {
             $sroute = 'magazine';
         } else {

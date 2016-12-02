@@ -130,32 +130,6 @@
                     @endif
                 @endif
             @endcan
-
-
-                            {{-- @if ($story->storyImages()->count() > 0)
-                                    @foreach($story->storyImages as $storyImage)
-                                        @if($storyImage->image_type == 'small')
-                                            @include('admin.storyimages.subviews.smallimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
-                                        @elseif($storyImage->image_type == 'story')
-                                            @include('admin.storyimages.subviews.storyimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
-                                        @elseif($storyImage->image_type == 'front')
-                                            @include('admin.storyimages.subviews.frontimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
-                                        @else
-                                            @include('admin.storyimages.subviews.otherimage',['storyImage' => $storyImage, 'story_id' => $story->id ])
-                                        @endif
-                                    @endforeach
-                            @endif --}}
-                            {{-- @if ($leftOverImages->count() > 0)
-                                    @foreach($leftOverImages as $leftOverImage)
-                                            @include('admin.story.subviews.addstoryimage',['otherImage' => $leftOverImage, 'story_id' => $story->id ])
-                                    @endforeach
-
-                                @endif --}}
-                        {{-- @endif --}}
-
-
-
-
         </div><!-- /.col-md-4 -->
 
 </div><!-- /.row -->
@@ -210,50 +184,12 @@ $(function () {
             $('#is-featured-yes').iCheck('disable');
         }
 
-
     //iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
       checkboxClass: 'icheckbox_minimal-blue',
       radioClass: 'iradio_minimal-blue'
     });
 
-
-        // //Start Date picker
-        // $('#start-date').datetimepicker({
-        //     format: 'YYYY-MM-DD HH:mm:ss'
-        // });
-
-        //End Date picker
-        // $('#end-date').datetimepicker({
-        //     format: 'YYYY-MM-DD HH:mm:ss',
-        //     useCurrent: false //Important! See Issue #1075
-        // });
-        // $("#start-date").on("dp.change", function (e) {
-        //             $('#end-date').data("DateTimePicker").minDate(e.date);
-        //     });
-        //     $("#end-date").on("dp.change", function (e) {
-        //             $('#start-date').data("DateTimePicker").maxDate(e.date);
-        //     });
-
-        // document.getElementById("externalButton").onclick = function () {
-        //
-        // var vuedata = document.getElementById("vue-box-tools");
-        // // vm.$refs.boxtools.setDirtyValue = 99;
-        // console.log('vuedata===='+ vuedata.$data);
-    // }
-        // $('#vue-box-tools').$refs.boxtools.setDirtyValue = 99;
   });
-// $('input[name=title]').on('blur', function () {
-//         var slugElement = $('input[name=slug]');
-//
-//         if (slugElement.val()) {
-//                 return;
-//         }
-//
-//         slugElement.val(this.value.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, ''));
-// });
-
-
-
 </script>
 @endsection

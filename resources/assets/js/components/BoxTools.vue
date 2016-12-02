@@ -60,7 +60,14 @@ export default  {
 
 
     ready() {
-        console.log('BoxTools')
+        console.log("G:");
+        console.log(this.gtype);
+        console.log("Q:");
+        console.log(this.qtype);
+        console.log("S:");
+        console.log(this.stype);
+        console.log("ROUTE:");
+        console.log(this.sroute);
     },
     data: function() {
         return {
@@ -111,38 +118,18 @@ export default  {
         },
         listLink:function() {
              return '/admin/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
-
-            // if(this.sroute === 'magazine'){
-            //     return '/admin/'+ this.sroute + '/'+ this.stype + '/queue';
-            // } else {
-            //     return '/admin/'+ this.sroute + '/'+ this.qtype +'/queue';
-            //
-            // }
         },
         createNewLink:function() {
-            return '/admin/'+ this.gtype +'/' + this.stype +  '/setup'
+            if(this.gtype == 'story'){
+                return '/admin/'+ this.qtype +'/' + this.gtype +  '/' + this.stype + '/form';
+            } else {
+                return '/admin/'+ this.gtype +'/' + this.stype +  '/setup'
+            }
         },
     },
 
     methods : {
-        // checkIndexWithValue: function (chitem){
-        // 	return
-        // },
-        // viewPreview: function(evt) {
-        //     var vurl = '/preview/' + this.rte +  '/' + this.thisRecordId;
-        //     console.log(vurl);
-        //     document.location = vurl;
-        //
-        // },
-        // viewList: function(evt) {
-        //     var url = '/admin/story/' + this.rte +  '/'
-        //     console.log(url);
-        //     document.location = url;
-        // },
-        // createNew: function(evt) {
-        //     var url = '/admin/story/' + this.rte +  '/setup'
-        //     console.log('this.rte='+ this.rte)
-        // },
+
 
     },
 

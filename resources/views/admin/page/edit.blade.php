@@ -55,7 +55,7 @@
                     @else
                         <a href="/preview/page/{{$page->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
                     @endif
-                    <a href="/admin/page/create" class="btn bg-orange"><i class="fa fa-plus-square"></i></a>
+                    <a href="/admin/page/form" class="btn bg-orange"><i class="fa fa-plus-square"></i></a>
                     <a href="/admin/page" class="btn bg-orange"><i class="fa fa-list-alt"></i></a>
                 </div><!-- /.btn-toolbar -->
 
@@ -209,28 +209,6 @@
             checkboxClass: 'icheckbox_flat-green',
             radioClass: 'iradio_flat-green'
         });
-
-        // var check_in = $("#start-date").flatpickr({
-        //             altInput: true,
-        //             altFormat: "m-d-Y",
-        //             minDate: new Date(),
-        //             onChange: function(dateObj, dateStr, instance) {
-        //                 check_out.set("minDate", dateObj.fp_incr(1));
-        //             }
-        //             });
-        // var check_out = $("end-date").flatpickr({
-        //            altInput: true,
-        //               altFormat: "m-d-Y",
-        //                  minDate: new Date(),
-        //                  onChange: function(dateObj, dateStr, instance) {
-        //                      check_in.set("maxDate", dateObj.fp_incr(-1));
-        //                  }
-        //              });
-        // check_in.config.onChange = dateObj => check_out.set("minDate", dateObj.fp_incr(1));
-        // check_out.config.onChange = dateObj => check_in.set("maxDate", dateObj.fp_incr(-1));
-        //
-        //
-
     });
 
 
@@ -238,7 +216,7 @@
                         altInput: true,
                         altInputClass: "form-control",
                         altFormat: "m-d-Y",
-                        minDate: new Date(),
+                        //minDate: new Date(),
                         onChange: function(dateObj, dateStr, instance) {
                             check_out.set("minDate", dateObj.fp_incr(1));
                         }
@@ -247,7 +225,7 @@
                         altInput: true,
                           altFormat: "m-d-Y",
                           altInputClass: "form-control",
-                             minDate: new Date(),
+                             //minDate: new Date(),
                              onChange: function(dateObj, dateStr, instance) {
                                  check_in.set("maxDate", dateObj.fp_incr(-1));
                              }

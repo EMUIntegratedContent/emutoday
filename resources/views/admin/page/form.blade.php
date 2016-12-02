@@ -91,7 +91,7 @@
       altInput: true,
       altInputClass: "form-control",
       altFormat: "m-d-Y",
-      minDate: new Date(),
+      //minDate: new Date(),
       onChange: function(dateObj, dateStr, instance) {
         check_out.set("minDate", dateObj.fp_incr(1));
       }
@@ -101,7 +101,7 @@
       altInput: true,
       altFormat: "m-d-Y",
       altInputClass: "form-control",
-      minDate: new Date(),
+      //minDate: new Date(),
       onChange: function(dateObj, dateStr, instance) {
         check_in.set("maxDate", dateObj.fp_incr(-1));
       }

@@ -132,15 +132,11 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
     Route::get('announcement/{id?}', 'Today\AnnouncementController@index'); // Does not exist??
 
-    // Route::get('news/{id?}', 'Today\StoryController@index');
-
     Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
     Route::get('calendar/user/events', 'Today\CalendarController@userEvents');
     Route::get('calendar/event/{id}', 'Today\CalendarController@show');
     Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
 
-
-    // Route::get('article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
@@ -154,8 +150,6 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::get('story/{stype}/{id?}', 'Today\StoryController@story');
 
-
-    //Route::get('{stype}/{id?}', 'Today\StoryController@story');
     Route::auth();
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview' ], function()
@@ -217,34 +211,17 @@ Route::group(['prefix' => 'api'], function() {
         Route::post('promotestory', ['as'=> 'admin_promotestory', 'uses'=> 'Admin\StoryController@promoteStory']);
         Route::put('story/{id}/updatefrompreview', ['as'=> 'admin_preview_story_update', 'uses'=> 'Admin\StoryController@updateFromPreview']);
 
-        // Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryController@queueArticle']);
-
-
-
-
-        // Route::get('news/story/{story}/edit', ['as' => 'admin_news_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
-
-        //Route::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
-
-
-
-
         Route::post('{qtype}/{gtype}/{stype}/{story}/addnewstoryimage',['as' => 'admin_storyimage_add_new_storyimage', 'uses' => 'Admin\StoryImageController@addNewStoryImage']);
         Route::get('storyimage/{storyimage}/confirm', ['as' => 'admin_storyimage_confirm', 'uses' => 'Admin\StoryImageController@confirm']);
-
 
         Route::resource('mediafile', 'Admin\MediafileController');
         Route::resource('role', 'Admin\RoleController');
         Route::resource('permission', 'Admin\PermissionController');
-        //Route::resource('mediatype', 'Admin\MediatypeController');
-        //Route::resource('imagetype', 'Admin\ImagetypeController');
 
         Route::get('story/queueall', ['as' => 'admin_story_queue', 'uses' => 'Admin\StoryTypeController@queueAll']);
-         Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryTypeController@queueArticle']);
+        Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryTypeController@queueArticle']);
 
         Route::get('story/{stype}/queueall', ['as' => 'admin_storytype_queueall', 'uses' => 'Admin\StoryTypeController@queueAll']);
-        //Route::get('story/{stype}/queuenews', ['as' => 'admin_storytype_queuenews', 'uses' => 'Admin\StoryTypeController@queueNews']);
-        //Route::get('story/{stype}/queue', ['as' => 'admin_storytype_queue', 'uses' => 'Admin\StoryTypeController@queueType']);
 
         Route::get('magazine/article/setup', ['as' => 'admin_magazine_article_setup', 'uses' => 'Admin\StoryTypeController@articleSetup']);
 
@@ -258,18 +235,10 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
 
-
-
-
-
-
-
     });
 
     Route::group(['prefix' => 'preview' ], function()
     {
-        //
-        // "/preview/queueall/story/story/41"
         Route::get('page/{page}/', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
         Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
 
@@ -277,14 +246,4 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
 
         Route::get('{qtype}/{gtype}/{stype}/{story}', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
-        // Route::get('story/{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
-        // Route::get('{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
-
-
     });
-
-
-// });
-// Route::get('/', function () {
-//     return view('welcome');
-// });

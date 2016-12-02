@@ -146,10 +146,6 @@ class MainController extends Controller
           ->take($this->recordLimitHR)->get();
         }
 
-
-
-
-        // $currentAnnouncements = $this->announcement->where('is_approved', 1)->orderBy('priority','desc')->paginate(3);
         $barImgs = collect();
         $storys = $page->storys()->get();
         // dd($storys);
@@ -158,17 +154,11 @@ class MainController extends Controller
             $heroImg = $story->storyImages()->where('image_type', 'front')->first();
           } else {
             $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
-            // $barImgs->push( $story->storyImages()->where('image_type', 'imagesmall')->first() );
           }
 
         }
-        //$events = $this->event->where(['start_date', '>=', $currentDateTime])->orderBy('start_date','desc')->get();
-        //   $fakeDate = Carbon::now()->subYear();
-
 
         $storyImages = $page->storyImages;
-
-        // $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 
         $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
           $query->where('name', 'video');
@@ -187,8 +177,7 @@ class MainController extends Controller
         }
 
         $tweets = $this->tweets->get_feed();
-        // $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
-
+        
         JavaScript::put([
           'jsis' => 'hi',
           'cdnow' => Carbon::now(),
@@ -197,7 +186,6 @@ class MainController extends Controller
           'currentPage' => $page
         ]);
         return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
-        // return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements'));
 
       }
 

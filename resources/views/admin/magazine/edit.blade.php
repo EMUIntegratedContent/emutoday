@@ -267,44 +267,10 @@
             radioClass: 'iradio_flat-green'
           });
 
-          //Start Date picker
-          // $('#start-date').datetimepicker({
-          //     format: 'YYYY-MM-DD HH:mm:ss'
-          // });
-          // CKEDITOR.replace(this.el.id, {
-          //      customConfig: editorConfig
-          //    //  customConfig: '/themes/ckeditor_config_admin.js'
-          // });
-
-
           CKEDITOR.replaceAll('.ckeditor',{
             customConfig: '/themes/ckeditor_config_simple.js',
             removePlugins:'Image'
           });
-          // CKEDITOR.config.removeButtons= 'Image,Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source';
-
-          // 	CKEDITOR.replace( 'story-content', {
-          // 		// Define changes to default configuration here. For example:
-          // filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
-          //   filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
-          //   filebrowserUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-          //   filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
-          //
-          // 				} );
-
-          //End Date picker
-          // $('#end-date').datetimepicker({
-          // 	format: 'YYYY-MM-DD HH:mm:ss',
-          // 	useCurrent: false //Important! See Issue #1075
-          // });
-          // $("#start-date").on("dp.change", function (e) {
-          // 			$('#end-date').data("DateTimePicker").minDate(e.date);
-          // 	});
-          // 	$("#end-date").on("dp.change", function (e) {
-          // 			$('#start-date').data("DateTimePicker").maxDate(e.date);
-          // 	});
-
-
 
         });
         var fortnightago = new Date();

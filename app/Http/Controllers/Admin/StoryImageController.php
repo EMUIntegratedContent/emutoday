@@ -40,8 +40,9 @@ class StoryImageController extends Controller
 
   public function index()
   {
-    $storyImages = $this->storyImages->paginate(10);
-    return view('admin.storyimages.index', compact('storyImages'));
+      return "This feature has been removed";
+    //$storyImages = $this->storyImages->paginate(10);
+    //return view('admin.storyimages.index', compact('storyImages'));
   }
 
   public function create(StoryImage $storyImage)

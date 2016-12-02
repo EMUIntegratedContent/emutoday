@@ -397,83 +397,12 @@ arraysEqual = function(a, b) {
 $('#table2 table').on('click', '.fa-pencil', function (ev) {
     ev.preventDefault();
     ev.stopPropagation();
-    // var data = table.row( $(this).parents('tr') ).data();
-    //$( "div" ).data( "role" ) === "page";
+    
     var parentBtnData = $(this).parent().data();
     var parentBtnId = parentBtnData['id'];
     var parentBtnStype = parentBtnData['stype'];
-    // console.log($(this).parent().data());
-    // console.log('parentBtnId====='+parentBtnData['id']);
-    // console.log('parentBtnData====='+JSON.stringify(parentBtnData));
-    var dataid = mainrecord_id;
-    var modal_message;
-    var canSave = false;
-    var skipModal = false;
-
-    //console.log('original_story_ids=' + original_story_ids);
-    //console.log('story_ids=' + story_ids);
-
-    // var itempath = '/admin/story/'+parentBtnStype+ '/' + parentBtnId +'/edit';
     var itempath = '/admin/queueall/story/'+parentBtnStype+ '/' + parentBtnId +'/edit';
-
-    if (arraysEqual(original_story_ids,story_ids)) {
-        //console.log('arrays are equal');
-        skipModal = true;
-    } else {
-        skipModal = false;
-        //console.log('arrays are NOTTTTTTTTT equal');
-    }
-
-
-
-    if(story_ids.indexOf(0) >= 0) {
-        modal_message = "You need to select the correct number of stories before saving";
-        canSave = false;
-    } else {
-        canSave = true;
-        modal_message = "Before leaving page we need to save";
-    }
-
-    var datastring = story_ids.toString();
-    var recordid = 'Record ID: '+ dataid;
-    var datatitle = "Before You Leave!";
-
-    var modal;
-    if (skipModal) {
-        window.location.href = itempath;
-    } else {
-        modal = $('#myModal').modal('show');
-         modal.find('.modal-title').text(datatitle)
-         modal.find('.modal-body').text(modal_message)
-         modal.find('#story-ids').val(datastring);
-        // modal.find('#modal-confirm-title').html('Delete Magazine');
-        // modal.find('#record-info').html(datatitle);
-        // modal.find('#record-id').html(recordid);
-        modal.find('#hidden-id').val(dataid);
-        var saveasbtn = document.getElementById("main-save-as");
-            if (canSave){
-                saveasbtn.disabled =false;
-                saveasbtn.addEventListener("click", function(e){
-                    var sids =  story_ids.toString();
-                    //console.log(sids);
-                    e.preventDefault();
-                    e.stopPropagation();   //this prevented it from submitting twice i a row
-                    $.ajax({
-                               url: '/api/page/saveas/'+mainrecord_id,
-                               type: 'PATCH',
-                               data: {story_ids: sids},
-                               success: function(res) {
-                                   //console.log('success');
-                                   //         location.assign(articlepath);
-                                   window.location.href = itempath;
-
-                               }
-                       });
-                });
-            } else {
-                saveasbtn.disabled = true;
-            }
-        }
+    window.open(itempath); //open the article in a new tab
 });
 
 // add onload event listener

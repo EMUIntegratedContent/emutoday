@@ -113,27 +113,17 @@
 </li>
 @endcan
 @can('super', $currentUser)
+{{-- 
 <li class="treeview {{ set_active('admin/storyimages*') }}">
-  <a href="#"><i class="fa fa-picture-o"></i> <span>Images</span> <!-- <i class="fa fa-angle-left pull-right"></i> --> </a>
+  <a href="#"><i class="fa fa-picture-o"></i> <span>Images</span></a>
   <ul class="treeview-menu">
     <li class="{{ set_active('admin/storyimages*') }}"><a href="/admin/storyimages"><i class="fa fa-list"></i> <span>List</span></a></li>
     <li class="{{ set_active('admin/storyimages*') }}"><a href="/admin/storyimages/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
   </ul>
 </li>
-
+--}}
 <hr/> <!-- //////////////////////////////// -->
 
 <li class="{{ set_active('admin/user*') }}"><a href="/admin/user"><i class="fa fa-users"></i> <span>Users</span></a></li>
-{{--
-  <li class="treeview {{ set_active('admin/twitter*') }}"><a href="/admin/twitter"><i class="fa fa-twitter"></i> <span>Tweets</span></a></li>
 
-  <li class="treeview {{ set_active('admin/bugz*') }}">
-    <a href="#"><i class="fa fa-bug"></i> <span>Bugz</span> <!-- <i class="fa fa-angle-left pull-right"></i> --> </a>
-    <ul class="treeview-menu">
-      <li class="{{ set_active('admin/bugz*') }}"><a href="/admin/bugz/app"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-      <li class="{{ set_active('admin/bugz*') }}"><a href="/admin/bugz"><i class="fa fa-list"></i> <span>List</span></a></li>
-      <li class="{{ set_active('admin/bugz*') }}"><a href="/admin/bugz/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-    </ul>
-  </li>
-  --}}
   @endcan
