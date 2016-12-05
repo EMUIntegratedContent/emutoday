@@ -176,8 +176,16 @@ class MainController extends Controller
           $currentStoryImageWithVideoTag = null;
         }
 
-        $tweets = $this->tweets->get_feed();
-        
+        $twitter_feeds = [
+          'emunews',
+          'emu_swoop',
+        ];
+        $twitter_settings = [
+          'count' => 4,
+        ];
+
+        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
+
         JavaScript::put([
           'jsis' => 'hi',
           'cdnow' => Carbon::now(),
