@@ -11,15 +11,15 @@
     </div>
     <div class="row">
       <div id="calendar-content-bar">
-        <div class="medium-3 show-for-medium columns">
+        <div class="medium-9 small-12 columns pull-right">
+          <!-- <event-view-content :elist.sync="eventlist"></event-view-content> -->
+          <event-view-content :eventid.once="eventid" :elist.sync="eventlist"></event-view-content>
+        </div>
+        <div class="small-12 medium-3 show-for-small columns pull-left">
           <event-view-side-bar v-on:change-eobject="handleEventFetch"></event-view-side-bar>
-      </div>
-      <div class="medium-9 small-12 columns">
-        <!-- <event-view-content :elist.sync="eventlist"></event-view-content> -->
-        <event-view-content :eventid.once="eventid" :elist.sync="eventlist"></event-view-content>
+        </div>
       </div>
     </div>
-  </div>
 </template>
 <style scoped>
 #graybar{

@@ -90,6 +90,7 @@ elixir(function(mix) {
     mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
     mix.browserify('vue-search-form.js', 'public/js/vue-search-form.js');
+    mix.browserify('vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js');
     mix.browserify('vue-search-filter.js', 'public/js/vue-search-filter.js');
     mix.browserify('admin-emucustom.js', 'public/js/admin-emucustom.js');
 

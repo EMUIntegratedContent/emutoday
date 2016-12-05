@@ -41,7 +41,14 @@
                     @foreach($storiesPaginated as $searchResult)
                     <li class="search-result-item">
                         @if($searchResult->getTable() == 'storys')
-                            <a href="/{{$searchResult->story_type}}/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
+                            {{-- dd($searchResult->story_type) --}}
+                            @if($searchResult->story_type == 'article')
+                            <a href="/magazine/{{$searchResult->story_type}}/{{$searchResult->id}}">
+                            @else
+                            <a href="/story/{{$searchResult->story_type}}/{{$searchResult->id}}">
+                            @endif
+                            <h5>{{$searchResult->title}}</h5></a>
+                            
                             <div class="search-result-content">
                                 @if($searchResult->subtitle)
                                 <p>{{ $searchResult->subtitle }}</p>

@@ -17872,7 +17872,7 @@ new Vue({
                 headers: {
                         // You could also store your token in a global object,
                         // and reference it here. APP.token
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        //'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                 }
         },
         ready: function ready() {

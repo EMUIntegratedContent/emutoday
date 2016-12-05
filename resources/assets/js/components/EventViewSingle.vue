@@ -60,10 +60,10 @@
         <small>{{item.id}}</small>
       </p>
 
-      <form method="POST" action="api/calendar/addevent">
+      <!--<form method="POST" action="api/calendar/addevent">
         <input type="hidden" name="eventId" value="{{item.id}}" />
         <input type="submit" value="+ Add to Calendar" />
-      </form>
+      </form>-->
 
     </div>
   </div>

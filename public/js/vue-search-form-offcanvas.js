@@ -12263,7 +12263,7 @@ exports.insert = function (css) {
 
 },{}],6:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n\n")
 'use strict';
 
 module.exports = {
@@ -12282,7 +12282,7 @@ module.exports = {
     methods: {
         submitSearch: function submitSearch(e) {
             if ($.trim(this.searchterm) != '') {
-                $("#search-form").submit();
+                $("#search-form-offcanvas").submit();
             }
         }
     },
@@ -12291,19 +12291,19 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-43dc95ce=\"\">\n    <div class=\"input-group\" _v-43dc95ce=\"\">\n        <span class=\"show-for-sr\" _v-43dc95ce=\"\">Search</span>\n        <input class=\"input-group-field\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-43dc95ce=\"\">\n        <div class=\"input-group-button\" _v-43dc95ce=\"\">\n            <button type=\"submit\" class=\"button\" _v-43dc95ce=\"\"><i class=\"fa fa-search\" _v-43dc95ce=\"\"></i></button>\n        </div>\n    </div>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form-offcanvas\" class=\"search-form-offcanvas\" v-on:submit.prevent=\"submitSearch\" _v-26243409=\"\">\n    <slot name=\"csrf\" _v-26243409=\"\"></slot>\n    <div class=\"input-group\" _v-26243409=\"\">\n        <span class=\"show-for-sr\" _v-26243409=\"\">Search</span>\n        <input class=\"input-group-field\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-26243409=\"\">\n        <div class=\"input-group-button\" _v-26243409=\"\">\n            <button type=\"submit\" class=\"button\" _v-26243409=\"\"><i class=\"fa fa-search\" _v-26243409=\"\"></i></button>\n        </div>\n    </div>\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
+    __vueify_insert__.cache["\n\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-43dc95ce", module.exports)
+    hotAPI.createRecord("_v-26243409", module.exports)
   } else {
-    hotAPI.update("_v-43dc95ce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-26243409", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":4,"vue-hot-reload-api":2,"vueify/lib/insert-css":5}],7:[function(require,module,exports){
@@ -12313,9 +12313,9 @@ var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
-var _SearchForm = require('./components/SearchForm.vue');
+var _SearchFormOffcanvas = require('./components/SearchFormOffcanvas.vue');
 
-var _SearchForm2 = _interopRequireDefault(_SearchForm);
+var _SearchFormOffcanvas2 = _interopRequireDefault(_SearchFormOffcanvas);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12324,8 +12324,8 @@ var Vue = require('vue');
 Vue.use(_vueResource2.default);
 
 new Vue({
-    el: '#vue-search-form',
-    components: { SearchForm: _SearchForm2.default },
+    el: '#vue-search-form-offcanvas',
+    components: { SearchFormOffcanvas: _SearchFormOffcanvas2.default },
     http: {
         headers: {
             // You could also store your token in a global object,
@@ -12335,6 +12335,6 @@ new Vue({
     }
 });
 
-},{"./components/SearchForm.vue":6,"vue":4,"vue-resource":3}]},{},[7]);
+},{"./components/SearchFormOffcanvas.vue":6,"vue":4,"vue-resource":3}]},{},[7]);
 
-//# sourceMappingURL=vue-search-form.js.map
+//# sourceMappingURL=vue-search-form-offcanvas.js.map

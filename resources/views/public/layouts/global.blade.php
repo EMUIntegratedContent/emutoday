@@ -31,6 +31,13 @@
           @section('offcanvaslist')
 
             <ul class="tier2-menu vertical dropdown menu" data-dropdown-menu>
+                <li>
+                  <div id="vue-search-form-offcanvas">
+                    <search-form-offcanvas>
+                        <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
+                    </search-form-offcanvas>
+                  </div><!-- /#vue-event-form-offcanvas -->
+                </li>
               <li><a href="/hub">Today</a></li>
               <li><a href="/calendar">Calendar</a></li>
               <li><a href="/announcement">Announcements</a></li>
@@ -60,23 +67,16 @@
                                                 </div>
                                                 <div class="large-7 medium-5 small-12 columns">
 
-                                                    <div class="icon-menu float-right">
+                                                    <div class="icon-menu float-right text-right">
 
-                                                        <div id="vue-search-form">
+                                                        <div id="vue-search-form" class="hide-for-small-only">
                                                             <search-form>
-                                                                <!--<input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">-->
+                                                                <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                                                             </search-form>
                                                         </div><!-- /#vue-event-form -->
-
-                                                        {{-- <span class="search-area"><a>Search <i class="fa fa-magnifying-glass"></i></a></span> --}}
-                                                        <span class="menu-area show-for-small-only"><a data-toggle="offCanvasRight">Menu <i class="fa fa-list"></i></a></span>
+                                                        <span class="menu-area show-for-small-only text-right"><a data-toggle="offCanvasRight">Menu &amp; Search <i class="fa fa-list"></i></a></span>
 
                                                     </div> <!-- .icon-menu -->
-
-{{--
-                                                        <li class="search-area"><a class="search-glass" href="">Search</a></li>
-                                                        <li class="menu-area"><a class="menu-icon" href="">Menu</a></li> --}}
-
                                                 </div>
                                             </div>
                                         </div><!-- large-9 -->
