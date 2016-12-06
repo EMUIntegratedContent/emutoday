@@ -93,7 +93,7 @@ elixir(function(mix) {
     mix.browserify('vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js');
     mix.browserify('vue-search-filter.js', 'public/js/vue-search-filter.js');
     mix.browserify('admin-emucustom.js', 'public/js/admin-emucustom.js');
-
+    mix.browserify('emergency.js', 'public/js/emergency.js');
 
 
     // mix.sass('app.scss');

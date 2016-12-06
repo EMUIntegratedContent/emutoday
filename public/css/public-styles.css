@@ -5596,7 +5596,7 @@ Tags: Gulp, Laravel
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,400italic);
 @import url(http://fonts.googleapis.com/css?family=PT+Serif);*/
 
-
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
 /****** General Styles *********/
 
 html, body {
@@ -5756,8 +5756,8 @@ ul.social-icons li img{
 }
 #tier1-nav h1{
     font-weight: 400;
-    font-size: 2rem;
-    margin: .3rem 0 0;
+    font-size: 2.5rem;
+    margin: .7rem 0 0;
     padding: 0.3rem 0 0 0.6rem;
 }
 #tier1-nav h1 a{
@@ -5766,7 +5766,7 @@ ul.social-icons li img{
 #tier1-nav h1 span.first-word{
     font-weight: 500;
     text-transform: uppercase;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #0f654a;
 }
 #tier1-nav ul{
@@ -5810,7 +5810,7 @@ text-transform: uppercase;
 
     font-size: 1rem;
     padding: 0 0.3rem;
-    margin-top: 1.3rem;
+    margin-top: 1.2rem;
 }
 
 #tier1-nav .icon-menu span {
@@ -6420,6 +6420,92 @@ ul.accordion li{
     height: 100%;
     display: block;
     padding: 0px 5px 5px;
+}
+
+/* EMU Emergency: CSS Styles should correspond to the CSS file on the emich server at: /data/main/htdocs/admin/wrapper/css/emu_attention.css */
+
+/*_Emergency Alerts in Red_*/
+.emergency-red{
+	/*background-color:#FF0000;*/
+	padding:10px 18px;
+	border-style: none;
+        clear: both;
+    background: #FF0000; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#a80e0e, #FF0000); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#a80e0e, #FF0000); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#a80e0e, #FF0000); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#a80e0e, #FF0000); /* Standard syntax */
+}
+.emergency-red h3:before{
+	content:"\f071";
+	font-family: FontAwesome;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: normal;
+	color: #fff;
+	padding-left: 0rem;
+    padding-right: .8rem;
+}
+.emergency-red h3{
+	color:#FFF;
+	margin: .3rem 0 .5rem 0;
+	padding: 0px;
+	font: bold 16px;
+}
+.emergency-red p{
+	color:#FFF;
+    margin: 0 0 .5rem 0;
+    font-size: .9rem;
+}
+.emergency-red a{
+	color:#FFF;
+}
+.emergency-red a:hover{
+	color: #FC6;
+}
+
+/*_Emergency Alerts in Yellow_*/
+
+.emergency-yellow{
+	padding:10px 18px;
+	background: #FC6;
+	border-style: none;
+    clear: both;
+    background: #FC6; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(#fec95e, #fcf02a); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#fec95e, #fcf02a); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#fec95e, #fcf02a); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#fec95e, #fcf02a); /* Standard syntax */    
+}
+.emergency-yellow h3{
+	color:#333;
+	margin: 0px;
+	margin: .3rem 0 .5rem 0;
+	font: bold 16px;
+}
+.emergency-yellow h3:before{
+	content:"\f071";
+	font-family: FontAwesome;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: normal;
+	color: #c4942c;
+	padding-left: 0rem;
+    padding-right: .8rem;
+}
+.emergency-yellow p{
+	color:#333;
+    margin: 0 0 .5rem 0;
+    font-size: .9rem;
+}
+.emergency-yellow a{
+	color:#333;
+}
+.emergency-yellow a:hover{
+	color:#037551;
+}
+#emergency-bar.no{
+    display:none;
 }
 /*News Headlines*/
 .publish-date {

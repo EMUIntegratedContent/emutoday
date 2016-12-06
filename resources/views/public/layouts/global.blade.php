@@ -20,7 +20,15 @@
   <body>
     @yield('bodytop')
 
-
+        {{-- EMU campus-wide emergency message area --}}
+        <div id="emergency-bar" class="no emergency">
+            <div class="row">
+                <div class="large-12 columns">
+                    <h3 id="emergency-title"></h3>
+                    <p id="emergency-message"></p>
+                </div>
+            </div>
+        </div>
     <div class="off-canvas-wrapper">
 
       <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>

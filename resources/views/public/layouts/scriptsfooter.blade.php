@@ -1,4 +1,5 @@
 <script type="text/javascript" src="/js/public-scripts.js"></script>
 <script type="text/javascript" src="/js/vue-search-form.js"></script>
 <script type="text/javascript" src="/js/vue-search-form-offcanvas.js"></script>
+<script type="text/javascript" src="/js/emergency.js"></script>
 @yield('scriptsfooter')
