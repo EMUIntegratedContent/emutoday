@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
     $.getJSON( "http://www.emich.edu/admin/api/emergency_api.php", function( data ) {
-        if(data.display == "no"){
+        if(data.display == "yes"){
             $( "#emergency-bar" ).removeClass("no");
             $( "#emergency-title" ).html( data.title );
             $( "#emergency-message" ).html( data.message );
@@ -15,8 +15,6 @@ $(document).ready(function(){
                 $("#emergency-bar").addClass("emergency-red");
             }
         }
-        
-        console.log(data);
     });
 });
 
