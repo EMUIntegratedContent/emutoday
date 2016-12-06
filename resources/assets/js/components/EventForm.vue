@@ -175,157 +175,103 @@
   </div><!-- /.md6col -->
 </div><!-- /.row -->
 <!-- RELATED LINKS -->
-    <div class="row">
-      <div :class="md12col">
-        <div v-bind:class="formGroup">
-          <label>Related Link</label>
-          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (www.yourlink.com)</p>
-          <div class="input-group">
-            <span :class="inputGroupLabel">http://</span>
-            <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text">
-          </div>
-          <p v-if="formErrors.related_link_1" class="help-text invalid">Please make sure url is properly formed.</p>
-        </div>
-      </div><!-- /.col-md-4 -->
-    </div><!-- /.row -->
-    <div class="row">
-      <div :class="md4col">
-        <div v-bind:class="formGroup">
-          <label>Related Link Text</label>
-          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
-          <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text">
-          <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
-        </div>
-      </div><!-- /.col-md-4 -->
-      <div :class="md8col">
-        <template v-if="record.related_link_1_txt">
-          <div v-bind:class="formGroup">
-            <label>Example of Related Link</label>
-            <p class="help-text">Below is how it may look. </p>
-            <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
-          </div>
-        </template>
-      </div><!-- /.md6col -->
-    </div>
-    <!-- Two -->
-    <span v-if="record.related_link_1">
-    <div class="row">
-      <div :class="md12col">
-        <div v-bind:class="formGroup">
-          <label>Second related Link</label>
-          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (www.yourlink.com)</p>
-          <div class="input-group">
-            <span :class="inputGroupLabel">http://</span>
-            <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text">
-          </div>
-          <p v-if="formErrors.related_link_2" class="help-text invalid">Please make sure url is properly formed.</p>
-        </div>
-      </div><!-- /.col-md-4 -->
-    </div><!-- /.row -->
-    <div class="row">
-      <div :class="md4col">
-        <div v-bind:class="formGroup">
-          <label>Related Link Text</label>
-          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
-          <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text">
-          <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
-        </div>
-      </div><!-- /.col-md-4 -->
-      <div :class="md8col">
-        <template v-if="record.related_link_2_txt">
-          <div v-bind:class="formGroup">
-            <label>Example of Related Link</label>
-            <p class="help-text">Below is how it may look. </p>
-            <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
-          </div>
-        </template>
-      </div><!-- /.md6col -->
-    </div>
-    </span>
-    <!-- three -->
-    <span v-if="record.related_link_2">
-    <div class="row">
-      <div :class="md12col">
-        <div v-bind:class="formGroup">
-          <label>Third related Link</label>
-          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (www.yourlink.com)</p>
-          <div class="input-group">
-            <span :class="inputGroupLabel">http://</span>
-            <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text">
-          </div>
-          <p v-if="formErrors.related_link_3" class="help-text invalid">Please make sure url is properly formed.</p>
-        </div>
-      </div><!-- /.col-md-4 -->
-    </div><!-- /.row -->
-    <div class="row">
-      <div :class="md4col">
-        <div v-bind:class="formGroup">
-          <label>Related Link Text</label>
-          <p class="help-text" id="link_txt-helptext">Please enter link text</p>
-          <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text">
-          <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
-        </div>
-      </div><!-- /.col-md-4 -->
-      <div :class="md8col">
-        <template v-if="record.related_link_3_txt">
-          <div v-bind:class="formGroup">
-            <label>Example of Related Link</label>
-            <p class="help-text">Below is how it may look. </p>
-            <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
-          </div>
-        </template>
-      </div><!-- /.md6col -->
-    </div>
-    </span>
-  </div>
-  <br/>
-<!-- RELATED LINKS -->
-<script> /*
 <div class="row">
   <div :class="md12col">
-    <div :class="formGroup">
-      <label>Related Link: <em>(ex. http://www.emich.edu/calendar)</em></label>
-      <div class="row">
-        <div :class="md6col">
-          <label for="related_link_1_txt">Link Text</label><input v-model="record.related_link_1_txt" class="form-control" name="related_link_1_txt" type="text">
-        </div><!-- /.md6col -->
-      </div><!-- /.row -->
-      <div class="row">
-        <div :class="md12col">
-          <label for="related_link_1">Link URL</label><input v-model="record.related_link_1" class="form-control" name="related_link_1_txt" type="text">
-        </div><!-- /.md12col -->
-      </div><!-- /.row -->
-        <span>{{relatedLink1}}</span>
-      <template v-if="record.related_link_1">
-        <div class="row">
-          <div :class="md6col">
-            <label for="related_link_2_txt">Second Link Text</label><input v-model="record.related_link_2_txt" class="form-control" name="related_link_2_txt" type="text">
-          </div><!-- /.md6col -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div :class="md12col">
-            <label for="related_link_2">Second Link URL</label><input v-model="record.related_link_2" class="form-control" name="related_link_2_txt" type="text">
-          </div><!-- /.md12col -->
-        </div><!-- /.row -->
-        <span>{{relatedLink2}}</span>
-      </template>
-      <template v-if="record.related_link_2">
-        <div class="row">
-          <div :class="md6col">
-            <label for="related_link_3_txt">Third Link Text</label><input v-model="record.related_link_3_txt" class="form-control" name="related_link_3_txt" type="text">
-          </div><!-- /.md6col -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div :class="md12col">
-            <label for="related_link_3">Third Link URL</label><input v-model="record.related_link_3" class="form-control" name="related_link_3_txt" type="text">
-          </div><!-- /.md12col -->
-        </div><!-- /.row -->
-        <span>{{relatedLink3}}</span>
-      </template>
+    <div v-bind:class="formGroup">
+      <label>Related Link</label>
+      <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+      <div class="input-group input-group-flat">
+        <span :class="inputGroupLabel">http://</span>
+        <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text">
+      </div>
+      <p v-if="formErrors.related_link_1" class="help-text invalid">Please make sure url is properly formed.</p>
     </div>
-  </div><!-- /.md12col -->
+  </div><!-- /.col-md-4 -->
 </div><!-- /.row -->
-*/</script>
+<div class="row">
+  <div :class="md4col">
+    <div v-bind:class="formGroup" class="input-group">
+      <label>Meaning desciption for Link</label>
+      <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+      <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text">
+      <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+    </div>
+  </div><!-- /.col-md-4 -->
+  <div :class="md8col">
+    <div v-bind:class="formGroup">
+      <label>Example of Related Link</label>
+      <p class="help-text">Below is how it may look. </p>
+      <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
+    </div>
+  </div><!-- /.md6col -->
+</div>
+<!-- Two -->
+<template v-if="record.related_link_1 && record.related_link_1_txt">
+  <div class="row">
+    <div :class="md12col">
+      <div v-bind:class="formGroup">
+        <label>Related Link</label>
+        <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+        <div class="input-group input-group-flat">
+          <span :class="inputGroupLabel">http://</span>
+          <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text">
+        </div>
+        <p v-if="formErrors.related_link_2" class="help-text invalid">Please make sure url is properly formed.</p>
+      </div>
+    </div><!-- /.col-md-4 -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div :class="md4col">
+      <div v-bind:class="formGroup" class="input-group">
+        <label>Meaning desciption for Link</label>
+        <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+        <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text">
+        <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+      </div>
+    </div><!-- /.col-md-4 -->
+    <div :class="md8col">
+      <div v-bind:class="formGroup">
+        <label>Example of Related Link</label>
+        <p class="help-text">Below is how it may look. </p>
+        <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
+      </div>
+    </div><!-- /.md6col -->
+  </div>
+</template>
+<!-- three -->
+<template v-if="record.related_link_2 && record.related_link_2_txt">
+  <div class="row">
+    <div :class="md12col">
+      <div v-bind:class="formGroup">
+        <label>Related Link</label>
+        <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+        <div class="input-group input-group-flat">
+          <span :class="inputGroupLabel">http://</span>
+          <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text">
+        </div>
+        <p v-if="formErrors.related_link_3" class="help-text invalid">Please make sure url is properly formed.</p>
+      </div>
+    </div><!-- /.col-md-4 -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div :class="md4col">
+      <div v-bind:class="formGroup" class="input-group">
+        <label>Meaning desciption for Link</label>
+        <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+        <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text">
+        <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+      </div>
+    </div><!-- /.col-md-4 -->
+    <div :class="md8col">
+      <div v-bind:class="formGroup">
+        <label>Example of Related Link</label>
+        <p class="help-text">Below is how it may look. </p>
+        <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
+      </div>
+    </div><!-- /.md6col -->
+  </div>
+</template>
+<!-- RELATED LINKS -->
 
 <div class="row">
   <div :class="md6col">
@@ -482,13 +428,13 @@
 <div class="row">
   <div :class="md12col">
     <div :class="formGroup">
-    <div v-bind:class="formGroup">
-      <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-      <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based of this information</button>
-      <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Event</button>
-    </div>
-  </form>
-</div><!-- /.md12col -->
+      <div v-bind:class="formGroup">
+        <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+        <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based of this information</button>
+        <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Event</button>
+      </div>
+    </form>
+  </div><!-- /.md12col -->
 
 
 </template>
@@ -926,7 +872,7 @@ module.exports  = {
     },
 
     fetchSubmittedRecord: function(recid){
-    // Sets params for update record, Passes an id to fetchCurrentRecord
+      // Sets params for update record, Passes an id to fetchCurrentRecord
       this.recordexists = true;
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
@@ -1123,9 +1069,9 @@ module.exports  = {
         return arguments[0].toUpperCase();
       });
     },
-    
+
     resetInital: function(){
-    // oh gosh.. is there a better way?
+      // oh gosh.. is there a better way?
       return {
         minicalslist:[],
         dateObject:{
