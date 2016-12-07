@@ -7,7 +7,6 @@
 
 @section('title','Submit an Event')
 @section('content-top')
-{{ cas()->user() }}
 <div id="calendar-bar">
   <div class="row">
     <div class="medium-12 column">

@@ -7554,5 +7554,8 @@ ul.pagination li.active {
   border-bottom: 1px solid #bbb;
   background: #efefef;
 }
+.input-group-flat {
+  margin-bottom: 0;
+}
 
 /*# sourceMappingURL=public-styles.css.map */
