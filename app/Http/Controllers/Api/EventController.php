@@ -101,17 +101,25 @@ class EventController extends ApiController
           return $fractal->createData($resource)->toArray();
       }
 
+      /**
+      * Retieve resource for editing
+      *
+      * @param  int  $id
+      * @return \Illuminate\Http\Response
+      */
       public function edit($id)
       {
-        $fractal = new Manager();
-        // $fractal->setSerializer(new ArraySerializer());
-        // $fractal->setSerializer(new DataArraySerializer());
+        // Authenticate user
+        cas()->authenticate();
+
+        // Retrieve the event with id of $id
         $event = Event::findOrFail($id);
 
+        $fractal = new Manager();
         $resource = new Fractal\Resource\Item($event, new FractalEventTransformerModelFull);
+
         // Turn all of that into a JSON string
         return $fractal->createData($resource)->toArray();
-
       }
 
 
@@ -307,19 +315,14 @@ class EventController extends ApiController
             }
           }
         }
-        /**
-        * Update the specified resource in storage.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @param  int  $id
-        * @return \Illuminate\Http\Response
-        */
+
         public function delete($id)
         {
           $event = Event::findOrFail($id);
           $event->delete();
           return 'Event Deleted';
         }
+
         public function cancel($id)
         {
           $event = Event::findOrFail($id);
@@ -329,6 +332,14 @@ class EventController extends ApiController
             ->respondSavedWithData('Event cancel status changed',[ 'record_id' => $event->id ]);
           }
         }
+
+        /**
+        * Update the specified resource in storage.
+        *
+        * @param  \Illuminate\Http\Request  $request
+        * @param  int  $id
+        * @return \Illuminate\Http\Response
+        */
         public function update(Request $request, $id)
         {
           // dd($request);
