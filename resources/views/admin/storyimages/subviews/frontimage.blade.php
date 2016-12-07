@@ -11,6 +11,7 @@
         <div class="box-header with-border">
             <div class="box-head-info pull-left">
                 @if($storyImage->is_active != 0)
+                {{-- dd($storyImage->filename) --}}
                     <img class="better-thumb" src="/imagecache/betterthumb/{{$storyImage->filename}}" alt="{{$storyImage->image_name}}">
                 @endif
               <h3 class="box-title">{{$storyImage->imgtype->name}}</h3>
@@ -21,13 +22,11 @@
           </div>
         </div><!-- /.box-header -->
         <div class="box-body">
-            {{-- {!! Form::label('image_type', 'Image Type:') !!} --}}
             {!! Form::hidden('image_type', $storyImage->image_type, ['class' => 'form-control input-sm', 'readonly' => 'readonly']) !!}
-            {{-- {!! Form::label('image_name', 'Name:') !!} --}}
             {!! Form::hidden('image_name', null, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
 
         <div class="form-group">
-            <label class="control-label" for="image">Select File</label>
+            <label class="control-label" for="image">Select File AHAHHAHA!</label>
             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
             <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
 
@@ -139,6 +138,7 @@
                                  'class' => 'form',
                                  'files' => true]
                                  ) !!}
+                                 {!! Form::hidden('image_type', $storyImage->image_type, ['class' => 'form-control input-sm', 'readonly' => 'readonly']) !!}
                                  {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'Onclick' => 'return ConfirmDelete();')) !!}
                                  {!! Form::close() !!}
                                     </div>

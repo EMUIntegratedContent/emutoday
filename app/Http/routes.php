@@ -204,7 +204,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('magazine', 'Admin\MagazineController');
 
         Route::patch('storyimage/{storyimage}/update',['as' => 'admin_storyimage_update', 'uses' => 'Admin\StoryImageController@update']);
-        Route::post('storyimage//{storyimage}/delete', ['as' => 'admin_storyimage_destroy', 'uses' => 'Admin\StoryImageController@destroy'] );
+        Route::delete('storyimage/{storyimage}/delete', ['as' => 'admin_storyimage_destroy', 'uses' => 'Admin\StoryImageController@destroy'] );
 
         Route::resource('storyimages', 'Admin\StoryImageController');
 
