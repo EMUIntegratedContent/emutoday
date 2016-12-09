@@ -986,7 +986,15 @@ module.exports  = {
         this.$http.post('/api/event/'+tempid+'/delete')
 
         .then((response) =>{
+          // If admin
+          if(window.location.href.indexOf("admin") > -1) {
             window.location.href = "/admin/event/queue";
+          } else { // Not admin
+            this.$data = this.resetInital();
+            this.formMessage.isOk = response.ok;
+            this.formMessage.msg = response.body;
+            this.recordexists = false;
+          }
         }, (response) => {
           console.log('Error: '+JSON.stringify(response))
         }).bind(this);
