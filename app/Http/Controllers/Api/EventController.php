@@ -131,6 +131,7 @@ class EventController extends ApiController
       */
       public function store(Request $request)
       {
+        // Validation rules
         $validation = \Validator::make( Input::all(), [
           'title'           => 'required',
           'location'        => 'required',
@@ -138,82 +139,89 @@ class EventController extends ApiController
           'start_date'      => 'required|date',
           'end_date'        => 'required|date',
           'categories'      => 'required',
-          'cost'			=> 'required',
+          'cost'			      => 'required',
           'description'     => 'required',
           'contact_person'  => 'required',
-          'contact_phone'  => 'required',
-          'contact_email'  => 'required|email'
+          'contact_phone'   => 'required',
+          'contact_email'   => 'required|email'
         ]);
 
+        // Check against Validation rules
         if( $validation->fails() )
         {
           return $this->setStatusCode(422)
           ->respondWithError($validation->errors()->getMessages());
         }
 
+        // Build record if Valid
         if($validation->passes())
         {
-            cas()->authenticate(); //run authentication before calling cas->user
+          cas()->authenticate(); //run authentication before calling cas->user
           $event = new Event;
-          $event->user_id       	= $request->get('user_id', nullValue());
-          // $event->submitter       	= cas()->user();
-          $event->title           	= $request->get('title');
-          $event->short_title     	= $request->get('short_title');
-          // $templocation = $request->get('location');serialize($templocation);
-          $event->on_campus					= $request->get('on_campus');
-          $event->building					= $request->get('building');
-          $event->room							= $request->get('room');
-          $event->location        	= $request->get('location');
-          $event->start_date      	= \Carbon\Carbon::parse($request->get('start_date'));
-          $event->start_time     		= \Carbon\Carbon::parse($request->get('start_time'));
-          $event->end_date      		= \Carbon\Carbon::parse($request->get('end_date'));
-          $event->end_time     			= \Carbon\Carbon::parse($request->get('end_time'));
-          $event->all_day						= $request->get('all_day');
-          $event->no_end_time				= $request->get('no_end_time');
-          $event->contact_person    = $request->get('contact_person');
-          $event->contact_phone     = $request->get('contact_phone');
-          $event->contact_email     = $request->get('contact_email');
-          $event->contact_fax				= $request->get('contact_fax');
-          $event->description     	= $request->get('description');
-          $event->submitter         = cas()->user();
+
+          // General & Location info
+          $event->submitter             	= cas()->user();
+          $event->title                 	= $request->get('title');
+          $event->short_title           	= $request->get('short_title');
+          $event->description           	= $request->get('description');
+          $event->on_campus				      	= $request->get('on_campus');
+          $event->building				      	= $request->get('building');
+          $event->room						      	= $request->get('room');
+          $event->location              	= $request->get('location');
+
+          // Time & Date info
+          $event->start_date             	= \Carbon\Carbon::parse($request->get('start_date'));
+          $event->start_time     	      	= \Carbon\Carbon::parse($request->get('start_time'));
+          $event->end_date      	      	= \Carbon\Carbon::parse($request->get('end_date'));
+          $event->end_time     		      	= \Carbon\Carbon::parse($request->get('end_time'));
+          $event->all_day					      	= $request->get('all_day');
+          $event->no_end_time			      	= $request->get('no_end_time');
+
+          // Contact & Links
+          $event->contact_person          = $request->get('contact_person');
+          $event->contact_phone           = $request->get('contact_phone');
+          $event->contact_email           = $request->get('contact_email');
+          $event->contact_fax			      	= $request->get('contact_fax');
           $event->related_link_1					= $request->get('related_link_1');
           $event->related_link_2					= $request->get('related_link_2');
           $event->related_link_3					= $request->get('related_link_3');
           $event->related_link_1_txt			= $request->get('related_link_1_txt');
           $event->related_link_2_txt			= $request->get('related_link_2_txt');
           $event->related_link_3_txt			= $request->get('related_link_3_txt');
-          // $event->reg_deadline						= $request->get('reg_deadline');
+
+          // Ticket info
+          $event->reg_deadline						= $request->get('reg_deadline');
           $event->free 										= $request->get('free');
           $event->cost 										= $request->get('cost');
-          $event->participants						=$request->get('participants');
-          $event->tickets									=$request->get('tickets');
-          $event->ticket_details_phone		=$request->get('ticket_details_phone');
-          $event->ticket_details_online		=$request->get('ticket_details_online');
-          $event->ticket_details_office		=$request->get('ticket_details_office');
-          $event->ticket_details_other		=$request->get('ticket_details_other');
+          $event->participants						= $request->get('participants');
+          $event->tickets									= $request->get('tickets');
+          $event->ticket_details_phone		= $request->get('ticket_details_phone');
+          $event->ticket_details_online		= $request->get('ticket_details_online');
+          $event->ticket_details_office		= $request->get('ticket_details_office');
+          $event->ticket_details_other		= $request->get('ticket_details_other');
 
+          // Misc
           $event->mini_calendar						= $request->get('mini_calendar');
           $event->lbc_approved						= $request->get('lbc_approved');
           $event->submission_date 				= \Carbon\Carbon::now();
 
-
-          if($event->save()) {
-
+          if($event->save()) { // Record successfully stored
+            // Make event categories and mini calendars
             $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
             $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
 
-            // $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'id');
+            // Relate event categories and mini calendars
             $event->eventcategories()->sync($categoriesRequest);
-            // $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'id');
             $event->minicalendars()->sync($minicalsRequest);
+
+            // Save and return
             $event->save();
             return $this->setStatusCode(201)
             ->respondSavedWithData('Event successfully created!',[ 'record_id' => $event->id ]);
-            // ->respondCreated('Event successfully created.');
           }
         }
-
       }
+
       public function mediaFileAdd($id, Request $request)
       {
         $group = 'event';
@@ -342,86 +350,97 @@ class EventController extends ApiController
         */
         public function update(Request $request, $id)
         {
-          // dd($request);
+          // Find event
           $event = Event::findOrFail($id);
+
+          // Validation rules
           $validation = \Validator::make( Input::all(), [
             'title'           => 'required',
             'location'        => 'required',
-            'on_campus'		=> 'required',
+            'on_campus'				=> 'required',
             'start_date'      => 'required|date',
             'end_date'        => 'required|date',
             'categories'      => 'required',
-            'cost'			=> 'required',
+            'cost'			      => 'required',
             'description'     => 'required',
             'contact_person'  => 'required',
-            'contact_phone'  => 'required',
-            'contact_email'  => 'required|email'
+            'contact_phone'   => 'required',
+            'contact_email'   => 'required|email'
           ]);
 
+          // Check against Validation rules
           if( $validation->fails() )
           {
             return $this->setStatusCode(422)
             ->respondWithError($validation->errors()->getMessages());
-
           }
+
+          // Build record if Valid
           if($validation->passes())
           {
+            // General & Location info
+            $event->submitter             	= cas()->user();
+            $event->title                 	= $request->get('title');
+            $event->short_title           	= $request->get('short_title');
+            $event->description           	= $request->get('description');
+            $event->on_campus				      	= $request->get('on_campus');
+            $event->building				      	= $request->get('building');
+            $event->room						      	= $request->get('room');
+            $event->location              	= $request->get('location');
 
-            $event->author_id       = $request->get('author_id');
-            $event->title           	= $request->get('title');
-            $event->short_title     	= $request->get('short_title');
-            // $templocation = $request->get('location');serialize($templocation);
-            $event->on_campus					= $request->get('on_campus');
-            $event->building					= $request->get('building');
-            $event->room							= $request->get('room');
-            $event->location        	= $request->get('location');
-            $event->start_date      	= \Carbon\Carbon::parse($request->get('start_date'));
-            $event->start_time     		= \Carbon\Carbon::parse($request->get('start_time'));
-            $event->end_date      		= \Carbon\Carbon::parse($request->get('end_date'));
-            $event->end_time     			= \Carbon\Carbon::parse($request->get('end_time'));
-            $event->all_day						= $request->get('all_day');
-            $event->no_end_time				= $request->get('no_end_time');
-            $event->contact_person    = $request->get('contact_person');
-            $event->contact_phone     = $request->get('contact_phone');
-            $event->contact_email     = $request->get('contact_email');
-            $event->contact_fax				= $request->get('contact_fax');
-            $event->description     	= $request->get('description');
+            // Time & Date info
+            $event->start_date             	= \Carbon\Carbon::parse($request->get('start_date'));
+            $event->start_time     	      	= \Carbon\Carbon::parse($request->get('start_time'));
+            $event->end_date      	      	= \Carbon\Carbon::parse($request->get('end_date'));
+            $event->end_time     		      	= \Carbon\Carbon::parse($request->get('end_time'));
+            $event->all_day					      	= $request->get('all_day');
+            $event->no_end_time			      	= $request->get('no_end_time');
 
-            $event->is_approved       = 0; // events must go back into approver queue when updated
-            $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
-
+            // Contact & Links
+            $event->contact_person          = $request->get('contact_person');
+            $event->contact_phone           = $request->get('contact_phone');
+            $event->contact_email           = $request->get('contact_email');
+            $event->contact_fax			      	= $request->get('contact_fax');
             $event->related_link_1					= $request->get('related_link_1');
             $event->related_link_2					= $request->get('related_link_2');
             $event->related_link_3					= $request->get('related_link_3');
             $event->related_link_1_txt			= $request->get('related_link_1_txt');
             $event->related_link_2_txt			= $request->get('related_link_2_txt');
             $event->related_link_3_txt			= $request->get('related_link_3_txt');
-            // $event->reg_deadline						= $request->get('reg_deadline');
+
+            // Ticket info
+            $event->reg_deadline						= $request->get('reg_deadline');
             $event->free 										= $request->get('free');
             $event->cost 										= $request->get('cost');
-            $event->participants						=$request->get('participants');
-            $event->tickets									=$request->get('tickets');
-            $event->ticket_details_phone		=$request->get('ticket_details_phone');
-            $event->ticket_details_online		=$request->get('ticket_details_online');
-            $event->ticket_details_office		=$request->get('ticket_details_office');
-            $event->ticket_details_other		=$request->get('ticket_details_other');
+            $event->participants						= $request->get('participants');
+            $event->tickets									= $request->get('tickets');
+            $event->ticket_details_phone		= $request->get('ticket_details_phone');
+            $event->ticket_details_online		= $request->get('ticket_details_online');
+            $event->ticket_details_office		= $request->get('ticket_details_office');
+            $event->ticket_details_other		= $request->get('ticket_details_other');
 
+            // Misc
             $event->mini_calendar						= $request->get('mini_calendar');
             $event->lbc_approved						= $request->get('lbc_approved');
-            // $event->submission_date 				= \Carbon\Carbon::now();
+            $event->submission_date 				= \Carbon\Carbon::now();
 
-            $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
-            $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+            // Reset Approvals
+            $event->is_approved       = 0; // events must go back into approver queue when updated
+            $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
 
-            if($event->save()) {
-              // $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
+            if($event->save()) { // Record successfully Saved
+              // Make event categories and mini calendars
+              $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
+              $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+
+              // Relate event categories and mini calendars
               $event->eventcategories()->sync($categoriesRequest);
-              // $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
               $event->minicalendars()->sync($minicalsRequest);
+
+              // Save and return
               $event->save();
               return $this->setStatusCode(201)
               ->respondSavedWithData('Event successfully updated!',[ 'record_id' => $event->id ]);
-              // ->respondCreated('Event updated.');
             }
           }
         }

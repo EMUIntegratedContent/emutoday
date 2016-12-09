@@ -15883,6 +15883,7 @@ module.exports = {
         console.log('response.status=' + response.status);
         console.log('response.ok=' + response.ok);
         console.log('response.statusText=' + response.statusText);
+        // console.log('response==== ' + JSON.stringify(response));
         // console.log('response.data=' + response.data.json());
         // this.record = response.data.data;
         _this3.$set('record', response.data.data);
@@ -15891,20 +15892,22 @@ module.exports = {
         _this3.refreshUserEventTable();
       }, function (response) {
         //error callback
-        console.log("ERRORS");
+        console.log("FETCH ERRORS");
       }).bind(this);
     },
     checkOverData: function checkOverData() {
-      if (this.record.location != null) {
-        if (this.record.building != null) {
-          this.record.on_campus = 1;
+      // Used after fetching an event
+      // Check event location
+      // not null and has more than white space
+      if (this.record.building != null && /\S/.test(this.record.building)) {
+        // Is on campus
+        this.record.on_campus = 1; // bool
 
-          this.building = { id: 0, name: this.convertFromSlug(this.record.building) };
-          //this.building = this.record.building;
-        } else {
-          this.record.on_campus = 0;
-          this.record.locationoffcampus = this.record.location;
-        }
+        this.building = { id: 0, name: this.convertFromSlug(this.record.building) };
+      } else {
+        // Not on campus
+        this.record.on_campus = 0; // bool
+        this.record.locationoffcampus = this.record.location;
       }
 
       this.setupDatePickers();
@@ -15997,6 +16000,10 @@ module.exports = {
         this.record.location = this.convertToSlug(this.computedLocation);
       } else {
         this.record.location = this.record.locationoffcampus;
+        // clearout these values
+        this.record.building = null;
+        this.record.building_id = null;
+        this.record.room = null;
       }
       // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
       // this.record.categories = this.zcategories;
