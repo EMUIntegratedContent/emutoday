@@ -9,13 +9,12 @@ use JavaScript;
 
 class CalendarController extends Controller
 {
-
     protected $events;
 
     public function __construct(Event $events)
     {
         $this->events = $events;
-        $this->middleware('auth', ['only'=>'eventForm']);
+        $this->middleware('auth', ['only'=>['eventForm','userEvents']]);
     }
 
     // Route::get('calendar', 'EmuToday\CalendarController@index');
@@ -197,14 +196,21 @@ class CalendarController extends Controller
 
         public function userEvents(Event $event)
         {
-          if (\Auth::check()) {
-            $user = \Auth::user();
-          } else {
-            return redirect()->guest('/emichlogin');
-          }
+          $user = cas()->user();
 
-          $approveditems = $user->events()->where('is_approved', '1')->get();;
-          $submitteditems = $user->events()->where('is_approved', '0')->get();
+          if($user){
+            $approveditems = $this->events->where([
+                ['is_approved', 1],
+                ['submitter', $user]
+                ])->get();
+
+            $submitteditems = $this->events->where([
+                ['is_approved', 0],
+                ['submitter', $user]
+                ])->get();
+          } else {
+            return "There was an error. Events table could not be loaded";
+          }
 
           if(\Request::ajax()) {
             $view = \View::make('public.calendar.eventform', compact('event', 'approveditems','submitteditems'));
