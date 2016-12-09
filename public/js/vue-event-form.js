@@ -15966,7 +15966,7 @@ module.exports = {
 
         this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
         this.$http.post('/api/event/' + tempid + '/delete').then(function (response) {
-          // If admin
+          // If user admin
           if (window.location.href.indexOf("admin") > -1) {
             window.location.href = "/admin/event/queue";
           } else {

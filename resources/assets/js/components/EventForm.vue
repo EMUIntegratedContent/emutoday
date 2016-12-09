@@ -986,7 +986,7 @@ module.exports  = {
         this.$http.post('/api/event/'+tempid+'/delete')
 
         .then((response) =>{
-          // If admin
+          // If user admin
           if(window.location.href.indexOf("admin") > -1) {
             window.location.href = "/admin/event/queue";
           } else { // Not admin
