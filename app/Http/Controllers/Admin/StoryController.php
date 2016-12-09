@@ -59,17 +59,6 @@ class StoryController extends Controller
         return view('admin.story.queue', compact('storys','sroute', 'stypes', 'qtype'));
     }
 
-    // public function queueArticle(Story $story) {
-    //     $storys = $this->story;
-    //     $sroute = 'magazine';
-    //     $stypes  = 'article';
-    //     $qtype  = 'queuearticle';
-    //     \JavaScript::put([
-    //         'records' => $storys
-    //     ]);
-    //     return view('admin.magazine.article.queue', compact('storys','sroute', 'stypes', 'qtype'));
-    // }
-
     public function updateFromPreview(Request $request, $id)
     {
     $story = $this->story->findOrFail($id);

@@ -49,52 +49,12 @@ class MagazineController extends Controller
      */
      public function index()
      {
-        //  $magazine = Magazine::withCount(['mediafiles' => function ($query) {
-        //         $query->where('content', 'like', 'foo%');
-        //     }])->get();
-         //
-        //
-        //  $mediaFilesRequired = Mediafile::where([
-        //      ['group', 'magazine'],
-        //      ['is_required',  1]
-        //      ])->count();
-        //
-
-        //  $magazines_complete = Magazine::has('storys', '>=', $this->articleCount)->orderBy('start_date', 'desc')->get();
-        //  $magazines_incomplete = Magazine::has('storys', '<', $this->articleCount)->orderBy('start_date', 'desc')->get();
-
-
         $magazines_complete = Magazine::where('is_ready',1)->orderBy('start_date', 'desc')->get();
                   $magazines_incomplete = Magazine::where('is_ready',0)->orderBy('start_date', 'desc')->get();
 
 
-        //  dd($magazines_complete,$magazines_incomplete);
-        //  $magselect = Magazine::has('storys', '>=', 4)->select('id', 'template','start_date', 'end_date')->get();
-
-         // = \DB::table('pages')->where('storys',5)->select('id', 'template','start_date', 'end_date')->get();
-         // $strys = \DB::table('storys')->select('id', 'title', 'start_date', 'end_date')->get();
-        //  $pgs = collect($pgselect)->toJson();
-
-        //  JavaScript::put([
-        //      'pgselect' => $pgselect,
-        //      'pgs' => $pgs
-         //
-        //  ]);
-
-        //  dd($magazines_complete,$magazines_incomplete);
-
          return view('admin.magazine.index',compact('magazines_incomplete','magazines_complete'));
-
-         // return view('admin.page.index',compact('pages','pgs','strys'));
      }
-    // public function index()
-    // {
-    //   $magazines = $this->magazine->orderBy('updated_at', 'desc')->get();
-    //         JavaScript::put([
-    //                 'allmags' => $magazines,
-    //         ]);
-    //   return view('admin.magazine.index', compact('magazines'));
-    // }
 
     /**
      * Show the form for creating a new resource.

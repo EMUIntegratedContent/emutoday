@@ -126,11 +126,10 @@ class StoryImageController extends Controller
       $imgFileName = $storyImage->image_name . '.' . $storyImage->image_extension;
       $image = Image::make($imgFilePath)
       ->save(public_path() . $destinationFolder . $imgFileName);
-      // ->fit(100)
-      // ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
+      
       $storyImage->filename = $imgFileName;
     }
-    //  $storyImage->is_active = 1;
+    
     $storyImage->save();
     $story = $storyImage->story;
     $stype = $story->story_type;
@@ -143,9 +142,6 @@ class StoryImageController extends Controller
     $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
 
     return redirect($rurl);
-    //    return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
-
-    // return redirect(route('admin.story.edit', $story->id ));
   }
 
   public function edit($id)
@@ -169,19 +165,31 @@ class StoryImageController extends Controller
     return view('admin.storyimages.confirm', compact('storyImage'));
   }
 
-  public function destroy($id)
+  public function destroy($id, Request $request)
   {
     $storyImage = $this->storyImages->findOrFail($id);
-
-    if($request->img_type == 'front') {
+    
+    $story = Story::findOrFail($storyImage->story_id);
+    
+    if($request->image_type == 'front') {
       // If the front images goes away. Then the story can no longer be featured
       $story->is_featured = 0;
       $story->save();
     }
-    $pathToImageForDelete = public_path() . $storyImage->image_path . $storyImage->image_name . '.' . $storyImage->image_extension;
-    File::delete($pathToImageForDelete);
-    flash()->warning('Image has been deleted');
 
+    $pathToImageForDelete = public_path() .$storyImage->image_path . $storyImage->image_name . '.' . $storyImage->image_extension;
+
+    if(File::exists($pathToImageForDelete)){
+        //delete the actual file
+        File::delete($pathToImageForDelete);
+        flash()->warning('Image has been deleted');
+        
+        //delete the story_image record
+        $storyImage->delete();
+    } else {
+       flash()->warning('Image was not found and could not be deleted.');
+    }
+    
     return redirect()->back();//->with('status', 'Record has been deleted.');
   }
 

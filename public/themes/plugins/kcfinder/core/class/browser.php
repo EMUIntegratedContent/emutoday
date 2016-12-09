@@ -210,7 +210,7 @@ class browser extends uploader {
             !isset($_POST['newDir']) ||
             !$this->checkFilename($_POST['newDir'])
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("SEVENTEEN");
 
         $dir = $this->postDir();
         $newDir = $this->normalizeDirname(trim($_POST['newDir']));
@@ -234,7 +234,7 @@ class browser extends uploader {
             !isset($_POST['newName']) ||
             !$this->checkFilename($_POST['newName'])
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("TWO");
 
         $dir = $this->postDir();
         $newName = $this->normalizeDirname(trim($_POST['newName']));
@@ -257,7 +257,7 @@ class browser extends uploader {
             !isset($_POST['dir']) ||
             !strlen(rtrim(rtrim(trim($_POST['dir']), "/"), "\\"))
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("THREE");
 
         $dir = $this->postDir();
 
@@ -278,7 +278,7 @@ class browser extends uploader {
         if (!$this->config['access']['files']['upload'] ||
             !isset($_POST['dir'])
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("FOUR");
 
         $dir = $this->postDir();
 
@@ -307,7 +307,7 @@ class browser extends uploader {
             (false === ($file = "$dir/{$_POST['file']}")) ||
             !file_exists($file) || !is_readable($file)
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("FIVE");
 
         header("Pragma: public");
         header("Expires: 0");
@@ -332,7 +332,7 @@ class browser extends uploader {
             (false === ($file = "$dir/{$_POST['file']}")) ||
             !file_exists($file) || !is_readable($file) || !file::isWritable($file)
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("SIX");
 
         if (isset($this->config['denyExtensionRename']) &&
             $this->config['denyExtensionRename'] &&
@@ -356,7 +356,7 @@ class browser extends uploader {
         if (!$this->validateExtension($ext, $this->type))
             $this->errorMsg("Denied file extension.");
         if (!@rename($file, $newName))
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("SEVEN");
 
         $thumbDir = "{$this->thumbsTypeDir}/{$_POST['dir']}";
         $thumbFile = "$thumbDir/{$_POST['file']}";
@@ -376,7 +376,7 @@ class browser extends uploader {
             !file_exists($file) || !is_readable($file) || !file::isWritable($file) ||
             !@unlink($file)
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("EIGHT");
 
         $thumb = "{$this->thumbsTypeDir}/{$_POST['dir']}/{$_POST['file']}";
         if (file_exists($thumb)) @unlink($thumb);
@@ -391,7 +391,7 @@ class browser extends uploader {
             !isset($_POST['files']) || !is_array($_POST['files']) ||
             !count($_POST['files'])
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("NINE");
 
         $error = array();
         foreach($_POST['files'] as $file) {
@@ -443,7 +443,7 @@ class browser extends uploader {
             !isset($_POST['files']) || !is_array($_POST['files']) ||
             !count($_POST['files'])
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("TEN");
 
         $error = array();
         foreach($_POST['files'] as $file) {
@@ -493,7 +493,7 @@ class browser extends uploader {
             !is_array($_POST['files']) ||
             !count($_POST['files'])
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("ELEVEN");
 
         $error = array();
         foreach($_POST['files'] as $file) {
@@ -523,7 +523,7 @@ class browser extends uploader {
     protected function act_downloadDir() {
         $dir = $this->postDir();
         if (!isset($_POST['dir']) || $this->config['denyZipDownload'])
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("TWELVE");
         $filename = basename($dir) . ".zip";
         do {
             $file = md5(time() . session_id());
@@ -545,7 +545,7 @@ class browser extends uploader {
             !is_array($_POST['files']) ||
             $this->config['denyZipDownload']
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("THIRTEEN");
 
         $zipFiles = array();
         foreach ($_POST['files'] as $file) {
@@ -583,7 +583,7 @@ class browser extends uploader {
             !is_array($_POST['files']) ||
             $this->config['denyZipDownload']
         )
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("FOURTEEN");
 
         $zipFiles = array();
         foreach ($_POST['files'] as $file) {
@@ -824,7 +824,7 @@ class browser extends uploader {
         if (isset($_POST['dir']))
             $dir .= "/" . $_POST['dir'];
         if (!$this->checkFilePath($dir))
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("FIFTEEN");
         if ($existent && (!is_dir($dir) || !is_readable($dir)))
             $this->errorMsg("Inexistant or inaccessible folder.");
         return $dir;
@@ -835,7 +835,7 @@ class browser extends uploader {
         if (isset($_GET['dir']))
             $dir .= "/" . $_GET['dir'];
         if (!$this->checkFilePath($dir))
-            $this->errorMsg("Unknown error.");
+            $this->errorMsg("SIXTEEN");
         if ($existent && (!is_dir($dir) || !is_readable($dir)))
             $this->errorMsg("Inexistant or inaccessible folder.");
         return $dir;
