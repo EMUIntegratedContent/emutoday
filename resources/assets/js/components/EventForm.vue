@@ -989,7 +989,7 @@ module.exports  = {
           // If user admin
           if(window.location.href.indexOf("admin") > -1) {
             window.location.href = "/admin/event/queue";
-          } else { // Not admin
+          } else { // Not user admin
             this.$data = this.resetInital();
             this.formMessage.isOk = response.ok;
             this.formMessage.msg = response.body;

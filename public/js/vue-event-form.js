@@ -15970,7 +15970,7 @@ module.exports = {
           if (window.location.href.indexOf("admin") > -1) {
             window.location.href = "/admin/event/queue";
           } else {
-            // Not admin
+            // Not user admin
             _this6.$data = _this6.resetInital();
             _this6.formMessage.isOk = response.ok;
             _this6.formMessage.msg = response.body;
