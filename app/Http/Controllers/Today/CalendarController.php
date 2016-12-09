@@ -71,24 +71,13 @@ class CalendarController extends Controller
                 // $featuredevents =  Event::where('mediafile_id', '>', 0)->orderBy('priority', 'dsc')->get();
                 $featuredevents =  Event::where([
                     ['is_approved', 1],
-                    ['mediafile_id', '>', 0]
-                    ] )
+                    ['mediafile_id', '>', 0],
+                    ['start_date', '>=', date('Y-m-d')]
+                   ] )
                     ->orderBy('start_date', 'asc')
                     ->orderBy('priority', 'dsc')
                     ->take(5)->get();
-                    // dd($featuredevents);
-                    // JavaScript::put([
-                    //     'jsis' => 'hi',
-                    //     'varYearUnit' => $varYearUnit,
-                    //     'currentDate' => Carbon::now(),
-                    //     'currentMonth' => $cd->month,
-                    //     'currentMonthWord' => $cd->format('M'),
-                    //     'currentYear' => $cd->format('Y'),
-                    //     'firstOfMonthDayNumber' => $cd->firstOfMonth()->format('w'),
-                    //     'dayArray' => $monthArray,
-                    //     'dayInMonth' => $dayInMonth,
-                    //     'groupedevents' => $groupedevents,
-                    // ]);
+                
     return view('public.calendar.index', compact('events', 'featuredevents', 'cd','totalDaysInArray', 'monthArray', 'dayInMonth', 'varYearUnit', 'varMonthUnit', 'varDayUnit','eventid'));
 
 
@@ -133,10 +122,6 @@ class CalendarController extends Controller
             $dayCounter++;
         }
         $totalDaysInArray = count($monthArray);
-
-        // $monthDayCollection = collect($monthArray);
-
-
         $firstOfYear =  Carbon::create($cd->year,1,1);
         $lastDayOfYear = Carbon::create($cd->year,12,31);
 
@@ -159,7 +144,8 @@ class CalendarController extends Controller
         // $featuredevents =  Event::where('mediafile_id', '>', 0)->orderBy('priority', 'dsc')->get();
         $featuredevents =  Event::where([
             ['is_approved', 1],
-            ['mediafile_id', '>', 0]
+            ['mediafile_id', '>', 0],
+            ['start_date', '>=', date('Y-m-d')]
             ] )
             ->orderBy('start_date', 'asc')
             ->orderBy('priority', 'dsc')
@@ -177,6 +163,7 @@ class CalendarController extends Controller
                 'dayInMonth' => $dayInMonth,
                 'groupedevents' => $groupedevents,
             ]);
+            
             return view('public.calendar.index', compact('events', 'featuredevents', 'cd','totalDaysInArray', 'monthArray', 'dayInMonth', 'varYearUnit', 'varMonthUnit', 'varDayUnit','eventid'));
         }
         /**

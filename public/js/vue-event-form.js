@@ -16123,8 +16123,6 @@ module.exports = {
     },
 
     delEvent: function delEvent(e) {
-      var _this6 = this;
-
       e.preventDefault();
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
@@ -16134,10 +16132,7 @@ module.exports = {
 
         this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
         this.$http.post('/api/event/' + tempid + '/delete').then(function (response) {
-          _this6.$data = _this6.resetInital();
-          _this6.formMessage.isOk = response.ok;
-          _this6.formMessage.msg = response.body;
-          _this6.recordexists = false;
+          window.location.href = "/admin/event/queue";
         }, function (response) {
           console.log('Error: ' + (0, _stringify2.default)(response));
         }).bind(this);
@@ -16152,7 +16147,7 @@ module.exports = {
     },
 
     submitForm: function submitForm(e) {
-      var _this7 = this;
+      var _this6 = this;
 
       //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
@@ -16191,20 +16186,20 @@ module.exports = {
         console.log('response.ok=' + response.ok);
         console.log('response.statusText=' + response.statusText);
         console.log('response.data=' + response.data.message);
-        _this7.formMessage.msg = response.data.message;
-        _this7.formMessage.isOk = response.ok;
-        _this7.formMessage.isErr = false;
-        _this7.currentRecordId = response.data.newdata.record_id;
-        _this7.recordexists = true;
-        _this7.formErrors = {};
-        _this7.fetchCurrentRecord(_this7.currentRecordId);
+        _this6.formMessage.msg = response.data.message;
+        _this6.formMessage.isOk = response.ok;
+        _this6.formMessage.isErr = false;
+        _this6.currentRecordId = response.data.newdata.record_id;
+        _this6.recordexists = true;
+        _this6.formErrors = {};
+        _this6.fetchCurrentRecord(_this6.currentRecordId);
       }, function (response) {
-        _this7.formMessage.isOk = false;
-        _this7.formMessage.isErr = true;
+        _this6.formMessage.isOk = false;
+        _this6.formMessage.isErr = true;
         //error callback
         // console.log("FORM ERRORS     " + response.json());
 
-        _this7.formErrors = response.data.error.message;
+        _this6.formErrors = response.data.error.message;
         console.log(response.data.error.message);
       }).bind(this);
     },

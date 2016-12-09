@@ -985,11 +985,7 @@ module.exports  = {
         this.$http.post('/api/event/'+tempid+'/delete')
 
         .then((response) =>{
-          this.$data = this.resetInital();
-          this.formMessage.isOk = response.ok;
-          this.formMessage.msg = response.body;
-          this.recordexists = false;
-
+            window.location.href = "/admin/event/queue";
         }, (response) => {
           console.log('Error: '+JSON.stringify(response))
         }).bind(this);

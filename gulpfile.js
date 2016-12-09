@@ -40,7 +40,7 @@ elixir(function(mix) {
                 'story-styles.css',
                 'magazine-styles.css',
                 'media-queries.css',
-                'tweeks.css',
+                'tweeks.css'
                 ], 'public/css/public-styles.css');
 
     mix.scripts([
@@ -140,7 +140,7 @@ elixir(function(mix) {
      */
         mix.styles([
                     'admin-less.css',
-                    'admin.css'
+                    'admin.css',
                 ], 'public/css/admin-styles.css');
 
     /*
