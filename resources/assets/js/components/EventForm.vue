@@ -1,7 +1,6 @@
 <template>
   <form>
     <slot name="csrf"></slot>
-    <!-- <slot name="author_id" v-model="record.author_id"></slot> -->
     <div class="row">
       <div v-bind:class="md12col">
         <div v-show="formMessage.isOk"  :class="calloutSuccess">
@@ -540,7 +539,6 @@ module.exports  = {
   directives: {},
   components: {vSelect},
   props:{
-    authorid: {default : '0'},
     recordexists: {default: false},
     recordid: {default: ''},
     framework: {default: 'foundation'}
@@ -602,7 +600,6 @@ module.exports  = {
       minicals: null,
       minicalendars: {},
       record: {
-        user_id: 0,
         on_campus: 1,
         all_day: 0,
         no_end_time: 0,
@@ -628,7 +625,6 @@ module.exports  = {
     }
   },
   ready() {
-    this.record.user_id = this.authorid;
     if(this.recordexists){
       console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid)
@@ -990,10 +986,37 @@ module.exports  = {
           if(window.location.href.indexOf("admin") > -1) {
             window.location.href = "/admin/event/queue";
           } else { // Not user admin
-            this.$data = this.resetInital();
+            // Clear out values;
+            this.record= {
+              on_campus: 1,
+              all_day: 0,
+              no_end_time: 0,
+              free: 0,
+              title: '',
+              description: '',
+              mini_calendar: '',
+              building: '',
+              categories:[]
+            };
+            this.record.location = '';
+            this.building = null;
+            this.buildings = null;
+            this.record.room = null;
+            this.record.building = null;
+            this.record.building_id = null;
+            this.record.lbc_approved= false;
+            this.record.sdate= '';
+            this.record.edate= '';
+            this.record.stime= '';
+            this.record.rdate= '';
             this.formMessage.isOk = response.ok;
             this.formMessage.msg = response.body;
             this.recordexists = false;
+            var d = new Date();
+            var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+            this.record.start_date = tempdate;
+            this.record.end_date = tempdate;
+            this.setupDatePickers();
           }
         }, (response) => {
           console.log('Error: '+JSON.stringify(response))
@@ -1016,7 +1039,6 @@ module.exports  = {
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      this.record.author_id = this.authorid;
       // this.record.related_link_1 = this.relatedLink1;
       // this.record.related_link_1 = this.relatedLink1;
       if(this.record.on_campus == true) {
@@ -1054,8 +1076,11 @@ module.exports  = {
         this.formMessage.isOk = response.ok;
         this.formMessage.isErr = false;
         this.currentRecordId = response.data.newdata.record_id;
+        this.record_id = response.data.newdata.record_id;
+        this.recordid = response.data.newdata.record_id;
         this.recordexists = true;
         this.formErrors = {};
+        this.refreshUserEventTable();
         this.fetchCurrentRecord(this.currentRecordId)
 
       }, (response) => {
@@ -1077,110 +1102,7 @@ module.exports  = {
       return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
         return arguments[0].toUpperCase();
       });
-    },
-
-    resetInital: function(){
-      // oh gosh.. is there a better way?
-      return {
-        minicalslist:[],
-        dateObject:{
-          startDateMin: '',
-          startDateDefault: '',
-          endDateMin: '',
-          endDateDefault: '',
-          regDateMin: '',
-          regDateDefault: ''
-        },
-        linkText1: '',
-        linkUrl1: '',
-        linkText2: '',
-        linkUrl2: '',
-        linkText3: '',
-        linkUrl3:'',
-        startdatePicker:null,
-        enddatePicker:null,
-        starttimePicker:null,
-        endtimePicker:null,
-        regdeadlinePicker:null,
-        sdate: '',
-        edate: '',
-        stime: '',
-        rdate: '',
-        ticketoptions: [
-          { label: 'Online', value: 'online'},
-          { label: 'Phone', value: 'phone'},
-          { label: 'Ticket Office', value: 'office'},
-          { label: 'Online, Phone and Ticket Office', value: 'all'},
-          { label: 'Other', value: 'other'},
-        ],
-        participants: [
-          { label: 'Campus Only', value: 'campus'},
-          { label: 'Open to Public', value: 'public'},
-          { label: 'Students Only', value: 'students'},
-          { label: 'Invitation Only', value: 'invite'},
-          { label: 'Tickets Required', value: 'tickets'},
-        ],
-        totalChars: {
-          start: 0,
-          title: 100,
-          description: 255
-        },
-        building_in: [],
-        building: null,
-        buildings: [],
-        // newbuilding: '',
-        //
-        // zbuildings: [],
-        zcategories: [],
-        zcats: [],
-        categories: {},
-        minicals: null,
-        minicalendars: {},
-        record: {
-          user_id: 0,
-          on_campus: 1,
-          all_day: 0,
-          no_end_time: 0,
-          free: 0,
-          title: '',
-          description: '',
-          mini_calendar: '',
-          building: '',
-          categories:[]
-        },
-        response: {
-
-        },
-        formStatus: {},
-        vModelLike: "",
-        formMessage: {
-          isOk: false,
-          isErr: false,
-          msg: ''
-        },
-        formInputs : {},
-        formErrors : {}
-      }
     }
-  },
-
-  watch: {
-
-  },
-
-
-  events: {
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
   }
 };
-
 </script>
