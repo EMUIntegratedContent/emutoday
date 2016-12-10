@@ -34,13 +34,12 @@
       <!-- /.small-12 columns -->
     </div>
     <!-- /.row -->
-
     <div class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
           <label>Related Link</label>
-          <p class="help-text" id="title-helptext">Please enter the url for your external web page. (www.yourlink.com)</p>
-          <div class="input-group">
+          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+          <div class="input-group input-group-flat">
             <span :class="inputGroupLabel">http://</span>
             <input v-model="record.link" class="form-control" v-bind:class="[formErrors.link ? 'invalid-input' : '']" name="link" type="text">
           </div>
@@ -50,24 +49,21 @@
     </div><!-- /.row -->
     <div class="row">
       <div :class="md4col">
-        <div v-bind:class="formGroup">
-          <label>Related Link Text</label>
-          <p class="help-text" id="link_txt-helptext">Please enter display text</p>
+        <div v-bind:class="formGroup" class="input-group">
+          <label>Meaning desciption for Link</label>
+          <p class="help-text" id="link_txt-helptext">(ex. Announcement webpage)</p>
           <input v-model="record.link_txt" class="form-control" v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text">
-          <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your external link.</p>
+          <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
         </div>
       </div><!-- /.col-md-4 -->
       <div :class="md8col">
-        <template v-if="record.link_txt">
-          <div v-bind:class="formGroup">
-            <label>Below is how it may look.</label>
-            <p class="help-text">Example of Related Link</p>
-            <h5 class="form-control">For more information visit: <a href="#"> {{record.link_txt}}</a>.</h5>
-          </div>
-        </template>
+        <div v-bind:class="formGroup">
+          <label>Example of Related Link</label>
+          <p class="help-text">Below is how it may look. </p>
+          <h5 class="form-control">For more information visit: <a href="#"> {{record.link_txt}}</a>.</h5>
+        </div>
       </div><!-- /.md6col -->
     </div>
-    <br/>
     <div v-if="generalForm"  class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
@@ -560,6 +556,9 @@ module.exports = {
         this.formErrors = response.data.error.message;
 
       }).bind(this);
+      setTimeout(function(){
+        location.reload();
+      },4000);
     }
   },
   watch: {
