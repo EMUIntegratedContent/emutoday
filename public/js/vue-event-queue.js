@@ -17011,12 +17011,8 @@ module.exports = {
       var files = this.$els.eventimg.files;
       var data = new FormData();
       data.append('event_id', this.formInputs.event_id);
-      // Since we have multiple files, we will loop through them and add them to an array in our form object.
-      //    for(var key in this.formInputs.attachment) {
+
       data.append('eventimg', files[0]);
-      //    }
-      // var formid = '#form-mediafile-upload'+this.item.id;
-      // var action =  $(formid).action;
       var action = '/api/event/addMediaFile/' + this.formInputs.event_id;
       this.$http.post(action, data).then(function (response) {
         console.log('good?' + response);
@@ -17024,11 +17020,6 @@ module.exports = {
       }, function (response) {
         console.log('bad?' + response);
       });
-      //    var action = $('#form-submit-ticket').action;
-      // POST the data to our Laravel controller
-      //    this.$http.post(action, form, function(response) {
-      //        console.log('Success:', response)
-      //    })
     },
 
     updateItem: function updateItem() {
@@ -17058,33 +17049,6 @@ module.exports = {
 
       console.log(ndata);
     },
-
-    //    AddMediaFileToEvent: function(item, args){
-    //        console.log(args)
-    //        var currentRecordId =  item.id;
-    //        var currentRecord = args;
-    //
-    //        this.$http.patch('/api/event/updateItem/' + item.id , currentRecord , {
-    //            method: 'PATCH'
-    //        } )
-    //        .then((response) => {
-    //            console.log('good?'+ response)
-    //            var movedIndex = this.movedItemIndex(movedid);
-    //                // this.xitems.pop(movedRecord);
-    //            // if (movedRecord.approved == 1) {
-    //            //         this.xitems.splice(movedIndex, 1);
-    //            //      this.items.push(movedRecord);
-    //            //  } else {
-    //            //      this.items.splice(movedIndex, 1);
-    //            //     this.xitems.push(movedRecord);
-    //            //  }
-    //
-    //                console.log('movedIndex==='+ movedIndex)
-    //            }, (response) => {
-    //                console.log('bad?'+ response)
-    //            });
-    //    },
-
 
     togglePanel: function togglePanel(ev) {
       if (this.showPanel === false) {

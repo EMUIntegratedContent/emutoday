@@ -123,7 +123,7 @@ class StoryImageController extends Controller
         $imgFileExtension = $imgFileOriginalExtension;
       }
       $storyImage->image_extension = $imgFileExtension;
-      $imgFileName = $storyImage->image_name . '.' . $storyImage->image_extension;
+      $imgFileName = $storyImage->image_name . '-'. date('YmdHis') . '.' . $storyImage->image_extension;
       $image = Image::make($imgFilePath)
       ->save(public_path() . $destinationFolder . $imgFileName);
       

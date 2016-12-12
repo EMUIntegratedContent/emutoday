@@ -264,7 +264,7 @@ class EventController extends ApiController
             default:
             $imgFileExtension = $imgFileOriginalExtension;
           }
-          $mediafile->name = 'event'. '-' .$event->id;
+          $mediafile->name = 'event'. '-' .$event->id . '-' . date('YmdHis');
           $mediafile->ext = $imgFileExtension;
           $imgFileName = $mediafile->name . '.' . $mediafile->ext;
           $image = Image::make($imgFilePath)

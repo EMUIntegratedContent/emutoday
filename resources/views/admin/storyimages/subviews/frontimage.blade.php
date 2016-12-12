@@ -26,7 +26,7 @@
             {!! Form::hidden('image_name', null, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
 
         <div class="form-group">
-            <label class="control-label" for="image">Select File AHAHHAHA!</label>
+            <label class="control-label" for="image">Select File</label>
             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
             <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
 
