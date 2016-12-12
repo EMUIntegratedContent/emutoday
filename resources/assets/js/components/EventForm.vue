@@ -76,7 +76,7 @@
   <div :class="md6col">
     <div class="form-group">
       <label for="start-date">Start Date: <span :class="iconStar" class="reqstar"></span></label>
-      <input id="start-date" :class="[formErrors_date ? 'invalid-input' : '']" type="text" v-model="record.start_date" aria-describedby="errorStartDate" />
+      <input id="start-date" :class="[formErrors.start_date ? 'invalid-input' : '']" type="text" v-model="record.start_date" aria-describedby="errorStartDate" />
       <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
     </div><!--form-group -->
   </div><!-- /.md6col -->
@@ -276,7 +276,8 @@
   <div :class="md6col">
     <div class="form-group">
       <label for="reg-deadline">Registration Deadline</label>
-      <input id="reg-deadline" type="text" v-model="record.reg_deadline" aria-describedby="errorRegDeadline"  />
+      <input id="reg-deadline" :class="[formErrors.reg_deadline ? 'invalid-input' : '']" type="text" v-model="record.reg_deadline" aria-describedby="errorRegDeadline" />
+      <p v-if="formErrors.reg_deadline" class="help-text invalid">Error</p>
     </div>
   </div><!-- /.md6col-->
 </div><!-- /.row -->
@@ -637,9 +638,9 @@ module.exports  = {
     this.fetchForSelectCategoriesList("");
 
     // Don't submit form on 'enter'
-    $(window).keydown(function(event){
-      if(event.keyCode == 13) {
-        event.preventDefault();
+    $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
+      if(e.which == 13) {
+        e.preventDefault();
         return false;
       }
     });
@@ -913,13 +914,13 @@ module.exports  = {
         console.log('response.status=' + response.status);
         console.log('response.ok=' + response.ok);
         console.log('response.statusText=' + response.statusText);
-        // console.log('response==== ' + JSON.stringify(response));
-        // console.log('response.data=' + response.data.json());
+        console.log('response.data=' + JSON.stringify(response.data.data.start_time));
         // this.record = response.data.data;
         this.$set('record', response.data.data)
 
         this.checkOverData();
         this.refreshUserEventTable();
+        this.record.start_time = response.data.data.start_time;
       }, (response) => {
         //error callback
         console.log("FETCH ERRORS");
@@ -960,26 +961,6 @@ module.exports  = {
         loading ? loading(true): undefined;
       })
     },
-    // fetchForSelectMiniCalendarList(search,loading) {
-    //     loading(true)
-    //     this.$http.get('/api/minicals',{
-    //         q: search
-    //     }).then(resp => {
-    //         this.minicals = resp.data;
-    //         loading(false)
-    //     })
-    // },
-    fetchMiniCalendarList: function() {
-      this.$http.get('/api/minicalendars').then(function(response){
-        // console.log('response->minicalendars=' + JSON.stringify(response.data));
-        this.minicalendars = response.data.data;
-
-      }, function(response) {
-        //  this.$set(this.formErrors, response.data);
-        console.log(response);
-      });
-    },
-
     delEvent: function(e) {
       e.preventDefault();
       this.formMessage.isOk = false;
@@ -1026,6 +1007,7 @@ module.exports  = {
             var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
             this.record.start_date = tempdate;
             this.record.end_date = tempdate;
+            this.record.reg_deadline = tempdate;
             this.setupDatePickers();
           }
         }, (response) => {
@@ -1097,11 +1079,14 @@ module.exports  = {
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
         //error callback
-        // console.log("FORM ERRORS     " + response.json());
+        console.log("FORM ERRORS" + JSON.stringify(response));
 
-        this.formErrors = response.data.error.message;
         console.log(response.data.error.message);
+        this.formErrors = response.data.error.message;
+        // console.log(response.data.error.message);
       }).bind(this);
+      this.record.start_time= "";
+      this.record.end_time= "";
     },
     convertToSlug:function(value){
       return value.toLowerCase()

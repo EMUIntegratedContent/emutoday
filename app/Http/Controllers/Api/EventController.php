@@ -170,12 +170,12 @@ class EventController extends ApiController
           $event->location              	= $request->get('location');
 
           // Time & Date info
-          $event->start_date             	= \Carbon\Carbon::parse($request->get('start_date'));
-          $event->start_time     	      	= \Carbon\Carbon::parse($request->get('start_time'));
-          $event->end_date      	      	= \Carbon\Carbon::parse($request->get('end_date'));
-          $event->end_time     		      	= \Carbon\Carbon::parse($request->get('end_time'));
           $event->all_day					      	= $request->get('all_day');
           $event->no_end_time			      	= $request->get('no_end_time');
+          $event->start_date             	= \Carbon\Carbon::parse($request->get('start_date'));
+          $request->get('all_day') == 1 ? $event->start_time = NULL : $event->start_time = \Carbon\Carbon::parse($request->get('start_time'));
+          $event->end_date      	      	= \Carbon\Carbon::parse($request->get('end_date'));
+          ($request->get('no_end_time') == 1 || $request->get('all_day') == 1) ? $event->end_time = NULL : $event->end_time = \Carbon\Carbon::parse($request->get('end_time'));
 
           // Contact & Links
           $event->contact_person          = $request->get('contact_person');
@@ -388,12 +388,12 @@ class EventController extends ApiController
             $event->location              	= $request->get('location');
 
             // Time & Date info
-            $event->start_date             	= \Carbon\Carbon::parse($request->get('start_date'));
-            $event->start_time     	      	= \Carbon\Carbon::parse($request->get('start_time'));
-            $event->end_date      	      	= \Carbon\Carbon::parse($request->get('end_date'));
-            $event->end_time     		      	= \Carbon\Carbon::parse($request->get('end_time'));
             $event->all_day					      	= $request->get('all_day');
             $event->no_end_time			      	= $request->get('no_end_time');
+            $event->start_date             	= \Carbon\Carbon::parse($request->get('start_date'));
+            $request->get('all_day') == 1 ? $event->start_time = NULL : $event->start_time = \Carbon\Carbon::parse($request->get('start_time'));
+            $event->end_date      	      	= \Carbon\Carbon::parse($request->get('end_date'));
+            ($request->get('no_end_time') == 1 || $request->get('all_day') == 1) ? $event->end_time = NULL : $event->end_time = \Carbon\Carbon::parse($request->get('end_time'));
 
             // Contact & Links
             $event->contact_person          = $request->get('contact_person');
