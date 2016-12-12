@@ -136,6 +136,7 @@ export default  {
     filterItemsUnapproved: function(items) {
       return items.filter(function(item) {
         return item.is_approved === 0
+        // return (item.is_approved === 0 && (item.priority + item.home_priority) === 0);
       });
     },
     filterItemsPromoted: function(items) {
@@ -145,13 +146,8 @@ export default  {
     },
     filterItemsLive: function(items) {
       return items.filter(function(item) {
-        return moment(item.start_date_time).isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.home_priority > 0 || item.priority > 0 || item.is_promoted === 1;  // true
-
-        // let thisDateTime = item.start_date + ' ' + item.start_time;
-        // return moment(thisDateTime, "YYYY-MM-DD h:mm A").isSameOrBefore(moment()) && item.is_approved === 1 || item.is_approved === 1 && item.priority > 0 || item.is_promoted === 1;  // true
-
-        // return moment(item.start_date).isAfter(moment())
-        // return item.live === 1
+        return (moment(item.start_date_time).isSameOrBefore(moment()) && item.is_approved === 1) || // Past NOW and approved
+        (item.is_approved === 1 && (item.home_priority > 0 || item.priority > 0 || item.is_promoted === 1)); // Approved with promotion / priority
       });
     },
     // checkIndexWithValue: function (chitem){

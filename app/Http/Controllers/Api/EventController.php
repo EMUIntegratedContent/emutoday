@@ -35,7 +35,7 @@ class EventController extends ApiController
   function __construct()
   {
     // $this->middleware('auth');
-    $this->middleware('web', ['only' => [
+    $this->middleware(['web','auth'], ['only' => [
       'queueLoad'
       ]]);
     }
@@ -379,7 +379,6 @@ class EventController extends ApiController
           if($validation->passes())
           {
             // General & Location info
-            $event->submitter             	= cas()->user();
             $event->title                 	= $request->get('title');
             $event->short_title           	= $request->get('short_title');
             $event->description           	= $request->get('description');
