@@ -10,11 +10,11 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
 {
   public function transform(Event $event)
   {
-      
+
         $user_id    = null;
 
         if($event->user_id != null){
-            $user_id    = $event->user_id; 
+            $user_id    = $event->user_id;
         }
     return [
       'id'                => (int) $event->id,
@@ -42,7 +42,8 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'related_link_2_txt'           => $event->related_link_2_txt,
       'related_link_3'           => $event->related_link_3,
       'related_link_3_txt'           => $event->related_link_3_txt,
-      'reg_deadline'           => $event->reg_deadline,
+      'reg_deadline'   => is_null($event->reg_deadline)?null:$event->reg_deadline->toDateString(),
+      // 'reg_deadline'           => $event->reg_deadline,
       'cost'           => $event->cost,
       'free'           => $event->free,
       'participants'           => $event->participants,
