@@ -633,6 +633,16 @@ module.exports  = {
       this.setupDatePickers();
     }
     this.fetchMiniCalsList();
+    this.fetchForSelectBuildingList("");
+    this.fetchForSelectCategoriesList("");
+
+    // Don't submit form on 'enter'
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
   },
 
   computed: {
@@ -933,21 +943,21 @@ module.exports  = {
       this.setupDatePickers();
     },
     fetchForSelectCategoriesList(search,loading){
-      loading(true)
+      loading ? loading(true): undefined;
       this.$http.get('/api/categorylist',{
         q: search
       }).then(resp => {
         this.zcats = resp.data;
-        loading(false)
+        loading ? loading(true): undefined;
       })
     },
     fetchForSelectBuildingList(search,loading) {
-      loading(true)
+      loading ? loading(true): undefined;
       this.$http.get('/api/buildinglist',{
         q: search
       }).then(resp => {
         this.buildings = resp.data;
-        loading(false)
+        loading ? loading(true): undefined;
       })
     },
     // fetchForSelectMiniCalendarList(search,loading) {
