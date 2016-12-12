@@ -35,7 +35,7 @@ class EventController extends ApiController
   function __construct()
   {
     // $this->middleware('auth');
-    $this->middleware('web', ['only' => [
+    $this->middleware(['web','auth'], ['only' => [
       'queueLoad'
       ]]);
     }
