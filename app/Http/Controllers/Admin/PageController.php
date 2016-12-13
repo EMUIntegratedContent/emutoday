@@ -115,9 +115,6 @@ class PageController extends Controller
                 $connectedStorys = $page->storys()->get();
 
                 $original_story_ids = $connectedStorys->pluck('id');
-
-                // original_story_ids = JSvars.original_story_ids;
-                // mainrecord_id = JSvars.mainrecordid;
         JavaScript::put([
             'mainrecordid' => $page->id,
             'original_story_ids'=> $original_story_ids,
@@ -125,14 +122,7 @@ class PageController extends Controller
             'storyimgs' => $storyimgs->toArray(),
             'storys' => $storys->toArray()
         ]);
-        // return view('admin.page.form', compact('page', 'storys'));
-        //return view('admin.magazine.edit', compact('page', 'storys'));
-        //
-        // dd($page,$storys,$storyimgs);
         return view('admin.page.edit', compact('page', 'storys','storyimgs'));
-
-        //  return view('admin.page.edit', compact('page', 'storys'));
-
     }
 
     public function update(Request $request, $id)
