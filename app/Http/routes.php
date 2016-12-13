@@ -137,10 +137,11 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('calendar/event/{id}', 'Today\CalendarController@show');
     Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
 
+    Route::get('magazine/archives', 'Today\MagazineController@archives');
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
-
+    
     Route::get('hub', 'MainController@index');
 
     Route::get('search','SearchController@search' );
@@ -197,6 +198,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('page', 'Admin\PageController');
 
         Route::get('magazine/form', ['as' => 'admin_magazine_form', 'uses' => 'Admin\MagazineController@form']);
+        Route::get('magazine/archives', ['as' => 'admin_magazine_archives', 'uses' => 'Admin\MagazineController@archives']);
         Route::get('magazine/{magazine}/edit', ['as' => 'admin_magazine_edit', 'uses' => 'Admin\MagazineController@edit']);
         Route::get('magazine/delete/{id?}', ['as' => 'admin_magazine_delete', 'uses' => 'Admin\MagazineController@delete'] );
         Route::post('magazine/{magazine}/addCoverImage', ['as' => 'store_magazine_cover', 'uses' => 'Admin\MagazineController@addCoverImage']);

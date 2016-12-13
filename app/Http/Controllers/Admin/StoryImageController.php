@@ -176,8 +176,8 @@ class StoryImageController extends Controller
       $story->is_featured = 0;
       $story->save();
     }
-
-    $pathToImageForDelete = public_path() .$storyImage->image_path . $storyImage->image_name . '.' . $storyImage->image_extension;
+    
+    $pathToImageForDelete = public_path() . $storyImage->image_path . $storyImage->filename;
 
     if(File::exists($pathToImageForDelete)){
         //delete the actual file

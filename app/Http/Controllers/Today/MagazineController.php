@@ -188,4 +188,8 @@ class MagazineController extends Controller
     private function noCurrentIssue(){
         return view('public.magazine.noissues');
     }
+    
+    public function archives(){
+        return view('public.magazine.archives');
+    }
 }
