@@ -110,13 +110,13 @@
     <div :class="md6col">
       <div v-show="hasStartTime" class="form-group">
         <label for="start-time">Start Time: <span :class="iconStar" class="reqstar"></span></label>
-        <input id="start-time" class="form-control" type="text" v-model="record.start_time" />
+        <input id="start-time" class="form-control" type="text" v-model="record.start_time" readonly/>
       </div><!-- /.form-group -->
     </div><!-- /.md6col -->
     <div :class="md6col">
       <div v-show="hasEndTime" class="form-group">
         <label for="end-time">End Time: <span :class="iconStar" class="reqstar"></span></label>
-        <input id="end-time" class="form-control" type="text" v-model="record.end_time" />
+        <input id="end-time" class="form-control" type="text" v-model="record.end_time" readonly/>
       </div><!-- /.form-group -->
     </div><!-- /.md6col -->
   </div><!-- /.row -->
@@ -813,7 +813,7 @@ module.exports  = {
         minDate: self.dateObject.startDateMin,
         defaultDate: self.dateObject.startDateDefault,
         enableTime: false,
-        altFormat: "m-d-Y",
+        // altFormat: "m-d-Y",
         altInput: true,
         altInputClass: "form-control",
         dateFormat: "Y-m-d",
@@ -830,7 +830,7 @@ module.exports  = {
         minDate: self.dateObject.endDateMin,
         defaultDate: self.dateObject.endDateDefault,
         enableTime: false,
-        altFormat: "m-d-Y",
+        // altFormat: "m-d-Y",
         altInput: true,
         altInputClass: "form-control",
         dateFormat: "Y-m-d",
@@ -867,7 +867,7 @@ module.exports  = {
         minDate: self.dateObject.regDateMin,
         defaultDate: self.dateObject.regDateDefault,
         enableTime: false,
-        altFormat: "m-d-Y",
+        // altFormat: "m-d-Y",
         altInput: true,
         altInputClass:"form-control",
         dateFormat: "Y-m-d",

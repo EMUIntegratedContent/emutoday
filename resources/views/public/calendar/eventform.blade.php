@@ -15,7 +15,7 @@
         <div class="medium-6 columns">
           <h3 class="cal-caps toptitle">Events Calendar</h3>
           <div id="vue-event-form">
-            <event-form v-ref:foo authorid="" eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
+            <event-form v-ref:foo eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
               <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
             </event-form>
           </div><!-- /#vue-event-form -->
@@ -44,9 +44,19 @@
                   @foreach($submitteditems as $item)
                   <tr id="{{ $item->id }}">
                     <td>{{ $item->title }}</td>
-                    <td>{{ $item->start_date }}</td>
-                    <td>{{ $item->end_date }}</td>
-                    <td>{{ $item->created_at }}</td>
+                    <td>
+                      {{ Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}
+                      @unless($item->start_time == null) -
+                        {{ Carbon\Carbon::parse($item->start_time)->format('g:ia') }}
+                      @endunless
+                    </td>
+                    <td>
+                      {{ Carbon\Carbon::parse($item->end_date)->format('M d, Y') }}
+                      @unless($item->end_time == null) -
+                        {{ Carbon\Carbon::parse($item->end_time)->format('g:ia') }}
+                      @endunless
+                    </td>
+                    <td>{{ Carbon\Carbon::parse($item->created_at)->format('M d, Y - g:ia') }}</td>
                     <td class="editBtn"><a href="#">EDIT</a></td>
                     @if($item->is_canceled == 1)
                     <!-- Do they need to ablity to cancel UNapproved events? Why bother approving a canceled event? -->
@@ -83,9 +93,19 @@
                   @foreach($approveditems as $item)
                   <tr id="{{ $item->id }}">
                     <td>{{ $item->title }}</td>
-                    <td>{{ $item->start_date }}</td>
-                    <td>{{ $item->end_date }}</td>
-                    <td>{{ $item->approved_date }}</td>
+                    <td>
+                      {{ Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}
+                      @unless($item->start_time == null) -
+                        {{ Carbon\Carbon::parse($item->start_time)->format('g:ia') }}
+                      @endunless
+                    </td>
+                    <td>
+                      {{ Carbon\Carbon::parse($item->end_date)->format('M d, Y') }}
+                      @unless($item->end_time == null) -
+                        {{ Carbon\Carbon::parse($item->end_time)->format('g:ia') }}
+                      @endunless
+                    </td>
+                    <td>{{ Carbon\Carbon::parse($item->approved_date)->format('M d, Y') }}</td>
                     <td class="editBtn"><a href="#">EDIT</a></td>
                     @if($item->is_canceled == 1)
                     <td class="cancelBtn"><a href="#">UNCANCEL</a></td>

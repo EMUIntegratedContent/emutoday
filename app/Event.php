@@ -136,15 +136,22 @@ class Event extends Model
 
   public function getStartTimeAttribute($value)
   {
-    return Carbon::parse($value)->format('g:i A');
+    if ($value != NULL){
+      return Carbon::parse($value)->format('g:i A');
+    } else {
+      return NULL;
+    }
   }
   public function getEndTimeAttribute($value)
   {
-    return Carbon::parse($value)->format('g:i A');
+    if ($value != NULL){
+      return Carbon::parse($value)->format('g:i A');
+    } else {
+      return NULL;
+    }
   }
   public function scopeAfterThisDate($query, $date)
   {
-
      return $query->where('start_date', '>', $date);
   }
 }

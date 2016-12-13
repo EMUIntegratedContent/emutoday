@@ -43,9 +43,9 @@
                   @foreach($submitteditems as $item)
                   <tr id="{{ $item->id }}">
                     <td>{{ $item->title }}</td>
-                    <td>{{ $item->start_date }}</td>
-                    <td>{{ $item->end_date }}</td>
-                    <td>{{ $item->created_at }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->end_date)->format('M d, Y') }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->created_at)->format('M d, Y - g:ia') }}</td>
                     <td class="editBtn"><a href="#">EDIT</a></td>
                   </tr>
                   @endforeach
@@ -72,9 +72,9 @@
                   @foreach($approveditems as $item)
                   <tr>
                     <td>{{ $item->title }}</td>
-                    <td>{{ $item->start_date }}</td>
-                    <td>{{ $item->end_date }}</td>
-                    <td>{{ $item->approved_date }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->end_date)->format('M d, Y') }}</td>
+                    <td>{{ Carbon\Carbon::parse($item->approved_date)->format('M d, Y') }}</td>
                   </tr>
                   @endforeach
                 </tbody>
