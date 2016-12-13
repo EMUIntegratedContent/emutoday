@@ -56,7 +56,6 @@
         <div class="calendar-other-categories">
           <h4>Other Calendars</h4>
           <ul class="other">
-            <li><a href="http://www.emich.edu/alumni/engage/events/">Alumni</a></li>
             <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
             <li><a href="http://www.emueagles.com/calendar.aspx">Athletics</a></li>
             <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
