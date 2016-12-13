@@ -16066,7 +16066,7 @@ module.exports = {
         _this3.$set('record', response.data.data);
 
         _this3.checkOverData();
-        _this3.refreshUserEventTable();
+        // this.refreshUserEventTable();
         _this3.record.start_time = response.data.data.start_time;
       }, function (response) {
         //error callback

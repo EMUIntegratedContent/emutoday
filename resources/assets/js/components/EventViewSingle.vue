@@ -56,9 +56,6 @@
         <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
         <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
       </template>
-      <p>
-        <small>{{item.id}}</small>
-      </p>
 
       <!--<form method="POST" action="api/calendar/addevent">
         <input type="hidden" name="eventId" value="{{item.id}}" />

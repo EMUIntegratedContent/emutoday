@@ -12,38 +12,52 @@
           <col width="300"/>
         </colgroup>
         @foreach ($storys as $story)
-        <tr>
-          <td class="redips-mark {{$story->is_featured?'frontstory-btn':'smallstory-btn'}}">
-            {{$story->id}}
-          </td>
+            @if($story->is_featured)
+                <tr>
+                    <td class="redips-mark frontstory-btn">
+                      {{$story->id}}
+                    </td>
 
-          @if($story->is_featured)
-          <td class="redips-mark drag-{{$story->id}}x">
-            <div id="drag-{{$story->id}}x"
-              class="redips-drag frontstory-btn"
-              data-stype="{{$story->story_type}}"
-              data-imgtype="front" data-imgname="{{$story->images()->ofType('front')->first()->filename}}">
-              {{$story->id}}
-            </div>
-          </td>
-          @else
-          <td class="redips-mark drag-{{$story->id}}">
-            <div id="drag-{{$story->id}}"
-              class="redips-drag smallstory-btn"
-              data-stype="{{$story->story_type}}"
-              data-imgtype="small" data-imgname="{{$story->images()->ofType('small')->first()->filename}}">
-              {{$story->id}}
-            </div>
-          </td>
-          @endif
+                    <td class="redips-mark drag-{{$story->id}}x">
+                      <div id="drag-{{$story->id}}x"
+                        class="redips-drag frontstory-btn"
+                        data-stype="{{$story->story_type}}"
+                        data-imgtype="front" data-imgname="{{$story->images()->ofType('front')->first()->filename}}">
+                        {{$story->id}}
+                      </div>
+                    </td>
+                    <td class="redips-mark story-type">
+                        {{$story->story_type}}
+                    </td>
+                    <td class="redips-mark story-title">
+                        {{$story->title}}
+                    </td>
+                </tr>
+            @else 
+                @if($story->images()->ofType('small')->first())
+                    <tr>
+                        <td class="redips-mark smallstory-btn">
+                          {{$story->id}}
+                        </td>
+                        <td class="redips-mark drag-{{$story->id}}">
+                            <div id="drag-{{$story->id}}"
+                              class="redips-drag smallstory-btn"
+                              data-stype="{{$story->story_type}}"
+                              data-imgtype="small" data-imgname="{{$story->images()->ofType('small')->first()->filename}}">
+                              {{$story->id}}
+                            </div>
+                        </td>
+                        <td class="redips-mark story-type">
+                            {{$story->story_type}}
+                        </td>
+                        <td class="redips-mark story-title">
+                            {{$story->title}}
+                        </td>
+                    </tr>
+                @endif
+            @endif
 
-          <td class="redips-mark story-type">
-            {{$story->story_type}}
-          </td>
-          <td class="redips-mark story-title">
-            {{$story->title}}
-          </td>
-        </tr>
+          
         @endforeach
       </table>
     </div>
