@@ -19,7 +19,7 @@ class AnnouncementController extends Controller
   public function __construct(Announcement $announcement)
   {
     $this->announcement = $announcement;
-    $this->middleware('auth', ['only'=>'announcementForm']);
+    $this->middleware('auth', ['only'=>['announcementForm','userAnnouncements']]);
   }
 
   // public function index($id = null)
@@ -41,7 +41,7 @@ class AnnouncementController extends Controller
       if (\Auth::check()) {
         // The user is logged in...
         $user = \Auth::user();
-        
+
         return redirect()->action('Admin\AnnouncementController@form');
       } else {
         $user = cas()->user();
@@ -50,36 +50,38 @@ class AnnouncementController extends Controller
             ['is_approved', 1],
             ['submitter', $user]
             ])->get();
-            
+
         $submitteditems = $this->announcement->where([
             ['is_approved', 0],
             ['submitter', $user]
             ])->get();
-        
+
         return view('public.announcement.form', compact('announcement','approveditems','submitteditems'));
       }
-
-      //return $request->session()->get('today_admin');
-
-
-      $cdate = Carbon::now();
-      $cdate_format = $cdate->format('m-d-Y');
-      JavaScript::put([
-        'jsis'=> 'hi',
-        'currentDate' => $cdate_format
-      ]);
-
-
-      // $announcements = $user->announcements;//$this->announcement->where('is_approved', '0')->orderBy('start_date', 'dsc')->paginate(4);
-/*
-      $approveditems = $user->announcements()->where('is_approved', '1')->get();;
-
-      $submitteditems = $user->announcements()->where('is_approved', '0')->get();
-
-      return view('public.announcement.form', compact('announcement','approveditems','submitteditems'));
-*/
-      // return redirect(route('emu-today.announcement.edit',$announcement->id ));
-      // return view('public.announcement.edit', compact('announcement'));
     }
 
+    public function userAnnouncements(Announcement $announcement)
+    {
+      $user = cas()->user();
+
+      if($user){
+        $approveditems = $this->announcement->where([
+          ['is_approved', 1],
+          ['submitter', $user]
+          ])->get();
+
+        $submitteditems = $this->announcement->where([
+          ['is_approved', 0],
+          ['submitter', $user]
+          ])->get();
+      } else {
+        return "There was an error. Announcements table could not be loaded";
+      }
+
+      if(\Request::ajax()) {
+        $view = \View::make('public.announcement.form', compact('announcement', 'approveditems','submitteditems'));
+        $view = $view->renderSections();
+        return json_encode($view['content-middle']);
+      }
+    }
   }

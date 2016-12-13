@@ -55,13 +55,14 @@
         </div>
         <div class="calendar-other-categories">
           <h4>Other Calendars</h4>
-          <ul>
-            <li><a href="">Art Galleries</a></li>
-            <li><a href="">Athletics</a></li>
-            <li><a href="">Holiday &amp; Payroll</a></li>
-            <li><a href="">Theatre</a></li>
+          <ul class="other">
+            <li><a href="http://www.emich.edu/alumni/engage/events/">Alumni</a></li>
+            <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
+            <li><a href="http://www.emueagles.com/calendar.aspx">Athletics</a></li>
+            <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
+            <li><a href="http://www.emich.edu/hr/calendar/">Holiday and Payroll</a></li>
+            <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
           </ul>
-        </div>
         <div class="ypsi-graphic">
           <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi.png" alt="Visit Ypsi Calendar"></a>
         </div>

@@ -21,9 +21,10 @@ var vm = new Vue({
     }
 });
 
-// Assign events to edit buttons
-var editBtns = document.getElementsByClassName('editBtn'); // Get edit elems
-for (var i=0;i<editBtns.length;i++){
-  // Assign an event listener to call a method within the Vue instance
-  editBtns[i].addEventListener('click', function(e){ vm.$refs.foo.fetchSubmittedRecord(this.id) })
-};
+function assignEventListeners(){
+  // Edit buttons need to call vue object methods
+  $("#calendar-bar").on("click", ".editBtn", function(event){
+    vm.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
+  });
+}
+assignEventListeners();

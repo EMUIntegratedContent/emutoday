@@ -1,7 +1,6 @@
 <template>
   <form>
     <slot name="csrf"></slot>
-    <!-- <slot name="author_id" v-model="newevent.author_id"></slot> -->
     <div class="row">
       <div v-bind:class="md12col">
         <div v-show="formMessage.isOk" :class="calloutSuccess">
@@ -69,7 +68,7 @@
         <div v-bind:class="formGroup">
           <label>Email Link</label>
           <p class="help-text" id="title-helptext">Please enter the contact person's email address. (contact@yourlink.com)</p>
-          <div class="input-group">
+          <div class="input-group input-group-flat">
             <span :class="inputGroupLabel">mailto:</span>
             <input v-model="record.email_link" class="form-control" v-bind:class="[formErrors.email_link ? 'invalid-input' : '']" name="email_link" type="text">
           </div>
@@ -77,7 +76,7 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div v-if="generalForm"  class="row">
+    <div v-if="generalForm" class="row">
       <div :class="md4col">
         <div v-bind:class="formGroup">
           <label>Email Link Text</label>
@@ -86,13 +85,11 @@
         </div>
       </div><!-- /.col-md-4 -->
       <div :class="md8col">
-        <template v-if="record.email_link">
-          <div v-bind:class="formGroup">
-            <label>Example of Email Link</label>
-            <p class="help-text">Below is how it may look. </p>
-            <h5 class="form-control">Contact: <a href="#"> {{record.email_link_txt}}</a>.</h5>
-          </div>
-        </template>
+        <div v-bind:class="formGroup">
+          <label>Example of Email Link</label>
+          <p class="help-text">Below is how it may look. </p>
+          <h5 class="form-control">Contact: <a href="#"> {{record.email_link_txt}}</a>.</h5>
+        </div>
       </div><!-- /.md6col -->
     </div>
     <br/>
@@ -242,9 +239,6 @@ module.exports = {
     errors: {
       default: ''
     },
-    authorid: {
-      default: '0'
-    },
     recordexists: {
       default: false
     },
@@ -312,26 +306,25 @@ module.exports = {
   },
   created: function() {
     this.currentDate = moment();
-    console.log('this.currentDate=' + this.currentDate)
+    //console.log('this.currentDate=' + this.currentDate)
   },
   ready: function() {
-    this.record.user_id = this.authorid;
     this.record.type = this.type;
     if(this.recordexists){
-      console.log('recordid'+ this.recordid)
+      //console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid)
     } else {
       if(this.type == 'hr') {
         this.record.announcement = "HR";
       }
-      console.log('type'+ this.type)
+      //console.log('type'+ this.type)
       this.setupDatePickers();
     }
   },
   // ready: function() {
   //
   //         if(this.recordexists){
-  //             console.log('editeventid'+ this.editid)
+  //             //console.log('editeventid'+ this.editid)
   //             this.fetchCurrentRecord(this.editid)
   //
   //         }
@@ -428,8 +421,20 @@ module.exports = {
     readyAgain: function() {
 
     },
+    refreshUserAnnouncementTable: function(){
+      $.get('/announcement/user/announcements', function(data){
+        data = $.parseJSON(data);
+        // //console.log(data.content);
+        $('#user-announcement-tables').html(data);
+      });
+    },
     fetchSubmittedRecord: function(recid){
+      // Sets params for update record, Passes an id to fetchCurrentRecord
       this.recordexists = true;
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      this.recordid = recid;
+      this.formErrors = {};
       this.fetchCurrentRecord(recid);
     },
     fetchCurrentRecord: function(recid) {
@@ -437,37 +442,38 @@ module.exports = {
 
       .then((response) => {
         //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data);
+        //console.log('response.status=' + response.status);
+        //console.log('response.ok=' + response.ok);
+        //console.log('response.statusText=' + response.statusText);
+        //console.log('response.data=' + response.data);
         // data = response.data;
         this.$set('record', response.data.data)
         //this.record = response.data.data;
-        console.log('this.record= ' + this.record);
+        //console.log('this.record= ' + this.record);
 
         this.checkOverData();
+        this.record.start_time = response.data.data.start_time;
       }, (response) => {
         //error callback
-        console.log("ERRORS");
+        //console.log("why?"+JSON.stringify(response));
 
         this.formErrors = response.data.error.message;
 
       }).bind(this);
     },
     checkOverData: function() {
-      console.log('this.record' + this.record.id)
+      //console.log('this.record' + this.record.id)
 
-      if(this.startdatePicker === null){
+      // if(this.startdatePicker === null){
         this.setupDatePickers();
-      }
+      // }
       // this.setupDatePickers();
       //this.startdate = this.record.start_date;
 
     },
     setupDatePickers:function(){
       var self = this;
-      console.log("setupDatePickers");
+      //console.log("setupDatePickers");
       if (this.record.start_date === '') {
         this.dateObject.startDateMin = this.currentDate;
         this.dateObject.startDateDefault = null;
@@ -518,47 +524,45 @@ module.exports = {
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      this.record.user_id = this.authorid;
       this.record.type = this.type;
-      let tempid;
-      if (typeof this.currentRecordId != 'undefined'){
-        tempid = this.currentRecordId;
-      } else {
-        tempid = this.record.id;
-      }
+      console.log('sd= '+this.record.start_date);
+      console.log('ed= '+this.record.end_date);
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/announcement/' + tempid : '/api/announcement';
+      let route =  (this.recordexists) ? '/api/announcement/' + this.record.id : '/api/announcement';
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then((response) => { // If valid
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data.message);
+        //console.log('response.status=' + response.status);
+        //console.log('response.ok=' + response.ok);
+        //console.log('response.statusText=' + response.statusText);
+        //console.log('response.data=' + response.data.message);
         this.formMessage.msg = response.data.message;
-        this.currentRecordId = response.data.newdata.record_id;
         this.formMessage.isOk = response.ok; // Success message
+        this.currentRecordId = response.data.newdata.record_id;
+        this.recordid = response.data.newdata.record_id;
+        this.record_id = response.data.newdata.record_id;
+        this.record.id = response.data.newdata.record_id;
         this.formMessage.isErr = false;
         this.recordexists = true;
         this.formErrors = {}; // Clear errors?
-        this.fetchCurrentRecord(this.currentRecordId)
-
+        this.fetchCurrentRecord(this.record.id)
+        this.refreshUserAnnouncementTable();
       }, (response) => { // If invalid. error callback
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
         // Set errors from validation to vue data
-        console.log(response.data.error.message);
+        //console.log(response.data.error.message);
         this.formErrors = response.data.error.message;
 
       }).bind(this);
-      setTimeout(function(){
-        location.reload();
-      },4000);
+      // setTimeout(function(){
+      //   location.reload();
+      // },4000);
     }
   },
   watch: {
@@ -568,23 +572,23 @@ module.exports = {
   filters: {
     momentstart: {
       read: function(val) {
-        console.log('read-val' + val)
+        //console.log('read-val' + val)
 
         return val ? val : '';
       },
       write: function(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal)
+        //console.log('write-val' + val + '--' + oldVal)
         return moment(val).format('MM-DD-YYYY');
       }
     },
     momentfilter: {
       read: function(val) {
-        console.log('read-val' + val)
+        //console.log('read-val' + val)
 
         return val ? moment(val).format('MM-DD-YYYY') : '';
       },
       write: function(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal)
+        //console.log('write-val' + val + '--' + oldVal)
 
         return moment(val).format('YYYY-MM-DD');
       }
@@ -594,12 +598,12 @@ module.exports = {
     // 'building-change':function(name) {
     // 	this.newbuilding = '';
     // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
+    // 	//console.log(this.newbuilding);
     // },
     // 'categories-change':function(list) {
     // 	this.categories = '';
     // 	this.categories = list;
-    // 	console.log(this.categories);
+    // 	//console.log(this.categories);
     // }
   }
 };

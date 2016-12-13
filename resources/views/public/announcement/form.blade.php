@@ -6,7 +6,7 @@
 @endsection
 
 @section('title', 'Submit an Announcement')
-@section('content')
+@section('content-top')
 <div id="calendar-bar">
   <div class="row">
     <div class="medium-12 column">
@@ -15,14 +15,16 @@
         <div class="medium-6 columns">
           <h3 class="cal-caps toptitle">Announcements</h3>
           <div id="vue-announcements">
-              
-            <announcement-form v-ref:foo framework="foundation" authorid="" recordexists="{{$announcement->exists ? true: false}}" editid="{{$announcement->exists ? $announcement->id : null }}">
+
+            <announcement-form v-ref:foo framework="foundation" recordexists="{{$announcement->exists ? true: false}}" editid="{{$announcement->exists ? $announcement->id : null }}">
               <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
             </announcement-form>
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
-        <div class="medium-6 columns">
+        <div class="medium-6 columns" id="user-announcement-tables">
+        @endsection
 
+        @section('content-middle')
           @unless(empty($submitteditems[0]))
           <div class="row">
             <div class="small-12 column">
@@ -39,12 +41,12 @@
                 </thead>
                 <tbody>
                   @foreach($submitteditems as $item)
-                  <tr>
+                  <tr id="{{ $item->id }}">
                     <td>{{ $item->title }}</td>
                     <td>{{ $item->start_date }}</td>
                     <td>{{ $item->end_date }}</td>
                     <td>{{ $item->created_at }}</td>
-                    <td class="editBtn" id="{{ $item->id }}"><a href="#">EDIT</a></td>
+                    <td class="editBtn"><a href="#">EDIT</a></td>
                   </tr>
                   @endforeach
                 </tbody>
@@ -80,8 +82,9 @@
             </div><!-- /.small-12 column -->
           </div><!-- /.row -->
           @endunless
+          @endsection
 
-
+          @section('content-bottom')
         </div><!-- /.medium-6 columns -->
       </div><!-- /.row -->
     </div><!-- /.small-12 column -->
