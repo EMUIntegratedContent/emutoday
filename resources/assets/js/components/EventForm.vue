@@ -919,7 +919,7 @@ module.exports  = {
         this.$set('record', response.data.data)
 
         this.checkOverData();
-        this.refreshUserEventTable();
+        // this.refreshUserEventTable();
         this.record.start_time = response.data.data.start_time;
       }, (response) => {
         //error callback

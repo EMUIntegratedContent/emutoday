@@ -34,7 +34,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('calendar/addevent', 'Api\CalendarController@addEventToGoogleCalendar')->name('addEventToGoogleCalendar');
     Route::get('oauth2callback', 'Api\CalendarController@oAuth');
     Route::get('calendarauth', 'Api\CalendarController@oAuthAPIConfirm');
-    
+
 
     /**
      * List of Buildings for EventForm
@@ -64,10 +64,10 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::get('taglist/{id}', function($id) {
         $tags = Story::find($id)->tags()->select('name', 'id as value')->get();
-        
+
         return $tags;
     });
-    
+
     Route::get('taglist', function() {
         return Tag::select('name', 'id as value')->get();
     });
@@ -80,7 +80,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
     Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
     Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
- 
+
     Route::patch('event/archiveitem/{id}', ['as' => 'api_event_archiveitem', 'uses' => 'Api\EventController@archiveItem']);
     Route::patch('event/updateitem/{id}', ['as' => 'api_event_updateitem', 'uses' =>'Api\EventController@updateItem']);
     Route::post('event/{id}/delete', ['as' => 'api_event_deleteitem', 'uses' => 'Api\EventController@delete']);
@@ -130,6 +130,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('/', ['as' => '/', 'uses' => 'MainController@index']);
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
+    Route::get('announcement/user/announcements', 'Today\AnnouncementController@userAnnouncements');
     Route::get('announcement/{id?}', 'Today\AnnouncementController@index'); // Does not exist??
 
     Route::get('calendar/event/form', 'Today\CalendarController@eventForm');
