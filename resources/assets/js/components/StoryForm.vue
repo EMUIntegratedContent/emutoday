@@ -68,10 +68,6 @@
             label="name"> </v-select>
         </div>
         <div v-if="needAuthor" class="form-inline author">
-          <!-- <div class="form-group save-author">
-            <button @click.prevent="fetchAuthor('down')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-down"></i></button>
-            <button @click.prevent="fetchAuthor('up')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-up"></i></button>
-          </div> -->
           <div class="form-group">
             <label for="author-first-name">First Name <span v-if="authorErrors.first_name" class="help-text invalid"> is Required</span></label>
             <input v-model="author.first_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="First Name">
@@ -92,9 +88,21 @@
             <button @click.prevent="saveAuthor" href="#" class="btn btn-primary btn-sm">{{authorBtnLabel}}</button>
           </div><!-- /.form-group -->
         </div>
-        </div>
       </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
+    <div class="row">
+      <div class="col-md-6">
+        <div v-if="isAdmin" class="form-inline author">
+            <label>Choose contact:</label>
+            <v-select
+            :value.sync="selectedContact"
+            :options="optionsContactlist"
+            :multiple="false"
+            placeholder="Contact (leaving this blank will set Geoff Larcom as the author)"
+            label="name"> </v-select>
+        </div>
+      </div><!-- /.col-md-6 -->
+    </div>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
@@ -300,6 +308,7 @@ module.exports  = {
       tags:[],
       taglist:[],
       selectedAuthor:null,
+      selectedContact:null,
       newform: false,
       response_record_id:'',
       response_stype: '',
@@ -331,6 +340,14 @@ module.exports  = {
         email: '',
         phone: ''
       },
+      contactlist:[],
+      contact: {
+        id: 0,
+        last_name: '',
+        first_name: '',
+        email: '',
+        phone: ''
+      },
       hasContent: false,
       isFresh: true,
       content: '',
@@ -344,7 +361,8 @@ module.exports  = {
         title: '',
         story_type: '',
         content: '',
-        start_date: ''
+        start_date: '',
+        contact: '',
       },
       record: {
         id: '',
@@ -353,6 +371,7 @@ module.exports  = {
         story_type: '',
         content: '',
         start_date: '',
+        contact: '',
         tags: []
       },
       fdate: null,
@@ -411,6 +430,7 @@ module.exports  = {
     this.fetchTagsList();
     this.fetchCurrentTags();
     this.getUserRoles();
+    this.fetchContactList();
   },
   computed: {
     authorBtnLabel:function(){
@@ -418,6 +438,9 @@ module.exports  = {
     },
     optionsAuthorlist:function(){
       return this.authorlist;
+    },
+    optionsContactlist:function(){
+      return this.contactlist;
     },
     isAdmin:function(){
       if(this.userRoles.indexOf('admin')!= -1) {
@@ -598,6 +621,17 @@ module.exports  = {
       }).bind(this);
     },
 
+    fetchContactList: function() {
+      console.log('contact list fetch');
+      this.$http.get('/api/contactlist')
+      .then((response) =>{
+        this.$set('contactlist', response.data)
+      }, (response) => {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+
     // Fetch the tags that match THIS record
     fetchTagsList: function() {
         this.$http.get('/api/taglist/')
@@ -606,7 +640,7 @@ module.exports  = {
             this.$set('taglist', response.data);
         });
     },
-    
+
     fetchCurrentTags(){
         this.$http.get('/api/taglist/'+ this.currentRecordId)
             .then((response) => {
@@ -623,11 +657,10 @@ module.exports  = {
 
 
       .then((response) =>{
-        console.log("DATAAAAA!")
-        console.log(response.data)
         this.$set('record', response.data.data)
         this.$set('recordOld', response.data.data)
-
+        console.log(response.data.data.contact)
+        this.$set('selectedContact', response.data.data.contact.first_name + ' ' + response.data.data.contact.last_name)
         this.checkOverData();
       }, (response) => {
         //error callback
@@ -703,7 +736,7 @@ module.exports  = {
               this.author.last_name = response.body.last_name;
               this.author.phone = response.body.phone;
               this.author.email = response.body.email;
-          }, 
+          },
           (response) => {
               //err
           }
@@ -743,9 +776,13 @@ module.exports  = {
       if (moment(this.fdate).isValid()){
         this.record.start_date = this.fdate;
       }
-      
-if (this.author.id !== 0) {
+
+      if (this.author.id !== 0) {
         this.record.author_id = this.author.id;
+      }
+
+      if (this.contact.id !== 0) {
+        this.record.contact_id = this.contact.id;
       }
 
       let tempid;

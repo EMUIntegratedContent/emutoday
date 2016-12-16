@@ -26,6 +26,13 @@ Route::get('/cas/logout', function(){
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
 Route::group(['prefix' => 'api'], function() {
+
+    Route::patch('authors/updateitem/{id}', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@updateItem']);
+    Route::get('authors/{id}/edit', ['as' => 'api_authors_edititem', 'uses' =>'Api\AuthorController@edit']);
+    Route::get('authors/primarycontact', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@getCurrentPrimaryContact']);
+    Route::post('authors', ['as' => 'api_authors_storeitem', 'uses' => 'Api\AuthorController@store']); // Route to save author to db
+    Route::resource('authors', 'Api\AuthorController');
+
     Route::get('active-categories/{year?}/{month?}/{day?}','Api\CategoriesController@activeCategories');
 
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
@@ -59,7 +66,17 @@ Route::group(['prefix' => 'api'], function() {
     });
 
     Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
-        return Author::select('first_name as name', 'id as value')->get();
+        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();
+    });
+
+    Route::get('contactlist', function() { // is there a way to concat first_name and last_name here?
+        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->where('is_contact', 1)->get();
+    });
+
+    Route::get('contactlist/{id}', function($id) {
+        $contact = Story::find($id)->contact()->select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();
+
+        return $contact;
     });
 
     Route::get('taglist/{id}', function($id) {
@@ -94,6 +111,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('announcement', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
+
+
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
     Route::get('{gtype}/{stype}/{qtype}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
@@ -103,6 +122,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('author/{id}', 'Api\StoryController@getAuthorData');
     Route::post('author', ['as' => 'api_story_storeauthor', 'uses' => 'Api\StoryController@storeAuthor']);
     Route::put('author/{id}', ['as' => 'api_story_saveauthor', 'uses' => 'Api\StoryController@saveAuthor']);
+
 
     Route::patch('story/archiveitem/{id}', ['as' => 'api_story_archiveitem', 'uses' => 'Api\StoryController@archiveItem']);
 
@@ -142,7 +162,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
-    
+
     Route::get('hub', 'MainController@index');
 
     Route::get('search','SearchController@search' );
@@ -169,6 +189,10 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::group(['prefix' => 'admin' ], function()
     {
+        Route::get('authors/list', ['as' => 'authors_list', 'uses' => 'Admin\AuthorsController@index']);
+        Route::get('authors/form', ['as' => 'authors_form', 'uses' => 'Admin\AuthorsController@form']);
+        Route::resource('authors', 'Admin\AuthorsController');
+
         Route::get('dashboard', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
         Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);
 
@@ -183,8 +207,10 @@ Route::group(['prefix' => 'api'], function() {
         Route::resource('user', 'Admin\UserController');
 
         Route::resource('mediafile', 'Admin\MediafileController');
+        Route::get('announcement/archives', ['as' => 'admin.announcement.archives', 'uses' => 'Admin\AnnouncementController@archives']);
         Route::get('announcement/queue/{atype?}', ['as' => 'admin.announcement.queue', 'uses' => 'Admin\AnnouncementController@queue']);
         Route::get('announcement/form/{atype?}', ['as' => 'admin.announcement.form', 'uses' => 'Admin\AnnouncementController@form']);
+
         Route::resource('announcement', 'Admin\AnnouncementController');
 
         Route::get('event/queue', ['as' => 'admin.event.queue', 'uses' => 'Admin\EventController@queue']);

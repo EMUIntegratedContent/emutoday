@@ -11,6 +11,8 @@ class Author extends Model
     'last_name',
     'email',
     'phone',
+    'is_contact',
+    'is_principal_contact'
   ];
 
   public function getFullNameAttribute(){
