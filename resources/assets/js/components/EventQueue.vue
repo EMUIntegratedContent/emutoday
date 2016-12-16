@@ -1,4 +1,5 @@
 <template>
+<label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail"/></label>
   <div class="row">
     <div class="col-md-4">
       <h3>Unapproved Events</h3>
@@ -49,6 +50,13 @@
 }
 #items-approved .box {
   margin-bottom: 4px;
+}
+#automail-label {
+  font-size: 110%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: 10px;
 }
 </style>
 <script>

@@ -317,6 +317,16 @@ class EventController extends ApiController
             $event->is_canceled = $request->get('is_canceled');
 
             if($event->save()) {
+              if ($request->get('automail') === true && !empty($request->get('is_approved')) && $request->get('is_approved') == '1'){
+                // Send approval notification email
+                $to      = $event->submitter."@emich.edu";
+                $subject = "Your Calendar Event Was Approved";
+                $message = "Thank you for your submission. Your event ({$event->title}) has been posted to the calendar.";
+                $headers = 'From: calendar_events@emich.edu' . "\r\n" .
+                'Reply-To: calendar_events@emich.edu' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+                mail($to, $subject, $message, $headers);
+              }
               $returnData = ['is_approved' => $event->is_approved,'home_priority'=> $event->home_priority, 'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('event updated',$returnData );

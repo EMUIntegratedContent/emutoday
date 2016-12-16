@@ -495,7 +495,7 @@ module.exports  = {
       var files = this.$els.eventimg.files;
       var data = new FormData();
       data.append('event_id', this.formInputs.event_id);
-      
+
       data.append('eventimg', files[0]);
       var action = '/api/event/addMediaFile/'+ this.formInputs.event_id;
       this.$http.post(action, data)
@@ -512,6 +512,9 @@ module.exports  = {
 
       this.patchRecord.is_canceled = this.item.is_canceled;
 
+      $("#automail").prop('checked') == true ? this.patchRecord.automail = true : this.patchRecord.automail = false;
+
+      console.log(">::patchRecord::< "+JSON.stringify(this.patchRecord));
       this.$http.patch('/api/event/updateitem/' + this.item.id , this.patchRecord , {
         method: 'PATCH'
       } )
