@@ -12,12 +12,12 @@
         <div class="form-group">
           <label>Title <span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
-          <input v-model="record.title" class="form-control" :class="[formErrors.title ? 'invalid-input' : '']"  name="title" type="text">
+          <input v-model="record.title" class="form-control" :class="[formErrors.title ? 'invalid-input' : '']"  name="title" type="text" maxlength="100">
           <p v-if="formErrors.title" class="help-text invalid">	Please Include a Title!</p>
         </div>
         <div class="form-group">
           <label>Short Title	</label>
-          <input v-model="record.short_title" class="form-control" type="text" placeholder="Short Title" name="short-title" >
+          <input v-model="record.short_title" class="form-control" type="text" placeholder="Short Title" name="short-title" maxlength="80">
         </div>
       </div><!-- /.md12col -->
     </div><!-- /.row -->
@@ -54,7 +54,7 @@
         </div><!-- /.md8col -->
         <div :class="md4col">
           <label>Room</label>
-          <input v-model="record.room" :class="[formErrors.room ? 'invalid-input' : '']" name="room" type="text">
+          <input v-model="record.room" :class="[formErrors.room ? 'invalid-input' : '']" name="room" type="text" class='mockh5' maxlength="80">
         </div><!-- /.md4col -->
       </div><!-- /.row -->
     </template>
@@ -66,7 +66,7 @@
         </template>
         <template v-else>
           <label>Location <span :class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.locationoffcampus" class="form-control" :class="[formErrors.location ? 'invalid-input' : '']" name="location" type="text">
+          <input v-model="record.locationoffcampus" class="form-control" :class="[formErrors.location ? 'invalid-input' : '']" name="location" type="text" maxlength="80">
         </template>
       </div><!-- /.md12col -->
     </div><!-- /.row -->
@@ -142,7 +142,7 @@
   <div :class="md6col">
     <div class="form-group">
       <label>Contact Person: <span :class="iconStar" class="reqstar"></span><em>(Jane Doe)</em></label>
-      <input v-model="record.contact_person" class="form-control" :class="[formErrors.contact_person ? 'invalid-input' : '']" name="contact-person" type="text">
+      <input v-model="record.contact_person" class="form-control" :class="[formErrors.contact_person ? 'invalid-input' : '']" name="contact-person" type="text" maxlength="80">
       <p v-if="formErrors.contact_person" class="help-text invalid">Need a Contact Person!</p>
 
     </div>
@@ -150,7 +150,7 @@
   <div :class="md6col">
     <div class="form-group">
       <label>Contact Email: <span :class="iconStar" class="reqstar"></span><em>(ex.janedoe@emich.edu)</em></label>
-      <input v-model="record.contact_email" class="form-control" :class="[formErrors.contact_email ? 'invalid-input' : '']" name="contact-email" type="text">
+      <input v-model="record.contact_email" class="form-control" :class="[formErrors.contact_email ? 'invalid-input' : '']" name="contact-email" type="text" maxlength="80">
       <p v-if="formErrors.contact_email" class="help-text invalid">Need a Contact Email!</p>
 
     </div>
@@ -160,7 +160,7 @@
   <div :class="md6col">
     <div class="form-group">
       <label>Contact Phone <span :class="iconStar" class="reqstar"></span> <em>(ex. 734.487.1849)</em>
-        <input v-model="record.contact_phone" class="form-control" :class="[formErrors.contact_phone ? 'invalid-input' : '']" name="contact-phone" type="text">
+        <input v-model="record.contact_phone" class="form-control" :class="[formErrors.contact_phone ? 'invalid-input' : '']" name="contact-phone" type="text" maxlength="80">
         <p v-if="formErrors.contact_phone" class="help-text invalid">Need a Contact Phone!</p>
       </label>
     </div>
@@ -168,109 +168,114 @@
   <div :class="md6col">
     <div class="form-group">
       <label>Contact Fax: <em>(ex. 734.487.1849)</em>
-        <input v-model="record.contact_fax" class="form-control" :class="[formErrors.contact_fax ? 'invalid-input' : '']" name="contact-fax" type="text">
+        <input v-model="record.contact_fax" class="form-control" :class="[formErrors.contact_fax ? 'invalid-input' : '']" name="contact-fax" type="text" maxlength="80">
       </label>
     </div>
   </div><!-- /.md6col -->
 </div><!-- /.row -->
 <!-- RELATED LINKS -->
-<div class="row">
-  <div :class="md12col">
-    <div v-bind:class="formGroup">
-      <label>Related Link</label>
-      <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
-      <div class="input-group input-group-flat">
-        <span :class="inputGroupLabel">http://</span>
-        <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text">
+<div class="input-group" style="width: 100%">
+  <div class="row">
+    <div :class="md12col">
+      <div v-bind:class="formGroup">
+        <label>Related Link</label>
+        <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+        <div class="input-group input-group-flat">
+          <span :class="inputGroupLabel">http://</span>
+          <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text" maxlength="80">
+        </div>
+        <p v-if="formErrors.related_link_1" class="help-text invalid">Please make sure url is properly formed.</p>
       </div>
-      <p v-if="formErrors.related_link_1" class="help-text invalid">Please make sure url is properly formed.</p>
+    </div><!-- /.col-md-4 -->
+  </div><!-- /.row -->
+  <div class="row">
+    <div :class="md4col">
+      <div v-bind:class="formGroup">
+        <label>Meaning desciption for Link</label>
+        <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+        <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text" maxlength="80">
+        <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+      </div>
+    </div><!-- /.col-md-4 -->
+    <div :class="md8col">
+      <div v-bind:class="formGroup">
+        <label>Example of Related Link</label>
+        <p class="help-text">Below is how it may look. </p>
+        <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
+      </div>
+    </div><!-- /.md6col -->
+  </div>
+  <!-- Two -->
+  <template v-if="record.related_link_1 && record.related_link_1_txt">
+    <br/>
+    <div class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Related Link</label>
+          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+          <div class="input-group input-group-flat">
+            <span :class="inputGroupLabel">http://</span>
+            <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text" maxlength="80">
+          </div>
+          <p v-if="formErrors.related_link_2" class="help-text invalid">Please make sure url is properly formed.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md4col">
+        <div v-bind:class="formGroup">
+          <label>Meaning desciption for Link</label>
+          <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+          <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text" maxlength="80">
+          <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+      <div :class="md8col">
+        <div v-bind:class="formGroup">
+          <label>Example of Related Link</label>
+          <p class="help-text">Below is how it may look. </p>
+          <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
+        </div>
+      </div><!-- /.md6col -->
     </div>
-  </div><!-- /.col-md-4 -->
-</div><!-- /.row -->
-<div class="row">
-  <div :class="md4col">
-    <div v-bind:class="formGroup" class="input-group">
-      <label>Meaning desciption for Link</label>
-      <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
-      <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text">
-      <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+    <br/>
+  </template>
+  <!-- three -->
+  <template v-if="record.related_link_2 && record.related_link_2_txt">
+    <div class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Related Link</label>
+          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+          <div class="input-group input-group-flat">
+            <span :class="inputGroupLabel">http://</span>
+            <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text" maxlength="80">
+          </div>
+          <p v-if="formErrors.related_link_3" class="help-text invalid">Please make sure url is properly formed.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md4col">
+        <div v-bind:class="formGroup">
+          <label>Meaning desciption for Link</label>
+          <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+          <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text" maxlength="80">
+          <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+        </div>
+      </div><!-- /.col-md-4 -->
+      <div :class="md8col">
+        <div v-bind:class="formGroup">
+          <label>Example of Related Link</label>
+          <p class="help-text">Below is how it may look. </p>
+          <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
+        </div>
+      </div><!-- /.md6col -->
     </div>
-  </div><!-- /.col-md-4 -->
-  <div :class="md8col">
-    <div v-bind:class="formGroup">
-      <label>Example of Related Link</label>
-      <p class="help-text">Below is how it may look. </p>
-      <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
-    </div>
-  </div><!-- /.md6col -->
+  </template>
 </div>
-<!-- Two -->
-<template v-if="record.related_link_1 && record.related_link_1_txt">
-  <div class="row">
-    <div :class="md12col">
-      <div v-bind:class="formGroup">
-        <label>Related Link</label>
-        <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
-        <div class="input-group input-group-flat">
-          <span :class="inputGroupLabel">http://</span>
-          <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text">
-        </div>
-        <p v-if="formErrors.related_link_2" class="help-text invalid">Please make sure url is properly formed.</p>
-      </div>
-    </div><!-- /.col-md-4 -->
-  </div><!-- /.row -->
-  <div class="row">
-    <div :class="md4col">
-      <div v-bind:class="formGroup" class="input-group">
-        <label>Meaning desciption for Link</label>
-        <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
-        <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text">
-        <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
-      </div>
-    </div><!-- /.col-md-4 -->
-    <div :class="md8col">
-      <div v-bind:class="formGroup">
-        <label>Example of Related Link</label>
-        <p class="help-text">Below is how it may look. </p>
-        <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
-      </div>
-    </div><!-- /.md6col -->
-  </div>
-</template>
-<!-- three -->
-<template v-if="record.related_link_2 && record.related_link_2_txt">
-  <div class="row">
-    <div :class="md12col">
-      <div v-bind:class="formGroup">
-        <label>Related Link</label>
-        <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
-        <div class="input-group input-group-flat">
-          <span :class="inputGroupLabel">http://</span>
-          <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text">
-        </div>
-        <p v-if="formErrors.related_link_3" class="help-text invalid">Please make sure url is properly formed.</p>
-      </div>
-    </div><!-- /.col-md-4 -->
-  </div><!-- /.row -->
-  <div class="row">
-    <div :class="md4col">
-      <div v-bind:class="formGroup" class="input-group">
-        <label>Meaning desciption for Link</label>
-        <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
-        <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text">
-        <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
-      </div>
-    </div><!-- /.col-md-4 -->
-    <div :class="md8col">
-      <div v-bind:class="formGroup">
-        <label>Example of Related Link</label>
-        <p class="help-text">Below is how it may look. </p>
-        <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
-      </div>
-    </div><!-- /.md6col -->
-  </div>
-</template>
 <!-- RELATED LINKS -->
+<br v-if="framework == 'bootstrap'"/>
 
 <div class="row">
   <div :class="md6col">
@@ -380,7 +385,7 @@
     <div :class="formGroup">
       <label>Description <span :class="iconStar" class="reqstar"></span> <p class="help-text" id="description-helptext">({{descriptionChars}} characters left)</p>
 
-        <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6"></textarea>
+        <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6" maxlength="255"></textarea>
       </label>
       <p v-if="formErrors.description" class="help-text invalid">Need a Description!</p>
 
@@ -515,11 +520,10 @@ form {
 .redBtn {
   background: hsl(0, 90%, 70%);
 }
-h5.form-control {
+h5.form-control, .mockh5 {
   margin: 0;
   display: block;
   width: 100%;
-  height: 2.4375rem;
   padding: .5rem;
   font-size: 14px;
   line-height: 1.42857143;
@@ -530,6 +534,9 @@ h5.form-control {
   border-radius: 4px;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+textarea {
+  resize: vertical !important;
 }
 </style>
 

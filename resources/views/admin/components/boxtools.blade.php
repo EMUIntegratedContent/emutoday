@@ -37,6 +37,11 @@
                     <a href="/admin/{{$rte}}/form/{{$atype}}" class="btn bg-orange {{ set_active($path.'/create', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
                     <a href="/admin/{{$rte}}/queue/{{$atype}}" class="btn bg-orange {{ set_active($path, 'disabled') }}"><i class="fa fa-list-alt"></i></a>
 
+                @elseif($rte == 'event')
+                    <a href="/admin/{{$rte}}/form" class="btn bg-orange {{ set_active($path.'/create', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
+                    <a href="/admin/{{$rte}}/queue" class="btn bg-orange {{ set_active($path, 'disabled') }}"><i class="fa fa-list-alt"></i></a>
+
+
                 @else
                         <a href="/admin/{{$rte}}/form" class="btn bg-purple {{ set_active($path.'/create', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
                 @endif

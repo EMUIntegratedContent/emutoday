@@ -22,35 +22,34 @@
   @endsection
 @section('content')
 
-    <div class="row">
-        <div class="col-md-6">
-                <div class="box">
-                    <div class="box-header">
-                        <h3 class="box-title">Event</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="vue-event-form">
-                            <event-form framework="bootstrap"
-                                        authorid="{{$currentUser->id}}"
-                                        recordexists="{{$event->exists ? true: false}}"
-                                        recordid="{{$event->exists ? $event->id : null }}">
-                                        <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
-                            </event-form>
-                        </div><!-- /#vue-event-form -->
-                        {{-- <div id="event-form-vue">
-                                    <event-form authorid="{{$currentUser->id}}" eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
-                                    </event-form>
-                            </div><!-- /#vue-event-form --> --}}
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{$event->exists ? 'Edit Event' : 'New Event'}}</h3>
+        @include('admin.components.boxtools', ['rte' => 'event', 'path' => 'admin/event'])
+      </div>	<!-- /.box-header -->
+      <!-- /.box-header -->
+      <div class="box-body">
+        <div id="vue-event-form">
+          <event-form framework="bootstrap"
+          authorid="{{$currentUser->id}}"
+          recordexists="{{$event->exists ? true: false}}"
+          recordid="{{$event->exists ? $event->id : null }}">
+          <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
+        </event-form>
+      </div><!-- /#vue-event-form -->
+      {{-- <div id="event-form-vue">
+        <event-form authorid="{{$currentUser->id}}" eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
+        </event-form>
+      </div><!-- /#vue-event-form --> --}}
 
-                    </div><!-- /.box-body -->
-                </div><!-- /.box -->
-            </div><!-- /.col-md-6 -->
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+</div><!-- /.col-md-6 -->
+<div class="col-md-6">
 
-                <div class="col-md-6">
-
-                </div><!-- /.col-md-6 -->
-
+</div><!-- /.col-md-6 -->
 @endsection
 
 @section('footer-vendor')
