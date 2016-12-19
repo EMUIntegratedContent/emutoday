@@ -34,7 +34,7 @@
       <div class="col-md-12">
         <div class="form-group">
           <label>Subtitle</label>
-          <p class="help-text" id="subtitle-helptext">Visibible in some cases</p>
+          <p class="help-text" id="subtitle-helptext">Visible in some cases</p>
           <input v-model="record.subtitle" v-bind:class="[formErrors.subtitle ? 'invalid-input' : '']" @blur="onBlur" name="subtitle" type="text">
           <p v-if="formErrors.subtitle" class="help-text invalid"></p>
         </div>
@@ -45,8 +45,9 @@
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
         </div>
         <div class="form-group user-display">
-          <div class="user-name">{{author.first_name}} {{author.last_name}}</div>
-          <div class="user-info">Contact {{author.first_name}} {{author.last_name}}, {{author.email}}, {{author.phone}}</div>
+          <div class="user-name">Author: {{author.first_name}} {{author.last_name}}</div>
+          <div v-if="contact.id != 0"class="user-info">Contact: {{contact.first_name}} {{contact.last_name}}, {{contact.email}}, {{contact.phone}}</div>
+          <div v-if="contact.id == 0" class="user-info">Contact: {{defaultcontact.first_name}} {{defaultcontact.last_name}}, {{defaultcontact.email}}, {{defaultcontact.phone}}</div>
         </div><!-- /.frm-group -->
       </div><!-- /.small-12 columns -->
     </div><!-- /.row -->
@@ -58,6 +59,7 @@
         </div>
         <a v-if="!needAuthor" @click.prevent="changeAuthor" href="#" class="btn btn-primary btn-sm">Change Author</a>
         <a v-if="hasAuthor" @click.prevent="resetAuthor" href="#" class="btn btn-primary btn-sm">Reset Author</a>
+        <a @click.prevent="changeContact" href="#" class="btn btn-primary btn-sm">Change Contact</a>
         <div v-if="needAuthor && isAdmin" class="form-inline author">
             <label>Choose existing Author:</label>
             <v-select
@@ -68,10 +70,6 @@
             label="name"> </v-select>
         </div>
         <div v-if="needAuthor" class="form-inline author">
-          <!-- <div class="form-group save-author">
-            <button @click.prevent="fetchAuthor('down')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-down"></i></button>
-            <button @click.prevent="fetchAuthor('up')" class="btn btn-warning btn-sm"><i class="fa fa-arrow-up"></i></button>
-          </div> -->
           <div class="form-group">
             <label for="author-first-name">First Name <span v-if="authorErrors.first_name" class="help-text invalid"> is Required</span></label>
             <input v-model="author.first_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="First Name">
@@ -92,9 +90,21 @@
             <button @click.prevent="saveAuthor" href="#" class="btn btn-primary btn-sm">{{authorBtnLabel}}</button>
           </div><!-- /.form-group -->
         </div>
-        </div>
       </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
+    <div class="row">
+      <div class="col-md-6">
+        <div v-if="isAdmin && needContact" class="form-inline author">
+            <label>Story contact:</label>
+            <v-select
+            :value.sync="selectedContact"
+            :options="optionsContactlist"
+            :multiple="false"
+            placeholder="Contact (leaving this blank will set the system default as the contact)"
+            label="name"> </v-select>
+        </div>
+      </div><!-- /.col-md-6 -->
+    </div>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
@@ -300,6 +310,7 @@ module.exports  = {
       tags:[],
       taglist:[],
       selectedAuthor:null,
+      selectedContact:null,
       newform: false,
       response_record_id:'',
       response_stype: '',
@@ -316,6 +327,7 @@ module.exports  = {
       userRoles: [],
       needAuthor: false,
       hasAuthor:false,
+      needContact: false,
       authorlist:[],
       author: {
         id: 0,
@@ -325,6 +337,21 @@ module.exports  = {
         phone: ''
       },
       authorNew: {
+        id: 0,
+        last_name: '',
+        first_name: '',
+        email: '',
+        phone: ''
+      },
+      contactlist:[],
+      contact: {
+        id: 0,
+        last_name: '',
+        first_name: '',
+        email: '',
+        phone: ''
+      },
+      defaultcontact: {
         id: 0,
         last_name: '',
         first_name: '',
@@ -344,7 +371,8 @@ module.exports  = {
         title: '',
         story_type: '',
         content: '',
-        start_date: ''
+        start_date: '',
+        contact: '',
       },
       record: {
         id: '',
@@ -353,6 +381,7 @@ module.exports  = {
         story_type: '',
         content: '',
         start_date: '',
+        contact: '',
         tags: []
       },
       fdate: null,
@@ -411,6 +440,7 @@ module.exports  = {
     this.fetchTagsList();
     this.fetchCurrentTags();
     this.getUserRoles();
+    this.fetchDefaultContact()
   },
   computed: {
     authorBtnLabel:function(){
@@ -418,6 +448,9 @@ module.exports  = {
     },
     optionsAuthorlist:function(){
       return this.authorlist;
+    },
+    optionsContactlist:function(){
+      return this.contactlist;
     },
     isAdmin:function(){
       if(this.userRoles.indexOf('admin')!= -1) {
@@ -552,6 +585,10 @@ module.exports  = {
       this.hasAuthor = true;
       this.saveAuthorMessage.isOk = '';
     },
+    changeContact:function(evt) {
+      this.fetchContactList();
+      this.needContact = true;
+    },
     toggleCallout:function(evt){
       this.formMessage.isOk = false
       this.saveAuthorMessage.isOk = false
@@ -598,6 +635,27 @@ module.exports  = {
       }).bind(this);
     },
 
+    fetchContactList: function() {
+      console.log('contact list fetch');
+      this.$http.get('/api/contactlist')
+      .then((response) =>{
+        this.$set('contactlist', response.data)
+      }, (response) => {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+
+    fetchDefaultContact: function() {
+      this.$http.get('/api/contactdefault')
+      .then((response) =>{
+        this.$set('defaultcontact', response.data)
+      }, (response) => {
+        //error callback
+        console.log("COULDN'T GET DEFAULT CONTACT");
+      }).bind(this);
+    },
+
     // Fetch the tags that match THIS record
     fetchTagsList: function() {
         this.$http.get('/api/taglist/')
@@ -606,7 +664,7 @@ module.exports  = {
             this.$set('taglist', response.data);
         });
     },
-    
+
     fetchCurrentTags(){
         this.$http.get('/api/taglist/'+ this.currentRecordId)
             .then((response) => {
@@ -623,10 +681,17 @@ module.exports  = {
 
 
       .then((response) =>{
-        console.log("DATAAAAA!")
-        console.log(response.data)
         this.$set('record', response.data.data)
         this.$set('recordOld', response.data.data)
+        console.log("CURRENT CONTACT")
+        console.log(response.data.data.contact)
+
+        //set contact information
+        this.contact.id = response.data.data.contact.id
+        this.contact.first_name = response.data.data.contact.first_name
+        this.contact.last_name = response.data.data.contact.last_name
+        this.contact.email = response.data.data.contact.email
+        this.contact.phone = response.data.data.contact.phone
 
         this.checkOverData();
       }, (response) => {
@@ -703,7 +768,7 @@ module.exports  = {
               this.author.last_name = response.body.last_name;
               this.author.phone = response.body.phone;
               this.author.email = response.body.email;
-          }, 
+          },
           (response) => {
               //err
           }
@@ -717,6 +782,34 @@ module.exports  = {
             this.author.last_name = '';
             this.author.phone = '';
             this.author.email = '';
+      }
+    },
+    fetchContact: function(){
+      if(this.selectedContact){
+        this.$http.get('/api/author/'+this.selectedContact.value)
+
+        .then(
+          (response) => {
+              this.contact.id = response.body.id;
+              this.record.contact_id = response.body.id;
+              this.contact.first_name = response.body.first_name;
+              this.contact.last_name = response.body.last_name;
+              this.contact.phone = response.body.phone;
+              this.contact.email = response.body.email;
+          },
+          (response) => {
+              //err
+          }
+        )
+
+        .bind(this);
+      } else {
+            this.contact.id = '';
+            this.record.contact_id = '';
+            this.contact.first_name = '';
+            this.contact.last_name = '';
+            this.contact.phone = '';
+            this.contact.email = '';
       }
     },
     ahhh: function(){
@@ -743,9 +836,13 @@ module.exports  = {
       if (moment(this.fdate).isValid()){
         this.record.start_date = this.fdate;
       }
-      
-if (this.author.id !== 0) {
+
+      if (this.author.id !== 0) {
         this.record.author_id = this.author.id;
+      }
+
+      if (this.contact.id !== 0) {
+        this.record.contact_id = this.contact.id;
       }
 
       let tempid;
@@ -811,6 +908,11 @@ if (this.author.id !== 0) {
     selectedAuthor: function(){
       // console.log(this.selectedAuthor);
       this.fetchAuthor();
+      this.hasAuthor = false;
+    },
+    selectedContact: function(){
+      // console.log(this.selectedAuthor);
+      this.fetchContact();
       this.hasAuthor = false;
     },
   },

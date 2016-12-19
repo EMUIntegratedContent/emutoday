@@ -34,7 +34,8 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'magazines' => $story->magazines,
             'pages' => $story->pages,
             // 'start_date'   => $story->start_date->format('m-d-Y'),
-            'author' => ($story->author_id == 0)? null:$story->author
+            'author' => ($story->author_id == 0)? null:$story->author,
+            'contact' => ($story->contact_id == 0)? null:$story->contact
         ];
     }
 }

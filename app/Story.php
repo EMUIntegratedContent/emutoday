@@ -5,7 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
- 
+
 class Story extends Model
 {
 
@@ -29,7 +29,7 @@ class Story extends Model
          'is_approved', 'is_live' ,
          'story_type',
          'author_id', 'author_info',
-         'priority'
+         'priority', 'contact_id',
      ];
      protected $dates = ['start_date', 'end_date'];
 
@@ -62,7 +62,16 @@ class Story extends Model
      */
     public function author()
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsTo(Author::class, 'author_id');
+    }
+
+    /**
+     * [author description]
+     * @return [type] [description]
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Author::class, 'contact_id');
     }
 
     /**

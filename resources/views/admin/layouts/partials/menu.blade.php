@@ -111,9 +111,10 @@
     <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/queuearticle/magazine/article/form"><i class="fa fa-plus-square"></i><span>Add Article</span></a></li>
   </ul>
 </li>
+<li><a href="/admin/authors/list"><i class="fa fa-pencil"></i> <span>Authors</span></a></li>
 @endcan
 @can('super', $currentUser)
-{{-- 
+{{--
 <li class="treeview {{ set_active('admin/storyimages*') }}">
   <a href="#"><i class="fa fa-picture-o"></i> <span>Images</span></a>
   <ul class="treeview-menu">

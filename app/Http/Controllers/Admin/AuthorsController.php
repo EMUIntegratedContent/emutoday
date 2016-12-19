@@ -3,7 +3,7 @@
 namespace Emutoday\Http\Controllers\Admin;
 
 
-use Emutoday\Announcement;
+use Emutoday\Author;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
@@ -11,15 +11,15 @@ use Emutoday\Helpers\Interfaces\IBug;
 
 use Illuminate\Support\Facades\View;
 
-class AnnouncementController extends Controller
+class AuthorsController extends Controller
 {
 
-    protected $announcement;
+    protected $author;
     protected $bugService;
 
-    public function __construct(Announcement $announcement, IBug $bugService)
+    public function __construct(Author $author, IBug $bugService)
     {
-        $this->announcement = $announcement;
+        $this->author = $author;
         $this->bugService = $bugService;
 
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
@@ -32,9 +32,10 @@ class AnnouncementController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function index()
+    public function index($atype = null)
     {
-
+      $authorsPaginated = Author::paginate(10);
+      return view('admin.authors.index', compact('author','atype','authorsPaginated'));
     }
 
     /**
@@ -45,10 +46,9 @@ class AnnouncementController extends Controller
     */
     public function edit($id)
     {
-        $announcement = $this->announcement->findOrFail($id);
-        $atype = $announcement->type;
+        $author = $this->author->findOrFail($id);
 
-        return view('admin.announcement.form', compact('announcement','atype'));
+        return view('admin.authors.form', compact('author'));
     }
 
     public function queue($atype = null) {
@@ -59,7 +59,7 @@ class AnnouncementController extends Controller
         }
         $announcement = $this->announcement;
 
-        return view('admin.announcement.queue', compact('announcements', 'atype'));
+        //return view('admin.announcement.queue', compact('announcements', 'atype'));
     }
 
     /**
@@ -67,26 +67,11 @@ class AnnouncementController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function form($atype = null)
+    public function form()
     {
-        if (is_null($atype)) {
-            $atype = 'general';
-        }
+        $author = $this->author;
 
-        $announcement = $this->announcement;
-
-        return view('admin.announcement.form', compact('announcement', 'atype'));
-    }
-
-    public function archives($atype = null){
-      if (is_null($atype)) {
-          $atype = 'general';
-      } else {
-          $atype = $atype;
-      }
-      $announcement = $this->announcement;
-
-      return view('admin.announcement.archives', compact('announcement','atype'));
+        return view('admin.authors.form', compact('author'));
     }
 
 }
