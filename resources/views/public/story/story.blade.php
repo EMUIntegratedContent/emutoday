@@ -46,10 +46,10 @@
             </div>
             @if($story->author_id === 0)
                 <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-                <p class="news-contacts">Contact {{ $story->user->full_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
+                <!--<p class="news-contacts">Contact {{ $story->user->full_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>-->
             @else
                 <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-                <p class="news-contacts">Contact {{ $story->author->full_name }}, {{ $story->author->email }}{{ empty($story->author->phone) ? '': ', ' . $story->author->phone }}</p>
+                <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->author->phone }}</p>
             @endif
 
           </div>

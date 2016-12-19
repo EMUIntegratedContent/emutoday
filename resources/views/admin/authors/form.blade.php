@@ -21,7 +21,7 @@
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">{{$author->exists ? 'Edit Author' : 'New Author'}}</h3>
-            @include('admin.components.boxtools', ['rte' => 'author', 'path' => 'admin/author'])
+            @include('admin.components.boxtools', ['rte' => 'authors', 'path' => 'admin/authors'])
           </div>	<!-- /.box-header -->
           <div class="box-body">
             <div id="vue-authors">

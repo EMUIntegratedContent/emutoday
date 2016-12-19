@@ -35,7 +35,7 @@ class StoryController extends Controller
                                   ])
                                   ->orderBy('start_date', 'desc')
                                   ->paginate(8);
-                                  // dd($storys->count());
+                                  
           return view('public.story.index', compact('storys'));
 
         } else {
@@ -43,10 +43,6 @@ class StoryController extends Controller
         if ($stype == 'article'){
 
             $rurl = '/magazine/article/'.$id;
-            // return view('admin.story.form', compact('story', 'stypes', 'tags','stypelist','requiredImages','otherImages'));
-            // Route::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
-
-
             return redirect($rurl);
         } else {
             $story = $this->storys->findOrFail($id);
@@ -72,22 +68,9 @@ class StoryController extends Controller
                         $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
                 }
 
-
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
 
-            //   $sideStudentStorys = $this->storys->where([
-            // 		['story_type', 'student'],
-            // 		['id', '<>', $id],
-            // 		['is_approved', 1],
-            // 		])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
-            // 			$query->where('image_type', 'small');
-            // 		}])->take(3)->get();
-              //
-            // 		$sideStudentBlurbs = collect();
-            // 		foreach ($sideStudentStorys as $sideStudentStory) {
-            // 		    $sideStudentBlurbs->push($sideStudentStory->storyImages()->where('image_type', 'small')->first());
-            // 		}
             $viewfolder = ($stype == 'news')? 'story': $stype;
             JavaScript::put([
                     'jsis' => 'hi',
@@ -118,10 +101,10 @@ class StoryController extends Controller
 
         } else {
             $story = $this->storys->findOrFail($id);
-            // $mainStoryImage = $story->storyImages()->ofType('imagemain')->first();
+
             $mainStoryImage = null;
             $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
-            // dd($mainStoryImage);
+
             foreach($mainStoryImages as $mainimg){
                 if($mainimg->imgtype->type == 'story') {
                     $mainStoryImage = $mainimg;
@@ -140,22 +123,8 @@ class StoryController extends Controller
                         $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
                 }
 
-
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
-
-            //   $sideStudentStorys = $this->storys->where([
-            // 		['story_type', 'student'],
-            // 		['id', '<>', $id],
-            // 		['is_approved', 1],
-            // 		])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
-            // 			$query->where('image_type', 'small');
-            // 		}])->take(3)->get();
-              //
-            // 		$sideStudentBlurbs = collect();
-            // 		foreach ($sideStudentStorys as $sideStudentStory) {
-            // 		    $sideStudentBlurbs->push($sideStudentStory->storyImages()->where('image_type', 'small')->first());
-            // 		}
 
             JavaScript::put([
                     'jsis' => 'hi',

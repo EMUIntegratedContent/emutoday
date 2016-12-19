@@ -73,6 +73,12 @@ Route::group(['prefix' => 'api'], function() {
         return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->where('is_contact', 1)->get();
     });
 
+    Route::get('contactdefault', function() { // is there a way to concat first_name and last_name here?
+        $author = Author::select()->where('is_principal_contact', 1)->first();
+
+        return $author;
+    });
+
     Route::get('contactlist/{id}', function($id) {
         $contact = Story::find($id)->contact()->select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();
 

@@ -169,8 +169,10 @@ class StoryController extends ApiController
                      return $this->setStatusCode(422)
                                              ->respondWithError($validation->errors()->getMessages());
                  }
-             if($validation->passes())
-                {
+             if($validation->passes()){
+                $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
+                $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
+
                 $story = new Story;
                 $story->title       = $request->get('title');
                 $story->slug        = $request->get('slug');
@@ -181,6 +183,7 @@ class StoryController extends ApiController
                 $story->content     = $request->get('content');
                 $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
                 $story->author_id   = $request->get('author_id', $request->user()->id);
+                $story->contact_id  = $contact_id;
 
                 $tags = array_pluck($request->input('tags'),'value');
 
@@ -277,6 +280,7 @@ class StoryController extends ApiController
                      'user_id'   => 'required',
                      'content'     => 'required'
              ]);
+
       if( $validation->fails() )
       {
           return $this->setStatusCode(422)
@@ -285,6 +289,8 @@ class StoryController extends ApiController
       if($validation->passes())
       {
         $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
+        $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
+
         //  $story = new Story;
         $story->user_id       	= $request->get('user_id');
         $story->title           	= $request->get('title');
@@ -303,7 +309,7 @@ class StoryController extends ApiController
         $story->is_archived         = $request->get('is_archived', 0);
         $story->start_date      	= $request->get('start_date');
         $story->end_date      	= \Carbon\Carbon::parse($request->get('end_date', null));
-        $story->contact_id    	= $request->get('contact_id', $defaultContact->id);
+        $story->contact_id    	= $contact_id;
 
         $tags = array_pluck($request->input('tags'),'value');
         $story->tags()->sync($tags);

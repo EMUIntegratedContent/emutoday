@@ -68,8 +68,16 @@ class AuthorController extends ApiController
       $author->last_name      	    = $request->get('last_name');
       $author->email      	        = $request->get('email');
       $author->phone     	          = $request->get('phone');
-      $author->is_contact           = $request->get('is_contact', 0);
-      $author->is_principal_contact = $request->get('is_principal_contact', 0);
+      
+      //If this author is set as the PRIMARY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
+      if($request->get('is_principal_contact') == 1){
+          $author->is_principal_contact = 1;
+          $author->is_contact = 1;
+          Author::where('id', '!=', $author->id)->update(['is_principal_contact'=> 0]);
+      } else {
+        $author->is_contact           = $request->get('is_contact', 0);
+        $author->is_principal_contact = 0;
+      }
 
       if($author->save()) {
         return $this->setStatusCode(201)
