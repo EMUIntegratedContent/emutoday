@@ -41,13 +41,13 @@
           <!-- Page Side Bar Column -->
           <div class="large-3 medium-4 small-12 columns featurepadding">
 						@if(count($sideStoryBlurbs)>0)
-						@include('public.layouts.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
+						@include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
 					@endif
 					@if(count($sideStudentBlurbs)>0)
-						@include('public.layouts.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
+						@include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
 
 					@endif
-          
+
           </div>
 
 
