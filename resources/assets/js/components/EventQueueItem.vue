@@ -30,86 +30,140 @@
               <div title="Display order for News Hub" class="form-group"> <!-- For the NEWS HUB page. -->
                 <label for="priority-number" class="priority">Today:</label>
                 <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" number>
-                <option v-for="option in options" v-bind:value="option.value">
-                  {{option.text}}
-                </option>
-              </select>
+                  <option v-for="option in options" v-bind:value="option.value">
+                    {{option.text}}
+                  </option>
+                </select>
+              </div>
+
+
+              <div id="applabel" class="form-group">
+                <label>Approved:&nbsp;</label>
+              </div><!-- /.form-group -->
+              <div class="form-group">
+                <vui-flip-switch id="switch-{{item.id}}"
+                v-on:click.prevent="changeIsApproved"
+                :value.sync="patchRecord.is_approved" >
+              </vui-flip-switch>
             </div>
+          </form>
+        </div><!-- /.col-sm-6 -->
+      </div><!-- /.row -->
 
+      <div class="row">
+        <a v-on:click.prevent="toggleBody" href="#">
+          <div class="col-sm-12">
+            <h6 class="box-title">{{item.title}}</h6><span class="event-cancel" v-if="item.is_canceled"> - canceled</span></h6>
+          </div><!-- /.col-md-12 -->
+        </a>
+      </div><!-- /.row -->
+    </div>  <!-- /.box-header -->
 
-            <div id="applabel" class="form-group">
-              <label>Approved:&nbsp;</label>
-            </div><!-- /.form-group -->
+    <div v-if="showBody" class="box-body">
+      <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
+      <template v-if="item.all_day">
+        <p>All Day Event</p>
+      </template>
+      <hr/>
+      <div class="item-info">
+        <p>Title: {{item.title}}</p>
+        <p v-if"item.short_title">Short-title: {{item.shor_title}}</p>
+        <p>Description: {{item.description}}</p>
+        <template v-if="isOnCampus">
+          <p>Location: <a href="http://emich.edu/maps/?building={{item.building}}" target="_blank">{{item.location}}</a></p>
+        </template>
+        <hr/>
+        <template v-else>
+          <p>Location: {{item.location}}</p>
+        </template>
+        <template v-if="item.contact_person || item.contact_person || item.contact_person">
+          <p>Contact:</p>
+          <ul>
+            <li v-if="item.contact_person">Person: {{item.contact_person}}</li>
+            <li v-if="item.contact_email">Email: {{item.contact_email}}</li>
+            <li v-if="item.contact_phone">Phone: {{item.contact_phone}}</li>
+          </ul>
+        </template>
+        <template v-if="item.related_link_1">
+          <p>Additional Information: (related links) </p>
+          <ul>
+            <li><a href="{{item.related_link_1}}" target="_blank">
+              <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
+              <template v-else>{{item.related_link_1}}</template>
+            </a></li>
+            <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">
+              <template v-if="item.related_link_2_txt">{{item.related_link_2_txt}}</template>
+              <template v-else>{{item.related_link_2}}</template>
+            </a></li>
+            <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">
+              <template v-if="item.related_link_3_txt">{{item.related_link_3_txt}}</template>
+              <template v-else>{{item.related_link_3}}</template>
+            </a></li>
+          </ul>
+        </template>
+        <hr/>
+        <p v-if="item.free">Cost: Free</p>
+        <p v-else>Cost: {{item.cost | currency }}</p>
+        <p>Participantion: {{eventParticipation}}</p>
+        <template v-if="item.tickets">
+          <p v-if="item.ticket_details_online">For Tickets Visit: {{item.ticket_details_online}}</p>
+          <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
+          <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
+          <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
+        </template>
+        <hr/>
+        <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
+        <hr/>
+        <p>Submitted by: {{item.submitter}}</p>
+      </div>
+      <template v-if="canHaveImage">
+        <img v-if="hasEventImage" :src="imageUrl" />
+        <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
+        <div v-show="showPanel" class="panel">
+          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
+            <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
             <div class="form-group">
-              <vui-flip-switch id="switch-{{item.id}}"
-              v-on:click.prevent="changeIsApproved"
-              :value.sync="patchRecord.is_approved" >
-            </vui-flip-switch>
-          </div>
-        </form>
-      </div><!-- /.col-sm-6 -->
-    </div><!-- /.row -->
+              <label for="event-image">Event Image</label><br>
+              <input v-el:eventimg type="file" name="eventimg" id="eventimg">
+            </div>
+            <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
+          </form>
+        </div><!-- /.panel mediaform -->
+      </template>
 
-    <div class="row">
-      <a v-on:click.prevent="toggleBody" href="#">
-        <div class="col-sm-12">
-          <h6 class="box-title">{{item.title}}</h6>
-        </div><!-- /.col-md-12 -->
-      </a>
-    </div><!-- /.row -->
-  </div>  <!-- /.box-header -->
-
-  <div v-if="showBody" class="box-body">
-
-    <p>From: {{item.start_time}} to {{item.end_time}}</p>
-    <p>{{item.description}}</p>
-    <div class="item-info">
-      Dates: {{item.start_date}} - {{item.end_date}}
-    </div>
-
-    <template v-if="canHaveImage">
-      <img v-if="hasEventImage" :src="imageUrl" />
-      <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
-      <div v-show="showPanel" class="panel">
-        <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
-          <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
-          <div class="form-group">
-            <label for="event-image">Event Image</label><br>
-            <input v-el:eventimg type="file" name="eventimg" id="eventimg">
-          </div>
-          <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
-        </form>
-      </div><!-- /.panel mediaform -->
-    </template>
-
-  </div><!-- /.box-body -->
+    </div><!-- /.box-body -->
 
 
-  <div :class="addSeperator" class="box-footer list-footer">
-    <div class="row">
-      <div class="col-sm-12 col-md-9">
-        <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->
+    <div :class="addSeperator" class="box-footer list-footer">
+      <div class="row">
+        <div class="col-sm-12 col-md-9">
+          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->
 
-        <span v-if="itemCurrent" :class="timeFromNowStatus">Live {{timefromNow}}</span> <span :class="timeLeftStatus">{{timeLeft}}</span>
+          <span v-if="itemCurrent" :class="timeFromNowStatus">Live {{timefromNow}}</span> <span :class="timeLeftStatus">{{timeLeft}}</span>
 
 
 
-      </div><!-- /.col-md-7 -->
-      <div class="col-sm-12 col-md-3">
-        {{item.id}}
-        <div class="btn-group pull-right">
+        </div><!-- /.col-md-7 -->
+        <div class="col-sm-12 col-md-3">
+          {{item.id}}
+          <div class="btn-group pull-right">
 
-          <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-pencil"></i></button>
-          <!-- <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-eye"></i></button> -->
-        </div><!-- /.btn-toolbar -->
+            <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-pencil"></i></button>
+            <!-- <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-eye"></i></button> -->
+          </div><!-- /.btn-toolbar -->
 
-      </div><!-- /.col-md-7 -->
-    </div><!-- /.row -->
-  </div><!-- /.box-footer -->
-</div><!-- /.box- -->
+        </div><!-- /.col-md-7 -->
+      </div><!-- /.row -->
+    </div><!-- /.box-footer -->
+  </div><!-- /.box- -->
 </div>
 </template>
 <style scoped>
+.event-cancel {
+  font-size: 90%;
+  font-weight: normal;
+  color: #333;
+}
 .box {
   color: #1B1B1B;
   margin-bottom: 10px;
@@ -461,9 +515,34 @@ module.exports  = {
     itemPreviewPath: function(){
       return '/preview/event/'+ this.item.id
     },
-
-
-
+    isOnCampus:function(){
+      if(this.item.building === null || this.item.building === "undefined"){
+        return false
+      } else {
+        return true
+      }
+    },
+    eventParticipation:function(){
+      switch (this.item.participants){
+        case 'campus':
+        return 'Campus Only'
+        break;
+        case 'public':
+        return 'Open to Public'
+        break;
+        case 'students':
+        return 'Students Only'
+        break;
+        case 'invite':
+        return 'Invitation Only'
+        break;
+        case 'tickets':
+        return 'Tickets Required'
+        break;
+        default:
+        return ''
+      }
+    }
   },
   methods:{
     // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
@@ -586,6 +665,9 @@ module.exports  = {
   },
 
   filters: {
+    yesNo: function(value) {
+      return (value == true) ? 'Yes' : 'No';
+    },
     titleDay: function (value) {
       return  moment(value).format("ddd")
     },
@@ -599,7 +681,7 @@ module.exports  = {
       read: function(val) {
         console.log('read-val'+ val )
 
-        return 	val ?  moment(val).format('MM-DD-YYYY') : '';
+        return val ?  moment(val).format('ddd, MM-DD-YYYY') : '';
       },
       write: function(val, oldVal) {
         console.log('write-val'+ val + '--'+ oldVal)
