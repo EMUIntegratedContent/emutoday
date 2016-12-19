@@ -60,6 +60,22 @@
     </div>  <!-- /.box-header -->
 
     <div v-if="showBody" class="box-body">
+      <template v-if="canHaveImage">
+        <img v-if="hasEventImage" :src="imageUrl" />
+        <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
+        <div v-show="showPanel" class="panel">
+          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
+            <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
+            <div class="form-group">
+              <label for="event-image">Event Image</label><br>
+              <input v-el:eventimg type="file" name="eventimg" id="eventimg">
+            </div>
+            <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
+          </form>
+        </div><!-- /.panel mediaform -->
+      <hr/>
+      </template>
+
       <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
       <template v-if="item.all_day">
         <p>All Day Event</p>
@@ -116,21 +132,6 @@
         <hr/>
         <p>Submitted by: {{item.submitter}}</p>
       </div>
-      <template v-if="canHaveImage">
-        <img v-if="hasEventImage" :src="imageUrl" />
-        <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
-        <div v-show="showPanel" class="panel">
-          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
-            <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
-            <div class="form-group">
-              <label for="event-image">Event Image</label><br>
-              <input v-el:eventimg type="file" name="eventimg" id="eventimg">
-            </div>
-            <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
-          </form>
-        </div><!-- /.panel mediaform -->
-      </template>
-
     </div><!-- /.box-body -->
 
 

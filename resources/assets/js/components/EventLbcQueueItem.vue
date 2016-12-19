@@ -51,51 +51,61 @@
     </div>  <!-- /.box-header -->
 
     <div v-if="showBody" class="box-body">
-      <p>{{item.description}}</p>
+      <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
       <template v-if="item.all_day">
-        <p>All Day</p>
+        <p>All Day Event</p>
       </template>
-      <template v-else>
-        <p v-if="item.no_end_time">{{item.start_time}}</p>
-        <p v-else>
-          From: {{item.start_time}} to {{item.end_time}}
-        </p>
-      </template>
-      <template v-if="isOnCampus">
-        <a href="http://emich.edu/maps/?building={{item.building}}" target="_blank">{{item.location}}</a>
-      </template>
-      <template v-else>
-        <p>{{item.location}}</p>
-      </template>
-
-      <div class="event-item" transition="expand">
+      <hr/>
+      <div class="item-info">
+        <p>Title: {{item.title}}</p>
+        <p v-if"item.short_title">Short-title: {{item.shor_title}}</p>
+        <p>Description: {{item.description}}</p>
+        <template v-if="isOnCampus">
+          <p>Location: <a href="http://emich.edu/maps/?building={{item.building}}" target="_blank">{{item.location}}</a></p>
+        </template>
+        <hr/>
+        <template v-else>
+          <p>Location: {{item.location}}</p>
+        </template>
         <template v-if="item.contact_person || item.contact_person || item.contact_person">
-          <p>Contact</p>
+          <p>Contact:</p>
           <ul>
-            <li v-if="item.contact_person">{{item.contact_person}}</li>
+            <li v-if="item.contact_person">Person: {{item.contact_person}}</li>
             <li v-if="item.contact_email">Email: {{item.contact_email}}</li>
             <li v-if="item.contact_phone">Phone: {{item.contact_phone}}</li>
           </ul>
         </template>
         <template v-if="item.related_link_1">
-          <p>Additional Information</p>
+          <p>Additional Information: (related links) </p>
           <ul>
-            <li><a href="{{item.related_link_1}}" target="_blank">{{item.related_link_1_txt}}</a></li>
-            <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">{{item.related_link_2_txt}}</a></li>
-            <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">{{item.related_link_3_txt}}</a></li>
+            <li><a href="{{item.related_link_1}}" target="_blank">
+              <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
+              <template v-else>{{item.related_link_1}}</template>
+            </a></li>
+            <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">
+              <template v-if="item.related_link_2_txt">{{item.related_link_2_txt}}</template>
+              <template v-else>{{item.related_link_2}}</template>
+            </a></li>
+            <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">
+              <template v-if="item.related_link_3_txt">{{item.related_link_3_txt}}</template>
+              <template v-else>{{item.related_link_3}}</template>
+            </a></li>
           </ul>
         </template>
+        <hr/>
         <p v-if="item.free">Cost: Free</p>
         <p v-else>Cost: {{item.cost | currency }}</p>
-        <p>{{eventParticipation}}</p>
+        <p>Participantion: {{eventParticipation}}</p>
         <template v-if="item.tickets">
           <p v-if="item.ticket_details_online">For Tickets Visit: {{item.ticket_details_online}}</p>
           <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
           <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
           <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
         </template>
-        <p>LBC Approved:{{item.lbc_approved | yesNo }}</p>
-        <p>LBC Reviewed:{{item.lbc_reviewed | yesNo }}</p>
+        <hr/>
+        <p>Submitted by: {{item.submitter}}</p>
+        <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
+        <p>LBC Reviewed: {{item.lbc_reviewed | yesNo }}</p>
       </div>
     </div><!-- /.box-body -->
 
@@ -492,6 +502,9 @@ module.exports  = {
     // dtpicker: require('../directives/dtpicker.js')
   },
   filters: {
+    yesNo: function(value) {
+      return (value == true) ? 'Yes' : 'No';
+    },
     titleDay: function (value) {
       return  moment(value).format("ddd")
     },
@@ -501,14 +514,11 @@ module.exports  = {
     titleDateLong: function (value) {
       return  moment(value).format("ddd MM/DD")
     },
-    yesNo: function(value) {
-      return (value == true) ? 'Yes' : 'No';
-    },
     momentPretty: {
       read: function(val) {
         console.log('read-val'+ val )
 
-        return 	val ?  moment(val).format('MM-DD-YYYY') : '';
+        return val ?  moment(val).format('ddd, MM-DD-YYYY') : '';
       },
       write: function(val, oldVal) {
         console.log('write-val'+ val + '--'+ oldVal)

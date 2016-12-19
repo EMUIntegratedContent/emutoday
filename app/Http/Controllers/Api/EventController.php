@@ -36,7 +36,8 @@ class EventController extends ApiController
   {
     // $this->middleware('auth');
     $this->middleware(['web','auth'], ['only' => [
-      'queueLoad'
+      'queueLoad',
+      'lbcQueueLoad'
       ]]);
     }
 
@@ -75,31 +76,36 @@ class EventController extends ApiController
             ['end_date', '>', $currentDate->subDay(2)]
             ])->get();
             // Announcement::all();
-          }
+        }
           $fractal = new Manager();
           $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
           return $fractal->createData($resource)->toArray();
-        } else {
-          return $this->setStatusCode(501)->respondWithError('Error');
-        }
+      } else {
+        return $this->setStatusCode(501)->respondWithError('Error');
       }
-      public function lbcQueueLoad()
-      { // Return LBC approved or reviewed events
-          $currentDate = Carbon::now();
+    }
 
+    public function lbcQueueLoad()
+    { // Return LBC approved or reviewed events
+      $currentDate = Carbon::now();
+
+      if (\Auth::check()) {
+        $user = \Auth::user();
+
+        if ($user->hasRole('lbc_approver')){
           $events = Event::where([
             ['lbc_approved', '1'],
             ['lbc_reviewed', '0'],
             ['end_date', '>', $currentDate->subDay(14)]
-          // ])->orWhere([
-          //   ['lbc_reviewed', '0'],
-          //   ['end_date', '>', $currentDate->subDay(14)]
-          ])->get();
-
-          $fractal = new Manager();
-          $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
-          return $fractal->createData($resource)->toArray();
+            ])->get();
+        }
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
+        return $fractal->createData($resource)->toArray();
+      } else {
+        return $this->setStatusCode(501)->respondWithError('Error');
       }
+    }
 
       /**
       * Retieve resource for editing
