@@ -8,6 +8,21 @@
 @endsection
 
 @section('magazine-title'){{ $story->title }} @stop
+
+@section('addthisMeta')
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{trim(Request::fullUrl())}}" />
+<meta property="og:title" content="{{trim($story->title)}}" />
+<meta property="og:description" content="{{trim($story->subtitle)}}" />
+  @if(isset($mainImage))
+  <meta property="og:image" content="http://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainImage->present()->mainImageURL)}}"/>
+  <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainImage->present()->mainImageURL)}}"/>
+  <meta property="og:image:width" content="400" />
+  <meta property="og:image:height" content="300" />
+  {{-- <!-- add an else for no mainImage --> --}}
+  @endif
+@endsection
+
 @section('content')
 <div id="news-story-bar" class="magazine-story">
   <div id="story-content" class="row">
