@@ -111,7 +111,10 @@
                     </div><!-- /.col-md-7 -->
                     <div class="col-sm-12 col-md-5">
                         <div class="btn-group pull-right">
-                            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledArchive" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>
+                            <!--
+                              When the archive system is built, uncomment this line and replace the disabled button below it... CP 12/20/16
+                              <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledArchive" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>-->
+                            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" disabled="disabled" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>
                             <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="edit"><i class="fa fa-pencil"></i></button>
                             <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledPreview" data-toggle="tooltip" data-placement="top" title="preview"><i class="fa fa-eye"></i></button>
 

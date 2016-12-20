@@ -45,13 +45,14 @@
     </div>
     <div class="large-3 medium-4 small-12 columns featurepadding">
       <div class="featured-content-block magazine-block">
-        <h6 class="headline-block">Popular stories</h6>
+        <h6 class="headline-block">Popular Articles</h6>
         <ul class="feature-list">
           @foreach ($sideStoryBlurbs as $ssblurb)
-          <li><a href="/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}">{{$ssblurb->caption}}</a></li>
+          <li><a href="/magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}">{{$ssblurb->caption}}</a></li>
           @endforeach
         </ul>
       </div>
+      {{--
       <div class="featured-content-block magazine-block">
         <h6 class="headline-block">Headlines</h6>
         <ul class="feature-list">
@@ -61,6 +62,7 @@
         </ul>
 
       </div>
+      --}}
       <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Subscribe</a>
       <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Submit a Story Idea</a>
     </div>

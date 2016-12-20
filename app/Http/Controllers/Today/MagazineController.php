@@ -24,7 +24,7 @@ class MagazineController extends Controller
     {
         $currentDateTime = Carbon::now();
         $currentIssue = false;
-        
+
         if ($year == null) {
 
           $magazine = $this->magazine->where([
@@ -51,13 +51,13 @@ class MagazineController extends Controller
         if(!$magazine){
             return $this->noCurrentIssue();
         }
-        
+
         JavaScript::put([
             'jsis' => 'hi',
         ]);
         // $magazine = $this->magazines->findOrFail($id);
         // $storyImages = $this->magazines->storyImages();
-        
+
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
                 $magazineCover = $magazine->mediafiles()->where('type','cover')->first();
@@ -112,7 +112,7 @@ class MagazineController extends Controller
         if(!$magazine){
             return $this->noCurrentIssue();
         }
-        
+
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
 
@@ -149,15 +149,17 @@ class MagazineController extends Controller
                 // dd($mainImage);
         $sideFeaturedStorys = $this->story
                                   ->where([
-                                    ['story_type', 'story'],
+                                    ['story_type', 'article'],
                                     ['id', '<>', $id],
                                                                         ['is_approved', 1],
                                   ])
+                                  /*
                                   ->orWhere([
                                     ['story_type', 'student'],
                                     ['id', '<>', $id],
                                                                         ['is_approved', 1],
                                   ])
+                                  */
                                   ->orderBy('created_at', 'desc')->with('storyImages')->take(3)->get();
 
         $sideStoryBlurbs = collect();
@@ -182,13 +184,13 @@ class MagazineController extends Controller
 
     /**
      * Display this view when there are no current, unarchived issues found.
-     * 
+     *
      * @return view
      */
     private function noCurrentIssue(){
         return view('public.magazine.noissues');
     }
-    
+
     public function archives(){
         return view('public.magazine.archives');
     }
