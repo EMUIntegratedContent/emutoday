@@ -11,12 +11,6 @@
                          <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
                     </template>
               </div>
-              <!-- <div class="btn-group btn-group-xs" @click="changeFilterByReadyStatus" role="group" aria-label="isReadyLabel" data-toggle="buttons" v-iconradio="readyStatus">
-                  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="ready"><input type="radio" autocomplete="off" value="1" /><span class="item-type-icon-shrt fa fa-circle"></span></label>
-                  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="not ready"><input type="radio" autocomplete="off" value="0" /><span class="item-type-icon-shrt fa fa-circle-o"></span></label>
-                  <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="reset"><input type="radio" autocomplete="off" value="" /><span class="item-type-icon-shrt fa fa-asterisk"></span></label>
-
-              </div> -->
             </div>
             <div id="items-unapproved">
                 <story-pod

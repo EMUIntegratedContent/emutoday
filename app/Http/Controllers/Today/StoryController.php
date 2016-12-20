@@ -35,7 +35,7 @@ class StoryController extends Controller
                                   ])
                                   ->orderBy('start_date', 'desc')
                                   ->paginate(8);
-                                  
+
           return view('public.story.index', compact('storys'));
 
         } else {
