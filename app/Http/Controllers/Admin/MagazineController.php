@@ -35,7 +35,7 @@ class MagazineController extends Controller
       $this->story = $story;
       $this->storyImage = $storyImage;
       $this->mediafile = $mediafile;
-      
+
       $this->bugService = $bugService;
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
@@ -119,7 +119,7 @@ class MagazineController extends Controller
                      $imgFileExtension = $imgFileOriginalExtension;
                  }
 
-         $mediafile->name = 'cover'. '-' .$magazine->year . '-' . $magazine->season;
+         $mediafile->name = 'cover'. '-' .$magazine->year . '-' . $magazine->season  . '-' . date('YmdHis');
          $mediafile->ext = $imgFileExtension;
 
          $imgFileName = $mediafile->name . '.' . $mediafile->ext;
@@ -159,16 +159,15 @@ class MagazineController extends Controller
                      break;
                      default:
                      $imgFileExtension = $imgFileOriginalExtension;
-                 }
+            }
             $mediafile->path = $destinationFolder;
-            $mediafile->name = $mediafile->type .'-'. $magazine->year . '-' . $magazine->season;
+            $mediafile->name = $mediafile->type .'-'. $magazine->year . '-' . $magazine->season . '-' . date('YmdHis');
             $mediafile->ext = $imgFileExtension;
             $imgFileName = $mediafile->name . '.' . $mediafile->ext;
             $mediafile->filename = $imgFileName;
             $image = Image::make($imgFilePath)
-                            ->save(public_path() . $destinationFolder . $imgFileName);
-            }
-
+                      ->save(public_path() . $destinationFolder . $imgFileName);
+        }
             $mediafile->headline = $request->input('headline');
             $mediafile->caption = $request->input('caption');
             $mediafile->teaser = $request->input('teaser');
@@ -179,7 +178,7 @@ class MagazineController extends Controller
 
             flash()->success('The Cover Image has been updated');
             return redirect()->back();
-        }
+    }
 
 
     /**
@@ -209,12 +208,10 @@ class MagazineController extends Controller
       JavaScript::put([
           'jsis' => 'hi',
       ]);
-      // $magazine = $this->magazines->findOrFail($id);
-      // $storyImages = $this->magazines->storyImages();
-      // return view('admin.magazine.preview', compact('magazine', 'storyImages', 'heroImg', 'barImgs'));
-            return view('public.magazine.index', compact('magazine', 'storyImages', 'heroImg', 'barImgs', 'magazineCover','magazineExtra'));
 
-            }
+      return view('public.magazine.index', compact('magazine', 'storyImages', 'heroImg', 'barImgs', 'magazineCover','magazineExtra'));
+
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -271,8 +268,6 @@ class MagazineController extends Controller
                     'storys' => $storys->toArray()
       ]);
 
-
-
       return view('admin.magazine.edit', compact('magazine', 'storys','storyimgs','mediatypes', 'mediafiles','mediafile','original_story_ids'));
     }
 
@@ -320,7 +315,6 @@ class MagazineController extends Controller
        if($magazine->mediafiles->count() < $magazineMediaCount){
            $magazine->is_ready = 0;
        }
-    //    dd($magazine->mediafiles->count(),$magazine->is_ready,$magazineMediaCount);
 
       $magazine->year = $request->year;
       $magazine->season   = $request->season;

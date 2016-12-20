@@ -31,6 +31,8 @@
       </div><!-- /.row -->
       <div id="big-feature-image">
         <img src="{{$mainImage->present()->mainImageURL}}" alt="feature-image">
+
+        <div class="feature-image-caption">{{ $mainImage->caption }}</div>
       </div>
       <!-- <div class="magazine-titlebar"><img src="/assets/imgs/graphic-title.png" alt="Lost Voices"></div> -->
       {!! $story->content !!}

@@ -19,7 +19,7 @@
       <img src="/imagecache/original/{{$heroImg->filename}}" alt="main image">
       <div id="magazine-text-over-image-box" class="row collapse">
         <div class="centered-main-title">
-          <h2><a href="/emu-today/magazine/article/{{$heroImg->story->id}}">{{$heroImg->title}}</a></h2>
+          <h2><a href="/magazine/article/{{$heroImg->story->id}}">{{$heroImg->title}}</a></h2>
           <p>{{$heroImg->caption}}</p>
         </div>
       </div>
@@ -29,7 +29,7 @@
         <div class="row small-up-2 medium-up-2 large-up-5">
             @for ($i = 1; $i <= count($barImgs); $i++)
                 <div class="column">
-                  <a class="article-link" href="/emu-today/magazine/article/{{$barImgs[$i]->story->id}}">
+                  <a class="article-link" href="/magazine/article/{{$barImgs[$i]->story->id}}">
                     <img class="topic-image" src="/imagecache/original/{{$barImgs[$i]->filename}}"  alt="topic image"/>
                     <div class="profile-content">
                       <div class="profile-text-content magazine" data-equalizer-watch>

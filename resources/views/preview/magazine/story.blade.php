@@ -32,7 +32,7 @@
               <div id="issue-grouping" class="row">
                 <div class="large-8 medium-8 small-12 columns">
                     @if($magazine)
-                        <a href="/emu-today/magazine/{{$magazine->year}}"><h2 class="issue-date news-caps">{{$magazine->season}} {{$magazine->year}}</h2></a>
+                        <a href="/magazine/{{$magazine->year}}"><h2 class="issue-date news-caps">{{$magazine->season}} {{$magazine->year}}</h2></a>
                     @else
                         <a href="#"><h2 class="issue-date news-caps">Season Year</h2></a>
                     @endif
@@ -50,6 +50,8 @@
              <div id="big-feature-image">
                  @if($mainImage)
                   <img src="{{$mainImage->present()->mainImageURL}}" alt="feature-image">
+
+                  <div class="feature-image-caption">{{ $mainImage->caption }}</div>
               @else
                   <img src="/assets/imgs/placeholder/article_front.jpg" alt="feature-image">
 
@@ -71,7 +73,6 @@
                 <h6 class="headline-block">Popular stories</h6>
                 <ul class="feature-list">
                     @foreach ($sideStoryBlurbs as $ssblurb)
-                    {{-- <li><a href="/emu-today/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}">{{$ssblurb->caption}}</a></li> --}}
                         @if($ssblurb)
                             <li><a href="#">{{$ssblurb->caption}}</a></li>
                         @else
@@ -84,18 +85,13 @@
                 <h6 class="headline-block">Headlines</h6>
                 <ul class="feature-list">
                   @foreach ($sideNewsStorys as $newsstory)
-                <li><a href="/emu-today/{{$newsstory->story_folder}}/{{$newsstory->id}}">{{$newsstory->title}}</a></li>
+                <li><a href="/{{$newsstory->story_folder}}/{{$newsstory->id}}">{{$newsstory->title}}</a></li>
                 @endforeach
                 </ul>
-
               </div>
               <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Subscribe</a>
               <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Submit a Story Idea</a>
-
-
             </div>
-
-
           </div>
         </div>
 @endsection
