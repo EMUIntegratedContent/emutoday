@@ -5671,6 +5671,9 @@ a.allcaps {
     text-transform: uppercase;
 }
 /*Headings*/
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+}
 h1{
     font-size: 2.1rem;
 }
@@ -5757,8 +5760,8 @@ ul.social-icons li img{
 #tier1-nav h1{
     font-weight: 400;
     font-size: 2.5rem;
-    margin: .7rem 0 0;
-    padding: 0.3rem 0 0 0.6rem;
+    margin: 0;
+    padding: 0.1rem 0 0 0.6rem;
 }
 #tier1-nav h1 a{
     color: #333;
@@ -6475,7 +6478,7 @@ ul.accordion li{
     background: -webkit-linear-gradient(#fec95e, #fcf02a); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#fec95e, #fcf02a); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#fec95e, #fcf02a); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#fec95e, #fcf02a); /* Standard syntax */    
+    background: linear-gradient(#fec95e, #fcf02a); /* Standard syntax */
 }
 .emergency-yellow h3{
 	color:#333;
@@ -6507,6 +6510,7 @@ ul.accordion li{
 #emergency-bar.no{
     display:none;
 }
+
 /*News Headlines*/
 .publish-date {
     float: right;

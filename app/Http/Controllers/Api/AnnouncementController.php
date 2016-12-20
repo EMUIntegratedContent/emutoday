@@ -168,7 +168,7 @@ class AnnouncementController extends ApiController
       $announcement->email_link_txt          = $request->get('email_link_txt', null);
 
       $announcement->submission_date   = $request->get('submission_date');
-      $announcement->is_approved      	= $request->get('is_approved', 0);
+      $announcement->is_approved      	= '0';
       $announcement->approved_date     = $request->get('approved_date', null);
       $announcement->is_promoted     	= $request->get('is_promoted', 0);
 
