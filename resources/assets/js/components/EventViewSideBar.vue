@@ -62,11 +62,11 @@
             <li><a href="http://www.emich.edu/hr/calendar/">Holiday and Payroll</a></li>
             <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
           </ul>
-        <div class="ypsi-graphic">
-          <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi.png" alt="Visit Ypsi Calendar"></a>
-        </div>
         <div class="submit-calendar">
           <a href="/calendar/event/form" class="button emu-button">Submit an Event</a>
+        </div>
+        <div class="ypsi-graphic">
+          <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi.png" alt="Visit Ypsi Calendar"></a>
         </div>
 
       </div>
@@ -75,8 +75,10 @@
   <style>
 
   .submit-calendar {
-    padding-left: 0;
-    padding-bottom: 1rem;
+    padding: 0;
+  }
+  .ypsi-graphic {
+    padding-bottom: 3rem;
   }
   .calendar-bar {
     background: ##bebdbd;

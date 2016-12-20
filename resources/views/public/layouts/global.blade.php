@@ -75,7 +75,7 @@
                                                 </div>
                                                 <div class="large-7 medium-5 small-12 columns">
 
-                                                    <div class="icon-menu float-right text-right">
+                                                    <div class="float-right text-right">
 
                                                         <div id="vue-search-form" class="hide-for-small-only">
                                                             <search-form>

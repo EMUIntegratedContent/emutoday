@@ -21,6 +21,7 @@
 
           <div class="large-12 medium-12 small-12 columns">
 
+            @unless(empty($featuredevents[0]))
             <div id="five-events-bar">
               <div id="news-title-bar" class="row">
                 <div class="large-12 medium-12 show-for-medium columns">
@@ -31,8 +32,9 @@
               <div class="row large-up-5 medium-up-3 show-for-medium" data-equalizer>
                 @each('public.calendar.partials.featuredevent', $featuredevents, 'fevent')
               </div><!-- row event block grid end -->
-
             </div> <!--end of five events bar-->
+            @endunless
+
           </div>
         </div><!--row 2 in calendar bar-->
       </div><!--end calendar row column-->

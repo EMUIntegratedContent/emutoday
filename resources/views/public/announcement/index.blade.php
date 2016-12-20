@@ -8,7 +8,7 @@
       <div class="row">
         <div class="large-12 medium-12 small-12 column">
           <div id="title-grouping" class="row">
-            <div class="large-5 medium-7 small-12 columns  noleftpadding"><h3 class="news-caps">Announcements <a class="smaller-title" href="">[ RSS feed ]</a></h3></div>
+            <div class="large-5 medium-7 small-12 columns  noleftpadding"><h3 class="news-caps">Announcements {{-- <!-- <a class="smaller-title" href="">[ RSS feed ]</a> --> --}}</h3></div>
             <div class="large-7 medium-5 small-12 columns noleftpadding"><h6>{!! $announcements->links() !!}</h6></div>
           </div>
           <div class="row">

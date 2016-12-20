@@ -22,7 +22,7 @@
     <div class="event-item" v-if="showBody" transition="expand">
       <p>{{item.description}}</p>
       <template v-if="item.contact_person || item.contact_person || item.contact_person">
-        <p>Contact</p>
+        <p>Contact:</p>
         <ul>
           <li v-if="item.contact_person">{{item.contact_person}}</li>
           <li v-if="item.contact_email">Email: {{item.contact_email}}</li>
@@ -30,7 +30,7 @@
         </ul>
       </template>
       <template v-if="item.related_link_1">
-        <p>Additional Information</p>
+        <p>Additional Information:</p>
         <ul>
           <li><a href="{{item.related_link_1}}" target="_blank">
             <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
@@ -49,7 +49,7 @@
       <p v-if="item.free">Cost: Free</p>
       <p v-else>Cost: {{item.cost | currency }}</p>
       <p>{{eventParticipation}}</p>
-      <p>LBC Approved:{{item.lbc_approved | yesNo }}</p>
+      <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
       <template v-if="item.tickets">
         <p v-if="item.ticket_details_online">For Tickets Visit: {{item.ticket_details_online}}</p>
         <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>

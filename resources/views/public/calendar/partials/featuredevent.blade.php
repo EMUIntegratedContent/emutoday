@@ -3,7 +3,7 @@
   <img class="topic-image" src="/imagecache/featuredevent/{{$fevent->mediaFile->filename}}" alt="calendar-feature"/>
   <div class="calendar-content">
     <div class="calendar-text-content" data-equalizer-watch>
-      <h6>{{$fevent->title}}</h6>
+      <h6><a href="/calendar/{{$fevent->present()->eventStartDateYear}}/{{$fevent->present()->eventStartDateMonthUnit}}/{{$fevent->present()->eventStartDateDay}}/{{$fevent->id}}">{{$fevent->title}}</a></h6>
       <p>{{$fevent->present()->displayTimeRange }}</p>
       <p>{{$fevent->location}}</p>
     </div>
