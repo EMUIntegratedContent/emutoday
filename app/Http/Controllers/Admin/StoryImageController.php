@@ -22,20 +22,20 @@ class StoryImageController extends Controller
 
   protected $storyImages;
   protected $bugService;
-  
+
   public function __construct(StoryImage $storyImages, Story $story, IBug $bugService)
   {
     $this->storyImages = $storyImages;
     $this->story= $story;
-    
+
     $this->bugService = $bugService;
     View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
     View::share('bugEvents', $this->bugService->getUnapprovedEvents());
     View::share('bugStories', $this->bugService->getUnapprovedStories());
-        
+
     parent::__construct();
-    
-        
+
+
   }
 
   public function index()
@@ -114,6 +114,7 @@ class StoryImageController extends Controller
       $imgFile = Input::file('image');
       $imgFilePath = $imgFile->getRealPath();
       $imgFileOriginalExtension = strtolower($imgFile->getClientOriginalExtension());
+
       switch ($imgFileOriginalExtension) {
         case 'jpg':
         case 'jpeg':
@@ -126,10 +127,10 @@ class StoryImageController extends Controller
       $imgFileName = $storyImage->image_name . '-'. date('YmdHis') . '.' . $storyImage->image_extension;
       $image = Image::make($imgFilePath)
       ->save(public_path() . $destinationFolder . $imgFileName);
-      
+
       $storyImage->filename = $imgFileName;
     }
-    
+
     $storyImage->save();
     $story = $storyImage->story;
     $stype = $story->story_type;
@@ -168,28 +169,28 @@ class StoryImageController extends Controller
   public function destroy($id, Request $request)
   {
     $storyImage = $this->storyImages->findOrFail($id);
-    
+
     $story = Story::findOrFail($storyImage->story_id);
-    
+
     if($request->image_type == 'front') {
       // If the front images goes away. Then the story can no longer be featured
       $story->is_featured = 0;
       $story->save();
     }
-    
+
     $pathToImageForDelete = public_path() . $storyImage->image_path . $storyImage->filename;
 
     if(File::exists($pathToImageForDelete)){
         //delete the actual file
         File::delete($pathToImageForDelete);
         flash()->warning('Image has been deleted');
-        
+
         //delete the story_image record
         $storyImage->delete();
     } else {
        flash()->warning('Image was not found and could not be deleted.');
     }
-    
+
     return redirect()->back();//->with('status', 'Record has been deleted.');
   }
 
