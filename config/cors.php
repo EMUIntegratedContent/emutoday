@@ -23,4 +23,4 @@
     'exposedHeaders' => [],
     'maxAge' => 3600,
     'hosts' => [],
-]
+];
