@@ -18,7 +18,8 @@
         "barryvdh/laravel-debugbar": "^2.2",
  	"subfission/cas": "dev-master",
         "google/apiclient": "dev-master",
-        "elasticsearch/elasticsearch": "~2.0"
+        "elasticsearch/elasticsearch": "~2.0",
+        "barryvdh/laravel-cors": "^0.8.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
