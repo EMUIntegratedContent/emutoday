@@ -25,6 +25,10 @@ Route::get('/cas/logout', function(){
     cas()->logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
+Route::group(['prefix' => 'externalapi'], function(){
+    Route::get('bug', 'Api\ExternalApiController@getEvents');
+});
+
 Route::group(['prefix' => 'api'], function() {
 
     Route::patch('authors/updateitem/{id}', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@updateItem']);
