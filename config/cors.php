@@ -17,7 +17,7 @@
      |
      */
     'supportsCredentials' => false,
-    'allowedOrigins' => ['*'],
+    'allowedOrigins' => ['http://www.emich.edu','http://webstage.emich.edu'],
     'allowedHeaders' => ['*'], // ex : ['Content-Type', 'Accept']
     'allowedMethods' => ['GET', 'POST'], // ex: ['GET', 'POST', 'PUT',  'DELETE']
     'exposedHeaders' => [],
