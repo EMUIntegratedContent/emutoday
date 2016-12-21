@@ -23,10 +23,27 @@ class ExternalApiController extends ApiController
     $this->middleware('cors');
   }
 
-  public function getEvents(){
-    return response()->json([
-        'name' => 'Abigail',
-        'state' => 'CA'
-    ]);
+  /**
+   *  Get a list of events from the database.
+   *
+   *  @param  int    $limit      Limit the number of events
+   *  @param  String $startDate  Start date for events
+   *  @param  String $endDate    End date for events
+   *  @return json               A JSON representation of all events 
+   */
+  public function getEvents($limit = 10, $startDate = '2016-12-01', $endDate = '2016-12-10'){
+    $conditions = array(); //conditions for the where clause
+    $events = Event::select('*');
+
+    if($startDate){
+      $conditions[] = array('start_date', '>=', $startDate);
+    }
+    if($endDate){
+      $conditions[] = array('end_date', '<=', $endDate);
+    }
+    $events->where($conditions)->limit($limit);
+    $result = $events->get();
+
+    return $result->toJson();
   }
 }
