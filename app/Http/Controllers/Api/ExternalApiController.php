@@ -29,7 +29,7 @@ class ExternalApiController extends ApiController
    *  @param  int    $limit      Limit the number of events
    *  @param  String $startDate  Start date for events
    *  @param  String $endDate    End date for events
-   *  @return json               A JSON representation of all events 
+   *  @return json               A JSON representation of all events
    */
    public function getEvents($limit = 10, $startDate = null, $endDate = null){
     $conditions = array(); //conditions for the where clause
