@@ -5,6 +5,7 @@ namespace Emutoday\Http\Controllers\Api;
 
 use Emutoday\Announcement;
 use Emutoday\Event;
+use Emutoday\Story;
 use Illuminate\Http\Request;
 
 
@@ -49,6 +50,13 @@ class ExternalApiController extends ApiController
     return $result->toJson();
   }
 
+  /**
+   *  Get a list of events from the database with a home_priority.
+   *
+   *  @param  int    $limit      Limit the number of events
+   *  @param  String $sortBy     The criteria for sorting events
+   *  @return json               A JSON representation of the events
+   */
   public function getHomeFeaturedEvents($limit = 5, $sortBy = 'date'){
     $today = date('Y-m-d');
     $events = Event::select('*')
@@ -64,6 +72,24 @@ class ExternalApiController extends ApiController
       $events->orderBy('start_date', 'asc');
     }
     $result = $events->get();
+
+    return $result->toJson();
+  }
+
+  public function getCurrentNews($limit = 10){
+    $today = date('Y-m-d');
+    $news = Story::select('title', 'is_approved', 'start_date', 'priority');
+    $news
+      ->where([
+        ['story_type', 'news'],
+        ['is_approved', 1],
+        ['start_date', '<=', $today],
+      ])
+      ->limit($limit)
+      ->orderBy('priority', 'desc')
+      ->orderBy('start_date', 'asc');
+
+    $result = $news->get();
 
     return $result->toJson();
   }
