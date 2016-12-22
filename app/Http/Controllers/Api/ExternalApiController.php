@@ -78,7 +78,7 @@ class ExternalApiController extends ApiController
 
   public function getCurrentNews($limit = 10){
     $today = date('Y-m-d');
-    $news = Story::select('title', 'is_approved', 'start_date', 'priority');
+    $news = Story::select('*');
     $news
       ->where([
         ['story_type', 'news'],
