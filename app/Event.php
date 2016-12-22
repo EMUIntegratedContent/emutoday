@@ -37,7 +37,7 @@ class Event extends Model
                         'tickets', 'ticket_details_online','ticket_details_phone','ticket_details_office','ticket_details_other',
                         'submission_date', 'approved_date','contact_fax','mini_calendar', 'lbc_reviewed', 'ensemble',
                         'mba','mini_calendar_alt', 'feature_image',
-                        'on_campus','medifile_id','building_id','priority'];
+                        'on_campus','mediafile_id','building_id','priority'];
 
 /**
  * [$dates description]

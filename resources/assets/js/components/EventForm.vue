@@ -817,7 +817,7 @@ module.exports  = {
         this.dateObject.regDateDefault = this.record.reg_deadline;
       }
       this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-        minDate: self.dateObject.startDateMin,
+        // minDate: self.dateObject.startDateMin,
         defaultDate: self.dateObject.startDateDefault,
         enableTime: false,
         // altFormat: "m-d-Y",

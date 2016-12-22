@@ -97,6 +97,7 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::patch('event/updateItem/{event}', 'Api\EventController@updateItem');
     Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
+    Route::post('event/removeMediaFile/{event}', 'Api\EventController@removeMediaFile');
 
     Route::get('event/queueload', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
     Route::get('event/lbcqueueload', ['as' => 'api.event.lbcqueueload', 'uses' => 'Api\EventController@lbcQueueLoad']);

@@ -72,7 +72,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
 
       'feature_image'           => $event->feature_image,
       'on_campus'           => $event->on_campus,
-      'medifile_id'           => $event->medifile_id,
+      'mediafile_id'           => $event->mediafile_id,
       'building_id'           => $event->building_id,
       'priority'           => $event->priority,
       'home_priority'           => $event->home_priority,
