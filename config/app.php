@@ -159,10 +159,9 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Sofa\Eloquence\ServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
         // Krenor\LdapAuth\LdapAuthServiceProvider::class,
-
-
 
         /*
          * Application Service Providers...
