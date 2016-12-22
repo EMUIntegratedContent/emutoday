@@ -33,6 +33,8 @@ class ExternalApiController extends ApiController
    */
   public function getEvents($limit = 10, $startDate = null, $endDate = null){
     $conditions = array(); //conditions for the where clause
+    $conditions[] = array('is_approved', 1);
+
     $events = Event::select('*');
 
     if($startDate){
@@ -42,6 +44,25 @@ class ExternalApiController extends ApiController
       $conditions[] = array('end_date', '<=', $endDate);
     }
     $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
+    $result = $events->get();
+
+    return $result->toJson();
+  }
+
+  public function getHomeFeaturedEvents($limit = 5, $sortBy = 'date'){
+    $today = date('Y-m-d');
+    $events = Event::select('*')
+      ->where([
+        ['home_priority', '>', 0],
+        ['end_date', '>=', $today],
+        ['is_approved', 1]
+      ])->limit($limit);
+
+    if($sortBy == 'priority'){
+      $events->orderBy('home_priority', 'desc');
+    } else {
+      $events->orderBy('start_date', 'asc');
+    }
     $result = $events->get();
 
     return $result->toJson();
