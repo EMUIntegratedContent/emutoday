@@ -53,7 +53,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'is_approved'           => $event->is_approved,
       'is_canceled'           => $event->is_canceled,
       'homepage'           => $event->homepage,
-      'submitter'           => cas()->user(),
+      'submitter'           => $event->submitter,
       'tickets'           => $event->tickets,
       'ticket_details_online'     => $event->ticket_details_online,
       'ticket_details_phone'           => $event->ticket_details_phone,
