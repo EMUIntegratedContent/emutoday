@@ -37,14 +37,14 @@ var _symbol = require("../core-js/symbol");
 
 var _symbol2 = _interopRequireDefault(_symbol);
 
-var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default ? "symbol" : typeof obj; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
   return typeof obj === "undefined" ? "undefined" : _typeof(obj);
 } : function (obj) {
-  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
+  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
 },{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],15:[function(require,module,exports){
 var core  = require('../../modules/_core')
@@ -2495,7 +2495,7 @@ if (typeof module !== "undefined") {
 }
 },{}],102:[function(require,module,exports){
 //! moment.js
-//! version : 2.15.2
+//! version : 2.15.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -3326,7 +3326,7 @@ if (typeof module !== "undefined") {
 
     // LOCALES
 
-    var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
+    var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s+)+MMMM?/;
     var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
     function localeMonths (m, format) {
         if (!m) {
@@ -4287,10 +4287,10 @@ if (typeof module !== "undefined") {
         var oldLocale = null;
         // TODO: Find a better way to register and load all the locales in Node
         if (!locales[name] && (typeof module !== 'undefined') &&
-                module && module.exports) {
+                module && module.require) {
             try {
                 oldLocale = globalLocale._abbr;
-                require('./locale/' + name);
+                module.require('./locale/' + name);
                 // because defineLocale currently also sets the global locale, we
                 // want to undo that for lazy loaded locales
                 locale_locales__getSetGlobalLocale(oldLocale);
@@ -6691,7 +6691,7 @@ if (typeof module !== "undefined") {
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.15.2';
+    utils_hooks__hooks.version = '2.15.0';
 
     setHookCallback(local__createLocal);
 
@@ -7213,7 +7213,7 @@ function format (id) {
 
 },{}],105:[function(require,module,exports){
 /*!
- * vue-resource v1.0.3
+ * vue-resource v1.0.2
  * https://github.com/vuejs/vue-resource
  * Released under the MIT License.
  */
@@ -7984,30 +7984,25 @@ function xdrClient (request) {
     return new PromiseObj(function (resolve) {
 
         var xdr = new XDomainRequest(),
-            handler = function (_ref) {
-            var type = _ref.type;
+            handler = function (event) {
 
+            var response = request.respondWith(xdr.responseText, {
+                status: xdr.status,
+                statusText: xdr.statusText
+            });
 
-            var status = 0;
-
-            if (type === 'load') {
-                status = 200;
-            } else if (type === 'error') {
-                status = 500;
-            }
-
-            resolve(request.respondWith(xdr.responseText, { status: status }));
+            resolve(response);
         };
 
         request.abort = function () {
             return xdr.abort();
         };
 
-        xdr.open(request.method, request.getUrl());
+        xdr.open(request.method, request.getUrl(), true);
         xdr.timeout = 0;
         xdr.onload = handler;
         xdr.onerror = handler;
-        xdr.ontimeout = handler;
+        xdr.ontimeout = function () {};
         xdr.onprogress = function () {};
         xdr.send(request.getBody());
     });
@@ -8108,16 +8103,14 @@ function jsonpClient (request) {
             handler,
             script;
 
-        handler = function (_ref) {
-            var type = _ref.type;
-
+        handler = function (event) {
 
             var status = 0;
 
-            if (type === 'load' && body !== null) {
+            if (event.type === 'load' && body !== null) {
                 status = 200;
-            } else if (type === 'error') {
-                status = 500;
+            } else if (event.type === 'error') {
+                status = 404;
             }
 
             resolve(request.respondWith(body, { status: status }));
@@ -9672,9 +9665,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 });
 
 },{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],107:[function(require,module,exports){
-(function (process){
+(function (process,global){
 /*!
- * Vue.js v1.0.28
+ * Vue.js v1.0.26
  * (c) 2016 Evan You
  * Released under the MIT License.
  */
@@ -9830,7 +9823,7 @@ function stripQuotes(str) {
 }
 
 /**
- * Camelize a hyphen-delimited string.
+ * Camelize a hyphen-delmited string.
  *
  * @param {String} str
  * @return {String}
@@ -9853,10 +9846,10 @@ function toUpper(_, c) {
  * @return {String}
  */
 
-var hyphenateRE = /([^-])([A-Z])/g;
+var hyphenateRE = /([a-z\d])([A-Z])/g;
 
 function hyphenate(str) {
-  return str.replace(hyphenateRE, '$1-$2').replace(hyphenateRE, '$1-$2').toLowerCase();
+  return str.replace(hyphenateRE, '$1-$2').toLowerCase();
 }
 
 /**
@@ -10076,7 +10069,12 @@ var UA = inBrowser && window.navigator.userAgent.toLowerCase();
 var isIE = UA && UA.indexOf('trident') > 0;
 var isIE9 = UA && UA.indexOf('msie 9.0') > 0;
 var isAndroid = UA && UA.indexOf('android') > 0;
-var isIOS = UA && /iphone|ipad|ipod|ios/.test(UA);
+var isIos = UA && /(iphone|ipad|ipod|ios)/i.test(UA);
+var iosVersionMatch = isIos && UA.match(/os ([\d_]+)/);
+var iosVersion = iosVersionMatch && iosVersionMatch[1].split('_');
+
+// detecting iOS UIWebView by indexedDB
+var hasMutationObserverBug = iosVersion && Number(iosVersion[0]) >= 9 && Number(iosVersion[1]) >= 3 && !window.indexedDB;
 
 var transitionProp = undefined;
 var transitionEndEvent = undefined;
@@ -10093,12 +10091,6 @@ if (inBrowser && !isIE9) {
   animationEndEvent = isWebkitAnim ? 'webkitAnimationEnd' : 'animationend';
 }
 
-/* istanbul ignore next */
-function isNative(Ctor) {
-  return (/native code/.test(Ctor.toString())
-  );
-}
-
 /**
  * Defer a task to execute it asynchronously. Ideally this
  * should be executed as a microtask, so we leverage
@@ -10112,55 +10104,35 @@ function isNative(Ctor) {
 var nextTick = (function () {
   var callbacks = [];
   var pending = false;
-  var timerFunc = undefined;
-
+  var timerFunc;
   function nextTickHandler() {
     pending = false;
     var copies = callbacks.slice(0);
-    callbacks.length = 0;
+    callbacks = [];
     for (var i = 0; i < copies.length; i++) {
       copies[i]();
     }
   }
 
-  // the nextTick behavior leverages the microtask queue, which can be accessed
-  // via either native Promise.then or MutationObserver.
-  // MutationObserver has wider support, however it is seriously bugged in
-  // UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
-  // completely stops working after triggering a few times... so, if native
-  // Promise is available, we will use it:
   /* istanbul ignore if */
-  if (typeof Promise !== 'undefined' && isNative(Promise)) {
-    var p = Promise.resolve();
-    var noop = function noop() {};
-    timerFunc = function () {
-      p.then(nextTickHandler);
-      // in problematic UIWebViews, Promise.then doesn't completely break, but
-      // it can get stuck in a weird state where callbacks are pushed into the
-      // microtask queue but the queue isn't being flushed, until the browser
-      // needs to do some other work, e.g. handle a timer. Therefore we can
-      // "force" the microtask queue to be flushed by adding an empty timer.
-      if (isIOS) setTimeout(noop);
-    };
-  } else if (typeof MutationObserver !== 'undefined') {
-    // use MutationObserver where native Promise is not available,
-    // e.g. IE11, iOS7, Android 4.4
+  if (typeof MutationObserver !== 'undefined' && !hasMutationObserverBug) {
     var counter = 1;
     var observer = new MutationObserver(nextTickHandler);
-    var textNode = document.createTextNode(String(counter));
+    var textNode = document.createTextNode(counter);
     observer.observe(textNode, {
       characterData: true
     });
     timerFunc = function () {
       counter = (counter + 1) % 2;
-      textNode.data = String(counter);
+      textNode.data = counter;
     };
   } else {
-    // fallback to setTimeout
-    /* istanbul ignore next */
-    timerFunc = setTimeout;
+    // webpack attempts to inject a shim for setImmediate
+    // if it is used as a global, so we have to work around that to
+    // avoid bundling unnecessary code.
+    var context = inBrowser ? window : typeof global !== 'undefined' ? global : {};
+    timerFunc = context.setImmediate || setTimeout;
   }
-
   return function (cb, ctx) {
     var func = ctx ? function () {
       cb.call(ctx);
@@ -10174,7 +10146,7 @@ var nextTick = (function () {
 
 var _Set = undefined;
 /* istanbul ignore if */
-if (typeof Set !== 'undefined' && isNative(Set)) {
+if (typeof Set !== 'undefined' && Set.toString().match(/native code/)) {
   // use native Set when available.
   _Set = Set;
 } else {
@@ -10295,6 +10267,7 @@ p.get = function (key, returnEntry) {
 };
 
 var cache$1 = new Cache(1000);
+var filterTokenRE = /[^\s'"]+|'[^']*'|"[^"]*"/g;
 var reservedArgRE = /^in$|^-?\d+/;
 
 /**
@@ -10303,167 +10276,35 @@ var reservedArgRE = /^in$|^-?\d+/;
 
 var str;
 var dir;
-var len;
-var index;
-var chr;
-var state;
-var startState = 0;
-var filterState = 1;
-var filterNameState = 2;
-var filterArgState = 3;
-
-var doubleChr = 0x22;
-var singleChr = 0x27;
-var pipeChr = 0x7C;
-var escapeChr = 0x5C;
-var spaceChr = 0x20;
-
-var expStartChr = { 0x5B: 1, 0x7B: 1, 0x28: 1 };
-var expChrPair = { 0x5B: 0x5D, 0x7B: 0x7D, 0x28: 0x29 };
-
-function peek() {
-  return str.charCodeAt(index + 1);
-}
-
-function next() {
-  return str.charCodeAt(++index);
-}
-
-function eof() {
-  return index >= len;
-}
-
-function eatSpace() {
-  while (peek() === spaceChr) {
-    next();
-  }
-}
-
-function isStringStart(chr) {
-  return chr === doubleChr || chr === singleChr;
-}
-
-function isExpStart(chr) {
-  return expStartChr[chr];
-}
-
-function isExpEnd(start, chr) {
-  return expChrPair[start] === chr;
-}
-
-function parseString() {
-  var stringQuote = next();
-  var chr;
-  while (!eof()) {
-    chr = next();
-    // escape char
-    if (chr === escapeChr) {
-      next();
-    } else if (chr === stringQuote) {
-      break;
-    }
-  }
-}
-
-function parseSpecialExp(chr) {
-  var inExp = 0;
-  var startChr = chr;
-
-  while (!eof()) {
-    chr = peek();
-    if (isStringStart(chr)) {
-      parseString();
-      continue;
-    }
-
-    if (startChr === chr) {
-      inExp++;
-    }
-    if (isExpEnd(startChr, chr)) {
-      inExp--;
-    }
-
-    next();
-
-    if (inExp === 0) {
-      break;
-    }
-  }
-}
-
+var c;
+var prev;
+var i;
+var l;
+var lastFilterIndex;
+var inSingle;
+var inDouble;
+var curly;
+var square;
+var paren;
 /**
- * syntax:
- * expression | filterName  [arg  arg [| filterName arg arg]]
+ * Push a filter to the current directive object
  */
 
-function parseExpression() {
-  var start = index;
-  while (!eof()) {
-    chr = peek();
-    if (isStringStart(chr)) {
-      parseString();
-    } else if (isExpStart(chr)) {
-      parseSpecialExp(chr);
-    } else if (chr === pipeChr) {
-      next();
-      chr = peek();
-      if (chr === pipeChr) {
-        next();
-      } else {
-        if (state === startState || state === filterArgState) {
-          state = filterState;
-        }
-        break;
-      }
-    } else if (chr === spaceChr && (state === filterNameState || state === filterArgState)) {
-      eatSpace();
-      break;
-    } else {
-      if (state === filterState) {
-        state = filterNameState;
-      }
-      next();
+function pushFilter() {
+  var exp = str.slice(lastFilterIndex, i).trim();
+  var filter;
+  if (exp) {
+    filter = {};
+    var tokens = exp.match(filterTokenRE);
+    filter.name = tokens[0];
+    if (tokens.length > 1) {
+      filter.args = tokens.slice(1).map(processFilterArg);
     }
   }
-
-  return str.slice(start + 1, index) || null;
-}
-
-function parseFilterList() {
-  var filters = [];
-  while (!eof()) {
-    filters.push(parseFilter());
+  if (filter) {
+    (dir.filters = dir.filters || []).push(filter);
   }
-  return filters;
-}
-
-function parseFilter() {
-  var filter = {};
-  var args;
-
-  state = filterState;
-  filter.name = parseExpression().trim();
-
-  state = filterArgState;
-  args = parseFilterArguments();
-
-  if (args.length) {
-    filter.args = args;
-  }
-  return filter;
-}
-
-function parseFilterArguments() {
-  var args = [];
-  while (!eof() && state !== filterState) {
-    var arg = parseExpression();
-    if (!arg) {
-      break;
-    }
-    args.push(processFilterArg(arg));
-  }
-
-  return args;
+  lastFilterIndex = i + 1;
 }
 
 /**
@@ -10515,22 +10356,56 @@ function parseDirective(s) {
 
   // reset parser state
   str = s;
+  inSingle = inDouble = false;
+  curly = square = paren = 0;
+  lastFilterIndex = 0;
   dir = {};
-  len = str.length;
-  index = -1;
-  chr = '';
-  state = startState;
 
-  var filters;
-
-  if (str.indexOf('|') < 0) {
-    dir.expression = str.trim();
-  } else {
-    dir.expression = parseExpression().trim();
-    filters = parseFilterList();
-    if (filters.length) {
-      dir.filters = filters;
+  for (i = 0, l = str.length; i < l; i++) {
+    prev = c;
+    c = str.charCodeAt(i);
+    if (inSingle) {
+      // check single quote
+      if (c === 0x27 && prev !== 0x5C) inSingle = !inSingle;
+    } else if (inDouble) {
+      // check double quote
+      if (c === 0x22 && prev !== 0x5C) inDouble = !inDouble;
+    } else if (c === 0x7C && // pipe
+    str.charCodeAt(i + 1) !== 0x7C && str.charCodeAt(i - 1) !== 0x7C) {
+      if (dir.expression == null) {
+        // first filter, end of expression
+        lastFilterIndex = i + 1;
+        dir.expression = str.slice(0, i).trim();
+      } else {
+        // already has filter
+        pushFilter();
+      }
+    } else {
+      switch (c) {
+        case 0x22:
+          inDouble = true;break; // "
+        case 0x27:
+          inSingle = true;break; // '
+        case 0x28:
+          paren++;break; // (
+        case 0x29:
+          paren--;break; // )
+        case 0x5B:
+          square++;break; // [
+        case 0x5D:
+          square--;break; // ]
+        case 0x7B:
+          curly++;break; // {
+        case 0x7D:
+          curly--;break; // }
+      }
     }
+  }
+
+  if (dir.expression == null) {
+    dir.expression = str.slice(0, i).trim();
+  } else if (lastFilterIndex !== 0) {
+    pushFilter();
   }
 
   cache$1.put(s, dir);
@@ -12119,7 +11994,10 @@ var util = Object.freeze({
 	isIE: isIE,
 	isIE9: isIE9,
 	isAndroid: isAndroid,
-	isIOS: isIOS,
+	isIos: isIos,
+	iosVersionMatch: iosVersionMatch,
+	iosVersion: iosVersion,
+	hasMutationObserverBug: hasMutationObserverBug,
 	get transitionProp () { return transitionProp; },
 	get transitionEndEvent () { return transitionEndEvent; },
 	get animationProp () { return animationProp; },
@@ -12219,7 +12097,7 @@ function initMixin (Vue) {
 
     // fragment:
     // if this instance is compiled inside a Fragment, it
-    // needs to register itself as a child of that fragment
+    // needs to reigster itself as a child of that fragment
     // for attach/detach to work properly.
     this._frag = options._frag;
     if (this._frag) {
@@ -12524,7 +12402,7 @@ function parsePath(path) {
  */
 
 function getPath(obj, path) {
-  return parseExpression$1(path).get(obj);
+  return parseExpression(path).get(obj);
 }
 
 /**
@@ -12559,7 +12437,7 @@ function setPath(obj, path, val) {
     last = obj;
     key = path[i];
     if (key.charAt(0) === '*') {
-      key = parseExpression$1(key.slice(1)).get.call(original, original);
+      key = parseExpression(key.slice(1)).get.call(original, original);
     }
     if (i < l - 1) {
       obj = obj[key];
@@ -12603,7 +12481,7 @@ var improperKeywordsRE = new RegExp('^(' + improperKeywords.replace(/,/g, '\\b|'
 
 var wsRE = /\s/g;
 var newlineRE = /\n/g;
-var saveRE = /[\{,]\s*[\w\$_]+\s*:|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*\$\{|\}(?:[^`\\"']|\\.)*`|`(?:[^`\\]|\\.)*`)|new |typeof |void /g;
+var saveRE = /[\{,]\s*[\w\$_]+\s*:|('(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*\$\{|\}(?:[^`\\]|\\.)*`|`(?:[^`\\]|\\.)*`)|new |typeof |void /g;
 var restoreRE = /"(\d+)"/g;
 var pathTestRE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\['.*?'\]|\[".*?"\]|\[\d+\]|\[[A-Za-z_$][\w$]*\])*$/;
 var identRE = /[^\w$\.](?:[A-Za-z_$][\w$]*)/g;
@@ -12750,7 +12628,7 @@ function compileSetter(exp) {
  * @return {Function}
  */
 
-function parseExpression$1(exp, needSet) {
+function parseExpression(exp, needSet) {
   exp = exp.trim();
   // try cache
   var hit = expressionCache.get(exp);
@@ -12789,7 +12667,7 @@ function isSimplePath(exp) {
 }
 
 var expression = Object.freeze({
-  parseExpression: parseExpression$1,
+  parseExpression: parseExpression,
   isSimplePath: isSimplePath
 });
 
@@ -12941,7 +12819,7 @@ function Watcher(vm, expOrFn, cb, options) {
     this.getter = expOrFn;
     this.setter = undefined;
   } else {
-    var res = parseExpression$1(expOrFn, this.twoWay);
+    var res = parseExpression(expOrFn, this.twoWay);
     this.getter = res.get;
     this.setter = res.set;
   }
@@ -13785,10 +13663,6 @@ var vFor = {
   params: ['track-by', 'stagger', 'enter-stagger', 'leave-stagger'],
 
   bind: function bind() {
-    if (process.env.NODE_ENV !== 'production' && this.el.hasAttribute('v-if')) {
-      warn('<' + this.el.tagName.toLowerCase() + ' v-for="' + this.expression + '" v-if="' + this.el.getAttribute('v-if') + '">: ' + 'Using v-if and v-for on the same element is not recommended - ' + 'consider filtering the source Array instead.', this.vm);
-    }
-
     // support "item in/of items" syntax
     var inMatch = this.expression.match(/(.*) (?:in|of) (.*)/);
     if (inMatch) {
@@ -13899,7 +13773,7 @@ var vFor = {
           });
         }
       } else {
-        // new instance
+        // new isntance
         frag = this.create(value, alias, i, key);
         frag.fresh = !init;
       }
@@ -14334,6 +14208,24 @@ function findPrevFrag(frag, anchor, id) {
 }
 
 /**
+ * Find a vm from a fragment.
+ *
+ * @param {Fragment} frag
+ * @return {Vue|undefined}
+ */
+
+function findVmFromFrag(frag) {
+  var node = frag.node;
+  // handle multi-node frag
+  if (frag.end) {
+    while (!node.__vue__ && node !== frag.end && node.nextSibling) {
+      node = node.nextSibling;
+    }
+  }
+  return node.__vue__;
+}
+
+/**
  * Create a range array from given number.
  *
  * @param {Number} n
@@ -14366,24 +14258,6 @@ if (process.env.NODE_ENV !== 'production') {
   vFor.warnDuplicate = function (value) {
     warn('Duplicate value found in v-for="' + this.descriptor.raw + '": ' + JSON.stringify(value) + '. Use track-by="$index" if ' + 'you are expecting duplicate values.', this.vm);
   };
-}
-
-/**
- * Find a vm from a fragment.
- *
- * @param {Fragment} frag
- * @return {Vue|undefined}
- */
-
-function findVmFromFrag(frag) {
-  var node = frag.node;
-  // handle multi-node frag
-  if (frag.end) {
-    while (!node.__vue__ && node !== frag.end && node.nextSibling) {
-      node = node.nextSibling;
-    }
-  }
-  return node.__vue__;
 }
 
 var vIf = {
@@ -14783,16 +14657,15 @@ var checkbox = {
     }
 
     this.listener = function () {
-      var model = self._watcher.get();
+      var model = self._watcher.value;
       if (isArray(model)) {
         var val = self.getValue();
-        var i = indexOf(model, val);
         if (el.checked) {
-          if (i < 0) {
-            self.set(model.concat(val));
+          if (indexOf(model, val) < 0) {
+            model.push(val);
           }
-        } else if (i > -1) {
-          self.set(model.slice(0, i).concat(model.slice(i + 1)));
+        } else {
+          model.$remove(val);
         }
       } else {
         self.set(getBooleanValue());
@@ -15309,12 +15182,6 @@ var cloak = {
   }
 };
 
-// logic control
-// two-way binding
-// event handling
-// attributes
-// ref & el
-// cloak
 // must export plain object
 var directives = {
   text: text$1,
@@ -15806,7 +15673,6 @@ var settablePathRE = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*|\[[^\[\]]+\])*$/;
 
 function compileProps(el, propOptions, vm) {
   var props = [];
-  var propsData = vm.$options.propsData;
   var names = Object.keys(propOptions);
   var i = names.length;
   var options, name, attr, value, path, parsed, prop;
@@ -15874,16 +15740,13 @@ function compileProps(el, propOptions, vm) {
     } else if ((value = getAttr(el, attr)) !== null) {
       // has literal binding!
       prop.raw = value;
-    } else if (propsData && (value = propsData[name] || propsData[path]) !== null) {
-      // has propsData
-      prop.raw = value;
     } else if (process.env.NODE_ENV !== 'production') {
       // check possible camelCase prop usage
       var lowerCaseName = path.toLowerCase();
       value = /[A-Z\-]/.test(name) && (el.getAttribute(lowerCaseName) || el.getAttribute(':' + lowerCaseName) || el.getAttribute('v-bind:' + lowerCaseName) || el.getAttribute(':' + lowerCaseName + '.once') || el.getAttribute('v-bind:' + lowerCaseName + '.once') || el.getAttribute(':' + lowerCaseName + '.sync') || el.getAttribute('v-bind:' + lowerCaseName + '.sync'));
       if (value) {
         warn('Possible usage error for prop `' + lowerCaseName + '` - ' + 'did you mean `' + attr + '`? HTML is case-insensitive, remember to use ' + 'kebab-case for props in templates.', vm);
-      } else if (options.required && (!propsData || !(name in propsData) && !(path in propsData))) {
+      } else if (options.required) {
         // warn missing required
         warn('Missing required prop: ' + name, vm);
       }
@@ -16728,7 +16591,7 @@ function linkAndCapture(linker, vm) {
   var originalDirCount = vm._directives.length;
   linker();
   var dirs = vm._directives.slice(originalDirCount);
-  sortDirectives(dirs);
+  dirs.sort(directiveComparator);
   for (var i = 0, l = dirs.length; i < l; i++) {
     dirs[i]._bind();
   }
@@ -16736,37 +16599,16 @@ function linkAndCapture(linker, vm) {
 }
 
 /**
- * sort directives by priority (stable sort)
+ * Directive priority sort comparator
  *
- * @param {Array} dirs
+ * @param {Object} a
+ * @param {Object} b
  */
-function sortDirectives(dirs) {
-  if (dirs.length === 0) return;
 
-  var groupedMap = {};
-  var i, j, k, l;
-  var index = 0;
-  var priorities = [];
-  for (i = 0, j = dirs.length; i < j; i++) {
-    var dir = dirs[i];
-    var priority = dir.descriptor.def.priority || DEFAULT_PRIORITY;
-    var array = groupedMap[priority];
-    if (!array) {
-      array = groupedMap[priority] = [];
-      priorities.push(priority);
-    }
-    array.push(dir);
-  }
-
-  priorities.sort(function (a, b) {
-    return a > b ? -1 : a === b ? 0 : 1;
-  });
-  for (i = 0, j = priorities.length; i < j; i++) {
-    var group = groupedMap[priorities[i]];
-    for (k = 0, l = group.length; k < l; k++) {
-      dirs[index++] = group[k];
-    }
-  }
+function directiveComparator(a, b) {
+  a = a.descriptor.def.priority || DEFAULT_PRIORITY;
+  b = b.descriptor.def.priority || DEFAULT_PRIORITY;
+  return a > b ? -1 : a === b ? 0 : 1;
 }
 
 /**
@@ -16884,13 +16726,7 @@ function compileRoot(el, options, contextOptions) {
     });
     if (names.length) {
       var plural = names.length > 1;
-
-      var componentName = options.el.tagName.toLowerCase();
-      if (componentName === 'component' && options.name) {
-        componentName += ':' + options.name;
-      }
-
-      warn('Attribute' + (plural ? 's ' : ' ') + names.join(', ') + (plural ? ' are' : ' is') + ' ignored on component ' + '<' + componentName + '> because ' + 'the component is a fragment instance: ' + 'http://vuejs.org/guide/components.html#Fragment-Instance');
+      warn('Attribute' + (plural ? 's ' : ' ') + names.join(', ') + (plural ? ' are' : ' is') + ' ignored on component ' + '<' + options.el.tagName.toLowerCase() + '> because ' + 'the component is a fragment instance: ' + 'http://vuejs.org/guide/components.html#Fragment-Instance');
     }
   }
 
@@ -16949,10 +16785,6 @@ function compileElement(el, options) {
   // textarea treats its text content as the initial value.
   // just bind it as an attr directive for value.
   if (el.tagName === 'TEXTAREA') {
-    // a textarea which has v-pre attr should skip complie.
-    if (getAttr(el, 'v-pre') !== null) {
-      return skip;
-    }
     var tokens = parseText(el.value);
     if (tokens) {
       el.setAttribute(':value', tokensToExp(tokens));
@@ -17279,7 +17111,7 @@ function makeTerminalNodeLinkFn(el, dirName, value, options, def, rawName, arg, 
     modifiers: modifiers,
     def: def
   };
-  // check ref for v-for, v-if and router-view
+  // check ref for v-for and router-view
   if (dirName === 'for' || dirName === 'router-view') {
     descriptor.ref = findRef(el);
   }
@@ -17519,9 +17351,6 @@ function transcludeTemplate(el, options) {
   var frag = parseTemplate(template, true);
   if (frag) {
     var replacer = frag.firstChild;
-    if (!replacer) {
-      return frag;
-    }
     var tag = replacer.tagName && replacer.tagName.toLowerCase();
     if (options.replace) {
       /* istanbul ignore if */
@@ -18274,7 +18103,7 @@ Directive.prototype._setupParamWatcher = function (key, expression) {
 Directive.prototype._checkStatement = function () {
   var expression = this.expression;
   if (expression && this.acceptStatement && !isSimplePath(expression)) {
-    var fn = parseExpression$1(expression).get;
+    var fn = parseExpression(expression).get;
     var scope = this._scope || this.vm;
     var handler = function handler(e) {
       scope.$event = e;
@@ -18722,7 +18551,7 @@ function dataAPI (Vue) {
    */
 
   Vue.prototype.$get = function (exp, asStatement) {
-    var res = parseExpression$1(exp);
+    var res = parseExpression(exp);
     if (res) {
       if (asStatement) {
         var self = this;
@@ -18750,7 +18579,7 @@ function dataAPI (Vue) {
    */
 
   Vue.prototype.$set = function (exp, val) {
-    var res = parseExpression$1(exp, true);
+    var res = parseExpression(exp, true);
     if (res && res.set) {
       res.set.call(this, this, val);
     }
@@ -19513,7 +19342,7 @@ function filterBy(arr, search, delimiter) {
 }
 
 /**
- * Order filter for arrays
+ * Filter filter for arrays
  *
  * @param {String|Array<String>|Function} ...sortKeys
  * @param {Number} [order]
@@ -19896,7 +19725,7 @@ function installGlobalAPI (Vue) {
 
 installGlobalAPI(Vue);
 
-Vue.version = '1.0.28';
+Vue.version = '1.0.26';
 
 // devtools global hook
 /* istanbul ignore next */
@@ -19911,7 +19740,7 @@ setTimeout(function () {
 }, 0);
 
 module.exports = Vue;
-}).call(this,require('_process'))
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"_process":103}],108:[function(require,module,exports){
 var inserted = exports.cache = {}
 
@@ -20701,14 +20530,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-849832dc", module.exports)
+    hotAPI.createRecord("_v-98bf4b7c", module.exports)
   } else {
-    hotAPI.update("_v-849832dc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-98bf4b7c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../vuex/getters":116,"vue":107,"vue-hot-reload-api":104,"vueify/lib/insert-css":108}],111:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\np[_v-2276a187] {\n  margin:0;\n}\nlabel[_v-2276a187] {\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-2276a187] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-2276a187] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-2276a187] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-2276a187] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-2276a187] {\n  color: #ff0000;\n}\n.user-display[_v-2276a187] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-2276a187] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-2276a187] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-2276a187]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-2276a187], [type='password'][_v-2276a187], [type='date'][_v-2276a187], [type='datetime'][_v-2276a187], [type='datetime-local'][_v-2276a187], [type='month'][_v-2276a187], [type='week'][_v-2276a187], [type='email'][_v-2276a187], [type='number'][_v-2276a187], [type='search'][_v-2276a187], [type='tel'][_v-2276a187], [type='time'][_v-2276a187], [type='url'][_v-2276a187], [type='color'][_v-2276a187],\ntextarea[_v-2276a187] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-2276a187], [type='checkbox'][_v-2276a187], [type='radio'][_v-2276a187] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-2276a187] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-2276a187]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-2276a187]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-2276a187] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-2276a187] {\n  vertical-align: bottom;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\np[_v-2bceb852] {\n  margin:0;\n}\nlabel[_v-2bceb852] {\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-2bceb852] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-2bceb852] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-2bceb852] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-2bceb852] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-2bceb852] {\n  color: #ff0000;\n}\n.user-display[_v-2bceb852] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-2bceb852] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-2bceb852] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-2bceb852]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-2bceb852], [type='password'][_v-2bceb852], [type='date'][_v-2bceb852], [type='datetime'][_v-2bceb852], [type='datetime-local'][_v-2bceb852], [type='month'][_v-2bceb852], [type='week'][_v-2bceb852], [type='email'][_v-2bceb852], [type='number'][_v-2bceb852], [type='search'][_v-2bceb852], [type='tel'][_v-2bceb852], [type='time'][_v-2bceb852], [type='url'][_v-2bceb852], [type='color'][_v-2bceb852],\ntextarea[_v-2bceb852] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-2bceb852], [type='checkbox'][_v-2bceb852], [type='radio'][_v-2bceb852] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-2bceb852] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-2bceb852]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-2bceb852]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-2bceb852] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-2bceb852] {\n  vertical-align: bottom;\n}\n")
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -21373,19 +21202,19 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-2276a187=\"\">\n    <slot name=\"csrf\" _v-2276a187=\"\"></slot>\n    <!-- <slot name=\"author_id\" v-model=\"newevent.author_id\"></slot> -->\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-12\" _v-2276a187=\"\">\n        <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-2276a187=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-2276a187=\"\"><i class=\"fa fa-times\" _v-2276a187=\"\"></i></button>\n          <h5 _v-2276a187=\"\">{{formMessage.msg}}</h5>\n        </div>\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-12\" _v-2276a187=\"\">\n        <div class=\"form-group\" _v-2276a187=\"\">\n          <label _v-2276a187=\"\">Title <i class=\"fi-star reqstar\" _v-2276a187=\"\"></i></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-2276a187=\"\">Please enter a title</p>\n          <input v-model=\"record.title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-2276a187=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-2276a187=\"\">\tPlease Include a Title!</p>\n        </div>\n      </div>\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-12\" _v-2276a187=\"\">\n        <div class=\"form-group\" _v-2276a187=\"\">\n          <label _v-2276a187=\"\">Slug <i class=\"fi-star reqstar\" _v-2276a187=\"\"></i></label>\n          <p class=\"help-text\" id=\"slug-helptext\" _v-2276a187=\"\">Automatic Readable link for sharing and social media</p>\n          <input v-model=\"recordSlug\" v-bind:class=\"[formErrors.slug ? 'invalid-input' : '']\" name=\"slug\" type=\"text\" _v-2276a187=\"\">\n          <p v-if=\"formErrors.slug\" class=\"help-text invalid\" _v-2276a187=\"\">needs slug!</p>\n        </div>\n      </div><!-- /.col-md-12 -->\n    </div>\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-12\" _v-2276a187=\"\">\n        <div class=\"form-group\" _v-2276a187=\"\">\n          <label _v-2276a187=\"\">Subtitle</label>\n          <p class=\"help-text\" id=\"subtitle-helptext\" _v-2276a187=\"\">Visible in some cases</p>\n          <input v-model=\"record.subtitle\" v-bind:class=\"[formErrors.subtitle ? 'invalid-input' : '']\" @blur=\"onBlur\" name=\"subtitle\" type=\"text\" _v-2276a187=\"\">\n          <p v-if=\"formErrors.subtitle\" class=\"help-text invalid\" _v-2276a187=\"\"></p>\n        </div>\n        <div class=\"form-group\" _v-2276a187=\"\">\n          <label _v-2276a187=\"\">Content <i class=\"fi-star reqstar\" _v-2276a187=\"\"></i></label>\n          <p class=\"help-text\" id=\"content-helptext\" _v-2276a187=\"\">Enter the story content</p>\n          <textarea v-if=\"hasContent\" id=\"content\" name=\"content\" v-ckrte=\"content\" :type=\"editorType\" :content=\"content\" :fresh=\"isFresh\" rows=\"200\" _v-2276a187=\"\"></textarea>\n          <p v-if=\"formErrors.content\" class=\"help-text invalid\" _v-2276a187=\"\">Need Content!</p>\n        </div>\n        <div class=\"form-group user-display\" _v-2276a187=\"\">\n          <div class=\"user-name\" _v-2276a187=\"\">Author: {{author.first_name}} {{author.last_name}}</div>\n          <div v-if=\"contact.id != 0\" class=\"user-info\" _v-2276a187=\"\">Contact: {{contact.first_name}} {{contact.last_name}}, {{contact.email}}, {{contact.phone}}</div>\n          <div v-if=\"contact.id == 0\" class=\"user-info\" _v-2276a187=\"\">Contact: {{defaultcontact.first_name}} {{defaultcontact.last_name}}, {{defaultcontact.email}}, {{defaultcontact.phone}}</div>\n        </div><!-- /.frm-group -->\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-12\" _v-2276a187=\"\">\n        <div v-show=\"saveAuthorMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-2276a187=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-2276a187=\"\"><i class=\"fa fa-times\" _v-2276a187=\"\"></i></button>\n          <h5 _v-2276a187=\"\">{{saveAuthorMessage.msg}}</h5>\n        </div>\n        <a v-if=\"!needAuthor\" @click.prevent=\"changeAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2276a187=\"\">Change Author</a>\n        <a v-if=\"hasAuthor\" @click.prevent=\"resetAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2276a187=\"\">Reset Author</a>\n        <a @click.prevent=\"changeContact\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2276a187=\"\">Change Contact</a>\n        <div v-if=\"needAuthor &amp;&amp; isAdmin\" class=\"form-inline author\" _v-2276a187=\"\">\n            <label _v-2276a187=\"\">Choose existing Author:</label>\n            <v-select :value.sync=\"selectedAuthor\" :options=\"optionsAuthorlist\" :multiple=\"false\" placeholder=\"Author (leaving this blank will set you as the author)\" label=\"name\" _v-2276a187=\"\"> </v-select>\n        </div>\n        <div v-if=\"needAuthor\" class=\"form-inline author\" _v-2276a187=\"\">\n          <div class=\"form-group\" _v-2276a187=\"\">\n            <label for=\"author-first-name\" _v-2276a187=\"\">First Name <span v-if=\"authorErrors.first_name\" class=\"help-text invalid\" _v-2276a187=\"\"> is Required</span></label>\n            <input v-model=\"author.first_name\" type=\"text\" class=\"form-control input-sm\" id=\"author-last-name\" placeholder=\"First Name\" _v-2276a187=\"\">\n          </div>\n          <div class=\"form-group\" _v-2276a187=\"\">\n            <label for=\"author-last-name\" _v-2276a187=\"\">Last Name</label>\n            <input v-model=\"author.last_name\" type=\"text\" class=\"form-control input-sm\" id=\"author-last-name\" placeholder=\"Last Name\" _v-2276a187=\"\">\n          </div>\n          <div class=\"form-group\" _v-2276a187=\"\">\n            <label for=\"author-email\" _v-2276a187=\"\">Email</label>\n            <input v-model=\"author.email\" type=\"email\" class=\"form-control input-sm\" id=\"author-email\" placeholder=\"author@emich.edu\" _v-2276a187=\"\">\n          </div>\n          <div class=\"form-group\" _v-2276a187=\"\">\n            <label for=\"author-phone\" _v-2276a187=\"\">Phone</label>\n            <input v-model=\"author.phone\" type=\"phone\" class=\"form-control input-sm\" id=\"author-phone\" placeholder=\"(313)-555-1212\" _v-2276a187=\"\">\n          </div>\n          <div class=\"form-group save-author\" _v-2276a187=\"\">\n            <button @click.prevent=\"saveAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2276a187=\"\">{{authorBtnLabel}}</button>\n          </div><!-- /.form-group -->\n        </div>\n      </div><!-- /.col-md-12 -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-6\" _v-2276a187=\"\">\n        <div v-if=\"isAdmin &amp;&amp; needContact\" class=\"form-inline author\" _v-2276a187=\"\">\n            <label _v-2276a187=\"\">Story contact:</label>\n            <v-select :value.sync=\"selectedContact\" :options=\"optionsContactlist\" :multiple=\"false\" placeholder=\"Contact (leaving this blank will set the system default as the contact)\" label=\"name\" _v-2276a187=\"\"> </v-select>\n        </div>\n      </div><!-- /.col-md-6 -->\n    </div>\n    <div class=\"row\" _v-2276a187=\"\">\n      <div class=\"col-md-6\" _v-2276a187=\"\">\n        <div class=\"form-group\" _v-2276a187=\"\">\n          <label for=\"start-date\" _v-2276a187=\"\">Start Date: <i class=\"fi-star reqstar\" _v-2276a187=\"\"></i></label>\n          <input v-if=\"fdate\" type=\"text\" :value=\"fdate\" :initval=\"fdate\" v-flatpickr=\"fdate\" _v-2276a187=\"\">\n          <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-2276a187=\"\">Need a Start Date</p>\n        </div><!--form-group -->\n      </div><!-- /.small-6 columns -->\n      <div class=\"col-md-6\" _v-2276a187=\"\">\n        <div v-if=\"isAdmin\" class=\"form-group\" _v-2276a187=\"\">\n          <label for=\"tags\" _v-2276a187=\"\">Tags:</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"tags\" :options=\"taglist\" :multiple=\"true\" placeholder=\"Select tags\" label=\"name\" _v-2276a187=\"\">\n        </v-select>\n\n      </div><!-- /.form-group -->\n    </div><!-- /.small-6 columns -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-2276a187=\"\">\n    <div class=\"col-md-6\" _v-2276a187=\"\">\n      <!-- <div class=\"form-group\">\n      RecordID:{{thisRecordId}} thisRecordState:{{thisRecordState}} thisRecordIsDirty:{{thisRecordIsDirty}}\n    </div> -->\n  </div><!-- /.col-md-6-->\n  <div class=\"col-md-6\" _v-2276a187=\"\">\n    <!-- <div class=\"form-group pull-right\">\n    {{record | json}}\n  </div> -->\n</div><!-- /.col-md-12 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-2276a187=\"\">\n  <div class=\"col-md-6\" _v-2276a187=\"\">\n    <template v-if=\"singleStype\">\n      <input v-model=\"record.story_type\" :value=\"s_types\" type=\"text\" disabled=\"disabled\" _v-2276a187=\"\">\n    </template>\n    <template v-else=\"\">\n      <label _v-2276a187=\"\">Story Type</label>\n      <select v-model=\"record.story_type\" _v-2276a187=\"\">\n        <option v-for=\"stype in s_types\" v-bind:value=\"stype.shortname\" selected=\"{{ stype.shortname == 'news' }}\" _v-2276a187=\"\">\n          {{ stype.name }}\n        </option>\n      </select>\n    </template>\n\n    <!-- <div class=\"form-group pull-right\">\n    {{record | json}}\n  </div> -->\n</div><!-- /.col-md-6 -->\n\n<div class=\"col-md-6\" _v-2276a187=\"\">\n\n</div><!-- /.col-md-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-2276a187=\"\">\n\n\n  <div class=\"col-md-12\" _v-2276a187=\"\">\n    <div class=\"form-group\" _v-2276a187=\"\">\n      <button v-on:click=\"submitForm\" type=\"submit\" class=\"btn btn-primary\" _v-2276a187=\"\">{{submitBtnLabel}}</button>\n    </div>\n  </div><!-- /.column -->\n</div>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-2bceb852=\"\">\n    <slot name=\"csrf\" _v-2bceb852=\"\"></slot>\n    <!-- <slot name=\"author_id\" v-model=\"newevent.author_id\"></slot> -->\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-12\" _v-2bceb852=\"\">\n        <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-2bceb852=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-2bceb852=\"\"><i class=\"fa fa-times\" _v-2bceb852=\"\"></i></button>\n          <h5 _v-2bceb852=\"\">{{formMessage.msg}}</h5>\n        </div>\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-12\" _v-2bceb852=\"\">\n        <div class=\"form-group\" _v-2bceb852=\"\">\n          <label _v-2bceb852=\"\">Title <i class=\"fi-star reqstar\" _v-2bceb852=\"\"></i></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-2bceb852=\"\">Please enter a title</p>\n          <input v-model=\"record.title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-2bceb852=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-2bceb852=\"\">\tPlease Include a Title!</p>\n        </div>\n      </div>\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-12\" _v-2bceb852=\"\">\n        <div class=\"form-group\" _v-2bceb852=\"\">\n          <label _v-2bceb852=\"\">Slug <i class=\"fi-star reqstar\" _v-2bceb852=\"\"></i></label>\n          <p class=\"help-text\" id=\"slug-helptext\" _v-2bceb852=\"\">Automatic Readable link for sharing and social media</p>\n          <input v-model=\"recordSlug\" v-bind:class=\"[formErrors.slug ? 'invalid-input' : '']\" name=\"slug\" type=\"text\" _v-2bceb852=\"\">\n          <p v-if=\"formErrors.slug\" class=\"help-text invalid\" _v-2bceb852=\"\">needs slug!</p>\n        </div>\n      </div><!-- /.col-md-12 -->\n    </div>\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-12\" _v-2bceb852=\"\">\n        <div class=\"form-group\" _v-2bceb852=\"\">\n          <label _v-2bceb852=\"\">Subtitle</label>\n          <p class=\"help-text\" id=\"subtitle-helptext\" _v-2bceb852=\"\">Visible in some cases</p>\n          <input v-model=\"record.subtitle\" v-bind:class=\"[formErrors.subtitle ? 'invalid-input' : '']\" @blur=\"onBlur\" name=\"subtitle\" type=\"text\" _v-2bceb852=\"\">\n          <p v-if=\"formErrors.subtitle\" class=\"help-text invalid\" _v-2bceb852=\"\"></p>\n        </div>\n        <div class=\"form-group\" _v-2bceb852=\"\">\n          <label _v-2bceb852=\"\">Content <i class=\"fi-star reqstar\" _v-2bceb852=\"\"></i></label>\n          <p class=\"help-text\" id=\"content-helptext\" _v-2bceb852=\"\">Enter the story content</p>\n          <textarea v-if=\"hasContent\" id=\"content\" name=\"content\" v-ckrte=\"content\" :type=\"editorType\" :content=\"content\" :fresh=\"isFresh\" rows=\"200\" _v-2bceb852=\"\"></textarea>\n          <p v-if=\"formErrors.content\" class=\"help-text invalid\" _v-2bceb852=\"\">Need Content!</p>\n        </div>\n        <div class=\"form-group user-display\" _v-2bceb852=\"\">\n          <div class=\"user-name\" _v-2bceb852=\"\">Author: {{author.first_name}} {{author.last_name}}</div>\n          <div v-if=\"contact.id != 0\" class=\"user-info\" _v-2bceb852=\"\">Contact: {{contact.first_name}} {{contact.last_name}}, {{contact.email}}, {{contact.phone}}</div>\n          <div v-if=\"contact.id == 0\" class=\"user-info\" _v-2bceb852=\"\">Contact: {{defaultcontact.first_name}} {{defaultcontact.last_name}}, {{defaultcontact.email}}, {{defaultcontact.phone}}</div>\n        </div><!-- /.frm-group -->\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-12\" _v-2bceb852=\"\">\n        <div v-show=\"saveAuthorMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-2bceb852=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-2bceb852=\"\"><i class=\"fa fa-times\" _v-2bceb852=\"\"></i></button>\n          <h5 _v-2bceb852=\"\">{{saveAuthorMessage.msg}}</h5>\n        </div>\n        <a v-if=\"!needAuthor\" @click.prevent=\"changeAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2bceb852=\"\">Change Author</a>\n        <a v-if=\"hasAuthor\" @click.prevent=\"resetAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2bceb852=\"\">Reset Author</a>\n        <a @click.prevent=\"changeContact\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2bceb852=\"\">Change Contact</a>\n        <div v-if=\"needAuthor &amp;&amp; isAdmin\" class=\"form-inline author\" _v-2bceb852=\"\">\n            <label _v-2bceb852=\"\">Choose existing Author:</label>\n            <v-select :value.sync=\"selectedAuthor\" :options=\"optionsAuthorlist\" :multiple=\"false\" placeholder=\"Author (leaving this blank will set you as the author)\" label=\"name\" _v-2bceb852=\"\"> </v-select>\n        </div>\n        <div v-if=\"needAuthor\" class=\"form-inline author\" _v-2bceb852=\"\">\n          <div class=\"form-group\" _v-2bceb852=\"\">\n            <label for=\"author-first-name\" _v-2bceb852=\"\">First Name <span v-if=\"authorErrors.first_name\" class=\"help-text invalid\" _v-2bceb852=\"\"> is Required</span></label>\n            <input v-model=\"author.first_name\" type=\"text\" class=\"form-control input-sm\" id=\"author-last-name\" placeholder=\"First Name\" _v-2bceb852=\"\">\n          </div>\n          <div class=\"form-group\" _v-2bceb852=\"\">\n            <label for=\"author-last-name\" _v-2bceb852=\"\">Last Name</label>\n            <input v-model=\"author.last_name\" type=\"text\" class=\"form-control input-sm\" id=\"author-last-name\" placeholder=\"Last Name\" _v-2bceb852=\"\">\n          </div>\n          <div class=\"form-group\" _v-2bceb852=\"\">\n            <label for=\"author-email\" _v-2bceb852=\"\">Email</label>\n            <input v-model=\"author.email\" type=\"email\" class=\"form-control input-sm\" id=\"author-email\" placeholder=\"author@emich.edu\" _v-2bceb852=\"\">\n          </div>\n          <div class=\"form-group\" _v-2bceb852=\"\">\n            <label for=\"author-phone\" _v-2bceb852=\"\">Phone</label>\n            <input v-model=\"author.phone\" type=\"phone\" class=\"form-control input-sm\" id=\"author-phone\" placeholder=\"(313)-555-1212\" _v-2bceb852=\"\">\n          </div>\n          <div class=\"form-group save-author\" _v-2bceb852=\"\">\n            <button @click.prevent=\"saveAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-2bceb852=\"\">{{authorBtnLabel}}</button>\n          </div><!-- /.form-group -->\n        </div>\n      </div><!-- /.col-md-12 -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-6\" _v-2bceb852=\"\">\n        <div v-if=\"isAdmin &amp;&amp; needContact\" class=\"form-inline author\" _v-2bceb852=\"\">\n            <label _v-2bceb852=\"\">Story contact:</label>\n            <v-select :value.sync=\"selectedContact\" :options=\"optionsContactlist\" :multiple=\"false\" placeholder=\"Contact (leaving this blank will set the system default as the contact)\" label=\"name\" _v-2bceb852=\"\"> </v-select>\n        </div>\n      </div><!-- /.col-md-6 -->\n    </div>\n    <div class=\"row\" _v-2bceb852=\"\">\n      <div class=\"col-md-6\" _v-2bceb852=\"\">\n        <div class=\"form-group\" _v-2bceb852=\"\">\n          <label for=\"start-date\" _v-2bceb852=\"\">Start Date: <i class=\"fi-star reqstar\" _v-2bceb852=\"\"></i></label>\n          <input v-if=\"fdate\" type=\"text\" :value=\"fdate\" :initval=\"fdate\" v-flatpickr=\"fdate\" _v-2bceb852=\"\">\n          <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-2bceb852=\"\">Need a Start Date</p>\n        </div><!--form-group -->\n      </div><!-- /.small-6 columns -->\n      <div class=\"col-md-6\" _v-2bceb852=\"\">\n        <div v-if=\"isAdmin\" class=\"form-group\" _v-2bceb852=\"\">\n          <label for=\"tags\" _v-2bceb852=\"\">Tags:</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"tags\" :options=\"taglist\" :multiple=\"true\" placeholder=\"Select tags\" label=\"name\" _v-2bceb852=\"\">\n        </v-select>\n\n      </div><!-- /.form-group -->\n    </div><!-- /.small-6 columns -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-2bceb852=\"\">\n    <div class=\"col-md-6\" _v-2bceb852=\"\">\n      <!-- <div class=\"form-group\">\n      RecordID:{{thisRecordId}} thisRecordState:{{thisRecordState}} thisRecordIsDirty:{{thisRecordIsDirty}}\n    </div> -->\n  </div><!-- /.col-md-6-->\n  <div class=\"col-md-6\" _v-2bceb852=\"\">\n    <!-- <div class=\"form-group pull-right\">\n    {{record | json}}\n  </div> -->\n</div><!-- /.col-md-12 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-2bceb852=\"\">\n  <div class=\"col-md-6\" _v-2bceb852=\"\">\n    <template v-if=\"singleStype\">\n      <input v-model=\"record.story_type\" :value=\"s_types\" type=\"text\" disabled=\"disabled\" _v-2bceb852=\"\">\n    </template>\n    <template v-else=\"\">\n      <label _v-2bceb852=\"\">Story Type</label>\n      <select v-model=\"record.story_type\" _v-2bceb852=\"\">\n        <option v-for=\"stype in s_types\" v-bind:value=\"stype.shortname\" selected=\"{{ stype.shortname == 'news' }}\" _v-2bceb852=\"\">\n          {{ stype.name }}\n        </option>\n      </select>\n    </template>\n\n    <!-- <div class=\"form-group pull-right\">\n    {{record | json}}\n  </div> -->\n</div><!-- /.col-md-6 -->\n\n<div class=\"col-md-6\" _v-2bceb852=\"\">\n\n</div><!-- /.col-md-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-2bceb852=\"\">\n\n\n  <div class=\"col-md-12\" _v-2bceb852=\"\">\n    <div class=\"form-group\" _v-2bceb852=\"\">\n      <button v-on:click=\"submitForm\" type=\"submit\" class=\"btn btn-primary\" _v-2bceb852=\"\">{{submitBtnLabel}}</button>\n    </div>\n  </div><!-- /.column -->\n</div>\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\np[_v-2276a187] {\n  margin:0;\n}\nlabel[_v-2276a187] {\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-2276a187] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-2276a187] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-2276a187] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-2276a187] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-2276a187] {\n  color: #ff0000;\n}\n.user-display[_v-2276a187] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-2276a187] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-2276a187] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-2276a187]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-2276a187], [type='password'][_v-2276a187], [type='date'][_v-2276a187], [type='datetime'][_v-2276a187], [type='datetime-local'][_v-2276a187], [type='month'][_v-2276a187], [type='week'][_v-2276a187], [type='email'][_v-2276a187], [type='number'][_v-2276a187], [type='search'][_v-2276a187], [type='tel'][_v-2276a187], [type='time'][_v-2276a187], [type='url'][_v-2276a187], [type='color'][_v-2276a187],\ntextarea[_v-2276a187] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-2276a187], [type='checkbox'][_v-2276a187], [type='radio'][_v-2276a187] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-2276a187] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-2276a187]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-2276a187]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-2276a187] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-2276a187] {\n  vertical-align: bottom;\n}\n"] = false
+    __vueify_insert__.cache["\np[_v-2bceb852] {\n  margin:0;\n}\nlabel[_v-2bceb852] {\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-2bceb852] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-2bceb852] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-2bceb852] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-2bceb852] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-2bceb852] {\n  color: #ff0000;\n}\n.user-display[_v-2bceb852] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-2bceb852] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-2bceb852] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-2bceb852]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-2bceb852], [type='password'][_v-2bceb852], [type='date'][_v-2bceb852], [type='datetime'][_v-2bceb852], [type='datetime-local'][_v-2bceb852], [type='month'][_v-2bceb852], [type='week'][_v-2bceb852], [type='email'][_v-2bceb852], [type='number'][_v-2bceb852], [type='search'][_v-2bceb852], [type='tel'][_v-2bceb852], [type='time'][_v-2bceb852], [type='url'][_v-2bceb852], [type='color'][_v-2bceb852],\ntextarea[_v-2bceb852] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-2bceb852], [type='checkbox'][_v-2bceb852], [type='radio'][_v-2bceb852] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-2bceb852] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-2bceb852]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-2bceb852]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-2bceb852] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-2bceb852] {\n  vertical-align: bottom;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2276a187", module.exports)
+    hotAPI.createRecord("_v-2bceb852", module.exports)
   } else {
-    hotAPI.update("_v-2276a187", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2bceb852", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/ckrte.js":112,"../directives/flatpickr.js":113,"../vuex/actions":115,"../vuex/getters":116,"babel-runtime/core-js/json/stringify":1,"moment":102,"vue":107,"vue-hot-reload-api":104,"vue-select":106,"vueify/lib/insert-css":108}],112:[function(require,module,exports){
@@ -21513,20 +21342,20 @@ Object.defineProperty(exports, "__esModule", {
 // Since we are only interested in the dispatch (and optionally the state)
 // we can pull those two parameters using the ES6 destructuring feature
 var updateRecordId = exports.updateRecordId = function updateRecordId(_ref, value) {
-  var dispatch = _ref.dispatch,
-      state = _ref.state;
+  var dispatch = _ref.dispatch;
+  var state = _ref.state;
 
   dispatch('RECORD_ID', value);
 };
 var updateRecordIsDirty = exports.updateRecordIsDirty = function updateRecordIsDirty(_ref2, value) {
-  var dispatch = _ref2.dispatch,
-      state = _ref2.state;
+  var dispatch = _ref2.dispatch;
+  var state = _ref2.state;
 
   dispatch('RECORD_IS_DIRTY', value);
 };
 var updateRecordState = exports.updateRecordState = function updateRecordState(_ref3, value) {
-  var dispatch = _ref3.dispatch,
-      state = _ref3.state;
+  var dispatch = _ref3.dispatch;
+  var state = _ref3.state;
 
   dispatch('RECORD_STATE', value);
 };
