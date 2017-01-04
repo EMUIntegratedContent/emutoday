@@ -139,6 +139,7 @@
   <div v-bind:class="md12col">
     <div v-bind:class="formGroup">
       <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+      <button v-if="recordexists" id="btn-delete" v-on:click="delAnnouncement" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Announcement</button>
     </div>
   </div>
 </div>
@@ -232,6 +233,9 @@ h5.form-control {
 }
 textarea {
   resize: vertical !important;
+}
+.redBtn {
+  background: hsl(0, 90%, 70%);
 }
 </style>
 
@@ -328,17 +332,6 @@ module.exports = {
       this.setupDatePickers();
     }
   },
-  // ready: function() {
-  //
-  //         if(this.recordexists){
-  //             //console.log('editeventid'+ this.editid)
-  //             this.fetchCurrentRecord(this.editid)
-  //
-  //         }
-  //
-  // },
-
-
   computed: {
     // Check announcement type. general or hr
     generalForm: function() {
@@ -478,6 +471,55 @@ module.exports = {
       //this.startdate = this.record.start_date;
 
     },
+    delAnnouncement: function(e) {
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+
+      if(confirm('Would you like to delete this Announcement')==true){
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+        this.recordid ? tempid = this.recordid : tempid = this.record.id;
+        this.$http.post('/api/announcement/'+tempid+'/delete')
+
+        .then((response) =>{
+          // If user admin
+          if(window.location.href.indexOf("admin") > -1) {
+            window.location.href = "/admin/announcement/queue";
+          } else { // Not user admin
+            // Clear out values;
+            this.formMessage.isOk = response.ok;
+            this.formMessage.msg = response.body;
+            this.recordexists = false;
+            this.record = {
+              title: '',
+              announcement: '',
+              start_date: '',
+              end_date: '',
+              approved_date: '',
+              submission_date: '',
+              is_approved: 0,
+              is_archived: 0,
+              is_promoted: 0,
+              link_txt: '',
+              link: '',
+              email_link_txt: '',
+              email_link: '',
+              type: ''
+            };
+            var d = new Date();
+            var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+            this.record.start_date = tempdate;
+            this.record.end_date = tempdate;
+            this.setupDatePickers();
+          }
+        }, (response) => {
+          console.log('Error: '+JSON.stringify(response))
+        }).bind(this);
+        this.refreshUserAnnouncementTable();
+      }
+    },
+
     setupDatePickers:function(){
       var self = this;
       //console.log("setupDatePickers");
@@ -494,7 +536,7 @@ module.exports = {
         this.dateObject.endDateDefault = this.record.end_date;
       }
       this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-        minDate: self.dateObject.startDateMin,
+        // minDate: self.dateObject.startDateMin,
         defaultDate: self.dateObject.startDateDefault,
         enableTime: false,
         // altFormat: "m-d-Y",

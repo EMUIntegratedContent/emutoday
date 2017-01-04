@@ -13,6 +13,6 @@ class Category extends Model
     }
 
     public function events() {
-        return $this->belongsToMany('Emutoday\Event', 'cea_category_event', 'category_id', 'event_id');
+        return $this->belongsToMany('Emutoday\Event', 'cea_event_categories', 'category_id', 'event_id');
     }
 }

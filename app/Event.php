@@ -91,7 +91,7 @@ class Event extends Model
 
   public function eventcategories()
   {
-    return $this->belongsToMany('Emutoday\Category', 'cea_category_event', 'event_id', 'category_id');
+    return $this->belongsToMany('Emutoday\Category', 'cea_event_categories', 'event_id', 'category_id');
   }
   public function doNothing()
   { //

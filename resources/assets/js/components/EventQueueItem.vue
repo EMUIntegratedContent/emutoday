@@ -66,7 +66,7 @@
 
         <div v-show="showPanel">
         <!-- <div class="panel"> -->
-          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
+          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="mediaform m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
             <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
             <div class="fa fa-photo btn btn-info btn-sm block m-b file-upload">
               <input v-el:eventimg type="file" @change="getFileName" class="file-input" name="eventimg" id="eventimg">
@@ -74,7 +74,7 @@
             <button v-if="eventimage" id="btn-mediafile-upload" type="submit" class="fa fa-floppy-o btn btn-sm bg-orange block m-b"></button>
             <span class="file-input-helpertext" id="file-name">{{eventimage}}</span>
           </form>
-          <form v-if="hasEventImage" id="form-mediafile-remove{{item.id}}" @submit.prevent="removeMediaFile" class="m-t" role="form" action="/api/event/removeMediaFile/{{item.id}}">
+          <form v-if="hasEventImage" id="form-mediafile-remove{{item.id}}" @submit.prevent="removeMediaFile" class="mediaform m-t" role="form" action="/api/event/removeMediaFile/{{item.id}}">
             <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
             <button id="btn-mediafile-remove" type="submit" class="fa fa-eraser btn btn-sm btn-danger block m-b"></button>
           </form>
@@ -227,6 +227,8 @@ h6.box-title {
 }
 form {
   display:inline-block;
+}
+form.mediaform {
   margin-top: 1rem;
 }
 .form-group {
@@ -256,7 +258,6 @@ h5 {
   margin-top: 0;
   margin-bottom: 0;
 }
-
 .form-group {
   /*border: 1px solid red;*/
 }

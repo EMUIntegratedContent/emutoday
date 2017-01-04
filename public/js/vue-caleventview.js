@@ -16338,7 +16338,7 @@ exports.insert = function (css) {
 
 },{}],10:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16414,7 +16414,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n"] = false
+    __vueify_insert__.cache["\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

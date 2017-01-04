@@ -121,6 +121,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('announcement/queueload/{atype}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
     Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
+    Route::post('announcement/{id}/delete', ['as' => 'api_announcement_deleteitem', 'uses' => 'Api\AnnouncementController@delete']);
     Route::post('announcement', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 

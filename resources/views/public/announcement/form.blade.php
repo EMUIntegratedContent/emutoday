@@ -66,15 +66,17 @@
                     <th class="text-left">Start Date</th>
                     <th class="text-left">End Date</th>
                     <th class="text-left">Approved</th>
+                    <th class="text-left">&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach($approveditems as $item)
-                  <tr>
+                  <tr id="{{ $item->id }}">
                     <td>{{ $item->title }}</td>
                     <td>{{ Carbon\Carbon::parse($item->start_date)->format('M d, Y') }}</td>
                     <td>{{ Carbon\Carbon::parse($item->end_date)->format('M d, Y') }}</td>
                     <td>{{ Carbon\Carbon::parse($item->approved_date)->format('M d, Y') }}</td>
+                    <td class="editBtn"><a href="#">EDIT</a></td>
                   </tr>
                   @endforeach
                 </tbody>

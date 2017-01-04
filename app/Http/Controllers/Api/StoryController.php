@@ -50,7 +50,7 @@ class StoryController extends ApiController
                } else {
 
                    if($qtype === 'queueall'){
-                   $storys  = Story::get();
+                     $storys  = Story::get();
                    } else {
                       $storys = Story::where('story_type', $stype)->get();
                    }

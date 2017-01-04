@@ -12092,7 +12092,7 @@ exports.insert = function (css) {
 
 },{}],6:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\ninput[_v-c7b8db4e] {\n  padding: 0;\n  padding-left: 1em;\n  height: 34.4px;\n  vertical-align: bottom;\n}\n\n")
 'use strict';
 
 module.exports = {
@@ -12120,13 +12120,17 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
+<<<<<<< HEAD
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form-offcanvas\" class=\"search-form-offcanvas\" v-on:submit.prevent=\"submitSearch\" _v-c7b8db4e=\"\">\n    <slot name=\"csrf\" _v-c7b8db4e=\"\"></slot>\n    <div class=\"input-group\" _v-c7b8db4e=\"\">\n        <span class=\"show-for-sr\" _v-c7b8db4e=\"\">Search</span>\n        <input class=\"input-group-field\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-c7b8db4e=\"\">\n        <div class=\"input-group-button\" _v-c7b8db4e=\"\">\n            <button type=\"submit\" class=\"button\" _v-c7b8db4e=\"\"><i class=\"fa fa-search\" _v-c7b8db4e=\"\"></i></button>\n        </div>\n    </div>\n</form>\n"
+=======
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form-offcanvas\" class=\"search-form-offcanvas\" v-on:submit.prevent=\"submitSearch\" _v-c7b8db4e=\"\">\n    <slot name=\"csrf\" _v-c7b8db4e=\"\"></slot>\n    <div class=\"input-group\" _v-c7b8db4e=\"\">\n        <span class=\"show-for-sr\" _v-c7b8db4e=\"\">Search</span>\n        <input class=\"input-group-field\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-c7b8db4e=\"\">\n        <div class=\"input-group-button\" _v-c7b8db4e=\"\">\n        <button type=\"submit\" class=\"button secondary small\" _v-c7b8db4e=\"\"><i class=\"fa fa-search\" _v-c7b8db4e=\"\"></i></button>\n        </div>\n    </div>\n</form>\n"
+>>>>>>> ee1c214be641a5daa9a67198d2116cfedf8d36d1
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n\n"] = false
+    __vueify_insert__.cache["\ninput[_v-c7b8db4e] {\n  padding: 0;\n  padding-left: 1em;\n  height: 34.4px;\n  vertical-align: bottom;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

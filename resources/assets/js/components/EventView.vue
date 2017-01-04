@@ -22,6 +22,9 @@
     </div>
 </template>
 <style scoped>
+.pull-right {
+    float:right;
+}
 #graybar{
     width: 100%;
     padding: .3rem 0;
