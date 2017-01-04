@@ -5,13 +5,13 @@
         <div class="row">
           <div class="large-9 large-push-3 medium-12 small-12 columns">
             <div class="row">
-              <div class="large-5 medium-9 small-12 columns">
+              <div class="large-5 medium-9 small-8 columns">
                 <h3 class="magazine-main-title hide-for-large"><a href="/magazine">Eastern <span class="magazine-descriptor-small hide-for-large">Magazine</span></a></h3>
               </div>
-              <div class="large-7 medium-3 small-12 columns">
+              <div class="large-7 medium-3 small-4 columns">
                 <div class="icon-menu float-right">
 
-                  <div id="vue-search-form">
+                  <div id="vue-search-form" class="hide-for-small-only">
                     <search-form>
                       <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                     </search-form>
