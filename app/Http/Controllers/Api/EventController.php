@@ -7,6 +7,7 @@ namespace Emutoday\Http\Controllers\Api;
 use Illuminate\Support\Facades\Input;
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
 use League\Fractal\Manager;
 use League\Fractal;
 
@@ -228,11 +229,29 @@ class EventController extends ApiController
         }
       }
 
-      public function mediaFileAdd($id, Request $request)
-      {
-        $group = 'event';
-        $type = 'small';
-        dd(Input::all());
+      public function removeMediaFile(Request $request)
+      { // Removes events mediafile / featured status
+        $event = Event::findOrFail($request->get('event_id'));
+        $mediafile_record = Mediafile::findOrFail($event->mediafile_id);
+
+        if(File::exists(public_path().$mediafile_record->getFullPath())){
+          //delete the actual file
+          File::delete(public_path().$mediafile_record->getFullPath());
+
+          //delete the mediafile record
+          $mediafile_record->delete();
+
+          // Update event record
+          $event->is_promoted = 0;
+          $event->mediafile_id = 0;
+          if($event->save()){
+            $returnData = ['mediafile_id' => $event->mediafile_id, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
+            return $this->setStatusCode(201)
+            ->respondUpdatedWithData('Successfully removed event promotion',$returnData );
+          }
+        } else {
+          flash()->warning('Image was not found and could not be deleted.');
+        }
       }
 
       public function addMediaFile(Request $request)
@@ -284,7 +303,7 @@ class EventController extends ApiController
           $event->mediaFile()->associate($mediafile);
           $event->is_promoted = 1;
           if($event->save()) {
-            $returnData = ['eventimage' => $event->mediaFile->filename , 'is_approved' => $event->is_approved,'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
+            $returnData = ['eventimage' => $mediafile->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
             return $this->setStatusCode(201)
             ->respondUpdatedWithData('event updated',$returnData );
             // return $this->setStatusCode(201)
@@ -333,7 +352,8 @@ class EventController extends ApiController
                 'X-Mailer: PHP/' . phpversion();
                 mail($to, $subject, $message, $headers);
               }
-              $returnData = ['is_approved' => $event->is_approved,'home_priority'=> $event->home_priority, 'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
+              // $returnData = ['is_approved' => $event->is_approved,'home_priority'=> $event->home_priority, 'priority'=> $event->priority, 'is_canceled'=> $event->is_canceled];
+              $returnData = ['is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('event updated',$returnData );
             }

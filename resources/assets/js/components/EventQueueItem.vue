@@ -36,7 +36,6 @@
                 </select>
               </div>
 
-
               <div id="applabel" class="form-group">
                 <label>Approved:&nbsp;</label>
               </div><!-- /.form-group -->
@@ -60,20 +59,28 @@
     </div>  <!-- /.box-header -->
 
     <div v-if="showBody" class="box-body">
+    <!-- <div class="box-body"> -->
       <template v-if="canHaveImage">
         <img v-if="hasEventImage" :src="imageUrl" />
-        <a v-on:click.prevent="togglePanel" class="btn bg-olive btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
-        <div v-show="showPanel" class="panel">
-          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
+        <a v-on:click.prevent="togglePanel" class="btn btn-info btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
+
+        <div v-show="showPanel">
+        <!-- <div class="panel"> -->
+          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="mediaform m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
             <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
-            <div class="form-group">
-              <label for="event-image">Event Image</label><br>
-              <input v-el:eventimg type="file" name="eventimg" id="eventimg">
+            <div class="fa fa-photo btn btn-info btn-sm block m-b file-upload">
+              <input v-el:eventimg type="file" @change="getFileName" class="file-input" name="eventimg" id="eventimg">
             </div>
-            <button id="btn-mediafile-upload" type="submit" class="btn btn-primary block m-b">Submit</button>
+            <button v-if="eventimage" id="btn-mediafile-upload" type="submit" class="fa fa-floppy-o btn btn-sm bg-orange block m-b"></button>
+            <span class="file-input-helpertext" id="file-name">{{eventimage}}</span>
+          </form>
+          <form v-if="hasEventImage" id="form-mediafile-remove{{item.id}}" @submit.prevent="removeMediaFile" class="mediaform m-t" role="form" action="/api/event/removeMediaFile/{{item.id}}">
+            <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
+            <button id="btn-mediafile-remove" type="submit" class="fa fa-eraser btn btn-sm btn-danger block m-b"></button>
           </form>
         </div><!-- /.panel mediaform -->
-      <hr/>
+
+        <hr/>
       </template>
 
       <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
@@ -160,6 +167,31 @@
 </div>
 </template>
 <style scoped>
+.file-upload {
+  position: relative;
+  overflow: hidden;
+}
+.file-upload input.file-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+span.file-input-helpertext {
+  display: inline-block;
+  line-height: 18px;
+  margin: 0 .5rem;
+  padding: 0;
+  vertical-align: middle;
+  padding: .2rem 0;
+  overflow: hidden;
+  border-bottom: 1px solid #bbb;
+}
+/*//////////////////*/
 .event-cancel {
   font-size: 90%;
   font-weight: normal;
@@ -194,7 +226,10 @@ h6.box-title {
   color: #1B1B1B;
 }
 form {
-  display:inline-flex;
+  display:inline-block;
+}
+form.mediaform {
+  margin-top: 1rem;
 }
 .form-group {
   margin-bottom: 2px;
@@ -223,7 +258,6 @@ h5 {
   margin-top: 0;
   margin-bottom: 0;
 }
-
 .form-group {
   /*border: 1px solid red;*/
 }
@@ -300,6 +334,7 @@ module.exports  = {
   props: ['item','pid','index'],
   data: function() {
     return {
+      eventimage: '',
       hasPriorityChanged:0,
       options: [
         { text: '0', value: 0 },
@@ -352,7 +387,7 @@ module.exports  = {
     this.initRecord.priority = this.patchRecord.priority = this.item.priority;
     this.initRecord.home_priority = this.patchRecord.home_priority = this.item.home_priority;
     this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;
-    this.initRecord.eventimage = this.patchRecord.eventimage = this.item.eventimage;
+    this.initRecord.eventimage = this.eventimage = this.patchRecord.eventimage = this.item.eventimage;
   },
   computed: {
     addSeperator: function(){
@@ -569,6 +604,11 @@ module.exports  = {
     priorityChange(event){
       console.log('priority=' + this.item.priority)
     },
+    getFileName(){
+      var files = this.$els.eventimg.files;
+      this.eventimage = this.$els.eventimg.files[0].name;
+      console.log(this.eventimage);
+    },
     addMediaFile(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -580,10 +620,24 @@ module.exports  = {
       var action = '/api/event/addMediaFile/'+ this.formInputs.event_id;
       this.$http.post(action, data)
       .then((response) => {
-        console.log('good?'+ response)
+        console.log('good?'+ JSON.stringify(response))
         this.checkAfterUpdate(response.data.newdata)
       }, (response) => {
         console.log('bad?'+ response)
+      });
+    },
+    removeMediaFile(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var data = new FormData();
+      data.append('event_id', this.formInputs.event_id);
+      var action = '/api/event/removeMediaFile/'+ this.formInputs.event_id;
+      this.$http.post(action, data)
+      .then((response) => {
+        // console.log('good?'+ JSON.stringify(response))
+        this.checkAfterUpdate(response.data.newdata)
+      }, (response) => {
+        console.log('bad?'+ JSON.stringify(response))
       });
     },
     updateItem: function(){
@@ -608,10 +662,11 @@ module.exports  = {
     },
     checkAfterUpdate: function(ndata){
       this.item.is_approved = this.initRecord.is_approved =   ndata.is_approved;
+      this.item.is_promoted = this.initRecord.is_promoted =   ndata.is_promoted;
       this.item.priority = this.initRecord.priority =  ndata.priority;
       this.item.home_priority = this.initRecord.home_priority =  ndata.home_priority;
       this.item.is_canceled = this.initRecord.is_canceled = ndata.is_canceled;
-      this.item.eventimage =  this.initRecord.eventimage = ndata.eventimage;
+      this.item.eventimage = this.eventimage = this.initRecord.eventimage = ndata.eventimage;
       this.hasPriorityChanged = 0;
 
       console.log(ndata);

@@ -17,7 +17,7 @@ class CalendarController extends ApiController
     {
         $this->events = $events;
     }
-    
+
     /**
      * [Creates event list when a date is selected]
      * route calendar/events/{year?}/{month?}/{day?}
@@ -286,6 +286,7 @@ class CalendarController extends ApiController
 
 
       $eventsInMonth = Event::select('id', 'start_date', 'end_date')->where([
+        ['is_approved', 1],
         ['start_date', '>', $cdate_start],
         ['start_date', '<', $cdate_end]
         ])->get();
@@ -338,23 +339,23 @@ class CalendarController extends ApiController
       return $request->all();
 
     }
-    
+
     public function addEventToGoogleCalendar(Request $request){
         $client = new \Google_Client();
         $client->setAuthConfig(base_path() . '/client_secret.json');
         $client->addScope(array(\Google_Service_Calendar::CALENDAR));
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
-        
+
         $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/api/oauth2callback';
-        
+
         if ($request->session()->has('access_token')) {
-            
+
             $client->setAccessToken(session('access_token'));
             $calendar_service = new \Google_Service_Calendar($client);
-          
+
             $event = $this->events->find($request->input('eventId'));
-          
+
             $event_arr = array();
             $startDate = $event->start_date;
             $endDate = $event->end_date;
@@ -372,7 +373,7 @@ class CalendarController extends ApiController
             $endDate = $endDate[0];
             $endDateTime = "$endDate $endTime";
             $endDateTime = new \DateTime($endDateTime, $timezone);
-          
+
             if($event->all_day){
                 $dateType = 'date';
                 $finalStartTime = $startDateTime->format('Y-m-d');
@@ -384,7 +385,7 @@ class CalendarController extends ApiController
                 // add an hour to the start hour if no end hour is somehow set as being before the start hour
                 if($endDateTime < $startDateTime){
                     $finalEndTime = clone $startDateTime;
-                    $finalEndTime->add(new \DateInterval('PT1H')); 
+                    $finalEndTime->add(new \DateInterval('PT1H'));
                     $finalEndTime = $finalEndTime->format(\DateTime::RFC3339);
                 } else {
                     $finalEndTime = $endDateTime->format(\DateTime::RFC3339);
@@ -407,13 +408,13 @@ class CalendarController extends ApiController
 
           $calendarId = 'primary';
           $evt = $calendar_service->events->insert($calendarId, $event);
-          
+
           $request->session()->flash('alert-success', 'Event successfully added!');
           return redirect()->back();
 
         } else {
           header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
-        } 
+        }
     }
 
     public function oAuth(Request $request){
@@ -423,7 +424,7 @@ class CalendarController extends ApiController
         $client->addScope(array(\Google_Service_Calendar::CALENDAR));
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
-        
+
         // If there is an pre-existing access token, and that token has expired, refresh it.
         if($client->getAccessToken() && $client->isAccessTokenExpired()){
             $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
