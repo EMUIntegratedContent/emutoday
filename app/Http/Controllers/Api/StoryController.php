@@ -50,9 +50,9 @@ class StoryController extends ApiController
                } else {
 
                    if($qtype === 'queueall'){
-                     $storys  = Story::limit(100)->get();
+                     $storys  = Story::get();
                    } else {
-                      $storys = Story::limit(100)->where('story_type', $stype)->get();
+                      $storys = Story::where('story_type', $stype)->get();
                    }
 
                }
