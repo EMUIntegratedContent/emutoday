@@ -5813,7 +5813,6 @@ text-transform: uppercase;
 
     font-size: 1rem;
     padding: 0 0.3rem;
-    margin-top: 1.2rem;
 }
 
 #tier1-nav .icon-menu span {
@@ -6900,7 +6899,7 @@ p.small-return-news {
     box-sizing: border-box;
 }
 #magazine-feature img {
-	padding-bottom: 0.8rem;
+	padding-bottom: 0rem;
 }
 
 /*.photo-feature-text{

@@ -5,13 +5,18 @@
             <span class="show-for-sr">Search</span>
             <input class="input-group-field" type="text" name="searchterm" placeholder="Search" v-model="searchterm">
             <div class="input-group-button">
-                <button type="submit" class="button"><i class="fa fa-search"></i></span></button>
+            <button type="submit" class="button secondary small"><i class="fa fa-search"></i></span></button>
             </div>
         </div>
     </form>
 </template>
 <style scoped>
-
+input {
+  padding: 0;
+  padding-left: 1em;
+  height: 34.4px;
+  vertical-align: bottom;
+}
 
 </style>
 
