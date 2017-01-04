@@ -204,4 +204,10 @@ class AnnouncementController extends ApiController
       //             ->respondUpdated('Announcement successfully Updated!');
     }
   }
+  public function delete($id)
+  {
+    $announcement = Announcement::findOrFail($id);
+    $announcement->delete();
+    return 'Announcement Deleted';
+  }
 }
