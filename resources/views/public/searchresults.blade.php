@@ -36,7 +36,7 @@
             <div class="large-12 medium-12 small-12 column">
                 @if($numResults > 0)
                     <h4><span class="smaller-title">Found {!! $numResults !!} Results</span></h4>
-                    
+
                     <ul class="search-result-list">
                     @foreach($storiesPaginated as $searchResult)
                     <li class="search-result-item">
@@ -48,7 +48,7 @@
                             <a href="/story/{{$searchResult->story_type}}/{{$searchResult->id}}">
                             @endif
                             <h5>{{$searchResult->title}}</h5></a>
-                            
+
                             <div class="search-result-content">
                                 @if($searchResult->subtitle)
                                 <p>{{ $searchResult->subtitle }}</p>
@@ -56,12 +56,11 @@
                                 <p>{!! $searchResult->teaser !!}</p>
                             </div>
                         @elseif($searchResult->getTable() == 'cea_events')
-                            <a href="/calendar/event/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
+                            <a href="/calendar/{{$searchResult->present()->eventStartDateYear}}/{{$searchResult->present()->eventStartDateMonthUnit}}/{{$searchResult->present()->eventStartDateDay}}/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
                             <div class="search-result-content">
                                 @if($searchResult->description)
                                 <p>{{ $searchResult->description }}</p>
                                 @endif
-                                <p>{!! $searchResult->submitter !!}</p>
                             </div>
                         @elseif($searchResult->getTable() == 'announcements')
                             <a href="/announcement/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
@@ -69,14 +68,13 @@
                                 @if($searchResult->announcement)
                                 <p>{{ $searchResult->announcement }}</p>
                                 @endif
-                                <p>{!! $searchResult->submitter !!}</p>
                             </div>
                         @endif
                     </li>
                     @endforeach
                     </ul>
                     <h6 class="text-center">{!! $storiesPaginated->links() !!}</h6>
-                @else 
+                @else
                     <div class="callout alert">
                         <p>No matching results. Try again.</p>
                     </div>
