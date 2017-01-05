@@ -164,41 +164,50 @@ class StoryController extends ApiController
             'content'     => 'required',
             'user_id'   => 'required' ]);
 
-             if( $validation->fails() )
-                 {
-                     return $this->setStatusCode(422)
-                                             ->respondWithError($validation->errors()->getMessages());
-                 }
-             if($validation->passes()){
-                $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
-                $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
+        if( $validation->fails() ){
+            return $this->setStatusCode(422)
+                        ->respondWithError($validation->errors()->getMessages());
+        }
 
-                $story = new Story;
-                $story->title       = $request->get('title');
-                $story->slug        = $request->get('slug');
-                $story->subtitle    = $request->get('subtitle');
-                $story->teaser      = $request->get('teaser');
-                $story->story_type  = $request->get('story_type');
-                $story->user_id     = $request->get('user_id');
-                $story->content     = $request->get('content');
-                $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
-                $story->author_id   = $request->get('author_id', $request->user()->id);
-                $story->contact_id  = $contact_id;
+        if($validation->passes()){
+            $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
+            $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
 
-                $tags = array_pluck($request->input('tags'),'value');
-
-                if($story->save()) {
-                    $record_id  = $story->id;
-
-                    $newStory = Story::find($record_id);
-                    $newStory->tags()->sync($tags);
-
-                    $newStory->save();
-
-                    return $this->setStatusCode(201)
-                    ->respondSavedWithData('Story has been created.',[ 'record_id' => $story->id, 'stype'=> $story->story_type] );
-                }
+            // People like Walter and Geoff should have an 'auto_approved' role set for them.
+            $auto_approve = $this->isAutoApproved($request->get('user_id'), $request->get('story_type'));
+            if($auto_approve){
+                $approval_level = 1;
+            } else {
+                $approval_level = 0;
             }
+
+            $story = new Story;
+            $story->title       = $request->get('title');
+            $story->slug        = $request->get('slug');
+            $story->subtitle    = $request->get('subtitle');
+            $story->teaser      = $request->get('teaser');
+            $story->story_type  = $request->get('story_type');
+            $story->user_id     = $request->get('user_id');
+            $story->content     = $request->get('content');
+            $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
+            $story->author_id   = $request->get('author_id', $request->user()->id);
+            $story->contact_id  = $contact_id;
+            $story->is_approved = $approval_level;
+
+            $tags = array_pluck($request->input('tags'),'value');
+
+            if($story->save()) {
+                $record_id  = $story->id;
+
+                $newStory = Story::find($record_id);
+                $newStory->tags()->sync($tags);
+
+                $newStory->save();
+
+                return $this->setStatusCode(201)
+                ->respondSavedWithData('Story has been created.',[ 'record_id' => $story->id, 'stype'=> $story->story_type] );
+            }
+        }
     }
 
     /**
@@ -467,5 +476,27 @@ class StoryController extends ApiController
       $author = Author::select()->where('is_principal_contact', 1)->first();
 
       return $author;
+    }
+
+    /**
+     * Determine if the currently logged-in user has the auto_approved role.
+     * If so, and if the story type is "news", return true.
+     *
+     * @param int $user_id  The ID of the user.
+     * @param string $story_type  The type of story.
+     * @return boolean $isApproved
+     */
+    public function isAutoApproved($user_id, $story_type){
+        $user = User::findOrFail($user_id);
+
+        if($story_type == 'news'){
+            foreach ($user->roles()->get() as $role){
+                if ($role->name == 'auto_approved')
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

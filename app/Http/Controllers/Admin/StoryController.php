@@ -25,8 +25,8 @@ use Illuminate\Support\Facades\View;
 class StoryController extends Controller
 {
     private $story;
-    private $bugService; 
-    
+    private $bugService;
+
     public function __construct(Story $story, IBug $bugService)
     {
         $this->story = $story;
@@ -37,7 +37,7 @@ class StoryController extends Controller
         View::share('bugStories', $this->bugService->getUnapprovedStories());
     }
 
-    
+
     public function queueAll(Story $story) {
         $storys = $this->story;
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
