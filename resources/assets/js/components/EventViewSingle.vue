@@ -32,15 +32,15 @@
       <template v-if="item.related_link_1">
         <p>Additional Information:</p>
         <ul>
-          <li><a href="{{item.related_link_1}}" target="_blank">
+          <li><a href="{{item.related_link_1 | hasHttp}}" target="_blank">
             <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
             <template v-else>{{item.related_link_1}}</template>
           </a></li>
-          <li v-if="item.related_link_2"><a href="{{item.related_link_2}}" target="_blank">
+          <li v-if="item.related_link_2"><a href="{{item.related_link_2 | hasHttp}}" target="_blank">
             <template v-if="item.related_link_2_txt">{{item.related_link_2_txt}}</template>
             <template v-else>{{item.related_link_2}}</template>
           </a></li>
-          <li v-if="item.related_link_3"><a href="{{item.related_link_3}}" target="_blank">
+          <li v-if="item.related_link_3"><a href="{{item.related_link_3 | hasHttp}}" target="_blank">
             <template v-if="item.related_link_3_txt">{{item.related_link_3_txt}}</template>
             <template v-else>{{item.related_link_3}}</template>
           </a></li>
@@ -51,7 +51,7 @@
       <p>{{eventParticipation}}</p>
       <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
       <template v-if="item.tickets">
-        <p v-if="item.ticket_details_online">For Tickets Visit: {{item.ticket_details_online}}</p>
+        <p v-if="item.ticket_details_online">For Tickets Visit: <a href="{{item.ticket_details_online | hasHttp}}">{{item.ticket_details_online}}</a></p>
         <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
         <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
         <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
@@ -178,6 +178,9 @@ module.exports  = {
     },
     yesNo: function(value) {
       return (value == true) ? 'Yes' : 'No';
+    },
+    hasHttp: function(value) { // Checks if links given 'http'
+      return (value.substr(0, 4)) == 'http' ? value : 'https://'+value;
     }
   },
   watch: {},

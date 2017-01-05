@@ -1038,10 +1038,8 @@ module.exports  = {
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      // this.record.related_link_1 = this.relatedLink1;
-      // this.record.related_link_1 = this.relatedLink1;
       if(this.record.on_campus == true) {
-        this.record.location = this.convertToSlug(this.computedLocation);
+        this.record.location = this.computedLocation;
       } else {
         this.record.location = this.record.locationoffcampus;
         // clearout these values
