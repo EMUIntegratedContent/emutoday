@@ -61,7 +61,7 @@ class SearchController extends Controller
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id')->get();
+            ], false)->select('title','subtitle','story_type','teaser','id')->where('is_approved', 1)->get();
         } else {
             $searchStoryResults = array();
         }
@@ -70,7 +70,7 @@ class SearchController extends Controller
         if(!$filter || $filter == 'events' || $filter == 'all'){
             $searchEventResults = Event::search($searchTermWild, [
                 'title' => 10,
-            ], false)->get();
+            ], false)->where('is_approved', 1)->get();
         } else {
             $searchEventResults = array();
         }
@@ -80,7 +80,7 @@ class SearchController extends Controller
             $searchAnnouncementResults = Announcement::search($searchTermWild, [
                 'title' => 50,
                 'announcement' => 35
-            ], false)->select('title','announcement','submitter','id')->get();
+            ], false)->where('is_approved', 1)->select('title','announcement','submitter','id')->get();
         } else {
             $searchAnnouncementResults = array();
         }
@@ -92,7 +92,7 @@ class SearchController extends Controller
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id')->get();
+            ], false)->where('is_approved', 1)->select('title','subtitle','story_type','teaser','id')->get();
 
             $searchMagazineResults = array();
 
