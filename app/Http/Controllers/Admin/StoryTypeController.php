@@ -30,7 +30,7 @@ class StoryTypeController extends Controller
     {
         $this->story = $story;
         $this->storyType = $storyType;
-        
+
         $this->bugService = $bugService;
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
@@ -97,7 +97,7 @@ class StoryTypeController extends Controller
             $stypes  = 'article';
             $stype= 'article';
             $qtype  = 'queuearticle';
-            
+
             return view('admin.magazine.article.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
         }
 
@@ -155,7 +155,7 @@ class StoryTypeController extends Controller
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
 
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
-        
+
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
                 // dd($user->id);
@@ -205,9 +205,6 @@ class StoryTypeController extends Controller
             'stypelist' => $stypelist
         ]);
         return view('admin.story.form', compact('story','sroute','stype' ,'stypes', 'stypelist' ));
-
-        // return view('admin.story.form', compact('story','sroute','stypes','stypelist'));
-
     }
 
     public function storyTypeEdit($qtype, $gtype,$stype, Story $story)

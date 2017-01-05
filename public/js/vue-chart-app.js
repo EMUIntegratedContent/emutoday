@@ -33404,7 +33404,7 @@ exports.insert = function (css) {
 
 },{}],9:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box-body[_v-1254a684] {\n    /*height: 800px;*/\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box-body[_v-aaf4066e] {\n    /*height: 800px;*/\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33575,19 +33575,19 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"panel-body\" _v-1254a684=\"\">\n    <vue-chart :packages=\"gpackages\" :chart-type=\"chartType\" :columns=\"columns\" :rows=\"rowsLoad\" :options=\"options\" _v-1254a684=\"\"></vue-chart>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"panel-body\" _v-aaf4066e=\"\">\n    <vue-chart :packages=\"gpackages\" :chart-type=\"chartType\" :columns=\"columns\" :rows=\"rowsLoad\" :options=\"options\" _v-aaf4066e=\"\"></vue-chart>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box-body[_v-1254a684] {\n    /*height: 800px;*/\n}\n"] = false
+    __vueify_insert__.cache["\n.box-body[_v-aaf4066e] {\n    /*height: 800px;*/\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-1254a684", module.exports)
+    hotAPI.createRecord("_v-aaf4066e", module.exports)
   } else {
-    hotAPI.update("_v-1254a684", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-aaf4066e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"moment":2,"vue":7,"vue-hot-reload-api":5,"vueify/lib/insert-css":8}],10:[function(require,module,exports){
