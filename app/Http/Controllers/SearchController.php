@@ -62,8 +62,6 @@ class SearchController extends Controller
                 'teaser' => 20,
                 'subtitle' => 10,
             ], false)->select('title','subtitle','story_type','teaser','id')->where('is_approved', 1)->get();
-
-                // ['is_approved', 1],
         } else {
             $searchStoryResults = array();
         }
