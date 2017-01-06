@@ -49,13 +49,13 @@ class MainController extends Controller
       //in case no new page has been set
       //pull last one to expire
       if(is_null($page)){
-        $page = $this->page->where([
-          ['is_ready', 1],
-          ['is_archived', 0],
-          ['start_date', '<=', $currentDateTimeStart]
+          $page = $this->page->where([
+              ['is_ready', 1],
+              ['is_archived', 0],
+              ['start_date', '<=', $currentDateTimeStart]
           ])->first();
 
-        }
+      }
 
         $currentStorysBasic = $this->story->where([
           ['story_type', 'news'],
@@ -147,19 +147,22 @@ class MainController extends Controller
         }
 
         $barImgs = collect();
-        $storys = $page->storys()->get();
-        // dd($storys);
-        foreach ($storys as $story) {
-          if ($story->pivot->page_position === 0) {
-            // IMPORTANT TO HAVE 'emutoday_front' FOR 'article' TYPE STORY WITH HIGHER 'id' THAN 'article_front'
-            $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
-          } else {
-            $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
-          }
 
+        if(!is_null($page)){
+            $storys = $page->storys()->get();
+            foreach ($storys as $story) {
+              if ($story->pivot->page_position === 0) {
+                // IMPORTANT TO HAVE 'emutoday_front' FOR 'article' TYPE STORY WITH HIGHER 'id' THAN 'article_front'
+                $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
+              } else {
+                $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
+              }
+            }
+            $storyImages = $page->storyImages;
+        } else {
+            $storyImages = null;
         }
 
-        $storyImages = $page->storyImages;
 
         $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
           $query->where('name', 'video');
