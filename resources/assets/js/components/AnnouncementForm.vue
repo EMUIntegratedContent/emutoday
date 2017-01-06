@@ -25,8 +25,8 @@
         <div v-if="generalForm" v-bind:class="formGroup">
           <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span></i>
             <p class="help-text" id="announcement-helptext">({{descriptionChars}} characters left)</p>
-            <textarea v-model="record.announcement" class="form-control" v-bind:class="[formErrors.announcement ? 'invalid-input' : '']" name="announcement" type="textarea" rows="8" maxlength="255"></textarea>
           </label>
+            <textarea v-model="record.announcement" class="form-control" v-bind:class="[formErrors.announcement ? 'invalid-input' : '']" name="announcement" type="textarea" rows="8" maxlength="255"></textarea>
           <p v-if="formErrors.announcement" class="help-text invalid">{{formErrors.announcement}}</p>
         </div>
       </div>
