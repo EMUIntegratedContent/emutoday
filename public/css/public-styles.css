@@ -6946,9 +6946,13 @@ p.small-return-news {
 .row.collapse > .columns.photo-feature-text{
     padding-left: .9rem;
 }
-@media screen and (min-width: 64em) {
+.row.collapse > .columns.photo-feature-text{
+    padding-left: .9rem;
+}
+@media screen and (max-width: 39.9375em) {
 	.row.collapse > .columns.photo-feature-text{
-		padding-left: 1.8rem;
+		padding-left: 0rem;
+		padding-top: 1rem;
 	}
 }
 h2.issue-date {
