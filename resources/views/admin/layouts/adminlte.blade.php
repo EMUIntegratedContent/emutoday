@@ -23,7 +23,7 @@
     @show
     @section('scripts-app')
         <!-- App related Scripts  that need to be loaded in the header -->
-        
+
     @show
     @include('include.js')
     <meta name="_token" content="{{ csrf_token() }}">
@@ -57,7 +57,7 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="search" method="GET" id="admin-search-form" class="sidebar-form">
+        <form action="/admin/search" method="GET" id="admin-search-form" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="searchterm" id="searchterm" class="form-control" placeholder="Search...">
                 <span class="input-group-btn">
@@ -66,7 +66,7 @@
                 </span>
             </div>
         </form>
-<!-- /.search form -->
+        <!-- /.search form -->
 
 <!-- ********************************
 Sidebar Menu
