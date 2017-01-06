@@ -185,7 +185,7 @@ class MainController extends Controller
           'emu_swoop',
         ];
         $twitter_settings = [
-          'count' => 4,
+          'count' => 3,
         ];
 
         $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
