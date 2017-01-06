@@ -42,7 +42,7 @@
                 </div>
               </div>
             <div class="row">
-                <div class="large-8 medium-8 small-12 columns">
+                <div class="large-12 medium-12 small-12 columns">
                     <h3>{{ $story->title }}</h3>
                     <h5>{{ $story->subtitle }}</h5>
                 </div>
@@ -65,8 +65,13 @@
               {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
           </div>
 
-              <div class="story-author">{{$authorInfo->full_name}}</div>
-              <p class="news-contacts">{{$authorInfo->first_name}} {{$authorInfo->last_name}}, {{$authorInfo->email}}, {{$authorInfo->phone}}</p>
+              @if($story->author_id === 0)
+              <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
+              <p class="news-contacts">Contact {{ $story->user->first_name }} {{ $story->user->last_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
+              @else
+              <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
+              <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
+              @endif
             </div>
             <div class="large-3 medium-4 small-12 columns featurepadding">
               <div class="featured-content-block magazine-block">

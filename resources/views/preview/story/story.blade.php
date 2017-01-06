@@ -27,7 +27,7 @@
         <div id="title-grouping" class="row">
           <div class="large-5 medium-4 small-6 columns"><h3 class="news-caps">News</h3></div>
           <div class="large-2 medium-4 small-6 columns">
-            <p class="story-publish-date">{{ $story->present()->publishedDate }}</p>
+            <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
           </div>
           <div class="large-5 medium-4 hide-for-small columns">
             <p class="small-return-news"><a href="/news">News Home</a></p>
@@ -63,23 +63,12 @@
             {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
         </div>
         @if($story->author_id === 0)
-            <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-            <p class="news-contacts">Contact {{ $story->user->full_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ',' . $story->user->phone  }}</p>
-
-
-            @else
-                <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-                <p class="news-contacts">Contact {{ $story->author->full_name }}, {{ $story->author->email }}{{ empty($story->author->phone) ? '': ',' . $story->author->phone }}</p>
-            @endif
-
-        {{--    @if($story->author) @if($story->author_id == 0)
-            <div class="story-author">{{ $story->user->full_name }}</div>
-            <p class="news-contacts">Contact {{ $story->user->email }}</p>
+        <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
+        <p class="news-contacts">Contact {{ $story->user->first_name }} {{ $story->user->last_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
         @else
-            <div class="story-author">{{ $story->author->last_name }}</div>
-            <p class="news-contacts">Contact {{ $story->author->email }}</p>
-
-        @endif --}}
+        <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
+        <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
+        @endif
           </div>
           <!-- Page Side Bar Column -->
           <div class="large-3 medium-4 small-12 columns featurepadding">
