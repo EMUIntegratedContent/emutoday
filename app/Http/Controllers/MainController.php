@@ -151,7 +151,8 @@ class MainController extends Controller
         // dd($storys);
         foreach ($storys as $story) {
           if ($story->pivot->page_position === 0) {
-            $heroImg = $story->storyImages()->where('image_type', 'front')->first();
+            // IMPORTANT TO HAVE 'emutoday_front' FOR 'article' TYPE STORY WITH HIGHER 'id' THAN 'article_front'
+            $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
           } else {
             $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
           }
