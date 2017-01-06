@@ -9,6 +9,7 @@
       @else
         <p>{{$fevent->present()->displayTimeRange }}</p>
       @endif
+      <p>{{$fevent->location}}</p>
     </div>
   </div>
 </div>
