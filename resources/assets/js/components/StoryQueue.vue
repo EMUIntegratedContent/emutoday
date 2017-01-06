@@ -60,7 +60,7 @@
 
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4>Live <small>Approved and StartDate has passed</small></h4>
+        <h4>Live <small>Approved and Start Date has passed</small></h4>
         <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
                 <label>Filter: </label>
