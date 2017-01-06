@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="large-8 medium-8 small-12 columns">
+        <div class="large-12 medium-12 small-12 columns">
           <h3>{{ $story->title }}</h3>
           <h5>{{ $story->subtitle }}</h5>
         </div>
