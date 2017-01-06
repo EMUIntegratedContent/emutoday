@@ -41,9 +41,9 @@
         <div class="row">
           <div class="large-7 large-push-5 medium-12 small-12 columns">
             <div class="row collapse photo-feature-section">
-              <div class="large-6 medium-6 small-12 columns"><img class="topic-image contributor" src="/imagecache/original/{{$magazineExtra->media_name}}"  alt="back page image"/>
+              <div class="large-6 medium-4 small-12 columns"><img class="topic-image contributor" src="/imagecache/original/{{$magazineExtra->media_name}}"  alt="back page image"/>
               </div>
-              <div class="large-6 medium-6 small-12 columns photo-feature-text ">
+              <div class="large-6 medium-8 small-12 columns photo-feature-text ">
                 <h5>{{$magazineExtra->headline}}</h5>
                 {!! $magazineExtra->teaser !!}
                 <p class="author">{{$magazineExtra->caption}}</p>
