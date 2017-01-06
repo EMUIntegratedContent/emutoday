@@ -702,7 +702,7 @@ module.exports  = {
       if (this.building) {
         this.record.building = this.building.name;
         bldg = this.record.building
-        room = (this.record.room)?' - Room:' + this.record.room:'';
+        room = (this.record.room)?' - ' + this.record.room:'';
 
       } else {
         bldg = ''
@@ -1038,10 +1038,9 @@ module.exports  = {
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      // this.record.related_link_1 = this.relatedLink1;
-      // this.record.related_link_1 = this.relatedLink1;
       if(this.record.on_campus == true) {
-        this.record.location = this.convertToSlug(this.computedLocation);
+        this.record.location = this.computedLocation;
+        console.log(">>>>>>>>>>>>"+this.computedLocation+"<<<<<<<<<<<<");
       } else {
         this.record.location = this.record.locationoffcampus;
         // clearout these values

@@ -144,7 +144,7 @@
         <h6 class="headline-block">Working @ EMU</h6>
         <ul class="feature-list">
           @foreach($currentHRAnnouncements as $currentHRAnnouncement)
-          <li><a href="http://{{ $currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a></li>
+          <li><a href="{{ (substr($currentHRAnnouncement->link, 0, 4) == 'http') ? $currentHRAnnouncement->link : 'https://'.$currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a></li>
           @endforeach
         </ul>
       </div>
