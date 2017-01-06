@@ -2,6 +2,7 @@
 @section('content')
 {{-- emu-today hub page --}}
 <div id="content-area">
+  @if($page)
   <div id="news-bar">
     <div class="row">
       <div class="large-7 medium-12 small-12 columns">
@@ -38,11 +39,9 @@
         </div>
       </div>
       @endfor
-
-
-      {{-- @each('public.layouts.components.smallimg', $barImgs, 'barImg') --}}
     </div>
   </div>
+  @endif
   <div id="news-headline-bar">
     <div class="row">
       <div class="large-9 medium-8 small-12 columns">
