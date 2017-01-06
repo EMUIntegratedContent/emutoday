@@ -23,7 +23,7 @@
         <div id="title-grouping" class="row">
           <div class="large-5 medium-4 small-6 columns"><h3 class="news-caps">News</h3></div>
           <div class="large-2 medium-4 small-6 columns">
-            <p class="story-publish-date">{{ $story->present()->publishedDate }}</p>
+            <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
           </div>
           <div class="large-5 medium-4 hide-for-small columns">
             <p class="small-return-news"><a href="/story/news">News Home</a></p>
