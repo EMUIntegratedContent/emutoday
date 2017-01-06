@@ -28,11 +28,7 @@
         <div class="form-group">
             <label class="control-label" for="image">Select File</label>
             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
-            @if($storyImage->group == 'article')
-              <span class="help-block">Select an image with a width of 1280 pixels and height of 500 pixels.</span>
-            @else
-              <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
-            @endif
+            <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
 
         </div>
         @if($storyImage->group == 'emutoday')

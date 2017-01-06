@@ -172,7 +172,7 @@ class EventController extends ApiController
           $event->short_title           	= $request->get('short_title');
           $event->description           	= $request->get('description');
           $event->on_campus				      	= $request->get('on_campus');
-          $event->building				      	= str_replace(' ', '-', strtolower($request->get('building')));
+          ($request->get('building') !== null) ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
           $event->room						      	= $request->get('room');
           $event->location              	= $request->get('location');
 
@@ -419,7 +419,7 @@ class EventController extends ApiController
             $event->short_title           	= $request->get('short_title');
             $event->description           	= $request->get('description');
             $event->on_campus				      	= $request->get('on_campus');
-            $event->building				      	= str_replace(' ', '-', strtolower($request->get('building')));
+            $request->get('building') !== null ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
             $event->room						      	= $request->get('room');
             $event->location              	= $request->get('location');
 

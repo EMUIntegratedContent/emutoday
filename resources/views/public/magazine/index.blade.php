@@ -40,10 +40,10 @@
       <div id="magazine-feature">
         <div class="row">
           <div class="large-7 large-push-5 medium-12 small-12 columns">
-            <div class="row photo-feature-section">
-              <div class="large-6 medium-6 small-12 columns"><img class="topic-image contributor" src="/imagecache/original/{{$magazineExtra->media_name}}"  alt="back page image"/>
+            <div class="row collapse photo-feature-section">
+              <div class="large-6 medium-4 small-12 columns"><img class="topic-image contributor" src="/imagecache/original/{{$magazineExtra->media_name}}"  alt="back page image"/>
               </div>
-              <div class="large-6 medium-6 small-12 columns photo-feature-text ">
+              <div class="large-6 medium-8 small-12 columns photo-feature-text ">
                 <h5>{{$magazineExtra->headline}}</h5>
                 {!! $magazineExtra->teaser !!}
                 <p class="author">{{$magazineExtra->caption}}</p>
@@ -55,11 +55,11 @@
 
 
           <div class="large-5 large-pull-7 medium-12 small-12 columns">
-            <div class="row">
-              <div class="large-6 medium-4 show-for-medium columns cover-box">
+            <div class="row collapse">
+              <div class="large-6 medium-3 show-for-medium columns cover-box">
                                 <img class="topic-image magazine-cover" src="/imagecache/magazinecover/{{$magazineCover->media_name}}"  alt="magazine image"/>
               </div>
-              <div class="large-6 medium-8 small-12 columns magazine-details">
+              <div class="large-6 medium-9 small-12 columns magazine-details">
                                 <h4>{{$magazineCover->headline}}</h4>
                                 {!! $magazineCover->teaser !!}
                                 <p><a href="{{$magazineCover->link}}">{{$magazineCover->link_text}}</a></p>

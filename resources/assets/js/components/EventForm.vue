@@ -319,13 +319,12 @@
 <div class="row">
   <div :class="md12col">
     <div :class="formGroup">
-      <label>Tickets Available
-        <select v-model="record.tickets" class="form-control">
-          <option v-for="ticketoption in ticketoptions" :value="ticketoption.value">
-            {{ ticketoption.label }}
-          </option>
-        </select>
-      </label>
+      <label>Tickets Available</label>
+      <select v-model="record.tickets" class="form-control">
+        <option v-for="ticketoption in ticketoptions" :value="ticketoption.value">
+          {{ ticketoption.label }}
+        </option>
+      </select>
       <template v-if="record.tickets == 'online' || record.tickets == 'all'">
         <label>Link: <em>(ex. http://www.emich.edu/calendar)</em>
           <input v-model="record.ticket_details_online" class="form-control" :class="[formErrors.ticket_details_online ? 'invalid-input' : '']" name="ticket-details-online" type="text">
@@ -383,10 +382,8 @@
 <div class="row">
   <div :class="md12col">
     <div :class="formGroup">
-      <label>Description <span :class="iconStar" class="reqstar"></span> <p class="help-text" id="description-helptext">({{descriptionChars}} characters left)</p>
-
-        <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6" maxlength="255"></textarea>
-      </label>
+      <label>Description <span :class="iconStar" class="reqstar"></span> <p class="help-text" id="description-helptext">({{descriptionChars}} characters left)</p></label>
+      <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6" maxlength="255"></textarea>
       <p v-if="formErrors.description" class="help-text invalid">Need a Description!</p>
 
     </div>
@@ -472,6 +469,9 @@ marging-bottom: 0;
 
 .input-group input[type='text'] {
   marging-bottom: 0;
+}
+label input {
+  font-weight: 400;
 }
 
 input[type='number'] {
