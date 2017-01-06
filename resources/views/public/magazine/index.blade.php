@@ -40,7 +40,7 @@
       <div id="magazine-feature">
         <div class="row">
           <div class="large-7 large-push-5 medium-12 small-12 columns">
-            <div class="row photo-feature-section">
+            <div class="row collapse photo-feature-section">
               <div class="large-6 medium-6 small-12 columns"><img class="topic-image contributor" src="/imagecache/original/{{$magazineExtra->media_name}}"  alt="back page image"/>
               </div>
               <div class="large-6 medium-6 small-12 columns photo-feature-text ">
