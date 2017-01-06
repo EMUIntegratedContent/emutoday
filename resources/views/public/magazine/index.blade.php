@@ -55,7 +55,7 @@
 
 
           <div class="large-5 large-pull-7 medium-12 small-12 columns">
-            <div class="row">
+            <div class="row collapse">
               <div class="large-6 medium-4 show-for-medium columns cover-box">
                                 <img class="topic-image magazine-cover" src="/imagecache/magazinecover/{{$magazineCover->media_name}}"  alt="magazine image"/>
               </div>
