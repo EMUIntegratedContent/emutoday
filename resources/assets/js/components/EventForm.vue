@@ -432,7 +432,7 @@
     <div :class="formGroup">
       <div v-bind:class="formGroup">
         <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-        <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based of this information</button>
+        <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based off this information</button>
         <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Event</button>
       </div>
     </form>
