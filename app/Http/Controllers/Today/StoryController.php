@@ -28,6 +28,10 @@ class StoryController extends Controller
     {
         if ($id == null) {
           $storys = $this->storys->where('story_type', 'story')
+                                  ->where([
+                                      ['is_approved', 1],
+                                      ['is_archived', 0]
+                                  ])
                                   ->orWhere('story_type', 'news')
                                   ->where([
                                       ['is_approved', 1],
