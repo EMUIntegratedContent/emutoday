@@ -25,7 +25,7 @@ class PageController extends Controller
         $this->page = $page;
         $this->story = $story;
         $this->storyImage = $storyImage;
-        
+
         $this->bugService = $bugService;
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());

@@ -33,44 +33,36 @@
 
       <div class="row calendar-categories">
         <div class="small-12 column">
-          <h4>Categories</h4>
-        </div>
-      </div>
-      <div class="row small-collapse calendar-categories">
-          <div class="event-category">
-            <div class="small-12 medium-12 large-10 columns">
-              <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" aria-describedby="all-events-badge" href="#">All Events</a>
+          <div class="calendar-other-categories">
+            <h4>Categories</h4>
+            <ul>
+              <li class="event-category">
+                <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" aria-describedby="all-events-badge" href="#">All Events</a>
+              </li>
+              <template v-for="category in categories">
+                <li class="event-category" v-if="category.events.length == 0 ?false:true"><a href="http://art.emich.edu/events/upcoming">
+                  <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)" aria-describedby="{{category.slug}}-badge" href="#">{{category.category}}</a>
+                </li>
+              </template>
+            </ul>
+          </div>
+          <div class="calendar-other-categories">
+            <h4>Other Calendars</h4>
+            <ul class="other">
+              <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
+              <li><a href="http://www.emueagles.com/calendar.aspx">Athletics</a></li>
+              <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
+              <li><a href="http://www.emich.edu/hr/calendar/">Holiday and Payroll</a></li>
+              <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
+            </ul>
+            <div class="submit-calendar">
+              <a href="/calendar/event/form" class="button emu-button">Submit an Event</a>
+            </div>
+            <div class="ypsi-graphic">
+              <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi.png" alt="Visit Ypsi Calendar"></a>
             </div>
           </div>
-        <template v-for="category in categories">
-          <div class="event-category" v-if="category.events.length == 0 ?false:true">
-            <div class="small-12 medium-12 large-10 columns">
-              <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)" aria-describedby="{{category.slug}}-badge" href="#">{{category.category}}</a>
-            </div>
-            <div class="show-for-large large-2 columns">
-              <span id="{{category.slug}}-badge" class="">{{category.events.length}}<span>
-              </div>
-            </div>
-          </template>
         </div>
-        <div class="calendar-other-categories">
-          <h4>Other Calendars</h4>
-          <ul class="other">
-            <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
-            <li><a href="http://www.emueagles.com/calendar.aspx">Athletics</a></li>
-            <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
-            <li><a href="http://www.emich.edu/hr/calendar/">Holiday and Payroll</a></li>
-            <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
-          </ul>
-        <div class="submit-calendar">
-          <a href="/calendar/event/form" class="button emu-button">Submit an Event</a>
-        </div>
-        <div class="ypsi-graphic">
-          <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi.png" alt="Visit Ypsi Calendar"></a>
-        </div>
-
-      </div>
-    </div>
   </template>
   <style>
 
