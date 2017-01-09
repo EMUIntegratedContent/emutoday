@@ -2,6 +2,7 @@
 <div id="redips-drag">
   <!-- tables inside this DIV could have drag-able content -->
   <!-- left container -->
+
   <div class="row">
     <div id="left" class="col-md-6">
       <table id="table1">
@@ -12,7 +13,7 @@
           <col width="300"/>
         </colgroup>
         @foreach ($storys as $story)
-            @if($story->is_featured)
+            @if($story->is_featured && $story->images()->ofType('hero')->first())
                 <tr>
                     <td class="redips-mark frontstory-btn">
                       {{$story->id}}
@@ -22,7 +23,7 @@
                       <div id="drag-{{$story->id}}x"
                         class="redips-drag frontstory-btn"
                         data-stype="{{$story->story_type}}"
-                        data-imgtype="front" data-imgname="{{$story->images()->ofType('front')->first()->filename}}">
+                        data-imgtype="front" data-imgname="{{$story->images()->ofType('hero')->first()->filename}}">
                         {{$story->id}}
                       </div>
                     </td>
@@ -33,7 +34,7 @@
                         {{$story->title}}
                     </td>
                 </tr>
-            @else 
+            @else
                 @if($story->images()->ofType('small')->first())
                     <tr>
                         <td class="redips-mark smallstory-btn">
@@ -57,7 +58,7 @@
                 @endif
             @endif
 
-          
+
         @endforeach
       </table>
     </div>
