@@ -213,6 +213,17 @@ class EventController extends ApiController
           $event->submission_date 				= \Carbon\Carbon::now();
 
           if($event->save()) { // Record successfully stored
+            // Send event has been submitted email
+            $to      = "calendar_events@emich.edu, webcomm@emich.edu";
+            $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
+            $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
+                        "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
+                        "https://today.emich.edu/admin/event/queue";
+            $headers = 'From: '.cas()->user().'@emich.edu'. "\r\n" .
+            'Reply-To: '.cas()->user()."@emich.edu"."\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+            mail($to, $subject, $message, $headers);
+
             // Make event categories and mini calendars
             $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
             $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
