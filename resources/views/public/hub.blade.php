@@ -52,12 +52,34 @@
         </ul>
         <div class="tabs-content" data-tabs-content="newshub-tabs">
           <div class="tabs-panel newshub-tab-front is-active" id="newshub-announcements-front">
-            <ul>
-              @foreach ($currentAnnouncements as $announcement)
-              <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
-              @endforeach
-              <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
-            </ul>
+              <div class="row">
+                  @if($topAnnouncement)
+                  <div class="large-6 medium-12 small-12 large-push-6 columns">
+                      <article id="special-notice-container">
+                          <h3>Special Notice</h3>
+                          <p>{{$topAnnouncement->title}}</p>
+                          <p><a href="/announcement/{{$topAnnouncement->id}}" class="button">More&nbsp;<i class="fa fa-play"></i></a></p>
+                      </article>
+                  </div>
+                  <div class="large-6 medium-12 small-12 large-pull-6 columns">
+                    <ul>
+                      @foreach ($currentAnnouncements as $announcement)
+                      <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
+                      @endforeach
+                      <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
+                    </ul>
+                  </div>
+                  @else
+                  <div class="large-12 medium-12 small-12 columns">
+                    <ul>
+                      @foreach ($currentAnnouncements as $announcement)
+                      <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
+                      @endforeach
+                      <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
+                    </ul>
+                  </div>
+                  @endif
+              </div>
           </div>
           <div class="tabs-panel newshub-tab-front" id="newshub-headlines-front">
             <ul>
