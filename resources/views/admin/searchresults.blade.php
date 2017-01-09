@@ -18,136 +18,72 @@
 
 
     @section('content')
-        <div class="row">
-            <div class="col-md-12">
-                <div id="search-result-box-story" class="box box-success box-solid">
-            <div class="box-header with-border">
-                      <h3 class="box-title">Story Search Results: <span class="smaller-title">{!! $searchStorys->total() !!} Records</span></h3>
-                      <div class="box-tools">
-                          <div class="btn-toolbar">
+    <div class="row">
+      <div id="vue-search-filter" class="col-md-12">
+        <div class="box box-success box-solid">
+          <ul id="search-filter-list" class="list-inline box-header with-border">
+            <li class="btn btn-default { (Request::get('filter') === null || Request::get('filter') == 'all')? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=all">All</a></li>
+            <li class="btn btn-default {{ Request::get('filter') == 'stories' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=stories">Stories</a></li>
+            <li class="btn btn-default {{ Request::get('filter') == 'events' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=events">Events</a></li>
+            <li class="btn btn-default {{ Request::get('filter') == 'announcements' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=announcements">Announcements</a></li>
+            <li class="btn btn-default {{ Request::get('filter') == 'magazine' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=magazine">Magazine</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-
-                        <form action="search" method="GET" class="input-group input-group-sm" style="width: 200px;">
-                          <input type="text" class="form-control pull-right" name="searchterm" value="{{$searchTerm}}">
-
-                          <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                          </div>
-                      </form>
-                      <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                      </button>
-                      </div>
-                      </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-success box-solid">
+          @if($numResults > 0)
+          <div class="box-header with-border">
+            <h3 class="box-title">Found {!! $numResults !!} Results</h3>
+          </div>
+          <div>
+            <div class="list-group">
+              @foreach($storiesPaginated as $searchResult)
+              <div class="list-group-item">
+                @if($searchResult->getTable() == 'storys')
+                <a class="list-group-item-heading" href="/admin/{{$searchResult->id}}/story/{{$searchResult->story_type}}/{{$searchResult->id}}/edit">
+                  <h5>{{$searchResult->title}}</h5></a>
+                  <div class="list-group-item-text">
+                    @if($searchResult->subtitle)
+                    <p>{{ $searchResult->subtitle }}</p>
+                    @endif
+                    <p>{!! $searchResult->teaser !!}</p>
                   </div>
-                    <!-- /.box-header -->
-
-                    <div class="box-body">
-                        <div  class="list-group">
-                            @foreach($searchStorys as $searchStory)
-                                <div class="list-group-item">
-                                <a href="/admin/story/{{$searchStory->id}}">
-                                    <h4 class="list-group-item-heading">{{$searchStory->title}}</h4></a>
-                                    <p class="list-group-item-text">
-                                        {!! $searchStory->teaser !!}
-                                    </p>
-                                </div>
-
-                                @endforeach
-                            </div>
-                            <!-- /.list-group -->
-                        </div>
-                        <!-- /.box-body -->
-                    <div class="box-footer">
-                        <h6 class="text-center">{!! $searchStorys->links() !!}</h6>
-                    </div><!-- /.box-footer -->
+                  @elseif($searchResult->getTable() == 'cea_events')
+                  <a class="list-group-item-heading" href="/admin/event/{{$searchResult->id}}/edit"><h5>{{$searchResult->title}}</h5></a>
+                  <div class="list-group-item-text">
+                    @if($searchResult->description)
+                    <p>{{ $searchResult->description }}</p>
+                    @endif
+                  </div>
+                  @elseif($searchResult->getTable() == 'announcements')
+                  <a class="list-group-item-heading" href="/admin/announcement/{{$searchResult->id}}/edit"><h5>{{$searchResult->title}}</h5></a>
+                  <div class="list-group-item-text">
+                    @if($searchResult->announcement)
+                    <p>{{ $searchResult->announcement }}</p>
+                    @endif
+                  </div>
+                  @endif
                 </div>
-                <!-- /.box -->
+                @endforeach
+                <div class="box-footer">
+                  <h6 class="text-center">{!! $storiesPaginated->links() !!}</h6>
+                </div><!-- /.box-footer -->
+              </div>
+              @else
+              <div class="callout alert">
+                <p>No matching results. Try again.</p>
+              </div>
+              @endif
+          </div>
+        </div>
+      </div>
+    </div>
+    @endsection
 
-            </div><!-- /.col-md-12 -->
-            <div class="col-md-12">
-                <div id="search-result-box-event" class="box box-success box-solid">
-
-            <div class="box-header with-border">
-                      <h3 class="box-title">Event Search Results: <span class="smaller-title">{!! $searchEvents->total() !!} Records</span></h3>
-                      <div class="box-tools">
-                        <form action="search" method="GET" class="input-group input-group-sm" style="width: 200px;">
-                          <input type="text" class="form-control pull-right" name="searchterm" value="{{$searchTerm}}">
-
-                          <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                          </div>
-                      </form>
-                      </div>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <div class="box-body">
-                        <div  class="list-group">
-                            @foreach($searchEvents as $searchEvent)
-                                <div class="list-group-item">
-                                <a href="/admin/event/{{$searchEvent->id}}">
-                                    <h4 class="list-group-item-heading">{{$searchEvent->title}}</h4></a>
-                                    <p class="list-group-item-text">
-                                        {{ $searchEvent->location }}
-                                    </p>
-                                    <p class="list-group-item-text">
-                                        {!!$searchEvent->description!!}
-                                    </p>
-                                </div>
-
-                                @endforeach
-                            </div>
-                            <!-- /.list-group -->
-                        </div>
-                        <!-- /.box-body -->
-                    <div class="box-footer">
-                        <h6 class="text-center">{!! $searchEvents->links() !!}</h6>
-                    </div><!-- /.box-footer -->
-                </div>
-                <!-- /.box -->
-
-            </div><!-- /.col-md-12 -->
-            <div class="col-md-12">
-                <div id="search-result-box-announcement" class="box box-success box-solid">
-            <div class="box-header with-border">
-                      <h3 class="box-title">Announcement Search Results: <span class="smaller-title">{!! $searchAnnouncements->total() !!} Records</span></h3>
-                      <div class="box-tools">
-                        <form action="search" method="GET" class="input-group input-group-sm" style="width: 200px;">
-                          <input type="text" class="form-control pull-right" name="searchterm" value="{{$searchTerm}}">
-
-                          <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                          </div>
-                      </form>
-                      </div>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <div class="box-body">
-                        <div  class="list-group">
-                            @foreach($searchAnnouncements as $searchAnnouncement)
-                                <div class="list-group-item">
-                                    <a href="/admin/announcement/{{$searchAnnouncement->id}}">
-                                    <h4 class="list-group-item-heading">{{$searchAnnouncement->title}}</h4></a>
-                                    <p class="list-group-item-text">{!!$searchAnnouncement->announcement!!}</p>
-                                </div>
-                                @endforeach
-                            </div>
-                            <!-- /.list-group -->
-                        </div>
-                        <!-- /.box-body -->
-                    <div class="box-footer">
-                        <h6 class="text-center">{!! $searchAnnouncements->links() !!}</h6>
-                    </div><!-- /.box-footer -->
-                </div>
-                <!-- /.box -->
-
-            </div><!-- /.col-md-12 -->
-</div><!-- /.row -->
-
-
-
-@endsection
 @section('footer-vendor')
     @parent
     {{-- <!-- jQuery 2.2.0 -->

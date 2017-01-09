@@ -19,7 +19,7 @@
         <div v-bind:class="formGroup">
           <label>Title <span v-bind:class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
-          <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text" maxlength="50">
+          <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text" maxlength="80">
           <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
         </div>
         <div v-if="generalForm" v-bind:class="formGroup">
@@ -301,7 +301,7 @@ module.exports = {
       // },
       totalChars: {
         start: 0,
-        title: 50,
+        title: 80,
         hr: 80,
         announcement: 255
       },
