@@ -220,7 +220,8 @@ module.exports  = {
         { text: '8', value: 8 },
         { text: '9', value: 9 },
         { text: '10', value: 10 },
-        { text: '99', value: 99 }
+        { text: '99', value: 99 },
+        { text: 'TOP',  value: 100},
       ],
       showBody: false,
       currentDate: {},

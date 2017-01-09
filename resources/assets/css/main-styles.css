@@ -922,3 +922,12 @@ ul.accordion li{
 #emergency-bar.no{
     display:none;
 }
+
+/* Special notice (announcement) box on front page */
+#special-notice-container{
+    background-color: #e6e6e6;
+    padding: 25px 25px 5px 25px;
+}
+#special-notice-container h3{
+    text-transform: uppercase;
+}

@@ -110,6 +110,7 @@
         <div class="form-group">
           <label for="start-date">Start Date: <i class="fi-star reqstar"></i></label>
           <input v-if="fdate" type="text" :value="fdate" :initval="fdate"  v-flatpickr="fdate">
+          <p>NOTE: For external story with "video" tag, treat this field as the END Date.</p>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
         </div><!--form-group -->
       </div><!-- /.small-6 columns -->

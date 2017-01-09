@@ -89,8 +89,8 @@ class MainController extends Controller
           ['type', 'general'],
           ['start_date', '<=', $currentDateTimeStart],
           ['end_date', '>=', $currentDateTimeEnd],
-          ['priority', '>', 0]
         ])
+        ->whereBetween('priority', [0,99])
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
         ->take($this->recordLimitAnnouncements)->get();
@@ -109,6 +109,18 @@ class MainController extends Controller
           ->orderBy('start_date','asc')
           ->take($this->recordLimitAnnouncements)->get();
         }
+
+        // Find the first announcement marked "TOP" (value of 100), if there is one.
+        $topAnnouncement = $this->announcement->where([
+          ['is_approved', 1],
+          ['is_archived', 0],
+          ['type', 'general'],
+          ['start_date', '<=', $currentDateTimeStart],
+          ['end_date', '>=', $currentDateTimeEnd],
+          ['priority', 100],
+        ])
+        ->orderBy('start_date', 'desc')
+        ->first();
 
         $events = $this->event->where([
           ['is_approved', 1],
@@ -197,7 +209,7 @@ class MainController extends Controller
           'cdend' => Carbon::now()->addDays(7),
           'currentPage' => $page
         ]);
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
 
       }
 
