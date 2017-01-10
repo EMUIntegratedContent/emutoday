@@ -1,3 +1,6 @@
+@unless($sideitems->first())
+<!-- Default Content -->
+@else
 <div class="featured-content-block">
     <h6 class="headline-block lt-green">{!! $sidetitle !!}</h6>
     {{-- {{  dd($sideitems->first()->present()->mainImageURL)}} --}}
@@ -13,3 +16,4 @@
     @endforeach
     </ul>
 </div>
+@endunless
