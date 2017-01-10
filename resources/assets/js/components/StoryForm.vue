@@ -281,15 +281,6 @@ module.exports  = {
       updateRecordId,
       updateRecordState,
       updateRecordIsDirty
-      // updateRecordId: ({ dispatch }, value) => {
-      //     dispatch('RECORD_ID', value)
-      // },
-      // updateRecordState: ({dispatch}, value) => {
-      //     dispatch('RECORD_STATE', value)
-      // },
-      // updateRecordIsDirty: ({dispatch}, value) => {
-      //     dispatch('RECORD_IS_DIRTY', value)
-      // }
     }
   },
   props:{
@@ -300,11 +291,6 @@ module.exports  = {
     gtype:{default: ''},
     qtype:{default: ''},
     stype:{default: ''},
-    // stypelist: {},
-    // stypelist1: {},
-    // stypelist2: {}
-    // storytype1: {default: {}},
-    // storytype: {default: {}}
   },
   data: function() {
     return {
@@ -430,8 +416,6 @@ module.exports  = {
       this.record.user_id = this.cuser.id;
       console.log('tthis.record.user_id'+     this.record.user_id);
 
-      //this.stype_list = this.storytype;
-      //this.record.story_type = this.storytype;
       this.fdate = this.currentDate;
 
       this.author = this.currentUser;

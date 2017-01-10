@@ -38,7 +38,7 @@ class StoryController extends Controller
                                       ['is_archived', 0]
                                   ])
                                   ->orderBy('start_date', 'desc')
-                                  ->paginate(8);
+                                  ->paginate(12);
 
           return view('public.story.index', compact('storys'));
 
@@ -99,7 +99,7 @@ class StoryController extends Controller
                                       ['is_archived', 0]
                                   ])
                                   ->orderBy('start_date', 'desc')
-                                  ->paginate(8);
+                                  ->paginate(12);
                                   // dd($storys->count());
           return view('public.story.index', compact('storys'));
 
