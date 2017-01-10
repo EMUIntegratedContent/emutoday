@@ -68,15 +68,33 @@ class AuthorController extends ApiController
       $author->last_name      	    = $request->get('last_name');
       $author->email      	        = $request->get('email');
       $author->phone     	          = $request->get('phone');
-      
-      //If this author is set as the PRIMARY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
+
+      //If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
       if($request->get('is_principal_contact') == 1){
           $author->is_principal_contact = 1;
           $author->is_contact = 1;
           Author::where('id', '!=', $author->id)->update(['is_principal_contact'=> 0]);
       } else {
-        $author->is_contact           = $request->get('is_contact', 0);
         $author->is_principal_contact = 0;
+        if($request->get('is_contact') == 1){
+            $author->is_contact = 1;
+        } else {
+            $author->is_contact = 0;
+        }
+      }
+
+      //If this author is set as the PRIMARY MAGAZINE contact, set all other authors' is_principal_magazine_contact fields to 0 and mark this author as a contact automatically
+      if($request->get('is_principal_magazine_contact') == 1){
+          $author->is_principal_magazine_contact = 1;
+          $author->is_contact = 1;
+          Author::where('id', '!=', $author->id)->update(['is_principal_magazine_contact'=> 0]);
+      } else {
+        $author->is_principal_magazine_contact = 0;
+        if($request->get('is_contact') == 1){
+            $author->is_contact = 1;
+        } else {
+            $author->is_contact = 0;
+        }
       }
 
       if($author->save()) {
@@ -125,15 +143,34 @@ class AuthorController extends ApiController
       $author->email      	        = $request->get('email');
       $author->phone     	          = $request->get('phone');
 
-      //If this author is set as the PRIMARY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
+      //If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
       if($request->get('is_principal_contact') == 1){
           $author->is_principal_contact = 1;
           $author->is_contact = 1;
           Author::where('id', '!=', $author->id)->update(['is_principal_contact'=> 0]);
       } else {
-        $author->is_contact           = $request->get('is_contact', 0);
         $author->is_principal_contact = 0;
+        if($request->get('is_contact') == 1){
+            $author->is_contact = 1;
+        } else {
+            $author->is_contact = 0;
+        }
       }
+
+      //If this author is set as the PRIMARY MAGAZINE contact, set all other authors' is_principal_magazine_contact fields to 0 and mark this author as a contact automatically
+      if($request->get('is_principal_magazine_contact') == 1){
+          $author->is_principal_magazine_contact = 1;
+          $author->is_contact = 1;
+          Author::where('id', '!=', $author->id)->update(['is_principal_magazine_contact'=> 0]);
+      } else {
+        $author->is_principal_magazine_contact = 0;
+        if($request->get('is_contact') == 1){
+            $author->is_contact = 1;
+        } else {
+            $author->is_contact = 0;
+        }
+      }
+
 
 
       if($author->save()) {
@@ -144,7 +181,7 @@ class AuthorController extends ApiController
   }
 
   /**
-   *  Get the one user in the authors table set as the PRINCIPAL contact
+   *  Get the one user in the authors table set as the PRINCIPAL STORY contact
    */
   public function getCurrentPrimaryContact(){
     $author = Author::select(\DB::raw('CONCAT(first_Name, " ", last_Name) AS name'))->where('is_principal_contact', 1)->first();
@@ -156,6 +193,21 @@ class AuthorController extends ApiController
     }
     return $this->setStatusCode(201)
     ->respondUpdatedWithData('Primary Contact', $primaryContact );
+  }
+
+  /**
+   *  Get the one user in the authors table set as the PRINCIPAL MAGAZINE contact
+   */
+  public function getCurrentPrimaryMagazineContact(){
+    $author = Author::select(\DB::raw('CONCAT(first_Name, " ", last_Name) AS name'))->where('is_principal_magazine_contact', 1)->first();
+
+    if($author){
+      $primaryContact = $author;
+    } else {
+      $primaryContact = null;
+    }
+    return $this->setStatusCode(201)
+    ->respondUpdatedWithData('Primary Magazine Contact', $primaryContact );
   }
 
 }

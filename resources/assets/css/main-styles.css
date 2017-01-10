@@ -925,9 +925,18 @@ ul.accordion li{
 
 /* Special notice (announcement) box on front page */
 #special-notice-container{
-    background-color: #e6e6e6;
-    padding: 25px 25px 5px 25px;
+    background-color: #f2f2f3;
+    /*padding: 25px 25px 5px 25px;*/
+    height: 177px;
+    overflow: hidden;
+    border:1.5rem solid #f2f2f3;
 }
 #special-notice-container h3{
     text-transform: uppercase;
+}
+#special-notice-container p{
+    margin-bottom: 0.4rem;
+}
+#special-notice-teaser > a{
+    color:#333;
 }

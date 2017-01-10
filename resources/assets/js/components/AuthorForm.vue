@@ -69,10 +69,20 @@
     <div class="row">
       <div :class="md12col">
         <div class="form-group">
-          <label>This author should be the DEFAULT contact for a story if none is otherwise specified.
+          <label>This author should be the DEFAULT contact for a STORY if none is otherwise specified.
             <input id="is-principal-contact-yes" name="is_principal_contact" type="checkbox" value="1" v-model="record.is_principal_contact"/>
           </label>
-          <p>Notice: Selecting this will replace the currently-select principal contact which is {{currentPrimaryContact}}.</p>
+          <p>Notice: Selecting this will replace the currently-select principal story contact, who is {{currentPrimaryContact}}.</p>
+        </div>
+      </div><!-- /.md6col -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md12col">
+        <div class="form-group">
+          <label>This author should be the DEFAULT contact for a MAGAZINE ARTICLE if none is otherwise specified.
+            <input id="is-principal-magazine-contact-yes" name="is_principal_magazine_contact" type="checkbox" value="1" v-model="record.is_principal_magazine_contact"/>
+          </label>
+          <p>Notice: Selecting this will replace the currently-select principal magazine contact, who is {{currentPrimaryMagazineContact}}.</p>
         </div>
       </div><!-- /.md6col -->
     </div><!-- /.row -->
@@ -204,6 +214,7 @@ module.exports = {
       startdatePicker: null,
       enddatePicker: null,
       currentPrimaryContact: '',
+      currentPrimaryMagazineContact: '',
       isCurrentContact: false,
       currentDate: {},
       dateObject: {
@@ -218,7 +229,8 @@ module.exports = {
         email: '',
         phone: '',
         is_contact: '',
-        is_principal_contact: ''
+        is_principal_contact: '',
+        is_principal_magazine_contact: '',
       },
       totalChars: {
         start: 0,
@@ -243,6 +255,7 @@ module.exports = {
       //console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid)
       this.fetchCurrentPrimaryContact()
+      this.fetchCurrentPrimaryMagazineContact()
     }
   },
   computed: {
@@ -319,6 +332,17 @@ module.exports = {
 
       .then((response) => {
         this.$set('currentPrimaryContact', response.data.newdata.name);
+        console.log(response.data);
+      }, (response) => {
+        this.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+
+    fetchCurrentPrimaryMagainzeContact: function(){
+      this.$http.get('/api/authors/primarymagazinecontact')
+
+      .then((response) => {
+        this.$set('currentPrimaryMagazineContact', response.data.newdata.name);
         console.log(response.data);
       }, (response) => {
         this.formErrors = response.data.error.message;

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateCeaEventsTable extends Migration
+class UpdateAuthorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,8 @@ class UpdateCeaEventsTable extends Migration
      */
     public function up()
     {
-        Schema::table('cea_events', function ($table) {
-            //$table->integer('home_priority');
+        Schema::table('authors', function (Blueprint $table) {
+            $table->tinyInteger('is_principal_magazine_contact');
         });
     }
 
@@ -24,8 +24,8 @@ class UpdateCeaEventsTable extends Migration
      */
     public function down()
     {
-        Schema::table('cea_events', function ($table) {
-            //$table->dropColumn('home_priority');
+        Schema::table('authors', function (Blueprint $table) {
+            $table->dropColumn('is_principal_magazine_contact');
         });
     }
 }
