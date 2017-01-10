@@ -32,6 +32,7 @@ class AnnouncementController extends Controller
         ['end_date', '>=', $currentDate],
         ['is_archived', 0 ]
       ])
+      ->orderBy('priority','desc')
       ->orderBy('start_date', 'desc')
       ->paginate(12);
 
