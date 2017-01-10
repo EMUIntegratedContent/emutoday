@@ -55,18 +55,17 @@ class MagazineController extends Controller
         JavaScript::put([
             'jsis' => 'hi',
         ]);
-        // $magazine = $this->magazines->findOrFail($id);
-        // $storyImages = $this->magazines->storyImages();
 
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
                 $magazineCover = $magazine->mediafiles()->where('type','cover')->first();
                 $magazineExtra = $magazine->mediafiles()->where('type','extra')->first();
 
-
+        //order magazine stories by their position
+        $stories = $magazine->storys()->orderBy('story_position')->get();
         if ($currentIssue){
 
-          foreach ($magazine->storys as $story) {
+          foreach ($stories as $story) {
                 if ($story->pivot->story_position === 0) {
                     $heroImg = $story->storyImages()->where('image_type', 'front')->first();
                 } else {
@@ -76,7 +75,7 @@ class MagazineController extends Controller
             }
           return view('public.magazine.index', compact('magazine', 'storyImages', 'heroImg', 'barImgs', 'magazineCover','magazineExtra'));
         } else {
-          foreach ($magazine->storys as $story) {
+          foreach ($stories->storys as $story) {
               if ($story->pivot->story_position === 0) {
                   $barImgs->push( $story->storyImages()->where('image_type', 'small')->first() );
               } else {
