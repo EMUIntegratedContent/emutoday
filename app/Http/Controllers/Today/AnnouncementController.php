@@ -31,7 +31,7 @@ class AnnouncementController extends Controller
       ['start_date', '<=', $currentDate],
       ['end_date', '>=', $currentDate],
       ['is_archived', 0 ]
-      ])->paginate(8);
+      ])->paginate(12);
       return view('public.announcement.index', compact('announcements', 'id'));
 
     }

@@ -31,8 +31,16 @@
             <div id="story-content-edit">
               {!! $story->content !!}
             </div>
-            <div class="story-author">{{ $story->user->name }}</div>
-            <p class="news-contacts">Contact {{ $story->user->email }}</p>
+            @if($story->author_id === 0)
+              @unless($story->author_info)
+                <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
+              @else
+                <div class="story-author">{{$story->author_info}}</div>
+              @endif
+            @else
+                <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
+            @endif
+            <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
           </div>
           <!-- Page Side Bar Column -->
           <div class="large-3 medium-4 small-12 columns featurepadding">
