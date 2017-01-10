@@ -329,6 +329,7 @@ module.exports  = {
       needAuthor: false,
       hasAuthor:false,
       needContact: false,
+      contactManuallyChanged: false,
       authorlist:[],
       author: {
         id: 0,
@@ -589,6 +590,7 @@ module.exports  = {
     changeContact:function(evt) {
       this.fetchContactList();
       this.needContact = true;
+      this.contactManuallyChanged = true;
     },
     toggleCallout:function(evt){
       this.formMessage.isOk = false
@@ -651,9 +653,21 @@ module.exports  = {
       this.$http.get('/api/contactdefault')
       .then((response) =>{
         this.$set('defaultcontact', response.data)
+        this.$set('contact', response.data)
       }, (response) => {
         //error callback
         console.log("COULDN'T GET DEFAULT CONTACT");
+      }).bind(this);
+    },
+
+    fetchDefaultMagazineContact: function() {
+      this.$http.get('/api/contactmagazinedefault')
+      .then((response) =>{
+        this.$set('defaultcontact', response.data)
+        this.$set('contact', response.data)
+      }, (response) => {
+        //error callback
+        console.log("COULDN'T GET DEFAULT MAGAZINE CONTACT");
       }).bind(this);
     },
 
@@ -916,6 +930,18 @@ module.exports  = {
       this.fetchContact();
       this.hasAuthor = false;
     },
+    'record.story_type': function(val){
+        // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
+        if(!this.contactManuallyChanged){
+            if(!this.record.contact){
+                if(val == 'article'){
+                    this.fetchDefaultMagazineContact()
+                } else {
+                    this.fetchDefaultContact()
+                }
+            }
+        }
+    }
   },
   events: {
 
