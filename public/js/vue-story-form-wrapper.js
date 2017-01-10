@@ -20627,6 +20627,7 @@ module.exports = {
       needAuthor: false,
       hasAuthor: false,
       needContact: false,
+      contactManuallyChanged: false,
       authorlist: [],
       author: {
         id: 0,
@@ -20882,6 +20883,7 @@ module.exports = {
     changeContact: function changeContact(evt) {
       this.fetchContactList();
       this.needContact = true;
+      this.contactManuallyChanged = true;
     },
     toggleCallout: function toggleCallout(evt) {
       this.formMessage.isOk = false;
@@ -20947,54 +20949,67 @@ module.exports = {
 
       this.$http.get('/api/contactdefault').then(function (response) {
         _this3.$set('defaultcontact', response.data);
+        _this3.$set('contact', response.data);
       }, function (response) {
         //error callback
         console.log("COULDN'T GET DEFAULT CONTACT");
       }).bind(this);
     },
 
+    fetchDefaultMagazineContact: function fetchDefaultMagazineContact() {
+      var _this4 = this;
+
+      this.$http.get('/api/contactmagazinedefault').then(function (response) {
+        _this4.$set('defaultcontact', response.data);
+        _this4.$set('contact', response.data);
+      }, function (response) {
+        //error callback
+        console.log("COULDN'T GET DEFAULT MAGAZINE CONTACT");
+      }).bind(this);
+    },
+
     // Fetch the tags that match THIS record
     fetchTagsList: function fetchTagsList() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$http.get('/api/taglist/').then(function (response) {
         console.log(response.data);
-        _this4.$set('taglist', response.data);
+        _this5.$set('taglist', response.data);
       });
     },
 
     fetchCurrentTags: function fetchCurrentTags() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.$http.get('/api/taglist/' + this.currentRecordId).then(function (response) {
         console.log(response.data);
-        _this5.$set('tags', response.data);
+        _this6.$set('tags', response.data);
       }, function (response) {});
     },
 
 
     fetchCurrentRecord: function fetchCurrentRecord() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.$http.get('/api/story/' + this.currentRecordId + '/edit').then(function (response) {
-        _this6.$set('record', response.data.data);
-        _this6.$set('recordOld', response.data.data);
+        _this7.$set('record', response.data.data);
+        _this7.$set('recordOld', response.data.data);
         console.log("CURRENT CONTACT");
         console.log(response.data.data.contact);
 
         //set contact information
-        _this6.contact.id = response.data.data.contact.id;
-        _this6.contact.first_name = response.data.data.contact.first_name;
-        _this6.contact.last_name = response.data.data.contact.last_name;
-        _this6.contact.email = response.data.data.contact.email;
-        _this6.contact.phone = response.data.data.contact.phone;
+        _this7.contact.id = response.data.data.contact.id;
+        _this7.contact.first_name = response.data.data.contact.first_name;
+        _this7.contact.last_name = response.data.data.contact.last_name;
+        _this7.contact.email = response.data.data.contact.email;
+        _this7.contact.phone = response.data.data.contact.phone;
 
-        _this6.checkOverData();
+        _this7.checkOverData();
       }, function (response) {
         //error callback
         console.log("ERRORS");
 
-        _this6.formErrors = response.data.error.message;
+        _this7.formErrors = response.data.error.message;
       }).bind(this);
     },
     checkOverData: function checkOverData() {
@@ -21020,7 +21035,7 @@ module.exports = {
     },
 
     saveAuthor: function saveAuthor(e) {
-      var _this7 = this;
+      var _this8 = this;
 
       e.preventDefault();
       this.saveAuthorMessage.isOk = '';
@@ -21029,37 +21044,37 @@ module.exports = {
       var route = this.author.id == 0 ? '/api/author' : '/api/author/' + this.author.id;
 
       this.$http[method](route, this.author).then(function (response) {
-        _this7.authorErrors = '';
-        _this7.fetchAuthorList();
+        _this8.authorErrors = '';
+        _this8.fetchAuthorList();
         console.log('response.author=' + (0, _stringify2.default)(response.data.newdata));
 
-        _this7.author.id = response.data.newdata.author.id;
-        _this7.record.author_id = response.data.newdata.author.id;
-        console.log('rec.author_id:' + _this7.author.id);
-        _this7.author.first_name = response.data.newdata.author.first_name;
-        _this7.author.last_name = response.data.newdata.author.last_name;
-        _this7.author.phone = response.data.newdata.author.phone;
-        _this7.author.email = response.data.newdata.author.email;
+        _this8.author.id = response.data.newdata.author.id;
+        _this8.record.author_id = response.data.newdata.author.id;
+        console.log('rec.author_id:' + _this8.author.id);
+        _this8.author.first_name = response.data.newdata.author.first_name;
+        _this8.author.last_name = response.data.newdata.author.last_name;
+        _this8.author.phone = response.data.newdata.author.phone;
+        _this8.author.email = response.data.newdata.author.email;
 
-        _this7.saveAuthorMessage.msg = response.data.message;
-        _this7.saveAuthorMessage.isOk = response.ok;
-        _this7.needAuthor = false;
+        _this8.saveAuthorMessage.msg = response.data.message;
+        _this8.saveAuthorMessage.isOk = response.ok;
+        _this8.needAuthor = false;
       }, function (response) {
         //error callback
-        _this7.authorErrors = response.data.error.message;
+        _this8.authorErrors = response.data.error.message;
       }).bind(this);
     },
     fetchAuthor: function fetchAuthor() {
-      var _this8 = this;
+      var _this9 = this;
 
       if (this.selectedAuthor) {
         this.$http.get('/api/author/' + this.selectedAuthor.value).then(function (response) {
-          _this8.author.id = response.body.id;
-          _this8.record.author_id = response.body.id;
-          _this8.author.first_name = response.body.first_name;
-          _this8.author.last_name = response.body.last_name;
-          _this8.author.phone = response.body.phone;
-          _this8.author.email = response.body.email;
+          _this9.author.id = response.body.id;
+          _this9.record.author_id = response.body.id;
+          _this9.author.first_name = response.body.first_name;
+          _this9.author.last_name = response.body.last_name;
+          _this9.author.phone = response.body.phone;
+          _this9.author.email = response.body.email;
         }, function (response) {
           //err
         }).bind(this);
@@ -21073,16 +21088,16 @@ module.exports = {
       }
     },
     fetchContact: function fetchContact() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.selectedContact) {
         this.$http.get('/api/author/' + this.selectedContact.value).then(function (response) {
-          _this9.contact.id = response.body.id;
-          _this9.record.contact_id = response.body.id;
-          _this9.contact.first_name = response.body.first_name;
-          _this9.contact.last_name = response.body.last_name;
-          _this9.contact.phone = response.body.phone;
-          _this9.contact.email = response.body.email;
+          _this10.contact.id = response.body.id;
+          _this10.record.contact_id = response.body.id;
+          _this10.contact.first_name = response.body.first_name;
+          _this10.contact.last_name = response.body.last_name;
+          _this10.contact.phone = response.body.phone;
+          _this10.contact.email = response.body.email;
         }, function (response) {
           //err
         }).bind(this);
@@ -21101,7 +21116,7 @@ module.exports = {
     },
 
     submitForm: function submitForm(e) {
-      var _this10 = this;
+      var _this11 = this;
 
       e.preventDefault();
       this.formMessage.isOk = '';
@@ -21143,22 +21158,22 @@ module.exports = {
 
       this.$http[method](route, this.record).then(function (response) {
 
-        _this10.formMessage.msg = response.data.message;
-        _this10.currentRecordId = response.data.newdata.record_id;
-        _this10.formMessage.isOk = response.ok;
-        _this10.formErrors = '';
+        _this11.formMessage.msg = response.data.message;
+        _this11.currentRecordId = response.data.newdata.record_id;
+        _this11.formMessage.isOk = response.ok;
+        _this11.formErrors = '';
 
         console.log('newdta' + response.data.newdata.record_id);
-        _this10.response_record_id = response.data.newdata.record_id;
-        _this10.response_stype = response.data.newdata.stype;
-        if (_this10.newform) {
-          _this10.nowOnReload();
+        _this11.response_record_id = response.data.newdata.record_id;
+        _this11.response_stype = response.data.newdata.stype;
+        if (_this11.newform) {
+          _this11.nowOnReload();
         } else {
-          _this10.onRefresh();
+          _this11.onRefresh();
         }
       }, function (response) {
         //error callback
-        _this10.formErrors = response.data.error.message;
+        _this11.formErrors = response.data.error.message;
       }).bind(this);
     }
   },
@@ -21197,6 +21212,18 @@ module.exports = {
       // console.log(this.selectedAuthor);
       this.fetchContact();
       this.hasAuthor = false;
+    },
+    'record.story_type': function recordStory_type(val) {
+      // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
+      if (!this.contactManuallyChanged) {
+        if (!this.record.contact) {
+          if (val == 'article') {
+            this.fetchDefaultMagazineContact();
+          } else {
+            this.fetchDefaultContact();
+          }
+        }
+      }
     }
   },
   events: {}

@@ -17,6 +17,7 @@ class FractalAuthorTransformerModel extends Fractal\TransformerAbstract
             'phone'       => $author->phone,
             'is_contact'  => $author->is_contact,
             'is_principal_contact' => $author->is_principal_contact,
+            'is_principal_magazine_contact' => $author->is_principal_magazine_contact,
 
         ];
     }
