@@ -33,10 +33,10 @@
         <div id="story-content" class="row">
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns">
-              @include('public.vendor.addthis')
             <h3>{{ $story->title }}</h3>
             <h5>{{ $story->subtitle }}</h5>
-            @if(isset($mainStoryImage))
+            @include('public.vendor.addthis')
+          @if(isset($mainStoryImage))
             <div id="big-feature-image">
               <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
 
