@@ -6605,9 +6605,9 @@ p.small-return-news {
 }
 .addthis{
     position: relative;
-    float:right;
+    /*float:right;*/
     margin-top: 0 0 0 1.2rem;
-    padding: .2rem 0 0 0;
+    padding: .2rem 0 .4rem 0;
 }
 .addthis img{
     margin: 0;
