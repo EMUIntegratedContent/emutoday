@@ -27,13 +27,15 @@ class AnnouncementController extends Controller
   {
     $currentDate = Carbon::now();
     $announcements = $this->announcement->where([
-      ['is_approved', 1],
-      ['start_date', '<=', $currentDate],
-      ['end_date', '>=', $currentDate],
-      ['is_archived', 0 ]
-      ])->paginate(12);
-      return view('public.announcement.index', compact('announcements', 'id'));
+        ['is_approved', 1],
+        ['start_date', '<=', $currentDate],
+        ['end_date', '>=', $currentDate],
+        ['is_archived', 0 ]
+      ])
+      ->orderBy('start_date', 'desc')
+      ->paginate(12);
 
+      return view('public.announcement.index', compact('announcements', 'id'));
     }
 
     public function announcementForm(Request $request, Announcement $announcement)

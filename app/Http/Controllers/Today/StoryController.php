@@ -26,14 +26,20 @@ class StoryController extends Controller
 
     public function story($stype, $id = null)
     {
+      $currentDate = Carbon::now();
         if ($id == null) {
           $storys = $this->storys->where('story_type', 'story')
                                   ->where([
+                                      ['start_date', '<=', $currentDate], // start_date has past
+                                      // while NOW() minus one year less than start_date?
+                                      // ['start_date', '>', $currentDate->subYear()], // Older than one year
                                       ['is_approved', 1],
                                       ['is_archived', 0]
                                   ])
                                   ->orWhere('story_type', 'news')
                                   ->where([
+                                      ['start_date', '<=', $currentDate], // start_date has past
+                                      // ['start_date', '>', $currentDate->subYear()], // Older than one year
                                       ['is_approved', 1],
                                       ['is_archived', 0]
                                   ])
