@@ -26,6 +26,7 @@ class StoryController extends Controller
 
     public function story($stype, $id = null)
     {
+      $currentDate = Carbon::now();
         if ($id == null) {
           $storys = $this->storys->where('story_type', 'story')
                                   ->where([
