@@ -31,9 +31,15 @@
           </div>
           <p class="button-group">
             @if($barImgs[$i]->story->story_type == 'external')
-              <a href="{{$barImgs[$i]->link}}" class="button">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
+              @if($barImgs[$i]->story->tags()->first()->name == 'video')
+                <a href="{{$barImgs[$i]->link}}" class="button">Watch&nbsp;<i class="fa fa-video-camera"></i></a>
+              @elseif($barImgs[$i]->story->tags()->first()->name == 'audio')
+                <a href="{{$barImgs[$i]->link}}" class="button">Listen&nbsp;<i class="fa fa-headphones"></i></a>
+              @else
+                <a href="{{$barImgs[$i]->link}}" class="button">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
+              @endif
             @else
-              <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}<i class="fa fa-play"></i></a>
+              <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}</a>
             @endif
           </p>
         </div>
