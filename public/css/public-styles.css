@@ -7103,6 +7103,36 @@ img.magazine-logo {
 	margin-bottom:0.3rem;
 
 }
+/**********************************/
+/* Story Imagebox and Caption Fix */
+/* CONTAINER */
+#story-content figure {
+  float:right;
+  max-width: 45%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #d8d8d8;
+	margin-bottom: 1.11111rem;
+	margin-left: 1.11111rem;
+	padding: 1.11111rem;
+	color: #333333;
+}
+/* IMAGES */
+#story-content figure img {
+  width: 100%;
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #999;
+	float: none;
+}
+/* CAPTIONS */
+#story-content figure figcaption {
+	margin: 0px;
+	padding: .7rem 0px 0px 0px;
+	font: 12px "Lucida Grande", Arial, Helvetica, sans-serif !important;
+	color: #333;
+}
+/* Story Caption Fix */
 
 /* Small only */
 @media screen and (max-width: 39.9375em) {
