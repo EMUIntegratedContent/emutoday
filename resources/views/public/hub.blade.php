@@ -57,8 +57,8 @@
                   <div class="large-6 medium-12 small-12 large-push-6 columns">
                       <article id="special-notice-container">
                           <h3>Special Notice</h3>
-                          <p>{{$topAnnouncement->title}}</p>
-                          <p><a href="/announcement/{{$topAnnouncement->id}}" class="button">More&nbsp;<i class="fa fa-play"></i></a></p>
+                          <p id="special-notice-title"><a href="/announcement/{{$topAnnouncement->id}}">{{ $topAnnouncement->title }}</a></p>
+                          <p id="special-notice-teaser"><a href="/announcement/{{$topAnnouncement->id}}">{{ str_limit($topAnnouncement->announcement, $limit = 95, $end = '...') }}</a></p>
                       </article>
                   </div>
                   <div class="large-6 medium-12 small-12 large-pull-6 columns">

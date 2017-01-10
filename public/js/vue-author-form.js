@@ -17699,6 +17699,7 @@ module.exports = {
       startdatePicker: null,
       enddatePicker: null,
       currentPrimaryContact: '',
+      currentPrimaryMagazineContact: '',
       isCurrentContact: false,
       currentDate: {},
       dateObject: {
@@ -17713,7 +17714,8 @@ module.exports = {
         email: '',
         phone: '',
         is_contact: '',
-        is_principal_contact: ''
+        is_principal_contact: '',
+        is_principal_magazine_contact: ''
       },
       totalChars: {
         start: 0,
@@ -17737,6 +17739,7 @@ module.exports = {
       //console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid);
       this.fetchCurrentPrimaryContact();
+      this.fetchCurrentPrimaryMagazineContact();
     }
   },
   computed: {
@@ -17817,8 +17820,19 @@ module.exports = {
       }).bind(this);
     },
 
-    submitForm: function submitForm(e) {
+    fetchCurrentPrimaryMagainzeContact: function fetchCurrentPrimaryMagainzeContact() {
       var _this3 = this;
+
+      this.$http.get('/api/authors/primarymagazinecontact').then(function (response) {
+        _this3.$set('currentPrimaryMagazineContact', response.data.newdata.name);
+        console.log(response.data);
+      }, function (response) {
+        _this3.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+
+    submitForm: function submitForm(e) {
+      var _this4 = this;
 
       e.preventDefault(); // Stop form defualt action
 
@@ -17837,22 +17851,22 @@ module.exports = {
 
       // Do this when response gets back.
       .then(function (response) {
-        _this3.formMessage.msg = response.data.message;
-        _this3.formMessage.isOk = response.ok; // Success message
-        _this3.currentRecordId = response.data.newdata.record_id;
-        _this3.recordid = response.data.newdata.record_id;
-        _this3.record_id = response.data.newdata.record_id;
-        _this3.record.id = response.data.newdata.record_id;
-        _this3.formMessage.isErr = false;
-        _this3.recordexists = true;
-        _this3.formErrors = {}; // Clear errors?
-        _this3.fetchCurrentRecord(_this3.record.id);
+        _this4.formMessage.msg = response.data.message;
+        _this4.formMessage.isOk = response.ok; // Success message
+        _this4.currentRecordId = response.data.newdata.record_id;
+        _this4.recordid = response.data.newdata.record_id;
+        _this4.record_id = response.data.newdata.record_id;
+        _this4.record.id = response.data.newdata.record_id;
+        _this4.formMessage.isErr = false;
+        _this4.recordexists = true;
+        _this4.formErrors = {}; // Clear errors?
+        _this4.fetchCurrentRecord(_this4.record.id);
       }, function (response) {
         // If invalid. error callback
-        _this3.formMessage.isOk = false;
-        _this3.formMessage.isErr = true;
+        _this4.formMessage.isOk = false;
+        _this4.formMessage.isErr = true;
         // Set errors from validation to vue data
-        _this3.formErrors = response.data.error.message;
+        _this4.formErrors = response.data.error.message;
       }).bind(this);
     }
   },
@@ -17862,7 +17876,7 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-091d29e6=\"\">\n    <slot name=\"csrf\" _v-091d29e6=\"\"></slot>\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div v-bind:class=\"md12col\" _v-091d29e6=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-091d29e6=\"\">\n          <h5 _v-091d29e6=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-091d29e6=\"\">\n          <h5 _v-091d29e6=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div v-bind:class=\"md6col\" _v-091d29e6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-091d29e6=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-091d29e6=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-091d29e6=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-091d29e6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-091d29e6=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-091d29e6=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-091d29e6=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md6col\" _v-091d29e6=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-091d29e6=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-091d29e6=\"\">Please enter the author's email address. (contact@emich.edu)</p>\n          <div class=\"input-group input-group-flat\" _v-091d29e6=\"\">\n            <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-091d29e6=\"\">\n          </div>\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-091d29e6=\"\">Please make sure email is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-6 -->\n      <div :class=\"md6col\" _v-091d29e6=\"\">\n        <!-- Phone -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Phone</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-091d29e6=\"\">Please enter the contact person's phone number.</p>\n          <div class=\"input-group input-group-flat\" _v-091d29e6=\"\">\n            <input v-model=\"record.phone\" class=\"form-control\" v-bind:class=\"[formErrors.phone ? 'invalid-input' : '']\" name=\"phone\" type=\"text\" _v-091d29e6=\"\">\n          </div>\n          <p v-if=\"formErrors.phone\" class=\"help-text invalid\" _v-091d29e6=\"\">Please enter a phone number.</p>\n        </div>\n      </div><!-- /.col-md-6 -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md6col\" _v-091d29e6=\"\">\n        <div class=\"form-group\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Show this author as story contact?\n            <input id=\"is-contact-yes\" name=\"is_contact\" type=\"checkbox\" value=\"1\" v-model=\"record.is_contact\" _v-091d29e6=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md12col\" _v-091d29e6=\"\">\n        <div class=\"form-group\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">This author should be the DEFAULT contact for a story if none is otherwise specified.\n            <input id=\"is-principal-contact-yes\" name=\"is_principal_contact\" type=\"checkbox\" value=\"1\" v-model=\"record.is_principal_contact\" _v-091d29e6=\"\">\n          </label>\n          <p _v-091d29e6=\"\">Notice: Selecting this will replace the currently-select principal contact which is {{currentPrimaryContact}}.</p>\n        </div>\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div v-bind:class=\"md12col\" _v-091d29e6=\"\">\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-091d29e6=\"\">{{submitBtnLabel}}</button>\n        </div>\n      </div>\n    </div>\n\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-091d29e6=\"\">\n    <slot name=\"csrf\" _v-091d29e6=\"\"></slot>\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div v-bind:class=\"md12col\" _v-091d29e6=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-091d29e6=\"\">\n          <h5 _v-091d29e6=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-091d29e6=\"\">\n          <h5 _v-091d29e6=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div v-bind:class=\"md6col\" _v-091d29e6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-091d29e6=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-091d29e6=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-091d29e6=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-091d29e6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-091d29e6=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-091d29e6=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-091d29e6=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md6col\" _v-091d29e6=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-091d29e6=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-091d29e6=\"\">Please enter the author's email address. (contact@emich.edu)</p>\n          <div class=\"input-group input-group-flat\" _v-091d29e6=\"\">\n            <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-091d29e6=\"\">\n          </div>\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-091d29e6=\"\">Please make sure email is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-6 -->\n      <div :class=\"md6col\" _v-091d29e6=\"\">\n        <!-- Phone -->\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Phone</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-091d29e6=\"\">Please enter the contact person's phone number.</p>\n          <div class=\"input-group input-group-flat\" _v-091d29e6=\"\">\n            <input v-model=\"record.phone\" class=\"form-control\" v-bind:class=\"[formErrors.phone ? 'invalid-input' : '']\" name=\"phone\" type=\"text\" _v-091d29e6=\"\">\n          </div>\n          <p v-if=\"formErrors.phone\" class=\"help-text invalid\" _v-091d29e6=\"\">Please enter a phone number.</p>\n        </div>\n      </div><!-- /.col-md-6 -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md6col\" _v-091d29e6=\"\">\n        <div class=\"form-group\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">Show this author as story contact?\n            <input id=\"is-contact-yes\" name=\"is_contact\" type=\"checkbox\" value=\"1\" v-model=\"record.is_contact\" _v-091d29e6=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md12col\" _v-091d29e6=\"\">\n        <div class=\"form-group\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">This author should be the DEFAULT contact for a STORY if none is otherwise specified.\n            <input id=\"is-principal-contact-yes\" name=\"is_principal_contact\" type=\"checkbox\" value=\"1\" v-model=\"record.is_principal_contact\" _v-091d29e6=\"\">\n          </label>\n          <p _v-091d29e6=\"\">Notice: Selecting this will replace the currently-select principal story contact, who is {{currentPrimaryContact}}.</p>\n        </div>\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div :class=\"md12col\" _v-091d29e6=\"\">\n        <div class=\"form-group\" _v-091d29e6=\"\">\n          <label _v-091d29e6=\"\">This author should be the DEFAULT contact for a MAGAZINE ARTICLE if none is otherwise specified.\n            <input id=\"is-principal-magazine-contact-yes\" name=\"is_principal_magazine_contact\" type=\"checkbox\" value=\"1\" v-model=\"record.is_principal_magazine_contact\" _v-091d29e6=\"\">\n          </label>\n          <p _v-091d29e6=\"\">Notice: Selecting this will replace the currently-select principal magazine contact, who is {{currentPrimaryMagazineContact}}.</p>\n        </div>\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-091d29e6=\"\">\n      <div v-bind:class=\"md12col\" _v-091d29e6=\"\">\n        <div v-bind:class=\"formGroup\" _v-091d29e6=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-091d29e6=\"\">{{submitBtnLabel}}</button>\n        </div>\n      </div>\n    </div>\n\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

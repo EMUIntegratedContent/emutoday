@@ -36,6 +36,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::patch('authors/updateitem/{id}', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@updateItem']);
     Route::get('authors/{id}/edit', ['as' => 'api_authors_edititem', 'uses' =>'Api\AuthorController@edit']);
     Route::get('authors/primarycontact', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@getCurrentPrimaryContact']);
+    Route::get('authors/primarymagazinecontact', ['as' => 'api_authors_updatemagazineitem', 'uses' =>'Api\AuthorController@getCurrentPrimaryMagazineContact']);
     Route::post('authors', ['as' => 'api_authors_storeitem', 'uses' => 'Api\AuthorController@store']); // Route to save author to db
     Route::resource('authors', 'Api\AuthorController');
 
