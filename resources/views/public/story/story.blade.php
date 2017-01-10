@@ -47,12 +47,15 @@
               {!! $story->content !!}
             </div>
             @if($story->author_id === 0)
+              @unless($story->author_info)
                 <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-                <!--<p class="news-contacts">Contact {{ $story->user->full_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>-->
+              @else
+                <div class="story-author">{{$story->author_info}}</div>
+              @endif
             @else
                 <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-                <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->author->phone }}</p>
             @endif
+            <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
 
           </div>
           <!-- Page Side Bar Column -->
