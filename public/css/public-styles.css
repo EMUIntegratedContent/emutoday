@@ -7119,11 +7119,22 @@ img.magazine-logo {
 }
 /* IMAGES */
 #story-content figure img {
-  width: 100%;
 	margin: 0px;
 	padding: 0px;
 	border: 1px solid #999;
 	float: none;
+}
+@media screen and (max-width: 40em) {
+  .vis_container, #story-content figure {
+    margin-left: .5rem;
+    margin-right: 1rem;
+    max-width: 100%;
+    clear:both;
+    float:left !important;
+  }
+}
+#story-content p img {
+	margin: 1rem;
 }
 /* CAPTIONS */
 #story-content figure figcaption {
@@ -7624,7 +7635,7 @@ ul.pagination li.active {
 }
 
 /**********************************/
-/* Story Imagebox and Caption Fix */
+/* Story Images / Imagebox and Caption Fix */
 /* CONTAINER */
 .vis_container, #story-content-edit figure {
   float:right;
@@ -7634,16 +7645,28 @@ ul.pagination li.active {
 	border-color: #d8d8d8;
 	margin-bottom: 1.11111rem;
 	margin-left: 1.11111rem;
+	margin-right: 0;
 	padding: 1.11111rem;
 	color: #333333;
 }
 /* IMAGES */
 .vis_container .visbox img, #story-content-edit figure img {
-  width: 100%;
 	margin: 0px;
 	padding: 0px;
 	border: 1px solid #999;
 	float: none;
+}
+@media screen and (max-width: 40em) {
+  .vis_container, #story-content-edit figure {
+    margin-left: .5rem;
+    margin-right: 1rem;
+    max-width: 100%;
+    clear:both;
+    float:left !important;
+  }
+}
+#story-content-edit p img {
+	margin: 1rem;
 }
 /* CAPTIONS */
 .viscaption {

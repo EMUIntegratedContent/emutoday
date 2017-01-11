@@ -334,11 +334,22 @@ img.magazine-logo {
 }
 /* IMAGES */
 #story-content figure img {
-  width: 100%;
 	margin: 0px;
 	padding: 0px;
 	border: 1px solid #999;
 	float: none;
+}
+@media screen and (max-width: 40em) {
+  .vis_container, #story-content figure {
+    margin-left: .5rem;
+    margin-right: 1rem;
+    max-width: 100%;
+    clear:both;
+    float:left !important;
+  }
+}
+#story-content p img {
+	margin: 1rem;
 }
 /* CAPTIONS */
 #story-content figure figcaption {
