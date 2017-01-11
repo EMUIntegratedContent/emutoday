@@ -28,7 +28,7 @@
       $.each($('.visbox img'), function() {
           var imgWidth = $(this).width();
           var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
-          $(this).closest('figure').css({'width': figureWidth, 'overflow-wrap': 'break-word'});
+          $(this).closest('div.visbox').css({'width': figureWidth, 'overflow-wrap': 'break-word'});
 
           console.log(imgWidth);
       });
