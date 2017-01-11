@@ -30,7 +30,7 @@
       <div id="issue-grouping" class="row">
         <div class="large-8 medium-8 small-12 columns">
           @if(isset($magazine))
-          <a href="/magazine/{{$magazine->year}}"><h2 class="issue-date news-caps">{{$magazine->season}} {{$magazine->year}}</h2></a>
+          <a href="/magazine/issue/{{$magazine->year}}/{{$magazine->season}}"><h2 class="issue-date news-caps">{{$magazine->season}} {{$magazine->year}}</h2></a>
           @endif
         </div>
         <div class="large-4 medium-4 small-12 columns noleftpadding">
