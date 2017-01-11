@@ -107,9 +107,9 @@
           <a class="popup-youtube" href="{{$currentStoryImageWithVideoTag->link}}">
                 <img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}" alt="featured video" style="display: block;" />
           </a>
-          <p><a href="{{$currentStoryImageWithVideoTag->link}}" target="blank">{{$currentStoryImageWithVideoTag->caption}}</a></p>
+          <p><a class="popup-youtube" href="{{$currentStoryImageWithVideoTag->link}}" target="blank">{{$currentStoryImageWithVideoTag->caption}}</a></p>
           @else
-          <a class="popup-youtube" href="https://www.youtube.com/user/emichigan08" target="blank"><img src="/assets/imgs/placeholder/external_video.jpg" alt="featured video"></a>
+          <a href="https://www.youtube.com/user/emichigan08" target="blank"><img src="/assets/imgs/placeholder/external_video.jpg" alt="featured video"></a>
           <p><a href="https://www.youtube.com/user/emichigan08" target="blank">Welcome to Education First, the official Eastern Michigan University YouTube Channel.</a></p>
           @endif
 

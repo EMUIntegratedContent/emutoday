@@ -344,7 +344,7 @@ img.magazine-logo {
 #story-content figure figcaption {
 	margin: 0px;
 	padding: .7rem 0px 0px 0px;
-	font: 12px !important;
+	font-size: 12px !important;
 	color: #333;
 }
 /* Story Caption Fix */

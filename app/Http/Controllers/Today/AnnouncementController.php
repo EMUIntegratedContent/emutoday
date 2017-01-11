@@ -27,9 +27,10 @@ class AnnouncementController extends Controller
   {
     $currentDate = Carbon::now();
     $announcements = $this->announcement->where([
-        ['is_approved', 1],
+        ['type', '!=', 'hr'],
         ['start_date', '<=', $currentDate],
         ['end_date', '>=', $currentDate],
+        ['is_approved', 1],
         ['is_archived', 0 ]
       ])
       ->orderBy('priority','desc')
@@ -51,11 +52,13 @@ class AnnouncementController extends Controller
 
         $approveditems = $this->announcement->where([
             ['is_approved', 1],
+            ['type', '!=', 'hr'],
             ['submitter', $user]
             ])->get();
 
         $submitteditems = $this->announcement->where([
             ['is_approved', 0],
+            ['type', '!=', 'hr'],
             ['submitter', $user]
             ])->get();
 
@@ -70,11 +73,13 @@ class AnnouncementController extends Controller
       if($user){
         $approveditems = $this->announcement->where([
           ['is_approved', 1],
+          ['type', '!=', 'hr'],
           ['submitter', $user]
           ])->get();
 
         $submitteditems = $this->announcement->where([
           ['is_approved', 0],
+          ['type', '!=', 'hr'],
           ['submitter', $user]
           ])->get();
       } else {

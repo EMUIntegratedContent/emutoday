@@ -47,7 +47,7 @@
           </div>
         </div><!-- /.col-md-4 -->
       </div><!-- /.row -->
-      <div class="row">
+      <div class="row" v-if="generalForm">
         <div :class="md4col">
           <div v-bind:class="formGroup">
             <label>Meaning desciption for Link</label>
@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <br v-if="framework == 'bootstrap'"/>
+    <br v-if="framework == 'bootstrap' && generalForm"/>
 
     <div v-if="generalForm"  class="row">
       <div :class="md12col">
@@ -97,7 +97,20 @@
         </div>
       </div><!-- /.md6col -->
     </div>
-    <br/>
+
+    <br v-if="framework == 'foundation' && generalForm"/>
+
+    <div v-if="generalForm" class="row">
+      <div :class="md12col">
+        <div class="form-group">
+          <label>Contact Phone <em>(ex. 734.487.1849)</em></label>
+          <input v-model="record.phone" class="form-control" :class="[formErrors.phone ? 'invalid-input' : '']" name="phone" type="text" maxlength="15">
+          <p v-if="formErrors.phone" class="help-text invalid">Need a Contact Phone!</p>
+        </div>
+      </div><!-- /.md6col -->
+    </div><!-- /.row -->
+
+    <br v-if="framework == 'foundation' && generalForm"/>
 
     <div class="row">
       <div v-bind:class="md6col">
@@ -289,6 +302,7 @@ module.exports = {
         link: '',
         email_link_txt: '',
         email_link: '',
+        phone: '',
         type: ''
       },
       // dateOptions: {
@@ -505,6 +519,7 @@ module.exports = {
               link: '',
               email_link_txt: '',
               email_link: '',
+              phone: '',
               type: ''
             };
             var d = new Date();

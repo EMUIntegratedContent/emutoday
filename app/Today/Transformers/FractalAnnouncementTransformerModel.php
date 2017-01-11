@@ -11,14 +11,14 @@ class FractalAnnouncementTransformerModel extends Fractal\TransformerAbstract
     public function transform(Announcement $announcement)
     {
         $user_id    = null;
-        $user_name  = null;  
-        $user_phone = null; 
+        $user_name  = null;
+        $user_phone = null;
         $user_email = null;
-        
+
         if($announcement->user_id != null){
-            $user_id    = $announcement->user_id; 
-            $user_name  = $announcement->user->full_name;  
-            $user_phone = $announcement->user->phone; 
+            $user_id    = $announcement->user_id;
+            $user_name  = $announcement->user->full_name;
+            $user_phone = $announcement->user->phone;
             $user_email = $announcement->user->email;
         }
         return [
@@ -37,11 +37,12 @@ class FractalAnnouncementTransformerModel extends Fractal\TransformerAbstract
             'email_link'      => $announcement->email_link,
             'email_link_txt' => $announcement->email_link_txt,
             'is_archived' => $announcement->is_archived,
+            'phone'  => $announcement->phone,
+
             'user_id'  => $user_id,
             'user_name'  => $user_name,
             'user_phone'  => $user_phone,
             'user_email'  => $user_email
-
         ];
     }
 }

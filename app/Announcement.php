@@ -22,8 +22,9 @@ class Announcement extends Model
         'is_approved',
         'link_txt',
         'link',
-        'mail_link_txt',
-        'mail_link'
+        'email_link_txt',
+        'email_link',
+        'phone'
     ];
     protected $dates = [
         'end_date', 'start_date',
