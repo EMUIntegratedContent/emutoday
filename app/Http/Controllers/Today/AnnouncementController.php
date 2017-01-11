@@ -52,11 +52,13 @@ class AnnouncementController extends Controller
 
         $approveditems = $this->announcement->where([
             ['is_approved', 1],
+            ['type', '!=', 'hr'],
             ['submitter', $user]
             ])->get();
 
         $submitteditems = $this->announcement->where([
             ['is_approved', 0],
+            ['type', '!=', 'hr'],
             ['submitter', $user]
             ])->get();
 
@@ -71,11 +73,13 @@ class AnnouncementController extends Controller
       if($user){
         $approveditems = $this->announcement->where([
           ['is_approved', 1],
+          ['type', '!=', 'hr'],
           ['submitter', $user]
           ])->get();
 
         $submitteditems = $this->announcement->where([
           ['is_approved', 0],
+          ['type', '!=', 'hr'],
           ['submitter', $user]
           ])->get();
       } else {
