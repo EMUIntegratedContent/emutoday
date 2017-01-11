@@ -345,8 +345,11 @@ img.magazine-logo {
     margin-right: 1rem;
     max-width: 100%;
     clear:both;
-    float:left;
+    float:left !important;
   }
+}
+#story-content p img {
+	margin: 1rem;
 }
 /* CAPTIONS */
 #story-content figure figcaption {

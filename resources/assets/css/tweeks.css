@@ -195,8 +195,11 @@ ul.pagination li.active {
     margin-right: 1rem;
     max-width: 100%;
     clear:both;
-    float:left;
+    float:left !important;
   }
+}
+#story-content-edit p img {
+	margin: 1rem;
 }
 /* CAPTIONS */
 .viscaption {
