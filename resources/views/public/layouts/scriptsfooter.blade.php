@@ -7,13 +7,20 @@
 <script>
     $(document).foundation();
     $(document).ready(function() {
-        $('.popup-youtube').magnificPopup({
-            type: 'iframe',
-            mainClass: 'mfp-fade',
-            removalDelay: 160,
-            preloader: false,
-            fixedContentPos: false,
-        });
+      $('.popup-youtube').magnificPopup({
+        type: 'iframe',
+        mainClass: 'mfp-fade',
+        removalDelay: 160,
+        preloader: false,
+        fixedContentPos: false,
+      });
+      // Resize captions for the today wyziwyg caption out put
+      var imgWidth = $('figure img').width();
+      $('figcaption').width(imgWidth);
+
+      // Resize captions for imported press release captions
+      var imgWidth = $('.visbox img').width();
+      $('.viscaption').width(imgWidth);
     });
 </script>
 @yield('scriptsfooter')

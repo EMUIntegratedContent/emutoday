@@ -52,7 +52,7 @@
               <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
               <li><a href="http://www.emueagles.com/calendar.aspx">Athletics</a></li>
               <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
-              <li><a href="http://www.emich.edu/hr/calendar/">Holiday and Payroll</a></li>
+              <li><a href="http://www.emich.edu/hr/working/employment/holidays.php">Holiday</a></li>
               <li><a href="http://www.emich.edu/emutheatre/">Theatre</a></li>
             </ul>
             <div class="submit-calendar">
