@@ -213,3 +213,8 @@ ul.pagination li.active {
 	color: #333;
 }
 /* Story Caption Fix */
+
+/* Foundation fix */
+.off-canvas-content, .off-canvas-content {
+    padding-bottom: 0px;
+}
