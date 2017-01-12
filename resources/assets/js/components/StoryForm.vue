@@ -426,7 +426,7 @@ module.exports  = {
     this.fetchTagsList();
     this.fetchCurrentTags();
     this.getUserRoles();
-    this.fetchDefaultContact()
+    this.fetchDefaultContact(false)
   },
   computed: {
     authorBtnLabel:function(){
@@ -536,8 +536,6 @@ module.exports  = {
     },
 
     onRefresh: function() {
-
-
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
@@ -633,11 +631,16 @@ module.exports  = {
       }).bind(this);
     },
 
-    fetchDefaultContact: function() {
+    /**
+     * Set the default contact field. If setContact is true, also change the record's contact to the default.
+     */
+    fetchDefaultContact: function(setContact) {
       this.$http.get('/api/contactdefault')
       .then((response) =>{
         this.$set('defaultcontact', response.data)
-        this.$set('contact', response.data)
+        if(setContact === true){
+            this.$set('contact', response.data)
+        }
       }, (response) => {
         //error callback
         console.log("COULDN'T GET DEFAULT CONTACT");
@@ -916,15 +919,16 @@ module.exports  = {
     },
     'record.story_type': function(val){
         // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
-        if(!this.contactManuallyChanged){
+        if(!this.contactManuallyChanged && !this.recordexists){
             if(!this.record.contact){
                 if(val == 'article'){
                     this.fetchDefaultMagazineContact()
                 } else {
-                    this.fetchDefaultContact()
+                    this.fetchDefaultContact(true)
                 }
             }
         }
+
     }
   },
   events: {
