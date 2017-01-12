@@ -20727,7 +20727,7 @@ module.exports = {
     this.fetchTagsList();
     this.fetchCurrentTags();
     this.getUserRoles();
-    this.fetchDefaultContact();
+    this.fetchDefaultContact(false);
   },
 
   computed: {
@@ -20835,7 +20835,6 @@ module.exports = {
     },
 
     onRefresh: function onRefresh() {
-
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
@@ -20933,12 +20932,17 @@ module.exports = {
       }).bind(this);
     },
 
-    fetchDefaultContact: function fetchDefaultContact() {
+    /**
+     * Set the default contact field. If setContact is true, also change the record's contact to the default.
+     */
+    fetchDefaultContact: function fetchDefaultContact(setContact) {
       var _this3 = this;
 
       this.$http.get('/api/contactdefault').then(function (response) {
         _this3.$set('defaultcontact', response.data);
-        _this3.$set('contact', response.data);
+        if (setContact === true) {
+          _this3.$set('contact', response.data);
+        }
       }, function (response) {
         //error callback
         console.log("COULDN'T GET DEFAULT CONTACT");
@@ -21204,12 +21208,12 @@ module.exports = {
     },
     'record.story_type': function recordStory_type(val) {
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
-      if (!this.contactManuallyChanged) {
+      if (!this.contactManuallyChanged && !this.recordexists) {
         if (!this.record.contact) {
           if (val == 'article') {
             this.fetchDefaultMagazineContact();
           } else {
-            this.fetchDefaultContact();
+            this.fetchDefaultContact(true);
           }
         }
       }
