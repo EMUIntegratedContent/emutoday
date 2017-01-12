@@ -7681,4 +7681,9 @@ ul.pagination li.active {
 }
 /* Story Caption Fix */
 
+/* Foundation fix */
+.off-canvas-content, .off-canvas-content {
+    padding-bottom: 0px;
+}
+
 /*# sourceMappingURL=public-styles.css.map */
