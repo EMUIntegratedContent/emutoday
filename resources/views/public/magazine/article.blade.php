@@ -19,11 +19,7 @@
   <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainImage->present()->mainImageURL)}}"/>
   <meta property="og:image:width" content="400" />
   <meta property="og:image:height" content="300" />
-  @else
-  <meta property="og:image" content="http://today.emich.edu/imgs/logoFill.png"/>
-  <meta property="og:image:secure_url" content="https://today.emich.edu/imgs/logoFill.png"/>
-  <meta property="og:image:width" content="400" />
-  <meta property="og:image:height" content="300" />
+  {{-- <!-- add an else for no mainImage --> --}}
   @endif
 @endsection
 
