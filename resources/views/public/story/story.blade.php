@@ -13,10 +13,10 @@
   <meta property="og:image:height" content="300" />
   {{-- <!-- add an else for no mainStoryImage --> --}}
   @else
-  <meta property="og:image" content="http://www.emich.edu/communications/images/logos/edfirst.png"/>
-  <meta property="og:image:secure_url" content="https://www.emich.edu/communications/images/logos/edfirst.png"/>
-  <meta property="og:image:width" content="400" />
-  <meta property="og:image:height" content="300" />
+  <meta property="og:image" content="http://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
+  <meta property="og:image:secure_url" content="https://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
+  <meta property="og:image:width" content="200" />
+  <meta property="og:image:height" content="200" />
   @endif
 @endsection
 
