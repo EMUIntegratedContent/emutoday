@@ -218,7 +218,17 @@ class AuthorController extends ApiController
     $users = User::leftJoin('authors', 'users.id', '=', 'authors.user_id')->select('users.id', 'users.first_name', 'users.last_name')->whereNull('authors.user_id')->orWhere('authors.user_id', $selectedUser)->orderby('last_name')->get();
 
     return $this->setStatusCode(201)
-    ->respondUpdatedWithData($selectedUser, $users );
+    ->respondUpdatedWithData($selectedUser, $users);
+  }
+
+  /**
+   * Get the author tied to the corresponding user id
+   */
+  public function getAuthorByUser($userId){
+      $author = Author::select('id', 'last_name', 'first_name', 'email', 'phone')->where('user_id', $userId)->first();
+
+      return $this->setStatusCode(201)
+      ->respondUpdatedWithData('Author conntected to user', $author);
   }
 
 }

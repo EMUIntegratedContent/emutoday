@@ -418,8 +418,7 @@ module.exports  = {
 
       this.fdate = this.currentDate;
 
-      this.author = this.currentUser;
-      this.author.id = this.record.user_id;
+      this.setAuthorToCurrentUser(this.currentUser.id)
       this.record.author_id = this.record.user_id;
       this.recordState = 'new';
     }
@@ -560,11 +559,7 @@ module.exports  = {
       this.hasAuthor = true;
     },
     resetAuthor:function(evt){
-      if (this.record.author_id !== 0 ){
-        this.author = this.currentUser;
-        this.author.id = 0;
-        this.record.author_id = 0;
-      }
+      this.setAuthorToCurrentUser(this.currentUser.id)
       this.needAuthor = false;
       this.hasAuthor = true;
       this.saveAuthorMessage.isOk = '';
@@ -685,8 +680,8 @@ module.exports  = {
       .then((response) =>{
         this.$set('record', response.data.data)
         this.$set('recordOld', response.data.data)
-        console.log("CURRENT CONTACT")
-        console.log(response.data.data.contact)
+        console.log("DAIDA")
+        console.log(response.data.data)
 
         //set contact information
         this.contact.id = response.data.data.contact.id
@@ -705,6 +700,23 @@ module.exports  = {
       }).bind(this);
 
     },
+    setAuthorToCurrentUser: function(userId){
+        //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
+        this.$http.get('/api/authorbyuser/' + userId)
+
+        .then((response) => {
+            if(response.data.newdata){
+                this.$set('author', response.data.newdata)
+            } else {
+                this.author = {}
+                this.record.author_id = 0
+            }
+          console.log("AUTHORDATA")
+          console.log(response.data.newdata)
+        }, (response) => {
+          this.formErrors = response.data.error.message;
+        }).bind(this);
+    },
     checkOverData: function() {
       this.hasContent = true;
 
@@ -712,12 +724,14 @@ module.exports  = {
       this.content = this.record.content;
 
       this.fdate = this.record.start_date;
-      console.log('this.fdate'+ this.fdate)
+
       if (this.record.author_id != 0) {
         this.author = this.record.author;
       } else {
-        this.author = this.currentUser;
-        this.author.id = 0;
+        // Set the default author based on the author table's id, not the user table's id!
+        this.setAuthorToCurrentUser(this.currentUser.id)
+        //this.author = this.currentUser;
+        //this.author.id = 0;
       }
       this.recordexists = true;
 
@@ -840,6 +854,7 @@ module.exports  = {
       }
 
       if (this.author.id !== 0) {
+          console.log("AUTHORID" + this.author.id)
         this.record.author_id = this.author.id;
       }
 
