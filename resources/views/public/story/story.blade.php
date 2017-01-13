@@ -6,7 +6,7 @@
 <meta property="og:url" content="{{trim(Request::fullUrl())}}" />
 <meta property="og:title" content="{{trim($story->title)}}" />
 <meta property="og:description" content="{{trim($story->subtitle)}}" />
-  @if(isset($mainStoryImage))
+  @if($mainStoryImage)
   <meta property="og:image" content="http://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>
   <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>
   <meta property="og:image:width" content="400" />
