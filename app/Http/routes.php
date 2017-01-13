@@ -143,7 +143,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('author/{id}', 'Api\StoryController@getAuthorData');
     Route::post('author', ['as' => 'api_story_storeauthor', 'uses' => 'Api\StoryController@storeAuthor']);
     Route::put('author/{id}', ['as' => 'api_story_saveauthor', 'uses' => 'Api\StoryController@saveAuthor']);
-
+    Route::get('users/{selectedUser?}', ['as' => 'users_find_authorapi', 'uses' => 'Api\AuthorController@getUsers']);
+    Route::get('authorbyuser/{userId?}', ['as' => 'authorbyuser', 'uses' => 'Api\AuthorController@getAuthorByUser']);
 
     Route::patch('story/archiveitem/{id}', ['as' => 'api_story_archiveitem', 'uses' => 'Api\StoryController@archiveItem']);
 
@@ -153,6 +154,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('page/chartload', ['as' => 'api_page_chartload', 'uses' => 'Api\PageController@chartLoad']);
 
     Route::get('page/queueload', ['as' => 'api.page.queueload', 'uses' => 'Api\PageController@queueLoad']);
+
+
 
 });
 

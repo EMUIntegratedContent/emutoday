@@ -12,7 +12,8 @@ class Author extends Model
     'email',
     'phone',
     'is_contact',
-    'is_principal_contact'
+    'is_principal_contact',
+    'user_id',
   ];
 
   public function getFullNameAttribute(){
@@ -21,4 +22,9 @@ class Author extends Model
   public function scopeLikeSearch($query, $field, $value){
     return $query->where($field, 'LIKE', "%$value%");
   }
+
+    public function user()
+    {
+        return $this->hasOne('Emutoday\User');
+    }
 }

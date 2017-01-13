@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddStorysPrincipalContact extends Migration
+class UpdateAuthorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,14 @@ class AddStorysPrincipalContact extends Migration
      */
     public function up()
     {
+        Schema::enableForeignKeyConstraints();
+        
         Schema::table('authors', function (Blueprint $table) {
-            $table->tinyInteger('is_principal_contact');
+            $table->integer('user_id')->unsigned()->nullable();
+        });
+
+        Schema::table('authors', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -25,7 +31,8 @@ class AddStorysPrincipalContact extends Migration
     public function down()
     {
         Schema::table('authors', function (Blueprint $table) {
-            $table->dropColumn('is_principal_contact');
+            $table->dropForeign('user_id');
+            $table->dropColumn('user_id');
         });
     }
 }

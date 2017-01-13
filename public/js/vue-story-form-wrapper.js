@@ -20719,9 +20719,8 @@ module.exports = {
 
       this.fdate = this.currentDate;
 
-      this.author = this.currentUser;
-      this.author.id = 0;
-      this.record.author_id = 0;
+      this.setAuthorToCurrentUser(this.currentUser.id);
+      this.record.author_id = this.record.user_id;
       this.recordState = 'new';
     }
     this.fetchTagsList();
@@ -20859,11 +20858,7 @@ module.exports = {
       this.hasAuthor = true;
     },
     resetAuthor: function resetAuthor(evt) {
-      if (this.record.author_id !== 0) {
-        this.author = this.currentUser;
-        this.author.id = 0;
-        this.record.author_id = 0;
-      }
+      this.setAuthorToCurrentUser(this.currentUser.id);
       this.needAuthor = false;
       this.hasAuthor = true;
       this.saveAuthorMessage.isOk = '';
@@ -20987,8 +20982,8 @@ module.exports = {
       this.$http.get('/api/story/' + this.currentRecordId + '/edit').then(function (response) {
         _this7.$set('record', response.data.data);
         _this7.$set('recordOld', response.data.data);
-        console.log("CURRENT CONTACT");
-        console.log(response.data.data.contact);
+        console.log("DAIDA");
+        console.log(response.data.data);
 
         //set contact information
         _this7.contact.id = response.data.data.contact.id;
@@ -21005,6 +21000,23 @@ module.exports = {
         _this7.formErrors = response.data.error.message;
       }).bind(this);
     },
+    setAuthorToCurrentUser: function setAuthorToCurrentUser(userId) {
+      var _this8 = this;
+
+      //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
+      this.$http.get('/api/authorbyuser/' + userId).then(function (response) {
+        if (response.data.newdata) {
+          _this8.$set('author', response.data.newdata);
+        } else {
+          _this8.author = {};
+          _this8.record.author_id = 0;
+        }
+        console.log("AUTHORDATA");
+        console.log(response.data.newdata);
+      }, function (response) {
+        _this8.formErrors = response.data.error.message;
+      }).bind(this);
+    },
     checkOverData: function checkOverData() {
       this.hasContent = true;
 
@@ -21012,12 +21024,14 @@ module.exports = {
       this.content = this.record.content;
 
       this.fdate = this.record.start_date;
-      console.log('this.fdate' + this.fdate);
+
       if (this.record.author_id != 0) {
         this.author = this.record.author;
       } else {
-        this.author = this.currentUser;
-        this.author.id = 0;
+        // Set the default author based on the author table's id, not the user table's id!
+        this.setAuthorToCurrentUser(this.currentUser.id);
+        //this.author = this.currentUser;
+        //this.author.id = 0;
       }
       this.recordexists = true;
 
@@ -21028,7 +21042,7 @@ module.exports = {
     },
 
     saveAuthor: function saveAuthor(e) {
-      var _this8 = this;
+      var _this9 = this;
 
       e.preventDefault();
       this.saveAuthorMessage.isOk = '';
@@ -21037,37 +21051,37 @@ module.exports = {
       var route = this.author.id == 0 ? '/api/author' : '/api/author/' + this.author.id;
 
       this.$http[method](route, this.author).then(function (response) {
-        _this8.authorErrors = '';
-        _this8.fetchAuthorList();
+        _this9.authorErrors = '';
+        _this9.fetchAuthorList();
         console.log('response.author=' + (0, _stringify2.default)(response.data.newdata));
 
-        _this8.author.id = response.data.newdata.author.id;
-        _this8.record.author_id = response.data.newdata.author.id;
-        console.log('rec.author_id:' + _this8.author.id);
-        _this8.author.first_name = response.data.newdata.author.first_name;
-        _this8.author.last_name = response.data.newdata.author.last_name;
-        _this8.author.phone = response.data.newdata.author.phone;
-        _this8.author.email = response.data.newdata.author.email;
+        _this9.author.id = response.data.newdata.author.id;
+        _this9.record.author_id = response.data.newdata.author.id;
+        console.log('rec.author_id:' + _this9.author.id);
+        _this9.author.first_name = response.data.newdata.author.first_name;
+        _this9.author.last_name = response.data.newdata.author.last_name;
+        _this9.author.phone = response.data.newdata.author.phone;
+        _this9.author.email = response.data.newdata.author.email;
 
-        _this8.saveAuthorMessage.msg = response.data.message;
-        _this8.saveAuthorMessage.isOk = response.ok;
-        _this8.needAuthor = false;
+        _this9.saveAuthorMessage.msg = response.data.message;
+        _this9.saveAuthorMessage.isOk = response.ok;
+        _this9.needAuthor = false;
       }, function (response) {
         //error callback
-        _this8.authorErrors = response.data.error.message;
+        _this9.authorErrors = response.data.error.message;
       }).bind(this);
     },
     fetchAuthor: function fetchAuthor() {
-      var _this9 = this;
+      var _this10 = this;
 
       if (this.selectedAuthor) {
         this.$http.get('/api/author/' + this.selectedAuthor.value).then(function (response) {
-          _this9.author.id = response.body.id;
-          _this9.record.author_id = response.body.id;
-          _this9.author.first_name = response.body.first_name;
-          _this9.author.last_name = response.body.last_name;
-          _this9.author.phone = response.body.phone;
-          _this9.author.email = response.body.email;
+          _this10.author.id = response.body.id;
+          _this10.record.author_id = response.body.id;
+          _this10.author.first_name = response.body.first_name;
+          _this10.author.last_name = response.body.last_name;
+          _this10.author.phone = response.body.phone;
+          _this10.author.email = response.body.email;
         }, function (response) {
           //err
         }).bind(this);
@@ -21081,16 +21095,16 @@ module.exports = {
       }
     },
     fetchContact: function fetchContact() {
-      var _this10 = this;
+      var _this11 = this;
 
       if (this.selectedContact) {
         this.$http.get('/api/author/' + this.selectedContact.value).then(function (response) {
-          _this10.contact.id = response.body.id;
-          _this10.record.contact_id = response.body.id;
-          _this10.contact.first_name = response.body.first_name;
-          _this10.contact.last_name = response.body.last_name;
-          _this10.contact.phone = response.body.phone;
-          _this10.contact.email = response.body.email;
+          _this11.contact.id = response.body.id;
+          _this11.record.contact_id = response.body.id;
+          _this11.contact.first_name = response.body.first_name;
+          _this11.contact.last_name = response.body.last_name;
+          _this11.contact.phone = response.body.phone;
+          _this11.contact.email = response.body.email;
         }, function (response) {
           //err
         }).bind(this);
@@ -21109,7 +21123,7 @@ module.exports = {
     },
 
     submitForm: function submitForm(e) {
-      var _this11 = this;
+      var _this12 = this;
 
       e.preventDefault();
       this.formMessage.isOk = '';
@@ -21131,6 +21145,7 @@ module.exports = {
       }
 
       if (this.author.id !== 0) {
+        console.log("AUTHORID" + this.author.id);
         this.record.author_id = this.author.id;
       }
 
@@ -21151,22 +21166,22 @@ module.exports = {
 
       this.$http[method](route, this.record).then(function (response) {
 
-        _this11.formMessage.msg = response.data.message;
-        _this11.currentRecordId = response.data.newdata.record_id;
-        _this11.formMessage.isOk = response.ok;
-        _this11.formErrors = '';
+        _this12.formMessage.msg = response.data.message;
+        _this12.currentRecordId = response.data.newdata.record_id;
+        _this12.formMessage.isOk = response.ok;
+        _this12.formErrors = '';
 
         console.log('newdta' + response.data.newdata.record_id);
-        _this11.response_record_id = response.data.newdata.record_id;
-        _this11.response_stype = response.data.newdata.stype;
-        if (_this11.newform) {
-          _this11.nowOnReload();
+        _this12.response_record_id = response.data.newdata.record_id;
+        _this12.response_stype = response.data.newdata.stype;
+        if (_this12.newform) {
+          _this12.nowOnReload();
         } else {
-          _this11.onRefresh();
+          _this12.onRefresh();
         }
       }, function (response) {
         //error callback
-        _this11.formErrors = response.data.error.message;
+        _this12.formErrors = response.data.error.message;
       }).bind(this);
     }
   },

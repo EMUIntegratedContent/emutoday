@@ -4,6 +4,7 @@ namespace Emutoday\Http\Controllers\Api;
 
 
 use Emutoday\Author;
+use Emutoday\User;
 use Illuminate\Http\Request;
 
 
@@ -67,7 +68,8 @@ class AuthorController extends ApiController
       $author->first_name           = $request->get('first_name');
       $author->last_name      	    = $request->get('last_name');
       $author->email      	        = $request->get('email');
-      $author->phone     	          = $request->get('phone');
+      $author->phone     	        = $request->get('phone');
+      $author->user_id              = $request->get('user_id', null);
 
       //If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
       if($request->get('is_principal_contact') == 1){
@@ -141,7 +143,8 @@ class AuthorController extends ApiController
       $author->first_name           = $request->get('first_name');
       $author->last_name      	    = $request->get('last_name');
       $author->email      	        = $request->get('email');
-      $author->phone     	          = $request->get('phone');
+      $author->phone     	        = $request->get('phone');
+      $author->user_id              = $request->get('user_id', null);
 
       //If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
       if($request->get('is_principal_contact') == 1){
@@ -170,8 +173,6 @@ class AuthorController extends ApiController
             $author->is_contact = 0;
         }
       }
-
-
 
       if($author->save()) {
         return $this->setStatusCode(201)
@@ -208,6 +209,26 @@ class AuthorController extends ApiController
     }
     return $this->setStatusCode(201)
     ->respondUpdatedWithData('Primary Magazine Contact', $primaryContact );
+  }
+
+  /**
+   *  Get the one user in the authors table set as the PRINCIPAL MAGAZINE contact
+   */
+  public function getUsers($selectedUser = null){
+    $users = User::leftJoin('authors', 'users.id', '=', 'authors.user_id')->select('users.id', 'users.first_name', 'users.last_name')->whereNull('authors.user_id')->orWhere('authors.user_id', $selectedUser)->orderby('last_name')->get();
+
+    return $this->setStatusCode(201)
+    ->respondUpdatedWithData($selectedUser, $users);
+  }
+
+  /**
+   * Get the author tied to the corresponding user id
+   */
+  public function getAuthorByUser($userId){
+      $author = Author::select('id', 'last_name', 'first_name', 'email', 'phone')->where('user_id', $userId)->first();
+
+      return $this->setStatusCode(201)
+      ->respondUpdatedWithData('Author conntected to user', $author);
   }
 
 }
