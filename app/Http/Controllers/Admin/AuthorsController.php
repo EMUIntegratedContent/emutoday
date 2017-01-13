@@ -34,7 +34,7 @@ class AuthorsController extends Controller
     */
     public function index($atype = null)
     {
-      $authorsPaginated = Author::paginate(10);
+      $authorsPaginated = Author::orderBy('last_name', 'asc')->paginate(10);
       return view('admin.authors.index', compact('author','atype','authorsPaginated'));
     }
 
