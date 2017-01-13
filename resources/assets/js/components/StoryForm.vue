@@ -419,8 +419,8 @@ module.exports  = {
       this.fdate = this.currentDate;
 
       this.author = this.currentUser;
-      this.author.id = 0;
-      this.record.author_id = 0;
+      this.author.id = this.record.user_id;
+      this.record.author_id = this.record.user_id;
       this.recordState = 'new';
     }
     this.fetchTagsList();

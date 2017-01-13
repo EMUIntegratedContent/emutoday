@@ -181,6 +181,12 @@ class StoryController extends ApiController
                 $approval_level = 0;
             }
 
+            if($request->get('author_id') == 0){
+                $author_id = $request->user()->id;
+            } else {
+                $author_id = $request->get('author_id');
+            }
+            
             $story = new Story;
             $story->title       = $request->get('title');
             $story->slug        = $request->get('slug');
@@ -190,7 +196,7 @@ class StoryController extends ApiController
             $story->user_id     = $request->get('user_id');
             $story->content     = $request->get('content');
             $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
-            $story->author_id   = $request->get('author_id', $request->user()->id);
+            $story->author_id   = $author_id;
             $story->contact_id  = $contact_id;
             $story->is_approved = $approval_level;
 

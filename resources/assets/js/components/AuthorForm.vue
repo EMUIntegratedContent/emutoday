@@ -59,6 +59,24 @@
     </div><!-- /.row -->
     <div class="row">
       <div :class="md6col">
+        <!-- Email -->
+        <div v-bind:class="formGroup">
+          <label>Associated User (can be empty)</label>
+          <p class="help-text" id="title-helptext">With which system user is this author associated (optional)?</p>
+          <div class="input-group input-group-flat">
+            <select v-model="record.user_id">
+                <option :value="null">-none-</option>
+                <option v-for="user in users" v-bind:value="user.id" selected="{{ record.user_id == user.id }}">
+                    {{ user.first_name }} {{ user.last_name }}
+                </option>
+            </select>
+          </div>
+          <p v-if="formErrors.user" class="help-text invalid">Not a valid selection.</p>
+        </div>
+      </div><!-- /.col-md-6 -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md6col">
         <div class="form-group">
           <label>Show this author as story contact?
             <input id="is-contact-yes" name="is_contact" type="checkbox" value="1" v-model="record.is_contact"/>
@@ -207,7 +225,11 @@ module.exports = {
     },
     type: {
       default: 'general'
-    }
+    },
+    user: {
+      default: ''
+    },
+    user_id: '',
   },
   data: function() {
     return {
@@ -231,6 +253,7 @@ module.exports = {
         is_contact: '',
         is_principal_contact: '',
         is_principal_magazine_contact: '',
+        user_id: '',
       },
       totalChars: {
         start: 0,
@@ -245,7 +268,7 @@ module.exports = {
         msg: ''
       },
       formInputs: {},
-      formErrors: {}
+      formErrors: {},
     }
   },
   created: function() {
@@ -255,7 +278,7 @@ module.exports = {
       //console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid)
       this.fetchCurrentPrimaryContact()
-      this.fetchCurrentPrimaryMagazineContact()
+      this.fetchCurrentPrimaryMagainzeContact()
     }
   },
   computed: {
@@ -306,6 +329,17 @@ module.exports = {
 
     },
 
+    fetchUsers: function(recid){
+        let route =  (recid) ? '/api/users/' + recid : '/api/users';
+
+        this.$http.get(route)
+
+        .then((response) => {
+          this.$set('users', response.data.newdata)
+        }, (response) => {
+          this.formErrors = response.data.error.message;
+        }).bind(this);
+    },
     fetchSubmittedRecord: function(recid){
       // Sets params for update record, Passes an id to fetchCurrentRecord
       this.recordexists = true;
@@ -321,7 +355,9 @@ module.exports = {
 
       .then((response) => {
         this.$set('record', response.data.data)
-        console.log(response.data);
+        this.user_id = response.data.data.user_id
+
+        this.fetchUsers(this.user_id)
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
@@ -332,7 +368,6 @@ module.exports = {
 
       .then((response) => {
         this.$set('currentPrimaryContact', response.data.newdata.name);
-        console.log(response.data);
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
@@ -343,7 +378,6 @@ module.exports = {
 
       .then((response) => {
         this.$set('currentPrimaryMagazineContact', response.data.newdata.name);
-        console.log(response.data);
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
@@ -355,8 +389,6 @@ module.exports = {
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       this.record.type = this.type;
-      console.log('sd= '+this.record.start_date);
-      console.log('ed= '+this.record.end_date);
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
