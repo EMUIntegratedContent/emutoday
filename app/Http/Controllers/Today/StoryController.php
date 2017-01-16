@@ -59,6 +59,7 @@ class StoryController extends Controller
             // $mainStoryImage = $story->storyImages()->ofType('imagemain')->first();
             $mainStoryImage = null;
             $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
+            $addThisImage = $story->storyImages()->where('image_type','social')->get();
             // dd($mainStoryImage);
             foreach($mainStoryImages as $mainimg){
                 if($mainimg->imgtype->type == 'story') {
@@ -85,14 +86,16 @@ class StoryController extends Controller
             JavaScript::put([
                     'jsis' => 'hi',
                     'mainStoryImage' => $mainStoryImage,
+                    'addThisImage' => $addThisImage,
                     'sidestudentblurbs' => $sideStudentBlurbs,
                     'sideStoryBlurbs' => $sideStoryBlurbs,
                     ]);
                 $storyview = 'public.'.$viewfolder.'.story';
 
-          return view($storyview, compact('story', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs'));
+          // This news story view
+          return view($storyview, compact('story', 'addThisImage', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs'));
         }
-}
+    }
 
     }
     public function index($id = null)

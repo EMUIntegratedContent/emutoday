@@ -127,7 +127,7 @@
         <hr/>
         <p v-if="item.free">Cost: Free</p>
         <p v-else>Cost: {{item.cost | currency }}</p>
-        <p>Participantion: {{eventParticipation}}</p>
+        <p>Participation: {{eventParticipation}}</p>
         <template v-if="item.tickets">
           <p v-if="item.ticket_details_online">For Tickets Visit: <a href="{{item.ticket_details_online | hasHttp}}">{{item.ticket_details_online}}</a></p>
           <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
