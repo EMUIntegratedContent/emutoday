@@ -33,7 +33,7 @@ class ExternalApiController extends ApiController
    *  @param  int    $minicalendar  Events from a certain mini calendar
    *  @return json                  A JSON representation of all events
    */
-  public function getEvents($limit = 10, $startDate = null, $endDate = null, $minicalendar = null){
+  public function getEvents($limit = 10, $startDate = null, $endDate = null, $miniCalendar = null){
     $conditions = array(); //conditions for the where clause
     $conditions[] = array('is_approved', 1);
 
@@ -45,8 +45,8 @@ class ExternalApiController extends ApiController
     if($endDate){
       $conditions[] = array('end_date', '<=', $endDate);
     }
-    if($minicalendar){
-        $conditions[] = array('mini_calendar', $minicalendar);
+    if($miniCalendar){
+        $conditions[] = array('mini_calendar', $miniCalendar);
     }
     $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
     $result = $events->get();
@@ -107,19 +107,19 @@ class ExternalApiController extends ApiController
    * If the 'previous' flag is TRUE, search for dates EARLIER than this.
    * If the 'previous' flag is FALSE, search for dates LATER than this.
    */
-  public function getPrevNextEvents($reference_date, $limit = 10, $previous = true, $minicalendar = null){
+  public function getPrevNextEvents($referenceDate, $limit = 10, $previous = true, $miniCalendar = null){
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
 
       $events = Event::select('*');
 
       if($previous){
-          $conditions[] = array('start_date', '<', $reference_date);
+          $conditions[] = array('start_date', '<', $referenceDate);
       } else {
-          $conditions[] = array('start_date', '>', $reference_date);
+          $conditions[] = array('start_date', '>', $referenceDate);
       }
-      if($minicalendar){
-          $conditions[] = array('mini_calendar', $minicalendar);
+      if($miniCalendar){
+          $conditions[] = array('mini_calendar', $miniCalendar);
       }
       $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
       $result = $events->get();
