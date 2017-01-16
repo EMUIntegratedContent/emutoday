@@ -107,17 +107,23 @@ class ExternalApiController extends ApiController
    * If the 'previous' flag is TRUE, search for dates EARLIER than this.
    * If the 'previous' flag is FALSE, search for dates LATER than this.
    */
-  public function getPrevNextEvents($referenceDate, $limit = 10, $previous = true, $miniCalendar = null){
+  public function getPrevNextEvents($limit = 10, $referenceDate = null, $miniCalendar = null, $previous = true){
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
 
       $events = Event::select('*');
 
-      if($previous){
-          $conditions[] = array('start_date', '<', $referenceDate);
+      // 'previous' flag is only relevant if referenceDate is set
+      if($reference_date){
+          if($previous){
+              $conditions[] = array('start_date', '<', $referenceDate);
+          } else {
+              $conditions[] = array('start_date', '>', $referenceDate);
+          }
       } else {
-          $conditions[] = array('start_date', '>', $referenceDate);
+          $conditions[] = array('start_date', '>=', date('Y-m-d'));
       }
+      // Return only events from this mini calendar
       if($miniCalendar){
           $conditions[] = array('mini_calendar', $miniCalendar);
       }
