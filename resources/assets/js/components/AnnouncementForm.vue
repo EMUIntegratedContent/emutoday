@@ -32,7 +32,7 @@
       </div>
       <!-- /.small-12 columns -->
     </div>
-    <!-- /.row -->
+    <!-- /.row  -->
     <div class="input-group" style="width: 100%">
       <div class="row">
         <div :class="md12col">
@@ -41,7 +41,7 @@
             <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
             <div class="input-group input-group-flat">
               <span :class="inputGroupLabel">http://</span>
-              <input v-model="record.link" class="form-control" v-bind:class="[formErrors.link ? 'invalid-input' : '']" name="link" type="text" maxlength="80">
+              <input v-model="record.link" class="form-control" v-bind:class="[formErrors.link ? 'invalid-input' : '']" name="link" type="text" maxlength="200">
             </div>
             <p v-if="formErrors.link" class="help-text invalid">Please make sure url is properly formed.</p>
           </div>
