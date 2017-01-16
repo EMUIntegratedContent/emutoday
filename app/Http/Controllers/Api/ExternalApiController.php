@@ -7,8 +7,6 @@ use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Story;
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\Input as Input;
 use Carbon\Carbon;
 use League\Fractal\Manager;
@@ -27,12 +25,13 @@ class ExternalApiController extends ApiController
   /**
    *  Get a list of events from the database.
    *
-   *  @param  int    $limit      Limit the number of events
-   *  @param  String $startDate  Start date for events
-   *  @param  String $endDate    End date for events
-   *  @return json               A JSON representation of all events
+   *  @param  int    $limit         Limit the number of events
+   *  @param  String $startDate     Start date for events
+   *  @param  String $endDate       End date for events
+   *  @param  int    $minicalendar  Events from a certain mini calendar
+   *  @return json                  A JSON representation of all events
    */
-   public function getEvents($limit = 10, $startDate = null, $endDate = null){
+  public function getEvents($limit = 10, $startDate = null, $endDate = null, $minicalendar = null){
     $conditions = array(); //conditions for the where clause
     $conditions[] = array('is_approved', 1);
 
@@ -43,6 +42,9 @@ class ExternalApiController extends ApiController
     }
     if($endDate){
       $conditions[] = array('end_date', '<=', $endDate);
+    }
+    if($minicalendar){
+        $conditions[] = array('mini_calendar', $minicalendar);
     }
     $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
     $result = $events->get();
@@ -92,5 +94,34 @@ class ExternalApiController extends ApiController
     $result = $news->get();
 
     return $result->toJson();
+  }
+
+  /**
+   * EMU public calendars (e.g. emich.edu/cob/calendar) often gather events not by date,
+   * but in groups of n-number of events. For example, the COB gets events in groups of 7,
+   * with previous and next arrows to fetch earlier and later events, respectively.
+   *
+   * In this function, return n-number of events based on the reference_date passed as an argument
+   * If the 'previous' flag is TRUE, search for dates EARLIER than this.
+   * If the 'previous' flag is FALSE, search for dates LATER than this.
+   */
+  public function getPrevNextEvents($reference_date, $limit = 10, $previous = true, $minicalendar = null){
+      $conditions = array(); //conditions for the where clause
+      $conditions[] = array('is_approved', 1);
+
+      $events = Event::select('*');
+
+      if($previous){
+          $conditions[] = array('start_date', '<', $reference_date);
+      } else {
+          $conditions[] = array('start_date', '>', $reference_date);
+      }
+      if($minicalendar){
+          $conditions[] = array('mini_calendar', $minicalendar);
+      }
+      $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
+      $result = $events->get();
+
+      return $result->toJson();
   }
 }
