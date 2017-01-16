@@ -59,7 +59,7 @@ class StoryController extends Controller
             // $mainStoryImage = $story->storyImages()->ofType('imagemain')->first();
             $mainStoryImage = null;
             $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
-            $addThisImage = $story->storyImages()->where('image_type','social')->get();
+            $addThisImage = $story->storyImages()->where('image_type','social')->first();
             // dd($mainStoryImage);
             foreach($mainStoryImages as $mainimg){
                 if($mainimg->imgtype->type == 'story') {
