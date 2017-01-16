@@ -114,7 +114,7 @@ class ExternalApiController extends ApiController
       $events = Event::select('*');
 
       // 'previous' flag is only relevant if referenceDate is set
-      if($reference_date){
+      if($referenceDate){
           if($previous){
               $conditions[] = array('start_date', '<', $referenceDate);
           } else {
