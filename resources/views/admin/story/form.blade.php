@@ -71,22 +71,21 @@
                 <div class="col-md-5">
                     @if($story->exists)
                     @if($story->story_type == 'news')
-                            {{-- the story_type 'news' does not have images  --}}
-                                <div class="box box-warning">
-                                    <div class="box-header with-border">
+                      <div class="box box-warning">
+                        <div class="box-header with-border">
 
-                                        <form action="{{ route('admin_promotestory',['id' => $story->id])}}" method="POST">
-                                            {{ csrf_field() }}
-                                            {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
-                                            {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
-                                            {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
+                          <form action="{{ route('admin_promotestory',['id' => $story->id])}}" method="POST">
+                            {{ csrf_field() }}
+                            {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
+                            {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
+                            {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
 
-                                            {!! Form::select('new_story_type', $stypelist, 'story', ['class' => 'form-control']) !!}
-                                            <button class="btn btn-primary" href="#">Promote Story</button>
-                                        </form>
-                                    </div>
-                                </div>
-                    @else
+                            {!! Form::select('new_story_type', $stypelist, 'story', ['class' => 'form-control']) !!}
+                            <button class="btn btn-primary" href="#">Promote Story</button>
+                          </form>
+                        </div>
+                      </div>
+                    @endif
                         {{-- the following story_types may have images  --}}
                             @if($currentRequiredImages !== null)
                                 {{-- display the appropriate for for the required images --}}
@@ -128,7 +127,6 @@
                                 @endif
                             @endif
                     @endif
-                @endif
             @endcan
         </div><!-- /.col-md-4 -->
 
