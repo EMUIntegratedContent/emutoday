@@ -105,7 +105,7 @@ class ExternalApiController extends ApiController
    * If the 'previous' flag is TRUE, search for dates EARLIER than this.
    * If the 'previous' flag is FALSE, search for dates LATER than this.
    */
-  public function getPrevNextEvents($limit = 10, $referenceDate = null, $previous = true, $miniCalendar = null){
+  public function getPrevNextEvents($limit = 10, $referenceDate = null, $previous = false, $miniCalendar = null){
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
 
@@ -118,7 +118,7 @@ class ExternalApiController extends ApiController
               $conditions[] = array('start_date', '<', $referenceDate);
               $orderBy = 'desc';
           } else {
-              $conditions[] = array('start_date', '>=', $referenceDate);
+              $conditions[] = array('start_date', '>', $referenceDate);
           }
       } else {
           $conditions[] = array('start_date', '>=', date('Y-m-d'));
