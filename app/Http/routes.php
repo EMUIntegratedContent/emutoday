@@ -26,7 +26,8 @@ Route::get('/cas/logout', function(){
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
 Route::group(['prefix' => 'externalapi'], function(){
-    Route::get('events/{limit?}/{startDate?}/{endDate?}', 'Api\ExternalApiController@getEvents');
+    Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
+    Route::get('eventsprevnext/{referenceDate}/{limit?}/{previous?}/{miniCalendar?}', 'Api\ExternalApiController@getPrevNextEvents');
     Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');
     Route::get('news/current/{limit?}', 'Api\ExternalApiController@getCurrentNews');
 });
