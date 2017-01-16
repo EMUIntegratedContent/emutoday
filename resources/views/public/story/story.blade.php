@@ -4,13 +4,13 @@
 @section('addthisMeta')
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{trim(Request::fullUrl())}}" />
-@if($story->type == 'news' && $addThisImage[0]->title)
+@if($story->story_type == 'news' && $addThisImage[0]->title)
   <meta property="og:title" content="{{$addThisImage[0]->title}}" />
 @else
   <meta property="og:title" content="{{trim($story->title)}}" />
 @endif
 <meta property="og:description" content="{{trim($story->subtitle)}}" />
-  @if($addThisImage[0])
+  @if($story->story_type == 'news' && $addThisImage[0])
   <meta property="og:image" content="http://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage[0]->present()->mainImageURL)}}"/>
   <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage[0]->present()->mainImageURL)}}"/>
   <meta property="og:image:width" content="400" />
@@ -27,7 +27,6 @@
   <meta property="og:image:height" content="150" />
   @endif
 @endsection
-
 
 @section('content')
   <div id="news-story-bar">
@@ -98,3 +97,4 @@
   @parent
 
   @endsection
+
