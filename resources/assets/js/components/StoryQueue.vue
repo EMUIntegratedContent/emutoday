@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+        <h2 v-if="loading" class="col-md-12">Loading. Please Wait...</h2>
         <div class="col-md-4">
             <h4>Unapproved<p></p></h4>
             <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
@@ -136,6 +137,7 @@ export default  {
         // this.currentDate = moment().format();
     },
     ready() {
+        this.loading = true;
         this.fetchAllRecords();
     },
     data: function() {
@@ -157,6 +159,7 @@ export default  {
             items_approved: [],
             items_live: [],
             currentTypesFilter: [],
+            loading: true,
         }
     },
     computed: {
@@ -407,6 +410,7 @@ export default  {
 
             .then((response) =>{
                 this.$set('allitems', response.data.data)
+                this.loading = false;
             }, (response) => {
                 //error callback
                 console.log("ERRORS");

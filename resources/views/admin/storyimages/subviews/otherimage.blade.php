@@ -32,6 +32,7 @@
                             </div>
 
 
+                            @if($storyImage->image_type !== 'social')
                             <div class="form-group">
                                 {!! Form::label('title', 'Title/Header') !!}
                                 {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
@@ -62,6 +63,13 @@
                                 {!! Form::text('link_text', null, ['class' => 'form-control input-sm']) !!}
                                 <span class="help-block">Text for the external link</span>
                             </div>
+                            @else
+                            <div class="form-group">
+                                {!! Form::label('title', 'Title') !!}
+                                {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+                                <span class="help-block">Optional Title for Social Links (otherwise chooses story title)</span>
+                            </div>
+                            @endif
 
 
 

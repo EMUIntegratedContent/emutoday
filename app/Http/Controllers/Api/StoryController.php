@@ -48,14 +48,13 @@ class StoryController extends ApiController
                    // dd($user->id);
                    $storys = $user->storys()->get();
                } else {
-
                    if($qtype === 'queueall'){
                      $storys  = Story::get();
                    } else {
                       $storys = Story::where('story_type', $stype)->get();
                    }
-
                }
+
                $fractal = new Manager();
                // $storys = Story::all();
                $resource = new Fractal\Resource\Collection($storys->all(), new FractalStoryTransformerModel);
@@ -70,7 +69,6 @@ class StoryController extends ApiController
     // this.$http.get('/api/story/appLoad')
     public function queueload($stype)
     {
-
         if (\Auth::check()) {
             $user = \Auth::user();
             // $storys = $this->story->newQuery();
@@ -84,7 +82,6 @@ class StoryController extends ApiController
                 } else {
                     $storys = Story::where('story_type', $stype)->get();
                 }
-
             }
             $fractal = new Manager();
             // $storys = Story::all();
