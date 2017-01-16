@@ -7,8 +7,6 @@ use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Story;
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\Input as Input;
 use Carbon\Carbon;
 use League\Fractal\Manager;
