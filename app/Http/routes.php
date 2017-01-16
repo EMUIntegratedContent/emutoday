@@ -27,7 +27,7 @@ Route::get('/cas/logout', function(){
 
 Route::group(['prefix' => 'externalapi'], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
-    Route::get('eventsprevnext/{referenceDate}/{limit?}/{previous?}/{miniCalendar?}', 'Api\ExternalApiController@getPrevNextEvents');
+    Route::get('eventsprevnext/{limit?}/{referenceDate?}/{miniCalendar?}/{previous?}', 'Api\ExternalApiController@getPrevNextEvents');
     Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');
     Route::get('news/current/{limit?}', 'Api\ExternalApiController@getCurrentNews');
 });
