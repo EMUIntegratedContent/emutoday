@@ -75,10 +75,7 @@
             <p>Featured: {{item.is_featured}}</p>
             <p>Live: {{item.is_live}}</p>
             <p>Archived: {{item.is_archived}}</p>
-            <p>Tags: {{item.tags | json}}</p>
             <p>Start Date: {{item.start_date}}</p>
-            <p>User: {{item.user | json}}</p>
-            <p>Author: {{item.author | json}}</p>
             <template v-if="isPartOfHub">
                 <div class="btn-group btn-xs form-inline">
                     <div class="form-group">
@@ -328,7 +325,6 @@ module.exports  = {
             currentDate: {},
             priorityOptions: [],
             record: {
-                user_id : '',
                 title: '',
                 story_type: '',
                 start_date: ''
@@ -491,19 +487,19 @@ module.exports  = {
             // }
         },
         homeIcon: function() {
-              if (this.item.tags.length > 0){
-
-
-              if (this.item.tags.indexOf('homepage') >= 0){
-                  hIcon = 'fa fa-home'
-              } else {
-                  hIcon = ''
-              }
-                  } else {
-                      hIcon = ''
-                  }
-
-                      return hIcon
+              // if (this.item.tags.length > 0){
+              //
+              //
+              // if (this.item.tags.indexOf('homepage') >= 0){
+              //     hIcon = 'fa fa-home'
+              // } else {
+              //     hIcon = ''
+              // }
+              //     } else {
+              //         hIcon = ''
+              //     }
+              //
+              //         return hIcon
                   },
                  archivedIcon: function() {
 
