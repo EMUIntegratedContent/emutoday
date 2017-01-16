@@ -127,7 +127,7 @@ class ExternalApiController extends ApiController
       if($miniCalendar){
           $conditions[] = array('mini_calendar', $miniCalendar);
       }
-      $events->where($conditions)->limit($limit)->orderBy(['start_date'=> $orderBy, 'start_date' => 'asc']);
+      $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
       $result = $events->get();
 
       return $result->toJson();
