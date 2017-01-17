@@ -145,7 +145,7 @@ class ExternalApiController extends ApiController
       return $return;
   }
 
-  public function getEventsByDates($limit = 10, $referenceDate = null, $previous = false, $miniCalendar = null, $includeSelectedDate = false){
+  public function getEventsByDates($limit = 10, $referenceDate = null, $previous = false, $includeSelectedDate = false, $miniCalendar = null){
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
 
