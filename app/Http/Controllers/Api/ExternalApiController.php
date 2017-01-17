@@ -125,7 +125,6 @@ class ExternalApiController extends ApiController
       }
       // Return only events from this mini calendar
       if($miniCalendar){
-          $conditions[] = array('mini_calendar', $miniCalendar);
           $events = MiniCalendar::find($miniCalendar)->events()->where($conditions);
 
           $result = $events->get();
