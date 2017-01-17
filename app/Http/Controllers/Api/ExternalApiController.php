@@ -182,7 +182,7 @@ class ExternalApiController extends ApiController
               $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date])->orderBy('title', 'asc');
               $events = $events->get();
 
-              $eventsArr[] = array('date' => $date->startDate, 'events' => $events);
+              $eventsArr[] = array('date' => $date->start_date, 'events' => $events);
           }
           $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
           return $return;
