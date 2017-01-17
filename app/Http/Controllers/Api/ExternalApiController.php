@@ -126,15 +126,15 @@ class ExternalApiController extends ApiController
       // Return only events from this mini calendar
       if($miniCalendar){
           $conditions[] = array('mini_calendar', $miniCalendar);
+          $events = MiniCalendar::find($miniCalendar)->events->toJson();
 
-          $events = MiniCalendar::find($miniCalendar)->events();
-          $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
-
-      } else {
-          $events = Event::select('*');
-          $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy)->get();
+          return $events;
       }
 
-      return $events->toJson();;
+      $events = Event::select('*');
+      $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
+      $result = $events->get();
+
+      return $result->toJson();
   }
 }
