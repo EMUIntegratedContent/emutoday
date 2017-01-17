@@ -135,10 +135,12 @@ class ExternalApiController extends ApiController
 
       $events = Event::select('*');
       //$events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
-      $events->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
+      $events->where($conditions);
+      $numEventsGross = $events->count();
+      $events->take($limit)->orderBy('start_date', $orderBy);
       $result = $events->get();
 
-      $return = ['events' => $result, 'morePrev' => false, 'moreNext' => true, 'numEventsGross' => count($result)];
+      $return = ['events' => $result, 'morePrev' => false, 'moreNext' => true, 'numEventsGross' => $numEventsGross];
 
       return $return;
   }
