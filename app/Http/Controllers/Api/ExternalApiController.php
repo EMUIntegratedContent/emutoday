@@ -145,11 +145,18 @@ class ExternalApiController extends ApiController
       return $return;
   }
 
-  public function getEventsByDates($limit = 10, $referenceDate = null, $previous = false, $miniCalendar = null){
+  public function getEventsByDates($limit = 10, $referenceDate = null, $previous = false, $miniCalendar = null, $includeSelectedDate = false){
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
 
       $orderBy = 'asc';
+
+      // includeSelectedDate variable gives the option of including the $referenceDate in the query
+      if($includeSelectedDate){
+          $dateOperator = '=';
+      } else {
+          $dateOperator = '';
+      }
 
       // 'previous' flag is only relevant if referenceDate is set
       if($referenceDate){
@@ -157,13 +164,13 @@ class ExternalApiController extends ApiController
           $currentDate = $referenceDate;
 
           if($previous){
-              $conditions[] = array('start_date', '<', $referenceDate);
+              $conditions[] = array('start_date', '<'.$dateOperator, $referenceDate);
               $orderBy = 'desc'; //start with most recent rather than oldest
           } else {
-              $conditions[] = array('start_date', '>', $referenceDate);
+              $conditions[] = array('start_date', '>'.$dateOperator, $referenceDate);
           }
       } else {
-          $conditions[] = array('start_date', '>', date('Y-m-d'));
+          $conditions[] = array('start_date', '>'.$dateOperator, date('Y-m-d'));
       }
 
       // If minicalendar is set
