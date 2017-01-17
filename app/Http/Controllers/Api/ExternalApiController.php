@@ -182,19 +182,27 @@ class ExternalApiController extends ApiController
               $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
               $events = $events->get();
 
-              $eventsArr[] = array('date' => $date->start_date, 'events' => $events);
+              $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
           }
           $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
           return $return;
       }
 
+      // No minicalendar set
       $dates = Event::distinct()->select('start_date')->where($conditions);
-      $numEventsGross = $dates->count();
+      $numDatesGross = $dates->count();
       $dates->take($limit)->orderBy('start_date', $orderBy);
       $result = $dates->get();
 
-      $return = ['events' => $result, 'numDatesGross' => $numDatesGross];
+      // Get all the events that fall on each date
+      $eventsArray = array();
+      foreach($dates as $date){
+          $events = Event::select(*)->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
+          $events = $events->get();
 
+          $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+      }
+      $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
       return $return;
   }
 }
