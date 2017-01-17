@@ -160,9 +160,6 @@ class ExternalApiController extends ApiController
 
       // 'previous' flag is only relevant if referenceDate is set
       if($referenceDate){
-          $startDates = array();
-          $currentDate = $referenceDate;
-
           if($previous){
               $conditions[] = array('start_date', '<'.$dateOperator, $referenceDate);
               $orderBy = 'desc'; //start with most recent rather than oldest
