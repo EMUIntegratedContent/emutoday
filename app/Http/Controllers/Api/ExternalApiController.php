@@ -151,19 +151,28 @@ class ExternalApiController extends ApiController
 
       $orderBy = 'asc';
 
+      // 'previous' flag is only relevant if referenceDate is set
       if($referenceDate){
           $startDates = array();
           $currentDate = $referenceDate;
 
-          $conditions[] = array('start_date', '>=', $referenceDate);
-          $dates = Event::distinct()->select('start_date')->where($conditions);
-          $numEventsGross = $dates->count();
-          $dates->take($limit)->orderBy('start_date', $orderBy);
-          $result = $dates->get();
-
-          $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
-
-          return $return;
+          if($previous){
+              $conditions[] = array('start_date', '<=', $referenceDate);
+              $orderBy = 'desc';
+          } else {
+              $conditions[] = array('start_date', '>=', $referenceDate);
+          }
+      } else {
+          $conditions[] = array('start_date', '>=', date('Y-m-d'));
       }
+
+      $dates = Event::distinct()->select('start_date')->where($conditions);
+      $numEventsGross = $dates->count();
+      $dates->take($limit)->orderBy('start_date', $orderBy);
+      $result = $dates->get();
+
+      $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
+
+      return $return;
   }
 }
