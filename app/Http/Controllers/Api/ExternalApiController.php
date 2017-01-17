@@ -127,7 +127,7 @@ class ExternalApiController extends ApiController
       if($miniCalendar){
           $conditions[] = array('mini_calendar', $miniCalendar);
 
-          $events = MiniCalendar::find($miniCalendar)->events;
+          $events = MiniCalendar::find($miniCalendar)->events();
           $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
 
       } else {
