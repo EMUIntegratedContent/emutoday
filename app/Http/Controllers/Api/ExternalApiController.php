@@ -98,53 +98,23 @@ class ExternalApiController extends ApiController
   }
 
   /**
-   * EMU public calendars (e.g. emich.edu/cob/calendar) often gather events not by date,
-   * but in groups of n-number of events. For example, the COB gets events in groups of 7,
-   * with previous and next arrows to fetch earlier and later events, respectively.
+   * EMU public calendars (e.g. emich.edu/cob/calendar) often gather events not by n-number of dates,
+   * For example, the COB gets events in groups of 7 dates (a date can have any number of events),
+   * with previous and next arrows to fetch earlier and later dates, respectively.
    *
-   * In this function, return n-number of events based on the reference_date passed as an argument
+   * In this function, return n-number of dates based on the reference_date passed as an argument
    * If the 'previous' flag is TRUE, search for dates EARLIER than this.
    * If the 'previous' flag is FALSE, search for dates LATER than this.
+   *
+   * @param int       $limit                     How many dates to get events for.
+   * @param String    $referenceDate             The date to search before or after.
+   * @param boolean   $previous                  TRUE = search past dates in relation to $referenceDate.
+   *                                             FALSE = search future dates in relation to $referenceDate.
+   * @param boolean   $includeSelectedDate       TRUE = search dates that include the $referenceDate.
+   *                                             FALSE = do not search dates that include the $referenceDate.
+   * @param int       $miniCalendar              The ID of the miniCalendar to filter dates and events by.
+   * @return Array                               The array of dates with corresponding events and the number of total results found.
    */
-  public function getPrevNextEvents($limit = 10, $referenceDate = null, $previous = false, $miniCalendar = null){
-      $conditions = array(); //conditions for the where clause
-      $conditions[] = array('is_approved', 1);
-
-      $orderBy = 'asc';
-
-      // 'previous' flag is only relevant if referenceDate is set
-      if($referenceDate){
-          if($previous){
-              $conditions[] = array('start_date', '<=', $referenceDate);
-              $orderBy = 'desc';
-          } else {
-              $conditions[] = array('start_date', '>=', $referenceDate);
-          }
-      } else {
-          $conditions[] = array('start_date', '>=', date('Y-m-d'));
-      }
-      // Return only events from this mini calendar
-      if($miniCalendar){
-          $events = MiniCalendar::find($miniCalendar)->events();
-          $numEventsGross = $events->count();
-          $events->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
-          $result = $events->get();
-
-          $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
-          return $return;
-      }
-
-      // No mini calendar given? Return matching events regardless of calendar.
-      $events = Event::select('*');
-      $events->where($conditions);
-      $numEventsGross = $events->count();
-      $events->take($limit)->orderBy('start_date', $orderBy);
-      $result = $events->get();
-
-      $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
-      return $return;
-  }
-
   public function getEventsByDates($limit = 10, $referenceDate = null, $previous = false, $includeSelectedDate = false, $miniCalendar = null){
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
