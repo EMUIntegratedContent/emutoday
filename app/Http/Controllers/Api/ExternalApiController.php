@@ -173,7 +173,7 @@ class ExternalApiController extends ApiController
 
           $numDatesGross = $dates->count();
 
-          $dates->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
+          $dates->where($conditions)->take($limit)->orderBy('start_date', $orderBy)->groupBy('start_date');
           $dates = $dates->get();
 
           // Get all the events that fall on each date
