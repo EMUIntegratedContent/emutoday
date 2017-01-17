@@ -145,7 +145,21 @@ class ExternalApiController extends ApiController
       return $return;
   }
 
-  protected function doMoreExist($conditions = array(), $past = false){
+  public function getEventsByDates($limit = 10, $referenceDate = null, $previous = false, $miniCalendar = null){
+      $conditions = array(); //conditions for the where clause
+      $conditions[] = array('is_approved', 1);
 
+      $orderBy = 'asc';
+
+      if($referenceDate){
+          $startDates = array();
+          $currentDate = $referenceDate;
+
+          $conditions[] = array('start_date', '>=', $referenceDate);
+          $dates = Events::distinct()->select('start_date')->where($conditions)->take($limit)->orderBy($orderBy);
+          $result = $dates->get();
+
+          return $result->toJson();
+      }
   }
 }
