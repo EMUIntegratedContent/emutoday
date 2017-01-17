@@ -135,6 +135,8 @@ class ExternalApiController extends ApiController
       $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
       $result = $events->get();
 
-      return $result->toJson();
+      $return = ['events' => $events->toJson()];
+
+      return $return;
   }
 }
