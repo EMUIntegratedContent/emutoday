@@ -125,12 +125,12 @@ class ExternalApiController extends ApiController
       }
       // Return only events from this mini calendar
       if($miniCalendar){
-          $events = MiniCalendar::find($miniCalendar)->events()->where($conditions);
+          $events = MiniCalendar::find($miniCalendar)->events();
           $numEventsGross = $events->count();
-          $events->take($limit)->orderBy('start_date', $orderBy);
+          $events->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
           $result = $events->get();
 
-          $return = ['events' => $result, 'morePrev' => true, 'moreNext' => true, 'numEventsGross' => $numEventsGross];
+          $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
           return $return;
       }
 
@@ -141,7 +141,7 @@ class ExternalApiController extends ApiController
       $events->take($limit)->orderBy('start_date', $orderBy);
       $result = $events->get();
 
-      $return = ['events' => $result, 'morePrev' => true, 'moreNext' => true, 'numEventsGross' => $numEventsGross];
+      $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
       return $return;
   }
 
