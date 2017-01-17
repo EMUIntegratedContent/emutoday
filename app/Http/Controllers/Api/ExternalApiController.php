@@ -178,7 +178,7 @@ class ExternalApiController extends ApiController
           $dates = $dates->get();
 
           // Get all the events that fall on each date
-          $eventsArray = array();
+          $eventsArr = array();
           foreach($dates as $date){
               $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
               $events = $events->get();
@@ -198,7 +198,7 @@ class ExternalApiController extends ApiController
       $result = $dates->get();
 
       // Get all the events that fall on each date
-      $eventsArray = array();
+      $eventsArr = array();
       foreach($dates as $date){
           $events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
           $events = $events->get();
