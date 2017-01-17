@@ -166,6 +166,16 @@ class ExternalApiController extends ApiController
           $conditions[] = array('start_date', '>=', date('Y-m-d'));
       }
 
+      if($miniCalendar){
+          $events = MiniCalendar::find($miniCalendar)->events()->distinct()->select('start_date');
+          $numEventsGross = $events->count();
+          $events->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
+          $result = $events->get();
+
+          $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
+          return $return;
+      }
+
       $dates = Event::distinct()->select('start_date')->where($conditions);
       $numEventsGross = $dates->count();
       $dates->take($limit)->orderBy('start_date', $orderBy);
