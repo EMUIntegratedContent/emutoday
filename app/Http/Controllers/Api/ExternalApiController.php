@@ -132,10 +132,10 @@ class ExternalApiController extends ApiController
       }
 
       $events = Event::select('*');
-      $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
-      $result = $events->get();
+      $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy)->get();
+      $result = $events->toJson();
 
-      $return = ['events' => $events->toJson(), 'morePrev' => false, 'moreNext' => true];
+      $return = ['events' => $result, 'morePrev' => false, 'moreNext' => true];
 
       return $return;
   }
