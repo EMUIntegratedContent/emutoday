@@ -195,7 +195,7 @@ class ExternalApiController extends ApiController
 
       // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
       $dates->take($limit)->orderBy('start_date', $orderBy)->groupBy('start_date');;
-      $result = $dates->get();
+      $dates = $dates->get();
 
       // Get all the events that fall on each date
       $eventsArr = array();
