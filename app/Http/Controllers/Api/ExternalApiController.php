@@ -157,13 +157,13 @@ class ExternalApiController extends ApiController
           $currentDate = $referenceDate;
 
           if($previous){
-              $conditions[] = array('start_date', '<=', $referenceDate);
-              $orderBy = 'desc';
+              $conditions[] = array('start_date', '<', $referenceDate);
+              $orderBy = 'desc'; //start with most recent rather than oldest
           } else {
-              $conditions[] = array('start_date', '>=', $referenceDate);
+              $conditions[] = array('start_date', '>', $referenceDate);
           }
       } else {
-          $conditions[] = array('start_date', '>=', date('Y-m-d'));
+          $conditions[] = array('start_date', '>', date('Y-m-d'));
       }
 
       // If minicalendar is set
@@ -173,6 +173,7 @@ class ExternalApiController extends ApiController
 
           $numDatesGross = $dates->count();
 
+          // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
           $dates->where($conditions)->take($limit)->orderBy('start_date', $orderBy)->groupBy('start_date');
           $dates = $dates->get();
 
@@ -181,7 +182,7 @@ class ExternalApiController extends ApiController
           foreach($dates as $date){
               $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
               $events = $events->get();
-
+              //add the day's events into the eventsArray
               $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
           }
           $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
@@ -191,7 +192,9 @@ class ExternalApiController extends ApiController
       // No minicalendar set
       $dates = Event::distinct()->select('start_date')->where($conditions);
       $numDatesGross = $dates->count();
-      $dates->take($limit)->orderBy('start_date', $orderBy);
+
+      // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
+      $dates->take($limit)->orderBy('start_date', $orderBy)->groupBy('start_date');;
       $result = $dates->get();
 
       // Get all the events that fall on each date
@@ -199,7 +202,7 @@ class ExternalApiController extends ApiController
       foreach($dates as $date){
           $events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
           $events = $events->get();
-
+          //add the day's events into the eventsArray
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
