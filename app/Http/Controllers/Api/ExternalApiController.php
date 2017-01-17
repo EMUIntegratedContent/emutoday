@@ -6,6 +6,7 @@ namespace Emutoday\Http\Controllers\Api;
 use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Story;
+use Emutoday\MiniCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input as Input;
 use Carbon\Carbon;
@@ -110,7 +111,6 @@ class ExternalApiController extends ApiController
       $conditions[] = array('is_approved', 1);
 
       $orderBy = 'asc';
-      $events = Event::select('*');
 
       // 'previous' flag is only relevant if referenceDate is set
       if($referenceDate){
@@ -126,10 +126,15 @@ class ExternalApiController extends ApiController
       // Return only events from this mini calendar
       if($miniCalendar){
           $conditions[] = array('mini_calendar', $miniCalendar);
-      }
-      $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
-      $result = $events->get();
 
-      return $result->toJson();
+          $events = MiniCalendar::find($miniCalendar)->events;
+          $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
+
+      } else {
+          $events = Event::select('*');
+          $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy)->get();
+      }
+
+      return $events->toJson();;
   }
 }
