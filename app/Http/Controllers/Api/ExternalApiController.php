@@ -169,7 +169,7 @@ class ExternalApiController extends ApiController
       // If minicalendar is set
       if($miniCalendar){
           // The goal here is to find a distinct number of dates that matches the $limit supplied
-          $dates = MiniCalendar::find($miniCalendar)->events()->select(DB::raw(DISTINCT('start_date')));
+          $dates = MiniCalendar::find($miniCalendar)->events()->select(\DB::raw(DISTINCT('start_date')));
 
           $numDatesGross = $dates->count();
 
