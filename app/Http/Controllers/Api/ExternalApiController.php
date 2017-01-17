@@ -197,7 +197,7 @@ class ExternalApiController extends ApiController
       // Get all the events that fall on each date
       $eventsArray = array();
       foreach($dates as $date){
-          $events = Event::select(*)->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
+          $events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
           $events = $events->get();
 
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
