@@ -166,13 +166,25 @@ class ExternalApiController extends ApiController
           $conditions[] = array('start_date', '>=', date('Y-m-d'));
       }
 
+      // If minicalendar is set
       if($miniCalendar){
-          $events = MiniCalendar::find($miniCalendar)->events()->distinct()->select('start_date');
-          $numEventsGross = $events->count();
-          $events->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
-          $result = $events->get();
+          // The goal here is to find a distinct number of dates that matches the $limit supplied
+          $dates = MiniCalendar::find($miniCalendar)->events()->distinct()->select('start_date');
 
-          $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
+          $numDatesGross = $dates->count();
+
+          $dates->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
+          $dates = $dates->get();
+
+          // Get all the events that fall on each date
+          $eventsArray = array();
+          foreach($dates as $date){
+              $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date])->orderBy('title', 'asc');
+              $events = $events->get();
+
+              $eventsArr[$date] = $events;
+          }
+          $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
           return $return;
       }
 
@@ -181,7 +193,7 @@ class ExternalApiController extends ApiController
       $dates->take($limit)->orderBy('start_date', $orderBy);
       $result = $dates->get();
 
-      $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
+      $return = ['events' => $result, 'numDatesGross' => $numDatesGross];
 
       return $return;
   }
