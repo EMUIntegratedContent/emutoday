@@ -125,18 +125,25 @@ class ExternalApiController extends ApiController
       }
       // Return only events from this mini calendar
       if($miniCalendar){
-          //$events = MiniCalendar::find($miniCalendar)->events()->where($conditions);
+          $events = MiniCalendar::find($miniCalendar)->events()->where($conditions);
 
-          //$result = $events->get();
-          //return $result->toJson();
+          $result = $events->get();
+
+          $return = ['events' => $result, 'morePrev' => false, 'moreNext' => true];
+          return $return;
       }
 
       $events = Event::select('*');
-      $events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
+      //$events->where($conditions)->limit($limit)->orderBy('start_date', $orderBy);
+      $events->where($conditions)->take($limit)->orderBy('start_date', $orderBy);
       $result = $events->get();
 
-      $return = ['events' => $result, 'morePrev' => false, 'moreNext' => true];
+      $return = ['events' => $result, 'morePrev' => false, 'moreNext' => true, 'numEventsGross' => count($result)];
 
       return $return;
+  }
+
+  protected function doMoreExist($conditions = array(), $past = false){
+
   }
 }
