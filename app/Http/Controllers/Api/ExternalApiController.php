@@ -158,7 +158,7 @@ class ExternalApiController extends ApiController
           $conditions[] = array('start_date', '>=', $referenceDate);
           $dates = Event::distinct()->select('start_date')->where($conditions);
           $numEventsGross = $dates->count();
-          $dates->take($limit)->orderBy($orderBy);
+          $dates->take($limit)->orderBy('start_date', $orderBy);
           $result = $dates->get();
 
           $return = ['events' => $result, 'numEventsGross' => $numEventsGross];
