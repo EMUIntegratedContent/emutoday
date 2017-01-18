@@ -22,7 +22,7 @@
         </div>
         <div id="featured-text" class="large-5 medium-12 small-12 columns">
           <h3>{{$heroImg->title}}</h3>
-          <p>{{$heroImg->caption}}</p>
+          <p>{{$heroImg->teaser}}</p>
           <p class="button-group"><a href="/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}" class="button">{{$heroImg->moretext}}</a></p>
         </div>
       </div>
