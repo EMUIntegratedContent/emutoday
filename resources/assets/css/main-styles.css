@@ -929,7 +929,7 @@ ul.accordion li{
     background-color: #f2f2f3;
     /*padding: 25px 25px 5px 25px;*/
     height: 177px;
-    overflow: hidden;
+    overflow: scroll;
     border:1.5rem solid #f2f2f3;
 }
 #special-notice-container h3{
