@@ -35,6 +35,7 @@ class ExternalApiController extends ApiController
   public function getEvents($limit = 10, $startDate = null, $endDate = null, $miniCalendar = null){
     $conditions = array(); //conditions for the where clause
     $conditions[] = array('is_approved', 1);
+    $conditions[] = array('is_canceled', 0);
 
     if($startDate){
       $conditions[] = array('start_date', '>=', $startDate);
