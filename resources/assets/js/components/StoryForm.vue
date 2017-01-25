@@ -52,7 +52,7 @@
       </div><!-- /.small-12 columns -->
     </div><!-- /.row -->
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <div v-show="saveAuthorMessage.isOk"  class="alert alert-success alert-dismissible">
           <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
           <h5>{{saveAuthorMessage.msg}}</h5>
@@ -69,6 +69,7 @@
             placeholder="Author (leaving this blank will set you as the author)"
             label="name"> </v-select>
         </div>
+        <!--
         <div v-if="needAuthor" class="form-inline author">
           <div class="form-group">
             <label for="author-first-name">First Name <span v-if="authorErrors.first_name" class="help-text invalid"> is Required</span></label>
@@ -88,7 +89,8 @@
           </div>
           <div class="form-group save-author">
             <button @click.prevent="saveAuthor" href="#" class="btn btn-primary btn-sm">{{authorBtnLabel}}</button>
-          </div><!-- /.form-group -->
+          </div>
+        -->
         </div>
       </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
