@@ -136,10 +136,17 @@ checkAndSetStoryPositions = function() {
             // tarCell = document.getElementById('emuhome0');
 
         } else {
-
-                document.getElementById('emuhome'+ sop[sindex].pivot.page_position).appendChild(
-                document.getElementById('drag-'+ sop[sindex].id)
-            );
+            if (sop[sindex].is_featured) {
+            // Front page able story (need to 'x' at the end of id
+              document.getElementById('emuhome'+ sop[sindex].pivot.page_position).appendChild(
+                  document.getElementById('drag-'+ sop[sindex].id + 'x')
+              );
+            } else {
+            // other story
+              document.getElementById('emuhome'+ sop[sindex].pivot.page_position).appendChild(
+                  document.getElementById('drag-'+ sop[sindex].id)
+              );
+            }
             // srcCell = document.getElementById('drag-'+ sop[sindex].id);
             // tarCell = document.getElementById('emuhome' + sop[sindex].pivot.page_position);
         }
@@ -397,7 +404,7 @@ arraysEqual = function(a, b) {
 $('#table2 table').on('click', '.fa-pencil', function (ev) {
     ev.preventDefault();
     ev.stopPropagation();
-    
+
     var parentBtnData = $(this).parent().data();
     var parentBtnId = parentBtnData['id'];
     var parentBtnStype = parentBtnData['stype'];
