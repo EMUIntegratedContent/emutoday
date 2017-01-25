@@ -255,20 +255,25 @@ class StoryController extends ApiController
      */
     public function updateItem($id, Request $request)
       {
-          $story = Story::findOrFail($id);
-          $story->is_approved = $request->get('is_approved',0);
-          $story->priority = $request->get('priority', 0);
-          $story->is_archived = $request->get('is_archived',0);
+        if (\Auth::check()) {
+          $user = \Auth::user();
+          if ($user->hasRole('admin')){
+            $story = Story::findOrFail($id);
+            $story->is_approved = $request->get('is_approved',0);
+            $story->priority = $request->get('priority', 0);
+            $story->is_archived = $request->get('is_archived',0);
 
-
-          if($story->save()) {
-
+            if($story->save()) {
               $returnData = ['is_approved' => $story->is_approved,'priority'=> $story->priority, 'is_archived'=> $story->is_archived];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('story patched',$returnData );
-                  // return $this->setStatusCode(201)
-                  //             ->respondUpdated('Announcement successfully Updated!');
-                          }
+              // return $this->setStatusCode(201)
+              //             ->respondUpdated('Announcement successfully Updated!');
+            }
+          } else {
+            return false;
+          }
+        }
       }
     /**
      * Update the specified resource in storage.

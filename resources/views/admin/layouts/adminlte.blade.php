@@ -57,6 +57,7 @@
         </div>
 
         <!-- search form (Optional) -->
+        @can('admin', $currentUser)
         <form action="/admin/search" method="GET" id="admin-search-form" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="searchterm" id="searchterm" class="form-control" placeholder="Search...">
@@ -66,6 +67,7 @@
                 </span>
             </div>
         </form>
+        @endcan
         <!-- /.search form -->
 
 <!-- ********************************
