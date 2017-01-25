@@ -50,7 +50,7 @@
       <div class="row" v-if="generalForm">
         <div :class="md4col">
           <div v-bind:class="formGroup">
-            <label>Meaning desciption for Link</label>
+            <label>Meaning description for Link</label>
             <p class="help-text" id="link_txt-helptext">(ex. Announcement webpage)</p>
             <input v-model="record.link_txt" class="form-control" v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text" maxlength="80">
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
