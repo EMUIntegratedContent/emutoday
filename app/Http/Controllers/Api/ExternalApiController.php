@@ -35,8 +35,7 @@ class ExternalApiController extends ApiController
   public function getEvents($limit = 10, $startDate = null, $endDate = null, $miniCalendar = null){
     $conditions = array(); //conditions for the where clause
     $conditions[] = array('is_approved', 1);
-
-    $events = Event::select('*');
+    $conditions[] = array('is_canceled', 0);
 
     if($startDate){
       $conditions[] = array('start_date', '>=', $startDate);
@@ -45,11 +44,13 @@ class ExternalApiController extends ApiController
       $conditions[] = array('end_date', '<=', $endDate);
     }
     if($miniCalendar){
-        $conditions[] = array('mini_calendar', $miniCalendar);
+        $events = MiniCalendar::find($miniCalendar)->events()->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
+    } else {
+        $events = Event::select('*');
+        $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
     }
-    $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
-    $result = $events->get();
 
+    $result = $events->get();
     return $result->toJson();
   }
 
