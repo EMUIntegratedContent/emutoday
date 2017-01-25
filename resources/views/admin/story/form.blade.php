@@ -129,8 +129,8 @@
                     @endif
             @endcan
         </div><!-- /.col-md-4 -->
-
 </div><!-- /.row -->
+<br id='pageTaller' style='margin-bottom:1000px;'/>{{-- Awful fix for dropdown author/contact menus being cut off by page end --}}
 @endsection
 @section('footer-plugin')
     @parent
