@@ -235,6 +235,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('announcement/archives', ['as' => 'admin.announcement.archives', 'uses' => 'Admin\AnnouncementController@archives']);
         Route::get('announcement/queue/{atype?}', ['as' => 'admin.announcement.queue', 'uses' => 'Admin\AnnouncementController@queue']);
         Route::get('announcement/form/{atype?}', ['as' => 'admin.announcement.form', 'uses' => 'Admin\AnnouncementController@form']);
+        Route::get('announcement/{id}/unarchive', ['as' => 'admin.announcement.unarchive', 'uses' => 'Admin\AnnouncementController@unarchive']);
 
         Route::resource('announcement', 'Admin\AnnouncementController');
 

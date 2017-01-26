@@ -78,15 +78,29 @@ class AnnouncementController extends Controller
         return view('admin.announcement.form', compact('announcement', 'atype'));
     }
 
-    public function archives($atype = null){
-      if (is_null($atype)) {
-          $atype = 'general';
-      } else {
-          $atype = $atype;
-      }
-      $announcement = $this->announcement;
+    public function archives($archivetype = 'general'){
+      $announcements = $this->announcement->where('is_archived', 1)->paginate(10);
 
-      return view('admin.announcement.archives', compact('announcement','atype'));
+      return view('admin.announcement.archives', compact('announcements'));
+    }
+
+    public function unarchive($id){
+        $announcement = $this->announcement->findOrFail($id);
+
+        if($announcement){
+            $announcement->is_archived = 0;
+            $announcement->save();
+
+            \Session::flash('success_message', 'Announcement has been unarchived.');
+            \Session::flash('success_message_unarchived_id', $id);
+            \Session::flash('alert-class', 'alert-success');
+        } else {
+            \Session::flash('failure_message', 'Announcement was not unarchived.');
+            \Session::flash('alert-class', 'alert-danger');
+        }
+      $announcements = $this->announcement->where('is_archived', 1)->paginate(10);
+
+      return redirect()->route('admin.announcement.archives');
     }
 
 }
