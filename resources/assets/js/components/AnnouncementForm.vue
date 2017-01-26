@@ -46,7 +46,7 @@
       <div class="row">
         <div :class="md12col">
           <div v-bind:class="formGroup">
-            <label>Related Link</label>
+            <label>Web Address</label>
             <p class="help-text" id="title-helptext">Please enter the web address for your related web page. (ex. www.yourlink.com)</p>
             <div class="input-group">
               <span :class="inputGroupLabel">http://</span>
