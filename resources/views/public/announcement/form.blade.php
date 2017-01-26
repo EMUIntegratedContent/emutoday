@@ -21,6 +21,7 @@
             </announcement-form>
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
+        <div class="medium-6 columns" id="preview-container"></div>
         <div class="medium-6 columns" id="user-announcement-tables">
         @endsection
 
