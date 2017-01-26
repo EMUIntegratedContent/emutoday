@@ -61,7 +61,7 @@
         <div :class="md12col">
           <div v-bind:class="formGroup">
             <label>Descriptive text for link</label>
-            <p class="help-text" id="title-helptext">Please add descriptive text for link. <strong>Do not use web address.</strong> (ex. My Announcment Webpage)</p>
+            <p class="help-text" id="title-helptext">Please add descriptive text for link. <strong>Do not use web address.</strong> (ex. My Announcement Webpage)</p>
             <input v-model="record.link_txt" class="form-control" v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text" maxlength="80">
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
           </div>
@@ -606,7 +606,7 @@ module.exports = {
 
     submitForm: function(e) {
       e.preventDefault(); // Stop form defualt action
-      
+
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
 
