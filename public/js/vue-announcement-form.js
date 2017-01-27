@@ -17872,8 +17872,10 @@ module.exports = {
     //     },
     readyAgain: function readyAgain() {},
     updatePreview: function updatePreview() {
-      // Move this preview
-      document.getElementById('preview-container').appendChild(document.getElementById('preview-contents'));
+      if (this.framework == 'foundation') {
+        // Move this preview
+        document.getElementById('preview-container').appendChild(document.getElementById('preview-contents'));
+      }
     },
     refreshUserAnnouncementTable: function refreshUserAnnouncementTable() {
       $.get('/announcement/user/announcements', function (data) {

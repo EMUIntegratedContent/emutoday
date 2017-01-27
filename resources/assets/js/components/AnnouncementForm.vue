@@ -449,13 +449,15 @@ module.exports = {
     // });
     //     },
     readyAgain: function() {
-
+      
     },
     updatePreview: function(){
-    // Move this preview
-      document.getElementById('preview-container').appendChild(
-        document.getElementById('preview-contents')
-      );
+      if (this.framework == 'foundation'){
+      // Move this preview
+        document.getElementById('preview-container').appendChild(
+          document.getElementById('preview-contents')
+        );
+      }
     },
     refreshUserAnnouncementTable: function(){
       $.get('/announcement/user/announcements', function(data){
