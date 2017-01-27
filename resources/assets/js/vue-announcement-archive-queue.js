@@ -3,10 +3,7 @@ var Vue = require('vue');
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
-// var moment = require('moment');
-
- import AnnouncementArchiveQueue from './components/AnnouncementArchiveQueue.vue';
-
+import AnnouncementArchiveQueue from './components/AnnouncementArchiveQueue.vue';
 
 new Vue({
     el: '#vue-announcement-archive-queue',
