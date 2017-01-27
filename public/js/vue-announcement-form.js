@@ -17767,7 +17767,9 @@ module.exports = {
     //console.log('this.currentDate=' + this.currentDate)
   },
   ready: function ready() {
-    $(document).foundation();
+    if (this.framework == 'foundation') {
+      $(document).foundation();
+    }
     this.record.type = this.type;
     if (this.recordexists) {
       //console.log('recordid'+ this.recordid)
