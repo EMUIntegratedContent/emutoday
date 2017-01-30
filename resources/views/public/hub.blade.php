@@ -11,7 +11,7 @@
       <div id="featured-text" class="large-5 medium-12 small-12 columns">
         <h3>{{$heroImg->title}}</h3>
         <p>{{$heroImg->teaser}}</p>
-        <p class="button-group"><a href="/story/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}" class="button">{{$heroImg->moretext}}</a></p>
+        <p class="button-group"><a href="/story/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}" aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}" class="button readmore">{{$heroImg->moretext}}</a></p>
       </div>
     </div>
   </div>
@@ -33,15 +33,15 @@
             @if($barImgs[$i]->story->story_type == 'external')
               @if($barImgs[$i]->story->tags()->first())
                 @if($barImgs[$i]->story->tags()->first()->name == 'video')
-                  <a href="{{$barImgs[$i]->link}}" class="button">Watch&nbsp;<i class="fa fa-video-camera"></i></a>
+                  <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Watch" class="button readmore">Watch&nbsp;<i class="fa fa-video-camera"></i></a>
                 @elseif($barImgs[$i]->story->tags()->first()->name == 'audio')
-                  <a href="{{$barImgs[$i]->link}}" class="button">Listen&nbsp;<i class="fa fa-headphones"></i></a>
+                  <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Listen" class="button readmore">Listen&nbsp;<i class="fa fa-headphones"></i></a>
                 @endif
                 @else
-                  <a href="{{$barImgs[$i]->link}}" class="button">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
+                  <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Read Story" class="button readmore">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
                 @endif
               @else
-                <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" class="button">{{$barImgs[$i]->moretext}}</a>
+                <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}</a>
             @endif
           </p>
         </div>
