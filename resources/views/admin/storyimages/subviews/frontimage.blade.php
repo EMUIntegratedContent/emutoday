@@ -32,22 +32,27 @@
 
         </div>
         @if($storyImage->group == 'emutoday')
-                <div class="form-group">
-                    {!! Form::label('title', 'Title/Header') !!}
-                    {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
-                    <span class="help-block">Large Bold text limited to a couple of words visible when story is main feature on emu-today hub </span>
-                </div>
-                <div class="form-group">
-                    {!! Form::label('teaser', 'Teaser/Byline') !!}
-                    {!! Form::textarea('teaser', null, ['class' => 'form-control input-sm', 'rows'=>'5']) !!}
-                    <span class="help-block">Small to Medium size text under title, visible when story is main feature on emu-today hub</span>
-                </div>
-                <div class="form-group">
-                    {!! Form::label('moretext', 'More Text Link') !!}
-                    {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
-                    <span class="help-block">Text used to link to full story page when the story is the main feature on emu-today page</span>
-                </div>
-
+            <div class="form-group">
+              {!! Form::label('title', 'Title/Header') !!}
+              {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+              <span class="help-block">Large Bold text limited to a couple of words visible when story is main feature on emu-today hub </span>
+            </div>
+            <div class="form-group">
+              {!! Form::label('teaser', 'Teaser/Byline') !!}
+              {!! Form::textarea('teaser', null, ['class' => 'form-control input-sm', 'rows'=>'5']) !!}
+              <span class="help-block">Small to Medium size text under title, visible when story is main feature on emu-today hub</span>
+            </div>
+            <div class="form-group">
+              {!! Form::label('moretext', 'More Text Link') !!}
+              {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
+              <span class="help-block">Text used to link to full story page when the story is the main feature on emu-today page</span>
+            </div>
+            <div class="form-group">
+              {!! Form::label('link', 'External Link') !!}
+              {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
+              <span class="help-block">Fully qualified URL for linking to an external webpage</span>
+              <span class="help-block">Fill this field, if the Top Story is an external type (tag of: external, video, audio)</span>
+            </div>
 
             @elseif($storyImage->group == 'student')
                 <div class="form-group">
