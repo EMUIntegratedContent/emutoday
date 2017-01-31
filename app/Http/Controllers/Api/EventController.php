@@ -214,7 +214,7 @@ class EventController extends ApiController
 
           if($event->save()) { // Record successfully stored
             // Send event has been submitted email
-            $to      = "calendar_events@emich.edu, webcomm@emich.edu";
+            $to      = "calendar_events@emich.edu";
             $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
             $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
                         "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
