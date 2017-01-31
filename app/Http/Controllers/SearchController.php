@@ -92,7 +92,7 @@ class SearchController extends Controller
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->where('is_approved', 1)->select('title','subtitle','story_type','teaser','id')->get();
+            ], false)->where(['is_approved' => 1, 'is_live' => 1])->select('title','subtitle','story_type','teaser','id')->get();
 
             $searchMagazineResults = array();
 
