@@ -150,7 +150,8 @@ class MagazineController extends Controller
                                   ->where([
                                     ['story_type', 'article'],
                                     ['id', '<>', $id],
-                                                                        ['is_approved', 1],
+                                    ['is_approved', 1],
+                                    ['start_date', '<=', date('Y-m-d')],
                                   ])
                                   /*
                                   ->orWhere([

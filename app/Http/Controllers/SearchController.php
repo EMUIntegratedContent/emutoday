@@ -56,12 +56,31 @@ class SearchController extends Controller
 
         // Story results
         if(!$filter || $filter == 'stories' || $filter == 'all'){
-            $searchStoryResults = Story::search($searchTermWild, [
+            $searchStoryResults = array();
+
+            // Non-magazine stories should be filtered only by is_approved
+            $searchStoryResultsNonMagazine = Story::search($searchTermWild, [
                 'title' => 50,
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id')->where('is_approved', 1)->get();
+            ], false)->select('title','subtitle','story_type','teaser','id')->where('is_approved', 1)->whereNotIn('story_type', ['article'])->get();
+
+            foreach($searchStoryResultsNonMagazine as $nm_story){
+                $searchStoryResults[] = $nm_story;
+            }
+
+            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
+            $searchStoryResultsMagazine = Story::search($searchTermWild, [
+                'title' => 50,
+                'content' => 35,
+                'teaser' => 20,
+                'subtitle' => 10,
+            ], false)->select('title','subtitle','story_type','teaser','id')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->get();
+
+            foreach($searchStoryResultsMagazine as $m_story){
+                $searchStoryResults[] = $m_story;
+            }
         } else {
             $searchStoryResults = array();
         }
@@ -87,20 +106,14 @@ class SearchController extends Controller
 
         // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
         if( ($filter && $filter == 'magazine') || $isSearchFromMagazine){
-            $allStoryResults = Story::search($searchTermWild, [
+            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
+            $searchMagazineResults = Story::search($searchTermWild, [
                 'title' => 50,
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->where('is_approved', 1)->select('title','subtitle','story_type','teaser','id')->get();
+            ], false)->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->select('title','subtitle','story_type','teaser','id')->get();
 
-            $searchMagazineResults = array();
-
-            foreach($allStoryResults as $article){
-                if($article->story_type == 'article'){
-                    $searchMagazineResults[] = $article;
-                }
-            }
         } else {
             $searchMagazineResults = array();
         }
