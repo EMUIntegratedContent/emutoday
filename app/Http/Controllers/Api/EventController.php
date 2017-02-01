@@ -226,7 +226,9 @@ class EventController extends ApiController
 
             // Make event categories and mini calendars
             $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
-            $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+            $minicalsRequestValue = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+            $minicalsRequestParent = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'parent');
+            $minicalsRequest = array_merge($minicalsRequestValue, array_filter($minicalsRequestParent));
 
             // Relate event categories and mini calendars
             $event->eventcategories()->sync($categoriesRequest);
@@ -477,7 +479,9 @@ class EventController extends ApiController
             if($event->save()) { // Record successfully Saved
               // Make event categories and mini calendars
               $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
-              $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+              $minicalsRequestValue = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+              $minicalsRequestParent = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'parent');
+              $minicalsRequest = array_merge($minicalsRequestValue, array_filter($minicalsRequestParent));
 
               // Relate event categories and mini calendars
               $event->eventcategories()->sync($categoriesRequest);
