@@ -13,11 +13,11 @@
         <p>{{$heroImg->teaser}}</p>
         @if($heroImg->story->tags()->first() && $heroImg->link)
           @if($heroImg->story->tags()->first()->name == 'video')
-            <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}" aria-label="{{$heroImg->teaser}} - Watch" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-video-camera"></i></a></p>
+            <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}" aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-video-camera"></i></a></p>
           @elseif($heroImg->story->tags()->first()->name == 'audio')
-            <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }} - Watch" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-headphones"></i></a></p>
+            <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}" aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-headphones"></i></a></p>
           @elseif($heroImg->story->tags()->first()->name == 'external')
-            <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}" aria-label="{{$heroImg->teaser}} - Watch" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-external-link"></i></a></p>
+            <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}" aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-external-link"></i></a></p>
           @else
             <p class="button-group"><a href="/story/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}" aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}" class="button readmore">{{$heroImg->moretext}}</a></p>
           @endif
