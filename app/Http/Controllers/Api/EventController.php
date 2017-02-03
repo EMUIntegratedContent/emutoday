@@ -402,6 +402,25 @@ class EventController extends ApiController
           // Find event
           $event = Event::findOrFail($id);
 
+          // Conditional validation of related link text
+          if($request->get('related_link_1') != ''){
+              $related_text_rules_1 = 'required';
+          } else {
+              $related_text_rules_1 = '';
+          }
+
+          if($request->get('related_link_2') != ''){
+              $related_text_rules_2 = 'required';
+          } else {
+              $related_text_rules_2 = '';
+          }
+
+          if($request->get('related_link_3') != ''){
+              $related_text_rules_3 = 'required';
+          } else {
+              $related_text_rules_3 = '';
+          }
+
           // Validation rules
           $validation = \Validator::make( Input::all(), [
             'title'           => 'required',
@@ -414,7 +433,10 @@ class EventController extends ApiController
             'description'     => 'required',
             'contact_person'  => 'required',
             'contact_phone'   => 'required',
-            'contact_email'   => 'required|email'
+            'contact_email'   => 'required|email',
+            'related_link_1_txt'  => $related_text_rules_1,
+            'related_link_2_txt'  => $related_text_rules_2,
+            'related_link_3_txt'  => $related_text_rules_3,
           ]);
 
           // Check against Validation rules

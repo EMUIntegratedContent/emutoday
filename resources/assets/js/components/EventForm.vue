@@ -12,12 +12,22 @@
         <div class="form-group">
           <label>Title <span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
-          <input v-model="record.title" class="form-control" :class="[formErrors.title ? 'invalid-input' : '']"  name="title" type="text" maxlength="100">
+          <input v-model="record.title" class="form-control" :class="[formErrors.title ? 'invalid-input' : '']"  name="title" type="text" maxlength="80">
           <p v-if="formErrors.title" class="help-text invalid">	Please Include a Title!</p>
         </div>
         <div class="form-group">
           <label>Short Title	</label>
           <input v-model="record.short_title" class="form-control" type="text" placeholder="Short Title" name="short-title" maxlength="80">
+        </div>
+      </div><!-- /.md12col -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md12col">
+        <div :class="formGroup">
+          <label>Description <span :class="iconStar" class="reqstar"></span> <p class="help-text" id="description-helptext">({{descriptionChars}} characters left)</p></label>
+          <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6" maxlength="255"></textarea>
+          <p v-if="formErrors.description" class="help-text invalid">Need a Description!</p>
+
         </div>
       </div><!-- /.md12col -->
     </div><!-- /.row -->
@@ -75,7 +85,7 @@
 <div class="row">
   <div :class="md6col">
     <div class="form-group">
-      <label for="start-date">Start Date: <span :class="iconStar" class="reqstar"></span></label>
+      <label for="start-date">Event Start Date: <span :class="iconStar" class="reqstar"></span></label>
       <input id="start-date" :class="[formErrors.start_date ? 'invalid-input' : '']" type="text" v-model="record.start_date" aria-describedby="errorStartDate" />
       <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
     </div><!--form-group -->
@@ -188,10 +198,10 @@
       </div>
     </div><!-- /.col-md-4 -->
   </div><!-- /.row -->
-  <div class="row">
+  <div class="row" v-show="record.related_link_1">
     <div :class="md4col">
       <div v-bind:class="formGroup">
-        <label>Meaning desciption for Link</label>
+        <label>Please add descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
         <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
         <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text" maxlength="80">
         <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
@@ -201,7 +211,7 @@
       <div v-bind:class="formGroup">
         <label>Example of Related Link</label>
         <p class="help-text">Below is how it may look. </p>
-        <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
+        <h5 class="form-control">For more information, visit <a href="#"> {{record.related_link_1_txt}}</a>.</h5>
       </div>
     </div><!-- /.md6col -->
   </div>
@@ -221,10 +231,10 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div class="row">
+    <div class="row" v-show="record.related_link_2">
       <div :class="md4col">
         <div v-bind:class="formGroup">
-          <label>Meaning desciption for Link</label>
+          <label>Please add descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
           <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text" maxlength="80">
           <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
@@ -255,10 +265,10 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div class="row">
+    <div class="row" v-show="record.related_link_3">
       <div :class="md4col">
         <div v-bind:class="formGroup">
-          <label>Meaning desciption for Link</label>
+          <label>Please add descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
           <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text" maxlength="80">
           <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
@@ -378,16 +388,6 @@
   <div :class="md6col">
 
   </div><!-- /.md6col -->
-</div><!-- /.row -->
-<div class="row">
-  <div :class="md12col">
-    <div :class="formGroup">
-      <label>Description <span :class="iconStar" class="reqstar"></span> <p class="help-text" id="description-helptext">({{descriptionChars}} characters left)</p></label>
-      <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6" maxlength="255"></textarea>
-      <p v-if="formErrors.description" class="help-text invalid">Need a Description!</p>
-
-    </div>
-  </div><!-- /.md12col -->
 </div><!-- /.row -->
 <div class="row">
   <div :class="md12col">
@@ -593,7 +593,7 @@ module.exports  = {
       ],
       totalChars: {
         start: 0,
-        title: 100,
+        title: 80,
         description: 255
       },
       building_in: [],

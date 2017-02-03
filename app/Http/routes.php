@@ -56,7 +56,7 @@ Route::group(['prefix' => 'api'], function() {
      */
     Route::get('buildinglist', function() {
         $text = Input::get('q');
-        return Building::likeSearch('name', $text)->select('name')->get();
+        return Building::likeSearch('name', $text)->select('name')->orderBy('name', 'asc')->get();
         //return Building::ofMapType('illustrated')->get();
     });
     /**
@@ -64,7 +64,7 @@ Route::group(['prefix' => 'api'], function() {
      */
     Route::get('categorylist', function() {
         $text = Input::get('q');
-        return Category::likeSearch('category', $text)->select('category', 'id as value')->get();
+        return Category::likeSearch('category', $text)->select('category', 'id as value')->orderBy('category', 'asc')->get();
     });
     /**
      * List of MiniCalendars for EventForm
