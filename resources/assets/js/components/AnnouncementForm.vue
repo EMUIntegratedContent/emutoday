@@ -46,7 +46,7 @@
       <div class="row">
         <div :class="md12col">
           <div v-bind:class="formGroup">
-            <label>Web Address</label>
+            <label>Related Link</label>
             <p class="help-text" id="title-helptext">Please enter the web address for your related web page. (ex. www.yourlink.com)</p>
             <div class="input-group">
               <span :class="inputGroupLabel">http://</span>
@@ -60,7 +60,7 @@
       <div class="row" v-if="generalForm">
         <div :class="md12col">
           <div v-bind:class="formGroup">
-            <label>Descriptive text for web page</label>
+            <label class="hidden" aria-label="Descriptive text for web page">Descriptive text for web page</label>
             <p class="help-text" id="title-helptext">Please add descriptive text for link. <strong>Do not use web address.</strong> (ex. My Announcement Webpage)</p>
             <input v-model="record.link_txt" class="form-control" v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text" maxlength="80">
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
@@ -78,6 +78,15 @@
 
     <br v-if="framework == 'bootstrap' && generalForm"/>
 
+    <div v-if="generalForm" class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Contact Person</label>
+          <!-- <p class="help-text" id="email-link-helptext">Please enter email link text</p> -->
+          <input v-model="record.email_link_txt" class="form-control" v-bind:class="[formErrors.email_link_txt ? 'invalid-input' : '']" name="email_link_txt" type="text" maxlength="80">
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div>
     <div v-if="generalForm"  class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
@@ -91,22 +100,6 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div v-if="generalForm" class="row">
-      <div :class="md12col">
-        <div v-bind:class="formGroup">
-          <label>Contact Name</label>
-          <!-- <p class="help-text" id="email-link-helptext">Please enter email link text</p> -->
-          <input v-model="record.email_link_txt" class="form-control" v-bind:class="[formErrors.email_link_txt ? 'invalid-input' : '']" name="email_link_txt" type="text" maxlength="80">
-        </div>
-      </div><!-- /.col-md-4 -->
-      <!-- <div :class="md8col">
-        <div v-bind:class="formGroup">
-          <label>Example of Email Link</label>
-          <p class="help-text">Below is how it may look. </p>
-          <h5 class="form-control">Contact: <a href="#"> {{record.email_link_txt}}</a>.</h5>
-        </div>
-      </div>-->
-    </div>
 
     <br v-if="framework == 'foundation' && generalForm"/>
 
@@ -125,7 +118,7 @@
     <div class="row">
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <label for="start-date">Start Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <label for="start-date">Publish Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
           <input id="start-date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" :value="record.start_date"/>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
         </div> <!--form-group -->
@@ -449,7 +442,7 @@ module.exports = {
     // });
     //     },
     readyAgain: function() {
-      
+
     },
     updatePreview: function(){
       if (this.framework == 'foundation'){
