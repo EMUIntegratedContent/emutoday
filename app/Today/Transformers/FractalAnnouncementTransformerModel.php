@@ -23,6 +23,7 @@ class FractalAnnouncementTransformerModel extends Fractal\TransformerAbstract
         }
         return [
             'id'      => (int) $announcement->id,
+            'submitter'    =>  $announcement->submitter,
             'title'    =>  $announcement->title,
             'announcement' => $announcement->announcement,
             'submission_date' => $announcement->submission_date ? $announcement->submission_date->toDateString(): $announcement->created_at->toDateString(),

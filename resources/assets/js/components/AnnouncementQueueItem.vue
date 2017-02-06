@@ -46,10 +46,8 @@
       <p>{{item.announcement}}</p>
       <div class="announcement-info">
         Submitted On: {{item.submission_date}}</br>
-        By: {{item.user_name}}</br>
-        {{item.user_email}} {{item.user_phone}}</br>
+        By: {{item.submitter}}</br>
         Dates: {{item.start_date}} - {{item.end_date}}
-
       </div>
 
     </div><!-- /.box-body -->
