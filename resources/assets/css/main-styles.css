@@ -734,6 +734,10 @@ img.bottom-logo{
     padding: .8rem 0 0 0;
 }
 
+.accordion{
+    display: table !important;
+    width: 100%;
+}
 ul.accordion li{
     border-top: 1px dotted #ccc;
 }
@@ -759,11 +763,9 @@ ul.accordion li{
 
 .accordion .accordion-item.is-active > a, .accordion dd.is-active > a {
     background: none;
-
 }
 .accordion .accordion-item > a:hover, .accordion dd > a:hover {
       text-decoration: none;
-
 }
 
 .clearfix:after {

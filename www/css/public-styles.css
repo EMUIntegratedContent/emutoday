@@ -3969,7 +3969,9 @@ select {
 .accordion {
   list-style-type: none;
   background: #ffffff;
-  margin-left: 0; }
+  margin-left: 0;
+  display:table;
+}
 
 .accordion-item:first-child > :first-child {
   border-radius: 0 0 0 0; }
