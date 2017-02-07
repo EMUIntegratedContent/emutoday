@@ -7,7 +7,6 @@
 <script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
 <script>
     $(document).foundation();
-    /*
     $(document).ready(function() {
       $('.popup-youtube').magnificPopup({
         type: 'iframe',
@@ -16,11 +15,11 @@
         preloader: false,
         fixedContentPos: false,
       });
-      */
+
       /**
        * These blocks ensure image captions do not stretch image dimensions on news stories
        */
-       /*
+       
       $.each($('figure img'), function() {
           var imgWidth = $(this).width();
           var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
@@ -35,6 +34,5 @@
           console.log(imgWidth);
       });
     });
-    */
 </script>
 @yield('scriptsfooter')
