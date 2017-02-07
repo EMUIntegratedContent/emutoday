@@ -35,5 +35,8 @@
       });
     });
     */
+    if (typeof browseris !== 'undefined') {
+        browseris.ie = false;
+    }
 </script>
 @yield('scriptsfooter')
