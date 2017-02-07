@@ -38,6 +38,12 @@
                 </div>
             </div>
         </div>
+        <div>
+            <div class="row">
+                <div class="large-12 columns" id="outdated-browser-container">
+                </div>
+            </div>
+        </div>
     <div class="off-canvas-wrapper">
 
       <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
