@@ -7,6 +7,9 @@
     <div id="listing-bar">
       <div class="row">
         <div class="large-12 medium-12 small-12 column">
+            <!--[if IE 11]>
+                    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+                <![endif]-->
           <div id="title-grouping" class="row">
             <div class="large-5 medium-7 small-12 columns  noleftpadding"><h3 class="news-caps">Announcements {{-- <!-- <a class="smaller-title" href="">[ RSS feed ]</a> --> --}}</h3></div>
             <div class="large-7 medium-5 small-12 columns noleftpadding"><h6>{!! $announcements->links() !!}</h6></div>
