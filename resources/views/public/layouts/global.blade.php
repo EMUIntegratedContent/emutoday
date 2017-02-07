@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
         <meta id="token" name="token" value="{{ csrf_token() }}">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=9">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     @if (array_key_exists('magazine-title', View::getSections())) <!-- Check for Magazine title -->
