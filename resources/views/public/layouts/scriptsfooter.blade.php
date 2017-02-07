@@ -1,6 +1,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<!--<script type="text/javascript" src="/js/public-scripts.js"></script>-->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/js/foundation.min.js"></script>
+<script type="text/javascript" src="/js/public-scripts.js"></script>
+<!--<script type="text/javascript" src="/js/foundation.min.js"></script>-->
 <script type="text/javascript" src="/js/vue-search-form.js"></script>
 <script type="text/javascript" src="/js/vue-search-form-offcanvas.js"></script>
 <script type="text/javascript" src="/js/emergency.js"></script>
@@ -19,7 +19,7 @@
       /**
        * These blocks ensure image captions do not stretch image dimensions on news stories
        */
-       
+
       $.each($('figure img'), function() {
           var imgWidth = $(this).width();
           var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
