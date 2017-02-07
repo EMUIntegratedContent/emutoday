@@ -734,10 +734,6 @@ img.bottom-logo{
     padding: .8rem 0 0 0;
 }
 
-.accordion{
-    display: table !important;
-    width: 100%;
-}
 ul.accordion li{
     border-top: 1px dotted #ccc;
 }

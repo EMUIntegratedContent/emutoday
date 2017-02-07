@@ -165,6 +165,7 @@ elixir(function(mix) {
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
+        //mix.browserify('foundation.min.js', 'public/js/foundation.min.js');
         mix.browserify('app.js', 'public/js/app.js');
 
 });
