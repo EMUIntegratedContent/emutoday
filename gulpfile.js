@@ -75,7 +75,7 @@ elixir(function(mix) {
               'foundation/foundation.util.timerAndImageLoader.js',
               'foundation/foundation.util.touch.js',
               'foundation/foundation.util.triggers.js',
-              'app.js'
+              //'app.js'
           ],
             'public/js/public-scripts.js'
             );
