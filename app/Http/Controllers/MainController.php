@@ -73,7 +73,7 @@ class MainController extends Controller
         if($currentStorysBasic->count() < $this->recordLimitNews ){
           $currentStorysBasic = $this->story->where([
             ['story_type', 'news'],
-            ['story_type', 'story']
+            ['story_type', 'story'],
             ['is_approved', 1],
             ['is_archived', 0],
             ['start_date', '<=', $currentDateTimeStart]
