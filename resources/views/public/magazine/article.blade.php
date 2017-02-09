@@ -73,17 +73,6 @@
           @endforeach
         </ul>
       </div>
-      {{--
-      <div class="featured-content-block magazine-block">
-        <h6 class="headline-block">Headlines</h6>
-        <ul class="feature-list">
-          @foreach ($sideNewsStorys as $newsstory)
-          <li><a href="/{{$newsstory->story_folder}}/{{$newsstory->id}}">{{$newsstory->title}}</a></li>
-          @endforeach
-        </ul>
-
-      </div>
-      --}}
       <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Subscribe</a>
       <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Submit a Story Idea</a>
     </div>

@@ -60,7 +60,7 @@
               <!-- Story Page Content -->
 
               <!-- <div class="magazine-titlebar"><img src="/assets/imgs/graphic-title.png" alt="Lost Voices"></div> -->
-              {{-- {!! $story->content !!} --}}
+              {!! $story->content !!}
               <div id="story-content-edit">
               {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
           </div>
