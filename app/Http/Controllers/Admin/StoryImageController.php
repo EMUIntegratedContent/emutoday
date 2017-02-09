@@ -69,8 +69,9 @@ class StoryImageController extends Controller
       'image_name'=> 'img' . $story->id . '_' . $request->img_type
 
     ]);
-    if($request->img_type == 'front') {
+    if($request->img_type == 'front' || $request->img_type == 'hero') {
       // Stories with 'front' image can be featured story
+      // Stories with 'hero' image can be featured story on Today.
       $story->is_featured = 1;
       $story->save();
     }
@@ -79,9 +80,6 @@ class StoryImageController extends Controller
 
 
     return redirect($rurl);
-    //return redirect(route('admin_storytype_edit', ['stype' => $stype, 'story'=> $story]));
-
-    // return redirect(route('admin.story.edit', $story->id));
   }
 
   public function update($id, Requests\StoryImage_UpdateRequest $request)
@@ -134,8 +132,9 @@ class StoryImageController extends Controller
     $storyImage->save();
     $story = $storyImage->story;
     $stype = $story->story_type;
-    if($request->img_type == 'front') {
-      // Stories with 'front' image can be featured story
+    if($request->img_type == 'front' || $request->img_type == 'hero') {
+      // Stories with 'front' image can be featured story on Magazines,
+      // Stories with 'hero' image can be featured story on Today.
       $story->is_featured = 1;
       $story->save();
     }
@@ -172,12 +171,6 @@ class StoryImageController extends Controller
 
     $story = Story::findOrFail($storyImage->story_id);
 
-    if($request->image_type == 'front') {
-      // If the front images goes away. Then the story can no longer be featured
-      $story->is_featured = 0;
-      $story->save();
-    }
-
     $pathToImageForDelete = public_path() . $storyImage->image_path . $storyImage->filename;
 
     if(File::exists($pathToImageForDelete)){
@@ -190,6 +183,22 @@ class StoryImageController extends Controller
     } else {
        flash()->warning('Image was not found and could not be deleted.');
     }
+
+    // Determine if the story is should still be set as featured based on the images
+    $is_featured_story = false;
+    foreach($story->storyImages as $img){
+        if($img->image_type == 'front' || $img->image_type == 'hero'){
+            $is_featured_story = true;
+            break; // When a front or hero image is found, break out of the loop
+        }
+    }
+
+    if($is_featured_story){
+        $story->is_featured = 1;
+    } else {
+        $story->is_featured = 0;
+    }
+    $story->save();
 
     return redirect()->back();//->with('status', 'Record has been deleted.');
   }
