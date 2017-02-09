@@ -13,7 +13,7 @@
                 </colgroup>
                 @foreach ($storys as $story)
                 <tr>
-                    <td class="redips-mark {{($story->is_featured && $story->images()->ofType('front')->first())?'frontstory-btn':'smallstory-btn'}}">
+                    <td class="redips-mark {{$story->is_featured?'frontstory-btn':'smallstory-btn'}}">
                             {{$story->id}}
                     </td>
 
