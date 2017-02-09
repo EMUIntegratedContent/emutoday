@@ -59,25 +59,38 @@
     </div>  <!-- /.box-header -->
 
     <div v-if="showBody" class="box-body">
-    <!-- <div class="box-body"> -->
+      <!-- <div class="box-body"> -->
+      <div v-show="formMessage.msg" class="callout bg-success">
+        <h5>{{formMessage.msg}}</h5>
+      </div>
+      <div v-show="formMessage.err" class="callout bg-danger">
+        <h5>{{formMessage.err}}</h5>
+      </div>
       <template v-if="canHaveImage">
-        <img v-if="hasEventImage" :src="imageUrl" />
-        <a v-on:click.prevent="togglePanel" class="btn btn-info btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
+        <img v-if="hasEventImage" :src="imageUrl" /><br/>
+        <a v-on:click.prevent="togglePanel" style="width: 100px" class="btn btn-info btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
 
         <div v-show="showPanel">
-        <!-- <div class="panel"> -->
-          <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="mediaform m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
-            <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
-            <div class="fa fa-photo btn btn-info btn-sm block m-b file-upload">
-              <input v-el:eventimg type="file" @change="getFileName" class="file-input" name="eventimg" id="eventimg">
-            </div>
-            <button v-if="eventimage" id="btn-mediafile-upload" type="submit" class="fa fa-floppy-o btn btn-sm bg-orange block m-b"></button>
-            <span class="file-input-helpertext" id="file-name">{{eventimage}}</span>
-          </form>
-          <form v-if="hasEventImage" id="form-mediafile-remove{{item.id}}" @submit.prevent="removeMediaFile" class="mediaform m-t" role="form" action="/api/event/removeMediaFile/{{item.id}}">
-            <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
-            <button id="btn-mediafile-remove" type="submit" class="fa fa-eraser btn btn-sm btn-danger block m-b"></button>
-          </form>
+          <!-- <div class="panel"> -->
+          <div>
+            <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="mediaform m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
+              <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id" />
+              <input type="text" class="hidden" name="caption" id="caption" v-model="formInputs.caption" />
+              <div class="fa fa-photo btn btn-info btn-sm block m-b file-upload">
+                <input v-el:eventimg type="file" @change="getFileName" class="file-input" name="eventimg" id="eventimg">
+              </div>
+              <button v-if="eventimage" id="btn-mediafile-upload" type="submit" class="fa fa-floppy-o btn btn-sm bg-orange block m-b"></button>
+              <span class="file-input-helpertext" id="file-name">{{eventimage}}</span><br/>
+            </form>
+            <form v-if="hasEventImage" id="form-mediafile-remove{{item.id}}" @submit.prevent="removeMediaFile" class="mediaform m-t" role="form" action="/api/event/removeMediaFile/{{item.id}}">
+              <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id">
+              <button id="btn-mediafile-remove" type="submit" class="fa fa-eraser btn btn-sm btn-danger block m-b"></button>
+            </form>
+          </div>
+          <div class="input-group caption" v-if="hasEventImage">
+            <span class="input-group-addon caption">Caption: </span>
+            <input class="form-control" type="text" v-model="formInputs.caption" />
+          </div>
         </div><!-- /.panel mediaform -->
 
         <hr/>
@@ -196,6 +209,12 @@ span.file-input-helpertext {
   font-size: 90%;
   font-weight: normal;
   color: #333;
+}
+.input-group.caption {
+  margin: .5rem 0;
+}
+.input-group-addon.caption {
+  background-color: #ddd;
 }
 .box {
   color: #1B1B1B;
@@ -352,8 +371,8 @@ module.exports  = {
       ],
       formInputs: {
         event_id: '',
-        attachment: ''
-
+        attachment: '',
+        caption: ''
       },
       showBody: false,
       showPanel: false,
@@ -370,6 +389,10 @@ module.exports  = {
         home_priority: 0,
         is_canceled: 0,
         eventimage: ''
+      },
+      formMessage: {
+        msg: false,
+        err: false,
       },
       itemCurrent: 1,
       currentDate: {},
@@ -388,6 +411,7 @@ module.exports  = {
     this.initRecord.home_priority = this.patchRecord.home_priority = this.item.home_priority;
     this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;
     this.initRecord.eventimage = this.eventimage = this.patchRecord.eventimage = this.item.eventimage;
+    this.formInputs.caption = this.caption = this.patchRecord.caption = this.item.caption;
   },
   computed: {
     addSeperator: function(){
@@ -612,31 +636,44 @@ module.exports  = {
     addMediaFile(event) {
       event.preventDefault();
       event.stopPropagation();
+      this.formMessage.msg = false;
+      this.formMessage.err = false;
+
       var files = this.$els.eventimg.files;
       var data = new FormData();
       data.append('event_id', this.formInputs.event_id);
+      data.append('caption', this.formInputs.caption);
 
-      data.append('eventimg', files[0]);
+      if(files[0]){
+        data.append('eventimg', files[0]);
+      }
       var action = '/api/event/addMediaFile/'+ this.formInputs.event_id;
       this.$http.post(action, data)
       .then((response) => {
         console.log('good?'+ JSON.stringify(response))
         this.checkAfterUpdate(response.data.newdata)
+        this.formMessage.msg = response.body.message;
       }, (response) => {
-        console.log('bad?'+ response)
+        this.formMessage.err = "Something when wrong.";
+        console.log('bad?'+ JSON.stringify(response))
       });
     },
     removeMediaFile(event) {
       event.preventDefault();
       event.stopPropagation();
+      this.formMessage.msg = false;
+      this.formMessage.err = false;
+
       var data = new FormData();
       data.append('event_id', this.formInputs.event_id);
       var action = '/api/event/removeMediaFile/'+ this.formInputs.event_id;
       this.$http.post(action, data)
       .then((response) => {
         // console.log('good?'+ JSON.stringify(response))
+        this.formMessage.msg = response.body.message;
         this.checkAfterUpdate(response.data.newdata)
       }, (response) => {
+        this.formMessage.err = "Something when wrong.";
         console.log('bad?'+ JSON.stringify(response))
       });
     },
@@ -645,6 +682,9 @@ module.exports  = {
       //    this.patchRecord.priority = this.item.priority;
 
       this.patchRecord.is_canceled = this.item.is_canceled;
+
+      this.formMessage.msg = false;
+      this.formMessage.err = false;
 
       $("#automail").prop('checked') == true ? this.patchRecord.automail = true : this.patchRecord.automail = false;
 
@@ -668,10 +708,14 @@ module.exports  = {
       this.item.is_canceled = this.initRecord.is_canceled = ndata.is_canceled;
       this.item.eventimage = this.eventimage = this.initRecord.eventimage = ndata.eventimage;
       this.hasPriorityChanged = 0;
-
       console.log(ndata);
-    },
 
+      var self = this; // huiasd  k
+      setTimeout(function(){
+        self.formMessage.msg = false;
+        self.formMessage.err = false;
+      }, 5000);
+    },
     togglePanel: function(ev) {
       if(this.showPanel === false) {
         this.showPanel = true;

@@ -1,5 +1,5 @@
 <template>
-<label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail"/></label>
+<label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail" checked="true"/></label>
   <div class="row">
     <div class="col-md-4">
       <h3>Unapproved Events</h3>
