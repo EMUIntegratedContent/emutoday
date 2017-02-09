@@ -165,7 +165,12 @@ class MainController extends Controller
             foreach ($storys as $story) {
               if ($story->pivot->page_position === 0) {
                 // IMPORTANT TO HAVE 'emutoday_front' FOR 'article' TYPE STORY WITH HIGHER 'id' THAN 'article_front'
-                $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
+                if($story->story_type == 'article'){
+                    $heroImg = $story->storyImages()->where('image_type', 'hero')->orderBy('id', 'desc')->first();
+                } else {
+                    $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
+                }
+
               } else {
                 $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
               }
