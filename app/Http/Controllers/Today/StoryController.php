@@ -73,7 +73,7 @@ class StoryController extends Controller
                 ['is_approved', 1],
                 ])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
                     $query->where('image_type', 'small');
-                }])->take(3)->get();
+                }])->limit(3)->get();
                 $sideStoryBlurbs = collect();
                 foreach ($sideFeaturedStorys as $sideFeaturedStory) {
                         $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
@@ -130,7 +130,7 @@ class StoryController extends Controller
                 ['is_approved', 1],
                 ])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
                     $query->where('image_type', 'small');
-                }])->take(3)->get();
+                }])->limit(3)->get();
                 $sideStoryBlurbs = collect();
                 foreach ($sideFeaturedStorys as $sideFeaturedStory) {
                         $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
