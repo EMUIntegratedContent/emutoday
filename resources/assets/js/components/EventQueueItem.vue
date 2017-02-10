@@ -319,12 +319,6 @@ h5 {
   border-bottom-left-radius: 3px;*/
   margin-bottom: 30px;
 }
-/*.box.box-solid.box-default {
-border: 1px solid #999999;
-}
-.box-body {
-padding: 3px 6px;
-}*/
 </style>
 <script>
 import moment from 'moment'

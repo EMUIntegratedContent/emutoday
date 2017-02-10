@@ -133,7 +133,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('announcement', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
-
+    // Archives API
+    Route::get('archive/queueload/{archiveType}', ['as' => 'api_archive_queue', 'uses' => 'Api\ArchiveController@queueLoad']);
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
@@ -155,8 +156,6 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('page/chartload', ['as' => 'api_page_chartload', 'uses' => 'Api\PageController@chartLoad']);
 
     Route::get('page/queueload', ['as' => 'api.page.queueload', 'uses' => 'Api\PageController@queueLoad']);
-
-
 
 });
 
@@ -243,6 +242,10 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('/lbcqueue', ['as' => 'admin.event.lbcqueue', 'uses' => 'Admin\EventController@lbcqueue']);
         Route::get('event/form', ['as' => 'admin.event.form', 'uses' => 'Admin\EventController@form']);
         Route::resource('event', 'Admin\EventController');
+
+        // Archives
+        Route::get('archive/queue/{entityType}', ['as' => 'admin.archive.queue', 'uses' => 'Admin\ArchiveController@queue']);
+        Route::resource('archive', 'Admin\ArchiveController');
 
         Route::get('page/form', ['as' => 'admin_page_form', 'uses' => 'Admin\PageController@form']);
         Route::get('page/{page}/edit', ['as' => 'admin_page_edit', 'uses' => 'Admin\PageController@edit']);

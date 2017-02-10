@@ -162,13 +162,10 @@ elixir(function(mix) {
         mix.browserify('vue-announcement-archive-queue.js', 'public/js/vue-announcement-archive-queue.js');
         mix.browserify('vue-event-queue.js', 'public/js/vue-event-queue.js');
         mix.browserify('vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js');
-
-        // mix.browserify('vue-story-app.js', 'public/js/vue-story-app.js');
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
-
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
-
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
+        mix.browserify('vue-archive-queue.js', 'public/js/vue-archive-queue.js');
 
 });
         /*

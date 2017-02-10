@@ -1,15 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":2}],2:[function(require,module,exports){
-var core  = require('../../modules/_core')
-  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-},{"../../modules/_core":3}],3:[function(require,module,exports){
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],4:[function(require,module,exports){
 //! moment.js
 //! version : 2.15.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -4244,7 +4233,7 @@ if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
     return _moment;
 
 }));
-},{}],5:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4426,7 +4415,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],6:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -4727,7 +4716,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],7:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 /*!
  * vue-resource v1.0.2
  * https://github.com/vuejs/vue-resource
@@ -6239,7 +6228,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],8:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -16316,7 +16305,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":5}],9:[function(require,module,exports){
+},{"_process":2}],6:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -16336,288 +16325,120 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],10:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-37ae778e] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
-var _moment = require('moment');
+var _ArchiveQueueItem = require('./ArchiveQueueItem.vue');
 
-var _moment2 = _interopRequireDefault(_moment);
-
-var _EventQueueItem = require('./EventQueueItem.vue');
-
-var _EventQueueItem2 = _interopRequireDefault(_EventQueueItem);
+var _ArchiveQueueItem2 = _interopRequireDefault(_ArchiveQueueItem);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import EventViewContent from './EventViewContent.vue'
 exports.default = {
-  components: { EventQueueItem: _EventQueueItem2.default },
-  props: ['annrecords'],
-  data: function data() {
-    return {
-      resource: {},
-      allitems: [],
-      otheritems: [],
-      appitems: [],
-      unappitems: [],
-      items: [],
-      xitems: [],
-      objs: {}
-    };
-  },
-  ready: function ready() {
-    this.fetchAllRecords();
-  },
+    components: { ArchiveQueueItem: _ArchiveQueueItem2.default },
+    props: {
+        entityType: { required: true }
+    },
+    data: function data() {
+        return {
+            resource: {},
+            allitems: [],
+            otheritems: [],
+            appitems: [],
+            unappitems: [],
+            items: [],
+            xitems: [],
+            objs: {},
+            pagination: {}
+        };
+    },
+    ready: function ready() {
+        this.fetchAllRecords();
+    },
 
-  computed: {
-    top4: function top4() {},
-    currentDateAndTime: function currentDateAndTime() {
-      return (0, _moment2.default)();
-    },
-    itemsApproved: function itemsApproved() {
-      return this.filterItemsApproved(this.allitems);
-    },
-    itemsUnapproved: function itemsUnapproved() {
-      return this.filterItemsUnapproved(this.allitems);
-    },
-    itemsPromoted: function itemsPromoted() {
-      return this.filterItemsPromoted(this.itemsApproved);
-    },
-    itemsLive: function itemsLive() {
-      return this.filterItemsLive(this.allitems);
-    }
-  },
-  methods: {
-    fetchAllRecords: function fetchAllRecords() {
-      var _this = this;
-
-      this.$http.get('/api/event/queueload').then(function (response) {
-        //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data);
-        _this.$set('allitems', response.data.data);
-        _this.checkOverDataFilter();
-      }, function (response) {
-        //error callback
-        console.log("ERRORS");
-      }).bind(this);
-    },
-    checkOverDataFilter: function checkOverDataFilter() {
-      console.log('items=' + this.items);
-      // var unapprovedItems = this.allitems.filter(function(item) {
-      // 	return item.approved === 0
-      // });
-      //
-      // this.xitems = unapprovedItems;
-      //
-      //
-      // var approvedItems = this.allitems.filter(function(item) {
-      // 	return item.approved === 1
-      // });
-      //
-      // this.items = approvedItems.sort(function(a,b){
-      // 	return parseFloat(b.priority) - parseFloat(a.priority);
-      // });
-    },
-    filterItemsApproved: function filterItemsApproved(items) {
-      return items.filter(function (item) {
-        return (0, _moment2.default)(item.start_date_time).isAfter((0, _moment2.default)()) && item.is_approved === 1 && item.home_priority === 0 && item.priority === 0 && item.is_promoted === 0; // true
-
-        // return item.is_approved === 1
-      });
-    },
-    filterItemsUnapproved: function filterItemsUnapproved(items) {
-      return items.filter(function (item) {
-        return item.is_approved === 0;
-        // return (item.is_approved === 0 && (item.priority + item.home_priority) === 0);
-      });
-    },
-    filterItemsPromoted: function filterItemsPromoted(items) {
-      return items.filter(function (item) {
-        return item.is_promoted === 1;
-      });
-    },
-    filterItemsLive: function filterItemsLive(items) {
-      return items.filter(function (item) {
-        return (0, _moment2.default)(item.start_date_time).isSameOrBefore((0, _moment2.default)()) && item.is_approved === 1 || // Past NOW and approved
-        item.is_approved === 1 && (item.home_priority > 0 || item.priority > 0 || item.is_promoted === 1); // Approved with promotion / priority
-      });
-    },
-    // checkIndexWithValue: function (chitem){
-    // 	return
-    // },
-
-    moveToApproved: function moveToApproved(changeditem) {
-
-      // this.xitems.pop(changeditem);
-      console.log('moveToApproved' + changeditem.priority);
-      changeditem.is_approved = 1;
-      changeditem.priority = changeditem.priority;
-      this.updateRecord(changeditem);
-    },
-    moveToUnApproved: function moveToUnApproved(changeditem) {
-
-      // this.xitems.pop(changeditem);
-      console.log('moveToUnApproved' + changeditem);
-      changeditem.is_approved = 0;
-
-      this.updateRecord(changeditem);
-    },
-    movedItemIndex: function movedItemIndex(mid) {
-      return this.xitems.findIndex(function (item) {
-        return item.id == mid;
-      });
-    },
-    updateRecord: function updateRecord(item) {
-      var currentRecordId = item.id;
-
-      var currentRecord = item;
-      this.$http.patch('/api/event/updateItem/' + item.id, item, {
-        method: 'PATCH'
-      }).then(function (response) {
-        console.log('good_eventQueue' + response);
-
-        //var movedIndex = this.movedItemIndex(movedid);
-        // this.xitems.pop(movedRecord);
-        // if (movedRecord.approved == 1) {
-        //         this.xitems.splice(movedIndex, 1);
-        //      this.items.push(movedRecord);
-        //  } else {
-        //      this.items.splice(movedIndex, 1);
-        //     this.xitems.push(movedRecord);
-        //  }
-
-        //console.log('movedIndex==='+ movedIndex)
-      }, function (response) {
-        console.log('bad?' + response);
-      });
-    },
-    // fetchUnapprovedRecords: function(){
-    //     this.$http.get('/api/event/unapprovedItems')
-    //
-    //         .then((response) =>{
-    //             console.log('response.status=' + response.status);
-    //             console.log('response.ok=' + response.ok);
-    //             console.log('response.statusText=' + response.statusText);
-    //             console.log('response.data=' + response.data);
-    //
-    //             this.$set('unappitems', response.data.data)
-    //
-    //             this.fetchApprovedRecords();
-    //         }, (response) => {
-    //             //error callback
-    //             console.log("ERRORS");
-    //
-    //             //  this.formErrors =  response.data.error.message;
-    //
-    //         }).bind(this);
-    // },
-    // fetchApprovedRecords: function() {
-    //     this.$http.get('/api/event/approvedItems')
-    //
-    //         .then((response) =>{
-    //                 //response.status;
-    //                 console.log('response.status=' + response.status);
-    //                 console.log('response.ok=' + response.ok);
-    //                 console.log('response.statusText=' + response.statusText);
-    //                 console.log('response.data=' + response.data);
-    //                 // data = response.data;
-    //                 //
-    //                 this.$set('allitems', response.data.data)
-    //
-    //                 // this.allitems = response.data.data;
-    //                 // console.log('this.record= ' + this.record);
-    //
-    //                 this.checkOverDataFilter();
-    //             }, (response) => {
-    //                 //error callback
-    //                 console.log("ERRORS");
-    //
-    //                 //  this.formErrors =  response.data.error.message;
-    //
-    //             }).bind(this);
-    //     },
-    //
-    // fetchOtherRecords: function() {
-    //     this.$http.get('/api/event/otherItems')
-    //
-    //         .then((response) =>{
-    //                 //response.status;
-    //                 console.log('response.status=' + response.status);
-    //                 console.log('response.ok=' + response.ok);
-    //                 console.log('response.statusText=' + response.statusText);
-    //                 console.log('response.data=' + response.data);
-    //                 // data = response.data;
-    //                 //
-    //                 this.$set('otheritems', response.data.data)
-    //
-    //                 // this.allitems = response.data.data;
-    //                 // console.log('this.record= ' + this.record);
-    //
-    //                 this.checkOverDataFilter();
-    //             }, (response) => {
-    //                 //error callback
-    //                 console.log("ERRORS");
-    //
-    //                 //  this.formErrors =  response.data.error.message;
-    //
-    //             }).bind(this);
-    //         },
-    checkOverData: function checkOverData() {
-      console.log('this.items=' + this.allitems);
-      for (var i = 0; i < this.allitems.length; i++) {
-        if (this.allitems[i].is_approved == 1) {
-          this.items.push(this.allitems.splice(i, 1));
-        } else {
-          this.xitems.push(this.allitems.splice(i, 1));
+    computed: {
+        compEntityType: function compEntityType() {
+            // Capitalize the entityType property
+            return this.entityType.charAt(0).toUpperCase() + this.entityType.slice(1);
+        },
+        totalPages: function totalPages() {
+            return this.pagination.total_pages;
         }
-      }
-    }
+    },
+    methods: {
+        fetchAllRecords: function fetchAllRecords(pageNumber) {
+            var _this = this;
 
-  },
+            var url = '/api/archive/queueload/' + this.entityType;
+            pageNumber ? url += '?page=' + pageNumber : '';
 
-  // the `events` option simply calls `$on` for you
-  // when the instance is created
-  events: {
-    // 'child-msg': function (msg) {
-    //   // `this` in event callbacks are automatically bound
-    //   // to the instance that registered it
-    //   this.messages.push(msg)
-    // }
-  }
+            this.$http.get(url).then(function (response) {
+                console.log(response.data);
+                _this.$set('allitems', response.data.data);
+                _this.makePagination(response.data.meta.pagination);
+            }, function (response) {
+                //error callback
+                console.log("Error fetching archive records");
+            }).bind(this);
+        },
+
+        makePagination: function makePagination(data) {
+            var pagination = {
+                current_page: data.current_page,
+                last_page: data.last_page,
+                next_page_url: data.next_page_url,
+                prev_page_url: data.prev_page_url,
+                total_pages: data.total_pages
+            };
+
+            this.$set('pagination', pagination);
+        },
+
+        updateRecord: function updateRecord(item) {
+            var currentRecordId = item.id;
+
+            var currentRecord = item;
+            this.$http.patch('/api/event/updateItem/' + item.id, item, {
+                method: 'PATCH'
+            }).then(function (response) {
+                console.log('good_eventQueue' + response);
+            }, function (response) {
+                console.log('bad?' + response);
+            });
+        }
+
+    },
+
+    // the `events` option simply calls `$on` for you
+    // when the instance is created
+    events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<label id=\"automail-label\" for=\"automail\" _v-37ae778e=\"\">Send notification email? <input type=\"checkbox\" name=\"automail\" id=\"automail\" _v-37ae778e=\"\"></label>\n  <div class=\"row\" _v-37ae778e=\"\">\n    <div class=\"col-md-4\" _v-37ae778e=\"\">\n      <h3 _v-37ae778e=\"\">Unapproved Events</h3>\n      <div id=\"items-unapproved\" _v-37ae778e=\"\">\n        <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-37ae778e=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-37ae778e=\"\">\n    <h3 _v-37ae778e=\"\">Approved Events</h3>\n    <div id=\"items-approved\" _v-37ae778e=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-37ae778e=\"\">\n    </event-queue-item>\n  </div>\n</div><!-- /.col-md-6 -->\n<div class=\"col-md-4\" _v-37ae778e=\"\">\n  <h3 _v-37ae778e=\"\">Live Events</h3>\n  <div id=\"items-live\" _v-37ae778e=\"\">\n    <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority+home_priority' -1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-37ae778e=\"\">\n  </event-queue-item>\n</div>\n</div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\">Archived {{ compEntityType }}</h3>\n        <div id=\"items-unapproved\" _v-e7ff0ab4=\"\">\n            <archive-queue-item v-for=\"item in allitems | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n    </div>\n</div>\n<div v-show=\"this.pagination.total_pages > 0\" class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <ul class=\"pagination\" _v-e7ff0ab4=\"\">\n            <li :class=\"this.pagination.current_page == 1 ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(1)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in totalPages\" :class=\"(n + 1) == this.pagination.current_page ? 'active': ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(n + 1)\" _v-e7ff0ab4=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"this.pagination.current_page == this.pagination.total_pages ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(this.pagination.total_pages)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#items-unapproved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-37ae778e] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n"] = false
+    __vueify_insert__.cache["\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-37ae778e", module.exports)
+    hotAPI.createRecord("_v-e7ff0ab4", module.exports)
   } else {
-    hotAPI.update("_v-37ae778e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-e7ff0ab4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./EventQueueItem.vue":11,"moment":4,"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],11:[function(require,module,exports){
+},{"./ArchiveQueueItem.vue":8,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-94cdab7e] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-94cdab7e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-94cdab7e] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-94cdab7e] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.box[_v-94cdab7e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-94cdab7e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-94cdab7e] {\n  padding: 3px;\n}\n.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nh5.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-94cdab7e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-94cdab7e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-94cdab7e] {\n  display:inline-block;\n}\nform.mediaform[_v-94cdab7e] {\n  margin-top: 1rem;\n}\n.form-group[_v-94cdab7e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-94cdab7e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-94cdab7e],\n.btn-group-vertical[_v-94cdab7e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-94cdab7e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-94cdab7e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-94cdab7e]{\n  margin-bottom: 0;\n}\n.topitems[_v-94cdab7e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-94cdab7e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-94cdab7e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-94cdab7e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-94cdab7e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-94cdab7e] {\n  color: #F39C12;\n}\n.time-is-long[_v-94cdab7e] {\n  color: #999999;\n}\n.time-is-over[_v-94cdab7e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-94cdab7e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-94cdab7e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-94cdab7e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-94cdab7e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
 'use strict';
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
 
 var _moment = require('moment');
 
@@ -16631,418 +16452,45 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 module.exports = {
   components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
-  props: ['item', 'pid', 'index'],
+  props: ['item', 'index', 'entityType'],
   data: function data() {
     return {
       eventimage: '',
-      hasPriorityChanged: 0,
-      options: [{ text: '0', value: 0 }, { text: '1', value: 1 }, { text: '2', value: 2 }, { text: '3', value: 3 }, { text: '4', value: 4 }, { text: '5', value: 5 }, { text: '6', value: 6 }, { text: '7', value: 7 }, { text: '8', value: 8 }, { text: '9', value: 9 }, { text: '10', value: 10 }, { text: '99', value: 99 }],
-      formInputs: {
-        event_id: '',
-        attachment: ''
-
-      },
       showBody: false,
-      showPanel: false,
-      initRecord: {
-        is_approved: 0,
-        priority: 0,
-        home_priority: 0,
-        is_canceled: 0,
-        eventimage: ''
-      },
-      patchRecord: {
-        is_approved: 0,
-        priority: 0,
-        home_priority: 0,
-        is_canceled: 0,
-        eventimage: ''
-      },
-      itemCurrent: 1,
-      currentDate: {},
-      record: {}
+      showPanel: false
     };
   },
-  created: function created() {
-    // this.is_approved = this.item.approved;
-    // this.currentDate = moment();
-    // console.log('this.currentDate=' + this.currentDate)
-  },
-  ready: function ready() {
-    this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
-    this.initRecord.priority = this.patchRecord.priority = this.item.priority;
-    this.initRecord.home_priority = this.patchRecord.home_priority = this.item.home_priority;
-    this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;
-    this.initRecord.eventimage = this.eventimage = this.patchRecord.eventimage = this.item.eventimage;
-  },
-  computed: {
-    addSeperator: function addSeperator() {
-      var asclass = 'box-footer-normal';
-      if (this.pid == 'items-live' && this.index == 3) {
-        asclass = 'box-footer-last-special';
-      }
-      return asclass;
-    },
-    hasPriorityChanged: function hasPriorityChanged() {
-      if (this.initRecord.home_priority != this.patchRecord.home_priority || this.initRecord.priority != this.patchRecord.priority) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    hasIsApprovedChanged: function hasIsApprovedChanged() {
-      if (this.initRecord.is_approved != this.patchRecord.is_approved) {
-        console.log('is_approved => initRecord=' + this.initRecord.is_approved + ' patchRecord=>' + this.patchRecord.is_approved);
-        return true;
-      } else {
-        return false;
-      }
-    },
-    timeLeftStatus: function timeLeftStatus() {
-      var diff = this.timeDiffNow(this.item.end_date_time);
-      if (diff <= 0) {
-        return 'time-is-over';
-      } else if (diff > 0 && diff <= 720) {
-        return 'time-is-short';
-      } else {
-        return 'time-is-long';
-      }
-    },
-
-    timeFromNowStatus: function timeFromNowStatus() {
-      var diff = this.timeDiffNow(this.item.start_date_time);
-      if (diff <= 0) {
-        return 'time-is-over';
-      } else if (diff > 0 && diff <= 720) {
-        return 'time-is-short';
-      } else {
-        return 'time-is-long';
-      }
-    },
-    timefromNow: function timefromNow() {
-      return (0, _moment2.default)(this.item.start_date_time).fromNow();
-    },
-    timeLeft: function timeLeft() {
-
-      if ((0, _moment2.default)(this.item.start_date_time).isSameOrBefore((0, _moment2.default)())) {
-        var tlft = this.timeDiffNow(this.item.end_date_time);
-        console.log('id=' + this.item.id + ' timeLeft' + tlft);
-        if (tlft < 0) {
-          this.itemCurrent = 0;
-          return 'Event Ended ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
-        } else {
-          this.itemCurrent = 1;
-          return ' and Ends ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
-        }
-      } else {
-        return '';
-      }
-    },
-    specialItem: function specialItem() {
-      var extrasep = void 0;
-
-      if (this.pid == 'items-live' && this.index < 9) {
-        if (this.item.home_priority > 0 && this.item.priority > 0) {
-          extrasep = 'special-item special-item-both';
-        } else if (this.item.home_priority > 0 && this.item.priority == 0) {
-          extrasep = 'special-item special-item-home';
-        } else if (this.item.home_priority == 0 && this.item.priority > 0) {
-          extrasep = 'special-item special-item-today';
-        }
-      } else {
-        extrasep = '';
-      }
-      return extrasep;
-    },
-    liveTimeStatusClass: function liveTimeStatusClass() {
-      var timepartstatus = void 0;
-
-      if ((0, _moment2.default)().isBetween(this.item.start_date_time, this.item.end_date_time)) {
-        timepartstatus = 'ongoing';
-      } else {
-        if (this.timeDiffNow(this.item.start_date_time) < 0) {
-          timepartstatus = 'event-negative';
-        } else {
-          timepartstatus = 'event-positive';
-        }
-      }
-
-      return timepartstatus;
-    },
-    itemStatus: function itemStatus() {
-      var sclass = 'box-default';
-
-      // console.log('pid' + this.pid + ' index='+ this.index);
-      if (this.pid == 'items-live') {
-        if (this.index < 4) {
-          console.log('topitems');
-          sclass = 'topitems';
-        }
-      }
-      // if (this.item.is_promoted === 1){
-      //     pclass =  'is-promoted'
-      //   } else {
-      //      pclass = 'box-default'
-      //   }
-      return sclass;
-    },
-    promotedIcon: function promotedIcon() {
-      if (this.item.is_promoted === 1) {
-        pIcon = 'fa fa fa-star';
-      } else {
-        pIcon = '';
-      }
-      return pIcon;
-    },
-    hasEventImage: function hasEventImage() {
-      if (this.item.eventimage) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    canHaveImage: function canHaveImage() {
-      if (this.item.is_approved) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    imageUrl: function imageUrl() {
-      var pth = "/imagecache/smallthumb/";
-      var fname = this.item.eventimage;
-      console.log(pth + fname);
-      return pth + fname;
-    },
-
-    isApproved: function isApproved() {
-      return this.item.is_approved;
-    },
-    itemEditPath: function itemEditPath() {
-      return '/admin/event/' + this.item.id + '/edit';
-    },
-    itemPreviewPath: function itemPreviewPath() {
-      return '/preview/event/' + this.item.id;
-    },
-    isOnCampus: function isOnCampus() {
-      if (this.item.building === null || this.item.building === "undefined") {
-        return false;
-      } else {
-        return true;
-      }
-    },
-    eventParticipation: function eventParticipation() {
-      switch (this.item.participants) {
-        case 'campus':
-          return 'Campus Only';
-          break;
-        case 'public':
-          return 'Open to Public';
-          break;
-        case 'students':
-          return 'Students Only';
-          break;
-        case 'invite':
-          return 'Invitation Only';
-          break;
-        case 'tickets':
-          return 'Tickets Required';
-          break;
-        default:
-          return '';
-      }
-    }
-  },
+  created: function created() {},
+  ready: function ready() {},
+  computed: {},
   methods: {
-    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
-    // onFileChange(event) {
-    //     var files = this.$els.eventimg.files;
-    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
-    //     this.formInputs.attachment = event.target.file;
-    // },
-    // Handle the form submission here
-    timeDiffNow: function timeDiffNow(val) {
-      return (0, _moment2.default)(val).diff((0, _moment2.default)(), 'minutes');
-    },
-    changeIsApproved: function changeIsApproved() {
-      this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
-      console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
-      this.updateItem();
-    },
-    editItem: function editItem(ev) {
-      window.location.href = this.itemEditPath;
-    },
-    priorityChange: function priorityChange(event) {
-      console.log('priority=' + this.item.priority);
-    },
-    getFileName: function getFileName() {
-      var files = this.$els.eventimg.files;
-      this.eventimage = this.$els.eventimg.files[0].name;
-      console.log(this.eventimage);
-    },
-    addMediaFile: function addMediaFile(event) {
-      var _this = this;
-
-      event.preventDefault();
-      event.stopPropagation();
-      var files = this.$els.eventimg.files;
-      var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
-
-      data.append('eventimg', files[0]);
-      var action = '/api/event/addMediaFile/' + this.formInputs.event_id;
-      this.$http.post(action, data).then(function (response) {
-        console.log('good?' + (0, _stringify2.default)(response));
-        _this.checkAfterUpdate(response.data.newdata);
-      }, function (response) {
-        console.log('bad?' + response);
-      });
-    },
-    removeMediaFile: function removeMediaFile(event) {
-      var _this2 = this;
-
-      event.preventDefault();
-      event.stopPropagation();
-      var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
-      var action = '/api/event/removeMediaFile/' + this.formInputs.event_id;
-      this.$http.post(action, data).then(function (response) {
-        // console.log('good?'+ JSON.stringify(response))
-        _this2.checkAfterUpdate(response.data.newdata);
-      }, function (response) {
-        console.log('bad?' + (0, _stringify2.default)(response));
-      });
-    },
-
-    updateItem: function updateItem() {
-      var _this3 = this;
-
-      //    this.patchRecord.is_approved = this.item.is_approved;
-      //    this.patchRecord.priority = this.item.priority;
-
-      this.patchRecord.is_canceled = this.item.is_canceled;
-
-      $("#automail").prop('checked') == true ? this.patchRecord.automail = true : this.patchRecord.automail = false;
-
-      console.log(">::patchRecord::< " + (0, _stringify2.default)(this.patchRecord));
-      this.$http.patch('/api/event/updateitem/' + this.item.id, this.patchRecord, {
-        method: 'PATCH'
-      }).then(function (response) {
-        console.log('good?' + response);
-        _this3.checkAfterUpdate(response.data.newdata);
-      }, function (response) {
-        console.log('bad?' + response);
-      });
-    },
-    checkAfterUpdate: function checkAfterUpdate(ndata) {
-      this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
-      this.item.is_promoted = this.initRecord.is_promoted = ndata.is_promoted;
-      this.item.priority = this.initRecord.priority = ndata.priority;
-      this.item.home_priority = this.initRecord.home_priority = ndata.home_priority;
-      this.item.is_canceled = this.initRecord.is_canceled = ndata.is_canceled;
-      this.item.eventimage = this.eventimage = this.initRecord.eventimage = ndata.eventimage;
-      this.hasPriorityChanged = 0;
-
-      console.log(ndata);
-    },
-
-    togglePanel: function togglePanel(ev) {
-      if (this.showPanel === false) {
-        this.showPanel = true;
-      } else {
-        this.showPanel = false;
-      }
-      console.log('this.showPanel' + this.showPanel);
-    },
-    toggleBody: function toggleBody(ev) {
-      if (this.showBody == false) {
-        this.showBody = true;
-      } else {
-        this.showBody = false;
-      }
-      console.log('toggleBody' + this.showBody);
-    },
-    doThis: function doThis(ev) {
-      this.item.is_approved = this.is_approved === 0 ? 1 : 0;
-      this.$emit('item-change', this.item);
-      //console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
+    toggleBody: function toggleBody() {
+      this.showBody ? this.showBody = false : this.showBody = true;
     }
   },
-  watch: {
-    priorityChanged: function priorityChanged(val, oldVal) {
-      if (val != oldVal) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  },
-  directives: {
-    // mydatedropper: require('../directives/mydatedropper.js')
-    // dtpicker: require('../directives/dtpicker.js')
-  },
+  watch: {},
+  directives: {},
 
-  filters: {
-    yesNo: function yesNo(value) {
-      return value == true ? 'Yes' : 'No';
-    },
-    titleDay: function titleDay(value) {
-      return (0, _moment2.default)(value).format("ddd");
-    },
-    titleDate: function titleDate(value) {
-      return (0, _moment2.default)(value).format("MM/DD");
-    },
-    titleDateLong: function titleDateLong(value) {
-      return (0, _moment2.default)(value).format("ddd MM/DD");
-    },
-    hasHttp: function hasHttp(value) {
-      // Checks if links given 'http'
-      return value.substr(0, 4) == 'http' ? value : 'https://' + value;
-    },
-    momentPretty: {
-      read: function read(val) {
-        console.log('read-val' + val);
-
-        return val ? (0, _moment2.default)(val).format('ddd, MM-DD-YYYY') : '';
-      },
-      write: function write(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal);
-
-        return (0, _moment2.default)(val).format('YYYY-MM-DD');
-      }
-    }
-  },
-  events: {
-
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
-  }
+  filters: {},
+  events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"specialItem\" _v-94cdab7e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-94cdab7e=\"\">\n\n      <div class=\"box-header with-border\" _v-94cdab7e=\"\">\n        <div class=\"row\" _v-94cdab7e=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-94cdab7e=\"\">\n            <div class=\"box-date-top pull-left\" _v-94cdab7e=\"\">{{item.start_date | titleDateLong}}</div>\n            <div class=\"pull-right\" _v-94cdab7e=\"\">\n              <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-94cdab7e=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-94cdab7e=\"\"></span></label>\n            </div><!-- /.pull-right -->\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-94cdab7e=\"\">\n            <form class=\"form-inline pull-right\" _v-94cdab7e=\"\">\n              <div class=\"form-group\" _v-94cdab7e=\"\">\n                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-94cdab7e=\"\"><span class=\"fa fa-floppy-o\" _v-94cdab7e=\"\"></span></button>\n              </div><!-- /.form-group -->\n              <div title=\"Display order for Eastern's index page\" class=\"form-group\" _v-94cdab7e=\"\"> <!-- For the HOME page. -->\n                <label for=\"home-priority-number\" class=\"priority\" _v-94cdab7e=\"\">Home:</label>\n                <select id=\"home-priority-{{item.id}}\" v-model=\"patchRecord.home_priority\" @change=\"priorityChange($event)\" number=\"\" _v-94cdab7e=\"\">\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-94cdab7e=\"\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>&nbsp;&nbsp;&nbsp;\n\n              <div title=\"Display order for News Hub\" class=\"form-group\" _v-94cdab7e=\"\"> <!-- For the NEWS HUB page. -->\n                <label for=\"priority-number\" class=\"priority\" _v-94cdab7e=\"\">Today:</label>\n                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" number=\"\" _v-94cdab7e=\"\">\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-94cdab7e=\"\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>\n\n              <div id=\"applabel\" class=\"form-group\" _v-94cdab7e=\"\">\n                <label _v-94cdab7e=\"\">Approved:&nbsp;</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-94cdab7e=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-94cdab7e=\"\">\n              </vui-flip-switch>\n            </div>\n          </form>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n\n      <div class=\"row\" _v-94cdab7e=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-94cdab7e=\"\">\n          <div class=\"col-sm-12\" _v-94cdab7e=\"\">\n            <h6 class=\"box-title\" _v-94cdab7e=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-94cdab7e=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-94cdab7e=\"\">\n    <!-- <div class=\"box-body\"> -->\n      <template v-if=\"canHaveImage\">\n        <img v-if=\"hasEventImage\" :src=\"imageUrl\" _v-94cdab7e=\"\">\n        <a v-on:click.prevent=\"togglePanel\" class=\"btn btn-info btn-sm\" href=\"#\" _v-94cdab7e=\"\">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>\n\n        <div v-show=\"showPanel\" _v-94cdab7e=\"\">\n        <!-- <div class=\"panel\"> -->\n          <form id=\"form-mediafile-upload{{item.id}}\" @submit.prevent=\"addMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/addMediaFile/{{item.id}}\" enctype=\"multipart/form-data\" files=\"true\" _v-94cdab7e=\"\">\n            <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-94cdab7e=\"\">\n            <div class=\"fa fa-photo btn btn-info btn-sm block m-b file-upload\" _v-94cdab7e=\"\">\n              <input v-el:eventimg=\"\" type=\"file\" @change=\"getFileName\" class=\"file-input\" name=\"eventimg\" id=\"eventimg\" _v-94cdab7e=\"\">\n            </div>\n            <button v-if=\"eventimage\" id=\"btn-mediafile-upload\" type=\"submit\" class=\"fa fa-floppy-o btn btn-sm bg-orange block m-b\" _v-94cdab7e=\"\"></button>\n            <span class=\"file-input-helpertext\" id=\"file-name\" _v-94cdab7e=\"\">{{eventimage}}</span>\n          </form>\n          <form v-if=\"hasEventImage\" id=\"form-mediafile-remove{{item.id}}\" @submit.prevent=\"removeMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/removeMediaFile/{{item.id}}\" _v-94cdab7e=\"\">\n            <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-94cdab7e=\"\">\n            <button id=\"btn-mediafile-remove\" type=\"submit\" class=\"fa fa-eraser btn btn-sm btn-danger block m-b\" _v-94cdab7e=\"\"></button>\n          </form>\n        </div><!-- /.panel mediaform -->\n\n        <hr _v-94cdab7e=\"\">\n      </template>\n\n      <p _v-94cdab7e=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-94cdab7e=\"\">All Day Event</p>\n      </template>\n      <hr _v-94cdab7e=\"\">\n      <div class=\"item-info\" _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">Title: {{item.title}}</p>\n        <p v-if\"item.short_title\"=\"\" _v-94cdab7e=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-94cdab7e=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-94cdab7e=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-94cdab7e=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <template v-else=\"\">\n          <p _v-94cdab7e=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-94cdab7e=\"\">Contact:</p>\n          <ul _v-94cdab7e=\"\">\n            <li v-if=\"item.contact_person\" _v-94cdab7e=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-94cdab7e=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-94cdab7e=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-94cdab7e=\"\">Additional Information: (related links) </p>\n          <ul _v-94cdab7e=\"\">\n            <li _v-94cdab7e=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-94cdab7e=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-94cdab7e=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <p v-if=\"item.free\" _v-94cdab7e=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-94cdab7e=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-94cdab7e=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-94cdab7e=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-94cdab7e=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-94cdab7e=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-94cdab7e=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-94cdab7e=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-94cdab7e=\"\">\n      <div class=\"row\" _v-94cdab7e=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-94cdab7e=\"\">\n          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-94cdab7e=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-94cdab7e=\"\">{{timeLeft}}</span>\n\n\n\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-94cdab7e=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-94cdab7e=\"\">\n\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" _v-94cdab7e=\"\"><i class=\"fa fa-pencil\" _v-94cdab7e=\"\"></i></button>\n            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-86f83d4e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-86f83d4e=\"\">\n\n      <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n          <div class=\"row\" _v-86f83d4e=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n              <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                <h6 class=\"box-title\" _v-86f83d4e=\"\">{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n        <!--Announcements Body-->\n        <div v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n            {{ item.announcement }}\n        </div>\n\n        <!--Events Body-->\n        <div v-show=\"entityType == 'events'\" _v-86f83d4e=\"\">\n            events\n        </div>\n\n        <!--Story Body-->\n        <div v-show=\"entityType == 'story'\" _v-86f83d4e=\"\">\n            story\n        </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n      <div class=\"row\" _v-86f83d4e=\"\">\n        <div class=\"col-sm-12 col-md-offset-9 col-md-3\" _v-86f83d4e=\"\">\n          ID: {{item.id}}\n          <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n\n            <button v-on:click.prevent=\"unarchiveItem\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n            <button v-on:click.prevent=\"deleteItem\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.file-upload[_v-94cdab7e] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-94cdab7e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-94cdab7e] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-94cdab7e] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.box[_v-94cdab7e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-94cdab7e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-94cdab7e] {\n  padding: 3px;\n}\n.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nh5.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-94cdab7e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-94cdab7e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-94cdab7e] {\n  display:inline-block;\n}\nform.mediaform[_v-94cdab7e] {\n  margin-top: 1rem;\n}\n.form-group[_v-94cdab7e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-94cdab7e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-94cdab7e],\n.btn-group-vertical[_v-94cdab7e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-94cdab7e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-94cdab7e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-94cdab7e]{\n  margin-bottom: 0;\n}\n.topitems[_v-94cdab7e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-94cdab7e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-94cdab7e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-94cdab7e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-94cdab7e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-94cdab7e] {\n  color: #F39C12;\n}\n.time-is-long[_v-94cdab7e] {\n  color: #999999;\n}\n.time-is-over[_v-94cdab7e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-94cdab7e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-94cdab7e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-94cdab7e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-94cdab7e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-94cdab7e", module.exports)
+    hotAPI.createRecord("_v-86f83d4e", module.exports)
   } else {
-    hotAPI.update("_v-94cdab7e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-86f83d4e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./VuiFlipSwitch.vue":12,"babel-runtime/core-js/json/stringify":1,"moment":4,"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
+},{"./VuiFlipSwitch.vue":9,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],9:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    -webkit-transition: margin 0.3s ease-in 0s;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    -webkit-transition: all 0.3s ease-in 0s;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -17089,44 +16537,35 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],13:[function(require,module,exports){
+},{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],10:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
-var _EventQueue = require('./components/EventQueue.vue');
+var _ArchiveQueue = require('./components/ArchiveQueue.vue');
 
-var _EventQueue2 = _interopRequireDefault(_EventQueue);
+var _ArchiveQueue2 = _interopRequireDefault(_ArchiveQueue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
+
 // Remember the token we created in the <head> tags? Get it here.
 var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
 Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
-// var moment = require('moment');
-
-
 new Vue({
-    el: '#vue-event-queue',
-    components: { EventQueue: _EventQueue2.default },
-    // http: {
-    //     headers: {
-    //         // You could also store your token in a global object,
-    //         // and reference it here. APP.token
-    //         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-    //     }
-    //     },
+    el: '#vue-archive-queue',
+    components: { ArchiveQueue: _ArchiveQueue2.default },
     ready: function ready() {
-        console.log('new Vue Event Queue ready');
+        console.log('new Vue Archive Queue ready');
     }
 });
 
-},{"./components/EventQueue.vue":10,"vue":8,"vue-resource":7}]},{},[13]);
+},{"./components/ArchiveQueue.vue":7,"vue":5,"vue-resource":4}]},{},[10]);
 
-//# sourceMappingURL=vue-event-queue.js.map
+//# sourceMappingURL=vue-archive-queue.js.map

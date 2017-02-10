@@ -16947,8 +16947,6 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-// var moment = require('moment');
-
 new Vue({
     el: '#vue-announcement-archive-queue',
     components: {
