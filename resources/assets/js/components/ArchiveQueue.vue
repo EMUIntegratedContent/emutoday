@@ -2,8 +2,15 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-md-8">
         <h3>Archived {{ compEntityType }}</h3>
-        <div id="items-unapproved">
-            <archive-queue-item v-for="item in allitems | orderBy 'start_date' 1" :item="item" :index="$index" :entity-type="entityType">
+        <div v-show="unarchivedAlert" class="alert alert-warning alert-dismissible" role="alert">
+          <button @click="unarchivedAlert = false" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        </div>
+        <div id="archived-items-container">
+            <!-- custom @unarchived event "emitted" in ArchiveQueueItem after ajax request -->
+            <archive-queue-item @unarchived="onItemUnarchive" v-for="item in allitems | orderBy 'start_date' 1" :item="item" :index="$index" :entity-type="entityType">
             </archive-queue-item>
         </div>
     </div>
@@ -39,13 +46,9 @@ export default {
         return {
             resource: {},
             allitems: [],
-            otheritems: [],
-            appitems: [],
-            unappitems: [],
             items: [],
-            xitems: [],
-            objs: {},
             pagination: {},
+            unarchivedAlert: false,
         }
     },
     ready() {
@@ -69,7 +72,10 @@ export default {
                 .then((response) => {
                     console.log(response.data)
                     this.$set('allitems', response.data.data)
-                    this.makePagination(response.data.meta.pagination)
+
+                    if(response.data.length > 0){
+                        this.makePagination(response.data.meta.pagination)
+                    }
                 }, (response) => {
                     //error callback
                     console.log("Error fetching archive records");
@@ -86,22 +92,10 @@ export default {
             }
 
             this.$set('pagination', pagination)
-
-
         },
 
-        updateRecord: function(item) {
-            var currentRecordId = item.id;
-
-            var currentRecord = item;
-            this.$http.patch('/api/event/updateItem/' + item.id, item, {
-                    method: 'PATCH'
-                })
-                .then((response) => {
-                    console.log('good_eventQueue' + response)
-                }, (response) => {
-                    console.log('bad?' + response)
-                });
+        onItemUnarchive(){
+            this.unarchivedAlert = true;
         },
 
     },

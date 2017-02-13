@@ -81,4 +81,53 @@ class ArchiveController extends ApiController
         return $this->setStatusCode(501)->respondWithError('Error loading archive queue.');
       }
     }
+
+    public function unarchive(Request $request, $archiveType, $id){
+      $currentDate = Carbon::now();
+
+      if (\Auth::check()) {
+        $user = \Auth::user();
+
+        if ($user->hasRole('admin')){
+            $fractal = new Manager();
+
+            switch($archiveType){
+                case 'announcements':
+                    $this->updateAnnouncement($id);
+
+                    $item = Announcement::findOrFail($id);
+                    // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                    $validation = \Validator::make( Input::all(), [
+                      'title'           => 'required|max:80|min:10',
+                      'start_date'      => 'required|date',
+                      'end_date'        => 'required|date',
+                      'announcement'     => 'required|max:255'
+                    ]);
+                    break;
+            }
+
+            if( $validation->fails() )
+            {
+              return $this->setStatusCode(422)
+              ->respondWithError($validation->errors()->getMessages());
+            }
+            if($validation->passes()){
+                $item->is_archived = 1;
+
+                if($item->save()) {
+                    return $this->setStatusCode(201)
+                    ->respondSavedWithData(ucfirst($archiveType) .' successfully unarchived!',[ 'record_id' => $item->id ]);
+                }
+            }
+        }
+        return $this->setStatusCode(403)->respondWithError('You do not have permission to access the archives.');
+
+      } else {
+        return $this->setStatusCode(501)->respondWithError('Error loading archive queue.');
+      }
+    }
+
+    protected function updateAnnouncement($id){
+
+    }
 }

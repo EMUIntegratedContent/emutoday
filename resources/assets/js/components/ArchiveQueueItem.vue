@@ -35,8 +35,8 @@
           ID: {{item.id}}
           <div class="btn-group pull-right">
 
-            <button v-on:click.prevent="unarchiveItem" class="btn bg-green btn-xs footer-btn" aria-label="unarchive item"><i class="fa fa-inbox"></i></button>
-            <button v-on:click.prevent="deleteItem" class="btn bg-red btn-xs footer-btn" aria-label="delete item"><i class="fa fa-trash"></i></button>
+            <button v-if="showButtons" @click="unarchiveItem(item)" type="button" class="btn bg-green btn-xs footer-btn" aria-label="unarchive item"><i class="fa fa-inbox"></i></button>
+            <button v-if="showButtons" @click="deleteItem(item)" type="button" class="btn bg-red btn-xs footer-btn" aria-label="delete item"><i class="fa fa-trash"></i></button>
           </div><!-- /.btn-toolbar -->
 
         </div><!-- /.col-md-7 -->
@@ -163,9 +163,6 @@ h5 {
   border-left: 6px solid #00bfff;
 }
 .special-item-last {
-  /*border-bottom: 6px solid #bfff00;
-  border-bottom-right-radius:3px;
-  border-bottom-left-radius: 3px;*/
   margin-bottom: 30px;
 }
 </style>
@@ -181,6 +178,7 @@ module.exports  = {
       eventimage: '',
       showBody: false,
       showPanel: false,
+      showButtons: true,
     }
   },
   created: function () {
@@ -195,6 +193,18 @@ module.exports  = {
   methods:{
       toggleBody(){
           this.showBody ? this.showBody = false : this.showBody = true;
+      },
+      unarchiveItem(item){
+          var url = '/api/archive/' + this.entityType + '/' + item.id + '/unarchive'
+          this.$http.put(url, item)
+              .then((response) => {
+                  console.log(response)
+                  this.$emit("unarchived", item.id)
+                  this.showButtons = false
+              }, (response) => {
+                  //error callback
+                  console.log("Error unarchiving record");
+              }).bind(this);
       },
   },
   watch: {

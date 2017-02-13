@@ -16349,13 +16349,9 @@ exports.default = {
         return {
             resource: {},
             allitems: [],
-            otheritems: [],
-            appitems: [],
-            unappitems: [],
             items: [],
-            xitems: [],
-            objs: {},
-            pagination: {}
+            pagination: {},
+            unarchivedAlert: false
         };
     },
     ready: function ready() {
@@ -16381,7 +16377,10 @@ exports.default = {
             this.$http.get(url).then(function (response) {
                 console.log(response.data);
                 _this.$set('allitems', response.data.data);
-                _this.makePagination(response.data.meta.pagination);
+
+                if (response.data.length > 0) {
+                    _this.makePagination(response.data.meta.pagination);
+                }
             }, function (response) {
                 //error callback
                 console.log("Error fetching archive records");
@@ -16400,19 +16399,9 @@ exports.default = {
             this.$set('pagination', pagination);
         },
 
-        updateRecord: function updateRecord(item) {
-            var currentRecordId = item.id;
-
-            var currentRecord = item;
-            this.$http.patch('/api/event/updateItem/' + item.id, item, {
-                method: 'PATCH'
-            }).then(function (response) {
-                console.log('good_eventQueue' + response);
-            }, function (response) {
-                console.log('bad?' + response);
-            });
+        onItemUnarchive: function onItemUnarchive() {
+            this.unarchivedAlert = true;
         }
-
     },
 
     // the `events` option simply calls `$on` for you
@@ -16420,7 +16409,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\">Archived {{ compEntityType }}</h3>\n        <div id=\"items-unapproved\" _v-e7ff0ab4=\"\">\n            <archive-queue-item v-for=\"item in allitems | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n    </div>\n</div>\n<div v-show=\"this.pagination.total_pages > 0\" class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <ul class=\"pagination\" _v-e7ff0ab4=\"\">\n            <li :class=\"this.pagination.current_page == 1 ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(1)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in totalPages\" :class=\"(n + 1) == this.pagination.current_page ? 'active': ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(n + 1)\" _v-e7ff0ab4=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"this.pagination.current_page == this.pagination.total_pages ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(this.pagination.total_pages)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\">Archived {{ compEntityType }}</h3>\n        <div v-show=\"unarchivedAlert\" class=\"alert alert-warning alert-dismissible\" role=\"alert\" _v-e7ff0ab4=\"\">\n          <button @click=\"unarchivedAlert = false\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\" _v-e7ff0ab4=\"\">\n            <span aria-hidden=\"true\" _v-e7ff0ab4=\"\">×</span>\n          </button>\n          <strong _v-e7ff0ab4=\"\">Holy guacamole!</strong> You should check in on some of those fields below.\n        </div>\n        <div id=\"archived-items-container\" _v-e7ff0ab4=\"\">\n            <!-- custom @unarchived event \"emitted\" in ArchiveQueueItem after ajax request -->\n            <archive-queue-item @unarchived=\"onItemUnarchive\" v-for=\"item in allitems | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n    </div>\n</div>\n<div v-show=\"this.pagination.total_pages > 0\" class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <ul class=\"pagination\" _v-e7ff0ab4=\"\">\n            <li :class=\"this.pagination.current_page == 1 ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(1)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in totalPages\" :class=\"(n + 1) == this.pagination.current_page ? 'active': ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(n + 1)\" _v-e7ff0ab4=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"this.pagination.current_page == this.pagination.total_pages ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(this.pagination.total_pages)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16437,7 +16426,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./ArchiveQueueItem.vue":8,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -16451,37 +16440,51 @@ var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
-  components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
-  props: ['item', 'index', 'entityType'],
-  data: function data() {
-    return {
-      eventimage: '',
-      showBody: false,
-      showPanel: false
-    };
-  },
-  created: function created() {},
-  ready: function ready() {},
-  computed: {},
-  methods: {
-    toggleBody: function toggleBody() {
-      this.showBody ? this.showBody = false : this.showBody = true;
-    }
-  },
-  watch: {},
-  directives: {},
+    components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
+    props: ['item', 'index', 'entityType'],
+    data: function data() {
+        return {
+            eventimage: '',
+            showBody: false,
+            showPanel: false,
+            showButtons: true
+        };
+    },
+    created: function created() {},
+    ready: function ready() {},
+    computed: {},
+    methods: {
+        toggleBody: function toggleBody() {
+            this.showBody ? this.showBody = false : this.showBody = true;
+        },
+        unarchiveItem: function unarchiveItem(item) {
+            var _this = this;
 
-  filters: {},
-  events: {}
+            var url = '/api/archive/' + this.entityType + '/' + item.id + '/unarchive';
+            this.$http.put(url, item).then(function (response) {
+                console.log(response);
+                _this.$emit("unarchived", item.id);
+                _this.showButtons = false;
+            }, function (response) {
+                //error callback
+                console.log("Error unarchiving record");
+            }).bind(this);
+        }
+    },
+    watch: {},
+    directives: {},
+
+    filters: {},
+    events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-86f83d4e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-86f83d4e=\"\">\n\n      <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n          <div class=\"row\" _v-86f83d4e=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n              <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                <h6 class=\"box-title\" _v-86f83d4e=\"\">{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n        <!--Announcements Body-->\n        <div v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n            {{ item.announcement }}\n        </div>\n\n        <!--Events Body-->\n        <div v-show=\"entityType == 'events'\" _v-86f83d4e=\"\">\n            events\n        </div>\n\n        <!--Story Body-->\n        <div v-show=\"entityType == 'story'\" _v-86f83d4e=\"\">\n            story\n        </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n      <div class=\"row\" _v-86f83d4e=\"\">\n        <div class=\"col-sm-12 col-md-offset-9 col-md-3\" _v-86f83d4e=\"\">\n          ID: {{item.id}}\n          <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n\n            <button v-on:click.prevent=\"unarchiveItem\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n            <button v-on:click.prevent=\"deleteItem\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-86f83d4e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-86f83d4e=\"\">\n\n      <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n          <div class=\"row\" _v-86f83d4e=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n              <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                <h6 class=\"box-title\" _v-86f83d4e=\"\">{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n        <!--Announcements Body-->\n        <div v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n            {{ item.announcement }}\n        </div>\n\n        <!--Events Body-->\n        <div v-show=\"entityType == 'events'\" _v-86f83d4e=\"\">\n            events\n        </div>\n\n        <!--Story Body-->\n        <div v-show=\"entityType == 'story'\" _v-86f83d4e=\"\">\n            story\n        </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n      <div class=\"row\" _v-86f83d4e=\"\">\n        <div class=\"col-sm-12 col-md-offset-9 col-md-3\" _v-86f83d4e=\"\">\n          ID: {{item.id}}\n          <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n\n            <button v-if=\"showButtons\" @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n            <button v-if=\"showButtons\" @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

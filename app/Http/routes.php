@@ -135,6 +135,7 @@ Route::group(['prefix' => 'api'], function() {
 
     // Archives API
     Route::get('archive/queueload/{archiveType}', ['as' => 'api_archive_queue', 'uses' => 'Api\ArchiveController@queueLoad']);
+    Route::put('archive/{archiveType}/{id}/unarchive', ['as' => 'api_unarchive', 'uses' => 'Api\ArchiveController@unarchive']);
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
