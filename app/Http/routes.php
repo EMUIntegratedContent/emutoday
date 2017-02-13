@@ -134,8 +134,9 @@ Route::group(['prefix' => 'api'], function() {
     Route::resource('announcement', 'Api\AnnouncementController');
 
     // Archives API
-    Route::get('archive/queueload/{archiveType}', ['as' => 'api_archive_queue', 'uses' => 'Api\ArchiveController@queueLoad']);
-    Route::put('archive/{archiveType}/{id}/unarchive', ['as' => 'api_unarchive', 'uses' => 'Api\ArchiveController@unarchive']);
+    Route::get('archive/queueload/{archiveType}/{perPage?}', ['as' => 'api_archive_queue', 'uses' => 'Api\ArchiveController@queueLoad']);
+    Route::put('archive/{archiveType}/{id}/unarchive', ['as' => 'api_archive_unarchive', 'uses' => 'Api\ArchiveController@unarchive']);
+    Route::delete('archive/{archiveType}/{id}/delete', ['as' => 'api_archive_delete', 'uses' => 'Api\ArchiveController@delete']);
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 

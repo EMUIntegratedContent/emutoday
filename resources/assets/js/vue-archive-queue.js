@@ -1,6 +1,7 @@
 var Vue = require('vue');
 
 import VueResource from 'vue-resource';
+import moment from 'moment';
 Vue.use(VueResource);
 
 // Remember the token we created in the <head> tags? Get it here.

@@ -38,7 +38,7 @@ class FractalAnnouncementTransformerModel extends Fractal\TransformerAbstract
             'email_link_txt' => $announcement->email_link_txt,
             'is_archived' => $announcement->is_archived,
             'phone'  => $announcement->phone,
-
+            'submitter' => $announcement->submitter,
             'user_id'  => $user_id,
             'user_name'  => $user_name,
             'user_phone'  => $user_phone,

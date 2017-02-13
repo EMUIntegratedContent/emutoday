@@ -16327,7 +16327,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-e7ff0ab4]{\n    cursor: pointer;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16338,12 +16338,20 @@ var _ArchiveQueueItem = require('./ArchiveQueueItem.vue');
 
 var _ArchiveQueueItem2 = _interopRequireDefault(_ArchiveQueueItem);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-    components: { ArchiveQueueItem: _ArchiveQueueItem2.default },
+    components: {
+        ArchiveQueueItem: _ArchiveQueueItem2.default
+    },
     props: {
-        entityType: { required: true }
+        entityType: {
+            required: true
+        }
     },
     data: function data() {
         return {
@@ -16351,7 +16359,7 @@ exports.default = {
             allitems: [],
             items: [],
             pagination: {},
-            unarchivedAlert: false
+            resultsPerPage: 10
         };
     },
     ready: function ready() {
@@ -16368,17 +16376,18 @@ exports.default = {
         }
     },
     methods: {
-        fetchAllRecords: function fetchAllRecords(pageNumber) {
+        fetchAllRecords: function fetchAllRecords(pageNumber, numPerPage) {
             var _this = this;
 
             var url = '/api/archive/queueload/' + this.entityType;
+            numPerPage ? url += '/' + numPerPage : '';
             pageNumber ? url += '?page=' + pageNumber : '';
 
             this.$http.get(url).then(function (response) {
                 console.log(response.data);
                 _this.$set('allitems', response.data.data);
 
-                if (response.data.length > 0) {
+                if (response.data.data.length > 0) {
                     _this.makePagination(response.data.meta.pagination);
                 }
             }, function (response) {
@@ -16393,14 +16402,21 @@ exports.default = {
                 last_page: data.last_page,
                 next_page_url: data.next_page_url,
                 prev_page_url: data.prev_page_url,
-                total_pages: data.total_pages
+                total_pages: data.total_pages,
+                total_records: data.total
             };
 
             this.$set('pagination', pagination);
         },
 
-        onItemUnarchive: function onItemUnarchive() {
-            this.unarchivedAlert = true;
+        paginateChange: function paginateChange(direction) {
+            if (direction == 'plus') {
+                this.resultsPerPage += 1;
+            } else if (direction == 'minus') {
+                this.resultsPerPage > 1 ? this.resultsPerPage -= 1 : '';
+            }
+
+            this.fetchAllRecords(1, parseInt(this.resultsPerPage));
         }
     },
 
@@ -16409,13 +16425,13 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\">Archived {{ compEntityType }}</h3>\n        <div v-show=\"unarchivedAlert\" class=\"alert alert-warning alert-dismissible\" role=\"alert\" _v-e7ff0ab4=\"\">\n          <button @click=\"unarchivedAlert = false\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\" _v-e7ff0ab4=\"\">\n            <span aria-hidden=\"true\" _v-e7ff0ab4=\"\">×</span>\n          </button>\n          <strong _v-e7ff0ab4=\"\">Holy guacamole!</strong> You should check in on some of those fields below.\n        </div>\n        <div id=\"archived-items-container\" _v-e7ff0ab4=\"\">\n            <!-- custom @unarchived event \"emitted\" in ArchiveQueueItem after ajax request -->\n            <archive-queue-item @unarchived=\"onItemUnarchive\" v-for=\"item in allitems | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n    </div>\n</div>\n<div v-show=\"this.pagination.total_pages > 0\" class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-12 col-md-8\" _v-e7ff0ab4=\"\">\n        <ul class=\"pagination\" _v-e7ff0ab4=\"\">\n            <li :class=\"this.pagination.current_page == 1 ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(1)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in totalPages\" :class=\"(n + 1) == this.pagination.current_page ? 'active': ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(n + 1)\" _v-e7ff0ab4=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"this.pagination.current_page == this.pagination.total_pages ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(this.pagination.total_pages)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-9 col-md-6\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\"><span class=\"badge\" _v-e7ff0ab4=\"\">{{ pagination.total_records }}</span> Archived {{ compEntityType }}</h3>\n        <p _v-e7ff0ab4=\"\">Click the item's title to expand and view associated content. When you unarchive an item, it will be shown in green. If you reload the page or move to the next page, that item will no longer be shown in this queue.</p>\n        <div id=\"archived-items-container\" _v-e7ff0ab4=\"\">\n            <!-- custom @unarchived event \"emitted\" in ArchiveQueueItem after ajax request -->\n            <archive-queue-item v-for=\"item in allitems | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n    </div>\n</div>\n<div v-show=\"this.pagination.total_pages > 0\" class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-md-4\" _v-e7ff0ab4=\"\">\n        <ul class=\"pagination\" _v-e7ff0ab4=\"\">\n            <li :class=\"this.pagination.current_page == 1 ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(1, this.resultsPerPage)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in totalPages\" :class=\"(n + 1) == this.pagination.current_page ? 'active': ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(n + 1, this.resultsPerPage)\" _v-e7ff0ab4=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"this.pagination.current_page == this.pagination.total_pages ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                <a href=\"#\" @click.prevent=\"fetchAllRecords(this.pagination.total_pages, this.resultsPerPage)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 col-md-6 col-md-2\" _v-e7ff0ab4=\"\">\n        <div class=\"form-group\" _v-e7ff0ab4=\"\">\n            <label for=\"resultsPerPage\" _v-e7ff0ab4=\"\">Per Page</label>\n            <div class=\"input-group\" _v-e7ff0ab4=\"\">\n                <div @click=\"paginateChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-e7ff0ab4=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :value=\"resultsPerPage\" disabled=\"\" _v-e7ff0ab4=\"\">\n                <div @click=\"paginateChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-e7ff0ab4=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
+    __vueify_insert__.cache["\n.cursor[_v-e7ff0ab4]{\n    cursor: pointer;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -16424,9 +16440,9 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-e7ff0ab4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./ArchiveQueueItem.vue":8,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
+},{"./ArchiveQueueItem.vue":8,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 3px;\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.special-item[_v-86f83d4e] {\n    border-left: 6px solid #ff00bf;\n    padding-left: 3px;\n    border-top-left-radius: 3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n}\n\n.special-item-both[_v-86f83d4e] {\n    border-left: 6px solid #bfff00;\n}\n\n.special-item-home[_v-86f83d4e] {\n    border-left: 6px solid #00bfff;\n}\n\n.special-item-last[_v-86f83d4e] {\n    margin-bottom: 30px;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a;\n    border: 2px solid #00a65a;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39;\n    border: 2px solid #dd4b39;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -16440,19 +16456,46 @@ var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
-    components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
+    components: {
+        VuiFlipSwitch: _VuiFlipSwitch2.default
+    },
     props: ['item', 'index', 'entityType'],
     data: function data() {
         return {
             eventimage: '',
             showBody: false,
             showPanel: false,
-            showButtons: true
+            showArchivedButtons: true,
+            showUnarchivedButtons: false,
+            showRetryButtons: false,
+            isUnarchived: false,
+            isDeleted: false,
+            confirmDelete: false
         };
     },
     created: function created() {},
     ready: function ready() {},
-    computed: {},
+    computed: {
+        unarchivedStatus: function unarchivedStatus() {
+            if (this.isUnarchived) {
+                return 'unarchived';
+            }
+
+            if (this.isDeleted) {
+                return 'unarchive-fail';
+            }
+
+            if (this.showRetryButtons) {
+                return 'unarchive-fail';
+            }
+        },
+        expandArrow: function expandArrow() {
+            return this.showBody ? 'fa fa-angle-down' : 'fa fa-angle-right';
+        },
+        formattedDate: function formattedDate() {
+            return (0, _moment2.default)(this.item.start_date).format("MM/DD/YYYY");
+        }
+    },
     methods: {
         toggleBody: function toggleBody() {
             this.showBody ? this.showBody = false : this.showBody = true;
@@ -16464,10 +16507,41 @@ module.exports = {
             this.$http.put(url, item).then(function (response) {
                 console.log(response);
                 _this.$emit("unarchived", item.id);
-                _this.showButtons = false;
+                _this.showArchivedButtons = false;
+                _this.showUnarchivedButtons = true;
+                _this.isUnarchived = true;
             }, function (response) {
                 //error callback
                 console.log("Error unarchiving record");
+                _this.showArchivedButtons = false;
+                _this.showRetryButtons = true;
+            }).bind(this);
+        },
+        editItem: function editItem(item) {
+            switch (this.entityType) {
+                case 'announcements':
+                    return "/admin/announcement/" + item.id + "/edit";
+                default:
+                    return;
+            }
+        },
+        deleteItemConfirm: function deleteItemConfirm() {
+            this.confirmDelete = true;
+        },
+        deleteItem: function deleteItem(item) {
+            var _this2 = this;
+
+            var url = '/api/archive/' + this.entityType + '/' + item.id + '/delete';
+            this.$http.delete(url).then(function (response) {
+                console.log(response);
+                _this2.$emit("deleted", item.id);
+                _this2.showArchivedButtons = false;
+                _this2.showUnarchivedButtons = false;
+                _this2.isDeleted = true;
+            }, function (response) {
+                //error callback
+                console.log("Error deleting record");
+                _this2.showArchivedButtons = true;
             }).bind(this);
         }
     },
@@ -16478,13 +16552,13 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-86f83d4e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-86f83d4e=\"\">\n\n      <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n          <div class=\"row\" _v-86f83d4e=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n              <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                <h6 class=\"box-title\" _v-86f83d4e=\"\">{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n        <!--Announcements Body-->\n        <div v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n            {{ item.announcement }}\n        </div>\n\n        <!--Events Body-->\n        <div v-show=\"entityType == 'events'\" _v-86f83d4e=\"\">\n            events\n        </div>\n\n        <!--Story Body-->\n        <div v-show=\"entityType == 'story'\" _v-86f83d4e=\"\">\n            story\n        </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n      <div class=\"row\" _v-86f83d4e=\"\">\n        <div class=\"col-sm-12 col-md-offset-9 col-md-3\" _v-86f83d4e=\"\">\n          ID: {{item.id}}\n          <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n\n            <button v-if=\"showButtons\" @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n            <button v-if=\"showButtons\" @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-86f83d4e=\"\">\n\n    <div :class=\"unarchivedStatus\" class=\"box box-solid\" _v-86f83d4e=\"\">\n\n        <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n                    <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                        <h6 class=\"box-title\" _v-86f83d4e=\"\"><span class=\"arrowBuffer\" _v-86f83d4e=\"\"><i :class=\"expandArrow\" _v-86f83d4e=\"\"></i></span> {{item.title}}</h6>\n                    </div>\n                    <!-- /.col-md-12 -->\n                </a>\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n            <!--Announcements Body-->\n            <div v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n                {{ item.announcement }}\n            </div>\n\n            <!--Events Body-->\n            <div v-show=\"entityType == 'events'\" _v-86f83d4e=\"\">\n                events\n            </div>\n\n            <!--Story Body-->\n            <div v-show=\"entityType == 'story'\" _v-86f83d4e=\"\">\n                story\n            </div>\n        </div>\n        <!-- /.box-body -->\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-86f83d4e=\"\">\n                    Submitted on {{ formattedDate }} by {{ item.submitter }}\n                </div>\n                <div class=\"col-sm-12 col-md-3\" _v-86f83d4e=\"\">\n                    <div v-show=\"showArchivedButtons\" _v-86f83d4e=\"\">\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showUnarchivedButtons\" _v-86f83d4e=\"\">\n                        <span class=\"success\" _v-86f83d4e=\"\"><i class=\"fa fa-check\" _v-86f83d4e=\"\"></i> Unarchived</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <a :href=\"editItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"edit item\" _v-86f83d4e=\"\"><i class=\"fa fa-pencil\" _v-86f83d4e=\"\"></i></a>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showRetryButtons\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-exclamation-triangle\" _v-86f83d4e=\"\"></i> Error</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-refresh\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"isDeleted\" class=\"pull-right\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i> Item Deleted</span>\n                    </div>\n                </div>\n                <!-- /.col-md-7 -->\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-footer -->\n    </div>\n    <!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-86f83d4e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-86f83d4e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-86f83d4e] {\n  padding: 3px;\n}\n.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nh5.box-footer[_v-86f83d4e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-86f83d4e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-86f83d4e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-86f83d4e] {\n  display:inline-block;\n}\nform.mediaform[_v-86f83d4e] {\n  margin-top: 1rem;\n}\n.form-group[_v-86f83d4e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-86f83d4e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-86f83d4e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-86f83d4e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-86f83d4e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-86f83d4e]{\n  margin-bottom: 0;\n}\n.topitems[_v-86f83d4e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-86f83d4e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-86f83d4e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-86f83d4e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-86f83d4e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-86f83d4e] {\n  color: #F39C12;\n}\n.time-is-long[_v-86f83d4e] {\n  color: #999999;\n}\n.time-is-over[_v-86f83d4e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-86f83d4e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-86f83d4e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-86f83d4e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-86f83d4e] {\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 3px;\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.special-item[_v-86f83d4e] {\n    border-left: 6px solid #ff00bf;\n    padding-left: 3px;\n    border-top-left-radius: 3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n}\n\n.special-item-both[_v-86f83d4e] {\n    border-left: 6px solid #bfff00;\n}\n\n.special-item-home[_v-86f83d4e] {\n    border-left: 6px solid #00bfff;\n}\n\n.special-item-last[_v-86f83d4e] {\n    margin-bottom: 30px;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a;\n    border: 2px solid #00a65a;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39;\n    border: 2px solid #dd4b39;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -16547,6 +16621,10 @@ var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
 var _ArchiveQueue = require('./components/ArchiveQueue.vue');
 
 var _ArchiveQueue2 = _interopRequireDefault(_ArchiveQueue);
@@ -16569,6 +16647,6 @@ new Vue({
     }
 });
 
-},{"./components/ArchiveQueue.vue":7,"vue":5,"vue-resource":4}]},{},[10]);
+},{"./components/ArchiveQueue.vue":7,"moment":1,"vue":5,"vue-resource":4}]},{},[10]);
 
 //# sourceMappingURL=vue-archive-queue.js.map

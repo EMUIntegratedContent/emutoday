@@ -50,7 +50,7 @@ class ArchiveController extends ApiController
 
     }
 
-    public function queueLoad($archiveType){
+    public function queueLoad($archiveType, $perPage = 10){
       $currentDate = Carbon::now();
 
       if (\Auth::check()) {
@@ -62,7 +62,7 @@ class ArchiveController extends ApiController
             switch($archiveType){
                 case 'announcements':
                     // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
-                    $paginator = Announcement::where('is_archived', 1)->orderBy('start_date', 'desc')->paginate(3);
+                    $paginator = Announcement::where('is_archived', 1)->orderBy('start_date', 'desc')->paginate($perPage);
                     $archivedItems = $paginator->getCollection();
 
                     $resource = new Fractal\Resource\Collection($archivedItems, new FractalAnnouncementTransformerModel);
@@ -93,8 +93,6 @@ class ArchiveController extends ApiController
 
             switch($archiveType){
                 case 'announcements':
-                    $this->updateAnnouncement($id);
-
                     $item = Announcement::findOrFail($id);
                     // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
                     $validation = \Validator::make( Input::all(), [
@@ -112,7 +110,7 @@ class ArchiveController extends ApiController
               ->respondWithError($validation->errors()->getMessages());
             }
             if($validation->passes()){
-                $item->is_archived = 1;
+                $item->is_archived = 0;
 
                 if($item->save()) {
                     return $this->setStatusCode(201)
@@ -127,7 +125,33 @@ class ArchiveController extends ApiController
       }
     }
 
-    protected function updateAnnouncement($id){
+    public function delete($archiveType, $id){
+        $currentDate = Carbon::now();
 
+        if (\Auth::check()) {
+          $user = \Auth::user();
+
+          if ($user->hasRole('admin')){
+              $fractal = new Manager();
+
+              switch($archiveType){
+                  case 'announcements':
+                      $item = Announcement::findOrFail($id);
+                      break;
+              }
+
+              if($item->delete()) {
+                  return $this->setStatusCode(200)
+                  ->respondSavedWithData(ucfirst($archiveType) .' successfully deleted!',[ 'record_id' => $item->id ]);
+              } else {
+                  return $this->setStatusCode(400)
+                  ->respondWithError("Item was not deleted.");
+              }
+          }
+          return $this->setStatusCode(403)->respondWithError('You do not have permission to access the archives.');
+
+        } else {
+          return $this->setStatusCode(501)->respondWithError('Error running authorization check.');
+        }
     }
 }
