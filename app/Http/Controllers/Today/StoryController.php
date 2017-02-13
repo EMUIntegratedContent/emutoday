@@ -68,16 +68,18 @@ class StoryController extends Controller
                 }
             }
             $sideFeaturedStorys = $this->storys->where([
-                ['story_type', 'story'],
-                ['id', '<>', $id],
-                ['is_approved', 1],
-                ])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
-                    $query->where('image_type', 'small');
-                }])->limit(3)->get();
-                $sideStoryBlurbs = collect();
-                foreach ($sideFeaturedStorys as $sideFeaturedStory) {
-                        $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
-                }
+              ['story_type', 'story'],
+              ['id', '<>', $id],
+              ['is_approved', 1],
+              ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query) {
+                  $query->where('image_type', '=', 'small');
+              })->limit(3)->get();
+              $sideStoryBlurbs = collect();
+              foreach ($sideFeaturedStorys as $sideFeaturedStory) {
+                      if ($sideFeaturedStory->storyImages()->where('image_type', 'small')->first()){ // redundant if
+                              $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
+                      }
+              }
 
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
@@ -125,16 +127,18 @@ class StoryController extends Controller
                 }
             }
             $sideFeaturedStorys = $this->storys->where([
-                ['story_type', 'story'],
-                ['id', '<>', $id],
-                ['is_approved', 1],
-                ])->orderBy('created_at', 'desc')->with(['storyImages'=> function($query) {
-                    $query->where('image_type', 'small');
-                }])->limit(3)->get();
-                $sideStoryBlurbs = collect();
-                foreach ($sideFeaturedStorys as $sideFeaturedStory) {
-                        $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
-                }
+              ['story_type', 'story'],
+              ['id', '<>', $id],
+              ['is_approved', 1],
+              ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query) {
+                  $query->where('image_type', '=', 'small');
+              })->limit(3)->get();
+              $sideStoryBlurbs = collect();
+              foreach ($sideFeaturedStorys as $sideFeaturedStory) {
+                      if ($sideFeaturedStory->storyImages()->where('image_type', 'small')->first()){ // redundant if
+                              $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
+                      }
+              }
 
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
