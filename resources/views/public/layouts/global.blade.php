@@ -38,12 +38,14 @@
                 </div>
             </div>
         </div>
+          <!--
         <div>
             <div class="row nopad">
                 <div class="large-12 columns nopad" id="outdated-browser-container">
                 </div>
             </div>
         </div>
+      -->
     <div class="off-canvas-wrapper">
 
       <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>

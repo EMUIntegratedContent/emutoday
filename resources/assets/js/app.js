@@ -31,4 +31,5 @@ $(document).ready(function() {
   // if(isIE){
       // $('#outdated-browser-container').html('<p data-alert class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/?locale=en">upgrade your browser</a> to improve your experience.</p>');
   // }
+  
 });
