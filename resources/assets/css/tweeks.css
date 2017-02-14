@@ -231,3 +231,13 @@ p.browserupgrade {
   background: #f7f0dd;
   border-bottom: 1px solid grey;
 }
+a.chrome:before {
+	content:"\f268";
+  font-family: FontAwesome;
+  padding-right: 0.15em;
+}
+a.firefox:before {
+	content:"\f269";
+  font-family: FontAwesome;
+  padding-right: 0.1em;
+}

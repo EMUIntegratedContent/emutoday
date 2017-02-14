@@ -32,7 +32,7 @@ $(document).ready(function () {
     // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     if (isIE) {
-        $('#outdated-browser-container').html('<p class="browserupgrade">EMU Today does not support Internet Explorer 10 or below. Please download the latest versions of <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&utm_source=firefox-com"><i class="fa fa-firefox" aria-hidden="true"></i>Firefox</a> or <a href="https://www.google.com/chrome/"><i class="fa fa-chrome" aria-hidden="true"></i>Chrome</a> to improve your viewing experience.</p>');
+        $('#outdated-browser-container').html('<p class="browserupgrade">EMU Today does not support Internet Explorer 10 or below. Please download the latest versions of <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&utm_source=firefox-com" class="firefox">Firefox</a> or <a href="https://www.google.com/chrome/" class="chrome">Chrome</a> to improve your viewing experience.</p>');
     }
 });
 
