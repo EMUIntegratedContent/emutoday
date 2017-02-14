@@ -218,3 +218,16 @@ ul.pagination li.active {
 .off-canvas-content, .off-canvas-content {
     padding-bottom: 0px;
 }
+div.browserupgrade {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+p.browserupgrade {
+  width: 100%;
+  margin: 0;
+  padding: .7rem;
+  text-align: center;
+  background: #f7f0dd;
+  border-bottom: 1px solid grey;
+}
