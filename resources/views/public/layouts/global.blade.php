@@ -39,8 +39,8 @@
             </div>
         </div>
         <div>
-            <div class="row">
-                <div class="large-12 columns" id="outdated-browser-container">
+            <div class="row nopad">
+                <div class="large-12 columns nopad" id="outdated-browser-container">
                 </div>
             </div>
         </div>
