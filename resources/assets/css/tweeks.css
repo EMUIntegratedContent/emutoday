@@ -218,12 +218,8 @@ ul.pagination li.active {
 .off-canvas-content, .off-canvas-content {
     padding-bottom: 0px;
 }
-.nopad {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
 .browserupgrade {
+  outline: #f08a24 700px solid;
   border-style: solid;
   border-width: 1px;
   display: block;
@@ -234,6 +230,4 @@ ul.pagination li.active {
   background-color: #f08a24;
   border-color: #de770f;
   color: #FFFFFF;
-  width: 200%;
-  text-align: center;
 }
