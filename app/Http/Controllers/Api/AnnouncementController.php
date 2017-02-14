@@ -36,7 +36,7 @@ class AnnouncementController extends ApiController
         $announcements = $user->announcements()->where('type',$atype)->get();
       } else {
         // User can see all announcements
-        $announcements = Announcement::where([ ['end_date', '>', $currentDate->subDay(2)], ['type', $atype] ])->get();
+        $announcements = Announcement::where([ /*['end_date', '>', $currentDate->subDay(2)],*/ ['type', $atype] ])->get();
       }
       $fractal = new Manager();
       $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);

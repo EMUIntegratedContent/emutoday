@@ -111,6 +111,7 @@ class ArchiveController extends ApiController
             }
             if($validation->passes()){
                 $item->is_archived = 0;
+                $item->is_approved = 0;
 
                 if($item->save()) {
                     return $this->setStatusCode(201)
@@ -140,7 +141,7 @@ class ArchiveController extends ApiController
                       break;
               }
 
-              if($item->delete()) {
+              if($item->save()) {
                   return $this->setStatusCode(200)
                   ->respondSavedWithData(ucfirst($archiveType) .' successfully deleted!',[ 'record_id' => $item->id ]);
               } else {

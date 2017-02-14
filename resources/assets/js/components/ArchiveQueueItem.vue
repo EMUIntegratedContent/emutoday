@@ -94,6 +94,7 @@
 .box {
     color: #1B1B1B;
     margin-bottom: 10px;
+    border: 1px solid #999999;
 }
 
 .box-body {
@@ -104,11 +105,12 @@
 }
 
 .box-header {
-    padding: 3px;
+    padding: 10px;
+    background-color: #D8D8D8;
 }
 
 .box-footer {
-    padding: 3px;
+    padding: 3px 10px 3px 10px;
 }
 
 h5.box-footer {
@@ -163,37 +165,17 @@ h5 {
     margin-bottom: 0;
 }
 
-.special-item {
-    border-left: 6px solid #ff00bf;
-    padding-left: 3px;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    margin-left: -10px;
-}
-
-.special-item-both {
-    border-left: 6px solid #bfff00;
-}
-
-.special-item-home {
-    border-left: 6px solid #00bfff;
-}
-
-.special-item-last {
-    margin-bottom: 30px;
-}
-
 .success{
     color: #00a65a;
 }
 
 .unarchived {
-    background-color: #00a65a;
-    border: 2px solid #00a65a;
+    background-color: #00a65a !important;
+    border: 2px solid #00a65a !important;
 }
 .unarchive-fail {
-    background-color: #dd4b39;
-    border: 2px solid #dd4b39;
+    background-color: #dd4b39 !important;
+    border: 2px solid #dd4b39 !important;
 }
 </style>
 
@@ -257,6 +239,7 @@ module.exports = {
                     this.$emit("unarchived", item.id)
                     this.showArchivedButtons = false
                     this.showUnarchivedButtons = true
+                    this.showRetryButtons = false
                     this.isUnarchived = true
                 }, (response) => {
                     //error callback

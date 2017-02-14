@@ -21,7 +21,7 @@
         <li class="{{ set_active('admin/announcement/*/hr') }}"><a href="/admin/announcement/form/hr"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
       </ul>
     </li>
-    <li><a href="/admin/announcement/archives"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
+    <li><a href="/admin/archive/queue/announcements"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
 </ul>
 </li>
 <li class="treeview {{ set_active('admin/event*') }}">
@@ -30,6 +30,7 @@
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/queue"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
     {{-- <li class="{{ set_active('admin/event*') }}"><a href="/admin/event"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+    <li><a href="/admin/archive/queue/events"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
   </ul>
 </li>
 @endcan
@@ -47,6 +48,7 @@
       <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
       {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
       <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/story/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
+      <li><a href="/admin/archive/queue/stories/news"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
     </ul>
   </li>
   @can('story_promote', $currentUser)
@@ -57,6 +59,7 @@
     <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
     {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
     <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+    <li><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
   </ul>
 </li>
 @endcan
