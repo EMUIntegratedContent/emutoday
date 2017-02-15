@@ -1,4 +1,9 @@
 <template>
+    <div v-if="role == 'admin' || role == 'admin_super'" class="row">
+        <div class="col-xs-12 text-right">
+            <a class="btn btn-sm btn-default" href="/admin/archive/queue/stories"><i class="fa fa-archive"></i> Archived Stories</a>
+        </div>
+    </div>
     <div class="row">
         <h2 v-if="loading" class="col-md-12">Loading. Please Wait...</h2>
         <div class="col-md-4">
@@ -228,7 +233,7 @@ export default  {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function (value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.storytype)
+            console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -244,43 +249,14 @@ export default  {
                 this.filterReadyStatus();
             }
         },
-        // filterReadyStatus: function(){
-        //     this.itemsUnapproved = this.itemsUnapproved.filter(function(item){
-        //         console.log('item.is_ready= ' + item.is_ready);
-        //         return item.is_ready === this.readyStatus;
-        //     })
-        // },
-        // resetReadyStatus: function(){
-        //     this.itemsUnapproved = this.itemsUnapproved.filter(function(item){
-        //         console.log('item.is_ready= ' + item.is_ready);
-        //         return item.is_ready !== '';
-        //     })
-        // },
         filterUnapprovedByStoryType: function (value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_unapproved_filter_storytype)
+            console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.items_unapproved_filter_storytype;
             }
         },
-        // filterUnapprovedByValues: function (value) {
-        //     console.log('value.story_type= ' + value.story_type + ' value.is_ready= ' + value.is_ready + ' storytype= ' + this.items_unapproved_filter_storytype  + ' is_ready= ' + this.items_unapproved_filter_isready)
-        //     let resetType,resetIsReady
-        //     resetType = (this.items_unapproved_filter_storytype === '')?true:false;
-        //     resetIsReady = (this.items_unapproved_filter_isready === '')?true:false;
-        //     if (resetType)
-        //     if (this.items_unapproved_filter_storytype === '' && this.items_unapproved_filter_isready === '') {
-        //         return value.story_type !== '' && value.is_ready !== '';
-        //     } else if (this.items_unapproved_filter_storytype === '' && this.items_unapproved_filter_isready !== '') {
-        //         return value.story_type !== '' && value.is_ready === this.items_unapproved_filter_isready
-        //     } else if (this.items_unapproved_filter_storytype !== '' && this.items_unapproved_filter_isready === '') {
-        //         return value.story_type === this.items_unapproved_filter_storytype && value.is_ready !== ''
-        //     }else {
-        //         return value.story_type === this.items_unapproved_filter_storytype && value.is_ready === this.items_unapproved_filter_isready
-        //
-        //     }
-        // },
         filterApprovedByStoryType: function (value) {
             console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
@@ -298,15 +274,6 @@ export default  {
                 return value.story_type === this.items_live_filter_storytype;
             }
         },
-        // storyTypeFilter:function (val, arg){
-        //     if (val == '' || val == 'all'){
-        //         return val.storytype !== '';
-        //     } else {
-        //         return val.storytype === arg;
-        //     }
-        //
-        //
-        // },
 
         typeIcon: function(sname) {
             switch (sname) {
@@ -401,11 +368,6 @@ export default  {
         fetchAllRecords: function() {
             let routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
 
-            // if (this.isString(this.s_types)){
-            //     routeurl = '/api/story/queueload/'+ this.stypes;
-            // } else {
-            //     routeurl = '/api/story/queueload/all';
-            // }
             this.$http.get(routeurl)
 
             .then((response) =>{
@@ -416,32 +378,8 @@ export default  {
                 console.log("ERRORS");
             }).bind(this);
         },
-        // checkOverData: function() {
-        //     console.log('this.items='+ this.allitems)
-        //
-        //
-        // },
-
-        // checkOverDataFilter: function() {
-        //     let self = this;
-        //     console.log('items=' + this.allitems)
-        //
-        //     this.allitems.forEach(function(item) {
-        //     if (item.is_approved === 1) {
-        //         self.items_approved.push(item)
-        //     } else {
-        //         self.items_unapproved.push(item)
-        //     }
-        //
-        // });
-        // console.log('items_unapproved'+ this.items_unapproved.length )
-        // console.log('items_approved'+ this.items_approved.length )
-        // }
     },
     filters: {
-        // titleDay: function (value) {
-        //     return  moment(value).format("ddd")
-        // },
         byObject: function(array, options) {
             var entry, found, i, key, len, result, value;
             result = [];
@@ -463,8 +401,6 @@ export default  {
                   found = false;
                   break;
                 }
-
-
               }
               if (found) {
                 result.push(entry);

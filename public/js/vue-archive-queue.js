@@ -16327,7 +16327,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-e7ff0ab4]{\n    cursor: pointer;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-e7ff0ab4]:active, span.item-type-icon.active[_v-e7ff0ab4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16338,6 +16338,14 @@ var _ArchiveQueueItem = require('./ArchiveQueueItem.vue');
 
 var _ArchiveQueueItem2 = _interopRequireDefault(_ArchiveQueueItem);
 
+var _Pagination = require('./Pagination.vue');
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
+var _iconradio = require('../directives/iconradio.js');
+
+var _iconradio2 = _interopRequireDefault(_iconradio);
+
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
@@ -16345,11 +16353,16 @@ var _moment2 = _interopRequireDefault(_moment);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
+    directives: { iconradio: _iconradio2.default },
     components: {
-        ArchiveQueueItem: _ArchiveQueueItem2.default
+        ArchiveQueueItem: _ArchiveQueueItem2.default,
+        Pagination: _Pagination2.default
     },
     props: {
         entityType: {
+            required: true
+        },
+        storyTypes: {
             required: true
         }
     },
@@ -16359,7 +16372,8 @@ exports.default = {
             allitems: [],
             items: [],
             pagination: {},
-            resultsPerPage: 10
+            resultsPerPage: 10,
+            filter_storytype: ''
         };
     },
     ready: function ready() {
@@ -16373,23 +16387,53 @@ exports.default = {
         },
         totalPages: function totalPages() {
             return this.pagination.total_pages;
+        },
+        story_types: function story_types() {
+            try {
+                return JSON.parse(this.storyTypes);
+            } catch (e) {
+                return this.storyTypes;
+            }
+        },
+        storyTypeIcons: function storyTypeIcons() {
+            if (this.isString(this.story_types)) {
+                return [{
+                    name: 'all',
+                    shortname: ''
+                }, {
+                    name: 'none',
+                    shortname: 'x'
+                }];
+            } else {
+                this.story_types.push({
+                    name: 'all',
+                    shortname: ''
+                });
+                return this.story_types;
+            }
         }
     },
     methods: {
         fetchAllRecords: function fetchAllRecords(pageNumber, numPerPage) {
             var _this = this;
 
-            var url = '/api/archive/queueload/' + this.entityType;
+            var url = '/api/archive/queueload/';
+
+            if (this.filter_storytype != '') {
+                url += this.filter_storytype;
+            } else {
+                url += this.entityType;
+            }
+
             numPerPage ? url += '/' + numPerPage : '';
             pageNumber ? url += '?page=' + pageNumber : '';
 
             this.$http.get(url).then(function (response) {
-                console.log(response.data);
                 _this.$set('allitems', response.data.data);
-
-                if (response.data.data.length > 0) {
-                    _this.makePagination(response.data.meta.pagination);
-                }
+                console.log(response.data.data);
+                //if (response.data.data.length > 0) {
+                _this.makePagination(response.data.meta.pagination);
+                //}
             }, function (response) {
                 //error callback
                 console.log("Error fetching archive records");
@@ -16409,7 +16453,11 @@ exports.default = {
             this.$set('pagination', pagination);
         },
 
-        paginateChange: function paginateChange(direction) {
+        isString: function isString(val) {
+            return toString.call(val) === "[object String]";
+        },
+
+        numPagesChange: function numPagesChange(direction) {
             if (direction == 'plus') {
                 this.resultsPerPage += 1;
             } else if (direction == 'minus') {
@@ -16417,21 +16465,57 @@ exports.default = {
             }
 
             this.fetchAllRecords(1, parseInt(this.resultsPerPage));
-        }
-    },
+        },
 
-    // the `events` option simply calls `$on` for you
-    // when the instance is created
-    events: {}
+
+        filterByStoryType: function filterByStoryType(value) {
+            var story_type = value.story_type;
+
+            if (this.filter_storytype === '') {
+                return story_type !== '';
+            } else {
+                return story_type === this.filter_storytype;
+            }
+        },
+
+        typeIcon: function typeIcon(storyname) {
+            switch (storyname) {
+                case 'emutoday':
+                case 'story':
+                    faicon = 'fa-file-image-o';
+                    break;
+                case 'news':
+                    faicon = 'fa-file-text-o';
+                    break;
+                case 'student':
+                    faicon = 'fa-graduation-cap';
+                    break;
+                case 'external':
+                    faicon = 'fa-file-o';
+                    break;
+                case 'article':
+                    faicon = 'fa-newspaper-o';
+                    break;
+                case '':
+                    faicon = 'fa-asterisk';
+                    break;
+                default:
+                    faicon = 'fa-file-o';
+                    break;
+            }
+
+            return 'fa ' + faicon + ' fa-fw';
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-9 col-md-6\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\"><span class=\"badge\" _v-e7ff0ab4=\"\">{{ pagination.total_records }}</span> Archived {{ compEntityType }}</h3>\n        <p _v-e7ff0ab4=\"\">Click the item's title to expand and view associated content. When you unarchive an item, it will be shown in green. If you reload the page or move to the next page, that item will no longer be shown in this queue.</p>\n        <div v-show=\"this.pagination.total_pages > 0\" class=\"row\" _v-e7ff0ab4=\"\">\n            <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-e7ff0ab4=\"\">\n                <ul class=\"pagination\" _v-e7ff0ab4=\"\">\n                    <li :class=\"this.pagination.current_page == 1 ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                        <a href=\"#\" @click.prevent=\"fetchAllRecords(1, this.resultsPerPage)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">«</span></a>\n                    </li>\n                    <li v-for=\"n in totalPages\" :class=\"(n + 1) == this.pagination.current_page ? 'active': ''\" _v-e7ff0ab4=\"\">\n                        <a href=\"#\" @click.prevent=\"fetchAllRecords(n + 1, this.resultsPerPage)\" _v-e7ff0ab4=\"\">{{ n + 1 }}</a>\n                    </li>\n                    <li :class=\"this.pagination.current_page == this.pagination.total_pages ? 'disabled' : ''\" _v-e7ff0ab4=\"\">\n                        <a href=\"#\" @click.prevent=\"fetchAllRecords(this.pagination.total_pages, this.resultsPerPage)\" _v-e7ff0ab4=\"\"><span _v-e7ff0ab4=\"\">»</span></a>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-e7ff0ab4=\"\">\n                <div class=\"form-group\" _v-e7ff0ab4=\"\">\n                    <label for=\"resultsPerPage\" _v-e7ff0ab4=\"\">Per Page</label>\n                    <div class=\"input-group\" _v-e7ff0ab4=\"\">\n                        <div @click=\"paginateChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-e7ff0ab4=\"\">-</div>\n                        <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :value=\"resultsPerPage\" disabled=\"\" _v-e7ff0ab4=\"\">\n                        <div @click=\"paginateChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-e7ff0ab4=\"\">+</div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <!-- ./row -->\n        <div id=\"archived-items-container\" _v-e7ff0ab4=\"\">\n            <!-- custom @unarchived event \"emitted\" in ArchiveQueueItem after ajax request -->\n            <archive-queue-item v-for=\"item in allitems\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-9 col-md-6\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\"><span class=\"badge\" _v-e7ff0ab4=\"\">{{ pagination.total_records }}</span> Archived {{ compEntityType }}</h3>\n        <p _v-e7ff0ab4=\"\">Click the item's title to expand and view associated content. When you unarchive an item, it will be shown in green. If you reload the page or move to the next page, that item will no longer be shown in this queue.</p>\n\n        <div v-show=\"entityType == 'stories'\" class=\"btn-toolbar\" role=\"toolbar\" _v-e7ff0ab4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-e7ff0ab4=\"\">\n                <label _v-e7ff0ab4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"filter_storytype\" @click=\"fetchAllRecords(1, this.resultsPerPage)\" _v-e7ff0ab4=\"\">\n                <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-e7ff0ab4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-e7ff0ab4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-e7ff0ab4=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n\n        <div id=\"archived-items-container\" _v-e7ff0ab4=\"\">\n            <archive-queue-item v-for=\"item in allitems\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n\n        <!-- Pagination: custom @numpageschanged and @pagechanged events \"emitted\" in Pagination.vue (arguments passed with the events automatically) -->\n        <pagination :paginateditems=\"pagination\" :resultsperpage=\"resultsPerPage\" @numpageschanged=\"numPagesChange\" @pagechanged=\"fetchAllRecords\" _v-e7ff0ab4=\"\">\n        </pagination>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.cursor[_v-e7ff0ab4]{\n    cursor: pointer;\n}\n"] = false
+    __vueify_insert__.cache["\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-e7ff0ab4]:active, span.item-type-icon.active[_v-e7ff0ab4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -16440,9 +16524,9 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-e7ff0ab4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./ArchiveQueueItem.vue":8,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
+},{"../directives/iconradio.js":11,"./ArchiveQueueItem.vue":8,"./Pagination.vue":9,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    background-color: #D8D8D8;\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.announcement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-86f83d4e]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.news[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-86f83d4e]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -16470,6 +16554,8 @@ module.exports = {
             showRetryButtons: false,
             isUnarchived: false,
             isDeleted: false,
+            isFailedDeleted: false,
+            isFailedUnarchived: false,
             confirmDelete: false
         };
     },
@@ -16477,23 +16563,28 @@ module.exports = {
     ready: function ready() {},
     computed: {
         unarchivedStatus: function unarchivedStatus() {
-            if (this.isUnarchived) {
-                return 'unarchived';
-            }
+            if (this.item.story_type && !this.isUnarchived && !this.isDeleted && !this.isFailedDeleted && !this.isFailedUnarchived) {
+                // For archives of type 'story' (and any subtypes thereof)
+                return this.item.story_type;
+            } else {
+                if (this.entityType == 'announcements' && !this.isUnarchived && !this.isDeleted && !this.isFailedDeleted && !this.isFailedUnarchived) {
+                    return 'announcement';
+                }
+                if (this.isUnarchived) {
+                    return 'unarchived';
+                }
 
-            if (this.isDeleted) {
-                return 'unarchive-fail';
-            }
+                if (this.isDeleted) {
+                    return 'deleted';
+                }
 
-            if (this.showRetryButtons) {
-                return 'unarchive-fail';
+                if (this.isFailedDeleted || this.isFailedUnarchived) {
+                    return 'unarchive-fail';
+                }
             }
         },
         expandArrow: function expandArrow() {
             return this.showBody ? 'fa fa-angle-down' : 'fa fa-angle-right';
-        },
-        formattedDate: function formattedDate() {
-            return (0, _moment2.default)(this.item.start_date).format("MM/DD/YYYY");
         }
     },
     methods: {
@@ -16511,11 +16602,13 @@ module.exports = {
                 _this.showUnarchivedButtons = true;
                 _this.showRetryButtons = false;
                 _this.isUnarchived = true;
+                _this.isFailedUnarchived = false;
             }, function (response) {
                 //error callback
                 console.log("Error unarchiving record");
                 _this.showArchivedButtons = false;
                 _this.showRetryButtons = true;
+                _this.isFailedUnarchived = true;
             }).bind(this);
         },
         editItem: function editItem(item) {
@@ -16539,11 +16632,18 @@ module.exports = {
                 _this2.showArchivedButtons = false;
                 _this2.showUnarchivedButtons = false;
                 _this2.isDeleted = true;
+                _this2.isFailedDeleted = false;
             }, function (response) {
                 //error callback
                 console.log("Error deleting record");
                 _this2.showArchivedButtons = true;
+                _this2.isFailedDeleted = true;
+                _this2.confirmDelete = false;
             }).bind(this);
+        },
+
+        formatDate: function formatDate(date) {
+            return (0, _moment2.default)(date).format("MM/DD/YYYY");
         }
     },
     watch: {},
@@ -16553,13 +16653,13 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-86f83d4e=\"\">\n\n    <div :class=\"unarchivedStatus\" class=\"box box-solid\" _v-86f83d4e=\"\">\n\n        <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n                    <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                        <h6 class=\"box-title\" _v-86f83d4e=\"\"><span class=\"arrowBuffer\" _v-86f83d4e=\"\"><i :class=\"expandArrow\" _v-86f83d4e=\"\"></i></span> {{item.title}}</h6>\n                    </div>\n                    <!-- /.col-md-12 -->\n                </a>\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n            <!--Announcements Body-->\n            <div v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n                {{ item.announcement }}\n            </div>\n\n            <!--Events Body-->\n            <div v-show=\"entityType == 'events'\" _v-86f83d4e=\"\">\n                events\n            </div>\n\n            <!--Story Body-->\n            <div v-show=\"entityType == 'story'\" _v-86f83d4e=\"\">\n                story\n            </div>\n        </div>\n        <!-- /.box-body -->\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-86f83d4e=\"\">\n                    Submitted on {{ formattedDate }} by {{ item.submitter }}\n                </div>\n                <div class=\"col-sm-12 col-md-3\" _v-86f83d4e=\"\">\n                    <div v-show=\"showArchivedButtons\" _v-86f83d4e=\"\">\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showUnarchivedButtons\" _v-86f83d4e=\"\">\n                        <span class=\"success\" _v-86f83d4e=\"\"><i class=\"fa fa-check\" _v-86f83d4e=\"\"></i> Unarchived</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <a :href=\"editItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"edit item\" _v-86f83d4e=\"\"><i class=\"fa fa-pencil\" _v-86f83d4e=\"\"></i></a>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showRetryButtons\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-exclamation-triangle\" _v-86f83d4e=\"\"></i> Error</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-refresh\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"isDeleted\" class=\"pull-right\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i> Item Deleted</span>\n                    </div>\n                </div>\n                <!-- /.col-md-7 -->\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-footer -->\n    </div>\n    <!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-86f83d4e=\"\">\n    <div :class=\"unarchivedStatus\" class=\"box box-solid\" _v-86f83d4e=\"\">\n        <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n                    <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                        <h6 class=\"box-title\" _v-86f83d4e=\"\"><span class=\"arrowBuffer\" _v-86f83d4e=\"\"><i :class=\"expandArrow\" _v-86f83d4e=\"\"></i></span><span class=\"badge\" _v-86f83d4e=\"\">{{ item.story_type }}</span> {{item.title}}</h6>\n                    </div>\n                    <!-- /.col-md-12 -->\n                </a>\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n            <!--Announcements Body-->\n            <div v-if=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n                {{ item.announcement }}\n            </div>\n\n            <!--Events Body-->\n            <div v-if=\"entityType == 'events'\" _v-86f83d4e=\"\">\n                {{ item.title }}\n            </div>\n\n            <!--Story Body-->\n            <div v-if=\"entityType == 'stories'\" _v-86f83d4e=\"\">\n                <div class=\"table-responsive\" _v-86f83d4e=\"\">\n                    <table class=\"table table-responsive\" _v-86f83d4e=\"\">\n                        <tbody _v-86f83d4e=\"\"><tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                Author\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ item.author_object.first_name }} {{ item.author_object.last_name }}\n                            </td>\n                        </tr>\n                        <tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                Start Date\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ this.formatDate(item.start_date) }}\n                            </td>\n                        </tr>\n                        <tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                End Date\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ this.formatDate(item.end_date) }}\n                            </td>\n                        </tr>\n                        <tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                Content\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ item.content }}\n                            </td>\n                        </tr>\n                    </tbody></table>\n                </div>\n            </div>\n        </div>\n        <!-- /.box-body -->\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-86f83d4e=\"\">\n                    <p v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">Submitted on {{ formatDate(item.start_date) }} by {{ item.submitter }}</p>\n                    <p v-show=\"entityType == 'stories'\" _v-86f83d4e=\"\">Story started on {{ formatDate(item.start_date) }}</p>\n                </div>\n                <div class=\"col-sm-12 col-md-3\" _v-86f83d4e=\"\">\n                    <div v-show=\"showArchivedButtons\" _v-86f83d4e=\"\">\n                        <span v-show=\"isFailedDeleted\" class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-exclamation-triangle\" _v-86f83d4e=\"\"></i> Error deleting item</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showUnarchivedButtons\" _v-86f83d4e=\"\">\n                        <span class=\"success\" _v-86f83d4e=\"\"><i class=\"fa fa-check\" _v-86f83d4e=\"\"></i> Unarchived</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <a :href=\"editItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"edit item\" _v-86f83d4e=\"\"><i class=\"fa fa-pencil\" _v-86f83d4e=\"\"></i></a>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showRetryButtons\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-exclamation-triangle\" _v-86f83d4e=\"\"></i> Error</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-refresh\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"isDeleted\" class=\"pull-right\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i> Item Deleted</span>\n                    </div>\n                </div>\n                <!-- /.col-md-7 -->\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-footer -->\n    </div>\n    <!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    background-color: #D8D8D8;\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n"] = false
+    __vueify_insert__.cache["\n.announcement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-86f83d4e]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.news[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-86f83d4e]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -16568,7 +16668,45 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-86f83d4e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./VuiFlipSwitch.vue":9,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],9:[function(require,module,exports){
+},{"./VuiFlipSwitch.vue":10,"moment":1,"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],9:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
+'use strict';
+
+module.exports = {
+    props: ['paginateditems', 'resultsperpage'],
+    data: function data() {
+        return {};
+    },
+    created: function created() {},
+    ready: function ready() {},
+    computed: {},
+    methods: {
+        perPageChange: function perPageChange(direction) {
+            this.$emit('numpageschanged', direction);
+        },
+        paginateChange: function paginateChange(pageNumber, numResults) {
+            this.$emit('pagechanged', pageNumber, numResults);
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"paginateditems.current_page == 1 ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(1, resultsperpage)\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in paginateditems.total_pages\" :class=\"(n + 1) == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n + 1, resultsperpage)\" _v-6eea2f11=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"paginateditems.current_page == paginateditems.total_pages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(paginateditems.total_pages, resultsperpage)\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-6eea2f11", module.exports)
+  } else {
+    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],10:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    -webkit-transition: margin 0.3s ease-in 0s;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    -webkit-transition: all 0.3s ease-in 0s;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -16615,7 +16753,56 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],10:[function(require,module,exports){
+},{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],11:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    twoWay: true,
+    bind: function bind() {
+        var self = this;
+        var btns = $(self.el).find('.btn');
+
+        btns.each(function () {
+            var initValue = $(this).find('input').get(0).value;
+            if (initValue === '') {
+                $(this).addClass('active');
+                //   $(this).addClass('bg-purple');
+            }
+            $(this).on('click', function () {
+                self.set(initValue);
+                //var v = $(this).find('input').get(0).value
+                //   self.set(v);
+            });
+        });
+    },
+    update: function update() {
+        var value = this._watcher.value;
+        console.log('xxxxxxxxxvalue=' + value);
+        if (value) {
+            this.set(value);
+
+            var btns = $(this.el).find('.btn');
+            btns.each(function () {
+                $(this).removeClass('active');
+                $(this).removeClass('bg-purple');
+                var v = $(this).find('input').get(0).value;
+                //   $(this).find('span').removeClass('prpstyle');
+                if (v === value) {
+                    $(this).addClass('active');
+                    $(this).addClass('bg-purple');
+                }
+            });
+        } else {
+            var input = $(this.el).find('.active input').get(0);
+            if (input) {
+                this.set(input.value);
+                console.log('input.value=' + input.value);
+            }
+        }
+    }
+};
+
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -16648,6 +16835,6 @@ new Vue({
     }
 });
 
-},{"./components/ArchiveQueue.vue":7,"moment":1,"vue":5,"vue-resource":4}]},{},[10]);
+},{"./components/ArchiveQueue.vue":7,"moment":1,"vue":5,"vue-resource":4}]},{},[12]);
 
 //# sourceMappingURL=vue-archive-queue.js.map

@@ -1,13 +1,11 @@
 <template>
 <div>
-
     <div :class="unarchivedStatus" class="box box-solid">
-
         <div class="box-header with-border">
             <div class="row">
                 <a v-on:click.prevent="toggleBody" href="#">
                     <div class="col-sm-12">
-                        <h6 class="box-title"><span class="arrowBuffer"><i :class="expandArrow"></i></span> {{item.title}}</h6>
+                        <h6 class="box-title"><span class="arrowBuffer"><i :class="expandArrow"></i></span><span class="badge">{{ item.story_type }}</span> {{item.title}}</h6>
                     </div>
                     <!-- /.col-md-12 -->
                 </a>
@@ -18,28 +16,65 @@
 
         <div v-if="showBody" class="box-body">
             <!--Announcements Body-->
-            <div v-show="entityType == 'announcements'">
+            <div v-if="entityType == 'announcements'">
                 {{ item.announcement }}
             </div>
 
             <!--Events Body-->
-            <div v-show="entityType == 'events'">
-                events
+            <div v-if="entityType == 'events'">
+                {{ item.title }}
             </div>
 
             <!--Story Body-->
-            <div v-show="entityType == 'story'">
-                story
+            <div v-if="entityType == 'stories'">
+                <div class="table-responsive">
+                    <table class="table table-responsive">
+                        <tr>
+                            <th>
+                                Author
+                            </th>
+                            <td>
+                                {{ item.author_object.first_name }} {{ item.author_object.last_name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Start Date
+                            </th>
+                            <td>
+                                {{ this.formatDate(item.start_date) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                End Date
+                            </th>
+                            <td>
+                                {{ this.formatDate(item.end_date) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Content
+                            </th>
+                            <td>
+                                {{ item.content }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <!-- /.box-body -->
         <div :class="addSeperator" class="box-footer list-footer">
             <div class="row">
                 <div class="col-sm-12 col-md-9">
-                    Submitted on {{ formattedDate }} by {{ item.submitter }}
+                    <p v-show="entityType == 'announcements'">Submitted on {{ formatDate(item.start_date) }} by {{ item.submitter }}</p>
+                    <p v-show="entityType == 'stories'">Story started on {{ formatDate(item.start_date) }}</p>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <div v-show="showArchivedButtons">
+                        <span v-show="isFailedDeleted" class="fail"><i class="fa fa-exclamation-triangle"></i> Error deleting item</span>
                         <div class="btn-group pull-right">
                             <button @click="unarchiveItem(item)" type="button" class="btn bg-green btn-xs footer-btn" aria-label="unarchive item"><i class="fa fa-inbox"></i></button>
                             <button @click="deleteItemConfirm" type="button" class="btn bg-red btn-xs footer-btn" aria-label="delete item initial step"><i class="fa fa-trash"></i></button>
@@ -85,10 +120,22 @@
 </div>
 </template>
 <style scoped>
+.announcement  {
+    color: #1B1B1B;
+    background-color: #ffcc33;
+    border: 1px solid #999999;
+}
+
 .arrowBuffer {
     width: 25px;
     display: inline-block;
     padding-left: 5px;
+}
+
+.article{
+    color: #1B1B1B;
+    background-color: #29AB87;
+    border: 1px solid #29AB87;
 }
 
 .box {
@@ -106,7 +153,7 @@
 
 .box-header {
     padding: 10px;
-    background-color: #D8D8D8;
+    /*background-color: #D8D8D8;*/
 }
 
 .box-footer {
@@ -124,6 +171,12 @@ button.footer-btn {
 .confirmDelete{
     padding: 0px 5px 0px 5px;
     font-weight: bold;
+}
+
+.external{
+    color: #1B1B1B;
+    background-color: #C9A0DC;
+    border: 1px solid #C9A0DC;
 }
 
 h6.box-title {
@@ -148,6 +201,11 @@ form.mediaform {
     display: inline-flex;
 }
 
+.story{
+    background-color: #76D7EA;
+    border: 1px solid #76D7EA;
+}
+
 h6 {
     margin-top: 0;
     margin-bottom: 0;
@@ -165,6 +223,12 @@ h5 {
     margin-bottom: 0;
 }
 
+.news  {
+    color: #1B1B1B;
+    background-color: #cccccc;
+    border: 1px solid #cccccc;
+}
+
 .success{
     color: #00a65a;
 }
@@ -172,6 +236,10 @@ h5 {
 .unarchived {
     background-color: #00a65a !important;
     border: 2px solid #00a65a !important;
+}
+.deleted{
+    background-color: #ff6666 !important;
+    border: 2px solid #ff6666 !important;
 }
 .unarchive-fail {
     background-color: #dd4b39 !important;
@@ -197,6 +265,8 @@ module.exports = {
             showRetryButtons: false,
             isUnarchived: false,
             isDeleted: false,
+            isFailedDeleted: false,
+            isFailedUnarchived: false,
             confirmDelete: false,
         }
     },
@@ -208,24 +278,29 @@ module.exports = {
     },
     computed: {
         unarchivedStatus: function() {
-            if (this.isUnarchived) {
-                return 'unarchived'
-            }
+            if (this.item.story_type && !this.isUnarchived && !this.isDeleted && !this.isFailedDeleted && !this.isFailedUnarchived){
+                // For archives of type 'story' (and any subtypes thereof)
+                return this.item.story_type
+            } else {
+                if( this.entityType == 'announcements' && !this.isUnarchived && !this.isDeleted && !this.isFailedDeleted && !this.isFailedUnarchived){
+                    return 'announcement'
+                }
+                if (this.isUnarchived) {
+                    return 'unarchived'
+                }
 
-            if (this.isDeleted) {
-                return 'unarchive-fail'
-            }
+                if (this.isDeleted) {
+                    return 'deleted'
+                }
 
-            if (this.showRetryButtons) {
-                return 'unarchive-fail'
+                if (this.isFailedDeleted || this.isFailedUnarchived) {
+                    return 'unarchive-fail'
+                }
             }
         },
         expandArrow: function() {
             return this.showBody ? 'fa fa-angle-down' : 'fa fa-angle-right'
         },
-        formattedDate: function() {
-            return moment(this.item.start_date).format("MM/DD/YYYY")
-        }
     },
     methods: {
         toggleBody() {
@@ -241,11 +316,13 @@ module.exports = {
                     this.showUnarchivedButtons = true
                     this.showRetryButtons = false
                     this.isUnarchived = true
+                    this.isFailedUnarchived = false
                 }, (response) => {
                     //error callback
                     console.log("Error unarchiving record");
                     this.showArchivedButtons = false
                     this.showRetryButtons = true
+                    this.isFailedUnarchived = true
                 }).bind(this);
         },
         editItem(item){
@@ -268,12 +345,18 @@ module.exports = {
                     this.showArchivedButtons = false
                     this.showUnarchivedButtons = false
                     this.isDeleted = true
+                    this.isFailedDeleted = false
                 }, (response) => {
                     //error callback
                     console.log("Error deleting record");
                     this.showArchivedButtons = true
+                    this.isFailedDeleted = true
+                    this.confirmDelete = false
                 }).bind(this);
         },
+        formatDate: function(date) {
+            return moment(date).format("MM/DD/YYYY")
+        }
     },
     watch: {
 

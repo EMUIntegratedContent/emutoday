@@ -3,6 +3,7 @@
 namespace Emutoday\Today\Transformers;
 
 use Emutoday\Story;
+use Emutoday\Author;
 use League\Fractal;
 use Carbon\Carbon;
 
@@ -10,6 +11,8 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
 {
     public function transform(Story $story)
     {
+        $author = Author::find($story->author_id);
+
         return [
             'id'      => (int) $story->id,
             'user_id' => $story->user_id,
@@ -33,9 +36,9 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'priority' => $story->priority,
             'magazines' => $story->magazines,
             'pages' => $story->pages,
-            // 'start_date'   => $story->start_date->format('m-d-Y'),
             'author' => ($story->author_id == 0)? null:$story->author,
-            'contact' => ($story->contact_id == 0)? null:$story->contact
+            'contact' => ($story->contact_id == 0)? null:$story->contact,
+            'author_object' => $author,
         ];
     }
 }

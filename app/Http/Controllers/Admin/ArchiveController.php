@@ -9,6 +9,7 @@ use Emutoday\Announcement;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
+use Emutoday\StoryType;
 
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
@@ -26,7 +27,8 @@ class ArchiveController extends Controller
     }
 
     public function queue($entityType) {
-        return view('admin.archive.queue', compact('entityType'));
+        $storyTypes  = collect(StoryType::select('name','shortname')->get());
+        return view('admin.archive.queue', compact('entityType', 'storyTypes'));
     }
 
 

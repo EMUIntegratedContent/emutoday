@@ -379,10 +379,7 @@ module.exports  = {
       }
       console.log('toggleBody' + this.showBody)
     },
-    // doThis: function(ev) {
-    //     this.$emit('item-change',this.item);
-    //     console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
-    // },
+
     changeIsApproved: function(){
       this.patchRecord.is_approved = (this.item.is_approved === 0)?1:0;
       console.log('this.patchRecord.is_approved ='+this.patchRecord.is_approved );

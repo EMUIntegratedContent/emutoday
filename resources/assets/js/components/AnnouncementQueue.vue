@@ -11,6 +11,11 @@
 </style>
 
 <template>
+    <div v-if="role == 'admin' || role == 'admin_super'" class="row">
+        <div class="col-xs-12 text-right">
+            <a class="btn btn-sm btn-default" href="/admin/archive/queue/announcements"><i class="fa fa-archive"></i> Archived Announcements</a>
+        </div>
+    </div>
   <div class="row">
     <div class="col-md-4">
       <h3>Unapproved</h3>
@@ -61,10 +66,11 @@
 <script>
 import moment from 'moment';
 import AnnouncementQueueItem from './AnnouncementQueueItem.vue'
-// import EventViewContent from './EventViewContent.vue'
+import Pagination from './Pagination.vue'
+
 export default {
   components: {AnnouncementQueueItem},
-  props: ['atype','cuser'],
+  props: ['atype','cuser', 'role'],
   data: function() {
     return {
       resource: {},

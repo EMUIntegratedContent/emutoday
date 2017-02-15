@@ -17341,7 +17341,7 @@ exports.default = {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function filerStoryTypeCustom(value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.storytype);
+            console.log('value = ' + value.story_type + ' stmodel =' + this.storytype);
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -17357,43 +17357,14 @@ exports.default = {
                 this.filterReadyStatus();
             }
         },
-        // filterReadyStatus: function(){
-        //     this.itemsUnapproved = this.itemsUnapproved.filter(function(item){
-        //         console.log('item.is_ready= ' + item.is_ready);
-        //         return item.is_ready === this.readyStatus;
-        //     })
-        // },
-        // resetReadyStatus: function(){
-        //     this.itemsUnapproved = this.itemsUnapproved.filter(function(item){
-        //         console.log('item.is_ready= ' + item.is_ready);
-        //         return item.is_ready !== '';
-        //     })
-        // },
         filterUnapprovedByStoryType: function filterUnapprovedByStoryType(value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_unapproved_filter_storytype);
+            console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype);
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.items_unapproved_filter_storytype;
             }
         },
-        // filterUnapprovedByValues: function (value) {
-        //     console.log('value.story_type= ' + value.story_type + ' value.is_ready= ' + value.is_ready + ' storytype= ' + this.items_unapproved_filter_storytype  + ' is_ready= ' + this.items_unapproved_filter_isready)
-        //     let resetType,resetIsReady
-        //     resetType = (this.items_unapproved_filter_storytype === '')?true:false;
-        //     resetIsReady = (this.items_unapproved_filter_isready === '')?true:false;
-        //     if (resetType)
-        //     if (this.items_unapproved_filter_storytype === '' && this.items_unapproved_filter_isready === '') {
-        //         return value.story_type !== '' && value.is_ready !== '';
-        //     } else if (this.items_unapproved_filter_storytype === '' && this.items_unapproved_filter_isready !== '') {
-        //         return value.story_type !== '' && value.is_ready === this.items_unapproved_filter_isready
-        //     } else if (this.items_unapproved_filter_storytype !== '' && this.items_unapproved_filter_isready === '') {
-        //         return value.story_type === this.items_unapproved_filter_storytype && value.is_ready !== ''
-        //     }else {
-        //         return value.story_type === this.items_unapproved_filter_storytype && value.is_ready === this.items_unapproved_filter_isready
-        //
-        //     }
-        // },
         filterApprovedByStoryType: function filterApprovedByStoryType(value) {
             console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype);
             if (this.items_approved_filter_storytype === '') {
@@ -17411,15 +17382,6 @@ exports.default = {
                 return value.story_type === this.items_live_filter_storytype;
             }
         },
-        // storyTypeFilter:function (val, arg){
-        //     if (val == '' || val == 'all'){
-        //         return val.storytype !== '';
-        //     } else {
-        //         return val.storytype === arg;
-        //     }
-        //
-        //
-        // },
 
         typeIcon: function typeIcon(sname) {
             switch (sname) {
@@ -17514,11 +17476,6 @@ exports.default = {
 
         var routeurl = '/api/' + this.gtype + '/' + this.stype + '/' + this.qtype;
 
-        // if (this.isString(this.s_types)){
-        //     routeurl = '/api/story/queueload/'+ this.stypes;
-        // } else {
-        //     routeurl = '/api/story/queueload/all';
-        // }
         this.$http.get(routeurl).then(function (response) {
             _this.$set('allitems', response.data.data);
             _this.loading = false;
@@ -17528,9 +17485,6 @@ exports.default = {
         }).bind(this);
     }), _methods),
     filters: {
-        // titleDay: function (value) {
-        //     return  moment(value).format("ddd")
-        // },
         byObject: function byObject(array, options) {
             var entry, found, i, key, len, result, value;
             result = [];
@@ -17565,7 +17519,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-1abbe793=\"\">\n        <h2 v-if=\"loading\" class=\"col-md-12\" _v-1abbe793=\"\">Loading. Please Wait...</h2>\n        <div class=\"col-md-4\" _v-1abbe793=\"\">\n            <h4 _v-1abbe793=\"\">Unapproved<p _v-1abbe793=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                    <label _v-1abbe793=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-1abbe793=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                    </template>\n              </div>\n            </div>\n            <div id=\"items-unapproved\" _v-1abbe793=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-1abbe793=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Live <small _v-1abbe793=\"\">Approved and Start Date has passed</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"row\" _v-1abbe793=\"\">\n        <div class=\"col-xs-12 text-right\" _v-1abbe793=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/stories\" _v-1abbe793=\"\"><i class=\"fa fa-archive\" _v-1abbe793=\"\"></i> Archived Stories</a>\n        </div>\n    </div>\n    <div class=\"row\" _v-1abbe793=\"\">\n        <h2 v-if=\"loading\" class=\"col-md-12\" _v-1abbe793=\"\">Loading. Please Wait...</h2>\n        <div class=\"col-md-4\" _v-1abbe793=\"\">\n            <h4 _v-1abbe793=\"\">Unapproved<p _v-1abbe793=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                    <label _v-1abbe793=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-1abbe793=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                    </template>\n              </div>\n            </div>\n            <div id=\"items-unapproved\" _v-1abbe793=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-1abbe793=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Live <small _v-1abbe793=\"\">Approved and Start Date has passed</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

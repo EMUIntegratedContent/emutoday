@@ -15,9 +15,8 @@
         @parent
     @endsection
 @section('content')
-
     <div id="vue-archive-queue">
-        <archive-queue entity-type="{{$entityType}}">
+        <archive-queue entity-type="{{$entityType}}" story-types="{{$storyTypes}}">
         </archive-queue>
     </div><!-- /.vue-archive-queue -->
 

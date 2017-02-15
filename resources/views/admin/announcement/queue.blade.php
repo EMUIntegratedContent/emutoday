@@ -27,7 +27,7 @@
 </div><!-- vue-app --> --}}
 
 <div id="vue-announcement-queue">
-  <announcement-queue atype="{{$atype}}" cuser="{{$currentUser}}">
+  <announcement-queue atype="{{$atype}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
   </announcement-queue>
 </div><!-- /.vue-announcement-app -->
 
@@ -40,25 +40,6 @@
 @section('footer-plugin')
 @parent
 
-{{-- <!-- Select2 -->
-  <script src="/themes/admin-lte/plugins/select2/select2.full.min.js"></script>
-  <!-- InputMask -->
-  <script src="/themes/admin-lte/plugins/input-mask/jquery.inputmask.js"></script>
-  <script src="/themes/admin-lte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-  <script src="/themes/admin-lte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-  <!-- date-range-picker -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-
-  <!-- bootstrap datetimepicker -->
-  <script src="/themes/plugins/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-
-
-  <script src="/themes/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-  <!-- iCheck 1.0.1 -->
-  <script src="/themes/admin-lte/plugins/iCheck/icheck.min.js"></script>
-  <!-- FastClick -->
-  <script src="/themes/admin-lte/plugins/fastclick/fastclick.js"></script> --}}
-
   @endsection
 
   @section('footer-app')
@@ -69,53 +50,5 @@
   @parent
 
   <script>
-  // $(function () {
-  // 	$('input[type="radio"]').iCheck({
-  // 		checkboxClass: 'icheckbox_flat-blue',
-  // 		radioClass: 'iradio_flat-blue'
-  // 	})
-  // 	$('#is-promoted-no').iCheck('check');
-  // 	$('#is-promoted-yes').iCheck('disable');
-  //
-  // 	// $('#is-approved-no').iCheck('check');
-  //
-  // 	// $('#is-promoted-no').iCheck('disable');
-  //
-  // 	//iCheck for checkbox and radio inputs
-  //   $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-  //     checkboxClass: 'icheckbox_minimal-blue',
-  //     radioClass: 'iradio_minimal-blue'
-  //   });
-  //   //Red color scheme for iCheck
-  //   $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-  //     checkboxClass: 'icheckbox_minimal-red',
-  //     radioClass: 'iradio_minimal-red'
-  //   });
-  //   //Flat red color scheme for iCheck
-  //   $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-  //     checkboxClass: 'icheckbox_flat-green',
-  //     radioClass: 'iradio_flat-green'
-  //   });
-  //
-  // 	//Start Date picker
-  // 	$('#start-date').datetimepicker({
-  // 		format: 'YYYY-MM-DD HH:mm:ss'
-  // 	});
-  //
-  // 	//End Date picker
-  // 	$('#end-date').datetimepicker({
-  // 		format: 'YYYY-MM-DD HH:mm:ss',
-  // 		useCurrent: false //Important! See Issue #1075
-  // 	});
-  // 	$("#start-date").on("dp.change", function (e) {
-  // 				$('#end-date').data("DateTimePicker").minDate(e.date);
-  // 		});
-  // 	$("#end-date").on("dp.change", function (e) {
-  // 			$('#start-date').data("DateTimePicker").maxDate(e.date);
-  // 	});
-  //
-  // });
-
-
   </script>
   @endsection

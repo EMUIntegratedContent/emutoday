@@ -23,11 +23,13 @@ use Emutoday\Category;
 use Emutoday\Building;
 use Emutoday\Mediafile;
 use Emutoday\Mediatype;
+use Emutoday\Story;
 
 use Carbon\Carbon;
 
 use Emutoday\Today\Transformers\FractalAnnouncementTransformerModel;
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
+use Emutoday\Today\Transformers\FractalStoryTransformerModel;
 
 use Illuminate\Http\Request;
 
@@ -37,7 +39,7 @@ class ArchiveController extends ApiController
   function __construct()
   {
     $this->middleware(['web','auth'], ['only' => [
-      'queueLoad',
+      'queueLoad', 'unarchive', 'delete',
       ]]);
     }
 
@@ -69,6 +71,67 @@ class ArchiveController extends ApiController
                     $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
 
                     return $fractal->createData($resource)->toArray();
+
+                case 'stories':
+                    // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                    $paginator = Story::where('is_archived', 1)->orderBy('start_date', 'desc')->paginate($perPage);
+                    $archivedItems = $paginator->getCollection();
+
+                    $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                    $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                    return $fractal->createData($resource)->toArray();
+
+                case 'external':
+                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'external'])->orderBy('start_date', 'desc')->paginate($perPage);
+                        $archivedItems = $paginator->getCollection();
+
+                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                        return $fractal->createData($resource)->toArray();
+
+                case 'news':
+                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'news'])->orderBy('start_date', 'desc')->paginate($perPage);
+                        $archivedItems = $paginator->getCollection();
+
+                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                        return $fractal->createData($resource)->toArray();
+
+                case 'article':
+                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'article'])->orderBy('start_date', 'desc')->paginate($perPage);
+                        $archivedItems = $paginator->getCollection();
+
+                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                        return $fractal->createData($resource)->toArray();
+
+                case 'story':
+                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'story'])->orderBy('start_date', 'desc')->paginate($perPage);
+                        $archivedItems = $paginator->getCollection();
+
+                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                        return $fractal->createData($resource)->toArray();
+
+                case 'student':
+                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'student'])->orderBy('start_date', 'desc')->paginate($perPage);
+                        $archivedItems = $paginator->getCollection();
+
+                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                        return $fractal->createData($resource)->toArray();
+
                 default;
                     $archivedItems = array();
                     return $archivedItems;
@@ -94,6 +157,7 @@ class ArchiveController extends ApiController
             switch($archiveType){
                 case 'announcements':
                     $item = Announcement::findOrFail($id);
+
                     // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
                     $validation = \Validator::make( Input::all(), [
                       'title'           => 'required|max:80|min:10',
@@ -101,6 +165,25 @@ class ArchiveController extends ApiController
                       'end_date'        => 'required|date',
                       'announcement'     => 'required|max:255'
                     ]);
+
+                    $item->is_archived = 0;
+                    $item->is_approved = 0;
+
+                    break;
+
+                case 'stories':
+                    // Find story
+                    $item = Story::findOrFail($id);
+                    $validation = \Validator::make( Input::all(), [
+                                 'title'           => 'required',
+                                 'start_date'      => 'required',
+                                 'user_id'   => 'required',
+                                 'content'     => 'required'
+                    ]);
+
+                    $item->is_archived = 0;
+                    $item->is_approved = 0;
+
                     break;
             }
 
@@ -110,8 +193,6 @@ class ArchiveController extends ApiController
               ->respondWithError($validation->errors()->getMessages());
             }
             if($validation->passes()){
-                $item->is_archived = 0;
-                $item->is_approved = 0;
 
                 if($item->save()) {
                     return $this->setStatusCode(201)
@@ -139,9 +220,13 @@ class ArchiveController extends ApiController
                   case 'announcements':
                       $item = Announcement::findOrFail($id);
                       break;
+
+                  case 'stories':
+                      $item = Story::findOrFail($id);
+                      break;
               }
 
-              if($item->save()) {
+              if($item->delete()) {
                   return $this->setStatusCode(200)
                   ->respondSavedWithData(ucfirst($archiveType) .' successfully deleted!',[ 'record_id' => $item->id ]);
               } else {

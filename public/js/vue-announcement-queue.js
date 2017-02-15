@@ -16558,12 +16558,15 @@ var _AnnouncementQueueItem = require('./AnnouncementQueueItem.vue');
 
 var _AnnouncementQueueItem2 = _interopRequireDefault(_AnnouncementQueueItem);
 
+var _Pagination = require('./Pagination.vue');
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import EventViewContent from './EventViewContent.vue'
 exports.default = {
   components: { AnnouncementQueueItem: _AnnouncementQueueItem2.default },
-  props: ['atype', 'cuser'],
+  props: ['atype', 'cuser', 'role'],
   data: function data() {
     return {
       resource: {},
@@ -16753,7 +16756,7 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\" _v-0569fa3a=\"\">\n    <div class=\"col-md-4\" _v-0569fa3a=\"\">\n      <h3 _v-0569fa3a=\"\">Unapproved</h3>\n      <div id=\"items-unapproved\" _v-0569fa3a=\"\">\n        <announcement-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-0569fa3a=\"\">\n      </announcement-queue-item>\n    </div>\n  </div>\n  <!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-0569fa3a=\"\">\n    <h3 _v-0569fa3a=\"\">Approved</h3>\n    <div id=\"items-approved\" _v-0569fa3a=\"\">\n      <announcement-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' -1\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-0569fa3a=\"\">\n    </announcement-queue-item>\n  </div>\n</div>\n<div class=\"col-md-4\" _v-0569fa3a=\"\">\n  <h3 _v-0569fa3a=\"\">Live</h3>\n  <div id=\"items-live\" _v-0569fa3a=\"\">\n    <announcement-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-0569fa3a=\"\">\n  </announcement-queue-item>\n</div>\n</div>\n<!-- /.col-md-6 -->\n</div>\n<!-- ./row -->\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"row\" _v-0569fa3a=\"\">\n        <div class=\"col-xs-12 text-right\" _v-0569fa3a=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/announcements\" _v-0569fa3a=\"\"><i class=\"fa fa-archive\" _v-0569fa3a=\"\"></i> Archived Announcements</a>\n        </div>\n    </div>\n  <div class=\"row\" _v-0569fa3a=\"\">\n    <div class=\"col-md-4\" _v-0569fa3a=\"\">\n      <h3 _v-0569fa3a=\"\">Unapproved</h3>\n      <div id=\"items-unapproved\" _v-0569fa3a=\"\">\n        <announcement-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-0569fa3a=\"\">\n      </announcement-queue-item>\n    </div>\n  </div>\n  <!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-0569fa3a=\"\">\n    <h3 _v-0569fa3a=\"\">Approved</h3>\n    <div id=\"items-approved\" _v-0569fa3a=\"\">\n      <announcement-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' -1\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-0569fa3a=\"\">\n    </announcement-queue-item>\n  </div>\n</div>\n<div class=\"col-md-4\" _v-0569fa3a=\"\">\n  <h3 _v-0569fa3a=\"\">Live</h3>\n  <div id=\"items-live\" _v-0569fa3a=\"\">\n    <announcement-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-0569fa3a=\"\">\n  </announcement-queue-item>\n</div>\n</div>\n<!-- /.col-md-6 -->\n</div>\n<!-- ./row -->\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16768,7 +16771,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0569fa3a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./AnnouncementQueueItem.vue":27,"moment":20,"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],27:[function(require,module,exports){
+},{"./AnnouncementQueueItem.vue":27,"./Pagination.vue":28,"moment":20,"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],27:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-0eb3f9d4] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-0eb3f9d4] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-0eb3f9d4] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-0eb3f9d4] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-0eb3f9d4] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-0eb3f9d4] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-0eb3f9d4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-0eb3f9d4] {\n  margin-bottom: 2px;\n}\n#applabel[_v-0eb3f9d4]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-0eb3f9d4],\n.btn-group-vertical[_v-0eb3f9d4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-0eb3f9d4] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-0eb3f9d4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-0eb3f9d4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-0eb3f9d4] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-0eb3f9d4]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-0eb3f9d4] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-0eb3f9d4] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-0eb3f9d4] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-0eb3f9d4] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-0eb3f9d4] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-0eb3f9d4] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-0eb3f9d4] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-0eb3f9d4] {\n  color: #F39C12;\n}\n.time-is-long[_v-0eb3f9d4] {\n  color: #999999;\n}\n.time-is-over[_v-0eb3f9d4] {\n  color: #9B59B6;\n}\n\n.special-item[_v-0eb3f9d4] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-0eb3f9d4] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
 'use strict';
@@ -16940,10 +16943,7 @@ module.exports = {
       }
       console.log('toggleBody' + this.showBody);
     },
-    // doThis: function(ev) {
-    //     this.$emit('item-change',this.item);
-    //     console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
-    // },
+
     changeIsApproved: function changeIsApproved() {
       this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
       console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
@@ -17035,7 +17035,45 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-0eb3f9d4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./VuiFlipSwitch.vue":28,"babel-runtime/helpers/defineProperty":2,"moment":20,"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],28:[function(require,module,exports){
+},{"./VuiFlipSwitch.vue":29,"babel-runtime/helpers/defineProperty":2,"moment":20,"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],28:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
+'use strict';
+
+module.exports = {
+    props: ['paginateditems', 'resultsperpage'],
+    data: function data() {
+        return {};
+    },
+    created: function created() {},
+    ready: function ready() {},
+    computed: {},
+    methods: {
+        perPageChange: function perPageChange(direction) {
+            this.$emit('numpageschanged', direction);
+        },
+        paginateChange: function paginateChange(pageNumber, numResults) {
+            this.$emit('pagechanged', pageNumber, numResults);
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"paginateditems.current_page == 1 ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(1, resultsperpage)\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in paginateditems.total_pages\" :class=\"(n + 1) == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n + 1, resultsperpage)\" _v-6eea2f11=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"paginateditems.current_page == paginateditems.total_pages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(paginateditems.total_pages, resultsperpage)\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-6eea2f11", module.exports)
+  } else {
+    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],29:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    -webkit-transition: margin 0.3s ease-in 0s;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    -webkit-transition: all 0.3s ease-in 0s;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -17082,7 +17120,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],29:[function(require,module,exports){
+},{"vue":24,"vue-hot-reload-api":22,"vueify/lib/insert-css":25}],30:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -17118,6 +17156,6 @@ new Vue({
     }
 });
 
-},{"./components/AnnouncementQueue.vue":26,"vue":24,"vue-resource":23}]},{},[29]);
+},{"./components/AnnouncementQueue.vue":26,"vue":24,"vue-resource":23}]},{},[30]);
 
 //# sourceMappingURL=vue-announcement-queue.js.map
