@@ -30,7 +30,7 @@
         </ul>
       </template>
       <template v-if="item.related_link_1">
-        <p>Additional Information:</p>
+        <p>For more information, visit:</p>
         <ul>
           <li><a href="{{item.related_link_1 | hasHttp}}" target="_blank">
             <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>

@@ -12,11 +12,11 @@
         <div class="form-group">
           <label>Title <span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
-          <input v-model="record.title" class="form-control" :class="[formErrors.title ? 'invalid-input' : '']"  name="title" type="text" maxlength="80">
+          <input v-model="record.title" class="form-control" :class="[formErrors.title ? 'invalid-input' : '']"  name="title" type="text" maxlength="80" autofocus>
           <p v-if="formErrors.title" class="help-text invalid">	Please Include a Title!</p>
         </div>
         <div class="form-group">
-          <label>Short Title	</label>
+          <label>Short Title</label>
           <input v-model="record.short_title" class="form-control" type="text" placeholder="Short Title" name="short-title" maxlength="80">
         </div>
       </div><!-- /.md12col -->
@@ -121,6 +121,7 @@
       <div v-show="hasStartTime" class="form-group">
         <label for="start-time">Start Time: <span :class="iconStar" class="reqstar"></span></label>
         <input id="start-time" class="form-control" type="text" v-model="record.start_time" readonly/>
+        <p v-if="formErrors.start_time" class="help-text invalid">Need a Start Time</p>
       </div><!-- /.form-group -->
     </div><!-- /.md6col -->
     <div :class="md6col">
@@ -244,7 +245,7 @@
         <div v-bind:class="formGroup">
           <label>Example of Related Link</label>
           <p class="help-text">Below is how it may look. </p>
-          <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
+          <h5 class="form-control">For more information, visit: <a href="#"> {{record.related_link_2_txt}}</a>.</h5>
         </div>
       </div><!-- /.md6col -->
     </div>
@@ -278,7 +279,7 @@
         <div v-bind:class="formGroup">
           <label>Example of Related Link</label>
           <p class="help-text">Below is how it may look. </p>
-          <h5 class="form-control">For more information visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
+          <h5 class="form-control">For more information, visit: <a href="#"> {{record.related_link_3_txt}}</a>.</h5>
         </div>
       </div><!-- /.md6col -->
     </div>
@@ -651,6 +652,11 @@ module.exports  = {
         return false;
       }
     });
+    this.startdatePicker.clear();
+    this.enddatePicker.clear();
+    this.starttimePicker.clear();
+    this.endtimePicker.clear();
+    this.regdeadlinePicker.clear();
   },
 
   computed: {
@@ -752,7 +758,6 @@ module.exports  = {
     },
     hasStartTime: function() {
       return this.record.all_day == 1? false : true;
-
     },
     hasEndTime: function() {
       return (this.record.all_day == 1 || this.record.no_end_time == 1)?false : true;
@@ -847,7 +852,6 @@ module.exports  = {
           self.record.end_date = dateString;
           self.enddatePicker.value = dateString;
         }
-
       });
 
       this.starttimePicker = flatpickr(document.getElementById("start-time"),{
@@ -858,7 +862,6 @@ module.exports  = {
           self.record.start_time = timeString;
           self.starttimePicker.value = timeString;
         }
-
       });
       this.endtimePicker = flatpickr(document.getElementById("end-time"),{
         noCalendar: true,
@@ -867,7 +870,6 @@ module.exports  = {
           self.record.end_time = timeString;
           self.endtimePicker.value = timeString;
         }
-
       });
 
       this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"),{
