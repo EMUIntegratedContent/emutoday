@@ -157,6 +157,12 @@ class EventController extends ApiController
             $related_text_rules_3 = '';
         }
 
+        if($request->get('all_day') != '1' || $request->get('all_day') != 1){
+            $start_time_rules = 'required';
+        } else {
+            $start_time_rules = '';
+        }
+
         // Validation rules
         $validation = \Validator::make( Input::all(), [
           'title'           => 'required',
@@ -164,7 +170,7 @@ class EventController extends ApiController
           'on_campus'				=> 'required',
           'start_date'      => 'required|date',
           'end_date'        => 'required|date',
-          'start_time'      => 'required',
+          'start_time'      => $start_time_rules,
           'categories'      => 'required',
           'cost'			      => 'required',
           'description'     => 'required',
@@ -456,6 +462,12 @@ class EventController extends ApiController
           } else {
               $related_text_rules_3 = '';
           }
+          
+          if($request->get('all_day') != '1' || $request->get('all_day') != 1){
+              $start_time_rules = 'required';
+          } else {
+              $start_time_rules = '';
+          }
 
           // Validation rules
           $validation = \Validator::make( Input::all(), [
@@ -464,7 +476,7 @@ class EventController extends ApiController
             'on_campus'				=> 'required',
             'start_date'      => 'required|date',
             'end_date'        => 'required|date',
-            'start_time'      => 'required',
+            'start_time'      => $start_time_rules,
             'categories'      => 'required',
             'cost'			      => 'required',
             'description'     => 'required',
