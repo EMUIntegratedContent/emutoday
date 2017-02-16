@@ -16676,22 +16676,100 @@ var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cu
 module.exports = {
     props: ['paginateditems', 'resultsperpage'],
     data: function data() {
-        return {};
+        return {
+            pageRange: []
+        };
     },
     created: function created() {},
-    ready: function ready() {},
-    computed: {},
+    ready: function ready() {
+        this.setVisiblePages();
+    },
+    computed: {
+        isMorePages: function isMorePages() {
+            return this.paginateditems.total_pages > this.pageRange[this.pageRange.length - 1];
+        },
+        isLessPages: function isLessPages() {
+            return this.pageRange[0] !== 1;
+        },
+        currentVisiblePages: function currentVisiblePages() {
+            var totalPages = this.paginateditems.total_pages;
+            var pageRange = this.pageRange;
+
+            var pages = [];
+            for (var i = 0; i < 5; i++) {
+                if (pageRange[i] <= totalPages) {
+                    pages.push(pageRange[i]);
+                }
+            }
+            return pages;
+        }
+    },
     methods: {
         perPageChange: function perPageChange(direction) {
             this.$emit('numpageschanged', direction);
         },
         paginateChange: function paginateChange(pageNumber, numResults) {
             this.$emit('pagechanged', pageNumber, numResults);
+        },
+        paginatorViewChange: function paginatorViewChange(direction) {
+            var newPageNumbers = [];
+
+            if (direction == 'plus') {
+                var currentLastPage = this.pageRange[this.pageRange.length - 1];
+
+                for (var i = 1; i <= 5; i++) {
+                    var pageNumber = currentLastPage + i;
+                    if (pageNumber <= this.paginateditems.total_pages) {
+                        newPageNumbers.push(pageNumber);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+            }
+
+            if (direction == 'minus') {
+                var currentFirstPage = this.pageRange[0];
+
+                for (var i = 5; i > 0; i--) {
+                    var pageNumber = currentFirstPage - i;
+                    if (pageNumber >= 1) {
+                        newPageNumbers.push(pageNumber);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+            }
+
+            if (direction == 'beginning') {
+                this.paginateChange(1, this.resultsperpage);
+
+                for (var i = 1; i <= 5; i++) {
+                    if (i <= this.paginateditems.total_pages) {
+                        newPageNumbers.push(i);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+
+                console.log(this.paginateditems);
+            }
+
+            if (direction == 'end') {
+                this.paginateChange(this.paginateditems.total_pages, this.resultsperpage);
+
+                for (var i = 4; i >= 0; i--) {
+                    var pageNumber = this.paginateditems.total_pages - i;
+                    if (pageNumber >= 1) {
+                        newPageNumbers.push(pageNumber);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+            }
+        },
+        setVisiblePages: function setVisiblePages() {
+            this.pageRange = [1, 2, 3, 4, 5];
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"paginateditems.current_page == 1 ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(1, resultsperpage)\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-for=\"n in paginateditems.total_pages\" :class=\"(n + 1) == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n + 1, resultsperpage)\" _v-6eea2f11=\"\">{{ n + 1 }}</a>\n            </li>\n            <li :class=\"paginateditems.current_page == paginateditems.total_pages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(paginateditems.total_pages, resultsperpage)\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-6eea2f11=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
