@@ -656,7 +656,7 @@ module.exports  = {
     this.enddatePicker.clear();
     this.starttimePicker.clear();
     this.endtimePicker.clear();
-    this.regdeadlinePicker.clear();
+    
   },
 
   computed: {
