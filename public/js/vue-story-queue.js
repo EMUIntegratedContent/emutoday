@@ -16761,6 +16761,122 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],47:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
+'use strict';
+
+module.exports = {
+    props: ['paginateditems', 'resultsperpage'],
+    data: function data() {
+        return {
+            pageRange: []
+        };
+    },
+    created: function created() {},
+    ready: function ready() {
+        this.setVisiblePages();
+    },
+    computed: {
+        isMorePages: function isMorePages() {
+            return this.paginateditems.total_pages > this.pageRange[this.pageRange.length - 1];
+        },
+        isLessPages: function isLessPages() {
+            return this.pageRange[0] !== 1;
+        },
+        currentVisiblePages: function currentVisiblePages() {
+            var totalPages = this.paginateditems.total_pages;
+            var pageRange = this.pageRange;
+
+            var pages = [];
+            for (var i = 0; i < 5; i++) {
+                if (pageRange[i] <= totalPages) {
+                    pages.push(pageRange[i]);
+                }
+            }
+            return pages;
+        }
+    },
+    methods: {
+        perPageChange: function perPageChange(direction) {
+            this.$emit('numpageschanged', direction);
+        },
+        paginateChange: function paginateChange(pageNumber, numResults) {
+            this.$emit('pagechanged', pageNumber, numResults);
+        },
+        paginatorViewChange: function paginatorViewChange(direction) {
+            var newPageNumbers = [];
+
+            if (direction == 'plus') {
+                var currentLastPage = this.pageRange[this.pageRange.length - 1];
+
+                for (var i = 1; i <= 5; i++) {
+                    var pageNumber = currentLastPage + i;
+                    if (pageNumber <= this.paginateditems.total_pages) {
+                        newPageNumbers.push(pageNumber);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+            }
+
+            if (direction == 'minus') {
+                var currentFirstPage = this.pageRange[0];
+
+                for (var i = 5; i > 0; i--) {
+                    var pageNumber = currentFirstPage - i;
+                    if (pageNumber >= 1) {
+                        newPageNumbers.push(pageNumber);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+            }
+
+            if (direction == 'beginning') {
+                this.paginateChange(1, this.resultsperpage);
+
+                for (var i = 1; i <= 5; i++) {
+                    if (i <= this.paginateditems.total_pages) {
+                        newPageNumbers.push(i);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+
+                console.log(this.paginateditems);
+            }
+
+            if (direction == 'end') {
+                this.paginateChange(this.paginateditems.total_pages, this.resultsperpage);
+
+                for (var i = 4; i >= 0; i--) {
+                    var pageNumber = this.paginateditems.total_pages - i;
+                    if (pageNumber >= 1) {
+                        newPageNumbers.push(pageNumber);
+                    }
+                }
+                this.pageRange = newPageNumbers;
+            }
+        },
+        setVisiblePages: function setVisiblePages() {
+            this.pageRange = [1, 2, 3, 4, 5];
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-6eea2f11=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-6eea2f11", module.exports)
+  } else {
+    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],48:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3f82d947] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
 'use strict';
 
@@ -17211,7 +17327,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3f82d947", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./VuiFlipSwitch.vue":49,"moment":40,"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],48:[function(require,module,exports){
+},{"./VuiFlipSwitch.vue":50,"moment":40,"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],49:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-1abbe793] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-1abbe793]:active, .btn-default.active[_v-1abbe793], .open > .dropdown-toggle.btn-default[_v-1abbe793] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-1abbe793]:active, .btn-default.active[_v-1abbe793], .open > .dropdown-toggle.btn-default[_v-1abbe793] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-1abbe793]:active, span.item-type-icon.active[_v-1abbe793]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-1abbe793] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-1abbe793] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-1abbe793] {\n    margin-bottom: 4px;\n\n}\n")
 'use strict';
@@ -17246,12 +17362,15 @@ var _iconradio = require('../directives/iconradio.js');
 
 var _iconradio2 = _interopRequireDefault(_iconradio);
 
+var _Pagination = require('./Pagination.vue');
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import EventViewContent from './EventViewContent.vue'
 exports.default = {
     directives: { iconradio: _iconradio2.default },
-    components: { StoryPod: _StoryPod2.default, IconToggleBtn: _IconToggleBtn2.default },
+    components: { StoryPod: _StoryPod2.default, IconToggleBtn: _IconToggleBtn2.default, Pagination: _Pagination2.default },
     props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
     created: function created() {
         // this.currentDate = moment().format();
@@ -17341,14 +17460,12 @@ exports.default = {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function filerStoryTypeCustom(value) {
-            console.log('value = ' + value.story_type + ' stmodel =' + this.storytype);
+            //console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.storytype;
             }
-
-            // return  moment(value).format("ddd")
         },
         changeFilterByReadyStatus: function changeFilterByReadyStatus(evnt) {
             if (this.readyStatus == '') {
@@ -17358,7 +17475,7 @@ exports.default = {
             }
         },
         filterUnapprovedByStoryType: function filterUnapprovedByStoryType(value) {
-            console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype);
+            //console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -17366,7 +17483,7 @@ exports.default = {
             }
         },
         filterApprovedByStoryType: function filterApprovedByStoryType(value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype);
+            //console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -17375,14 +17492,13 @@ exports.default = {
         },
 
         filterLiveByStoryType: function filterLiveByStoryType(value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype);
+            //console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
             if (this.items_live_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.items_live_filter_storytype;
             }
         },
-
         typeIcon: function typeIcon(sname) {
             switch (sname) {
                 case 'emutoday':
@@ -17408,7 +17524,6 @@ exports.default = {
                     faicon = 'fa-file-o';
                     break;
             }
-
             return 'fa ' + faicon + ' fa-fw';
         },
 
@@ -17422,8 +17537,7 @@ exports.default = {
             var movedRecord = changeditem;
             var movedIndex = this.movedItemIndex(movedid);
 
-            // var movedIndex = this.items_unapproved.findIndex(item => item.id == mid)
-            console.log('movedid' + movedid + 'movedIndex' + movedIndex);
+            //console.log('movedid'+movedid +  'movedIndex'+movedIndex)
             if (movedRecord.is_approved === 1) {
                 this.items_unapproved.splice(movedIndex, 1);
                 this.items_approved.push(movedRecord);
@@ -17433,9 +17547,6 @@ exports.default = {
             }
         },
         moveToUnApproved: function moveToUnApproved(changeditem) {
-
-            // this.xitems.pop(changeditem);
-            console.log('moveToUnApproved' + changeditem);
             changeditem.is_approved = 0;
 
             this.updateRecord(changeditem);
@@ -17467,7 +17578,7 @@ exports.default = {
         this.$http.patch('/api/story/' + item.id, item, {
             method: 'PATCH'
         }).then(function (response) {
-            console.log('good?' + response);
+            //console.log('good?'+ response)
         }, function (response) {
             console.log('bad?' + response);
         });
@@ -17483,12 +17594,20 @@ exports.default = {
             //error callback
             console.log("ERRORS");
         }).bind(this);
+    }), (0, _defineProperty3.default)(_methods, 'numPagesChange', function numPagesChange(direction) {
+        if (direction == 'plus') {
+            this.resultsPerPage += 1;
+        } else if (direction == 'minus') {
+            this.resultsPerPage > 1 ? this.resultsPerPage -= 1 : '';
+        }
+
+        this.fetchAllRecords(1, parseInt(this.resultsPerPage));
     }), _methods),
     filters: {
         byObject: function byObject(array, options) {
             var entry, found, i, key, len, result, value;
             result = [];
-            console.log(options);
+
             if ((0, _keys2.default)(options).length === 0) {
                 return array;
             }
@@ -17497,11 +17616,11 @@ exports.default = {
                 found = true;
                 for (key in options) {
                     value = options[key];
-                    console.log('options[key]=' + options[key]);
+
                     if (value === '') {
                         break;
                     }
-                    console.log('entry[key]= ' + entry[key]);
+
                     if (entry[key] !== value) {
                         found = false;
                         break;
@@ -17511,7 +17630,6 @@ exports.default = {
                     result.push(entry);
                 }
             }
-            console.log(result);
             return result;
         }
     },
@@ -17519,7 +17637,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"row\" _v-1abbe793=\"\">\n        <div class=\"col-xs-12 text-right\" _v-1abbe793=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/stories\" _v-1abbe793=\"\"><i class=\"fa fa-archive\" _v-1abbe793=\"\"></i> Archived Stories</a>\n        </div>\n    </div>\n    <div class=\"row\" _v-1abbe793=\"\">\n        <h2 v-if=\"loading\" class=\"col-md-12\" _v-1abbe793=\"\">Loading. Please Wait...</h2>\n        <div class=\"col-md-4\" _v-1abbe793=\"\">\n            <h4 _v-1abbe793=\"\">Unapproved<p _v-1abbe793=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                    <label _v-1abbe793=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-1abbe793=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                    </template>\n              </div>\n            </div>\n            <div id=\"items-unapproved\" _v-1abbe793=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-1abbe793=\"\">\n                </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Live <small _v-1abbe793=\"\">Approved and Start Date has passed</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"row\" _v-1abbe793=\"\">\n        <div class=\"col-xs-12 text-right\" _v-1abbe793=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/stories\" _v-1abbe793=\"\"><i class=\"fa fa-archive\" _v-1abbe793=\"\"></i> Archived Stories</a>\n        </div>\n    </div>\n    <div class=\"row\" _v-1abbe793=\"\">\n        <h2 v-if=\"loading\" class=\"col-md-12\" _v-1abbe793=\"\">Loading. Please Wait...</h2>\n        <div class=\"col-md-4\" _v-1abbe793=\"\">\n            <h4 _v-1abbe793=\"\">Unapproved<p _v-1abbe793=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                    <label _v-1abbe793=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-1abbe793=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                    </template>\n              </div>\n            </div>\n            <div id=\"items-unapproved\" _v-1abbe793=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-1abbe793=\"\">\n                </story-pod>\n\n\n                <pagination :paginateditems=\"itemsUnapproved\" :resultsperpage=\"unapprovedResultsPerPage\" @numpageschanged=\"numPagesChange\" @pagechanged=\"fetchAllRecords\" _v-1abbe793=\"\">\n                </pagination>\n\n            </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n\n\n\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\">Live <small _v-1abbe793=\"\">Approved and Start Date has passed</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -17534,7 +17652,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-1abbe793", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../directives/iconradio.js":50,"./IconToggleBtn.vue":46,"./StoryPod.vue":47,"babel-runtime/core-js/object/keys":2,"babel-runtime/helpers/defineProperty":3,"moment":40,"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],49:[function(require,module,exports){
+},{"../directives/iconradio.js":51,"./IconToggleBtn.vue":46,"./Pagination.vue":47,"./StoryPod.vue":48,"babel-runtime/core-js/object/keys":2,"babel-runtime/helpers/defineProperty":3,"moment":40,"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],50:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    -webkit-transition: margin 0.3s ease-in 0s;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    -webkit-transition: all 0.3s ease-in 0s;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -17581,7 +17699,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],50:[function(require,module,exports){
+},{"vue":44,"vue-hot-reload-api":42,"vueify/lib/insert-css":45}],51:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -17630,7 +17748,7 @@ module.exports = {
     }
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -17666,6 +17784,6 @@ new Vue({
         }
 });
 
-},{"./components/StoryQueue.vue":48,"moment":40,"vue":44,"vue-resource":43}]},{},[51]);
+},{"./components/StoryQueue.vue":49,"moment":40,"vue":44,"vue-resource":43}]},{},[52]);
 
 //# sourceMappingURL=vue-story-queue.js.map

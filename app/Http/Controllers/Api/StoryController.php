@@ -37,15 +37,11 @@ class StoryController extends ApiController
        }
 
 
-       public function queue($gtype, $stype, $qtype)
+       public function queue($gtype, $stype, $qtype, $perPage = 10)
        {
-
            if (\Auth::check()) {
                $user = \Auth::user();
-               // $storys = $this->story->newQuery();
-               // dd($user->roles);
                if ($user->hasRole('contributor_1')){
-                   // dd($user->id);
                    $storys = $user->storys()->get();
                } else {
                    if($qtype === 'queueall'){
@@ -56,13 +52,11 @@ class StoryController extends ApiController
                }
 
                $fractal = new Manager();
-               // $storys = Story::all();
                $resource = new Fractal\Resource\Collection($storys->all(), new FractalStoryTransformerModel);
                // Turn all of that into a Array string
                return $fractal->createData($resource)->toArray();
            } else {
                return $this->setStatusCode(501)->respondWithError('Error');
-
            }
        }
 

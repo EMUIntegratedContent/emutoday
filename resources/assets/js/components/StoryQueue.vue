@@ -32,7 +32,12 @@
                     :index="$index"
                     :is="items-unapproved">
                 </story-pod>
-        </div>
+
+
+                <pagination :paginateditems="itemsUnapproved" :resultsperpage="unapprovedResultsPerPage" @numpageschanged="numPagesChange" @pagechanged="fetchAllRecords">
+                </pagination>
+
+            </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
         <h4>Approved</h4>
@@ -133,10 +138,11 @@ import moment from 'moment'
 import StoryPod from './StoryPod.vue'
 import IconToggleBtn from './IconToggleBtn.vue'
 import iconradio from '../directives/iconradio.js'
-// import EventViewContent from './EventViewContent.vue'
+import Pagination from './Pagination.vue'
+
 export default  {
     directives: {iconradio},
-    components: {StoryPod,IconToggleBtn},
+    components: {StoryPod,IconToggleBtn,Pagination},
     props: ['stypes','stype','sroute','qtype','gtype','cuser','role'],
     created(){
         // this.currentDate = moment().format();
@@ -204,7 +210,6 @@ export default  {
                     shortname: 'x'
                     }
                 ]
-
             } else {
                 this.s_types.push({
                     name: 'all',
@@ -212,9 +217,6 @@ export default  {
                 })
                 return this.s_types;
             }
-
-
-
         },
         itemsApproved:function() {
             return  this.filterItemsApproved(this.allitems);
@@ -233,14 +235,12 @@ export default  {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function (value) {
-            console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
+            //console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.storytype;
             }
-
-            // return  moment(value).format("ddd")
         },
         changeFilterByReadyStatus: function(evnt){
             if (this.readyStatus == ''){
@@ -250,7 +250,7 @@ export default  {
             }
         },
         filterUnapprovedByStoryType: function (value) {
-            console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
+            //console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -258,7 +258,7 @@ export default  {
             }
         },
         filterApprovedByStoryType: function (value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
+            //console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -267,14 +267,13 @@ export default  {
         },
 
         filterLiveByStoryType: function (value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
+            //console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
             if (this.items_live_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.items_live_filter_storytype;
             }
         },
-
         typeIcon: function(sname) {
             switch (sname) {
                 case 'emutoday':
@@ -300,9 +299,7 @@ export default  {
                 faicon = 'fa-file-o'
                 break
             }
-
             return 'fa '+ faicon + ' fa-fw'
-
         },
 
         movedItemIndex: function(mid) {
@@ -313,8 +310,7 @@ export default  {
             let movedRecord = changeditem;
             let movedIndex = this.movedItemIndex(movedid);
 
-            // var movedIndex = this.items_unapproved.findIndex(item => item.id == mid)
-            console.log('movedid'+movedid +  'movedIndex'+movedIndex)
+            //console.log('movedid'+movedid +  'movedIndex'+movedIndex)
             if (movedRecord.is_approved === 1) {
                 this.items_unapproved.splice(movedIndex, 1);
                 this.items_approved.push(movedRecord);
@@ -324,9 +320,6 @@ export default  {
             }
         },
         moveToUnApproved: function(changeditem){
-
-            // this.xitems.pop(changeditem);
-            console.log('moveToUnApproved'+ changeditem)
             changeditem.is_approved = 0;
 
             this.updateRecord(changeditem)
@@ -358,12 +351,11 @@ export default  {
                 method: 'PATCH'
             } )
             .then((response) => {
-                console.log('good?'+ response)
-
+                //console.log('good?'+ response)
             }, (response) => {
                 console.log('bad?'+ response)
             });
-    },
+        },
 
         fetchAllRecords: function() {
             let routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
@@ -378,12 +370,22 @@ export default  {
                 console.log("ERRORS");
             }).bind(this);
         },
+
+        numPagesChange(direction) {
+            if (direction == 'plus') {
+                this.resultsPerPage += 1
+            } else if (direction == 'minus') {
+                this.resultsPerPage > 1 ? this.resultsPerPage -= 1 : ''
+            }
+
+            this.fetchAllRecords(1, parseInt(this.resultsPerPage))
+        },
     },
     filters: {
         byObject: function(array, options) {
             var entry, found, i, key, len, result, value;
             result = [];
-            console.log(options);
+
             if (Object.keys(options).length === 0) {
               return array;
             }
@@ -392,11 +394,11 @@ export default  {
               found = true;
               for (key in options) {
                 value = options[key];
-                console.log('options[key]=' + options[key])
+
                 if(value === ''){
                     break;
                 }
-                console.log('entry[key]= ' + entry[key]);
+
                 if (entry[key] !== value) {
                   found = false;
                   break;
@@ -406,7 +408,6 @@ export default  {
                 result.push(entry);
               }
             }
-            console.log(result);
             return result;
           }
     },

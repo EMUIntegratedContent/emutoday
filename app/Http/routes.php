@@ -140,7 +140,7 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
-    Route::get('{gtype}/{stype}/{qtype}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
+    Route::get('{gtype}/{stype}/{qtype}/{perPage?}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
 
     Route::patch('story/updateitem/{id}', ['as' => 'api_story_updateitem', 'uses' => 'Api\StoryController@updateItem']);
 
