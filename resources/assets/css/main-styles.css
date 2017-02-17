@@ -759,11 +759,9 @@ ul.accordion li{
 
 .accordion .accordion-item.is-active > a, .accordion dd.is-active > a {
     background: none;
-
 }
 .accordion .accordion-item > a:hover, .accordion dd > a:hover {
       text-decoration: none;
-
 }
 
 .clearfix:after {

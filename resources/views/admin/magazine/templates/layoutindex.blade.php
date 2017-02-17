@@ -13,22 +13,19 @@
                 </colgroup>
                 @foreach ($storys as $story)
                 <tr>
-                    <td class="redips-mark {{$story->is_featured?'frontstory-btn':'smallstory-btn'}}">
+                    <td class="redips-mark {{($story->is_featured && $story->images()->ofType('front')->first())?'frontstory-btn':'smallstory-btn'}}">
                             {{$story->id}}
                     </td>
 
-                    @if($story->is_featured)
+                    @if($story->is_featured && $story->images()->ofType('front')->first())
                         <td class="redips-mark drag-{{$story->id}}x">
                                 <div id="drag-{{$story->id}}x" class="redips-drag frontstory-btn"
-
-
                                      data-imgtype="front" data-imgname="{{$story->images()->ofType('front')->first()->filename}}">
                                     {{$story->id}}</div>
                         </td>
                             @else
                             <td class="redips-mark drag-{{$story->id}}">
                                 <div id="drag-{{$story->id}}" class="redips-drag smallstory-btn"
-
                                      data-imgtype="small" data-imgname="{{$story->images()->ofType('small')->first()->filename}}">
                                      {{$story->id}}
                                  </div>

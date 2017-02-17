@@ -8403,6 +8403,4 @@ Foundation.IHearYou = checkListeners;
 //   }
 // }
 
-$(document).foundation();
-
 //# sourceMappingURL=public-scripts.js.map

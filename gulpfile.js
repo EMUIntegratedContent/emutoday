@@ -75,7 +75,7 @@ elixir(function(mix) {
               'foundation/foundation.util.timerAndImageLoader.js',
               'foundation/foundation.util.touch.js',
               'foundation/foundation.util.triggers.js',
-              'app.js'
+              //'app.js'
           ],
             'public/js/public-scripts.js'
             );
@@ -164,7 +164,12 @@ elixir(function(mix) {
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
+<<<<<<< HEAD
         mix.browserify('vue-archive-queue.js', 'public/js/vue-archive-queue.js');
+=======
+        //mix.browserify('foundation.min.js', 'public/js/foundation.min.js');
+        mix.browserify('app.js', 'public/js/app.js');
+>>>>>>> master
 
 });
         /*

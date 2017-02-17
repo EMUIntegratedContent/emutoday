@@ -47,16 +47,14 @@
                     <h5>{{ $story->subtitle }}</h5>
                 </div>
             </div><!-- /.row -->
-             <div id="big-feature-image">
+            <div id="big-feature-image">
                  @if($mainImage)
                   <img src="{{$mainImage->present()->mainImageURL}}" alt="feature-image">
-
                   <div class="feature-image-caption">{{ $mainImage->caption }}</div>
-              @else
+                 @else
                   <img src="/assets/imgs/placeholder/article_front.jpg" alt="feature-image">
-
-              @endif
-              </div>
+                 @endif
+            </div>
               <!-- Story Page Content -->
 
               <!-- <div class="magazine-titlebar"><img src="/assets/imgs/graphic-title.png" alt="Lost Voices"></div> -->

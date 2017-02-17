@@ -12,68 +12,87 @@
       </div>
       <!-- /.small-12 columns -->
     </div>
-    <!-- /.row -->
+
     <div class="row">
       <div v-bind:class="md12col">
-        <!-- Title -->
         <div v-bind:class="formGroup">
-          <label>Title <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
-          <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text" maxlength="80">
-          <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
+          <div class="input-group" style="width: 100%">
+            <label>Title <span v-bind:class="iconStar" class="reqstar"></span></label>
+            <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
+            <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text" maxlength="80">
+            <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
+          </div>
         </div>
-        <div v-if="generalForm" v-bind:class="formGroup">
-          <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span></i>
-            <p class="help-text" id="announcement-helptext">({{descriptionChars}} characters left)</p>
-          </label>
+      </div>
+    </div>
+
+    <div v-if="generalForm" class="row">
+      <div v-bind:class="md12col">
+        <div v-bind:class="formGroup">
+          <div v-bind:class="formGroup">
+            <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span></i>
+              <p class="help-text" id="announcement-helptext">({{descriptionChars}} characters left)</p>
+            </label>
             <textarea v-model="record.announcement" class="form-control" v-bind:class="[formErrors.announcement ? 'invalid-input' : '']" name="announcement" type="textarea" rows="8" maxlength="255"></textarea>
-          <p v-if="formErrors.announcement" class="help-text invalid">{{formErrors.announcement}}</p>
+            <p v-if="formErrors.announcement" class="help-text invalid">{{formErrors.announcement}}</p>
+          </div>
         </div>
       </div>
       <!-- /.small-12 columns -->
     </div>
+
     <!-- /.row  -->
     <div class="input-group" style="width: 100%">
       <div class="row">
         <div :class="md12col">
           <div v-bind:class="formGroup">
             <label>Related Link</label>
-            <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
-            <div class="input-group input-group-flat">
+            <p class="help-text" id="title-helptext">Please enter the web address for your related web page. (ex. www.yourlink.com)</p>
+            <div class="input-group">
               <span :class="inputGroupLabel">http://</span>
               <input v-model="record.link" class="form-control" v-bind:class="[formErrors.link ? 'invalid-input' : '']" name="link" type="text" maxlength="200">
             </div>
-            <p v-if="formErrors.link" class="help-text invalid">Please make sure url is properly formed.</p>
+            <p v-if="formErrors.link" class="help-text invalid">Please make sure web address is properly formed.</p>
           </div>
         </div><!-- /.col-md-4 -->
       </div><!-- /.row -->
+
       <div class="row" v-if="generalForm">
-        <div :class="md4col">
+        <div :class="md12col">
           <div v-bind:class="formGroup">
-            <label>Meaning description for Link</label>
-            <p class="help-text" id="link_txt-helptext">(ex. Announcement webpage)</p>
+            <label class="hidden" aria-label="Descriptive text for web page">Descriptive text for web page</label>
+            <p class="help-text" id="title-helptext">Please add descriptive text for link. <strong>Do not use web address.</strong> (ex. My Announcement Webpage)</p>
             <input v-model="record.link_txt" class="form-control" v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text" maxlength="80">
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
           </div>
-        </div><!-- /.col-md-4 -->
-        <div :class="md8col">
+        </div>
+        <!-- <div :class="md8col">
           <div v-bind:class="formGroup">
             <label>Example of Related Link</label>
             <p class="help-text">Below is how it may look. </p>
             <h5 class="form-control">For more information visit: <a href="#"> {{record.link_txt}}</a>.</h5>
           </div>
-        </div><!-- /.md6col -->
+        </div> -->
       </div>
     </div>
 
     <br v-if="framework == 'bootstrap' && generalForm"/>
 
+    <div v-if="generalForm" class="row">
+      <div :class="md12col">
+        <div v-bind:class="formGroup">
+          <label>Contact Person</label>
+          <!-- <p class="help-text" id="email-link-helptext">Please enter email link text</p> -->
+          <input v-model="record.email_link_txt" class="form-control" v-bind:class="[formErrors.email_link_txt ? 'invalid-input' : '']" name="email_link_txt" type="text" maxlength="80">
+        </div>
+      </div><!-- /.col-md-4 -->
+    </div>
     <div v-if="generalForm"  class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
-          <label>Email Link</label>
+          <label>Contact Email</label>
           <p class="help-text" id="title-helptext">Please enter the contact person's email address. (contact@yourlink.com)</p>
-          <div class="input-group input-group-flat">
+          <div class="input-group">
             <span :class="inputGroupLabel">mailto:</span>
             <input v-model="record.email_link" class="form-control" v-bind:class="[formErrors.email_link ? 'invalid-input' : '']" name="email_link" type="text" maxlength="80">
           </div>
@@ -81,22 +100,6 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div v-if="generalForm" class="row">
-      <div :class="md4col">
-        <div v-bind:class="formGroup">
-          <label>Email Link Text</label>
-          <p class="help-text" id="email-link-helptext">Please enter email link text</p>
-          <input v-model="record.email_link_txt" class="form-control" v-bind:class="[formErrors.email_link_txt ? 'invalid-input' : '']" name="email_link_txt" type="text" maxlength="80">
-        </div>
-      </div><!-- /.col-md-4 -->
-      <div :class="md8col">
-        <div v-bind:class="formGroup">
-          <label>Example of Email Link</label>
-          <p class="help-text">Below is how it may look. </p>
-          <h5 class="form-control">Contact: <a href="#"> {{record.email_link_txt}}</a>.</h5>
-        </div>
-      </div><!-- /.md6col -->
-    </div>
 
     <br v-if="framework == 'foundation' && generalForm"/>
 
@@ -115,39 +118,38 @@
     <div class="row">
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <label for="start-date">Start Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input id="start-date"  v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text">
-
-          <!-- <input v-if="startdate" :class="formControl" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" :value="startdate" :initval="startdate"  v-flatpickr="startdate"> -->
-
-          <!-- <input id="start-date" :class="formControl" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" :value="record.start_date" /> -->
+          <label for="start-date">Publish Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <input id="start-date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" :value="record.start_date"/>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
-        </div>
-        <!--form-group -->
-      </div>
-      <!-- /.small-6 columns -->
+        </div> <!--form-group -->
+      </div> <!-- /.small-6 columns -->
+
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <!-- <input id="my-end-date" v-dtpicker ddate="currentDate" /> -->
           <label for="end-date">End Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input id="end-date" v-bind:class="[formErrors.end_date ? 'invalid-input' : '']" type="text" :value="record.end_date" />
-          <!-- <template v-if="hasStartDate">
-          <input id="end-date" v-bind:class="[formErrors.end_date ? 'invalid-input' : '']" type="text" v-model="record.end_date"   />
+          <input id="end-date" class="form-control" v-bind:class="[formErrors.end_date ? 'invalid-input' : '']" type="text" :value="record.end_date" />
+          <p v-if="formErrors.end_date" class="help-text invalid">Need an End Date</p>
+        </div> <!--form-group -->
+      </div> <!-- /.small-6 columns -->
+    </div> <!-- /.row -->
 
-        </template>
-        <template v-else>
-        <input v-bind:class="[formErrors.end_date ? 'invalid-input' : '']" type="text" v-model="record.end_date"  disabled="disabled" />
-
-      </template> -->
-      <!-- <datepicker id="end-date" :readonly="true" format="YYYY-MM-DD" name="end-date" :value.sync="edate"></datepicker> -->
-      <p v-if="formErrors.end_date" class="help-text invalid">Need an End Date</p>
-
-    </div>
-    <!--form-group -->
+<div id="preview-contents" class="row" v-show="record.title" v-if="framework == 'foundation'">
+  <div v-bind:class="md12col">
+    <h3 class="cal-caps toptitle">Announcement Preview</h3>
+    <ul class="accordion" data-accordion>
+      <li class="accordion-item is-active" id="accitem-1" data-accordion-item>
+        <a href="#" class="accordion-title">{{record.title}}</a>
+        <div class="accordion-content" data-tab-content>
+          <p>{{record.announcement}}</p>
+          <p v-if='record.link'>For more information visit: <a class="accordion-link" target="_blank">{{record.link_txt}}</a></p>
+          <p v-if='record.email_link'>Contact Email: <a class="accordion-link" target="_blank">{{record.email_link_txt}}</a></p>
+          <p v-if='record.phone'>Contact Phone: {{record.phone}}</a></p>
+          <!-- <p v-if='record.start_date'>Posted {{record.start_date}}</a></p> -->
+        </div>
+      </li>
+    </ul>
   </div>
-  <!-- /.small-6 columns -->
 </div>
-<!-- /.row -->
 <div class="row">
   <div v-bind:class="md12col">
     <div v-bind:class="formGroup">
@@ -163,7 +165,9 @@
 p {
   margin: 0;
 }
-
+.accordion-content p {
+  margin-bottom: .5rem;
+}
 label {
   margin-top: 3px;
   margin-bottom: 3px;
@@ -334,6 +338,9 @@ module.exports = {
     //console.log('this.currentDate=' + this.currentDate)
   },
   ready: function() {
+    if (this.framework == 'foundation'){
+      $(document).foundation();
+    }
     this.record.type = this.type;
     if(this.recordexists){
       //console.log('recordid'+ this.recordid)
@@ -345,6 +352,8 @@ module.exports = {
       //console.log('type'+ this.type)
       this.setupDatePickers();
     }
+
+    this.updatePreview();
   },
   computed: {
     // Check announcement type. general or hr
@@ -435,6 +444,14 @@ module.exports = {
     readyAgain: function() {
 
     },
+    updatePreview: function(){
+      if (this.framework == 'foundation'){
+      // Move this preview
+        document.getElementById('preview-container').appendChild(
+          document.getElementById('preview-contents')
+        );
+      }
+    },
     refreshUserAnnouncementTable: function(){
       $.get('/announcement/user/announcements', function(data){
         data = $.parseJSON(data);
@@ -466,6 +483,7 @@ module.exports = {
         //console.log('this.record= ' + this.record);
 
         this.checkOverData();
+        this.updatePreview();
         this.record.start_time = response.data.data.start_time;
       }, (response) => {
         //error callback
@@ -585,6 +603,9 @@ module.exports = {
 
     submitForm: function(e) {
       e.preventDefault(); // Stop form defualt action
+
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 

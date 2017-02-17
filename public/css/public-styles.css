@@ -6346,11 +6346,9 @@ ul.accordion li{
 
 .accordion .accordion-item.is-active > a, .accordion dd.is-active > a {
     background: none;
-
 }
 .accordion .accordion-item > a:hover, .accordion dd > a:hover {
       text-decoration: none;
-
 }
 
 .clearfix:after {
@@ -7685,6 +7683,29 @@ ul.pagination li.active {
 /* Foundation fix */
 .off-canvas-content, .off-canvas-content {
     padding-bottom: 0px;
+}
+div.browserupgrade {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+p.browserupgrade {
+  width: 100%;
+  margin: 0;
+  padding: .7rem;
+  text-align: center;
+  background: #f7f0dd;
+  border-bottom: 1px solid grey;
+}
+a.chrome:before {
+	content:"\f268";
+  font-family: FontAwesome;
+  padding-right: 0.15em;
+}
+a.firefox:before {
+	content:"\f269";
+  font-family: FontAwesome;
+  padding-right: 0.1em;
 }
 
 /*# sourceMappingURL=public-styles.css.map */

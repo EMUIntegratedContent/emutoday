@@ -138,6 +138,31 @@ class EventController extends ApiController
       */
       public function store(Request $request)
       {
+        // Conditional validation of related link text
+        if($request->get('related_link_1') != ''){
+            $related_text_rules_1 = 'required';
+        } else {
+            $related_text_rules_1 = '';
+        }
+
+        if($request->get('related_link_2') != ''){
+            $related_text_rules_2 = 'required';
+        } else {
+            $related_text_rules_2 = '';
+        }
+
+        if($request->get('related_link_3') != ''){
+            $related_text_rules_3 = 'required';
+        } else {
+            $related_text_rules_3 = '';
+        }
+
+        if($request->get('all_day') != '1' || $request->get('all_day') != 1){
+            $start_time_rules = 'required';
+        } else {
+            $start_time_rules = '';
+        }
+
         // Validation rules
         $validation = \Validator::make( Input::all(), [
           'title'           => 'required',
@@ -145,12 +170,16 @@ class EventController extends ApiController
           'on_campus'				=> 'required',
           'start_date'      => 'required|date',
           'end_date'        => 'required|date',
+          'start_time'      => $start_time_rules,
           'categories'      => 'required',
           'cost'			      => 'required',
           'description'     => 'required',
           'contact_person'  => 'required',
           'contact_phone'   => 'required',
-          'contact_email'   => 'required|email'
+          'contact_email'   => 'required|email',
+          'related_link_1_txt'  => $related_text_rules_1,
+          'related_link_2_txt'  => $related_text_rules_2,
+          'related_link_3_txt'  => $related_text_rules_3,
         ]);
 
         // Check against Validation rules
@@ -214,7 +243,7 @@ class EventController extends ApiController
 
           if($event->save()) { // Record successfully stored
             // Send event has been submitted email
-            $to      = "calendar_events@emich.edu, webcomm@emich.edu";
+            $to      = "calendar_events@emich.edu";
             $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
             $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
                         "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
@@ -226,7 +255,9 @@ class EventController extends ApiController
 
             // Make event categories and mini calendars
             $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
-            $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+            $minicalsRequestValue = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+            $minicalsRequestParent = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'parent');
+            $minicalsRequest = array_merge($minicalsRequestValue, array_filter($minicalsRequestParent));
 
             // Relate event categories and mini calendars
             $event->eventcategories()->sync($categoriesRequest);
@@ -276,49 +307,62 @@ class EventController extends ApiController
         $event_id = $request->input('event_id');
         // $imgFile = $request->file('attachment');
         $event = Event::findOrFail($event_id);
-        //define the image paths
-        $destinationFolder = '/imgs/'.$group.'/';
-        $mediafile = new Mediafile();
-        //Find mediatype for this type of media file
-        $mediatype = Mediatype::where([
-          ['group',$group],
-          ['type', $type]
-          ])->first();
-          //Define mediatype to mediafile relationship
-          $mediafile->mediatype()->associate($mediatype);
-          $mediafile->group = $group;
-          $mediafile->type = $type;
-          $mediafile->path = $destinationFolder;
-          $imgFile = Input::file('eventimg');
-          $imgFilePath = $imgFile->getRealPath();
-          $imgFileOriginalExtension = strtolower($imgFile->getClientOriginalExtension());
-          switch ($imgFileOriginalExtension) {
-            case 'jpg':
-            case 'jpeg':
-            $imgFileExtension = 'jpg';
-            break;
-            default:
-            $imgFileExtension = $imgFileOriginalExtension;
-          }
-          $mediafile->name = 'event'. '-' .$event->id . '-' . date('YmdHis');
-          $mediafile->ext = $imgFileExtension;
-          $imgFileName = $mediafile->name . '.' . $mediafile->ext;
-          $image = Image::make($imgFilePath)
-          ->save(public_path() . $destinationFolder . $imgFileName);
-          //  ->fit(100)
-          //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
-          // 	}
-          //
-          $mediafile->filename = $imgFileName;
-          $mediafile->save();
-          $event->mediaFile()->associate($mediafile);
-          $event->is_promoted = 1;
+
+        if (empty(Input::file('eventimg'))) { // Just add/change caption to existing mediafile
+          $mediafile_record = Mediafile::findOrFail($event->mediafile_id);
+          $mediafile_record->caption = $request->input('caption');
+          $mediafile_record->save();
           if($event->save()) {
-            $returnData = ['eventimage' => $mediafile->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
+            $returnData = ['eventimage' => $mediafile_record->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
             return $this->setStatusCode(201)
-            ->respondUpdatedWithData('event updated',$returnData );
-            // return $this->setStatusCode(201)
-            //             ->respondCreated('Event successfully updated');
+            ->respondUpdatedWithData('Image Caption Updated',$returnData );
+          }
+        } else {
+          //define the image paths
+          $destinationFolder = '/imgs/'.$group.'/';
+          $mediafile = new Mediafile();
+          //Find mediatype for this type of media file
+          $mediatype = Mediatype::where([
+            ['group',$group],
+            ['type', $type]
+            ])->first();
+            //Define mediatype to mediafile relationship
+            $mediafile->mediatype()->associate($mediatype);
+            $mediafile->group = $group;
+            $mediafile->type = $type;
+            $mediafile->path = $destinationFolder;
+            $imgFile = Input::file('eventimg');
+            $imgFilePath = $imgFile->getRealPath();
+            $imgFileOriginalExtension = strtolower($imgFile->getClientOriginalExtension());
+            switch ($imgFileOriginalExtension) {
+              case 'jpg':
+              case 'jpeg':
+              $imgFileExtension = 'jpg';
+              break;
+              default:
+              $imgFileExtension = $imgFileOriginalExtension;
+            }
+            $mediafile->name = 'event'. '-' .$event->id . '-' . date('YmdHis');
+            $mediafile->ext = $imgFileExtension;
+            $imgFileName = $mediafile->name . '.' . $mediafile->ext;
+            $image = Image::make($imgFilePath)
+            ->save(public_path() . $destinationFolder . $imgFileName);
+            //  ->fit(100)
+            //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
+            // 	}
+            //
+            $mediafile->filename = $imgFileName;
+            $mediafile->caption = $request->input('caption');
+            $mediafile->save();
+            $event->mediaFile()->associate($mediafile);
+            $event->is_promoted = 1;
+            if($event->save()) {
+              $returnData = ['eventimage' => $mediafile->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
+              return $this->setStatusCode(201)
+              ->respondUpdatedWithData('Event Image Updated',$returnData );
+              // return $this->setStatusCode(201)
+              //             ->respondCreated('Event successfully updated');
+            }
           }
         }
 
@@ -400,6 +444,31 @@ class EventController extends ApiController
           // Find event
           $event = Event::findOrFail($id);
 
+          // Conditional validation of related link text
+          if($request->get('related_link_1') != ''){
+              $related_text_rules_1 = 'required';
+          } else {
+              $related_text_rules_1 = '';
+          }
+
+          if($request->get('related_link_2') != ''){
+              $related_text_rules_2 = 'required';
+          } else {
+              $related_text_rules_2 = '';
+          }
+
+          if($request->get('related_link_3') != ''){
+              $related_text_rules_3 = 'required';
+          } else {
+              $related_text_rules_3 = '';
+          }
+          
+          if($request->get('all_day') != '1' || $request->get('all_day') != 1){
+              $start_time_rules = 'required';
+          } else {
+              $start_time_rules = '';
+          }
+
           // Validation rules
           $validation = \Validator::make( Input::all(), [
             'title'           => 'required',
@@ -407,12 +476,16 @@ class EventController extends ApiController
             'on_campus'				=> 'required',
             'start_date'      => 'required|date',
             'end_date'        => 'required|date',
+            'start_time'      => $start_time_rules,
             'categories'      => 'required',
             'cost'			      => 'required',
             'description'     => 'required',
             'contact_person'  => 'required',
             'contact_phone'   => 'required',
-            'contact_email'   => 'required|email'
+            'contact_email'   => 'required|email',
+            'related_link_1_txt'  => $related_text_rules_1,
+            'related_link_2_txt'  => $related_text_rules_2,
+            'related_link_3_txt'  => $related_text_rules_3,
           ]);
 
           // Check against Validation rules
@@ -477,7 +550,9 @@ class EventController extends ApiController
             if($event->save()) { // Record successfully Saved
               // Make event categories and mini calendars
               $categoriesRequest = $request->input('categories') == null ? [] : array_pluck($request->input('categories'),'value');
-              $minicalsRequest = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+              $minicalsRequestValue = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'value');
+              $minicalsRequestParent = $request->input('minicals') == null ? [] : array_pluck($request->input('minicals'),'parent');
+              $minicalsRequest = array_merge($minicalsRequestValue, array_filter($minicalsRequestParent));
 
               // Relate event categories and mini calendars
               $event->eventcategories()->sync($categoriesRequest);

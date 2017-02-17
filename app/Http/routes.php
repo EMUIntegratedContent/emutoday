@@ -56,7 +56,7 @@ Route::group(['prefix' => 'api'], function() {
      */
     Route::get('buildinglist', function() {
         $text = Input::get('q');
-        return Building::likeSearch('name', $text)->select('name')->get();
+        return Building::likeSearch('name', $text)->select('name')->orderBy('name', 'asc')->get();
         //return Building::ofMapType('illustrated')->get();
     });
     /**
@@ -64,14 +64,14 @@ Route::group(['prefix' => 'api'], function() {
      */
     Route::get('categorylist', function() {
         $text = Input::get('q');
-        return Category::likeSearch('category', $text)->select('category', 'id as value')->get();
+        return Category::likeSearch('category', $text)->select('category', 'id as value')->orderBy('category', 'asc')->get();
     });
     /**
      * List of MiniCalendars for EventForm
      */
     Route::get('minicalslist', function() {
-        return MiniCalendar::select('calendar', 'id as value')->get();
-    });
+        return MiniCalendar::select('calendar', 'id as value', 'parent')->orderBy('calendar', 'asc')->get();
+    })  ;
 
     Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
         return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();

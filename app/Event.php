@@ -137,7 +137,8 @@ class Event extends Model
   public function getStartTimeAttribute($value)
   {
     if ($value != NULL){
-      return Carbon::parse($value)->format('g:i A');
+        $formatted = Carbon::parse($value)->format('g:i a');
+        return str_replace(array('am','pm'), array('a.m.','p.m.'), $formatted);
     } else {
       return NULL;
     }
@@ -145,7 +146,8 @@ class Event extends Model
   public function getEndTimeAttribute($value)
   {
     if ($value != NULL){
-      return Carbon::parse($value)->format('g:i A');
+        $formatted = Carbon::parse($value)->format('g:i a');
+        return str_replace(array('am','pm'), array('a.m','p.m.'), $formatted);
     } else {
       return NULL;
     }

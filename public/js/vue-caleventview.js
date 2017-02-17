@@ -16338,7 +16338,7 @@ exports.insert = function (css) {
 
 },{}],10:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -16408,19 +16408,19 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-6520d5b8=\"\">\n    <div class=\"calendar-bar row\" _v-6520d5b8=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-6520d5b8=\"\">\n      <h4 _v-6520d5b8=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-6520d5b8=\"\">\n          <h4 _v-6520d5b8=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-6520d5b8=\"\">\n  <div id=\"calendar-content-bar\" _v-6520d5b8=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-6520d5b8=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-6520d5b8=\"\"></event-view-content>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-6520d5b8=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-6520d5b8=\"\"></event-view-side-bar>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-dc1c0446=\"\">\n    <div class=\"calendar-bar row\" _v-dc1c0446=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-dc1c0446=\"\">\n      <h4 _v-dc1c0446=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-dc1c0446=\"\">\n          <h4 _v-dc1c0446=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-dc1c0446=\"\">\n  <div id=\"calendar-content-bar\" _v-dc1c0446=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-dc1c0446=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-dc1c0446=\"\"></event-view-content>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-dc1c0446=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-dc1c0446=\"\"></event-view-side-bar>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n"] = false
+    __vueify_insert__.cache["\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6520d5b8", module.exports)
+    hotAPI.createRecord("_v-dc1c0446", module.exports)
   } else {
-    hotAPI.update("_v-6520d5b8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-dc1c0446", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventViewContent.vue":11,"./EventViewSideBar.vue":12,"babel-runtime/core-js/json/stringify":1,"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],11:[function(require,module,exports){
@@ -16527,9 +16527,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-65b6795e", module.exports)
+    hotAPI.createRecord("_v-147bd0e8", module.exports)
   } else {
-    hotAPI.update("_v-65b6795e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-147bd0e8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventViewSingle.vue":13,"moment":4,"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],12:[function(require,module,exports){
@@ -16750,9 +16750,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2f140894", module.exports)
+    hotAPI.createRecord("_v-57b15ccf", module.exports)
   } else {
-    hotAPI.update("_v-2f140894", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-57b15ccf", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],13:[function(require,module,exports){
@@ -16838,7 +16838,7 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>Additional Information:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">Cost: {{item.cost | currency }}</p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\">{{item.ticket_details_online}}</a></p>\n      <p v-if=\"item.ticket_details_phone\">For Tickets Call: {{item.ticket_details_phone}}</p>\n      <p v-if=\"item.ticket_details_office\">For Tickets Office: {{item.ticket_details_office}}</p>\n      <p v-if=\"item.ticket_details_other\">Or: {{item.ticket_details_other}}</p>\n    </template>\n\n    <!--<form method=\"POST\" action=\"api/calendar/addevent\">\n      <input type=\"hidden\" name=\"eventId\" value=\"{{item.id}}\" />\n      <input type=\"submit\" value=\"+ Add to Calendar\" />\n    </form>-->\n\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">Cost: {{item.cost | currency }}</p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\">For tickets, go to <a href=\"{{item.ticket_details_online | hasHttp}}\">{{item.ticket_details_online}}</a>.</p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n\n    <!--<form method=\"POST\" action=\"api/calendar/addevent\">\n      <input type=\"hidden\" name=\"eventId\" value=\"{{item.id}}\" />\n      <input type=\"submit\" value=\"+ Add to Calendar\" />\n    </form>-->\n\n  </div>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16848,9 +16848,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-8cbe0bc0", module.exports)
+    hotAPI.createRecord("_v-378a9af6", module.exports)
   } else {
-    hotAPI.update("_v-8cbe0bc0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-378a9af6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],14:[function(require,module,exports){

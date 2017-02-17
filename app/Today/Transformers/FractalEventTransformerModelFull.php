@@ -69,6 +69,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'mba'           => $event->mba,
       'mini_calendar_alt'           => $event->mini_calendar_alt,
       'eventimage' => ($event->mediafile_id > 0)?$event->mediaFile->filename: null,
+      'caption' => ($event->mediafile_id > 0)?$event->mediaFile->caption: null,
 
       'feature_image'           => $event->feature_image,
       'on_campus'           => $event->on_campus,

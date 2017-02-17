@@ -30,7 +30,7 @@
         </ul>
       </template>
       <template v-if="item.related_link_1">
-        <p>Additional Information:</p>
+        <p>For more information, visit:</p>
         <ul>
           <li><a href="{{item.related_link_1 | hasHttp}}" target="_blank">
             <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
@@ -51,10 +51,10 @@
       <p>{{eventParticipation}}</p>
       <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
       <template v-if="item.tickets">
-        <p v-if="item.ticket_details_online">For Tickets Visit: <a href="{{item.ticket_details_online | hasHttp}}">{{item.ticket_details_online}}</a></p>
-        <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
-        <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
-        <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
+        <p v-if="item.ticket_details_online">For tickets, go to <a href="{{item.ticket_details_online | hasHttp}}">{{item.ticket_details_online}}</a>.</p>
+        <p v-if="item.ticket_details_phone">For tickets, call {{item.ticket_details_phone}}.</p>
+        <p v-if="item.ticket_details_office">For tickets, visit {{item.ticket_details_office}}.</p>
+        <p v-if="item.ticket_details_other">Or {{item.ticket_details_other}}</p>
       </template>
 
       <!--<form method="POST" action="api/calendar/addevent">
