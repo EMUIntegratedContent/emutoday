@@ -164,24 +164,8 @@ elixir(function(mix) {
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
-<<<<<<< HEAD
         mix.browserify('vue-archive-queue.js', 'public/js/vue-archive-queue.js');
-=======
         //mix.browserify('foundation.min.js', 'public/js/foundation.min.js');
         mix.browserify('app.js', 'public/js/app.js');
->>>>>>> master
 
 });
-        /*
-
-/*
- |--------------------------------------------------------------------------
- | Version Asset Management
- |--------------------------------------------------------------------------
- |
-  */
-// elixir(function(mix) {
-//     mix.version(['css/public-styles.css','js/public-scripts.js']);
-//
-//     // mix.version(['css/public-styles.css','js/public-scripts.js','css/admin-styles.css', 'js/vendor-scripts.js','js/admin-scripts.js']);
-// });

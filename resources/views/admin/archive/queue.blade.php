@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title','ArchiveQueue')
+@section('title','Archive Queue')
 @section('style-vendor')
     @parent
 @endsection
