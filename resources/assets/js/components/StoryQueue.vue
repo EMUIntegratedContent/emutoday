@@ -1,13 +1,28 @@
 <template>
-    <div v-if="role == 'admin' || role == 'admin_super'" class="row">
-        <div class="col-xs-12 text-right">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+            <form class="form-inline">
+              <div class="form-group">
+                  <label for="start-date">Showing stories starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                  <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
+              </div>
+              <div v-if="isEndDate" class="form-group">
+                  <label for="start-date"> and </label>
+                  <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate">
+              </div>
+              <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
+              <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
+            </form>
+        </div>
+        <div v-if="role == 'admin' || role == 'admin_super'" class="col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right">
             <a class="btn btn-sm btn-default" href="/admin/archive/queue/stories"><i class="fa fa-archive"></i> Archived Stories</a>
         </div>
     </div>
+    <hr />
     <div class="row">
         <h2 v-if="loading" class="col-md-12">Loading. Please Wait...</h2>
         <div class="col-md-4">
-            <h4>Unapproved<p></p></h4>
+            <h4><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved<p></p></h4>
             <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-xs" role="group">
                     <label>Filter: </label>
@@ -32,15 +47,10 @@
                     :index="$index"
                     :is="items-unapproved">
                 </story-pod>
-
-
-                <pagination :paginateditems="itemsUnapproved" :resultsperpage="unapprovedResultsPerPage" @numpageschanged="numPagesChange" @pagechanged="fetchAllRecords">
-                </pagination>
-
             </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4>Approved</h4>
+        <h4><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h4>
         <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
                 <label>Filter: </label>
@@ -66,12 +76,9 @@
                 :is="items-approved">
             </story-pod>
         </div>
-
-
-
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4>Live <small>Approved and Start Date has passed</small></h4>
+        <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has passed</small></h4>
         <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
                 <label>Filter: </label>
@@ -113,7 +120,6 @@
     }
     .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
         color: #ffffff;
-
     }
 
     span.item-type-icon:active, span.item-type-icon.active{
@@ -131,6 +137,11 @@
         margin-bottom: 4px;
 
     }
+    #rangetoggle{
+        color: #FF851B;
+        margin-left: 5px;
+        border-bottom: 2px #FF851B dotted;
+    }
 </style>
 <script>
 
@@ -139,17 +150,20 @@ import StoryPod from './StoryPod.vue'
 import IconToggleBtn from './IconToggleBtn.vue'
 import iconradio from '../directives/iconradio.js'
 import Pagination from './Pagination.vue'
+import flatpickr from "../directives/flatpickr.js"
 
 export default  {
-    directives: {iconradio},
+    directives: {iconradio, flatpickr},
     components: {StoryPod,IconToggleBtn,Pagination},
     props: ['stypes','stype','sroute','qtype','gtype','cuser','role'],
     created(){
-        // this.currentDate = moment().format();
+
     },
     ready() {
-        this.loading = true;
-        this.fetchAllRecords();
+        let twoWeeksEarlier = moment().subtract(2, 'w')
+        this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
+        this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+        this.fetchAllRecords()
     },
     data: function() {
         return {
@@ -171,10 +185,13 @@ export default  {
             items_live: [],
             currentTypesFilter: [],
             loading: true,
+            eventMsg: null,
+            startdate: null,
+            enddate: null,
+            isEndDate: false,
         }
     },
     computed: {
-
         checkRoleAndQueueType:function() {
             if (this.role === 'admin' || this.role === 'admin_super'){
                 if(this.qtype === 'queueall'){
@@ -228,9 +245,14 @@ export default  {
             return  this.filterItemsLive(this.allitems);
         }
     },
-
-
     methods : {
+        toggleRange: function(){
+            if(this.isEndDate){
+                this.isEndDate = false
+            } else {
+                this.isEndDate = true
+            }
+        },
         isString: function(val){
             return toString.call(val) === "[object String]";
         },
@@ -274,6 +296,11 @@ export default  {
                 return value.story_type === this.items_live_filter_storytype;
             }
         },
+
+        onCalendarChange: function(){
+            // flatpickr directive method
+        },
+
         typeIcon: function(sname) {
             switch (sname) {
                 case 'emutoday':
@@ -351,14 +378,25 @@ export default  {
                 method: 'PATCH'
             } )
             .then((response) => {
-                //console.log('good?'+ response)
             }, (response) => {
-                console.log('bad?'+ response)
             });
         },
 
         fetchAllRecords: function() {
-            let routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
+            this.loading = true
+
+            var routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
+            // if a start date is set, get stories whose start_date is on or after this date
+            if(this.startdate){
+                routeurl = routeurl + '/' + this.startdate
+            } else {
+                routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
+            }
+
+            // if a date range is set, get stories between the start date and end date
+            if(this.isEndDate){
+                routeurl = routeurl + '/' + this.enddate
+            }
 
             this.$http.get(routeurl)
 
@@ -369,16 +407,6 @@ export default  {
                 //error callback
                 console.log("ERRORS");
             }).bind(this);
-        },
-
-        numPagesChange(direction) {
-            if (direction == 'plus') {
-                this.resultsPerPage += 1
-            } else if (direction == 'minus') {
-                this.resultsPerPage > 1 ? this.resultsPerPage -= 1 : ''
-            }
-
-            this.fetchAllRecords(1, parseInt(this.resultsPerPage))
         },
     },
     filters: {

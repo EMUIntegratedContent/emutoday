@@ -113,8 +113,8 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
     Route::post('event/removeMediaFile/{event}', 'Api\EventController@removeMediaFile');
 
-    Route::get('event/queueload', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
-    Route::get('event/lbcqueueload', ['as' => 'api.event.lbcqueueload', 'uses' => 'Api\EventController@lbcQueueLoad']);
+    Route::get('event/queueload/{fromDate?}/{toDate?}', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
+    Route::get('event/lbcqueueload/{fromDate?}/{toDate?}', ['as' => 'api.event.lbcqueueload', 'uses' => 'Api\EventController@lbcQueueLoad']);
     Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
     Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
     Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
@@ -126,7 +126,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::resource('event', 'Api\EventController');
 
 
-    Route::get('announcement/queueload/{atype}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
+    Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
     Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
     Route::post('announcement/{id}/delete', ['as' => 'api_announcement_deleteitem', 'uses' => 'Api\AnnouncementController@delete']);
@@ -140,7 +140,7 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
-    Route::get('{gtype}/{stype}/{qtype}/{perPage?}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
+    Route::get('{gtype}/{stype}/{qtype}/{fromDate?}/{toDate?}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
 
     Route::patch('story/updateitem/{id}', ['as' => 'api_story_updateitem', 'uses' => 'Api\StoryController@updateItem']);
 

@@ -18,6 +18,5 @@ module.exports = {
          this.vm.onCalendarChange();
 
         this.set(dateStr)
-        // this.set($(this).val())
     }
 }

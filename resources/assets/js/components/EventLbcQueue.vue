@@ -1,7 +1,24 @@
 <template>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+            <form class="form-inline">
+              <div class="form-group">
+                  <label for="start-date">Showing LBC events starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                  <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
+              </div>
+              <div v-if="isEndDate" class="form-group">
+                  <label for="start-date"> and </label>
+                  <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate">
+              </div>
+              <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
+              <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
+            </form>
+        </div>
+    </div>
+    <hr />
   <div class="row">
     <div class="col-md-6">
-      <h3>Unapproved Events</h3>
+      <h3><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>
       <div id="items-approved">
         <event-queue-item
 
@@ -16,7 +33,7 @@
     </div><!-- /.col-md-6 -->
 
     <div class="col-md-6">
-      <h3>Approved Events</h3>
+      <h3><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>
       <div id="items-approved">
         <event-queue-item
 
@@ -32,20 +49,6 @@
   </div><!-- /.col-md-6 -->
 </template>
 
-<!--
-<div class="col-md-4">
-  <h3>Live Events</h3>
-  <div id="items-live">
-    <event-queue-item
-    pid="items-live"
-    v-for="item in itemsLive | orderBy 'priority' -1"
-    @item-change="moveToUnApproved"
-    :item="item"
-    :index="$index"
-    :is="other-list">
-  </event-queue-item>
-</div>
--->
 <style scoped>
 #items-unapproved .box {
   margin-bottom: 4px;
@@ -58,12 +61,19 @@
 	background-color: #eff3fa;
   border: 1px solid #bbb;
 }
+#rangetoggle{
+    color: #FF851B;
+    margin-left: 5px;
+    border-bottom: 2px #FF851B dotted;
+}
 </style>
 <script>
 import moment from 'moment';
 import EventQueueItem from './EventLbcQueueItem.vue'
+import flatpickr from "../directives/flatpickr.js"
 
 export default  {
+  directives: {flatpickr},
   components: {EventQueueItem},
   props: ['annrecords'],
   data: function() {
@@ -75,11 +85,18 @@ export default  {
       unappitems: [],
       items: [],
       xitems: [],
-      objs: {}
+      objs: {},
+      loading: true,
+      startdate: null,
+      enddate: null,
+      isEndDate: false,
     }
   },
   ready() {
-    this.fetchAllRecords();
+      let twoWeeksEarlier = moment().subtract(2, 'w')
+      this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
+      this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+      this.fetchAllRecords();
   },
   computed: {
     top4:function(){
@@ -96,18 +113,29 @@ export default  {
   },
   methods : {
     fetchAllRecords: function() {
-      this.$http.get('/api/event/lbcqueueload')
+      this.loading = true
+
+      var routeurl = '/api/event/lbcqueueload'
+      // if a start date is set, get stories whose start_date is on or after this date
+      if(this.startdate){
+          routeurl = routeurl + '/' + this.startdate
+      } else {
+          routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
+      }
+      // if a date range is set, get stories between the start date and end date
+      if(this.isEndDate){
+          routeurl = routeurl + '/' + this.enddate
+      }
+
+      this.$http.get(routeurl)
+
       .then((response) =>{
-        //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data);
-        this.$set('allitems', response.data.data)
-        this.checkOverDataFilter();
+          this.$set('allitems', response.data.data)
+          this.checkOverDataFilter()
+          this.loading = false
       }, (response) => {
-        //error callback
-        console.log("ERRORS");
+          //error callback
+          console.log("ERRORS")
       }).bind(this);
     },
     checkOverDataFilter: function() {
@@ -144,6 +172,13 @@ export default  {
           this.xitems.push(this.allitems.splice(i,1));
         }
       }
+  },
+    toggleRange: function(){
+        if(this.isEndDate){
+            this.isEndDate = false
+        } else {
+            this.isEndDate = true
+        }
     },
   },
   events: {

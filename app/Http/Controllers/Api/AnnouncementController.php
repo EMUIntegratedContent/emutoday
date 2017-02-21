@@ -25,24 +25,35 @@ class AnnouncementController extends ApiController
     $this->middleware('web', ['only' => [ 'queueLoad' ]]);
   }
 
-  public function queueLoad($atype)
+  public function queueLoad($atype, $fromDate = null, $toDate = null)
   {
     $currentDate = Carbon::now();
     if (\Auth::check()) {
-      $user = \Auth::user();
 
+      $user = \Auth::user();
       if ($user->hasRole('contributor_1')){
-        // User can see only their own announcements
-        $announcements = $user->announcements()->where('type',$atype)->get();
+          if($fromDate && !$toDate){
+              $announcements = $user->announcements()->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['type', $atype]])->get();
+          } elseif($fromDate && $toDate){
+              $announcements = $user->announcements()->where([['is_archived', 0], ['type', $atype]])->whereBetween('start_date', array($fromDate, $toDate))->get();
+          } else {
+              $announcements = $user->announcements()->where(['is_archived' => 0, 'type' => $atype])->get();
+          }
       } else {
-        // User can see all announcements
-        $announcements = Announcement::where([ /*['end_date', '>', $currentDate->subDay(2)],*/ ['type', $atype] ])->get();
+            if($fromDate && !$toDate){
+                $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['type', $atype]])->get();
+            } elseif($fromDate && $toDate){
+                $announcements  = Announcement::where([['is_archived', 0], ['type', $atype]])->whereBetween('start_date', array($fromDate, $toDate))->get();
+            } else {
+                $announcements  = Announcement::where(['is_archived' => 0, 'type' => $atype])->get();
+            }
       }
+
       $fractal = new Manager();
       $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
-
       // Turn all of that into a Array string
       return $fractal->createData($resource)->toArray();
+
     } else {
       return $this->setStatusCode(501)->respondWithError('Error');
     }

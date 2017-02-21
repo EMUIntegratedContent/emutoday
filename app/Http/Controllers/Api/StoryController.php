@@ -28,26 +28,41 @@ class StoryController extends ApiController
     function __construct(Story $story)
     {
         $this->story = $story;
-        // $this->middleware('auth');
-    //     $this->middleware('web', ['only' => [
-    //        'appLoad','listType','queueload'
-    //    ]]);
         $this->middleware('web', ['only' => ['queueload','queue'
        ]]);
        }
 
 
-       public function queue($gtype, $stype, $qtype, $perPage = 10)
-       {
+       public function queue($gtype, $stype, $qtype, $fromDate = null, $toDate = null)
+       { 
            if (\Auth::check()) {
                $user = \Auth::user();
                if ($user->hasRole('contributor_1')){
-                   $storys = $user->storys()->get();
-               } else {
-                   if($qtype === 'queueall'){
-                     $storys  = Story::get();
+                   if($fromDate && !$toDate){
+                       $storys = $user->storys()->where([['start_date', '>=', $fromDate], ['is_archived', 0]])->get();
+                   } elseif($fromDate && $toDate){
+                       $storys = $user->storys()->where('is_archived', 0)->whereBetween('start_date', array($fromDate, $toDate))->get();
                    } else {
-                      $storys = Story::where('story_type', $stype)->get();
+                       $storys = $user->storys()->where('is_archived', 0)->get();
+                   }
+               } else {
+                 if($qtype === 'queueall'){
+                     if($fromDate && !$toDate){
+                         $storys  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0]])->get();
+                     } elseif($fromDate && $toDate){
+                         $storys  = Story::where('is_archived', 0)->whereBetween('start_date', array($fromDate, $toDate))->get();
+                     } else {
+                         $storys  = Story::where('is_archived', 0)->get();
+                     }
+
+                 } else {
+                      if($fromDate && !$toDate){
+                          $storys = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['story_type', $stype]])->get();
+                      } elseif($fromDate && $toDate){
+                          $storys = Story::where(['story_type' => $stype, 'is_archived' => 0])->whereBetween('start_date', array($fromDate, $toDate))->get();
+                      } else {
+                          $storys = Story::where('is_archived', 0)->get();
+                      }
                    }
                }
 

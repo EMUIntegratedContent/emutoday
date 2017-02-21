@@ -61,7 +61,7 @@ class EventController extends ApiController
 
     }
 
-    public function queueLoad()
+    public function queueLoad($fromDate = null, $toDate = null)
     {
       $currentDate = Carbon::now();
 
@@ -69,15 +69,23 @@ class EventController extends ApiController
         $user = \Auth::user();
 
         if ($user->hasRole('contributor_1')){
-          // dd($user->id);
-          $events = $user->events()->get();
+            if($fromDate && !$toDate){
+                $events = $user->events()->where('start_date', '>=', $fromDate)->get();
+            } elseif($fromDate && $toDate){
+                $events = $user->events()->whereBetween('start_date', array($fromDate, $toDate))->get();
+            } else {
+                $events = $user->events()->get();
+            }
         } else {
-          // $events = Event::limit(40)->where([
-          $events = Event::where([
-            ['end_date', '>', $currentDate->subDay(2)]
-            ])->get();
-            // Announcement::all();
+              if($fromDate && !$toDate){
+                  $events  = Event::where('start_date', '>=', $fromDate)->get();
+              } elseif($fromDate && $toDate){
+                  $events  = Event::whereBetween('start_date', array($fromDate, $toDate))->get();
+              } else {
+                  $events  = Event::get();
+              }
         }
+
           $fractal = new Manager();
           $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
           return $fractal->createData($resource)->toArray();
@@ -86,7 +94,7 @@ class EventController extends ApiController
       }
     }
 
-    public function lbcQueueLoad()
+    public function lbcQueueLoad($fromDate = null, $toDate = null)
     { // Return LBC approved or reviewed events
       $currentDate = Carbon::now();
 
@@ -94,12 +102,15 @@ class EventController extends ApiController
         $user = \Auth::user();
 
         if ($user->hasRole('lbc_approver')){
-          $events = Event::where([
-            ['lbc_approved', '1'],
-            ['lbc_reviewed', '0'],
-            ['end_date', '>', $currentDate->subDay(14)]
-            ])->get();
+            if($fromDate && !$toDate){
+                $events  = Event::where([['start_date', '>=', $fromDate], ['lbc_approved', '1'], ['lbc_reviewed', '0']])->get();
+            } elseif($fromDate && $toDate){
+                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->whereBetween('start_date', array($fromDate, $toDate))->get();
+            } else {
+                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->get();
+            }
         }
+
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
         return $fractal->createData($resource)->toArray();
@@ -462,7 +473,7 @@ class EventController extends ApiController
           } else {
               $related_text_rules_3 = '';
           }
-          
+
           if($request->get('all_day') != '1' || $request->get('all_day') != 1){
               $start_time_rules = 'required';
           } else {
