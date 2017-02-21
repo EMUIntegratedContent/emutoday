@@ -62,7 +62,7 @@ class CalendarController extends ApiController
           ['start_date', '>=' , $cdate_start],
           ['start_date', '<=', $cdate_end],
           ['is_approved', '1']
-      ])->orderBy('start_date')->get();
+      ])->orderBy('start_date')->orderBy('start_time')->get();
 
 
       // it would be better just to not query the event in the first place...
