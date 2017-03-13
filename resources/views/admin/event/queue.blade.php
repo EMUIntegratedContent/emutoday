@@ -8,7 +8,7 @@
 <!-- iCheck for checkboxes and radio inputs -->
 {{-- <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css"> --}}
 {{-- <link rel="stylesheet" href="/themes/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"> --}}
-
+<link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
     @endsection
     @section('style-app')
         @parent

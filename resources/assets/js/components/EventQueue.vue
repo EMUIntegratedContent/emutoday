@@ -1,8 +1,30 @@
 <template>
-<label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail" checked="true"/></label>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+            <form class="form-inline">
+              <div class="form-group">
+                  <label for="start-date">Showing events starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                  <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
+              </div>
+              <div v-if="isEndDate" class="form-group">
+                  <label for="start-date"> and </label>
+                  <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate">
+              </div>
+              <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
+              <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
+            </form>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12">
+            <label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail" checked="true"/></label>
+        </div>
+    </div>
   <div class="row">
+      <h2 v-if="loading" class="col-md-12">Loading. Please Wait...</h2>
     <div class="col-md-4">
-      <h3>Unapproved Events</h3>
+      <h3><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>
       <div id="items-unapproved">
         <event-queue-item
         pid="items-unapproved"
@@ -16,7 +38,7 @@
     </div>
   </div><!-- /.col-md-6 -->
   <div class="col-md-4">
-    <h3>Approved Events</h3>
+    <h3><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>
     <div id="items-approved">
       <event-queue-item
 
@@ -30,7 +52,7 @@
   </div>
 </div><!-- /.col-md-6 -->
 <div class="col-md-4">
-  <h3>Live Events</h3>
+  <h3><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live Events</h3>
   <div id="items-live">
     <event-queue-item
     pid="items-live"
@@ -58,12 +80,19 @@
   position: relative;
   top: 10px;
 }
+#rangetoggle{
+    color: #FF851B;
+    margin-left: 5px;
+    border-bottom: 2px #FF851B dotted;
+}
 </style>
 <script>
 import moment from 'moment';
 import EventQueueItem from './EventQueueItem.vue'
-// import EventViewContent from './EventViewContent.vue'
+import flatpickr from "../directives/flatpickr.js"
+
 export default  {
+  directives: {flatpickr},
   components: {EventQueueItem},
   props: ['annrecords'],
   data: function() {
@@ -75,11 +104,18 @@ export default  {
       unappitems: [],
       items: [],
       xitems: [],
-      objs: {}
+      objs: {},
+      loading: true,
+      startdate: null,
+      enddate: null,
+      isEndDate: false,
     }
   },
   ready() {
-    this.fetchAllRecords();
+      let twoWeeksEarlier = moment().subtract(2, 'w')
+      this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
+      this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+      this.fetchAllRecords();
   },
   computed: {
     top4:function(){
@@ -102,43 +138,37 @@ export default  {
   },
   methods : {
     fetchAllRecords: function() {
-      this.$http.get('/api/event/queueload')
+      this.loading = true
+
+      var routeurl = '/api/event/queueload'
+      // if a start date is set, get stories whose start_date is on or after this date
+      if(this.startdate){
+          routeurl = routeurl + '/' + this.startdate
+      } else {
+          routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
+      }
+      // if a date range is set, get stories between the start date and end date
+      if(this.isEndDate){
+          routeurl = routeurl + '/' + this.enddate
+      }
+
+      this.$http.get(routeurl)
+
       .then((response) =>{
-        //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data);
-        this.$set('allitems', response.data.data)
-        this.checkOverDataFilter();
+          this.$set('allitems', response.data.data)
+          this.checkOverDataFilter()
+          this.loading = false
       }, (response) => {
-        //error callback
-        console.log("ERRORS");
+          //error callback
+          console.log("ERRORS")
       }).bind(this);
     },
     checkOverDataFilter: function() {
-      console.log('items=' + this.items)
-      // var unapprovedItems = this.allitems.filter(function(item) {
-      // 	return item.approved === 0
-      // });
-      //
-      // this.xitems = unapprovedItems;
-      //
-      //
-      // var approvedItems = this.allitems.filter(function(item) {
-      // 	return item.approved === 1
-      // });
-      //
-      // this.items = approvedItems.sort(function(a,b){
-      // 	return parseFloat(b.priority) - parseFloat(a.priority);
-      // });
 
     },
     filterItemsApproved: function(items) {
       return items.filter(function(item) {
         return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.home_priority === 0 && item.priority === 0 && item.is_promoted === 0;  // true
-
-        // return item.is_approved === 1
       });
     },
     filterItemsUnapproved: function(items) {
@@ -158,9 +188,6 @@ export default  {
         (item.is_approved === 1 && (item.home_priority > 0 || item.priority > 0 || item.is_promoted === 1)); // Approved with promotion / priority
       });
     },
-    // checkIndexWithValue: function (chitem){
-    // 	return
-    // },
 
     moveToApproved: function(changeditem){
 
@@ -171,8 +198,6 @@ export default  {
       this.updateRecord(changeditem)
     },
     moveToUnApproved: function(changeditem){
-
-      // this.xitems.pop(changeditem);
       console.log('moveToUnApproved'+ changeditem)
       changeditem.is_approved = 0;
 
@@ -180,6 +205,9 @@ export default  {
     },
     movedItemIndex: function(mid){
       return this.xitems.findIndex(item => item.id == mid)
+    },
+    onCalendarChange: function(){
+        // flatpickr directive method
     },
     updateRecord: function(item){
       var currentRecordId =  item.id;
@@ -190,95 +218,10 @@ export default  {
       } )
       .then((response) => {
         console.log('good_eventQueue'+ response)
-
-
-
-        //var movedIndex = this.movedItemIndex(movedid);
-        // this.xitems.pop(movedRecord);
-        // if (movedRecord.approved == 1) {
-        //         this.xitems.splice(movedIndex, 1);
-        //      this.items.push(movedRecord);
-        //  } else {
-        //      this.items.splice(movedIndex, 1);
-        //     this.xitems.push(movedRecord);
-        //  }
-
-        //console.log('movedIndex==='+ movedIndex)
       }, (response) => {
         console.log('bad?'+ response)
       });
     },
-    // fetchUnapprovedRecords: function(){
-    //     this.$http.get('/api/event/unapprovedItems')
-    //
-    //         .then((response) =>{
-    //             console.log('response.status=' + response.status);
-    //             console.log('response.ok=' + response.ok);
-    //             console.log('response.statusText=' + response.statusText);
-    //             console.log('response.data=' + response.data);
-    //
-    //             this.$set('unappitems', response.data.data)
-    //
-    //             this.fetchApprovedRecords();
-    //         }, (response) => {
-    //             //error callback
-    //             console.log("ERRORS");
-    //
-    //             //  this.formErrors =  response.data.error.message;
-    //
-    //         }).bind(this);
-    // },
-    // fetchApprovedRecords: function() {
-    //     this.$http.get('/api/event/approvedItems')
-    //
-    //         .then((response) =>{
-    //                 //response.status;
-    //                 console.log('response.status=' + response.status);
-    //                 console.log('response.ok=' + response.ok);
-    //                 console.log('response.statusText=' + response.statusText);
-    //                 console.log('response.data=' + response.data);
-    //                 // data = response.data;
-    //                 //
-    //                 this.$set('allitems', response.data.data)
-    //
-    //                 // this.allitems = response.data.data;
-    //                 // console.log('this.record= ' + this.record);
-    //
-    //                 this.checkOverDataFilter();
-    //             }, (response) => {
-    //                 //error callback
-    //                 console.log("ERRORS");
-    //
-    //                 //  this.formErrors =  response.data.error.message;
-    //
-    //             }).bind(this);
-    //     },
-    //
-    // fetchOtherRecords: function() {
-    //     this.$http.get('/api/event/otherItems')
-    //
-    //         .then((response) =>{
-    //                 //response.status;
-    //                 console.log('response.status=' + response.status);
-    //                 console.log('response.ok=' + response.ok);
-    //                 console.log('response.statusText=' + response.statusText);
-    //                 console.log('response.data=' + response.data);
-    //                 // data = response.data;
-    //                 //
-    //                 this.$set('otheritems', response.data.data)
-    //
-    //                 // this.allitems = response.data.data;
-    //                 // console.log('this.record= ' + this.record);
-    //
-    //                 this.checkOverDataFilter();
-    //             }, (response) => {
-    //                 //error callback
-    //                 console.log("ERRORS");
-    //
-    //                 //  this.formErrors =  response.data.error.message;
-    //
-    //             }).bind(this);
-    //         },
     checkOverData: function() {
       console.log('this.items='+ this.allitems)
       for (var i=0; i < this.allitems.length; i++ ) {
@@ -290,6 +233,13 @@ export default  {
       }
 
     },
+    toggleRange: function(){
+        if(this.isEndDate){
+            this.isEndDate = false
+        } else {
+            this.isEndDate = true
+        }
+    },
 
   },
 
@@ -297,11 +247,6 @@ export default  {
   // the `events` option simply calls `$on` for you
   // when the instance is created
   events: {
-    // 'child-msg': function (msg) {
-    //   // `this` in event callbacks are automatically bound
-    //   // to the instance that registered it
-    //   this.messages.push(msg)
-    // }
   }
 }
 </script>

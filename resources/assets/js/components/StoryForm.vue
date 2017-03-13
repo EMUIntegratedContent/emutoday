@@ -69,28 +69,6 @@
             placeholder="Author (leaving this blank will set you as the author)"
             label="name"> </v-select>
         </div>
-        <!--
-        <div v-if="needAuthor" class="form-inline author">
-          <div class="form-group">
-            <label for="author-first-name">First Name <span v-if="authorErrors.first_name" class="help-text invalid"> is Required</span></label>
-            <input v-model="author.first_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="First Name">
-          </div>
-          <div class="form-group">
-            <label for="author-last-name">Last Name</label>
-            <input v-model="author.last_name" type="text" class="form-control input-sm" id="author-last-name" placeholder="Last Name">
-          </div>
-          <div class="form-group">
-            <label for="author-email">Email</label>
-            <input v-model="author.email" type="email" class="form-control input-sm" id="author-email" placeholder="author@emich.edu">
-          </div>
-          <div class="form-group">
-            <label for="author-phone">Phone</label>
-            <input v-model="author.phone" type="phone" class="form-control input-sm" id="author-phone" placeholder="(313)-555-1212">
-          </div>
-          <div class="form-group save-author">
-            <button @click.prevent="saveAuthor" href="#" class="btn btn-primary btn-sm">{{authorBtnLabel}}</button>
-          </div>
-        -->
         </div>
       </div><!-- /.col-md-12 -->
     </div><!-- /.row -->

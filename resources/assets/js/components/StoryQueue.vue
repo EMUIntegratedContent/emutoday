@@ -1,13 +1,28 @@
 <template>
-    <div v-if="role == 'admin' || role == 'admin_super'" class="row">
-        <div class="col-xs-12 text-right">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+            <form class="form-inline">
+              <div class="form-group">
+                  <label for="start-date">Showing stories starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                  <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
+              </div>
+              <div v-if="isEndDate" class="form-group">
+                  <label for="start-date"> and </label>
+                  <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate">
+              </div>
+              <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
+              <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
+            </form>
+        </div>
+        <div v-if="role == 'admin' || role == 'admin_super'" class="col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right">
             <a class="btn btn-sm btn-default" href="/admin/archive/queue/stories"><i class="fa fa-archive"></i> Archived Stories</a>
         </div>
     </div>
+    <hr />
     <div class="row">
         <h2 v-if="loading" class="col-md-12">Loading. Please Wait...</h2>
         <div class="col-md-4">
-            <h4>Unapproved<p></p></h4>
+            <h4><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved<p></p></h4>
             <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-xs" role="group">
                     <label>Filter: </label>
@@ -32,10 +47,10 @@
                     :index="$index"
                     :is="items-unapproved">
                 </story-pod>
-        </div>
+            </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4>Approved</h4>
+        <h4><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h4>
         <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
                 <label>Filter: </label>
@@ -61,12 +76,9 @@
                 :is="items-approved">
             </story-pod>
         </div>
-
-
-
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4>Live <small>Approved and Start Date has passed</small></h4>
+        <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has passed</small></h4>
         <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
                 <label>Filter: </label>
@@ -108,7 +120,6 @@
     }
     .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
         color: #ffffff;
-
     }
 
     span.item-type-icon:active, span.item-type-icon.active{
@@ -126,6 +137,11 @@
         margin-bottom: 4px;
 
     }
+    #rangetoggle{
+        color: #FF851B;
+        margin-left: 5px;
+        border-bottom: 2px #FF851B dotted;
+    }
 </style>
 <script>
 
@@ -133,17 +149,21 @@ import moment from 'moment'
 import StoryPod from './StoryPod.vue'
 import IconToggleBtn from './IconToggleBtn.vue'
 import iconradio from '../directives/iconradio.js'
-// import EventViewContent from './EventViewContent.vue'
+import Pagination from './Pagination.vue'
+import flatpickr from "../directives/flatpickr.js"
+
 export default  {
-    directives: {iconradio},
-    components: {StoryPod,IconToggleBtn},
+    directives: {iconradio, flatpickr},
+    components: {StoryPod,IconToggleBtn,Pagination},
     props: ['stypes','stype','sroute','qtype','gtype','cuser','role'],
     created(){
-        // this.currentDate = moment().format();
+
     },
     ready() {
-        this.loading = true;
-        this.fetchAllRecords();
+        let twoWeeksEarlier = moment().subtract(2, 'w')
+        this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
+        this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+        this.fetchAllRecords()
     },
     data: function() {
         return {
@@ -165,10 +185,13 @@ export default  {
             items_live: [],
             currentTypesFilter: [],
             loading: true,
+            eventMsg: null,
+            startdate: null,
+            enddate: null,
+            isEndDate: false,
         }
     },
     computed: {
-
         checkRoleAndQueueType:function() {
             if (this.role === 'admin' || this.role === 'admin_super'){
                 if(this.qtype === 'queueall'){
@@ -204,7 +227,6 @@ export default  {
                     shortname: 'x'
                     }
                 ]
-
             } else {
                 this.s_types.push({
                     name: 'all',
@@ -212,9 +234,6 @@ export default  {
                 })
                 return this.s_types;
             }
-
-
-
         },
         itemsApproved:function() {
             return  this.filterItemsApproved(this.allitems);
@@ -226,21 +245,24 @@ export default  {
             return  this.filterItemsLive(this.allitems);
         }
     },
-
-
     methods : {
+        toggleRange: function(){
+            if(this.isEndDate){
+                this.isEndDate = false
+            } else {
+                this.isEndDate = true
+            }
+        },
         isString: function(val){
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function (value) {
-            console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
+            //console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.storytype;
             }
-
-            // return  moment(value).format("ddd")
         },
         changeFilterByReadyStatus: function(evnt){
             if (this.readyStatus == ''){
@@ -250,7 +272,7 @@ export default  {
             }
         },
         filterUnapprovedByStoryType: function (value) {
-            console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
+            //console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -258,7 +280,7 @@ export default  {
             }
         },
         filterApprovedByStoryType: function (value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
+            //console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -267,12 +289,16 @@ export default  {
         },
 
         filterLiveByStoryType: function (value) {
-            console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
+            //console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
             if (this.items_live_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
                 return value.story_type === this.items_live_filter_storytype;
             }
+        },
+
+        onCalendarChange: function(){
+            // flatpickr directive method
         },
 
         typeIcon: function(sname) {
@@ -300,9 +326,7 @@ export default  {
                 faicon = 'fa-file-o'
                 break
             }
-
             return 'fa '+ faicon + ' fa-fw'
-
         },
 
         movedItemIndex: function(mid) {
@@ -313,8 +337,7 @@ export default  {
             let movedRecord = changeditem;
             let movedIndex = this.movedItemIndex(movedid);
 
-            // var movedIndex = this.items_unapproved.findIndex(item => item.id == mid)
-            console.log('movedid'+movedid +  'movedIndex'+movedIndex)
+            //console.log('movedid'+movedid +  'movedIndex'+movedIndex)
             if (movedRecord.is_approved === 1) {
                 this.items_unapproved.splice(movedIndex, 1);
                 this.items_approved.push(movedRecord);
@@ -324,9 +347,6 @@ export default  {
             }
         },
         moveToUnApproved: function(changeditem){
-
-            // this.xitems.pop(changeditem);
-            console.log('moveToUnApproved'+ changeditem)
             changeditem.is_approved = 0;
 
             this.updateRecord(changeditem)
@@ -358,15 +378,25 @@ export default  {
                 method: 'PATCH'
             } )
             .then((response) => {
-                console.log('good?'+ response)
-
             }, (response) => {
-                console.log('bad?'+ response)
             });
-    },
+        },
 
         fetchAllRecords: function() {
-            let routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
+            this.loading = true
+
+            var routeurl = '/api/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
+            // if a start date is set, get stories whose start_date is on or after this date
+            if(this.startdate){
+                routeurl = routeurl + '/' + this.startdate
+            } else {
+                routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
+            }
+
+            // if a date range is set, get stories between the start date and end date
+            if(this.isEndDate){
+                routeurl = routeurl + '/' + this.enddate
+            }
 
             this.$http.get(routeurl)
 
@@ -383,7 +413,7 @@ export default  {
         byObject: function(array, options) {
             var entry, found, i, key, len, result, value;
             result = [];
-            console.log(options);
+
             if (Object.keys(options).length === 0) {
               return array;
             }
@@ -392,11 +422,11 @@ export default  {
               found = true;
               for (key in options) {
                 value = options[key];
-                console.log('options[key]=' + options[key])
+
                 if(value === ''){
                     break;
                 }
-                console.log('entry[key]= ' + entry[key]);
+
                 if (entry[key] !== value) {
                   found = false;
                   break;
@@ -406,7 +436,6 @@ export default  {
                 result.push(entry);
               }
             }
-            console.log(result);
             return result;
           }
     },

@@ -17,6 +17,6 @@ new Vue({
                 }
         },
     ready() {
-      console.log('new Vue StoryQueue ready');
+       console.log('new Vue StoryQueue ready');
     }
 });
