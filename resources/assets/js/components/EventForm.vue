@@ -193,7 +193,7 @@
         <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
         <div class="input-group input-group-flat">
           <span :class="inputGroupLabel">http://</span>
-          <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text" maxlength="80">
+          <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text" maxlength="255">
         </div>
         <p v-if="formErrors.related_link_1" class="help-text invalid">Please make sure url is properly formed.</p>
       </div>
@@ -226,7 +226,7 @@
           <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
           <div class="input-group input-group-flat">
             <span :class="inputGroupLabel">http://</span>
-            <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text" maxlength="80">
+            <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text" maxlength="255">
           </div>
           <p v-if="formErrors.related_link_2" class="help-text invalid">Please make sure url is properly formed.</p>
         </div>
@@ -260,7 +260,7 @@
           <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
           <div class="input-group input-group-flat">
             <span :class="inputGroupLabel">http://</span>
-            <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text" maxlength="80">
+            <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text" maxlength="255">
           </div>
           <p v-if="formErrors.related_link_3" class="help-text invalid">Please make sure url is properly formed.</p>
         </div>
@@ -656,7 +656,7 @@ module.exports  = {
     this.enddatePicker.clear();
     this.starttimePicker.clear();
     this.endtimePicker.clear();
-    
+
   },
 
   computed: {
