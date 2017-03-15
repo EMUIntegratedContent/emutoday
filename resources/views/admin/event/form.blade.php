@@ -39,11 +39,6 @@
           <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
         </event-form>
       </div><!-- /#vue-event-form -->
-      {{-- <div id="event-form-vue">
-        <event-form authorid="{{$currentUser->id}}" eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
-        </event-form>
-      </div><!-- /#vue-event-form --> --}}
-
     </div><!-- /.box-body -->
   </div><!-- /.box -->
 </div><!-- /.col-md-6 -->

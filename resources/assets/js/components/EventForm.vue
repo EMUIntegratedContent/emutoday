@@ -9,6 +9,9 @@
         <div v-show="formMessage.isErr"  :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
+        <div v-show="this.record.is_canceled == 1" :class="calloutFail">
+          <h5>This event has been canceled.</h5>
+        </div>
         <div class="form-group">
           <label>Title <span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="title-helptext">Please enter a title ({{titleChars}} characters left)</p>
@@ -392,20 +395,6 @@
 </div><!-- /.row -->
 <div class="row">
   <div :class="md12col">
-
-    <!-- <div :class="formGroup">
-    <label>Group Website Calendar <p class="help-text" id="minicalendar-helptext">If your groups website has a calendar that is fed from this one, and you would like this event to show up on it, please select it from the list below:</p>
-    <v-select
-    :debounce="250"
-    :value.sync="record.minicalendars"
-    :on-search="fetchForSelectMiniCalendarList"
-    :multiple="true"
-    :options="minicals"
-    placeholder="Select a minicalendar..."
-    label="calendar">
-  </v-select>
-</label>
-</div> -->
 </div><!-- /.md12col -->
 
 <div :class="md12col">
@@ -417,15 +406,6 @@
   label="calendar">
 </v-select>
 
-<!-- <div :class="formGroup">
-<label>Group Website Calendar <p class="help-text" id="minicalendar-helptext">If your groups website has a calendar that is fed from this one, and you would like this event to show up on it, please select it from the list below:</p>
-<select v-model="record.mini_calendar" id="mini_calendar" v-myselect="mini_calendar">
-<option v-for="minicalendar in minicalendars" :value="minicalendar.id">
-{{minicalendar.calendar}}
-</option>
-</select>
-</label>
-</div> -->
 </div><!-- /.md12col -->
 </div><!-- /.row -->
 <div class="row">
@@ -434,6 +414,7 @@
       <div v-bind:class="formGroup">
         <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
         <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based off this information</button>
+        <button v-if="recordexists && isAdmin" id="btn-cancel" v-on:click="cancelEvent" type="submit" v-bind:class="btnPrimary">{{ cancelStatus }}</button>
         <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Event</button>
       </div>
     </form>
@@ -449,24 +430,12 @@ label {
   margin-top: 3px;
   margin-bottom: 3px;
   display: block;
-  /*margin-bottom: 1.5em;*/
 }
 
 label > span {
   display: inline-block;
-  /*width: 8em;*/
   vertical-align: top;
 }
-/*input[type='text'], [type='password'],
-[type='date'], [type='datetime'],
-[type='datetime-local'], [type='month'],
-[type='week'], [type='email'],
-[type='number'], [type='search'],
-[type='tel'], [type='time'],
-[type='url'], [type='color'],
-textarea {
-marging-bottom: 0;
-}*/
 
 .input-group input[type='text'] {
   marging-bottom: 0;
@@ -563,12 +532,6 @@ module.exports  = {
         regDateMin: '',
         regDateDefault: ''
       },
-      // linkText1: '',
-      // linkUrl1: '',
-      // linkText2: '',
-      // linkUrl2: '',
-      // linkText3: '',
-      // linkUrl3:'',
       startdatePicker:null,
       enddatePicker:null,
       starttimePicker:null,
@@ -600,9 +563,6 @@ module.exports  = {
       building_in: [],
       building: null,
       buildings: [],
-      // newbuilding: '',
-      //
-      // zbuildings: [],
       zcategories: [],
       zcats: [],
       categories: {},
@@ -617,7 +577,8 @@ module.exports  = {
         description: '',
         mini_calendar: '',
         building: '',
-        categories:[]
+        categories:[],
+        is_canceled: 0,
       },
       response: {
 
@@ -715,10 +676,9 @@ module.exports  = {
         room = ''
       }
       return bldg + room;
-      // let  buildingChoice = 	this.record.building
-      // let room = (this.record.room)?' - Room:' + this.record.room:'';
-      // return this.record.building+ room;
-      // return this.zbuilding[0] + room
+    },
+    cancelStatus: function(){
+      return (this.record.is_canceled == 1)? 'Uncancel Event':'Cancel Event'
     },
     isOnCampus: function() {
       return this.record.on_campus == 1 ? true:false;
@@ -727,34 +687,26 @@ module.exports  = {
       if(this.record.free == 1 ) {
         return '0.00';
       } else {
-        // this.record.cost = '';
         return '';
       }
-      // return this.record.free == 1 ? false:true;
     },
     hasCost: function() {
       if(this.record.free == 1 ) {
         this.record.cost = '0.00';
         return false;
       } else {
-        // this.record.cost = '';
         return true;
       }
-      // return this.record.free == 1 ? false:true;
     },
     titleChars: function() {
       var str = this.record.title;
-      // console.log(str.length);
       var cclength = str.length;
       return this.totalChars.title - cclength;
-      // this.totalChars.title - (this.record.title).length
     },
     descriptionChars: function() {
       var str = this.record.description;
-      // console.log(str.length);
       var cclength = str.length;
       return this.totalChars.description - cclength;
-      // this.totalChars.title - (this.record.title).length
     },
     hasStartTime: function() {
       return this.record.all_day == 1? false : true;
@@ -762,28 +714,14 @@ module.exports  = {
     hasEndTime: function() {
       return (this.record.all_day == 1 || this.record.no_end_time == 1)?false : true;
     },
-    // relatedLink1: function() {
-    //   if (this.record.related_link_1 || this.record.related_link_1_txt) {
-    //     return this.record.related_link_1_txt
-    //   }
-    // },
-    // relatedLink2: function() {
-    //   if (this.record.related_link_2 || this.record.related_link_2) {
-    //     return this.record.related_link_2_txt
-    //   }
-    // },
-    // relatedLink3: function() {
-    //   if (this.record.related_link_3 || this.record.related_link_3) {
-    //     return this.record.related_link_3_txt
-    //   }
-    // },
-
+    isAdmin: function(){
+        return window.location.href.indexOf("admin") > -1;
+    }
   },
   methods: {
     refreshUserEventTable: function(){
       $.get('/calendar/user/events', function(data){
         data = $.parseJSON(data);
-        // console.log(data.content);
         $('#user-events-tables').html(data);
       });
     },
@@ -791,10 +729,6 @@ module.exports  = {
     fetchMiniCalsList: function() {
       this.$http.get('/api/minicalslist')
       .then((response) =>{
-        //   let taglistraw = response.data;
-        //   let taglistformat = this.foreachTagListRaw(response.data);
-
-
         this.$set('minicalslist', response.data)
       }, (response) => {
         //error callback
@@ -1032,8 +966,34 @@ module.exports  = {
       this.submitForm(e);
     },
 
+    cancelEvent: function(e){
+        e.preventDefault();
+        this.formMessage.isOk = false;
+        this.formMessage.isErr = false;
+
+        if(confirm('Would you like to cancel this Event')==true){
+          $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+          this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+          this.$http.patch('/api/event/'+tempid+'/cancel')
+
+          .then((response) =>{
+              if(this.record.is_canceled == 0){
+                  this.record.is_canceled = 1
+              } else {
+                  this.record.is_canceled = 0
+              }
+
+              this.formMessage.msg = "Event's status has been changed.";
+              this.formMessage.isOk = response.ok;
+          }, (response) => {
+            console.log('Error: '+JSON.stringify(response))
+          }).bind(this);
+          this.refreshUserEventTable();
+        }
+    },
+
     submitForm: function(e) {
-      //  console.log('this.eventform=' + this.eventform.$valid);
       e.preventDefault();
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
@@ -1050,11 +1010,6 @@ module.exports  = {
         this.record.building_id = null;
         this.record.room = null;
       }
-      // this.record.location = (this.on_campus)?this.computedLocation: this.record.location;
-      // this.record.categories = this.zcategories;
-      // console.log("cats="+ this.record.categories);
-      //
-      //
       this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
       this.record.categories = this.record.eventcategories;
 
@@ -1062,9 +1017,6 @@ module.exports  = {
       let route =  (this.recordexists) ? '/api/event/' + this.recordid : '/api/event';
 
       this.$http[method](route, this.record)
-
-      // this.$http.post('/api/story', this.record)
-      // this.$http.post('/api/event', this.record)
 
       .then((response) =>{
         response.status;
@@ -1091,7 +1043,6 @@ module.exports  = {
 
         console.log(response.data.error.message);
         this.formErrors = response.data.error.message;
-        // console.log(response.data.error.message);
       }).bind(this);
       this.record.start_time= "";
       this.record.end_time= "";
