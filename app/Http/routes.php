@@ -309,7 +309,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('{qtype}/{gtype}/{stype}/{story}', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
     });
 
-    Route::get('/sitemap', function()
-    {
-       return Response::view('sitemap')->header('Content-Type', 'application/xml');
-    });
+    // Route::get('/sitemap', function()
+    // {
+    //    return Response::view('sitemap')->header('Content-Type', 'application/xml');
+    // });
