@@ -16,7 +16,7 @@
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
         "barryvdh/laravel-debugbar": "^2.2",
- 	"subfission/cas": "dev-master",
+ 	    "subfission/cas": "dev-master",
         "google/apiclient": "dev-master",
         "elasticsearch/elasticsearch": "~2.0",
         "barryvdh/laravel-cors": "^0.8.2"

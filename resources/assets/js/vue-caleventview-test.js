@@ -7,12 +7,12 @@ var VueRouter = require('vue-router');
 Vue.use(VueRouter);
 
 
-import EventView from './components/EventView.vue';
+import EventViewTest from './components/EventViewTest.vue';
 
 new Vue({
-    el: '#vue-caleventview',
+    el: '#vue-caleventview-test',
 
-    components: {EventView},
+    components: {EventViewTest},
 
     ready() {
       // alert('vue ready');

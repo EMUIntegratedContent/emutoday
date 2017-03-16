@@ -10,7 +10,7 @@
       </div>
       <div id="featured-text" class="large-5 medium-12 small-12 columns">
         <h3>{{$heroImg->title}}</h3>
-        <p>{{$heroImg->teaser}}</p>
+        <p>{!! $heroImg->teaser !!}</p>
         @if($heroImg->story->tags()->first() && $heroImg->link)
           @if($heroImg->story->tags()->first()->name == 'video')
             <p class="button-group"><a href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}" aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}" class="button readmore">{{$heroImg->moretext}}&nbsp;<i class="fa fa-video-camera"></i></a></p>

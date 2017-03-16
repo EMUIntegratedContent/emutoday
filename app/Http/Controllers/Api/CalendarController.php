@@ -203,22 +203,6 @@ class CalendarController extends ApiController
                           'monthVarWord'=> $monthVarWord,
                           'monthArray'=> $calDaysArray,
                           'dayInMonth' => $dayInMonth];
-    //  $carbondate = new Carbon();
-      // if ($mondifier == 'all') {
-      //     $events = Event::all();
-      //   } else {
-        //   $year = 2016;
-        //
-        //   $carbondatestart = Carbon::create($year,1,1,12);
-        //
-        //   $carbondateend = Carbon::create($year,1,1,12)->addYear();
-        //     $events = Event::where([
-        //           ['start_date', '>', $carbondatestart],
-        //           ['start_date', '<', $carbondateend],
-        //         ])->get();
-        // // }
-        //
-        //   return $this->respond($events);
     }
 
     /**

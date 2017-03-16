@@ -10,12 +10,12 @@
         <div v-for="eitem in elist">
           <div class="event-day">
             <h4>{{$key | titleDateLongWithYear }}</h4>
-            <event-view-single
+            <event-view-single-copy
             v-for="item in eitem"
             :item="item"
             :index="$index"
             :targeteventid="eventid">
-          </event-view-single>
+            </event-view-single-copy>
         </div>
       </div>
     </div>
@@ -67,10 +67,10 @@ Vue.use(VueRouter);
 
 import moment from 'moment'
 import EventViewSingle from './EventViewSingle.vue'
-import EventViewSingleCopy from './EventViewSingle.vue'
+import EventViewSingleCopy from './EventViewSingleCopy.vue'
 
 module.exports  = {
-  components: {EventViewSingle, EventViewSingle},
+  components: {EventViewSingle, EventViewSingleCopy},
   props:  {
     elist: {},
     eventlist: [],

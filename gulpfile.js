@@ -87,6 +87,7 @@ elixir(function(mix) {
                  */
 
     mix.browserify('vue-caleventview.js', 'public/js/vue-caleventview.js');
+    mix.browserify('vue-caleventview-test.js', 'public/js/vue-caleventview-test.js');
     mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
     mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');
@@ -165,7 +166,6 @@ elixir(function(mix) {
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
         mix.browserify('vue-archive-queue.js', 'public/js/vue-archive-queue.js');
-        //mix.browserify('foundation.min.js', 'public/js/foundation.min.js');
         mix.browserify('app.js', 'public/js/app.js');
 
 });
