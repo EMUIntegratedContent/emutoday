@@ -19540,6 +19540,7 @@ module.exports = {
   },
   methods: {
     toggleBody: function toggleBody(ev) {
+      addeventatc.refresh();
       if (this.showBody == false) {
         this.showBody = true;
       } else {

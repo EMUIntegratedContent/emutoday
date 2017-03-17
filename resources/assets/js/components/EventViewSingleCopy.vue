@@ -176,6 +176,7 @@ module.exports  = {
   },
   methods: {
     toggleBody: function(ev) {
+        addeventatc.refresh();
       if(this.showBody == false) {
         this.showBody = true;
       } else {
