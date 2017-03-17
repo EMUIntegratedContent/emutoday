@@ -19505,6 +19505,7 @@ module.exports = {
     } else {
       this.showBody = false;
     }
+    //addeventatc.refresh();
   },
 
   computed: {
@@ -19540,13 +19541,16 @@ module.exports = {
   },
   methods: {
     toggleBody: function toggleBody(ev) {
-      addeventatc.refresh();
+
       if (this.showBody == false) {
         this.showBody = true;
       } else {
         this.showBody = false;
       }
       console.log('toggleBody' + this.showBody);
+      setTimeout(function () {
+        addeventatc.refresh();
+      }, 300);
     },
     sortKeyInt: function sortKeyInt($key) {
       return parseInt($key);
@@ -19556,6 +19560,24 @@ module.exports = {
     reformatDate: function reformatDate(value) {
       var arr = value.split('-');
       return arr[1] + '/' + arr[2] + '/' + arr[0];
+    },
+    calendarDate: function calendarDate(value) {
+      var arr = value.split(' ');
+      return arr[0];
+    },
+    amPm: function amPm(value) {
+      if (value) {
+        var arr = value.split(' ');
+
+        if (arr[1] == 'a.m.') {
+          return arr[0] + ' AM';
+        }
+        if (arr[1] == 'p.m.') {
+          return arr[0] + ' PM';
+        }
+        return value;
+      }
+      return;
     },
     yesNo: function yesNo(value) {
       return value == true ? 'Yes' : 'No';
@@ -19569,7 +19591,7 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">Cost: {{item.cost | currency }}</p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\">For tickets, go to <a href=\"{{item.ticket_details_online | hasHttp}}\">{{item.ticket_details_online}}</a>.</p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n\n    <!--<form method=\"POST\" action=\"api/calendar/addevent\">\n      <input type=\"hidden\" name=\"eventId\" value=\"{{item.id}}\" />\n      <input type=\"submit\" value=\"+ Add to Calendar\" />\n    </form>-->\n\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">03/30/2017 09:00 AM</span>\n          <span class=\"end\">03/30/2017 11:00 AM</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">Summary of the event</span>\n          <span class=\"description\">Description of the event<br>Example of a new line</span>\n          <span class=\"location\">Location of the event</span>\n          <span class=\"organizer\">Organizer</span>\n          <span class=\"organizer_email\">Organizer e-mail</span>\n          <span class=\"facebook_event\">https://www.facebook.com/events/703782616363133</span>\n          <span class=\"all_day_event\">false</span>\n          <span class=\"date_format\">MM/DD/YYYY</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div>\n\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <!-- AddEvent plugin script -->\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br><br>\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">Cost: {{item.cost | currency }}</p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\">For tickets, go to <a href=\"{{item.ticket_details_online | hasHttp}}\">{{item.ticket_details_online}}</a>.</p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n\n    <!--<form method=\"POST\" action=\"api/calendar/addevent\">\n      <input type=\"hidden\" name=\"eventId\" value=\"{{item.id}}\" />\n      <input type=\"submit\" value=\"+ Add to Calendar\" />\n    </form>-->\n\n  </div>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
