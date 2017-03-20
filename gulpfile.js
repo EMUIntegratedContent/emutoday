@@ -87,7 +87,6 @@ elixir(function(mix) {
                  */
 
     mix.browserify('vue-caleventview.js', 'public/js/vue-caleventview.js');
-    mix.browserify('vue-caleventview-test.js', 'public/js/vue-caleventview-test.js');
     mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
     mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');

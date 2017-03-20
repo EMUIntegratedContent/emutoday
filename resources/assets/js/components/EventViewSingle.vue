@@ -20,6 +20,22 @@
     </template>
 
     <div class="event-item" v-if="showBody" transition="expand">
+        <!-- AddEvent plugin script -->
+        <div title="Add to Calendar" class="addeventatc">
+            Add to Calendar
+            <span class="start">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>
+            <span class="end">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>
+            <span class="timezone">America/Detroit</span>
+            <span class="title">{{item.title}}</span>
+            <span class="description">{{item.description}}</span>
+            <span class="location">{{item.location}}</span>
+            <span class="organizer">{{item.contact_person}}</span>
+            <span class="organizer_email">{{item.contact_email}}</span>
+            <span class="all_day_event">{{ item.all_day ? true : false }}</span>
+            <span class="date_format">YYYY-MM-DD</span>
+            <span class="client">atdkyfGQrzEzDlSNTmQU26933</span>
+        </div><br /><br />
+
       <p>{{item.description}}</p>
       <template v-if="item.contact_person || item.contact_person || item.contact_person">
         <p>Contact:</p>
@@ -56,12 +72,6 @@
         <p v-if="item.ticket_details_office">For tickets, visit {{item.ticket_details_office}}.</p>
         <p v-if="item.ticket_details_other">Or {{item.ticket_details_other}}</p>
       </template>
-
-      <!--<form method="POST" action="api/calendar/addevent">
-        <input type="hidden" name="eventId" value="{{item.id}}" />
-        <input type="submit" value="+ Add to Calendar" />
-      </form>-->
-
     </div>
   </div>
 
@@ -124,6 +134,8 @@ module.exports  = {
     } else {
       this.showBody = false;
     }
+    console.log(this.item)
+    setTimeout(function(){addeventatc.refresh();}, 300);
   },
   computed: {
 
@@ -160,12 +172,14 @@ module.exports  = {
   },
   methods: {
     toggleBody: function(ev) {
+
       if(this.showBody == false) {
         this.showBody = true;
       } else {
         this.showBody = false;
       }
       console.log('toggleBody' + this.showBody)
+      setTimeout(function(){addeventatc.refresh();}, 300);
     },
     sortKeyInt: function ($key) {
       return parseInt($key);
@@ -175,6 +189,24 @@ module.exports  = {
     reformatDate: function (value) {
       var arr = value.split('-');
       return arr[1] + '/' + arr[2] + '/' + arr[0];
+    },
+    calendarDate: function (value) {
+      var arr = value.split(' ');
+      return arr[0]
+    },
+    amPm: function (value) {
+        if(value){
+            var arr = value.split(' ');
+
+            if(arr[1] == 'a.m.'){
+                return arr[0] + ' AM'
+            }
+            if(arr[1] == 'p.m.'){
+                return arr[0] + ' PM'
+            }
+            return value
+        }
+        return
     },
     yesNo: function(value) {
       return (value == true) ? 'Yes' : 'No';
