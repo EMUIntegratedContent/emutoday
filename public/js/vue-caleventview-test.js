@@ -19505,7 +19505,9 @@ module.exports = {
     } else {
       this.showBody = false;
     }
-    //addeventatc.refresh();
+    setTimeout(function () {
+      addeventatc.refresh();
+    }, 300);
   },
 
   computed: {
