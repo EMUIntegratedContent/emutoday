@@ -147,7 +147,7 @@ class Event extends Model
   {
     if ($value != NULL){
         $formatted = Carbon::parse($value)->format('g:i a');
-        return str_replace(array('am','pm'), array('a.m','p.m.'), $formatted);
+        return str_replace(array('am','pm'), array('a.m.','p.m.'), $formatted);
     } else {
       return NULL;
     }
