@@ -19322,13 +19322,7 @@ exports.default = {
   },
   // the `events` option simply calls `$on` for you
   // when the instance is created
-  events: {
-    // 'child-msg': function (msg) {
-    //   // `this` in event callbacks are automatically bound
-    //   // to the instance that registered it
-    //   this.messages.push(msg)
-    // }
-  }
+  events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-6520d5b8=\"\">\n    <div class=\"calendar-bar row\" _v-6520d5b8=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-6520d5b8=\"\">\n      <h4 _v-6520d5b8=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-6520d5b8=\"\">\n          <h4 _v-6520d5b8=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-6520d5b8=\"\">\n  <div id=\"calendar-content-bar\" _v-6520d5b8=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-6520d5b8=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-6520d5b8=\"\"></event-view-content>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-6520d5b8=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-6520d5b8=\"\"></event-view-side-bar>\n    </div>\n  </div>\n</div>\n"

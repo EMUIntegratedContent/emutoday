@@ -167,9 +167,6 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::group(['prefix' => 'auth' ], function()
     {
-      // Route::post('/emichlogin', function(){
-      //   return 'login';
-      // });
       Route::post('/emichlogin', ['as' => 'emich-login', 'uses' => 'Auth\AuthController@guest']);
     });
 
@@ -308,8 +305,3 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('{qtype}/{gtype}/{stype}/{story}', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
     });
-
-    // Route::get('/sitemap', function()
-    // {
-    //    return Response::view('sitemap')->header('Content-Type', 'application/xml');
-    // });

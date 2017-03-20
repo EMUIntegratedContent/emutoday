@@ -22,7 +22,6 @@ class CalendarController extends Controller
         $cd;
         $eventid = $id;
         if ($year == null) {
-            // $mondifier = "all";
             $cd = Carbon::now();
         } else {
             if ($month == null) {
@@ -36,8 +35,6 @@ class CalendarController extends Controller
             }
 
         }
-
-        // $cd = Carbon::now();
         $varYearUnit =   $cd->year;
         $varMonthUnit =   $cd->month;
         $varDayUnit =   $cd->day;
@@ -74,9 +71,8 @@ class CalendarController extends Controller
         $groupedevents = $events_this_month->groupBy(function ($item, $key) {
             $startdate = $item['start_date'];
             return $startdate->day;
-            //  return substr($item['account_id'], -3);
         });
-        // $featuredevents =  Event::where('mediafile_id', '>', 0)->orderBy('priority', 'dsc')->get();
+
         $featuredevents =  Event::where([
             ['is_approved', 1],
             ['mediafile_id', '>', 0],
@@ -121,7 +117,6 @@ class CalendarController extends Controller
 
             }
 
-            // $cd = Carbon::now();
             $varYearUnit =   $cd->year;
             $varMonthUnit =   $cd->month;
             $varDayUnit =   $cd->day;
@@ -158,9 +153,8 @@ class CalendarController extends Controller
             $groupedevents = $events_this_month->groupBy(function ($item, $key) {
                 $startdate = $item['start_date'];
                 return $startdate->day;
-                //  return substr($item['account_id'], -3);
             });
-            // $featuredevents =  Event::where('mediafile_id', '>', 0)->orderBy('priority', 'dsc')->get();
+
             $featuredevents =  Event::where([
                 ['is_approved', 1],
                 ['mediafile_id', '>', 0],

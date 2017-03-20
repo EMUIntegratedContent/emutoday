@@ -21256,44 +21256,34 @@ if (module.hot) {(function () {  module.hot.accept()
 'use strict';
 
 module.exports = {
-  twoWay: true,
-  priority: 1000,
-  params: ['content', 'type'],
-  bind: function bind() {
+    twoWay: true,
+    priority: 1000,
+    params: ['content', 'type'],
+    bind: function bind() {
 
-    console.log(this.setupEditor);
-    this.vm.$nextTick(this.setupEditor.bind(this));
-  },
-  setupEditor: function setUpEditor() {
-    var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
-    var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
-    var self = this;
-    CKEDITOR.replace(this.el.id, {
-      customConfig: editorConfig
-      //  customConfig: '/themes/ckeditor_config_admin.js'
-    });
-    //      filebrowserWindowFeatures: 'resizable=no',
-    //      filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
-    //      filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
-    //      filebrowserUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-    //      filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
-    //  });
+        console.log(this.setupEditor);
+        this.vm.$nextTick(this.setupEditor.bind(this));
+    },
+    setupEditor: function setUpEditor() {
+        var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
+        var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
+        var self = this;
+        CKEDITOR.replace(this.el.id, {
+            customConfig: editorConfig
+        });
 
-    CKEDITOR.instances[this.el.id].setData(this.params.content);
-    CKEDITOR.instances[this.el.id].on('change', function () {
-      self.set(CKEDITOR.instances[self.el.id].getData());
-    });
-  },
-  update: function update(value) {
-    //    $(this.el).val(value).trigger('change')
-    if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
-    //    CKEDITOR.instances[this.el.id].setData(value);
-    this.vm.onContentChange();
-  },
-  unbind: function unbind() {
-    CKEDITOR.instances[this.el.id].destroy();
-    //    $(this.el).off().select2('destroy')
-  }
+        CKEDITOR.instances[this.el.id].setData(this.params.content);
+        CKEDITOR.instances[this.el.id].on('change', function () {
+            self.set(CKEDITOR.instances[self.el.id].getData());
+        });
+    },
+    update: function update(value) {
+        if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
+        this.vm.onContentChange();
+    },
+    unbind: function unbind() {
+        CKEDITOR.instances[this.el.id].destroy();
+    }
 };
 
 },{}],113:[function(require,module,exports){

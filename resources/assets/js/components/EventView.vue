@@ -78,11 +78,6 @@
         // the `events` option simply calls `$on` for you
         // when the instance is created
         events: {
-          // 'child-msg': function (msg) {
-          //   // `this` in event callbacks are automatically bound
-          //   // to the instance that registered it
-          //   this.messages.push(msg)
-          // }
         }
     }
 </script>

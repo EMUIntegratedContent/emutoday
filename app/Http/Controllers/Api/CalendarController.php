@@ -46,13 +46,8 @@ class CalendarController extends ApiController
       }
 
       if ($mondifier == 'YMD') {
-        // $variations = Variation::where('created_at', '<' , $valuation->updated_at->toDateTimeString())->get();
-
         $cdate_start = Carbon::create($year,$month,$day)->startOfDay();
         $cdate_end = Carbon::create($year,$month,$day)->addDays(7)->endOfDay();
-      //  dd($cdatePlusOne);
-
-
       } else {
         $cdate_start = Carbon::now()->startOfDay();
         $cdate_end = Carbon::now()->addDays(7)->endOfDay();
@@ -63,7 +58,6 @@ class CalendarController extends ApiController
           ['start_date', '<=', $cdate_end],
           ['is_approved', '1']
       ])->orderBy('start_date')->orderBy('start_time')->get();
-
 
       // it would be better just to not query the event in the first place...
       if (!empty($id)){ // if id is given.
@@ -89,9 +83,8 @@ class CalendarController extends ApiController
       }
 
       $groupedByDay = $eventlist->groupBy(function ($date){
-    return Carbon::parse($date->start_date)->format('Y-n-j');                // return Carbon::parse($date->start_date)->timestamp;
+    return Carbon::parse($date->start_date)->format('Y-n-j');
               });
-              // dd($groupedByDay);
         $yearVar = $cdate_start->year;
         $monthVarWord = $cdate_start->format('F');
         $monthVar =  $cdate_start->month;
@@ -129,12 +122,8 @@ class CalendarController extends ApiController
 
       }
 
-      // dd($mondifier);
-
-
       $cdate = Carbon::now()->subYear();
       $cdate_first = $cdate->firstOfMonth();
-
 
       $yearVar =  $cdate->year;
       $monthVar= $cdate->month;
@@ -166,9 +155,6 @@ class CalendarController extends ApiController
                 return Carbon::parse($date->start_date)->format('j');
               });
 
-
-
-
         $keyed = $eventlist->keyBy(function ($item) {
           return Carbon::parse($item['start_date'])->day;
         });
@@ -179,7 +165,6 @@ class CalendarController extends ApiController
         $dayObject = collect(['day' => 'x'.$dayCounter , 'hasevents'=> 'no']);
         $calDaysArray->push($dayObject);
 
-        //  = array_add($monthArray,$dayCounter, $dayObject);
         $dayCounter++;
       }
 
@@ -188,10 +173,8 @@ class CalendarController extends ApiController
         $dayObject = collect(['day' => $x, 'hasevents'=> $hasevent]);
         $calDaysArray->push($dayObject);
 
-        // $monthArray = array_add($monthArray,$dayCounter, $dayObject);
         $dayCounter++;
       }
-
       $totalDaysInArray = count($calDaysArray);
 
       return [ 'groupedByDay' => $groupedByDay,
@@ -244,9 +227,7 @@ class CalendarController extends ApiController
             }
 
         }
-
       }
-
 
       $selectedYear = $selectedDate->year;
       $selectedMonth = $selectedDate->month;
@@ -280,7 +261,6 @@ class CalendarController extends ApiController
         });
         $uniqueByDay = $keyed->keys();
 
-
         $eventlistcount = $eventsInMonth->count();
         $calDaysArray = collect();
       $dayCounter = 0;
@@ -289,19 +269,16 @@ class CalendarController extends ApiController
         $calDaysArray->push($dayObject);
         $dayCounter++;
       }
-      // dd($uniqueByDay);
 
       for ($x = 1; $x <= $selectedMonth_daysInMonth; $x++){
         $hasevent = $uniqueByDay->contains($x)?'yes-events':'no-events';
         $dayObject = collect(['day' => $x, 'hasevents'=> $hasevent]);
         $calDaysArray->push($dayObject);
 
-        // $monthArray = array_add($monthArray,$dayCounter, $dayObject);
         $dayCounter++;
       }
 
       $totalDaysInArray = count($calDaysArray);
-
 
       return    [
           'uniqueByDay'         => $uniqueByDay,

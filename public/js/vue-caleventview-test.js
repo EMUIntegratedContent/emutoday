@@ -19505,6 +19505,7 @@ module.exports = {
     } else {
       this.showBody = false;
     }
+    console.log(this.item);
     setTimeout(function () {
       addeventatc.refresh();
     }, 300);
@@ -19571,10 +19572,10 @@ module.exports = {
       if (value) {
         var arr = value.split(' ');
 
-        if (arr[1] == 'a.m.') {
+        if (arr[1] == 'a.m.' || arr[1] == 'a.m') {
           return arr[0] + ' AM';
         }
-        if (arr[1] == 'p.m.') {
+        if (arr[1] == 'p.m.' || arr[1] == 'p.m') {
           return arr[0] + ' PM';
         }
         return value;
