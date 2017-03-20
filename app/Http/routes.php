@@ -180,7 +180,6 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('calendar/user/events', 'Today\CalendarController@userEvents');
     Route::get('calendar/event/{id}', 'Today\CalendarController@show');
     Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
-    Route::get('calendartest/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@indextest');
 
     Route::get('magazine/archives', 'Today\MagazineController@archives');
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
