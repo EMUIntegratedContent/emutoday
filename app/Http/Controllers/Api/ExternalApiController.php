@@ -85,10 +85,10 @@ class ExternalApiController extends ApiController
     $news = Story::select('*');
     $news
       ->where([
-        ['story_type', 'news'],
         ['is_approved', 1],
         ['start_date', '<=', $today],
       ])
+      ->whereIn('story_type', ['news', 'story'])
       ->limit($limit)
       ->orderBy('priority', 'desc')
       ->orderBy('start_date', 'asc');
