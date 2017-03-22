@@ -24,6 +24,7 @@ use Emutoday\Mediafile;
 use Emutoday\Mediatype;
 
 use Carbon\Carbon;
+use Mail;
 
 
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
@@ -65,6 +66,7 @@ class EventController extends ApiController
     {
       $currentDate = Carbon::now();
 
+/*
       // Send event has been submitted email
       $to      = "cpuzzuol@emich.edu";
       $subject = "Ur dumm";
@@ -73,6 +75,12 @@ class EventController extends ApiController
       'Reply-To: '.cas()->user()."@emich.edu"."\r\n" .
       'X-Mailer: PHP/' . phpversion();
       mail($to, $subject, $message, $headers);
+*/
+    Mail::send('emails.todayperiodical', array(), function ($m) use ($currentDate) {
+        $m->from('hello@app.com', 'Your Application');
+
+        $m->to('cpuzzuol@emich.edu')->subject('Your Reminder on ' . $currentDate . '!');
+    });
 
       if (\Auth::check()) {
         $user = \Auth::user();
