@@ -18,7 +18,7 @@
     <hr />
     <div class="row">
         <div class="col-xs-12">
-            <label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail" checked="true"/></label>
+            <label id="automail-label" for="automail">Send notification email? <input type="checkbox" name="automail" id="automail"/></label>
         </div>
     </div>
   <div class="row">
