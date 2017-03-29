@@ -204,7 +204,8 @@ class ExternalApiController extends ApiController
    */
   public function getHomecomingEvents($firstDate, $lastDate){
       $conditions = array(); //conditions for the where clause
-      $conditions[] = array(['is_approved', 1], ['start_date', '>=', $firstDate]);
+      $conditions[] = array('is_approved', 1);
+      $conditions[] = array('start_date', '>=', $firstDate);
 
       $miniCalendars = array(40,41,42); //MiniCalendar IDs in table cea_mini_calendars
 
