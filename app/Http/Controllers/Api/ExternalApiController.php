@@ -202,7 +202,8 @@ class ExternalApiController extends ApiController
    * @param int       $miniCalendar              The ID of the miniCalendar to filter dates and events by.
    * @return Array                               The array of dates with corresponding events and the number of total results found.
    */
-  public function getHomecomingEvents($firstDate, $lastDate){
+  public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
+      return $request;
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
       $conditions[] = array('start_date', '>=', $firstDate);
