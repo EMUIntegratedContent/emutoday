@@ -211,7 +211,7 @@ class ExternalApiController extends ApiController
       $orderBy = 'asc';
 
       // The goal here is to find a distinct number of dates that matches the $limit supplied
-      $dates = MiniCalendar::whereIn('id', $miniCalendars)->events()->distinct()->select('start_date');
+      $dates = MiniCalendar::find(40)->events()->distinct()->select('start_date');
 
       $numDatesGross = $dates->count();
 
@@ -222,7 +222,7 @@ class ExternalApiController extends ApiController
       // Get all the events that fall on each date
       $eventsArr = array();
       foreach($dates as $date){
-          $events = MiniCalendar::whereIn('id', $miniCalendars)->events()->where($conditions)->orderBy('title', 'asc');
+          $events = MiniCalendar::find(40)->events()->where($conditions)->orderBy('title', 'asc');
           $events = $events->get();
           //add the day's events into the eventsArray
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
