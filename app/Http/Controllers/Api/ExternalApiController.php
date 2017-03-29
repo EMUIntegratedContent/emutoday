@@ -206,6 +206,7 @@ class ExternalApiController extends ApiController
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
       $conditions[] = array('start_date', '>=', $firstDate);
+      $conditions[] = array('start_date', '>=', $lastDate);
 
       $miniCalendars = array(40,41,42); //MiniCalendar IDs in table cea_mini_calendars
 
@@ -215,8 +216,7 @@ class ExternalApiController extends ApiController
       $dates = MiniCalendar::find(39)->events()->distinct()->select('start_date');
 
       $numDatesGross = $dates->count();
-      return $dates;
-      
+
       // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
       $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
       $dates = $dates->get();
