@@ -206,7 +206,7 @@ class ExternalApiController extends ApiController
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
       $conditions[] = array('start_date', '>=', $firstDate);
-      $conditions[] = array('start_date', '>=', $lastDate);
+      $conditions[] = array('start_date', '<=', $lastDate);
 
       $miniCalendars = array(40,41,42); //MiniCalendar IDs in table cea_mini_calendars
 
