@@ -211,11 +211,12 @@ class ExternalApiController extends ApiController
 
       $orderBy = 'asc';
 
-      // The goal here is to find a distinct number of dates that matches the $limit supplied
-      $dates = MiniCalendar::find(40)->events()->distinct()->select('start_date');
+      // Find a distinct number of dates that match
+      $dates = MiniCalendar::find(39)->events()->distinct()->select('start_date');
 
       $numDatesGross = $dates->count();
-
+      return $dates;
+      
       // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
       $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
       $dates = $dates->get();
