@@ -183,4 +183,71 @@ class ExternalApiController extends ApiController
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
       return $return;
   }
+
+  /**
+   * EMU public calendars (e.g. emich.edu/cob/calendar) often gather events not by n-number of dates,
+   * For example, the COB gets events in groups of 7 dates (a date can have any number of events),
+   * with previous and next arrows to fetch earlier and later dates, respectively.
+   *
+   * In this function, return n-number of dates based on the reference_date passed as an argument
+   * If the 'previous' flag is TRUE, search for dates EARLIER than this.
+   * If the 'previous' flag is FALSE, search for dates LATER than this.
+   *
+   * @param int       $limit                     How many dates to get events for.
+   * @param String    $referenceDate             The date to search before or after.
+   * @param boolean   $previous                  TRUE = search past dates in relation to $referenceDate.
+   *                                             FALSE = search future dates in relation to $referenceDate.
+   * @param boolean   $includeSelectedDate       TRUE = search dates that include the $referenceDate.
+   *                                             FALSE = do not search dates that include the $referenceDate.
+   * @param int       $miniCalendar              The ID of the miniCalendar to filter dates and events by.
+   * @return Array                               The array of dates with corresponding events and the number of total results found.
+   */
+  public function getEventsByDateRange($firstDate, $lastDate, $miniCalendars = array()){
+      $conditions = array(); //conditions for the where clause
+      $conditions[] = array(['is_approved', 1], ['start_date', '>=', $firstDate], ['startDate', '<=', $lastDate]);
+
+      $orderBy = 'asc';
+
+      // If minicalendar is set
+      if(!empty($miniCalendar)){
+          // The goal here is to find a distinct number of dates that matches the $limit supplied
+          $dates = MiniCalendar::findMany($miniCalendars)->events()->distinct()->select('start_date');
+
+          $numDatesGross = $dates->count();
+
+          // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
+          $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
+          $dates = $dates->get();
+
+          // Get all the events that fall on each date
+          $eventsArr = array();
+          foreach($dates as $date){
+              $events = MiniCalendar::findMany($miniCalendars)->events()->where($conditions)->orderBy('title', 'asc');
+              $events = $events->get();
+              //add the day's events into the eventsArray
+              $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+          }
+          $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
+          return $return;
+      }
+
+      // No minicalendar set
+      $dates = Event::distinct()->select('start_date')->where($conditions);
+      $numDatesGross = $dates->count();
+
+      // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
+      $dates->orderBy('start_date', $orderBy)->groupBy('start_date');;
+      $dates = $dates->get();
+
+      // Get all the events that fall on each date
+      $eventsArr = array();
+      foreach($dates as $date){
+          $events = Event::select('*')->where($conditions)->orderBy('title', 'asc');
+          $events = $events->get();
+          //add the day's events into the eventsArray
+          $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+      }
+      $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
+      return $return;
+  }
 }
