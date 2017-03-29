@@ -208,8 +208,8 @@ class ExternalApiController extends ApiController
 
       $orderBy = 'asc';
 
-      // If minicalendar is set
-      if(!empty($miniCalendar)){
+      // If minicalendars are set
+      if(!empty($miniCalendars)){
           // The goal here is to find a distinct number of dates that matches the $limit supplied
           $dates = MiniCalendar::findMany($miniCalendars)->events()->distinct()->select('start_date');
 
@@ -230,7 +230,7 @@ class ExternalApiController extends ApiController
           $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
           return $return;
       }
-
+/*
       // No minicalendar set
       $dates = Event::distinct()->select('start_date')->where($conditions);
       $numDatesGross = $dates->count();
@@ -249,5 +249,6 @@ class ExternalApiController extends ApiController
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
       return $return;
+      */
   }
 }
