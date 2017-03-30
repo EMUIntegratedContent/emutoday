@@ -211,7 +211,7 @@ class ExternalApiController extends ApiController
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
 
       $dateArr = array();
-      while(strtotime($firstDate) <= strtotime($endDate)){
+      while(strtotime($firstDate) <= strtotime($lastDate)){
           $dateArr[] = $firstDate;
 
           $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
