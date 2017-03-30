@@ -203,6 +203,38 @@ class ExternalApiController extends ApiController
    * @return Array                               The array of dates with corresponding events and the number of total results found.
    */
   public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
-      
+      //return $request->get('minicalendars');
+      $conditions = array(); //conditions for the where clause
+      $conditions[] = array('is_approved', 1);
+      $conditions[] = array('start_date', '>=', $firstDate);
+      $conditions[] = array('start_date', '<=', $lastDate);
+
+      $miniCalendars = array(40,41,42); //MiniCalendar IDs in table cea_mini_calendars
+
+      $orderBy = 'asc';
+
+      // Find a distinct number of dates that match
+      $dates = MiniCalendar::find(39)->events()->distinct()->select('start_date');
+
+      $numDatesGross = $dates->count();
+
+      return $numDatesGross;
+
+/*
+      // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
+      $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
+      $dates = $dates->get();
+
+      // Get all the events that fall on each date
+      $eventsArr = array();
+      foreach($dates as $date){
+          $events = MiniCalendar::find(55)->events()->where($conditions)->orderBy('title', 'asc');
+          $events = $events->get();
+          //add the day's events into the eventsArray
+          $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+      }
+      $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
+      //return $return;
+*/
   }
 }
