@@ -210,17 +210,14 @@ class ExternalApiController extends ApiController
 
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
 
-      $orderBy = 'asc';
+      $dateArr = array();
+      while(strtotime($firstDate) <= strtotime($endDate)){
+          $dateArr[] = $firstDate;
 
-      // Find a distinct number of dates that match
-      $dates = MiniCalendar::find(39)->events()->distinct()->select('start_date');
+          $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+      }
 
-      $numDatesGross = $dates->count();
-
-      // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
-      $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
-      $dates = $dates->get();
-
+       /*
       // Get all the events that fall on each date
       $eventsArr = array();
       foreach($dates as $date){
@@ -238,7 +235,7 @@ class ExternalApiController extends ApiController
           }
 
           $eventsArr[] = $dayEventsArr;
-          /*
+
           // Get all the events in each mini calendar
           if(count($miniCalendars) > 0){
               $dayEvents = array();
@@ -253,8 +250,9 @@ class ExternalApiController extends ApiController
               //add the day's events into the eventsArray
               $eventsArr[] = array('date' => $date->start_date, 'date_events' => $dayEvents);
           }
-          */
+
       }
-      return $eventsArr;
+      */
+      return $dateArr;
   }
 }
