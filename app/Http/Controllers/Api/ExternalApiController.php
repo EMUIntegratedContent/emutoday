@@ -225,8 +225,11 @@ class ExternalApiController extends ApiController
       // Get all the events that fall on each date
       $eventsArr = array();
       foreach($dates as $date){
-          $events = MiniCalendar::find($miniCalendars)->events()->where($conditions)->orderBy('title', 'asc');
-          $events = $events->get();
+          // Get all the events in each mini calendar
+          foreach($miniCalendars as $miniCalendar){
+              $events = MiniCalendar::find($miniCalendar)->events()->where($conditions)->orderBy('title', 'asc');
+              $events = $events->get();
+          }
           //add the day's events into the eventsArray
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
       }
