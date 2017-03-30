@@ -213,9 +213,12 @@ class ExternalApiController extends ApiController
       $eventsArr = array();
       while(strtotime($firstDate) <= strtotime($lastDate)){
           // Get all the events for the date
-          $dayEvents = Event::where(['is_approved' => 1, 'start_date' => $firstDate])->orderBy('title', 'asc');
+          $dayEvents = Event::where(['is_approved' => 1, 'start_date' => $firstDate])->whereHas('minicalendars', function($query) use($miniCalendars) {
+                            $query->whereIn('minicalendars', $currentPrice); // price is the field name
+                        })->orderBy('title', 'asc');
           $dayEvents = $dayEvents->get();
 
+        /*
           $dayEventsArr = array();
           foreach($dayEvents as $dayEvent){
               // Which minicalendars are attached to this event?
@@ -226,6 +229,7 @@ class ExternalApiController extends ApiController
           }
 
           $eventsArr[] = array('date' => $firstDate, 'events' => $dayEventsArr);
+         */
 
           $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate))); //increment the date
       }
