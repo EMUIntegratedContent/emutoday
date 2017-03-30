@@ -218,9 +218,8 @@ class ExternalApiController extends ApiController
 
       $numDatesGross = $dates->count();
 
-      return $numDatesGross;
+      //return $numDatesGross;
 
-/*
       // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
       $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
       $dates = $dates->get();
@@ -234,7 +233,6 @@ class ExternalApiController extends ApiController
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
-      //return $return;
-*/
+      return $return;
   }
 }
