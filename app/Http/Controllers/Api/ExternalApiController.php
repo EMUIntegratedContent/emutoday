@@ -235,6 +235,6 @@ class ExternalApiController extends ApiController
           }
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
-      return $return;
+      return $miniCalendars;
   }
 }
