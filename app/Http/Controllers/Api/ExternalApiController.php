@@ -236,7 +236,7 @@ class ExternalApiController extends ApiController
               $dayEventsArr[] = array('event' => $dayEvent);
           }
 
-          $eventsArr[] = $dayEventsArr;
+          $eventsArr[] = $date->start_date;
           /*
           // Get all the events in each mini calendar
           if(count($miniCalendars) > 0){
