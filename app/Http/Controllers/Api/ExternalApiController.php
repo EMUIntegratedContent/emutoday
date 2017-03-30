@@ -210,11 +210,24 @@ class ExternalApiController extends ApiController
 
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
 
-      $dateArr = array();
+      $eventsArr = array();
       while(strtotime($firstDate) <= strtotime($lastDate)){
-          $dateArr[] = $firstDate;
+          // Get all the events for the date
+          $dayEvents = Event::where(['is_approved' => 1, 'start_date' => $firstDate])->orderBy('title', 'asc');
+          $dayEvents = $dayEvents->get();
 
-          $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate)));
+          $dayEventsArr = array();
+          foreach($dayEvents as $dayEvent){
+              // Which minicalendars are attached to this event?
+              $associatedMinicalendars = Event::find($dayEvent->id)->minicalendars();
+              $associatedMinicalendars = $associatedMinicalendars->get();
+
+              $dayEventsArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
+          }
+
+          $eventsArr[$firstDate] = $dayEventsArr;
+
+          $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate))); //increment the date
       }
 
        /*
