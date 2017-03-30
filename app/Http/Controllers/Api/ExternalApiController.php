@@ -224,6 +224,19 @@ class ExternalApiController extends ApiController
       // Get all the events that fall on each date
       $eventsArr = array();
       foreach($dates as $date){
+          // Get all the events for the date
+          $dayEvents = Event::where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
+
+          $dayEventsArr = array();
+          foreach($dayEvents as $dayEvent){
+              // Which minicalendars are attached to this event?
+              $associatedMinicalendars = Event::find($dayEvent->id)->minicalendars();
+              $associatedMinicalendars = $associatedMinicalendars->get();
+
+              $dayEventsArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
+          }
+
+          /*
           // Get all the events in each mini calendar
           if(count($miniCalendars) > 0){
               $dayEvents = array();
@@ -238,8 +251,8 @@ class ExternalApiController extends ApiController
               //add the day's events into the eventsArray
               $eventsArr[] = array('date' => $date->start_date, 'date_events' => $dayEvents);
           }
+          */
       }
-      $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
-      return $return;
+      return $eventsArr;
   }
 }
