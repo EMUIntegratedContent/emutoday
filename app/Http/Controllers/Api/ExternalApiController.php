@@ -204,9 +204,6 @@ class ExternalApiController extends ApiController
    */
   public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
       $conditions = array(); //conditions for the where clause
-      $conditions[] = array('is_approved', 1);
-      $conditions[] = array('start_date', '>=', $firstDate);
-      $conditions[] = array('start_date', '<=', $lastDate);
 
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
 
@@ -218,59 +215,18 @@ class ExternalApiController extends ApiController
                         })->orderBy('title', 'asc');
           $dayEvents = $dayEvents->get();
 
-          $eventsArr[] = $dayEvents;
-        /*
-          $dayEventsArr = array();
+          // Get all the minicalendars to which each event belongsTo
+          $dayArr = array();
           foreach($dayEvents as $dayEvent){
-              // Which minicalendars are attached to this event?
               $associatedMinicalendars = Event::find($dayEvent->id)->minicalendars();
               $associatedMinicalendars = $associatedMinicalendars->get();
 
-              $dayEventsArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
+              $dayArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars)
           }
-
-          $eventsArr[] = array('date' => $firstDate, 'events' => $dayEventsArr);
-         */
+          $eventsArr[] = $dayArr;
 
           $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate))); //increment the date
       }
-
-       /*
-      // Get all the events that fall on each date
-      $eventsArr = array();
-      foreach($dates as $date){
-          // Get all the events for the date
-          $dayEvents = Event::where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
-          $dayEvents = $dayEvents->get();
-
-          $dayEventsArr = array();
-          foreach($dayEvents as $dayEvent){
-              // Which minicalendars are attached to this event?
-              $associatedMinicalendars = Event::find($dayEvent->id)->minicalendars();
-              $associatedMinicalendars = $associatedMinicalendars->get();
-
-              $dayEventsArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
-          }
-
-          $eventsArr[] = $dayEventsArr;
-
-          // Get all the events in each mini calendar
-          if(count($miniCalendars) > 0){
-              $dayEvents = array();
-              foreach($miniCalendars as $miniCalendar){
-                  $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
-                  $events = $events->get();
-
-                  foreach($events as $event){
-                      $dayEvents[] = $event;
-                  }
-              }
-              //add the day's events into the eventsArray
-              $eventsArr[] = array('date' => $date->start_date, 'date_events' => $dayEvents);
-          }
-
-      }
-      */
       return $eventsArr;
   }
 }
