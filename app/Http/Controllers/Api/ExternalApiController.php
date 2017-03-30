@@ -266,6 +266,6 @@ class ExternalApiController extends ApiController
 
       }
       */
-      return $dateArr;
+      return $eventsArr;
   }
 }
