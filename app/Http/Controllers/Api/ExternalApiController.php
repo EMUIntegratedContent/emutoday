@@ -218,8 +218,6 @@ class ExternalApiController extends ApiController
 
       $numDatesGross = $dates->count();
 
-      //return $numDatesGross;
-
       // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
       $dates->where($conditions)->orderBy('start_date', $orderBy)->groupBy('start_date');
       $dates = $dates->get();
@@ -227,7 +225,7 @@ class ExternalApiController extends ApiController
       // Get all the events that fall on each date
       $eventsArr = array();
       foreach($dates as $date){
-          $events = MiniCalendar::find(55)->events()->where($conditions)->orderBy('title', 'asc');
+          $events = MiniCalendar::find(40)->events()->where($conditions)->orderBy('title', 'asc');
           $events = $events->get();
           //add the day's events into the eventsArray
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
