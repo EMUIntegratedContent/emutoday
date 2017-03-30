@@ -231,7 +231,7 @@ class ExternalApiController extends ApiController
           $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
-      return $dates;
+      return $return;
 
   }
 }
