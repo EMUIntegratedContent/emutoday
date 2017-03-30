@@ -221,7 +221,7 @@ class ExternalApiController extends ApiController
               $associatedMinicalendars = Event::find($dayEvent->id)->minicalendars();
               $associatedMinicalendars = $associatedMinicalendars->get();
 
-              $dayArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars)
+              $dayArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
           }
           $eventsArr[] = $dayArr;
 
