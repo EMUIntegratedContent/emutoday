@@ -185,22 +185,12 @@ class ExternalApiController extends ApiController
   }
 
   /**
-   * EMU public calendars (e.g. emich.edu/cob/calendar) often gather events not by n-number of dates,
-   * For example, the COB gets events in groups of 7 dates (a date can have any number of events),
-   * with previous and next arrows to fetch earlier and later dates, respectively.
+   * Get all homecoming events (events that have homecoming-related minicalendars related to them)
    *
-   * In this function, return n-number of dates based on the reference_date passed as an argument
-   * If the 'previous' flag is TRUE, search for dates EARLIER than this.
-   * If the 'previous' flag is FALSE, search for dates LATER than this.
-   *
-   * @param int       $limit                     How many dates to get events for.
-   * @param String    $referenceDate             The date to search before or after.
-   * @param boolean   $previous                  TRUE = search past dates in relation to $referenceDate.
-   *                                             FALSE = search future dates in relation to $referenceDate.
-   * @param boolean   $includeSelectedDate       TRUE = search dates that include the $referenceDate.
-   *                                             FALSE = do not search dates that include the $referenceDate.
-   * @param int       $miniCalendar              The ID of the miniCalendar to filter dates and events by.
-   * @return Array                               The array of dates with corresponding events and the number of total results found.
+   * @param Request   $request                   The HTTP request (which will contain an array of minicalendars in this case).
+   * @param String    $firstDate                 The first date for which to search homecoming events.
+   * @param String    $lastDate                  The last date for which to search homecoming events.
+   * @return Array                               The array of events with corresponding minicalendars.
    */
   public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
       $conditions = array(); //conditions for the where clause
@@ -208,6 +198,8 @@ class ExternalApiController extends ApiController
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
 
       $eventsArr = array();
+
+      // Loop through each date between first and last dates
       while(strtotime($firstDate) <= strtotime($lastDate)){
           // Get all the events for the date
           $dayEvents = Event::whereHas('minicalendars', function($query) use($miniCalendars, $firstDate) {
@@ -221,8 +213,11 @@ class ExternalApiController extends ApiController
               $associatedMinicalendars = Event::find($dayEvent->id)->minicalendars();
               $associatedMinicalendars = $associatedMinicalendars->get();
 
+              // Pack this day's events along with the associated minicalendars into an array
               $dayArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
           }
+
+          // Add this day's events array to the master events array
           $eventsArr[] = $dayArr;
 
           $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate))); //increment the date
