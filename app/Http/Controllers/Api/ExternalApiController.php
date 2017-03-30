@@ -204,6 +204,5 @@ class ExternalApiController extends ApiController
    */
   public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
       
-
   }
 }
