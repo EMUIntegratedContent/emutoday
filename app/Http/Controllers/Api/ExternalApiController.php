@@ -203,7 +203,7 @@ class ExternalApiController extends ApiController
    * @return Array                               The array of dates with corresponding events and the number of total results found.
    */
   public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
-      return $request->get('minicalendars');
+      //return $request->get('minicalendars');
       $conditions = array(); //conditions for the where clause
       $conditions[] = array('is_approved', 1);
       $conditions[] = array('start_date', '>=', $firstDate);
