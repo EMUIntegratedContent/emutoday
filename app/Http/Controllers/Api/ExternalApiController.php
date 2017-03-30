@@ -225,7 +225,7 @@ class ExternalApiController extends ApiController
               $dayEventsArr[] = array('event' => $dayEvent, 'minicalendars' => $associatedMinicalendars);
           }
 
-          $eventsArr[$firstDate] = $dayEventsArr;
+          $eventsArr[] = array('date' => $firstDate, 'events' => $dayEventsArr);
 
           $firstDate = date ("Y-m-d", strtotime("+1 day", strtotime($firstDate))); //increment the date
       }
