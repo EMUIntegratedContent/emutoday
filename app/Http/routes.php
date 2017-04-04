@@ -47,10 +47,15 @@ Route::group(['prefix' => 'api'], function() {
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
-    Route::post('calendar/addevent', 'Api\CalendarController@addEventToGoogleCalendar')->name('addEventToGoogleCalendar');
-    Route::get('oauth2callback', 'Api\CalendarController@oAuth');
-    Route::get('calendarauth', 'Api\CalendarController@oAuthAPIConfirm');
+    Route::patch('experts/updateitem/{id}', ['as' => 'api_experts_updateitem', 'uses' =>'Api\ExpertsController@updateItem']);
+    Route::get('experts/{id}/edit', ['as' => 'api_experts_edititem', 'uses' =>'Api\ExpertsController@edit']);
+    Route::post('experts', ['as' => 'api_experts_storeitem', 'uses' => 'Api\ExpertsController@store']); // Route to save expert to db
+    Route::resource('experts', 'Api\ExpertsController');
 
+    Route::patch('expertcategory/updateitem/{id}', ['as' => 'api_expertcategory_updateitem', 'uses' =>'Api\ExpertCategoryController@updateItem']);
+    Route::get('expertcategory/{id}/edit', ['as' => 'api_expertcategory_edititem', 'uses' =>'Api\ExpertCategoryController@edit']);
+    Route::post('expertcategory', ['as' => 'api_expertcategory_storeitem', 'uses' => 'Api\ExpertCategoryController@store']); // Route to save expert to db
+    Route::resource('expertcategory', 'Api\ExpertCategoryController');
 
     /**
      * List of Buildings for EventForm
@@ -125,7 +130,6 @@ Route::group(['prefix' => 'api'], function() {
     Route::post('event/{id}/delete', ['as' => 'api_event_deleteitem', 'uses' => 'Api\EventController@delete']);
     Route::patch('event/{id}/cancel', ['as' => 'api_event_cancelitem', 'uses' => 'Api\EventController@cancel']);
     Route::resource('event', 'Api\EventController');
-
 
     Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
@@ -216,6 +220,14 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('authors/list', ['as' => 'authors_list', 'uses' => 'Admin\AuthorsController@index']);
         Route::get('authors/form', ['as' => 'authors_form', 'uses' => 'Admin\AuthorsController@form']);
         Route::resource('authors', 'Admin\AuthorsController');
+
+        Route::get('experts/list', ['as' => 'experts_list', 'uses' => 'Admin\ExpertsController@index']);
+        Route::get('experts/form', ['as' => 'experts_form', 'uses' => 'Admin\ExpertsController@form']);
+        Route::resource('experts', 'Admin\ExpertsController');
+
+        Route::get('expertcategory/list', ['as' => 'expertcategory_list', 'uses' => 'Admin\ExpertCategoryController@index']);
+        Route::get('expertcategory/form', ['as' => 'expertcategory_form', 'uses' => 'Admin\ExpertCategoryController@form']);
+        Route::resource('expertcategory', 'Admin\ExpertCategoryController');
 
         Route::get('dashboard', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
         Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);

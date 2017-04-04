@@ -111,9 +111,6 @@
   </div><!-- /.row -->
   <div class="row">
     <div class="col-md-6">
-      <!-- <div class="form-group">
-      RecordID:{{thisRecordId}} thisRecordState:{{thisRecordState}} thisRecordIsDirty:{{thisRecordIsDirty}}
-    </div> -->
   </div><!-- /.col-md-6-->
   <div class="col-md-6">
     <!-- <div class="form-group pull-right">
@@ -134,10 +131,6 @@
         </option>
       </select>
     </template>
-
-    <!-- <div class="form-group pull-right">
-    {{record | json}}
-  </div> -->
 </div><!-- /.col-md-6 -->
 
 <div class="col-md-6">

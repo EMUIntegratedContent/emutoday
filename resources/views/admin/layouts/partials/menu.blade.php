@@ -62,23 +62,6 @@
 </li>
 @endcan
 </ul>
-
-
-{{--
-  <ul class="treeview-menu">
-    @can('story_approve', $currentUser)
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-    @endcan
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
-
-
-    @can('story_promote', $currentUser)
-
-    <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
-    @endcan
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/story/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
-
-  </ul> --}}
 </li>
 @endcan
 
@@ -90,16 +73,28 @@
     <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
   </ul>
 </li>
-@endcan
-{{-- @can('super',$currentUser)
-<li class="treeview {{ set_active('admin/page*') }}">
-  <a href="#"><i class="fa fa-envelope-o"></i> <span>Email Blasts</span> <!-- <i class="fa fa-angle-left pull-right"> --></i></a>
+<li class="treeview {{ set_active('admin/experts*') }}">
+  <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
   <ul class="treeview-menu">
-    <li class="{{ set_active('admin/emailblast*') }}"><a href="#"><i class="fa fa-list"></i> <span>List</span></a></li>
-    <li class="{{ set_active('admin/emailblast*') }}"><a href="#"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+    <li><a href="#"><i class="fa fa-circle-o"></i>People <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+        </span></a>
+        <ul class="treeview-menu {{ set_active('admin/expert*') }}">
+            <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/list"><i class="fa fa-list"></i> <span>List</span></a></li>
+            <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+        </ul>
+    </li>
+    <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+        </span></a>
+        <ul class="treeview-menu {{ set_active('admin/experts/category*') }}">
+            <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/list"><i class="fa fa-list"></i> <span>List</span></a></li>
+            <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+        </ul>
+    </li>
   </ul>
 </li>
-@endcan --}}
+@endcan
 
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/magazine*') }}">
@@ -114,15 +109,6 @@
 <li><a href="/admin/authors/list"><i class="fa fa-pencil"></i> <span>Authors</span></a></li>
 @endcan
 @can('super', $currentUser)
-{{--
-<li class="treeview {{ set_active('admin/storyimages*') }}">
-  <a href="#"><i class="fa fa-picture-o"></i> <span>Images</span></a>
-  <ul class="treeview-menu">
-    <li class="{{ set_active('admin/storyimages*') }}"><a href="/admin/storyimages"><i class="fa fa-list"></i> <span>List</span></a></li>
-    <li class="{{ set_active('admin/storyimages*') }}"><a href="/admin/storyimages/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-  </ul>
-</li>
---}}
 <hr/> <!-- //////////////////////////////// -->
 
 <li class="{{ set_active('admin/user*') }}"><a href="/admin/user"><i class="fa fa-users"></i> <span>Users</span></a></li>

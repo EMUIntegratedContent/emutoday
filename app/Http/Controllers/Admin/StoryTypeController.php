@@ -235,22 +235,18 @@ class StoryTypeController extends Controller
             'storytype' => $story->story_type,
             'is_featured' => $story->is_featured,
         ]);
-        // $sroute = 'story';
+
         if ($user->hasRole('contributor_1')){
-            // dd($user->id);
             $stypelist = 'news';
             $stype = 'news';
             $stypes = 'news';
         } else {
 
-            // dd($story->storyImages->where('is_active',1)->count());
             $currentRequiredImages = null;
             $currentOtherImages = null;
             $stillNeedTheseImgs = null;
 
             $imagetypeNames = Imagetype::ofGroup($storyGroup)->get()->keyBy('id');
-            // dd($imagetypeNames->count());
-            // $requiredImageKeys = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
 
             $requiredImageListCollection = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
             $otherImageListCollection = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
@@ -271,7 +267,6 @@ class StoryTypeController extends Controller
 
             $remainingRequiredImagesNeeded = $requiredImageList->count() - $currentRequiredImages->count();
 
-            // dd($imagetypeNames,$requiredImageList,$requiredImageListArray,$requiredImageCollect,$requiredImageKeyArray);
             $stillNeedTheseImgs = null;
 
             if($remainingRequiredImagesNeeded > 0) {
@@ -280,12 +275,7 @@ class StoryTypeController extends Controller
 
                 $stillNeedTheseImgs = $requiredImageListCollection->except($currentRequiredImagesIdsListArray);
 
-
                 $currentOtherImages = null;
-
-                // dd($stillneedthese);
-                // dd('$remainingRequiredImagesNeeded='. $remainingRequiredImagesNeeded);
-
 
                 return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
 
@@ -298,8 +288,6 @@ class StoryTypeController extends Controller
 
                 $remainingOtherImagesNeeded = $otherImageCollect->count() - $currentOtherImages->count();
 
-                // dd('$remainingOtherImagesNeeded=' . $remainingOtherImagesNeeded);
-
                 if ($remainingOtherImagesNeeded > 0) {
                         $currentOtherImagesIdsList = $currentOtherImages->pluck('imagetype_id');
                         $currentOtherImagesIdsListArray = $currentOtherImagesIdsList->toArray();
@@ -307,15 +295,11 @@ class StoryTypeController extends Controller
 
                         return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
 
-
                 } else {
                     $stillNeedTheseImgs = null;
                     return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
-
                 }
-
             }
-
         }
         $currentRequiredImages = null;
         $currentOtherImages = null;

@@ -17,10 +17,7 @@
                 @elseif($rte == 'all')
 
                     <a href="/admin/story/story/setup" class="btn bg-orange btn-sm {{ set_active($path.'/setup', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
-
-                   {{-- <a href="/admin/story/create" class="btn bg-orange btn-sm {{ set_active($path.'/setup', 'disabled') }}"><i class="fa fa-plus-square"></i></a> --}}
-
-
+                    
                 @elseif($rte == 'magazine')
                         @if(isset($id))
                             <a href="/preview/{{$rte}}/{{$id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
