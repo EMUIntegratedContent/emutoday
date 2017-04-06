@@ -56,9 +56,14 @@ class ExpertCategoryController extends ApiController
     }
     if($validation->passes())
     {
-      $category->category           = $request->get('first_name');
+      $category->category           = $request->get('category');
 
       if($category->save()) {
+
+          //Associations can only be made AFTER entity is saved
+          $associatedCategories = array_pluck($request->input('associatedCategories'),'value');
+          $category->associations()->sync($associatedCategories);
+
         return $this->setStatusCode(201)
         ->respondSavedWithData('Expert category successfully saved!',[ 'record_id' => $category->id ]);
       }
@@ -99,10 +104,47 @@ class ExpertCategoryController extends ApiController
     {
         $category->category         = $request->get('category');
 
+        $associatedCategories = array_pluck($request->input('associatedCategories'),'value');
+        $category->associations()->sync($associatedCategories);
+
         if($category->save()) {
             return $this->setStatusCode(201)
             ->respondSavedWithData('Expert category successfully updated!',[ 'record_id' => $category->id ]);
         }
     }
+  }
+
+  public function delete($id)
+  {
+    $category = ExpertCategory::findOrFail($id);
+    $category->delete();
+    return $this->setStatusCode(200)->respond('Expert category successfully deleted!');
+  }
+
+  /**
+   * Get all ExpertCategory entities EXCEPT for the category which corresponds to the ID passed
+   *
+   * @param int $id
+   * @return Array
+   */
+  public function getAllCategories($id = null){
+      if($id){
+          $categories = ExpertCategory::select('category', 'id as value')->where('id', '<>', $id)->orderBy('category', 'asc')->get();
+          return $categories;
+      }
+
+      $categories = ExpertCategory::select('category', 'id as value')->orderBy('category', 'asc')->get();
+      return $categories;
+  }
+
+  /**
+   * Get all ExpertCategory entities which are associated with the ExpertCategory ID passed
+   *
+   * @param int $id
+   * @return Array
+   */
+  public function getAssociatedCategories($id){
+      $categories = ExpertCategory::find($id)->associations()->select('category', 'id as value')->get();
+      return $categories;
   }
 }

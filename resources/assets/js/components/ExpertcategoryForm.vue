@@ -23,9 +23,15 @@
         </div>
       </div>
       <div v-bind:class="md6col">
-        <div v-bind:class="formGroup">
-
-        </div>
+          <label>Related Categories</label>
+          <v-select
+          :class="[formErrors.tags ? 'invalid-input' : '']"
+          :value.sync="associatedCategories"
+          :options="allCategories"
+          :multiple="true"
+          placeholder="Select related categories"
+          label="category">
+          </v-select>
       </div>
       <!-- /.small-12 columns -->
     </div>
@@ -35,6 +41,7 @@
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+          <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Category</button>
         </div>
       </div>
     </div>
@@ -43,6 +50,9 @@
 </template>
 
 <style scoped>
+.redBtn {
+  background: hsl(0, 90%, 70%);
+}
 p {
   margin: 0;
 }
@@ -134,9 +144,10 @@ h5.form-control {
 <script>
 import moment from 'moment';
 import flatpickr from 'flatpickr';
+import vSelect from "vue-select";
 module.exports = {
   directives: {flatpickr},
-  components: {},
+  components: {vSelect},
   props: {
     errors: {
       default: ''
@@ -150,20 +161,16 @@ module.exports = {
     framework: {
       default: 'foundation'
     },
-    type: {
-      default: 'general'
-    },
-    user: {
-      default: ''
-    },
-    user_id: '',
   },
   data: function() {
     return {
       currentDate: {},
       record: {
         category: '',
+        associatedCategories: [],
       },
+      allCategories: [],
+      associatedCategories: [],
       totalChars: {
         title: 50,
       },
@@ -182,13 +189,16 @@ module.exports = {
   ready: function() {
     if (this.recordexists){
       this.currentRecordId = this.editid;
-      console.log(this.recordid)
       this.newform = false;
+      this.fetchAllCategories(this.recordid);
+      this.fetchAssociatedCategories(this.recordid);
       this.fetchCurrentRecord(this.recordid);
     } else {
       this.newform = true;
       this.hasContent = true;
       this.recordState = 'new';
+
+      this.fetchAllCategories();
     }
   },
   computed: {
@@ -246,12 +256,39 @@ module.exports = {
       }).bind(this);
     },
 
+    fetchAllCategories: function(id){
+        let route =  (this.recordexists) ? '/api/expertcategory/all/' + id : '/api/expertcategory/all/';
+
+        // Submit form.
+        this.$http.get(route) //
+
+        .then((response) => {
+          this.$set('allCategories', response.data)
+        }, (response) => {
+          console.log("Error fetching expert categories")
+        }).bind(this);
+    },
+
+    fetchAssociatedCategories: function(id){
+        this.$http.get('/api/expertcategory/associated/' + id)
+
+        .then((response) => {
+          this.$set('associatedCategories', response.data)
+        }, (response) => {
+          console.log("Error fetching associated categories")
+        }).bind(this);
+    },
+
     submitForm: function(e) {
       e.preventDefault(); // Stop form defualt action
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      this.record.about = this.about;
+      if (this.associatedCategories.length > 0) {
+         this.record.associatedCategories = this.associatedCategories;
+      } else {
+         this.record.associatedCategories = [];
+      }
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
@@ -275,7 +312,25 @@ module.exports = {
         // Set errors from validation to vue data
         this.formErrors = response.data.error.message;
       }).bind(this);
-    }
+    },
+
+    delEvent: function(e) {
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+
+      if(confirm('Would you like to delete this category')==true){
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+        this.$http.post('/api/expertcategory/'+this.record.id+'/delete')
+
+        .then((response) =>{
+            window.location.href = "/admin/expertcategory/list";
+        }, (response) => {
+          console.log('Error: '+JSON.stringify(response))
+        }).bind(this);
+      }
+    },
   },
   watch: {
 

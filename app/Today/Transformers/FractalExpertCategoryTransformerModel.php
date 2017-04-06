@@ -10,8 +10,9 @@ class FractalExpertCategoryTransformerModel extends Fractal\TransformerAbstract
     public function transform(ExpertCategory $category)
     {
         return [
-            'id'          => (int) $category->id,
-            'category'  => $category->category,
+            'id'                   => (int) $category->id,
+            'category'             => $category->category,
+            'associatedCategories' => $category->associations()->select('category', 'id as value')->get(),
         ];
     }
 }

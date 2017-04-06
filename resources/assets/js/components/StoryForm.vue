@@ -801,10 +801,6 @@ module.exports  = {
             this.contact.email = '';
       }
     },
-    ahhh: function(){
-      console.log('author',this.authors, this.authorlist)
-      console.log('tag',this.tags, this.taglist)
-    },
 
     submitForm: function(e) {
       e.preventDefault();

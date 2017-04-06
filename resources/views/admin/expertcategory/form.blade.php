@@ -9,7 +9,6 @@
 @endsection
 
 @section('content')
-
     <div class="row">
       <div class="col-md-7">
         <div class="box box-primary">
@@ -23,7 +22,7 @@
                   <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
               </expertcategory-form>
             </div><!-- /#vue-event-form -->
-          </div><!-- /.box-body --> 
+          </div><!-- /.box-body -->
         </div><!-- /.box-body -->
       </div><!-- /.box -->
       <div class="col-md-5">

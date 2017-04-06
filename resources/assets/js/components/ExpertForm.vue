@@ -58,8 +58,7 @@
         <!-- First Name -->
         <div v-bind:class="formGroup">
           <label>About <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <!--<input v-model="record.about" class="form-control" v-bind:class="[formErrors.about ? 'invalid-input' : '']" name="about" type="text">
-          <p v-if="formErrors.about" class="help-text invalid">{{formErrors.about}}</p>-->
+          <!--<textarea v-model="record.about" id="about" name="about" rows="200"></textarea>-->
           <textarea v-if="hasContent" id="about" name="about" v-ckrte="about" :type="editorType" :about="about" :fresh="isFresh" rows="200"></textarea>
           <p v-if="formErrors.about" class="help-text invalid">Need Content!</p>
         </div>
@@ -80,8 +79,28 @@
     <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
+        <!-- Last Name -->
+        <div v-bind:class="formGroup">
+          <label>Expertise Categories <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <v-select
+          :class="[formErrors.tags ? 'invalid-input' : '']"
+          :value.sync="categories"
+          :options="categorieslist"
+          :multiple="true"
+          placeholder="Select expertise category"
+          label="category">
+          </v-select>
+          <p v-if="formErrors.category" class="help-text invalid">{{formErrors.category}}</p>
+        </div>
+      </div>
+      <!-- /.small-12 columns -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+          <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Expert</button>
         </div>
       </div>
     </div>
@@ -90,6 +109,9 @@
 </template>
 
 <style scoped>
+.redBtn {
+  background: hsl(0, 90%, 70%);
+}
 p {
   margin: 0;
 }
@@ -181,10 +203,11 @@ h5.form-control {
 <script>
 import moment from 'moment';
 import flatpickr from 'flatpickr';
-import ckrte from "../directives/ckrte.js"
+import ckrte from "../directives/ckrte.js";
+import vSelect from "vue-select";
 module.exports = {
   directives: {ckrte,flatpickr},
-  components: {},
+  components: {vSelect},
   props: {
     errors: {
       default: ''
@@ -204,11 +227,14 @@ module.exports = {
     user: {
       default: ''
     },
-    user_id: '',
   },
   data: function() {
     return {
+      about: '',
+      ckfullyloaded: false,
       currentDate: {},
+      categories: [],
+      categorieslist: [],
       record: {
         first_name: '',
         last_name: '',
@@ -216,6 +242,7 @@ module.exports = {
         expertise: '',
         about: '',
         education: '',
+        categories: [],
       },
       totalChars: {
         title: 50,
@@ -237,13 +264,16 @@ module.exports = {
   },
   ready: function() {
     if (this.recordexists){
-      this.currentRecordId = this.editid;
+      this.currentRecordId = this.recordid;
       this.newform = false;
-      this.fetchCurrentRecord();
+      this.fetchCategoryList();
+      this.fetchCurrentCategory(this.currentRecordId);
+      this.fetchCurrentRecord(this.currentRecordId);
     } else {
       this.newform = true;
       this.hasContent = true;
       this.recordState = 'new';
+      this.fetchCategoryList();
     }
   },
   computed: {
@@ -304,12 +334,30 @@ module.exports = {
 
       .then((response) => {
         this.$set('record', response.data.data)
-        this.user_id = response.data.data.user_id
 
-        this.fetchUsers(this.user_id)
+        this.hasContent = true;
+        this.currentRecordId = this.record.id;
+        this.about = this.record.about;
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
+    },
+
+    // Fetch the tags that match THIS record
+    fetchCategoryList: function() {
+        this.$http.get('/api/experts/category')
+          .then((response) =>{
+            this.$set('categorieslist', response.data);
+        });
+    },
+
+    // Fetch the category that matches THIS record
+    fetchCurrentCategory(){
+        this.$http.get('/api/experts/category/'+ this.currentRecordId)
+            .then((response) => {
+                this.$set('categories', response.data);
+            }, (response) => {
+        });
     },
 
     submitForm: function(e) {
@@ -318,6 +366,12 @@ module.exports = {
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       this.record.about = this.about;
+
+      if (this.categories.length > 0) {
+         this.record.categories = this.categories;
+      } else {
+         this.record.categories = [];
+      }
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
@@ -344,7 +398,25 @@ module.exports = {
         // Set errors from validation to vue data
         this.formErrors = response.data.error.message;
       }).bind(this);
-    }
+    },
+
+    delEvent: function(e) {
+        e.preventDefault();
+        this.formMessage.isOk = false;
+        this.formMessage.isErr = false;
+
+        if(confirm('Would you like to delete this expert')==true){
+          $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+          this.$http.post('/api/experts/'+this.record.id+'/delete')
+
+          .then((response) =>{
+              window.location.href = "/admin/experts/list";
+          }, (response) => {
+            console.log('Error: '+JSON.stringify(response))
+          }).bind(this);
+        }
+    },
   },
   watch: {
 

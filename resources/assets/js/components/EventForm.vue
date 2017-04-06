@@ -371,13 +371,6 @@
           {{ participant.label }}
         </option>
       </select>
-      <!-- <v-select :value="record.participants"
-      :options="participants"
-      :searchable="false"
-      >
-
-    </v-select> -->
-
   </div>
 </div><!--/.md12col -->
 </div><!-- /.row -->

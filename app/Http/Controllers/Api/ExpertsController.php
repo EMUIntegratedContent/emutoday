@@ -4,21 +4,21 @@ namespace Emutoday\Http\Controllers\Api;
 
 
 use Emutoday\Expert;
+use Emutoday\ExpertCategory;
 use Emutoday\User;
 use Illuminate\Http\Request;
 
 
 use Illuminate\Support\Facades\Input as Input;
 use Carbon\Carbon;
-// use emutoday\Emutoday\Transformers\FractalAnnouncementTransformer;
 
-// use emutoday\Emutoday\Transformers\AnnouncementTransformer;
 use League\Fractal\Manager;
 use League\Fractal;
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Serializer\DataArraySerializer;
 
-use Emutoday\Today\Transformers\FractalExpertsTransformerModel;
+use Emutoday\Today\Transformers\FractalExpertTransformerModel;
+
 class ExpertsController extends ApiController
 {
   function __construct()
@@ -75,6 +75,10 @@ class ExpertsController extends ApiController
       $expert->expertise            = $request->get('expertise', null);
 
       if($expert->save()) {
+
+          $categories = array_pluck($request->input('categories'),'value');
+          $expert->expertCategories()->sync($categories);
+
         return $this->setStatusCode(201)
         ->respondSavedWithData('Expert successfully saved!',[ 'record_id' => $expert->id ]);
       }
@@ -84,9 +88,9 @@ class ExpertsController extends ApiController
   public function edit($id)
   {
     $fractal = new Manager();
-    $author = Author::findOrFail($id);
+    $expert = Expert::findOrFail($id);
 
-    $resource = new Fractal\Resource\Item($author, new FractalAuthorTransformerModel);
+    $resource = new Fractal\Resource\Item($expert, new FractalExpertTransformerModel);
     // Turn all of that into a JSON string
     return $fractal->createData($resource)->toArray();
   }
@@ -124,10 +128,34 @@ class ExpertsController extends ApiController
         $expert->education          = $request->get('education');
         $expert->expertise          = $request->get('expertise', null);
 
+        $categories = array_pluck($request->input('categories'),'value');
+        $expert->expertCategories()->sync($categories);
+
         if($expert->save()) {
             return $this->setStatusCode(201)
             ->respondSavedWithData('Expert successfully updated!',[ 'record_id' => $expert->id ]);
         }
     }
+  }
+
+  public function expertCategory($id = null){
+      if($id){
+          $expert = Expert::findOrFail($id);
+
+          $category = $expert->expertCategories()->select('category', 'id as value')->get();
+
+          return $category;
+      }
+
+      $categories = ExpertCategory::select('category', 'id as value')->orderBy('category', 'asc')->get();
+
+      return $categories;
+  }
+
+  public function delete($id)
+  {
+    $expert = Expert::findOrFail($id);
+    $expert->delete();
+    return $this->setStatusCode(200)->respond('Expert successfully deleted!');
   }
 }

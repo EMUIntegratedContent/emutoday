@@ -26,21 +26,24 @@
           <div class="box-body">
             <table class="table">
               <tr>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Category</th>
+                <th><span class="sr-only">Thumbnail Photo</span></th>
+                <th>Name</th>
                 <th>Job Title</th>
+                <th>Categories</th>
                 <th>Actions</th>
               </tr>
             @foreach ($expertsPaginated as $expert)
               <tr>
-                <td>{{ $expert->last_name }}</td>
-                <td>{{ $expert->first_name }}</td>
+                  <td>
+                      Thumbnail goes here
+                  </td>
+                <td>{{ $expert->getFullNameAttribute() }}</td>
+                <td>{{ $expert->title }}</td>
                 <td>
-
+                    @foreach ($expert->expertCategories as $category)
+                        <span class="badge">{{ $category->category }}</span>
+                    @endforeach
                 </td>
-                {{--<td>{{ $expert->category }}</td>--}}
-                <td>{{ $author->title }}</td>
                 <td>
                   <a href="/admin/experts/{{ $expert->id }}/edit" class="button success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                 </td>

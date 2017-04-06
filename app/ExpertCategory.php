@@ -3,6 +3,7 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use Emutoday\ExpertCategory;
 
 class ExpertCategory extends Model
 {
@@ -17,12 +18,17 @@ class ExpertCategory extends Model
     'category',
   ];
 
+    public function experts()
+    {
+      return $this->belongsToMany('Emutoday\Expert');
+    }
+
     /**
      * Associations between categories can exist. For example, "Astronomy" can be related to "Physics" or "Space Science"
      */
     public function associations()
 	{
-		return $this->belongsToMany('ExpertCategory', 'expertcategory_associations', 'cat_id', 'assoc_id');
+		return $this->belongsToMany('Emutoday\ExpertCategory', 'expertcategory_associations', 'cat_id', 'assoc_id');
 	}
 
 	public function addAssociation(ExpertCategory $category)

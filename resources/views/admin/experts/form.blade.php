@@ -41,7 +41,7 @@
           </div>	<!-- /.box-header -->
           <div class="box-body">
             <div id="vue-experts">
-              <expert-form errors="{{ json_encode($errors) }}" framework="bootstrap" authorid="{{$currentUser->id}}" recordexists="{{$expert->exists ? true: false}}" recordid="{{$expert->exists ? $expert->id : null }}">
+              <expert-form errors="{{ json_encode($errors) }}" framework="bootstrap" recordexists="{{$expert->exists ? true: false}}" recordid="{{$expert->exists ? $expert->id : null }}">
                   <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
               </expert-form>
             </div><!-- /#vue-event-form -->
@@ -89,5 +89,5 @@
 @endsection
 @section('footer-script')
     @parent
-    
+
 @endsection

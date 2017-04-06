@@ -21117,10 +21117,6 @@ module.exports = {
         this.contact.email = '';
       }
     },
-    ahhh: function ahhh() {
-      console.log('author', this.authors, this.authorlist);
-      console.log('tag', this.tags, this.taglist);
-    },
 
     submitForm: function submitForm(e) {
       var _this12 = this;

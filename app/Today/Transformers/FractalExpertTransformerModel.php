@@ -17,6 +17,7 @@ class FractalExpertTransformerModel extends Fractal\TransformerAbstract
             'about'       => $expert->about,
             'education'   => $expert->education,
             'expertise'   => $expert->expertise,
+            'categories'  => $expert->expertCategories()->select('category', 'id as value')->get(),
         ];
     }
 }

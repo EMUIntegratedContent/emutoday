@@ -47,20 +47,9 @@ class ExpertsController extends Controller
     */
     public function edit($id)
     {
-        $author = $this->author->findOrFail($id);
+        $expert = $this->expert->findOrFail($id);
 
-        return view('admin.authors.form', compact('author'));
-    }
-
-    public function queue($atype = null) {
-        if (is_null($atype)) {
-            $atype = 'general';
-        } else {
-            $atype = $atype;
-        }
-        $announcement = $this->announcement;
-
-        //return view('admin.announcement.queue', compact('announcements', 'atype'));
+        return view('admin.experts.form', compact('expert'));
     }
 
     /**

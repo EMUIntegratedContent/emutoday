@@ -19,10 +19,10 @@ class Expert extends Model
     return $this->last_name . ', '. $this->first_name;
   }
 
-    public function expertCategory()
-    {
-        return $this->hasOne('Emutoday\ExpertCategory');
-    }
+    public function expertCategories()
+	{
+		return $this->belongsToMany('Emutoday\ExpertCategory', 'experts_expertcategory', 'expert_id', 'cat_id');
+	}
 
     public function addImage()
     {

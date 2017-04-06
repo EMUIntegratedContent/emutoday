@@ -17,8 +17,8 @@ class CreateExpertcategoryAssociationsTable extends Migration
               $table->integer('cat_id')->unsigned();
               $table->integer('assoc_id')->unsigned();
 
-              $table->foreign('cat_id')->references('id')->on('expertscategory');
-              $table->foreign('assoc_id')->references('id')->on('expertscategory');
+              $table->foreign('cat_id')->references('id')->on('expertscategory')->onDelete('cascade');
+              $table->foreign('assoc_id')->references('id')->on('expertscategory')->onDelete('cascade');
 
               // Ensures this relationship occurs only once
               $table->primary(array('cat_id', 'assoc_id'));

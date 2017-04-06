@@ -38,17 +38,9 @@ class StoryTypeController extends Controller
 
     }
     public function queueAll(Story $story) {
-        //$storys = \Story::
-        //gtype is the story group route (either story or magazine)
         $gtype = 'story';
-        //stype is the actual story type : 'story', 'news', 'article', 'external', etc..
-        //$stype = $stype;
-        //qtype is the queue type, it's for
-        //tracking what queue->edit->preview pathway
-        // 'queueall' = all story types, 'queuenews' = just news, 'queuearticle'=>magazine articles
         $qtype = 'queueall';
         $stype = 'all';
-        //dd('group= ' .$group . ' stype= ' . $stype. ' qtype= ' . $qtype);
         $sroute = 'story';
         if ($qtype === 'queueall') {
             $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
@@ -56,22 +48,13 @@ class StoryTypeController extends Controller
             $stypes  = $stype;
         }
         return view('admin.story.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
-
-        // return view('admin.story.queue', compact('storys','sroute', 'stypes', 'qtype'));
     }
     public function queue($gtype, $stype, $qtype) {
 
-        //$storys = \Story::
-        //gtype is the story group route (either story or magazine)
         $gtype = $gtype;
-        //stype is the actual story type : 'story', 'news', 'article', 'external', etc..
         $stype = $stype;
-        //qtype is the queue type, it's for
-        //tracking what queue->edit->preview pathway
-        // 'queueall' = all story types, 'queuenews' = just news, 'queuearticle'=>magazine articles
         $qtype = $qtype;
 
-        //dd('group= ' .$group . ' stype= ' . $stype. ' qtype= ' . $qtype);
         $sroute = 'story';
         if ($qtype === 'queueall') {
             $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
@@ -79,10 +62,6 @@ class StoryTypeController extends Controller
             $stypes  = $stype;
         }
 
-        // $qtype  = 'queuenews';
-        // \JavaScript::put([
-        //     'records' => $storys
-        // ]);
         return view('admin.story.queue', compact('sroute', 'gtype', 'stypes', 'stype', 'qtype'));
     }
     /**

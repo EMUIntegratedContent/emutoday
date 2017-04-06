@@ -49,11 +49,16 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::patch('experts/updateitem/{id}', ['as' => 'api_experts_updateitem', 'uses' =>'Api\ExpertsController@updateItem']);
     Route::get('experts/{id}/edit', ['as' => 'api_experts_edititem', 'uses' =>'Api\ExpertsController@edit']);
+    Route::get('experts/category/{id?}', ['as' => 'api_experts_category', 'uses' =>'Api\ExpertsController@expertCategory']);
     Route::post('experts', ['as' => 'api_experts_storeitem', 'uses' => 'Api\ExpertsController@store']); // Route to save expert to db
+    Route::post('experts/{id}/delete', ['as' => 'api_experts_delete', 'uses' =>'Api\ExpertsController@delete']);
     Route::resource('experts', 'Api\ExpertsController');
 
     Route::patch('expertcategory/updateitem/{id}', ['as' => 'api_expertcategory_updateitem', 'uses' =>'Api\ExpertCategoryController@updateItem']);
     Route::get('expertcategory/{id}/edit', ['as' => 'api_expertcategory_edititem', 'uses' =>'Api\ExpertCategoryController@edit']);
+    Route::get('expertcategory/all/{id?}', ['as' => 'api_expertcategory_all', 'uses' => 'Api\ExpertCategoryController@getAllCategories']);
+    Route::get('expertcategory/associated/{id}', ['as' => 'api_expertcategory_associated', 'uses' => 'Api\ExpertCategoryController@getAssociatedCategories']);
+    Route::post('expertcategory/{id}/delete', ['as' => 'api_expertcategory_delete', 'uses' =>'Api\ExpertCategoryController@delete']);
     Route::post('expertcategory', ['as' => 'api_expertcategory_storeitem', 'uses' => 'Api\ExpertCategoryController@store']); // Route to save expert to db
     Route::resource('expertcategory', 'Api\ExpertCategoryController');
 
