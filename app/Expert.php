@@ -3,6 +3,7 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use Emutoday\StoryImage;
 
 class Expert extends Model
 {
@@ -26,19 +27,19 @@ class Expert extends Model
 
     public function addImage()
     {
-        return $this->storyImages()->create([
+        return $this->expertImages()->create([
             'image_name'=> 'img' . $this->id . '_expert',
-            'image_type'=> 'imageexpert',
+            'image_type'=> 'headshot',
         ]);
     }
 
-    public function storyImage()
+    public function expertImages()
     {
-        return $this->hasOne(ExpertImage::class);
+        return $this->hasMany('Emutoday\ExpertImage');
     }
 
     public function images()
     {
-        return $this->hasOne('Emutoday\ExpertImage');
+        return $this->hasMany('Emutoday\ExpertImage');
     }
 }

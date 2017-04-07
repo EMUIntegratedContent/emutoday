@@ -4,6 +4,7 @@ namespace Emutoday\Http\Controllers\Admin;
 
 
 use Emutoday\Expert;
+use Emutoday\Imagetype;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
@@ -45,11 +46,65 @@ class ExpertsController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function edit($id)
+    public function edit($id, Expert $expert)
     {
         $expert = $this->expert->findOrFail($id);
 
-        return view('admin.experts.form', compact('expert'));
+        $currentRequiredImages = null;
+        $currentOtherImages = null;
+        $stillNeedTheseImgs = null;
+
+        //$currentRequiredImages = $story->storyImages->whereIn('imagetype_id',$requiredImageKeyArray);
+        $imagetypeNames = Imagetype::ofGroup('experts')->get()->keyBy('id');
+
+        $requiredImageListCollection = Imagetype::ofGroup('experts')->isRequired(1)->get();
+        $otherImageListCollection = Imagetype::ofGroup('experts')->isRequired(0)->get();
+
+        // List out the  required image types  needed
+        $requiredImageList = Imagetype::ofGroup('experts')->isRequired(1)->pluck('type', 'id');
+        $requiredImageListArray = $requiredImageList->toArray();
+
+        // List out all the possible other image types
+        $otherImageList = Imagetype::ofGroup('experts')->isRequired(0)->pluck('type', 'id');
+        $otherImageListArray = $otherImageList->toArray();
+
+        //create array of requireed images to compare with actual iamges
+        $requiredImageCollect = Imagetype::ofGroup('experts')->isRequired(1)->pluck('id');
+        $requiredImageKeyArray = $requiredImageCollect->toArray();
+
+        $currentRequiredImages = $expert->expertImages->whereIn('imagetype_id',$requiredImageKeyArray);
+
+        $remainingRequiredImagesNeeded = $requiredImageList->count() - $currentRequiredImages->count();
+
+        $stillNeedTheseImgs = null;
+
+        if($remainingRequiredImagesNeeded > 0) {
+            $currentRequiredImagesIdsList = $currentRequiredImages->pluck('imagetype_id');
+            $currentRequiredImagesIdsListArray = $currentRequiredImagesIdsList->toArray();
+
+            $stillNeedTheseImgs = $requiredImageListCollection->except($currentRequiredImagesIdsListArray);
+
+            $currentOtherImages = null;
+
+            return view('admin.experts.form', compact('expert','currentRequiredImages','currentOtherImages','stillNeedTheseImgs'));
+        }
+
+        $otherImageCollect = Imagetype::ofGroup('expoerts')->isRequired(0)->pluck('id');
+        $otherImageKeyArray = $otherImageCollect->toArray();
+
+        $currentOtherImages = $expert->expertImages->whereIn('imagetype_id', $otherImageKeyArray);
+        $remainingOtherImagesNeeded = $otherImageCollect->count() - $currentOtherImages->count();
+
+        if ($remainingOtherImagesNeeded > 0) {
+                $currentOtherImagesIdsList = $currentOtherImages->pluck('imagetype_id');
+                $currentOtherImagesIdsListArray = $currentOtherImagesIdsList->toArray();
+                $stillNeedTheseImgs = $otherImageListCollection->except($currentOtherImagesIdsListArray);
+
+                return view('admin.experts.form', compact('expert','currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+        } else {
+            $stillNeedTheseImgs = null;
+            return view('admin.experts.form', compact('expert','currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+        }
     }
 
     /**

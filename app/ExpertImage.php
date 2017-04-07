@@ -9,6 +9,13 @@ class ExpertImage extends Model
     use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\StoryImagePresenter';
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'experts_images';
+
     protected $fillable = [
         'expert_id',
         'is_active',
@@ -17,7 +24,7 @@ class ExpertImage extends Model
         'title',
         'caption',
         'image_extension',
-        'image_type',
+        'image_name',
         'imagetype_id',
         'group'
 ];
@@ -38,11 +45,6 @@ class ExpertImage extends Model
     public function imgtype()
     {
         return $this->belongsTo('Emutoday\Imagetype','imagetype_id');
-    }
-
-    public function scopeOfType($query, $itype)
-    {
-        return $query->where('image_type',$itype);
     }
 
 }

@@ -49,7 +49,32 @@
         </div><!-- /.box-body -->
       </div><!-- /.box -->
       <div class="col-md-5">
-          {{--@include('admin.experts.subviews.expertimage',['expert_id' => $expert->id ])--}}
+          @if($expert->exists)
+              {{-- dd($currentRequiredImages) --}}
+
+              @if($currentRequiredImages !== null)
+                  {{-- display the appropriate for for the required images --}}
+                  @if ($currentRequiredImages->count() > 0)
+                      {{-- there is at least 1 requireed image in the collection
+                          so loop thru the required images collection and display form --}}
+                      @foreach($currentRequiredImages as $currentRequiredImage)
+                          @include('admin.experts.subviews.expertimage',['expertImage' => $currentRequiredImage, 'expert_id' => $expert->id ])
+                      @endforeach
+                  @endif
+              @endif
+              @if($currentOtherImages !== null)
+                  @if($currentOtherImages->count() > 0)
+                      <!-- use this section if other images become necessary -->
+                  @endif
+              @endif
+              @if($stillNeedTheseImgs !== null)
+                  @if($stillNeedTheseImgs->count() > 0)
+                      @foreach($stillNeedTheseImgs as $stillNeedTheseImg)
+                           @include('admin.experts.subviews.addexpertimage',['otherImage' => $stillNeedTheseImg, 'expert_id' => $expert->id ])
+                      @endforeach
+                  @endif
+              @endif
+          @endif
       </div><!-- /.md5 -->
     </div><!-- /.row -->
 

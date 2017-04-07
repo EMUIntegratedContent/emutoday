@@ -70,22 +70,22 @@
             @can('admin', $currentUser)
                 <div class="col-md-5">
                     @if($story->exists)
-                    @if($story->story_type == 'news')
-                      <div class="box box-warning">
-                        <div class="box-header with-border">
+                        @if($story->story_type == 'news')
+                          <div class="box box-warning">
+                            <div class="box-header with-border">
 
-                          <form action="{{ route('admin_promotestory',['id' => $story->id])}}" method="POST">
-                            {{ csrf_field() }}
-                            {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
-                            {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
-                            {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
+                              <form action="{{ route('admin_promotestory',['id' => $story->id])}}" method="POST">
+                                {{ csrf_field() }}
+                                {{ Form::hidden('qtype', $qtype, array('id' => 'qtype')) }}
+                                {{ Form::hidden('gtype', $gtype, array('id' => 'gtype')) }}
+                                {{ Form::hidden('stype', $stype, array('id' => 'stype')) }}
 
-                            {!! Form::select('new_story_type', $stypelist, 'story', ['class' => 'form-control']) !!}
-                            <button class="btn btn-primary" href="#">Promote Story</button>
-                          </form>
-                        </div>
-                      </div>
-                    @endif
+                                {!! Form::select('new_story_type', $stypelist, 'story', ['class' => 'form-control']) !!}
+                                <button class="btn btn-primary" href="#">Promote Story</button>
+                              </form>
+                            </div>
+                          </div>
+                        @endif
                         {{-- the following story_types may have images  --}}
                             @if($currentRequiredImages !== null)
                                 {{-- display the appropriate for for the required images --}}
@@ -94,10 +94,13 @@
                                         so loop thru the required images collection and display form --}}
                                     @foreach($currentRequiredImages as $currentRequiredImage)
                                         @if($currentRequiredImage->image_type == 'small')
+                                            mp
                                             @include('admin.storyimages.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @elseif($currentRequiredImage->image_type == 'story')
+                                            rp
                                             @include('admin.storyimages.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
+                                            tp
                                             @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @endif
                                     @endforeach
@@ -110,8 +113,10 @@
 
                                     @foreach($currentOtherImages as $currentOtherImage)
                                         @if($currentOtherImage->image_type == 'front')
+                                            zp
                                             @include('admin.storyimages.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
+                                            yp
                                             @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
 
                                         @endif
@@ -122,6 +127,7 @@
 
                                 @if($stillNeedTheseImgs->count() > 0)
                                     @foreach($stillNeedTheseImgs as $stillNeedTheseImg)
+                                        kp
                                         @include('admin.storyimages.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                     @endforeach
                                 @endif

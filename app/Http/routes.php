@@ -310,6 +310,11 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
 
+        Route::patch('expertimage/{expertimage}/update',['as' => 'admin_expertimage_update', 'uses' => 'Admin\ExpertImageController@update']);
+        Route::delete('expertimage/{expertimage}/delete', ['as' => 'admin_expertimage_destroy', 'uses' => 'Admin\ExpertImageController@destroy'] );
+        Route::post('experts/{expert}/addnewexpertimage',['as' => 'admin_expertimage_add_new_expertimage', 'uses' => 'Admin\ExpertImageController@addNewExpertImage']);
+        Route::get('expertimage/{expertimage}/confirm', ['as' => 'admin_expertimage_confirm', 'uses' => 'Admin\ExpertImageController@confirm']);
+
     });
 
     Route::group(['prefix' => 'preview' ], function()

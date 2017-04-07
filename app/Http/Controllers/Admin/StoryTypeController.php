@@ -259,7 +259,6 @@ class StoryTypeController extends Controller
                 return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
 
             } else {
-
                 $otherImageCollect = Imagetype::ofGroup($storyGroup)->isRequired(0)->pluck('id');//keyBy('id');
                 $otherImageKeyArray = $otherImageCollect->toArray();
 
