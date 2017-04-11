@@ -114,10 +114,11 @@ class ExpertCategoryController extends ApiController
     }
   }
 
-  public function delete($id)
+  public function delete(Request $request, $id)
   {
     $category = ExpertCategory::findOrFail($id);
     $category->delete();
+
     return $this->setStatusCode(200)->respond('Expert category successfully deleted!');
   }
 

@@ -15,7 +15,13 @@
         @parent
     @endsection
 @section('content')
-
+    @if(Session::has('status'))
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('status') }}</p>
+            </div>
+        </div>
+    @endif
     <div class="row">
       <div class="col-md-9">
         <div class="box box-primary">

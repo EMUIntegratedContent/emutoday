@@ -31,7 +31,6 @@
 
         @section('content')
         <div class="row">
-            {{ dd($currentUser->roles) }}
             @if($currentUser->roles->first()->name == 'contributor_1')
                 <div class="col-md-10">
             @else
