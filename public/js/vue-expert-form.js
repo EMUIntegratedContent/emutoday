@@ -20582,6 +20582,7 @@ module.exports = {
       this.recordState = 'new';
       this.fetchCategoryList();
     }
+    this.getUserRoles();
   },
   computed: {
 
@@ -20671,14 +20672,12 @@ module.exports = {
       } else {
         this.checkContentChange();
       }
-      console.log('content change');
     },
     checkContentChange: function checkContentChange() {
       if (!this.recordIsDirty) {
         this.recordIsDirty = true;
         this.updateRecordIsDirty(true);
       }
-      console.log('checkContentChange');
     },
     jsonEquals: function jsonEquals(a, b) {
       return (0, _stringify2.default)(a) === (0, _stringify2.default)(b);

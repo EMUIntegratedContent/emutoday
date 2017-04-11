@@ -306,6 +306,7 @@ module.exports = {
       this.recordState = 'new';
       this.fetchCategoryList();
     }
+    this.getUserRoles();
   },
   computed: {
 
@@ -396,14 +397,12 @@ module.exports = {
         } else {
           this.checkContentChange();
         }
-        console.log('content change')
       },
       checkContentChange: function(){
         if (!this.recordIsDirty) {
           this.recordIsDirty = true
           this.updateRecordIsDirty(true);
         }
-        console.log('checkContentChange')
       },
       jsonEquals: function(a,b) {
         return JSON.stringify(a) === JSON.stringify(b);
@@ -421,9 +420,6 @@ module.exports = {
         } else {
           self.userRoles.push('guest');
         }
-
-
-
       },
 
     fetchCurrentRecord: function(recid) {
