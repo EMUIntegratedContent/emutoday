@@ -81,7 +81,7 @@
       <div v-bind:class="md12col">
         <!-- Last Name -->
         <div v-bind:class="formGroup">
-          <label>Expertise Categories <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <label>Expertise Categories</label>
           <v-select
           :class="[formErrors.tags ? 'invalid-input' : '']"
           :value.sync="categories"
@@ -361,7 +361,7 @@ module.exports = {
 
     editorType:function(){
       if(this.isAdmin){
-        return 'simple'
+        return 'admin'
       } else {
         return 'simple'
       }

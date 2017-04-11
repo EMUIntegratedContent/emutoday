@@ -16,7 +16,7 @@ class CreateExpertsImagesTable extends Migration
             $table->increments('id');
 
             $table->integer('expert_id')->unsigned();
-            $table->boolean('confirmed');
+            $table->boolean('is_active');
             $table->integer('imagetype_id')->unsigned()->nullable();
             $table->string('title');
             $table->string('caption')->nullable();
