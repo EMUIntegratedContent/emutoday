@@ -98,4 +98,15 @@ class User extends Authenticatable
     public function bugztracked(){
         return $this->hasMany('Emutoday\Bugz', 'user_id');
     }
+
+    public function isAdmin() {
+        if($this->hasRole('admin') || $this->hasRole('super_admin')){
+            return true;
+        }
+        return false;
+    }
+
+    public function isExpertsEditor() {
+        return $this->hasRole('experts');
+    }
 }

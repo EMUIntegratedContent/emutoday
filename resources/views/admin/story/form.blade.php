@@ -31,7 +31,7 @@
 
         @section('content')
         <div class="row">
-
+            {{ dd($currentUser->roles) }}
             @if($currentUser->roles->first()->name == 'contributor_1')
                 <div class="col-md-10">
             @else
@@ -94,13 +94,10 @@
                                         so loop thru the required images collection and display form --}}
                                     @foreach($currentRequiredImages as $currentRequiredImage)
                                         @if($currentRequiredImage->image_type == 'small')
-                                            mp
                                             @include('admin.storyimages.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @elseif($currentRequiredImage->image_type == 'story')
-                                            rp
                                             @include('admin.storyimages.subviews.storyimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
-                                            tp
                                             @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @endif
                                     @endforeach
@@ -113,12 +110,9 @@
 
                                     @foreach($currentOtherImages as $currentOtherImage)
                                         @if($currentOtherImage->image_type == 'front')
-                                            zp
                                             @include('admin.storyimages.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
-                                            yp
                                             @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
-
                                         @endif
                                     @endforeach
                                 @endif
@@ -127,7 +121,6 @@
 
                                 @if($stillNeedTheseImgs->count() > 0)
                                     @foreach($stillNeedTheseImgs as $stillNeedTheseImg)
-                                        kp
                                         @include('admin.storyimages.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                     @endforeach
                                 @endif

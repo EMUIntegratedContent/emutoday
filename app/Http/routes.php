@@ -226,14 +226,6 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('authors/form', ['as' => 'authors_form', 'uses' => 'Admin\AuthorsController@form']);
         Route::resource('authors', 'Admin\AuthorsController');
 
-        Route::get('experts/list', ['as' => 'experts_list', 'uses' => 'Admin\ExpertsController@index']);
-        Route::get('experts/form', ['as' => 'experts_form', 'uses' => 'Admin\ExpertsController@form']);
-        Route::resource('experts', 'Admin\ExpertsController');
-
-        Route::get('expertcategory/list', ['as' => 'expertcategory_list', 'uses' => 'Admin\ExpertCategoryController@index']);
-        Route::get('expertcategory/form', ['as' => 'expertcategory_form', 'uses' => 'Admin\ExpertCategoryController@form']);
-        Route::resource('expertcategory', 'Admin\ExpertCategoryController');
-
         Route::get('dashboard', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
         Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);
 
@@ -310,10 +302,23 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
 
-        Route::patch('expertimage/{expertimage}/update',['as' => 'admin_expertimage_update', 'uses' => 'Admin\ExpertImageController@update']);
-        Route::delete('expertimage/{expertimage}/delete', ['as' => 'admin_expertimage_destroy', 'uses' => 'Admin\ExpertImageController@destroy'] );
-        Route::post('experts/{expert}/addnewexpertimage',['as' => 'admin_expertimage_add_new_expertimage', 'uses' => 'Admin\ExpertImageController@addNewExpertImage']);
-        Route::get('expertimage/{expertimage}/confirm', ['as' => 'admin_expertimage_confirm', 'uses' => 'Admin\ExpertImageController@confirm']);
+
+        /* EXPERTS */
+        Route::group(['middleware' => 'Emutoday\Http\Middleware\ExpertsMiddleware'], function()
+        {
+            Route::get('experts/list', ['as' => 'experts_list', 'uses' => 'Admin\ExpertsController@index']);
+            Route::get('experts/form', ['as' => 'experts_form', 'uses' => 'Admin\ExpertsController@form']);
+            Route::resource('experts', 'Admin\ExpertsController');
+
+            Route::get('expertcategory/list', ['as' => 'expertcategory_list', 'uses' => 'Admin\ExpertCategoryController@index']);
+            Route::get('expertcategory/form', ['as' => 'expertcategory_form', 'uses' => 'Admin\ExpertCategoryController@form']);
+            Route::resource('expertcategory', 'Admin\ExpertCategoryController');
+
+            Route::patch('expertimage/{expertimage}/update',['as' => 'admin_expertimage_update', 'uses' => 'Admin\ExpertImageController@update']);
+            Route::delete('expertimage/{expertimage}/delete', ['as' => 'admin_expertimage_destroy', 'uses' => 'Admin\ExpertImageController@destroy'] );
+            Route::post('experts/{expert}/addnewexpertimage',['as' => 'admin_expertimage_add_new_expertimage', 'uses' => 'Admin\ExpertImageController@addNewExpertImage']);
+            Route::get('expertimage/{expertimage}/confirm', ['as' => 'admin_expertimage_confirm', 'uses' => 'Admin\ExpertImageController@confirm']);
+        });
 
     });
 

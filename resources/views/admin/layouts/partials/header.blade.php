@@ -14,10 +14,9 @@
     <!-- Navbar Right Menu -->
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-
+            {{-- dd($currentUser) --}}
             <!-- /.messages-menu -->
             @can('super', $currentUser)
-                {{--@include('admin.layouts.partials.notifications.bugz')--}}
 
                 @include('admin.layouts.partials.notifications.events')
                 @include('admin.layouts.partials.notifications.announcements')

@@ -35,7 +35,9 @@
             @foreach ($expertsPaginated as $expert)
               <tr>
                   <td>
-                      <img class="better-thumb" src="/imagecache/betterthumb/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}">
+                      @if($expert->expertImages()->first())
+                      <img class="small-thumb" src="/imagecache/betterthumb/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}">
+                      @endif
                   </td>
                 <td>{{ $expert->getFullNameAttribute() }}</td>
                 <td>{{ $expert->title }}</td>

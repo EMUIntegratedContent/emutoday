@@ -34,7 +34,7 @@ class StoryController extends ApiController
 
 
        public function queue($gtype, $stype, $qtype, $fromDate = null, $toDate = null)
-       { 
+       {
            if (\Auth::check()) {
                $user = \Auth::user();
                if ($user->hasRole('contributor_1')){

@@ -12,6 +12,7 @@ use Emutoday\Helpers\Interfaces\IBug;
 
 use Illuminate\Support\Facades\View;
 use JavaScript;
+use Emutoday\User;
 
 class ExpertsController extends Controller
 {
@@ -115,6 +116,12 @@ class ExpertsController extends Controller
     public function form()
     {
         $expert = $this->expert;
+
+        $user = \Auth::user();
+
+        JavaScript::put([
+            'cuser' => $user,
+        ]);
 
         return view('admin.experts.form', compact('expert'));
     }

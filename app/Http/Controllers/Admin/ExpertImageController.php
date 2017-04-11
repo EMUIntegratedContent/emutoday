@@ -72,7 +72,7 @@ class ExpertImageController extends Controller
     //create new instance of model to save from form
     $expertImage = $this->expertImage->findOrFail($id);
 
-    $expertImage->is_active = $request->get('is_active');
+    $expertImage->is_active = 1;
     $expertImage->title = $request->get('title');
     $expertImage->caption = $request->get('caption');
 

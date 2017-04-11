@@ -41,7 +41,12 @@
           </div>	<!-- /.box-header -->
           <div class="box-body">
             <div id="vue-experts">
-              <expert-form errors="{{ json_encode($errors) }}" framework="bootstrap" recordexists="{{$expert->exists ? true: false}}" recordid="{{$expert->exists ? $expert->id : null }}">
+              <expert-form
+                errors="{{ json_encode($errors) }}"
+                framework="bootstrap"
+                :cuser-roles="{{$currentUser->roles}}"
+                recordexists="{{$expert->exists ? true: false}}"
+                recordid="{{$expert->exists ? $expert->id : null }}">
                   <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
               </expert-form>
             </div><!-- /#vue-event-form -->
@@ -50,8 +55,6 @@
       </div><!-- /.box -->
       <div class="col-md-5">
           @if($expert->exists)
-              {{-- dd($currentRequiredImages) --}}
-
               @if($currentRequiredImages !== null)
                   {{-- display the appropriate for for the required images --}}
                   @if ($currentRequiredImages->count() > 0)

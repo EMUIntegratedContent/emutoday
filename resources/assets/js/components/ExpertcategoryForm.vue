@@ -145,9 +145,23 @@ h5.form-control {
 import moment from 'moment';
 import flatpickr from 'flatpickr';
 import vSelect from "vue-select";
+import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
+import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
 module.exports = {
   directives: {flatpickr},
   components: {vSelect},
+  vuex: {
+    getters: {
+      thisRecordId: getRecordId,
+      thisRecordState: getRecordState,
+      thisRecordIsDirty: getRecordIsDirty
+    },
+    actions: {
+      updateRecordId,
+      updateRecordState,
+      updateRecordIsDirty
+    }
+  },
   props: {
     errors: {
       default: ''
@@ -164,6 +178,7 @@ module.exports = {
   },
   data: function() {
     return {
+      ckfullyloaded: false,
       currentDate: {},
       record: {
         category: '',
@@ -182,6 +197,9 @@ module.exports = {
       },
       formInputs: {},
       formErrors: {},
+      isFresh: true,
+      hasContent: false,
+      newform: false,
     }
   },
   created: function() {
@@ -279,6 +297,22 @@ module.exports = {
         }).bind(this);
     },
 
+    nowOnReload:function() {
+      let newurl = '/admin/expertcategory/'+ this.currentRecordId+'/edit';
+
+      document.location = newurl;
+    },
+
+    onRefresh: function() {
+      this.updateRecordId(this.currentRecordId);
+      this.recordState = 'edit';
+      this.recordIsDirty = false;
+
+      this.recordId = this.currentRecordId;
+      this.recordexists = true;
+      this.fetchCurrentRecord();
+    },
+
     submitForm: function(e) {
       e.preventDefault(); // Stop form defualt action
 
@@ -305,7 +339,12 @@ module.exports = {
         this.formMessage.isErr = false;
         this.recordexists = true;
         this.formErrors = {}; // Clear errors?
-        this.fetchCurrentRecord(this.record.id)
+
+        if (this.newform) {
+          this.nowOnReload();
+        } else {
+          this.onRefresh();
+        }
       }, (response) => { // If invalid. error callback
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;

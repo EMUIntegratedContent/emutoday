@@ -20706,7 +20706,6 @@ module.exports = {
   ready: function ready() {
     if (this.recordexists) {
       this.currentRecordId = this.editid;
-      console.log('this.recordId >>>>' + this.currentRecordId);
       this.singleStype = true;
       this.newform = false;
       // this.record.user_id = this.cuser.id;
@@ -20715,8 +20714,6 @@ module.exports = {
       this.newform = true;
       this.hasContent = true;
       this.record.user_id = this.cuser.id;
-      console.log('tthis.record.user_id' + this.record.user_id);
-
       this.fdate = this.currentDate;
 
       this.setAuthorToCurrentUser(this.currentUser.id);
@@ -20809,6 +20806,8 @@ module.exports = {
   methods: {
     getUserRoles: function getUserRoles() {
       var roles = this.cuser.roles;
+      console.log("USER");
+      console.log(this.cuser);
       var self = this;
       this.userRoles = [];
       if (roles.length > 0) {
@@ -20818,18 +20817,11 @@ module.exports = {
       } else {
         self.userRoles.push('guest');
       }
-
-      console.log('userRoles====' + this.userRoles);
     },
 
-
     nowOnReload: function nowOnReload() {
-
-      //   {qtype}/{gtype}/{stype}/{story}/edit'
+      //   {qtype}/{gtype}/{stype}/{story}/edit
       var newurl = '/admin/' + this.qtype + '/' + this.gtype + '/' + this.response_stype + '/' + this.response_record_id + '/edit';
-
-      //   let newurl = '/admin/story/' + this.response_stype +'/'+ this.response_record_id+'/edit';
-      console.log(newurl);
       document.location = newurl;
     },
 
@@ -20837,7 +20829,7 @@ module.exports = {
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
-      //   this.updateRecordState('edit');
+
       this.recordId = this.currentRecordId;
       this.recordexists = true;
       this.fetchCurrentRecord();
@@ -20878,11 +20870,9 @@ module.exports = {
         this.recordIsDirty = true;
         this.updateRecordIsDirty(true);
       }
-      console.log('blur');
     },
     onCalendarChange: function onCalendarChange() {
       this.checkContentChange();
-      console.log('cal change');
     },
     onContentChange: function onContentChange() {
       if (!this.ckfullyloaded) {
@@ -20890,14 +20880,12 @@ module.exports = {
       } else {
         this.checkContentChange();
       }
-      console.log('content change');
     },
     checkContentChange: function checkContentChange() {
       if (!this.recordIsDirty) {
         this.recordIsDirty = true;
         this.updateRecordIsDirty(true);
       }
-      console.log('checkContentChange');
     },
     jsonEquals: function jsonEquals(a, b) {
       return (0, _stringify2.default)(a) === (0, _stringify2.default)(b);
@@ -20906,7 +20894,6 @@ module.exports = {
     fetchAuthorList: function fetchAuthorList() {
       var _this = this;
 
-      console.log('author list fetch');
       this.$http.get('/api/authorlist').then(function (response) {
         _this.$set('authorlist', response.data);
       }, function (response) {
@@ -20918,7 +20905,6 @@ module.exports = {
     fetchContactList: function fetchContactList() {
       var _this2 = this;
 
-      console.log('contact list fetch');
       this.$http.get('/api/contactlist').then(function (response) {
         _this2.$set('contactlist', response.data);
       }, function (response) {
@@ -20961,7 +20947,6 @@ module.exports = {
       var _this5 = this;
 
       this.$http.get('/api/taglist/').then(function (response) {
-        console.log(response.data);
         _this5.$set('taglist', response.data);
       });
     },
@@ -20970,7 +20955,6 @@ module.exports = {
       var _this6 = this;
 
       this.$http.get('/api/taglist/' + this.currentRecordId).then(function (response) {
-        console.log(response.data);
         _this6.$set('tags', response.data);
       }, function (response) {});
     },
@@ -20982,8 +20966,6 @@ module.exports = {
       this.$http.get('/api/story/' + this.currentRecordId + '/edit').then(function (response) {
         _this7.$set('record', response.data.data);
         _this7.$set('recordOld', response.data.data);
-        console.log("DAIDA");
-        console.log(response.data.data);
 
         //set contact information
         _this7.contact.id = response.data.data.contact.id;
@@ -20996,7 +20978,6 @@ module.exports = {
       }, function (response) {
         //error callback
         console.log("ERRORS");
-
         _this7.formErrors = response.data.error.message;
       }).bind(this);
     },
@@ -21011,8 +20992,6 @@ module.exports = {
           _this8.author = {};
           _this8.record.author_id = 0;
         }
-        console.log("AUTHORDATA");
-        console.log(response.data.newdata);
       }, function (response) {
         _this8.formErrors = response.data.error.message;
       }).bind(this);
@@ -21030,8 +21009,6 @@ module.exports = {
       } else {
         // Set the default author based on the author table's id, not the user table's id!
         this.setAuthorToCurrentUser(this.currentUser.id);
-        //this.author = this.currentUser;
-        //this.author.id = 0;
       }
       this.recordexists = true;
 
@@ -21046,18 +21023,16 @@ module.exports = {
 
       e.preventDefault();
       this.saveAuthorMessage.isOk = '';
-      console.log('rec.author_id:' + this.author.id);
       var method = this.author.id == 0 ? 'post' : 'put';
       var route = this.author.id == 0 ? '/api/author' : '/api/author/' + this.author.id;
 
       this.$http[method](route, this.author).then(function (response) {
         _this9.authorErrors = '';
         _this9.fetchAuthorList();
-        console.log('response.author=' + (0, _stringify2.default)(response.data.newdata));
 
         _this9.author.id = response.data.newdata.author.id;
         _this9.record.author_id = response.data.newdata.author.id;
-        console.log('rec.author_id:' + _this9.author.id);
+
         _this9.author.first_name = response.data.newdata.author.first_name;
         _this9.author.last_name = response.data.newdata.author.last_name;
         _this9.author.phone = response.data.newdata.author.phone;
@@ -21141,7 +21116,6 @@ module.exports = {
       }
 
       if (this.author.id !== 0) {
-        console.log("AUTHORID" + this.author.id);
         this.record.author_id = this.author.id;
       }
 
@@ -21155,8 +21129,6 @@ module.exports = {
       } else {
         tempid = this.record.id;
       }
-      console.log('tempid' + tempid);
-      console.log('this.recordexists' + this.recordexists);
       var method = this.recordexists ? 'put' : 'post';
       var route = this.recordexists ? '/api/story/' + tempid : '/api/story';
 
@@ -21167,7 +21139,6 @@ module.exports = {
         _this12.formMessage.isOk = response.ok;
         _this12.formErrors = '';
 
-        console.log('newdta' + response.data.newdata.record_id);
         _this12.response_record_id = response.data.newdata.record_id;
         _this12.response_stype = response.data.newdata.stype;
         if (_this12.newform) {
@@ -21184,24 +21155,18 @@ module.exports = {
   filters: {
     momentstart: {
       read: function read(val) {
-        console.log('read-val' + val);
 
         return val ? val : '';
       },
       write: function write(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal);
         return (0, _moment2.default)(val).format('MM-DD-YYYY');
       }
     },
     momentfilter: {
       read: function read(val) {
-        console.log('read-val' + val);
-
         return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
       },
       write: function write(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal);
-
         return (0, _moment2.default)(val).format('YYYY-MM-DD');
       }
     }

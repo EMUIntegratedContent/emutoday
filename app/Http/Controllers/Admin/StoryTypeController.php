@@ -8,9 +8,6 @@ use Emutoday\Tag;
 use Emutoday\User;
 use Emutoday\Imagetype;
 use Emutoday\StoryType;
-// use Emutoday\Today\Transformers\FractalStoryTransformer;
-// use Emutoday\Today\Transformers\FractalStoryExtraTransformer;
-// use Emutoday\Today\Transformers\StoryTransformer;
 
 use League\Fractal\Manager;
 use League\Fractal;

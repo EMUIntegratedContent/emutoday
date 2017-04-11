@@ -19782,11 +19782,27 @@ var _vueSelect = require('vue-select');
 
 var _vueSelect2 = _interopRequireDefault(_vueSelect);
 
+var _actions = require('../vuex/actions');
+
+var _getters = require('../vuex/getters');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
   directives: { flatpickr: _flatpickr2.default },
   components: { vSelect: _vueSelect2.default },
+  vuex: {
+    getters: {
+      thisRecordId: _getters.getRecordId,
+      thisRecordState: _getters.getRecordState,
+      thisRecordIsDirty: _getters.getRecordIsDirty
+    },
+    actions: {
+      updateRecordId: _actions.updateRecordId,
+      updateRecordState: _actions.updateRecordState,
+      updateRecordIsDirty: _actions.updateRecordIsDirty
+    }
+  },
   props: {
     errors: {
       default: ''
@@ -19803,6 +19819,7 @@ module.exports = {
   },
   data: function data() {
     return {
+      ckfullyloaded: false,
       currentDate: {},
       record: {
         category: '',
@@ -19820,7 +19837,10 @@ module.exports = {
         msg: ''
       },
       formInputs: {},
-      formErrors: {}
+      formErrors: {},
+      isFresh: true,
+      hasContent: false,
+      newform: false
     };
   },
   created: function created() {},
@@ -19919,6 +19939,22 @@ module.exports = {
       }).bind(this);
     },
 
+    nowOnReload: function nowOnReload() {
+      var newurl = '/admin/expertcategory/' + this.currentRecordId + '/edit';
+
+      document.location = newurl;
+    },
+
+    onRefresh: function onRefresh() {
+      this.updateRecordId(this.currentRecordId);
+      this.recordState = 'edit';
+      this.recordIsDirty = false;
+
+      this.recordId = this.currentRecordId;
+      this.recordexists = true;
+      this.fetchCurrentRecord();
+    },
+
     submitForm: function submitForm(e) {
       var _this4 = this;
 
@@ -19947,7 +19983,12 @@ module.exports = {
         _this4.formMessage.isErr = false;
         _this4.recordexists = true;
         _this4.formErrors = {}; // Clear errors?
-        _this4.fetchCurrentRecord(_this4.record.id);
+
+        if (_this4.newform) {
+          _this4.nowOnReload();
+        } else {
+          _this4.onRefresh();
+        }
       }, function (response) {
         // If invalid. error callback
         _this4.formMessage.isOk = false;
@@ -19994,7 +20035,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5ebcad83", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"babel-runtime/core-js/json/stringify":1,"flatpickr":101,"moment":102,"vue":107,"vue-hot-reload-api":104,"vue-select":106,"vueify/lib/insert-css":108}],110:[function(require,module,exports){
+},{"../vuex/actions":111,"../vuex/getters":112,"babel-runtime/core-js/json/stringify":1,"flatpickr":101,"moment":102,"vue":107,"vue-hot-reload-api":104,"vue-select":106,"vueify/lib/insert-css":108}],110:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -20023,6 +20064,53 @@ var vm = new Vue({
     }
 });
 
-},{"./components/ExpertcategoryForm.vue":109,"vue":107,"vue-resource":105}]},{},[110]);
+},{"./components/ExpertcategoryForm.vue":109,"vue":107,"vue-resource":105}],111:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// An action will receive the store as the first argument.
+// Since we are only interested in the dispatch (and optionally the state)
+// we can pull those two parameters using the ES6 destructuring feature
+var updateRecordId = exports.updateRecordId = function updateRecordId(_ref, value) {
+  var dispatch = _ref.dispatch;
+  var state = _ref.state;
+
+  dispatch('RECORD_ID', value);
+};
+var updateRecordIsDirty = exports.updateRecordIsDirty = function updateRecordIsDirty(_ref2, value) {
+  var dispatch = _ref2.dispatch;
+  var state = _ref2.state;
+
+  dispatch('RECORD_IS_DIRTY', value);
+};
+var updateRecordState = exports.updateRecordState = function updateRecordState(_ref3, value) {
+  var dispatch = _ref3.dispatch;
+  var state = _ref3.state;
+
+  dispatch('RECORD_STATE', value);
+};
+
+},{}],112:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// This getter is a function which just returns the count
+// With ES6 you can also write it as:
+// export const getCount = state => state.count
+var getRecordId = exports.getRecordId = function getRecordId(state) {
+  return state.recordId;
+};
+var getRecordIsDirty = exports.getRecordIsDirty = function getRecordIsDirty(state) {
+  return state.recordIsDirty;
+};
+var getRecordState = exports.getRecordState = function getRecordState(state) {
+  return state.recordState;
+};
+
+},{}]},{},[110]);
 
 //# sourceMappingURL=vue-expertcategory-form.js.map

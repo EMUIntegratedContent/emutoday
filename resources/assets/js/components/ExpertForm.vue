@@ -59,7 +59,7 @@
         <div v-bind:class="formGroup">
           <label>About <span v-bind:class="iconStar" class="reqstar"></span></label>
           <!--<textarea v-model="record.about" id="about" name="about" rows="200"></textarea>-->
-          <textarea v-if="hasContent" id="about" name="about" v-ckrte="about" :type="editorType" :about="about" :fresh="isFresh" rows="200"></textarea>
+          <textarea v-if="hasContent" v-model="record.about" id="about" name="about" v-ckrte="about" :type="editorType" :about="about" :fresh="isFresh" rows="200"></textarea>
           <p v-if="formErrors.about" class="help-text invalid">Need Content!</p>
         </div>
       </div>
@@ -205,10 +205,25 @@ import moment from 'moment';
 import flatpickr from 'flatpickr';
 import ckrte from "../directives/ckrte.js";
 import vSelect from "vue-select";
+import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
+import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
 module.exports = {
   directives: {ckrte,flatpickr},
   components: {vSelect},
+  vuex: {
+    getters: {
+      thisRecordId: getRecordId,
+      thisRecordState: getRecordState,
+      thisRecordIsDirty: getRecordIsDirty
+    },
+    actions: {
+      updateRecordId,
+      updateRecordState,
+      updateRecordIsDirty
+    }
+  },
   props: {
+    cuserRoles: {default: {}},
     errors: {
       default: ''
     },
@@ -232,10 +247,23 @@ module.exports = {
     return {
       about: '',
       ckfullyloaded: false,
+      contactManuallyChanged: false,
       currentDate: {},
       categories: [],
       categorieslist: [],
+      newform: false,
+      recordState: '',
+      recordOld: {
+        id: '',
+        first_name: '',
+        last_name: '',
+        title: '',
+        expertise: '',
+        about: '',
+        education: '',
+      },
       record: {
+        id: '',
         first_name: '',
         last_name: '',
         title: '',
@@ -258,9 +286,12 @@ module.exports = {
       isFresh: true,
       hasContent: false,
       about: '',
+      recordState: '',
+      userRoles: [],
     }
   },
-  created: function() {
+  created: function () {
+    this.recordState = 'created';
   },
   ready: function() {
     if (this.recordexists){
@@ -312,7 +343,17 @@ module.exports = {
     inputGroupLabel:function(){
       return (this.framework=='foundation')?'input-group-label':'input-group-addon'
     },
-
+    isAdmin:function(){
+      if(this.userRoles.indexOf('admin')!= -1) {
+        return true;
+      } else {
+        if (this.userRoles.indexOf('admin_super') != -1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
     // Switch verbage of submit button.
     submitBtnLabel:function(){
       return (this.recordexists)?'Update Expert': 'Create Expert'
@@ -320,20 +361,77 @@ module.exports = {
 
     editorType:function(){
       if(this.isAdmin){
-        return 'admin'
+        return 'simple'
       } else {
         return 'simple'
       }
     },
+
+    changeContact:function(evt) {
+      this.contactManuallyChanged = true;
+    },
+
+    hasLocalRecordChanged: function() {
+      var ckval = false
+      if (this.recordOld.title !== this.record.title){
+        ckval = true
+      }
+
+      if (this.recordOld.content !== this.content ) {
+        ckval = true
+      }
+
+      if (ckval) {
+        this.updateRecordIsDirty(true)
+
+      }
+      return ckval
+    },
   },
 
   methods: {
+      onContentChange: function(){
+        if (!this.ckfullyloaded) {
+          this.ckfullyloaded = true
+        } else {
+          this.checkContentChange();
+        }
+        console.log('content change')
+      },
+      checkContentChange: function(){
+        if (!this.recordIsDirty) {
+          this.recordIsDirty = true
+          this.updateRecordIsDirty(true);
+        }
+        console.log('checkContentChange')
+      },
+      jsonEquals: function(a,b) {
+        return JSON.stringify(a) === JSON.stringify(b);
+      },
+
+      getUserRoles(){
+
+        let roles = this.cuserRoles;
+        let self = this;
+        this.userRoles = [];
+        if (roles.length > 0) {
+          roles.forEach(function(item,index){
+            self.userRoles.push(item.name);
+          })
+        } else {
+          self.userRoles.push('guest');
+        }
+
+
+
+      },
 
     fetchCurrentRecord: function(recid) {
       this.$http.get('/api/experts/' + recid + '/edit')
 
       .then((response) => {
         this.$set('record', response.data.data)
+        this.$set('recordOld', response.data.data)
 
         this.hasContent = true;
         this.currentRecordId = this.record.id;
@@ -358,6 +456,22 @@ module.exports = {
                 this.$set('categories', response.data);
             }, (response) => {
         });
+    },
+
+    nowOnReload:function() {
+      let newurl = '/admin/experts/'+ this.currentRecordId+'/edit';
+
+      document.location = newurl;
+    },
+
+    onRefresh: function() {
+      this.updateRecordId(this.currentRecordId);
+      this.recordState = 'edit';
+      this.recordIsDirty = false;
+
+      this.recordId = this.currentRecordId;
+      this.recordexists = true;
+      this.fetchCurrentRecord(this.currentRecordId);
     },
 
     submitForm: function(e) {
@@ -391,7 +505,11 @@ module.exports = {
         this.formMessage.isErr = false;
         this.recordexists = true;
         this.formErrors = {}; // Clear errors?
-        this.fetchCurrentRecord(this.record.id)
+        if (this.newform) {
+          this.nowOnReload();
+        } else {
+          this.onRefresh();
+        }
       }, (response) => { // If invalid. error callback
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;

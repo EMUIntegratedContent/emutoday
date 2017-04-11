@@ -98,12 +98,7 @@ class StoryController extends Controller
 
             flash()->success('Story has been Promoted.');
             $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
-            // return view('admin.story.form', compact('story', 'stypes', 'tags','stypelist','requiredImages','otherImages'));
-            // Route::get('story/{stype}/{story}/edit', ['as' => 'admin_storytype_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
-
-
             return redirect($rurl);
-            // return redirect()->route('admin_storytype_edit',['stype'=> $stypes, 'story'=> $story]);
 
         }
 

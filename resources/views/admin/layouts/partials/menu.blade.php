@@ -73,28 +73,31 @@
     <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
   </ul>
 </li>
-<li class="treeview {{ set_active('admin/experts*') }}">
-  <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
-  <ul class="treeview-menu">
-    <li><a href="#"><i class="fa fa-circle-o"></i>People <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-        </span></a>
-        <ul class="treeview-menu {{ set_active('admin/expert*') }}">
-            <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/list"><i class="fa fa-list"></i> <span>List</span></a></li>
-            <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-        </ul>
-    </li>
-    <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">
-        <i class="fa fa-angle-left pull-right"></i>
-        </span></a>
-        <ul class="treeview-menu {{ set_active('admin/experts/category*') }}">
-            <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/list"><i class="fa fa-list"></i> <span>List</span></a></li>
-            <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
-        </ul>
-    </li>
-  </ul>
-</li>
 @endcan
+{{-- Gate Facade allows multiple permission checks (unlike @can) --}}
+@if(Gate::check('admin') || Gate::check('experts'))
+    <li class="treeview {{ set_active('admin/experts*') }}">
+      <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
+      <ul class="treeview-menu">
+        <li><a href="#"><i class="fa fa-circle-o"></i>People <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+            </span></a>
+            <ul class="treeview-menu {{ set_active('admin/expert*') }}">
+                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/list"><i class="fa fa-list"></i> <span>List</span></a></li>
+                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+            </span></a>
+            <ul class="treeview-menu {{ set_active('admin/experts/category*') }}">
+                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/list"><i class="fa fa-list"></i> <span>List</span></a></li>
+                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+            </ul>
+        </li>
+      </ul>
+    </li>
+@endif
 
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/magazine*') }}">
