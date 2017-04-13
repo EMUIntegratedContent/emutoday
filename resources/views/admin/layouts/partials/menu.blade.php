@@ -75,7 +75,8 @@
 </li>
 @endcan
 {{-- Gate Facade allows multiple permission checks (unlike @can) --}}
-@if(Gate::check('admin') || Gate::check('experts'))
+{{--@if(Gate::check('admin') || Gate::check('experts'))--}}
+@if(Gate::check('experts'))
     <li class="treeview {{ set_active('admin/experts*') }}">
       <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
       <ul class="treeview-menu">
