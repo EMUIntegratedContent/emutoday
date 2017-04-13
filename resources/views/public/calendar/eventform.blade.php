@@ -18,11 +18,9 @@
             <event-form v-ref:foo eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
               <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
             </event-form>
-            <p>
-                *All calendar items are subject to change.<br />
-                The EMU calendar is maintained by the Division of Communications and includes events sponsored by University departments and student organizations.<br />
-                Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.
-            </p>
+            <p>*All calendar items are subject to change.</p>
+            <p>The EMU calendar is maintained by the Division of Communications and includes events sponsored by University departments and student organizations.</p>
+            <p>Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p>
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
         <div class="medium-6 columns" id="user-events-tables">

@@ -475,7 +475,7 @@ input[type="text"]{
   margin: 0;
 }
 form {
-  padding-bottom: 320px;
+  padding-bottom: 20px;
 }
 .yellowBtn {
   background: hsl(60, 70%, 50%);
