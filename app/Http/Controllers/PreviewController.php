@@ -172,13 +172,19 @@ class PreviewController extends Controller
         $storys = $page->storys()->get();
 
         foreach ($storys as $story) {
-            if ($story->pivot->page_position === 0) {
-                $heroImg = $story->storyImages()->where('image_type', 'front')->first();
+            if($story->story_type == 'artcle'){
+                if ($story->pivot->page_position === 0) {
+                    $heroImg = $story->storyImages()->where('image_type', 'hero')->first();
+                } else {
+                    $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
+                }
             } else {
-                $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
-                // $barImgs->push( $story->storyImages()->where('image_type', 'imagesmall')->first() );
+                if ($story->pivot->page_position === 0) {
+                    $heroImg = $story->storyImages()->where('image_type', 'front')->first();
+                } else {
+                    $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
+                }
             }
-
         }
 
         $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
@@ -197,12 +203,6 @@ class PreviewController extends Controller
             $currentStoryImageWithVideoTag = null;
         }
 
-
-
-        // $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
-        //
-        // $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
-
         $events = $this->event->where([
                 ['is_approved',1],
                 ['start_date', '>=', Carbon::now()->startOfDay()]
@@ -211,7 +211,6 @@ class PreviewController extends Controller
 
 
         $storyImages = $page->storyImages;
-      //  $tweets = Tweet::orderBy('created_at','desc')->paginate(4);
         $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 
         JavaScript::put([
