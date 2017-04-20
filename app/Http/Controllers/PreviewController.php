@@ -172,7 +172,7 @@ class PreviewController extends Controller
         $storys = $page->storys()->get();
 
         foreach ($storys as $story) {
-            if($story->story_type == 'artcle'){
+            if($story->story_type == 'article'){
                 if ($story->pivot->page_position === 0) {
                     $heroImg = $story->storyImages()->where('image_type', 'hero')->first();
                 } else {
