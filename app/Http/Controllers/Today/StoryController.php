@@ -94,7 +94,7 @@ class StoryController extends Controller
                     ]);
                 $storyview = 'public.'.$viewfolder.'.story';
 
-                var_dump($sideStoryBlurbs);
+                var_dump($id);
           // This news story view
           return view($storyview, compact('story', 'addThisImage', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs'));
         }
