@@ -9,6 +9,7 @@
         @if(!empty($sideitem->caption) && !empty($sideitem->story->id))
           <li><a href="/story/{{$storytype}}/{{$sideitem->story->id}}">{{ $sideitem->caption }}</a></li>
         @else
+           <li><a href="/story/{{$storytype}}/{{$sideitem->story->id}}">Read more.</a></li>
         @endif
     @endforeach
     </ul>
