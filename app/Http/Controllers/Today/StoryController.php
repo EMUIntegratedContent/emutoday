@@ -71,8 +71,8 @@ class StoryController extends Controller
               ['story_type', 'story'],
               ['id', '<>', $id],
               ['is_approved', 1],
-              ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query){
-                  $query->where('image_type', '=', 'small');
+              ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query) use($id){
+                  $query->where([['image_type', '=', 'small'], ['story_id', '<>', $id]]);
               })->limit(3)->get();
               $sideStoryBlurbs = collect();
               foreach ($sideFeaturedStorys as $sideFeaturedStory) {
@@ -94,7 +94,6 @@ class StoryController extends Controller
                     ]);
                 $storyview = 'public.'.$viewfolder.'.story';
 
-                var_dump($id);
           // This news story view
           return view($storyview, compact('story', 'addThisImage', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs'));
         }
