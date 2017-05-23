@@ -6,6 +6,7 @@
     <img src="/imagecache/original/{{$sideitems->first()->filename}}" alt="{{$sideitems->first()->filename}}">
     <ul class="feature-list">
     @foreach($sideitems as $sideitem)
+        <img src="/imagecache/original/{{$sideitem->first()->filename}}" alt="{{$sideitem->first()->filename}}">
         @if(!empty($sideitem->caption) && !empty($sideitem->story->id))
           <li><a href="/story/{{$storytype}}/{{$sideitem->story->id}}">{{ $sideitem->caption }}</a></li>
         @else
