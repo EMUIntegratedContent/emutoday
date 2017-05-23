@@ -79,7 +79,7 @@ class StoryController extends Controller
                       if ($sideFeaturedStory->storyImages()->where('image_type', 'small')->first()){ // redundant if
                               $sideStoryBlurbs->push($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
                       }
-                      var_dump($sideFeaturedStory->storyImages()->where('image_type', 'small')->first());
+                      var_dump($sideFeaturedStory->storyImages()->where('image_type', 'small')->first()->filename);
               }
 
             //Removed Student Side Bar until firther notice
