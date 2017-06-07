@@ -12,11 +12,11 @@ keys:
     - ~/.ssh/id_rsa
 
 folders:
-    - map: "/Users/bkosciel/Projects/emutoday"
+    - map: "/Users/cpuzzuol/emutoday"
       to: "/home/vagrant/emutoday"
 
 sites:
-    - map: homestead.app
+    - map: emutoday.app
       to: "/home/vagrant/emutoday/public"
 
 databases:
