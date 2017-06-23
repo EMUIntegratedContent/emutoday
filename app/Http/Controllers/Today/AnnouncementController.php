@@ -34,7 +34,7 @@ class AnnouncementController extends Controller
         ['is_archived', 0 ]
       ])
       ->orderBy('priority','desc')
-      ->orderBy('start_date', 'desc')
+      ->orderBy('start_date', 'asc')
       ->paginate(12);
 
       return view('public.announcement.index', compact('announcements', 'id'));
