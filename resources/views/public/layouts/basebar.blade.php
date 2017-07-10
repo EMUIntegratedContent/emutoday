@@ -17,7 +17,7 @@
 		</div>
 		<div id="social-links" class="large-4 medium-12 small-12 columns noleftpadding norightpadding">
 				<ul class="social-icons">
-					<li><a href="https://www.facebook.com/Eastern.Michigan.University"><img alt="Facebook" src="{{'/assets/imgs/icons/facebook-base-icons.png'}}"></a></li>
+					<li><a href="https://www.facebook.com/EasternMichU/"><img alt="Facebook" src="{{'/assets/imgs/icons/facebook-base-icons.png'}}"></a></li>
 					<li><a href="http://www.emich.edu/twitter/"><img alt="Twitter" src="{{'/assets/imgs/icons/twitter-base-icons.png'}}"></a></li>
 					<li><a href="https://www.youtube.com/user/emichigan08"><img alt="YouTube" src="{{'/assets/imgs/icons/you-tube-base-icons.png'}}"></a></li>
 					<li><a href="https://instagram.com/easternmichigan/"><img alt="Instagram" src="{{'/assets/imgs/icons/instagram-base-icons-new.png' }}"></a></li>
