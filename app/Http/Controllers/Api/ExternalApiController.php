@@ -224,4 +224,14 @@ class ExternalApiController extends ApiController
       }
       return $eventsArr;
   }
+
+  /**
+   * Takes an externally-created Campus Life event and re-creates it in EMU Today
+   * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
+   */
+  public function createCampusLifeEvent(Request $request){
+    return response()->json([
+      'message' => 'The coy sand.'
+    ]);
+  }
 }

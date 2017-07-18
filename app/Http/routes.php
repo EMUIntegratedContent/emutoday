@@ -31,6 +31,7 @@ Route::group(['prefix' => 'externalapi'], function(){
     Route::get('eventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEventsByDates');
     Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');
     Route::get('news/current/{limit?}', 'Api\ExternalApiController@getCurrentNews');
+    Route::post('events/campuslife/new', 'Api\ExternalApiController@createCampusLifeEvent');
 });
 
 Route::group(['prefix' => 'api'], function() {
