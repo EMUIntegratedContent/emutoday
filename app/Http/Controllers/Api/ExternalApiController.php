@@ -230,7 +230,7 @@ class ExternalApiController extends ApiController
    * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
    */
   public function createCampusLifeEvent(Request $request){
-    /*
+
     $validation = \Validator::make( Input::all(), [
       //'first_name'          => 'required|max:80|min:2',
     ]);
@@ -240,7 +240,7 @@ class ExternalApiController extends ApiController
       return $this->setStatusCode(422)
       ->respondWithError($validation->errors()->getMessages());
     }
-    */
+    
     if($validation->passes())
     {
       // UPDATE this event if it already exists (i.e. if its External ID is found)
