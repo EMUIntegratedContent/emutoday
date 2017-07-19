@@ -339,7 +339,7 @@ class ExternalApiController extends ApiController
       }
 
       return $this->setStatusCode(400)
-      ->respondSavedWithData('Event cound not be updated!');
+      ->respondWithError('Event cound not be updated!');
     }
   }
 
@@ -365,7 +365,7 @@ class ExternalApiController extends ApiController
       $existingEvent = Event::where('external_record_id', $request->input('record-id'))->first();
       if($existingEvent){
         return $this->setStatusCode(400)
-        ->respondSavedWithData('Event already exists!');
+        ->respondWithError('Event already exists!');
       }
       $event = new Event;
 
@@ -465,6 +465,6 @@ class ExternalApiController extends ApiController
     }
 
     return $this->setStatusCode(400)
-    ->respondSavedWithData('Event cound not be created!');
+    ->respondWithError('Event cound not be created!');
   }
 }
