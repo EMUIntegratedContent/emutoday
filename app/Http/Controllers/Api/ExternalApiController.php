@@ -298,6 +298,9 @@ class ExternalApiController extends ApiController
         if($request->input('link-3') != ''){
           $existingEvent->related_link_3 = $request->input('link-3');
           $existingEvent->related_link_3_txt = $request->input('link-3');
+        } else {
+          $existingEvent->related_link_3 = null;
+          $existingEvent->related_link_3_txt = null;
         }
 
         $existingEvent->lbc_approved = $request->input('lbc');
@@ -306,6 +309,8 @@ class ExternalApiController extends ApiController
 
         if($request->input('deadline') != ''){
           $existingEvent->reg_deadline = $request->input('deadline');
+        } else {
+          $existingEvent->reg_deadline = null;
         }
 
         if($existingEvent->save()) {
