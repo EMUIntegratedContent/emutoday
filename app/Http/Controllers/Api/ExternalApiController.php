@@ -253,9 +253,9 @@ class ExternalApiController extends ApiController
         $existingEvent->title = $request->input('title');
         $existingEvent->description = $request->input('description');
         $existingEvent->start_date = $request->input('start-date');
-        $existingEvent->start_time = new \DateTime($startTime);
+        $existingEvent->start_time = new \DateTime("9:30 PM");
         $existingEvent->end_date = $request->input('end-date');
-        $existingEvent->end_time = new \DateTime($endTime);
+        $existingEvent->end_time = new \DateTime("11:30 PM");
 
         $existingEvent->contact_person = $request->input('contact-person');
         $existingEvent->contact_phone = $request->input('contact-phone');
