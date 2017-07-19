@@ -244,7 +244,7 @@ class ExternalApiController extends ApiController
     {
       // Do NOT add this event if it already exists (i.e. if its External ID is found)
       $existingEvent = Event::where('external_record_id', $request->input('event_id'))->get();
-      if($existingEvent){
+      if(count($existingEvent)){
         //var_dump($existingEvent);
         return $this->setStatusCode(400)
         ->respondWithError($existingEvent);
