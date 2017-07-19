@@ -248,10 +248,11 @@ class ExternalApiController extends ApiController
         $existingEvent->is_approved = 0; //event needs re-approval
 
         $existingEvent->title = $request->input('title');
+        $existingEvent->description = $request->input('description');
         $existingEvent->start_date = $request->input('start-date');
-        $existingEvent->start_time = $request->input('start-time');
+        $existingEvent->start_time = strtotime($request->input('start-time'));
         $existingEvent->end_date = $request->input('end-date');
-        $existingEvent->end_time = $request->input('end-time');
+        $existingEvent->end_time = strtotime($request->input('end-time'));
 
         $existingEvent->contact_person = $request->input('contact-person');
         $existingEvent->contact_phone = $request->input('contact-phone');
@@ -288,11 +289,17 @@ class ExternalApiController extends ApiController
         if($request->input('link-1') != ''){
           $existingEvent->related_link_1 = $request->input('link-1');
           $existingEvent->related_link_1_txt = $request->input('link-1');
+        } else {
+          $existingEvent->related_link_1 = null;
+          $existingEvent->related_link_1_txt = null;
         }
 
         if($request->input('link-2') != ''){
           $existingEvent->related_link_2 = $request->input('link-2');
           $existingEvent->related_link_2_txt = $request->input('link-2');
+        } else {
+          $existingEvent->related_link_2 = null;
+          $existingEvent->related_link_2_txt = null;
         }
 
         if($request->input('link-3') != ''){
