@@ -305,7 +305,7 @@ class ExternalApiController extends ApiController
         $existingEvent->participants = $request->input('participants');
 
         if($request->input('deadline') != ''){
-          $existingEvent->participants = $request->input('reg_deadline');
+          $existingEvent->reg_deadline = $request->input('deadline');
         }
 
         if($existingEvent->save()) {
