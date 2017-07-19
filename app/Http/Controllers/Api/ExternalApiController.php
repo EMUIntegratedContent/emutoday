@@ -230,8 +230,45 @@ class ExternalApiController extends ApiController
    * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
    */
   public function createCampusLifeEvent(Request $request){
+    $event = new Event;
+    $validation = \Validator::make( Input::all(), [
+      //'first_name'          => 'required|max:80|min:2',
+    ]);
+
+    if( $validation->fails() )
+    {
+      return $this->setStatusCode(422)
+      ->respondWithError($validation->errors()->getMessages());
+    }
+    if($validation->passes())
+    {
+      $event->title           = $request->input('title');
+
+      if($event->save()) {
+        return $this->setStatusCode(201)
+        ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
+      }
+    }
+    /*
+    'user_id', 'title', 'short_title', 'description',
+                          'location', 'building','room',
+                          'start_date', 'start_time', 'end_date', 'end_time' ,'all_day', 'no_end_time',
+                          'contact_person','contact_phone', 'contact_email',
+                          'related_link_1', 'related_link_1_txt',
+                          'related_link_2', 'related_link_2_txt',
+                          'related_link_3', 'related_link_3_txt',
+                          'reg_deadline', 'cost','free','participants', 'lbc_approved',
+                          'is_promoted', 'is_featured','is_approved', 'is_canceled',
+                          'homepage', 'submitter',
+                          'tickets', 'ticket_details_online','ticket_details_phone','ticket_details_office','ticket_details_other',
+                          'submission_date', 'approved_date','contact_fax','mini_calendar', 'lbc_reviewed', 'ensemble',
+                          'mba','mini_calendar_alt', 'feature_image',
+                          'on_campus','mediafile_id','building_id','priority'
+    */
+    /*
     return response()->json([
       'message' => $request->all()
     ]);
+    */
   }
 }
