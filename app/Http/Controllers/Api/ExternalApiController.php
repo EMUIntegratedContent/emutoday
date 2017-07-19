@@ -245,11 +245,34 @@ class ExternalApiController extends ApiController
       // UPDATE this event if it already exists (i.e. if its External ID is found)
       $existingEvent = Event::where('external_record_id', $request->input('event_id'))->first();
       if($existingEvent){
+        $existingEvent->is_approved = 0; //event needs re-approval
+
         $existingEvent->title = $request->input('title');
         $existingEvent->start_date = $request->input('start-date');
         $existingEvent->start_time = $request->input('start-time');
         $existingEvent->end_date = $request->input('end-date');
         $existingEvent->end_time = $request->input('end-time');
+
+        $existingEvent->contact_person = $request->input('contact-person');
+        $existingEvent->contact_phone = $request->input('contact-phone');
+        $existingEvent->contact_email = $request->input('contact-email');
+        $existingEvent->contact_fax = $request->input('contact-fax');
+
+        $existingEvent->cost = $request->input('cost');
+        $existingEvent->tickets = $request->input('tickets');
+        if($request->input('tickets') == 'online'){
+          $existingEvent->ticket_details_online = $request->input('ticket-details-online');
+        } else if ($request->input('tickets') == 'phone') {
+          $existingEvent->ticket_details_phone = $request->input('ticket-details-phone');
+        } else if ($request->input('tickets') == 'office') {
+          $existingEvent->ticket_details_office = $request->input('ticket-details-office');
+        } else if ($request->input('tickets') == 'all') {
+          $existingEvent->ticket_details_online = $request->input('ticket-details-online');
+          $existingEvent->ticket_details_phone = $request->input('ticket-details-phone');
+          $existingEvent->ticket_details_office = $request->input('ticket-details-office');
+        } else if ($request->input('tickets') == 'other') {
+          $existingEvent->ticket_details_other = $request->input('ticket-details-other');
+        }
 
         if($request->input('all-day') == 1){
             $existingEvent->all_day = 1;
@@ -259,7 +282,7 @@ class ExternalApiController extends ApiController
 
         if($request->input('no-end') == 1){
             $existingEvent->no_end_time = 1;
-            $existingEvent->end_time = null;
+            $existingEvent->end_time = '23:59:59';
         }
 
         if($request->input('link-1') != ''){
