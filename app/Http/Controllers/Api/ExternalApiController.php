@@ -338,7 +338,7 @@ class ExternalApiController extends ApiController
       $event = new Event;
       $event->is_approved = 0; //event needs re-approval
       $event->submitter = $request->input('submitter');
-      $event->submission_date = date();
+      $event->submission_date = date('Y-m-d');
 
       $event->title = $request->input('title');
       $event->description = $request->input('description');
