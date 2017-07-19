@@ -242,12 +242,16 @@ class ExternalApiController extends ApiController
     }
     if($validation->passes())
     {
+      // Do NOT add this event if it already exists (i.e. if its External ID is found)
+      $existingEvent = Event::where('external_record_id', $request->input())
       $event->title           = $request->input('title');
 
+      /*
       if($event->save()) {
         return $this->setStatusCode(201)
         ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
       }
+      */
     }
     /*
     'user_id', 'title', 'short_title', 'description',
@@ -265,10 +269,10 @@ class ExternalApiController extends ApiController
                           'mba','mini_calendar_alt', 'feature_image',
                           'on_campus','mediafile_id','building_id','priority'
     */
-    /*
+
     return response()->json([
       'message' => $request->all()
     ]);
-    */
+    
   }
 }
