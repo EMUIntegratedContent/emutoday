@@ -245,17 +245,14 @@ class ExternalApiController extends ApiController
       // UPDATE this event if it already exists (i.e. if its External ID is found)
       $existingEvent = Event::where('external_record_id', $request->input('event_id'))->first();
       if($existingEvent){
-        $startTime = $request->input('start-time');
-        $endTime = $request->input('end-time');
-
         $existingEvent->is_approved = 0; //event needs re-approval
 
         $existingEvent->title = $request->input('title');
         $existingEvent->description = $request->input('description');
         $existingEvent->start_date = $request->input('start-date');
-        $existingEvent->start_time = new \DateTime("9:30 PM");
+        $existingEvent->start_time = date("H:i:s", $request->input('start-time'));
         $existingEvent->end_date = $request->input('end-date');
-        $existingEvent->end_time = new \DateTime("11:30 PM");
+        $existingEvent->end_time = date("H:i:s", $request->input('end-time'));
 
         $existingEvent->contact_person = $request->input('contact-person');
         $existingEvent->contact_phone = $request->input('contact-phone');
