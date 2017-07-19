@@ -243,7 +243,11 @@ class ExternalApiController extends ApiController
     if($validation->passes())
     {
       // Do NOT add this event if it already exists (i.e. if its External ID is found)
-      //$existingEvent = Event::where('external_record_id', $request->input());
+      $existingEvent = Event::where('external_record_id', $request->input('id'))->get();
+      if($existingEvent){
+        return $this->setStatusCode(400)
+        ->respondWithError('That record already exists!');
+      }
       $event->title           = $request->input('title');
 
       /*
