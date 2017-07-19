@@ -300,6 +300,14 @@ class ExternalApiController extends ApiController
           $existingEvent->related_link_3_txt = $request->input('link-3');
         }
 
+        $existingEvent->lbc_approved = $request->input('lbc');
+        $existingEvent->location = $request->input('location');
+        $existingEvent->participants = $request->input('participants');
+
+        if($request->input('deadline') != ''){
+          $existingEvent->participants = $request->input('reg_deadline');
+        }
+
         if($existingEvent->save()) {
           return $this->setStatusCode(201)
           ->respondSavedWithData('Event successfully updated!',[ 'laravel_event' => $existingEvent, 'cma_event' => $request->all(), 'all-day' => $request->input('all-day') ]);
