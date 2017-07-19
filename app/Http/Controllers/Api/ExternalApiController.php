@@ -240,7 +240,7 @@ class ExternalApiController extends ApiController
       return $this->setStatusCode(422)
       ->respondWithError($validation->errors()->getMessages());
     }
-    
+
     if($validation->passes())
     {
       // UPDATE this event if it already exists (i.e. if its External ID is found)
@@ -337,6 +337,8 @@ class ExternalApiController extends ApiController
 
       $event = new Event;
       $event->is_approved = 0; //event needs re-approval
+      $event->submitter = $request->input('submitter');
+      $event->submission_date = date();
 
       $event->title = $request->input('title');
       $event->description = $request->input('description');
