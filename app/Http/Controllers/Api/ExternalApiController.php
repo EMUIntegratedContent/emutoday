@@ -243,7 +243,7 @@ class ExternalApiController extends ApiController
     if($validation->passes())
     {
       // Do NOT add this event if it already exists (i.e. if its External ID is found)
-      $existingEvent = Event::where('external_record_id', $request->input())
+      //$existingEvent = Event::where('external_record_id', $request->input());
       $event->title           = $request->input('title');
 
       /*
@@ -273,6 +273,6 @@ class ExternalApiController extends ApiController
     return response()->json([
       'message' => $request->all()
     ]);
-    
+
   }
 }
