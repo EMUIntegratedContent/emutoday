@@ -32,6 +32,7 @@ Route::group(['prefix' => 'externalapi'], function(){
     Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');
     Route::get('news/current/{limit?}', 'Api\ExternalApiController@getCurrentNews');
     Route::post('events/campuslife/update/{id}', 'Api\ExternalApiController@updateCampusLifeEvent');
+    Route::post('events/campuslife/new', 'Api\ExternalApiController@createCampusLifeEvent');
 });
 
 Route::group(['prefix' => 'api'], function() {

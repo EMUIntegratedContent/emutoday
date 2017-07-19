@@ -334,14 +334,33 @@ class ExternalApiController extends ApiController
 
         if($existingEvent->save()) {
           return $this->setStatusCode(201)
-          ->respondSavedWithData('Event successfully updated!',[ 'laravel_event' => $existingEvent, 'cma_event' => $request->all(), 'all-day' => $request->input('all-day') ]);
+          ->respondSavedWithData('Event successfully updated!', [ 'laravel_event' => $existingEvent, 'cma_event' => $request->all(), 'all-day' => $request->input('all-day') ]);
         }
-
-        return $this->setStatusCode(400)
-        ->respondWithError('Event could not be updated.');
       }
 
+      return $this->setStatusCode(400)
+      ->respondSavedWithData('Event cound not be updated!');
+    }
+  }
 
+  /**
+   * Takes an externally-created Campus Life event and re-creates it in EMU Today
+   * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
+   */
+  public function createCampusLifeEvent(Request $request){
+
+    $validation = \Validator::make( Input::all(), [
+      //'first_name'          => 'required|max:80|min:2',
+    ]);
+
+    if( $validation->fails() )
+    {
+      return $this->setStatusCode(422)
+      ->respondWithError($validation->errors()->getMessages());
+    }
+
+    if($validation->passes())
+    {
       $event = new Event;
       $event->is_approved = 0; //event needs re-approval
       $event->submitter = $request->input('submitter');
@@ -435,10 +454,9 @@ class ExternalApiController extends ApiController
         return $this->setStatusCode(201)
         ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
       }
-
-      return $this->setStatusCode(400)
-      ->respondSavedWithData('Event cound not be created!');
-
     }
+
+    return $this->setStatusCode(400)
+    ->respondSavedWithData('Event cound not be created!');
   }
 }
