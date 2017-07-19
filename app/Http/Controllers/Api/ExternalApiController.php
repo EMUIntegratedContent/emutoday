@@ -249,6 +249,12 @@ class ExternalApiController extends ApiController
         $existingEvent->start_date = $request->input('start-date');
         $existingEvent->start_time = $request->input('start-time');
 
+        if($request->input('all-day') == 1){
+            $existingEvent->all_day = 1;
+            $existingEvent->start_time = '00:00:00';
+            $existingEvent->end_time = '23:59:59';
+        }
+
         if($request->input('link-1') != ''){
           $existingEvent->related_link_1 = $request->input('link-1');
           $existingEvent->related_link_1_txt = $request->input('link-1');
