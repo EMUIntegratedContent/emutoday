@@ -246,6 +246,8 @@ class ExternalApiController extends ApiController
       $existingEvent = Event::where('external_record_id', $request->input('event_id'))->first();
       if($existingEvent){
         $existingEvent->title = $request->input('title');
+        $existingEvent->start_date = $request->input('start-date');
+        $existingEvent->start_time = $request->input('start-time');
 
         if($request->input('link-1') != ''){
           $existingEvent->related_link_1 = $request->input('link-1');
