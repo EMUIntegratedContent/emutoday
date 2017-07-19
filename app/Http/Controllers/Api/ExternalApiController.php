@@ -230,7 +230,7 @@ class ExternalApiController extends ApiController
    * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
    */
   public function createCampusLifeEvent(Request $request){
-    $event = new Event;
+    /*
     $validation = \Validator::make( Input::all(), [
       //'first_name'          => 'required|max:80|min:2',
     ]);
@@ -240,6 +240,7 @@ class ExternalApiController extends ApiController
       return $this->setStatusCode(422)
       ->respondWithError($validation->errors()->getMessages());
     }
+    */
     if($validation->passes())
     {
       // UPDATE this event if it already exists (i.e. if its External ID is found)
@@ -276,14 +277,18 @@ class ExternalApiController extends ApiController
         }
 
         if($request->input('all-day') == 1){
-            $existingEvent->all_day = 1;
-            $existingEvent->start_time = '00:00:00';
-            $existingEvent->end_time = '23:59:59';
+          $existingEvent->all_day = 1;
+          $existingEvent->start_time = '00:00:00';
+          $existingEvent->end_time = '23:59:59';
+        } else {
+          $existingEvent->all_day = 0;
         }
 
         if($request->input('no-end') == 1){
-            $existingEvent->no_end_time = 1;
-            $existingEvent->end_time = '23:59:59';
+          $existingEvent->no_end_time = 1;
+          $existingEvent->end_time = '23:59:59';
+        } else {
+          $existingEvent->no_end_time = 0;
         }
 
         if($request->input('link-1') != ''){
@@ -329,16 +334,95 @@ class ExternalApiController extends ApiController
         ->respondWithError('Event could not be updated.');
       }
 
-      // OTHERWISE, add it to the cea table
-      $event->title           = $request->input('title');
 
-      /*
+      $event = new Event;
+      $event->is_approved = 0; //event needs re-approval
+
+      $event->title = $request->input('title');
+      $event->description = $request->input('description');
+      $event->start_date = $request->input('start-date');
+      $event->start_time = date("H:i:s", strtotime($request->input('start-time')));
+      $event->end_date = $request->input('end-date');
+      $event->end_time = date("H:i:s", strtotime($request->input('end-time')));
+
+      $event->contact_person = $request->input('contact-person');
+      $event->contact_phone = $request->input('contact-phone');
+      $event->contact_email = $request->input('contact-email');
+      $event->contact_fax = $request->input('contact-fax');
+
+      $event->cost = $request->input('cost');
+      $event->tickets = $request->input('tickets');
+      if($request->input('tickets') == 'online'){
+        $event->ticket_details_online = $request->input('ticket-details-online');
+      } else if ($request->input('tickets') == 'phone') {
+        $event->ticket_details_phone = $request->input('ticket-details-phone');
+      } else if ($request->input('tickets') == 'office') {
+        $event->ticket_details_office = $request->input('ticket-details-office');
+      } else if ($request->input('tickets') == 'all') {
+        $event->ticket_details_online = $request->input('ticket-details-online');
+        $event->ticket_details_phone = $request->input('ticket-details-phone');
+        $event->ticket_details_office = $request->input('ticket-details-office');
+      } else if ($request->input('tickets') == 'other') {
+        $event->ticket_details_other = $request->input('ticket-details-other');
+      }
+
+      if($request->input('all-day') == 1){
+        $event->all_day = 1;
+        $event->start_time = '00:00:00';
+        $event->end_time = '23:59:59';
+      } else {
+        $event->all_day = 0;
+      }
+
+      if($request->input('no-end') == 1){
+        $event->no_end_time = 1;
+        $event->end_time = '23:59:59';
+      } else {
+        $event->no_end_time = 0;
+      }
+
+      if($request->input('link-1') != ''){
+        $event->related_link_1 = $request->input('link-1');
+        $event->related_link_1_txt = $request->input('link-1');
+      } else {
+        $event->related_link_1 = null;
+        $event->related_link_1_txt = null;
+      }
+
+      if($request->input('link-2') != ''){
+        $event->related_link_2 = $request->input('link-2');
+        $event->related_link_2_txt = $request->input('link-2');
+      } else {
+        $event->related_link_2 = null;
+        $event->related_link_2_txt = null;
+      }
+
+      if($request->input('link-3') != ''){
+        $event->related_link_3 = $request->input('link-3');
+        $event->related_link_3_txt = $request->input('link-3');
+      } else {
+        $event->related_link_3 = null;
+        $event->related_link_3_txt = null;
+      }
+
+      $event->lbc_approved = $request->input('lbc');
+      $event->location = $request->input('location');
+      $event->participants = $request->input('participants');
+
+      if($request->input('deadline') != ''){
+        $event->reg_deadline = $request->input('deadline');
+      } else {
+        $event->reg_deadline = null;
+      }
+
       if($event->save()) {
         return $this->setStatusCode(201)
         ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
       }
-      */
-    }
+
+      return $this->setStatusCode(400)
+      ->respondSavedWithData('Event cound not be created!');
+
     /*
     'user_id', 'title', 'short_title', 'description',
                           'location', 'building','room',
