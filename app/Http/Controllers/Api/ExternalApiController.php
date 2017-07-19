@@ -231,7 +231,7 @@ class ExternalApiController extends ApiController
    */
   public function createCampusLifeEvent(Request $request){
     return response()->json([
-      'message' => 'The coy sand.'
+      'message' => $request->all();
     ]);
   }
 }
