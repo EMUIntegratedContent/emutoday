@@ -245,9 +245,15 @@ class ExternalApiController extends ApiController
       // UPDATE this event if it already exists (i.e. if its External ID is found)
       $existingEvent = Event::where('external_record_id', $request->input('event_id'))->first();
       if($existingEvent){
-        //var_dump($existingEvent);
+        $existingEvent->title = $request->input('title');
+
+        if($existingEvent->save()) {
+          return $this->setStatusCode(201)
+          ->respondSavedWithData('Event successfully updated!',[ 'event_id' => $event->id ]);
+        }
+        
         return $this->setStatusCode(400)
-        ->respondWithError($existingEvent);
+        ->respondWithError('Event could not be updated.');
       }
 
       // OTHERWISE, add it to the cea table
