@@ -229,7 +229,7 @@ class ExternalApiController extends ApiController
    * Takes an externally-created Campus Life event and re-creates it in EMU Today
    * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
    */
-  public function createCampusLifeEvent(Request $request){
+  public function updateCampusLifeEvent(Request $request, $id){
 
     $validation = \Validator::make( Input::all(), [
       //'first_name'          => 'required|max:80|min:2',
@@ -244,7 +244,7 @@ class ExternalApiController extends ApiController
     if($validation->passes())
     {
       // UPDATE this event if it already exists (i.e. if its External ID is found)
-      $existingEvent = Event::where('external_record_id', $request->input('event_id'))->first();
+      $existingEvent = Event::where('external_record_id', $id)->first();
       if($existingEvent){
         $existingEvent->is_approved = 0; //event needs re-approval
 
