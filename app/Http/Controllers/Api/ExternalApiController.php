@@ -247,11 +247,26 @@ class ExternalApiController extends ApiController
       if($existingEvent){
         $existingEvent->title = $request->input('title');
 
+        if($request->input('link-1') != ''){
+          $existingEvent->related_link_1 = $request->input('link-1');
+          $existingEvent->related_link_1_txt = $request->input('link-1')
+        }
+
+        if($request->input('link-2') != ''){
+          $existingEvent->related_link_2 = $request->input('link-2');
+          $existingEvent->related_link_2_txt = $request->input('link-2')
+        }
+
+        if($request->input('link-3') != ''){
+          $existingEvent->related_link_3 = $request->input('link-3');
+          $existingEvent->related_link_3_txt = $request->input('link-3')
+        }
+
         if($existingEvent->save()) {
           return $this->setStatusCode(201)
           ->respondSavedWithData('Event successfully updated!',[ 'event_id' => $event->id ]);
         }
-        
+
         return $this->setStatusCode(400)
         ->respondWithError('Event could not be updated.');
       }
