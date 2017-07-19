@@ -260,7 +260,6 @@ class ExternalApiController extends ApiController
         $existingEvent->contact_email = $request->input('contact-email');
         $existingEvent->contact_fax = $request->input('contact-fax');
 
-        $existingEvent->cost = $request->input('cost');
         $existingEvent->tickets = $request->input('tickets');
         if($request->input('tickets') == 'online'){
           $existingEvent->ticket_details_online = $request->input('ticket-details-online');
@@ -274,6 +273,14 @@ class ExternalApiController extends ApiController
           $existingEvent->ticket_details_office = $request->input('ticket-details-office');
         } else if ($request->input('tickets') == 'other') {
           $existingEvent->ticket_details_other = $request->input('ticket-details-other');
+        }
+
+        if($request->input('free') == 1){
+          $existingEvent->free = 1;
+          $existingEvent->cost = null;
+        } else {
+          $existingEvent->free = 0;
+          $existingEvent->cost = $request->input('cost');
         }
 
         if($request->input('all-day') == 1){
@@ -352,7 +359,6 @@ class ExternalApiController extends ApiController
       $event->contact_email = $request->input('contact-email');
       $event->contact_fax = $request->input('contact-fax');
 
-      $event->cost = $request->input('cost');
       $event->tickets = $request->input('tickets');
       if($request->input('tickets') == 'online'){
         $event->ticket_details_online = $request->input('ticket-details-online');
@@ -366,6 +372,14 @@ class ExternalApiController extends ApiController
         $event->ticket_details_office = $request->input('ticket-details-office');
       } else if ($request->input('tickets') == 'other') {
         $event->ticket_details_other = $request->input('ticket-details-other');
+      }
+
+      if($request->input('free') == 1){
+        $event->free = 1;
+        $event->cost = null;
+      } else {
+        $event->free = 0;
+        $event->cost = $request->input('cost');
       }
 
       if($request->input('all-day') == 1){
@@ -424,27 +438,6 @@ class ExternalApiController extends ApiController
 
       return $this->setStatusCode(400)
       ->respondSavedWithData('Event cound not be created!');
-
-    /*
-    'user_id', 'title', 'short_title', 'description',
-                          'location', 'building','room',
-                          'start_date', 'start_time', 'end_date', 'end_time' ,'all_day', 'no_end_time',
-                          'contact_person','contact_phone', 'contact_email',
-                          'related_link_1', 'related_link_1_txt',
-                          'related_link_2', 'related_link_2_txt',
-                          'related_link_3', 'related_link_3_txt',
-                          'reg_deadline', 'cost','free','participants', 'lbc_approved',
-                          'is_promoted', 'is_featured','is_approved', 'is_canceled',
-                          'homepage', 'submitter',
-                          'tickets', 'ticket_details_online','ticket_details_phone','ticket_details_office','ticket_details_other',
-                          'submission_date', 'approved_date','contact_fax','mini_calendar', 'lbc_reviewed', 'ensemble',
-                          'mba','mini_calendar_alt', 'feature_image',
-                          'on_campus','mediafile_id','building_id','priority'
-    */
-
-    return response()->json([
-      'message' => $request->all()
-    ]);
 
     }
   }
