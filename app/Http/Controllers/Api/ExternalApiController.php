@@ -277,7 +277,7 @@ class ExternalApiController extends ApiController
 
         if($request->input('free') == 1){
           $existingEvent->free = 1;
-          $existingEvent->cost = null;
+          $existingEvent->cost = 0;
         } else {
           $existingEvent->free = 0;
           $existingEvent->cost = $request->input('cost');
@@ -361,8 +361,16 @@ class ExternalApiController extends ApiController
 
     if($validation->passes())
     {
+      // DO NOT create this event if it already exists (i.e. if its External ID is found)
+      $existingEvent = Event::where('external_record_id', $request->input('record-id'))->first();
+      if($existingEvent){
+        return $this->setStatusCode(400)
+        ->respondSavedWithData('Event already exists!');
+      }
       $event = new Event;
+
       $event->is_approved = 0; //event needs re-approval
+      $event->external_record_id = $request->input('record-id');
       $event->submitter = $request->input('submitter');
       $event->submission_date = date('Y-m-d');
 
@@ -395,7 +403,7 @@ class ExternalApiController extends ApiController
 
       if($request->input('free') == 1){
         $event->free = 1;
-        $event->cost = null;
+        $event->cost = 0;
       } else {
         $event->free = 0;
         $event->cost = $request->input('cost');
