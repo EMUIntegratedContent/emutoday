@@ -266,7 +266,7 @@ class ExternalApiController extends ApiController
 
         if($existingEvent->save()) {
           return $this->setStatusCode(201)
-          ->respondSavedWithData('Event successfully updated!',[ 'event_id' => $event->id ]);
+          ->respondSavedWithData('Event successfully updated!',[ 'laravel_event' => $existingEvent, 'cma_event' => $request->all() ]);
         }
 
         return $this->setStatusCode(400)
