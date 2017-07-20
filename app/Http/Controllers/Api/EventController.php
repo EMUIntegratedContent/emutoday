@@ -76,11 +76,7 @@ class EventController extends ApiController
       'X-Mailer: PHP/' . phpversion();
       mail($to, $subject, $message, $headers);
 */
-    Mail::send('emails.todayperiodical', array(), function ($m) use ($currentDate) {
-        $m->from('hello@app.com', 'Your Application');
 
-        $m->to('cpuzzuol@emich.edu')->subject('Your Reminder on ' . $currentDate . '!');
-    });
 
       if (\Auth::check()) {
         $user = \Auth::user();

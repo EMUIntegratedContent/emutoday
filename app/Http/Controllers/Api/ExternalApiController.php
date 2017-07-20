@@ -461,6 +461,17 @@ class ExternalApiController extends ApiController
       }
 
       if($event->save()) {
+        //$to      = "calendar_events@emich.edu";
+        $to      = "cpuzzuol@emich.edu";
+        $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
+        $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
+                    "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
+                    "https://today.emich.edu/admin/event/queue";
+        $headers = 'From: '.$event->submitter.'@emich.edu'. "\r\n" .
+        'Reply-To: '.$event->submitter."@emich.edu"."\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $message, $headers);
+
         return $this->setStatusCode(201)
         ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
       }
