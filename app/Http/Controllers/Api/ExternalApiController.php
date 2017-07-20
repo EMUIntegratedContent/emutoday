@@ -467,4 +467,31 @@ class ExternalApiController extends ApiController
     return $this->setStatusCode(400)
     ->respondWithError('Event cound not be created!');
   }
+
+  public function cancelCampusLifeEvent(Request $request, $id){
+
+    $eventToDelete = Event::where('external_record_id', $id)->first();
+
+    $eventToDelete->is_canceled = 1;
+    if($eventToDelete->save()) {
+      return $this->setStatusCode(200)
+      ->respondUpdatedWithData('Event successfully canceled!',[]);
+    }
+
+    return $this->setStatusCode(400)
+    ->respondWithError('Event cound not be canceled!');
+  }
+
+  public function deleteCampusLifeEvent(Request $request, $id){
+
+    $eventToDelete = Event::where('external_record_id', $id)->first();
+
+    if($eventToDelete->delete()) {
+      return $this->setStatusCode(204)
+      ->respondUpdatedWithData('Event successfully deleted!',[]);
+    }
+
+    return $this->setStatusCode(400)
+    ->respondWithError('Event cound not be deleted!');
+  }
 }
