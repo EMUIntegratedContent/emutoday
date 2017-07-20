@@ -66,18 +66,6 @@ class EventController extends ApiController
     {
       $currentDate = Carbon::now();
 
-/*
-      // Send event has been submitted email
-      $to      = "cpuzzuol@emich.edu";
-      $subject = "Ur dumm";
-      $message = "HOLLA!";
-      $headers = 'From: '.cas()->user().'@emich.edu'. "\r\n" .
-      'Reply-To: '.cas()->user()."@emich.edu"."\r\n" .
-      'X-Mailer: PHP/' . phpversion();
-      mail($to, $subject, $message, $headers);
-*/
-
-
       if (\Auth::check()) {
         $user = \Auth::user();
 
