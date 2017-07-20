@@ -226,8 +226,10 @@ class ExternalApiController extends ApiController
   }
 
   /**
-   * Takes an externally-created Campus Life event and re-creates it in EMU Today
+   * Takes an externally-created Campus Life event and updates it in EMU Today
    * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
+   *
+   * @param int $id   The id of the record in the godzilla/general/campuslife_events table
    */
   public function updateCampusLifeEvent(Request $request, $id){
 
@@ -468,6 +470,12 @@ class ExternalApiController extends ApiController
     ->respondWithError('Event cound not be created!');
   }
 
+  /**
+   * Takes an externally-created Campus Life event and updates its cancelation status in EMU Today
+   * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
+   *
+   * @param int $id   The id of the record in the godzilla/general/campuslife_events table
+   */
   public function cancelCampusLifeEvent(Request $request, $id){
 
     $eventToCancel = Event::where('external_record_id', $id)->first();
@@ -483,6 +491,12 @@ class ExternalApiController extends ApiController
     ->respondWithError('Event cancelation status cound not be updated!');
   }
 
+  /**
+   * Takes an externally-created Campus Life event and deletes it in EMU Today
+   * e.g. https://www.emich.edu/campuslife/admin/calendar/add.php
+   *
+   * @param int $id   The id of the record in the godzilla/general/campuslife_events table
+   */
   public function deleteCampusLifeEvent(Request $request, $id){
 
     $eventToDelete = Event::where('external_record_id', $id)->first();
