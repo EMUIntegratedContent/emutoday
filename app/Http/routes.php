@@ -33,7 +33,7 @@ Route::group(['prefix' => 'externalapi'], function(){
     Route::get('news/current/{limit?}', 'Api\ExternalApiController@getCurrentNews');
     Route::post('events/campuslife/update/{id}', 'Api\ExternalApiController@updateCampusLifeEvent');
     Route::post('events/campuslife/cancel/{id}', 'Api\ExternalApiController@cancelCampusLifeEvent');
-    Route::delete('events/campuslife/delete/{id}', 'Api\ExternalApiController@deleteCampusLifeEvent');
+    Route::post('events/campuslife/delete/{id}', 'Api\ExternalApiController@deleteCampusLifeEvent');
     Route::post('events/campuslife/new', 'Api\ExternalApiController@createCampusLifeEvent');
 });
 

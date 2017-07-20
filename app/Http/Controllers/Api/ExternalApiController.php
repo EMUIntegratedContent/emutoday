@@ -476,11 +476,11 @@ class ExternalApiController extends ApiController
 
     if($eventToCancel->save()) {
       return $this->setStatusCode(200)
-      ->respondUpdatedWithData('Event successfully canceled!',[]);
+      ->respondUpdatedWithData('Event cancelation status successfully updated!',[]);
     }
 
     return $this->setStatusCode(400)
-    ->respondWithError('Event cound not be canceled!');
+    ->respondWithError('Event cancelation status cound not be updated!');
   }
 
   public function deleteCampusLifeEvent(Request $request, $id){
