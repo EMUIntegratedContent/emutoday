@@ -470,10 +470,11 @@ class ExternalApiController extends ApiController
 
   public function cancelCampusLifeEvent(Request $request, $id){
 
-    $eventToDelete = Event::where('external_record_id', $id)->first();
+    $eventToCancel = Event::where('external_record_id', $id)->first();
 
-    $eventToDelete->is_canceled = 1;
-    if($eventToDelete->save()) {
+    $eventToCancel->is_canceled == 1 ? $eventToCancel->is_canceled = 0 : $eventToCancel->is_canceled = 1;
+
+    if($eventToCancel->save()) {
       return $this->setStatusCode(200)
       ->respondUpdatedWithData('Event successfully canceled!',[]);
     }
