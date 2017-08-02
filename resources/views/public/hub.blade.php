@@ -48,6 +48,8 @@
                     <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Watch" class="button readmore">Watch&nbsp;<i class="fa fa-video-camera"></i></a>
                   @elseif($barImgs[$i]->story->tags()->first()->name == 'audio')
                     <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Listen" class="button readmore">Listen&nbsp;<i class="fa fa-headphones"></i></a>
+                  @elseif($barImgs[$i]->story->tags()->first()->name == 'gallery')
+                    <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Gallery" class="button readmore">View Gallery&nbsp;<i class="fa fa-camera-retro"></i></a>
                   @else
                     @if($barImgs[$i]->moretext != "")
                       <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}&nbsp;<i class="fa fa-external-link"></i></a>
@@ -55,14 +57,14 @@
                       <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Read Story" class="button readmore">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
                     @endif
                   @endif
-                @else
+              @else
                   @if($barImgs[$i]->moretext != "")
                     <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}&nbsp;<i class="fa fa-external-link"></i></a>
                   @else
                     <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Read Story" class="button readmore">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
                   @endif
-                @endif
-              @else
+              @endif
+            @else
                 <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}</a>
             @endif
           </p>
