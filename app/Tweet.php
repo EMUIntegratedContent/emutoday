@@ -99,7 +99,7 @@ class Tweet extends Model
 
     //////////////////////////////////////
     // Sort the array based on time or creatation. Please leave function as inline anonymous
-    //usort($tweets, function($x, $y){return strtotime($y['created_at']) - strtotime($x['created_at']);});
+    usort($tweets, function($x, $y){return strtotime($y['created_at']) - strtotime($x['created_at']);});
 
     //////////////////////////////////////
     // Too many?! !
