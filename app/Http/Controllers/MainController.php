@@ -199,6 +199,7 @@ class MainController extends Controller
 
         $twitter_feeds = [
           'EasternMichU',
+          'emunews',
         ];
         $twitter_settings = [
           'count' => 3,
