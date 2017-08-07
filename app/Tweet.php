@@ -103,11 +103,11 @@ class Tweet extends Model
 
     //////////////////////////////////////
     // Too many?! !
-    if(!empty($resetcount)){
+    /*if(!empty($resetcount)){
       $settings['count'] = $resetcount;
     }
     $tweets = array_slice($tweets, 0, $settings['count']);
-
+    */
     //////////////////////////////////////
     // add markup to tweet text, it comes in raw
     for ($i=0; $i<count($tweets); $i++){ // URL
