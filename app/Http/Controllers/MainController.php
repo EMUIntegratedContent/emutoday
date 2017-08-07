@@ -198,7 +198,6 @@ class MainController extends Controller
         }
 
         $twitter_feeds = [
-          'emunews',
           'EasternMichU',
         ];
         $twitter_settings = [
