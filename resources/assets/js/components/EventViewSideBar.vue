@@ -34,7 +34,8 @@
       <div class="row calendar-categories">
         <div class="small-12 column">
           <div class="calendar-other-categories">
-            <h4>Categories</h4>
+            <a class="button hollow" href="http://www.emich.edu/registrar/calendars/">Academic Calendar <i class="fa fa-external-link" aria-hidden="true"></i></a>
+            <h4>Event Categories</h4>
             <ul>
               <li class="event-category">
                 <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" aria-describedby="all-events-badge" href="#">All Events</a>
@@ -49,7 +50,6 @@
           <div class="calendar-other-categories">
             <h4>Other Calendars</h4>
             <ul class="other">
-              <li><a href="http://www.emich.edu/registrar/calendars/">Academics</a></li>
               <li><a href="http://art.emich.edu/events/upcoming">Art Galleries</a></li>
               <li><a href="http://www.emueagles.com/calendar.aspx">Athletics</a></li>
               <li><a href="http://www.emich.edu/campuslife/calendars/index.php">Campus Life</a></li>
