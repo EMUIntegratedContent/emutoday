@@ -1,5 +1,7 @@
 @extends('public.layouts.global')
-@section('title','Calendar')
+@section('description','Attend sporting events, theatre performances, musical events, academic seminars and much more at Eastern Michigan University.')
+@section('keywords','emu, eastern michigan university, calendar, events, calendar of events, what to do on campus, calendar events entertainment, calendar events things to do, calendar events, campus events, calendar events whats going on Ypsilanti, calendar events what to do at emu, what to do at eastern michigan university')
+@section('title','Calendar – Eastern Michigan University')
 @section('content')
 <div id="content-area">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
