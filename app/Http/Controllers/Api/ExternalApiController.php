@@ -202,7 +202,7 @@ class ExternalApiController extends ApiController
       while(strtotime($firstDate) <= strtotime($lastDate)){
           // Get all the events for the date
           $dayEvents = Event::whereHas('minicalendars', function($query) use($miniCalendars, $firstDate) {
-                            $query->where(['is_approved' => 1, 'start_date' => $firstDate])->whereIn('id', array(46));
+                            $query->where(['is_approved' => 1, 'start_date' => $firstDate])->whereIn('id', $miniCalendars);
                         })->orderBy('start_time', 'asc');
           $dayEvents = $dayEvents->get();
 
