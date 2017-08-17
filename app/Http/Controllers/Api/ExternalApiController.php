@@ -196,7 +196,7 @@ class ExternalApiController extends ApiController
       $conditions = array(); //conditions for the where clause
 
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
-
+      var_dump($miniCalendars);
       $eventsArr = array();
 
       // Loop through each date between first and last dates
