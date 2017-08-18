@@ -338,6 +338,114 @@ class ExternalApiController extends ApiController
           ->respondSavedWithData('Event successfully updated!', [ 'laravel_event' => $existingEvent, 'cma_event' => $request->all(), 'all-day' => $request->input('all-day') ]);
         }
       }
+      // create the event if it didn't previously exist
+      else {
+        $event = new Event;
+
+        $event->is_approved = 0; //event needs re-approval
+        $event->external_record_id = $request->input('record-id');
+        $event->submitter = $request->input('submitter');
+        $event->submission_date = date('Y-m-d');
+
+        $event->title = $request->input('title');
+        $event->description = $request->input('description');
+        $event->start_date = $request->input('start-date');
+        $event->start_time = date("H:i:s", strtotime($request->input('start-time')));
+        $event->end_date = $request->input('end-date');
+        $event->end_time = date("H:i:s", strtotime($request->input('end-time')));
+
+        $event->contact_person = $request->input('contact-person');
+        $event->contact_phone = $request->input('contact-phone');
+        $event->contact_email = $request->input('contact-email');
+        $event->contact_fax = $request->input('contact-fax');
+
+        $event->tickets = $request->input('tickets');
+        if($request->input('tickets') == 'online'){
+          $event->ticket_details_online = $request->input('ticket-details-online');
+        } else if ($request->input('tickets') == 'phone') {
+          $event->ticket_details_phone = $request->input('ticket-details-phone');
+        } else if ($request->input('tickets') == 'office') {
+          $event->ticket_details_office = $request->input('ticket-details-office');
+        } else if ($request->input('tickets') == 'all') {
+          $event->ticket_details_online = $request->input('ticket-details-online');
+          $event->ticket_details_phone = $request->input('ticket-details-phone');
+          $event->ticket_details_office = $request->input('ticket-details-office');
+        } else if ($request->input('tickets') == 'other') {
+          $event->ticket_details_other = $request->input('ticket-details-other');
+        }
+
+        if($request->input('free') == 1){
+          $event->free = 1;
+          $event->cost = 0;
+        } else {
+          $event->free = 0;
+          $event->cost = $request->input('cost');
+        }
+
+        if($request->input('all-day') == 1){
+          $event->all_day = 1;
+          $event->start_time = '00:00:00';
+          $event->end_time = '23:59:59';
+        } else {
+          $event->all_day = 0;
+        }
+
+        if($request->input('no-end') == 1){
+          $event->no_end_time = 1;
+          $event->end_time = '23:59:59';
+        } else {
+          $event->no_end_time = 0;
+        }
+
+        if($request->input('link-1') != ''){
+          $event->related_link_1 = $request->input('link-1');
+          $event->related_link_1_txt = $request->input('link-1');
+        } else {
+          $event->related_link_1 = null;
+          $event->related_link_1_txt = null;
+        }
+
+        if($request->input('link-2') != ''){
+          $event->related_link_2 = $request->input('link-2');
+          $event->related_link_2_txt = $request->input('link-2');
+        } else {
+          $event->related_link_2 = null;
+          $event->related_link_2_txt = null;
+        }
+
+        if($request->input('link-3') != ''){
+          $event->related_link_3 = $request->input('link-3');
+          $event->related_link_3_txt = $request->input('link-3');
+        } else {
+          $event->related_link_3 = null;
+          $event->related_link_3_txt = null;
+        }
+
+        $event->lbc_approved = $request->input('lbc');
+        $event->location = $request->input('location');
+        $event->participants = $request->input('participants');
+
+        if($request->input('deadline') != ''){
+          $event->reg_deadline = $request->input('deadline');
+        } else {
+          $event->reg_deadline = null;
+        }
+
+        if($event->save()) {
+          $to      = "cpuzzuol@emich.edu";
+          $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
+          $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
+                      "$event->title\nhttps://today.emich.edu/admin/event/$event->id/edit\n\n" .
+                      "https://today.emich.edu/admin/event/queue";
+          $headers = 'From: '.$event->submitter.'@emich.edu'. "\r\n" .
+          'Reply-To: '.$event->submitter."@emich.edu"."\r\n" .
+          'X-Mailer: PHP/' . phpversion();
+          mail($to, $subject, $message, $headers);
+
+          return $this->setStatusCode(201)
+          ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
+        }
+      }
 
       return $this->setStatusCode(400)
       ->respondWithError('Event cound not be updated!');
@@ -517,5 +625,19 @@ class ExternalApiController extends ApiController
 
     return $this->setStatusCode(400)
     ->respondWithError('Event cound not be deleted!');
+  }
+
+  /**
+   * INSTRUCTIONS
+   * Cron OrgSync API script every 30 minutes
+   *
+   * Function 1: Get all events from orgsync API: curl -i -X GET 'https://api.orgsync.com/api/v2/events?key=Rl4NzNlqpaRih4tKQmRlcSMKftQVI09JH0xNglReQ58'
+   * Function 2: Get an array of all the ids within the events from function 1
+   * Functoin 3: Get an array of all the external_record_ids
+   * Function 4: If an id exists within the events from OrgSync but NOT EMUToday, make that event.
+   * Function 5: If an id exists within the EMUToday table but not in the events from OrgSync, delete that event from EMUToday.
+   */
+  public function refreshOrgSyncEvents(Request $request){
+
   }
 }
