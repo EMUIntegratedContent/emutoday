@@ -448,7 +448,7 @@ class ExternalApiController extends ApiController
         */
       }
 
-      return $this->setStatusCode(400)
+      return $this->setStatusCode(422)
       ->respondWithError('Event cound not be updated!');
     }
   }
