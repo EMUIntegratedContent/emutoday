@@ -2,7 +2,6 @@
 
 namespace Emutoday\Http\Controllers\Api;
 
-use Auth;
 use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Story;
@@ -193,7 +192,6 @@ class ExternalApiController extends ApiController
    * @return Array                               The array of events with corresponding minicalendars.
    */
   public function getHomecomingEvents(Request $request, $firstDate, $lastDate){
-      Auth::guard('api')->user();
       $conditions = array(); //conditions for the where clause
 
       $miniCalendars = $request->get('minicalendars'); //MiniCalendar IDs in table cea_mini_calendars
