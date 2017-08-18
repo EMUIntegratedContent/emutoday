@@ -333,10 +333,10 @@ class ExternalApiController extends ApiController
           $existingEvent->reg_deadline = null;
         }
 
-        //if($existingEvent->save()) {
+        if($existingEvent->save()) {
           return $this->setStatusCode(201)
           ->respondSavedWithData('Event successfully updated!', [ 'laravel_event' => $existingEvent, 'cma_event' => $request->all(), 'all-day' => $request->input('all-day') ]);
-        //}
+        }
       }
       // create the event if it didn't previously exist
       else {
@@ -430,7 +430,7 @@ class ExternalApiController extends ApiController
         } else {
           $event->reg_deadline = null;
         }
-        /*
+
         if($event->save()) {
           $to      = "cpuzzuol@emich.edu";
           $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
@@ -445,7 +445,7 @@ class ExternalApiController extends ApiController
           return $this->setStatusCode(201)
           ->respondSavedWithData('Event successfully created!',[ 'event_id' => $event->id ]);
         }
-        */
+
       }
 
       return $this->setStatusCode(400)
