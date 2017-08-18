@@ -19,7 +19,9 @@
  	      "subfission/cas": "dev-master",
         "google/apiclient": "dev-master",
         "elasticsearch/elasticsearch": "~2.0",
-        "barryvdh/laravel-cors": "^0.8.2"
+        "barryvdh/laravel-cors": "^0.8.2",
+        "doctrine/dbal": "~2.3",
+        "snowfire/beautymail": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
