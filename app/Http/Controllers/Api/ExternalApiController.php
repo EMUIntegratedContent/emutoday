@@ -343,7 +343,7 @@ class ExternalApiController extends ApiController
         $event = new Event;
 
         $event->is_approved = 0; //event needs re-approval
-        $event->external_record_id = $request->input('record-id');
+        $event->external_record_id = $id;
         $event->submitter = $request->input('submitter');
         $event->submission_date = date('Y-m-d');
 
@@ -449,7 +449,7 @@ class ExternalApiController extends ApiController
       }
 
       return $this->setStatusCode(400)
-      ->respondWithError($id);
+      ->respondWithError('Event cound not be updated!');
     }
   }
 
