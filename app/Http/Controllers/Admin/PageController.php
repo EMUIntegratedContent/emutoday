@@ -97,7 +97,7 @@ class PageController extends Controller
       );
 
       flash()->success('Page has been created.');
-      return redirect(route('admin.page.edit', $page->id));//->with('status', 'Story has been created.');
+      return redirect(route('admin_page_edit', $page->id));//->with('status', 'Story has been created.');
     }
 
     public function edit($id)
@@ -167,7 +167,7 @@ class PageController extends Controller
 
         //$story->fill($request->only('title', 'slug', 'subtitle', 'teaser','content','story_type'))->save();
         flash()->success('Page has been updated.');
-        return redirect(route('admin.page.edit', $page->id));
+        return redirect(route('admin_page_edit', $page->id));
         //return redirect(route('admin.story.edit', $story->id))->with('status', 'Story has been updated.');
     }
 
@@ -176,7 +176,7 @@ class PageController extends Controller
         $page = $this->page->findOrFail($request->get('id'));
         $page->delete();
         flash()->warning('Page has been deleted.');
-        return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
+        return redirect(route('admin_page_index'));//->with('status', 'Story has been deleted.');
     }
 
     public function destroy($id)
@@ -184,6 +184,6 @@ class PageController extends Controller
         $page = $this->page->findOrFail($id);
         $page->delete();
         flash()->warning('Page has been deleted.');
-        return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
+        return redirect(route('admin_page_index'));//->with('status', 'Story has been deleted.');
     }
 }

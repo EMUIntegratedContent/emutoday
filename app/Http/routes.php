@@ -226,6 +226,7 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::group(['prefix' => 'admin' ], function()
     {
+
         Route::get('authors/list', ['as' => 'authors_list', 'uses' => 'Admin\AuthorsController@index']);
         Route::get('authors/form', ['as' => 'authors_form', 'uses' => 'Admin\AuthorsController@form']);
         Route::resource('authors', 'Admin\AuthorsController');
@@ -278,10 +279,13 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('archive/queue/{entityType}', ['as' => 'admin.archive.queue', 'uses' => 'Admin\ArchiveController@queue']);
         Route::resource('archive', 'Admin\ArchiveController');
 
-        Route::get('page/form', ['as' => 'admin_page_form', 'uses' => 'Admin\PageController@form']);
-        Route::get('page/{page}/edit', ['as' => 'admin_page_edit', 'uses' => 'Admin\PageController@edit']);
-        Route::post('page/delete', ['as' => 'admin_page_delete', 'uses' => 'Admin\PageController@delete'] );
+        Route::get('page/edit/{page}', ['as' => 'admin_page_edit', 'uses' => 'Admin\PageController@edit']);
+        Route::put('page/update/{page}', ['as' => 'admin_page_update', 'uses' => 'Admin\PageController@update']);
         Route::get('page/destroy/{id?}', ['as' => 'admin_page_destroy', 'uses' => 'Admin\PageController@destroy'] );
+        Route::get('page/form', ['as' => 'admin_page_form', 'uses' => 'Admin\PageController@form']);
+        Route::post('page/delete', ['as' => 'admin_page_delete', 'uses' => 'Admin\PageController@delete'] );
+        Route::post('page/store', ['as' => 'admin_page_store', 'uses' => 'Admin\PageController@store']);
+        Route::get('page/index', ['as' => 'admin_page_index', 'uses' => 'Admin\PageController@index']);
         Route::resource('page', 'Admin\PageController');
 
         Route::get('magazine/form', ['as' => 'admin_magazine_form', 'uses' => 'Admin\MagazineController@form']);
@@ -290,6 +294,7 @@ Route::group(['prefix' => 'api'], function() {
         Route::get('magazine/delete/{id?}', ['as' => 'admin_magazine_delete', 'uses' => 'Admin\MagazineController@delete'] );
         Route::post('magazine/{magazine}/addCoverImage', ['as' => 'store_magazine_cover', 'uses' => 'Admin\MagazineController@addCoverImage']);
         Route::put('magazine/{mediafile}/updateCoverImage/', ['as' => 'update_magazine_cover', 'uses' => 'Admin\MagazineController@updateCoverImage']);
+        Route::post('magazine/store', ['as' => 'admin_magazine_store', 'uses' => 'Admin\MagazineController@store']);
         Route::resource('magazine', 'Admin\MagazineController');
 
         Route::patch('storyimage/{storyimage}/update',['as' => 'admin_storyimage_update', 'uses' => 'Admin\StoryImageController@update']);
@@ -322,8 +327,12 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('{qtype}/{gtype}/{stype}/form','Admin\StoryTypeController@storyTypeForm' );
 
-        Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
+        //Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
+        Route::get('{qtype}/{gtype}/{stype}/{story}/edit', function($qtype, $gtype, $stype, $story) {
+            $story = Story::find($story);
 
+            return $story->title;
+        });
 
     });
 

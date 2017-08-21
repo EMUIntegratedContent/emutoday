@@ -195,14 +195,15 @@ class StoryTypeController extends Controller
 
         $user = \Auth::user();
         //$stypes = $stype;
-        $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
+        $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
 
-        $tags = \Emutoday\Tag::lists('name', 'id');
+        $tags = \Emutoday\Tag::pluck('name', 'id');
 
         if ($stype == 'emutoday'){
             $stype = 'story';
         }
+        var_dump($story);
         $storyGroup = $story->storyType->group;
 
         JavaScript::put([
@@ -314,7 +315,7 @@ public function create($stype)
         }
     } else {
         $stypes = $stype;
-        $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
+        $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
 
         return view('admin.story.form', compact('story','sroute', 'stypes','stypelist'));
 
@@ -403,7 +404,7 @@ public function promoteStory($id, Request $request)
 
     $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
     $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-    $stypelist = StoryType::where('level', 1)->lists('name','shortname');
+    $stypelist = StoryType::where('level', 1)->pluck('name','shortname');
     $stypes = $story->story_type;
 
     foreach ($requiredImages as $img) {
@@ -509,8 +510,8 @@ public function edit($id)
         $story->story_type = 'story';
     }
     $stypes = $story->story_type;
-    $tags = \Emutoday\Tag::lists('name', 'id');
-    $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
+    $tags = \Emutoday\Tag::pluck('name', 'id');
+    $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
     JavaScript::put([
         'stype' => $stypes,
         'storytype' => $story->story_type,

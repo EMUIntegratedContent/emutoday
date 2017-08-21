@@ -78,7 +78,7 @@
                                         <td>{{ $page->present()->prettyEndDate }}</td>
                                         <td class="text-center"><small>{{ $page->present()->pageLiveIn }}</small></td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.page.edit', $page->id) }}">
+                                            <a href="{{ route('admin_page_edit', $page->id) }}">
                                                 <span class="fa fa-pencil" aria-hidden="true"></span>
                                             </a>
                                         </td>
@@ -140,7 +140,7 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.page.edit', $page->id) }}">
+                                            <a href="{{ route('admin_page_edit', $page->id) }}">
                                                 <span class="fa fa-pencil" aria-hidden="true"></span>
                                             </a>
                                         </td>
@@ -228,7 +228,7 @@
                                         <td class="text-center"><small>{{ $page->present()->pageLiveIn }}</small></td>
 
                                         <td class="text-center">
-                                            <a href="{{ route('admin.page.edit', $page->id) }}">
+                                            <a href="{{ route('admin_page_edit', $page->id) }}">
                                                 <span class="fa fa-pencil" aria-hidden="true"></span>
                                             </a>
                                         </td>
@@ -285,7 +285,7 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{ route('admin.page.edit', $page->id) }}">
+                                            <a href="{{ route('admin_page_edit', $page->id) }}">
                                                 <span class="fa fa-pencil" aria-hidden="true"></span>
                                             </a>
                                         </td>

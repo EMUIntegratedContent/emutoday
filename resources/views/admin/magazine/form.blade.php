@@ -35,8 +35,8 @@
                 </div>	<!-- /.box-header -->
                 <div class="box-body">
         {!! Form::model($magazine, [
-            'method' =>  'post',
-            'route' => ['admin.magazine.store']
+            'method' =>  'POST',
+            'route' => ['admin_magazine_store']
         ]) !!}
         <div class="form-group">
             {!! Form::label('year') !!}
