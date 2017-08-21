@@ -37,7 +37,7 @@ class RoleController extends Controller
     public function create(Role $role)
     {
 
-        $rolePermissions = \Emutoday\Permission::lists('name', 'id');
+        $rolePermissions = \Emutoday\Permission::pluck('name', 'id');
         return view('admin.role.form', compact('role','rolePermissions' ));
     }
 
@@ -82,7 +82,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = $this->role->findOrFail($id);
-        $rolePermissions = \Emutoday\Permission::lists('name', 'id');
+        $rolePermissions = \Emutoday\Permission::pluck('name', 'id');
 
         return view('admin.role.form', compact('role', 'rolePermissions'));
     }

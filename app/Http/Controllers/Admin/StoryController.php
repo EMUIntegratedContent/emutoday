@@ -82,7 +82,7 @@ class StoryController extends Controller
 
             $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
             $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-            $stypelist = StoryType::where('level', 1)->lists('name','shortname');
+            $stypelist = StoryType::where('level', 1)->pluck('name','shortname');
             $stypes = $story->story_type;
             $stype = $story->story_type;
             foreach ($requiredImages as $img) {

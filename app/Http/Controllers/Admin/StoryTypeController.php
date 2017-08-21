@@ -167,7 +167,7 @@ class StoryTypeController extends Controller
     {
         $user = \Auth::user();
         $story = null;
-        // $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
+        // $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
         $sroute = 'magazine';
         $stypelist = 'article';
         $stype = 'article';
@@ -185,6 +185,7 @@ class StoryTypeController extends Controller
 
     public function storyTypeEdit($qtype, $gtype,$stype, Story $story)
     {
+        //$story = \Emutoday\Story::find($story);
         $urlprev = \URL::previous();
 
         if(str_contains($urlprev, 'magazine')) {
@@ -203,7 +204,7 @@ class StoryTypeController extends Controller
         if ($stype == 'emutoday'){
             $stype = 'story';
         }
-        var_dump($story);
+
         $storyGroup = $story->storyType->group;
 
         JavaScript::put([

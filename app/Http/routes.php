@@ -25,7 +25,7 @@ Route::get('/cas/logout', function(){
     cas()->logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
-Route::group(['prefix' => 'externalapi'], function(){
+Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
     Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
     Route::get('eventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEventsByDates');
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'externalapi'], function(){
     Route::post('events/campuslife/new', 'Api\ExternalApiController@createCampusLifeEvent');
 });
 
-Route::group(['prefix' => 'api'], function() {
+Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::patch('authors/updateitem/{id}', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@updateItem']);
     Route::get('authors/{id}/edit', ['as' => 'api_authors_edititem', 'uses' =>'Api\AuthorController@edit']);
@@ -144,6 +144,7 @@ Route::group(['prefix' => 'api'], function() {
     Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
     Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
     Route::post('announcement/{id}/delete', ['as' => 'api_announcement_deleteitem', 'uses' => 'Api\AnnouncementController@delete']);
+    Route::get('announcement/archive', ['as' => 'api_announcement_archive', 'uses' => 'Api\AnnouncementController@archives']);
     Route::post('announcement', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
@@ -211,7 +212,7 @@ Route::group(['prefix' => 'api'], function() {
 
     Route::auth();
     //watch out for match anything ROUTES
-    Route::group(['prefix' => 'preview' ], function()
+    Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
     {
         Route::get('page/{page}/', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
         Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
@@ -224,7 +225,7 @@ Route::group(['prefix' => 'api'], function() {
 
     });
 
-    Route::group(['prefix' => 'admin' ], function()
+    Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
 
         Route::get('authors/list', ['as' => 'authors_list', 'uses' => 'Admin\AuthorsController@index']);
@@ -252,17 +253,20 @@ Route::group(['prefix' => 'api'], function() {
             Route::get('expertimage/{expertimage}/confirm', ['as' => 'admin_expertimage_confirm', 'uses' => 'Admin\ExpertImageController@confirm']);
         });
 
+        Route::get('user/{user}/edit', ['as' => 'admin_user_edit', 'uses' => 'Admin\UserController@edit']);
         Route::post('user/{user}/addMediafileUser', ['as' => 'store_mediafile_user', 'uses' => 'Admin\MediafileController@addMediafileUser']);
         Route::post('user/{user}/updateMediafileUser', ['as' => 'update_mediafile_user', 'uses' => 'Admin\MediafileController@updateMediafileUser']);
         Route::delete('user/{user}/removeMediafileUser', ['as' => 'remove_mediafile_user', 'uses' => 'Admin\MediafileController@removeMediafileUser']);
-
-        Route::get('user/{user}/edit', ['as' => 'admin_user_edit', 'uses' => 'Admin\UserController@edit']);
         Route::get('user/{user}/confirm', ['as' => 'admin_user_confirm', 'uses' => 'Admin\UserController@confirm']);
         Route::delete('user/{user}/destroy', ['as' => 'admin_user_destroy', 'uses' => 'Admin\UserController@destroy']);
+        Route::put('user/{user}/update', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
+        Route::put('user/{user}/store', ['as' => 'admin_user_store', 'uses' => 'Admin\UserController@store']);
         Route::get('user/form', 'Admin\UserController@form');
         Route::resource('user', 'Admin\UserController');
 
+        Route::patch('mediafile/{mediafile}/update', ['as' => 'admin_mediafile_update', 'uses' => 'Admin\MediafileController@update']);
         Route::resource('mediafile', 'Admin\MediafileController');
+
         Route::get('announcement/archives', ['as' => 'admin.announcement.archives', 'uses' => 'Admin\AnnouncementController@archives']);
         Route::get('announcement/queue/{atype?}', ['as' => 'admin.announcement.queue', 'uses' => 'Admin\AnnouncementController@queue']);
         Route::get('announcement/form/{atype?}', ['as' => 'admin.announcement.form', 'uses' => 'Admin\AnnouncementController@form']);
@@ -327,16 +331,17 @@ Route::group(['prefix' => 'api'], function() {
 
         Route::get('{qtype}/{gtype}/{stype}/form','Admin\StoryTypeController@storyTypeForm' );
 
-        //Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
-        Route::get('{qtype}/{gtype}/{stype}/{story}/edit', function($qtype, $gtype, $stype, $story) {
+        Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' )->middleware('bindings');
+        /*Route::get('{qtype}/{gtype}/{stype}/{story}/edit', function($qtype, $gtype, $stype, $story) {
             $story = Story::find($story);
 
             return $story->title;
         });
+        */
 
     });
 
-    Route::group(['prefix' => 'preview' ], function()
+    Route::group(['prefix' => 'preview', 'middleware' => ['bindings'] ], function()
     {
         Route::get('page/{page}/', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
         Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);

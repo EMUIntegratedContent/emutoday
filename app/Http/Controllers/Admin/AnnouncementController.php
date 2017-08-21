@@ -100,7 +100,7 @@ class AnnouncementController extends Controller
         }
       $announcements = $this->announcement->where('is_archived', 1)->paginate(10);
 
-      return redirect()->route('admin.announcement.archives');
+      return redirect()->route('admin_announcement_archives');
     }
 
 }

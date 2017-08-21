@@ -170,8 +170,8 @@ class PreviewController extends Controller
       $currentAnnouncements = $this->announcement->where('is_approved', 1)->orderBy('priority','desc')->paginate(3);
       $barImgs = collect();
       $storys = $page->storys()->get();
-
       foreach ($storys as $story) {
+
           if($story->story_type == 'article'){
               if ($story->pivot->page_position === 0) {
                   $heroImg = $story->storyImages()->where('image_type', 'hero')->first();
@@ -220,7 +220,6 @@ class PreviewController extends Controller
           'cdend' => Carbon::now()->addDays(7),
           'currentPage' => $page
       ]);
-
       return view('preview.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
 
   }
