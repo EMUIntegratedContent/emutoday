@@ -1,7 +1,5 @@
 <?php
-
 return array(
-
     /*
     |--------------------------------------------------------------------------
     | Name of route
@@ -15,9 +13,7 @@ return array(
     | Examples: "images", "img/cache"
     |
     */
-
     'route' => 'imagecache',
-
     /*
     |--------------------------------------------------------------------------
     | Storage paths
@@ -29,7 +25,6 @@ return array(
     | Define as many directories as you like.
     |
     */
-
     'paths' => array(
         public_path('imgs'),
                 public_path('imgs/story'),
@@ -39,7 +34,6 @@ return array(
                 public_path('imgs/placeholder'),
                 public_path('imgs/expert'),
     ),
-
     /*
     |--------------------------------------------------------------------------
     | Manipulation templates
@@ -55,7 +49,6 @@ return array(
     | will be applied, by its fully qualified name.
     |
     */
-
     'templates' => array(
         'small' => 'Intervention\Image\Templates\Small',
         'medium' => 'Intervention\Image\Templates\Medium',
@@ -66,10 +59,10 @@ return array(
         'ddfront' => 'Emutoday\Today\Filters\DDFront',
         'avatar160' => 'Emutoday\Today\Filters\Avatar160',
         'magazinecover' => 'Emutoday\Today\Filters\MagazineCover',
-        'featuredevent' => 'Emutoday\Today\Filters\FeaturedEvent'
-
+        'featuredevent' => 'Emutoday\Today\Filters\FeaturedEvent',
+        'expertthumb' => 'Emutoday\Today\Filters\ExpertThumb',
+        'expertmedium' => 'Emutoday\Today\Filters\ExpertMedium'
     ),
-
     /*
     |--------------------------------------------------------------------------
     | Image Cache Lifetime
@@ -78,7 +71,5 @@ return array(
     | Lifetime in minutes of the images handled by the imagecache route.
     |
     */
-
     'lifetime' => 43200,
-
 );
