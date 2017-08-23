@@ -21,7 +21,7 @@
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Experts Categories</h3>
-            @include('admin.components.boxtools', ['rte' => 'experts', 'path' => 'admin/experts'])
+            @include('admin.components.boxtools', ['rte' => 'expertcategory', 'path' => 'admin/expertcategory'])
           </div>	<!-- /.box-header -->
           <div class="box-body">
             <table class="table">

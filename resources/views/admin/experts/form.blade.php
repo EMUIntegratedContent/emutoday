@@ -38,27 +38,33 @@
             </div>
         </div>
     @endif
+
     <div class="row">
-      <div class="col-md-7">
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">{{$expert->exists ? 'Edit Expert' : 'New Expert'}}</h3>
-            @include('admin.components.boxtools', ['rte' => 'experts', 'path' => 'admin/experts'])
-          </div>	<!-- /.box-header -->
-          <div class="box-body">
+        <div class="col-md-7">
             <div id="vue-experts">
-              <expert-form
-                errors="{{ json_encode($errors) }}"
-                framework="bootstrap"
-                :cuser-roles="{{$currentUser->roles}}"
-                recordexists="{{$expert->exists ? true: false}}"
-                recordid="{{$expert->exists ? $expert->id : null }}">
-                  <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
-              </expert-form>
-            </div><!-- /#vue-event-form -->
-          </div><!-- /.box-body -->
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">{{$expert->exists ? 'Edit Expert ' . $expert->getFullNameAttribute() : 'New Expert'}}</h3>
+                    <div id="vue-box-tools">
+                        <expert-box-tools v-ref:expertboxtools viewtype="form"
+                        :current-user="{{$currentUser}}"
+                        :record-id="{{$expert->exists ? $expert->id : null}}"
+                        ></expert-box-tools>
+                    </div>
+                  </div>	<!-- /.box-header -->
+                  <div class="box-body">
+                      <expert-form
+                        errors="{{ json_encode($errors) }}"
+                        framework="bootstrap"
+                        :cuser-roles="{{$currentUser->roles}}"
+                        recordexists="{{$expert->exists ? true: false}}"
+                        recordid="{{$expert->exists ? $expert->id : null }}">
+                          <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
+                      </expert-form>
+                  </div><!-- /.box-body -->
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+      </div>
       <div class="col-md-5">
           @if($expert->exists)
               @if($currentRequiredImages !== null)

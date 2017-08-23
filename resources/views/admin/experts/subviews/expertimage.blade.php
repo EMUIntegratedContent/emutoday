@@ -11,7 +11,7 @@
         <div class="box-header with-border">
             <div class="box-head-info pull-left">
                 @if($expertImage->is_active != 0)
-                    <img class="better-thumb" src="/imagecache/betterthumb/{{$expertImage->filename}}" alt="{{$expertImage->image_name}}">
+                    <img class="better-thumb" src="/imagecache/expertthumb/{{$expertImage->filename}}" alt="{{$expertImage->image_name}}">
                 @endif
                 <h3 class="box-title">Profile Image</h3>
             </div><!-- /.box-head-info -->

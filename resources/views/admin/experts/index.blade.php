@@ -23,7 +23,7 @@
         </div>
     @endif
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-md-12">
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">Experts List</h3>
@@ -33,24 +33,34 @@
             <table class="table">
               <tr>
                 <th><span class="sr-only">Thumbnail Photo</span></th>
-                <th>Name</th>
+                <th>Last Name</th>
+                <th>First Name</th>
                 <th>Job Title</th>
                 <th>Categories</th>
+                <th>Approved?</th>
                 <th>Actions</th>
               </tr>
             @foreach ($expertsPaginated as $expert)
               <tr>
                   <td>
                       @if($expert->expertImages()->first())
-                      <img class="small-thumb" src="/imagecache/betterthumb/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}">
+                      <img class="small-thumb" src="/imagecache/expertthumb/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}">
                       @endif
                   </td>
-                <td>{{ $expert->getFullNameAttribute() }}</td>
+                <td>{{ $expert->last_name }}</td>
+                <td>{{ $expert->first_name }}</td>
                 <td>{{ $expert->title }}</td>
                 <td>
                     @foreach ($expert->expertCategories as $category)
                         <span class="badge">{{ $category->category }}</span>
                     @endforeach
+                </td>
+                <td>
+                  @if($expert->is_approved)
+                      <span class="label label-success">Yes</span>
+                  @else
+                      <span class="label label-danger">No</span>
+                  @endif
                 </td>
                 <td>
                   <a href="/admin/experts/{{ $expert->id }}/edit" class="button success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
