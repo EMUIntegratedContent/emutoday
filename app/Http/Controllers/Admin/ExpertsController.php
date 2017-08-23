@@ -28,6 +28,8 @@ class ExpertsController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
     /**
@@ -124,6 +126,18 @@ class ExpertsController extends Controller
         ]);
 
         return view('admin.experts.form', compact('expert'));
+    }
+
+    /**
+     *  Update the expert from the admin/preview view (which uses CKEDITOR)
+     */
+    public function updateFromPreview(Request $request, $id)
+    {
+        $expert = $this->expert->findOrFail($id);
+        $expert->biography = $request->get('biography');
+        $expert->save();
+        flash()->success('Expert biography has been updated.');
+        return redirect()->back();
     }
 
 }

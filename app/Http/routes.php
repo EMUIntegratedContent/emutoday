@@ -54,6 +54,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::patch('experts/updateitem/{id}', ['as' => 'api_experts_updateitem', 'uses' =>'Api\ExpertsController@updateItem']);
     Route::get('experts/{id}/edit', ['as' => 'api_experts_edititem', 'uses' =>'Api\ExpertsController@edit']);
     Route::get('experts/category/{id?}', ['as' => 'api_experts_category', 'uses' =>'Api\ExpertsController@expertCategory']);
+    Route::get('experts/previoustitles/{id?}', ['as' => 'api_experts_previoustitles', 'uses' =>'Api\ExpertsController@expertPreviousTitles']);
+    Route::get('experts/education/{id?}', ['as' => 'api_experts_education', 'uses' =>'Api\ExpertsController@expertEducation']);
+    Route::get('experts/expertise/{id?}', ['as' => 'api_experts_expertise', 'uses' =>'Api\ExpertsController@expertExpertise']);
+    Route::get('experts/languages/{id?}', ['as' => 'api_experts_languages', 'uses' =>'Api\ExpertsController@expertLanguages']);
+    Route::get('experts/social/{id?}', ['as' => 'api_experts_social', 'uses' =>'Api\ExpertsController@expertSocialMediaLinks']);
+    Route::get('experts/list/{id?}', ['as' => 'api_experts_list', 'uses' =>'Api\ExpertsController@getExperts']);
     Route::post('experts', ['as' => 'api_experts_storeitem', 'uses' => 'Api\ExpertsController@store']); // Route to save expert to db
     Route::post('experts/{id}/delete', ['as' => 'api_experts_delete', 'uses' =>'Api\ExpertsController@delete']);
     Route::resource('experts', 'Api\ExpertsController');
@@ -65,6 +71,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::post('expertcategory/{id}/delete', ['as' => 'api_expertcategory_delete', 'uses' =>'Api\ExpertCategoryController@delete']);
     Route::post('expertcategory', ['as' => 'api_expertcategory_storeitem', 'uses' => 'Api\ExpertCategoryController@store']); // Route to save expert to db
     Route::resource('expertcategory', 'Api\ExpertCategoryController');
+
+    Route::put('expertmediarequest/{id}', ['as' => 'api_expertmediarequest_updateitem', 'uses' =>'Api\ExpertMediaRequestController@updateItem']);
+    Route::post('expertmediarequest', ['as' => 'api_expertmediarequest_store', 'uses' => 'Api\ExpertMediaRequestController@store']); // Save expert media request to db
+    Route::get('expertmediarequest/{id}', ['as' => 'api_expertmediarequest_get', 'uses' => 'Api\ExpertMediaRequestController@getExpertMediaRequest']);
+    Route::post('expertspeakerrequest', ['as' => 'api_expertspeakerrequest_store', 'uses' => 'Api\ExpertSpeakerRequestController@store']); // Save expert speaker request to db
+    Route::resource('expertrequest', 'Api\ExpertRequestController');
 
     /**
      * List of Buildings for EventForm
@@ -210,10 +222,25 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('story/{stype}/{id?}', 'Today\StoryController@story');
 
+    Route::get('experts/view/{id}', ['as' => 'expertview', 'uses' => 'Today\ExpertsController@show']);
+    Route::get('experts/user/experts', 'Today\ExpertsController@userExperts');
+    Route::get('experts/find', ['as' => 'expertsearch', 'uses' => 'SearchController@expertSearch']);
+    Route::get('experts/form', 'Today\ExpertsController@expertForm');
+    Route::get('experts/contact', function() {
+        return view('public.experts.contact');
+    });
+    Route::get('experts/speakerrequest/{expertId?}', 'Today\ExpertSpeakerRequestController@index');
+    Route::get('experts/mediarequest/{expertId?}', 'Today\ExpertMediaRequestController@index');
+    Route::get('experts', 'Today\ExpertsController@index');
+    Route::resource('experts', 'Today\ExpertsController');
+    Route::resource('expertrequest', 'Today\ExpertRequestController');
+
     Route::auth();
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
     {
+        Route::get('experts/{id}', ['as' => 'preview_experts', 'uses' => 'PreviewController@expert']);
+
         Route::get('page/{page}/', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
         Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
 
@@ -238,6 +265,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         /* EXPERTS */
         Route::group(['middleware' => 'Emutoday\Http\Middleware\ExpertsMiddleware'], function()
         {
+            Route::put('experts/{id}/updatefrompreview', ['as'=> 'admin_preview_expert_update', 'uses'=> 'Admin\ExpertsController@updateFromPreview']);
             Route::get('experts/{id}/edit', ['as' => 'experts_edititem', 'uses' =>'Admin\ExpertsController@edit']);
             Route::get('experts/list', ['as' => 'experts_list', 'uses' => 'Admin\ExpertsController@index']);
             Route::get('experts/form', ['as' => 'experts_form', 'uses' => 'Admin\ExpertsController@form']);
@@ -246,6 +274,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
             Route::get('expertcategory/list', ['as' => 'expertcategory_list', 'uses' => 'Admin\ExpertCategoryController@index']);
             Route::get('expertcategory/form', ['as' => 'expertcategory_form', 'uses' => 'Admin\ExpertCategoryController@form']);
             Route::resource('expertcategory', 'Admin\ExpertCategoryController');
+
+            Route::get('expertrequests/{id}/edit', ['as' => 'expertrequests_edititem', 'uses' => 'Admin\ExpertRequestController@edit']);
+            Route::get('expertrequests/list', ['as' => 'expertrequests_list', 'uses' => 'Admin\ExpertRequestController@index']);
+            Route::resource('expertrequests', 'Admin\ExpertRequestController');
 
             Route::patch('expertimage/{expertimage}/update',['as' => 'admin_expertimage_update', 'uses' => 'Admin\ExpertImageController@update']);
             Route::delete('expertimage/{expertimage}/delete', ['as' => 'admin_expertimage_destroy', 'uses' => 'Admin\ExpertImageController@destroy'] );

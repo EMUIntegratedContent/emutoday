@@ -63,6 +63,7 @@ class ExpertCategoryController extends ApiController
           //Associations can only be made AFTER entity is saved
           $associatedCategories = array_pluck($request->input('associatedCategories'),'value');
           $category->associations()->sync($associatedCategories);
+          $category->associationsOtherway()->sync($associatedCategories);
 
         return $this->setStatusCode(201)
         ->respondSavedWithData('Expert category successfully saved!',[ 'record_id' => $category->id ]);
@@ -106,6 +107,7 @@ class ExpertCategoryController extends ApiController
 
         $associatedCategories = array_pluck($request->input('associatedCategories'),'value');
         $category->associations()->sync($associatedCategories);
+        $category->associationsOtherway()->sync($associatedCategories);
 
         if($category->save()) {
             return $this->setStatusCode(201)
