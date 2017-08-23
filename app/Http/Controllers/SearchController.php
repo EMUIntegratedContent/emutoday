@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 use Emutoday\Http\Requests;
-use Emutoday\Helpers\Interfaces\ISearch;
-use Emutoday\Repositories\ElasticStoryRepository;
 
 use Emutoday\Story;
 use Emutoday\Page;
 use Emutoday\Announcement;
 use Emutoday\Event;
 use Emutoday\Tweet;
+use Emutoday\Expert;
+use Emutoday\ExpertCategory;
 use Carbon\Carbon;
 use JavaScript;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,15 +21,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class SearchController extends Controller
 {
 
-    //public function __construct(Story $story, Announcement $announcement, Event $event, ISearch $searchProvider, ElasticStoryRepository $searchRepo)
-    public function __construct(Story $story, Announcement $announcement, Event $event, ISearch $searchProvider)
+    //public function __construct(Story $story, Announcement $announcement, Event $event)
+    public function __construct(Story $story, Announcement $announcement, Event $event)
 
     {
-        //$this->searchRepo = $searchRepo;
         $this->story = $story;
         $this->announcement = $announcement;
         $this->event = $event;
-        $this->searchProvider = $searchProvider;
     }
 
 
@@ -118,12 +116,6 @@ class SearchController extends Controller
             $searchMagazineResults = array();
         }
 
-        //$storiesPaginated = $this->searchRepo->search();
-        // $numResults = count($storiesPaginated);
-
-        //return view('public.searchresults2', compact('storiesPaginated', 'searchTerm', 'numResults'));
-
-
         $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults));
 
         $numResults = count($allStories);
@@ -138,6 +130,30 @@ class SearchController extends Controller
 
         return view('public.searchresults', compact('storiesPaginated', 'searchTermWild', 'searchTerm', 'numResults', 'isSearchFromMagazine'));
 
+    }
+
+    /**
+     * Eastern Experts Search
+     */
+    public function expertSearch(Request $request){
+        $searchterm = $request->get('q');
+        $searchCategory = $request->get('category');
+
+        // Fields and scores set in Emutoday/Expert model class
+        if($searchCategory != ''){
+            $experts = Expert::search('%'.$searchterm.'%')
+                            ->where('is_approved', 1)
+                            ->whereHas('expertCategories', function($query) use ($searchCategory){
+                                $query->where('category', $searchCategory);
+                            })
+                            ->get();
+        } else {
+            $experts = Expert::search('%'.$searchterm.'%')->where('is_approved', 1)->get();
+        }
+
+        $expertCategories = ExpertCategory::all();
+
+        return view('public.experts.find', ['experts' => $experts, 'expertCategories' => $expertCategories, 'currentCategory' => $searchCategory]);
     }
 
 
