@@ -14,16 +14,6 @@
     </div>
     <!-- /.row -->
     <div class="row">
-      <div v-bind:class="md12col">
-          <!-- Is approved? -->
-            <div v-bind:class="formGroup">
-              <label>Approved for Public Display? <input type="checkbox" value="1" v-model="record.is_approved"></label>
-            </div>
-      </div>
-      <!-- /.small-12 columns -->
-    </div>
-    <!-- /.row -->
-    <div class="row">
         <div v-bind:class="md12col">
             <!-- Expert Type -->
             <h4>I'd like to be listed as a <span v-bind:class="iconStar" class="reqstar">*</span></h4>
@@ -41,9 +31,43 @@
       <div v-bind:class="md12col">
         <!-- Display Name -->
         <div v-bind:class="formGroup">
-          <label>Display Name <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <label>Display Name <span v-bind:class="iconStar" class="reqstar">*</span></label>
           <input v-model="record.display_name" class="form-control" v-bind:class="[formErrors.display_name ? 'invalid-input' : '']" name="display_name" type="text">
           <p v-if="formErrors.display_name" class="help-text invalid">{{formErrors.display_name}}</p>
+        </div>
+      </div>
+      <!-- /.small-12 columns -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div v-bind:class="md12col">
+            <!-- Interview preferences -->
+            <h4>I will</h4>
+              <div class="checkbox">
+                <label><input type="checkbox" value="1" v-model="record.do_print_interviews">Do interviews for print media</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" value="1" v-model="record.do_broadcast_interviews">Do interviews for broadcast media</label>
+              </div>
+        </div>
+        <!-- /.small-12 columns -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div v-bind:class="md6col">
+        <!-- First Name -->
+        <div v-bind:class="formGroup">
+          <label>First Name <span v-bind:class="iconStar" class="reqstar">*</span></label>
+          <input v-model="record.first_name" class="form-control" v-bind:class="[formErrors.first_name ? 'invalid-input' : '']" name="first_name" type="text">
+          <p v-if="formErrors.first_name" class="help-text invalid">{{formErrors.first_name}}</p>
+        </div>
+      </div>
+      <div v-bind:class="md6col">
+        <!-- Last Name -->
+        <div v-bind:class="formGroup">
+          <label>Last Name <span v-bind:class="iconStar" class="reqstar">*</span></label>
+          <input v-model="record.last_name" class="form-control" v-bind:class="[formErrors.last_name ? 'invalid-input' : '']" name="last_name" type="text">
+          <p v-if="formErrors.last_name" class="help-text invalid">{{formErrors.last_name}}</p>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -53,29 +77,9 @@
       <div v-bind:class="md12col">
         <!-- EMU Title -->
         <div v-bind:class="formGroup">
-          <label>EMU Title <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <label>EMU Title <span v-bind:class="iconStar" class="reqstar">*</span></label>
           <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text">
           <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
-        </div>
-      </div>
-      <!-- /.small-12 columns -->
-    </div>
-    <!-- /.row -->
-    <div class="row">
-      <div v-bind:class="md6col">
-        <!-- First Name -->
-        <div v-bind:class="formGroup">
-          <label>First Name <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.first_name" class="form-control" v-bind:class="[formErrors.first_name ? 'invalid-input' : '']" name="first_name" type="text">
-          <p v-if="formErrors.first_name" class="help-text invalid">{{formErrors.first_name}}</p>
-        </div>
-      </div>
-      <div v-bind:class="md6col">
-        <!-- Last Name -->
-        <div v-bind:class="formGroup">
-          <label>Last Name <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.last_name" class="form-control" v-bind:class="[formErrors.last_name ? 'invalid-input' : '']" name="last_name" type="text">
-          <p v-if="formErrors.last_name" class="help-text invalid">{{formErrors.last_name}}</p>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -112,7 +116,7 @@
       <div v-bind:class="md6col">
         <!-- Email -->
         <div v-bind:class="formGroup">
-          <label>Email <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <label>Email <span v-bind:class="iconStar" class="reqstar">*</span></label>
           <input v-model="record.email" class="form-control" v-bind:class="[formErrors.email ? 'invalid-input' : '']" name="email" type="text">
           <p v-if="formErrors.email" class="help-text invalid">{{formErrors.email}}</p>
         </div>
@@ -120,65 +124,57 @@
       <!-- /.small-12 columns -->
     </div>
     <!-- /.row -->
-    <div class="row">
-      <div v-bind:class="md12col">
-          <!-- Interview preferences -->
-          <h4>Interview Preferences</h4>
-            <div class="checkbox">
-              <label><input type="checkbox" value="1" v-model="record.do_print_interviews">Print Interviews</label>
-            </div>
-            <div class="checkbox">
-              <label><input type="checkbox" value="1" v-model="record.do_broadcast_interviews">Broadcast Media Interviews</label>
-            </div>
-      </div>
-      <!-- /.small-12 columns -->
-    </div>
-    <!-- /.row -->
-    <div class="row">
+    <div class="row list-row">
         <!-- Previous Titles -->
         <div v-bind:class="md12col">
-            <h4>Previous Titles</h4>
+            <h4>Additional Titles (Include official EMU Affiliations)</h4>
         </div>
         <div v-if="previousTitles.length > 0" v-bind:class="md12col">
           <div v-for="title in previousTitles" class="input-group">
-              <label class="sr-only">Previous Title</label>
-              <input class="form-control dynamic-list-item" type="text" v-model="title.title">
-              <span class="input-group-btn">
-                  <button @click="delTitle(title)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
-              </span>
+                <div class="input-group">
+                  <input class="input-group-field" type="text" v-model="title.title">
+                  <div class="input-group-button">
+                    <button type="button" class="button" @click="delTitle(title)">X</button>
+                  </div>
+                </div>
           </div>
         </div>
         <div v-else v-bind:class="md12col">
-            <p>None</p>
+            <p class="nofields">None</p>
         </div>
         <div v-bind:class="md12col">
-            <button @click="addTitle" :class="btnSecondary" type="button">Add Title</button>
+            <button @click="addTitle" class="button secondary" type="button">Add Title</button>
         </div>
     </div>
     <!-- /.row -->
-    <div class="row">
+    <div class="row list-row">
         <!-- Languages -->
         <div v-bind:class="md12col">
-            <h4>Languages</h4>
+            <h4>Languages Spoken</h4>
         </div>
         <div v-if="languages.length > 0" v-bind:class="md12col">
           <div v-for="language in languages" class="input-group">
               <label class="sr-only">Language</label>
-              <input class="form-control dynamic-list-item" type="text" v-model="language.language">
-              <span class="input-group-btn">
-                  <button @click="delLanguage(language)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
-              </span>
+              <div class="input-group">
+                <input class="input-group-field" type="text" v-model="language.language">
+                <div class="input-group-button">
+                  <button type="button" class="button" @click="delLanguage(language)">X</button>
+                </div>
+              </div>
           </div>
         </div>
         <div v-else v-bind:class="md12col">
-            <p>None</p>
+            <p class="nofields">None</p>
         </div>
         <div v-bind:class="md12col">
-            <button @click="addLanguage" :class="btnSecondary" type="button">Add Language</button>
+            <button @click="addLanguage" class="button secondary" type="button">Add Language</button>
+        </div>
+        <div v-bind:class="md12col">
+            <p class="callout primary">Besides English, in what languages are you comfortable being interviewed?</p>
         </div>
     </div>
     <!-- /.row -->
-    <div class="row">
+    <div class="row list-row">
         <!-- Education -->
         <div v-bind:class="md12col">
             <h4>Education</h4>
@@ -186,70 +182,76 @@
         <div v-if="education.length > 0" v-bind:class="md12col">
           <div v-for="ed in education" class="input-group">
               <label class="sr-only">Education</label>
-              <input class="form-control dynamic-list-item" type="text" v-model="ed.education">
-              <span class="input-group-btn">
-                  <button @click="delEducation(ed)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
-              </span>
+              <div class="input-group">
+                <input class="input-group-field" type="text" v-model="ed.education">
+                <div class="input-group-button">
+                  <button type="button" class="button" @click="delEducation(ed)">X</button>
+                </div>
+              </div>
           </div>
         </div>
         <div v-else v-bind:class="md12col">
-            <p>None</p>
+            <p class="nofields">None</p>
         </div>
         <div v-bind:class="md12col">
-            <button @click="addEducation" :class="btnSecondary" type="button">Add Education</button>
+            <button @click="addEducation" class="button secondary" type="button">Add Education</button>
         </div>
     </div>
     <!-- /.row -->
-    <div class="row">
-        <!-- Fiels of expertise -->
+    <div class="row list-row">
+        <!-- Fields of expertise -->
         <div v-bind:class="md12col">
             <h4>Fields of Expertise</h4>
         </div>
         <div v-if="expertise.length > 0" v-bind:class="md12col">
           <div v-for="exp in expertise" class="input-group">
               <label class="sr-only">Field of Expertise</label>
-              <input class="form-control dynamic-list-item" type="text" v-model="exp.expertise">
-              <span class="input-group-btn">
-                  <button @click="delExpertise(exp)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
-              </span>
+              <div class="input-group">
+                <input class="input-group-field" type="text" v-model="exp.expertise">
+                <div class="input-group-button">
+                  <button type="button" class="button" @click="delExpertise(exp)">X</button>
+                </div>
+              </div>
           </div>
         </div>
         <div v-else v-bind:class="md12col">
-            <p>None</p>
+            <p class="nofields">None</p>
         </div>
         <div v-bind:class="md12col">
-            <button @click="addExpertise" :class="btnSecondary" type="button">Add Expertise</button>
+            <button @click="addExpertise" class="button secondary" type="button">Add Expertise</button>
         </div>
     </div>
     <!-- /.row -->
-    <div class="row">
+    <div class="row list-row">
         <!-- Social media links -->
         <div v-bind:class="md12col">
-            <h4>Social Media Links</h4>
+            <h4>Related Links and Social Media</h4>
         </div>
         <div v-if="social.length > 0" v-bind:class="md12col">
-          <div v-for="soc in social">
-              <label class="sr-only">Social Media</label>
-              <div class="row">
-                  <div v-bind:class="md4col">
-                      <label>Title</label>
-                      <input class="form-control dynamic-list-item" type="text" v-model="soc.title">
-                  </div>
-                  <div v-bind:class="md6col" class="input-group">
-                      <label>URL</label>
-                      <input class="form-control social-list-item" type="text" v-model="soc.url">
-                      <span class="input-group-btn">
-                          <button @click="delSocial(soc)" class="btn btn-secondary social-list-btn" type="button">X</button>
-                      </span>
+          <div v-for="soc in social" class="input-group">
+              <div class="medium-6 columns">
+                  <label>Title</label>
+                  <input class="input-group-field" type="text" v-model="soc.title">
+              </div>
+              <div class="medium-6 columns">
+                  <label>URL</label>
+                  <div class="input-group">
+                    <input class="input-group-field" type="text" v-model="soc.url">
+                    <div class="input-group-button">
+                      <button type="button" class="button" @click="delSocial(soc)">X</button>
+                    </div>
                   </div>
               </div>
           </div>
         </div>
         <div v-else v-bind:class="md12col">
-            <p>None</p>
+            <p class="nofields">None</p>
         </div>
         <div v-bind:class="md12col">
-            <button @click="addSocial" :class="btnSecondary" type="button">Add Social Link</button>
+            <button @click="addSocial" class="button secondary" type="button">Add Social Link</button>
+        </div>
+        <div v-bind:class="md12col">
+            <p class="callout primary">Enter related links like department/faculty websites and social media profiles. (e.g. Center for Research website, Twitter account)</p>
         </div>
     </div>
     <!-- /.row -->
@@ -257,24 +259,13 @@
       <div v-bind:class="md12col">
         <!-- Biography -->
         <div v-bind:class="formGroup">
-          <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="200"></textarea>
-          <p v-if="formErrors.biography" class="help-text invalid">Need biography.</p>
+          <label>Biography <span v-bind:class="iconStar" class="reqstar">*</span></label>
+          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" type="simple" :biography="biography" :fresh="isFresh" rows="200"></textarea>
+          <p v-if="formErrors.biography" class="help-text invalid">You must enter a biography for this expert.</p>
         </div>
       </div>
     </div>
    <!-- /.row -->
-   <div class="row">
-     <div v-bind:class="md12col">
-       <!-- Teaser -->
-       <div v-bind:class="formGroup">
-         <label>Teaser (short description of expert for search results page)</label>
-         <textarea v-model="record.teaser" class="form-control" id="teaser" name="teaser" rows="2"></textarea>
-         <p v-if="formErrors.teaser" class="help-text invalid">Need teaser.</p>
-       </div>
-     </div>
-   </div>
-  <!-- /.row -->
    <div class="row">
      <div v-bind:class="md12col">
          <h4>Submitter Information</h4>
@@ -308,30 +299,37 @@
      <!-- /.small-12 columns -->
    </div>
    <!-- /.row -->
-    <div class="row">
-      <div v-bind:class="md12col">
-        <!-- Last Name -->
-        <div v-bind:class="formGroup">
-          <label>Expertise Categories</label>
-          <v-select
-          :class="[formErrors.tags ? 'invalid-input' : '']"
-          :value.sync="categories"
-          :options="categorieslist"
-          :multiple="true"
-          placeholder="Select expertise category"
-          label="category">
-          </v-select>
-          <p v-if="formErrors.category" class="help-text invalid">{{formErrors.category}}</p>
-        </div>
-      </div>
-      <!-- /.small-12 columns -->
-    </div>
-    <!-- /.row -->
+   <div class="row" v-show="!recordexists">
+       <div v-bind:class="md12col" id="policies-container">
+           <!-- Terms and conditions -->
+           <h5>Policies</h5>
+           <p>The Speakers & Experts Directory is a community service of the University Communications Office.</p>
+           <p>
+               ...
+           </p>
+           <p>Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>
+       </div>
+       <!-- /.small-12 columns -->
+     <div v-bind:class="md12col">
+         <!-- Is approved? -->
+           <div v-bind:class="formGroup">
+             <label><input type="checkbox" value="1" v-model="record.accept_policies">I have read and accepted the policies <span v-bind:class="iconStar" class="reqstar">*</span></label>
+           </div>
+           <p v-if="formErrors.accept_policies" class="help-text invalid">{{formErrors.accept_policies}}</p>
+     </div>
+     <!-- /.small-12 columns -->
+   </div>
+   <div class="row" v-show="recordexists">
+       <div v-bind:class="md12col" id="policies-container">
+           <p>Please note that when you update this expert, he/she will be removed from the experts list until an administrator has approved the changes.</p>
+       </div>
+       <!-- /.small-12 columns -->
+   </div>
+   <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-          <button v-if="recordexists" id="btn-delete" v-on:click="delExpert" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Expert</button>
         </div>
       </div>
     </div>
@@ -340,20 +338,31 @@
 </template>
 
 <style scoped>
+.row{
+    padding: 5px 0px 5px 0px;
+}
+.list-row{
+    padding: 10px;
+    border: 1px solid #eeeeee;
+}
+.list-row h4{
+    padding: 10px;
+    background: #eeeeee;
+}
+.nofields{
+    padding: 10px;
+    font-style: italic;
+}
+#policies-container{
+    height: 175px;
+    overflow: scroll;
+    padding: 16px;
+    background: #eeeeee;
+    border: 1px solid #999999;
+    margin: 10px;
+}
 .redBtn {
   background: hsl(0, 90%, 70%);
-}
-.dynamic-list-item{
-    margin: 5px 0px 10px 0px !important;
-}
-.dynamic-list-btn{
-    margin-top: -4px !important;
-}
-.social-list-item{
-    margin: 2px 0px 2px 0px !important;
-}
-.social-list-btn{
-    margin-top: 26px !important;
 }
 p {
   margin: 0;
@@ -450,8 +459,6 @@ import ckrte from "../directives/ckrte.js";
 import vSelect from "vue-select";
 import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
 import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
-import VuiFlipSwitch from './VuiFlipSwitch.vue'
-
 module.exports = {
   directives: {ckrte,flatpickr},
   components: {vSelect},
@@ -468,14 +475,13 @@ module.exports = {
     }
   },
   props: {
-    cuserRoles: {default: {}},
     errors: {
       default: ''
     },
     recordexists: {
       default: false
     },
-    recordid: {
+    editid: {
       default: ''
     },
     framework: {
@@ -512,17 +518,16 @@ module.exports = {
       recordState: '',
       record: {
         id: '',
-        accept_policies: 1,
+        accept_policies: 0, //public form only...not saved into database
         biography: '',
         cell_phone: '',
         display_name: '',
         email: '',
+        expert_type: '',
+        first_name: '',
         is_community_speaker: 0,
         is_media_expert: 0,
         do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        do_phone_interviews: 0,
         do_broadcast_interviews: 0,
         is_approved: 0,
         last_name: '',
@@ -531,7 +536,6 @@ module.exports = {
         submitter_email: '',
         submitter_name: '',
         submitter_phone: '',
-        teaser: '',
         title: '',
         categories: [],
         education: [],
@@ -542,7 +546,7 @@ module.exports = {
       },
       recordOld: {
           id: '',
-          accept_policies: 1,
+          accept_policies: 0, //public form only...not saved into database
           biography: '',
           cell_phone: '',
           display_name: '',
@@ -560,7 +564,6 @@ module.exports = {
           submitter_email: '',
           submitter_name: '',
           submitter_phone: '',
-          teaser: '',
           title: '',
           categories: [],
           education: [],
@@ -575,7 +578,6 @@ module.exports = {
       totalChars: {
         title: 50,
       },
-      userRoles: [],
     }
   },
   created: function () {
@@ -599,7 +601,6 @@ module.exports = {
       this.recordState = 'new';
       this.fetchCategoryList();
     }
-    this.getUserRoles();
   },
   computed: {
 
@@ -637,28 +638,9 @@ module.exports = {
     inputGroupLabel:function(){
       return (this.framework=='foundation')?'input-group-label':'input-group-addon'
     },
-    isAdmin:function(){
-      if(this.userRoles.indexOf('admin')!= -1) {
-        return true;
-      } else {
-        if (this.userRoles.indexOf('admin_super') != -1) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    },
     // Switch verbage of submit button.
     submitBtnLabel:function(){
       return (this.recordexists)?'Update Expert': 'Create Expert'
-    },
-
-    editorType:function(){
-      if(this.isAdmin){
-        return 'admin'
-      } else {
-        return 'simple'
-      }
     },
 
     hasLocalRecordChanged: function() {
@@ -697,20 +679,6 @@ module.exports = {
         return JSON.stringify(a) === JSON.stringify(b);
       },
 
-      getUserRoles(){
-
-        let roles = this.cuserRoles;
-        let self = this;
-        this.userRoles = [];
-        if (roles.length > 0) {
-          roles.forEach(function(item,index){
-            self.userRoles.push(item.name);
-          })
-        } else {
-          self.userRoles.push('guest');
-        }
-      },
-
     fetchCurrentRecord: function(recid) {
       this.$http.get('/api/experts/' + recid + '/edit')
 
@@ -721,6 +689,12 @@ module.exports = {
         this.hasContent = true;
         this.currentRecordId = this.record.id;
         this.biography = this.record.biography;
+        this.fetchCurrentCategory();
+        this.fetchEducation();
+        this.fetchExpertise();
+        this.fetchLanguages();
+        this.fetchPreviousTitles();
+        this.fetchSocial();
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
@@ -804,6 +778,16 @@ module.exports = {
       this.fetchCurrentRecord(this.currentRecordId);
     },
 
+    fetchSubmittedRecord: function(recid){
+      // Sets params for update record, Passes an id to fetchCurrentRecord
+      this.recordexists = true;
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      this.recordid = recid;
+      this.formErrors = {};
+      this.fetchCurrentRecord(recid);
+    },
+
     submitForm: function(e) {
       e.preventDefault(); // Stop form defualt action
 
@@ -847,6 +831,8 @@ module.exports = {
          this.record.social = [];
       }
 
+      this.record.is_approved = 0; //any new or updated expert from the public end automatically requires approval from admin
+
       // Decide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
       let route =  (this.recordexists) ? '/api/experts/' + this.record.id : '/api/experts';
@@ -864,12 +850,8 @@ module.exports = {
         this.record.id = response.data.newdata.record_id;
         this.formMessage.isErr = false;
         this.recordexists = true;
-        this.formErrors = {}; // Clear errors?
-        if (this.newform) {
-          this.nowOnReload();
-        } else {
-          this.onRefresh();
-        }
+        this.formErrors = {};
+        this.refreshUserExpertsTable();
       }, (response) => { // If invalid. error callback
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
@@ -878,22 +860,11 @@ module.exports = {
       }).bind(this);
     },
 
-    delExpert: function(e) {
-        e.preventDefault();
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = false;
-
-        if(confirm('Would you like to delete this expert?')==true){
-          $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-          this.$http.post('/api/experts/'+this.record.id+'/delete')
-
-          .then((response) =>{
-              window.location.href = "/admin/experts/list";
-          }, (response) => {
-            console.log('Error: '+JSON.stringify(response))
-          }).bind(this);
-        }
+    refreshUserExpertsTable: function(){
+      $.get('/experts/user/experts', function(data){
+        data = $.parseJSON(data);
+        $('#user-expert-tables').html(data);
+      });
     },
 
     delTitle: function(title) {

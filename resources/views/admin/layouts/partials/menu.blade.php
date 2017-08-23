@@ -1,4 +1,3 @@
-
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/announcement*') }}">
   <a href="#"><i class="fa fa-bullhorn"></i> <span>Announcements</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
@@ -75,17 +74,29 @@
 </li>
 @endcan
 {{-- Gate Facade allows multiple permission checks (unlike @can) --}}
-{{--@if(Gate::check('admin') || Gate::check('experts'))--}}
-@if(Gate::check('experts'))
+@if(Gate::check('admin') || Gate::check('experts'))
     <li class="treeview {{ set_active('admin/experts*') }}">
       <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
       <ul class="treeview-menu">
-        <li><a href="#"><i class="fa fa-circle-o"></i>People <span class="pull-right-container">
+        <li><a href="#"><i class="fa fa-circle-o"></i>Eastern Experts <span class="pull-right-container">
+            @if(count($bugExperts) > 0)
+            <span class="label label-success">{{ count($bugExperts) }} NEW</span>
+            @endif
             <i class="fa fa-angle-left pull-right"></i>
             </span></a>
             <ul class="treeview-menu {{ set_active('admin/expert*') }}">
                 <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/list"><i class="fa fa-list"></i> <span>List</span></a></li>
                 <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>Media Requests <span class="pull-right-container">
+            @if(count($bugExpertMediaRequests) > 0)
+            <span class="label label-success">{{ count($bugExpertMediaRequests) }} NEW</span>
+            @endif
+            <i class="fa fa-angle-left pull-right"></i>
+            </span></a>
+            <ul class="treeview-menu {{ set_active('admin/experts/requests*') }}">
+                <li class="{{ set_active('admin/expertrequests/*') }}"><a href="/admin/expertrequests/list"><i class="fa fa-list"></i> <span>List</span></a></li>
             </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">

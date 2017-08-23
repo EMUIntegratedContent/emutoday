@@ -1,55 +1,30 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":17}],2:[function(require,module,exports){
+},{"core-js/library/fn/json/stringify":16}],2:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/create"), __esModule: true };
-},{"core-js/library/fn/object/create":18}],3:[function(require,module,exports){
+},{"core-js/library/fn/object/create":17}],3:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-properties"), __esModule: true };
-},{"core-js/library/fn/object/define-properties":19}],4:[function(require,module,exports){
+},{"core-js/library/fn/object/define-properties":18}],4:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":20}],5:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":19}],5:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-descriptor"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-descriptor":21}],6:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-descriptor":20}],6:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-names"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-names":22}],7:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-names":21}],7:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-symbols"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-symbols":23}],8:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-symbols":22}],8:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-prototype-of"), __esModule: true };
-},{"core-js/library/fn/object/get-prototype-of":24}],9:[function(require,module,exports){
+},{"core-js/library/fn/object/get-prototype-of":23}],9:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/is-extensible"), __esModule: true };
-},{"core-js/library/fn/object/is-extensible":25}],10:[function(require,module,exports){
+},{"core-js/library/fn/object/is-extensible":24}],10:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
-},{"core-js/library/fn/object/keys":26}],11:[function(require,module,exports){
+},{"core-js/library/fn/object/keys":25}],11:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/prevent-extensions"), __esModule: true };
-},{"core-js/library/fn/object/prevent-extensions":27}],12:[function(require,module,exports){
+},{"core-js/library/fn/object/prevent-extensions":26}],12:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
-},{"core-js/library/fn/symbol":28}],13:[function(require,module,exports){
+},{"core-js/library/fn/symbol":27}],13:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol/iterator"), __esModule: true };
-},{"core-js/library/fn/symbol/iterator":29}],14:[function(require,module,exports){
-"use strict";
-
-exports.__esModule = true;
-
-var _defineProperty = require("../core-js/object/define-property");
-
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
-},{"../core-js/object/define-property":4}],15:[function(require,module,exports){
+},{"core-js/library/fn/symbol/iterator":28}],14:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -71,83 +46,83 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 } : function (obj) {
   return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
-},{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],16:[function(require,module,exports){
+},{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],15:[function(require,module,exports){
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var core  = require('../../modules/_core')
   , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
 module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
-},{"../../modules/_core":35}],18:[function(require,module,exports){
+},{"../../modules/_core":34}],17:[function(require,module,exports){
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
 module.exports = function create(P, D){
   return $Object.create(P, D);
 };
-},{"../../modules/_core":35,"../../modules/es6.object.create":88}],19:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.create":87}],18:[function(require,module,exports){
 require('../../modules/es6.object.define-properties');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperties(T, D){
   return $Object.defineProperties(T, D);
 };
-},{"../../modules/_core":35,"../../modules/es6.object.define-properties":89}],20:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.define-properties":88}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-},{"../../modules/_core":35,"../../modules/es6.object.define-property":90}],21:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.define-property":89}],20:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-descriptor');
 var $Object = require('../../modules/_core').Object;
 module.exports = function getOwnPropertyDescriptor(it, key){
   return $Object.getOwnPropertyDescriptor(it, key);
 };
-},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-descriptor":91}],22:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":90}],21:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-names');
 var $Object = require('../../modules/_core').Object;
 module.exports = function getOwnPropertyNames(it){
   return $Object.getOwnPropertyNames(it);
 };
-},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-names":92}],23:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":91}],22:[function(require,module,exports){
 require('../../modules/es6.symbol');
 module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
-},{"../../modules/_core":35,"../../modules/es6.symbol":99}],24:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.symbol":98}],23:[function(require,module,exports){
 require('../../modules/es6.object.get-prototype-of');
 module.exports = require('../../modules/_core').Object.getPrototypeOf;
-},{"../../modules/_core":35,"../../modules/es6.object.get-prototype-of":93}],25:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":92}],24:[function(require,module,exports){
 require('../../modules/es6.object.is-extensible');
 module.exports = require('../../modules/_core').Object.isExtensible;
-},{"../../modules/_core":35,"../../modules/es6.object.is-extensible":94}],26:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":93}],25:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
-},{"../../modules/_core":35,"../../modules/es6.object.keys":95}],27:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.keys":94}],26:[function(require,module,exports){
 require('../../modules/es6.object.prevent-extensions');
 module.exports = require('../../modules/_core').Object.preventExtensions;
-},{"../../modules/_core":35,"../../modules/es6.object.prevent-extensions":96}],28:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":95}],27:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-},{"../../modules/_core":35,"../../modules/es6.object.to-string":97,"../../modules/es6.symbol":99,"../../modules/es7.symbol.async-iterator":100,"../../modules/es7.symbol.observable":101}],29:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.to-string":96,"../../modules/es6.symbol":98,"../../modules/es7.symbol.async-iterator":99,"../../modules/es7.symbol.observable":100}],28:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-},{"../../modules/_wks-ext":85,"../../modules/es6.string.iterator":98,"../../modules/web.dom.iterable":102}],30:[function(require,module,exports){
+},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":97,"../../modules/web.dom.iterable":101}],29:[function(require,module,exports){
 module.exports = function(it){
   if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function(){ /* empty */ };
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function(it){
   if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-},{"./_is-object":51}],33:[function(require,module,exports){
+},{"./_is-object":50}],32:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject')
@@ -169,16 +144,16 @@ module.exports = function(IS_INCLUDES){
     } return !IS_INCLUDES && -1;
   };
 };
-},{"./_to-index":77,"./_to-iobject":79,"./_to-length":80}],34:[function(require,module,exports){
+},{"./_to-index":76,"./_to-iobject":78,"./_to-length":79}],33:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function(fn, that, length){
@@ -199,18 +174,18 @@ module.exports = function(fn, that, length){
     return fn.apply(that, arguments);
   };
 };
-},{"./_a-function":30}],37:[function(require,module,exports){
+},{"./_a-function":29}],36:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function(it){
   if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./_fails":43}],39:[function(require,module,exports){
+},{"./_fails":42}],38:[function(require,module,exports){
 var isObject = require('./_is-object')
   , document = require('./_global').document
   // in old IE typeof document.createElement is 'object'
@@ -218,12 +193,12 @@ var isObject = require('./_is-object')
 module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-},{"./_global":44,"./_is-object":51}],40:[function(require,module,exports){
+},{"./_global":43,"./_is-object":50}],39:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // all enumerable object keys, includes symbols
 var getKeys = require('./_object-keys')
   , gOPS    = require('./_object-gops')
@@ -239,7 +214,7 @@ module.exports = function(it){
     while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
   } return result;
 };
-},{"./_object-gops":65,"./_object-keys":68,"./_object-pie":69}],42:[function(require,module,exports){
+},{"./_object-gops":64,"./_object-keys":67,"./_object-pie":68}],41:[function(require,module,exports){
 var global    = require('./_global')
   , core      = require('./_core')
   , ctx       = require('./_ctx')
@@ -301,7 +276,7 @@ $export.W = 32;  // wrap
 $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library` 
 module.exports = $export;
-},{"./_core":35,"./_ctx":36,"./_global":44,"./_hide":46}],43:[function(require,module,exports){
+},{"./_core":34,"./_ctx":35,"./_global":43,"./_hide":45}],42:[function(require,module,exports){
 module.exports = function(exec){
   try {
     return !!exec();
@@ -309,17 +284,17 @@ module.exports = function(exec){
     return true;
   }
 };
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 var dP         = require('./_object-dp')
   , createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function(object, key, value){
@@ -328,29 +303,29 @@ module.exports = require('./_descriptors') ? function(object, key, value){
   object[key] = value;
   return object;
 };
-},{"./_descriptors":38,"./_object-dp":60,"./_property-desc":71}],47:[function(require,module,exports){
+},{"./_descriptors":37,"./_object-dp":59,"./_property-desc":70}],46:[function(require,module,exports){
 module.exports = require('./_global').document && document.documentElement;
-},{"./_global":44}],48:[function(require,module,exports){
+},{"./_global":43}],47:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function(){
   return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./_descriptors":38,"./_dom-create":39,"./_fails":43}],49:[function(require,module,exports){
+},{"./_descriptors":37,"./_dom-create":38,"./_fails":42}],48:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-},{"./_cof":34}],50:[function(require,module,exports){
+},{"./_cof":33}],49:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
-},{"./_cof":34}],51:[function(require,module,exports){
+},{"./_cof":33}],50:[function(require,module,exports){
 module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 var create         = require('./_object-create')
   , descriptor     = require('./_property-desc')
@@ -364,7 +339,7 @@ module.exports = function(Constructor, NAME, next){
   Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-},{"./_hide":46,"./_object-create":59,"./_property-desc":71,"./_set-to-string-tag":73,"./_wks":86}],53:[function(require,module,exports){
+},{"./_hide":45,"./_object-create":58,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],52:[function(require,module,exports){
 'use strict';
 var LIBRARY        = require('./_library')
   , $export        = require('./_export')
@@ -435,13 +410,13 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
   }
   return methods;
 };
-},{"./_export":42,"./_has":45,"./_hide":46,"./_iter-create":52,"./_iterators":55,"./_library":57,"./_object-gpo":66,"./_redefine":72,"./_set-to-string-tag":73,"./_wks":86}],54:[function(require,module,exports){
+},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":56,"./_object-gpo":65,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],53:[function(require,module,exports){
 module.exports = function(done, value){
   return {value: value, done: !!done};
 };
-},{}],55:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = {};
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 var getKeys   = require('./_object-keys')
   , toIObject = require('./_to-iobject');
 module.exports = function(object, el){
@@ -452,9 +427,9 @@ module.exports = function(object, el){
     , key;
   while(length > index)if(O[key = keys[index++]] === el)return key;
 };
-},{"./_object-keys":68,"./_to-iobject":79}],57:[function(require,module,exports){
+},{"./_object-keys":67,"./_to-iobject":78}],56:[function(require,module,exports){
 module.exports = true;
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 var META     = require('./_uid')('meta')
   , isObject = require('./_is-object')
   , has      = require('./_has')
@@ -508,7 +483,7 @@ var meta = module.exports = {
   getWeak:  getWeak,
   onFreeze: onFreeze
 };
-},{"./_fails":43,"./_has":45,"./_is-object":51,"./_object-dp":60,"./_uid":83}],59:[function(require,module,exports){
+},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":59,"./_uid":82}],58:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject    = require('./_an-object')
   , dPs         = require('./_object-dps')
@@ -551,7 +526,7 @@ module.exports = Object.create || function create(O, Properties){
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":32,"./_dom-create":39,"./_enum-bug-keys":40,"./_html":47,"./_object-dps":61,"./_shared-key":74}],60:[function(require,module,exports){
+},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":60,"./_shared-key":73}],59:[function(require,module,exports){
 var anObject       = require('./_an-object')
   , IE8_DOM_DEFINE = require('./_ie8-dom-define')
   , toPrimitive    = require('./_to-primitive')
@@ -568,7 +543,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
-},{"./_an-object":32,"./_descriptors":38,"./_ie8-dom-define":48,"./_to-primitive":82}],61:[function(require,module,exports){
+},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":81}],60:[function(require,module,exports){
 var dP       = require('./_object-dp')
   , anObject = require('./_an-object')
   , getKeys  = require('./_object-keys');
@@ -582,7 +557,7 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   while(length > i)dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
-},{"./_an-object":32,"./_descriptors":38,"./_object-dp":60,"./_object-keys":68}],62:[function(require,module,exports){
+},{"./_an-object":31,"./_descriptors":37,"./_object-dp":59,"./_object-keys":67}],61:[function(require,module,exports){
 var pIE            = require('./_object-pie')
   , createDesc     = require('./_property-desc')
   , toIObject      = require('./_to-iobject')
@@ -599,7 +574,7 @@ exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor
   } catch(e){ /* empty */ }
   if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 };
-},{"./_descriptors":38,"./_has":45,"./_ie8-dom-define":48,"./_object-pie":69,"./_property-desc":71,"./_to-iobject":79,"./_to-primitive":82}],63:[function(require,module,exports){
+},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":68,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],62:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = require('./_to-iobject')
   , gOPN      = require('./_object-gopn').f
@@ -620,7 +595,7 @@ module.exports.f = function getOwnPropertyNames(it){
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":64,"./_to-iobject":79}],64:[function(require,module,exports){
+},{"./_object-gopn":63,"./_to-iobject":78}],63:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys      = require('./_object-keys-internal')
   , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
@@ -628,9 +603,9 @@ var $keys      = require('./_object-keys-internal')
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
 };
-},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],65:[function(require,module,exports){
+},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],64:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has         = require('./_has')
   , toObject    = require('./_to-object')
@@ -644,7 +619,7 @@ module.exports = Object.getPrototypeOf || function(O){
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
-},{"./_has":45,"./_shared-key":74,"./_to-object":81}],67:[function(require,module,exports){
+},{"./_has":44,"./_shared-key":73,"./_to-object":80}],66:[function(require,module,exports){
 var has          = require('./_has')
   , toIObject    = require('./_to-iobject')
   , arrayIndexOf = require('./_array-includes')(false)
@@ -662,7 +637,7 @@ module.exports = function(object, names){
   }
   return result;
 };
-},{"./_array-includes":33,"./_has":45,"./_shared-key":74,"./_to-iobject":79}],68:[function(require,module,exports){
+},{"./_array-includes":32,"./_has":44,"./_shared-key":73,"./_to-iobject":78}],67:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys       = require('./_object-keys-internal')
   , enumBugKeys = require('./_enum-bug-keys');
@@ -670,9 +645,9 @@ var $keys       = require('./_object-keys-internal')
 module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
-},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],69:[function(require,module,exports){
+},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],68:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-},{}],70:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
 var $export = require('./_export')
   , core    = require('./_core')
@@ -683,7 +658,7 @@ module.exports = function(KEY, exec){
   exp[KEY] = exec(fn);
   $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
 };
-},{"./_core":35,"./_export":42,"./_fails":43}],71:[function(require,module,exports){
+},{"./_core":34,"./_export":41,"./_fails":42}],70:[function(require,module,exports){
 module.exports = function(bitmap, value){
   return {
     enumerable  : !(bitmap & 1),
@@ -692,9 +667,9 @@ module.exports = function(bitmap, value){
     value       : value
   };
 };
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = require('./_hide');
-},{"./_hide":46}],73:[function(require,module,exports){
+},{"./_hide":45}],72:[function(require,module,exports){
 var def = require('./_object-dp').f
   , has = require('./_has')
   , TAG = require('./_wks')('toStringTag');
@@ -702,20 +677,20 @@ var def = require('./_object-dp').f
 module.exports = function(it, tag, stat){
   if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-},{"./_has":45,"./_object-dp":60,"./_wks":86}],74:[function(require,module,exports){
+},{"./_has":44,"./_object-dp":59,"./_wks":85}],73:[function(require,module,exports){
 var shared = require('./_shared')('keys')
   , uid    = require('./_uid');
 module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
-},{"./_shared":75,"./_uid":83}],75:[function(require,module,exports){
+},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
 var global = require('./_global')
   , SHARED = '__core-js_shared__'
   , store  = global[SHARED] || (global[SHARED] = {});
 module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-},{"./_global":44}],76:[function(require,module,exports){
+},{"./_global":43}],75:[function(require,module,exports){
 var toInteger = require('./_to-integer')
   , defined   = require('./_defined');
 // true  -> String#at
@@ -733,7 +708,7 @@ module.exports = function(TO_STRING){
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-},{"./_defined":37,"./_to-integer":78}],77:[function(require,module,exports){
+},{"./_defined":36,"./_to-integer":77}],76:[function(require,module,exports){
 var toInteger = require('./_to-integer')
   , max       = Math.max
   , min       = Math.min;
@@ -741,34 +716,34 @@ module.exports = function(index, length){
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-},{"./_to-integer":78}],78:[function(require,module,exports){
+},{"./_to-integer":77}],77:[function(require,module,exports){
 // 7.1.4 ToInteger
 var ceil  = Math.ceil
   , floor = Math.floor;
 module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-},{}],79:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject')
   , defined = require('./_defined');
 module.exports = function(it){
   return IObject(defined(it));
 };
-},{"./_defined":37,"./_iobject":49}],80:[function(require,module,exports){
+},{"./_defined":36,"./_iobject":48}],79:[function(require,module,exports){
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer')
   , min       = Math.min;
 module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-},{"./_to-integer":78}],81:[function(require,module,exports){
+},{"./_to-integer":77}],80:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function(it){
   return Object(defined(it));
 };
-},{"./_defined":37}],82:[function(require,module,exports){
+},{"./_defined":36}],81:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -781,13 +756,13 @@ module.exports = function(it, S){
   if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-},{"./_is-object":51}],83:[function(require,module,exports){
+},{"./_is-object":50}],82:[function(require,module,exports){
 var id = 0
   , px = Math.random();
 module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 var global         = require('./_global')
   , core           = require('./_core')
   , LIBRARY        = require('./_library')
@@ -797,9 +772,9 @@ module.exports = function(name){
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
   if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 };
-},{"./_core":35,"./_global":44,"./_library":57,"./_object-dp":60,"./_wks-ext":85}],85:[function(require,module,exports){
+},{"./_core":34,"./_global":43,"./_library":56,"./_object-dp":59,"./_wks-ext":84}],84:[function(require,module,exports){
 exports.f = require('./_wks');
-},{"./_wks":86}],86:[function(require,module,exports){
+},{"./_wks":85}],85:[function(require,module,exports){
 var store      = require('./_shared')('wks')
   , uid        = require('./_uid')
   , Symbol     = require('./_global').Symbol
@@ -811,7 +786,7 @@ var $exports = module.exports = function(name){
 };
 
 $exports.store = store;
-},{"./_global":44,"./_shared":75,"./_uid":83}],87:[function(require,module,exports){
+},{"./_global":43,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables')
   , step             = require('./_iter-step')
@@ -846,19 +821,19 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-},{"./_add-to-unscopables":31,"./_iter-define":53,"./_iter-step":54,"./_iterators":55,"./_to-iobject":79}],88:[function(require,module,exports){
+},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":78}],87:[function(require,module,exports){
 var $export = require('./_export')
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 $export($export.S, 'Object', {create: require('./_object-create')});
-},{"./_export":42,"./_object-create":59}],89:[function(require,module,exports){
+},{"./_export":41,"./_object-create":58}],88:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperties: require('./_object-dps')});
-},{"./_descriptors":38,"./_export":42,"./_object-dps":61}],90:[function(require,module,exports){
+},{"./_descriptors":37,"./_export":41,"./_object-dps":60}],89:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
-},{"./_descriptors":38,"./_export":42,"./_object-dp":60}],91:[function(require,module,exports){
+},{"./_descriptors":37,"./_export":41,"./_object-dp":59}],90:[function(require,module,exports){
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 var toIObject                 = require('./_to-iobject')
   , $getOwnPropertyDescriptor = require('./_object-gopd').f;
@@ -868,12 +843,12 @@ require('./_object-sap')('getOwnPropertyDescriptor', function(){
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-},{"./_object-gopd":62,"./_object-sap":70,"./_to-iobject":79}],92:[function(require,module,exports){
+},{"./_object-gopd":61,"./_object-sap":69,"./_to-iobject":78}],91:[function(require,module,exports){
 // 19.1.2.7 Object.getOwnPropertyNames(O)
 require('./_object-sap')('getOwnPropertyNames', function(){
   return require('./_object-gopn-ext').f;
 });
-},{"./_object-gopn-ext":63,"./_object-sap":70}],93:[function(require,module,exports){
+},{"./_object-gopn-ext":62,"./_object-sap":69}],92:[function(require,module,exports){
 // 19.1.2.9 Object.getPrototypeOf(O)
 var toObject        = require('./_to-object')
   , $getPrototypeOf = require('./_object-gpo');
@@ -883,7 +858,7 @@ require('./_object-sap')('getPrototypeOf', function(){
     return $getPrototypeOf(toObject(it));
   };
 });
-},{"./_object-gpo":66,"./_object-sap":70,"./_to-object":81}],94:[function(require,module,exports){
+},{"./_object-gpo":65,"./_object-sap":69,"./_to-object":80}],93:[function(require,module,exports){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = require('./_is-object');
 
@@ -892,7 +867,7 @@ require('./_object-sap')('isExtensible', function($isExtensible){
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-},{"./_is-object":51,"./_object-sap":70}],95:[function(require,module,exports){
+},{"./_is-object":50,"./_object-sap":69}],94:[function(require,module,exports){
 // 19.1.2.14 Object.keys(O)
 var toObject = require('./_to-object')
   , $keys    = require('./_object-keys');
@@ -902,7 +877,7 @@ require('./_object-sap')('keys', function(){
     return $keys(toObject(it));
   };
 });
-},{"./_object-keys":68,"./_object-sap":70,"./_to-object":81}],96:[function(require,module,exports){
+},{"./_object-keys":67,"./_object-sap":69,"./_to-object":80}],95:[function(require,module,exports){
 // 19.1.2.15 Object.preventExtensions(O)
 var isObject = require('./_is-object')
   , meta     = require('./_meta').onFreeze;
@@ -912,9 +887,9 @@ require('./_object-sap')('preventExtensions', function($preventExtensions){
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
 });
-},{"./_is-object":51,"./_meta":58,"./_object-sap":70}],97:[function(require,module,exports){
-arguments[4][16][0].apply(exports,arguments)
-},{"dup":16}],98:[function(require,module,exports){
+},{"./_is-object":50,"./_meta":57,"./_object-sap":69}],96:[function(require,module,exports){
+arguments[4][15][0].apply(exports,arguments)
+},{"dup":15}],97:[function(require,module,exports){
 'use strict';
 var $at  = require('./_string-at')(true);
 
@@ -932,7 +907,7 @@ require('./_iter-define')(String, 'String', function(iterated){
   this._i += point.length;
   return {value: point, done: false};
 });
-},{"./_iter-define":53,"./_string-at":76}],99:[function(require,module,exports){
+},{"./_iter-define":52,"./_string-at":75}],98:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
 var global         = require('./_global')
@@ -1168,11 +1143,11 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-},{"./_an-object":32,"./_descriptors":38,"./_enum-keys":41,"./_export":42,"./_fails":43,"./_global":44,"./_has":45,"./_hide":46,"./_is-array":50,"./_keyof":56,"./_library":57,"./_meta":58,"./_object-create":59,"./_object-dp":60,"./_object-gopd":62,"./_object-gopn":64,"./_object-gopn-ext":63,"./_object-gops":65,"./_object-keys":68,"./_object-pie":69,"./_property-desc":71,"./_redefine":72,"./_set-to-string-tag":73,"./_shared":75,"./_to-iobject":79,"./_to-primitive":82,"./_uid":83,"./_wks":86,"./_wks-define":84,"./_wks-ext":85}],100:[function(require,module,exports){
+},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_keyof":55,"./_library":56,"./_meta":57,"./_object-create":58,"./_object-dp":59,"./_object-gopd":61,"./_object-gopn":63,"./_object-gopn-ext":62,"./_object-gops":64,"./_object-keys":67,"./_object-pie":68,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],99:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
-},{"./_wks-define":84}],101:[function(require,module,exports){
+},{"./_wks-define":83}],100:[function(require,module,exports){
 require('./_wks-define')('observable');
-},{"./_wks-define":84}],102:[function(require,module,exports){
+},{"./_wks-define":83}],101:[function(require,module,exports){
 require('./es6.array.iterator');
 var global        = require('./_global')
   , hide          = require('./_hide')
@@ -1186,7 +1161,7 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
   if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-},{"./_global":44,"./_hide":46,"./_iterators":55,"./_wks":86,"./es6.array.iterator":87}],103:[function(require,module,exports){
+},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":85,"./es6.array.iterator":86}],102:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2520,7 +2495,7 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6985,7 +6960,7 @@ return hooks;
 
 })));
 
-},{}],105:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -7171,7 +7146,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],106:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -7472,7 +7447,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],107:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -9042,7 +9017,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":16}],108:[function(require,module,exports){
+},{"got":15}],107:[function(require,module,exports){
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -9983,7 +9958,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }]);
 });
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":15}],109:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],108:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -20224,7 +20199,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":105}],110:[function(require,module,exports){
+},{"_process":104}],109:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -20244,867 +20219,43 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],111:[function(require,module,exports){
-/*!
- * Vuex v1.0.1
- * (c) 2017 Evan You
- * Released under the MIT License.
- */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Vuex = factory());
-}(this, (function () { 'use strict';
+},{}],110:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.row[_v-24c38516]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-24c38516]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-24c38516]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-24c38516]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-24c38516]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n#honeypot[_v-24c38516]{\n    display: none;\n}\n.redBtn[_v-24c38516] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-24c38516] {\n  margin: 0;\n}\n\nlabel[_v-24c38516] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-24c38516] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-24c38516] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-24c38516] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-24c38516] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-24c38516] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-24c38516] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-24c38516] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-24c38516] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-24c38516] {\n  margin: 0;\n}\n\n[type='submit'][_v-24c38516],\n[type='button'][_v-24c38516] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-24c38516] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-24c38516] {\n  margin: 0;\n}\n\nh5.form-control[_v-24c38516] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
+var _moment = require('moment');
 
+var _moment2 = _interopRequireDefault(_moment);
 
+var _flatpickr = require('flatpickr');
 
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
 
+var _vueSelect = require('vue-select');
 
+var _vueSelect2 = _interopRequireDefault(_vueSelect);
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-
-
-
-
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
+module.exports = {
+  directives: { flatpickr: _flatpickr2.default },
+  components: { vSelect: _vueSelect2.default },
+  props: {
+    errors: {
+      default: ''
+    },
+    framework: {
+      default: 'foundation'
+    },
+    expertId: {
+      default: ''
     }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var toConsumableArray = function (arr) {
-  if (Array.isArray(arr)) {
-    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-    return arr2;
-  } else {
-    return Array.from(arr);
-  }
-};
-
-/**
- * Merge an array of objects into one.
- *
- * @param {Array<Object>} arr
- * @return {Object}
- */
-
-function mergeObjects(arr) {
-  return arr.reduce(function (prev, obj) {
-    Object.keys(obj).forEach(function (key) {
-      var existing = prev[key];
-      if (existing) {
-        // allow multiple mutation objects to contain duplicate
-        // handlers for the same mutation type
-        if (Array.isArray(existing)) {
-          prev[key] = existing.concat(obj[key]);
-        } else {
-          prev[key] = [existing].concat(obj[key]);
-        }
-      } else {
-        prev[key] = obj[key];
-      }
-    });
-    return prev;
-  }, {});
-}
-
-/**
- * Deep copy the given object considering circular structure.
- * This function caches all nested objects and its copies.
- * If it detects circular structure, use cached copy to avoid infinite loop.
- *
- * @param {*} obj
- * @param {Array<Object>} cache
- * @return {*}
- */
-
-
-/**
- * Check whether the given value is Object or not
- *
- * @param {*} obj
- * @return {Boolean}
- */
-
-function isObject(obj) {
-  return obj !== null && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
-}
-
-/**
- * Get state sub tree by given keys.
- *
- * @param {Object} state
- * @param {Array<String>} nestedKeys
- * @return {Object}
- */
-function getNestedState(state, nestedKeys) {
-  return nestedKeys.reduce(function (state, key) {
-    return state[key];
-  }, state);
-}
-
-/**
- * Hacks to get access to Vue internals.
- * Maybe we should expose these...
- */
-
-var Watcher = void 0;
-function getWatcher(vm) {
-  if (!Watcher) {
-    var noop = function noop() {};
-    var unwatch = vm.$watch(noop, noop);
-    Watcher = vm._watchers[0].constructor;
-    unwatch();
-  }
-  return Watcher;
-}
-
-var Dep = void 0;
-function getDep(vm) {
-  if (!Dep) {
-    Dep = vm._data.__ob__.dep.constructor;
-  }
-  return Dep;
-}
-
-var hook = typeof window !== 'undefined' && window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
-
-function devtoolPlugin(store) {
-  if (!hook) return;
-
-  hook.emit('vuex:init', store);
-
-  hook.on('vuex:travel-to-state', function (targetState) {
-    store.replaceState(targetState);
-  });
-
-  store.subscribe(function (mutation, state) {
-    hook.emit('vuex:mutation', mutation, state);
-  });
-}
-
-var override = function (Vue) {
-  var version = Number(Vue.version.split('.')[0]);
-
-  if (version >= 2) {
-    var usesInit = Vue.config._lifecycleHooks.indexOf('init') > -1;
-    Vue.mixin(usesInit ? { init: vuexInit } : { beforeCreate: vuexInit });
-  } else {
-    (function () {
-      // override init and inject vuex init procedure
-      // for 1.x backwards compatibility.
-      var _init = Vue.prototype._init;
-      Vue.prototype._init = function () {
-        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-        options.init = options.init ? [vuexInit].concat(options.init) : vuexInit;
-        _init.call(this, options);
-      };
-    })();
-  }
-
-  /**
-   * Vuex init hook, injected into each instances init hooks list.
-   */
-
-  function vuexInit() {
-    var options = this.$options;
-    var store = options.store,
-        vuex = options.vuex;
-    // store injection
-
-    if (store) {
-      this.$store = store;
-    } else if (options.parent && options.parent.$store) {
-      this.$store = options.parent.$store;
-    }
-    // vuex option handling
-    if (vuex) {
-      if (!this.$store) {
-        console.warn('[vuex] store not injected. make sure to ' + 'provide the store option in your root component.');
-      }
-      var state = vuex.state,
-          actions = vuex.actions;
-      var getters = vuex.getters;
-      // handle deprecated state option
-
-      if (state && !getters) {
-        console.warn('[vuex] vuex.state option will been deprecated in 1.0. ' + 'Use vuex.getters instead.');
-        getters = state;
-      }
-      // getters
-      if (getters) {
-        options.computed = options.computed || {};
-        for (var key in getters) {
-          defineVuexGetter(this, key, getters[key]);
-        }
-      }
-      // actions
-      if (actions) {
-        options.methods = options.methods || {};
-        for (var _key in actions) {
-          options.methods[_key] = makeBoundAction(this.$store, actions[_key], _key);
-        }
-      }
-    }
-  }
-
-  /**
-   * Setter for all getter properties.
-   */
-
-  function setter() {
-    throw new Error('vuex getter properties are read-only.');
-  }
-
-  /**
-   * Define a Vuex getter on an instance.
-   *
-   * @param {Vue} vm
-   * @param {String} key
-   * @param {Function} getter
-   */
-
-  function defineVuexGetter(vm, key, getter) {
-    if (typeof getter !== 'function') {
-      console.warn('[vuex] Getter bound to key \'vuex.getters.' + key + '\' is not a function.');
-    } else {
-      Object.defineProperty(vm, key, {
-        enumerable: true,
-        configurable: true,
-        get: makeComputedGetter(vm.$store, getter),
-        set: setter
-      });
-    }
-  }
-
-  /**
-   * Make a computed getter, using the same caching mechanism of computed
-   * properties. In addition, it is cached on the raw getter function using
-   * the store's unique cache id. This makes the same getter shared
-   * across all components use the same underlying watcher, and makes
-   * the getter evaluated only once during every flush.
-   *
-   * @param {Store} store
-   * @param {Function} getter
-   */
-
-  function makeComputedGetter(store, getter) {
-    var id = store._getterCacheId;
-
-    // cached
-    if (getter[id]) {
-      return getter[id];
-    }
-    var vm = store._vm;
-    var Watcher = getWatcher(vm);
-    var Dep = getDep(vm);
-    var watcher = new Watcher(vm, function (vm) {
-      return getter(vm.state);
-    }, null, { lazy: true });
-    var computedGetter = function computedGetter() {
-      if (watcher.dirty) {
-        watcher.evaluate();
-      }
-      if (Dep.target) {
-        watcher.depend();
-      }
-      return watcher.value;
-    };
-    getter[id] = computedGetter;
-    return computedGetter;
-  }
-
-  /**
-   * Make a bound-to-store version of a raw action function.
-   *
-   * @param {Store} store
-   * @param {Function} action
-   * @param {String} key
-   */
-
-  function makeBoundAction(store, action, key) {
-    if (typeof action !== 'function') {
-      console.warn('[vuex] Action bound to key \'vuex.actions.' + key + '\' is not a function.');
-    }
-    return function vuexBoundAction() {
-      for (var _len = arguments.length, args = Array(_len), _key2 = 0; _key2 < _len; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return action.call.apply(action, [this, store].concat(args));
-    };
-  }
-
-  // option merging
-  var merge = Vue.config.optionMergeStrategies.computed;
-  Vue.config.optionMergeStrategies.vuex = function (toVal, fromVal) {
-    if (!toVal) return fromVal;
-    if (!fromVal) return toVal;
+  },
+  data: function data() {
     return {
-      getters: merge(toVal.getters, fromVal.getters),
-      state: merge(toVal.state, fromVal.state),
-      actions: merge(toVal.actions, fromVal.actions)
-    };
-  };
-};
-
-var Vue = void 0;
-var uid = 0;
-
-var Store = function () {
-
-  /**
-   * @param {Object} options
-   *        - {Object} state
-   *        - {Object} actions
-   *        - {Object} mutations
-   *        - {Array} plugins
-   *        - {Boolean} strict
-   */
-
-  function Store() {
-    var _this = this;
-
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        _ref$state = _ref.state,
-        state = _ref$state === undefined ? {} : _ref$state,
-        _ref$mutations = _ref.mutations,
-        mutations = _ref$mutations === undefined ? {} : _ref$mutations,
-        _ref$modules = _ref.modules,
-        modules = _ref$modules === undefined ? {} : _ref$modules,
-        _ref$plugins = _ref.plugins,
-        plugins = _ref$plugins === undefined ? [] : _ref$plugins,
-        _ref$strict = _ref.strict,
-        strict = _ref$strict === undefined ? false : _ref$strict;
-
-    classCallCheck(this, Store);
-
-    this._getterCacheId = 'vuex_store_' + uid++;
-    this._dispatching = false;
-    this._rootMutations = this._mutations = mutations;
-    this._modules = modules;
-    this._subscribers = [];
-    // bind dispatch to self
-    var dispatch = this.dispatch;
-    this.dispatch = function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      dispatch.apply(_this, args);
-    };
-    // use a Vue instance to store the state tree
-    // suppress warnings just in case the user has added
-    // some funky global mixins
-    if (!Vue) {
-      throw new Error('[vuex] must call Vue.use(Vuex) before creating a store instance.');
-    }
-    var silent = Vue.config.silent;
-    Vue.config.silent = true;
-    this._vm = new Vue({
-      data: {
-        state: state
-      }
-    });
-    Vue.config.silent = silent;
-    this._setupModuleState(state, modules);
-    this._setupModuleMutations(modules);
-    // add extra warnings in strict mode
-    if (strict) {
-      this._setupMutationCheck();
-    }
-    // apply plugins
-    devtoolPlugin(this);
-    plugins.forEach(function (plugin) {
-      return plugin(_this);
-    });
-  }
-
-  /**
-   * Getter for the entire state tree.
-   * Read only.
-   *
-   * @return {Object}
-   */
-
-  createClass(Store, [{
-    key: 'replaceState',
-
-
-    /**
-     * Replace root state.
-     *
-     * @param {Object} state
-     */
-
-    value: function replaceState(state) {
-      this._dispatching = true;
-      this._vm.state = state;
-      this._dispatching = false;
-    }
-
-    /**
-     * Dispatch an action.
-     *
-     * @param {String} type
-     */
-
-  }, {
-    key: 'dispatch',
-    value: function dispatch(type) {
-      var _this2 = this;
-
-      for (var _len2 = arguments.length, payload = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        payload[_key2 - 1] = arguments[_key2];
-      }
-
-      var silent = false;
-      var isObjectStyleDispatch = false;
-      // compatibility for object actions, e.g. FSA
-      if ((typeof type === 'undefined' ? 'undefined' : _typeof(type)) === 'object' && type.type && arguments.length === 1) {
-        isObjectStyleDispatch = true;
-        payload = type;
-        if (type.silent) silent = true;
-        type = type.type;
-      }
-      var handler = this._mutations[type];
-      var state = this.state;
-      if (handler) {
-        this._dispatching = true;
-        // apply the mutation
-        if (Array.isArray(handler)) {
-          handler.forEach(function (h) {
-            isObjectStyleDispatch ? h(state, payload) : h.apply(undefined, [state].concat(toConsumableArray(payload)));
-          });
-        } else {
-          isObjectStyleDispatch ? handler(state, payload) : handler.apply(undefined, [state].concat(toConsumableArray(payload)));
-        }
-        this._dispatching = false;
-        if (!silent) {
-          (function () {
-            var mutation = isObjectStyleDispatch ? payload : { type: type, payload: payload };
-            _this2._subscribers.forEach(function (sub) {
-              return sub(mutation, state);
-            });
-          })();
-        }
-      } else {
-        console.warn('[vuex] Unknown mutation: ' + type);
-      }
-    }
-
-    /**
-     * Watch state changes on the store.
-     * Same API as Vue's $watch, except when watching a function,
-     * the function gets the state as the first argument.
-     *
-     * @param {Function} fn
-     * @param {Function} cb
-     * @param {Object} [options]
-     */
-
-  }, {
-    key: 'watch',
-    value: function watch(fn, cb, options) {
-      var _this3 = this;
-
-      if (typeof fn !== 'function') {
-        console.error('Vuex store.watch only accepts function.');
-        return;
-      }
-      return this._vm.$watch(function () {
-        return fn(_this3.state);
-      }, cb, options);
-    }
-
-    /**
-     * Subscribe to state changes. Fires after every mutation.
-     */
-
-  }, {
-    key: 'subscribe',
-    value: function subscribe(fn) {
-      var subs = this._subscribers;
-      if (subs.indexOf(fn) < 0) {
-        subs.push(fn);
-      }
-      return function () {
-        var i = subs.indexOf(fn);
-        if (i > -1) {
-          subs.splice(i, 1);
-        }
-      };
-    }
-
-    /**
-     * Hot update mutations & modules.
-     *
-     * @param {Object} options
-     *        - {Object} [mutations]
-     *        - {Object} [modules]
-     */
-
-  }, {
-    key: 'hotUpdate',
-    value: function hotUpdate() {
-      var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-          mutations = _ref2.mutations,
-          modules = _ref2.modules;
-
-      this._rootMutations = this._mutations = mutations || this._rootMutations;
-      this._setupModuleMutations(modules || this._modules);
-    }
-
-    /**
-     * Attach sub state tree of each module to the root tree.
-     *
-     * @param {Object} state
-     * @param {Object} modules
-     */
-
-  }, {
-    key: '_setupModuleState',
-    value: function _setupModuleState(state, modules) {
-      var _this4 = this;
-
-      if (!isObject(modules)) return;
-
-      Object.keys(modules).forEach(function (key) {
-        var module = modules[key];
-
-        // set this module's state
-        Vue.set(state, key, module.state || {});
-
-        // retrieve nested modules
-        _this4._setupModuleState(state[key], module.modules);
-      });
-    }
-
-    /**
-     * Bind mutations for each module to its sub tree and
-     * merge them all into one final mutations map.
-     *
-     * @param {Object} updatedModules
-     */
-
-  }, {
-    key: '_setupModuleMutations',
-    value: function _setupModuleMutations(updatedModules) {
-      var modules = this._modules;
-      Object.keys(updatedModules).forEach(function (key) {
-        modules[key] = updatedModules[key];
-      });
-      var updatedMutations = this._createModuleMutations(modules, []);
-      this._mutations = mergeObjects([this._rootMutations].concat(toConsumableArray(updatedMutations)));
-    }
-
-    /**
-     * Helper method for _setupModuleMutations.
-     * The method retrieve nested sub modules and
-     * bind each mutations to its sub tree recursively.
-     *
-     * @param {Object} modules
-     * @param {Array<String>} nestedKeys
-     * @return {Array<Object>}
-     */
-
-  }, {
-    key: '_createModuleMutations',
-    value: function _createModuleMutations(modules, nestedKeys) {
-      var _this5 = this;
-
-      if (!isObject(modules)) return [];
-
-      return Object.keys(modules).map(function (key) {
-        var module = modules[key];
-        var newNestedKeys = nestedKeys.concat(key);
-
-        // retrieve nested modules
-        var nestedMutations = _this5._createModuleMutations(module.modules, newNestedKeys);
-
-        if (!module || !module.mutations) {
-          return mergeObjects(nestedMutations);
-        }
-
-        // bind mutations to sub state tree
-        var mutations = {};
-        Object.keys(module.mutations).forEach(function (name) {
-          var original = module.mutations[name];
-          mutations[name] = function (state) {
-            for (var _len3 = arguments.length, args = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-              args[_key3 - 1] = arguments[_key3];
-            }
-
-            original.apply(undefined, [getNestedState(state, newNestedKeys)].concat(args));
-          };
-        });
-
-        // merge mutations of this module and nested modules
-        return mergeObjects([mutations].concat(toConsumableArray(nestedMutations)));
-      });
-    }
-
-    /**
-     * Setup mutation check: if the Vuex instance's state is mutated
-     * outside of a mutation handler, we throw en error. This effectively
-     * enforces all mutations to the state to be trackable and hot-reloadable.
-     * However, this comes at a run time cost since we are doing a deep
-     * watch on the entire state tree, so it is only enabled if the
-     * strict option is set to true.
-     */
-
-  }, {
-    key: '_setupMutationCheck',
-    value: function _setupMutationCheck() {
-      var _this6 = this;
-
-      var Watcher = getWatcher(this._vm);
-      /* eslint-disable no-new */
-      new Watcher(this._vm, 'state', function () {
-        if (!_this6._dispatching) {
-          throw new Error('[vuex] Do not mutate vuex store state outside mutation handlers.');
-        }
-      }, { deep: true, sync: true });
-      /* eslint-enable no-new */
-    }
-  }, {
-    key: 'state',
-    get: function get$$1() {
-      return this._vm.state;
-    },
-    set: function set$$1(v) {
-      throw new Error('[vuex] Use store.replaceState() to explicit replace store state.');
-    }
-  }]);
-  return Store;
-}();
-
-function install(_Vue) {
-  if (Vue) {
-    console.warn('[vuex] already installed. Vue.use(Vuex) should be called only once.');
-    return;
-  }
-  Vue = _Vue;
-  override(Vue);
-}
-
-// auto install in dist mode
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
-}
-
-var index = {
-  Store: Store,
-  install: install
-};
-
-return index;
-
-})));
-
-},{}],112:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.toolbar-row {\n  width: 100%;\ntext-align: right;\n}\n\n.toolbar-block {\n\n  display: inline-block;\n}​\n#items-unapproved .box {\n    margin-bottom: 4px;\n}\n#items-approved .box {\n    margin-bottom: 4px;\n\n}\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    props: ['viewtype', 'recordId', 'currentUser', 'role'],
-
-    ready: function ready() {},
-
-    data: function data() {
-        return {};
-    },
-    computed: {
-        previewLink: function previewLink() {
-            return '/preview/experts/' + this.recordId;
-        },
-        listLink: function listLink() {
-            return '/admin/experts/list';
-        },
-        createNewLink: function createNewLink() {
-            return '/admin/experts/form';
-        }
-
-    },
-
-    methods: {},
-
-    // the `events` option simply calls `$on` for you
-    // when the instance is created
-    events: {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"toolbar-row\">\n    <div class=\"toolbar-block\">\n\n    </div><!-- /.tool-block -->\n    <div class=\"toolbar-block pull-right\">\n        <div class=\"btn-toolbar btn-group-sm \">\n            <a id=\"btn-preview-{{id}}\" :href=\"previewLink\" class=\"btn bg-orange btn-sm\"><i class=\"fa fa-eye\"></i></a>\n            <a id=\"btn-new-{{id}}\" :href=\"createNewLink\" class=\"btn bg-orange btn-sm\"><i class=\"fa fa-plus-square\"></i></a>\n            <a id=\"btn-list-{{id}}\" :href=\"listLink\" class=\"btn bg-orange btn-sm\"><i class=\"fa fa-list-alt\"></i></a>\n        </div><!-- /.btn-toolbar -->\n    </div><!-- /.toolbar-block -->\n</div><!-- /.center-text -->\n\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.toolbar-row {\n  width: 100%;\ntext-align: right;\n}\n\n.toolbar-block {\n\n  display: inline-block;\n}​\n#items-unapproved .box {\n    margin-bottom: 4px;\n}\n#items-approved .box {\n    margin-bottom: 4px;\n\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-73b8fb11", module.exports)
-  } else {
-    hotAPI.update("_v-73b8fb11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],113:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-f7e430f6]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-f7e430f6]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-f7e430f6]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-f7e430f6]{\n    margin-top: 26px !important;\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
-'use strict';
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _flatpickr = require('flatpickr');
-
-var _flatpickr2 = _interopRequireDefault(_flatpickr);
-
-var _ckrte = require('../directives/ckrte.js');
-
-var _ckrte2 = _interopRequireDefault(_ckrte);
-
-var _vueSelect = require('vue-select');
-
-var _vueSelect2 = _interopRequireDefault(_vueSelect);
-
-var _actions = require('../vuex/actions');
-
-var _getters = require('../vuex/getters');
-
-var _VuiFlipSwitch = require('./VuiFlipSwitch.vue');
-
-var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-module.exports = {
-  directives: { ckrte: _ckrte2.default, flatpickr: _flatpickr2.default },
-  components: { vSelect: _vueSelect2.default },
-  vuex: {
-    getters: {
-      thisRecordId: _getters.getRecordId,
-      thisRecordState: _getters.getRecordState,
-      thisRecordIsDirty: _getters.getRecordIsDirty
-    },
-    actions: {
-      updateRecordId: _actions.updateRecordId,
-      updateRecordState: _actions.updateRecordState,
-      updateRecordIsDirty: _actions.updateRecordIsDirty
-    }
-  },
-  props: {
-    cuserRoles: { default: {} },
-    errors: {
-      default: ''
-    },
-    recordexists: {
-      default: false
-    },
-    recordid: {
-      default: ''
-    },
-    framework: {
-      default: 'foundation'
-    },
-    type: {
-      default: 'general'
-    },
-    user: {
-      default: ''
-    }
-  },
-  data: function data() {
-    var _record, _ref;
-
-    return _ref = {
-      biography: '',
-      categories: [],
-      categorieslist: [],
-      ckfullyloaded: false,
-      currentDate: {},
-      education: [],
-      expertise: [],
+      expertListError: '',
+      experts: {},
       formErrors: {},
       formInputs: {},
       formMessage: {
@@ -21112,631 +20263,32 @@ module.exports = {
         isErr: false,
         msg: ''
       },
-      hasContent: false,
-      isFresh: true,
-      languages: [],
-      newform: false,
-      previousTitles: [],
-      recordState: '',
-      record: (_record = {
-        id: '',
-        accept_policies: 1,
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        do_phone_interviews: 0
-      }, (0, _defineProperty3.default)(_record, 'do_broadcast_interviews', 0), (0, _defineProperty3.default)(_record, 'is_approved', 0), (0, _defineProperty3.default)(_record, 'last_name', ''), (0, _defineProperty3.default)(_record, 'office_phone', ''), (0, _defineProperty3.default)(_record, 'release_cell_phone', 0), (0, _defineProperty3.default)(_record, 'submitter_email', ''), (0, _defineProperty3.default)(_record, 'submitter_name', ''), (0, _defineProperty3.default)(_record, 'submitter_phone', ''), (0, _defineProperty3.default)(_record, 'teaser', ''), (0, _defineProperty3.default)(_record, 'title', ''), (0, _defineProperty3.default)(_record, 'categories', []), (0, _defineProperty3.default)(_record, 'education', []), (0, _defineProperty3.default)(_record, 'expertise', []), (0, _defineProperty3.default)(_record, 'languages', []), (0, _defineProperty3.default)(_record, 'previousTitles', []), (0, _defineProperty3.default)(_record, 'social', []), _record),
-      recordOld: {
-        id: '',
-        accept_policies: 1,
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        interviews: '',
-        is_approved: 0,
-        last_name: '',
-        office_phone: '',
-        release_cell_phone: 0,
-        submitter_email: '',
-        submitter_name: '',
-        submitter_phone: '',
-        teaser: '',
-        title: '',
-        categories: [],
-        education: [],
-        expertise: [],
-        languages: [],
-        previousTitles: [],
-        social: []
-      }
-    }, (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'response', {}), (0, _defineProperty3.default)(_ref, 'social', []), (0, _defineProperty3.default)(_ref, 'totalChars', {
-      title: 50
-    }), (0, _defineProperty3.default)(_ref, 'userRoles', []), _ref;
-  },
-  created: function created() {
-    this.recordState = 'created';
-  },
-  ready: function ready() {
-    if (this.recordexists) {
-      this.currentRecordId = this.recordid;
-      this.newform = false;
-      this.fetchCategoryList();
-      this.fetchEducation();
-      this.fetchExpertise();
-      this.fetchLanguages();
-      this.fetchPreviousTitles();
-      this.fetchSocial();
-      this.fetchCurrentCategory(this.currentRecordId);
-      this.fetchCurrentRecord(this.currentRecordId);
-    } else {
-      this.newform = true;
-      this.hasContent = true;
-      this.recordState = 'new';
-      this.fetchCategoryList();
-    }
-    this.getUserRoles();
-  },
-  computed: {
-
-    // switch classes based on css framework. foundation or bootstrap
-    md6col: function md6col() {
-      return this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6';
-    },
-    md12col: function md12col() {
-      return this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12';
-    },
-    md8col: function md8col() {
-      return this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8';
-    },
-    md4col: function md4col() {
-      return this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4';
-    },
-    btnPrimary: function btnPrimary() {
-      return this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary';
-    },
-    formGroup: function formGroup() {
-      return this.framework == 'foundation' ? 'form-group' : 'form-group';
-    },
-    formControl: function formControl() {
-      return this.framework == 'foundation' ? '' : 'form-control';
-    },
-    calloutSuccess: function calloutSuccess() {
-      return this.framework == 'foundation' ? 'callout success' : 'alert alert-success';
-    },
-    calloutFail: function calloutFail() {
-      return this.framework == 'foundation' ? 'callout alert' : 'alert alert-danger';
-    },
-    iconStar: function iconStar() {
-      return this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star';
-    },
-    inputGroupLabel: function inputGroupLabel() {
-      return this.framework == 'foundation' ? 'input-group-label' : 'input-group-addon';
-    },
-    isAdmin: function isAdmin() {
-      if (this.userRoles.indexOf('admin') != -1) {
-        return true;
-      } else {
-        if (this.userRoles.indexOf('admin_super') != -1) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    },
-    // Switch verbage of submit button.
-    submitBtnLabel: function submitBtnLabel() {
-      return this.recordexists ? 'Update Expert' : 'Create Expert';
-    },
-
-    editorType: function editorType() {
-      if (this.isAdmin) {
-        return 'admin';
-      } else {
-        return 'simple';
-      }
-    },
-
-    hasLocalRecordChanged: function hasLocalRecordChanged() {
-      var ckval = false;
-      if (this.recordOld.title !== this.record.title) {
-        ckval = true;
-      }
-
-      if (this.recordOld.content !== this.content) {
-        ckval = true;
-      }
-
-      if (ckval) {
-        this.updateRecordIsDirty(true);
-      }
-      return ckval;
-    }
-  },
-
-  methods: {
-    onContentChange: function onContentChange() {
-      if (!this.ckfullyloaded) {
-        this.ckfullyloaded = true;
-      } else {
-        this.checkContentChange();
-      }
-    },
-    checkContentChange: function checkContentChange() {
-      if (!this.recordIsDirty) {
-        this.recordIsDirty = true;
-        this.updateRecordIsDirty(true);
-      }
-    },
-    jsonEquals: function jsonEquals(a, b) {
-      return (0, _stringify2.default)(a) === (0, _stringify2.default)(b);
-    },
-
-    getUserRoles: function getUserRoles() {
-
-      var roles = this.cuserRoles;
-      var self = this;
-      this.userRoles = [];
-      if (roles.length > 0) {
-        roles.forEach(function (item, index) {
-          self.userRoles.push(item.name);
-        });
-      } else {
-        self.userRoles.push('guest');
-      }
-    },
-
-
-    fetchCurrentRecord: function fetchCurrentRecord(recid) {
-      var _this = this;
-
-      this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
-        _this.$set('record', response.data.data);
-        _this.$set('recordOld', response.data.data);
-
-        _this.hasContent = true;
-        _this.currentRecordId = _this.record.id;
-        _this.biography = _this.record.biography;
-      }, function (response) {
-        _this.formErrors = response.data.error.message;
-      }).bind(this);
-    },
-
-    // Fetch the tags that match THIS record
-    fetchCategoryList: function fetchCategoryList() {
-      var _this2 = this;
-
-      this.$http.get('/api/experts/category').then(function (response) {
-        _this2.$set('categorieslist', response.data);
-      });
-    },
-
-    // Fetch the categories that matches THIS expert
-    fetchCurrentCategory: function fetchCurrentCategory() {
-      var _this3 = this;
-
-      this.$http.get('/api/experts/category/' + this.currentRecordId).then(function (response) {
-        _this3.$set('categories', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the education that matches THIS expert
-    fetchEducation: function fetchEducation() {
-      var _this4 = this;
-
-      this.$http.get('/api/experts/education/' + this.currentRecordId).then(function (response) {
-        _this4.$set('education', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the expertise that matches THIS expert
-    fetchExpertise: function fetchExpertise() {
-      var _this5 = this;
-
-      this.$http.get('/api/experts/expertise/' + this.currentRecordId).then(function (response) {
-        _this5.$set('expertise', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the languages that matches THIS expert
-    fetchLanguages: function fetchLanguages() {
-      var _this6 = this;
-
-      this.$http.get('/api/experts/languages/' + this.currentRecordId).then(function (response) {
-        _this6.$set('languages', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the job titles that matches THIS expert
-    fetchPreviousTitles: function fetchPreviousTitles() {
-      var _this7 = this;
-
-      this.$http.get('/api/experts/previoustitles/' + this.currentRecordId).then(function (response) {
-        _this7.$set('previousTitles', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the social media links that matches THIS expert
-    fetchSocial: function fetchSocial() {
-      var _this8 = this;
-
-      this.$http.get('/api/experts/social/' + this.currentRecordId).then(function (response) {
-        _this8.$set('social', response.data);
-      }, function (response) {});
-    },
-
-
-    nowOnReload: function nowOnReload() {
-      var newurl = '/admin/experts/' + this.currentRecordId + '/edit';
-
-      document.location = newurl;
-    },
-
-    onRefresh: function onRefresh() {
-      this.updateRecordId(this.currentRecordId);
-      this.recordState = 'edit';
-      this.recordIsDirty = false;
-
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
-      this.fetchCurrentRecord(this.currentRecordId);
-    },
-
-    submitForm: function submitForm(e) {
-      var _this9 = this;
-
-      e.preventDefault(); // Stop form defualt action
-
-      $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-      this.record.biography = this.biography;
-
-      if (this.categories.length > 0) {
-        this.record.categories = this.categories;
-      } else {
-        this.record.categories = [];
-      }
-
-      if (this.education.length > 0) {
-        this.record.education = this.education;
-      } else {
-        this.record.education = [];
-      }
-
-      if (this.expertise.length > 0) {
-        this.record.expertise = this.expertise;
-      } else {
-        this.record.expertise = [];
-      }
-
-      if (this.languages.length > 0) {
-        this.record.languages = this.languages;
-      } else {
-        this.record.languages = [];
-      }
-
-      if (this.previousTitles.length > 0) {
-        this.record.previousTitles = this.previousTitles;
-      } else {
-        this.record.previousTitles = [];
-      }
-
-      if (this.social.length > 0) {
-        this.record.social = this.social;
-      } else {
-        this.record.social = [];
-      }
-
-      // Decide route to submit form to
-      var method = this.recordexists ? 'put' : 'post';
-      var route = this.recordexists ? '/api/experts/' + this.record.id : '/api/experts';
-
-      // Submit form.
-      this.$http[method](route, this.record) //
-
-      // Do this when response gets back.
-      .then(function (response) {
-        _this9.formMessage.msg = response.data.message;
-        _this9.formMessage.isOk = response.ok; // Success message
-        _this9.currentRecordId = response.data.newdata.record_id;
-        _this9.recordid = response.data.newdata.record_id;
-        _this9.record_id = response.data.newdata.record_id;
-        _this9.record.id = response.data.newdata.record_id;
-        _this9.formMessage.isErr = false;
-        _this9.recordexists = true;
-        _this9.formErrors = {}; // Clear errors?
-        if (_this9.newform) {
-          _this9.nowOnReload();
-        } else {
-          _this9.onRefresh();
-        }
-      }, function (response) {
-        // If invalid. error callback
-        _this9.formMessage.isOk = false;
-        _this9.formMessage.isErr = true;
-        // Set errors from validation to vue data
-        _this9.formErrors = response.data.error.message;
-      }).bind(this);
-    },
-
-    delExpert: function delExpert(e) {
-      e.preventDefault();
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-
-      if (confirm('Would you like to delete this expert?') == true) {
-        $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-        this.$http.post('/api/experts/' + this.record.id + '/delete').then(function (response) {
-          window.location.href = "/admin/experts/list";
-        }, function (response) {
-          console.log('Error: ' + (0, _stringify2.default)(response));
-        }).bind(this);
-      }
-    },
-
-    delTitle: function delTitle(title) {
-      if (confirm('Would you like to delete this title?') == true) {
-        this.previousTitles.$remove(title);
-      }
-    },
-
-    addTitle: function addTitle() {
-      this.previousTitles.push({ value: '', title: '' });
-    },
-
-    delLanguage: function delLanguage(language) {
-      if (confirm('Would you like to delete this language?') == true) {
-        this.languages.$remove(language);
-      }
-    },
-
-    addLanguage: function addLanguage() {
-      this.languages.push({ value: '', language: '' });
-    },
-
-    delEducation: function delEducation(education) {
-      if (confirm('Would you like to delete this education?') == true) {
-        this.education.$remove(education);
-      }
-    },
-
-    addEducation: function addEducation() {
-      this.education.push({ value: '', education: '' });
-    },
-
-    delExpertise: function delExpertise(expertise) {
-      if (confirm('Would you like to delete this field of expertise?') == true) {
-        this.expertise.$remove(expertise);
-      }
-    },
-
-    addExpertise: function addExpertise() {
-      this.expertise.push({ value: '', expertise: '' });
-    },
-
-    delSocial: function delSocial(link) {
-      if (confirm('Would you like to delete this social media link?') == true) {
-        this.social.$remove(link);
-      }
-    },
-
-    addSocial: function addSocial() {
-      this.social.push({ value: '', title: '', url: '' });
-    }
-  },
-  watch: {},
-
-  filters: {},
-  events: {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-f7e430f6=\"\">\n    <slot name=\"csrf\" _v-f7e430f6=\"\"></slot>\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <!-- Is approved? -->\n            <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\">Approved for Public Display? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_approved\" _v-f7e430f6=\"\"></label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <!-- Expert Type -->\n            <h4 _v-f7e430f6=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-f7e430f6=\"\">\n                <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-f7e430f6=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-f7e430f6=\"\">\n                <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-f7e430f6=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n            <label _v-f7e430f6=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-f7e430f6=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <!-- Interview preferences -->\n          <h4 _v-f7e430f6=\"\">Interview Preferences</h4>\n            <div class=\"checkbox\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-f7e430f6=\"\">Print Interviews</label>\n            </div>\n            <div class=\"checkbox\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-f7e430f6=\"\">Broadcast Media Interviews</label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Previous Titles</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Previous Title</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"title.title\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delTitle(title)\" class=\"btn btn-secondary dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addTitle\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Languages</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Language</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"language.language\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delLanguage(language)\" class=\"btn btn-secondary dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addLanguage\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Language</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Education</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"ed.education\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delEducation(ed)\" class=\"btn btn-secondary dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addEducation\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Fiels of expertise -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Field of Expertise</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"exp.expertise\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delExpertise(exp)\" class=\"btn btn-secondary dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addExpertise\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Social Media Links</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"soc in social\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Social Media</label>\n              <div class=\"row\" _v-f7e430f6=\"\">\n                  <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n                      <label _v-f7e430f6=\"\">Title</label>\n                      <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"soc.title\" _v-f7e430f6=\"\">\n                  </div>\n                  <div v-bind:class=\"md6col\" class=\"input-group\" _v-f7e430f6=\"\">\n                      <label _v-f7e430f6=\"\">URL</label>\n                      <input class=\"form-control social-list-item\" type=\"text\" v-model=\"soc.url\" _v-f7e430f6=\"\">\n                      <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                          <button @click=\"delSocial(soc)\" class=\"btn btn-secondary social-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n                      </span>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addSocial\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Social Link</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"200\" _v-f7e430f6=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need biography.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n       <!-- Teaser -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Teaser (short description of expert for search results page)</label>\n         <textarea v-model=\"record.teaser\" class=\"form-control\" id=\"teaser\" name=\"teaser\" rows=\"2\" _v-f7e430f6=\"\"></textarea>\n         <p v-if=\"formErrors.teaser\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need teaser.</p>\n       </div>\n     </div>\n   </div>\n  <!-- /.row -->\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n         <h4 _v-f7e430f6=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Expertise Categories</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"categories\" :options=\"categorieslist\" :multiple=\"true\" placeholder=\"Select expertise category\" label=\"category\" _v-f7e430f6=\"\">\n          </v-select>\n          <p v-if=\"formErrors.category\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.category}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delExpert\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">Delete Expert</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-f7e430f6]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-f7e430f6]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-f7e430f6]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-f7e430f6]{\n    margin-top: 26px !important;\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-f7e430f6", module.exports)
-  } else {
-    hotAPI.update("_v-f7e430f6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"../directives/ckrte.js":116,"../vuex/actions":118,"../vuex/getters":119,"./VuiFlipSwitch.vue":115,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],114:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.row[_v-1429f3ce]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-1429f3ce]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-1429f3ce]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-1429f3ce]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-1429f3ce]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-1429f3ce] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-1429f3ce] {\n  margin: 0;\n}\n\nlabel[_v-1429f3ce] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1429f3ce] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1429f3ce] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1429f3ce] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1429f3ce] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1429f3ce] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1429f3ce] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1429f3ce] {\n  margin: 0;\n}\n\n[type='submit'][_v-1429f3ce],\n[type='button'][_v-1429f3ce] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1429f3ce] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1429f3ce] {\n  margin: 0;\n}\n\nh5.form-control[_v-1429f3ce] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
-'use strict';
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _flatpickr = require('flatpickr');
-
-var _flatpickr2 = _interopRequireDefault(_flatpickr);
-
-var _ckrte = require('../directives/ckrte.js');
-
-var _ckrte2 = _interopRequireDefault(_ckrte);
-
-var _vueSelect = require('vue-select');
-
-var _vueSelect2 = _interopRequireDefault(_vueSelect);
-
-var _actions = require('../vuex/actions');
-
-var _getters = require('../vuex/getters');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-module.exports = {
-  directives: { ckrte: _ckrte2.default, flatpickr: _flatpickr2.default },
-  components: { vSelect: _vueSelect2.default },
-  vuex: {
-    getters: {
-      thisRecordId: _getters.getRecordId,
-      thisRecordState: _getters.getRecordState,
-      thisRecordIsDirty: _getters.getRecordIsDirty
-    },
-    actions: {
-      updateRecordId: _actions.updateRecordId,
-      updateRecordState: _actions.updateRecordState,
-      updateRecordIsDirty: _actions.updateRecordIsDirty
-    }
-  },
-  props: {
-    errors: {
-      default: ''
-    },
-    recordexists: {
-      default: false
-    },
-    editid: {
-      default: ''
-    },
-    framework: {
-      default: 'foundation'
-    },
-    type: {
-      default: 'general'
-    },
-    user: {
-      default: ''
-    }
-  },
-  data: function data() {
-    var _ref;
-
-    return _ref = {
-      biography: '',
-      categories: [],
-      categorieslist: [],
-      ckfullyloaded: false,
-      currentDate: {},
-      education: [],
-      expertise: [],
-      formErrors: {},
-      formInputs: {},
-      formMessage: {
-        isOk: false,
-        isErr: false,
-        msg: ''
-      },
-      hasContent: false,
-      isFresh: true,
-      languages: [],
-      newform: false,
-      previousTitles: [],
-      recordState: '',
       record: {
         id: '',
-        accept_policies: 0, //public form only...not saved into database
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        expert_type: '',
-        first_name: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        is_approved: 0,
-        last_name: '',
-        office_phone: '',
-        release_cell_phone: 0,
-        submitter_email: '',
-        submitter_name: '',
-        submitter_phone: '',
-        title: '',
-        categories: [],
-        education: [],
-        expertise: [],
-        languages: [],
-        previousTitles: [],
-        social: []
+        organization: '',
+        org_description: '',
+        org_website: '',
+        contact_name: '',
+        contact_phone: '',
+        contact_email: '',
+        time_needed: '',
+        length_of_presentation: '',
+        location: '',
+        event_description: '',
+        topic: '',
+        expert_id: '',
+        honeypot: ''
       },
-      recordOld: {
-        id: '',
-        accept_policies: 0, //public form only...not saved into database
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        interviews: '',
-        is_approved: 0,
-        last_name: '',
-        office_phone: '',
-        release_cell_phone: 0,
-        submitter_email: '',
-        submitter_name: '',
-        submitter_phone: '',
-        title: '',
-        categories: [],
-        education: [],
-        expertise: [],
-        languages: [],
-        previousTitles: [],
-        social: []
-      }
-    }, (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'response', {}), (0, _defineProperty3.default)(_ref, 'social', []), (0, _defineProperty3.default)(_ref, 'totalChars', {
-      title: 50
-    }), _ref;
+      recordexists: false,
+      response: {},
+      selectedExpert: {}
+    };
   },
-  created: function created() {
-    this.recordState = 'created';
-  },
+  created: function created() {},
   ready: function ready() {
-    if (this.recordexists) {
-      this.currentRecordId = this.recordid;
-      this.newform = false;
-      this.fetchCategoryList();
-      this.fetchEducation();
-      this.fetchExpertise();
-      this.fetchLanguages();
-      this.fetchPreviousTitles();
-      this.fetchSocial();
-      this.fetchCurrentCategory(this.currentRecordId);
-      this.fetchCurrentRecord(this.currentRecordId);
-    } else {
-      this.newform = true;
-      this.hasContent = true;
-      this.recordState = 'new';
-      this.fetchCategoryList();
-    }
+    this.fetchExperts();
+    this.setupDatePicker();
+    this.getSelectedSpeaker();
   },
   computed: {
 
@@ -21773,293 +20325,85 @@ module.exports = {
     },
     inputGroupLabel: function inputGroupLabel() {
       return this.framework == 'foundation' ? 'input-group-label' : 'input-group-addon';
-    },
-    // Switch verbage of submit button.
-    submitBtnLabel: function submitBtnLabel() {
-      return this.recordexists ? 'Update Expert' : 'Create Expert';
-    },
-
-    hasLocalRecordChanged: function hasLocalRecordChanged() {
-      var ckval = false;
-      if (this.recordOld.title !== this.record.title) {
-        ckval = true;
-      }
-
-      if (this.recordOld.content !== this.content) {
-        ckval = true;
-      }
-
-      if (ckval) {
-        this.updateRecordIsDirty(true);
-      }
-      return ckval;
     }
   },
 
   methods: {
-    onContentChange: function onContentChange() {
-      if (!this.ckfullyloaded) {
-        this.ckfullyloaded = true;
-      } else {
-        this.checkContentChange();
-      }
-    },
-    checkContentChange: function checkContentChange() {
-      if (!this.recordIsDirty) {
-        this.recordIsDirty = true;
-        this.updateRecordIsDirty(true);
-      }
-    },
-    jsonEquals: function jsonEquals(a, b) {
-      return (0, _stringify2.default)(a) === (0, _stringify2.default)(b);
-    },
-
-    fetchCurrentRecord: function fetchCurrentRecord(recid) {
+    fetchExperts: function fetchExperts() {
       var _this = this;
 
-      this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
-        _this.$set('record', response.data.data);
-        _this.$set('recordOld', response.data.data);
-
-        _this.hasContent = true;
-        _this.currentRecordId = _this.record.id;
-        _this.biography = _this.record.biography;
-        _this.fetchCurrentCategory();
-        _this.fetchEducation();
-        _this.fetchExpertise();
-        _this.fetchLanguages();
-        _this.fetchPreviousTitles();
-        _this.fetchSocial();
+      this.$http.get('/api/experts/list', { params: { type: 'speaker' } }).then(function (response) {
+        _this.$set('experts', response.data.newdata);
       }, function (response) {
-        _this.formErrors = response.data.error.message;
+        _this.expertListError = "Unable to fetch experts list.";
       }).bind(this);
     },
 
-    // Fetch the tags that match THIS record
-    fetchCategoryList: function fetchCategoryList() {
+    // Takes the Expert ID from the URL and sets that expert as the selected expert on page load
+    getSelectedSpeaker: function getSelectedSpeaker() {
+      if (this.expertId) {
+        this.record.expert_id = this.expertId;
+      }
+    },
+
+    getSelectedExpert: function getSelectedExpert() {
       var _this2 = this;
 
-      this.$http.get('/api/experts/category').then(function (response) {
-        _this2.$set('categorieslist', response.data);
+      this.$http.get('/api/experts/list/' + this.record.expert_id) //
+
+      .then(function (response) {
+        _this2.$set('selectedExpert', response.data.newdata[0]);
+      }, function (response) {
+        console.log("Unable to fetch experts.");
+      }).bind(this);
+    },
+
+    setupDatePicker: function setupDatePicker() {
+      var self = this;
+
+      this.record.time_needed = this.currentDate;
+      this.startdatePicker = (0, _flatpickr2.default)(document.getElementById("time_needed"), {
+        minDate: "today",
+        defaultDate: "today",
+        enableTime: true,
+        onChange: function onChange(dateObject, dateString) {
+          self.record.time_needed = dateString;
+          console.log(dateString);
+        }
       });
     },
 
-    // Fetch the categories that matches THIS expert
-    fetchCurrentCategory: function fetchCurrentCategory() {
-      var _this3 = this;
-
-      this.$http.get('/api/experts/category/' + this.currentRecordId).then(function (response) {
-        _this3.$set('categories', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the education that matches THIS expert
-    fetchEducation: function fetchEducation() {
-      var _this4 = this;
-
-      this.$http.get('/api/experts/education/' + this.currentRecordId).then(function (response) {
-        _this4.$set('education', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the expertise that matches THIS expert
-    fetchExpertise: function fetchExpertise() {
-      var _this5 = this;
-
-      this.$http.get('/api/experts/expertise/' + this.currentRecordId).then(function (response) {
-        _this5.$set('expertise', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the languages that matches THIS expert
-    fetchLanguages: function fetchLanguages() {
-      var _this6 = this;
-
-      this.$http.get('/api/experts/languages/' + this.currentRecordId).then(function (response) {
-        _this6.$set('languages', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the job titles that matches THIS expert
-    fetchPreviousTitles: function fetchPreviousTitles() {
-      var _this7 = this;
-
-      this.$http.get('/api/experts/previoustitles/' + this.currentRecordId).then(function (response) {
-        _this7.$set('previousTitles', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the social media links that matches THIS expert
-    fetchSocial: function fetchSocial() {
-      var _this8 = this;
-
-      this.$http.get('/api/experts/social/' + this.currentRecordId).then(function (response) {
-        _this8.$set('social', response.data);
-      }, function (response) {});
-    },
-
-
-    nowOnReload: function nowOnReload() {
-      var newurl = '/admin/experts/' + this.currentRecordId + '/edit';
-
-      document.location = newurl;
-    },
-
-    onRefresh: function onRefresh() {
-      this.updateRecordId(this.currentRecordId);
-      this.recordState = 'edit';
-      this.recordIsDirty = false;
-
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
-      this.fetchCurrentRecord(this.currentRecordId);
-    },
-
-    fetchSubmittedRecord: function fetchSubmittedRecord(recid) {
-      // Sets params for update record, Passes an id to fetchCurrentRecord
-      this.recordexists = true;
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-      this.recordid = recid;
-      this.formErrors = {};
-      this.fetchCurrentRecord(recid);
-    },
-
     submitForm: function submitForm(e) {
-      var _this9 = this;
+      var _this3 = this;
 
       e.preventDefault(); // Stop form defualt action
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      this.record.biography = this.biography;
-
-      if (this.categories.length > 0) {
-        this.record.categories = this.categories;
-      } else {
-        this.record.categories = [];
-      }
-
-      if (this.education.length > 0) {
-        this.record.education = this.education;
-      } else {
-        this.record.education = [];
-      }
-
-      if (this.expertise.length > 0) {
-        this.record.expertise = this.expertise;
-      } else {
-        this.record.expertise = [];
-      }
-
-      if (this.languages.length > 0) {
-        this.record.languages = this.languages;
-      } else {
-        this.record.languages = [];
-      }
-
-      if (this.previousTitles.length > 0) {
-        this.record.previousTitles = this.previousTitles;
-      } else {
-        this.record.previousTitles = [];
-      }
-
-      if (this.social.length > 0) {
-        this.record.social = this.social;
-      } else {
-        this.record.social = [];
-      }
-
-      this.record.is_approved = 0; //any new or updated expert from the public end automatically requires approval from admin
-
       // Decide route to submit form to
-      var method = this.recordexists ? 'put' : 'post';
-      var route = this.recordexists ? '/api/experts/' + this.record.id : '/api/experts';
+      var method = 'post';
+      var route = '/api/expertspeakerrequest';
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then(function (response) {
-        _this9.formMessage.msg = response.data.message;
-        _this9.formMessage.isOk = response.ok; // Success message
-        _this9.currentRecordId = response.data.newdata.record_id;
-        _this9.recordid = response.data.newdata.record_id;
-        _this9.record_id = response.data.newdata.record_id;
-        _this9.record.id = response.data.newdata.record_id;
-        _this9.formMessage.isErr = false;
-        _this9.recordexists = true;
-        _this9.formErrors = {};
-        _this9.refreshUserExpertsTable();
+        _this3.formMessage.msg = response.data.message;
+        _this3.formMessage.isOk = response.ok; // Success message
+        _this3.record_id = response.data.newdata.record_id;
+        _this3.formMessage.isErr = false;
+        _this3.recordexists = true;
+        _this3.formErrors = {};
+
+        _this3.getSelectedExpert();
       }, function (response) {
         // If invalid. error callback
-        _this9.formMessage.isOk = false;
-        _this9.formMessage.isErr = true;
+        _this3.formMessage.isOk = false;
+        _this3.formMessage.isErr = true;
         // Set errors from validation to vue data
-        _this9.formErrors = response.data.error.message;
+        _this3.formErrors = response.data.error.message;
       }).bind(this);
-    },
-
-    refreshUserExpertsTable: function refreshUserExpertsTable() {
-      $.get('/experts/user/experts', function (data) {
-        data = $.parseJSON(data);
-        $('#user-expert-tables').html(data);
-      });
-    },
-
-    delTitle: function delTitle(title) {
-      if (confirm('Would you like to delete this title?') == true) {
-        this.previousTitles.$remove(title);
-      }
-    },
-
-    addTitle: function addTitle() {
-      this.previousTitles.push({ value: '', title: '' });
-    },
-
-    delLanguage: function delLanguage(language) {
-      if (confirm('Would you like to delete this language?') == true) {
-        this.languages.$remove(language);
-      }
-    },
-
-    addLanguage: function addLanguage() {
-      this.languages.push({ value: '', language: '' });
-    },
-
-    delEducation: function delEducation(education) {
-      if (confirm('Would you like to delete this education?') == true) {
-        this.education.$remove(education);
-      }
-    },
-
-    addEducation: function addEducation() {
-      this.education.push({ value: '', education: '' });
-    },
-
-    delExpertise: function delExpertise(expertise) {
-      if (confirm('Would you like to delete this field of expertise?') == true) {
-        this.expertise.$remove(expertise);
-      }
-    },
-
-    addExpertise: function addExpertise() {
-      this.expertise.push({ value: '', expertise: '' });
-    },
-
-    delSocial: function delSocial(link) {
-      if (confirm('Would you like to delete this social media link?') == true) {
-        this.social.$remove(link);
-      }
-    },
-
-    addSocial: function addSocial() {
-      this.social.push({ value: '', title: '', url: '' });
     }
   },
   watch: {},
@@ -22068,124 +20412,31 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-1429f3ce=\"\">\n    <slot name=\"csrf\" _v-1429f3ce=\"\"></slot>\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-1429f3ce=\"\">\n          <h5 _v-1429f3ce=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-1429f3ce=\"\">\n          <h5 _v-1429f3ce=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <!-- Expert Type -->\n            <h4 _v-1429f3ce=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-1429f3ce=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-1429f3ce=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <!-- Interview preferences -->\n            <h4 _v-1429f3ce=\"\">I will</h4>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-1429f3ce=\"\">Do interviews for print media</label>\n              </div>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-1429f3ce=\"\">Do interviews for broadcast media</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n            <label _v-1429f3ce=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-1429f3ce=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Additional Titles (Include official EMU Affiliations)</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-1429f3ce=\"\">\n                <div class=\"input-group\" _v-1429f3ce=\"\">\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"title.title\" _v-1429f3ce=\"\">\n                  <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                    <button type=\"button\" class=\"button\" @click=\"delTitle(title)\" _v-1429f3ce=\"\">X</button>\n                  </div>\n                </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addTitle\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Languages Spoken</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Language</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"language.language\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delLanguage(language)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addLanguage\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Language</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"callout primary\" _v-1429f3ce=\"\">Besides English, in what languages are you comfortable being interviewed?</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Education</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"ed.education\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delEducation(ed)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addEducation\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Fields of expertise -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Field of Expertise</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"exp.expertise\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delExpertise(exp)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addExpertise\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Related Links and Social Media</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"soc in social\" class=\"input-group\" _v-1429f3ce=\"\">\n              <div class=\"medium-6 columns\" _v-1429f3ce=\"\">\n                  <label _v-1429f3ce=\"\">Title</label>\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"soc.title\" _v-1429f3ce=\"\">\n              </div>\n              <div class=\"medium-6 columns\" _v-1429f3ce=\"\">\n                  <label _v-1429f3ce=\"\">URL</label>\n                  <div class=\"input-group\" _v-1429f3ce=\"\">\n                    <input class=\"input-group-field\" type=\"text\" v-model=\"soc.url\" _v-1429f3ce=\"\">\n                    <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                      <button type=\"button\" class=\"button\" @click=\"delSocial(soc)\" _v-1429f3ce=\"\">X</button>\n                    </div>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addSocial\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Social Link</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"callout primary\" _v-1429f3ce=\"\">Enter related links like department/faculty websites and social media profiles. (e.g. Center for Research website, Twitter account)</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" type=\"simple\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"200\" _v-1429f3ce=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-1429f3ce=\"\">You must enter a biography for this expert.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n         <h4 _v-1429f3ce=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n   <div class=\"row\" v-show=\"!recordexists\" _v-1429f3ce=\"\">\n       <div v-bind:class=\"md12col\" id=\"policies-container\" _v-1429f3ce=\"\">\n           <!-- Terms and conditions -->\n           <h5 _v-1429f3ce=\"\">Policies</h5>\n           <p _v-1429f3ce=\"\">The Speakers &amp; Experts Directory is a community service of the University Communications Office.</p>\n           <p _v-1429f3ce=\"\">\n               ...\n           </p>\n           <p _v-1429f3ce=\"\">Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>\n       </div>\n       <!-- /.small-12 columns -->\n     <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n         <!-- Is approved? -->\n           <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n             <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.accept_policies\" _v-1429f3ce=\"\">I have read and accepted the policies <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n           </div>\n           <p v-if=\"formErrors.accept_policies\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.accept_policies}}</p>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <div class=\"row\" v-show=\"recordexists\" _v-1429f3ce=\"\">\n       <div v-bind:class=\"md12col\" id=\"policies-container\" _v-1429f3ce=\"\">\n           <p _v-1429f3ce=\"\">Please note that when you update this expert, he/she will be removed from the experts list until an administrator has approved the changes.</p>\n       </div>\n       <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-1429f3ce=\"\">{{submitBtnLabel}}</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form v-show=\"!recordexists\" _v-24c38516=\"\">\n    <slot name=\"csrf\" _v-24c38516=\"\"></slot>\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-24c38516=\"\">\n          <h5 _v-24c38516=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Expert -->\n        <div v-if=\"this.expertListError != ''\" _v-24c38516=\"\">\n            {{ this.expertListError }}\n        </div>\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Expert <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <select v-model=\"record.expert_id\" v-bind:class=\"[formErrors.expert_id ? 'invalid-input' : '']\" name=\"expert_id\" _v-24c38516=\"\">\n              <option v-for=\"expert in experts\" value=\"{{ expert.id }}\" _v-24c38516=\"\">{{ expert.last_name }}, {{ expert.first_name}}</option>\n          </select>\n          <p v-if=\"formErrors.expert_id\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.expert_id}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Organization Name -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Name of your organization <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.organization\" class=\"form-control\" v-bind:class=\"[formErrors.organization ? 'invalid-input' : '']\" name=\"organization\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.organization\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.organization}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Organization Description -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Describe your organization</label>\n          <textarea v-model=\"record.org_description\" class=\"form-control\" v-bind:class=\"[formErrors.org_description ? 'invalid-input' : '']\" name=\"org_description\" _v-24c38516=\"\"></textarea>\n          <p v-if=\"formErrors.org_description\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.org_description}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Your organization's website -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Your organization's website</label>\n          <input v-model=\"record.org_website\" class=\"form-control\" v-bind:class=\"[formErrors.org_website ? 'invalid-input' : '']\" name=\"org_website\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.org_website\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.org_website}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md4col\" _v-24c38516=\"\">\n        <!-- Contact Name -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Contact Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.contact_name\" class=\"form-control\" v-bind:class=\"[formErrors.contact_name ? 'invalid-input' : '']\" name=\"contact_name\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.contact_name\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.contact_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-24c38516=\"\">\n        <!-- Contact Phone -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Contact Phone <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.contact_phone\" class=\"form-control\" v-bind:class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact_phone\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.contact_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-24c38516=\"\">\n        <!-- Contact Phone -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Contact Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.contact_email\" class=\"form-control\" v-bind:class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact_email\" type=\"email\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.contact_email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Speaking date -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">When do you need the speaker?  <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.time_needed\" class=\"form-control\" v-bind:class=\"[formErrors.time_needed ? 'invalid-input' : '']\" name=\"time_needed\" id=\"time_needed\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.time_needed\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.time_needed}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Length -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Length of presentation <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.length_of_presentation\" class=\"form-control\" v-bind:class=\"[formErrors.length_of_presentation ? 'invalid-input' : '']\" name=\"length_of_presentation\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.length_of_presentation\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.length_of_presentation}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Event location -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Event location <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.location\" class=\"form-control\" v-bind:class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.location\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.location}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Deadline -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Describe event</label>\n          <textarea v-model=\"record.event_description\" class=\"form-control\" v-bind:class=\"[formErrors.event_description ? 'invalid-input' : '']\" name=\"event_description\" _v-24c38516=\"\"></textarea>\n          <p v-if=\"formErrors.event_description\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.event_description}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <!-- Topic -->\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <label _v-24c38516=\"\">Preferred lecture topic <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-24c38516=\"\">*</span></label>\n          <input v-model=\"record.topic\" class=\"form-control\" v-bind:class=\"[formErrors.topic ? 'invalid-input' : '']\" name=\"topic\" type=\"text\" _v-24c38516=\"\">\n          <p v-if=\"formErrors.topic\" class=\"help-text invalid\" _v-24c38516=\"\">{{formErrors.topic}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-24c38516=\"\">\n      <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n        <div v-bind:class=\"formGroup\" _v-24c38516=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-24c38516=\"\">Send Request</button>\n          <input v-model=\"record.honeypot\" class=\"form-control\" v-bind:class=\"[formErrors.honeypot ? 'invalid-input' : '']\" name=\"honeypot\" type=\"text\" id=\"honeypot\" _v-24c38516=\"\">\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n    <div class=\"row\" v-show=\"recordexists\" _v-24c38516=\"\">\n        <div v-bind:class=\"md12col\" _v-24c38516=\"\">\n            <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-24c38516=\"\">\n              <h5 _v-24c38516=\"\">{{formMessage.msg}}</h5>\n            </div>\n            <p _v-24c38516=\"\"><strong _v-24c38516=\"\">Here are the details of your submission.</strong></p>\n            <ul _v-24c38516=\"\">\n                <li _v-24c38516=\"\">\n                    Expert: {{ selectedExpert.first_name }} {{ selectedExpert.last_name }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Organization: {{ record.organization }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Organization Description: {{ record.org_description }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Organization Website: {{ record.org_website }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Contact Name: {{ record.contact_name }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Contact Phone: {{ record.contact_phone }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Contact Email: {{ record.contact_email }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Date of Event: {{ record.time_needed }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Length of Presentation: {{ record.length_of_presentation }}\n                </li>\n                <li _v-24c38516=\"\">\n                    EventDescription: {{ record.event_description }}\n                </li>\n                <li _v-24c38516=\"\">\n                    Topic: {{ record.topic }}\n                </li>\n            </ul>\n        </div>\n    </div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.row[_v-1429f3ce]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-1429f3ce]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-1429f3ce]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-1429f3ce]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-1429f3ce]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-1429f3ce] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-1429f3ce] {\n  margin: 0;\n}\n\nlabel[_v-1429f3ce] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1429f3ce] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1429f3ce] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1429f3ce] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1429f3ce] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1429f3ce] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1429f3ce] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1429f3ce] {\n  margin: 0;\n}\n\n[type='submit'][_v-1429f3ce],\n[type='button'][_v-1429f3ce] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1429f3ce] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1429f3ce] {\n  margin: 0;\n}\n\nh5.form-control[_v-1429f3ce] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.row[_v-24c38516]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-24c38516]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-24c38516]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-24c38516]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-24c38516]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n#honeypot[_v-24c38516]{\n    display: none;\n}\n.redBtn[_v-24c38516] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-24c38516] {\n  margin: 0;\n}\n\nlabel[_v-24c38516] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-24c38516] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-24c38516] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-24c38516] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-24c38516] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-24c38516] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-24c38516] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-24c38516] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-24c38516] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-24c38516] {\n  margin: 0;\n}\n\n[type='submit'][_v-24c38516],\n[type='button'][_v-24c38516] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-24c38516] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-24c38516] {\n  margin: 0;\n}\n\nh5.form-control[_v-24c38516] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-1429f3ce", module.exports)
+    hotAPI.createRecord("_v-24c38516", module.exports)
   } else {
-    hotAPI.update("_v-1429f3ce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-24c38516", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../directives/ckrte.js":116,"../vuex/actions":118,"../vuex/getters":119,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],115:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    props: {
-        disabled: Boolean,
-        checked: [Boolean, Number],
-        value: Number,
-        readonly: Boolean
-    },
-    ready: function ready() {
-        this.value == !!this.checked;
-    },
-
-    data: function data() {
-        return {
-            // compval: $('#slct').val()
-        };
-    },
-    methods: {
-        vuiValueChange: function vuiValueChange(event) {
-            console.log('this.value' + this.value);
-        }
-    },
-    events: {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :readonly=\"readonly\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-c9c83bf8", module.exports)
-  } else {
-    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],116:[function(require,module,exports){
-'use strict';
-
-module.exports = {
-    twoWay: true,
-    priority: 1000,
-    params: ['content', 'type'],
-    bind: function bind() {
-
-        console.log(this.setupEditor);
-        this.vm.$nextTick(this.setupEditor.bind(this));
-    },
-    setupEditor: function setUpEditor() {
-        var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
-        var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
-        var self = this;
-        CKEDITOR.replace(this.el.id, {
-            customConfig: editorConfig
-        });
-
-        CKEDITOR.instances[this.el.id].setData(this.params.content);
-        CKEDITOR.instances[this.el.id].on('change', function () {
-            self.set(CKEDITOR.instances[self.el.id].getData());
-        });
-    },
-    update: function update(value) {
-        if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
-        this.vm.onContentChange();
-    },
-    unbind: function unbind() {
-        CKEDITOR.instances[this.el.id].destroy();
-    }
-};
-
-},{}],117:[function(require,module,exports){
+},{"flatpickr":102,"moment":103,"vue":108,"vue-hot-reload-api":105,"vue-select":107,"vueify/lib/insert-css":109}],111:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
-var _ExpertForm = require('./components/ExpertForm.vue');
+var _ExpertSpeakerRequestForm = require('./components/ExpertSpeakerRequestForm.vue');
 
-var _ExpertForm2 = _interopRequireDefault(_ExpertForm);
-
-var _ExpertFormPublic = require('./components/ExpertFormPublic.vue');
-
-var _ExpertFormPublic2 = _interopRequireDefault(_ExpertFormPublic);
-
-var _ExpertBoxTools = require('./components/ExpertBoxTools.vue');
-
-var _ExpertBoxTools2 = _interopRequireDefault(_ExpertBoxTools);
-
-var _store = require('./vuex/store');
-
-var _store2 = _interopRequireDefault(_store);
+var _ExpertSpeakerRequestForm2 = _interopRequireDefault(_ExpertSpeakerRequestForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22197,127 +20448,13 @@ Vue.use(_vueResource2.default);
 
 
 var vm = new Vue({
-  el: '#vue-experts',
-  components: {
-    ExpertForm: _ExpertForm2.default,
-    ExpertBoxTools: _ExpertBoxTools2.default
-  },
-  store: _store2.default,
-  ready: function ready() {
-    console.log('Expert Form ready');
-  }
-});
-
-var vmpublic = new Vue({
-  el: '#vue-experts-public',
-  components: { ExpertFormPublic: _ExpertFormPublic2.default },
-  store: _store2.default,
-  ready: function ready() {
-    console.log('Public Expert Form ready');
-  }
-});
-
-function assignEventListeners() {
-  // Cancel and edit buttons need to call vue object methods
-  $("#experts-bar").on("click", ".editBtn", function (event) {
-    vmpublic.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
-  });
-  $("#experts-bar").on("click", ".cancelBtn", function (event) {
-    vmpublic.$refs.foo.cancelRecord(this.parentNode.id);
-  });
-}
-assignEventListeners();
-
-},{"./components/ExpertBoxTools.vue":112,"./components/ExpertForm.vue":113,"./components/ExpertFormPublic.vue":114,"./vuex/store":120,"vue":109,"vue-resource":107}],118:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// An action will receive the store as the first argument.
-// Since we are only interested in the dispatch (and optionally the state)
-// we can pull those two parameters using the ES6 destructuring feature
-var updateRecordId = exports.updateRecordId = function updateRecordId(_ref, value) {
-  var dispatch = _ref.dispatch,
-      state = _ref.state;
-
-  dispatch('RECORD_ID', value);
-};
-var updateRecordIsDirty = exports.updateRecordIsDirty = function updateRecordIsDirty(_ref2, value) {
-  var dispatch = _ref2.dispatch,
-      state = _ref2.state;
-
-  dispatch('RECORD_IS_DIRTY', value);
-};
-var updateRecordState = exports.updateRecordState = function updateRecordState(_ref3, value) {
-  var dispatch = _ref3.dispatch,
-      state = _ref3.state;
-
-  dispatch('RECORD_STATE', value);
-};
-
-},{}],119:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// This getter is a function which just returns the count
-// With ES6 you can also write it as:
-// export const getCount = state => state.count
-var getRecordId = exports.getRecordId = function getRecordId(state) {
-  return state.recordId;
-};
-var getRecordIsDirty = exports.getRecordIsDirty = function getRecordIsDirty(state) {
-  return state.recordIsDirty;
-};
-var getRecordState = exports.getRecordState = function getRecordState(state) {
-  return state.recordState;
-};
-
-},{}],120:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _vue = require('vue');
-
-var _vue2 = _interopRequireDefault(_vue);
-
-var _vuex = require('vuex');
-
-var _vuex2 = _interopRequireDefault(_vuex);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_vue2.default.use(_vuex2.default);
-
-var state = {
-    // When the app starts, count is set to 0
-    recordId: 0,
-    recordIsDirty: false,
-    recordState: 'init'
-};
-var mutations = {
-    // A mutation receives the current state as the first argument
-    // You can make any modifications you want inside this function
-    RECORD_ID: function RECORD_ID(state, id) {
-        state.recordId = id;
-    },
-    RECORD_IS_DIRTY: function RECORD_IS_DIRTY(state, tf) {
-        state.recordIsDirty = tf;
-    },
-    RECORD_STATE: function RECORD_STATE(state, value) {
-        state.recordState = value;
+    el: '#vue-expertspeakerrequest-form',
+    components: { ExpertSpeakerRequestForm: _ExpertSpeakerRequestForm2.default },
+    ready: function ready() {
+        console.log('Expert Speaker Request Form ready');
     }
-};
-exports.default = new _vuex2.default.Store({
-    state: state,
-    mutations: mutations
 });
 
-},{"vue":109,"vuex":111}]},{},[117]);
+},{"./components/ExpertSpeakerRequestForm.vue":110,"vue":108,"vue-resource":106}]},{},[111]);
 
-//# sourceMappingURL=vue-expert-form.js.map
+//# sourceMappingURL=vue-expertspeakerrequest-form.js.map
