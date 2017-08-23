@@ -31,13 +31,23 @@ class ExpertCategory extends Model
 		return $this->belongsToMany('Emutoday\ExpertCategory', 'expertcategory_associations', 'cat_id', 'assoc_id');
 	}
 
+    /**
+     * We need associations to be stored both ways (for example, if Astronomy relates to Physics, Physics must be related to Astronomy...so we make two records)
+     */
+    public function associationsOtherway()
+	{
+		return $this->belongsToMany('Emutoday\ExpertCategory', 'expertcategory_associations', 'assoc_id', 'cat_id');
+	}
+
 	public function addAssociation(ExpertCategory $category)
 	{
 		$this->associations()->attach($category->id);
+        $this->associationsOtherway()->attach($category->id);
 	}
 
 	public function removeAssociation(ExpertCategory $category)
 	{
 		$this->associations()->detach($category->id);
+        $this->associationsOtherway()->detach($category->id);
 	}
 }
