@@ -28,5 +28,5 @@
         </select>
     </label>
     <input type="submit" value="Apply" class="button" />
-    <a href="/experts/find" class="button">Reset</a>
+    <a href="/experts/find" class="button hollow">Reset</a>
 </form>

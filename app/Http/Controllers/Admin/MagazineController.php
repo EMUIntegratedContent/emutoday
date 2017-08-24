@@ -81,7 +81,7 @@ class MagazineController extends Controller
             + $request->only( 'year', 'season','title','subtitle','teaser')
                             );
       flash()->success('Magazine has been setup.');
-      return redirect(route('admin.magazine.edit', $magazine->id));
+      return redirect()->route('admin_magazine_edit', $magazine->id);
     }
 
     public function addCoverImage($id, Request $request)
@@ -140,7 +140,7 @@ class MagazineController extends Controller
         $mediafile->save();
         $magazine->mediafiles()->save($mediafile);
         flash()->success('Cover Image has been added');
-        return redirect(route('admin.magazine.edit', $magazine->id));
+        return redirect(route('admin_magazine_edit', $magazine->id));
     }
 
     public function updateCoverImage($id, Request $request)
@@ -332,7 +332,7 @@ class MagazineController extends Controller
       $magazine->is_archived = $request->is_archived;
       $magazine->save();
       flash()->success('Magazine has been updated.');
-      return redirect(route('admin.magazine.edit', $magazine->id));
+      return redirect(route('admin_magazine_edit', $magazine->id));
     }
 
     /**
@@ -357,20 +357,6 @@ class MagazineController extends Controller
       $magazine = $this->magazine->findOrFail($id);
       $magazine->delete();
       flash()->warning('Magazine has been deleted.');
-      return redirect(route('admin.magazine.index'));//->with('status', 'Story has been deleted.');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-      $magazine = $this->magazine->findOrFail($id);
-      $magazine->delete();
-      flash()->warning('Magazine has been deleted.');
-      return redirect(route('admin.magazine.index'));
+      return redirect()->route('admin_magazine_index');//->with('status', 'Story has been deleted.');
     }
 }

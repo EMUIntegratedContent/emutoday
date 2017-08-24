@@ -39,11 +39,11 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
-    Route::patch('authors/updateitem/{id}', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@updateItem']);
-    Route::get('authors/{id}/edit', ['as' => 'api_authors_edititem', 'uses' =>'Api\AuthorController@edit']);
-    Route::get('authors/primarycontact', ['as' => 'api_authors_updateitem', 'uses' =>'Api\AuthorController@getCurrentPrimaryContact']);
-    Route::get('authors/primarymagazinecontact', ['as' => 'api_authors_updatemagazineitem', 'uses' =>'Api\AuthorController@getCurrentPrimaryMagazineContact']);
-    Route::post('authors', ['as' => 'api_authors_storeitem', 'uses' => 'Api\AuthorController@store']); // Route to save author to db
+    Route::patch('authors/updateitem/{id}', 'Api\AuthorController@updateItem')->name('api_authors_updateitem');
+    Route::get('authors/{id}/edit', 'Api\AuthorController@edit')->name('api_authors_edititem');
+    Route::get('authors/primarycontact', 'Api\AuthorController@getCurrentPrimaryContact')->name('api_authors_updateitem');
+    Route::get('authors/primarymagazinecontact', 'Api\AuthorController@getCurrentPrimaryMagazineContact')->name('api_authors_updatemagazineitem');
+    Route::post('authors', 'Api\AuthorController@store')->name('api_authors_storeitem'); // Route to save author to db
     Route::resource('authors', 'Api\AuthorController');
 
     Route::get('active-categories/{year?}/{month?}/{day?}','Api\CategoriesController@activeCategories');
@@ -51,32 +51,31 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
-    Route::patch('experts/updateitem/{id}', ['as' => 'api_experts_updateitem', 'uses' =>'Api\ExpertsController@updateItem']);
-    Route::get('experts/{id}/edit', ['as' => 'api_experts_edititem', 'uses' =>'Api\ExpertsController@edit']);
-    Route::get('experts/category/{id?}', ['as' => 'api_experts_category', 'uses' =>'Api\ExpertsController@expertCategory']);
-    Route::get('experts/previoustitles/{id?}', ['as' => 'api_experts_previoustitles', 'uses' =>'Api\ExpertsController@expertPreviousTitles']);
-    Route::get('experts/education/{id?}', ['as' => 'api_experts_education', 'uses' =>'Api\ExpertsController@expertEducation']);
-    Route::get('experts/expertise/{id?}', ['as' => 'api_experts_expertise', 'uses' =>'Api\ExpertsController@expertExpertise']);
-    Route::get('experts/languages/{id?}', ['as' => 'api_experts_languages', 'uses' =>'Api\ExpertsController@expertLanguages']);
-    Route::get('experts/social/{id?}', ['as' => 'api_experts_social', 'uses' =>'Api\ExpertsController@expertSocialMediaLinks']);
-    Route::get('experts/list/{id?}', ['as' => 'api_experts_list', 'uses' =>'Api\ExpertsController@getExperts']);
-    Route::post('experts', ['as' => 'api_experts_storeitem', 'uses' => 'Api\ExpertsController@store']); // Route to save expert to db
-    Route::post('experts/{id}/delete', ['as' => 'api_experts_delete', 'uses' =>'Api\ExpertsController@delete']);
+    Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
+    Route::get('experts/{id}/edit', 'Api\ExpertsController@edit')->name('api_experts_edititem');
+    Route::get('experts/category/{id?}', 'Api\ExpertsController@expertCategory')->name('api_experts_category');
+    Route::get('experts/previoustitles/{id?}', 'Api\ExpertsController@expertPreviousTitles')->name('api_experts_previoustitles');
+    Route::get('experts/education/{id?}', 'Api\ExpertsController@expertEducation')->name('api_experts_education');
+    Route::get('experts/expertise/{id?}', 'Api\ExpertsController@expertExpertise')->name('api_experts_expertise');
+    Route::get('experts/languages/{id?}', 'Api\ExpertsController@expertLanguages')->name('api_experts_languages');
+    Route::get('experts/social/{id?}', 'Api\ExpertsController@expertSocialMediaLinks')->name('api_experts_social');
+    Route::get('experts/list/{id?}', 'Api\ExpertsController@getExperts')->name('api_experts_list');
+    Route::post('experts', 'Api\ExpertsController@store')->name('api_experts_storeitem'); // Route to save expert to db
+    Route::post('experts/{id}/delete', 'Api\ExpertsController@delete')->name('api_experts_delete');
     Route::resource('experts', 'Api\ExpertsController');
 
-    Route::patch('expertcategory/updateitem/{id}', ['as' => 'api_expertcategory_updateitem', 'uses' =>'Api\ExpertCategoryController@updateItem']);
-    Route::get('expertcategory/{id}/edit', ['as' => 'api_expertcategory_edititem', 'uses' =>'Api\ExpertCategoryController@edit']);
-    Route::get('expertcategory/all/{id?}', ['as' => 'api_expertcategory_all', 'uses' => 'Api\ExpertCategoryController@getAllCategories']);
-    Route::get('expertcategory/associated/{id}', ['as' => 'api_expertcategory_associated', 'uses' => 'Api\ExpertCategoryController@getAssociatedCategories']);
-    Route::post('expertcategory/{id}/delete', ['as' => 'api_expertcategory_delete', 'uses' =>'Api\ExpertCategoryController@delete']);
-    Route::post('expertcategory', ['as' => 'api_expertcategory_storeitem', 'uses' => 'Api\ExpertCategoryController@store']); // Route to save expert to db
+    Route::patch('expertcategory/updateitem/{id}', 'Api\ExpertCategoryController@updateItem')->name('api_expertcategory_updateitem');
+    Route::get('expertcategory/{id}/edit', 'Api\ExpertCategoryController@edit')->name('api_expertcategory_edititem');
+    Route::get('expertcategory/all/{id?}', 'Api\ExpertCategoryController@getAllCategories')->name('api_expertcategory_all');
+    Route::get('expertcategory/associated/{id}', 'Api\ExpertCategoryController@getAssociatedCategories')->name('api_expertcategory_associated');
+    Route::post('expertcategory/{id}/delete', 'Api\ExpertCategoryController@delete')->name('api_expertcategory_delete');
+    Route::post('expertcategory', 'Api\ExpertCategoryController@store')->name('api_expertcategory_storeitem'); // Route to save expert to db
     Route::resource('expertcategory', 'Api\ExpertCategoryController');
 
-    Route::put('expertmediarequest/{id}', ['as' => 'api_expertmediarequest_updateitem', 'uses' =>'Api\ExpertMediaRequestController@updateItem']);
-    Route::post('expertmediarequest', ['as' => 'api_expertmediarequest_store', 'uses' => 'Api\ExpertMediaRequestController@store']); // Save expert media request to db
-    Route::get('expertmediarequest/{id}', ['as' => 'api_expertmediarequest_get', 'uses' => 'Api\ExpertMediaRequestController@getExpertMediaRequest']);
-    Route::post('expertspeakerrequest', ['as' => 'api_expertspeakerrequest_store', 'uses' => 'Api\ExpertSpeakerRequestController@store']); // Save expert speaker request to db
-    Route::resource('expertrequest', 'Api\ExpertRequestController');
+    Route::put('expertmediarequest/{id}', 'Api\ExpertMediaRequestController@updateItem')->name('api_expertmediarequest_updateitem');
+    Route::post('expertmediarequest', 'Api\ExpertMediaRequestController@store')->name('api_expertmediarequest_store'); // Save expert media request to db
+    Route::get('expertmediarequest/{id}', 'Api\ExpertMediaRequestController@getExpertMediaRequest')->name('api_expertmediarequest_get');
+    Route::post('expertspeakerrequest', 'Api\ExpertSpeakerRequestController@store')->name('api_expertspeakerrequest_store'); // Save expert speaker request to db
 
     /**
      * List of Buildings for EventForm
@@ -140,64 +139,64 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::post('event/addMediaFile/{event}', 'Api\EventController@addMediaFile');
     Route::post('event/removeMediaFile/{event}', 'Api\EventController@removeMediaFile');
 
-    Route::get('event/queueload/{fromDate?}/{toDate?}', ['as' => 'api.event.queueload', 'uses' => 'Api\EventController@queueLoad']);
-    Route::get('event/lbcqueueload/{fromDate?}/{toDate?}', ['as' => 'api.event.lbcqueueload', 'uses' => 'Api\EventController@lbcQueueLoad']);
-    Route::get('event/otherItems', ['as' => 'api.event.otheritems', 'uses' => 'Api\EventController@otherItems']);
-    Route::get('event/unapprovedItems', ['as' => 'api.event.unapproveditems', 'uses' => 'Api\EventController@unapprovedItems']);
-    Route::get('event/approvedItems', ['as' => 'api.event.approveditems', 'uses' => 'Api\EventController@approvedItems']);
+    Route::get('event/queueload/{fromDate?}/{toDate?}', 'Api\EventController@queueLoad')->name('api.event.queueload');
+    Route::get('event/lbcqueueload/{fromDate?}/{toDate?}', 'Api\EventController@lbcQueueLoad')->name('api.event.lbcqueueload');
+    Route::get('event/otherItems', 'Api\EventController@otherItems')->name('api.event.otheritems');
+    Route::get('event/unapprovedItems', 'Api\EventController@unapprovedItems')->name('api.event.unapproveditems');
+    Route::get('event/approvedItems', 'Api\EventController@approvedItems')->name('api.event.approveditems');
 
-    Route::patch('event/archiveitem/{id}', ['as' => 'api_event_archiveitem', 'uses' => 'Api\EventController@archiveItem']);
-    Route::patch('event/updateitem/{id}', ['as' => 'api_event_updateitem', 'uses' =>'Api\EventController@updateItem']);
-    Route::post('event/{id}/delete', ['as' => 'api_event_deleteitem', 'uses' => 'Api\EventController@delete']);
-    Route::patch('event/{id}/cancel', ['as' => 'api_event_cancelitem', 'uses' => 'Api\EventController@cancel']);
+    Route::patch('event/archiveitem/{id}', 'Api\EventController@archiveItem')->name('api_event_archiveitem');
+    Route::patch('event/updateitem/{id}', 'Api\EventController@updateItem')->name('api_event_updateitem');
+    Route::post('event/{id}/delete', 'Api\EventController@delete')->name('api_event_deleteitem');
+    Route::patch('event/{id}/cancel', 'Api\EventController@cancel')->name('api_event_cancelitem');
     Route::resource('event', 'Api\EventController');
 
-    Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', ['as' => 'api_announcement_queueload', 'uses' => 'Api\AnnouncementController@queueLoad']);
-    Route::patch('announcement/updateitem/{id}', ['as' => 'api_announcement_updateitem', 'uses' =>'Api\AnnouncementController@updateItem']);
-    Route::patch('announcement/archiveitem/{id}', ['as' => 'api_announcement_archiveitem', 'uses' => 'Api\AnnouncementController@archiveItem']);
-    Route::post('announcement/{id}/delete', ['as' => 'api_announcement_deleteitem', 'uses' => 'Api\AnnouncementController@delete']);
-    Route::get('announcement/archive', ['as' => 'api_announcement_archive', 'uses' => 'Api\AnnouncementController@archives']);
-    Route::post('announcement', ['as' => 'api_announcement_storeitem', 'uses' => 'Api\AnnouncementController@store']); // Route to save announcement submissions to db
+    Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', 'Api\AnnouncementController@queueLoad')->name('api_announcement_queueload');
+    Route::patch('announcement/updateitem/{id}', 'Api\AnnouncementController@updateItem')->name('api_announcement_updateitem');
+    Route::patch('announcement/archiveitem/{id}', 'Api\AnnouncementController@archiveItem')->name('api_announcement_archiveitem');
+    Route::post('announcement/{id}/delete', 'Api\AnnouncementController@delete')->name('api_announcement_deleteitem');
+    Route::get('announcement/archive', 'Api\AnnouncementController@archives')->name('api_announcement_archive');
+    Route::post('announcement', 'Api\AnnouncementController@store')->name('api_announcement_storeitem'); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
     // Archives API
-    Route::get('archive/queueload/{archiveType}/{perPage?}', ['as' => 'api_archive_queue', 'uses' => 'Api\ArchiveController@queueLoad']);
-    Route::put('archive/{archiveType}/{id}/unarchive', ['as' => 'api_archive_unarchive', 'uses' => 'Api\ArchiveController@unarchive']);
-    Route::delete('archive/{archiveType}/{id}/delete', ['as' => 'api_archive_delete', 'uses' => 'Api\ArchiveController@delete']);
+    Route::get('archive/queueload/{archiveType}/{perPage?}', 'Api\ArchiveController@queueLoad')->name('api_archive_queue');
+    Route::put('archive/{archiveType}/{id}/unarchive', 'Api\ArchiveController@unarchive')->name('api_archive_unarchive');
+    Route::delete('archive/{archiveType}/{id}/delete', 'Api\ArchiveController@delete')->name('api_archive_delete');
 
     Route::get('story/{story}/edit', 'Api\StoryController@edit');
 
-    Route::get('{gtype}/{stype}/{qtype}/{fromDate?}/{toDate?}', ['as'=> 'api_storytype_queueload', 'uses'=> 'Api\StoryController@queue']);
+    Route::get('{gtype}/{stype}/{qtype}/{fromDate?}/{toDate?}', 'Api\StoryController@queue')->name('api_storytype_queueload');
 
-    Route::patch('story/updateitem/{id}', ['as' => 'api_story_updateitem', 'uses' => 'Api\StoryController@updateItem']);
+    Route::patch('story/updateitem/{id}', 'Api\StoryController@updateItem')->name('api_story_updateitem');
 
     Route::get('author/{id}', 'Api\StoryController@getAuthorData');
-    Route::post('author', ['as' => 'api_story_storeauthor', 'uses' => 'Api\StoryController@storeAuthor']);
-    Route::put('author/{id}', ['as' => 'api_story_saveauthor', 'uses' => 'Api\StoryController@saveAuthor']);
-    Route::get('users/{selectedUser?}', ['as' => 'users_find_authorapi', 'uses' => 'Api\AuthorController@getUsers']);
-    Route::get('authorbyuser/{userId?}', ['as' => 'authorbyuser', 'uses' => 'Api\AuthorController@getAuthorByUser']);
+    Route::post('author', 'Api\StoryController@storeAuthor')->name('api_story_storeauthor');
+    Route::put('author/{id}', 'Api\StoryController@saveAuthor')->name('api_story_saveauthor');
+    Route::get('users/{selectedUser?}', 'Api\AuthorController@getUsers')->name('users_find_authorapi');
+    Route::get('authorbyuser/{userId?}', 'Api\AuthorController@getAuthorByUser')->name('authorbyuser');
 
-    Route::patch('story/archiveitem/{id}', ['as' => 'api_story_archiveitem', 'uses' => 'Api\StoryController@archiveItem']);
+    Route::patch('story/archiveitem/{id}', 'Api\StoryController@archiveItem')->name('api_story_archiveitem');
 
     Route::resource('story', 'Api\StoryController');
 
 
-    Route::get('page/chartload', ['as' => 'api_page_chartload', 'uses' => 'Api\PageController@chartLoad']);
+    Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
 
-    Route::get('page/queueload', ['as' => 'api.page.queueload', 'uses' => 'Api\PageController@queueLoad']);
+    Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
 
 });
 
-    Route::get('emichlogin', ['as' => 'emich-login', function() {
+    Route::get('emichlogin', function() {
         return view('public.emichlogin', ['form' => 'event']);
-    }]);
+    })->name('emich-login');
 
     Route::group(['prefix' => 'auth' ], function()
     {
-      Route::post('/emichlogin', ['as' => 'emich-login', 'uses' => 'Auth\AuthController@guest']);
+      Route::post('/emichlogin', 'Auth\AuthController@guest')->name('emich-login');
     });
 
-    Route::get('/', ['as' => '/', 'uses' => 'MainController@index']);
+    Route::get('/', 'MainController@index')->name('/');
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
     Route::get('announcement/user/announcements', 'Today\AnnouncementController@userAnnouncements');
@@ -222,9 +221,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('story/{stype}/{id?}', 'Today\StoryController@story');
 
-    Route::get('experts/view/{id}', ['as' => 'expertview', 'uses' => 'Today\ExpertsController@show']);
+    Route::get('experts/view/{id}', 'Today\ExpertsController@show')->name('expertview');
     Route::get('experts/user/experts', 'Today\ExpertsController@userExperts');
-    Route::get('experts/find', ['as' => 'expertsearch', 'uses' => 'SearchController@expertSearch']);
+    Route::get('experts/find', 'SearchController@expertSearch')->name('expertsearch');
     Route::get('experts/form', 'Today\ExpertsController@expertForm');
     Route::get('experts/contact', function() {
         return view('public.experts.contact');
@@ -239,15 +238,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
     {
-        Route::get('experts/{id}', ['as' => 'preview_experts', 'uses' => 'PreviewController@expert']);
+        Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
 
-        Route::get('page/{page}/', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
-        Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
+        Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
+        Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
 
-        Route::get('magazine/{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
+        Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
 
-        Route::get('story/{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
-        Route::get('{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
+        Route::get('story/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
+        Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
 
 
     });
@@ -255,108 +254,111 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
 
-        Route::get('authors/list', ['as' => 'authors_list', 'uses' => 'Admin\AuthorsController@index']);
-        Route::get('authors/form', ['as' => 'authors_form', 'uses' => 'Admin\AuthorsController@form']);
+        Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
+        Route::get('authors/form', 'Admin\AuthorsController@form')->name('authors_form');
         Route::resource('authors', 'Admin\AuthorsController');
 
-        Route::get('dashboard', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
-        Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);
+        Route::get('dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
+        Route::get('search', 'Admin\DashboardController@search')->name('admin.search');
 
         /* EXPERTS */
         Route::group(['middleware' => 'Emutoday\Http\Middleware\ExpertsMiddleware', 'middleware' => ['bindings']], function()
         {
-            Route::put('experts/{id}/updatefrompreview', ['as'=> 'admin_preview_expert_update', 'uses'=> 'Admin\ExpertsController@updateFromPreview']);
-            Route::get('experts/{id}/edit', ['as' => 'experts_edititem', 'uses' =>'Admin\ExpertsController@edit']);
-            Route::get('experts/list', ['as' => 'experts_list', 'uses' => 'Admin\ExpertsController@index']);
-            Route::get('experts/form', ['as' => 'experts_form', 'uses' => 'Admin\ExpertsController@form']);
+            Route::put('experts/{id}/updatefrompreview', 'Admin\ExpertsController@updateFromPreview')->name('admin_preview_expert_update');
+            Route::get('experts/{id}/edit', 'Admin\ExpertsController@edit')->name('experts_edititem');
+            Route::get('experts/list', 'Admin\ExpertsController@index')->name('experts_list');
+            Route::get('experts/form', 'Admin\ExpertsController@form')->name('experts_form');
             Route::resource('experts', 'Admin\ExpertsController');
 
-            Route::get('expertcategory/list', ['as' => 'expertcategory_list', 'uses' => 'Admin\ExpertCategoryController@index']);
-            Route::get('expertcategory/form', ['as' => 'expertcategory_form', 'uses' => 'Admin\ExpertCategoryController@form']);
+            Route::get('expertcategory/list', 'Admin\ExpertCategoryController@index')->name('expertcategory_list');
+            Route::get('expertcategory/form', 'Admin\ExpertCategoryController@form')->name('expertcategory_form');
             Route::resource('expertcategory', 'Admin\ExpertCategoryController');
 
-            Route::get('expertrequests/{id}/edit', ['as' => 'expertrequests_edititem', 'uses' => 'Admin\ExpertRequestController@edit']);
-            Route::get('expertrequests/list', ['as' => 'expertrequests_list', 'uses' => 'Admin\ExpertRequestController@index']);
+            Route::get('expertrequests/{id}/edit', 'Admin\ExpertRequestController@edit')->name('expertrequests_edititem');
+            Route::get('expertrequests/list', 'Admin\ExpertRequestController@index')->name('expertrequests_list');
             Route::resource('expertrequests', 'Admin\ExpertRequestController');
 
-            Route::patch('expertimage/{expertimage}/update',['as' => 'admin_expertimage_update', 'uses' => 'Admin\ExpertImageController@update']);
-            Route::delete('expertimage/{expertimage}/delete', ['as' => 'admin_expertimage_destroy', 'uses' => 'Admin\ExpertImageController@destroy'] );
-            Route::get('experts/{expert}/addnewexpertimage',['as' => 'admin_expertimage_add_new_expertimage', 'uses' => 'Admin\ExpertImageController@addNewExpertImage']);
-            Route::get('expertimage/{expertimage}/confirm', ['as' => 'admin_expertimage_confirm', 'uses' => 'Admin\ExpertImageController@confirm']);
+            Route::patch('expertimage/{expertimage}/update', 'Admin\ExpertImageController@update')->name('admin_expertimage_update');
+            Route::delete('expertimage/{expertimage}/delete', 'Admin\ExpertImageController@destroy')->name('admin_expertimage_destroy');
+            Route::get('experts/{expert}/addnewexpertimage', 'Admin\ExpertImageController@addNewExpertImage')->name('admin_expertimage_add_new_expertimage');
+            Route::get('expertimage/{expertimage}/confirm', 'Admin\ExpertImageController@confirm')->name('admin_expertimage_confirm');
         });
 
-        Route::get('user/{user}/edit', ['as' => 'admin_user_edit', 'uses' => 'Admin\UserController@edit']);
-        Route::post('user/{user}/addMediafileUser', ['as' => 'store_mediafile_user', 'uses' => 'Admin\MediafileController@addMediafileUser']);
-        Route::post('user/{user}/updateMediafileUser', ['as' => 'update_mediafile_user', 'uses' => 'Admin\MediafileController@updateMediafileUser']);
-        Route::delete('user/{user}/removeMediafileUser', ['as' => 'remove_mediafile_user', 'uses' => 'Admin\MediafileController@removeMediafileUser']);
-        Route::get('user/{user}/confirm', ['as' => 'admin_user_confirm', 'uses' => 'Admin\UserController@confirm']);
-        Route::delete('user/{user}/destroy', ['as' => 'admin_user_destroy', 'uses' => 'Admin\UserController@destroy']);
-        Route::put('user/{user}/update', ['as' => 'admin_user_update', 'uses' => 'Admin\UserController@update']);
-        Route::put('user/{user}/store', ['as' => 'admin_user_store', 'uses' => 'Admin\UserController@store']);
+        Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('admin_user_edit');
+        Route::post('user/{user}/addMediafileUser', 'Admin\MediafileController@addMediafileUser')->name('store_mediafile_user');
+        Route::post('user/{user}/updateMediafileUser', 'Admin\MediafileController@updateMediafileUser')->name('update_mediafile_user');
+        Route::delete('user/{user}/removeMediafileUser', 'Admin\MediafileController@removeMediafileUser')->name('remove_mediafile_user');
+        Route::get('user/{user}/confirm', 'Admin\UserController@confirm')->name('admin_user_confirm');
+        Route::delete('user/{user}/destroy', 'Admin\UserController@destroy')->name('admin_user_destroy');
+        Route::put('user/{user}/update', 'Admin\UserController@update')->name('admin_user_update');
+        Route::put('user/{user}/store', 'Admin\UserController@store')->name('admin_user_store');
         Route::get('user/form', 'Admin\UserController@form');
         Route::resource('user', 'Admin\UserController');
 
-        Route::patch('mediafile/{mediafile}/update', ['as' => 'admin_mediafile_update', 'uses' => 'Admin\MediafileController@update']);
+        Route::patch('mediafile/{mediafile}/update', 'Admin\MediafileController@update')->name('admin_mediafile_update');
         Route::resource('mediafile', 'Admin\MediafileController');
 
-        Route::get('announcement/archives', ['as' => 'admin.announcement.archives', 'uses' => 'Admin\AnnouncementController@archives']);
-        Route::get('announcement/queue/{atype?}', ['as' => 'admin.announcement.queue', 'uses' => 'Admin\AnnouncementController@queue']);
-        Route::get('announcement/form/{atype?}', ['as' => 'admin.announcement.form', 'uses' => 'Admin\AnnouncementController@form']);
-        Route::get('announcement/{id}/unarchive', ['as' => 'admin.announcement.unarchive', 'uses' => 'Admin\AnnouncementController@unarchive']);
+        Route::get('announcement/archives', 'Admin\AnnouncementController@archives')->name('admin.announcement.archives');
+        Route::get('announcement/queue/{atype?}', 'Admin\AnnouncementController@queue')->name('admin.announcement.queue');
+        Route::get('announcement/form/{atype?}', 'Admin\AnnouncementController@form')->name('admin.announcement.form');
+        Route::get('announcement/{id}/unarchive', 'Admin\AnnouncementController@unarchive')->name('admin.announcement.unarchive');
 
         Route::resource('announcement', 'Admin\AnnouncementController');
 
-        Route::get('event/queue', ['as' => 'admin.event.queue', 'uses' => 'Admin\EventController@queue']);
-        Route::get('/lbcqueue', ['as' => 'admin.event.lbcqueue', 'uses' => 'Admin\EventController@lbcqueue']);
-        Route::get('event/form', ['as' => 'admin.event.form', 'uses' => 'Admin\EventController@form']);
+        Route::get('event/queue', 'Admin\EventController@queue')->name('admin.event.queue');
+        Route::get('/lbcqueue', 'Admin\EventController@lbcqueue')->name('admin.event.lbcqueue');
+        Route::get('event/form', 'Admin\EventController@form')->name('admin.event.form');
         Route::resource('event', 'Admin\EventController');
 
         // Archives
-        Route::get('archive/queue/{entityType}', ['as' => 'admin.archive.queue', 'uses' => 'Admin\ArchiveController@queue']);
+        Route::get('archive/queue/{entityType}', 'Admin\ArchiveController@queue')->name('admin.archive.queue');
         Route::resource('archive', 'Admin\ArchiveController');
 
-        Route::get('page/edit/{page}', ['as' => 'admin_page_edit', 'uses' => 'Admin\PageController@edit']);
-        Route::put('page/update/{page}', ['as' => 'admin_page_update', 'uses' => 'Admin\PageController@update']);
-        Route::get('page/destroy/{id?}', ['as' => 'admin_page_destroy', 'uses' => 'Admin\PageController@destroy'] );
-        Route::get('page/form', ['as' => 'admin_page_form', 'uses' => 'Admin\PageController@form']);
-        Route::post('page/delete', ['as' => 'admin_page_delete', 'uses' => 'Admin\PageController@delete'] );
-        Route::post('page/store', ['as' => 'admin_page_store', 'uses' => 'Admin\PageController@store']);
-        Route::get('page/index', ['as' => 'admin_page_index', 'uses' => 'Admin\PageController@index']);
+        Route::get('page/edit/{page}', 'Admin\PageController@edit')->name('admin_page_edit');
+        Route::put('page/update/{page}', 'Admin\PageController@update')->name('admin_page_update');
+        Route::get('page/destroy/{id?}', 'Admin\PageController@destroy')->name('admin_page_destroy');
+        Route::get('page/form', 'Admin\PageController@form')->name('admin_page_form');
+        Route::post('page/delete', 'Admin\PageController@delete')->name('admin_page_delete');
+        Route::post('page/store', 'Admin\PageController@store')->name('admin_page_store');
+        Route::get('page/index', 'Admin\PageController@index')->name('admin_page_index');
         Route::resource('page', 'Admin\PageController');
 
-        Route::get('magazine/form', ['as' => 'admin_magazine_form', 'uses' => 'Admin\MagazineController@form']);
-        Route::get('magazine/archives', ['as' => 'admin_magazine_archives', 'uses' => 'Admin\MagazineController@archives']);
-        Route::get('magazine/{magazine}/edit', ['as' => 'admin_magazine_edit', 'uses' => 'Admin\MagazineController@edit']);
-        Route::get('magazine/delete/{id?}', ['as' => 'admin_magazine_delete', 'uses' => 'Admin\MagazineController@delete'] );
-        Route::post('magazine/{magazine}/addCoverImage', ['as' => 'store_magazine_cover', 'uses' => 'Admin\MagazineController@addCoverImage']);
-        Route::put('magazine/{mediafile}/updateCoverImage/', ['as' => 'update_magazine_cover', 'uses' => 'Admin\MagazineController@updateCoverImage']);
-        Route::post('magazine/store', ['as' => 'admin_magazine_store', 'uses' => 'Admin\MagazineController@store']);
-        Route::resource('magazine', 'Admin\MagazineController');
 
-        Route::patch('storyimage/{storyimage}/update',['as' => 'admin_storyimage_update', 'uses' => 'Admin\StoryImageController@update']);
-        Route::delete('storyimage/{storyimage}/delete', ['as' => 'admin_storyimage_destroy', 'uses' => 'Admin\StoryImageController@destroy'] );
+        Route::get('magazine/{magazine}/edit', 'Admin\MagazineController@edit')->name('admin_magazine_edit');
+        Route::put('magazine/{magazine}/update', 'Admin\MagazineController@update')->name('admin_magazine_update');
+        Route::get('magazine/delete/{id?}', 'Admin\MagazineController@delete')->name('admin_magazine_update');
+        Route::post('magazine/{magazine}/addCoverImage', 'Admin\MagazineController@addCoverImage')->name('store_magazine_cover');
+        Route::put('magazine/{mediafile}/updateCoverImage/', 'Admin\MagazineController@updateCoverImage')->name('update_magazine_cover');
+        Route::get('magazine/delete/{id?}', 'Admin\MagazineController@delete')->name('admin_magazine_delete');
+        Route::get('magazine/form', 'Admin\MagazineController@form')->name('admin_magazine_form');
+        Route::get('magazine/archives', 'Admin\MagazineController@archives')->name('admin_magazine_archives');
+        Route::post('magazine/store', 'Admin\MagazineController@store')->name('admin_magazine_store');
+        Route::get('magazine', 'Admin\MagazineController@index')->name('admin_magazine_index');
+
+        Route::patch('storyimage/{storyimage}/update', 'Admin\StoryImageController@update')->name('admin_storyimage_update');
+        Route::delete('storyimage/{storyimage}/delete', 'Admin\StoryImageController@destroy')->name('admin_storyimage_destroy');
 
         Route::resource('storyimages', 'Admin\StoryImageController');
 
-        Route::post('promotestory', ['as'=> 'admin_promotestory', 'uses'=> 'Admin\StoryController@promoteStory']);
-        Route::put('story/{id}/updatefrompreview', ['as'=> 'admin_preview_story_update', 'uses'=> 'Admin\StoryController@updateFromPreview']);
+        Route::post('promotestory', 'Admin\StoryController@promoteStory')->name('admin_promotestory');
+        Route::put('story/{id}/updatefrompreview', 'Admin\StoryController@updateFromPreview')->name('admin_preview_story_update');
 
-        Route::post('{qtype}/{gtype}/{stype}/{story}/addnewstoryimage',['as' => 'admin_storyimage_add_new_storyimage', 'uses' => 'Admin\StoryImageController@addNewStoryImage']);
-        Route::get('storyimage/{storyimage}/confirm', ['as' => 'admin_storyimage_confirm', 'uses' => 'Admin\StoryImageController@confirm']);
+        Route::post('{qtype}/{gtype}/{stype}/{story}/addnewstoryimage', 'Admin\StoryImageController@addNewStoryImage')->name('admin_storyimage_add_new_storyimage');
+        Route::get('storyimage/{storyimage}/confirm', 'Admin\StoryImageController@confirm')->name('admin_storyimage_confirm');
 
         Route::resource('mediafile', 'Admin\MediafileController');
         Route::resource('role', 'Admin\RoleController');
         Route::resource('permission', 'Admin\PermissionController');
 
-        Route::get('story/queueall', ['as' => 'admin_story_queue', 'uses' => 'Admin\StoryTypeController@queueAll']);
-        Route::get('magazine/article/queuearticle', ['as'=> 'admin_magazine_article_queue', 'uses'=> 'Admin\StoryTypeController@queueArticle']);
+        Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
+        Route::get('magazine/article/queuearticle', 'Admin\StoryTypeController@queueArticle')->name('admin_magazine_article_queue');
 
-        Route::get('story/{stype}/queueall', ['as' => 'admin_storytype_queueall', 'uses' => 'Admin\StoryTypeController@queueAll']);
+        Route::get('story/{stype}/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_storytype_queueall');
 
-        Route::get('magazine/article/setup', ['as' => 'admin_magazine_article_setup', 'uses' => 'Admin\StoryTypeController@articleSetup']);
+        Route::get('magazine/article/setup', 'Admin\StoryTypeController@articleSetup')->name('admin_magazine_article_setup');
 
-        Route::get('magazine/{stype}/{story}/edit', ['as' => 'admin_magazine_article_edit', 'uses' => 'Admin\StoryTypeController@storyTypeEdit']);
-        Route::get('story/{stype}/setup', ['as' => 'admin_storytype_setup', 'uses' => 'Admin\StoryTypeController@storyTypeSetUp']);
+        Route::get('magazine/{stype}/{story}/edit', 'Admin\StoryTypeController@storyTypeEdit')->name('admin_magazine_article_edit');
+        Route::get('story/{stype}/setup', 'Admin\StoryTypeController@storyTypeSetUp')->name('admin_storytype_setup');
 
 
         Route::get('{gtype}/{stype}/{qtype}','Admin\StoryTypeController@queue' );
@@ -364,22 +366,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('{qtype}/{gtype}/{stype}/form','Admin\StoryTypeController@storyTypeForm' );
 
         Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' )->middleware('bindings');
-        /*Route::get('{qtype}/{gtype}/{stype}/{story}/edit', function($qtype, $gtype, $stype, $story) {
-            $story = Story::find($story);
-
-            return $story->title;
-        });
-        */
-
     });
 
     Route::group(['prefix' => 'preview', 'middleware' => ['bindings'] ], function()
     {
-        Route::get('page/{page}/', ['as' => 'preview_hub', 'uses' => 'PreviewController@hub']);
-        Route::get('magazine/{magazine}/', ['as' => 'preview_magazine', 'uses' => 'PreviewController@magazine']);
+        Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
+        Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
 
-        Route::get('magazine/{stype}/{story}/', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
+        Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
         Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
 
-        Route::get('{qtype}/{gtype}/{stype}/{story}', ['as' => 'preview_story', 'uses' => 'PreviewController@story']);
+        Route::get('{qtype}/{gtype}/{stype}/{story}', 'PreviewController@story')->name('preview_story');
     });

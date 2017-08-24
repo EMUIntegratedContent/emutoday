@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\URL;
 use Emutoday\Http\Requests;
+use Emutoday\Helpers\Interfaces\ISearch;
 
 use Emutoday\Story;
 use Emutoday\Page;
@@ -22,12 +23,13 @@ class SearchController extends Controller
 {
 
     //public function __construct(Story $story, Announcement $announcement, Event $event)
-    public function __construct(Story $story, Announcement $announcement, Event $event)
+    public function __construct(Story $story, Announcement $announcement, Event $event, ISearch $searchProvider)
 
     {
         $this->story = $story;
         $this->announcement = $announcement;
         $this->event = $event;
+        $this->searchProvider = $searchProvider;
     }
 
 
@@ -115,6 +117,12 @@ class SearchController extends Controller
         } else {
             $searchMagazineResults = array();
         }
+
+        //$storiesPaginated = $this->searchRepo->search();
+        // $numResults = count($storiesPaginated);
+
+        //return view('public.searchresults2', compact('storiesPaginated', 'searchTerm', 'numResults'));
+
 
         $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults));
 

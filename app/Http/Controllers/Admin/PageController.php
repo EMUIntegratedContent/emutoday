@@ -156,21 +156,17 @@ class PageController extends Controller
                  } else {
                      $page->is_ready = 1;
                  }
-            //  dd($storyIDsForPivotArray);
              $page->storys()->sync($storyIDsForPivotArray);
             }
 
         $page->uri = $request->uri;
         $page->start_date = \Carbon\Carbon::parse($request->start_date);
         $page->end_date = \Carbon\Carbon::parse($request->end_date);
-        // $page->is_active = $request->is_active;
 
         $page->save();
 
-        //$story->fill($request->only('title', 'slug', 'subtitle', 'teaser','content','story_type'))->save();
         flash()->success('Page has been updated.');
         return redirect(route('admin_page_edit', $page->id));
-        //return redirect(route('admin.story.edit', $story->id))->with('status', 'Story has been updated.');
     }
 
     public function delete(Request $request)
