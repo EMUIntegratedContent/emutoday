@@ -391,14 +391,15 @@
 </div><!-- /.md12col -->
 
 <div :class="md12col">
-  <v-select
-  :value.sync="record.minicalendars"
-  :options="minicalslist"
-  :multiple="true"
-  placeholder="Select Mini Calendar"
-  label="calendar">
-</v-select>
-
+  <label for="minical">Select Mini Calendar
+    <v-select id="minical"
+    :value.sync="record.minicalendars"
+    :options="minicalslist"
+    :multiple="true"
+    placeholder="Select Mini Calendar"
+    label="calendar">
+    </v-select>
+  </label>
 </div><!-- /.md12col -->
 </div><!-- /.row -->
 <div class="row">
