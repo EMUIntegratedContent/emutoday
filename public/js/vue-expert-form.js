@@ -21302,7 +21302,6 @@ module.exports = {
       var _this = this;
 
       this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
-        console.log(response.data.data);
         _this.$set('record', response.data.data);
         _this.$set('recordOld', response.data.data);
 

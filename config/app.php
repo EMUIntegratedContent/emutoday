@@ -160,6 +160,7 @@ return [
         Sofa\Eloquence\ServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Snowfire\Beautymail\BeautymailServiceProvider::class,
 
         // Krenor\LdapAuth\LdapAuthServiceProvider::class,
 

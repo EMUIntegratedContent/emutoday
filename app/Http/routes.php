@@ -263,7 +263,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('search', ['as' => 'admin.search', 'uses' => 'Admin\DashboardController@search']);
 
         /* EXPERTS */
-        Route::group(['middleware' => 'Emutoday\Http\Middleware\ExpertsMiddleware'], function()
+        Route::group(['middleware' => 'Emutoday\Http\Middleware\ExpertsMiddleware', 'middleware' => ['bindings']], function()
         {
             Route::put('experts/{id}/updatefrompreview', ['as'=> 'admin_preview_expert_update', 'uses'=> 'Admin\ExpertsController@updateFromPreview']);
             Route::get('experts/{id}/edit', ['as' => 'experts_edititem', 'uses' =>'Admin\ExpertsController@edit']);
@@ -281,7 +281,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
             Route::patch('expertimage/{expertimage}/update',['as' => 'admin_expertimage_update', 'uses' => 'Admin\ExpertImageController@update']);
             Route::delete('expertimage/{expertimage}/delete', ['as' => 'admin_expertimage_destroy', 'uses' => 'Admin\ExpertImageController@destroy'] );
-            Route::post('experts/{expert}/addnewexpertimage',['as' => 'admin_expertimage_add_new_expertimage', 'uses' => 'Admin\ExpertImageController@addNewExpertImage']);
+            Route::get('experts/{expert}/addnewexpertimage',['as' => 'admin_expertimage_add_new_expertimage', 'uses' => 'Admin\ExpertImageController@addNewExpertImage']);
             Route::get('expertimage/{expertimage}/confirm', ['as' => 'admin_expertimage_confirm', 'uses' => 'Admin\ExpertImageController@confirm']);
         });
 

@@ -715,7 +715,6 @@ module.exports = {
       this.$http.get('/api/experts/' + recid + '/edit')
 
       .then((response) => {
-        console.log(response.data.data)
         this.$set('record', response.data.data)
         this.$set('recordOld', response.data.data)
 

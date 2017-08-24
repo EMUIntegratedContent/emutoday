@@ -80,7 +80,7 @@ class ExpertImageController extends Controller
 
     //define the image paths
     $destinationFolder = '/imgs/expert/';
-
+    var_dump($expertImage->image_path);
     //assign the image paths to new model, so we can save them to DB
     $expertImage->image_path = $destinationFolder;
 

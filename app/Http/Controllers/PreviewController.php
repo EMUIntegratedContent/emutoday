@@ -9,6 +9,8 @@ use Emutoday\Story;
 use Emutoday\User;
 use Emutoday\Author;
 use Emutoday\Event;
+use Emutoday\Expert;
+use Emutoday\ExpertCategory;
 use Emutoday\Page;
 use Emutoday\Magazine;
 use Emutoday\Tweet;
@@ -32,15 +34,14 @@ class PreviewController extends Controller
 {
 
 
-  public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement)
+  public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement, Expert $expert)
   {
       $this->page = $page;
-              $this->magazine = $magazine;
+      $this->magazine = $magazine;
       $this->story = $story;
-        $this->event = $event;
-              $this->announcement = $announcement;
-
-
+      $this->event = $event;
+      $this->announcement = $announcement;
+      $this->expert = $expert;
   }
 
   // Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@return');
@@ -70,28 +71,8 @@ class PreviewController extends Controller
       return redirect($rurl);
   }
 
-
-      // public function story( $stype, Story $story)
-      // {
           public function story($qtype,$gtype, $stype, Story $story)
           {
-
-              // dd($qtype . ' '. $gtype. ''. $stype.''. $story);
-          // $url =  \URL::previous();
-          // //$url = 'http://www.domain.com/page?s=194&client=151678&m=a4a&v=1&g=54';
-          // $remove_http = str_replace('http://', '', $url);
-          // $split_url = explode('/', $remove_http);
-          //
-          // //$flast  = last($split_url);
-          //
-          //
-          // //check if user is coming from queue or edit form
-          // $form = array_pop($split_url);
-          // //check what queue or form they are coming from
-          // $sroute = array_pop($split_url);
-
-          // dd($url,$split_url,$form,$sroute);
-          // $story =  $this->story->findOrFail($id);
           $mainStoryImage = null;
           $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
           // dd($mainStoryImage);
@@ -155,13 +136,6 @@ class PreviewController extends Controller
 
           }
       }
-
-
-      // public function hub(Page $page)
-      // {
-      // 	return 'need to recreate or reroute to correct preview page' . $page;
-      // }
-
 
   public function hub(Page $page)
   {
@@ -233,6 +207,12 @@ class PreviewController extends Controller
               $barImgs->push( $story->storyImages()->where('image_type', 'small')->first() );
 
           return view('preview.student.index', compact('heroImg', 'featureImg','barImgs'));
+      }
+
+      public function expert($id)
+      {
+        $expert = $this->expert->findOrFail($id);
+        return view('preview.expert', compact('expert'));
       }
 
       public function magazine(Magazine $magazine)
