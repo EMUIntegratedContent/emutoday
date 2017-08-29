@@ -1,26 +1,23 @@
 <?php
-
+/**
+ * IMPORTANT! EMUToday uses Laravel Passport to manage most OAuth configuration.
+ * Most routes are pre-configured by passport.
+ * Documentation: https://laravel.com/docs/5.4/passport
+ */
 namespace Emutoday\Http\Controllers\Admin;
 
-
-use Emutoday\Event;
-use Emutoday\Announcement;
-
 use Illuminate\Http\Request;
-
-use Emutoday\Http\Requests;
-use Emutoday\StoryType;
-
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
 
-class ArchiveController extends Controller
+class OAuthController extends Controller
 {
     protected $bugService;
 
     public function __construct(IBug $bugService)
     {
         $this->bugService = $bugService;
+
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
@@ -28,22 +25,10 @@ class ArchiveController extends Controller
         View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
-    public function queue($entityType) {
-        $storyTypes  = collect(StoryType::select('name','shortname')->get());
-        return view('admin.archive.queue', compact('entityType', 'storyTypes'));
-    }
-
-
     /**
-    * Process deletion of an archived item.
-    *
-    * @param  int $id
-    * @return \Illuminate\Http\Response
-    */
-    public function delete($id)
-    {
-        return view('admin.archive.queue');
+     * List all OAuth Clients of the currently logged-in user.
+     */
+    public function list() {
+        return view('admin.oauth.list');
     }
-
-
 }

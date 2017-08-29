@@ -81,53 +81,5 @@
         @parent
 
         <script>
-            // $(function () {
-            // 	$('input[type="radio"]').iCheck({
-            // 		checkboxClass: 'icheckbox_flat-blue',
-            // 		radioClass: 'iradio_flat-blue'
-            // 	})
-            // 	$('#is-promoted-no').iCheck('check');
-            // 	$('#is-promoted-yes').iCheck('disable');
-            //
-            // 	// $('#is-approved-no').iCheck('check');
-            //
-            // 	// $('#is-promoted-no').iCheck('disable');
-            //
-            // 	//iCheck for checkbox and radio inputs
-          //   $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-          //     checkboxClass: 'icheckbox_minimal-blue',
-          //     radioClass: 'iradio_minimal-blue'
-          //   });
-          //   //Red color scheme for iCheck
-          //   $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-          //     checkboxClass: 'icheckbox_minimal-red',
-          //     radioClass: 'iradio_minimal-red'
-          //   });
-          //   //Flat red color scheme for iCheck
-          //   $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-          //     checkboxClass: 'icheckbox_flat-green',
-          //     radioClass: 'iradio_flat-green'
-          //   });
-            //
-            // 	//Start Date picker
-            // 	$('#start-date').datetimepicker({
-            // 		format: 'YYYY-MM-DD HH:mm:ss'
-            // 	});
-            //
-            // 	//End Date picker
-            // 	$('#end-date').datetimepicker({
-            // 		format: 'YYYY-MM-DD HH:mm:ss',
-            // 		useCurrent: false //Important! See Issue #1075
-            // 	});
-            // 	$("#start-date").on("dp.change", function (e) {
-            // 				$('#end-date').data("DateTimePicker").minDate(e.date);
-            // 		});
-            // 	$("#end-date").on("dp.change", function (e) {
-            // 			$('#start-date').data("DateTimePicker").maxDate(e.date);
-            // 	});
-            //
-            // });
-
-
         </script>
     @endsection

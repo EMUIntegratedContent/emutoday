@@ -21,7 +21,8 @@
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.8.2",
         "doctrine/dbal": "~2.3",
-        "snowfire/beautymail": "dev-master"
+        "snowfire/beautymail": "dev-master",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

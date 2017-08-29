@@ -161,8 +161,7 @@ return [
         Subfission\Cas\CasServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Snowfire\Beautymail\BeautymailServiceProvider::class,
-
-        // Krenor\LdapAuth\LdapAuthServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -173,8 +172,6 @@ return [
         Emutoday\Providers\RouteServiceProvider::class,
         Emutoday\Providers\SearchServiceProvider::class,
         Emutoday\Providers\BugServiceProvider::class,
-        //Emutoday\Providers\ObserverServiceProvider::class,
-        //Emutoday\Providers\RepositoriesServiceProvider::class,
 
     ],
 

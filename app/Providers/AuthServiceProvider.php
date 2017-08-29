@@ -5,8 +5,9 @@ namespace Emutoday\Providers;
 use Emutoday\Permission;
 
 use Illuminate\Support\Facades\Gate;
-//use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Laravel\Passport\Passport;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Carbon\Carbon;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,12 +29,18 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Passport::routes();
+        Passport::tokensExpireIn(Carbon::now()->addMinutes(30));
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(1));
+
         foreach ($this->getPermissions() as $permission) {
                         Gate::define( $permission->name, function ($user) use ($permission) {
                                 return $user->hasRole($permission->roles);
                         });
                     }
-        //
+
+
     }
 
     protected function getPermissions()
