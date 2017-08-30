@@ -20,61 +20,6 @@ use GuzzleHttp\Client;
 | and give it the controller to call when that URI is requested.
 |
 */
-
-/**
- * CLIENT ROUTE - After creating a client in EMU Today, this function should be used
- * in the client application to authorize the app.
- */
-Route::get('/authorization', function () {
-    $query = http_build_query([
-        'client_id' => '14',
-        'redirect_uri' => 'http://emutoday.app/auth/callback',
-        'response_type' => 'code',
-        'scope' => '',
-    ]);
-
-    return redirect('http://emutoday.app/oauth/authorize?'.$query);
-});
-/**
- * CLIENT ROUTE - After creating a client in EMU Today and immediately after authorization,
- * this function should be used in the client app to obtain a bearer token and refresh token.
- * The bearer token generated here should be sent as a HEADER in requests to Today routes.
- */
-Route::get('/auth/callback', function (Request $request) {
-    $http = new GuzzleHttp\Client;
-
-    $response = $http->post('http://emutoday.app/oauth/token', [
-        'form_params' => [
-            'grant_type' => 'authorization_code',
-            'client_id' => '13',
-            'client_secret' => 'Is84wqENfvxQdloYppJlUQj55beq975ELrV0de1u',
-            'redirect_uri' => 'http://emutoday.app/auth/callback',
-            'code' => $request->code,
-        ],
-    ]);
-
-    return json_decode((string) $response->getBody(), true);
-});
-/**
- * CLIENT ROUTE - After creating a client in EMU Today and after receiving a bearer and refresh token,
- * this function should be used in the client app to generate a refresh token.
- */
-Route::get('/refresh', function(){
-  $http = new GuzzleHttp\Client;
-
-  $response = $http->post('http://emutoday.app/oauth/token', [
-      'form_params' => [
-          'grant_type' => 'refresh_token',
-          'refresh_token' => 'def502002bfb9ee7543ed3449e9c28354f25673373ffe0ab3249aa86b581da284c5fcd11022612bf7dfb7341597b2812dc4658cc237a47d4d7f46582a77dc02c82cb0b4162bf792651b0863b6a67fdacd305befdcfde4b7be3b3960cb26c058d3b55ec456c7ec4776d43f6e1110625b9a768ea9d4d52a8903207f094472567ea5521568070476c9b0bb1e1334a8b2769c8fb2ea7ddfd5dc50639f6db530a7bcbb0f10f71f279a9e21f1c9429d704d7aea7daac100f713cd35828430428388b599ee622b0bcd2e97bc3ceee03a6dcf0bcecf896c304327414629d05d2e6bbdb95290e1bd06adeb34311592ec1a536a869dcd9a9d6d764c77f8964ec9ebbf766a106b439dd71cb06031e012b42dc21267ae64ece528f53b9a13e376ce5e41e76a8188c73bc7f2f50f3ec4e5445fe03b308f3808c85afaceab6c9792e289cd7e386b92c69a05092290035fb99013d6899cce3b7860d6da9d5329009eb82a2e1b3de752249',
-          'client_id' => '13',
-          'client_secret' => 'Is84wqENfvxQdloYppJlUQj55beq975ELrV0de1u',
-          'scope' => '',
-      ],
-  ]);
-
-  return json_decode((string) $response->getBody(), true);
-});
-
 Route::get('/cas/logout', function(){
     Auth::logout();
     Session::flush();
