@@ -85,7 +85,7 @@ Route::group(['prefix' => 'api'], function() {
      * List of MiniCalendars for EventForm
      */
     Route::get('minicalslist', function() {
-        return MiniCalendar::select('calendar', 'id as value', 'parent')->orderBy('calendar', 'asc')->get();
+        return MiniCalendar::select('calendar', 'id as value', 'parent')->where('calendar', '<>', 'Welcome Weeks')->orderBy('calendar', 'asc')->get();
     })  ;
 
     Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
