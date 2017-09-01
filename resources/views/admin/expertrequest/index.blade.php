@@ -1,27 +1,22 @@
 @extends('admin.layouts.adminlte')
 @section('title', 'Expert Media Requests')
 @section('style-vendor')
-    @parent
+  @parent
 @endsection
 @section('style-plugin')
-    @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
-
-    @endsection
-    @section('style-app')
-        @parent
-        @endsection
-        @section('scripthead')
-        @parent
-    @endsection
+  @parent
+@endsection
+@section('style-app')
+  @parent
+@endsection
+@section('scripthead')
+  @parent
+@endsection
 @section('content')
-    @if(Session::has('status'))
-        <div class="row">
-            <div class="col-sm-12">
-                <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('status') }}</p>
-            </div>
-        </div>
-    @endif
+  <div id="vue-expert-request-list">
+    <expert-mediarequest-list></expert-mediarequest-list>
+  </div>
+  {{--
     <div class="row">
       <div class="col-md-12">
         <div class="box box-primary">
@@ -62,23 +57,18 @@
         </div><!-- /.box-body -->
       </div><!-- /.box -->
     </div><!-- /.row -->
+    --}}
 @endsection
 @section('footer-vendor')
-    @parent
-    {{-- <script src="/js/admintools.js"></script> --}}
+  @parent
 @endsection
-
 @section('footer-plugin')
-    @parent
-
-    @endsection
-
-    @section('footer-app')
-    @parent
-    @endsection
+  @parent
+@endsection
+@section('footer-app')
+  @parent
+  <script type="text/javascript" src="/js/vue-expert-request-list.js"></script>
+@endsection
 @section('footer-script')
-        @parent
-
-        <script>
-        </script>
-    @endsection
+  @parent
+@endsection
