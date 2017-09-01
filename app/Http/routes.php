@@ -77,6 +77,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::put('expertmediarequest/{id}', 'Api\ExpertMediaRequestController@updateItem')->name('api_expertmediarequest_updateitem');
     Route::post('expertmediarequest', 'Api\ExpertMediaRequestController@store')->name('api_expertmediarequest_store'); // Save expert media request to db
     Route::get('expertmediarequest/{id}', 'Api\ExpertMediaRequestController@getExpertMediaRequest')->name('api_expertmediarequest_get');
+    Route::get('expertmediarequest/list/search', 'Api\ExpertMediaRequestController@search')->name('api_expertmediarequest_search');
     Route::post('expertspeakerrequest', 'Api\ExpertSpeakerRequestController@store')->name('api_expertspeakerrequest_store'); // Save expert speaker request to db
 
     /**
@@ -188,16 +189,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
 
 });
-/*
-    Route::get('emichlogin', function() {
-        return view('public.emichlogin', ['form' => 'event']);
-    })->name('emich-login');
 
-    Route::group(['prefix' => 'auth' ], function()
-    {
-      Route::post('/emichlogin', 'Auth\AuthController@guest')->name('emich-login');
-    });
-*/
     Route::get('/', 'MainController@index')->name('/');
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');

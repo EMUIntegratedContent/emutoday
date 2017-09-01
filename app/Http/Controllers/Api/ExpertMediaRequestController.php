@@ -103,4 +103,12 @@ class ExpertMediaRequestController extends ApiController
       ->respondUpdatedWithData('Expert media request updated.',[ 'record_id' => $expertMediaRequest->id ] );
     }
   }
+
+  public function search(Request $request){
+
+    $result = ExpertMediaRequest::orderBy('created_at', 'desc')->with('expert')->paginate(2);
+
+    return $this->setStatusCode(200)
+    ->respondUpdatedWithData('Expert media request search results.', $result );
+  }
 }
