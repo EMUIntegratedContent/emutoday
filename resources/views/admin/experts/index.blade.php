@@ -15,6 +15,10 @@
         @parent
     @endsection
 @section('content')
+  <div id="vue-expert-list">
+    <expert-list></expert-list>
+  </div>
+  {{--
     @if(Session::has('status'))
         <div class="row">
             <div class="col-sm-12">
@@ -73,6 +77,7 @@
         </div><!-- /.box-body -->
       </div><!-- /.box -->
     </div><!-- /.row -->
+    --}}
 @endsection
 @section('footer-vendor')
     @parent
@@ -86,10 +91,11 @@
 
     @section('footer-app')
     @parent
+    <script type="text/javascript" src="/js/vue-expert-list.js"></script>
     @endsection
 @section('footer-script')
         @parent
 
         <script>
         </script>
-    @endsection
+@endsection

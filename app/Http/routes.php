@@ -61,6 +61,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('experts/languages/{id?}', 'Api\ExpertsController@expertLanguages')->name('api_experts_languages');
     Route::get('experts/social/{id?}', 'Api\ExpertsController@expertSocialMediaLinks')->name('api_experts_social');
     Route::get('experts/list/{id?}', 'Api\ExpertsController@getExperts')->name('api_experts_list');
+    Route::get('experts/search/{term?}', 'Api\ExpertsController@searchExperts')->name('api_experts_search');
     Route::post('experts', 'Api\ExpertsController@store')->name('api_experts_storeitem'); // Route to save expert to db
     Route::post('experts/{id}/delete', 'Api\ExpertsController@delete')->name('api_experts_delete');
     Route::resource('experts', 'Api\ExpertsController');

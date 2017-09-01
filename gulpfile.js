@@ -92,17 +92,16 @@ elixir(function(mix) {
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
     mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');
     mix.browserify('vue-expert-form.js', 'public/js/vue-expert-form.js');
+    mix.browserify('vue-expert-list.js', 'public/js/vue-expert-list.js');
     mix.browserify('vue-expertmediarequest-form.js', 'public/js/vue-expertmediarequest-form.js');
     mix.browserify('vue-expertspeakerrequest-form.js', 'public/js/vue-expertspeakerrequest-form.js');
     mix.browserify('vue-expertcategory-form.js', 'public/js/vue-expertcategory-form.js');
     mix.browserify('vue-search-form.js', 'public/js/vue-search-form.js');
     mix.browserify('vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js');
-    mix.browserify('vue-search-filter.js', 'public/js/vue-search-filter.js');
     mix.browserify('vue-oauth-clients.js', 'public/js/vue-oauth-clients.js');
     mix.browserify('vue-oauth-authorized-clients.js', 'public/js/vue-oauth-authorized-clients.js');
     mix.browserify('vue-oauth-personal-access-tokens.js', 'public/js/vue-oauth-personal-access-tokens.js');
     mix.browserify('admin-emucustom.js', 'public/js/admin-emucustom.js');
-    mix.browserify('emergency.js', 'public/js/emergency.js');
 
 
     // mix.sass('app.scss');

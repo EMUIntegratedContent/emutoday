@@ -49,6 +49,22 @@ class ExpertsController extends ApiController
   }
 
   /**
+   * Get all the experts based on the search term.
+   */
+  public function searchExperts(Request $request, $term = ''){
+        if($term != ''){
+            $result = Expert::orderBy('last_name', 'asc')->where('first_name', 'like', '%'. $term . '%')->orWhere('last_name', 'like', '%'. $term .'%')
+            ->with('expertImages')->paginate(10);
+        } else {
+            $result = Expert::orderBy('last_name', 'asc')
+            ->with('expertImages')->paginate(10);
+        }
+
+      return $this->setStatusCode(200)
+      ->respondUpdatedWithData('Got expert(s)', $result );
+  }
+
+  /**
    * Create and save a new expert
    */
   public function store(Request $request)

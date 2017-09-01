@@ -144,7 +144,7 @@
               <label class="sr-only">Previous Title</label>
               <input class="form-control dynamic-list-item" type="text" v-model="title.title">
               <span class="input-group-btn">
-                  <button @click="delTitle(title)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
+                  <button @click="delTitle(title)" class="btn btn-warning dynamic-list-btn" type="button">X</button>
               </span>
           </div>
         </div>
@@ -166,7 +166,7 @@
               <label class="sr-only">Language</label>
               <input class="form-control dynamic-list-item" type="text" v-model="language.language">
               <span class="input-group-btn">
-                  <button @click="delLanguage(language)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
+                  <button @click="delLanguage(language)" class="btn btn-warning dynamic-list-btn" type="button">X</button>
               </span>
           </div>
         </div>
@@ -188,7 +188,7 @@
               <label class="sr-only">Education</label>
               <input class="form-control dynamic-list-item" type="text" v-model="ed.education">
               <span class="input-group-btn">
-                  <button @click="delEducation(ed)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
+                  <button @click="delEducation(ed)" class="btn btn-warning dynamic-list-btn" type="button">X</button>
               </span>
           </div>
         </div>
@@ -210,7 +210,7 @@
               <label class="sr-only">Field of Expertise</label>
               <input class="form-control dynamic-list-item" type="text" v-model="exp.expertise">
               <span class="input-group-btn">
-                  <button @click="delExpertise(exp)" class="btn btn-secondary dynamic-list-btn" type="button">X</button>
+                  <button @click="delExpertise(exp)" class="btn btn-warning dynamic-list-btn" type="button">X</button>
               </span>
           </div>
         </div>
@@ -239,7 +239,7 @@
                       <label>URL</label>
                       <input class="form-control social-list-item" type="text" v-model="soc.url">
                       <span class="input-group-btn">
-                          <button @click="delSocial(soc)" class="btn btn-secondary social-list-btn" type="button">X</button>
+                          <button @click="delSocial(soc)" class="btn btn-warning social-list-btn" type="button">X</button>
                       </span>
                   </div>
               </div>
@@ -618,6 +618,9 @@ module.exports = {
     },
     btnPrimary: function() {
       return (this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary')
+    },
+    btnSecondary: function() {
+      return (this.framework == 'foundation' ? 'button button-secondary' : 'btn btn-link')
     },
     formGroup: function() {
       return (this.framework == 'foundation' ? 'form-group' : 'form-group')
