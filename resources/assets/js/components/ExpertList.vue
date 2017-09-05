@@ -18,10 +18,9 @@
                       <input type="radio" name="typeFilter" value="all" autocomplete="off"> All
                     </label>
                     <label class="btn btn-info">
-                      <input type="radio" name="typeFilter" value="new" autocomplete="off"> New
+                      <input type="radio" name="typeFilter" value="new" autocomplete="off"> Unapproved
                     </label>
                   </div>
-                  {{ type_filter }}
                   <div class="input-group">
                     <label for="narrow" class="sr-only">Narrow results</label>
                     <input type="text" class="form-control" id="narrow" placeholder="Narrow Results" v-model="currentSearch">

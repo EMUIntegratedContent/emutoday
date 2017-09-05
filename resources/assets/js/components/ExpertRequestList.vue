@@ -22,19 +22,18 @@
                       <input type="radio" name="typeFilter" value="new" autocomplete="off"> New
                     </label>
                     <label class="btn btn-info">
-                      <input type="radio" name="typeFilter" value="read" autocomplete="off"> Read
+                      <input type="radio" name="typeFilter" value="read" autocomplete="off"> Viewed
                     </label>
                   </div>
                   <div class="form-group">
-                      <label for="start-date">| Requests <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                      <label for="start-date">| Requests between</label>
                       <input v-if="formData.start_date" v-model="formData.start_date" id="start_date" type="text" :initval="formData.start_date" v-flatpickr="formData.start_date">
                   </div>
-                  <div v-if="isEndDate" class="form-group">
+                  <div class="form-group">
                       <label for="start-date"> and </label>
                       <input v-if="formData.end_date" type="text" :initval="formData.end_date" id="end-date" v-flatpickr="formData.end_date">
                   </div>
                   <button type="button" class="btn btn-sm btn-info" @click.prevent="fetchRequests(this.formData, 1)">Filter</button>
-                  <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
                 </form>
               </div>
             </div>
@@ -125,7 +124,6 @@ module.exports = {
       last_page: 1, //need a second last page in case search results turn up 0 pages
       hasPrevious: true,
       hasNext: true,
-      isEndDate: false,
       startdatePicker:null,
       enddatePicker:null,
       dateObject:{
