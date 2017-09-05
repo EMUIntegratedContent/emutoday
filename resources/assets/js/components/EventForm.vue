@@ -609,8 +609,6 @@ module.exports  = {
     });
     this.startdatePicker.clear();
     this.enddatePicker.clear();
-    // this.starttimePicker.clear();
-    // this.endtimePicker.clear();
   },
 
   computed: {

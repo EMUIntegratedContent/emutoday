@@ -18163,14 +18163,23 @@ module.exports = {
       last_page: 1, //need a second last page in case search results turn up 0 pages
       hasPrevious: true,
       hasNext: true,
-      isEndDate: false
+      isEndDate: false,
+      startdatePicker: null,
+      enddatePicker: null,
+      dateObject: {
+        startDateMin: '',
+        startDateDefault: '',
+        endDateMin: '',
+        endDateDefault: ''
+      }
     };
   },
   created: function created() {},
   ready: function ready() {
-    var twoWeeksEarlier = (0, _moment2.default)().subtract(2, 'w');
-    this.formData.start_date = twoWeeksEarlier.format("YYYY-MM-DD");
-    this.formData.end_date = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
+    var sixMonthsEarlier = (0, _moment2.default)().subtract(6, 'months');
+    var today = (0, _moment2.default)();
+    this.formData.start_date = sixMonthsEarlier.format("YYYY-MM-DD");
+    this.formData.end_date = today.format("YYYY-MM-DD");
     this.fetchRequests(this.formData, 1);
   },
   computed: {
@@ -18230,12 +18239,9 @@ module.exports = {
     fetchRequests: function fetchRequests(data, page) {
       var _this = this;
 
-      //var url
-      //searchterm ? url = '/api/experts/search/' + searchterm + '?page=' + page : url = '/api/experts/search?page=' + page
-
       // only run if pages within pagination range
       if (page > 0 && page <= this.last_page) {
-        this.$http.get('/api/expertmediarequest/list/search?page=' + page).then(function (response) {
+        this.$http.get('/api/expertmediarequest/list/search?page=' + page + '&start_date=' + data.start_date + '&end_date=' + data.end_date + '&type_filter=' + data.type_filter).then(function (response) {
           _this.$set('mediarequests', response.body.newdata.data);
           _this.makePagination(response.body.newdata);
           console.log(response.body.newdata);
@@ -18266,10 +18272,50 @@ module.exports = {
 
     isActivePage: function isActivePage(page) {
       return page == this.pagination.current_page;
+    },
+
+
+    setupDatePickers: function setupDatePickers() {
+      var self = this;
+
+      this.startdatePicker = (0, _flatpickr2.default)(document.getElementById("start_date"), {
+        defaultDate: self.dateObject.startDateDefault,
+        enableTime: false,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange: function onChange(dateObject, dateString) {
+          self.enddatePicker.set("minDate", dateObject);
+          self.formData.start_date = dateString;
+          self.startdatePicker.value = dateString;
+        }
+      });
+
+      this.enddatePicker = (0, _flatpickr2.default)(document.getElementById("end_date"), {
+        defaultDate: self.dateObject.endDateDefault,
+        enableTime: false,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange: function onChange(dateObject, dateString) {
+          self.formData.end_date = dateString;
+          self.enddatePicker.value = dateString;
+        }
+      });
+    },
+
+    onCalendarChange: function onCalendarChange() {
+      // flatpickr directive method
     }
   },
   watch: {},
-  filters: {},
+  filters: {
+    formatDate: function formatDate(date) {
+      if (date) {
+        return (0, _moment2.default)(String(date)).format('MM/DD/YYYY');
+      }
+    }
+  },
   events: {},
   directives: {
     flatpickr: _flatpickr2.default,
@@ -18310,7 +18356,7 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-019f019c=\"\">\n  <div class=\"row\" _v-019f019c=\"\">\n    <div v-bind:class=\"md12col\" _v-019f019c=\"\">\n      <h1 _v-019f019c=\"\">Eastern Expert Media Requests</h1>\n    </div>\n  </div>\n  <div class=\"row\" _v-019f019c=\"\">\n    <div v-bind:class=\"md8col\" _v-019f019c=\"\">\n      <div class=\"panel panel-default\" _v-019f019c=\"\">\n        <!-- Default panel contents -->\n        <div class=\"panel-heading\" _v-019f019c=\"\">\n          <div class=\"row\" _v-019f019c=\"\">\n            <div :class=\"md12col\" _v-019f019c=\"\">\n              <form class=\"form-inline\" role=\"search\" _v-019f019c=\"\">\n                <!-- Tutorial for button group workaround https://forum-archive.vuejs.org/topic/135/problem-binding-bootstrap-styled-radio-button-groups-with-vue-vm/3 -->\n                <div class=\"btn-group\" data-toggle=\"buttons\" v-radio=\"formData.type_filter\" _v-019f019c=\"\">\n                  <label class=\"btn btn-info active\" _v-019f019c=\"\">\n                    <input type=\"radio\" name=\"typeFilter\" value=\"all\" autocomplete=\"off\" _v-019f019c=\"\"> All\n                  </label>\n                  <label class=\"btn btn-info\" _v-019f019c=\"\">\n                    <input type=\"radio\" name=\"typeFilter\" value=\"new\" autocomplete=\"off\" _v-019f019c=\"\"> New\n                  </label>\n                  <label class=\"btn btn-info\" _v-019f019c=\"\">\n                    <input type=\"radio\" name=\"typeFilter\" value=\"read\" autocomplete=\"off\" _v-019f019c=\"\"> Read\n                  </label>\n                </div>\n                <div class=\"form-group\" _v-019f019c=\"\">\n                    <label for=\"start-date\" _v-019f019c=\"\">Requests <span v-if=\"isEndDate\" _v-019f019c=\"\">between</span><span v-else=\"\" _v-019f019c=\"\">on or after</span></label>\n                    <input v-if=\"formData.start_date\" v-model=\"formData.start_date\" type=\"text\" :initval=\"formData.start_date\" v-flatpickr=\"formData.start_date\" _v-019f019c=\"\">\n                </div>\n                <div v-if=\"isEndDate\" class=\"form-group\" _v-019f019c=\"\">\n                    <label for=\"start-date\" _v-019f019c=\"\"> and </label>\n                    <input v-if=\"formData.end_date\" type=\"text\" :initval=\"formData.end_date\" v-flatpickr=\"formData.end_date\" _v-019f019c=\"\">\n                </div>\n                <button type=\"button\" class=\"btn btn-sm btn-info\" @click.prevent=\"fetchRequests('', 1)\" _v-019f019c=\"\">Filter</button>\n                <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-019f019c=\"\"><span v-if=\"isEndDate\" _v-019f019c=\"\"> - Remove </span><span v-else=\"\" _v-019f019c=\"\"> + Add </span>Range</a>\n              </form>\n            </div>\n          </div>\n        </div>\n\n        <!-- Table -->\n        <table class=\"table table-hover table-sm\" _v-019f019c=\"\">\n          <tbody _v-019f019c=\"\"><tr _v-019f019c=\"\">\n            <th _v-019f019c=\"\">Submitted</th>\n            <th _v-019f019c=\"\">Requester</th>\n            <th _v-019f019c=\"\">Media Outlet</th>\n            <th _v-019f019c=\"\">Requested Expert</th>\n            <th _v-019f019c=\"\">Deadline</th>\n            <th _v-019f019c=\"\">Status</th>\n            <th _v-019f019c=\"\">Actions</th>\n          </tr>\n          <tr v-for=\"request in mediarequests\" _v-019f019c=\"\">\n            <td _v-019f019c=\"\">{{ request.created_at }}</td>\n            <td _v-019f019c=\"\">{{ request.name }}</td>\n            <td _v-019f019c=\"\">{{ request.media_outlet }}</td>\n            <td _v-019f019c=\"\">{{ request.expert.first_name + ' ' + request.expert.last_name }}</td>\n            <td _v-019f019c=\"\">{{ request.deadline }}</td>\n            <td _v-019f019c=\"\">\n              <span v-if=\"request.is_acknowledged\" class=\"label label-info\" _v-019f019c=\"\">Viewed</span>\n              <span v-else=\"\" class=\"label label-warning\" _v-019f019c=\"\">New</span>\n            </td>\n            <td _v-019f019c=\"\">\n              <a href=\"/admin/expertrequests/{{ request.id }}/edit\" class=\"button success\" _v-019f019c=\"\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\" _v-019f019c=\"\"></i></a>\n            </td>\n          </tr>\n        </tbody></table>\n        <div class=\"panel-footer\" _v-019f019c=\"\">\n          <ul class=\"pagination\" _v-019f019c=\"\">\n            <li v-bind:class=\"{disabled: !hasPrevious}\" class=\"page-item\" _v-019f019c=\"\">\n              <a href=\"#\" v-on:click.prevent=\"fetchRequests('', pagination.current_page-1)\" class=\"page-link\" tabindex=\"-1\" _v-019f019c=\"\">Previous</a>\n            </li>\n            <li v-for=\"pg in pagination.last_page\" :class=\"{active: isActivePage(pg+1)}\" class=\"page-item\" _v-019f019c=\"\">\n              <a class=\"page-link\" href=\"#\" v-on:click.prevent=\"fetchRequests('', pg+1)\" _v-019f019c=\"\">{{ pg+1 }} <span v-if=\"isCurrent\" class=\"sr-only\" _v-019f019c=\"\">(current)</span></a>\n            </li>\n            <li v-bind:class=\"{disabled: !hasNext}\" class=\"page-item\" _v-019f019c=\"\">\n              <a class=\"page-link\" v-on:click.prevent=\"fetchRequests('', pagination.current_page+1)\" href=\"#\" _v-019f019c=\"\">Next</a>\n            </li>\n          </ul>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-019f019c=\"\">\n  <div class=\"row\" _v-019f019c=\"\">\n    <div v-bind:class=\"md12col\" _v-019f019c=\"\">\n      <h1 _v-019f019c=\"\">Eastern Expert Media Requests</h1>\n    </div>\n  </div>\n  <div class=\"row\" _v-019f019c=\"\">\n    <div v-bind:class=\"md8col\" _v-019f019c=\"\">\n      <div class=\"panel panel-default\" _v-019f019c=\"\">\n        <!-- Default panel contents -->\n        <div class=\"panel-heading\" _v-019f019c=\"\">\n          <div class=\"row\" _v-019f019c=\"\">\n            <div :class=\"md12col\" _v-019f019c=\"\">\n              <form class=\"form-inline\" role=\"search\" _v-019f019c=\"\">\n                <!-- Tutorial for button group workaround https://forum-archive.vuejs.org/topic/135/problem-binding-bootstrap-styled-radio-button-groups-with-vue-vm/3 -->\n                <div class=\"btn-group\" data-toggle=\"buttons\" v-radio=\"formData.type_filter\" @click.prevent=\"fetchRequests(this.formData, 1)\" _v-019f019c=\"\">\n                  <label class=\"btn btn-info active\" _v-019f019c=\"\">\n                    <input type=\"radio\" name=\"typeFilter\" value=\"all\" autocomplete=\"off\" _v-019f019c=\"\"> All\n                  </label>\n                  <label class=\"btn btn-info\" _v-019f019c=\"\">\n                    <input type=\"radio\" name=\"typeFilter\" value=\"new\" autocomplete=\"off\" _v-019f019c=\"\"> New\n                  </label>\n                  <label class=\"btn btn-info\" _v-019f019c=\"\">\n                    <input type=\"radio\" name=\"typeFilter\" value=\"read\" autocomplete=\"off\" _v-019f019c=\"\"> Read\n                  </label>\n                </div>\n                <div class=\"form-group\" _v-019f019c=\"\">\n                    <label for=\"start-date\" _v-019f019c=\"\">| Requests <span v-if=\"isEndDate\" _v-019f019c=\"\">between</span><span v-else=\"\" _v-019f019c=\"\">on or after</span></label>\n                    <input v-if=\"formData.start_date\" v-model=\"formData.start_date\" id=\"start_date\" type=\"text\" :initval=\"formData.start_date\" v-flatpickr=\"formData.start_date\" _v-019f019c=\"\">\n                </div>\n                <div v-if=\"isEndDate\" class=\"form-group\" _v-019f019c=\"\">\n                    <label for=\"start-date\" _v-019f019c=\"\"> and </label>\n                    <input v-if=\"formData.end_date\" type=\"text\" :initval=\"formData.end_date\" id=\"end-date\" v-flatpickr=\"formData.end_date\" _v-019f019c=\"\">\n                </div>\n                <button type=\"button\" class=\"btn btn-sm btn-info\" @click.prevent=\"fetchRequests(this.formData, 1)\" _v-019f019c=\"\">Filter</button>\n                <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-019f019c=\"\"><span v-if=\"isEndDate\" _v-019f019c=\"\"> - Remove </span><span v-else=\"\" _v-019f019c=\"\"> + Add </span>Range</a>\n              </form>\n            </div>\n          </div>\n        </div>\n\n        <!-- Table -->\n        <table class=\"table table-hover table-sm\" _v-019f019c=\"\">\n          <tbody _v-019f019c=\"\"><tr _v-019f019c=\"\">\n            <th _v-019f019c=\"\">Submitted</th>\n            <th _v-019f019c=\"\">Requester</th>\n            <th _v-019f019c=\"\">Media Outlet</th>\n            <th _v-019f019c=\"\">Requested Expert</th>\n            <th _v-019f019c=\"\">Deadline</th>\n            <th _v-019f019c=\"\">Status</th>\n            <th _v-019f019c=\"\">Actions</th>\n          </tr>\n          <tr v-for=\"request in mediarequests\" _v-019f019c=\"\">\n            <td _v-019f019c=\"\">{{ request.created_at | formatDate }}</td>\n            <td _v-019f019c=\"\">{{ request.name }}</td>\n            <td _v-019f019c=\"\">{{ request.media_outlet }}</td>\n            <td _v-019f019c=\"\">{{ request.expert.first_name + ' ' + request.expert.last_name }}</td>\n            <td _v-019f019c=\"\">{{ request.deadline }}</td>\n            <td _v-019f019c=\"\">\n              <span v-if=\"request.is_acknowledged\" class=\"label label-info\" _v-019f019c=\"\">Viewed</span>\n              <span v-else=\"\" class=\"label label-warning\" _v-019f019c=\"\">New</span>\n            </td>\n            <td _v-019f019c=\"\">\n              <a href=\"/admin/expertrequests/{{ request.id }}/edit\" class=\"button success\" _v-019f019c=\"\"><i class=\"fa fa-pencil-square-o\" aria-hidden=\"true\" _v-019f019c=\"\"></i></a>\n            </td>\n          </tr>\n        </tbody></table>\n        <div class=\"panel-footer\" _v-019f019c=\"\">\n          <ul class=\"pagination\" _v-019f019c=\"\">\n            <li v-bind:class=\"{disabled: !hasPrevious}\" class=\"page-item\" _v-019f019c=\"\">\n              <a href=\"#\" v-on:click.prevent=\"fetchRequests(this.formData, pagination.current_page-1)\" class=\"page-link\" tabindex=\"-1\" _v-019f019c=\"\">Previous</a>\n            </li>\n            <li v-for=\"pg in pagination.last_page\" :class=\"{active: isActivePage(pg+1)}\" class=\"page-item\" _v-019f019c=\"\">\n              <a class=\"page-link\" href=\"#\" v-on:click.prevent=\"fetchRequests(this.formData, pg+1)\" _v-019f019c=\"\">{{ pg+1 }} <span v-if=\"isCurrent\" class=\"sr-only\" _v-019f019c=\"\">(current)</span></a>\n            </li>\n            <li v-bind:class=\"{disabled: !hasNext}\" class=\"page-item\" _v-019f019c=\"\">\n              <a class=\"page-link\" v-on:click.prevent=\"fetchRequests(this.formData, pagination.current_page+1)\" href=\"#\" _v-019f019c=\"\">Next</a>\n            </li>\n          </ul>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

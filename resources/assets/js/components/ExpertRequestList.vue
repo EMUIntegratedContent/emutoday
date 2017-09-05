@@ -14,7 +14,7 @@
               <div :class="md12col">
                 <form class="form-inline" role="search">
                   <!-- Tutorial for button group workaround https://forum-archive.vuejs.org/topic/135/problem-binding-bootstrap-styled-radio-button-groups-with-vue-vm/3 -->
-                  <div class="btn-group" data-toggle="buttons" v-radio="formData.type_filter">
+                  <div class="btn-group" data-toggle="buttons" v-radio="formData.type_filter" @click.prevent="fetchRequests(this.formData, 1)">
                     <label class="btn btn-info active">
                       <input type="radio" name="typeFilter" value="all" autocomplete="off"> All
                     </label>
@@ -26,14 +26,14 @@
                     </label>
                   </div>
                   <div class="form-group">
-                      <label for="start-date">Requests <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                      <input v-if="formData.start_date" v-model="formData.start_date" type="text" :initval="formData.start_date" v-flatpickr="formData.start_date">
+                      <label for="start-date">| Requests <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                      <input v-if="formData.start_date" v-model="formData.start_date" id="start_date" type="text" :initval="formData.start_date" v-flatpickr="formData.start_date">
                   </div>
                   <div v-if="isEndDate" class="form-group">
                       <label for="start-date"> and </label>
-                      <input v-if="formData.end_date" type="text" :initval="formData.end_date" v-flatpickr="formData.end_date">
+                      <input v-if="formData.end_date" type="text" :initval="formData.end_date" id="end-date" v-flatpickr="formData.end_date">
                   </div>
-                  <button type="button" class="btn btn-sm btn-info" @click.prevent="fetchRequests('', 1)">Filter</button>
+                  <button type="button" class="btn btn-sm btn-info" @click.prevent="fetchRequests(this.formData, 1)">Filter</button>
                   <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
                 </form>
               </div>
@@ -52,7 +52,7 @@
               <th>Actions</th>
             </tr>
             <tr v-for="request in mediarequests">
-              <td>{{ request.created_at }}</td>
+              <td>{{ request.created_at | formatDate }}</td>
               <td>{{ request.name }}</td>
               <td>{{ request.media_outlet }}</td>
               <td>{{ request.expert.first_name + ' ' + request.expert.last_name }}</td>
@@ -69,13 +69,13 @@
           <div class="panel-footer">
             <ul class="pagination">
               <li v-bind:class="{disabled: !hasPrevious}" class="page-item">
-                <a href="#" v-on:click.prevent="fetchRequests('', pagination.current_page-1)" class="page-link" tabindex="-1">Previous</a>
+                <a href="#" v-on:click.prevent="fetchRequests(this.formData, pagination.current_page-1)" class="page-link" tabindex="-1">Previous</a>
               </li>
               <li v-for="pg in pagination.last_page" :class="{active: isActivePage(pg+1)}" class="page-item">
-                <a class="page-link" href="#" v-on:click.prevent="fetchRequests('', pg+1)">{{ pg+1 }} <span v-if="isCurrent" class="sr-only">(current)</span></a>
+                <a class="page-link" href="#" v-on:click.prevent="fetchRequests(this.formData, pg+1)">{{ pg+1 }} <span v-if="isCurrent" class="sr-only">(current)</span></a>
               </li>
               <li v-bind:class="{disabled: !hasNext}" class="page-item">
-                <a class="page-link" v-on:click.prevent="fetchRequests('', pagination.current_page+1)" href="#">Next</a>
+                <a class="page-link" v-on:click.prevent="fetchRequests(this.formData, pagination.current_page+1)" href="#">Next</a>
               </li>
             </ul>
           </div>
@@ -126,15 +126,24 @@ module.exports = {
       hasPrevious: true,
       hasNext: true,
       isEndDate: false,
+      startdatePicker:null,
+      enddatePicker:null,
+      dateObject:{
+        startDateMin: '',
+        startDateDefault: '',
+        endDateMin: '',
+        endDateDefault: ''
+      },
     }
   },
   created: function () {
 
   },
   ready: function() {
-    let twoWeeksEarlier = moment().subtract(2, 'w')
-    this.formData.start_date = twoWeeksEarlier.format("YYYY-MM-DD")
-    this.formData.end_date = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+    let sixMonthsEarlier = moment().subtract(6, 'months')
+    let today = moment();
+    this.formData.start_date = sixMonthsEarlier.format("YYYY-MM-DD")
+    this.formData.end_date = today.format("YYYY-MM-DD")
     this.fetchRequests(this.formData, 1);
   },
   computed: {
@@ -192,12 +201,9 @@ module.exports = {
         }
     },
     fetchRequests: function(data, page) {
-      //var url
-      //searchterm ? url = '/api/experts/search/' + searchterm + '?page=' + page : url = '/api/experts/search?page=' + page
-
       // only run if pages within pagination range
       if(page > 0 && page <= this.last_page){
-        this.$http.get('/api/expertmediarequest/list/search?page=' + page)
+        this.$http.get('/api/expertmediarequest/list/search?page=' + page + '&start_date=' + data.start_date + '&end_date=' + data.end_date + '&type_filter=' + data.type_filter)
         .then((response) => {
           this.$set('mediarequests', response.body.newdata.data)
           this.makePagination(response.body.newdata)
@@ -229,11 +235,49 @@ module.exports = {
 
     isActivePage(page){
       return page == this.pagination.current_page
-    }
+    },
+
+    setupDatePickers:function(){
+      var self = this;
+
+      this.startdatePicker = flatpickr(document.getElementById("start_date"), {
+        defaultDate: self.dateObject.startDateDefault,
+        enableTime: false,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange(dateObject, dateString) {
+          self.enddatePicker.set("minDate", dateObject);
+          self.formData.start_date = dateString;
+          self.startdatePicker.value = dateString;
+        }
+      });
+
+      this.enddatePicker = flatpickr(document.getElementById("end_date"), {
+        defaultDate: self.dateObject.endDateDefault,
+        enableTime: false,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange(dateObject, dateString) {
+          self.formData.end_date = dateString;
+          self.enddatePicker.value = dateString;
+        }
+      });
+    },
+
+    onCalendarChange: function(){
+        // flatpickr directive method
+    },
   },
   watch: {
   },
   filters: {
+    formatDate: function(date){
+      if (date) {
+        return moment(String(date)).format('MM/DD/YYYY')
+      }
+    }
   },
   events: {
   },

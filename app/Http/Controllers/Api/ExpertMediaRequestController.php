@@ -104,9 +104,33 @@ class ExpertMediaRequestController extends ApiController
     }
   }
 
+  /**
+   * Get all the expert media requests based on the query prarmeters provided.
+   */
   public function search(Request $request){
+    $conditions = array(); //conditions for the where clause
 
-    $result = ExpertMediaRequest::orderBy('created_at', 'desc')->with('expert')->paginate(2);
+    if($request->start_date){
+      $conditions[] = array('created_at', '>=', $request->start_date);
+    }
+    if($request->end_date){
+      $endDate = new \DateTime($request->end_date); // need to include all 24 hours of the end date
+      $conditions[] = array('created_at', '<', $endDate->add(new \DateInterval('P1D')));
+    }
+    if($request->type_filter){
+      switch ($request->type_filter) {
+        case 'new':
+          $conditions[] = array('is_acknowledged', 0);
+          break;
+        case 'read':
+          $conditions[] = array('is_acknowledged', 1);
+          break;
+        default:
+          break;
+      }
+    }
+
+    $result = ExpertMediaRequest::where($conditions)->orderBy('created_at', 'desc')->with('expert')->paginate(15);
 
     return $this->setStatusCode(200)
     ->respondUpdatedWithData('Expert media request search results.', $result );
