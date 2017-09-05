@@ -11,8 +11,16 @@
           <!-- Default panel contents -->
           <div class="panel-heading">
             <div class="row">
-              <div :class="md6col">
-                <form v-on:submit.prevent="fetchExperts(currentSearch, 1)" class="form" role="search">
+              <div :class="md8col">
+                <form v-on:submit.prevent="fetchExperts(currentSearch, 1)" class="form-inline" role="search">
+                  <div class="btn-group" data-toggle="buttons" v-radio="type_filter" @click.prevent="fetchExperts(currentSearch, 1)">
+                    <label class="btn btn-info active">
+                      <input type="radio" name="typeFilter" value="all" autocomplete="off"> All
+                    </label>
+                    <label class="btn btn-info">
+                      <input type="radio" name="typeFilter" value="new" autocomplete="off"> New
+                    </label>
+                  </div>
                   <div class="input-group">
                     <label for="narrow" class="sr-only">Narrow results</label>
                     <input type="text" class="form-control" id="narrow" placeholder="Narrow Results" v-model="currentSearch">
@@ -22,7 +30,7 @@
                   </div>
                 </form>
               </div>
-              <div :class="md6col">
+              <div :class="md4col">
                 <p class="text-right"><a :class="btnPrimary" href="/admin/experts/form">Add Expert</a></p>
               </div>
             </div>
@@ -83,7 +91,6 @@
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
 module.exports = {
-  directives: {},
   components: {},
   props: {
     framework: {
@@ -109,6 +116,7 @@ module.exports = {
       last_page: 1, //need a second last page in case search results turn up 0 pages
       hasPrevious: true,
       hasNext: true,
+      type_filter: 'all'
     }
   },
   created: function () {
@@ -166,7 +174,7 @@ module.exports = {
   methods: {
     fetchExperts: function(searchterm, page) {
       var url
-      searchterm ? url = '/api/experts/search/' + searchterm + '?page=' + page : url = '/api/experts/search?page=' + page
+      searchterm ? url = '/api/experts/search/' + searchterm + '?page=' + page + '&type_filter=' + this.type_filter : url = '/api/experts/search?page=' + page  + '&type_filter=' + this.type_filter
 
       // only run if pages within pagination range
       if(page > 0 && page <= this.last_page){
@@ -209,6 +217,41 @@ module.exports = {
   filters: {
   },
   events: {
+  },
+  directives: {
+    radio: {
+      twoWay: true,
+      bind: function() {
+          var self = this;
+          var btns = $(self.el).find('.btn');
+          btns.each(function() {
+              $(this).on('click', function() {
+                  var v = $(this).find('input').get(0).value
+                  self.set(v);
+              })
+          });
+      },
+      update: function() {
+          var value = this._watcher.value;
+          if (value) {
+              this.set(value);
+              var btns = $(this.el).find('.btn')
+              btns.each(function() {
+                  $(this).removeClass('active');
+                  var v = $(this).find('input').get(0).value;
+
+                  if (v === value) {
+                      $(this).addClass('active');
+                  }
+              });
+          } else {
+              var input = $(this.el).find('.active input').get(0);
+              if (input) {
+                  this.set(input.value);
+              }
+          }
+      }
+    }
   }
 };
 

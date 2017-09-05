@@ -53,11 +53,17 @@ class ExpertsController extends ApiController
    */
   public function searchExperts(Request $request, $term = ''){
         if($term != ''){
-            $result = Expert::orderBy('last_name', 'asc')->where('first_name', 'like', '%'. $term . '%')->orWhere('last_name', 'like', '%'. $term .'%')
-            ->with('expertImages')->paginate(10);
+            $result = Expert::orderBy('last_name', 'asc')->where('first_name', 'like', '%'. $term . '%')->orWhere('last_name', 'like', '%'. $term .'%');
+            if($request->type_filter && $request->type_filter == 'new'){
+              $result = $result->where('is_approved', 0);
+            }
+            $result = $result->with('expertImages')->paginate(10);
         } else {
-            $result = Expert::orderBy('last_name', 'asc')
-            ->with('expertImages')->paginate(10);
+            $result = Expert::orderBy('last_name', 'asc');
+            if($request->type_filter && $request->type_filter == 'new'){
+              $result = $result->where('is_approved', 0);
+            }
+            $result = $result->with('expertImages')->paginate(10);
         }
 
       return $this->setStatusCode(200)
