@@ -21,6 +21,7 @@
                       <input type="radio" name="typeFilter" value="new" autocomplete="off"> New
                     </label>
                   </div>
+                  {{ type_filter }}
                   <div class="input-group">
                     <label for="narrow" class="sr-only">Narrow results</label>
                     <input type="text" class="form-control" id="narrow" placeholder="Narrow Results" v-model="currentSearch">
@@ -182,7 +183,7 @@ module.exports = {
         .then((response) => {
           this.$set('experts', response.body.newdata.data)
           this.makePagination(response.body.newdata)
-          console.log(response.body.newdata)
+          console.log(url)
         }, (response) => {
           this.formErrors = response.data.error.message;
         }).bind(this);
