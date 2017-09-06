@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Emutoday\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
