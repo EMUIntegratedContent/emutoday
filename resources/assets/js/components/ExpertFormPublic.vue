@@ -259,8 +259,8 @@
       <div v-bind:class="md12col">
         <!-- Biography -->
         <div v-bind:class="formGroup">
-          <label>Biography <span v-bind:class="iconStar" class="reqstar">*</span></label>
-          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" type="simple" :biography="biography" :fresh="isFresh" rows="200"></textarea>
+          <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="20"></textarea>
           <p v-if="formErrors.biography" class="help-text invalid">You must enter a biography for this expert.</p>
         </div>
       </div>
@@ -645,17 +645,11 @@ module.exports = {
 
     hasLocalRecordChanged: function() {
       var ckval = false
-      if (this.recordOld.title !== this.record.title){
+      if (this.recordOld.biography !== this.biography ) {
         ckval = true
       }
-
-      if (this.recordOld.content !== this.content ) {
-        ckval = true
-      }
-
       if (ckval) {
         this.updateRecordIsDirty(true)
-
       }
       return ckval
     },
