@@ -24,9 +24,9 @@ module.exports = {
      if (!CKEDITOR.instances[this.el.id])
        return this.vm.$nextTick(this.update.bind(this, value));
 
-     CKEDITOR.instances[this.el.id].setData(value, function(editor){
-       editor.focus();
-     }); // Need for Experts public CKEditor
+     //CKEDITOR.instances[this.el.id].setData(value, function(){
+    //   CKEDITOR.instances[this.el.id].focus();
+     //}); // Need for Experts public CKEditor
      this.vm.onContentChange();
    },
    unbind: function () {

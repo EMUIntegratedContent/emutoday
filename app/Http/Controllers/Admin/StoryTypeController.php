@@ -169,7 +169,6 @@ class StoryTypeController extends Controller
     {
         $user = \Auth::user();
         $story = null;
-        // $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
         $sroute = 'magazine';
         $stypelist = 'article';
         $stype = 'article';
@@ -187,7 +186,6 @@ class StoryTypeController extends Controller
 
     public function storyTypeEdit($qtype, $gtype,$stype, Story $story)
     {
-        //$story = \Emutoday\Story::find($story);
         $urlprev = \URL::previous();
 
         if(str_contains($urlprev, 'magazine')) {
@@ -197,7 +195,6 @@ class StoryTypeController extends Controller
         }
 
         $user = \Auth::user();
-        //$stypes = $stype;
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
         $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
 
@@ -458,9 +455,6 @@ public function show($id)
 }
 public function update(Requests\UpdateStoryRequest $request, $id)
 {
-
-    // dd($request->input('tags'));
-
     $story = $this->story->findOrFail($id);
 
     $story->fill($request->only('title', 'slug', 'subtitle', 'teaser','content','external_link', 'story_type','is_approved', 'is_featured'));
@@ -488,7 +482,6 @@ public function update(Requests\UpdateStoryRequest $request, $id)
     $story->save();
     flash()->success('Story has been updated.');
     return redirect(route('admin_story_edit', $story->id));
-    //return redirect(route('admin_story_edit', $story->id))->with('status', 'Story has been updated.');
 }
 
 public function destroy($id)
@@ -496,7 +489,7 @@ public function destroy($id)
     $story = $this->story->findOrFail($id);
     $story->delete();
     flash()->warning('Story has been deleted.');
-    return redirect(route('admin.story.index'));//->with('status', 'Story has been deleted.');
+    return redirect(route('admin.story.index'));
 }
 
 public function confirm($id)
@@ -534,13 +527,9 @@ public function edit($id)
         $imagetypeNames = null;
         $currentStoryImages = null;
         $leftOverImages = null;
-        // dd($leftOverImages);
         $requiredImages = null;
         $otherImages = null;
 
-
-
-        // return view('admin.story.role.form', compact('story', 'stypes', 'tags'));
         return view('admin.story.form', compact('story','sroute', 'stypes', 'tags','stypelist','requiredImages','otherImages', 'leftOverImages'));
 
     } else {
@@ -548,11 +537,10 @@ public function edit($id)
         $imagetypeNames = Imagetype::ofGroup($storyGroup)->get()->keyBy('id');
         $currentStoryImages = $story->storyImages->pluck('image_type','imagetype_id');
         $leftOverImages = $imagetypeNames->diffKeys($currentStoryImages);
-        // dd($leftOverImages);
         $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
         $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-        return view('admin.story.form', compact('story','sroute', 'stypes', 'tags','stypelist','requiredImages','otherImages', 'leftOverImages'));
 
+        return view('admin.story.form', compact('story','sroute', 'stypes', 'tags','stypelist','requiredImages','otherImages', 'leftOverImages'));
     }
 
 

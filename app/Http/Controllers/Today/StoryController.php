@@ -31,15 +31,18 @@ class StoryController extends Controller
           $storys = $this->storys->where('story_type', 'story')
                                   ->where([
                                       ['start_date', '<=', $currentDate], // start_date has past
-                                      // while NOW() minus one year less than start_date?
-                                      // ['start_date', '>', $currentDate->subYear()], // Older than one year
                                       ['is_approved', 1],
                                       ['is_archived', 0]
                                   ])
                                   ->orWhere('story_type', 'news')
                                   ->where([
                                       ['start_date', '<=', $currentDate], // start_date has past
-                                      // ['start_date', '>', $currentDate->subYear()], // Older than one year
+                                      ['is_approved', 1],
+                                      ['is_archived', 0]
+                                  ])
+                                  ->orWhere('story_type', 'bulletin')
+                                  ->where([
+                                      ['start_date', '<=', $currentDate], // start_date has past
                                       ['is_approved', 1],
                                       ['is_archived', 0]
                                   ])
@@ -56,11 +59,11 @@ class StoryController extends Controller
             return redirect($rurl);
         } else {
             $story = $this->storys->findOrFail($id);
-            // $mainStoryImage = $story->storyImages()->ofType('imagemain')->first();
+
             $mainStoryImage = null;
             $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
             $addThisImage = $story->storyImages()->where('image_type','social')->first();
-            // dd($mainStoryImage);
+
             foreach($mainStoryImages as $mainimg){
                 if($mainimg->imgtype->type == 'story') {
                     $mainStoryImage = $mainimg;

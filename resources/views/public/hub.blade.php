@@ -116,7 +116,12 @@
           <div class="tabs-panel newshub-tab-front" id="newshub-headlines-front">
             <ul>
               @foreach ($currentStorysBasic as $basicstory)
-              <li><a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a></li>
+              <li>
+                @if($basicstory->story_type == 'bulletin')
+                  <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                @endif
+                <a class="front-bulletin" href="/story/bulletin/{{$basicstory->id}}">{{$basicstory->title}}</a>
+              </li>
               @endforeach
               <li><a href="/story/news" class="bottom-tab-link">More Headlines</a></li>
             </ul>

@@ -132,6 +132,16 @@ class ArchiveController extends ApiController
 
                         return $fractal->createData($resource)->toArray();
 
+                case 'bulletin':
+                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
+                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'bulletin'])->orderBy('start_date', 'desc')->paginate($perPage);
+                        $archivedItems = $paginator->getCollection();
+
+                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                        return $fractal->createData($resource)->toArray();
+
                 default;
                     $archivedItems = array();
                     return $archivedItems;

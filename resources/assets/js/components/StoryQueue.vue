@@ -322,6 +322,9 @@ export default  {
                 case '':
                 faicon = 'fa-asterisk'
                 break
+                case 'bulletin':
+                faicon = 'fa-thumb-tack'
+                break
                 default:
                 faicon = 'fa-file-o'
                 break

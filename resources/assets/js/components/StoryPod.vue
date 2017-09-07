@@ -227,17 +227,13 @@
             background-color: #29AB87;
             border: 1px solid #29AB87;
         }
-        .item-type-icon {
-            /*color: #1B1B1B;*/
-            /*position:absolute;
-            top: 5px;
-            left: 5px;*/
-
+        .bulletin  {
+            color: #1B1B1B;
+            background-color: #CD5C5C;
+            border: 1px solid #CD5C5C;
         }
         .zcallout {
             border-radius: 5px;
-            /*margin: 0 0 20px 0;*/
-            /*padding: 15px 30px 15px 15px;*/
             border-left: 50px solid #ff0000;
         }
         .zinfo-box-icon {
@@ -267,7 +263,6 @@
             left: 18px;
             top: 0;
         }
-
 
         select.form-control {
             height:22px;
@@ -480,27 +475,8 @@ module.exports  = {
             } else {
                 return ''
             }
-            // if(this.item.magazines.length > 0 || this.item.pages.length > 0) {
-            //     return 'fa fa-chain'
-            // } else {
-            //     return ''
-            // }
         },
-        homeIcon: function() {
-              // if (this.item.tags.length > 0){
-              //
-              //
-              // if (this.item.tags.indexOf('homepage') >= 0){
-              //     hIcon = 'fa fa-home'
-              // } else {
-              //     hIcon = ''
-              // }
-              //     } else {
-              //         hIcon = ''
-              //     }
-              //
-              //         return hIcon
-                  },
+        homeIcon: function() {},
                  archivedIcon: function() {
 
                       if (this.item.archived === 1){
@@ -543,6 +519,9 @@ module.exports  = {
                           break
                           case 'article':
                           faicon = 'fa-newspaper-o'
+                          break
+                          case 'bulletin':
+                          faicon = 'fa-thumb-tack'
                           break
                           default:
                           faicon = 'fa-file-o'

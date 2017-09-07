@@ -18525,6 +18525,9 @@ exports.default = {
                 case 'article':
                     faicon = 'fa-newspaper-o';
                     break;
+                case 'bulletin':
+                    faicon = 'fa-thumb-tack';
+                    break;
                 default:
                     faicon = 'fa-file-o';
                     break;
@@ -18669,7 +18672,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":46,"vue-hot-reload-api":44,"vueify/lib/insert-css":47}],50:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3f82d947] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.bulletin[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
 'use strict';
 
 var _moment = require('moment');
@@ -18844,27 +18847,8 @@ module.exports = {
             } else {
                 return '';
             }
-            // if(this.item.magazines.length > 0 || this.item.pages.length > 0) {
-            //     return 'fa fa-chain'
-            // } else {
-            //     return ''
-            // }
         },
-        homeIcon: function homeIcon() {
-            // if (this.item.tags.length > 0){
-            //
-            //
-            // if (this.item.tags.indexOf('homepage') >= 0){
-            //     hIcon = 'fa fa-home'
-            // } else {
-            //     hIcon = ''
-            // }
-            //     } else {
-            //         hIcon = ''
-            //     }
-            //
-            //         return hIcon
-        },
+        homeIcon: function homeIcon() {},
         archivedIcon: function archivedIcon() {
 
             if (this.item.archived === 1) {
@@ -18907,6 +18891,9 @@ module.exports = {
                     break;
                 case 'article':
                     faicon = 'fa-newspaper-o';
+                    break;
+                case 'bulletin':
+                    faicon = 'fa-thumb-tack';
                     break;
                 default:
                     faicon = 'fa-file-o';
@@ -19110,7 +19097,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3f82d947] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n"] = false
+    __vueify_insert__.cache["\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.bulletin[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -19329,6 +19316,9 @@ exports.default = {
                     break;
                 case '':
                     faicon = 'fa-asterisk';
+                    break;
+                case 'bulletin':
+                    faicon = 'fa-thumb-tack';
                     break;
                 default:
                     faicon = 'fa-file-o';
@@ -19554,12 +19544,9 @@ module.exports = {
             var initValue = $(this).find('input').get(0).value;
             if (initValue === '') {
                 $(this).addClass('active');
-                //   $(this).addClass('bg-purple');
             }
             $(this).on('click', function () {
                 self.set(initValue);
-                //var v = $(this).find('input').get(0).value
-                //   self.set(v);
             });
         });
     },
@@ -19574,7 +19561,6 @@ module.exports = {
                 $(this).removeClass('active');
                 $(this).removeClass('bg-purple');
                 var v = $(this).find('input').get(0).value;
-                //   $(this).find('span').removeClass('prpstyle');
                 if (v === value) {
                     $(this).addClass('active');
                     $(this).addClass('bg-purple');

@@ -17,7 +17,15 @@
 
               <ul class="news-headlines">
                 @foreach($storys as $story)
-                  <li><div class="publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('M d, Y') }}</div><a href="/story/{{$story->story_type}}/{{$story->id}}">{{$story->title}}</a></li>
+                  <li>
+                    <div class="publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('M d, Y') }}</div>
+                    <a href="/story/{{$story->story_type}}/{{$story->id}}">
+                        @if($story->story_type == 'bulletin')
+                          <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                        @endif
+                      {{$story->title}}
+                    </a>
+                  </li>
                 @endforeach
               </ul>
               <div id="base-grouping" class="row">

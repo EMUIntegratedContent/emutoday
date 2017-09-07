@@ -254,15 +254,6 @@ module.exports  = {
                         updateRecordId,
                         updateRecordState,
                         updateRecordIsDirty
-                        // updateRecordId: ({ dispatch }, value) => {
-                        //     dispatch('RECORD_ID', value)
-                        // },
-                        // updateRecordState: ({dispatch}, value) => {
-                        //     dispatch('RECORD_STATE', value)
-                        // },
-                        // updateRecordIsDirty: ({dispatch}, value) => {
-                        //     dispatch('RECORD_IS_DIRTY', value)
-                        // }
                     }
                 },
                 props:{
@@ -270,11 +261,6 @@ module.exports  = {
                     recordexists: {default: false},
                     editid: {default: ''},
                     stypes: {default: {}}
-                    // stypelist: {},
-                    // stypelist1: {},
-                    // stypelist2: {}
-                    // storytype1: {default: {}},
-                    // storytype: {default: {}}
                 },
                 data: function() {
                 return {
@@ -364,16 +350,12 @@ module.exports  = {
                       console.log('this.recordId >>>>'+     this.currentRecordId );
                       this.singleStype = true;
                       this.newform = false;
-                      // this.record.user_id = this.cuser.id;
                       this.fetchCurrentRecord();
                   } else {
                       this.newform = true;
                       this.hasContent = true;
                       this.record.user_id = this.cuser.id;
-                      console.log('tthis.record.user_id'+     this.record.user_id);
 
-                      //this.stype_list = this.storytype;
-                      //this.record.story_type = this.storytype;
                       this.fdate = this.currentDate;
 
                       this.author = this.currentUser;
@@ -392,13 +374,11 @@ module.exports  = {
                       return (this.userRoles.indexOf('admin') != -1)?true:false;
                   },
                   s_types:function(){
-                     // var data = localStorage[key];
                         try {
                             this.singleStype = false;
                             return JSON.parse(this.stypes);
                         } catch(e) {
                             this.singleStype = true;
-                            // this.record.story_type = this.stypes;
                             return this.stypes;
                         }
                   },
@@ -478,7 +458,6 @@ module.exports  = {
                       this.updateRecordId(this.currentRecordId);
                       this.recordState = 'edit';
                       this.recordIsDirty = false;
-                    //   this.updateRecordState('edit');
                     this.recordId = this.currentRecordId;
                       this.recordexists = true;
                       this.fetchCurrentRecord();
@@ -536,24 +515,11 @@ module.exports  = {
                   jsonEquals: function(a,b) {
                       return JSON.stringify(a) === JSON.stringify(b);
                   },
-                //   fetchForSelectTagsList(){
-                //       loading(true)
-                //       this.$http.get('/api/taglist',{
-                //           q: search
-                //       }).then(resp => {
-                //           this.tags = resp.data;
-                //           loading(false)
-                //       })
-                //   },
 
                   fetchTagsList: function() {
 
                       this.$http.get('/api/taglist')
                           .then((response) =>{
-                            //   let taglistraw = response.data;
-                            //   let taglistformat = this.foreachTagListRaw(response.data);
-
-
                                   this.$set('taglist', response.data)
                               }, (response) => {
                                   //error callback
@@ -562,38 +528,16 @@ module.exports  = {
 
                               }).bind(this);
                   },
-                //   foreachTagListRaw: function(myarray) {
-                //       let newarray = [];
-                //       myarray.forEach(function(item,index){
-                //           let tobject = {};
-                //           tobject.name = item.name;
-                //           tobject.value = item.id;
-                  //
-                //           newarray.push(tobject);
-                //       });
-                  //
-                //       return newarray;
-                  //
-                //   },
                     fetchCurrentRecord: function() {
 
                         this.$http.get('/api/story/'+ this.currentRecordId +'/edit')
 
                             .then((response) =>{
-                                    //response.status;
-                                    // console.log('response.status=' + response.status);
-                                    // console.log('response.ok=' + response.ok);
-                                    // console.log('response.statusText=' + response.statusText);
-                                    // console.log('response.data=' + response.data);
-                                    // data = response.data;
                                     this.$set('record', response.data.data)
                                     this.$set('recordOld', response.data.data)
-                                    // this.record = response.data.data;
-                                    // console.log('this.record= ' + this.record);
 
                                     this.checkOverData();
                                 }, (response) => {
-                                    //error callback
                                     console.log("ERRORS");
 
                                      this.formErrors =  response.data.error.message;
@@ -602,12 +546,10 @@ module.exports  = {
                     },
                     checkOverData: function() {
                             this.hasContent = true;
-                            // console.log('this.record'+ this.record.id)
                             this.currentRecordId = this.record.id;
                             this.content = this.record.content;
-                            // console.log('this.record.start_date='+ this.record.start_date)
                             if (this.record.tags){
-                                
+
                                 this.tags = this.record.tags;
                                 this.record.tags = null;
                             }
@@ -623,7 +565,6 @@ module.exports  = {
                             this.recordexists = true;
 
                             this.recordState = "edit"
-                            // this.updateRecordState("edit");
                             this.recordIsDirty = false;
                             this.updateRecordId(this.currentRecordId);
                             this.updateRecordIsDirty(false);
@@ -656,13 +597,8 @@ module.exports  = {
                                 }).bind(this);
                     },
                     submitForm: function(e) {
-                    //  console.log('this.eventform=' + this.eventform.$valid);
                         e.preventDefault();
-                  // this.newevent.start_date = this.sdate;
-                  // this.newevent.end_date = this.edate;
-                  // this.newevent.reg_deadline = this.rdate;
                   this.record.user_id = this.cuser.id;
-                 // this.record.user_id = this.currentUser.id;
                  if(this.record.story_type === 'external'){
                      this.record.content = 'not used';
                  } else {
@@ -671,15 +607,10 @@ module.exports  = {
                  if (this.tags.length > 0) {
                      this.record.tags = this.tags;
                  }
-
-
-                  //   this.record.story_type = this.storytype;
                   this.record.slug = this.recordSlug;
                   if (moment(this.fdate).isValid()){
                       this.record.start_date = this.fdate;
                   }
-                //this.record.start_date = this.fdate;
-                //   this.record.start_date =  moment(this.fdate,"MM-DD-YYYY").format("YYYY-MM-DD HH:mm:ss");
                 if (this.author.id !== 0) {
                     this.record.author_id = this.author.id;
                 }
@@ -699,16 +630,10 @@ module.exports  = {
                   this.$http[method](route, this.record)
 
                             .then((response) =>{
-                                    //response.status;
-                                    // console.log('response.status=' + response.status);
-                                    // console.log('response.ok=' + response.ok);
-                                    // console.log('response.statusText=' + response.statusText);
-                                    // console.log('response.data=' + response.data.message);
 
                                  this.formMessage.msg = response.data.message;
                                 this.currentRecordId = response.data.newdata.record_id;
                                  this.formMessage.isOk = response.ok;
-                                //  console.log('goooooo'+response.newdata.record_id);
                                   console.log('newdta'+response.data.newdata.record_id);
                                 this.response_record_id = response.data.newdata.record_id;
                                 this.response_stype = response.data.newdata.stype;
@@ -718,9 +643,6 @@ module.exports  = {
                                         this.onRefresh();
 
                                 }
-
-
-
 
                                 }, (response) => {
                                     //error callback
@@ -754,27 +676,9 @@ module.exports  = {
                         },
                     },
                     watch: {
-                      //   'recordState': function(val,oldVal) {
-                      //       console.log('new: %s, old: %s', val, oldVal)
-                      //       this.updateRecordState(val)
-
-                        //
-                      //   },
-                      //   deep: true
 
                     },
                     events: {
-
-                    // 'building-change':function(name) {
-                    // 	this.newbuilding = '';
-                    // 	this.newbuilding = name;
-                    // 	console.log(this.newbuilding);
-                    // },
-                    // 'categories-change':function(list) {
-                    // 	this.categories = '';
-                    // 	this.categories = list;
-                    // 	console.log(this.categories);
-                    // }
                 }
 };
 

@@ -6527,6 +6527,10 @@ ul.accordion li{
     color:#333;
 }
 
+.front-bulletin{
+  display: inline !important;
+}
+
 /*News Headlines*/
 .publish-date {
     float: right;

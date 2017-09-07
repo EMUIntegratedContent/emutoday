@@ -228,6 +228,11 @@ h5 {
     background-color: #cccccc;
     border: 1px solid #cccccc;
 }
+.bulletin  {
+    color: #1B1B1B;
+    background-color: #CD5C5C;
+    border: 1px solid #CD5C5C;
+}
 
 .success{
     color: #00a65a;
@@ -329,6 +334,8 @@ module.exports = {
             switch(this.entityType){
                 case 'announcements':
                     return "/admin/announcement/" + item.id + "/edit"
+                case 'stories':
+                    return "/admin/queueall/story/" + item.story_type + "/" + item.id + "/edit"
                 default:
                     return
             }

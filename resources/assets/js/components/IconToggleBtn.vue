@@ -36,6 +36,9 @@
                     case 'article':
                     faicon = 'fa-newspaper-o'
                     break
+                    case 'bulletin':
+                    faicon = 'fa-thumb-tack'
+                    break
                     default:
                     faicon = 'fa-file-o'
                     break

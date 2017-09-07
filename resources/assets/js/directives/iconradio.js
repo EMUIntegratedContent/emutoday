@@ -8,12 +8,9 @@ module.exports = {
           let initValue = $(this).find('input').get(0).value;
           if (initValue === '') {
               $(this).addClass('active');
-            //   $(this).addClass('bg-purple');
           }
           $(this).on('click', function() {
               self.set(initValue);
-              //var v = $(this).find('input').get(0).value
-            //   self.set(v);
           })
       });
   },
@@ -28,7 +25,6 @@ module.exports = {
               $(this).removeClass('active');
               $(this).removeClass('bg-purple');
               var v = $(this).find('input').get(0).value;
-              //   $(this).find('span').removeClass('prpstyle');
               if (v === value) {
                   $(this).addClass('active');
                   $(this).addClass('bg-purple');

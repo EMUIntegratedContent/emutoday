@@ -44,28 +44,16 @@ class PreviewController extends Controller
       $this->expert = $expert;
   }
 
-  // Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@return');
-
   public function goBack($gtype, $stype,$qtype, $id = null){
       $val = 'form';
       $isqueue = strpos($qtype,$val);
-      //dd($qtype .'----$isqueue '.$isqueue);
       if($isqueue === false){
-
-
           $rurl = '/admin/'.$gtype.'/'.$stype.'/'.$qtype;
 
-          // return redirect($rurl);
-          // Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' );
-
       } else {
-
           //it's from form
           $qtype = str_replace($val, '', $qtype);
           $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$id.'/edit';
-          // return redirect('admin/{gtype}/{stype}/{qtype}');
-          // Route::get('{gtype}/{stype}/{qtype}','Admin\StoryTypeController@queue' );
-
       }
 
       return redirect($rurl);
@@ -75,7 +63,7 @@ class PreviewController extends Controller
           {
           $mainStoryImage = null;
           $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
-          // dd($mainStoryImage);
+
           foreach($mainStoryImages as $mainimg){
               if($mainimg->imgtype->type == 'story') {
                   $mainStoryImage = $mainimg;
@@ -96,7 +84,7 @@ class PreviewController extends Controller
               $authorInfo = $story->author;
           }
           // $sroute = 'story';
-          if($stype == 'story' || $stype == 'emutoday' || $stype == 'news'){
+          if($stype == 'story' || $stype == 'emutoday' || $stype == 'news' || $stype == 'bulletin'){
               $sideStoryBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
 
               return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));

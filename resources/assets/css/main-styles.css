@@ -939,3 +939,7 @@ ul.accordion li{
 #special-notice-teaser > a{
     color:#333;
 }
+
+.front-bulletin{
+  display: inline !important;
+}

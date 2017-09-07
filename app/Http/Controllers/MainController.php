@@ -58,12 +58,11 @@ class MainController extends Controller
       }
 
         $currentStorysBasic = $this->story->where([
-          ['story_type', 'news'],
           ['is_approved', 1],
           ['is_archived', 0],
           ['start_date', '<=', $currentDateTimeStart],
           ['priority', '>', 0]
-        ])
+        ])->whereIn('story_type', ['news', 'bulletin'])
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
         ->take($this->recordLimitNews)->get();
@@ -73,6 +72,7 @@ class MainController extends Controller
         if($currentStorysBasic->count() < $this->recordLimitNews ){
           $currentStorysBasic = $this->story->where([
             ['story_type', 'news'],
+            ['story_type', 'bulletin'],
             ['is_approved', 1],
             ['is_archived', 0],
             ['start_date', '<=', $currentDateTimeStart]

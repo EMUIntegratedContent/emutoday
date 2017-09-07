@@ -1,7 +1,6 @@
 <template>
   <form>
     <slot name="csrf"></slot>
-    <!-- <slot name="author_id" v-model="newevent.author_id"></slot> -->
     <div class="row">
       <div class="col-md-12">
         <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
@@ -494,7 +493,6 @@ module.exports  = {
 
     },
     nowOnReload:function() {
-      //   {qtype}/{gtype}/{stype}/{story}/edit
       let newurl = '/admin/' + this.qtype + '/'+this.gtype+'/'+ this.response_stype +'/'+ this.response_record_id+'/edit';
       document.location = newurl;
     },
@@ -823,11 +821,6 @@ module.exports  = {
 
         this.response_record_id = response.data.newdata.record_id;
         this.response_stype = response.data.newdata.stype;
-        if (this.newform) {
-          this.nowOnReload();
-        } else {
-          this.onRefresh();
-        }
       }, (response) => {
         //error callback
         this.formErrors =  response.data.error.message;

@@ -190,6 +190,9 @@ export default {
                 case 'article':
                 faicon = 'fa-newspaper-o'
                 break
+                case 'bulletin':
+                faicon = 'fa-thumb-tack'
+                break
                 case '':
                 faicon = 'fa-asterisk'
                 break
