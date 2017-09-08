@@ -2,6 +2,7 @@
 
 namespace Emutoday\Http\Controllers\Today;
 
+use Illuminate\Http\Request;
 use Emutoday\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Emutoday\Story;
@@ -24,32 +25,43 @@ class StoryController extends Controller
     }
 
 
-    public function story($stype, $id = null)
+    public function story(Request $request, $stype, $id = null)
     {
+      $newsBulletinFilter = $request->get('filter');
       $currentDate = Carbon::now();
         if ($id == null) {
-          $storys = $this->storys->where('story_type', 'story')
-                                  ->where([
-                                      ['start_date', '<=', $currentDate], // start_date has past
-                                      ['is_approved', 1],
-                                      ['is_archived', 0]
-                                  ])
-                                  ->orWhere('story_type', 'news')
-                                  ->where([
-                                      ['start_date', '<=', $currentDate], // start_date has past
-                                      ['is_approved', 1],
-                                      ['is_archived', 0]
-                                  ])
-                                  ->orWhere('story_type', 'bulletin')
-                                  ->where([
-                                      ['start_date', '<=', $currentDate], // start_date has past
-                                      ['is_approved', 1],
-                                      ['is_archived', 0]
-                                  ])
-                                  ->orderBy('start_date', 'desc')
-                                  ->paginate(12);
-
-          return view('public.story.index', compact('storys'));
+          if(!$newsBulletinFilter){
+            $storys = $this->storys->where('story_type', 'story')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orWhere('story_type', 'news')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orWhere('story_type', 'bulletin')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orderBy('start_date', 'desc')
+                                    ->paginate(12);
+          } else {
+            $storys = $this->storys->where([
+                                        ['story_type', $newsBulletinFilter],
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orderBy('start_date', 'desc')
+                                    ->paginate(12);
+          }
+          return view('public.story.index', compact('storys', 'newsBulletinFilter'));
 
         } else {
         // dd($stype . 'story==== '.$id );
@@ -87,7 +99,7 @@ class StoryController extends Controller
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
 
-            $viewfolder = ($stype == 'news')? 'story': $stype;
+            $viewfolder = ($stype == 'news' || $stype == 'bulletin')? 'story': $stype;
             JavaScript::put([
                     'jsis' => 'hi',
                     'mainStoryImage' => $mainStoryImage,

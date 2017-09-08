@@ -26,6 +26,9 @@ Route::get('/cas/logout', function(){
     cas()->logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
+# RSS Feeds
+Route::get('/feed/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
+
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
     Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
