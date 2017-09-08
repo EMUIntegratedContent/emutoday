@@ -314,7 +314,7 @@ export default  {
                 faicon = 'fa-graduation-cap'
                 break
                 case 'external':
-                faicon = 'fa-file-o'
+                faicon = 'fa-external-link'
                 break
                 case 'article':
                 faicon = 'fa-newspaper-o'
@@ -322,8 +322,11 @@ export default  {
                 case '':
                 faicon = 'fa-asterisk'
                 break
-                case 'bulletin':
-                faicon = 'fa-thumb-tack'
+                case 'advisory':
+                faicon = 'fa-warning'
+                break
+                case 'statement':
+                faicon = 'fa-commenting'
                 break
                 default:
                 faicon = 'fa-file-o'

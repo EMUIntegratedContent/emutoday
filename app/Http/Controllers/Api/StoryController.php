@@ -190,8 +190,8 @@ class StoryController extends ApiController
             $story->is_approved = $approval_level;
 
             //Somehow, 'news' story type does this automatically...not sure how though. CP 9/7/17
-            if($request->get('story_type') == 'bulletin'){
-              $story->is_ready     	= 1;
+            if($request->get('story_type') == 'advisory' || $request->get('story_type') == 'statement'){
+              $story->is_ready = 1;
             }
             $tags = array_pluck($request->input('tags'),'value');
 

@@ -9,14 +9,15 @@
           <div class="row">
             <div class="large-5 medium-7 small-12 columns"><h3 class="news-caps">News Headlines {{-- <!--<a class="smaller-title" href="">[ RSS feed ]</a>--> --}}</h3></div>
             <div class="large-7 medium-5 small-12 columns">
-              <h6>{!! $storys->links() !!}</h6>
+              <h6>{!! $storys->appends(['filter' => $newsAdvisoryStatementFilter])->render() !!}</h6>
             </div>
           </div>
           <div id="title-grouping" class="row">
             <div class="large-12 medium-12 small-12 columns">
-                <a href="/story/news" class="button newsfilter @if($newsBulletinFilter) secondary @endif">News + Bulletins</a>
-                <a href="/story/news?filter=news" class="button newsfilter @if($newsBulletinFilter != 'news') secondary @endif">News Only</a>
-                <a href="/story/news?filter=bulletin" class="button newsfilter @if($newsBulletinFilter != 'bulletin') secondary @endif">Bulletins Only</a>
+                <a href="/story/news" class="button newsfilter @if($newsAdvisoryStatementFilter) secondary @endif">All</a>
+                <a href="/story/news?filter=news" class="button newsfilter @if($newsAdvisoryStatementFilter != 'news') secondary @endif">News Only</a>
+                <a href="/story/news?filter=advisory" class="button newsfilter @if($newsAdvisoryStatementFilter != 'advisory') secondary @endif">Advisories Only</a>
+                <a href="/story/news?filter=statement" class="button newsfilter @if($newsAdvisoryStatementFilter != 'statement') secondary @endif">Statements Only</a>
             </div>
           </div>
           <div class="row">
@@ -26,8 +27,10 @@
                   <li>
                     <div class="publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('M d, Y') }}</div>
                     <a href="/story/{{$story->story_type}}/{{$story->id}}">
-                        @if($story->story_type == 'bulletin')
-                          <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                        @if($story->story_type == 'advisory')
+                          <i class="fa fa-warning" aria-hidden="true"></i>
+                        @elseif($story->story_type == 'statement')
+                          <i class="fa fa-commenting" aria-hidden="true"></i>
                         @endif
                       {{$story->title}}
                     </a>
@@ -37,7 +40,7 @@
               <div id="base-grouping" class="row">
                 <div class="large-5 medium-7 hide-for-small columns">&nbsp;</div>
                 <div class="large-7 medium-5 small-12 columns">
-                  <h6>{!! $storys->links() !!}</h6>
+                  <h6>{!! $storys->appends(['filter' => $newsAdvisoryStatementFilter])->render() !!}</h6>
                 </div>
               </div>
 

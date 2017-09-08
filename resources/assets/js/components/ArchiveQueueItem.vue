@@ -228,10 +228,15 @@ h5 {
     background-color: #cccccc;
     border: 1px solid #cccccc;
 }
-.bulletin  {
+.advisory  {
     color: #1B1B1B;
     background-color: #CD5C5C;
     border: 1px solid #CD5C5C;
+}
+.statement  {
+    color: #1B1B1B;
+    background-color: #FFA500;
+    border: 1px solid #FFA500;
 }
 
 .success{

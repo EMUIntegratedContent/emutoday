@@ -83,8 +83,7 @@ class PreviewController extends Controller
           } else {
               $authorInfo = $story->author;
           }
-          // $sroute = 'story';
-          if($stype == 'story' || $stype == 'emutoday' || $stype == 'news' || $stype == 'bulletin'){
+          if($stype == 'story' || $stype == 'emutoday' || $stype == 'news' || $stype == 'advisory' || $stype == 'statement'){
               $sideStoryBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
 
               return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));

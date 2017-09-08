@@ -42,7 +42,7 @@ class StoryTypeController extends Controller
         $stype = 'all';
         $sroute = 'story';
         if ($qtype === 'queueall') {
-            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
         } else {
             $stypes  = $stype;
         }
@@ -56,7 +56,7 @@ class StoryTypeController extends Controller
 
         $sroute = 'story';
         if ($qtype === 'queueall') {
-            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
         } else {
             $stypes  = $stype;
         }
@@ -84,7 +84,7 @@ class StoryTypeController extends Controller
         $story = new Story;
 
             $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
-            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
 
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
@@ -132,7 +132,7 @@ class StoryTypeController extends Controller
         $story = new Story;
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
 
-        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
 
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
@@ -196,7 +196,7 @@ class StoryTypeController extends Controller
 
         $user = \Auth::user();
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
-        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
 
         $tags = \Emutoday\Tag::pluck('name', 'id');
 

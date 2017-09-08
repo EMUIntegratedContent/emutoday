@@ -227,10 +227,15 @@
             background-color: #29AB87;
             border: 1px solid #29AB87;
         }
-        .bulletin  {
+        .advisory  {
             color: #1B1B1B;
             background-color: #CD5C5C;
             border: 1px solid #CD5C5C;
+        }
+        .statement  {
+            color: #1B1B1B;
+            background-color: #FFA500;
+            border: 1px solid #FFA500;
         }
         .zcallout {
             border-radius: 5px;
@@ -515,13 +520,19 @@ module.exports  = {
                           faicon = 'fa-graduation-cap'
                           break
                           case 'external':
-                          faicon = 'fa-file-o'
+                          faicon = 'fa-external-link'
                           break
                           case 'article':
                           faicon = 'fa-newspaper-o'
                           break
-                          case 'bulletin':
-                          faicon = 'fa-thumb-tack'
+                          case '':
+                          faicon = 'fa-asterisk'
+                          break
+                          case 'advisory':
+                          faicon = 'fa-warning'
+                          break
+                          case 'statement':
+                          faicon = 'fa-commenting'
                           break
                           default:
                           faicon = 'fa-file-o'

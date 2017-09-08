@@ -27,10 +27,10 @@ class StoryController extends Controller
 
     public function story(Request $request, $stype, $id = null)
     {
-      $newsBulletinFilter = $request->get('filter');
+      $newsAdvisoryStatementFilter = $request->get('filter');
       $currentDate = Carbon::now();
         if ($id == null) {
-          if(!$newsBulletinFilter){
+          if(!$newsAdvisoryStatementFilter){
             $storys = $this->storys->where('story_type', 'story')
                                     ->where([
                                         ['start_date', '<=', $currentDate], // start_date has past
@@ -43,7 +43,13 @@ class StoryController extends Controller
                                         ['is_approved', 1],
                                         ['is_archived', 0]
                                     ])
-                                    ->orWhere('story_type', 'bulletin')
+                                    ->orWhere('story_type', 'advisory')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orWhere('story_type', 'statement')
                                     ->where([
                                         ['start_date', '<=', $currentDate], // start_date has past
                                         ['is_approved', 1],
@@ -53,7 +59,7 @@ class StoryController extends Controller
                                     ->paginate(12);
           } else {
             $storys = $this->storys->where([
-                                        ['story_type', $newsBulletinFilter],
+                                        ['story_type', $newsAdvisoryStatementFilter],
                                         ['start_date', '<=', $currentDate], // start_date has past
                                         ['is_approved', 1],
                                         ['is_archived', 0]
@@ -61,7 +67,7 @@ class StoryController extends Controller
                                     ->orderBy('start_date', 'desc')
                                     ->paginate(12);
           }
-          return view('public.story.index', compact('storys', 'newsBulletinFilter'));
+          return view('public.story.index', compact('storys', 'newsAdvisoryStatementFilter'));
 
         } else {
         // dd($stype . 'story==== '.$id );

@@ -29,7 +29,7 @@ class ArchiveController extends Controller
     }
 
     public function queue($entityType) {
-        $storyTypes  = collect(StoryType::select('name','shortname')->get());
+        $storyTypes  = collect(StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
         return view('admin.archive.queue', compact('entityType', 'storyTypes'));
     }
 

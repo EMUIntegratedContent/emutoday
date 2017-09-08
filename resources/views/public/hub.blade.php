@@ -117,8 +117,10 @@
             <ul>
               @foreach ($currentStorysBasic as $basicstory)
               <li>
-                @if($basicstory->story_type == 'bulletin')
-                  <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+                @if($basicstory->story_type == 'advisory')
+                  <i class="fa fa-warning" aria-hidden="true"></i>
+                @elseif($basicstory->story_type == 'statement')
+                  <i class="fa fa-commenting" aria-hidden="true"></i>
                 @endif
                 <a class="front-bulletin" href="/story/bulletin/{{$basicstory->id}}">{{$basicstory->title}}</a>
               </li>
