@@ -359,10 +359,6 @@ class EventController extends ApiController
             $imgFileName = $mediafile->name . '.' . $mediafile->ext;
             $image = Image::make($imgFilePath)
             ->save(public_path() . $destinationFolder . $imgFileName);
-            //  ->fit(100)
-            //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
-            // 	}
-            //
             $mediafile->filename = $imgFileName;
             $mediafile->caption = $request->input('caption');
             $mediafile->save();
@@ -372,8 +368,6 @@ class EventController extends ApiController
               $returnData = ['eventimage' => $mediafile->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('Event Image Updated',$returnData );
-              // return $this->setStatusCode(201)
-              //             ->respondCreated('Event successfully updated');
             }
           }
         }

@@ -51,7 +51,7 @@ class Event extends Model
       * @var array
       */
      protected $casts = [
-         
+
     ];
     use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\EventPresenter';
@@ -113,16 +113,6 @@ class Event extends Model
     $dt = $this->start_date;
      return $dt->year;
   }
-
-  // public function getStartDateAttribute($value)
-  // {
-  //   $newval = Carbon::parse($value)->toDateString();
-  //   return Carbon::parse($newval);
-  // }
-  // public function getEndDateAttribute($value)
-  // {
-  //   return Carbon::parse($value)->toDateString();
-  // }
 
   public function getStartTimeAttribute($value)
   {

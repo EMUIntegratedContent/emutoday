@@ -113,7 +113,7 @@
   </div><!-- /.small-6 column -->
   <div :class="md6col">
     <div v-show="hasStartTime" class="form-group">
-      <label for="no-end-time">No End Time:
+      <label for="no-end-time">No End Time:</label>
         <input id="no-end-time" name="no_end_time" type="checkbox" value="1" v-model="record.no_end_time"/>
         <!-- <label v-show="hasEndTime" for="no-end-time-no" class="radiobtns">no</label><input id="no-end-time-no"  name="no_end_time" type="radio" value="0" v-model="record.no_end_time"/> -->
       </div>
@@ -523,6 +523,8 @@ module.exports  = {
         startDateDefault: '',
         endDateMin: '',
         endDateDefault: '',
+        startTimeDefault: '',
+        endTimeDefault: '',
         regDateMin: '',
         regDateDefault: ''
       },
@@ -573,6 +575,8 @@ module.exports  = {
         building: '',
         categories:[],
         is_canceled: 0,
+        start_time: '12:00 PM',
+        end_time: '12:00 PM'
       },
       response: {
 
@@ -590,7 +594,6 @@ module.exports  = {
   },
   ready() {
     if(this.recordexists){
-      console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid)
     } else {
       //this.record.start_date = this.currentDate;
@@ -607,8 +610,8 @@ module.exports  = {
         return false;
       }
     });
-    this.startdatePicker.clear();
-    this.enddatePicker.clear();
+    //this.startdatePicker.clear();
+    //this.enddatePicker.clear();
   },
 
   computed: {
@@ -730,7 +733,6 @@ module.exports  = {
     },
     setupDatePickers:function(){
       var self = this;
-      console.log("setupDatePickers");
       if (this.record.start_date === '') {
         this.dateObject.startDateMin = this.currentDate;
         this.dateObject.startDateDefault = null;
@@ -742,7 +744,8 @@ module.exports  = {
         this.dateObject.startDateDefault = this.record.start_date;
         this.dateObject.endDateMin = this.record.start_date;
         this.dateObject.endDateDefault = this.record.end_date;
-        this.dateObject.startTimeDefault = this.record.end_time;
+        this.dateObject.startTimeDefault = this.record.start_time;
+        this.dateObject.endTimeDefault = this.record.end_time;
         this.dateObject.regDateMin = this.record.start_date;
         this.dateObject.regDateDefault = this.record.reg_deadline;
       }
@@ -782,7 +785,7 @@ module.exports  = {
       this.starttimePicker = flatpickr(document.getElementById("start-time"),{
         noCalendar: true,
         enableTime: true,
-        defaultDate: self.dateObject.endDateDefault,
+        defaultDate: self.dateObject.startTimeDefault,
         onChange(timeObject, timeString) {
           self.record.start_time = timeString;
           self.starttimePicker.value = timeString;
@@ -791,6 +794,7 @@ module.exports  = {
       this.endtimePicker = flatpickr(document.getElementById("end-time"),{
         noCalendar: true,
         enableTime: true,
+        defaultDate: self.dateObject.endTimeDefault,
         onChange(timeObject, timeString) {
           self.record.end_time = timeString;
           self.endtimePicker.value = timeString;
@@ -824,41 +828,29 @@ module.exports  = {
 
     cancelRecord: function(recid){
       // toggles cancel
-      console.log('FROM CANCEL: '+recid);
       this.formMessage.isOk = false;
       this.formMessage.msg = false;
 
       this.$http.patch('/api/event/'+ recid + '/cancel')
       .then((response) => {
-        console.log('GOOD:'+JSON.stringify(response))
         this.formMessage.isOk = response.ok;
         this.formMessage.msg = response.body.message;
       }, (response) => {
-        console.log('BAD:'+JSON.stringify(response))
+        console.log(JSON.stringify(response))
       }).bind(this);
       this.refreshUserEventTable();
     },
 
     fetchCurrentRecord: function() {
-      console.log('FROM FETCH: '+this.recordid);
       this.$http.get('/api/event/'+ this.recordid + '/edit')
 
       .then((response) =>{
-        //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + JSON.stringify(response.data.data.start_time));
-        // this.record = response.data.data;
         this.$set('record', response.data.data)
-
         this.checkOverData();
-        // this.refreshUserEventTable();
         this.record.start_time = response.data.data.start_time;
       }, (response) => {
         //error callback
         console.log("FETCH ERRORS");
-
       }).bind(this);
     },
     checkOverData: function() { // Used after fetching an event
@@ -867,7 +859,6 @@ module.exports  = {
       if(this.record.building != null && /\S/.test(this.record.building)){
         // Is on campus
         this.record.on_campus = 1; // bool
-
         this.building = {id:0, name:this.convertFromSlug(this.record.building)};
       } else {
         // Not on campus
@@ -993,7 +984,6 @@ module.exports  = {
 
       if(this.record.on_campus == true) {
         this.record.location = this.computedLocation;
-        console.log(">>>>>>>>>>>>"+this.computedLocation+"<<<<<<<<<<<<");
       } else {
         this.record.location = this.record.locationoffcampus;
         // clearout these values
@@ -1011,10 +1001,6 @@ module.exports  = {
 
       .then((response) =>{
         response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data.message);
         this.formMessage.msg = response.data.message;
         this.formMessage.isOk = response.ok;
         this.formMessage.isErr = false;
@@ -1031,12 +1017,8 @@ module.exports  = {
         this.formMessage.isErr = true;
         //error callback
         console.log("FORM ERRORS" + JSON.stringify(response));
-
-        console.log(response.data.error.message);
         this.formErrors = response.data.error.message;
       }).bind(this);
-      this.record.start_time= "";
-      this.record.end_time= "";
     },
     convertToSlug:function(value){
       return value.toLowerCase()

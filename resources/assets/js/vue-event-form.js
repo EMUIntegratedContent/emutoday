@@ -3,15 +3,11 @@ var Vue = require('vue');
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
-import VueRouter from 'vue-router';
-Vue.use(VueRouter);
-
 import EventForm from './components/EventForm.vue'
 var vm = new Vue({
     el: '#vue-event-form',
     components: {EventForm:EventForm},
     ready() {
-      console.log('vue ready');
     }
 });
 
