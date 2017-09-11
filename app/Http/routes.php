@@ -289,7 +289,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('user/{user}/confirm', 'Admin\UserController@confirm')->name('admin_user_confirm');
         Route::delete('user/{user}/destroy', 'Admin\UserController@destroy')->name('admin_user_destroy');
         Route::put('user/{user}/update', 'Admin\UserController@update')->name('admin_user_update');
-        Route::put('user/{user}/store', 'Admin\UserController@store')->name('admin_user_store');
+        Route::post('user/store', 'Admin\UserController@store')->name('admin_user_store');
         Route::get('user/form', 'Admin\UserController@form');
         Route::resource('user', 'Admin\UserController');
 
