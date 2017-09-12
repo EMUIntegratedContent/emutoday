@@ -250,7 +250,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
-        Route::get('oauth/list', 'Admin\OAuthController@list')->name('list_user_oauth_clients');
+        Route::get('oauth/list', 'Admin\OAuthController@listClients')->name('list_user_oauth_clients');
 
         Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
         Route::get('authors/form', 'Admin\AuthorsController@form')->name('authors_form');
