@@ -118,11 +118,12 @@
               @foreach ($currentStorysBasic as $basicstory)
               <li>
                 @if($basicstory->story_type == 'advisory')
-                  <i class="fa fa-warning" aria-hidden="true"></i>
+                  <a href="/story/advisory/{{$basicstory->id}}"><i class="fa fa-warning" aria-hidden="true"></i> {{$basicstory->title}}</a>
                 @elseif($basicstory->story_type == 'statement')
-                  <i class="fa fa-commenting" aria-hidden="true"></i>
+                  <a href="/story/statement/{{$basicstory->id}}"><i class="fa fa-commenting" aria-hidden="true"></i> {{$basicstory->title}}</a>
+                @else
+                  <a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a>
                 @endif
-                <a class="front-bulletin" href="/story/bulletin/{{$basicstory->id}}">{{$basicstory->title}}</a>
               </li>
               @endforeach
               <li><a href="/story/news" class="bottom-tab-link">More Headlines</a></li>

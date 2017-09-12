@@ -105,7 +105,7 @@ class StoryController extends Controller
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
 
-            $viewfolder = ($stype == 'news' || $stype == 'bulletin')? 'story': $stype;
+            $viewfolder = ($stype == 'news' || $stype == 'statement' || $stype == 'advisory')? 'story': $stype;
             JavaScript::put([
                     'jsis' => 'hi',
                     'mainStoryImage' => $mainStoryImage,
