@@ -21802,6 +21802,7 @@ module.exports = {
       } else {
         this.checkContentChange();
       }
+      this.ckload = true;
     },
     checkContentChange: function checkContentChange() {
       if (!this.recordIsDirty) {
@@ -21815,8 +21816,6 @@ module.exports = {
 
     fetchCurrentRecord: function fetchCurrentRecord(recid) {
       var _this = this;
-
-      this.ckload = true; // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
 
       this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
         _this.$set('record', response.data.data);
@@ -21834,8 +21833,6 @@ module.exports = {
       }, function (response) {
         _this.formErrors = response.data.error.message;
       }).bind(this);
-
-      this.ckload = true; // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
     },
 
     // Fetch the tags that match THIS record
@@ -22160,8 +22157,7 @@ module.exports = {
 
     // pass in a parameter set to true, then set to false after first update
     // needed for public experts form's ckedior
-    //if(this.params.ckload)
-    CKEDITOR.instances[this.el.id].setData(value);
+    if (this.params.ckload) CKEDITOR.instances[this.el.id].setData(value);
 
     this.params.ckload = false;
     this.vm.onContentChange();

@@ -663,6 +663,7 @@ module.exports = {
         } else {
           this.checkContentChange();
         }
+        this.ckload = true;
       },
       checkContentChange: function(){
         if (!this.recordIsDirty) {
@@ -675,8 +676,6 @@ module.exports = {
       },
 
     fetchCurrentRecord: function(recid) {
-      this.ckload = true  // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
-
       this.$http.get('/api/experts/' + recid + '/edit')
 
       .then((response) => {
@@ -695,8 +694,6 @@ module.exports = {
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
-
-      this.ckload = true // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
     },
 
     // Fetch the tags that match THIS record
