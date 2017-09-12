@@ -21748,10 +21748,9 @@ if (module.hot) {(function () {  module.hot.accept()
 module.exports = {
   twoWay: true,
   priority: 1000,
-  params: ['content', 'type'],
+  params: ['content', 'type', 'ckload'],
   bind: function bind() {
     this.vm.$nextTick(this.setupEditor.bind(this));
-    console.log("FIRST BOUND");
   },
   setupEditor: function setUpEditor() {
     var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
@@ -21770,14 +21769,17 @@ module.exports = {
 
     if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
 
-    //CKEDITOR.instances[this.el.id].setData(value, function(){
-    //   CKEDITOR.instances[this.el.id].focus();
-    //}); // Need for Experts public CKEditor
+    // pass in a parameter set to true, then set to false after first update
+    // needed for public experts form's ckedior
+    if (this.params.ckload) CKEDITOR.instances[this.el.id].setData(value);
+
+    this.params.ckload = false;
     this.vm.onContentChange();
   },
   unbind: function unbind() {
     CKEDITOR.instances[this.el.id].destroy();
   }
+
 };
 
 },{}],114:[function(require,module,exports){

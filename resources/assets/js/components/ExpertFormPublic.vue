@@ -260,7 +260,7 @@
         <!-- Biography -->
         <div v-bind:class="formGroup">
           <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="20"></textarea>
+          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :ckload="ckload" :biography="biography" :fresh="isFresh" rows="20"></textarea>
           <p v-if="formErrors.biography" class="help-text invalid">You must enter a biography for this expert.</p>
         </div>
       </div>
@@ -510,6 +510,7 @@ module.exports = {
         isErr: false,
         msg: ''
       },
+      ckload: 'true',
       hasContent: false,
       isFresh: true,
       languages: [],
@@ -674,6 +675,7 @@ module.exports = {
       },
 
     fetchCurrentRecord: function(recid) {
+
       this.$http.get('/api/experts/' + recid + '/edit')
 
       .then((response) => {
@@ -766,7 +768,6 @@ module.exports = {
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
-
       this.recordId = this.currentRecordId;
       this.recordexists = true;
       this.fetchCurrentRecord(this.currentRecordId);
