@@ -19,7 +19,6 @@ module.exports = {
      });
    },
    update: function (value, binding, vnode, oldVnode) {
-
      if (!CKEDITOR.instances[this.el.id])
        return this.vm.$nextTick(this.update.bind(this, value));
 

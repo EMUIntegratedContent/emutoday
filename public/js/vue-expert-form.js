@@ -21832,6 +21832,8 @@ module.exports = {
       }, function (response) {
         _this.formErrors = response.data.error.message;
       }).bind(this);
+
+      this.ckload = true; // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
     },
 
     // Fetch the tags that match THIS record
@@ -22152,7 +22154,6 @@ module.exports = {
     });
   },
   update: function update(value, binding, vnode, oldVnode) {
-
     if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
 
     // pass in a parameter set to true, then set to false after first update

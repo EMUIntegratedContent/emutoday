@@ -694,6 +694,8 @@ module.exports = {
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
+
+      this.ckload = true // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
     },
 
     // Fetch the tags that match THIS record
