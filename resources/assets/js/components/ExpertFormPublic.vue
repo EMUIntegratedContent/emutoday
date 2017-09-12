@@ -260,7 +260,7 @@
         <!-- Biography -->
         <div v-bind:class="formGroup">
           <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :ckload="ckload" :biography="biography" :fresh="isFresh" rows="20"></textarea>
+          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="20"></textarea>
           <p v-if="formErrors.biography" class="help-text invalid">You must enter a biography for this expert.</p>
         </div>
       </div>
@@ -663,7 +663,7 @@ module.exports = {
         } else {
           this.checkContentChange();
         }
-        this.ckload = true;
+        this.ckload = false
       },
       checkContentChange: function(){
         if (!this.recordIsDirty) {
@@ -676,6 +676,7 @@ module.exports = {
       },
 
     fetchCurrentRecord: function(recid) {
+      this.ckload = true // DO NOT REMOVE!!! needed for ckeditor
       this.$http.get('/api/experts/' + recid + '/edit')
 
       .then((response) => {

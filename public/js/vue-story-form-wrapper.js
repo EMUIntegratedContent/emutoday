@@ -21748,7 +21748,7 @@ if (module.hot) {(function () {  module.hot.accept()
 module.exports = {
   twoWay: true,
   priority: 1000,
-  params: ['content', 'type', 'ckload'],
+  params: ['content', 'type'],
   bind: function bind() {
     this.vm.$nextTick(this.setupEditor.bind(this));
   },
@@ -21768,11 +21768,10 @@ module.exports = {
   update: function update(value, binding, vnode, oldVnode) {
     if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
 
-    // pass in a parameter set to true, then set to false after first update
-    // needed for public experts form's ckedior
-    if (this.params.ckload) CKEDITOR.instances[this.el.id].setData(value);
+    // For public experts form's ckedior: set ckload to false after first update to prevent cursor from moving to top of editor
+    if (this.vm.ckload) CKEDITOR.instances[this.el.id].setData(value);
 
-    this.params.ckload = false;
+    this.vm.ckload = false;
     this.vm.onContentChange();
   },
   unbind: function unbind() {
