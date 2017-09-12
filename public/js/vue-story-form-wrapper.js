@@ -21770,7 +21770,8 @@ module.exports = {
 
     // pass in a parameter set to true, then set to false after first update
     // needed for public experts form's ckedior
-    if (this.params.ckload) CKEDITOR.instances[this.el.id].setData(value);
+    //if(this.params.ckload)
+    CKEDITOR.instances[this.el.id].setData(value);
 
     this.params.ckload = false;
     this.vm.onContentChange();
