@@ -21816,6 +21816,8 @@ module.exports = {
     fetchCurrentRecord: function fetchCurrentRecord(recid) {
       var _this = this;
 
+      this.ckload = true; // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
+
       this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
         _this.$set('record', response.data.data);
         _this.$set('recordOld', response.data.data);

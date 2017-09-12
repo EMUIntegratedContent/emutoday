@@ -675,6 +675,7 @@ module.exports = {
       },
 
     fetchCurrentRecord: function(recid) {
+      this.ckload = true  // DO NOT REMOVE!!!!! Needed for ckeditor functionality and directive
 
       this.$http.get('/api/experts/' + recid + '/edit')
 
