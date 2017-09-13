@@ -19,11 +19,22 @@ class RSSFeedController extends Controller {
       $this->builder = $builder;
   }
 
-  //We're making atom default type
-  public function getNews($type = "atom")
+  //We're making rss default type
+  public function getNews($type = "rss")
   {
       if ($type === "rss" || $type === "atom") {
-          return $this->builder->render($type);
+          return $this->builder->render($type, 'news');
+      }
+
+      //If invalid feed requested, redirect home
+      return redirect()->home();
+  }
+
+  //We're making rss default type
+  public function getEvents($type = "rss")
+  {
+      if ($type === "rss" || $type === "atom") {
+          return $this->builder->render($type, 'events');
       }
 
       //If invalid feed requested, redirect home
