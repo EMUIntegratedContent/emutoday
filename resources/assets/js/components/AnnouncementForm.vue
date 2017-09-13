@@ -142,18 +142,27 @@
     </ul>
   </div>
 </div>
-<div class="row">
-  <div v-bind:class="md12col">
-    <div v-bind:class="formGroup">
-      <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-      <button v-if="recordexists" id="btn-delete" v-on:click="delAnnouncement" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Announcement</button>
+<div class="row" id="submit-area">
+  <div v-if="isadmin" :class="md4col">
+    <div class="checkbox">
+      <label><input type="checkbox" v-model="record.admin_pre_approved">Auto Approve</label>
     </div>
   </div>
+  <div :class="md8col">
+    <div :class="formGroup">
+      <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+      <button v-if="recordexists" id="btn-delete" v-on:click="delAnnouncement" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Announcement</button>
+    </div><!-- /.md12col -->
+  </div><!-- /.md12col -->
+  </form>
 </div>
-</form>
 </template>
 
 <style scoped>
+#submit-area{
+  background: #e1e1e1;
+  margin:20px 0 0 0;
+}
 p {
   margin: 0;
 }
@@ -270,7 +279,10 @@ module.exports = {
     },
     type: {
       default: 'general'
-    }
+    },
+    isadmin: {
+      default: false
+    },
   },
   data: function() {
     return {
@@ -299,16 +311,9 @@ module.exports = {
         email_link_txt: '',
         email_link: '',
         phone: '',
-        type: ''
+        type: '',
+        admin_pre_approved: false,
       },
-      // dateOptions: {
-      //     minDate: "today",
-      //     enableTime: false,
-      //     altFormat: "m-d-Y",
-      //     altInput: true,
-      //     altInputClass:"form-control",
-      //     dateFormat: "Y-m-d",
-      // },
       totalChars: {
         start: 0,
         title: 80,

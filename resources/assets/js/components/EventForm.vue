@@ -407,12 +407,10 @@
   </div>
   <div :class="md8col">
     <div :class="formGroup">
-      <div v-bind:class="formGroup">
-        <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-        <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Clone Event</button>
-        <button v-if="recordexists && isAdmin" id="btn-cancel" v-on:click="cancelEvent" type="submit" v-bind:class="btnPrimary">{{ cancelStatus }}</button>
-        <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Event</button>
-      </div>
+      <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+      <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Clone Event</button>
+      <button v-if="recordexists && isAdmin" id="btn-cancel" v-on:click="cancelEvent" type="submit" v-bind:class="btnPrimary">{{ cancelStatus }}</button>
+      <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Event</button>
     </div><!-- /.md12col -->
   </div><!-- /.md12col -->
   </form>

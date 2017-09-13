@@ -258,7 +258,7 @@ class EventController extends ApiController
             $event->is_approved       = 1;
             $createMessage = "Event successfully created and approved.";
           } else {
-            $createMessage = "Event successfully.";
+            $createMessage = "Event successfully created.";
           }
 
           if($event->save()) { // Record successfully stored
