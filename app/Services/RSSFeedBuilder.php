@@ -4,6 +4,7 @@ namespace Emutoday\Services;
 
 use Illuminate\Support\Facades\App;
 use Emutoday\Story;
+use Illuminate\Support\Facades\URL;
 
 class RSSFeedBuilder
 {
@@ -38,7 +39,7 @@ class RSSFeedBuilder
                     $link = route('/', ["id" => $story->id]);
 
                     // set story info
-                    $feed->add($story->title, $story->start_date, $story->created_at, $story->updated_at, $story->is_approved);
+                    $feed->add($story->title, $story->author['first_name'] . ' ' . $story->author['last_name'], URL::to('/story/' . $story->story_type . '/' . $story->id), $story->created_at, $story->teaser, $story->content);
                 }
             }
         }
