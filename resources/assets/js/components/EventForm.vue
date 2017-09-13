@@ -1,6 +1,7 @@
 <template>
   <form>
     <slot name="csrf"></slot>
+    {{ $route }}
     <div class="row">
       <div v-bind:class="md12col">
         <div v-show="formMessage.isOk"  :class="calloutSuccess">
@@ -30,7 +31,6 @@
           <label>Description <span :class="iconStar" class="reqstar"></span> <p class="help-text" id="description-helptext">({{descriptionChars}} characters left)</p></label>
           <textarea v-model="record.description" class="form-control" :class="[formErrors.description ? 'invalid-input' : '']" name="description" type="textarea" rows="6" maxlength="255"></textarea>
           <p v-if="formErrors.description" class="help-text invalid">Need a Description!</p>
-
         </div>
       </div><!-- /.md12col -->
     </div><!-- /.row -->
@@ -62,8 +62,6 @@
               placeholder="Select a Building ..."
               label="name">
             </v-select>
-            <!-- <select id="select-zbuilding" class="js-example-basic-multiple" style="width: 100%" v-myselect="zbuildings"  ajaxurl="/api/zbuildings" v-bind:resultvalue="buildings" data-tags="false" multiple="multiple" data-maximum-selection-length="1">
-          </select> -->
         </div><!-- /.md8col -->
         <div :class="md4col">
           <label>Room</label>
@@ -115,9 +113,8 @@
     <div v-show="hasStartTime" class="form-group">
       <label for="no-end-time">No End Time:</label>
         <input id="no-end-time" name="no_end_time" type="checkbox" value="1" v-model="record.no_end_time"/>
-        <!-- <label v-show="hasEndTime" for="no-end-time-no" class="radiobtns">no</label><input id="no-end-time-no"  name="no_end_time" type="radio" value="0" v-model="record.no_end_time"/> -->
-      </div>
-    </div><!-- /.small-6 column -->
+    </div>
+  </div><!-- /.small-6 column -->
   </div><!-- /.row -->
   <div class="row">
     <div :class="md6col">
@@ -402,21 +399,31 @@
   </label>
 </div><!-- /.md12col -->
 </div><!-- /.row -->
-<div class="row">
-  <div :class="md12col">
+<div class="row" id="submit-area">
+  <div v-if="isadmin" :class="md4col">
+    <div class="checkbox">
+      <label><input type="checkbox" v-model="record.admin_pre_approved">Auto Approve</label>
+    </div>
+  </div>
+  <div :class="md8col">
     <div :class="formGroup">
       <div v-bind:class="formGroup">
         <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-        <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Create new Event based off this information</button>
+        <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Clone Event</button>
         <button v-if="recordexists && isAdmin" id="btn-cancel" v-on:click="cancelEvent" type="submit" v-bind:class="btnPrimary">{{ cancelStatus }}</button>
-        <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Event</button>
+        <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Event</button>
       </div>
-    </form>
+    </div><!-- /.md12col -->
   </div><!-- /.md12col -->
-
+  </form>
+</div>
 
 </template>
 <style scoped>
+#submit-area{
+  background: #e1e1e1;
+  margin:20px 0 0 0;
+}
 p {
   margin:0;
 }
@@ -513,7 +520,8 @@ module.exports  = {
   props:{
     recordexists: {default: false},
     recordid: {default: ''},
-    framework: {default: 'foundation'}
+    framework: {default: 'foundation'},
+    isadmin: {default: false},
   },
   data: function() {
     return {
@@ -576,7 +584,8 @@ module.exports  = {
         categories:[],
         is_canceled: 0,
         start_time: '12:00 PM',
-        end_time: '12:00 PM'
+        end_time: '12:00 PM',
+        admin_pre_approved: false,
       },
       response: {
 
@@ -596,7 +605,6 @@ module.exports  = {
     if(this.recordexists){
       this.fetchCurrentRecord(this.recordid)
     } else {
-      //this.record.start_date = this.currentDate;
       this.setupDatePickers();
     }
     this.fetchMiniCalsList();
@@ -610,8 +618,6 @@ module.exports  = {
         return false;
       }
     });
-    //this.startdatePicker.clear();
-    //this.enddatePicker.clear();
   },
 
   computed: {

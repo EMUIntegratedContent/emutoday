@@ -66,13 +66,6 @@
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
           </div>
         </div>
-        <!-- <div :class="md8col">
-          <div v-bind:class="formGroup">
-            <label>Example of Related Link</label>
-            <p class="help-text">Below is how it may look. </p>
-            <h5 class="form-control">For more information visit: <a href="#"> {{record.link_txt}}</a>.</h5>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -82,7 +75,6 @@
       <div :class="md12col">
         <div v-bind:class="formGroup">
           <label>Contact Person</label>
-          <!-- <p class="help-text" id="email-link-helptext">Please enter email link text</p> -->
           <input v-model="record.email_link_txt" class="form-control" v-bind:class="[formErrors.email_link_txt ? 'invalid-input' : '']" name="email_link_txt" type="text" maxlength="80">
         </div>
       </div><!-- /.col-md-4 -->

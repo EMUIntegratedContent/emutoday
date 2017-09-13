@@ -33,7 +33,9 @@
           <event-form framework="bootstrap"
           authorid="{{$currentUser->id}}"
           recordexists="{{$event->exists ? true: false}}"
-          recordid="{{$event->exists ? $event->id : null }}">
+          recordid="{{$event->exists ? $event->id : null }}"
+          isadmin="true"
+          >
           <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
         </event-form>
       </div><!-- /#vue-event-form -->

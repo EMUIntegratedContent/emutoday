@@ -19264,7 +19264,6 @@ exports.default = {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function filerStoryTypeCustom(value) {
-            //console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19279,7 +19278,6 @@ exports.default = {
             }
         },
         filterUnapprovedByStoryType: function filterUnapprovedByStoryType(value) {
-            //console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19287,7 +19285,6 @@ exports.default = {
             }
         },
         filterApprovedByStoryType: function filterApprovedByStoryType(value) {
-            //console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19296,7 +19293,6 @@ exports.default = {
         },
 
         filterLiveByStoryType: function filterLiveByStoryType(value) {
-            //console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
             if (this.items_live_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19352,7 +19348,6 @@ exports.default = {
             var movedRecord = changeditem;
             var movedIndex = this.movedItemIndex(movedid);
 
-            //console.log('movedid'+movedid +  'movedIndex'+movedIndex)
             if (movedRecord.is_approved === 1) {
                 this.items_unapproved.splice(movedIndex, 1);
                 this.items_approved.push(movedRecord);
@@ -19613,18 +19608,11 @@ var Vue = require('vue');
 Vue.use(_vueResource2.default);
 
 new Vue({
-        el: '#vue-story-queue',
-        components: { StoryQueue: _StoryQueue2.default },
-        http: {
-                headers: {
-                        // You could also store your token in a global object,
-                        // and reference it here. APP.token
-                        //'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                }
-        },
-        ready: function ready() {
-                console.log('new Vue StoryQueue ready');
-        }
+    el: '#vue-story-queue',
+    components: { StoryQueue: _StoryQueue2.default },
+    ready: function ready() {
+        console.log('Vue StoryQueue ready');
+    }
 });
 
 },{"./components/StoryQueue.vue":51,"moment":42,"vue":46,"vue-resource":45}]},{},[55]);

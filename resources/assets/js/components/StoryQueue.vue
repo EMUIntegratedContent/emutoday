@@ -257,7 +257,6 @@ export default  {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function (value) {
-            //console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -272,7 +271,6 @@ export default  {
             }
         },
         filterUnapprovedByStoryType: function (value) {
-            //console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -280,7 +278,6 @@ export default  {
             }
         },
         filterApprovedByStoryType: function (value) {
-            //console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -289,7 +286,6 @@ export default  {
         },
 
         filterLiveByStoryType: function (value) {
-            //console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
             if (this.items_live_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -343,7 +339,6 @@ export default  {
             let movedRecord = changeditem;
             let movedIndex = this.movedItemIndex(movedid);
 
-            //console.log('movedid'+movedid +  'movedIndex'+movedIndex)
             if (movedRecord.is_approved === 1) {
                 this.items_unapproved.splice(movedIndex, 1);
                 this.items_approved.push(movedRecord);

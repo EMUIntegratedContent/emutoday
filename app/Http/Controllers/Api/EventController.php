@@ -253,6 +253,14 @@ class EventController extends ApiController
           $event->lbc_approved						= $request->get('lbc_approved');
           $event->submission_date 				= \Carbon\Carbon::now();
 
+          // Reset Approvals
+          if($request->input('admin_pre_approved')){
+            $event->is_approved       = 1;
+            $createMessage = "Event successfully created and approved.";
+          } else {
+            $createMessage = "Event successfully.";
+          }
+
           if($event->save()) { // Record successfully stored
             // Send event has been submitted email
             $to      = "calendar_events@emich.edu";
@@ -278,7 +286,7 @@ class EventController extends ApiController
             // Save and return
             $event->save();
             return $this->setStatusCode(201)
-            ->respondSavedWithData('Event successfully created!',[ 'record_id' => $event->id ]);
+            ->respondSavedWithData($createMessage,[ 'record_id' => $event->id ]);
           }
         }
       }
@@ -550,8 +558,17 @@ class EventController extends ApiController
             $event->submission_date 				= \Carbon\Carbon::now();
 
             // Reset Approvals
-            $event->is_approved       = 0; // events must go back into approver queue when updated
-            $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
+            if($request->input('admin_pre_approved')){
+              $event->is_approved       = 1;
+
+              $updateMessage = "Event successfully updated and approved.";
+            } else {
+              $event->is_approved       = 0; // events must go back into approver queue when updated
+              $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
+
+              $updateMessage = "Event successfully updated.";
+            }
+
 
             if($event->save()) { // Record successfully Saved
               // Make event categories and mini calendars
@@ -564,10 +581,12 @@ class EventController extends ApiController
               $event->eventcategories()->sync($categoriesRequest);
               $event->minicalendars()->sync($minicalsRequest);
 
+
               // Save and return
               $event->save();
+
               return $this->setStatusCode(201)
-              ->respondSavedWithData('Event successfully updated!',[ 'record_id' => $event->id ]);
+              ->respondSavedWithData($updateMessage,[ 'record_id' => $event->id ]);
             }
           }
         }
