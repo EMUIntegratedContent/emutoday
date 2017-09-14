@@ -3,7 +3,7 @@
 
 @section('title', 'Experts')
 @section('content')
-  <div id="content-area">
+  <div id="experts">
       <div class="row">
         <div class="large-12 medium-12 small-12 columns">
             <h3 class="news-caps">Eastern Experts</h3>

@@ -3,7 +3,7 @@
 
 @section('title', 'Eastern Expert ' . $expert->display_name)
 @section('content')
-  <div id="content-area">
+  <div id="experts">
       <div class="row">
           <div class="large-3 medium-12 small-12 columns">
               @include('public.experts.subviews.expertnav')
