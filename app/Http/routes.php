@@ -26,6 +26,10 @@ Route::get('/cas/logout', function(){
     cas()->logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
+# RSS Feeds
+Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
+Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
+
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
     Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
@@ -247,7 +251,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
-        Route::get('oauth/list', 'Admin\OAuthController@list')->name('list_user_oauth_clients');
+        Route::get('oauth/list', 'Admin\OAuthController@listClients')->name('list_user_oauth_clients');
 
         Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
         Route::get('authors/form', 'Admin\AuthorsController@form')->name('authors_form');
@@ -286,7 +290,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('user/{user}/confirm', 'Admin\UserController@confirm')->name('admin_user_confirm');
         Route::delete('user/{user}/destroy', 'Admin\UserController@destroy')->name('admin_user_destroy');
         Route::put('user/{user}/update', 'Admin\UserController@update')->name('admin_user_update');
-        Route::put('user/{user}/store', 'Admin\UserController@store')->name('admin_user_store');
+        Route::post('user/store', 'Admin\UserController@store')->name('admin_user_store');
         Route::get('user/form', 'Admin\UserController@form');
         Route::resource('user', 'Admin\UserController');
 

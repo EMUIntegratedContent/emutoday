@@ -22,7 +22,8 @@
         "barryvdh/laravel-cors": "^0.8.2",
         "doctrine/dbal": "~2.3",
         "snowfire/beautymail": "dev-master",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "roumen/feed": "~2.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

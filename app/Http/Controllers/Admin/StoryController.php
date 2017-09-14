@@ -73,8 +73,6 @@ class StoryController extends Controller
     public function promoteStory(Request $request)
         {
             $story = $this->story->findOrFail($request->id);
-            //return 'working on it' . $story->id;
-            //
             $story->story_type = $request->new_story_type;
             $story->save();
             $storyGroup = $story->storyType->group;

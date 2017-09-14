@@ -57,7 +57,6 @@ class ExpertsController extends Controller
         $currentOtherImages = null;
         $stillNeedTheseImgs = null;
 
-        //$currentRequiredImages = $story->storyImages->whereIn('imagetype_id',$requiredImageKeyArray);
         $imagetypeNames = Imagetype::ofGroup('experts')->get()->keyBy('id');
 
         $requiredImageListCollection = Imagetype::ofGroup('experts')->isRequired(1)->get();
@@ -79,8 +78,6 @@ class ExpertsController extends Controller
 
         $remainingRequiredImagesNeeded = $requiredImageList->count() - $currentRequiredImages->count();
 
-        $stillNeedTheseImgs = null;
-
         if($remainingRequiredImagesNeeded > 0) {
             $currentRequiredImagesIdsList = $currentRequiredImages->pluck('imagetype_id');
             $currentRequiredImagesIdsListArray = $currentRequiredImagesIdsList->toArray();
@@ -92,7 +89,7 @@ class ExpertsController extends Controller
             return view('admin.experts.form', compact('expert','currentRequiredImages','currentOtherImages','stillNeedTheseImgs'));
         }
 
-        $otherImageCollect = Imagetype::ofGroup('expoerts')->isRequired(0)->pluck('id');
+        $otherImageCollect = Imagetype::ofGroup('experts')->isRequired(0)->pluck('id');
         $otherImageKeyArray = $otherImageCollect->toArray();
 
         $currentOtherImages = $expert->expertImages->whereIn('imagetype_id', $otherImageKeyArray);

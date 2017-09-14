@@ -3,7 +3,11 @@
 
 @section('title', 'Experts Directory Contact Us')
 @section('content')
+<<<<<<< HEAD
   <div id="experts">
+=======
+  <div id="experts-area">
+>>>>>>> f6a149e75412923106f3297fe1514bdcf1ada217
       <div class="row">
           <div class="large-3 medium-3 small-12 columns">
               @include('public.experts.subviews.expertnav')

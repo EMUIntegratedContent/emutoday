@@ -510,6 +510,7 @@ module.exports = {
         isErr: false,
         msg: ''
       },
+      ckload: 'true',
       hasContent: false,
       isFresh: true,
       languages: [],
@@ -662,6 +663,7 @@ module.exports = {
         } else {
           this.checkContentChange();
         }
+        this.ckload = false
       },
       checkContentChange: function(){
         if (!this.recordIsDirty) {
@@ -674,6 +676,7 @@ module.exports = {
       },
 
     fetchCurrentRecord: function(recid) {
+      this.ckload = true // DO NOT REMOVE!!! needed for ckeditor
       this.$http.get('/api/experts/' + recid + '/edit')
 
       .then((response) => {
@@ -766,7 +769,6 @@ module.exports = {
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
-
       this.recordId = this.currentRecordId;
       this.recordexists = true;
       this.fetchCurrentRecord(this.currentRecordId);

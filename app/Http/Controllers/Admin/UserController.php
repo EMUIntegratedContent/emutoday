@@ -59,7 +59,7 @@ class UserController extends Controller
 
         $newUser->roles()->sync($request->input('role_list'));
         flash()->success('User has been created.');
-        return redirect(route('admin_user_index'));//->with('status', 'User has been created.');
+        return redirect()->action('Admin\UserController@index')->with('status', 'User has been updated.');
     }
 
 

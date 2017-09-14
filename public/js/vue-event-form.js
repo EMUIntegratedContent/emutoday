@@ -49,194 +49,221 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 },{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],15:[function(require,module,exports){
 
 },{}],16:[function(require,module,exports){
-var core  = require('../../modules/_core')
-  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
+var core = require('../../modules/_core');
+var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
+module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
+
 },{"../../modules/_core":34}],17:[function(require,module,exports){
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
-module.exports = function create(P, D){
+module.exports = function create(P, D) {
   return $Object.create(P, D);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.create":87}],18:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.create":86}],18:[function(require,module,exports){
 require('../../modules/es6.object.define-properties');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperties(T, D){
+module.exports = function defineProperties(T, D) {
   return $Object.defineProperties(T, D);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.define-properties":88}],19:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.define-properties":87}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc){
+module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.define-property":89}],20:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.define-property":88}],20:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-descriptor');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyDescriptor(it, key){
+module.exports = function getOwnPropertyDescriptor(it, key) {
   return $Object.getOwnPropertyDescriptor(it, key);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":90}],21:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":89}],21:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-names');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyNames(it){
+module.exports = function getOwnPropertyNames(it) {
   return $Object.getOwnPropertyNames(it);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":91}],22:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":90}],22:[function(require,module,exports){
 require('../../modules/es6.symbol');
 module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
-},{"../../modules/_core":34,"../../modules/es6.symbol":98}],23:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.symbol":97}],23:[function(require,module,exports){
 require('../../modules/es6.object.get-prototype-of');
 module.exports = require('../../modules/_core').Object.getPrototypeOf;
-},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":92}],24:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":91}],24:[function(require,module,exports){
 require('../../modules/es6.object.is-extensible');
 module.exports = require('../../modules/_core').Object.isExtensible;
-},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":93}],25:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":92}],25:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
-},{"../../modules/_core":34,"../../modules/es6.object.keys":94}],26:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.keys":93}],26:[function(require,module,exports){
 require('../../modules/es6.object.prevent-extensions');
 module.exports = require('../../modules/_core').Object.preventExtensions;
-},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":95}],27:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":94}],27:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-},{"../../modules/_core":34,"../../modules/es6.object.to-string":96,"../../modules/es6.symbol":98,"../../modules/es7.symbol.async-iterator":99,"../../modules/es7.symbol.observable":100}],28:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.to-string":95,"../../modules/es6.symbol":97,"../../modules/es7.symbol.async-iterator":98,"../../modules/es7.symbol.observable":99}],28:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":97,"../../modules/web.dom.iterable":101}],29:[function(require,module,exports){
-module.exports = function(it){
-  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+
+},{"../../modules/_wks-ext":83,"../../modules/es6.string.iterator":96,"../../modules/web.dom.iterable":100}],29:[function(require,module,exports){
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
+
 },{}],30:[function(require,module,exports){
-module.exports = function(){ /* empty */ };
+module.exports = function () { /* empty */ };
+
 },{}],31:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function(it){
-  if(!isObject(it))throw TypeError(it + ' is not an object!');
+module.exports = function (it) {
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
+
 },{"./_is-object":50}],32:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = require('./_to-iobject')
-  , toLength  = require('./_to-length')
-  , toIndex   = require('./_to-index');
-module.exports = function(IS_INCLUDES){
-  return function($this, el, fromIndex){
-    var O      = toIObject($this)
-      , length = toLength(O.length)
-      , index  = toIndex(fromIndex, length)
-      , value;
+var toIObject = require('./_to-iobject');
+var toLength = require('./_to-length');
+var toAbsoluteIndex = require('./_to-absolute-index');
+module.exports = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIObject($this);
+    var length = toLength(O.length);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
     // Array#includes uses SameValueZero equality algorithm
-    if(IS_INCLUDES && el != el)while(length > index){
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
       value = O[index++];
-      if(value != value)return true;
-    // Array#toIndex ignores holes, Array#includes - not
-    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-      if(O[index] === el)return IS_INCLUDES || index || 0;
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-},{"./_to-index":76,"./_to-iobject":78,"./_to-length":79}],33:[function(require,module,exports){
+
+},{"./_to-absolute-index":75,"./_to-iobject":77,"./_to-length":78}],33:[function(require,module,exports){
 var toString = {}.toString;
 
-module.exports = function(it){
+module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
+
 },{}],34:[function(require,module,exports){
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+var core = module.exports = { version: '2.5.1' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
 },{}],35:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function(fn, that, length){
+module.exports = function (fn, that, length) {
   aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
       return fn.call(that, a);
     };
-    case 2: return function(a, b){
+    case 2: return function (a, b) {
       return fn.call(that, a, b);
     };
-    case 3: return function(a, b, c){
+    case 3: return function (a, b, c) {
       return fn.call(that, a, b, c);
     };
   }
-  return function(/* ...args */){
+  return function (/* ...args */) {
     return fn.apply(that, arguments);
   };
 };
+
 },{"./_a-function":29}],36:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function(it){
-  if(it == undefined)throw TypeError("Can't call method on  " + it);
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
+
 },{}],37:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function(){
-  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !require('./_fails')(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
+
 },{"./_fails":42}],38:[function(require,module,exports){
-var isObject = require('./_is-object')
-  , document = require('./_global').document
-  // in old IE typeof document.createElement is 'object'
-  , is = isObject(document) && isObject(document.createElement);
-module.exports = function(it){
+var isObject = require('./_is-object');
+var document = require('./_global').document;
+// typeof document.createElement is 'object' in old IE
+var is = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
+
 },{"./_global":43,"./_is-object":50}],39:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
+
 },{}],40:[function(require,module,exports){
 // all enumerable object keys, includes symbols
-var getKeys = require('./_object-keys')
-  , gOPS    = require('./_object-gops')
-  , pIE     = require('./_object-pie');
-module.exports = function(it){
-  var result     = getKeys(it)
-    , getSymbols = gOPS.f;
-  if(getSymbols){
-    var symbols = getSymbols(it)
-      , isEnum  = pIE.f
-      , i       = 0
-      , key;
-    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
+var getKeys = require('./_object-keys');
+var gOPS = require('./_object-gops');
+var pIE = require('./_object-pie');
+module.exports = function (it) {
+  var result = getKeys(it);
+  var getSymbols = gOPS.f;
+  if (getSymbols) {
+    var symbols = getSymbols(it);
+    var isEnum = pIE.f;
+    var i = 0;
+    var key;
+    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
   } return result;
 };
-},{"./_object-gops":64,"./_object-keys":67,"./_object-pie":68}],41:[function(require,module,exports){
-var global    = require('./_global')
-  , core      = require('./_core')
-  , ctx       = require('./_ctx')
-  , hide      = require('./_hide')
-  , PROTOTYPE = 'prototype';
 
-var $export = function(type, name, source){
-  var IS_FORCED = type & $export.F
-    , IS_GLOBAL = type & $export.G
-    , IS_STATIC = type & $export.S
-    , IS_PROTO  = type & $export.P
-    , IS_BIND   = type & $export.B
-    , IS_WRAP   = type & $export.W
-    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-    , expProto  = exports[PROTOTYPE]
-    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
-    , key, own, out;
-  if(IS_GLOBAL)source = name;
-  for(key in source){
+},{"./_object-gops":63,"./_object-keys":66,"./_object-pie":67}],41:[function(require,module,exports){
+var global = require('./_global');
+var core = require('./_core');
+var ctx = require('./_ctx');
+var hide = require('./_hide');
+var PROTOTYPE = 'prototype';
+
+var $export = function (type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var IS_WRAP = type & $export.W;
+  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
+  var expProto = exports[PROTOTYPE];
+  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
+  var key, own, out;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if(own && key in exports)continue;
+    if (own && key in exports) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -244,11 +271,11 @@ var $export = function(type, name, source){
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function(C){
-      var F = function(a, b, c){
-        if(this instanceof C){
-          switch(arguments.length){
-            case 0: return new C;
+    : IS_WRAP && target[key] == out ? (function (C) {
+      var F = function (a, b, c) {
+        if (this instanceof C) {
+          switch (arguments.length) {
+            case 0: return new C();
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -259,10 +286,10 @@ var $export = function(type, name, source){
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if(IS_PROTO){
+    if (IS_PROTO) {
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
     }
   }
 };
@@ -274,232 +301,241 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library` 
+$export.R = 128; // real proto method for `library`
 module.exports = $export;
+
 },{"./_core":34,"./_ctx":35,"./_global":43,"./_hide":45}],42:[function(require,module,exports){
-module.exports = function(exec){
+module.exports = function (exec) {
   try {
     return !!exec();
-  } catch(e){
+  } catch (e) {
     return true;
   }
 };
+
 },{}],43:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
 },{}],44:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function(it, key){
+module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
+
 },{}],45:[function(require,module,exports){
-var dP         = require('./_object-dp')
-  , createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function(object, key, value){
+var dP = require('./_object-dp');
+var createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
-} : function(object, key, value){
+} : function (object, key, value) {
   object[key] = value;
   return object;
 };
-},{"./_descriptors":37,"./_object-dp":59,"./_property-desc":70}],46:[function(require,module,exports){
-module.exports = require('./_global').document && document.documentElement;
+
+},{"./_descriptors":37,"./_object-dp":58,"./_property-desc":69}],46:[function(require,module,exports){
+var document = require('./_global').document;
+module.exports = document && document.documentElement;
+
 },{"./_global":43}],47:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function(){
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function () {
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
+
 },{"./_descriptors":37,"./_dom-create":38,"./_fails":42}],48:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+// eslint-disable-next-line no-prototype-builtins
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
+
 },{"./_cof":33}],49:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
-module.exports = Array.isArray || function isArray(arg){
+module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
+
 },{"./_cof":33}],50:[function(require,module,exports){
-module.exports = function(it){
+module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
+
 },{}],51:[function(require,module,exports){
 'use strict';
-var create         = require('./_object-create')
-  , descriptor     = require('./_property-desc')
-  , setToStringTag = require('./_set-to-string-tag')
-  , IteratorPrototype = {};
+var create = require('./_object-create');
+var descriptor = require('./_property-desc');
+var setToStringTag = require('./_set-to-string-tag');
+var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function(){ return this; });
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
 
-module.exports = function(Constructor, NAME, next){
-  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
+module.exports = function (Constructor, NAME, next) {
+  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-},{"./_hide":45,"./_object-create":58,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],52:[function(require,module,exports){
+
+},{"./_hide":45,"./_object-create":57,"./_property-desc":69,"./_set-to-string-tag":71,"./_wks":84}],52:[function(require,module,exports){
 'use strict';
-var LIBRARY        = require('./_library')
-  , $export        = require('./_export')
-  , redefine       = require('./_redefine')
-  , hide           = require('./_hide')
-  , has            = require('./_has')
-  , Iterators      = require('./_iterators')
-  , $iterCreate    = require('./_iter-create')
-  , setToStringTag = require('./_set-to-string-tag')
-  , getPrototypeOf = require('./_object-gpo')
-  , ITERATOR       = require('./_wks')('iterator')
-  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
-  , FF_ITERATOR    = '@@iterator'
-  , KEYS           = 'keys'
-  , VALUES         = 'values';
+var LIBRARY = require('./_library');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var hide = require('./_hide');
+var has = require('./_has');
+var Iterators = require('./_iterators');
+var $iterCreate = require('./_iter-create');
+var setToStringTag = require('./_set-to-string-tag');
+var getPrototypeOf = require('./_object-gpo');
+var ITERATOR = require('./_wks')('iterator');
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
 
-var returnThis = function(){ return this; };
+var returnThis = function () { return this; };
 
-module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function(kind){
-    if(!BUGGY && kind in proto)return proto[kind];
-    switch(kind){
-      case KEYS: return function keys(){ return new Constructor(this, kind); };
-      case VALUES: return function values(){ return new Constructor(this, kind); };
-    } return function entries(){ return new Constructor(this, kind); };
+  var getMethod = function (kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS: return function keys() { return new Constructor(this, kind); };
+      case VALUES: return function values() { return new Constructor(this, kind); };
+    } return function entries() { return new Constructor(this, kind); };
   };
-  var TAG        = NAME + ' Iterator'
-    , DEF_VALUES = DEFAULT == VALUES
-    , VALUES_BUG = false
-    , proto      = Base.prototype
-    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
-    , $default   = $native || getMethod(DEFAULT)
-    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
-    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
-    , methods, key, IteratorPrototype;
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
   // Fix native
-  if($anyNative){
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
-    if(IteratorPrototype !== Object.prototype){
+  if ($anyNative) {
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if(DEF_VALUES && $native && $native.name !== VALUES){
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
     VALUES_BUG = true;
-    $default = function values(){ return $native.call(this); };
+    $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG]  = returnThis;
-  if(DEFAULT){
+  Iterators[TAG] = returnThis;
+  if (DEFAULT) {
     methods = {
-      values:  DEF_VALUES ? $default : getMethod(VALUES),
-      keys:    IS_SET     ? $default : getMethod(KEYS),
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if(FORCED)for(key in methods){
-      if(!(key in proto))redefine(proto, key, methods[key]);
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":56,"./_object-gpo":65,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],53:[function(require,module,exports){
-module.exports = function(done, value){
-  return {value: value, done: !!done};
+
+},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":55,"./_object-gpo":64,"./_redefine":70,"./_set-to-string-tag":71,"./_wks":84}],53:[function(require,module,exports){
+module.exports = function (done, value) {
+  return { value: value, done: !!done };
 };
+
 },{}],54:[function(require,module,exports){
 module.exports = {};
+
 },{}],55:[function(require,module,exports){
-var getKeys   = require('./_object-keys')
-  , toIObject = require('./_to-iobject');
-module.exports = function(object, el){
-  var O      = toIObject(object)
-    , keys   = getKeys(O)
-    , length = keys.length
-    , index  = 0
-    , key;
-  while(length > index)if(O[key = keys[index++]] === el)return key;
-};
-},{"./_object-keys":67,"./_to-iobject":78}],56:[function(require,module,exports){
 module.exports = true;
-},{}],57:[function(require,module,exports){
-var META     = require('./_uid')('meta')
-  , isObject = require('./_is-object')
-  , has      = require('./_has')
-  , setDesc  = require('./_object-dp').f
-  , id       = 0;
-var isExtensible = Object.isExtensible || function(){
+
+},{}],56:[function(require,module,exports){
+var META = require('./_uid')('meta');
+var isObject = require('./_is-object');
+var has = require('./_has');
+var setDesc = require('./_object-dp').f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !require('./_fails')(function(){
+var FREEZE = !require('./_fails')(function () {
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function(it){
-  setDesc(it, META, {value: {
+var setMeta = function (it) {
+  setDesc(it, META, { value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  }});
+  } });
 };
-var fastKey = function(it, create){
+var fastKey = function (it, create) {
   // return primitive with prefix
-  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if(!has(it, META)){
+  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return 'F';
+    if (!isExtensible(it)) return 'F';
     // not necessary to add metadata
-    if(!create)return 'E';
+    if (!create) return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function(it, create){
-  if(!has(it, META)){
+var getWeak = function (it, create) {
+  if (!has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return true;
+    if (!isExtensible(it)) return true;
     // not necessary to add metadata
-    if(!create)return false;
+    if (!create) return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function(it){
-  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
+var onFreeze = function (it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY:      META,
-  NEED:     false,
-  fastKey:  fastKey,
-  getWeak:  getWeak,
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
   onFreeze: onFreeze
 };
-},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":59,"./_uid":82}],58:[function(require,module,exports){
+
+},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":58,"./_uid":81}],57:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject    = require('./_an-object')
-  , dPs         = require('./_object-dps')
-  , enumBugKeys = require('./_enum-bug-keys')
-  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
-  , Empty       = function(){ /* empty */ }
-  , PROTOTYPE   = 'prototype';
+var anObject = require('./_an-object');
+var dPs = require('./_object-dps');
+var enumBugKeys = require('./_enum-bug-keys');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function(){
+var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = require('./_dom-create')('iframe')
-    , i      = enumBugKeys.length
-    , lt     = '<'
-    , gt     = '>'
-    , iframeDocument;
+  var iframe = require('./_dom-create')('iframe');
+  var i = enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
   iframe.style.display = 'none';
   require('./_html').appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -510,15 +546,15 @@ var createDict = function(){
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties){
+module.exports = Object.create || function create(O, Properties) {
   var result;
-  if(O !== null){
+  if (O !== null) {
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty;
+    result = new Empty();
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -526,292 +562,318 @@ module.exports = Object.create || function create(O, Properties){
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":60,"./_shared-key":73}],59:[function(require,module,exports){
-var anObject       = require('./_an-object')
-  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
-  , toPrimitive    = require('./_to-primitive')
-  , dP             = Object.defineProperty;
+},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":59,"./_shared-key":72}],58:[function(require,module,exports){
+var anObject = require('./_an-object');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var toPrimitive = require('./_to-primitive');
+var dP = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if(IE8_DOM_DEFINE)try {
+  if (IE8_DOM_DEFINE) try {
     return dP(O, P, Attributes);
-  } catch(e){ /* empty */ }
-  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-  if('value' in Attributes)O[P] = Attributes.value;
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
-},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":81}],60:[function(require,module,exports){
-var dP       = require('./_object-dp')
-  , anObject = require('./_an-object')
-  , getKeys  = require('./_object-keys');
 
-module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties){
+},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":80}],59:[function(require,module,exports){
+var dP = require('./_object-dp');
+var anObject = require('./_an-object');
+var getKeys = require('./_object-keys');
+
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
-  var keys   = getKeys(Properties)
-    , length = keys.length
-    , i = 0
-    , P;
-  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
+  var keys = getKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
+  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
-},{"./_an-object":31,"./_descriptors":37,"./_object-dp":59,"./_object-keys":67}],61:[function(require,module,exports){
-var pIE            = require('./_object-pie')
-  , createDesc     = require('./_property-desc')
-  , toIObject      = require('./_to-iobject')
-  , toPrimitive    = require('./_to-primitive')
-  , has            = require('./_has')
-  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
-  , gOPD           = Object.getOwnPropertyDescriptor;
 
-exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P){
+},{"./_an-object":31,"./_descriptors":37,"./_object-dp":58,"./_object-keys":66}],60:[function(require,module,exports){
+var pIE = require('./_object-pie');
+var createDesc = require('./_property-desc');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var has = require('./_has');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var gOPD = Object.getOwnPropertyDescriptor;
+
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if(IE8_DOM_DEFINE)try {
+  if (IE8_DOM_DEFINE) try {
     return gOPD(O, P);
-  } catch(e){ /* empty */ }
-  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch (e) { /* empty */ }
+  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
 };
-},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":68,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],62:[function(require,module,exports){
+
+},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":67,"./_property-desc":69,"./_to-iobject":77,"./_to-primitive":80}],61:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = require('./_to-iobject')
-  , gOPN      = require('./_object-gopn').f
-  , toString  = {}.toString;
+var toIObject = require('./_to-iobject');
+var gOPN = require('./_object-gopn').f;
+var toString = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function(it){
+var getWindowNames = function (it) {
   try {
     return gOPN(it);
-  } catch(e){
+  } catch (e) {
     return windowNames.slice();
   }
 };
 
-module.exports.f = function getOwnPropertyNames(it){
+module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":63,"./_to-iobject":78}],63:[function(require,module,exports){
+},{"./_object-gopn":62,"./_to-iobject":77}],62:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys      = require('./_object-keys-internal')
-  , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
+var $keys = require('./_object-keys-internal');
+var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
-},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],64:[function(require,module,exports){
-exports.f = Object.getOwnPropertySymbols;
-},{}],65:[function(require,module,exports){
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has         = require('./_has')
-  , toObject    = require('./_to-object')
-  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
-  , ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function(O){
+},{"./_enum-bug-keys":39,"./_object-keys-internal":65}],63:[function(require,module,exports){
+exports.f = Object.getOwnPropertySymbols;
+
+},{}],64:[function(require,module,exports){
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+var has = require('./_has');
+var toObject = require('./_to-object');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+module.exports = Object.getPrototypeOf || function (O) {
   O = toObject(O);
-  if(has(O, IE_PROTO))return O[IE_PROTO];
-  if(typeof O.constructor == 'function' && O instanceof O.constructor){
+  if (has(O, IE_PROTO)) return O[IE_PROTO];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
-},{"./_has":44,"./_shared-key":73,"./_to-object":80}],66:[function(require,module,exports){
-var has          = require('./_has')
-  , toIObject    = require('./_to-iobject')
-  , arrayIndexOf = require('./_array-includes')(false)
-  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
 
-module.exports = function(object, names){
-  var O      = toIObject(object)
-    , i      = 0
-    , result = []
-    , key;
-  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+},{"./_has":44,"./_shared-key":72,"./_to-object":79}],65:[function(require,module,exports){
+var has = require('./_has');
+var toIObject = require('./_to-iobject');
+var arrayIndexOf = require('./_array-includes')(false);
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+
+module.exports = function (object, names) {
+  var O = toIObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while(names.length > i)if(has(O, key = names[i++])){
+  while (names.length > i) if (has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
-},{"./_array-includes":32,"./_has":44,"./_shared-key":73,"./_to-iobject":78}],67:[function(require,module,exports){
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = require('./_object-keys-internal')
-  , enumBugKeys = require('./_enum-bug-keys');
 
-module.exports = Object.keys || function keys(O){
+},{"./_array-includes":32,"./_has":44,"./_shared-key":72,"./_to-iobject":77}],66:[function(require,module,exports){
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys = require('./_object-keys-internal');
+var enumBugKeys = require('./_enum-bug-keys');
+
+module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
-},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],68:[function(require,module,exports){
+
+},{"./_enum-bug-keys":39,"./_object-keys-internal":65}],67:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-},{}],69:[function(require,module,exports){
+
+},{}],68:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
-var $export = require('./_export')
-  , core    = require('./_core')
-  , fails   = require('./_fails');
-module.exports = function(KEY, exec){
-  var fn  = (core.Object || {})[KEY] || Object[KEY]
-    , exp = {};
+var $export = require('./_export');
+var core = require('./_core');
+var fails = require('./_fails');
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
   exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
 };
-},{"./_core":34,"./_export":41,"./_fails":42}],70:[function(require,module,exports){
-module.exports = function(bitmap, value){
+
+},{"./_core":34,"./_export":41,"./_fails":42}],69:[function(require,module,exports){
+module.exports = function (bitmap, value) {
   return {
-    enumerable  : !(bitmap & 1),
+    enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
+    writable: !(bitmap & 4),
+    value: value
   };
 };
-},{}],71:[function(require,module,exports){
-module.exports = require('./_hide');
-},{"./_hide":45}],72:[function(require,module,exports){
-var def = require('./_object-dp').f
-  , has = require('./_has')
-  , TAG = require('./_wks')('toStringTag');
 
-module.exports = function(it, tag, stat){
-  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
+},{}],70:[function(require,module,exports){
+module.exports = require('./_hide');
+
+},{"./_hide":45}],71:[function(require,module,exports){
+var def = require('./_object-dp').f;
+var has = require('./_has');
+var TAG = require('./_wks')('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
-},{"./_has":44,"./_object-dp":59,"./_wks":85}],73:[function(require,module,exports){
-var shared = require('./_shared')('keys')
-  , uid    = require('./_uid');
-module.exports = function(key){
+
+},{"./_has":44,"./_object-dp":58,"./_wks":84}],72:[function(require,module,exports){
+var shared = require('./_shared')('keys');
+var uid = require('./_uid');
+module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
-var global = require('./_global')
-  , SHARED = '__core-js_shared__'
-  , store  = global[SHARED] || (global[SHARED] = {});
-module.exports = function(key){
+
+},{"./_shared":73,"./_uid":81}],73:[function(require,module,exports){
+var global = require('./_global');
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || (global[SHARED] = {});
+module.exports = function (key) {
   return store[key] || (store[key] = {});
 };
-},{"./_global":43}],75:[function(require,module,exports){
-var toInteger = require('./_to-integer')
-  , defined   = require('./_defined');
+
+},{"./_global":43}],74:[function(require,module,exports){
+var toInteger = require('./_to-integer');
+var defined = require('./_defined');
 // true  -> String#at
 // false -> String#codePointAt
-module.exports = function(TO_STRING){
-  return function(that, pos){
-    var s = String(defined(that))
-      , i = toInteger(pos)
-      , l = s.length
-      , a, b;
-    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
+module.exports = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(defined(that));
+    var i = toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-},{"./_defined":36,"./_to-integer":77}],76:[function(require,module,exports){
-var toInteger = require('./_to-integer')
-  , max       = Math.max
-  , min       = Math.min;
-module.exports = function(index, length){
+
+},{"./_defined":36,"./_to-integer":76}],75:[function(require,module,exports){
+var toInteger = require('./_to-integer');
+var max = Math.max;
+var min = Math.min;
+module.exports = function (index, length) {
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-},{"./_to-integer":77}],77:[function(require,module,exports){
+
+},{"./_to-integer":76}],76:[function(require,module,exports){
 // 7.1.4 ToInteger
-var ceil  = Math.ceil
-  , floor = Math.floor;
-module.exports = function(it){
+var ceil = Math.ceil;
+var floor = Math.floor;
+module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-},{}],78:[function(require,module,exports){
+
+},{}],77:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject')
-  , defined = require('./_defined');
-module.exports = function(it){
+var IObject = require('./_iobject');
+var defined = require('./_defined');
+module.exports = function (it) {
   return IObject(defined(it));
 };
-},{"./_defined":36,"./_iobject":48}],79:[function(require,module,exports){
+
+},{"./_defined":36,"./_iobject":48}],78:[function(require,module,exports){
 // 7.1.15 ToLength
-var toInteger = require('./_to-integer')
-  , min       = Math.min;
-module.exports = function(it){
+var toInteger = require('./_to-integer');
+var min = Math.min;
+module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-},{"./_to-integer":77}],80:[function(require,module,exports){
+
+},{"./_to-integer":76}],79:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
-module.exports = function(it){
+module.exports = function (it) {
   return Object(defined(it));
 };
-},{"./_defined":36}],81:[function(require,module,exports){
+
+},{"./_defined":36}],80:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function(it, S){
-  if(!isObject(it))return it;
+module.exports = function (it, S) {
+  if (!isObject(it)) return it;
   var fn, val;
-  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
-},{"./_is-object":50}],82:[function(require,module,exports){
-var id = 0
-  , px = Math.random();
-module.exports = function(key){
+
+},{"./_is-object":50}],81:[function(require,module,exports){
+var id = 0;
+var px = Math.random();
+module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-},{}],83:[function(require,module,exports){
-var global         = require('./_global')
-  , core           = require('./_core')
-  , LIBRARY        = require('./_library')
-  , wksExt         = require('./_wks-ext')
-  , defineProperty = require('./_object-dp').f;
-module.exports = function(name){
-  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
-};
-},{"./_core":34,"./_global":43,"./_library":56,"./_object-dp":59,"./_wks-ext":84}],84:[function(require,module,exports){
-exports.f = require('./_wks');
-},{"./_wks":85}],85:[function(require,module,exports){
-var store      = require('./_shared')('wks')
-  , uid        = require('./_uid')
-  , Symbol     = require('./_global').Symbol
-  , USE_SYMBOL = typeof Symbol == 'function';
 
-var $exports = module.exports = function(name){
+},{}],82:[function(require,module,exports){
+var global = require('./_global');
+var core = require('./_core');
+var LIBRARY = require('./_library');
+var wksExt = require('./_wks-ext');
+var defineProperty = require('./_object-dp').f;
+module.exports = function (name) {
+  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+};
+
+},{"./_core":34,"./_global":43,"./_library":55,"./_object-dp":58,"./_wks-ext":83}],83:[function(require,module,exports){
+exports.f = require('./_wks');
+
+},{"./_wks":84}],84:[function(require,module,exports){
+var store = require('./_shared')('wks');
+var uid = require('./_uid');
+var Symbol = require('./_global').Symbol;
+var USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function (name) {
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-},{"./_global":43,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+
+},{"./_global":43,"./_shared":73,"./_uid":81}],85:[function(require,module,exports){
 'use strict';
-var addToUnscopables = require('./_add-to-unscopables')
-  , step             = require('./_iter-step')
-  , Iterators        = require('./_iterators')
-  , toIObject        = require('./_to-iobject');
+var addToUnscopables = require('./_add-to-unscopables');
+var step = require('./_iter-step');
+var Iterators = require('./_iterators');
+var toIObject = require('./_to-iobject');
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = require('./_iter-define')(Array, 'Array', function(iterated, kind){
+module.exports = require('./_iter-define')(Array, 'Array', function (iterated, kind) {
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , kind  = this._k
-    , index = this._i++;
-  if(!O || index >= O.length){
+}, function () {
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
+  if (!O || index >= O.length) {
     this._t = undefined;
     return step(1);
   }
-  if(kind == 'keys'  )return step(0, index);
-  if(kind == 'values')return step(0, O[index]);
+  if (kind == 'keys') return step(0, index);
+  if (kind == 'values') return step(0, O[index]);
   return step(0, [index, O[index]]);
 }, 'values');
 
@@ -821,278 +883,288 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":78}],87:[function(require,module,exports){
-var $export = require('./_export')
+
+},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":77}],86:[function(require,module,exports){
+var $export = require('./_export');
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', {create: require('./_object-create')});
-},{"./_export":41,"./_object-create":58}],88:[function(require,module,exports){
+$export($export.S, 'Object', { create: require('./_object-create') });
+
+},{"./_export":41,"./_object-create":57}],87:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperties: require('./_object-dps')});
-},{"./_descriptors":37,"./_export":41,"./_object-dps":60}],89:[function(require,module,exports){
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperties: require('./_object-dps') });
+
+},{"./_descriptors":37,"./_export":41,"./_object-dps":59}],88:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
-},{"./_descriptors":37,"./_export":41,"./_object-dp":59}],90:[function(require,module,exports){
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject                 = require('./_to-iobject')
-  , $getOwnPropertyDescriptor = require('./_object-gopd').f;
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
 
-require('./_object-sap')('getOwnPropertyDescriptor', function(){
-  return function getOwnPropertyDescriptor(it, key){
+},{"./_descriptors":37,"./_export":41,"./_object-dp":58}],89:[function(require,module,exports){
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+var toIObject = require('./_to-iobject');
+var $getOwnPropertyDescriptor = require('./_object-gopd').f;
+
+require('./_object-sap')('getOwnPropertyDescriptor', function () {
+  return function getOwnPropertyDescriptor(it, key) {
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-},{"./_object-gopd":61,"./_object-sap":69,"./_to-iobject":78}],91:[function(require,module,exports){
+
+},{"./_object-gopd":60,"./_object-sap":68,"./_to-iobject":77}],90:[function(require,module,exports){
 // 19.1.2.7 Object.getOwnPropertyNames(O)
-require('./_object-sap')('getOwnPropertyNames', function(){
+require('./_object-sap')('getOwnPropertyNames', function () {
   return require('./_object-gopn-ext').f;
 });
-},{"./_object-gopn-ext":62,"./_object-sap":69}],92:[function(require,module,exports){
-// 19.1.2.9 Object.getPrototypeOf(O)
-var toObject        = require('./_to-object')
-  , $getPrototypeOf = require('./_object-gpo');
 
-require('./_object-sap')('getPrototypeOf', function(){
-  return function getPrototypeOf(it){
+},{"./_object-gopn-ext":61,"./_object-sap":68}],91:[function(require,module,exports){
+// 19.1.2.9 Object.getPrototypeOf(O)
+var toObject = require('./_to-object');
+var $getPrototypeOf = require('./_object-gpo');
+
+require('./_object-sap')('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
     return $getPrototypeOf(toObject(it));
   };
 });
-},{"./_object-gpo":65,"./_object-sap":69,"./_to-object":80}],93:[function(require,module,exports){
+
+},{"./_object-gpo":64,"./_object-sap":68,"./_to-object":79}],92:[function(require,module,exports){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = require('./_is-object');
 
-require('./_object-sap')('isExtensible', function($isExtensible){
-  return function isExtensible(it){
+require('./_object-sap')('isExtensible', function ($isExtensible) {
+  return function isExtensible(it) {
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-},{"./_is-object":50,"./_object-sap":69}],94:[function(require,module,exports){
-// 19.1.2.14 Object.keys(O)
-var toObject = require('./_to-object')
-  , $keys    = require('./_object-keys');
 
-require('./_object-sap')('keys', function(){
-  return function keys(it){
+},{"./_is-object":50,"./_object-sap":68}],93:[function(require,module,exports){
+// 19.1.2.14 Object.keys(O)
+var toObject = require('./_to-object');
+var $keys = require('./_object-keys');
+
+require('./_object-sap')('keys', function () {
+  return function keys(it) {
     return $keys(toObject(it));
   };
 });
-},{"./_object-keys":67,"./_object-sap":69,"./_to-object":80}],95:[function(require,module,exports){
-// 19.1.2.15 Object.preventExtensions(O)
-var isObject = require('./_is-object')
-  , meta     = require('./_meta').onFreeze;
 
-require('./_object-sap')('preventExtensions', function($preventExtensions){
-  return function preventExtensions(it){
+},{"./_object-keys":66,"./_object-sap":68,"./_to-object":79}],94:[function(require,module,exports){
+// 19.1.2.15 Object.preventExtensions(O)
+var isObject = require('./_is-object');
+var meta = require('./_meta').onFreeze;
+
+require('./_object-sap')('preventExtensions', function ($preventExtensions) {
+  return function preventExtensions(it) {
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
 });
-},{"./_is-object":50,"./_meta":57,"./_object-sap":69}],96:[function(require,module,exports){
+
+},{"./_is-object":50,"./_meta":56,"./_object-sap":68}],95:[function(require,module,exports){
 arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],97:[function(require,module,exports){
+},{"dup":15}],96:[function(require,module,exports){
 'use strict';
-var $at  = require('./_string-at')(true);
+var $at = require('./_string-at')(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-require('./_iter-define')(String, 'String', function(iterated){
+require('./_iter-define')(String, 'String', function (iterated) {
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , index = this._i
-    , point;
-  if(index >= O.length)return {value: undefined, done: true};
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return { value: undefined, done: true };
   point = $at(O, index);
   this._i += point.length;
-  return {value: point, done: false};
+  return { value: point, done: false };
 });
-},{"./_iter-define":52,"./_string-at":75}],98:[function(require,module,exports){
+
+},{"./_iter-define":52,"./_string-at":74}],97:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
-var global         = require('./_global')
-  , has            = require('./_has')
-  , DESCRIPTORS    = require('./_descriptors')
-  , $export        = require('./_export')
-  , redefine       = require('./_redefine')
-  , META           = require('./_meta').KEY
-  , $fails         = require('./_fails')
-  , shared         = require('./_shared')
-  , setToStringTag = require('./_set-to-string-tag')
-  , uid            = require('./_uid')
-  , wks            = require('./_wks')
-  , wksExt         = require('./_wks-ext')
-  , wksDefine      = require('./_wks-define')
-  , keyOf          = require('./_keyof')
-  , enumKeys       = require('./_enum-keys')
-  , isArray        = require('./_is-array')
-  , anObject       = require('./_an-object')
-  , toIObject      = require('./_to-iobject')
-  , toPrimitive    = require('./_to-primitive')
-  , createDesc     = require('./_property-desc')
-  , _create        = require('./_object-create')
-  , gOPNExt        = require('./_object-gopn-ext')
-  , $GOPD          = require('./_object-gopd')
-  , $DP            = require('./_object-dp')
-  , $keys          = require('./_object-keys')
-  , gOPD           = $GOPD.f
-  , dP             = $DP.f
-  , gOPN           = gOPNExt.f
-  , $Symbol        = global.Symbol
-  , $JSON          = global.JSON
-  , _stringify     = $JSON && $JSON.stringify
-  , PROTOTYPE      = 'prototype'
-  , HIDDEN         = wks('_hidden')
-  , TO_PRIMITIVE   = wks('toPrimitive')
-  , isEnum         = {}.propertyIsEnumerable
-  , SymbolRegistry = shared('symbol-registry')
-  , AllSymbols     = shared('symbols')
-  , OPSymbols      = shared('op-symbols')
-  , ObjectProto    = Object[PROTOTYPE]
-  , USE_NATIVE     = typeof $Symbol == 'function'
-  , QObject        = global.QObject;
+var global = require('./_global');
+var has = require('./_has');
+var DESCRIPTORS = require('./_descriptors');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var META = require('./_meta').KEY;
+var $fails = require('./_fails');
+var shared = require('./_shared');
+var setToStringTag = require('./_set-to-string-tag');
+var uid = require('./_uid');
+var wks = require('./_wks');
+var wksExt = require('./_wks-ext');
+var wksDefine = require('./_wks-define');
+var enumKeys = require('./_enum-keys');
+var isArray = require('./_is-array');
+var anObject = require('./_an-object');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var createDesc = require('./_property-desc');
+var _create = require('./_object-create');
+var gOPNExt = require('./_object-gopn-ext');
+var $GOPD = require('./_object-gopd');
+var $DP = require('./_object-dp');
+var $keys = require('./_object-keys');
+var gOPD = $GOPD.f;
+var dP = $DP.f;
+var gOPN = gOPNExt.f;
+var $Symbol = global.Symbol;
+var $JSON = global.JSON;
+var _stringify = $JSON && $JSON.stringify;
+var PROTOTYPE = 'prototype';
+var HIDDEN = wks('_hidden');
+var TO_PRIMITIVE = wks('toPrimitive');
+var isEnum = {}.propertyIsEnumerable;
+var SymbolRegistry = shared('symbol-registry');
+var AllSymbols = shared('symbols');
+var OPSymbols = shared('op-symbols');
+var ObjectProto = Object[PROTOTYPE];
+var USE_NATIVE = typeof $Symbol == 'function';
+var QObject = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function(){
+var setSymbolDesc = DESCRIPTORS && $fails(function () {
   return _create(dP({}, 'a', {
-    get: function(){ return dP(this, 'a', {value: 7}).a; }
+    get: function () { return dP(this, 'a', { value: 7 }).a; }
   })).a != 7;
-}) ? function(it, key, D){
+}) ? function (it, key, D) {
   var protoDesc = gOPD(ObjectProto, key);
-  if(protoDesc)delete ObjectProto[key];
+  if (protoDesc) delete ObjectProto[key];
   dP(it, key, D);
-  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
+  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
 } : dP;
 
-var wrap = function(tag){
+var wrap = function (tag) {
   var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
   return typeof it == 'symbol';
-} : function(it){
+} : function (it) {
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D){
-  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D) {
+  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
   anObject(it);
   key = toPrimitive(key, true);
   anObject(D);
-  if(has(AllSymbols, key)){
-    if(!D.enumerable){
-      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
+  if (has(AllSymbols, key)) {
+    if (!D.enumerable) {
+      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
-      D = _create(D, {enumerable: createDesc(0, false)});
+      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
+      D = _create(D, { enumerable: createDesc(0, false) });
     } return setSymbolDesc(it, key, D);
   } return dP(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P){
+var $defineProperties = function defineProperties(it, P) {
   anObject(it);
-  var keys = enumKeys(P = toIObject(P))
-    , i    = 0
-    , l = keys.length
-    , key;
-  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
+  var keys = enumKeys(P = toIObject(P));
+  var i = 0;
+  var l = keys.length;
+  var key;
+  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P){
+var $create = function create(it, P) {
   return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key){
+var $propertyIsEnumerable = function propertyIsEnumerable(key) {
   var E = isEnum.call(this, key = toPrimitive(key, true));
-  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
+  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
   return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
-  it  = toIObject(it);
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
+  it = toIObject(it);
   key = toPrimitive(key, true);
-  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
+  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
   var D = gOPD(it, key);
-  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
+  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it){
-  var names  = gOPN(toIObject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it) {
+  var names = gOPN(toIObject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
-  var IS_OP  = it === ObjectProto
-    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
+  var IS_OP = it === ObjectProto;
+  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if(!USE_NATIVE){
-  $Symbol = function Symbol(){
-    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
+if (!USE_NATIVE) {
+  $Symbol = function Symbol() {
+    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
     var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function(value){
-      if(this === ObjectProto)$set.call(OPSymbols, value);
-      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
+    var $set = function (value) {
+      if (this === ObjectProto) $set.call(OPSymbols, value);
+      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, createDesc(1, value));
     };
-    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
+    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
     return wrap(tag);
   };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
+  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
     return this._k;
   });
 
   $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f   = $defineProperty;
+  $DP.f = $defineProperty;
   require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
-  require('./_object-pie').f  = $propertyIsEnumerable;
+  require('./_object-pie').f = $propertyIsEnumerable;
   require('./_object-gops').f = $getOwnPropertySymbols;
 
-  if(DESCRIPTORS && !require('./_library')){
+  if (DESCRIPTORS && !require('./_library')) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  wksExt.f = function(name){
+  wksExt.f = function (name) {
     return wrap(wks(name));
-  }
+  };
 }
 
-$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
+$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
 
-for(var symbols = (
+for (var es6Symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
+).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
 
-for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
+for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
 
 $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function(key){
+  'for': function (key) {
     return has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(key){
-    if(isSymbol(key))return keyOf(SymbolRegistry, key);
-    throw TypeError(key + ' is not a symbol!');
+  keyFor: function keyFor(sym) {
+    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
+    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
   },
-  useSetter: function(){ setter = true; },
-  useSimple: function(){ setter = false; }
+  useSetter: function () { setter = true; },
+  useSimple: function () { setter = false; }
 });
 
 $export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -1111,24 +1183,24 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it){
-    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
-    var args = [it]
-      , i    = 1
-      , replacer, $replacer;
-    while(arguments.length > i)args.push(arguments[i++]);
+  stringify: function stringify(it) {
+    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    var args = [it];
+    var i = 1;
+    var replacer, $replacer;
+    while (arguments.length > i) args.push(arguments[i++]);
     replacer = args[1];
-    if(typeof replacer == 'function')$replacer = replacer;
-    if($replacer || !isArray(replacer))replacer = function(key, value){
-      if($replacer)value = $replacer.call(this, key, value);
-      if(!isSymbol(value))return value;
+    if (typeof replacer == 'function') $replacer = replacer;
+    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
+      if ($replacer) value = $replacer.call(this, key, value);
+      if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -1143,25 +1215,35 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_keyof":55,"./_library":56,"./_meta":57,"./_object-create":58,"./_object-dp":59,"./_object-gopd":61,"./_object-gopn":63,"./_object-gopn-ext":62,"./_object-gops":64,"./_object-keys":67,"./_object-pie":68,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],99:[function(require,module,exports){
-require('./_wks-define')('asyncIterator');
-},{"./_wks-define":83}],100:[function(require,module,exports){
-require('./_wks-define')('observable');
-},{"./_wks-define":83}],101:[function(require,module,exports){
-require('./es6.array.iterator');
-var global        = require('./_global')
-  , hide          = require('./_hide')
-  , Iterators     = require('./_iterators')
-  , TO_STRING_TAG = require('./_wks')('toStringTag');
 
-for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
-  var NAME       = collections[i]
-    , Collection = global[NAME]
-    , proto      = Collection && Collection.prototype;
-  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
+},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_library":55,"./_meta":56,"./_object-create":57,"./_object-dp":58,"./_object-gopd":60,"./_object-gopn":62,"./_object-gopn-ext":61,"./_object-gops":63,"./_object-keys":66,"./_object-pie":67,"./_property-desc":69,"./_redefine":70,"./_set-to-string-tag":71,"./_shared":73,"./_to-iobject":77,"./_to-primitive":80,"./_uid":81,"./_wks":84,"./_wks-define":82,"./_wks-ext":83}],98:[function(require,module,exports){
+require('./_wks-define')('asyncIterator');
+
+},{"./_wks-define":82}],99:[function(require,module,exports){
+require('./_wks-define')('observable');
+
+},{"./_wks-define":82}],100:[function(require,module,exports){
+require('./es6.array.iterator');
+var global = require('./_global');
+var hide = require('./_hide');
+var Iterators = require('./_iterators');
+var TO_STRING_TAG = require('./_wks')('toStringTag');
+
+var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
+  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
+  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
+  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
+  'TextTrackList,TouchList').split(',');
+
+for (var i = 0; i < DOMIterables.length; i++) {
+  var NAME = DOMIterables[i];
+  var Collection = global[NAME];
+  var proto = Collection && Collection.prototype;
+  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":85,"./es6.array.iterator":86}],102:[function(require,module,exports){
+
+},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":84,"./es6.array.iterator":85}],101:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2495,7 +2577,7 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],103:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2681,7 +2763,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -2982,7 +3064,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],105:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -4552,2518 +4634,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":15}],106:[function(require,module,exports){
-(function (process){
-/**
-  * vue-router v2.7.0
-  * (c) 2017 Evan You
-  * @license MIT
-  */
-'use strict';
-
-/*  */
-
-function assert (condition, message) {
-  if (!condition) {
-    throw new Error(("[vue-router] " + message))
-  }
-}
-
-function warn (condition, message) {
-  if (process.env.NODE_ENV !== 'production' && !condition) {
-    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
-  }
-}
-
-function isError (err) {
-  return Object.prototype.toString.call(err).indexOf('Error') > -1
-}
-
-var View = {
-  name: 'router-view',
-  functional: true,
-  props: {
-    name: {
-      type: String,
-      default: 'default'
-    }
-  },
-  render: function render (_, ref) {
-    var props = ref.props;
-    var children = ref.children;
-    var parent = ref.parent;
-    var data = ref.data;
-
-    data.routerView = true;
-
-    // directly use parent context's createElement() function
-    // so that components rendered by router-view can resolve named slots
-    var h = parent.$createElement;
-    var name = props.name;
-    var route = parent.$route;
-    var cache = parent._routerViewCache || (parent._routerViewCache = {});
-
-    // determine current view depth, also check to see if the tree
-    // has been toggled inactive but kept-alive.
-    var depth = 0;
-    var inactive = false;
-    while (parent && parent._routerRoot !== parent) {
-      if (parent.$vnode && parent.$vnode.data.routerView) {
-        depth++;
-      }
-      if (parent._inactive) {
-        inactive = true;
-      }
-      parent = parent.$parent;
-    }
-    data.routerViewDepth = depth;
-
-    // render previous view if the tree is inactive and kept-alive
-    if (inactive) {
-      return h(cache[name], data, children)
-    }
-
-    var matched = route.matched[depth];
-    // render empty node if no matched route
-    if (!matched) {
-      cache[name] = null;
-      return h()
-    }
-
-    var component = cache[name] = matched.components[name];
-
-    // attach instance registration hook
-    // this will be called in the instance's injected lifecycle hooks
-    data.registerRouteInstance = function (vm, val) {
-      // val could be undefined for unregistration
-      var current = matched.instances[name];
-      if (
-        (val && current !== vm) ||
-        (!val && current === vm)
-      ) {
-        matched.instances[name] = val;
-      }
-    }
-
-    // also regiseter instance in prepatch hook
-    // in case the same component instance is reused across different routes
-    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
-      matched.instances[name] = vnode.componentInstance;
-    };
-
-    // resolve props
-    data.props = resolveProps(route, matched.props && matched.props[name]);
-
-    return h(component, data, children)
-  }
-};
-
-function resolveProps (route, config) {
-  switch (typeof config) {
-    case 'undefined':
-      return
-    case 'object':
-      return config
-    case 'function':
-      return config(route)
-    case 'boolean':
-      return config ? route.params : undefined
-    default:
-      if (process.env.NODE_ENV !== 'production') {
-        warn(
-          false,
-          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
-          "expecting an object, function or boolean."
-        );
-      }
-  }
-}
-
-/*  */
-
-var encodeReserveRE = /[!'()*]/g;
-var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
-var commaRE = /%2C/g;
-
-// fixed encodeURIComponent which is more conformant to RFC3986:
-// - escapes [!'()*]
-// - preserve commas
-var encode = function (str) { return encodeURIComponent(str)
-  .replace(encodeReserveRE, encodeReserveReplacer)
-  .replace(commaRE, ','); };
-
-var decode = decodeURIComponent;
-
-function resolveQuery (
-  query,
-  extraQuery,
-  _parseQuery
-) {
-  if ( extraQuery === void 0 ) extraQuery = {};
-
-  var parse = _parseQuery || parseQuery;
-  var parsedQuery;
-  try {
-    parsedQuery = parse(query || '');
-  } catch (e) {
-    process.env.NODE_ENV !== 'production' && warn(false, e.message);
-    parsedQuery = {};
-  }
-  for (var key in extraQuery) {
-    var val = extraQuery[key];
-    parsedQuery[key] = Array.isArray(val) ? val.slice() : val;
-  }
-  return parsedQuery
-}
-
-function parseQuery (query) {
-  var res = {};
-
-  query = query.trim().replace(/^(\?|#|&)/, '');
-
-  if (!query) {
-    return res
-  }
-
-  query.split('&').forEach(function (param) {
-    var parts = param.replace(/\+/g, ' ').split('=');
-    var key = decode(parts.shift());
-    var val = parts.length > 0
-      ? decode(parts.join('='))
-      : null;
-
-    if (res[key] === undefined) {
-      res[key] = val;
-    } else if (Array.isArray(res[key])) {
-      res[key].push(val);
-    } else {
-      res[key] = [res[key], val];
-    }
-  });
-
-  return res
-}
-
-function stringifyQuery (obj) {
-  var res = obj ? Object.keys(obj).map(function (key) {
-    var val = obj[key];
-
-    if (val === undefined) {
-      return ''
-    }
-
-    if (val === null) {
-      return encode(key)
-    }
-
-    if (Array.isArray(val)) {
-      var result = [];
-      val.forEach(function (val2) {
-        if (val2 === undefined) {
-          return
-        }
-        if (val2 === null) {
-          result.push(encode(key));
-        } else {
-          result.push(encode(key) + '=' + encode(val2));
-        }
-      });
-      return result.join('&')
-    }
-
-    return encode(key) + '=' + encode(val)
-  }).filter(function (x) { return x.length > 0; }).join('&') : null;
-  return res ? ("?" + res) : ''
-}
-
-/*  */
-
-
-var trailingSlashRE = /\/?$/;
-
-function createRoute (
-  record,
-  location,
-  redirectedFrom,
-  router
-) {
-  var stringifyQuery$$1 = router && router.options.stringifyQuery;
-  var route = {
-    name: location.name || (record && record.name),
-    meta: (record && record.meta) || {},
-    path: location.path || '/',
-    hash: location.hash || '',
-    query: location.query || {},
-    params: location.params || {},
-    fullPath: getFullPath(location, stringifyQuery$$1),
-    matched: record ? formatMatch(record) : []
-  };
-  if (redirectedFrom) {
-    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery$$1);
-  }
-  return Object.freeze(route)
-}
-
-// the starting route that represents the initial state
-var START = createRoute(null, {
-  path: '/'
-});
-
-function formatMatch (record) {
-  var res = [];
-  while (record) {
-    res.unshift(record);
-    record = record.parent;
-  }
-  return res
-}
-
-function getFullPath (
-  ref,
-  _stringifyQuery
-) {
-  var path = ref.path;
-  var query = ref.query; if ( query === void 0 ) query = {};
-  var hash = ref.hash; if ( hash === void 0 ) hash = '';
-
-  var stringify = _stringifyQuery || stringifyQuery;
-  return (path || '/') + stringify(query) + hash
-}
-
-function isSameRoute (a, b) {
-  if (b === START) {
-    return a === b
-  } else if (!b) {
-    return false
-  } else if (a.path && b.path) {
-    return (
-      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query)
-    )
-  } else if (a.name && b.name) {
-    return (
-      a.name === b.name &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query) &&
-      isObjectEqual(a.params, b.params)
-    )
-  } else {
-    return false
-  }
-}
-
-function isObjectEqual (a, b) {
-  if ( a === void 0 ) a = {};
-  if ( b === void 0 ) b = {};
-
-  var aKeys = Object.keys(a);
-  var bKeys = Object.keys(b);
-  if (aKeys.length !== bKeys.length) {
-    return false
-  }
-  return aKeys.every(function (key) {
-    var aVal = a[key];
-    var bVal = b[key];
-    // check nested equality
-    if (typeof aVal === 'object' && typeof bVal === 'object') {
-      return isObjectEqual(aVal, bVal)
-    }
-    return String(aVal) === String(bVal)
-  })
-}
-
-function isIncludedRoute (current, target) {
-  return (
-    current.path.replace(trailingSlashRE, '/').indexOf(
-      target.path.replace(trailingSlashRE, '/')
-    ) === 0 &&
-    (!target.hash || current.hash === target.hash) &&
-    queryIncludes(current.query, target.query)
-  )
-}
-
-function queryIncludes (current, target) {
-  for (var key in target) {
-    if (!(key in current)) {
-      return false
-    }
-  }
-  return true
-}
-
-/*  */
-
-// work around weird flow bug
-var toTypes = [String, Object];
-var eventTypes = [String, Array];
-
-var Link = {
-  name: 'router-link',
-  props: {
-    to: {
-      type: toTypes,
-      required: true
-    },
-    tag: {
-      type: String,
-      default: 'a'
-    },
-    exact: Boolean,
-    append: Boolean,
-    replace: Boolean,
-    activeClass: String,
-    exactActiveClass: String,
-    event: {
-      type: eventTypes,
-      default: 'click'
-    }
-  },
-  render: function render (h) {
-    var this$1 = this;
-
-    var router = this.$router;
-    var current = this.$route;
-    var ref = router.resolve(this.to, current, this.append);
-    var location = ref.location;
-    var route = ref.route;
-    var href = ref.href;
-
-    var classes = {};
-    var globalActiveClass = router.options.linkActiveClass;
-    var globalExactActiveClass = router.options.linkExactActiveClass;
-    // Support global empty active class
-    var activeClassFallback = globalActiveClass == null
-            ? 'router-link-active'
-            : globalActiveClass;
-    var exactActiveClassFallback = globalExactActiveClass == null
-            ? 'router-link-exact-active'
-            : globalExactActiveClass;
-    var activeClass = this.activeClass == null
-            ? activeClassFallback
-            : this.activeClass;
-    var exactActiveClass = this.exactActiveClass == null
-            ? exactActiveClassFallback
-            : this.exactActiveClass;
-    var compareTarget = location.path
-      ? createRoute(null, location, null, router)
-      : route;
-
-    classes[exactActiveClass] = isSameRoute(current, compareTarget);
-    classes[activeClass] = this.exact
-      ? classes[exactActiveClass]
-      : isIncludedRoute(current, compareTarget);
-
-    var handler = function (e) {
-      if (guardEvent(e)) {
-        if (this$1.replace) {
-          router.replace(location);
-        } else {
-          router.push(location);
-        }
-      }
-    };
-
-    var on = { click: guardEvent };
-    if (Array.isArray(this.event)) {
-      this.event.forEach(function (e) { on[e] = handler; });
-    } else {
-      on[this.event] = handler;
-    }
-
-    var data = {
-      class: classes
-    };
-
-    if (this.tag === 'a') {
-      data.on = on;
-      data.attrs = { href: href };
-    } else {
-      // find the first <a> child and apply listener and href
-      var a = findAnchor(this.$slots.default);
-      if (a) {
-        // in case the <a> is a static node
-        a.isStatic = false;
-        var extend = _Vue.util.extend;
-        var aData = a.data = extend({}, a.data);
-        aData.on = on;
-        var aAttrs = a.data.attrs = extend({}, a.data.attrs);
-        aAttrs.href = href;
-      } else {
-        // doesn't have <a> child, apply listener to self
-        data.on = on;
-      }
-    }
-
-    return h(this.tag, data, this.$slots.default)
-  }
-};
-
-function guardEvent (e) {
-  // don't redirect with control keys
-  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
-  // don't redirect when preventDefault called
-  if (e.defaultPrevented) { return }
-  // don't redirect on right click
-  if (e.button !== undefined && e.button !== 0) { return }
-  // don't redirect if `target="_blank"`
-  if (e.currentTarget && e.currentTarget.getAttribute) {
-    var target = e.currentTarget.getAttribute('target');
-    if (/\b_blank\b/i.test(target)) { return }
-  }
-  // this may be a Weex event which doesn't have this method
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  return true
-}
-
-function findAnchor (children) {
-  if (children) {
-    var child;
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      if (child.tag === 'a') {
-        return child
-      }
-      if (child.children && (child = findAnchor(child.children))) {
-        return child
-      }
-    }
-  }
-}
-
-var _Vue;
-
-function install (Vue) {
-  if (install.installed) { return }
-  install.installed = true;
-
-  _Vue = Vue;
-
-  var isDef = function (v) { return v !== undefined; };
-
-  var registerInstance = function (vm, callVal) {
-    var i = vm.$options._parentVnode;
-    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
-      i(vm, callVal);
-    }
-  };
-
-  Vue.mixin({
-    beforeCreate: function beforeCreate () {
-      if (isDef(this.$options.router)) {
-        this._routerRoot = this;
-        this._router = this.$options.router;
-        this._router.init(this);
-        Vue.util.defineReactive(this, '_route', this._router.history.current);
-      } else {
-        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
-      }
-      registerInstance(this, this);
-    },
-    destroyed: function destroyed () {
-      registerInstance(this);
-    }
-  });
-
-  Object.defineProperty(Vue.prototype, '$router', {
-    get: function get () { return this._routerRoot._router }
-  });
-
-  Object.defineProperty(Vue.prototype, '$route', {
-    get: function get () { return this._routerRoot._route }
-  });
-
-  Vue.component('router-view', View);
-  Vue.component('router-link', Link);
-
-  var strats = Vue.config.optionMergeStrategies;
-  // use the same hook merging strategy for route hooks
-  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
-}
-
-/*  */
-
-var inBrowser = typeof window !== 'undefined';
-
-/*  */
-
-function resolvePath (
-  relative,
-  base,
-  append
-) {
-  var firstChar = relative.charAt(0);
-  if (firstChar === '/') {
-    return relative
-  }
-
-  if (firstChar === '?' || firstChar === '#') {
-    return base + relative
-  }
-
-  var stack = base.split('/');
-
-  // remove trailing segment if:
-  // - not appending
-  // - appending to trailing slash (last segment is empty)
-  if (!append || !stack[stack.length - 1]) {
-    stack.pop();
-  }
-
-  // resolve relative path
-  var segments = relative.replace(/^\//, '').split('/');
-  for (var i = 0; i < segments.length; i++) {
-    var segment = segments[i];
-    if (segment === '..') {
-      stack.pop();
-    } else if (segment !== '.') {
-      stack.push(segment);
-    }
-  }
-
-  // ensure leading slash
-  if (stack[0] !== '') {
-    stack.unshift('');
-  }
-
-  return stack.join('/')
-}
-
-function parsePath (path) {
-  var hash = '';
-  var query = '';
-
-  var hashIndex = path.indexOf('#');
-  if (hashIndex >= 0) {
-    hash = path.slice(hashIndex);
-    path = path.slice(0, hashIndex);
-  }
-
-  var queryIndex = path.indexOf('?');
-  if (queryIndex >= 0) {
-    query = path.slice(queryIndex + 1);
-    path = path.slice(0, queryIndex);
-  }
-
-  return {
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function cleanPath (path) {
-  return path.replace(/\/\//g, '/')
-}
-
-var index$1 = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-/**
- * Expose `pathToRegexp`.
- */
-var index = pathToRegexp;
-var parse_1 = parse;
-var compile_1 = compile;
-var tokensToFunction_1 = tokensToFunction;
-var tokensToRegExp_1 = tokensToRegExp;
-
-/**
- * The main path matching regexp utility.
- *
- * @type {RegExp}
- */
-var PATH_REGEXP = new RegExp([
-  // Match escaped characters that would otherwise appear in future matches.
-  // This allows the user to escape special characters that won't transform.
-  '(\\\\.)',
-  // Match Express-style parameters and un-named parameters with a prefix
-  // and optional suffixes. Matches appear as:
-  //
-  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
-  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
-  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
-  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
-].join('|'), 'g');
-
-/**
- * Parse a string for the raw tokens.
- *
- * @param  {string}  str
- * @param  {Object=} options
- * @return {!Array}
- */
-function parse (str, options) {
-  var tokens = [];
-  var key = 0;
-  var index = 0;
-  var path = '';
-  var defaultDelimiter = options && options.delimiter || '/';
-  var res;
-
-  while ((res = PATH_REGEXP.exec(str)) != null) {
-    var m = res[0];
-    var escaped = res[1];
-    var offset = res.index;
-    path += str.slice(index, offset);
-    index = offset + m.length;
-
-    // Ignore already escaped sequences.
-    if (escaped) {
-      path += escaped[1];
-      continue
-    }
-
-    var next = str[index];
-    var prefix = res[2];
-    var name = res[3];
-    var capture = res[4];
-    var group = res[5];
-    var modifier = res[6];
-    var asterisk = res[7];
-
-    // Push the current path onto the tokens.
-    if (path) {
-      tokens.push(path);
-      path = '';
-    }
-
-    var partial = prefix != null && next != null && next !== prefix;
-    var repeat = modifier === '+' || modifier === '*';
-    var optional = modifier === '?' || modifier === '*';
-    var delimiter = res[2] || defaultDelimiter;
-    var pattern = capture || group;
-
-    tokens.push({
-      name: name || key++,
-      prefix: prefix || '',
-      delimiter: delimiter,
-      optional: optional,
-      repeat: repeat,
-      partial: partial,
-      asterisk: !!asterisk,
-      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
-    });
-  }
-
-  // Match any characters still remaining.
-  if (index < str.length) {
-    path += str.substr(index);
-  }
-
-  // If the path exists, push it onto the end.
-  if (path) {
-    tokens.push(path);
-  }
-
-  return tokens
-}
-
-/**
- * Compile a string to a template function for the path.
- *
- * @param  {string}             str
- * @param  {Object=}            options
- * @return {!function(Object=, Object=)}
- */
-function compile (str, options) {
-  return tokensToFunction(parse(str, options))
-}
-
-/**
- * Prettier encoding of URI path segments.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeURIComponentPretty (str) {
-  return encodeURI(str).replace(/[\/?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeAsterisk (str) {
-  return encodeURI(str).replace(/[?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Expose a method for transforming tokens into the path function.
- */
-function tokensToFunction (tokens) {
-  // Compile all the tokens into regexps.
-  var matches = new Array(tokens.length);
-
-  // Compile all the patterns before compilation.
-  for (var i = 0; i < tokens.length; i++) {
-    if (typeof tokens[i] === 'object') {
-      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
-    }
-  }
-
-  return function (obj, opts) {
-    var path = '';
-    var data = obj || {};
-    var options = opts || {};
-    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
-
-    for (var i = 0; i < tokens.length; i++) {
-      var token = tokens[i];
-
-      if (typeof token === 'string') {
-        path += token;
-
-        continue
-      }
-
-      var value = data[token.name];
-      var segment;
-
-      if (value == null) {
-        if (token.optional) {
-          // Prepend partial segment prefixes.
-          if (token.partial) {
-            path += token.prefix;
-          }
-
-          continue
-        } else {
-          throw new TypeError('Expected "' + token.name + '" to be defined')
-        }
-      }
-
-      if (index$1(value)) {
-        if (!token.repeat) {
-          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
-        }
-
-        if (value.length === 0) {
-          if (token.optional) {
-            continue
-          } else {
-            throw new TypeError('Expected "' + token.name + '" to not be empty')
-          }
-        }
-
-        for (var j = 0; j < value.length; j++) {
-          segment = encode(value[j]);
-
-          if (!matches[i].test(segment)) {
-            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
-          }
-
-          path += (j === 0 ? token.prefix : token.delimiter) + segment;
-        }
-
-        continue
-      }
-
-      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
-
-      if (!matches[i].test(segment)) {
-        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
-      }
-
-      path += token.prefix + segment;
-    }
-
-    return path
-  }
-}
-
-/**
- * Escape a regular expression string.
- *
- * @param  {string} str
- * @return {string}
- */
-function escapeString (str) {
-  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
-}
-
-/**
- * Escape the capturing group by escaping special characters and meaning.
- *
- * @param  {string} group
- * @return {string}
- */
-function escapeGroup (group) {
-  return group.replace(/([=!:$\/()])/g, '\\$1')
-}
-
-/**
- * Attach the keys as a property of the regexp.
- *
- * @param  {!RegExp} re
- * @param  {Array}   keys
- * @return {!RegExp}
- */
-function attachKeys (re, keys) {
-  re.keys = keys;
-  return re
-}
-
-/**
- * Get the flags for a regexp from the options.
- *
- * @param  {Object} options
- * @return {string}
- */
-function flags (options) {
-  return options.sensitive ? '' : 'i'
-}
-
-/**
- * Pull out keys from a regexp.
- *
- * @param  {!RegExp} path
- * @param  {!Array}  keys
- * @return {!RegExp}
- */
-function regexpToRegexp (path, keys) {
-  // Use a negative lookahead to match only capturing groups.
-  var groups = path.source.match(/\((?!\?)/g);
-
-  if (groups) {
-    for (var i = 0; i < groups.length; i++) {
-      keys.push({
-        name: i,
-        prefix: null,
-        delimiter: null,
-        optional: false,
-        repeat: false,
-        partial: false,
-        asterisk: false,
-        pattern: null
-      });
-    }
-  }
-
-  return attachKeys(path, keys)
-}
-
-/**
- * Transform an array into a regexp.
- *
- * @param  {!Array}  path
- * @param  {Array}   keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function arrayToRegexp (path, keys, options) {
-  var parts = [];
-
-  for (var i = 0; i < path.length; i++) {
-    parts.push(pathToRegexp(path[i], keys, options).source);
-  }
-
-  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
-
-  return attachKeys(regexp, keys)
-}
-
-/**
- * Create a path regexp from string input.
- *
- * @param  {string}  path
- * @param  {!Array}  keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function stringToRegexp (path, keys, options) {
-  return tokensToRegExp(parse(path, options), keys, options)
-}
-
-/**
- * Expose a function for taking tokens and returning a RegExp.
- *
- * @param  {!Array}          tokens
- * @param  {(Array|Object)=} keys
- * @param  {Object=}         options
- * @return {!RegExp}
- */
-function tokensToRegExp (tokens, keys, options) {
-  if (!index$1(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  var strict = options.strict;
-  var end = options.end !== false;
-  var route = '';
-
-  // Iterate over the tokens and create our regexp string.
-  for (var i = 0; i < tokens.length; i++) {
-    var token = tokens[i];
-
-    if (typeof token === 'string') {
-      route += escapeString(token);
-    } else {
-      var prefix = escapeString(token.prefix);
-      var capture = '(?:' + token.pattern + ')';
-
-      keys.push(token);
-
-      if (token.repeat) {
-        capture += '(?:' + prefix + capture + ')*';
-      }
-
-      if (token.optional) {
-        if (!token.partial) {
-          capture = '(?:' + prefix + '(' + capture + '))?';
-        } else {
-          capture = prefix + '(' + capture + ')?';
-        }
-      } else {
-        capture = prefix + '(' + capture + ')';
-      }
-
-      route += capture;
-    }
-  }
-
-  var delimiter = escapeString(options.delimiter || '/');
-  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
-
-  // In non-strict mode we allow a slash at the end of match. If the path to
-  // match already ends with a slash, we remove it for consistency. The slash
-  // is valid at the end of a path match, not in the middle. This is important
-  // in non-ending mode, where "/test/" shouldn't match "/test//route".
-  if (!strict) {
-    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
-  }
-
-  if (end) {
-    route += '$';
-  } else {
-    // In non-ending mode, we need the capturing groups to match as much as
-    // possible by using a positive lookahead to the end or next path segment.
-    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
-  }
-
-  return attachKeys(new RegExp('^' + route, flags(options)), keys)
-}
-
-/**
- * Normalize the given path string, returning a regular expression.
- *
- * An empty array can be passed in for the keys, which will hold the
- * placeholder key descriptions. For example, using `/user/:id`, `keys` will
- * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
- *
- * @param  {(string|RegExp|Array)} path
- * @param  {(Array|Object)=}       keys
- * @param  {Object=}               options
- * @return {!RegExp}
- */
-function pathToRegexp (path, keys, options) {
-  if (!index$1(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  if (path instanceof RegExp) {
-    return regexpToRegexp(path, /** @type {!Array} */ (keys))
-  }
-
-  if (index$1(path)) {
-    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
-  }
-
-  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
-}
-
-index.parse = parse_1;
-index.compile = compile_1;
-index.tokensToFunction = tokensToFunction_1;
-index.tokensToRegExp = tokensToRegExp_1;
-
-/*  */
-
-var regexpCompileCache = Object.create(null);
-
-function fillParams (
-  path,
-  params,
-  routeMsg
-) {
-  try {
-    var filler =
-      regexpCompileCache[path] ||
-      (regexpCompileCache[path] = index.compile(path));
-    return filler(params || {}, { pretty: true })
-  } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      warn(false, ("missing param for " + routeMsg + ": " + (e.message)));
-    }
-    return ''
-  }
-}
-
-/*  */
-
-function createRouteMap (
-  routes,
-  oldPathList,
-  oldPathMap,
-  oldNameMap
-) {
-  // the path list is used to control path matching priority
-  var pathList = oldPathList || [];
-  var pathMap = oldPathMap || Object.create(null);
-  var nameMap = oldNameMap || Object.create(null);
-
-  routes.forEach(function (route) {
-    addRouteRecord(pathList, pathMap, nameMap, route);
-  });
-
-  // ensure wildcard routes are always at the end
-  for (var i = 0, l = pathList.length; i < l; i++) {
-    if (pathList[i] === '*') {
-      pathList.push(pathList.splice(i, 1)[0]);
-      l--;
-      i--;
-    }
-  }
-
-  return {
-    pathList: pathList,
-    pathMap: pathMap,
-    nameMap: nameMap
-  }
-}
-
-function addRouteRecord (
-  pathList,
-  pathMap,
-  nameMap,
-  route,
-  parent,
-  matchAs
-) {
-  var path = route.path;
-  var name = route.name;
-  if (process.env.NODE_ENV !== 'production') {
-    assert(path != null, "\"path\" is required in a route configuration.");
-    assert(
-      typeof route.component !== 'string',
-      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
-      "string id. Use an actual component instead."
-    );
-  }
-
-  var normalizedPath = normalizePath(path, parent);
-  var pathToRegexpOptions = route.pathToRegexpOptions || {};
-
-  if (typeof route.caseSensitive === 'boolean') {
-    pathToRegexpOptions.sensitive = route.caseSensitive;
-  }
-
-  var record = {
-    path: normalizedPath,
-    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
-    components: route.components || { default: route.component },
-    instances: {},
-    name: name,
-    parent: parent,
-    matchAs: matchAs,
-    redirect: route.redirect,
-    beforeEnter: route.beforeEnter,
-    meta: route.meta || {},
-    props: route.props == null
-      ? {}
-      : route.components
-        ? route.props
-        : { default: route.props }
-  };
-
-  if (route.children) {
-    // Warn if route is named, does not redirect and has a default child route.
-    // If users navigate to this route by name, the default child will
-    // not be rendered (GH Issue #629)
-    if (process.env.NODE_ENV !== 'production') {
-      if (route.name && !route.redirect && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
-        warn(
-          false,
-          "Named Route '" + (route.name) + "' has a default child route. " +
-          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
-          "the default child route will not be rendered. Remove the name from " +
-          "this route and use the name of the default child route for named " +
-          "links instead."
-        );
-      }
-    }
-    route.children.forEach(function (child) {
-      var childMatchAs = matchAs
-        ? cleanPath((matchAs + "/" + (child.path)))
-        : undefined;
-      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
-    });
-  }
-
-  if (route.alias !== undefined) {
-    var aliases = Array.isArray(route.alias)
-      ? route.alias
-      : [route.alias];
-
-    aliases.forEach(function (alias) {
-      var aliasRoute = {
-        path: alias,
-        children: route.children
-      };
-      addRouteRecord(
-        pathList,
-        pathMap,
-        nameMap,
-        aliasRoute,
-        parent,
-        record.path || '/' // matchAs
-      );
-    });
-  }
-
-  if (!pathMap[record.path]) {
-    pathList.push(record.path);
-    pathMap[record.path] = record;
-  }
-
-  if (name) {
-    if (!nameMap[name]) {
-      nameMap[name] = record;
-    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
-      warn(
-        false,
-        "Duplicate named routes definition: " +
-        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
-      );
-    }
-  }
-}
-
-function compileRouteRegex (path, pathToRegexpOptions) {
-  var regex = index(path, [], pathToRegexpOptions);
-  if (process.env.NODE_ENV !== 'production') {
-    var keys = {};
-    regex.keys.forEach(function (key) {
-      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
-      keys[key.name] = true;
-    });
-  }
-  return regex
-}
-
-function normalizePath (path, parent) {
-  path = path.replace(/\/$/, '');
-  if (path[0] === '/') { return path }
-  if (parent == null) { return path }
-  return cleanPath(((parent.path) + "/" + path))
-}
-
-/*  */
-
-
-function normalizeLocation (
-  raw,
-  current,
-  append,
-  router
-) {
-  var next = typeof raw === 'string' ? { path: raw } : raw;
-  // named target
-  if (next.name || next._normalized) {
-    return next
-  }
-
-  // relative params
-  if (!next.path && next.params && current) {
-    next = assign({}, next);
-    next._normalized = true;
-    var params = assign(assign({}, current.params), next.params);
-    if (current.name) {
-      next.name = current.name;
-      next.params = params;
-    } else if (current.matched.length) {
-      var rawPath = current.matched[current.matched.length - 1].path;
-      next.path = fillParams(rawPath, params, ("path " + (current.path)));
-    } else if (process.env.NODE_ENV !== 'production') {
-      warn(false, "relative params navigation requires a current route.");
-    }
-    return next
-  }
-
-  var parsedPath = parsePath(next.path || '');
-  var basePath = (current && current.path) || '/';
-  var path = parsedPath.path
-    ? resolvePath(parsedPath.path, basePath, append || next.append)
-    : basePath;
-
-  var query = resolveQuery(
-    parsedPath.query,
-    next.query,
-    router && router.options.parseQuery
-  );
-
-  var hash = next.hash || parsedPath.hash;
-  if (hash && hash.charAt(0) !== '#') {
-    hash = "#" + hash;
-  }
-
-  return {
-    _normalized: true,
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function assign (a, b) {
-  for (var key in b) {
-    a[key] = b[key];
-  }
-  return a
-}
-
-/*  */
-
-
-function createMatcher (
-  routes,
-  router
-) {
-  var ref = createRouteMap(routes);
-  var pathList = ref.pathList;
-  var pathMap = ref.pathMap;
-  var nameMap = ref.nameMap;
-
-  function addRoutes (routes) {
-    createRouteMap(routes, pathList, pathMap, nameMap);
-  }
-
-  function match (
-    raw,
-    currentRoute,
-    redirectedFrom
-  ) {
-    var location = normalizeLocation(raw, currentRoute, false, router);
-    var name = location.name;
-
-    if (name) {
-      var record = nameMap[name];
-      if (process.env.NODE_ENV !== 'production') {
-        warn(record, ("Route with name '" + name + "' does not exist"));
-      }
-      if (!record) { return _createRoute(null, location) }
-      var paramNames = record.regex.keys
-        .filter(function (key) { return !key.optional; })
-        .map(function (key) { return key.name; });
-
-      if (typeof location.params !== 'object') {
-        location.params = {};
-      }
-
-      if (currentRoute && typeof currentRoute.params === 'object') {
-        for (var key in currentRoute.params) {
-          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
-            location.params[key] = currentRoute.params[key];
-          }
-        }
-      }
-
-      if (record) {
-        location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
-        return _createRoute(record, location, redirectedFrom)
-      }
-    } else if (location.path) {
-      location.params = {};
-      for (var i = 0; i < pathList.length; i++) {
-        var path = pathList[i];
-        var record$1 = pathMap[path];
-        if (matchRoute(record$1.regex, location.path, location.params)) {
-          return _createRoute(record$1, location, redirectedFrom)
-        }
-      }
-    }
-    // no match
-    return _createRoute(null, location)
-  }
-
-  function redirect (
-    record,
-    location
-  ) {
-    var originalRedirect = record.redirect;
-    var redirect = typeof originalRedirect === 'function'
-        ? originalRedirect(createRoute(record, location, null, router))
-        : originalRedirect;
-
-    if (typeof redirect === 'string') {
-      redirect = { path: redirect };
-    }
-
-    if (!redirect || typeof redirect !== 'object') {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(
-          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
-        );
-      }
-      return _createRoute(null, location)
-    }
-
-    var re = redirect;
-    var name = re.name;
-    var path = re.path;
-    var query = location.query;
-    var hash = location.hash;
-    var params = location.params;
-    query = re.hasOwnProperty('query') ? re.query : query;
-    hash = re.hasOwnProperty('hash') ? re.hash : hash;
-    params = re.hasOwnProperty('params') ? re.params : params;
-
-    if (name) {
-      // resolved named direct
-      var targetRecord = nameMap[name];
-      if (process.env.NODE_ENV !== 'production') {
-        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
-      }
-      return match({
-        _normalized: true,
-        name: name,
-        query: query,
-        hash: hash,
-        params: params
-      }, undefined, location)
-    } else if (path) {
-      // 1. resolve relative redirect
-      var rawPath = resolveRecordPath(path, record);
-      // 2. resolve params
-      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
-      // 3. rematch with existing query and hash
-      return match({
-        _normalized: true,
-        path: resolvedPath,
-        query: query,
-        hash: hash
-      }, undefined, location)
-    } else {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
-      }
-      return _createRoute(null, location)
-    }
-  }
-
-  function alias (
-    record,
-    location,
-    matchAs
-  ) {
-    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
-    var aliasedMatch = match({
-      _normalized: true,
-      path: aliasedPath
-    });
-    if (aliasedMatch) {
-      var matched = aliasedMatch.matched;
-      var aliasedRecord = matched[matched.length - 1];
-      location.params = aliasedMatch.params;
-      return _createRoute(aliasedRecord, location)
-    }
-    return _createRoute(null, location)
-  }
-
-  function _createRoute (
-    record,
-    location,
-    redirectedFrom
-  ) {
-    if (record && record.redirect) {
-      return redirect(record, redirectedFrom || location)
-    }
-    if (record && record.matchAs) {
-      return alias(record, location, record.matchAs)
-    }
-    return createRoute(record, location, redirectedFrom, router)
-  }
-
-  return {
-    match: match,
-    addRoutes: addRoutes
-  }
-}
-
-function matchRoute (
-  regex,
-  path,
-  params
-) {
-  var m = path.match(regex);
-
-  if (!m) {
-    return false
-  } else if (!params) {
-    return true
-  }
-
-  for (var i = 1, len = m.length; i < len; ++i) {
-    var key = regex.keys[i - 1];
-    var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
-    if (key) {
-      params[key.name] = val;
-    }
-  }
-
-  return true
-}
-
-function resolveRecordPath (path, record) {
-  return resolvePath(path, record.parent ? record.parent.path : '/', true)
-}
-
-/*  */
-
-
-var positionStore = Object.create(null);
-
-function setupScroll () {
-  window.addEventListener('popstate', function (e) {
-    saveScrollPosition();
-    if (e.state && e.state.key) {
-      setStateKey(e.state.key);
-    }
-  });
-}
-
-function handleScroll (
-  router,
-  to,
-  from,
-  isPop
-) {
-  if (!router.app) {
-    return
-  }
-
-  var behavior = router.options.scrollBehavior;
-  if (!behavior) {
-    return
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(typeof behavior === 'function', "scrollBehavior must be a function");
-  }
-
-  // wait until re-render finishes before scrolling
-  router.app.$nextTick(function () {
-    var position = getScrollPosition();
-    var shouldScroll = behavior(to, from, isPop ? position : null);
-    if (!shouldScroll) {
-      return
-    }
-    var isObject = typeof shouldScroll === 'object';
-    if (isObject && typeof shouldScroll.selector === 'string') {
-      var el = document.querySelector(shouldScroll.selector);
-      if (el) {
-        var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
-        offset = normalizeOffset(offset);
-        position = getElementPosition(el, offset);
-      } else if (isValidPosition(shouldScroll)) {
-        position = normalizePosition(shouldScroll);
-      }
-    } else if (isObject && isValidPosition(shouldScroll)) {
-      position = normalizePosition(shouldScroll);
-    }
-
-    if (position) {
-      window.scrollTo(position.x, position.y);
-    }
-  });
-}
-
-function saveScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    positionStore[key] = {
-      x: window.pageXOffset,
-      y: window.pageYOffset
-    };
-  }
-}
-
-function getScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    return positionStore[key]
-  }
-}
-
-function getElementPosition (el, offset) {
-  var docEl = document.documentElement;
-  var docRect = docEl.getBoundingClientRect();
-  var elRect = el.getBoundingClientRect();
-  return {
-    x: elRect.left - docRect.left - offset.x,
-    y: elRect.top - docRect.top - offset.y
-  }
-}
-
-function isValidPosition (obj) {
-  return isNumber(obj.x) || isNumber(obj.y)
-}
-
-function normalizePosition (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
-    y: isNumber(obj.y) ? obj.y : window.pageYOffset
-  }
-}
-
-function normalizeOffset (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : 0,
-    y: isNumber(obj.y) ? obj.y : 0
-  }
-}
-
-function isNumber (v) {
-  return typeof v === 'number'
-}
-
-/*  */
-
-var supportsPushState = inBrowser && (function () {
-  var ua = window.navigator.userAgent;
-
-  if (
-    (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
-    ua.indexOf('Mobile Safari') !== -1 &&
-    ua.indexOf('Chrome') === -1 &&
-    ua.indexOf('Windows Phone') === -1
-  ) {
-    return false
-  }
-
-  return window.history && 'pushState' in window.history
-})();
-
-// use User Timing api (if present) for more accurate key precision
-var Time = inBrowser && window.performance && window.performance.now
-  ? window.performance
-  : Date;
-
-var _key = genKey();
-
-function genKey () {
-  return Time.now().toFixed(3)
-}
-
-function getStateKey () {
-  return _key
-}
-
-function setStateKey (key) {
-  _key = key;
-}
-
-function pushState (url, replace) {
-  saveScrollPosition();
-  // try...catch the pushState call to get around Safari
-  // DOM Exception 18 where it limits to 100 pushState calls
-  var history = window.history;
-  try {
-    if (replace) {
-      history.replaceState({ key: _key }, '', url);
-    } else {
-      _key = genKey();
-      history.pushState({ key: _key }, '', url);
-    }
-  } catch (e) {
-    window.location[replace ? 'replace' : 'assign'](url);
-  }
-}
-
-function replaceState (url) {
-  pushState(url, true);
-}
-
-/*  */
-
-function runQueue (queue, fn, cb) {
-  var step = function (index) {
-    if (index >= queue.length) {
-      cb();
-    } else {
-      if (queue[index]) {
-        fn(queue[index], function () {
-          step(index + 1);
-        });
-      } else {
-        step(index + 1);
-      }
-    }
-  };
-  step(0);
-}
-
-/*  */
-
-function resolveAsyncComponents (matched) {
-  return function (to, from, next) {
-    var hasAsync = false;
-    var pending = 0;
-    var error = null;
-
-    flatMapComponents(matched, function (def, _, match, key) {
-      // if it's a function and doesn't have cid attached,
-      // assume it's an async component resolve function.
-      // we are not using Vue's default async resolving mechanism because
-      // we want to halt the navigation until the incoming component has been
-      // resolved.
-      if (typeof def === 'function' && def.cid === undefined) {
-        hasAsync = true;
-        pending++;
-
-        var resolve = once(function (resolvedDef) {
-          if (resolvedDef.__esModule && resolvedDef.default) {
-            resolvedDef = resolvedDef.default;
-          }
-          // save resolved on async factory in case it's used elsewhere
-          def.resolved = typeof resolvedDef === 'function'
-            ? resolvedDef
-            : _Vue.extend(resolvedDef);
-          match.components[key] = resolvedDef;
-          pending--;
-          if (pending <= 0) {
-            next();
-          }
-        });
-
-        var reject = once(function (reason) {
-          var msg = "Failed to resolve async component " + key + ": " + reason;
-          process.env.NODE_ENV !== 'production' && warn(false, msg);
-          if (!error) {
-            error = isError(reason)
-              ? reason
-              : new Error(msg);
-            next(error);
-          }
-        });
-
-        var res;
-        try {
-          res = def(resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
-        if (res) {
-          if (typeof res.then === 'function') {
-            res.then(resolve, reject);
-          } else {
-            // new syntax in Vue 2.3
-            var comp = res.component;
-            if (comp && typeof comp.then === 'function') {
-              comp.then(resolve, reject);
-            }
-          }
-        }
-      }
-    });
-
-    if (!hasAsync) { next(); }
-  }
-}
-
-function flatMapComponents (
-  matched,
-  fn
-) {
-  return flatten(matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) { return fn(
-      m.components[key],
-      m.instances[key],
-      m, key
-    ); })
-  }))
-}
-
-function flatten (arr) {
-  return Array.prototype.concat.apply([], arr)
-}
-
-// in Webpack 2, require.ensure now also returns a Promise
-// so the resolve/reject functions may get called an extra time
-// if the user uses an arrow function shorthand that happens to
-// return that Promise.
-function once (fn) {
-  var called = false;
-  return function () {
-    var args = [], len = arguments.length;
-    while ( len-- ) args[ len ] = arguments[ len ];
-
-    if (called) { return }
-    called = true;
-    return fn.apply(this, args)
-  }
-}
-
-/*  */
-
-var History = function History (router, base) {
-  this.router = router;
-  this.base = normalizeBase(base);
-  // start with a route object that stands for "nowhere"
-  this.current = START;
-  this.pending = null;
-  this.ready = false;
-  this.readyCbs = [];
-  this.readyErrorCbs = [];
-  this.errorCbs = [];
-};
-
-History.prototype.listen = function listen (cb) {
-  this.cb = cb;
-};
-
-History.prototype.onReady = function onReady (cb, errorCb) {
-  if (this.ready) {
-    cb();
-  } else {
-    this.readyCbs.push(cb);
-    if (errorCb) {
-      this.readyErrorCbs.push(errorCb);
-    }
-  }
-};
-
-History.prototype.onError = function onError (errorCb) {
-  this.errorCbs.push(errorCb);
-};
-
-History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
-    var this$1 = this;
-
-  var route = this.router.match(location, this.current);
-  this.confirmTransition(route, function () {
-    this$1.updateRoute(route);
-    onComplete && onComplete(route);
-    this$1.ensureURL();
-
-    // fire ready cbs once
-    if (!this$1.ready) {
-      this$1.ready = true;
-      this$1.readyCbs.forEach(function (cb) { cb(route); });
-    }
-  }, function (err) {
-    if (onAbort) {
-      onAbort(err);
-    }
-    if (err && !this$1.ready) {
-      this$1.ready = true;
-      this$1.readyErrorCbs.forEach(function (cb) { cb(err); });
-    }
-  });
-};
-
-History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
-    var this$1 = this;
-
-  var current = this.current;
-  var abort = function (err) {
-    if (isError(err)) {
-      if (this$1.errorCbs.length) {
-        this$1.errorCbs.forEach(function (cb) { cb(err); });
-      } else {
-        warn(false, 'uncaught error during route navigation:');
-        console.error(err);
-      }
-    }
-    onAbort && onAbort(err);
-  };
-  if (
-    isSameRoute(route, current) &&
-    // in the case the route map has been dynamically appended to
-    route.matched.length === current.matched.length
-  ) {
-    this.ensureURL();
-    return abort()
-  }
-
-  var ref = resolveQueue(this.current.matched, route.matched);
-    var updated = ref.updated;
-    var deactivated = ref.deactivated;
-    var activated = ref.activated;
-
-  var queue = [].concat(
-    // in-component leave guards
-    extractLeaveGuards(deactivated),
-    // global before hooks
-    this.router.beforeHooks,
-    // in-component update hooks
-    extractUpdateHooks(updated),
-    // in-config enter guards
-    activated.map(function (m) { return m.beforeEnter; }),
-    // async components
-    resolveAsyncComponents(activated)
-  );
-
-  this.pending = route;
-  var iterator = function (hook, next) {
-    if (this$1.pending !== route) {
-      return abort()
-    }
-    try {
-      hook(route, current, function (to) {
-        if (to === false || isError(to)) {
-          // next(false) -> abort navigation, ensure current URL
-          this$1.ensureURL(true);
-          abort(to);
-        } else if (
-          typeof to === 'string' ||
-          (typeof to === 'object' && (
-            typeof to.path === 'string' ||
-            typeof to.name === 'string'
-          ))
-        ) {
-          // next('/') or next({ path: '/' }) -> redirect
-          abort();
-          if (typeof to === 'object' && to.replace) {
-            this$1.replace(to);
-          } else {
-            this$1.push(to);
-          }
-        } else {
-          // confirm transition and pass on the value
-          next(to);
-        }
-      });
-    } catch (e) {
-      abort(e);
-    }
-  };
-
-  runQueue(queue, iterator, function () {
-    var postEnterCbs = [];
-    var isValid = function () { return this$1.current === route; };
-    // wait until async components are resolved before
-    // extracting in-component enter guards
-    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
-    var queue = enterGuards.concat(this$1.router.resolveHooks);
-    runQueue(queue, iterator, function () {
-      if (this$1.pending !== route) {
-        return abort()
-      }
-      this$1.pending = null;
-      onComplete(route);
-      if (this$1.router.app) {
-        this$1.router.app.$nextTick(function () {
-          postEnterCbs.forEach(function (cb) { cb(); });
-        });
-      }
-    });
-  });
-};
-
-History.prototype.updateRoute = function updateRoute (route) {
-  var prev = this.current;
-  this.current = route;
-  this.cb && this.cb(route);
-  this.router.afterHooks.forEach(function (hook) {
-    hook && hook(route, prev);
-  });
-};
-
-function normalizeBase (base) {
-  if (!base) {
-    if (inBrowser) {
-      // respect <base> tag
-      var baseEl = document.querySelector('base');
-      base = (baseEl && baseEl.getAttribute('href')) || '/';
-      // strip full URL origin
-      base = base.replace(/^https?:\/\/[^\/]+/, '');
-    } else {
-      base = '/';
-    }
-  }
-  // make sure there's the starting slash
-  if (base.charAt(0) !== '/') {
-    base = '/' + base;
-  }
-  // remove trailing slash
-  return base.replace(/\/$/, '')
-}
-
-function resolveQueue (
-  current,
-  next
-) {
-  var i;
-  var max = Math.max(current.length, next.length);
-  for (i = 0; i < max; i++) {
-    if (current[i] !== next[i]) {
-      break
-    }
-  }
-  return {
-    updated: next.slice(0, i),
-    activated: next.slice(i),
-    deactivated: current.slice(i)
-  }
-}
-
-function extractGuards (
-  records,
-  name,
-  bind,
-  reverse
-) {
-  var guards = flatMapComponents(records, function (def, instance, match, key) {
-    var guard = extractGuard(def, name);
-    if (guard) {
-      return Array.isArray(guard)
-        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
-        : bind(guard, instance, match, key)
-    }
-  });
-  return flatten(reverse ? guards.reverse() : guards)
-}
-
-function extractGuard (
-  def,
-  key
-) {
-  if (typeof def !== 'function') {
-    // extend now so that global mixins are applied.
-    def = _Vue.extend(def);
-  }
-  return def.options[key]
-}
-
-function extractLeaveGuards (deactivated) {
-  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
-}
-
-function extractUpdateHooks (updated) {
-  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
-}
-
-function bindGuard (guard, instance) {
-  if (instance) {
-    return function boundRouteGuard () {
-      return guard.apply(instance, arguments)
-    }
-  }
-}
-
-function extractEnterGuards (
-  activated,
-  cbs,
-  isValid
-) {
-  return extractGuards(activated, 'beforeRouteEnter', function (guard, _, match, key) {
-    return bindEnterGuard(guard, match, key, cbs, isValid)
-  })
-}
-
-function bindEnterGuard (
-  guard,
-  match,
-  key,
-  cbs,
-  isValid
-) {
-  return function routeEnterGuard (to, from, next) {
-    return guard(to, from, function (cb) {
-      next(cb);
-      if (typeof cb === 'function') {
-        cbs.push(function () {
-          // #750
-          // if a router-view is wrapped with an out-in transition,
-          // the instance may not have been registered at this time.
-          // we will need to poll for registration until current route
-          // is no longer valid.
-          poll(cb, match.instances, key, isValid);
-        });
-      }
-    })
-  }
-}
-
-function poll (
-  cb, // somehow flow cannot infer this is a function
-  instances,
-  key,
-  isValid
-) {
-  if (instances[key]) {
-    cb(instances[key]);
-  } else if (isValid()) {
-    setTimeout(function () {
-      poll(cb, instances, key, isValid);
-    }, 16);
-  }
-}
-
-/*  */
-
-
-var HTML5History = (function (History$$1) {
-  function HTML5History (router, base) {
-    var this$1 = this;
-
-    History$$1.call(this, router, base);
-
-    var expectScroll = router.options.scrollBehavior;
-
-    if (expectScroll) {
-      setupScroll();
-    }
-
-    window.addEventListener('popstate', function (e) {
-      var current = this$1.current;
-      this$1.transitionTo(getLocation(this$1.base), function (route) {
-        if (expectScroll) {
-          handleScroll(router, route, current, true);
-        }
-      });
-    });
-  }
-
-  if ( History$$1 ) HTML5History.__proto__ = History$$1;
-  HTML5History.prototype = Object.create( History$$1 && History$$1.prototype );
-  HTML5History.prototype.constructor = HTML5History;
-
-  HTML5History.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      pushState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      replaceState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.ensureURL = function ensureURL (push) {
-    if (getLocation(this.base) !== this.current.fullPath) {
-      var current = cleanPath(this.base + this.current.fullPath);
-      push ? pushState(current) : replaceState(current);
-    }
-  };
-
-  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getLocation(this.base)
-  };
-
-  return HTML5History;
-}(History));
-
-function getLocation (base) {
-  var path = window.location.pathname;
-  if (base && path.indexOf(base) === 0) {
-    path = path.slice(base.length);
-  }
-  return (path || '/') + window.location.search + window.location.hash
-}
-
-/*  */
-
-
-var HashHistory = (function (History$$1) {
-  function HashHistory (router, base, fallback) {
-    History$$1.call(this, router, base);
-    // check history fallback deeplinking
-    if (fallback && checkFallback(this.base)) {
-      return
-    }
-    ensureSlash();
-  }
-
-  if ( History$$1 ) HashHistory.__proto__ = History$$1;
-  HashHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  HashHistory.prototype.constructor = HashHistory;
-
-  // this is delayed until the app mounts
-  // to avoid the hashchange listener being fired too early
-  HashHistory.prototype.setupListeners = function setupListeners () {
-    var this$1 = this;
-
-    window.addEventListener('hashchange', function () {
-      if (!ensureSlash()) {
-        return
-      }
-      this$1.transitionTo(getHash(), function (route) {
-        replaceHash(route.fullPath);
-      });
-    });
-  };
-
-  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
-    this.transitionTo(location, function (route) {
-      pushHash(route.fullPath);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    this.transitionTo(location, function (route) {
-      replaceHash(route.fullPath);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HashHistory.prototype.ensureURL = function ensureURL (push) {
-    var current = this.current.fullPath;
-    if (getHash() !== current) {
-      push ? pushHash(current) : replaceHash(current);
-    }
-  };
-
-  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getHash()
-  };
-
-  return HashHistory;
-}(History));
-
-function checkFallback (base) {
-  var location = getLocation(base);
-  if (!/^\/#/.test(location)) {
-    window.location.replace(
-      cleanPath(base + '/#' + location)
-    );
-    return true
-  }
-}
-
-function ensureSlash () {
-  var path = getHash();
-  if (path.charAt(0) === '/') {
-    return true
-  }
-  replaceHash('/' + path);
-  return false
-}
-
-function getHash () {
-  // We can't use window.location.hash here because it's not
-  // consistent across browsers - Firefox will pre-decode it!
-  var href = window.location.href;
-  var index = href.indexOf('#');
-  return index === -1 ? '' : href.slice(index + 1)
-}
-
-function pushHash (path) {
-  window.location.hash = path;
-}
-
-function replaceHash (path) {
-  var href = window.location.href;
-  var i = href.indexOf('#');
-  var base = i >= 0 ? href.slice(0, i) : href;
-  window.location.replace((base + "#" + path));
-}
-
-/*  */
-
-
-var AbstractHistory = (function (History$$1) {
-  function AbstractHistory (router, base) {
-    History$$1.call(this, router, base);
-    this.stack = [];
-    this.index = -1;
-  }
-
-  if ( History$$1 ) AbstractHistory.__proto__ = History$$1;
-  AbstractHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  AbstractHistory.prototype.constructor = AbstractHistory;
-
-  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
-      this$1.index++;
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.go = function go (n) {
-    var this$1 = this;
-
-    var targetIndex = this.index + n;
-    if (targetIndex < 0 || targetIndex >= this.stack.length) {
-      return
-    }
-    var route = this.stack[targetIndex];
-    this.confirmTransition(route, function () {
-      this$1.index = targetIndex;
-      this$1.updateRoute(route);
-    });
-  };
-
-  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    var current = this.stack[this.stack.length - 1];
-    return current ? current.fullPath : '/'
-  };
-
-  AbstractHistory.prototype.ensureURL = function ensureURL () {
-    // noop
-  };
-
-  return AbstractHistory;
-}(History));
-
-/*  */
-
-var VueRouter = function VueRouter (options) {
-  if ( options === void 0 ) options = {};
-
-  this.app = null;
-  this.apps = [];
-  this.options = options;
-  this.beforeHooks = [];
-  this.resolveHooks = [];
-  this.afterHooks = [];
-  this.matcher = createMatcher(options.routes || [], this);
-
-  var mode = options.mode || 'hash';
-  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
-  if (this.fallback) {
-    mode = 'hash';
-  }
-  if (!inBrowser) {
-    mode = 'abstract';
-  }
-  this.mode = mode;
-
-  switch (mode) {
-    case 'history':
-      this.history = new HTML5History(this, options.base);
-      break
-    case 'hash':
-      this.history = new HashHistory(this, options.base, this.fallback);
-      break
-    case 'abstract':
-      this.history = new AbstractHistory(this, options.base);
-      break
-    default:
-      if (process.env.NODE_ENV !== 'production') {
-        assert(false, ("invalid mode: " + mode));
-      }
-  }
-};
-
-var prototypeAccessors = { currentRoute: {} };
-
-VueRouter.prototype.match = function match (
-  raw,
-  current,
-  redirectedFrom
-) {
-  return this.matcher.match(raw, current, redirectedFrom)
-};
-
-prototypeAccessors.currentRoute.get = function () {
-  return this.history && this.history.current
-};
-
-VueRouter.prototype.init = function init (app /* Vue component instance */) {
-    var this$1 = this;
-
-  process.env.NODE_ENV !== 'production' && assert(
-    install.installed,
-    "not installed. Make sure to call `Vue.use(VueRouter)` " +
-    "before creating root instance."
-  );
-
-  this.apps.push(app);
-
-  // main app already initialized.
-  if (this.app) {
-    return
-  }
-
-  this.app = app;
-
-  var history = this.history;
-
-  if (history instanceof HTML5History) {
-    history.transitionTo(history.getCurrentLocation());
-  } else if (history instanceof HashHistory) {
-    var setupHashListener = function () {
-      history.setupListeners();
-    };
-    history.transitionTo(
-      history.getCurrentLocation(),
-      setupHashListener,
-      setupHashListener
-    );
-  }
-
-  history.listen(function (route) {
-    this$1.apps.forEach(function (app) {
-      app._route = route;
-    });
-  });
-};
-
-VueRouter.prototype.beforeEach = function beforeEach (fn) {
-  return registerHook(this.beforeHooks, fn)
-};
-
-VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
-  return registerHook(this.resolveHooks, fn)
-};
-
-VueRouter.prototype.afterEach = function afterEach (fn) {
-  return registerHook(this.afterHooks, fn)
-};
-
-VueRouter.prototype.onReady = function onReady (cb, errorCb) {
-  this.history.onReady(cb, errorCb);
-};
-
-VueRouter.prototype.onError = function onError (errorCb) {
-  this.history.onError(errorCb);
-};
-
-VueRouter.prototype.push = function push (location, onComplete, onAbort) {
-  this.history.push(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
-  this.history.replace(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.go = function go (n) {
-  this.history.go(n);
-};
-
-VueRouter.prototype.back = function back () {
-  this.go(-1);
-};
-
-VueRouter.prototype.forward = function forward () {
-  this.go(1);
-};
-
-VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
-  var route = to
-    ? to.matched
-      ? to
-      : this.resolve(to).route
-    : this.currentRoute;
-  if (!route) {
-    return []
-  }
-  return [].concat.apply([], route.matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) {
-      return m.components[key]
-    })
-  }))
-};
-
-VueRouter.prototype.resolve = function resolve (
-  to,
-  current,
-  append
-) {
-  var location = normalizeLocation(
-    to,
-    current || this.history.current,
-    append,
-    this
-  );
-  var route = this.match(location, current);
-  var fullPath = route.redirectedFrom || route.fullPath;
-  var base = this.history.base;
-  var href = createHref(base, fullPath, this.mode);
-  return {
-    location: location,
-    route: route,
-    href: href,
-    // for backwards compat
-    normalizedTo: location,
-    resolved: route
-  }
-};
-
-VueRouter.prototype.addRoutes = function addRoutes (routes) {
-  this.matcher.addRoutes(routes);
-  if (this.history.current !== START) {
-    this.history.transitionTo(this.history.getCurrentLocation());
-  }
-};
-
-Object.defineProperties( VueRouter.prototype, prototypeAccessors );
-
-function registerHook (list, fn) {
-  list.push(fn);
-  return function () {
-    var i = list.indexOf(fn);
-    if (i > -1) { list.splice(i, 1); }
-  }
-}
-
-function createHref (base, fullPath, mode) {
-  var path = mode === 'hash' ? '#' + fullPath : fullPath;
-  return base ? cleanPath(base + '/' + path) : path
-}
-
-VueRouter.install = install;
-VueRouter.version = '2.7.0';
-
-if (inBrowser && window.Vue) {
-  window.Vue.use(VueRouter);
-}
-
-module.exports = VueRouter;
-
-}).call(this,require('_process'))
-},{"_process":103}],107:[function(require,module,exports){
+},{"got":15}],105:[function(require,module,exports){
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -8004,7 +5575,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }]);
 });
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],108:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],106:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -18245,7 +15816,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":103}],109:[function(require,module,exports){
+},{"_process":102}],107:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -18265,9 +15836,9 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],110:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\np[_v-3a158057] {\n  margin:0;\n}\nlabel[_v-3a158057] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-3a158057] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-3a158057] {\n  marging-bottom: 0;\n}\nlabel input[_v-3a158057] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-3a158057] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-3a158057] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-3a158057] {\n  color: #ff0000;\n}\n.reqstar[_v-3a158057] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-3a158057] {\n  margin: 0;\n}\n\n[type='submit'][_v-3a158057], [type='button'][_v-3a158057] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-3a158057]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-3a158057]{\n  margin: 0;\n}\nform[_v-3a158057] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-3a158057] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-3a158057] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-3a158057], .mockh5[_v-3a158057] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-3a158057] {\n  resize: vertical !important;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#submit-area[_v-ee392e9c]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-ee392e9c] {\n  margin:0;\n}\nlabel[_v-ee392e9c] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-ee392e9c] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\nlabel input[_v-ee392e9c] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-ee392e9c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-ee392e9c] {\n  color: #ff0000;\n}\n.reqstar[_v-ee392e9c] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-ee392e9c] {\n  margin: 0;\n}\n\n[type='submit'][_v-ee392e9c], [type='button'][_v-ee392e9c] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-ee392e9c]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-ee392e9c]{\n  margin: 0;\n}\nform[_v-ee392e9c] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-ee392e9c] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-ee392e9c] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-ee392e9c], .mockh5[_v-ee392e9c] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-ee392e9c] {\n  resize: vertical !important;\n}\n")
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -18290,7 +15861,8 @@ module.exports = {
   props: {
     recordexists: { default: false },
     recordid: { default: '' },
-    framework: { default: 'foundation' }
+    framework: { default: 'foundation' },
+    isadmin: { default: false }
   },
   data: function data() {
     return {
@@ -18300,6 +15872,8 @@ module.exports = {
         startDateDefault: '',
         endDateMin: '',
         endDateDefault: '',
+        startTimeDefault: '',
+        endTimeDefault: '',
         regDateMin: '',
         regDateDefault: ''
       },
@@ -18337,7 +15911,10 @@ module.exports = {
         mini_calendar: '',
         building: '',
         categories: [],
-        is_canceled: 0
+        is_canceled: 0,
+        start_time: '12:00 PM',
+        end_time: '12:00 PM',
+        admin_pre_approved: false
       },
       response: {},
       formStatus: {},
@@ -18353,10 +15930,8 @@ module.exports = {
   },
   ready: function ready() {
     if (this.recordexists) {
-      console.log('recordid' + this.recordid);
       this.fetchCurrentRecord(this.recordid);
     } else {
-      //this.record.start_date = this.currentDate;
       this.setupDatePickers();
     }
     this.fetchMiniCalsList();
@@ -18370,8 +15945,6 @@ module.exports = {
         return false;
       }
     });
-    this.startdatePicker.clear();
-    this.enddatePicker.clear();
   },
 
 
@@ -18494,7 +16067,6 @@ module.exports = {
     },
     setupDatePickers: function setupDatePickers() {
       var self = this;
-      console.log("setupDatePickers");
       if (this.record.start_date === '') {
         this.dateObject.startDateMin = this.currentDate;
         this.dateObject.startDateDefault = null;
@@ -18506,7 +16078,8 @@ module.exports = {
         this.dateObject.startDateDefault = this.record.start_date;
         this.dateObject.endDateMin = this.record.start_date;
         this.dateObject.endDateDefault = this.record.end_date;
-        this.dateObject.startTimeDefault = this.record.end_time;
+        this.dateObject.startTimeDefault = this.record.start_time;
+        this.dateObject.endTimeDefault = this.record.end_time;
         this.dateObject.regDateMin = this.record.start_date;
         this.dateObject.regDateDefault = this.record.reg_deadline;
       }
@@ -18545,7 +16118,7 @@ module.exports = {
       this.starttimePicker = (0, _flatpickr2.default)(document.getElementById("start-time"), {
         noCalendar: true,
         enableTime: true,
-        defaultDate: self.dateObject.endDateDefault,
+        defaultDate: self.dateObject.startTimeDefault,
         onChange: function onChange(timeObject, timeString) {
           self.record.start_time = timeString;
           self.starttimePicker.value = timeString;
@@ -18554,6 +16127,7 @@ module.exports = {
       this.endtimePicker = (0, _flatpickr2.default)(document.getElementById("end-time"), {
         noCalendar: true,
         enableTime: true,
+        defaultDate: self.dateObject.endTimeDefault,
         onChange: function onChange(timeObject, timeString) {
           self.record.end_time = timeString;
           self.endtimePicker.value = timeString;
@@ -18589,16 +16163,14 @@ module.exports = {
       var _this2 = this;
 
       // toggles cancel
-      console.log('FROM CANCEL: ' + recid);
       this.formMessage.isOk = false;
       this.formMessage.msg = false;
 
       this.$http.patch('/api/event/' + recid + '/cancel').then(function (response) {
-        console.log('GOOD:' + (0, _stringify2.default)(response));
         _this2.formMessage.isOk = response.ok;
         _this2.formMessage.msg = response.body.message;
       }, function (response) {
-        console.log('BAD:' + (0, _stringify2.default)(response));
+        console.log((0, _stringify2.default)(response));
       }).bind(this);
       this.refreshUserEventTable();
     },
@@ -18606,18 +16178,9 @@ module.exports = {
     fetchCurrentRecord: function fetchCurrentRecord() {
       var _this3 = this;
 
-      console.log('FROM FETCH: ' + this.recordid);
       this.$http.get('/api/event/' + this.recordid + '/edit').then(function (response) {
-        //response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + (0, _stringify2.default)(response.data.data.start_time));
-        // this.record = response.data.data;
         _this3.$set('record', response.data.data);
-
         _this3.checkOverData();
-        // this.refreshUserEventTable();
         _this3.record.start_time = response.data.data.start_time;
       }, function (response) {
         //error callback
@@ -18631,7 +16194,6 @@ module.exports = {
       if (this.record.building != null && /\S/.test(this.record.building)) {
         // Is on campus
         this.record.on_campus = 1; // bool
-
         this.building = { id: 0, name: this.convertFromSlug(this.record.building) };
       } else {
         // Not on campus
@@ -18765,7 +16327,6 @@ module.exports = {
 
       if (this.record.on_campus == true) {
         this.record.location = this.computedLocation;
-        console.log(">>>>>>>>>>>>" + this.computedLocation + "<<<<<<<<<<<<");
       } else {
         this.record.location = this.record.locationoffcampus;
         // clearout these values
@@ -18781,10 +16342,6 @@ module.exports = {
 
       this.$http[method](route, this.record).then(function (response) {
         response.status;
-        console.log('response.status=' + response.status);
-        console.log('response.ok=' + response.ok);
-        console.log('response.statusText=' + response.statusText);
-        console.log('response.data=' + response.data.message);
         _this8.formMessage.msg = response.data.message;
         _this8.formMessage.isOk = response.ok;
         _this8.formMessage.isErr = false;
@@ -18800,12 +16357,8 @@ module.exports = {
         _this8.formMessage.isErr = true;
         //error callback
         console.log("FORM ERRORS" + (0, _stringify2.default)(response));
-
-        console.log(response.data.error.message);
         _this8.formErrors = response.data.error.message;
       }).bind(this);
-      this.record.start_time = "";
-      this.record.end_time = "";
     },
     convertToSlug: function convertToSlug(value) {
       return value.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
@@ -18818,31 +16371,27 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-3a158057=\"\">\n    <slot name=\"csrf\" _v-3a158057=\"\"></slot>\n    <div class=\"row\" _v-3a158057=\"\">\n      <div v-bind:class=\"md12col\" _v-3a158057=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">There are errors.</h5>\n        </div>\n        <div v-show=\"this.record.is_canceled == 1\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">This event has been canceled.</h5>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" maxlength=\"80\" autofocus=\"\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-3a158057=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Short Title</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" maxlength=\"80\" _v-3a158057=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-3a158057=\"\">({{descriptionChars}} characters left)</p></label>\n          <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" maxlength=\"255\" _v-3a158057=\"\"></textarea>\n          <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Description!</p>\n\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md6col\" _v-3a158057=\"\">\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-3a158057=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-3a158057=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-3a158057=\"\">\n            <div :class=\"md8col\" _v-3a158057=\"\">\n              <label _v-3a158057=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-3a158057=\"\">\n            </v-select>\n            <!-- <select id=\"select-zbuilding\" class=\"js-example-basic-multiple\" style=\"width: 100%\" v-myselect=\"zbuildings\"  ajaxurl=\"/api/zbuildings\" v-bind:resultvalue=\"buildings\" data-tags=\"false\" multiple=\"multiple\" data-maximum-selection-length=\"1\">\n          </select> -->\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" class=\"mockh5\" maxlength=\"80\" _v-3a158057=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-3a158057=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"start-date\" _v-3a158057=\"\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"end-date\" _v-3a158057=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-3a158057=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"all-day\" _v-3a158057=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"no-end-time\" _v-3a158057=\"\">No End Time:\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-3a158057=\"\">\n        <!-- <label v-show=\"hasEndTime\" for=\"no-end-time-no\" class=\"radiobtns\">no</label><input id=\"no-end-time-no\"  name=\"no_end_time\" type=\"radio\" value=\"0\" v-model=\"record.no_end_time\"/> -->\n      </label></div>\n    </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"start-time\" _v-3a158057=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly=\"\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.start_time\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Time</p>\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"end-time\" _v-3a158057=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly=\"\" _v-3a158057=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div class=\"form-group\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-3a158057=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Phone <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Fax: <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<!-- RELATED LINKS -->\n<div class=\"input-group\" style=\"width: 100%\" _v-3a158057=\"\">\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Related Link</label>\n        <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n        <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n          <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n          <input v-model=\"record.related_link_1\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n        </div>\n        <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n  </div><!-- /.row -->\n  <div class=\"row\" v-show=\"record.related_link_1\" _v-3a158057=\"\">\n    <div :class=\"md4col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n        <input v-model=\"record.related_link_1_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n    <div :class=\"md8col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Example of Related Link</label>\n        <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n        <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_1_txt}}</a>.</h5>\n      </div>\n    </div><!-- /.md6col -->\n  </div>\n  <!-- Two -->\n  <template v-if=\"record.related_link_1 &amp;&amp; record.related_link_1_txt\">\n    <br _v-3a158057=\"\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_2\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_2\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_2_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_2_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n    <br _v-3a158057=\"\">\n  </template>\n  <!-- three -->\n  <template v-if=\"record.related_link_2 &amp;&amp; record.related_link_2_txt\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_3\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_3\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_3_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_3_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n  </template>\n</div>\n<!-- RELATED LINKS -->\n<br v-if=\"framework == 'bootstrap'\" _v-3a158057=\"\">\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"reg-deadline\" _v-3a158057=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\" _v-3a158057=\"\">Error</p>\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md2col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Free</label>\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-3a158057=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Tickets Available</label>\n      <select v-model=\"record.tickets\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-3a158057=\"\">\n          {{ ticketoption.label }}\n        </option>\n      </select>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Link: <em _v-3a158057=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Tickets by Phone <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-3a158057=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-3a158057=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label for=\"lbc-approved\" _v-3a158057=\"\">LBC Approved: <em _v-3a158057=\"\">(pre-approval required)</em>\n        <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-3a158057=\"\">\n  <label for=\"minical\" _v-3a158057=\"\">Select Mini Calendar\n    <v-select id=\"minical\" :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-3a158057=\"\">\n    </v-select>\n  </label>\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{submitBtnLabel}}</button>\n        <button v-if=\"recordexists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Create new Event based off this information</button>\n        <button v-if=\"recordexists &amp;&amp; isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{ cancelStatus }}</button>\n        <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Delete this Event</button>\n      </div>\n    </div></div></div></form>\n  <!-- /.md12col -->\n\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-ee392e9c=\"\">\n    <slot name=\"csrf\" _v-ee392e9c=\"\"></slot>\n    {{ $route }}\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"md12col\" _v-ee392e9c=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-ee392e9c=\"\">\n          <h5 _v-ee392e9c=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-ee392e9c=\"\">\n          <h5 _v-ee392e9c=\"\">There are errors.</h5>\n        </div>\n        <div v-show=\"this.record.is_canceled == 1\" :class=\"calloutFail\" _v-ee392e9c=\"\">\n          <h5 _v-ee392e9c=\"\">This event has been canceled.</h5>\n        </div>\n        <div class=\"form-group\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" maxlength=\"80\" autofocus=\"\" _v-ee392e9c=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-ee392e9c=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Short Title</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" maxlength=\"80\" _v-ee392e9c=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <div :class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-ee392e9c=\"\">({{descriptionChars}} characters left)</p></label>\n          <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" maxlength=\"255\" _v-ee392e9c=\"\"></textarea>\n          <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Description!</p>\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md6col\" _v-ee392e9c=\"\">\n        <div class=\"form-group\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-ee392e9c=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-ee392e9c=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-ee392e9c=\"\">\n            <div :class=\"md8col\" _v-ee392e9c=\"\">\n              <label _v-ee392e9c=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-ee392e9c=\"\">\n            </v-select>\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" class=\"mockh5\" maxlength=\"80\" _v-ee392e9c=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-ee392e9c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-ee392e9c=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-ee392e9c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"start-date\" _v-ee392e9c=\"\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"end-date\" _v-ee392e9c=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-ee392e9c=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"all-day\" _v-ee392e9c=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-ee392e9c=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"no-end-time\" _v-ee392e9c=\"\">No End Time:</label>\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-ee392e9c=\"\">\n    </div>\n  </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-ee392e9c=\"\">\n    <div :class=\"md6col\" _v-ee392e9c=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-ee392e9c=\"\">\n        <label for=\"start-time\" _v-ee392e9c=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly=\"\" _v-ee392e9c=\"\">\n        <p v-if=\"formErrors.start_time\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Start Time</p>\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-ee392e9c=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-ee392e9c=\"\">\n        <label for=\"end-time\" _v-ee392e9c=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly=\"\" _v-ee392e9c=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-ee392e9c=\"\">\n    <div :class=\"md12col\" _v-ee392e9c=\"\">\n      <div class=\"form-group\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-ee392e9c=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span><em _v-ee392e9c=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span><em _v-ee392e9c=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Phone <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span> <em _v-ee392e9c=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Fax: <em _v-ee392e9c=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<!-- RELATED LINKS -->\n<div class=\"input-group\" style=\"width: 100%\" _v-ee392e9c=\"\">\n  <div class=\"row\" _v-ee392e9c=\"\">\n    <div :class=\"md12col\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Related Link</label>\n        <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n        <div class=\"input-group input-group-flat\" _v-ee392e9c=\"\">\n          <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">http://</span>\n          <input v-model=\"record.related_link_1\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\" maxlength=\"255\" _v-ee392e9c=\"\">\n        </div>\n        <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\" _v-ee392e9c=\"\">Please make sure url is properly formed.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n  </div><!-- /.row -->\n  <div class=\"row\" v-show=\"record.related_link_1\" _v-ee392e9c=\"\">\n    <div :class=\"md4col\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <p class=\"help-text\" id=\"link_txt-helptext\" _v-ee392e9c=\"\">(ex. The event webpage)</p>\n        <input v-model=\"record.related_link_1_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n        <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\" _v-ee392e9c=\"\"> Please include a descriptive text for your related link.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n    <div :class=\"md8col\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Example of Related Link</label>\n        <p class=\"help-text\" _v-ee392e9c=\"\">Below is how it may look. </p>\n        <h5 class=\"form-control\" _v-ee392e9c=\"\">For more information, visit <a href=\"#\" _v-ee392e9c=\"\"> {{record.related_link_1_txt}}</a>.</h5>\n      </div>\n    </div><!-- /.md6col -->\n  </div>\n  <!-- Two -->\n  <template v-if=\"record.related_link_1 &amp;&amp; record.related_link_1_txt\">\n    <br _v-ee392e9c=\"\">\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">http://</span>\n            <input v-model=\"record.related_link_2\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\" maxlength=\"255\" _v-ee392e9c=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\" _v-ee392e9c=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_2\" _v-ee392e9c=\"\">\n      <div :class=\"md4col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-ee392e9c=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_2_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n          <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\" _v-ee392e9c=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-ee392e9c=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-ee392e9c=\"\">For more information, visit: <a href=\"#\" _v-ee392e9c=\"\"> {{record.related_link_2_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n    <br _v-ee392e9c=\"\">\n  </template>\n  <!-- three -->\n  <template v-if=\"record.related_link_2 &amp;&amp; record.related_link_2_txt\">\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">http://</span>\n            <input v-model=\"record.related_link_3\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\" maxlength=\"255\" _v-ee392e9c=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\" _v-ee392e9c=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_3\" _v-ee392e9c=\"\">\n      <div :class=\"md4col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-ee392e9c=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_3_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n          <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\" _v-ee392e9c=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-ee392e9c=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-ee392e9c=\"\">For more information, visit: <a href=\"#\" _v-ee392e9c=\"\"> {{record.related_link_3_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n  </template>\n</div>\n<!-- RELATED LINKS -->\n<br v-if=\"framework == 'bootstrap'\" _v-ee392e9c=\"\">\n\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"reg-deadline\" _v-ee392e9c=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\" _v-ee392e9c=\"\">Error</p>\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md2col\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Free</label>\n        <div :class=\"formGroup\" _v-ee392e9c=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-ee392e9c=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-ee392e9c=\"\">\n          <div class=\"input-group\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-ee392e9c=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-ee392e9c=\"\">\n          <div class=\"input-group\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-ee392e9c=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Tickets Available</label>\n      <select v-model=\"record.tickets\" class=\"form-control\" _v-ee392e9c=\"\">\n        <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-ee392e9c=\"\">\n          {{ ticketoption.label }}\n        </option>\n      </select>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-ee392e9c=\"\">Link: <em _v-ee392e9c=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-ee392e9c=\"\">Tickets by Phone <em _v-ee392e9c=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-ee392e9c=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-ee392e9c=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-ee392e9c=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-ee392e9c=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <label for=\"lbc-approved\" _v-ee392e9c=\"\">LBC Approved: <em _v-ee392e9c=\"\">(pre-approval required)</em>\n        <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\" _v-ee392e9c=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-ee392e9c=\"\">\n  <label for=\"minical\" _v-ee392e9c=\"\">Select Mini Calendar\n    <v-select id=\"minical\" :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-ee392e9c=\"\">\n    </v-select>\n  </label>\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" id=\"submit-area\" _v-ee392e9c=\"\">\n  <div v-if=\"isadmin\" :class=\"md4col\" _v-ee392e9c=\"\">\n    <div class=\"checkbox\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\"><input type=\"checkbox\" v-model=\"record.admin_pre_approved\" _v-ee392e9c=\"\">Auto Approve</label>\n    </div>\n  </div>\n  <div :class=\"md8col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">{{submitBtnLabel}}</button>\n      <button v-if=\"recordexists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">Clone Event</button>\n      <button v-if=\"recordexists &amp;&amp; isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">{{ cancelStatus }}</button>\n      <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">Delete Event</button>\n    </div><!-- /.md12col -->\n  </div><!-- /.md12col -->\n  </div></form>\n\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\np[_v-3a158057] {\n  margin:0;\n}\nlabel[_v-3a158057] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-3a158057] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-3a158057] {\n  marging-bottom: 0;\n}\nlabel input[_v-3a158057] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-3a158057] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-3a158057] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-3a158057] {\n  color: #ff0000;\n}\n.reqstar[_v-3a158057] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-3a158057] {\n  margin: 0;\n}\n\n[type='submit'][_v-3a158057], [type='button'][_v-3a158057] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-3a158057]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-3a158057]{\n  margin: 0;\n}\nform[_v-3a158057] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-3a158057] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-3a158057] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-3a158057], .mockh5[_v-3a158057] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-3a158057] {\n  resize: vertical !important;\n}\n"] = false
+    __vueify_insert__.cache["\n#submit-area[_v-ee392e9c]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-ee392e9c] {\n  margin:0;\n}\nlabel[_v-ee392e9c] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-ee392e9c] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\nlabel input[_v-ee392e9c] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-ee392e9c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-ee392e9c] {\n  color: #ff0000;\n}\n.reqstar[_v-ee392e9c] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-ee392e9c] {\n  margin: 0;\n}\n\n[type='submit'][_v-ee392e9c], [type='button'][_v-ee392e9c] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-ee392e9c]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-ee392e9c]{\n  margin: 0;\n}\nform[_v-ee392e9c] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-ee392e9c] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-ee392e9c] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-ee392e9c], .mockh5[_v-ee392e9c] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-ee392e9c] {\n  resize: vertical !important;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3a158057", module.exports)
+    hotAPI.createRecord("_v-ee392e9c", module.exports)
   } else {
-    hotAPI.update("_v-3a158057", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ee392e9c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"babel-runtime/core-js/json/stringify":1,"flatpickr":102,"vue":108,"vue-hot-reload-api":104,"vue-select":107,"vueify/lib/insert-css":109}],111:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"flatpickr":101,"vue":106,"vue-hot-reload-api":103,"vue-select":105,"vueify/lib/insert-css":107}],109:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
-
-var _vueRouter = require('vue-router');
-
-var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
 var _EventForm = require('./components/EventForm.vue');
 
@@ -18854,14 +16403,10 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-Vue.use(_vueRouter2.default);
-
 var vm = new Vue({
   el: '#vue-event-form',
   components: { EventForm: _EventForm2.default },
-  ready: function ready() {
-    console.log('vue ready');
-  }
+  ready: function ready() {}
 });
 
 function assignEventListeners() {
@@ -18875,6 +16420,6 @@ function assignEventListeners() {
 }
 assignEventListeners();
 
-},{"./components/EventForm.vue":110,"vue":108,"vue-resource":105,"vue-router":106}]},{},[111]);
+},{"./components/EventForm.vue":108,"vue":106,"vue-resource":104}]},{},[109]);
 
 //# sourceMappingURL=vue-event-form.js.map

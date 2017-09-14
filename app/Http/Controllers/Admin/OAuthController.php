@@ -28,7 +28,7 @@ class OAuthController extends Controller
     /**
      * List all OAuth Clients of the currently logged-in user.
      */
-    public function list() {
+    public function listClients() {
         return view('admin.oauth.list');
     }
 }

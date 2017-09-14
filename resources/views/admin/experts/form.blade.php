@@ -79,7 +79,9 @@
               @endif
               @if($currentOtherImages !== null)
                   @if($currentOtherImages->count() > 0)
-                      <!-- use this section if other images become necessary -->
+                    @foreach($currentOtherImages as $currentOtherImage)
+                        @include('admin.experts.subviews.expertimage',['expertImage' => $currentOtherImage, 'expert_id' => $expert->id ])
+                    @endforeach
                   @endif
               @endif
               @if($stillNeedTheseImgs !== null)

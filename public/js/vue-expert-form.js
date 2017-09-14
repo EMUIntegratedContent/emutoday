@@ -21735,6 +21735,7 @@ module.exports = {
         isErr: false,
         msg: ''
       },
+      ckload: 'true',
       hasContent: false,
       isFresh: true,
       languages: [],
@@ -21883,6 +21884,7 @@ module.exports = {
       } else {
         this.checkContentChange();
       }
+      this.ckload = false;
     },
     checkContentChange: function checkContentChange() {
       if (!this.recordIsDirty) {
@@ -21897,6 +21899,7 @@ module.exports = {
     fetchCurrentRecord: function fetchCurrentRecord(recid) {
       var _this = this;
 
+      this.ckload = true; // DO NOT REMOVE!!! needed for ckeditor
       this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
         _this.$set('record', response.data.data);
         _this.$set('recordOld', response.data.data);
@@ -21994,7 +21997,6 @@ module.exports = {
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
-
       this.recordId = this.currentRecordId;
       this.recordexists = true;
       this.fetchCurrentRecord(this.currentRecordId);
@@ -22219,7 +22221,6 @@ module.exports = {
   params: ['content', 'type'],
   bind: function bind() {
     this.vm.$nextTick(this.setupEditor.bind(this));
-    console.log("FIRST BOUND");
   },
   setupEditor: function setUpEditor() {
     var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
@@ -22235,17 +22236,18 @@ module.exports = {
     });
   },
   update: function update(value, binding, vnode, oldVnode) {
-
     if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
 
-    CKEDITOR.instances[this.el.id].setData(value, function (editor) {
-      editor.focus();
-    }); // Need for Experts public CKEditor
+    // For public experts form's ckedior: set ckload to false after first update to prevent cursor from moving to top of editor
+    if (this.vm.ckload) CKEDITOR.instances[this.el.id].setData(value);
+
+    this.vm.ckload = false;
     this.vm.onContentChange();
   },
   unbind: function unbind() {
     CKEDITOR.instances[this.el.id].destroy();
   }
+
 };
 
 },{}],116:[function(require,module,exports){

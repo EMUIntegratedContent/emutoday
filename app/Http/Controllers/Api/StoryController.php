@@ -75,15 +75,11 @@ class StoryController extends ApiController
            }
        }
 
-    // this.$http.get('/api/story/appLoad')
     public function queueload($stype)
     {
         if (\Auth::check()) {
             $user = \Auth::user();
-            // $storys = $this->story->newQuery();
-            // dd($user->roles);
             if ($user->hasRole('contributor_1')){
-                // dd($user->id);
                 $storys = $user->storys()->get();
             } else {
                 if($stype === 'all'){
@@ -93,7 +89,6 @@ class StoryController extends ApiController
                 }
             }
             $fractal = new Manager();
-            // $storys = Story::all();
             $resource = new Fractal\Resource\Collection($storys->all(), new FractalStoryTransformerModel);
             // Turn all of that into a Array string
             return $fractal->createData($resource)->toArray();
@@ -110,9 +105,6 @@ class StoryController extends ApiController
 
         if (\Auth::check()) {
             $user = \Auth::user();
-            // $storys = $this->story->newQuery();
-            // dd($user->roles);
-
             if ($user->hasRole('contributor_1')){
                 // dd($user->id);
                 if($stype == 'all'){
@@ -148,21 +140,18 @@ class StoryController extends ApiController
             // Turn all of that into a JSON string
             return $fractal->createData($resource)->toArray();
     }
-        public function articles()
-        {
-            $fractal = new Manager();
+    public function articles()
+    {
+        $fractal = new Manager();
 
-            $storys = Story::where('story_type','article')->get();
+        $storys = Story::where('story_type','article')->get();
 
-
-            $resource = new Fractal\Resource\Collection($storys->all(), new FractalStoryTransformer);
-                // Turn all of that into a JSON string
-                return $fractal->createData($resource)->toArray();
-        }
+        $resource = new Fractal\Resource\Collection($storys->all(), new FractalStoryTransformer);
+        return $fractal->createData($resource)->toArray();
+    }
 
     public function store(Request $request)
     {
-        //  if (! Input::get('title') or ! Input::get('location'))
         $validation = \Validator::make( Input::all(), [
             'title'           => 'required',
             'start_date'      => 'required',
@@ -200,6 +189,10 @@ class StoryController extends ApiController
             $story->contact_id  = $contact_id;
             $story->is_approved = $approval_level;
 
+            //Somehow, 'news' story type does this automatically...not sure how though. CP 9/7/17
+            if($request->get('story_type') == 'advisory' || $request->get('story_type') == 'statement'){
+              $story->is_ready = 1;
+            }
             $tags = array_pluck($request->input('tags'),'value');
 
             if($story->save()) {
@@ -245,11 +238,7 @@ class StoryController extends ApiController
      */
     public function edit($id)
     {
-
-
         $fractal = new Manager();
-        // $fractal->setSerializer(new ArraySerializer());
-        // $fractal->setSerializer(new DataArraySerializer());
         $story = Story::findOrFail($id);
         $resource = new Fractal\Resource\Item($story, new FractalStoryTransformerModel);
             // Turn all of that into a JSON string
@@ -276,8 +265,6 @@ class StoryController extends ApiController
               $returnData = ['is_approved' => $story->is_approved,'priority'=> $story->priority, 'is_archived'=> $story->is_archived];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('story patched',$returnData );
-              // return $this->setStatusCode(201)
-              //             ->respondUpdated('Announcement successfully Updated!');
             }
           } else {
             return false;
@@ -311,7 +298,6 @@ class StoryController extends ApiController
         $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
         $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
 
-        //  $story = new Story;
         $story->user_id       	= $request->get('user_id');
         $story->title           	= $request->get('title');
         $story->slug           	= $request->get('slug');
@@ -321,8 +307,8 @@ class StoryController extends ApiController
         $story->author_id        = $request->get('author_id', 0);
         $story->author_info        = $request->get('author_info', null);
         $story->content     	    = $request->get('content');
+        $story->is_ready     	= 1;
         $story->is_approved     	= $request->get('is_approved', 0);
-        $story->is_ready     	= $request->get('is_ready', 0);
         $story->is_promoted          = $request->get('is_promoted', 0);
         $story->is_featured    	= $request->get('is_featured', 0);
         $story->is_live          = $request->get('is_live', 0);
@@ -331,6 +317,7 @@ class StoryController extends ApiController
         $story->end_date      	= \Carbon\Carbon::parse($request->get('end_date', null));
         $story->contact_id    	= $contact_id;
 
+
         $tags = array_pluck($request->input('tags'),'value');
         $story->tags()->sync($tags);
 
@@ -338,7 +325,7 @@ class StoryController extends ApiController
              $record_id = $story->id;
 
              return $this->setStatusCode(201)
-             ->respondSavedWithData('Story updated.',[ 'record_id' => $record_id, 'stype'=> $story->story_type] );
+             ->respondSavedWithData('Story updated.',[ 'record_id' => $record_id, 'stype'=> $story->story_type, 'ready' => $story->is_ready] );
 
              }
          }

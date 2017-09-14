@@ -50,7 +50,7 @@
                         <td>{{ $expert->title }}</td>
                         <td>{{ Carbon\Carbon::parse($expert->created_at)->format('M d, Y') }}</td>
                         <td>@if($expert->is_approved) Approved @else Pending @endif</td>
-                        <td class="editBtn"><a href="#">EDIT</a><!--| <a href="#">DELETE</a>--></td>
+                        <td class="editBtn"><a href="#">EDIT</a></td>
                     </tr>
                   @endforeach
                 </tbody>

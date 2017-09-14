@@ -54,7 +54,7 @@
                                  'class' => 'form',
                                  'files' => true]
                                  ) !!}
-                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'Onclick' => 'return ConfirmDelete();')) !!}
+                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'onclick' => 'return ConfirmDelete();')) !!}
                                  {!! Form::close() !!}
                                     </div>
                             @endif

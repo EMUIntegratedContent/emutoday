@@ -154,7 +154,7 @@ class ExpertImageController extends Controller
        flash()->warning('Image was not found and could not be deleted.');
     }
 
-    $story->save();
+    $expert->save();
 
     return redirect()->back();//->with('status', 'Record has been deleted.');
   }

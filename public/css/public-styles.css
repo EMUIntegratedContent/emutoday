@@ -6527,6 +6527,12 @@ ul.accordion li{
     color:#333;
 }
 
+.button.secondary{
+  background-color: #ffffff;
+  border: 1px solid #0f654a;
+  color: #0f654a;
+}
+
 /*News Headlines*/
 .publish-date {
     float: right;
@@ -7145,12 +7151,19 @@ img.magazine-logo {
 /* Story Caption Fix */
 
 /* Eastern Experts Stylesheets */
+<<<<<<< HEAD
 *{
     /*color:red !important;*/
 }
 #experts{
     margin-top: 2rem;
 }
+=======
+#experts-area{
+  
+}
+
+>>>>>>> f6a149e75412923106f3297fe1514bdcf1ada217
 /* Small only */
 @media screen and (max-width: 39.9375em) {
 	#tier1-nav	.icon-menu {
