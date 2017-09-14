@@ -3,7 +3,7 @@
 
 @section('title', 'Expert Search Results')
 @section('content')
-  <div id="content-area">
+  <div id="experts-area">
       <div class="row">
           <div class="large-3 medium-3 small-12 columns">
               @include('public.experts.subviews.expertnav')
