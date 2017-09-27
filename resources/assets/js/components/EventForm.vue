@@ -20,7 +20,7 @@
           <p v-if="formErrors.title" class="help-text invalid">	Please Include a Title!</p>
         </div>
         <div class="form-group">
-          <label>Short Title</label>
+          <label>Short Title - for departmental use only</label>
           <input v-model="record.short_title" class="form-control" type="text" placeholder="Short Title" name="short-title" maxlength="80">
         </div>
       </div><!-- /.md12col -->
@@ -388,7 +388,7 @@
 </div><!-- /.md12col -->
 
 <div :class="md12col">
-  <label for="minical">Select Mini Calendar
+  <label for="minical">Select your department's mini calendar(s)
     <v-select id="minical"
     :value.sync="record.minicalendars"
     :options="minicalslist"

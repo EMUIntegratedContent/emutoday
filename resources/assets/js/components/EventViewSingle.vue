@@ -67,7 +67,7 @@
       <p>{{eventParticipation}}</p>
       <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
       <template v-if="item.tickets">
-        <p v-if="item.ticket_details_online">For tickets, go to <a href="{{item.ticket_details_online | hasHttp}}">{{item.ticket_details_online}}</a>.</p>
+        <p v-if="item.ticket_details_online"><a href="{{item.ticket_details_online | hasHttp}}">Get Tickets Online</a></p>
         <p v-if="item.ticket_details_phone">For tickets, call {{item.ticket_details_phone}}.</p>
         <p v-if="item.ticket_details_office">For tickets, visit {{item.ticket_details_office}}.</p>
         <p v-if="item.ticket_details_other">Or {{item.ticket_details_other}}</p>
@@ -85,7 +85,7 @@
 .event-cancel {
   font-size: 90%;
   font-weight: normal;
-  color: #333;
+  color: #b20c0c;
 }
 h6 {
   color: #0f654a;

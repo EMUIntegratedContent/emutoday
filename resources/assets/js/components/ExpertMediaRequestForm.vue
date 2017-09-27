@@ -186,16 +186,16 @@
         <!-- Interview type -->
         <label>Interview Details <span v-bind:class="iconStar" class="reqstar">*</span></label>
         <div v-bind:class="formGroup">
-          <label for="inperson_int"><input type="radio" id="inperson_int" value="In-person" v-model="record.interview_type">In-person</label>
+          <label for="inperson_int"><input type="radio" id="inperson_int" value="In-person" v-model="record.interview_type">&nbsp;In-person</label>
         </div>
         <div v-bind:class="formGroup">
-          <label for="phone_int"><input type="radio" id="phone_int" value="Phone" v-model="record.interview_type">Phone</label>
+          <label for="phone_int"><input type="radio" id="phone_int" value="Phone" v-model="record.interview_type">&nbsp;Phone</label>
         </div>
         <div v-bind:class="formGroup">
-          <label for="oncamera_int"><input type="radio" id="oncamera_int" value="On-camera" v-model="record.interview_type">On-camera</label>
+          <label for="oncamera_int"><input type="radio" id="oncamera_int" value="On-camera" v-model="record.interview_type">&nbsp;On-camera</label>
         </div>
         <div v-bind:class="formGroup">
-          <label for="instudio_int"><input type="radio" id="instudio_int" value="In-studio" v-model="record.interview_type">In-studio</label>
+          <label for="instudio_int"><input type="radio" id="instudio_int" value="In-studio" v-model="record.interview_type">&nbsp;In-studio</label>
         </div>
         <p v-if="formErrors.interview_type" class="help-text invalid">{{formErrors.interview_type}}</p>
       </div>

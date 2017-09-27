@@ -118,7 +118,19 @@ class SearchController extends Controller
             $searchMagazineResults = array();
         }
 
-        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults));
+        // Expert results
+        if(!$filter || $filter == 'experts' || $filter == 'all'){
+            $searchExpertsResults = Expert::search($searchTermWild, [
+                'first_name' => 50,
+                'last_name' => 50,
+                'display_name' => 50,
+                'title' => 30,
+            ], false)->where('is_approved', 1)->select('id','first_name','last_name','display_name','title')->get();
+        } else {
+            $searchExpertsResults = array();
+        }
+
+        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults, $searchExpertsResults));
 
         $numResults = count($allStories);
 

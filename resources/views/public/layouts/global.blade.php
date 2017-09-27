@@ -106,10 +106,6 @@
                                                 <a href="http://www.emich.edu"><img class="full-logo show-for-large" alt="Eastern Michigan University" src="/assets/imgs/home/logo.png"></a>
                                                 <a href="http://www.emich.edu"><img class="emu show-for-medium-only" alt="Eastern Michigan University" src="/assets/imgs/home/emu.png"></a>
                                                 <a href="http://www.emich.edu"><img class="block-e show-for-small-only" alt="Eastern Michigan University" src="/assets/imgs/home/blockewhiteplain.png"></a>
-
-                                                {{-- <a href="http://www.emich.edu">
-                                                    <img data-interchange="[/assets/imgs/home/emu.png, small], [/assets/imgs/home/blockewhiteplain.png, medium], [/assets/imgs/home/logo.png, large]">
-                                                </a> --}}
                                             </div><!-- logo-box -->
                                         </div><!-- large-3 -->
                                     </div><!-- row -->
@@ -143,7 +139,6 @@
                                         <div class="row">
                                             <div class="large-12 show-for-medium columns">
                                             <ul>
-                                                <!-- '/admin/php/secondary_nav.php'); -->
                                                 <li><a href="/experts">Experts</a></li>
                                                 <li><a href="/magazine">Eastern Magazine</a></li>
                                                 <li><a href="/calendar/event/form">Submit an Event</a></li>

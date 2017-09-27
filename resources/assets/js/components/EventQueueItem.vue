@@ -29,7 +29,7 @@
                 </select>
               </div>&nbsp;&nbsp;&nbsp;
               -->
-              
+
               <div title="Display order for News Hub" class="form-group"> <!-- For the NEWS HUB page. -->
                 <label for="priority-number" class="priority">Rank:</label>
                 <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" number>

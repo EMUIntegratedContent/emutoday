@@ -38,11 +38,11 @@
             <h4>Event Categories</h4>
             <ul>
               <li class="event-category">
-                <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" aria-describedby="all-events-badge" href="#">All Events</a>
+                <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, false)" href="#">All Events</a>
               </li>
               <template v-for="category in categories">
-                <li class="event-category" v-if="category.events.length == 0 ?false:true"><a href="http://art.emich.edu/events/upcoming">
-                  <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)" aria-describedby="{{category.slug}}-badge" href="#">{{category.category}}</a>
+                <li class="event-category" v-if="category.events.length == 0 ?false:true">
+                  <a v-on:click.prevent="dispatchNewEvent(selectedDayInMonth, category.id)" href="#">{{category.category}}</a>
                 </li>
               </template>
             </ul>
