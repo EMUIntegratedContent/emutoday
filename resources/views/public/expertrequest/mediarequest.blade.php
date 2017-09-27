@@ -26,7 +26,11 @@
     @parent
 @endsection
 @section('content')
-  <div id="content-area">
+  <div id="experts-area">
+      
+     
+      
+      
       <div class="row">
           <div class="large-3 medium-3 small-12 columns">
               @include('public.experts.subviews.expertnav')
@@ -34,7 +38,7 @@
           <div class="large-9 medium-3 small-12 columns">
               <div class="row">
                 <div class="large-12 medium-12 small-12 columns">
-                    <h3 class="news-caps">Request an Eastern Expert</h3>
+                    <h1>Request an Eastern Expert</h1>
                     <p>The Office of Media Relations works directly with journalists to develop stories and track down expert sources for print, electronic, and broadcast media.</p>
                     <h4>Need a source quickly?</h4>
                     <p>You don't have to go through the directory. We'll track down a media expert for you and arrange the interview. Contact us at 702-895-3102 or email at mediarelations@unlv.edu.</p>

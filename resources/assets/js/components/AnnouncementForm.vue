@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
 
     <div v-if="generalForm" class="row">
       <div v-bind:class="md12col">
