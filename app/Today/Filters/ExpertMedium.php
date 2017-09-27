@@ -13,6 +13,5 @@ class ExpertMedium implements FilterInterface
         return $image->resize(null, 418, function ($constraint) {
             $constraint->aspectRatio();
         });
-
     }
 }
