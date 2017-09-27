@@ -18,7 +18,8 @@
               <div class="form-group">
                 <button v-if="hasPriorityChanged" @click.prevent="updateItem" class="btn footer-btn bg-orange btn-xs" href="#"><span class="fa fa-floppy-o"></span></button>
               </div><!-- /.form-group -->
-              <div title="Display order for Eastern's index page" class="form-group"> <!-- For the HOME page. -->
+              <!-- Previously for the EMU home page
+              <div title="Display order for Eastern's index page" class="form-group">
                 <label for="home-priority-number" class="priority">Home:</label>
                 <select id="home-priority-{{item.id}}" v-model="patchRecord.home_priority" @change="priorityChange($event)" number>
                   <option v-for="option in options" v-bind:value="option.value">
@@ -26,9 +27,9 @@
                   </option>
                 </select>
               </div>&nbsp;&nbsp;&nbsp;
-
+              -->
               <div title="Display order for News Hub" class="form-group"> <!-- For the NEWS HUB page. -->
-                <label for="priority-number" class="priority">Today:</label>
+                <label for="priority-number" class="priority">Rank:</label>
                 <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" number>
                   <option v-for="option in options" v-bind:value="option.value">
                     {{option.text}}

@@ -118,12 +118,6 @@ class SearchController extends Controller
             $searchMagazineResults = array();
         }
 
-        //$storiesPaginated = $this->searchRepo->search();
-        // $numResults = count($storiesPaginated);
-
-        //return view('public.searchresults2', compact('storiesPaginated', 'searchTerm', 'numResults'));
-
-
         $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults));
 
         $numResults = count($allStories);
