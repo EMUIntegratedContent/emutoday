@@ -26,7 +26,7 @@
         <div class="form-group">
             <label class="control-label" for="image">Select File</label>
             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
-            <span class="help-block">Select the headshot you wish to upload (Width: 800px | Height: 1000px)</span>
+            <span class="help-block">Upload a photo (Width: 800px | Height: 1000px | Resolution: 72ppi). MUST be a 4:5 width to height ratio!</span>
         </div>
 
         <div class="form-group">

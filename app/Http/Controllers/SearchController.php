@@ -154,9 +154,10 @@ class SearchController extends Controller
                             ->whereHas('expertCategories', function($query) use ($searchCategory){
                                 $query->where('category', $searchCategory);
                             })
-                            ->get();
+                            ->orderBy('last_name', 'ASC')
+                            ->paginate(10);
         } else {
-            $experts = Expert::search('%'.$searchterm.'%')->where('is_approved', 1)->get();
+            $experts = Expert::search('%'.$searchterm.'%')->where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
         }
 
         $expertCategories = ExpertCategory::all();
