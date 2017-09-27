@@ -16,20 +16,11 @@
               </div>
               <div class="row">
                   <div class="large-12 medium-12 small-12 columns">
-                      <h4>Help for Journalists</h4>
-                      <p>
-                          UNLV Office of Media Relations<br />
-                          Phone: 702-895-3102<br />
-                          Fax: 702-895-4057<br />
-                          E-mail: mediarelations@unlv.edu<br />
-                      </p>
-                      <h4>Help for Community Speakers</h4>
-                      <p>
-                          Isabelle Johnson<br />
-                          University Communications<br />
-                          Phone: 702-895-3963<br />
-                          E-mail: isabelle.johnson@unlv.edu<br />
-                      </p>
+                    <h2>Contact for eastern experts and community speakers:</h2>
+
+                    <p>EMU Office of Media Relations<br />
+                    Phone: 734.487.4400<br />
+                    glarcom@emich.edu</p>
                   </div>
               </div>
           </div>
