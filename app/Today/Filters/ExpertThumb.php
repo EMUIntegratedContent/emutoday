@@ -9,7 +9,7 @@ class ExpertThumb implements FilterInterface
 {
     public function applyFilter(Image $image)
     {
-        // resize the image to a height of 150px  and constrain aspect ratio (auto width)
-        return $image->resize(123, 154);
+        // resize the image to a 4:5 ratio
+        return $image->resize(120, 150);
     }
 }
