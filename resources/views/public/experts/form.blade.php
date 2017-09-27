@@ -7,7 +7,8 @@
 
 @section('title', 'Eastern Expert Form')
 @section('content-top')
-<div id="experts-bar">
+<div id="experts-area">
+    
   <div class="row">
     <div class="large-12 medium-12 small-12 columns">
       @include('public.components.errors')
@@ -16,7 +17,7 @@
               @include('public.experts.subviews.expertnav')
         </div><!-- /.large-3 column -->
         <div class="large-5 medium-12 small-12 columns">
-          <h3 class="cal-caps toptitle">Expert Form</h3>
+          <h1>Expert Form</h1>
           <div id="vue-experts-public">
               <expert-form-public
                 v-ref:foo

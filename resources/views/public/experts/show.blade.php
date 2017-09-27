@@ -4,12 +4,14 @@
 @section('title', 'Eastern Expert ' . $expert->display_name)
 @section('content')
   <div id="experts-area">
+ 
       <div class="row">
+          
           <div class="large-3 medium-12 small-12 columns">
               @include('public.experts.subviews.expertnav')
           </div>
-          <div class="large-6 medium-12 small-12 columns">
-            <article>
+          <div class="large-7 medium-12 small-12 columns">
+              
                 <h2>{{ $expert->display_name }}</h2>
                 <p class="expert-title">{{ $expert->title }}</p>
                 <p><strong>Expertise:</strong> {{ $expertiseString }}</p>
@@ -51,10 +53,10 @@
                 </ul>
             </article>
           </div>
-          <div class="large-3 medium-12 small-12 columns">
+          <div class="large-2 medium-12 small-12 columns rightside-column">
             @if($expert->expertImages()->first())
-                <img src="/imagecache/expertmedium/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}" />
-                <p><a href="/imgs/expert/{{$expert->expertImages()->first()->filename}}">Download High Resolution Photo</a></p>
+                <img class="expert-sidepic" src="/imagecache/expertmedium/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}" />
+                <p><a class="button hi-res-expert" href="/imgs/expert/{{$expert->expertImages()->first()->filename}}">Download High Resolution Photo</a></p>
             @else
                 <p>
                     No photo available
@@ -71,7 +73,7 @@
             <p><i class="fa fa-check-circle"></i> Available for print Interviews</p>
             @endif
             @if($expert->do_broadcast_interviews)
-            <p><i class="fa fa-check-circle"></i> Available for proadcast Interviews</p>
+            <p><i class="fa fa-check-circle"></i> Available for broadcast Interviews</p>
             @endif
 
             {!! $languageString !!}

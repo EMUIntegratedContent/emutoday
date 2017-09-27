@@ -7,7 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
     @endsection
 @section('content')
-  <div id="content-area">
+  <div id="experts-area">
+      
       <div class="row">
           <div class="large-3 medium-3 small-12 columns">
               @include('public.experts.subviews.expertnav')
@@ -15,7 +16,7 @@
           <div class="large-9 medium-3 small-12 columns">
               <div class="row">
                 <div class="large-12 medium-12 small-12 columns">
-                    <h3 class="news-caps">Request an Eastern Speaker</h3>
+                    <h1>Request an Eastern Speaker</h1>
                     <p>To request a speaker, fill out the following form. It will be emailed to the speaker, who will follow up with you directly to make arrangements.</p>
                 </div>
               </div>

@@ -4,6 +4,7 @@
 @section('title', 'Experts Directory Contact Us')
 @section('content')
   <div id="experts-area">
+     
       <div class="row">
           <div class="large-3 medium-3 small-12 columns">
               @include('public.experts.subviews.expertnav')
@@ -11,7 +12,7 @@
           <div class="large-9 medium-3 small-12 columns">
               <div class="row">
                 <div class="large-12 medium-12 small-12 columns">
-                    <h3 class="news-caps">Contact</h3>
+                    <h1>Contact</h1>
                 </div>
               </div>
               <div class="row">
