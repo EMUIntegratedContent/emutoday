@@ -32,10 +32,10 @@ var vmpublic = new Vue({
 
 function assignEventListeners(){
   // Cancel and edit buttons need to call vue object methods
-  $("#experts-bar").on("click", ".editBtn", function(event){
+  $("#experts-area").on("click", ".editBtn", function(event){
     vmpublic.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
   });
-  $("#experts-bar").on("click", ".cancelBtn", function(event){
+  $("#experts-area").on("click", ".cancelBtn", function(event){
     vmpublic.$refs.foo.cancelRecord(this.parentNode.id);
   });
 }

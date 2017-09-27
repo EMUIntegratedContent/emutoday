@@ -4,14 +4,14 @@
 @section('title', 'Eastern Expert ' . $expert->display_name)
 @section('content')
   <div id="experts-area">
- 
+
       <div class="row">
-          
+
           <div class="large-3 medium-12 small-12 columns">
               @include('public.experts.subviews.expertnav')
           </div>
           <div class="large-7 medium-12 small-12 columns">
-              
+
                 <h2>{{ $expert->display_name }}</h2>
                 <p class="expert-title">{{ $expert->title }}</p>
                 <p><strong>Expertise:</strong> {{ $expertiseString }}</p>
@@ -55,12 +55,10 @@
           </div>
           <div class="large-2 medium-12 small-12 columns rightside-column">
             @if($expert->expertImages()->first())
-                <img class="expert-sidepic" src="/imagecache/expertmedium/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}" />
+                <img class="expert-sidepic" src="/imagecache/expertmedium/{{$expert->expertImages()->first()->filename}}" alt="A photo of {{$expert->display_name}}." />
                 <p><a class="button hi-res-expert" href="/imgs/expert/{{$expert->expertImages()->first()->filename}}">Download High Resolution Photo</a></p>
             @else
-                <p>
-                    No photo available
-                </p>
+                <img class="expert-sidepic" src="/imagecache/expertmedium/no-image.png" alt="No photo available for {{$expert->display_name}}." />
             @endif
             @if($expert->is_media_expert)
             <p><a href="/experts/mediarequest/{{ $expert->id }}" class="button">Request as Media Expert</a></p>

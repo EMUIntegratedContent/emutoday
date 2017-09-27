@@ -49,7 +49,7 @@
             <tr v-for="expert in experts">
               <td>
                 <img v-if="expert.expert_images[0]" class="small-thumb" v-bind:src="'/imagecache/expertthumb/' + expert.expert_images[0].filename" v-bind:alt="'A photo of ' + expert.first_name + ' ' + expert.last_name">
-                <img v-else class="small-thumb" src="/imgs/expert/no-image.jpg" v-bind:alt="'No image available for ' + expert.first_name + ' ' + expert.last_name">
+                <img v-else class="small-thumb" src="/imagecache/expertthumb/no-image.png" v-bind:alt="'No image available for ' + expert.first_name + ' ' + expert.last_name">
               </td>
               <td>{{ expert.last_name }}</td>
               <td>{{ expert.first_name }}</td>

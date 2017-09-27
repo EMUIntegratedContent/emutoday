@@ -8,7 +8,6 @@
 @section('title', 'Eastern Expert Form')
 @section('content-top')
 <div id="experts-area">
-    
   <div class="row">
     <div class="large-12 medium-12 small-12 columns">
       @include('public.components.errors')

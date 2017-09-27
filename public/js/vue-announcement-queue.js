@@ -30,87 +30,80 @@ exports.default = function (obj, key, value) {
 },{}],4:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc) {
+module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-
 },{"../../modules/_core":7,"../../modules/es6.object.define-property":20}],5:[function(require,module,exports){
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-
 },{}],6:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-
 },{"./_is-object":16}],7:[function(require,module,exports){
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 },{}],8:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
+module.exports = function(fn, that, length){
   aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
       return fn.call(that, a);
     };
-    case 2: return function (a, b) {
+    case 2: return function(a, b){
       return fn.call(that, a, b);
     };
-    case 3: return function (a, b, c) {
+    case 3: return function(a, b, c){
       return fn.call(that, a, b, c);
     };
   }
-  return function (/* ...args */) {
+  return function(/* ...args */){
     return fn.apply(that, arguments);
   };
 };
-
 },{"./_a-function":5}],9:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_fails')(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_fails":12}],10:[function(require,module,exports){
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
+var isObject = require('./_is-object')
+  , document = require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-
 },{"./_global":13,"./_is-object":16}],11:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var PROTOTYPE = 'prototype';
+var global    = require('./_global')
+  , core      = require('./_core')
+  , ctx       = require('./_ctx')
+  , hide      = require('./_hide')
+  , PROTOTYPE = 'prototype';
 
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if(own && key in exports)continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -118,11 +111,11 @@ var $export = function (type, name, source) {
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -133,10 +126,10 @@ var $export = function (type, name, source) {
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
+    if(IS_PROTO){
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
     }
   }
 };
@@ -148,93 +141,81 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
-
 },{"./_core":7,"./_ctx":8,"./_global":13,"./_hide":14}],12:[function(require,module,exports){
-module.exports = function (exec) {
+module.exports = function(exec){
   try {
     return !!exec();
-  } catch (e) {
+  } catch(e){
     return true;
   }
 };
-
 },{}],13:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 },{}],14:[function(require,module,exports){
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
+var dP         = require('./_object-dp')
+  , createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
+} : function(object, key, value){
   object[key] = value;
   return object;
 };
-
 },{"./_descriptors":9,"./_object-dp":17,"./_property-desc":18}],15:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function(){
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_descriptors":9,"./_dom-create":10,"./_fails":12}],16:[function(require,module,exports){
-module.exports = function (it) {
+module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
 },{}],17:[function(require,module,exports){
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
+var anObject       = require('./_an-object')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , toPrimitive    = require('./_to-primitive')
+  , dP             = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
-
 },{"./_an-object":6,"./_descriptors":9,"./_ie8-dom-define":15,"./_to-primitive":19}],18:[function(require,module,exports){
-module.exports = function (bitmap, value) {
+module.exports = function(bitmap, value){
   return {
-    enumerable: !(bitmap & 1),
+    enumerable  : !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+    writable    : !(bitmap & 4),
+    value       : value
   };
 };
-
 },{}],19:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function(it, S){
+  if(!isObject(it))return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-
 },{"./_is-object":16}],20:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
-
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
 },{"./_descriptors":9,"./_export":11,"./_object-dp":17}],21:[function(require,module,exports){
 "use strict";
 
@@ -18354,7 +18335,7 @@ exports.insert = function (css) {
 
 },{}],28:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n#items-unapproved .box[_v-2ff73f84] {\n  margin-bottom: 4px;\n}\n\n#items-approved .box[_v-2ff73f84] {\n  margin-bottom: 4px;\n}\n\n#rangetoggle[_v-2ff73f84]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n#items-unapproved .box[_v-0569fa3a] {\n  margin-bottom: 4px;\n}\n\n#items-approved .box[_v-0569fa3a] {\n  margin-bottom: 4px;\n}\n\n#rangetoggle[_v-0569fa3a]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -18485,24 +18466,24 @@ exports.default = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-2ff73f84=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-2ff73f84=\"\">\n            <form class=\"form-inline\" _v-2ff73f84=\"\">\n              <div class=\"form-group\" _v-2ff73f84=\"\">\n                  <label for=\"start-date\" _v-2ff73f84=\"\">Showing announcements starting <span v-if=\"isEndDate\" _v-2ff73f84=\"\">between</span><span v-else=\"\" _v-2ff73f84=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-2ff73f84=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-2ff73f84=\"\">\n                  <label for=\"start-date\" _v-2ff73f84=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-2ff73f84=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-2ff73f84=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-2ff73f84=\"\"><span v-if=\"isEndDate\" _v-2ff73f84=\"\"> - Remove </span><span v-else=\"\" _v-2ff73f84=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n        <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right\" _v-2ff73f84=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/announcements\" _v-2ff73f84=\"\"><i class=\"fa fa-archive\" _v-2ff73f84=\"\"></i> Archived Announcements</a>\n        </div>\n    </div>\n    <hr _v-2ff73f84=\"\">\n  <div class=\"row\" _v-2ff73f84=\"\">\n      <h2 v-if=\"loading\" class=\"col-md-12\" _v-2ff73f84=\"\">Loading. Please Wait...</h2>\n    <div class=\"col-md-4\" _v-2ff73f84=\"\">\n      <h3 _v-2ff73f84=\"\"><span class=\"badge\" _v-2ff73f84=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved</h3>\n      <div id=\"items-unapproved\" _v-2ff73f84=\"\">\n        <announcement-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-2ff73f84=\"\">\n      </announcement-queue-item>\n    </div>\n  </div>\n  <!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-2ff73f84=\"\">\n    <h3 _v-2ff73f84=\"\"><span class=\"badge\" _v-2ff73f84=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h3>\n    <div id=\"items-approved\" _v-2ff73f84=\"\">\n      <announcement-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' -1\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-2ff73f84=\"\">\n    </announcement-queue-item>\n  </div>\n</div>\n<div class=\"col-md-4\" _v-2ff73f84=\"\">\n  <h3 _v-2ff73f84=\"\"><span class=\"badge\" _v-2ff73f84=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live</h3>\n  <div id=\"items-live\" _v-2ff73f84=\"\">\n    <announcement-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-2ff73f84=\"\">\n  </announcement-queue-item>\n</div>\n</div>\n<!-- /.col-md-6 -->\n</div>\n<!-- ./row -->\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-0569fa3a=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-0569fa3a=\"\">\n            <form class=\"form-inline\" _v-0569fa3a=\"\">\n              <div class=\"form-group\" _v-0569fa3a=\"\">\n                  <label for=\"start-date\" _v-0569fa3a=\"\">Showing announcements starting <span v-if=\"isEndDate\" _v-0569fa3a=\"\">between</span><span v-else=\"\" _v-0569fa3a=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-0569fa3a=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-0569fa3a=\"\">\n                  <label for=\"start-date\" _v-0569fa3a=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-0569fa3a=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-0569fa3a=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-0569fa3a=\"\"><span v-if=\"isEndDate\" _v-0569fa3a=\"\"> - Remove </span><span v-else=\"\" _v-0569fa3a=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n        <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right\" _v-0569fa3a=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/announcements\" _v-0569fa3a=\"\"><i class=\"fa fa-archive\" _v-0569fa3a=\"\"></i> Archived Announcements</a>\n        </div>\n    </div>\n    <hr _v-0569fa3a=\"\">\n  <div class=\"row\" _v-0569fa3a=\"\">\n      <h2 v-if=\"loading\" class=\"col-md-12\" _v-0569fa3a=\"\">Loading. Please Wait...</h2>\n    <div class=\"col-md-4\" _v-0569fa3a=\"\">\n      <h3 _v-0569fa3a=\"\"><span class=\"badge\" _v-0569fa3a=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved</h3>\n      <div id=\"items-unapproved\" _v-0569fa3a=\"\">\n        <announcement-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-0569fa3a=\"\">\n      </announcement-queue-item>\n    </div>\n  </div>\n  <!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-0569fa3a=\"\">\n    <h3 _v-0569fa3a=\"\"><span class=\"badge\" _v-0569fa3a=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h3>\n    <div id=\"items-approved\" _v-0569fa3a=\"\">\n      <announcement-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' -1\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-0569fa3a=\"\">\n    </announcement-queue-item>\n  </div>\n</div>\n<div class=\"col-md-4\" _v-0569fa3a=\"\">\n  <h3 _v-0569fa3a=\"\"><span class=\"badge\" _v-0569fa3a=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live</h3>\n  <div id=\"items-live\" _v-0569fa3a=\"\">\n    <announcement-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority' -1\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-0569fa3a=\"\">\n  </announcement-queue-item>\n</div>\n</div>\n<!-- /.col-md-6 -->\n</div>\n<!-- ./row -->\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n#items-unapproved .box[_v-2ff73f84] {\n  margin-bottom: 4px;\n}\n\n#items-approved .box[_v-2ff73f84] {\n  margin-bottom: 4px;\n}\n\n#rangetoggle[_v-2ff73f84]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n\n"] = false
+    __vueify_insert__.cache["\n\n#items-unapproved .box[_v-0569fa3a] {\n  margin-bottom: 4px;\n}\n\n#items-approved .box[_v-0569fa3a] {\n  margin-bottom: 4px;\n}\n\n#rangetoggle[_v-0569fa3a]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2ff73f84", module.exports)
+    hotAPI.createRecord("_v-0569fa3a", module.exports)
   } else {
-    hotAPI.update("_v-2ff73f84", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-0569fa3a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/flatpickr.js":32,"./AnnouncementQueueItem.vue":29,"./Pagination.vue":30,"moment":22,"vue":26,"vue-hot-reload-api":24,"vueify/lib/insert-css":27}],29:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-026b3af1] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-026b3af1] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-026b3af1] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-026b3af1] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-026b3af1] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-026b3af1] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-026b3af1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-026b3af1] {\n  margin-bottom: 2px;\n}\n#applabel[_v-026b3af1]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-026b3af1],\n.btn-group-vertical[_v-026b3af1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-026b3af1] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-026b3af1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-026b3af1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-026b3af1] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-026b3af1]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-026b3af1] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-026b3af1] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-026b3af1] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-026b3af1] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-026b3af1] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-026b3af1] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-026b3af1] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-026b3af1] {\n  color: #F39C12;\n}\n.time-is-long[_v-026b3af1] {\n  color: #999999;\n}\n.time-is-over[_v-026b3af1] {\n  color: #9B59B6;\n}\n\n.special-item[_v-026b3af1] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-026b3af1] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-0eb3f9d4] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-0eb3f9d4] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-0eb3f9d4] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-0eb3f9d4] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-0eb3f9d4] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-0eb3f9d4] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-0eb3f9d4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-0eb3f9d4] {\n  margin-bottom: 2px;\n}\n#applabel[_v-0eb3f9d4]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-0eb3f9d4],\n.btn-group-vertical[_v-0eb3f9d4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-0eb3f9d4] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-0eb3f9d4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-0eb3f9d4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-0eb3f9d4] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-0eb3f9d4]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-0eb3f9d4] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-0eb3f9d4] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-0eb3f9d4] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-0eb3f9d4] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-0eb3f9d4] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-0eb3f9d4] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-0eb3f9d4] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-0eb3f9d4] {\n  color: #F39C12;\n}\n.time-is-long[_v-0eb3f9d4] {\n  color: #999999;\n}\n.time-is-over[_v-0eb3f9d4] {\n  color: #9B59B6;\n}\n\n.special-item[_v-0eb3f9d4] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-0eb3f9d4] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
@@ -18749,24 +18730,24 @@ module.exports = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-026b3af1=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-026b3af1=\"\">\n      <div class=\"box-header with-border\" _v-026b3af1=\"\">\n        <div class=\"row\" _v-026b3af1=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-026b3af1=\"\">\n            <div class=\"box-date-top pull-left\" _v-026b3af1=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-026b3af1=\"\">\n            <form class=\"form-inline pull-right\" _v-026b3af1=\"\">\n              <div class=\"form-group\" _v-026b3af1=\"\">\n                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-026b3af1=\"\"><span class=\"fa fa-floppy-o\" _v-026b3af1=\"\"></span></button>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-026b3af1=\"\">\n                <label class=\"sr-only\" for=\"priority-number\" _v-026b3af1=\"\">Priority</label>\n                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" number=\"\" _v-026b3af1=\"\">\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-026b3af1=\"\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>\n              <div id=\"applabel\" class=\"form-group \" _v-026b3af1=\"\">\n                <label _v-026b3af1=\"\">  approved:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-026b3af1=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-026b3af1=\"\">\n              </vui-flip-switch>\n            </div>\n          </form>\n        </div><!-- /.col-md-12 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-026b3af1=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-026b3af1=\"\">\n          <div class=\"col-sm-12\" _v-026b3af1=\"\">\n            <h6 class=\"box-title\" _v-026b3af1=\"\">{{item.title}}</h6>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n\n    </div>  <!-- /.box-header -->\n\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-026b3af1=\"\">\n      <p _v-026b3af1=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-026b3af1=\"\">\n        Submitted On: {{item.submission_date}}<br _v-026b3af1=\"\">\n        By: {{item.submitter}}<br _v-026b3af1=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-026b3af1=\"\">\n      <div class=\"row\" _v-026b3af1=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-026b3af1=\"\">\n          <span :class=\"timeFromNowStatus\" _v-026b3af1=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-026b3af1=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-026b3af1=\"\">\n          <div class=\"btn-group pull-right\" _v-026b3af1=\"\">\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-026b3af1=\"\"><i class=\"fa fa-pencil\" _v-026b3af1=\"\"></i></button>\n            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-026b3af1=\"\"><i class=\"fa fa-archive\" _v-026b3af1=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-0eb3f9d4=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-0eb3f9d4=\"\">\n      <div class=\"box-header with-border\" _v-0eb3f9d4=\"\">\n        <div class=\"row\" _v-0eb3f9d4=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-0eb3f9d4=\"\">\n            <div class=\"box-date-top pull-left\" _v-0eb3f9d4=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-0eb3f9d4=\"\">\n            <form class=\"form-inline pull-right\" _v-0eb3f9d4=\"\">\n              <div class=\"form-group\" _v-0eb3f9d4=\"\">\n                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-0eb3f9d4=\"\"><span class=\"fa fa-floppy-o\" _v-0eb3f9d4=\"\"></span></button>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-0eb3f9d4=\"\">\n                <label class=\"sr-only\" for=\"priority-number\" _v-0eb3f9d4=\"\">Priority</label>\n                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" number=\"\" _v-0eb3f9d4=\"\">\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-0eb3f9d4=\"\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>\n              <div id=\"applabel\" class=\"form-group \" _v-0eb3f9d4=\"\">\n                <label _v-0eb3f9d4=\"\">  approved:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-0eb3f9d4=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-0eb3f9d4=\"\">\n              </vui-flip-switch>\n            </div>\n          </form>\n        </div><!-- /.col-md-12 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-0eb3f9d4=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-0eb3f9d4=\"\">\n          <div class=\"col-sm-12\" _v-0eb3f9d4=\"\">\n            <h6 class=\"box-title\" _v-0eb3f9d4=\"\">{{item.title}}</h6>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n\n    </div>  <!-- /.box-header -->\n\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-0eb3f9d4=\"\">\n      <p _v-0eb3f9d4=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-0eb3f9d4=\"\">\n        Submitted On: {{item.submission_date}}<br _v-0eb3f9d4=\"\">\n        By: {{item.submitter}}<br _v-0eb3f9d4=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-0eb3f9d4=\"\">\n      <div class=\"row\" _v-0eb3f9d4=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-0eb3f9d4=\"\">\n          <span :class=\"timeFromNowStatus\" _v-0eb3f9d4=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-0eb3f9d4=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-0eb3f9d4=\"\">\n          <div class=\"btn-group pull-right\" _v-0eb3f9d4=\"\">\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-0eb3f9d4=\"\"><i class=\"fa fa-pencil\" _v-0eb3f9d4=\"\"></i></button>\n            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-0eb3f9d4=\"\"><i class=\"fa fa-archive\" _v-0eb3f9d4=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-026b3af1] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-026b3af1] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-026b3af1] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-026b3af1] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-026b3af1] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-026b3af1] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-026b3af1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-026b3af1] {\n  margin-bottom: 2px;\n}\n#applabel[_v-026b3af1]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-026b3af1],\n.btn-group-vertical[_v-026b3af1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-026b3af1] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-026b3af1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-026b3af1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-026b3af1] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-026b3af1]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-026b3af1] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-026b3af1] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-026b3af1] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-026b3af1] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-026b3af1] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-026b3af1] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-026b3af1] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-026b3af1] {\n  color: #F39C12;\n}\n.time-is-long[_v-026b3af1] {\n  color: #999999;\n}\n.time-is-over[_v-026b3af1] {\n  color: #9B59B6;\n}\n\n.special-item[_v-026b3af1] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-026b3af1] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-0eb3f9d4] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-0eb3f9d4] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-0eb3f9d4] {\n  padding: 3px;\n}\n\nbutton.footer-btn[_v-0eb3f9d4] {\n  border-color: #1B1B1B;\n\n}\n\nh6.box-title[_v-0eb3f9d4] {\n  color: #1B1B1B;\n}\n\n\n.zcallout[_v-0eb3f9d4] {\n  border-radius: 5px;\n  /*margin: 0 0 20px 0;*/\n  /*padding: 15px 30px 15px 15px;*/\n  border-left: 50px solid #ff0000;\n}\nform[_v-0eb3f9d4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-0eb3f9d4] {\n  margin-bottom: 2px;\n}\n#applabel[_v-0eb3f9d4]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-0eb3f9d4],\n.btn-group-vertical[_v-0eb3f9d4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-0eb3f9d4] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-0eb3f9d4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-0eb3f9d4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-0eb3f9d4] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-0eb3f9d4]{\n  margin-bottom: 0;\n}\n\n\n.box-footer[_v-0eb3f9d4] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-0eb3f9d4] {\n  border: 1px solid #999999;\n}\n\n.topitems[_v-0eb3f9d4] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-0eb3f9d4] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-0eb3f9d4] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-0eb3f9d4] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-0eb3f9d4] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-0eb3f9d4] {\n  color: #F39C12;\n}\n.time-is-long[_v-0eb3f9d4] {\n  color: #999999;\n}\n.time-is-over[_v-0eb3f9d4] {\n  color: #9B59B6;\n}\n\n.special-item[_v-0eb3f9d4] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-0eb3f9d4] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-026b3af1", module.exports)
+    hotAPI.createRecord("_v-0eb3f9d4", module.exports)
   } else {
-    hotAPI.update("_v-026b3af1", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-0eb3f9d4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./VuiFlipSwitch.vue":31,"babel-runtime/helpers/defineProperty":2,"moment":22,"vue":26,"vue-hot-reload-api":24,"vueify/lib/insert-css":27}],30:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-0c4d5bd4]{\n    cursor: pointer;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
 'use strict';
 
 module.exports = {
@@ -18865,19 +18846,19 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-0c4d5bd4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-0c4d5bd4=\"\">\n        <ul class=\"pagination\" _v-0c4d5bd4=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-0c4d5bd4=\"\"><span _v-0c4d5bd4=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-0c4d5bd4=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-0c4d5bd4=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-0c4d5bd4=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-0c4d5bd4=\"\"><span _v-0c4d5bd4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-0c4d5bd4=\"\">\n        <div class=\"form-group\" _v-0c4d5bd4=\"\">\n            <label for=\"resultsPerPage\" _v-0c4d5bd4=\"\">Per Page</label>\n            <div class=\"input-group\" _v-0c4d5bd4=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-0c4d5bd4=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-0c4d5bd4=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-0c4d5bd4=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-6eea2f11=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.cursor[_v-0c4d5bd4]{\n    cursor: pointer;\n}\n"] = false
+    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-0c4d5bd4", module.exports)
+    hotAPI.createRecord("_v-6eea2f11", module.exports)
   } else {
-    hotAPI.update("_v-0c4d5bd4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":26,"vue-hot-reload-api":24,"vueify/lib/insert-css":27}],31:[function(require,module,exports){
@@ -18922,9 +18903,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-f48fb642", module.exports)
+    hotAPI.createRecord("_v-c9c83bf8", module.exports)
   } else {
-    hotAPI.update("_v-f48fb642", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":26,"vue-hot-reload-api":24,"vueify/lib/insert-css":27}],32:[function(require,module,exports){

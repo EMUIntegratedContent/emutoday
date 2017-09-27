@@ -4,11 +4,11 @@
 @section('title', 'Expert Search Results')
 @section('content')
   <div id="experts-area">
-    
+
       <div class="row">
-          
+
           <div class="large-3 medium-3 small-12 columns">
-              
+
               @include('public.experts.subviews.expertnav')
           </div>
           <div class="large-9 medium-9 small-12 columns"  data-equalizer="text-expert">
@@ -19,17 +19,19 @@
               @include('public.experts.subviews.searchform')
                     </div>
               </div>
-            
+
               <div class="row">
                 <div class="large-12 medium-12 small-12 columns">
-                
+
               <h3 class="news-caps">{{ count($experts) }} Matching Experts</h3>
               @forelse ($experts as $expert)
                   <article class="expert-listing">
                       <div class="row">
                       <div class="small-4 columns photobox">
                       @if($expert->expertImages()->first())
-                          <img src="/imagecache/expertthumb/{{$expert->expertImages()->first()->filename}}" alt="{{$expert->expertImages()->first()->image_name}}" />
+                          <img src="/imagecache/expertthumb/{{$expert->expertImages()->first()->filename}}" alt="A photo of {{ $expert->display_name }}." />
+                      @else
+                          <img src="/imagecache/expertthumb/no-image.png" alt="No photo for {{ $expert->display_name }}." />
                       @endif
                           </div>
                       <div class="small-8 columns text-expertbox" data-equalizer-watch="text-expert">
