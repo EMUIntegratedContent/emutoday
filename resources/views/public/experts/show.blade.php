@@ -41,7 +41,7 @@
                     <h3>Social Media Links</h3>
                     <ul id="socialmedia-list">
                         @foreach($expert->socialMediaLinks as $socialMedia)
-                            <li>{{ $socialMedia->title }}: {{ $socialMedia->url }}</li>
+                            <li><a href="{{ $socialMedia->url }}">{{ $socialMedia->title }}</a></li>
                         @endforeach
                     </ul>
                 @endif

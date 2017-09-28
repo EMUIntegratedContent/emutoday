@@ -236,7 +236,7 @@
                       <input class="form-control dynamic-list-item" type="text" v-model="soc.title">
                   </div>
                   <div v-bind:class="md6col" class="input-group">
-                      <label>URL</label>
+                      <label>Full URL (e.g. http://facebook.com)</label>
                       <input class="form-control social-list-item" type="text" v-model="soc.url">
                       <span class="input-group-btn">
                           <button @click="delSocial(soc)" class="btn btn-warning social-list-btn" type="button">X</button>
