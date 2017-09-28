@@ -38,7 +38,7 @@
       <div class="large-12 medium-12 small-12 columns">
         <!-- Story Page Title group -->
         <div id="title-grouping" class="row">
-          <div class="large-5 medium-4 small-6 columns"><h3 class="news-caps">News</h3></div>
+          <div class="large-5 medium-4 small-6 columns"><h3 class="news-caps">@if($story->story_type == 'advisory') Media Advisory @else {{ $story->story_type }} @endif</h3></div>
           <div class="large-2 medium-4 small-6 columns">
             <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
           </div>

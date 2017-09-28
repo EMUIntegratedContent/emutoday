@@ -939,3 +939,9 @@ ul.accordion li{
 #special-notice-teaser > a{
     color:#333;
 }
+
+.button.secondary{
+  background-color: #ffffff;
+  border: 1px solid #0f654a;
+  color: #0f654a;
+}

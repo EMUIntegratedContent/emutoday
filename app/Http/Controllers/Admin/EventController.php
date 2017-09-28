@@ -15,16 +15,18 @@ class EventController extends Controller
 {
 
     protected $event;
-    protected $bugService; 
+    protected $bugService;
 
     public function __construct(Event $event, IBug $bugService)
     {
         $this->event = $event;
-        
+
         $this->bugService = $bugService;
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
     /**
@@ -62,7 +64,7 @@ class EventController extends Controller
     public function edit($id)
     {
         $event = $this->event->findOrFail($id);
-        // $categories = \emutoday\Category::lists('category', 'id');
+        // $categories = \emutoday\Category::pluck('category', 'id');
 
         return view('admin.event.form', compact('event'));
     }

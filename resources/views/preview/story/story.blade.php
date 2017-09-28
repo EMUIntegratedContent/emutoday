@@ -25,7 +25,7 @@
       <div class="large-12 medium-12 small-12 columns">
         <!-- Story Page Title group -->
         <div id="title-grouping" class="row">
-          <div class="large-5 medium-4 small-6 columns"><h3 class="news-caps">News</h3></div>
+          <div class="large-5 medium-4 small-6 columns"><h3 class="news-caps">{{$story->story_type}}</h3></div>
           <div class="large-2 medium-4 small-6 columns">
             <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
           </div>
@@ -40,11 +40,6 @@
                         'route' => ['admin_preview_story_update', $story->id],
                         'files' => true
                     ]) !!}
-                    {{-- {!! Form::model($story, [
-                            'method' => 'put',
-                            'route' => ['admin.story.update', $story->id],
-                            'files' => true,
-                    ]) !!} --}}
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns">
             <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>

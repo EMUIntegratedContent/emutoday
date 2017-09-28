@@ -96,10 +96,6 @@
                     </div>
                 </div>
             </template>
-
-
-
-
       </div><!-- /.box-body -->
             <div class="box-footer list-footer">
                 <div class="row">
@@ -108,21 +104,13 @@
                     </div><!-- /.col-md-7 -->
                     <div class="col-sm-12 col-md-5">
                         <div class="btn-group pull-right">
-                            <!--
-                              When the archive system is built, uncomment this line and replace the disabled button below it... CP 12/20/16
-                              <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledArchive" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>-->
-                            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>
                             <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="edit"><i class="fa fa-pencil"></i></button>
-                            <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledPreview" data-toggle="tooltip" data-placement="top" title="preview"><i class="fa fa-eye"></i></button>
-
+                            <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledPreview" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></button>
+                            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="bottom" title="archive"><i class="fa fa-archive"></i></button>
                         </div><!-- /.btn-toolbar -->
-
                     </div><!-- /.col-md-7 -->
                 </div><!-- /.row -->
-
-
             </div><!-- /.box-footer -->
-
     </div><!-- /.box- -->
 </div>
 </div>
@@ -227,17 +215,18 @@
             background-color: #29AB87;
             border: 1px solid #29AB87;
         }
-        .item-type-icon {
-            /*color: #1B1B1B;*/
-            /*position:absolute;
-            top: 5px;
-            left: 5px;*/
-
+        .advisory  {
+            color: #1B1B1B;
+            background-color: #CD5C5C;
+            border: 1px solid #CD5C5C;
+        }
+        .statement  {
+            color: #1B1B1B;
+            background-color: #FFA500;
+            border: 1px solid #FFA500;
         }
         .zcallout {
             border-radius: 5px;
-            /*margin: 0 0 20px 0;*/
-            /*padding: 15px 30px 15px 15px;*/
             border-left: 50px solid #ff0000;
         }
         .zinfo-box-icon {
@@ -267,7 +256,6 @@
             left: 18px;
             top: 0;
         }
-
 
         select.form-control {
             height:22px;
@@ -480,27 +468,8 @@ module.exports  = {
             } else {
                 return ''
             }
-            // if(this.item.magazines.length > 0 || this.item.pages.length > 0) {
-            //     return 'fa fa-chain'
-            // } else {
-            //     return ''
-            // }
         },
-        homeIcon: function() {
-              // if (this.item.tags.length > 0){
-              //
-              //
-              // if (this.item.tags.indexOf('homepage') >= 0){
-              //     hIcon = 'fa fa-home'
-              // } else {
-              //     hIcon = ''
-              // }
-              //     } else {
-              //         hIcon = ''
-              //     }
-              //
-              //         return hIcon
-                  },
+        homeIcon: function() {},
                  archivedIcon: function() {
 
                       if (this.item.archived === 1){
@@ -539,10 +508,19 @@ module.exports  = {
                           faicon = 'fa-graduation-cap'
                           break
                           case 'external':
-                          faicon = 'fa-file-o'
+                          faicon = 'fa-external-link'
                           break
                           case 'article':
                           faicon = 'fa-newspaper-o'
+                          break
+                          case '':
+                          faicon = 'fa-asterisk'
+                          break
+                          case 'advisory':
+                          faicon = 'fa-warning'
+                          break
+                          case 'statement':
+                          faicon = 'fa-commenting'
                           break
                           default:
                           faicon = 'fa-file-o'

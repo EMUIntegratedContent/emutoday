@@ -117,7 +117,6 @@ class AnnouncementController extends ApiController
       $announcement->email_link         = $request->get('email_link', null);
       $announcement->email_link_txt     = $request->get('email_link_txt', null);
       $announcement->phone              = $request->get('phone', null);
-      $announcement->is_approved      	= $request->get('is_approved', 0);
       $announcement->approved_date      =  null;
       $announcement->is_promoted       	=  0;
       $announcement->type               = $request->get('type', 'general');
@@ -125,10 +124,18 @@ class AnnouncementController extends ApiController
       $announcement->priority     	    = $request->get('priority', 0);
       $announcement->is_archived      	= $request->get('is_archived', 0);
 
+      // Reset Approvals
+      if($request->input('admin_pre_approved')){
+        $announcement->is_approved       = 1;
+        $createMessage = "Announcement successfully created and approved.";
+      } else {
+        $createMessage = "Announcement successfully created.";
+      }
+
       if($announcement->save())
       { // Now save to db and return success
         return $this->setStatusCode(201)
-        ->respondSavedWithData('Announcement successfully created!',[ 'record_id' => $announcement->id ]);
+        ->respondSavedWithData($createMessage, [ 'record_id' => $announcement->id ]);
       }
     }
   }
@@ -181,7 +188,6 @@ class AnnouncementController extends ApiController
       $announcement->phone              = $request->get('phone', null);
 
       $announcement->submission_date   = $request->get('submission_date');
-      $announcement->is_approved      	= '0';
       $announcement->approved_date     = $request->get('approved_date', null);
       $announcement->is_promoted     	= $request->get('is_promoted', 0);
 
@@ -189,10 +195,20 @@ class AnnouncementController extends ApiController
       $announcement->is_archived     	= $request->get('is_archived', 0);
       $announcement->type             = $request->get('type', 'general');
 
+      // Reset Approvals
+      if($request->input('admin_pre_approved')){
+        $announcement->is_approved       = 1;
+
+        $updateMessage = "Announcement successfully updated and approved.";
+      } else {
+        $announcement->is_approved       = 0; // events must go back into approver queue when updated
+
+        $updateMessage = "Announcement successfully updated.";
+      }
+
       if($announcement->save()) {
         return $this->setStatusCode(201)
-        ->respondSavedWithData('Announcement successfully Updated!',[ 'record_id' => $announcement->id ]);
-        // ->respondUpdated('Announcement Successfully Updated!');
+        ->respondSavedWithData($updateMessage, [ 'record_id' => $announcement->id ]);
       }
     }
   }

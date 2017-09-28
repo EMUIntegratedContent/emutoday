@@ -25,6 +25,7 @@
         </div>
     @endif
  <div class="row">
+   {{--
      <div class="col-md-6">
             <div class="box box-default">
                 <div class="box-header with-border">
@@ -34,25 +35,6 @@
                     </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-
-                    {{-- <table id="main-story-table" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                            <th class="text-center">ID</th>
-                            <th class="text-left">Type</th>
-                            <th class="text-left">Title</th>
-                            <th class="text-center">Featured</th>
-                            <th class="text-center">Approved</th>
-                            <th class="text-left">Live</th>
-                            <th class="text-left">Start Date</th>
-                            <th class="text-left">End Date</th>
-                            <th class="text-left">Edit</th>
-                            <th class="text-left">Delete</th>
-                        </tr>
-                </thead>
-            </table> --}}
-            {{-- {!! $storys->render() !!} --}}
-            {{-- {{ $storys->links() }} --}}
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
@@ -70,23 +52,7 @@
                         </div>
                         <div class="box-body">
                             <div class="box-body">
-                                {{-- <table id="main-announcement-table" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                                <th class="text-center">ID</th>
-                                                <th class="text-left">Title</th>
-                                                <th class="text-center">Approved</th>
-                                                    <th class="text-center">Promoted</th>
-                                                    <th class="text-left">Start Date</th>
-                                                    <th class="text-left">End Date</th>
-                                                <th class="text-left">Edit</th>
-                                                <th class="text-left">Delete</th>
-                                        </tr>
-                                    </thead>
 
-                                </table> --}}
-                                {{-- {!! $storys->render() !!} --}}
-                                {{-- {{ $storys->links() }} --}}
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -95,7 +61,11 @@
                     <!-- /.box -->
 
         </div><!-- /.col-md-6 -->
-    </div><!-- /.row -->
+        --}}
+    <div class="col-sm-12">
+      <p class="text-center"><img src="{{ url('/assets/imgs/emu-today/thats-true-lg.png') }}" alt="That's TRUE logo" /></p>
+    </div>
+  </div><!-- /.row -->
 
 
 

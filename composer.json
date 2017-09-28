@@ -6,8 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.*",
-        "laravelcollective/html": "5.2.*",
+        "laravel/framework": "5.4.*",
+        "laravel/passport": "~3.0",
+        "laravelcollective/html": "5.4.*",
         "laracasts/presenter": "^0.2.1",
         "laracasts/utilities": "~2.0",
         "laracasts/flash": "^2.0",
@@ -20,7 +21,9 @@
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.8.2",
         "doctrine/dbal": "~2.3",
-        "snowfire/beautymail": "dev-master"
+        "snowfire/beautymail": "dev-master",
+        "guzzlehttp/guzzle": "^6.3",
+        "roumen/feed": "~2.10"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

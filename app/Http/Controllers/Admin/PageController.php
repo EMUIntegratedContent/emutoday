@@ -30,6 +30,8 @@ class PageController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
     public function index()
@@ -97,7 +99,7 @@ class PageController extends Controller
       );
 
       flash()->success('Page has been created.');
-      return redirect(route('admin.page.edit', $page->id));//->with('status', 'Story has been created.');
+      return redirect(route('admin_page_edit', $page->id));//->with('status', 'Story has been created.');
     }
 
     public function edit($id)
@@ -154,21 +156,17 @@ class PageController extends Controller
                  } else {
                      $page->is_ready = 1;
                  }
-            //  dd($storyIDsForPivotArray);
              $page->storys()->sync($storyIDsForPivotArray);
             }
 
         $page->uri = $request->uri;
         $page->start_date = \Carbon\Carbon::parse($request->start_date);
         $page->end_date = \Carbon\Carbon::parse($request->end_date);
-        // $page->is_active = $request->is_active;
 
         $page->save();
 
-        //$story->fill($request->only('title', 'slug', 'subtitle', 'teaser','content','story_type'))->save();
         flash()->success('Page has been updated.');
-        return redirect(route('admin.page.edit', $page->id));
-        //return redirect(route('admin.story.edit', $story->id))->with('status', 'Story has been updated.');
+        return redirect(route('admin_page_edit', $page->id));
     }
 
     public function delete(Request $request)
@@ -176,7 +174,7 @@ class PageController extends Controller
         $page = $this->page->findOrFail($request->get('id'));
         $page->delete();
         flash()->warning('Page has been deleted.');
-        return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
+        return redirect(route('admin_page_index'));//->with('status', 'Story has been deleted.');
     }
 
     public function destroy($id)
@@ -184,6 +182,6 @@ class PageController extends Controller
         $page = $this->page->findOrFail($id);
         $page->delete();
         flash()->warning('Page has been deleted.');
-        return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
+        return redirect(route('admin_page_index'));//->with('status', 'Story has been deleted.');
     }
 }

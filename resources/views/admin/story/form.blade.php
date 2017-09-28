@@ -3,14 +3,8 @@
 @section('title', $story->exists ? 'Editing '.$story->title : 'Create New Story')
     @section('style-plugin')
         @parent
-<!-- iCheck for checkboxes and radio inputs -->
-{{-- <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css"> --}}
 <!-- Bootstrap Color Picker -->
 <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
-<!-- Select2 -->
-{{-- <link rel="stylesheet" href="/themes/admin-lte/plugins/select2/select2.min.css"> --}}
-
-{{-- <link rel="stylesheet" href="/themes/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"> --}}
 
     @endsection
         @section('scripts-vendor')

@@ -24,10 +24,12 @@ class ArchiveController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
     public function queue($entityType) {
-        $storyTypes  = collect(StoryType::select('name','shortname')->get());
+        $storyTypes  = collect(StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
         return view('admin.archive.queue', compact('entityType', 'storyTypes'));
     }
 
@@ -35,7 +37,7 @@ class ArchiveController extends Controller
     /**
     * Process deletion of an archived item.
     *
-    * @param  ??????
+    * @param  int $id
     * @return \Illuminate\Http\Response
     */
     public function delete($id)

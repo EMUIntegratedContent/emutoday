@@ -11,7 +11,7 @@
         <div class="box-header with-border">
             <div class="box-head-info pull-left">
                 @if($expertImage->is_active != 0)
-                    <img class="better-thumb" src="/imagecache/betterthumb/{{$expertImage->filename}}" alt="{{$expertImage->image_name}}">
+                    <img class="better-thumb" src="/imagecache/expertthumb/{{$expertImage->filename}}" alt="{{$expertImage->image_name}}">
                 @endif
                 <h3 class="box-title">Profile Image</h3>
             </div><!-- /.box-head-info -->
@@ -26,13 +26,13 @@
         <div class="form-group">
             <label class="control-label" for="image">Select File</label>
             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
-            <span class="help-block">Select the headshot you wish to upload (Width: 279px | Height: 418px)</span>
+            <span class="help-block">Upload a photo (Width: 800px | Height: 1000px | Resolution: 72ppi). MUST be a 4:5 width to height ratio!</span>
         </div>
 
         <div class="form-group">
           {!! Form::label('title', 'Title/Header') !!}
           {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
-          <span class="help-block">Large Bold text limited to a couple of words visible when story is main feature on emu-today hub </span>
+          <span class="help-block">Display name of the expert.</span>
         </div>
         <div class="form-group">
           {!! Form::label('caption', 'Caption') !!}
@@ -54,7 +54,7 @@
                                  'class' => 'form',
                                  'files' => true]
                                  ) !!}
-                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'Onclick' => 'return ConfirmDelete();')) !!}
+                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'onclick' => 'return ConfirmDelete();')) !!}
                                  {!! Form::close() !!}
                                     </div>
                             @endif
