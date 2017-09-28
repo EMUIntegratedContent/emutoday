@@ -36,7 +36,15 @@
                     <div class="small-8 columns text-expertbox" data-equalizer-watch="text-expert">
                      <h2><a href="{{ route('expertview', ['id' => $expert->id]) }}">{{ $expert->display_name }}</a></h2>
                     <p>{{ $expert->title }}</p>
-                    <p>{{ $expert->teaser }}</p>
+                    @php $numexpertise = count($expert->expertise) @endphp
+                    @if($numexpertise > 0)
+                      <p><strong>Areas of expertise:</strong>
+                      @foreach($expert->expertise as $expertise)
+                        @php $numexpertise--  @endphp
+                        {{ $expertise->expertise }}{{-- DO NOT ADD A COMMA AFTER THE LAST ONE --}}@if($numexpertise > 0),@endif
+                      @endforeach
+                    @endif
+                    </p>
                     </div>
                         </div>
                 </article>

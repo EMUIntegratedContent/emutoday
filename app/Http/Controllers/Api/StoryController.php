@@ -98,8 +98,6 @@ class StoryController extends ApiController
         }
     }
 
-
-
     public function listType($stype)
     {
 
@@ -478,7 +476,7 @@ class StoryController extends ApiController
 
     /**
      * Determine if the currently logged-in user has the auto_approved role.
-     * If so, and if the story type is "news", return true.
+     * If so, and if the story type is "news" "advisory" or "statement", return true.
      *
      * @param int $user_id  The ID of the user.
      * @param string $story_type  The type of story.
@@ -487,7 +485,7 @@ class StoryController extends ApiController
     public function isAutoApproved($user_id, $story_type){
         $user = User::findOrFail($user_id);
 
-        if($story_type == 'news'){
+        if($story_type == 'news' || $story_type == 'advisory' || $story_type == 'statement'){
             foreach ($user->roles()->get() as $role){
                 if ($role->name == 'auto_approved')
                 {

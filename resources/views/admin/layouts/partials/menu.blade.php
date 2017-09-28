@@ -49,7 +49,7 @@
     </ul>
   </li>
   @can('story_promote', $currentUser)
-    <li><a href="#"><i class="fa fa-circle-o"></i>Advisories <span class="pull-right-container">
+    <li><a href="#"><i class="fa fa-circle-o"></i>Media Advisories <span class="pull-right-container">
       <i class="fa fa-angle-left pull-right"></i>
     </span></a>
     <ul class="treeview-menu {{ set_active('admin/story/advisory*') }}">

@@ -16,7 +16,7 @@
             <div class="large-12 medium-12 small-12 columns">
                 <a href="/story/news" class="button newsfilter @if($newsAdvisoryStatementFilter) secondary @endif">All</a>
                 <a href="/story/news?filter=news" class="button newsfilter @if($newsAdvisoryStatementFilter != 'news') secondary @endif">News Only</a>
-                <a href="/story/news?filter=advisory" class="button newsfilter @if($newsAdvisoryStatementFilter != 'advisory') secondary @endif">Advisories Only</a>
+                <a href="/story/news?filter=advisory" class="button newsfilter @if($newsAdvisoryStatementFilter != 'advisory') secondary @endif">Media Advisories Only</a>
                 <a href="/story/news?filter=statement" class="button newsfilter @if($newsAdvisoryStatementFilter != 'statement') secondary @endif">Statements Only</a>
             </div>
           </div>

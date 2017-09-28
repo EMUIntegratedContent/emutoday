@@ -27,10 +27,6 @@
 @endsection
 @section('content')
   <div id="experts-area">
-
-
-
-
       <div class="row">
           <div class="large-3 medium-3 small-12 columns">
               @include('public.experts.subviews.expertnav')

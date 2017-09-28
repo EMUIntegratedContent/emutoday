@@ -15,13 +15,9 @@
                 </div></div>
             <div class="row">
                 <div class="large-12 medium-12 small-12 columns search-container">
-                   
-                    
                     @include('public.experts.subviews.searchform')
                 </div>
-            
-            
-                </div>
+            </div>
         </div>
     </div>
 </div>
