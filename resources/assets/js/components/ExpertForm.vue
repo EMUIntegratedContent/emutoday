@@ -255,6 +255,25 @@
     <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
+        <!-- Last Name -->
+        <div v-bind:class="formGroup">
+          <label>Expertise Categories</label>
+          <v-select
+          :class="[formErrors.tags ? 'invalid-input' : '']"
+          :value.sync="categories"
+          :options="categorieslist"
+          :multiple="true"
+          placeholder="Select expertise category"
+          label="category">
+          </v-select>
+          <p v-if="formErrors.category" class="help-text invalid">{{formErrors.category}}</p>
+        </div>
+      </div>
+      <!-- /.small-12 columns -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div v-bind:class="md12col">
         <!-- Biography -->
         <div v-bind:class="formGroup">
           <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
@@ -308,25 +327,6 @@
      <!-- /.small-12 columns -->
    </div>
    <!-- /.row -->
-    <div class="row">
-      <div v-bind:class="md12col">
-        <!-- Last Name -->
-        <div v-bind:class="formGroup">
-          <label>Expertise Categories</label>
-          <v-select
-          :class="[formErrors.tags ? 'invalid-input' : '']"
-          :value.sync="categories"
-          :options="categorieslist"
-          :multiple="true"
-          placeholder="Select expertise category"
-          label="category">
-          </v-select>
-          <p v-if="formErrors.category" class="help-text invalid">{{formErrors.category}}</p>
-        </div>
-      </div>
-      <!-- /.small-12 columns -->
-    </div>
-    <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
