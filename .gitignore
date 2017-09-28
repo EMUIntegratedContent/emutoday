@@ -11,5 +11,5 @@ Homestead.yaml
 
 *Homestead.yaml*
 *.vagrant*
-*composer*
+composer
 *oauth.php*
