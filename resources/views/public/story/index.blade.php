@@ -26,12 +26,7 @@
                 @foreach($storys as $story)
                   <li>
                     <div class="publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('M d, Y') }}</div>
-                    <a href="/story/{{$story->story_type}}/{{$story->id}}">
-                        @if($story->story_type == 'advisory')
-                          <i class="fa fa-warning" aria-hidden="true"></i>
-                        @elseif($story->story_type == 'statement')
-                          <i class="fa fa-commenting" aria-hidden="true"></i>
-                        @endif
+                    <a href="/story/{{$story->story_type}}/{{$story->id}}" class="@if($story->story_type == 'advisory') advisory-link @elseif($story->story_type == 'statement') statement-link @endif">
                       {{$story->title}}
                     </a>
                   </li>
