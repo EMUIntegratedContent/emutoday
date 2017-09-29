@@ -14,7 +14,7 @@
               <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
             </form>
         </div>
-        <div v-if="role == 'admin' || role == 'admin_super'" class="col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right">
+        <div v-if="canApprove" class="col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right">
             <a class="btn btn-sm btn-default" href="/admin/archive/queue/stories"><i class="fa fa-archive"></i> Archived Stories</a>
         </div>
     </div>
@@ -36,6 +36,7 @@
             <div id="items-unapproved">
                 <story-pod
                     pid="items-unapproved"
+                    :role="role"
                     :sroute="sroute"
                     :stype="stype"
                     :gtype="gtype"
@@ -64,6 +65,7 @@
         <div id="items-approved">
             <story-pod
                 pid="items-approved"
+                :role="role"
                 :sroute="sroute"
                 :stype="stype"
                 :gtype="gtype"
@@ -92,6 +94,7 @@
         <div id="items-live">
             <story-pod
                 pid="items-live"
+                :role="role"
                 :sroute="sroute"
                 :stype="stype"
                 :gtype="gtype"
@@ -157,7 +160,6 @@ export default  {
     components: {StoryPod,IconToggleBtn,Pagination},
     props: ['stypes','stype','sroute','qtype','gtype','cuser','role'],
     created(){
-
     },
     ready() {
         let twoWeeksEarlier = moment().subtract(2, 'w')
@@ -202,6 +204,12 @@ export default  {
             } else {
                 return false
             }
+        },
+        canApprove: function(){
+          if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'contributor_2' || this.role === 'editor'){
+              return true
+          }
+          return false
         },
         s_types:function(){
            // var data = localStorage[key];

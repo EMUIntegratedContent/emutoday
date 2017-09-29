@@ -35,10 +35,6 @@
 @can('story_create', $currentUser)
 <li class="treeview {{ set_active('admin/story*') }}">
   <a href="#"><i class="fa fa-file-text-o"></i> <span>Stories</span> <!-- <i class="fa fa-angle-left pull-right"> --></i></a>
-
-
-
-
   <ul class="treeview-menu">
     <li><a href="#"><i class="fa fa-circle-o"></i>News <span class="pull-right-container">
       <i class="fa fa-angle-left pull-right"></i>
@@ -47,7 +43,7 @@
       <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
       <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/news/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
     </ul>
-  </li>
+    </li>
   @can('story_promote', $currentUser)
     <li><a href="#"><i class="fa fa-circle-o"></i>Media Advisories <span class="pull-right-container">
       <i class="fa fa-angle-left pull-right"></i>
@@ -59,22 +55,22 @@
   </li>
   <li><a href="#"><i class="fa fa-circle-o"></i>Statements <span class="pull-right-container">
     <i class="fa fa-angle-left pull-right"></i>
-  </span></a>
-  <ul class="treeview-menu {{ set_active('admin/story/statement*') }}">
-    <li class="{{ set_active('admin/story/statement*') }}"><a href="/admin/story/statement/queuestatement"><i class="fa fa-rocket"></i> <span>Statement Queue</span></a></li>
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/statement/statement/form"><i class="fa fa-plus-square"></i><span>New Statement</span></a></li>
-  </ul>
-</li>
+    </span></a>
+    <ul class="treeview-menu {{ set_active('admin/story/statement*') }}">
+      <li class="{{ set_active('admin/story/statement*') }}"><a href="/admin/story/statement/queuestatement"><i class="fa fa-rocket"></i> <span>Statement Queue</span></a></li>
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/statement/statement/form"><i class="fa fa-plus-square"></i><span>New Statement</span></a></li>
+    </ul>
+  </li>
   <li><a href="#"><i class="fa fa-circle-o"></i>All Stories <span class="pull-right-container">
     <i class="fa fa-angle-left pull-right"></i>
-  </span></a>
-  <ul class="treeview-menu {{ set_active('admin/story/all') }}">
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
-  </ul>
-</li>
-  @endcan
+    </span></a>
+    <ul class="treeview-menu {{ set_active('admin/story/all') }}">
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+    </ul>
+  </li>
   <li><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
+  @endcan
 </ul>
 </li>
 @endcan
