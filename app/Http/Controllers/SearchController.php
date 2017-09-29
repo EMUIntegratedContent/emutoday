@@ -152,19 +152,32 @@ class SearchController extends Controller
     public function expertSearch(Request $request){
         $searchterm = $request->get('q');
         $searchCategory = $request->get('category');
-
         // Fields and scores set in Emutoday/Expert model class
-        if($searchCategory != ''){
-            $experts = Expert::search('%'.$searchterm.'%')
-                            ->where('is_approved', 1)
-                            ->whereHas('expertCategories', function($query) use ($searchCategory){
-                                $query->where('category', $searchCategory);
-                            })
-                            ->orderBy('last_name', 'ASC')
-                            ->groupBy('last_name')
-                            ->paginate(10);
+        if($searchCategory){
+            // Expert::search creates some odd alphebetizing when used with an empty search
+            if($searchterm){
+              $experts = Expert::search('%'.$searchterm.'%')
+                              ->where('is_approved', 1)
+                              ->whereHas('expertCategories', function($query) use ($searchCategory){
+                                  $query->where('category', $searchCategory);
+                              })
+                              ->orderBy('last_name', 'ASC')
+                              ->paginate(10);
+            } else {
+              $experts = Expert::where('is_approved', 1)
+                              ->whereHas('expertCategories', function($query) use ($searchCategory){
+                                  $query->where('category', $searchCategory);
+                              })
+                              ->orderBy('last_name', 'ASC')
+                              ->paginate(10);
+            }
         } else {
+          // Expert::search creates some odd alphebetizing when used with an empty search
+          if($searchterm){
             $experts = Expert::search('%'.$searchterm.'%')->where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
+          } else {
+            $experts = Expert::where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
+          }
         }
 
         $expertCategories = ExpertCategory::all();
