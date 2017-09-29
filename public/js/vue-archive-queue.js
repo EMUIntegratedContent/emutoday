@@ -17318,7 +17318,6 @@ module.exports = {
     },
     update: function update() {
         var value = this._watcher.value;
-        console.log('xxxxxxxxxvalue=' + value);
         if (value) {
             this.set(value);
 
@@ -17336,7 +17335,6 @@ module.exports = {
             var input = $(this.el).find('.active input').get(0);
             if (input) {
                 this.set(input.value);
-                console.log('input.value=' + input.value);
             }
         }
     }
