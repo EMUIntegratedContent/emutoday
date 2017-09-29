@@ -35,6 +35,8 @@ class StoryController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
 
@@ -71,8 +73,6 @@ class StoryController extends Controller
     public function promoteStory(Request $request)
         {
             $story = $this->story->findOrFail($request->id);
-            //return 'working on it' . $story->id;
-            //
             $story->story_type = $request->new_story_type;
             $story->save();
             $storyGroup = $story->storyType->group;
@@ -82,7 +82,7 @@ class StoryController extends Controller
 
             $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
             $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-            $stypelist = StoryType::where('level', 1)->lists('name','shortname');
+            $stypelist = StoryType::where('level', 1)->pluck('name','shortname');
             $stypes = $story->story_type;
             $stype = $story->story_type;
             foreach ($requiredImages as $img) {

@@ -1,4 +1,3 @@
-
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/announcement*') }}">
   <a href="#"><i class="fa fa-bullhorn"></i> <span>Announcements</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
@@ -8,7 +7,6 @@
     </span></a>
     <ul class="treeview-menu {{ set_active('admin/announcement/*/general') }}">
       <li class="{{ set_active('admin/announcement/*/general') }}"><a href="/admin/announcement/queue/general"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-      {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
       <li class="{{ set_active('admin/announcement/*/general') }}"><a href="/admin/announcement/form/general"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
     </ul>
   </li>
@@ -17,7 +15,6 @@
       </span></a>
       <ul class="treeview-menu {{ set_active('admin/announcement/*/hr') }}">
         <li class="{{ set_active('admin/announcement/*/hr') }}"><a href="/admin/announcement/queue/hr"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-        {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
         <li class="{{ set_active('admin/announcement/*/hr') }}"><a href="/admin/announcement/form/hr"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
       </ul>
     </li>
@@ -28,7 +25,6 @@
   <a href="#"><i class="fa fa-calendar"></i> <span>Events</span> <!-- <i class="fa fa-angle-left pull-right"></i>--></a>
   <ul class="treeview-menu">
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/queue"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-    {{-- <li class="{{ set_active('admin/event*') }}"><a href="/admin/event"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
   </ul>
 </li>
@@ -45,29 +41,43 @@
     </span></a>
     <ul class="treeview-menu {{ set_active('admin/story/news*') }}">
       <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
-      {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
-      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/story/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/news/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
+    </ul>
+    </li>
+  @can('story_promote', $currentUser)
+    <li><a href="#"><i class="fa fa-circle-o"></i>Media Advisories <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span></a>
+    <ul class="treeview-menu {{ set_active('admin/story/advisory*') }}">
+      <li class="{{ set_active('admin/story/advisory*') }}"><a href="/admin/story/advisory/queueadvisory"><i class="fa fa-rocket"></i> <span>Advisory Queue</span></a></li>
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/advisory/advisory/form"><i class="fa fa-plus-square"></i><span>New Advisory</span></a></li>
     </ul>
   </li>
-  @can('story_promote', $currentUser)
+  <li><a href="#"><i class="fa fa-circle-o"></i>Statements <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i>
+    </span></a>
+    <ul class="treeview-menu {{ set_active('admin/story/statement*') }}">
+      <li class="{{ set_active('admin/story/statement*') }}"><a href="/admin/story/statement/queuestatement"><i class="fa fa-rocket"></i> <span>Statement Queue</span></a></li>
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/statement/statement/form"><i class="fa fa-plus-square"></i><span>New Statement</span></a></li>
+    </ul>
+  </li>
   <li><a href="#"><i class="fa fa-circle-o"></i>All Stories <span class="pull-right-container">
     <i class="fa fa-angle-left pull-right"></i>
-  </span></a>
-  <ul class="treeview-menu {{ set_active('admin/story/all') }}">
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
-    {{-- <li class="{{ set_active('admin/announcement*') }}"><a href="/admin/announcement"><i class="fa fa-list"></i> <span>List</span></a></li> --}}
-    <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
-  </ul>
+    </span></a>
+    <ul class="treeview-menu {{ set_active('admin/story/all') }}">
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/story/all/queueall"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
+      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
+    </ul>
+  </li>
   <li><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
-</li>
-@endcan
+  @endcan
 </ul>
 </li>
 @endcan
 
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/page*') }}">
-  <a href="#"><i class="fa fa-newspaper-o"></i> <span>Hub</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
+  <a href="#"><i class="fa fa-newspaper-o"></i> <span>Hub</span></a>
   <ul class="treeview-menu">
     <li class="{{ set_active('admin/page*') }}"><a href="/admin/page"><i class="fa fa-list"></i> <span>List</span></a></li>
     <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
@@ -75,17 +85,29 @@
 </li>
 @endcan
 {{-- Gate Facade allows multiple permission checks (unlike @can) --}}
-{{--@if(Gate::check('admin') || Gate::check('experts'))--}}
-@if(Gate::check('experts'))
-    <li class="treeview {{ set_active('admin/experts*') }}">
+@if(Gate::check('admin') || Gate::check('experts'))
+    <li class="treeview {{ set_active('admin/expert*') }}">
       <a href="#"><i class="fa fa-blind"></i> <span>Experts</span></a>
       <ul class="treeview-menu">
-        <li><a href="#"><i class="fa fa-circle-o"></i>People <span class="pull-right-container">
+        <li><a href="#"><i class="fa fa-circle-o"></i>Eastern Experts <span class="pull-right-container">
+            @if(count($bugExperts) > 0)
+            <span class="label label-success">{{ count($bugExperts) }} PEND.</span>
+            @endif
             <i class="fa fa-angle-left pull-right"></i>
             </span></a>
             <ul class="treeview-menu {{ set_active('admin/expert*') }}">
                 <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/list"><i class="fa fa-list"></i> <span>List</span></a></li>
                 <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>Media Requests <span class="pull-right-container">
+            @if(count($bugExpertMediaRequests) > 0)
+            <span class="label label-success">{{ count($bugExpertMediaRequests) }} NEW</span>
+            @endif
+            <i class="fa fa-angle-left pull-right"></i>
+            </span></a>
+            <ul class="treeview-menu {{ set_active('admin/experts/requests*') }}">
+                <li class="{{ set_active('admin/expertrequests/*') }}"><a href="/admin/expertrequests/list"><i class="fa fa-list"></i> <span>List</span></a></li>
             </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">

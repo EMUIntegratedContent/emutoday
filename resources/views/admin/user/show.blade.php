@@ -21,6 +21,9 @@
             <li class="list-group-item">
                 <b>PHONE</b> <a class="pull-right">{{$user->phone}}</a>
             </li>
+            <li class="list-group-item">
+                <b>OAuth</b> <a class="pull-right" href="/admin/oauth/list">Clients</a>
+            </li>
         </ul>
         <a href="/admin/user/{{$user->id}}/edit" class="btn btn-primary btn-block"><b>Edit User</b></a>
 

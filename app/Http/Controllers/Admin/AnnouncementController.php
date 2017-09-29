@@ -25,6 +25,8 @@ class AnnouncementController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
     /**
@@ -100,7 +102,7 @@ class AnnouncementController extends Controller
         }
       $announcements = $this->announcement->where('is_archived', 1)->paginate(10);
 
-      return redirect()->route('admin.announcement.archives');
+      return redirect()->route('admin_announcement_archives');
     }
 
 }

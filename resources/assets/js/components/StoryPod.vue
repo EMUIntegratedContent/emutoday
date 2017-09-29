@@ -33,25 +33,26 @@
                                 </select>
                           </div>
                           </template>
-                          <template v-if="recordIsReady">
-                              <div id="applabel" class="form-group">
-                                  <label>approved:</label>
-                              </div><!-- /.form-group -->
-                              <div class="form-group">
+                          <template v-if="canApprove">
+                            <template v-if="recordIsReady">
+                                <div id="applabel" class="form-group">
+                                    <label>approved:</label>
+                                </div><!-- /.form-group -->
+                                <div class="form-group">
 
-                                  <vui-flip-switch id="switch-{{item.id}}"
+                                    <vui-flip-switch id="switch-{{item.id}}"
 
-                                  v-on:click.prevent="changeIsApproved"
-                                  :value.sync="patchRecord.is_approved" >
-                                  </vui-flip-switch>
-                              </div>
+                                    v-on:click.prevent="changeIsApproved"
+                                    :value.sync="patchRecord.is_approved" >
+                                    </vui-flip-switch>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="form-group">
+                                    <label>Not ready for approval</label>
+                                </div><!-- /.form-group -->
+                            </template>
                           </template>
-                          <template v-else>
-                              <div class="form-group">
-                                  <label>Not ready for approval</label>
-                              </div><!-- /.form-group -->
-                          </template>
-
                         </div><!-- /.pull-right -->
                     </div><!-- /.col-md-12-->
                 </div><!-- /.row -->
@@ -96,10 +97,6 @@
                     </div>
                 </div>
             </template>
-
-
-
-
       </div><!-- /.box-body -->
             <div class="box-footer list-footer">
                 <div class="row">
@@ -108,21 +105,13 @@
                     </div><!-- /.col-md-7 -->
                     <div class="col-sm-12 col-md-5">
                         <div class="btn-group pull-right">
-                            <!--
-                              When the archive system is built, uncomment this line and replace the disabled button below it... CP 12/20/16
-                              <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledArchive" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>-->
-                            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>
                             <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="edit"><i class="fa fa-pencil"></i></button>
-                            <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledPreview" data-toggle="tooltip" data-placement="top" title="preview"><i class="fa fa-eye"></i></button>
-
+                            <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledPreview" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></button>
+                            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="bottom" title="archive"><i class="fa fa-archive"></i></button>
                         </div><!-- /.btn-toolbar -->
-
                     </div><!-- /.col-md-7 -->
                 </div><!-- /.row -->
-
-
             </div><!-- /.box-footer -->
-
     </div><!-- /.box- -->
 </div>
 </div>
@@ -227,17 +216,18 @@
             background-color: #29AB87;
             border: 1px solid #29AB87;
         }
-        .item-type-icon {
-            /*color: #1B1B1B;*/
-            /*position:absolute;
-            top: 5px;
-            left: 5px;*/
-
+        .advisory  {
+            color: #1B1B1B;
+            background-color: #CD5C5C;
+            border: 1px solid #CD5C5C;
+        }
+        .statement  {
+            color: #1B1B1B;
+            background-color: #FFA500;
+            border: 1px solid #FFA500;
         }
         .zcallout {
             border-radius: 5px;
-            /*margin: 0 0 20px 0;*/
-            /*padding: 15px 30px 15px 15px;*/
             border-left: 50px solid #ff0000;
         }
         .zinfo-box-icon {
@@ -267,7 +257,6 @@
             left: 18px;
             top: 0;
         }
-
 
         select.form-control {
             height:22px;
@@ -316,7 +305,7 @@ import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
     directives: {},
     components: {VuiFlipSwitch},
-    props: ['item','pid','sroute','qtype','gtype','stype','index'],
+    props: ['item','pid','sroute','qtype','gtype','stype','index','role'],
     data: function() {
         return {
             response_msg: '',
@@ -373,6 +362,12 @@ module.exports  = {
             }
         return extrasep;
         },
+        canApprove: function(){
+          if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'contributor_2' || this.role === 'editor'){
+              return true
+          }
+          return false
+        },
         isLiveColumn:function(){
             if(this.pid === 'items-live'){
                 return true;
@@ -402,7 +397,6 @@ module.exports  = {
         },
         hasIsApprovedChanged: function(){
             if (this.initRecord.is_approved != this.patchRecord.is_approved){
-                console.log('is_approved => initRecord='+ this.initRecord.is_approved  + ' patchRecord=>' +this.patchRecord.is_approved );
                 return true
             } else {
                 return false
@@ -480,27 +474,8 @@ module.exports  = {
             } else {
                 return ''
             }
-            // if(this.item.magazines.length > 0 || this.item.pages.length > 0) {
-            //     return 'fa fa-chain'
-            // } else {
-            //     return ''
-            // }
         },
-        homeIcon: function() {
-              // if (this.item.tags.length > 0){
-              //
-              //
-              // if (this.item.tags.indexOf('homepage') >= 0){
-              //     hIcon = 'fa fa-home'
-              // } else {
-              //     hIcon = ''
-              // }
-              //     } else {
-              //         hIcon = ''
-              //     }
-              //
-              //         return hIcon
-                  },
+        homeIcon: function() {},
                  archivedIcon: function() {
 
                       if (this.item.archived === 1){
@@ -539,10 +514,19 @@ module.exports  = {
                           faicon = 'fa-graduation-cap'
                           break
                           case 'external':
-                          faicon = 'fa-file-o'
+                          faicon = 'fa-external-link'
                           break
                           case 'article':
                           faicon = 'fa-newspaper-o'
+                          break
+                          case '':
+                          faicon = 'fa-asterisk'
+                          break
+                          case 'advisory':
+                          faicon = 'fa-warning'
+                          break
+                          case 'statement':
+                          faicon = 'fa-commenting'
                           break
                           default:
                           faicon = 'fa-file-o'
@@ -590,14 +574,10 @@ module.exports  = {
               },
               methods: {
                   gotoHub: function(itemid){
-                       console.log(itemid);
                       window.location.href = '/admin/page/'+itemid+'/edit';
-
                   },
                   gotoMag: function(itemid){
-                      console.log(itemid);
                       window.location.href = '/admin/magazine/'+itemid+'/edit';
-
                   },
                   editItem: function(ev) {
                       window.location.href = this.itemEditPath;
@@ -606,7 +586,7 @@ module.exports  = {
                       window.location.href = this.itemPreviewPath;
                   },
                   priorityChange(event){
-                      console.log('priority=' + this.item.priority)
+
                   },
                     toggleBody: function(ev) {
                         if(this.showBody == false) {
@@ -614,12 +594,7 @@ module.exports  = {
                         } else {
                             this.showBody = false;
                         }
-                        console.log('toggleBody' + this.showBody)
                     },
-                    // doThis: function(ev) {
-                    //     this.$emit('item-change',this.item);
-                    //     console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
-                    // },
                     approveItem: function(ev){
 
                         if (this.item.is_approved === 1){
@@ -627,48 +602,35 @@ module.exports  = {
                         } else {
                             this.item.xIs_approved = 1;
                         }
-
                         this.updateRecordStatus();
-
-
-
                     },
                     changeIsApproved: function(){
                         this.patchRecord.is_approved = (this.item.is_approved === 0)?1:0;
-                        console.log('this.patchRecord.is_approved ='+this.patchRecord.is_approved );
                         this.updateItem();
 
                     },
                     archiveItem: function(){
-                     //    this.patchRecord.is_approved = this.item.is_approved;
-                     //    this.patchRecord.priority = this.item.priority;
                         this.patchRecord.is_archived = 1;
 
                         this.$http.patch('/api/story/archiveitem/' + this.item.id , this.patchRecord , {
                             method: 'PATCH'
                         } )
                         .then((response) => {
-                            console.log('good?'+ response)
                             this.checkAfterUpdate(response.data.newdata)
 
                             }, (response) => {
-                                console.log('bad?'+ response)
                             });
                     },
                     updateItem: function(){
-                     //    this.patchRecord.is_approved = this.item.is_approved;
-                     //    this.patchRecord.priority = this.item.priority;
                         this.patchRecord.is_archived = this.item.is_archived;
 
                         this.$http.patch('/api/story/updateitem/' + this.item.id , this.patchRecord , {
                             method: 'PATCH'
                         } )
                         .then((response) => {
-                            console.log('good?'+ response)
                             this.checkAfterUpdate(response.data.newdata)
 
                             }, (response) => {
-                                console.log('bad?'+ response)
                             });
                     },
                     checkAfterUpdate: function(ndata){
@@ -677,8 +639,6 @@ module.exports  = {
                         this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
 
                         this.hasPriorityChanged = 0;
-
-                        console.log(ndata);
                     },
                     updateRecordStatus: function(){
                         // this.item.is_approved = (this.is_approved === 0)?1:0;
@@ -687,18 +647,12 @@ module.exports  = {
                             method: 'PATCH'
                         } )
                         .then((response) => {
-                            console.log('StoryPodgood?'+ response)
                             self.response_approval = response.data.isapproved;
                             self.item.is_approved = (self.response_approval == 1)?1:0;
 
                             self.$emit('item-change',self.item);
-                            // self.itemMsgStatus.show = true;
-                            // self.itemMsgStatus.level = 'success';
-                            // self.itemMsgStatus.msg = response.data.msg;
 
                         }, (response) => {
-                            console.log('bad?'+ response)
-
                             self.itemMsgStatus.show = true;
                             self.itemMsgStatus.level = 'danger';
                             self.itemMsgStatus.msg = response.data.error.message;
@@ -707,14 +661,12 @@ module.exports  = {
                     doThis: function(ev) {
                         this.item.is_approved = (this.is_approved === 0)?1:0;
                        this.$emit('item-change',this.item);
-                    //console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
                     },
 
                 },
                 watch: {
                     'isapproved': function(val, oldVal) {
                         if (val !=  oldVal) {
-                            console.log('val change')
                         }
                     }
                 },
@@ -723,29 +675,14 @@ module.exports  = {
 
                         momentPretty: {
                             read: function(val) {
-                                    console.log('read-val'+ val )
-
                                 return 	val ?  moment(val).format('MM-DD-YYYY') : '';
                             },
                             write: function(val, oldVal) {
-                                console.log('write-val'+ val + '--'+ oldVal)
-
                                 return moment(val).format('YYYY-MM-DD');
                             }
                         }
                     },
                     events: {
-
-                    // 'building-change':function(name) {
-                    // 	this.newbuilding = '';
-                    // 	this.newbuilding = name;
-                    // 	console.log(this.newbuilding);
-                    // },
-                    // 'categories-change':function(list) {
-                    // 	this.categories = '';
-                    // 	this.categories = list;
-                    // 	console.log(this.categories);
-                    // }
                 }
             };
 

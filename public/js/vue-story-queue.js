@@ -18520,10 +18520,19 @@ exports.default = {
                     faicon = 'fa-graduation-cap';
                     break;
                 case 'external':
-                    faicon = 'fa-file-o';
+                    faicon = 'fa-external-link';
                     break;
                 case 'article':
                     faicon = 'fa-newspaper-o';
+                    break;
+                case '':
+                    faicon = 'fa-asterisk';
+                    break;
+                case 'advisory':
+                    faicon = 'fa-warning';
+                    break;
+                case 'statement':
+                    faicon = 'fa-commenting';
                     break;
                 default:
                     faicon = 'fa-file-o';
@@ -18669,7 +18678,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":46,"vue-hot-reload-api":44,"vueify/lib/insert-css":47}],50:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3f82d947] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n")
 'use strict';
 
 var _moment = require('moment');
@@ -18685,7 +18694,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports = {
     directives: {},
     components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
-    props: ['item', 'pid', 'sroute', 'qtype', 'gtype', 'stype', 'index'],
+    props: ['item', 'pid', 'sroute', 'qtype', 'gtype', 'stype', 'index', 'role'],
     data: function data() {
         return {
             response_msg: '',
@@ -18739,6 +18748,12 @@ module.exports = {
             }
             return extrasep;
         },
+        canApprove: function canApprove() {
+            if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'contributor_2' || this.role === 'editor') {
+                return true;
+            }
+            return false;
+        },
         isLiveColumn: function isLiveColumn() {
             if (this.pid === 'items-live') {
                 return true;
@@ -18768,7 +18783,6 @@ module.exports = {
         },
         hasIsApprovedChanged: function hasIsApprovedChanged() {
             if (this.initRecord.is_approved != this.patchRecord.is_approved) {
-                console.log('is_approved => initRecord=' + this.initRecord.is_approved + ' patchRecord=>' + this.patchRecord.is_approved);
                 return true;
             } else {
                 return false;
@@ -18844,27 +18858,8 @@ module.exports = {
             } else {
                 return '';
             }
-            // if(this.item.magazines.length > 0 || this.item.pages.length > 0) {
-            //     return 'fa fa-chain'
-            // } else {
-            //     return ''
-            // }
         },
-        homeIcon: function homeIcon() {
-            // if (this.item.tags.length > 0){
-            //
-            //
-            // if (this.item.tags.indexOf('homepage') >= 0){
-            //     hIcon = 'fa fa-home'
-            // } else {
-            //     hIcon = ''
-            // }
-            //     } else {
-            //         hIcon = ''
-            //     }
-            //
-            //         return hIcon
-        },
+        homeIcon: function homeIcon() {},
         archivedIcon: function archivedIcon() {
 
             if (this.item.archived === 1) {
@@ -18903,10 +18898,19 @@ module.exports = {
                     faicon = 'fa-graduation-cap';
                     break;
                 case 'external':
-                    faicon = 'fa-file-o';
+                    faicon = 'fa-external-link';
                     break;
                 case 'article':
                     faicon = 'fa-newspaper-o';
+                    break;
+                case '':
+                    faicon = 'fa-asterisk';
+                    break;
+                case 'advisory':
+                    faicon = 'fa-warning';
+                    break;
+                case 'statement':
+                    faicon = 'fa-commenting';
                     break;
                 default:
                     faicon = 'fa-file-o';
@@ -18952,11 +18956,9 @@ module.exports = {
     },
     methods: {
         gotoHub: function gotoHub(itemid) {
-            console.log(itemid);
             window.location.href = '/admin/page/' + itemid + '/edit';
         },
         gotoMag: function gotoMag(itemid) {
-            console.log(itemid);
             window.location.href = '/admin/magazine/' + itemid + '/edit';
         },
         editItem: function editItem(ev) {
@@ -18965,9 +18967,7 @@ module.exports = {
         previewItem: function previewItem(ev) {
             window.location.href = this.itemPreviewPath;
         },
-        priorityChange: function priorityChange(event) {
-            console.log('priority=' + this.item.priority);
-        },
+        priorityChange: function priorityChange(event) {},
 
         toggleBody: function toggleBody(ev) {
             if (this.showBody == false) {
@@ -18975,12 +18975,7 @@ module.exports = {
             } else {
                 this.showBody = false;
             }
-            console.log('toggleBody' + this.showBody);
         },
-        // doThis: function(ev) {
-        //     this.$emit('item-change',this.item);
-        //     console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
-        // },
         approveItem: function approveItem(ev) {
 
             if (this.item.is_approved === 1) {
@@ -18988,45 +18983,33 @@ module.exports = {
             } else {
                 this.item.xIs_approved = 1;
             }
-
             this.updateRecordStatus();
         },
         changeIsApproved: function changeIsApproved() {
             this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
-            console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
             this.updateItem();
         },
         archiveItem: function archiveItem() {
             var _this = this;
 
-            //    this.patchRecord.is_approved = this.item.is_approved;
-            //    this.patchRecord.priority = this.item.priority;
             this.patchRecord.is_archived = 1;
 
             this.$http.patch('/api/story/archiveitem/' + this.item.id, this.patchRecord, {
                 method: 'PATCH'
             }).then(function (response) {
-                console.log('good?' + response);
                 _this.checkAfterUpdate(response.data.newdata);
-            }, function (response) {
-                console.log('bad?' + response);
-            });
+            }, function (response) {});
         },
         updateItem: function updateItem() {
             var _this2 = this;
 
-            //    this.patchRecord.is_approved = this.item.is_approved;
-            //    this.patchRecord.priority = this.item.priority;
             this.patchRecord.is_archived = this.item.is_archived;
 
             this.$http.patch('/api/story/updateitem/' + this.item.id, this.patchRecord, {
                 method: 'PATCH'
             }).then(function (response) {
-                console.log('good?' + response);
                 _this2.checkAfterUpdate(response.data.newdata);
-            }, function (response) {
-                console.log('bad?' + response);
-            });
+            }, function (response) {});
         },
         checkAfterUpdate: function checkAfterUpdate(ndata) {
             this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
@@ -19034,8 +19017,6 @@ module.exports = {
             this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
 
             this.hasPriorityChanged = 0;
-
-            console.log(ndata);
         },
         updateRecordStatus: function updateRecordStatus() {
             // this.item.is_approved = (this.is_approved === 0)?1:0;
@@ -19043,17 +19024,11 @@ module.exports = {
             this.$http.patch('/api/story/updateQueue', this.item, {
                 method: 'PATCH'
             }).then(function (response) {
-                console.log('StoryPodgood?' + response);
                 self.response_approval = response.data.isapproved;
                 self.item.is_approved = self.response_approval == 1 ? 1 : 0;
 
                 self.$emit('item-change', self.item);
-                // self.itemMsgStatus.show = true;
-                // self.itemMsgStatus.level = 'success';
-                // self.itemMsgStatus.msg = response.data.msg;
             }, function (response) {
-                console.log('bad?' + response);
-
                 self.itemMsgStatus.show = true;
                 self.itemMsgStatus.level = 'danger';
                 self.itemMsgStatus.msg = response.data.error.message;
@@ -19062,15 +19037,12 @@ module.exports = {
         doThis: function doThis(ev) {
             this.item.is_approved = this.is_approved === 0 ? 1 : 0;
             this.$emit('item-change', this.item);
-            //console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
         }
 
     },
     watch: {
         'isapproved': function isapproved(val, oldVal) {
-            if (val != oldVal) {
-                console.log('val change');
-            }
+            if (val != oldVal) {}
         }
     },
 
@@ -19078,39 +19050,23 @@ module.exports = {
 
         momentPretty: {
             read: function read(val) {
-                console.log('read-val' + val);
-
                 return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
             },
             write: function write(val, oldVal) {
-                console.log('write-val' + val + '--' + oldVal);
-
                 return (0, _moment2.default)(val).format('YYYY-MM-DD');
             }
         }
     },
-    events: {
-
-        // 'building-change':function(name) {
-        // 	this.newbuilding = '';
-        // 	this.newbuilding = name;
-        // 	console.log(this.newbuilding);
-        // },
-        // 'categories-change':function(list) {
-        // 	this.categories = '';
-        // 	this.categories = list;
-        // 	console.log(this.categories);
-        // }
-    }
+    events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div _v-3f82d947=\"\">\n        <div v-show=\"itemMsgStatus.show\" class=\"callout callout-{{itemMsgStatus.level}}\" _v-3f82d947=\"\">\n         <span class=\"Alert__close\" @click=\"itemMsgStatus.show = false\" _v-3f82d947=\"\">X</span>\n        <h5 _v-3f82d947=\"\">{{itemMsgStatus.msg}}</h5>\n    </div>\n    <div :class=\"specialItem\" _v-3f82d947=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-3f82d947=\"\">\n        <div class=\"box-header with-border\" _v-3f82d947=\"\">\n                <div class=\"row\" _v-3f82d947=\"\">\n                    <div class=\"col-sm-12 col-md-6\" _v-3f82d947=\"\">\n                        <div class=\"pull-left\" _v-3f82d947=\"\">\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-3f82d947=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" :title=\"isReadyStatus\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"readyIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"promotedIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Featured\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"featuredIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"on HomePage\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"homeIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"linked\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"linkedIcon\" _v-3f82d947=\"\"></span></label>\n                        </div><!-- /.pull-left -->\n                    </div>\n                        <div class=\"col-sm-12 col-md-6\" _v-3f82d947=\"\">\n                        <div id=\"storyform\" class=\"form-inline pull-right\" _v-3f82d947=\"\">\n                            <template v-if=\"isLiveColumn\">\n                            <div class=\"form-group\" _v-3f82d947=\"\">\n                                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-3f82d947=\"\"><span class=\"fa fa-floppy-o\" _v-3f82d947=\"\"></span></button>\n                            </div><!-- /.form-group -->\n                          <div class=\"form-group\" _v-3f82d947=\"\">\n                            <label class=\"sr-only\" for=\"priority-number\" _v-3f82d947=\"\">Priority</label>\n                                <select id=\"priority-{{item.id}}\" v-show=\"this.item.story_type != 'article'\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" class=\"form-control\" number=\"\" _v-3f82d947=\"\">\n                                    <option v-for=\"option in priorityOptions\" v-bind:value=\"option.value\" _v-3f82d947=\"\">\n                                        {{option.text}}\n                                    </option>\n                                </select>\n                          </div>\n                          </template>\n                          <template v-if=\"recordIsReady\">\n                              <div id=\"applabel\" class=\"form-group\" _v-3f82d947=\"\">\n                                  <label _v-3f82d947=\"\">approved:</label>\n                              </div><!-- /.form-group -->\n                              <div class=\"form-group\" _v-3f82d947=\"\">\n\n                                  <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-3f82d947=\"\">\n                                  </vui-flip-switch>\n                              </div>\n                          </template>\n                          <template v-else=\"\">\n                              <div class=\"form-group\" _v-3f82d947=\"\">\n                                  <label _v-3f82d947=\"\">Not ready for approval</label>\n                              </div><!-- /.form-group -->\n                          </template>\n\n                        </div><!-- /.pull-right -->\n                    </div><!-- /.col-md-12-->\n                </div><!-- /.row -->\n                <div class=\"row\" _v-3f82d947=\"\">\n                        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-3f82d947=\"\">\n                    <div class=\"col-md-12\" _v-3f82d947=\"\">\n                        <h6 class=\"box-title\" _v-3f82d947=\"\">{{item.title}}</h6>\n                    </div><!-- /.col-md-12 -->\n  </a>\n                </div><!-- /.row -->\n\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-3f82d947=\"\">\n            <p _v-3f82d947=\"\">ID: {{item.id}}</p>\n            <p _v-3f82d947=\"\">Type: {{item.story_type}}</p>\n            <p _v-3f82d947=\"\">Title: {{item.title}}</p>\n            <p _v-3f82d947=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-3f82d947=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-3f82d947=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-3f82d947=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-3f82d947=\"\">Live: {{item.is_live}}</p>\n            <p _v-3f82d947=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-3f82d947=\"\">Start Date: {{item.start_date}}</p>\n            <template v-if=\"isPartOfHub\">\n                <div class=\"btn-group btn-xs form-inline\" _v-3f82d947=\"\">\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <label _v-3f82d947=\"\">Hubs: </label>\n                    </div>\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <button v-for=\"hub in connectedHubs\" v-on:click.prevent=\"gotoHub(hub.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Hub Id: {{hub.id}}\" _v-3f82d947=\"\"><i class=\"fa fa-newspaper-o\" _v-3f82d947=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n            <template v-if=\"isPartOfMag\">\n                <div class=\"btn-group btn-xs form-inline\" _v-3f82d947=\"\">\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <label _v-3f82d947=\"\">Mags: </label>\n                    </div>\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <button v-for=\"mag in connectedMags\" v-on:click.prevent=\"gotoMag(mag.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Mag Id: {{mag.id}}\" _v-3f82d947=\"\"><i class=\"fa fa-book\" _v-3f82d947=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n\n\n\n\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-3f82d947=\"\">\n                <div class=\"row\" _v-3f82d947=\"\">\n                    <div class=\"col-sm-12 col-md-7\" _v-3f82d947=\"\">\n                        <h5 _v-3f82d947=\"\">Live {{timefromNow}}</h5>\n                    </div><!-- /.col-md-7 -->\n                    <div class=\"col-sm-12 col-md-5\" _v-3f82d947=\"\">\n                        <div class=\"btn-group pull-right\" _v-3f82d947=\"\">\n                            <!--\n                              When the archive system is built, uncomment this line and replace the disabled button below it... CP 12/20/16\n                              <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledArchive\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\"><i class=\"fa fa-archive\"></i></button>-->\n                            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"archive\" _v-3f82d947=\"\"><i class=\"fa fa-archive\" _v-3f82d947=\"\"></i></button>\n                            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-3f82d947=\"\"><i class=\"fa fa-pencil\" _v-3f82d947=\"\"></i></button>\n                            <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledPreview\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"preview\" _v-3f82d947=\"\"><i class=\"fa fa-eye\" _v-3f82d947=\"\"></i></button>\n\n                        </div><!-- /.btn-toolbar -->\n\n                    </div><!-- /.col-md-7 -->\n                </div><!-- /.row -->\n\n\n            </div><!-- /.box-footer -->\n\n    </div><!-- /.box- -->\n</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div _v-3f82d947=\"\">\n        <div v-show=\"itemMsgStatus.show\" class=\"callout callout-{{itemMsgStatus.level}}\" _v-3f82d947=\"\">\n         <span class=\"Alert__close\" @click=\"itemMsgStatus.show = false\" _v-3f82d947=\"\">X</span>\n        <h5 _v-3f82d947=\"\">{{itemMsgStatus.msg}}</h5>\n    </div>\n    <div :class=\"specialItem\" _v-3f82d947=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-3f82d947=\"\">\n        <div class=\"box-header with-border\" _v-3f82d947=\"\">\n                <div class=\"row\" _v-3f82d947=\"\">\n                    <div class=\"col-sm-12 col-md-6\" _v-3f82d947=\"\">\n                        <div class=\"pull-left\" _v-3f82d947=\"\">\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-3f82d947=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" :title=\"isReadyStatus\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"readyIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"promotedIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Featured\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"featuredIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"on HomePage\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"homeIcon\" _v-3f82d947=\"\"></span></label>\n                            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"linked\" _v-3f82d947=\"\"><span class=\"item-featured-icon\" :class=\"linkedIcon\" _v-3f82d947=\"\"></span></label>\n                        </div><!-- /.pull-left -->\n                    </div>\n                        <div class=\"col-sm-12 col-md-6\" _v-3f82d947=\"\">\n                        <div id=\"storyform\" class=\"form-inline pull-right\" _v-3f82d947=\"\">\n                            <template v-if=\"isLiveColumn\">\n                            <div class=\"form-group\" _v-3f82d947=\"\">\n                                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-3f82d947=\"\"><span class=\"fa fa-floppy-o\" _v-3f82d947=\"\"></span></button>\n                            </div><!-- /.form-group -->\n                          <div class=\"form-group\" _v-3f82d947=\"\">\n                            <label class=\"sr-only\" for=\"priority-number\" _v-3f82d947=\"\">Priority</label>\n                                <select id=\"priority-{{item.id}}\" v-show=\"this.item.story_type != 'article'\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" class=\"form-control\" number=\"\" _v-3f82d947=\"\">\n                                    <option v-for=\"option in priorityOptions\" v-bind:value=\"option.value\" _v-3f82d947=\"\">\n                                        {{option.text}}\n                                    </option>\n                                </select>\n                          </div>\n                          </template>\n                          <template v-if=\"canApprove\">\n                            <template v-if=\"recordIsReady\">\n                                <div id=\"applabel\" class=\"form-group\" _v-3f82d947=\"\">\n                                    <label _v-3f82d947=\"\">approved:</label>\n                                </div><!-- /.form-group -->\n                                <div class=\"form-group\" _v-3f82d947=\"\">\n\n                                    <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-3f82d947=\"\">\n                                    </vui-flip-switch>\n                                </div>\n                            </template>\n                            <template v-else=\"\">\n                                <div class=\"form-group\" _v-3f82d947=\"\">\n                                    <label _v-3f82d947=\"\">Not ready for approval</label>\n                                </div><!-- /.form-group -->\n                            </template>\n                          </template>\n                        </div><!-- /.pull-right -->\n                    </div><!-- /.col-md-12-->\n                </div><!-- /.row -->\n                <div class=\"row\" _v-3f82d947=\"\">\n                        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-3f82d947=\"\">\n                    <div class=\"col-md-12\" _v-3f82d947=\"\">\n                        <h6 class=\"box-title\" _v-3f82d947=\"\">{{item.title}}</h6>\n                    </div><!-- /.col-md-12 -->\n  </a>\n                </div><!-- /.row -->\n\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-3f82d947=\"\">\n            <p _v-3f82d947=\"\">ID: {{item.id}}</p>\n            <p _v-3f82d947=\"\">Type: {{item.story_type}}</p>\n            <p _v-3f82d947=\"\">Title: {{item.title}}</p>\n            <p _v-3f82d947=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-3f82d947=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-3f82d947=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-3f82d947=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-3f82d947=\"\">Live: {{item.is_live}}</p>\n            <p _v-3f82d947=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-3f82d947=\"\">Start Date: {{item.start_date}}</p>\n            <template v-if=\"isPartOfHub\">\n                <div class=\"btn-group btn-xs form-inline\" _v-3f82d947=\"\">\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <label _v-3f82d947=\"\">Hubs: </label>\n                    </div>\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <button v-for=\"hub in connectedHubs\" v-on:click.prevent=\"gotoHub(hub.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Hub Id: {{hub.id}}\" _v-3f82d947=\"\"><i class=\"fa fa-newspaper-o\" _v-3f82d947=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n            <template v-if=\"isPartOfMag\">\n                <div class=\"btn-group btn-xs form-inline\" _v-3f82d947=\"\">\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <label _v-3f82d947=\"\">Mags: </label>\n                    </div>\n                    <div class=\"form-group\" _v-3f82d947=\"\">\n                        <button v-for=\"mag in connectedMags\" v-on:click.prevent=\"gotoMag(mag.id)\" class=\"btn bg-hub btn-xs\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Edit Mag Id: {{mag.id}}\" _v-3f82d947=\"\"><i class=\"fa fa-book\" _v-3f82d947=\"\"></i></button>\n                    </div>\n                </div>\n            </template>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-3f82d947=\"\">\n                <div class=\"row\" _v-3f82d947=\"\">\n                    <div class=\"col-sm-12 col-md-7\" _v-3f82d947=\"\">\n                        <h5 _v-3f82d947=\"\">Live {{timefromNow}}</h5>\n                    </div><!-- /.col-md-7 -->\n                    <div class=\"col-sm-12 col-md-5\" _v-3f82d947=\"\">\n                        <div class=\"btn-group pull-right\" _v-3f82d947=\"\">\n                            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"edit\" _v-3f82d947=\"\"><i class=\"fa fa-pencil\" _v-3f82d947=\"\"></i></button>\n                            <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\" :disabled=\"disabledPreview\" data-toggle=\"tooltip\" title=\"preview\" _v-3f82d947=\"\"><i class=\"fa fa-eye\" _v-3f82d947=\"\"></i></button>\n                            <button v-on:click.prevent=\"archiveItem\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"archive\" _v-3f82d947=\"\"><i class=\"fa fa-archive\" _v-3f82d947=\"\"></i></button>\n                        </div><!-- /.btn-toolbar -->\n                    </div><!-- /.col-md-7 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.item-type-icon[_v-3f82d947] {\n    /*color: #1B1B1B;*/\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    /*margin: 0 0 20px 0;*/\n    /*padding: 15px 30px 15px 15px;*/\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n"] = false
+    __vueify_insert__.cache["\n.box[_v-3f82d947] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-3f82d947] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-3f82d947] {\n    padding: 3px;\n}\n.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\n\n#storyform[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-3f82d947] {\n    margin-bottom: 2px;\n}\n#applabel[_v-3f82d947]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-3f82d947],\n.btn-group-vertical[_v-3f82d947] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-3f82d947] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-3f82d947] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-3f82d947] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-3f82d947] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-3f82d947] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-3f82d947] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-3f82d947] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-3f82d947] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-3f82d947] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-3f82d947] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-3f82d947]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-3f82d947] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-3f82d947] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-3f82d947] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-3f82d947] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-3f82d947] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-3f82d947] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-3f82d947]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-3f82d947] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-3f82d947] {\n    /*border-bottom: 6px solid #bfff00;\n    border-bottom-right-radius:3px;\n    border-bottom-left-radius: 3px;*/\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}*/\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -19214,6 +19170,12 @@ exports.default = {
                 return false;
             }
         },
+        canApprove: function canApprove() {
+            if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'contributor_2' || this.role === 'editor') {
+                return true;
+            }
+            return false;
+        },
         s_types: function s_types() {
             // var data = localStorage[key];
             try {
@@ -19265,7 +19227,6 @@ exports.default = {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function filerStoryTypeCustom(value) {
-            //console.log('value = ' + value.story_type + ' stmodel =' + this.storytype)
             if (this.storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19280,7 +19241,6 @@ exports.default = {
             }
         },
         filterUnapprovedByStoryType: function filterUnapprovedByStoryType(value) {
-            //console.log('value = ' + value.story_type + ' stmodel = ' + this.items_unapproved_filter_storytype)
             if (this.items_unapproved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19288,7 +19248,6 @@ exports.default = {
             }
         },
         filterApprovedByStoryType: function filterApprovedByStoryType(value) {
-            //console.log('value' + value.story_type + 'stmodel=' + this.items_approved_filter_storytype)
             if (this.items_approved_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19297,7 +19256,6 @@ exports.default = {
         },
 
         filterLiveByStoryType: function filterLiveByStoryType(value) {
-            //console.log('value' + value.story_type + 'stmodel=' + this.items_live_filter_storytype)
             if (this.items_live_filter_storytype === '') {
                 return value.story_type !== '';
             } else {
@@ -19322,13 +19280,19 @@ exports.default = {
                     faicon = 'fa-graduation-cap';
                     break;
                 case 'external':
-                    faicon = 'fa-file-o';
+                    faicon = 'fa-external-link';
                     break;
                 case 'article':
                     faicon = 'fa-newspaper-o';
                     break;
                 case '':
                     faicon = 'fa-asterisk';
+                    break;
+                case 'advisory':
+                    faicon = 'fa-warning';
+                    break;
+                case 'statement':
+                    faicon = 'fa-commenting';
                     break;
                 default:
                     faicon = 'fa-file-o';
@@ -19347,7 +19311,6 @@ exports.default = {
             var movedRecord = changeditem;
             var movedIndex = this.movedItemIndex(movedid);
 
-            //console.log('movedid'+movedid +  'movedIndex'+movedIndex)
             if (movedRecord.is_approved === 1) {
                 this.items_unapproved.splice(movedIndex, 1);
                 this.items_approved.push(movedRecord);
@@ -19448,7 +19411,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-1abbe793=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-1abbe793=\"\">\n            <form class=\"form-inline\" _v-1abbe793=\"\">\n              <div class=\"form-group\" _v-1abbe793=\"\">\n                  <label for=\"start-date\" _v-1abbe793=\"\">Showing stories starting <span v-if=\"isEndDate\" _v-1abbe793=\"\">between</span><span v-else=\"\" _v-1abbe793=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-1abbe793=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-1abbe793=\"\">\n                  <label for=\"start-date\" _v-1abbe793=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-1abbe793=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-1abbe793=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-1abbe793=\"\"><span v-if=\"isEndDate\" _v-1abbe793=\"\"> - Remove </span><span v-else=\"\" _v-1abbe793=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n        <div v-if=\"role == 'admin' || role == 'admin_super'\" class=\"col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right\" _v-1abbe793=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/stories\" _v-1abbe793=\"\"><i class=\"fa fa-archive\" _v-1abbe793=\"\"></i> Archived Stories</a>\n        </div>\n    </div>\n    <hr _v-1abbe793=\"\">\n    <div class=\"row\" _v-1abbe793=\"\">\n        <h2 v-if=\"loading\" class=\"col-md-12\" _v-1abbe793=\"\">Loading. Please Wait...</h2>\n        <div class=\"col-md-4\" _v-1abbe793=\"\">\n            <h4 _v-1abbe793=\"\"><span class=\"badge\" _v-1abbe793=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved<p _v-1abbe793=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                    <label _v-1abbe793=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-1abbe793=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                    </template>\n              </div>\n            </div>\n            <div id=\"items-unapproved\" _v-1abbe793=\"\">\n                <story-pod pid=\"items-unapproved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-1abbe793=\"\">\n                </story-pod>\n            </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\"><span class=\"badge\" _v-1abbe793=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-approved\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\"><span class=\"badge\" _v-1abbe793=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small _v-1abbe793=\"\">Approved and Start Date has passed</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-live\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-1abbe793=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-1abbe793=\"\">\n            <form class=\"form-inline\" _v-1abbe793=\"\">\n              <div class=\"form-group\" _v-1abbe793=\"\">\n                  <label for=\"start-date\" _v-1abbe793=\"\">Showing stories starting <span v-if=\"isEndDate\" _v-1abbe793=\"\">between</span><span v-else=\"\" _v-1abbe793=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-1abbe793=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-1abbe793=\"\">\n                  <label for=\"start-date\" _v-1abbe793=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-1abbe793=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-1abbe793=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-1abbe793=\"\"><span v-if=\"isEndDate\" _v-1abbe793=\"\"> - Remove </span><span v-else=\"\" _v-1abbe793=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n        <div v-if=\"canApprove\" class=\"col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right\" _v-1abbe793=\"\">\n            <a class=\"btn btn-sm btn-default\" href=\"/admin/archive/queue/stories\" _v-1abbe793=\"\"><i class=\"fa fa-archive\" _v-1abbe793=\"\"></i> Archived Stories</a>\n        </div>\n    </div>\n    <hr _v-1abbe793=\"\">\n    <div class=\"row\" _v-1abbe793=\"\">\n        <h2 v-if=\"loading\" class=\"col-md-12\" _v-1abbe793=\"\">Loading. Please Wait...</h2>\n        <div class=\"col-md-4\" _v-1abbe793=\"\">\n            <h4 _v-1abbe793=\"\"><span class=\"badge\" _v-1abbe793=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved<p _v-1abbe793=\"\"></p></h4>\n            <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n                <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                    <label _v-1abbe793=\"\">Filter: </label>\n                </div>\n                <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_unapproved_filter_storytype\" _v-1abbe793=\"\">\n                     <template v-for=\"item in storyTypeIcons\">\n                         <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                    </template>\n              </div>\n            </div>\n            <div id=\"items-unapproved\" _v-1abbe793=\"\">\n                <story-pod pid=\"items-unapproved\" :role=\"role\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1 | filterBy filterUnapprovedByStoryType\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"items-unapproved\" _v-1abbe793=\"\">\n                </story-pod>\n            </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\"><span class=\"badge\" _v-1abbe793=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_approved_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-approved\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-approved\" :role=\"role\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsApproved | orderBy 'start_date' 1 | filterBy filterApprovedByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-approved\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n    <div class=\"col-md-4\" _v-1abbe793=\"\">\n        <h4 _v-1abbe793=\"\"><span class=\"badge\" _v-1abbe793=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small _v-1abbe793=\"\">Approved and Start Date has passed</small></h4>\n        <div v-show=\"checkRoleAndQueueType\" class=\"btn-toolbar\" role=\"toolbar\" _v-1abbe793=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1abbe793=\"\">\n                <label _v-1abbe793=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_live_filter_storytype\" _v-1abbe793=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1abbe793=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1abbe793=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1abbe793=\"\"></span></label>\n                </template>\n          </div>\n      </div>\n        <div id=\"items-live\" _v-1abbe793=\"\">\n            <story-pod pid=\"items-live\" :role=\"role\" :sroute=\"sroute\" :stype=\"stype\" :gtype=\"gtype\" :qtype=\"qtype\" v-for=\"item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"items-live\" _v-1abbe793=\"\">\n            </story-pod>\n        </div>\n    </div><!-- /.col-md-4 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -19554,18 +19517,14 @@ module.exports = {
             var initValue = $(this).find('input').get(0).value;
             if (initValue === '') {
                 $(this).addClass('active');
-                //   $(this).addClass('bg-purple');
             }
             $(this).on('click', function () {
                 self.set(initValue);
-                //var v = $(this).find('input').get(0).value
-                //   self.set(v);
             });
         });
     },
     update: function update() {
         var value = this._watcher.value;
-        console.log('xxxxxxxxxvalue=' + value);
         if (value) {
             this.set(value);
 
@@ -19574,7 +19533,6 @@ module.exports = {
                 $(this).removeClass('active');
                 $(this).removeClass('bg-purple');
                 var v = $(this).find('input').get(0).value;
-                //   $(this).find('span').removeClass('prpstyle');
                 if (v === value) {
                     $(this).addClass('active');
                     $(this).addClass('bg-purple');
@@ -19584,7 +19542,6 @@ module.exports = {
             var input = $(this.el).find('.active input').get(0);
             if (input) {
                 this.set(input.value);
-                console.log('input.value=' + input.value);
             }
         }
     }
@@ -19612,18 +19569,11 @@ var Vue = require('vue');
 Vue.use(_vueResource2.default);
 
 new Vue({
-        el: '#vue-story-queue',
-        components: { StoryQueue: _StoryQueue2.default },
-        http: {
-                headers: {
-                        // You could also store your token in a global object,
-                        // and reference it here. APP.token
-                        //'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                }
-        },
-        ready: function ready() {
-                console.log('new Vue StoryQueue ready');
-        }
+    el: '#vue-story-queue',
+    components: { StoryQueue: _StoryQueue2.default },
+    ready: function ready() {
+        console.log('Vue StoryQueue ready');
+    }
 });
 
 },{"./components/StoryQueue.vue":51,"moment":42,"vue":46,"vue-resource":45}]},{},[55]);

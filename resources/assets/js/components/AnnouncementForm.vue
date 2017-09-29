@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
 
     <div v-if="generalForm" class="row">
       <div v-bind:class="md12col">
@@ -66,13 +66,6 @@
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
           </div>
         </div>
-        <!-- <div :class="md8col">
-          <div v-bind:class="formGroup">
-            <label>Example of Related Link</label>
-            <p class="help-text">Below is how it may look. </p>
-            <h5 class="form-control">For more information visit: <a href="#"> {{record.link_txt}}</a>.</h5>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -82,7 +75,6 @@
       <div :class="md12col">
         <div v-bind:class="formGroup">
           <label>Contact Person</label>
-          <!-- <p class="help-text" id="email-link-helptext">Please enter email link text</p> -->
           <input v-model="record.email_link_txt" class="form-control" v-bind:class="[formErrors.email_link_txt ? 'invalid-input' : '']" name="email_link_txt" type="text" maxlength="80">
         </div>
       </div><!-- /.col-md-4 -->
@@ -150,18 +142,27 @@
     </ul>
   </div>
 </div>
-<div class="row">
-  <div v-bind:class="md12col">
-    <div v-bind:class="formGroup">
-      <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-      <button v-if="recordexists" id="btn-delete" v-on:click="delAnnouncement" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete this Announcement</button>
+<div class="row" id="submit-area">
+  <div v-if="isadmin" :class="md4col">
+    <div class="checkbox">
+      <label><input type="checkbox" v-model="record.admin_pre_approved">Auto Approve</label>
     </div>
   </div>
+  <div :class="md8col">
+    <div :class="formGroup">
+      <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+      <button v-if="recordexists" id="btn-delete" v-on:click="delAnnouncement" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Announcement</button>
+    </div><!-- /.md12col -->
+  </div><!-- /.md12col -->
+  </form>
 </div>
-</form>
 </template>
 
 <style scoped>
+#submit-area{
+  background: #e1e1e1;
+  margin:20px 0 0 0;
+}
 p {
   margin: 0;
 }
@@ -278,7 +279,10 @@ module.exports = {
     },
     type: {
       default: 'general'
-    }
+    },
+    isadmin: {
+      default: false
+    },
   },
   data: function() {
     return {
@@ -307,16 +311,9 @@ module.exports = {
         email_link_txt: '',
         email_link: '',
         phone: '',
-        type: ''
+        type: '',
+        admin_pre_approved: false,
       },
-      // dateOptions: {
-      //     minDate: "today",
-      //     enableTime: false,
-      //     altFormat: "m-d-Y",
-      //     altInput: true,
-      //     altInputClass:"form-control",
-      //     dateFormat: "Y-m-d",
-      // },
       totalChars: {
         start: 0,
         title: 80,

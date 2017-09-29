@@ -16,15 +16,17 @@ use Illuminate\Support\Facades\View;
 class UserController extends Controller
 {
     protected $user;
-    protected $bugService; 
-    
+    protected $bugService;
+
     public function __construct(User $user, Role $role, Permission $permission, IBug $bugService)
     {
         $this->bugService = $bugService;
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
-        
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
+
         $this->user = $user;
         $this->permission = $permission;
         $this->role = $role;
@@ -43,7 +45,7 @@ class UserController extends Controller
     public function form(User $user, Mediafile $mediafile)
     {
         $mediafiles = null;
-        $userRoles = \Emutoday\Role::lists('name', 'id');
+        $userRoles = \Emutoday\Role::pluck('name', 'id');
         return view('admin.user.form', compact('user','userRoles','mediafiles' ));
     }
 
@@ -51,20 +53,20 @@ class UserController extends Controller
     {
         // Create user.
         $this->user->create($request->only('last_name', 'first_name', 'phone', 'email'));
-        
+
         // Save user roles.
         $newUser = User::orderBy('created_at', 'desc')->first();
 
         $newUser->roles()->sync($request->input('role_list'));
         flash()->success('User has been created.');
-        return redirect(route('admin.user.index'));//->with('status', 'User has been created.');
+        return redirect()->action('Admin\UserController@index')->with('status', 'User has been updated.');
     }
 
 
     public function edit($id)
     {
         $user = $this->user->findOrFail($id);
-                $userRoles = \Emutoday\Role::lists('name', 'id');
+                $userRoles = \Emutoday\Role::pluck('name', 'id');
                 $avatar = $user->mediaFiles->where('type', 'avatar')->first();
 
                 $mediafiles = $user->mediaFiles;
@@ -78,7 +80,7 @@ class UserController extends Controller
         $rolesList = $request->input('role_list') == null ? [] : $request->input('role_list');
         $user->roles()->sync($rolesList);
         flash()->success('User has been updated.');
-        return redirect(route('admin.user.edit', $user->id));//->with('status', 'User has been updated.');
+        return redirect()->action('Admin\UserController@edit', $user->id);//->with('status', 'User has been updated.');
     }
     public function confirm(Requests\User_DeleteRequest $request, $id)
     {

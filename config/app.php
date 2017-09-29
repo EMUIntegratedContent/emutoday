@@ -160,8 +160,9 @@ return [
         Sofa\Eloquence\ServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
-
-        // Krenor\LdapAuth\LdapAuthServiceProvider::class,
+        Snowfire\Beautymail\BeautymailServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
+        Roumen\Feed\FeedServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -172,8 +173,6 @@ return [
         Emutoday\Providers\RouteServiceProvider::class,
         Emutoday\Providers\SearchServiceProvider::class,
         Emutoday\Providers\BugServiceProvider::class,
-        //Emutoday\Providers\ObserverServiceProvider::class,
-        //Emutoday\Providers\RepositoriesServiceProvider::class,
 
     ],
 
@@ -227,6 +226,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Cas' => Subfission\Cas\Facades\Cas::class,
+        'Feed' => Roumen\Feed\Feed::class,
 
 
     ],

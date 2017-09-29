@@ -1,7 +1,6 @@
 <template>
   <form>
     <slot name="csrf"></slot>
-    <!-- <slot name="author_id" v-model="newevent.author_id"></slot> -->
     <div class="row">
       <div class="col-md-12">
         <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
@@ -9,6 +8,23 @@
           <h5>{{formMessage.msg}}</h5>
         </div>
       </div><!-- /.small-12 columns -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div class="col-md-12">
+        <template v-if="singleStype">
+          <label>Story Type: {{record.story_type | capitalize}}</label>
+          <input v-model="record.story_type" :value="s_types" type="hidden" disabled="disabled" />
+        </template>
+        <template v-else>
+          <label>Story Type</label>
+          <select v-model="record.story_type">
+            <option v-for="stype in s_types" v-bind:value="stype.shortname" selected="{{ stype.shortname == 'news' }}">
+              {{ stype.name }}
+            </option>
+          </select>
+        </template>
+        <hr />
+      </div><!-- /.col-md-6 -->
     </div><!-- /.row -->
     <div class="row">
       <div class="col-md-12">
@@ -111,32 +127,11 @@
   </div><!-- /.row -->
   <div class="row">
     <div class="col-md-6">
-  </div><!-- /.col-md-6-->
-  <div class="col-md-6">
-    <!-- <div class="form-group pull-right">
-    {{record | json}}
-  </div> -->
-</div><!-- /.col-md-12 -->
-</div><!-- /.row -->
-<div class="row">
-  <div class="col-md-6">
-    <template v-if="singleStype">
-      <input v-model="record.story_type" :value="s_types" type="text" disabled="disabled" />
-    </template>
-    <template v-else>
-      <label>Story Type</label>
-      <select v-model="record.story_type">
-        <option v-for="stype in s_types" v-bind:value="stype.shortname" selected="{{ stype.shortname == 'news' }}">
-          {{ stype.name }}
-        </option>
-      </select>
-    </template>
-</div><!-- /.col-md-6 -->
+    </div><!-- /.col-md-6-->
+    <div class="col-md-6">
+    </div><!-- /.col-md-6 -->
+  </div><!-- /.row -->
 
-<div class="col-md-6">
-
-</div><!-- /.col-md-6 -->
-</div><!-- /.row -->
 <div class="row">
 
 
@@ -154,9 +149,7 @@ p {
 }
 label {
   display: block;
-  /*margin-bottom: 1.5em;*/
 }
-
 label > span {
   display: inline-block;
   width: 8em;
@@ -380,7 +373,6 @@ module.exports  = {
       this.currentRecordId = this.editid;
       this.singleStype = true;
       this.newform = false;
-      // this.record.user_id = this.cuser.id;
       this.fetchCurrentRecord();
     } else {
       this.newform = true;
@@ -398,6 +390,9 @@ module.exports  = {
     this.fetchDefaultContact(false)
   },
   computed: {
+    isAdvisoryOrStatement: function(){
+      return this.stype == 'advisory' || this.stype == 'statement'
+    },
     authorBtnLabel:function(){
       return (this.hasAuthor) ? 'Update Author' : 'New Author';
     },
@@ -432,7 +427,6 @@ module.exports  = {
         return JSON.parse(this.stypes);
       } catch(e) {
         this.singleStype = true;
-        // this.record.story_type = this.stypes;
         return this.stypes;
       }
     },
@@ -494,7 +488,6 @@ module.exports  = {
 
     },
     nowOnReload:function() {
-      //   {qtype}/{gtype}/{stype}/{story}/edit
       let newurl = '/admin/' + this.qtype + '/'+this.gtype+'/'+ this.response_stype +'/'+ this.response_record_id+'/edit';
       document.location = newurl;
     },
@@ -654,7 +647,13 @@ module.exports  = {
     },
     setAuthorToCurrentUser: function(userId){
         //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
-        this.$http.get('/api/authorbyuser/' + userId)
+        var url = '/api/authorbyuser/'
+        if(this.isAdvisoryOrStatement){
+          url += 1 // Jane Doe in the users table
+        } else {
+          url += userId
+        }
+        this.$http.get(url)
 
         .then((response) => {
             if(response.data.newdata){
@@ -823,11 +822,6 @@ module.exports  = {
 
         this.response_record_id = response.data.newdata.record_id;
         this.response_stype = response.data.newdata.stype;
-        if (this.newform) {
-          this.nowOnReload();
-        } else {
-          this.onRefresh();
-        }
       }, (response) => {
         //error callback
         this.formErrors =  response.data.error.message;
@@ -855,16 +849,25 @@ module.exports  = {
   },
   watch: {
     selectedAuthor: function(){
-      // console.log(this.selectedAuthor);
       this.fetchAuthor();
       this.hasAuthor = false;
     },
     selectedContact: function(){
-      // console.log(this.selectedAuthor);
       this.fetchContact();
       this.hasAuthor = false;
     },
     'record.story_type': function(val){
+        // Change author to "Official Statements" if this is an advisory or statement story type
+        var previousStype = this.stype;
+        var newStype = val;
+        this.stype = newStype; // change the stype
+        if(this.stype == 'statement' || this.stype == 'advisory'){
+          this.resetAuthor() // changes author to "Official Statement"
+        }
+        if((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')){
+          this.resetAuthor() // changes author back to current user
+        }
+
         // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
         if(!this.contactManuallyChanged && !this.recordexists){
             if(!this.record.contact){
@@ -875,7 +878,6 @@ module.exports  = {
                 }
             }
         }
-
     }
   },
   events: {

@@ -128,22 +128,21 @@
                                 <div class="form-group">
                                 {!! Form::submit('Update Image', array('class'=>'btn btn-primary')) !!}
                                 {!! Form::close() !!}
-                            </div>
-                            @if($storyImage->imgtype->is_required == 0)
-                            {{-- @if($storyImage->image_type == 'imagehero') --}}
+                                </div>
+                               @if($storyImage->imgtype->is_required == 0)
                                  <div class="form-group">
-                                 {!! Form::model($storyImage, ['route' => ['admin_storyimage_destroy', $storyImage->id],
-                                 'method' => 'DELETE',
-                                 'class' => 'form',
-                                 'files' => true]
-                                 ) !!}
-                                 {!! Form::hidden('image_type', $storyImage->image_type, ['class' => 'form-control input-sm', 'readonly' => 'readonly']) !!}
-                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'Onclick' => 'return ConfirmDelete();')) !!}
-                                 {!! Form::close() !!}
-                                    </div>
-                            @endif
-                        </div> <!-- /.form-inline -->
-        </div><!-- /.box-footer-->
+                                   {!! Form::model($storyImage, ['route' => ['admin_storyimage_destroy', $storyImage->id],
+                                   'method' => 'DELETE',
+                                   'class' => 'form',
+                                   'files' => true]
+                                   ) !!}
+                                   {!! Form::hidden('image_type', $storyImage->image_type, ['class' => 'form-control input-sm', 'readonly' => 'readonly']) !!}
+                                   {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'Onclick' => 'return ConfirmDelete();')) !!}
+                                   {!! Form::close() !!}
+                                 </div>
+                               @endif
+                            </div> <!-- /.form-inline -->
+                </div><!-- /.box-footer-->
 
 </div> <!-- /.box -->
 

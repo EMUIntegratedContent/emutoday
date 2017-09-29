@@ -41,7 +41,7 @@
     <div class="row">
         {!! Form::model($page, [
             'method' =>  'put',
-            'route' => ['admin.page.update', $page->id]
+            'route' => ['admin_page_update', $page->id]
         ]) !!}
       {{ csrf_field() }}
         <div class="col-sm-12">

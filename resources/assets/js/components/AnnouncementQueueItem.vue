@@ -58,11 +58,9 @@
         </div><!-- /.col-md-7 -->
         <div class="col-sm-12 col-md-3">
           <div class="btn-group pull-right">
-            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>
             <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="edit"><i class="fa fa-pencil"></i></button>
-            <!-- <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-eye"></i></button> -->
+            <button v-on:click.prevent="archiveItem" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" data-placement="top" title="archive"><i class="fa fa-archive"></i></button>
           </div><!-- /.btn-toolbar -->
-
         </div><!-- /.col-md-7 -->
       </div><!-- /.row -->
     </div><!-- /.box-footer -->

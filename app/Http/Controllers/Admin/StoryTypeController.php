@@ -32,6 +32,8 @@ class StoryTypeController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
 
     }
     public function queueAll(Story $story) {
@@ -40,7 +42,7 @@ class StoryTypeController extends Controller
         $stype = 'all';
         $sroute = 'story';
         if ($qtype === 'queueall') {
-            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
         } else {
             $stypes  = $stype;
         }
@@ -54,7 +56,7 @@ class StoryTypeController extends Controller
 
         $sroute = 'story';
         if ($qtype === 'queueall') {
-            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
         } else {
             $stypes  = $stype;
         }
@@ -82,7 +84,7 @@ class StoryTypeController extends Controller
         $story = new Story;
 
             $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
-            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+            $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
 
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
@@ -130,7 +132,7 @@ class StoryTypeController extends Controller
         $story = new Story;
         $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname')->all();
 
-        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
 
         $user = \Auth::user();
             if ($user->hasRole('contributor_1')){
@@ -167,7 +169,6 @@ class StoryTypeController extends Controller
     {
         $user = \Auth::user();
         $story = null;
-        // $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
         $sroute = 'magazine';
         $stypelist = 'article';
         $stype = 'article';
@@ -194,15 +195,15 @@ class StoryTypeController extends Controller
         }
 
         $user = \Auth::user();
-        //$stypes = $stype;
-        $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
-        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->get());
+        $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
+        $stypes  = collect(\Emutoday\StoryType::select('name','shortname')->orderBy('display_order', 'asc')->get());
 
-        $tags = \Emutoday\Tag::lists('name', 'id');
+        $tags = \Emutoday\Tag::pluck('name', 'id');
 
         if ($stype == 'emutoday'){
             $stype = 'story';
         }
+
         $storyGroup = $story->storyType->group;
 
         JavaScript::put([
@@ -314,7 +315,7 @@ public function create($stype)
         }
     } else {
         $stypes = $stype;
-        $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
+        $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
 
         return view('admin.story.form', compact('story','sroute', 'stypes','stypelist'));
 
@@ -403,7 +404,7 @@ public function promoteStory($id, Request $request)
 
     $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
     $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-    $stypelist = StoryType::where('level', 1)->lists('name','shortname');
+    $stypelist = StoryType::where('level', 1)->pluck('name','shortname');
     $stypes = $story->story_type;
 
     foreach ($requiredImages as $img) {
@@ -454,9 +455,6 @@ public function show($id)
 }
 public function update(Requests\UpdateStoryRequest $request, $id)
 {
-
-    // dd($request->input('tags'));
-
     $story = $this->story->findOrFail($id);
 
     $story->fill($request->only('title', 'slug', 'subtitle', 'teaser','content','external_link', 'story_type','is_approved', 'is_featured'));
@@ -484,7 +482,6 @@ public function update(Requests\UpdateStoryRequest $request, $id)
     $story->save();
     flash()->success('Story has been updated.');
     return redirect(route('admin_story_edit', $story->id));
-    //return redirect(route('admin_story_edit', $story->id))->with('status', 'Story has been updated.');
 }
 
 public function destroy($id)
@@ -492,7 +489,7 @@ public function destroy($id)
     $story = $this->story->findOrFail($id);
     $story->delete();
     flash()->warning('Story has been deleted.');
-    return redirect(route('admin.story.index'));//->with('status', 'Story has been deleted.');
+    return redirect(route('admin.story.index'));
 }
 
 public function confirm($id)
@@ -509,8 +506,8 @@ public function edit($id)
         $story->story_type = 'story';
     }
     $stypes = $story->story_type;
-    $tags = \Emutoday\Tag::lists('name', 'id');
-    $stypelist = \Emutoday\StoryType::where('level', 1)->lists('name','shortname');
+    $tags = \Emutoday\Tag::pluck('name', 'id');
+    $stypelist = \Emutoday\StoryType::where('level', 1)->pluck('name','shortname');
     JavaScript::put([
         'stype' => $stypes,
         'storytype' => $story->story_type,
@@ -530,13 +527,9 @@ public function edit($id)
         $imagetypeNames = null;
         $currentStoryImages = null;
         $leftOverImages = null;
-        // dd($leftOverImages);
         $requiredImages = null;
         $otherImages = null;
 
-
-
-        // return view('admin.story.role.form', compact('story', 'stypes', 'tags'));
         return view('admin.story.form', compact('story','sroute', 'stypes', 'tags','stypelist','requiredImages','otherImages', 'leftOverImages'));
 
     } else {
@@ -544,11 +537,10 @@ public function edit($id)
         $imagetypeNames = Imagetype::ofGroup($storyGroup)->get()->keyBy('id');
         $currentStoryImages = $story->storyImages->pluck('image_type','imagetype_id');
         $leftOverImages = $imagetypeNames->diffKeys($currentStoryImages);
-        // dd($leftOverImages);
         $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
         $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-        return view('admin.story.form', compact('story','sroute', 'stypes', 'tags','stypelist','requiredImages','otherImages', 'leftOverImages'));
 
+        return view('admin.story.form', compact('story','sroute', 'stypes', 'tags','stypelist','requiredImages','otherImages', 'leftOverImages'));
     }
 
 

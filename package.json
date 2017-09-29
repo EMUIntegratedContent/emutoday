@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "admin-lte": "^2.3.3",
+    "axios": "^0.16.2",
     "bootstrap": "^3.3.6",
     "flatpickr": "^1.9.1",
     "font-awesome": "^4.6.3",

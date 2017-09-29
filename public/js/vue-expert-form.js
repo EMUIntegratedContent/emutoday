@@ -20970,7 +20970,58 @@ return index;
 
 },{}],112:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.toolbar-row {\n  width: 100%;\ntext-align: right;\n}\n\n.toolbar-block {\n\n  display: inline-block;\n}​\n#items-unapproved .box {\n    margin-bottom: 4px;\n}\n#items-approved .box {\n    margin-bottom: 4px;\n\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: ['viewtype', 'recordId', 'currentUser', 'role'],
+
+    ready: function ready() {},
+
+    data: function data() {
+        return {};
+    },
+    computed: {
+        previewLink: function previewLink() {
+            return '/preview/experts/' + this.recordId;
+        },
+        listLink: function listLink() {
+            return '/admin/experts/list';
+        },
+        createNewLink: function createNewLink() {
+            return '/admin/experts/form';
+        }
+
+    },
+
+    methods: {},
+
+    // the `events` option simply calls `$on` for you
+    // when the instance is created
+    events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"toolbar-row\">\n    <div class=\"toolbar-block\">\n\n    </div><!-- /.tool-block -->\n    <div class=\"toolbar-block pull-right\">\n        <div class=\"btn-toolbar btn-group-sm \">\n            <a id=\"btn-preview-{{id}}\" :href=\"previewLink\" class=\"btn bg-orange btn-sm\"><i class=\"fa fa-eye\"></i></a>\n            <a id=\"btn-new-{{id}}\" :href=\"createNewLink\" class=\"btn bg-orange btn-sm\"><i class=\"fa fa-plus-square\"></i></a>\n            <a id=\"btn-list-{{id}}\" :href=\"listLink\" class=\"btn bg-orange btn-sm\"><i class=\"fa fa-list-alt\"></i></a>\n        </div><!-- /.btn-toolbar -->\n    </div><!-- /.toolbar-block -->\n</div><!-- /.center-text -->\n\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.toolbar-row {\n  width: 100%;\ntext-align: right;\n}\n\n.toolbar-block {\n\n  display: inline-block;\n}​\n#items-unapproved .box {\n    margin-bottom: 4px;\n}\n#items-approved .box {\n    margin-bottom: 4px;\n\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-73b8fb11", module.exports)
+  } else {
+    hotAPI.update("_v-73b8fb11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],113:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-f7e430f6]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-f7e430f6]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-f7e430f6]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-f7e430f6]{\n    margin-top: 26px !important;\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -21000,6 +21051,10 @@ var _vueSelect2 = _interopRequireDefault(_vueSelect);
 var _actions = require('../vuex/actions');
 
 var _getters = require('../vuex/getters');
+
+var _VuiFlipSwitch = require('./VuiFlipSwitch.vue');
+
+var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21040,50 +21095,75 @@ module.exports = {
     }
   },
   data: function data() {
-    var _ref;
+    var _record, _ref;
 
     return _ref = {
-      about: '',
-      ckfullyloaded: false,
-      contactManuallyChanged: false,
-      currentDate: {},
+      biography: '',
       categories: [],
       categorieslist: [],
-      newform: false,
-      recordState: '',
-      recordOld: {
-        id: '',
-        first_name: '',
-        last_name: '',
-        title: '',
-        expertise: '',
-        about: '',
-        education: ''
-      },
-      record: {
-        id: '',
-        first_name: '',
-        last_name: '',
-        title: '',
-        expertise: '',
-        about: '',
-        education: '',
-        categories: []
-      },
-      totalChars: {
-        title: 50
-      },
-      response: {},
+      ckfullyloaded: false,
+      currentDate: {},
+      education: [],
+      expertise: [],
+      formErrors: {},
+      formInputs: {},
       formMessage: {
         isOk: false,
         isErr: false,
         msg: ''
       },
-      formInputs: {},
-      formErrors: {},
+      hasContent: false,
       isFresh: true,
-      hasContent: false
-    }, (0, _defineProperty3.default)(_ref, 'about', ''), (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'userRoles', []), _ref;
+      languages: [],
+      newform: false,
+      previousTitles: [],
+      recordState: '',
+      record: (_record = {
+        id: '',
+        accept_policies: 1,
+        biography: '',
+        cell_phone: '',
+        display_name: '',
+        email: '',
+        is_community_speaker: 0,
+        is_media_expert: 0,
+        do_print_interviews: 0,
+        do_broadcast_interviews: 0,
+        first_name: '',
+        do_phone_interviews: 0
+      }, (0, _defineProperty3.default)(_record, 'do_broadcast_interviews', 0), (0, _defineProperty3.default)(_record, 'is_approved', 0), (0, _defineProperty3.default)(_record, 'last_name', ''), (0, _defineProperty3.default)(_record, 'office_phone', ''), (0, _defineProperty3.default)(_record, 'release_cell_phone', 0), (0, _defineProperty3.default)(_record, 'submitter_email', ''), (0, _defineProperty3.default)(_record, 'submitter_name', ''), (0, _defineProperty3.default)(_record, 'submitter_phone', ''), (0, _defineProperty3.default)(_record, 'teaser', ''), (0, _defineProperty3.default)(_record, 'title', ''), (0, _defineProperty3.default)(_record, 'categories', []), (0, _defineProperty3.default)(_record, 'education', []), (0, _defineProperty3.default)(_record, 'expertise', []), (0, _defineProperty3.default)(_record, 'languages', []), (0, _defineProperty3.default)(_record, 'previousTitles', []), (0, _defineProperty3.default)(_record, 'social', []), _record),
+      recordOld: {
+        id: '',
+        accept_policies: 1,
+        biography: '',
+        cell_phone: '',
+        display_name: '',
+        email: '',
+        is_community_speaker: 0,
+        is_media_expert: 0,
+        do_print_interviews: 0,
+        do_broadcast_interviews: 0,
+        first_name: '',
+        interviews: '',
+        is_approved: 0,
+        last_name: '',
+        office_phone: '',
+        release_cell_phone: 0,
+        submitter_email: '',
+        submitter_name: '',
+        submitter_phone: '',
+        teaser: '',
+        title: '',
+        categories: [],
+        education: [],
+        expertise: [],
+        languages: [],
+        previousTitles: [],
+        social: []
+      }
+    }, (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'response', {}), (0, _defineProperty3.default)(_ref, 'social', []), (0, _defineProperty3.default)(_ref, 'totalChars', {
+      title: 50
+    }), (0, _defineProperty3.default)(_ref, 'userRoles', []), _ref;
   },
   created: function created() {
     this.recordState = 'created';
@@ -21093,6 +21173,11 @@ module.exports = {
       this.currentRecordId = this.recordid;
       this.newform = false;
       this.fetchCategoryList();
+      this.fetchEducation();
+      this.fetchExpertise();
+      this.fetchLanguages();
+      this.fetchPreviousTitles();
+      this.fetchSocial();
       this.fetchCurrentCategory(this.currentRecordId);
       this.fetchCurrentRecord(this.currentRecordId);
     } else {
@@ -21120,6 +21205,9 @@ module.exports = {
     },
     btnPrimary: function btnPrimary() {
       return this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary';
+    },
+    btnSecondary: function btnSecondary() {
+      return this.framework == 'foundation' ? 'button button-secondary' : 'btn btn-link';
     },
     formGroup: function formGroup() {
       return this.framework == 'foundation' ? 'form-group' : 'form-group';
@@ -21161,10 +21249,6 @@ module.exports = {
       } else {
         return 'simple';
       }
-    },
-
-    changeContact: function changeContact(evt) {
-      this.contactManuallyChanged = true;
     },
 
     hasLocalRecordChanged: function hasLocalRecordChanged() {
@@ -21226,7 +21310,7 @@ module.exports = {
 
         _this.hasContent = true;
         _this.currentRecordId = _this.record.id;
-        _this.about = _this.record.about;
+        _this.biography = _this.record.biography;
       }, function (response) {
         _this.formErrors = response.data.error.message;
       }).bind(this);
@@ -21241,12 +21325,62 @@ module.exports = {
       });
     },
 
-    // Fetch the category that matches THIS record
+    // Fetch the categories that matches THIS expert
     fetchCurrentCategory: function fetchCurrentCategory() {
       var _this3 = this;
 
       this.$http.get('/api/experts/category/' + this.currentRecordId).then(function (response) {
         _this3.$set('categories', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the education that matches THIS expert
+    fetchEducation: function fetchEducation() {
+      var _this4 = this;
+
+      this.$http.get('/api/experts/education/' + this.currentRecordId).then(function (response) {
+        _this4.$set('education', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the expertise that matches THIS expert
+    fetchExpertise: function fetchExpertise() {
+      var _this5 = this;
+
+      this.$http.get('/api/experts/expertise/' + this.currentRecordId).then(function (response) {
+        _this5.$set('expertise', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the languages that matches THIS expert
+    fetchLanguages: function fetchLanguages() {
+      var _this6 = this;
+
+      this.$http.get('/api/experts/languages/' + this.currentRecordId).then(function (response) {
+        _this6.$set('languages', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the job titles that matches THIS expert
+    fetchPreviousTitles: function fetchPreviousTitles() {
+      var _this7 = this;
+
+      this.$http.get('/api/experts/previoustitles/' + this.currentRecordId).then(function (response) {
+        _this7.$set('previousTitles', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the social media links that matches THIS expert
+    fetchSocial: function fetchSocial() {
+      var _this8 = this;
+
+      this.$http.get('/api/experts/social/' + this.currentRecordId).then(function (response) {
+        _this8.$set('social', response.data);
       }, function (response) {});
     },
 
@@ -21268,13 +21402,13 @@ module.exports = {
     },
 
     submitForm: function submitForm(e) {
-      var _this4 = this;
+      var _this9 = this;
 
       e.preventDefault(); // Stop form defualt action
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      this.record.about = this.about;
+      this.record.biography = this.biography;
 
       if (this.categories.length > 0) {
         this.record.categories = this.categories;
@@ -21282,7 +21416,37 @@ module.exports = {
         this.record.categories = [];
       }
 
-      // Dicide route to submit form to
+      if (this.education.length > 0) {
+        this.record.education = this.education;
+      } else {
+        this.record.education = [];
+      }
+
+      if (this.expertise.length > 0) {
+        this.record.expertise = this.expertise;
+      } else {
+        this.record.expertise = [];
+      }
+
+      if (this.languages.length > 0) {
+        this.record.languages = this.languages;
+      } else {
+        this.record.languages = [];
+      }
+
+      if (this.previousTitles.length > 0) {
+        this.record.previousTitles = this.previousTitles;
+      } else {
+        this.record.previousTitles = [];
+      }
+
+      if (this.social.length > 0) {
+        this.record.social = this.social;
+      } else {
+        this.record.social = [];
+      }
+
+      // Decide route to submit form to
       var method = this.recordexists ? 'put' : 'post';
       var route = this.recordexists ? '/api/experts/' + this.record.id : '/api/experts';
 
@@ -21291,35 +21455,35 @@ module.exports = {
 
       // Do this when response gets back.
       .then(function (response) {
-        _this4.formMessage.msg = response.data.message;
-        _this4.formMessage.isOk = response.ok; // Success message
-        _this4.currentRecordId = response.data.newdata.record_id;
-        _this4.recordid = response.data.newdata.record_id;
-        _this4.record_id = response.data.newdata.record_id;
-        _this4.record.id = response.data.newdata.record_id;
-        _this4.formMessage.isErr = false;
-        _this4.recordexists = true;
-        _this4.formErrors = {}; // Clear errors?
-        if (_this4.newform) {
-          _this4.nowOnReload();
+        _this9.formMessage.msg = response.data.message;
+        _this9.formMessage.isOk = response.ok; // Success message
+        _this9.currentRecordId = response.data.newdata.record_id;
+        _this9.recordid = response.data.newdata.record_id;
+        _this9.record_id = response.data.newdata.record_id;
+        _this9.record.id = response.data.newdata.record_id;
+        _this9.formMessage.isErr = false;
+        _this9.recordexists = true;
+        _this9.formErrors = {}; // Clear errors?
+        if (_this9.newform) {
+          _this9.nowOnReload();
         } else {
-          _this4.onRefresh();
+          _this9.onRefresh();
         }
       }, function (response) {
         // If invalid. error callback
-        _this4.formMessage.isOk = false;
-        _this4.formMessage.isErr = true;
+        _this9.formMessage.isOk = false;
+        _this9.formMessage.isErr = true;
         // Set errors from validation to vue data
-        _this4.formErrors = response.data.error.message;
+        _this9.formErrors = response.data.error.message;
       }).bind(this);
     },
 
-    delEvent: function delEvent(e) {
+    delExpert: function delExpert(e) {
       e.preventDefault();
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
 
-      if (confirm('Would you like to delete this expert') == true) {
+      if (confirm('Would you like to delete this expert?') == true) {
         $('html, body').animate({ scrollTop: 0 }, 'fast');
 
         this.$http.post('/api/experts/' + this.record.id + '/delete').then(function (response) {
@@ -21328,6 +21492,56 @@ module.exports = {
           console.log('Error: ' + (0, _stringify2.default)(response));
         }).bind(this);
       }
+    },
+
+    delTitle: function delTitle(title) {
+      if (confirm('Would you like to delete this title?') == true) {
+        this.previousTitles.$remove(title);
+      }
+    },
+
+    addTitle: function addTitle() {
+      this.previousTitles.push({ value: '', title: '' });
+    },
+
+    delLanguage: function delLanguage(language) {
+      if (confirm('Would you like to delete this language?') == true) {
+        this.languages.$remove(language);
+      }
+    },
+
+    addLanguage: function addLanguage() {
+      this.languages.push({ value: '', language: '' });
+    },
+
+    delEducation: function delEducation(education) {
+      if (confirm('Would you like to delete this education?') == true) {
+        this.education.$remove(education);
+      }
+    },
+
+    addEducation: function addEducation() {
+      this.education.push({ value: '', education: '' });
+    },
+
+    delExpertise: function delExpertise(expertise) {
+      if (confirm('Would you like to delete this field of expertise?') == true) {
+        this.expertise.$remove(expertise);
+      }
+    },
+
+    addExpertise: function addExpertise() {
+      this.expertise.push({ value: '', expertise: '' });
+    },
+
+    delSocial: function delSocial(link) {
+      if (confirm('Would you like to delete this social media link?') == true) {
+        this.social.$remove(link);
+      }
+    },
+
+    addSocial: function addSocial() {
+      this.social.push({ value: '', title: '', url: '' });
     }
   },
   watch: {},
@@ -21336,13 +21550,13 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-f7e430f6=\"\">\n    <slot name=\"csrf\" _v-f7e430f6=\"\"></slot>\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Expertise</label>\n          <input v-model=\"record.expertise\" class=\"form-control\" v-bind:class=\"[formErrors.expertise ? 'invalid-input' : '']\" name=\"expertise\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.expertise\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.expertise}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">About <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <!--<textarea v-model=\"record.about\" id=\"about\" name=\"about\" rows=\"200\"></textarea>-->\n          <textarea v-if=\"hasContent\" v-model=\"record.about\" id=\"about\" name=\"about\" v-ckrte=\"about\" :type=\"editorType\" :about=\"about\" :fresh=\"isFresh\" rows=\"200\" _v-f7e430f6=\"\"></textarea>\n          <p v-if=\"formErrors.about\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need Content!</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Education <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.education\" class=\"form-control\" v-bind:class=\"[formErrors.education ? 'invalid-input' : '']\" name=\"education\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.education\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.education}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Expertise Categories</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"categories\" :options=\"categorieslist\" :multiple=\"true\" placeholder=\"Select expertise category\" label=\"category\" _v-f7e430f6=\"\">\n          </v-select>\n          <p v-if=\"formErrors.category\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.category}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">Delete Expert</button>\n        </div>\n      </div>\n    </div>\n\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-f7e430f6=\"\">\n    <slot name=\"csrf\" _v-f7e430f6=\"\"></slot>\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <!-- Is approved? -->\n            <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\">Approved for Public Display? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_approved\" _v-f7e430f6=\"\"></label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <!-- Expert Type -->\n            <h4 _v-f7e430f6=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-f7e430f6=\"\">\n                <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-f7e430f6=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-f7e430f6=\"\">\n                <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-f7e430f6=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n            <label _v-f7e430f6=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-f7e430f6=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <!-- Interview preferences -->\n          <h4 _v-f7e430f6=\"\">Interview Preferences</h4>\n            <div class=\"checkbox\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-f7e430f6=\"\">Print Interviews</label>\n            </div>\n            <div class=\"checkbox\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-f7e430f6=\"\">Broadcast Media Interviews</label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Previous Titles</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Previous Title</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"title.title\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delTitle(title)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addTitle\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Languages</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Language</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"language.language\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delLanguage(language)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addLanguage\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Language</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Education</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"ed.education\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delEducation(ed)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addEducation\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Fiels of expertise -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Field of Expertise</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"exp.expertise\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delExpertise(exp)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addExpertise\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Social Media Links</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"soc in social\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Social Media</label>\n              <div class=\"row\" _v-f7e430f6=\"\">\n                  <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n                      <label _v-f7e430f6=\"\">Title</label>\n                      <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"soc.title\" _v-f7e430f6=\"\">\n                  </div>\n                  <div v-bind:class=\"md6col\" class=\"input-group\" _v-f7e430f6=\"\">\n                      <label _v-f7e430f6=\"\">Full URL (e.g. http://facebook.com)</label>\n                      <input class=\"form-control social-list-item\" type=\"text\" v-model=\"soc.url\" _v-f7e430f6=\"\">\n                      <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                          <button @click=\"delSocial(soc)\" class=\"btn btn-warning social-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n                      </span>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addSocial\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Social Link</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Expertise Categories</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"categories\" :options=\"categorieslist\" :multiple=\"true\" placeholder=\"Select expertise category\" label=\"category\" _v-f7e430f6=\"\">\n          </v-select>\n          <p v-if=\"formErrors.category\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.category}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"200\" _v-f7e430f6=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need biography.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n       <!-- Teaser -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Teaser (short description of expert for search results page)</label>\n         <textarea v-model=\"record.teaser\" class=\"form-control\" id=\"teaser\" name=\"teaser\" rows=\"2\" _v-f7e430f6=\"\"></textarea>\n         <p v-if=\"formErrors.teaser\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need teaser.</p>\n       </div>\n     </div>\n   </div>\n  <!-- /.row -->\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n         <h4 _v-f7e430f6=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delExpert\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">Delete Expert</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-f7e430f6]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-f7e430f6]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-f7e430f6]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-f7e430f6]{\n    margin-top: 26px !important;\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -21351,41 +21565,610 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-f7e430f6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../directives/ckrte.js":113,"../vuex/actions":115,"../vuex/getters":116,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],113:[function(require,module,exports){
+},{"../directives/ckrte.js":116,"../vuex/actions":118,"../vuex/getters":119,"./VuiFlipSwitch.vue":115,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],114:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.row[_v-1429f3ce]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-1429f3ce]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-1429f3ce]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-1429f3ce]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-1429f3ce]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-1429f3ce] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-1429f3ce] {\n  margin: 0;\n}\n\nlabel[_v-1429f3ce] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1429f3ce] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1429f3ce] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1429f3ce] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1429f3ce] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1429f3ce] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1429f3ce] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1429f3ce] {\n  margin: 0;\n}\n\n[type='submit'][_v-1429f3ce],\n[type='button'][_v-1429f3ce] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1429f3ce] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1429f3ce] {\n  margin: 0;\n}\n\nh5.form-control[_v-1429f3ce] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+'use strict';
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _flatpickr = require('flatpickr');
+
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+var _ckrte = require('../directives/ckrte.js');
+
+var _ckrte2 = _interopRequireDefault(_ckrte);
+
+var _vueSelect = require('vue-select');
+
+var _vueSelect2 = _interopRequireDefault(_vueSelect);
+
+var _actions = require('../vuex/actions');
+
+var _getters = require('../vuex/getters');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+  directives: { ckrte: _ckrte2.default, flatpickr: _flatpickr2.default },
+  components: { vSelect: _vueSelect2.default },
+  vuex: {
+    getters: {
+      thisRecordId: _getters.getRecordId,
+      thisRecordState: _getters.getRecordState,
+      thisRecordIsDirty: _getters.getRecordIsDirty
+    },
+    actions: {
+      updateRecordId: _actions.updateRecordId,
+      updateRecordState: _actions.updateRecordState,
+      updateRecordIsDirty: _actions.updateRecordIsDirty
+    }
+  },
+  props: {
+    errors: {
+      default: ''
+    },
+    recordexists: {
+      default: false
+    },
+    editid: {
+      default: ''
+    },
+    framework: {
+      default: 'foundation'
+    },
+    type: {
+      default: 'general'
+    },
+    user: {
+      default: ''
+    }
+  },
+  data: function data() {
+    var _ref;
+
+    return _ref = {
+      biography: '',
+      categories: [],
+      categorieslist: [],
+      ckfullyloaded: false,
+      currentDate: {},
+      education: [],
+      expertise: [],
+      formErrors: {},
+      formInputs: {},
+      formMessage: {
+        isOk: false,
+        isErr: false,
+        msg: ''
+      },
+      ckload: 'true',
+      hasContent: false,
+      isFresh: true,
+      languages: [],
+      newform: false,
+      previousTitles: [],
+      recordState: '',
+      record: {
+        id: '',
+        accept_policies: 0, //public form only...not saved into database
+        biography: '',
+        cell_phone: '',
+        display_name: '',
+        email: '',
+        expert_type: '',
+        first_name: '',
+        is_community_speaker: 0,
+        is_media_expert: 0,
+        do_print_interviews: 0,
+        do_broadcast_interviews: 0,
+        is_approved: 0,
+        last_name: '',
+        office_phone: '',
+        release_cell_phone: 0,
+        submitter_email: '',
+        submitter_name: '',
+        submitter_phone: '',
+        title: '',
+        categories: [],
+        education: [],
+        expertise: [],
+        languages: [],
+        previousTitles: [],
+        social: []
+      },
+      recordOld: {
+        id: '',
+        accept_policies: 0, //public form only...not saved into database
+        biography: '',
+        cell_phone: '',
+        display_name: '',
+        email: '',
+        is_community_speaker: 0,
+        is_media_expert: 0,
+        do_print_interviews: 0,
+        do_broadcast_interviews: 0,
+        first_name: '',
+        interviews: '',
+        is_approved: 0,
+        last_name: '',
+        office_phone: '',
+        release_cell_phone: 0,
+        submitter_email: '',
+        submitter_name: '',
+        submitter_phone: '',
+        title: '',
+        categories: [],
+        education: [],
+        expertise: [],
+        languages: [],
+        previousTitles: [],
+        social: []
+      }
+    }, (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'response', {}), (0, _defineProperty3.default)(_ref, 'social', []), (0, _defineProperty3.default)(_ref, 'totalChars', {
+      title: 50
+    }), _ref;
+  },
+  created: function created() {
+    this.recordState = 'created';
+  },
+  ready: function ready() {
+    if (this.recordexists) {
+      this.currentRecordId = this.recordid;
+      this.newform = false;
+      this.fetchCategoryList();
+      this.fetchEducation();
+      this.fetchExpertise();
+      this.fetchLanguages();
+      this.fetchPreviousTitles();
+      this.fetchSocial();
+      this.fetchCurrentCategory(this.currentRecordId);
+      this.fetchCurrentRecord(this.currentRecordId);
+    } else {
+      this.newform = true;
+      this.hasContent = true;
+      this.recordState = 'new';
+      this.fetchCategoryList();
+    }
+  },
+  computed: {
+
+    // switch classes based on css framework. foundation or bootstrap
+    md6col: function md6col() {
+      return this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6';
+    },
+    md12col: function md12col() {
+      return this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12';
+    },
+    md8col: function md8col() {
+      return this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8';
+    },
+    md4col: function md4col() {
+      return this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4';
+    },
+    btnPrimary: function btnPrimary() {
+      return this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary';
+    },
+    formGroup: function formGroup() {
+      return this.framework == 'foundation' ? 'form-group' : 'form-group';
+    },
+    formControl: function formControl() {
+      return this.framework == 'foundation' ? '' : 'form-control';
+    },
+    calloutSuccess: function calloutSuccess() {
+      return this.framework == 'foundation' ? 'callout success' : 'alert alert-success';
+    },
+    calloutFail: function calloutFail() {
+      return this.framework == 'foundation' ? 'callout alert' : 'alert alert-danger';
+    },
+    iconStar: function iconStar() {
+      return this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star';
+    },
+    inputGroupLabel: function inputGroupLabel() {
+      return this.framework == 'foundation' ? 'input-group-label' : 'input-group-addon';
+    },
+    // Switch verbage of submit button.
+    submitBtnLabel: function submitBtnLabel() {
+      return this.recordexists ? 'Update Expert' : 'Create Expert';
+    },
+
+    hasLocalRecordChanged: function hasLocalRecordChanged() {
+      var ckval = false;
+      if (this.recordOld.biography !== this.biography) {
+        ckval = true;
+      }
+      if (ckval) {
+        this.updateRecordIsDirty(true);
+      }
+      return ckval;
+    }
+  },
+
+  methods: {
+    onContentChange: function onContentChange() {
+      if (!this.ckfullyloaded) {
+        this.ckfullyloaded = true;
+      } else {
+        this.checkContentChange();
+      }
+      this.ckload = false;
+    },
+    checkContentChange: function checkContentChange() {
+      if (!this.recordIsDirty) {
+        this.recordIsDirty = true;
+        this.updateRecordIsDirty(true);
+      }
+    },
+    jsonEquals: function jsonEquals(a, b) {
+      return (0, _stringify2.default)(a) === (0, _stringify2.default)(b);
+    },
+
+    fetchCurrentRecord: function fetchCurrentRecord(recid) {
+      var _this = this;
+
+      this.ckload = true; // DO NOT REMOVE!!! needed for ckeditor
+      this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
+        _this.$set('record', response.data.data);
+        _this.$set('recordOld', response.data.data);
+
+        _this.hasContent = true;
+        _this.currentRecordId = _this.record.id;
+        _this.biography = _this.record.biography;
+        _this.fetchCurrentCategory();
+        _this.fetchEducation();
+        _this.fetchExpertise();
+        _this.fetchLanguages();
+        _this.fetchPreviousTitles();
+        _this.fetchSocial();
+      }, function (response) {
+        _this.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+
+    // Fetch the tags that match THIS record
+    fetchCategoryList: function fetchCategoryList() {
+      var _this2 = this;
+
+      this.$http.get('/api/experts/category').then(function (response) {
+        _this2.$set('categorieslist', response.data);
+      });
+    },
+
+    // Fetch the categories that matches THIS expert
+    fetchCurrentCategory: function fetchCurrentCategory() {
+      var _this3 = this;
+
+      this.$http.get('/api/experts/category/' + this.currentRecordId).then(function (response) {
+        _this3.$set('categories', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the education that matches THIS expert
+    fetchEducation: function fetchEducation() {
+      var _this4 = this;
+
+      this.$http.get('/api/experts/education/' + this.currentRecordId).then(function (response) {
+        _this4.$set('education', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the expertise that matches THIS expert
+    fetchExpertise: function fetchExpertise() {
+      var _this5 = this;
+
+      this.$http.get('/api/experts/expertise/' + this.currentRecordId).then(function (response) {
+        _this5.$set('expertise', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the languages that matches THIS expert
+    fetchLanguages: function fetchLanguages() {
+      var _this6 = this;
+
+      this.$http.get('/api/experts/languages/' + this.currentRecordId).then(function (response) {
+        _this6.$set('languages', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the job titles that matches THIS expert
+    fetchPreviousTitles: function fetchPreviousTitles() {
+      var _this7 = this;
+
+      this.$http.get('/api/experts/previoustitles/' + this.currentRecordId).then(function (response) {
+        _this7.$set('previousTitles', response.data);
+      }, function (response) {});
+    },
+
+
+    // Fetch the social media links that matches THIS expert
+    fetchSocial: function fetchSocial() {
+      var _this8 = this;
+
+      this.$http.get('/api/experts/social/' + this.currentRecordId).then(function (response) {
+        _this8.$set('social', response.data);
+      }, function (response) {});
+    },
+
+
+    nowOnReload: function nowOnReload() {
+      var newurl = '/admin/experts/' + this.currentRecordId + '/edit';
+
+      document.location = newurl;
+    },
+
+    onRefresh: function onRefresh() {
+      this.updateRecordId(this.currentRecordId);
+      this.recordState = 'edit';
+      this.recordIsDirty = false;
+      this.recordId = this.currentRecordId;
+      this.recordexists = true;
+      this.fetchCurrentRecord(this.currentRecordId);
+    },
+
+    fetchSubmittedRecord: function fetchSubmittedRecord(recid) {
+      // Sets params for update record, Passes an id to fetchCurrentRecord
+      this.recordexists = true;
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      this.recordid = recid;
+      this.formErrors = {};
+      this.fetchCurrentRecord(recid);
+    },
+
+    submitForm: function submitForm(e) {
+      var _this9 = this;
+
+      e.preventDefault(); // Stop form defualt action
+
+      $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+      this.record.biography = this.biography;
+
+      if (this.categories.length > 0) {
+        this.record.categories = this.categories;
+      } else {
+        this.record.categories = [];
+      }
+
+      if (this.education.length > 0) {
+        this.record.education = this.education;
+      } else {
+        this.record.education = [];
+      }
+
+      if (this.expertise.length > 0) {
+        this.record.expertise = this.expertise;
+      } else {
+        this.record.expertise = [];
+      }
+
+      if (this.languages.length > 0) {
+        this.record.languages = this.languages;
+      } else {
+        this.record.languages = [];
+      }
+
+      if (this.previousTitles.length > 0) {
+        this.record.previousTitles = this.previousTitles;
+      } else {
+        this.record.previousTitles = [];
+      }
+
+      if (this.social.length > 0) {
+        this.record.social = this.social;
+      } else {
+        this.record.social = [];
+      }
+
+      this.record.is_approved = 0; //any new or updated expert from the public end automatically requires approval from admin
+
+      // Decide route to submit form to
+      var method = this.recordexists ? 'put' : 'post';
+      var route = this.recordexists ? '/api/experts/' + this.record.id : '/api/experts';
+
+      // Submit form.
+      this.$http[method](route, this.record) //
+
+      // Do this when response gets back.
+      .then(function (response) {
+        _this9.formMessage.msg = response.data.message;
+        _this9.formMessage.isOk = response.ok; // Success message
+        _this9.currentRecordId = response.data.newdata.record_id;
+        _this9.recordid = response.data.newdata.record_id;
+        _this9.record_id = response.data.newdata.record_id;
+        _this9.record.id = response.data.newdata.record_id;
+        _this9.formMessage.isErr = false;
+        _this9.recordexists = true;
+        _this9.formErrors = {};
+        _this9.refreshUserExpertsTable();
+      }, function (response) {
+        // If invalid. error callback
+        _this9.formMessage.isOk = false;
+        _this9.formMessage.isErr = true;
+        // Set errors from validation to vue data
+        _this9.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+
+    refreshUserExpertsTable: function refreshUserExpertsTable() {
+      $.get('/experts/user/experts', function (data) {
+        data = $.parseJSON(data);
+        $('#user-expert-tables').html(data);
+      });
+    },
+
+    delTitle: function delTitle(title) {
+      if (confirm('Would you like to delete this title?') == true) {
+        this.previousTitles.$remove(title);
+      }
+    },
+
+    addTitle: function addTitle() {
+      this.previousTitles.push({ value: '', title: '' });
+    },
+
+    delLanguage: function delLanguage(language) {
+      if (confirm('Would you like to delete this language?') == true) {
+        this.languages.$remove(language);
+      }
+    },
+
+    addLanguage: function addLanguage() {
+      this.languages.push({ value: '', language: '' });
+    },
+
+    delEducation: function delEducation(education) {
+      if (confirm('Would you like to delete this education?') == true) {
+        this.education.$remove(education);
+      }
+    },
+
+    addEducation: function addEducation() {
+      this.education.push({ value: '', education: '' });
+    },
+
+    delExpertise: function delExpertise(expertise) {
+      if (confirm('Would you like to delete this field of expertise?') == true) {
+        this.expertise.$remove(expertise);
+      }
+    },
+
+    addExpertise: function addExpertise() {
+      this.expertise.push({ value: '', expertise: '' });
+    },
+
+    delSocial: function delSocial(link) {
+      if (confirm('Would you like to delete this social media link?') == true) {
+        this.social.$remove(link);
+      }
+    },
+
+    addSocial: function addSocial() {
+      this.social.push({ value: '', title: '', url: '' });
+    }
+  },
+  watch: {},
+
+  filters: {},
+  events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-1429f3ce=\"\">\n    <slot name=\"csrf\" _v-1429f3ce=\"\"></slot>\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-1429f3ce=\"\">\n          <h5 _v-1429f3ce=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-1429f3ce=\"\">\n          <h5 _v-1429f3ce=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <!-- Expert Type -->\n            <h4 _v-1429f3ce=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-1429f3ce=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-1429f3ce=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <!-- Interview preferences -->\n            <h4 _v-1429f3ce=\"\">I will</h4>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-1429f3ce=\"\">Do interviews for print media</label>\n              </div>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-1429f3ce=\"\">Do interviews for broadcast media</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n            <label _v-1429f3ce=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-1429f3ce=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Additional Titles (Include official EMU Affiliations)</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-1429f3ce=\"\">\n                <div class=\"input-group\" _v-1429f3ce=\"\">\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"title.title\" _v-1429f3ce=\"\">\n                  <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                    <button type=\"button\" class=\"button\" @click=\"delTitle(title)\" _v-1429f3ce=\"\">X</button>\n                  </div>\n                </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addTitle\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Languages Spoken</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Language</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"language.language\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delLanguage(language)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addLanguage\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Language</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"callout primary\" _v-1429f3ce=\"\">Besides English, in what languages are you comfortable being interviewed?</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Education</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"ed.education\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delEducation(ed)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addEducation\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Fields of expertise -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Field of Expertise</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"exp.expertise\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delExpertise(exp)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addExpertise\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Related Links and Social Media</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"soc in social\" class=\"input-group\" _v-1429f3ce=\"\">\n              <div class=\"medium-6 columns\" _v-1429f3ce=\"\">\n                  <label _v-1429f3ce=\"\">Title</label>\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"soc.title\" _v-1429f3ce=\"\">\n              </div>\n              <div class=\"medium-6 columns\" _v-1429f3ce=\"\">\n                  <label _v-1429f3ce=\"\">URL</label>\n                  <div class=\"input-group\" _v-1429f3ce=\"\">\n                    <input class=\"input-group-field\" type=\"text\" v-model=\"soc.url\" _v-1429f3ce=\"\">\n                    <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                      <button type=\"button\" class=\"button\" @click=\"delSocial(soc)\" _v-1429f3ce=\"\">X</button>\n                    </div>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addSocial\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Social Link</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"callout primary\" _v-1429f3ce=\"\">Enter related links like department/faculty websites and social media profiles. (e.g. Center for Research website, Twitter account)</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"20\" _v-1429f3ce=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-1429f3ce=\"\">You must enter a biography for this expert.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n         <h4 _v-1429f3ce=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n   <div class=\"row\" v-show=\"!recordexists\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md12col\" id=\"policies-container\" _v-1429f3ce=\"\">\n         <!-- Terms and conditions -->\n         <h5 _v-1429f3ce=\"\">Policies</h5>\n         <p _v-1429f3ce=\"\">The Speakers &amp; Experts Directory is a community service of the Division of Communications.</p><br _v-1429f3ce=\"\">\n         <p _v-1429f3ce=\"\">Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>\n     </div>\n       <!-- /.small-12 columns -->\n     <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n         <!-- Is approved? -->\n           <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n             <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.accept_policies\" _v-1429f3ce=\"\">I have read and accepted the policies <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n           </div>\n           <p v-if=\"formErrors.accept_policies\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.accept_policies}}</p>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <div class=\"row\" v-show=\"recordexists\" _v-1429f3ce=\"\">\n       <div v-bind:class=\"md12col\" id=\"policies-container\" _v-1429f3ce=\"\">\n           <p _v-1429f3ce=\"\">Please note that when you update this expert, he/she will be removed from the experts list until an administrator has approved the changes.</p>\n       </div>\n       <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-1429f3ce=\"\">{{submitBtnLabel}}</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.row[_v-1429f3ce]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-1429f3ce]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-1429f3ce]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-1429f3ce]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-1429f3ce]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-1429f3ce] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-1429f3ce] {\n  margin: 0;\n}\n\nlabel[_v-1429f3ce] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1429f3ce] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1429f3ce] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1429f3ce] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1429f3ce] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1429f3ce] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1429f3ce] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1429f3ce] {\n  margin: 0;\n}\n\n[type='submit'][_v-1429f3ce],\n[type='button'][_v-1429f3ce] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1429f3ce] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1429f3ce] {\n  margin: 0;\n}\n\nh5.form-control[_v-1429f3ce] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-1429f3ce", module.exports)
+  } else {
+    hotAPI.update("_v-1429f3ce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../directives/ckrte.js":116,"../vuex/actions":118,"../vuex/getters":119,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],115:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        disabled: Boolean,
+        checked: [Boolean, Number],
+        value: Number,
+        readonly: Boolean
+    },
+    ready: function ready() {
+        this.value == !!this.checked;
+    },
+
+    data: function data() {
+        return {
+            // compval: $('#slct').val()
+        };
+    },
+    methods: {
+        vuiValueChange: function vuiValueChange(event) {
+            console.log('this.value' + this.value);
+        }
+    },
+    events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :readonly=\"readonly\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-c9c83bf8", module.exports)
+  } else {
+    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = {
-    twoWay: true,
-    priority: 1000,
-    params: ['content', 'type'],
-    bind: function bind() {
+  twoWay: true,
+  priority: 1000,
+  params: ['content', 'type'],
+  bind: function bind() {
+    this.vm.$nextTick(this.setupEditor.bind(this));
+  },
+  setupEditor: function setUpEditor() {
+    var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
+    var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
+    var self = this;
+    CKEDITOR.replace(this.el.id, {
+      customConfig: editorConfig
+    });
 
-        console.log(this.setupEditor);
-        this.vm.$nextTick(this.setupEditor.bind(this));
-    },
-    setupEditor: function setUpEditor() {
-        var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
-        var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
-        var self = this;
-        CKEDITOR.replace(this.el.id, {
-            customConfig: editorConfig
-        });
+    CKEDITOR.instances[this.el.id].setData(this.params.content);
+    CKEDITOR.instances[this.el.id].on('change', function () {
+      self.set(CKEDITOR.instances[self.el.id].getData());
+    });
+  },
+  update: function update(value, binding, vnode, oldVnode) {
+    if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
 
-        CKEDITOR.instances[this.el.id].setData(this.params.content);
-        CKEDITOR.instances[this.el.id].on('change', function () {
-            self.set(CKEDITOR.instances[self.el.id].getData());
-        });
-    },
-    update: function update(value) {
-        if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
-        this.vm.onContentChange();
-    },
-    unbind: function unbind() {
-        CKEDITOR.instances[this.el.id].destroy();
-    }
+    // For public experts form's ckedior: set ckload to false after first update to prevent cursor from moving to top of editor
+    if (this.vm.ckload) CKEDITOR.instances[this.el.id].setData(value);
+
+    this.vm.ckload = false;
+    this.vm.onContentChange();
+  },
+  unbind: function unbind() {
+    CKEDITOR.instances[this.el.id].destroy();
+  }
+
 };
 
-},{}],114:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -21395,6 +22178,14 @@ var _vueResource2 = _interopRequireDefault(_vueResource);
 var _ExpertForm = require('./components/ExpertForm.vue');
 
 var _ExpertForm2 = _interopRequireDefault(_ExpertForm);
+
+var _ExpertFormPublic = require('./components/ExpertFormPublic.vue');
+
+var _ExpertFormPublic2 = _interopRequireDefault(_ExpertFormPublic);
+
+var _ExpertBoxTools = require('./components/ExpertBoxTools.vue');
+
+var _ExpertBoxTools2 = _interopRequireDefault(_ExpertBoxTools);
 
 var _store = require('./vuex/store');
 
@@ -21410,15 +22201,38 @@ Vue.use(_vueResource2.default);
 
 
 var vm = new Vue({
-    el: '#vue-experts',
-    components: { ExpertForm: _ExpertForm2.default },
-    store: _store2.default,
-    ready: function ready() {
-        console.log('Expert Form ready');
-    }
+  el: '#vue-experts',
+  components: {
+    ExpertForm: _ExpertForm2.default,
+    ExpertBoxTools: _ExpertBoxTools2.default
+  },
+  store: _store2.default,
+  ready: function ready() {
+    console.log('Expert Form ready');
+  }
 });
 
-},{"./components/ExpertForm.vue":112,"./vuex/store":117,"vue":109,"vue-resource":107}],115:[function(require,module,exports){
+var vmpublic = new Vue({
+  el: '#vue-experts-public',
+  components: { ExpertFormPublic: _ExpertFormPublic2.default },
+  store: _store2.default,
+  ready: function ready() {
+    console.log('Public Expert Form ready');
+  }
+});
+
+function assignEventListeners() {
+  // Cancel and edit buttons need to call vue object methods
+  $("#experts-area").on("click", ".editBtn", function (event) {
+    vmpublic.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
+  });
+  $("#experts-area").on("click", ".cancelBtn", function (event) {
+    vmpublic.$refs.foo.cancelRecord(this.parentNode.id);
+  });
+}
+assignEventListeners();
+
+},{"./components/ExpertBoxTools.vue":112,"./components/ExpertForm.vue":113,"./components/ExpertFormPublic.vue":114,"./vuex/store":120,"vue":109,"vue-resource":107}],118:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21446,7 +22260,7 @@ var updateRecordState = exports.updateRecordState = function updateRecordState(_
   dispatch('RECORD_STATE', value);
 };
 
-},{}],116:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21465,7 +22279,7 @@ var getRecordState = exports.getRecordState = function getRecordState(state) {
   return state.recordState;
 };
 
-},{}],117:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21508,6 +22322,6 @@ exports.default = new _vuex2.default.Store({
     mutations: mutations
 });
 
-},{"vue":109,"vuex":111}]},{},[114]);
+},{"vue":109,"vuex":111}]},{},[117]);
 
 //# sourceMappingURL=vue-expert-form.js.map

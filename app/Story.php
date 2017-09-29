@@ -185,6 +185,9 @@ class Story extends Model
               case 'external':
                 $type = 'external';
                 break;
+              case 'bulletin':
+                $type = 'bulletin';
+                break;
               default:
                 $type = $this->story_type;
               }
@@ -196,14 +199,6 @@ class Story extends Model
 
 
         /** ************* ACCESSORS ************** */
-
-        /**
-         * [Determine if Story is part of emutoday hub]
-         * @return [type] [description]
-         */
-        // public function getOnHubAttribute(){
-        //       return $this->
-        // }
 
         /**
          * [setPublishedAtAttribute description]
@@ -227,8 +222,6 @@ class Story extends Model
         public function scopeOfStoryType($query, $group)
         {
                 return $query->storyType->where('group', $group);
-
-                // where('story_type', $type);
         }
 
 

@@ -2,6 +2,7 @@
 
 namespace Emutoday\Providers;
 
+//use Illuminate\Support\Facades\Router;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -22,11 +23,11 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
         //
 
-        parent::boot($router);
+        parent::boot();
     }
 
     /**

@@ -15,7 +15,6 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        // 'sitemap' => 'Emutoday\Http\Middleware\sitemap'
     ];
 
     /**
@@ -30,6 +29,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Emutoday\Http\Middleware\VerifyCsrfToken::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
@@ -52,5 +52,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'cas.auth'  => \Subfission\Cas\Middleware\CASAuth::class,
         'cas.guest' => \Subfission\Cas\Middleware\RedirectCASAuthenticated::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'client_credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class, //for Laravel Passport OAuth
     ];
 }

@@ -22,6 +22,9 @@
                 @include('admin.layouts.partials.notifications.announcements')
                 @include('admin.layouts.partials.notifications.storys')
             @endcan
+            @if(Gate::check('admin') || Gate::check('experts'))
+                @include('admin.layouts.partials.notifications.experts')
+            @endif
         @include('admin.layouts.partials.usermenu')
 
 <!-- Control Sidebar Toggle Button -->

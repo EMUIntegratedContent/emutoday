@@ -71,71 +71,42 @@ class ArchiveController extends ApiController
                     $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
 
                     return $fractal->createData($resource)->toArray();
-
                 case 'stories':
-                    // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
                     $paginator = Story::where('is_archived', 1)->orderBy('start_date', 'desc')->paginate($perPage);
-                    $archivedItems = $paginator->getCollection();
-
-                    $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
-                    $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-                    return $fractal->createData($resource)->toArray();
-
+                    break;
                 case 'external':
-                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
-                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'external'])->orderBy('start_date', 'desc')->paginate($perPage);
-                        $archivedItems = $paginator->getCollection();
-
-                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
-                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-                        return $fractal->createData($resource)->toArray();
-
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'external'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
                 case 'news':
-                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
-                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'news'])->orderBy('start_date', 'desc')->paginate($perPage);
-                        $archivedItems = $paginator->getCollection();
-
-                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
-                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-                        return $fractal->createData($resource)->toArray();
-
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'news'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
                 case 'article':
-                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
-                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'article'])->orderBy('start_date', 'desc')->paginate($perPage);
-                        $archivedItems = $paginator->getCollection();
-
-                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
-                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-                        return $fractal->createData($resource)->toArray();
-
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'article'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
                 case 'story':
-                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
-                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'story'])->orderBy('start_date', 'desc')->paginate($perPage);
-                        $archivedItems = $paginator->getCollection();
-
-                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
-                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-                        return $fractal->createData($resource)->toArray();
-
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'story'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
                 case 'student':
-                        // How to use pagination with Fractal: http://fractal.thephpleague.com/pagination/
-                        $paginator = Story::where(['is_archived' => 1, 'story_type' => 'student'])->orderBy('start_date', 'desc')->paginate($perPage);
-                        $archivedItems = $paginator->getCollection();
-
-                        $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
-                        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-                        return $fractal->createData($resource)->toArray();
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'student'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
+                case 'statement':
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'statement'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
+                case 'advisory':
+                    $paginator = Story::where(['is_archived' => 1, 'story_type' => 'advisory'])->orderBy('start_date', 'desc')->paginate($perPage);
+                    break;
 
                 default;
                     $archivedItems = array();
                     return $archivedItems;
             }
+
+            $archivedItems = $paginator->getCollection();
+
+            $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryTransformerModel);
+            $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+            return $fractal->createData($resource)->toArray();
 
         }
         return $this->setStatusCode(403)->respondWithError('You do not have permission to access the archives.');

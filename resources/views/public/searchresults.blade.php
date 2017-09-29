@@ -29,6 +29,7 @@
                     <li class="{{ Request::get('filter') == 'events' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=events">Events</a></li>
                     <li class="{{ Request::get('filter') == 'announcements' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=announcements">Announcements</a></li>
                     <li class="{{ Request::get('filter') == 'magazine' || $isSearchFromMagazine == true ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=magazine">Magazine</a></li>
+                    <li class="{{ Request::get('filter') == 'experts' ? 'active' : '' }}"><a href="/search?searchterm={{ $searchTerm }}&filter=experts">Experts</a></li>
                 </ul>
             </div>
           </div>
@@ -67,6 +68,15 @@
                             <div class="search-result-content">
                                 @if($searchResult->announcement)
                                 <p>{{ $searchResult->announcement }}</p>
+                                @endif
+                            </div>
+                        @elseif($searchResult->getTable() == 'experts')
+                            <a href="/experts/view/{{$searchResult->id}}"><h5>Eastern Expert {{$searchResult->display_name}}</h5></a>
+                            <div class="search-result-content">
+                                @if($searchResult->title)
+                                <p>{{ $searchResult->title }}</p>
+                                @else
+                                <p>{{$searchResult->first_name}} is an Eastern Expert.</p> 
                                 @endif
                             </div>
                         @endif
