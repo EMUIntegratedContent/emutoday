@@ -12175,7 +12175,7 @@ exports.insert = function (css) {
 
 },{}],31:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.action-link[_v-55310567] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-55310567] {\n    margin-bottom: 0;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.action-link[_v-78ea8be2] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-78ea8be2] {\n    margin-bottom: 0;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -12244,19 +12244,19 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-55310567=\"\">\n    <div v-if=\"tokens.length > 0\" _v-55310567=\"\">\n        <div class=\"panel panel-default\" _v-55310567=\"\">\n            <div class=\"panel-heading\" _v-55310567=\"\">Authorized Applications</div>\n\n            <div class=\"panel-body\" _v-55310567=\"\">\n                <!-- Authorized Tokens -->\n                <table class=\"table table-borderless m-b-none\" _v-55310567=\"\">\n                    <thead _v-55310567=\"\">\n                        <tr _v-55310567=\"\">\n                            <th _v-55310567=\"\">Name</th>\n                            <th _v-55310567=\"\">Scopes</th>\n                            <th _v-55310567=\"\"></th>\n                        </tr>\n                    </thead>\n\n                    <tbody _v-55310567=\"\">\n                        <tr v-for=\"token in tokens\" _v-55310567=\"\">\n                            <!-- Client Name -->\n                            <td style=\"vertical-align: middle;\" _v-55310567=\"\">\n                                {{ token.client.name }}\n                            </td>\n\n                            <!-- Scopes -->\n                            <td style=\"vertical-align: middle;\" _v-55310567=\"\">\n                                <span v-if=\"token.scopes.length > 0\" _v-55310567=\"\">\n                                    {{ token.scopes.join(', ') }}\n                                </span>\n                            </td>\n\n                            <!-- Revoke Button -->\n                            <td style=\"vertical-align: middle;\" _v-55310567=\"\">\n                                <a class=\"action-link text-danger\" @click=\"revoke(token)\" _v-55310567=\"\">\n                                    Revoke\n                                </a>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-78ea8be2=\"\">\n    <div v-if=\"tokens.length > 0\" _v-78ea8be2=\"\">\n        <div class=\"panel panel-default\" _v-78ea8be2=\"\">\n            <div class=\"panel-heading\" _v-78ea8be2=\"\">Authorized Applications</div>\n\n            <div class=\"panel-body\" _v-78ea8be2=\"\">\n                <!-- Authorized Tokens -->\n                <table class=\"table table-borderless m-b-none\" _v-78ea8be2=\"\">\n                    <thead _v-78ea8be2=\"\">\n                        <tr _v-78ea8be2=\"\">\n                            <th _v-78ea8be2=\"\">Name</th>\n                            <th _v-78ea8be2=\"\">Scopes</th>\n                            <th _v-78ea8be2=\"\"></th>\n                        </tr>\n                    </thead>\n\n                    <tbody _v-78ea8be2=\"\">\n                        <tr v-for=\"token in tokens\" _v-78ea8be2=\"\">\n                            <!-- Client Name -->\n                            <td style=\"vertical-align: middle;\" _v-78ea8be2=\"\">\n                                {{ token.client.name }}\n                            </td>\n\n                            <!-- Scopes -->\n                            <td style=\"vertical-align: middle;\" _v-78ea8be2=\"\">\n                                <span v-if=\"token.scopes.length > 0\" _v-78ea8be2=\"\">\n                                    {{ token.scopes.join(', ') }}\n                                </span>\n                            </td>\n\n                            <!-- Revoke Button -->\n                            <td style=\"vertical-align: middle;\" _v-78ea8be2=\"\">\n                                <a class=\"action-link text-danger\" @click=\"revoke(token)\" _v-78ea8be2=\"\">\n                                    Revoke\n                                </a>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.action-link[_v-55310567] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-55310567] {\n    margin-bottom: 0;\n}\n"] = false
+    __vueify_insert__.cache["\n.action-link[_v-78ea8be2] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-78ea8be2] {\n    margin-bottom: 0;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-55310567", module.exports)
+    hotAPI.createRecord("_v-78ea8be2", module.exports)
   } else {
-    hotAPI.update("_v-55310567", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-78ea8be2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"axios":1,"vue":29,"vue-hot-reload-api":28,"vueify/lib/insert-css":30}],32:[function(require,module,exports){

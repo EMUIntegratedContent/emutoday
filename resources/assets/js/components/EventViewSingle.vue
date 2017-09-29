@@ -63,7 +63,14 @@
         </ul>
       </template>
       <p v-if="item.free">Cost: Free</p>
-      <p v-else>Cost: {{item.cost | currency }}</p>
+      <p v-else>
+        <template v-if="item.cost | isNumeric">
+          Cost: {{item.cost | currency }}
+        </template>
+        <template v-else>
+          Cost: {{item.cost}}
+        </template>
+      </p>
       <p>{{eventParticipation}}</p>
       <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
       <template v-if="item.tickets">
@@ -213,6 +220,9 @@ module.exports  = {
     },
     hasHttp: function(value) { // Checks if links given 'http'
       return (value.substr(0, 4)) == 'http' ? value : 'https://'+value;
+    },
+    isNumeric: function(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
     }
   },
   watch: {},
