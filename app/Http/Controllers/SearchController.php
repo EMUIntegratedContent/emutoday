@@ -161,6 +161,7 @@ class SearchController extends Controller
                                 $query->where('category', $searchCategory);
                             })
                             ->orderBy('last_name', 'ASC')
+                            ->groupBy('last_name')
                             ->paginate(10);
         } else {
             $experts = Expert::search('%'.$searchterm.'%')->where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
