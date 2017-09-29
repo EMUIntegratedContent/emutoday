@@ -300,15 +300,12 @@
    </div>
    <!-- /.row -->
    <div class="row" v-show="!recordexists">
-       <div v-bind:class="md12col" id="policies-container">
-           <!-- Terms and conditions -->
-           <h5>Policies</h5>
-           <p>The Speakers & Experts Directory is a community service of the University Communications Office.</p>
-           <p>
-               ...
-           </p>
-           <p>Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>
-       </div>
+     <div v-bind:class="md12col" id="policies-container">
+         <!-- Terms and conditions -->
+         <h5>Policies</h5>
+         <p>The Speakers &amp; Experts Directory is a community service of the Division of Communications.</p><br>
+         <p>Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>
+     </div>
        <!-- /.small-12 columns -->
      <div v-bind:class="md12col">
          <!-- Is approved? -->
