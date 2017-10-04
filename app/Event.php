@@ -18,8 +18,6 @@ class Event extends Model
    */
   protected $table = 'cea_events';
 
-
-
   /**
    * [$fillable description]
    * @var [type]
@@ -37,6 +35,7 @@ class Event extends Model
                         'tickets', 'ticket_details_online','ticket_details_phone','ticket_details_office','ticket_details_other',
                         'submission_date', 'approved_date','contact_fax','mini_calendar', 'lbc_reviewed', 'ensemble',
                         'mba','mini_calendar_alt', 'feature_image',
+                        'hsc_rewards', 'hsc_reviewed',
                         'on_campus','mediafile_id','building_id','priority'];
 
 /**
@@ -71,8 +70,7 @@ class Event extends Model
     return $this->belongsToMany('Emutoday\MiniCalendar', 'cea_event_minicalendar', 'event_id', 'mini_calendar_id');
   }
   /**
-   * get a list of the mini calendars associated with this Event
-   * @return [Array]
+   * get a list of the mini calendars associated with this Event * @return [Array]
    */
   public function getMiniCalendarListAttribute()
   {

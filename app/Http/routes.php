@@ -149,6 +149,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('event/queueload/{fromDate?}/{toDate?}', 'Api\EventController@queueLoad')->name('api.event.queueload');
     Route::get('event/lbcqueueload/{fromDate?}/{toDate?}', 'Api\EventController@lbcQueueLoad')->name('api.event.lbcqueueload');
+    Route::get('event/hscqueueload/{fromDate?}/{toDate?}', 'Api\EventController@hscQueueLoad')->name('api.event.hscqueueload');
     Route::get('event/otherItems', 'Api\EventController@otherItems')->name('api.event.otheritems');
     Route::get('event/unapprovedItems', 'Api\EventController@unapprovedItems')->name('api.event.unapproveditems');
     Route::get('event/approvedItems', 'Api\EventController@approvedItems')->name('api.event.approveditems');
@@ -307,6 +308,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
         Route::get('event/queue', 'Admin\EventController@queue')->name('admin.event.queue');
         Route::get('/lbcqueue', 'Admin\EventController@lbcqueue')->name('admin.event.lbcqueue');
+        Route::get('/hscqueue', 'Admin\EventController@hscqueue')->name('admin.event.hscqueue');
         Route::get('event/form', 'Admin\EventController@form')->name('admin.event.form');
         Route::resource('event', 'Admin\EventController');
 
