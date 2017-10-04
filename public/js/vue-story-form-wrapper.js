@@ -21269,11 +21269,14 @@ module.exports = {
       }
     },
     editorType: function editorType() {
-      if (this.isAdmin) {
-        return 'admin';
+      /*
+      if(this.isAdmin){
+        return 'admin'
       } else {
-        return 'simple';
+        return 'simple'
       }
+      */
+      return 'admin';
     },
     s_types: function s_types() {
       // var data = localStorage[key];

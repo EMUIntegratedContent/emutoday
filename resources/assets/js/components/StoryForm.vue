@@ -414,11 +414,14 @@ module.exports  = {
       }
     },
     editorType:function(){
+      /*
       if(this.isAdmin){
         return 'admin'
       } else {
         return 'simple'
       }
+      */
+      return 'admin'
     },
     s_types:function(){
       // var data = localStorage[key];
