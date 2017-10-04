@@ -68,6 +68,9 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'submission_date' => is_null($event->submission_date) ? null: $event->submission_date->toDateString(),
       'approved_date' => is_null($event->approved_date) ?null :  $event->approved_date->toDateString(),
 
+      'hsc_reviewed'           => $event->hsc_reviewed,
+      'hsc_rewards'           => $event->hsc_rewards,
+
       'contact_fax'           => $event->contact_fax,
       'mini_calendar'           => $event->mini_calendar,
       'lbc_reviewed'           => $event->lbc_reviewed,

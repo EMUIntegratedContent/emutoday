@@ -73,6 +73,7 @@
       </p>
       <p>{{eventParticipation}}</p>
       <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
+      <p v-if="item.hsc_rewards">Eagle Rewards: {{item.hsc_rewards}}</p>
       <template v-if="item.tickets">
         <p v-if="item.ticket_details_online"><a href="{{item.ticket_details_online | hasHttp}}">Get Tickets Online</a></p>
         <p v-if="item.ticket_details_phone">For tickets, call {{item.ticket_details_phone}}.</p>

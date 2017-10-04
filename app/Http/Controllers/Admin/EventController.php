@@ -44,6 +44,9 @@ class EventController extends Controller
     public function lbcqueue() {
         return view('admin.event.lbcqueue');
     }
+    public function hscqueue() {
+        return view('admin.event.hscqueue');
+    }
 
     /**
     * Show the form for creating a new resource.

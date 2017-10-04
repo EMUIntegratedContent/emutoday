@@ -1,250 +1,1353 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":5}],2:[function(require,module,exports){
-module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":6}],3:[function(require,module,exports){
-"use strict";
+},{"core-js/library/fn/json/stringify":3}],2:[function(require,module,exports){
 
-exports.__esModule = true;
-
-var _defineProperty = require("../core-js/object/define-property");
-
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
-},{"../core-js/object/define-property":2}],4:[function(require,module,exports){
-
-},{}],5:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var core = require('../../modules/_core');
 var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
 module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
 
-},{"../../modules/_core":9}],6:[function(require,module,exports){
-require('../../modules/es6.object.define-property');
-var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
-};
-
-},{"../../modules/_core":9,"../../modules/es6.object.define-property":22}],7:[function(require,module,exports){
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-},{}],8:[function(require,module,exports){
-var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-},{"./_is-object":18}],9:[function(require,module,exports){
+},{"../../modules/_core":4}],4:[function(require,module,exports){
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
-},{}],10:[function(require,module,exports){
-// optional / simple context binding
-var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
+},{}],5:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var flatpickr = function flatpickr(selector, config) {
+	var elements = void 0;
+
+	var createInstance = function createInstance(element) {
+		if (element._flatpickr) {
+			element._flatpickr.destroy();
+		}
+
+		element._flatpickr = new flatpickr.init(element, config);
+		return element._flatpickr;
+	};
+
+	if (selector.nodeName) {
+		return createInstance(selector);
+	}
+	/*
+ Utilize the performance of native getters if applicable
+ https://jsperf.com/getelementsbyclassname-vs-queryselectorall/18
+ https://jsperf.com/jquery-vs-javascript-performance-comparison/22
+ */
+	else if (/^#[a-zA-Z0-9\-_]*$/.test(selector)) {
+			return createInstance(document.getElementById(selector.slice(1)));
+		} else if (/^\.[a-zA-Z0-9\-_]*$/.test(selector)) {
+			elements = document.getElementsByClassName(selector.slice(1));
+		} else {
+			elements = document.querySelectorAll(selector);
+		}
+
+	var instances = [];
+
+	for (var i = 0; i < elements.length; i++) {
+		instances.push(createInstance(elements[i]));
+	}
+
+	if (instances.length === 1) {
+		return instances[0];
+	}
+
+	return {
+		calendars: instances,
+		byID: function byID(id) {
+			return document.getElementById(id)._flatpickr;
+		}
+	};
 };
 
-},{"./_a-function":7}],11:[function(require,module,exports){
-// Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
-});
+/**
+ * @constructor
+ */
+flatpickr.init = function (element, instanceConfig) {
+	function createElement(tag, className, content) {
+		var newElement = document.createElement(tag);
 
-},{"./_fails":14}],12:[function(require,module,exports){
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
+		if (content) {
+			newElement.textContent = content;
+		}
+
+		if (className) {
+			newElement.className = className;
+		}
+
+		return newElement;
+	}
+
+	var debounce = function debounce(func, wait, immediate) {
+		var timeout = void 0;
+		return function () {
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			var context = this;
+
+			var later = function later() {
+				timeout = null;
+				if (!immediate) {
+					func.apply(context, args);
+				}
+			};
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (immediate && !timeout) {
+				func.apply(context, args);
+			}
+		};
+	};
+
+	// functions
+	var self = this;
+	var parseConfig = void 0,
+	    init = void 0,
+	    wrap = void 0,
+	    uDate = void 0,
+	    equalDates = void 0,
+	    pad = void 0,
+	    monthToStr = void 0,
+	    isEnabled = void 0,
+	    buildMonthNavigation = void 0,
+	    buildWeekdays = void 0,
+	    buildCalendar = void 0,
+	    buildDays = void 0,
+	    buildWeeks = void 0,
+	    buildTime = void 0,
+	    timeWrapper = void 0,
+	    yearScroll = void 0,
+	    updateValue = void 0,
+	    amPMToggle = void 0,
+	    onKeyDown = void 0,
+	    onResize = void 0,
+	    updateNavigationCurrentMonth = void 0,
+	    handleYearChange = void 0,
+	    changeMonth = void 0,
+	    getDaysinMonth = void 0,
+	    documentClick = void 0,
+	    selectDate = void 0,
+	    getRandomCalendarIdStr = void 0,
+	    bind = void 0,
+	    triggerChange = void 0;
+
+	// elements & variables
+	var calendarContainer = void 0,
+	    weekdayContainer = void 0,
+	    timeContainer = void 0,
+	    navigationCurrentMonth = void 0,
+	    monthsNav = void 0,
+	    prevMonthNav = void 0,
+	    currentYearElement = void 0,
+	    currentMonthElement = void 0,
+	    nextMonthNav = void 0,
+	    calendar = void 0,
+	    weekNumbers = void 0,
+	    now = new Date(),
+	    wrapperElement = void 0,
+	    clickEvt = void 0;
+
+	self.formats = {
+		// weekday name, short, e.g. Thu
+		D: function D() {
+			return self.l10n.weekdays.shorthand[self.formats.w()];
+		},
+
+		// full month name e.g. January
+		F: function F() {
+			return monthToStr(self.formats.n() - 1, false);
+		},
+
+		// hours with leading zero e.g. 03
+		H: function H() {
+			return pad(self.selectedDateObj.getHours());
+		},
+
+		// day (1-30) with ordinal suffix e.g. 1st, 2nd
+		J: function J() {
+			return self.formats.j() + self.l10n.ordinal(self.formats.j());
+		},
+
+		// AM/PM
+		K: function K() {
+			return self.selectedDateObj.getHours() > 11 ? "PM" : "AM";
+		},
+
+		// shorthand month e.g. Jan, Sep, Oct, etc
+		M: function M() {
+			return monthToStr(self.formats.n() - 1, true);
+		},
+
+		// seconds 00-59
+		S: function S() {
+			return pad(self.selectedDateObj.getSeconds());
+		},
+
+		// unix timestamp
+		U: function U() {
+			return self.selectedDateObj.getTime() / 1000;
+		},
+
+		// full year e.g. 2016
+		Y: function Y() {
+			return self.selectedDateObj.getFullYear();
+		},
+
+		// day in month, padded (01-30)
+		d: function d() {
+			return pad(self.formats.j());
+		},
+
+		// hour from 1-12 (am/pm)
+		h: function h() {
+			return self.selectedDateObj.getHours() % 12 ? self.selectedDateObj.getHours() % 12 : 12;
+		},
+
+		// minutes, padded with leading zero e.g. 09
+		i: function i() {
+			return pad(self.selectedDateObj.getMinutes());
+		},
+
+		// day in month (1-30)
+		j: function j() {
+			return self.selectedDateObj.getDate();
+		},
+
+		// weekday name, full, e.g. Thursday
+		l: function l() {
+			return self.l10n.weekdays.longhand[self.formats.w()];
+		},
+
+		// padded month number (01-12)
+		m: function m() {
+			return pad(self.formats.n());
+		},
+
+		// the month number (1-12)
+		n: function n() {
+			return self.selectedDateObj.getMonth() + 1;
+		},
+
+		// seconds 0-59
+		s: function s() {
+			return self.selectedDateObj.getSeconds();
+		},
+
+		// number of the day of the week
+		w: function w() {
+			return self.selectedDateObj.getDay();
+		},
+
+		// last two digits of year e.g. 16 for 2016
+		y: function y() {
+			return String(self.formats.Y()).substring(2);
+		}
+	};
+
+	self.defaultConfig = {
+		/* if true, dates will be parsed, formatted, and displayed in UTC.
+  preloading date strings w/ timezones is recommended but not necessary */
+		utc: false,
+
+		// wrap: see https://chmln.github.io/flatpickr/#strap
+		wrap: false,
+
+		// enables week numbers
+		weekNumbers: false,
+
+		allowInput: false,
+
+		/*
+  	clicking on input opens the date(time)picker.
+  	disable if you wish to open the calendar manually with .open()
+  */
+		clickOpens: true,
+
+		// display time picker in 24 hour mode
+		time_24hr: false,
+
+		// enables the time picker functionality
+		enableTime: false,
+
+		// noCalendar: true will hide the calendar. use for a time picker along w/ enableTime
+		noCalendar: false,
+
+		// more date format chars at https://chmln.github.io/flatpickr/#dateformat
+		dateFormat: "Y-m-d",
+
+		// altInput - see https://chmln.github.io/flatpickr/#altinput
+		altInput: false,
+
+		// the created altInput element will have this class.
+		altInputClass: "",
+
+		// same as dateFormat, but for altInput
+		altFormat: "F j, Y", // defaults to e.g. June 10, 2016
+
+		// defaultDate - either a datestring or a date object. used for datetimepicker"s initial value
+		defaultDate: null,
+
+		// the minimum date that user can pick (inclusive)
+		minDate: null,
+
+		// the maximum date that user can pick (inclusive)
+		maxDate: null,
+
+		// dateparser that transforms a given string to a date object
+		parseDate: null,
+
+		// see https://chmln.github.io/flatpickr/#disable
+		enable: [],
+
+		// see https://chmln.github.io/flatpickr/#disable
+		disable: [],
+
+		// display the short version of month names - e.g. Sep instead of September
+		shorthandCurrentMonth: false,
+
+		// displays calendar inline. see https://chmln.github.io/flatpickr/#inline-calendar
+		inline: false,
+
+		// position calendar inside wrapper and next to the input element
+		// leave at false unless you know what you"re doing
+		static: false,
+
+		// code for previous/next icons. this is where you put your custom icon code e.g. fontawesome
+		prevArrow: "&lt;",
+		nextArrow: "&gt;",
+
+		// enables seconds in the time picker
+		enableSeconds: false,
+
+		// step size used when scrolling/incrementing the hour element
+		hourIncrement: 1,
+
+		// step size used when scrolling/incrementing the minute element
+		minuteIncrement: 5,
+
+		// onChange callback when user selects a date or time
+		onChange: null, // function (dateObj, dateStr) {}
+
+		// called every time calendar is opened
+		onOpen: null, // function (dateObj, dateStr) {}
+
+		// called every time calendar is closed
+		onClose: null, // function (dateObj, dateStr) {}
+
+		onValueUpdate: null
+	};
+
+	init = function init() {
+		instanceConfig = instanceConfig || {};
+
+		self.element = element;
+
+		parseConfig();
+
+		self.input = self.config.wrap ? element.querySelector("[data-input]") : element;
+		self.input.classList.add("flatpickr-input");
+
+		if (self.config.defaultDate) {
+			self.config.defaultDate = uDate(self.config.defaultDate);
+		}
+
+		if (self.input.value || self.config.defaultDate) {
+			self.selectedDateObj = uDate(self.config.defaultDate || self.input.value);
+		}
+
+		wrap();
+		buildCalendar();
+		bind();
+
+		self.uDate = uDate;
+		self.jumpToDate();
+		updateValue();
+	};
+
+	parseConfig = function parseConfig() {
+		self.config = {};
+
+		Object.keys(self.defaultConfig).forEach(function (key) {
+			if (instanceConfig.hasOwnProperty(key)) {
+				self.config[key] = instanceConfig[key];
+			} else if (self.element.dataset && self.element.dataset.hasOwnProperty(key.toLowerCase())) {
+				self.config[key] = self.element.dataset[key.toLowerCase()];
+			} else if (!self.element.dataset && self.element.hasAttribute("data-" + key)) {
+				self.config[key] = self.element.getAttribute("data-" + key);
+			} else {
+				self.config[key] = flatpickr.init.prototype.defaultConfig[key] || self.defaultConfig[key];
+			}
+
+			if (typeof self.defaultConfig[key] === "boolean") {
+				self.config[key] = self.config[key] === true || self.config[key] === "" || self.config[key] === "true";
+			}
+
+			if (key === "enableTime" && self.config[key]) {
+				self.defaultConfig.dateFormat = !self.config.time_24hr ? "Y-m-d h:i K" : "Y-m-d H:i";
+				self.defaultConfig.altFormat = !self.config.time_24hr ? "F j Y, h:i K" : "F j, Y H:i";
+			} else if (key === "noCalendar" && self.config[key]) {
+				self.defaultConfig.dateFormat = "h:i K";
+				self.defaultConfig.altFormat = "h:i K";
+			}
+		});
+	};
+
+	getRandomCalendarIdStr = function getRandomCalendarIdStr() {
+		var randNum = void 0,
+		    idStr = void 0;
+		do {
+			randNum = Math.round(Math.random() * Math.pow(10, 10));
+			idStr = "flatpickr-" + randNum;
+		} while (document.getElementById(idStr) !== null);
+
+		return idStr;
+	};
+
+	uDate = function uDate(date, timeless) {
+		timeless = timeless || false;
+
+		if (date === "today") {
+			date = new Date();
+			timeless = true;
+		} else if (typeof date === "string") {
+			date = date.trim();
+
+			if (self.config.parseDate) {
+				date = self.config.parseDate(date);
+			} else if (/^\d\d\d\d\-\d{1,2}\-\d\d$/.test(date)) {
+				// this utc datestring gets parsed, but incorrectly by Date.parse
+				date = new Date(date.replace(/(\d)-(\d)/g, "$1/$2"));
+			} else if (Date.parse(date)) {
+				date = new Date(date);
+			} else if (/^\d\d\d\d\-\d\d\-\d\d/.test(date)) {
+				// disable special utc datestring
+				date = new Date(date.replace(/(\d)-(\d)/g, "$1/$2"));
+			} else if (/^(\d?\d):(\d\d)/.test(date)) {
+				// time-only picker
+				var matches = date.match(/^(\d?\d):(\d\d)(:(\d\d))?/),
+				    seconds = matches[4] !== undefined ? matches[4] : 0;
+
+				date = new Date();
+				date.setHours(matches[1], matches[2], seconds, 0);
+			} else {
+				console.error("flatpickr: invalid date string " + date);
+				console.info(self.element);
+			}
+		}
+
+		if (!(date instanceof Date) || !date.getTime()) {
+			return null;
+		}
+
+		if (self.config.utc && !date.fp_isUTC) {
+			date = date.fp_toUTC();
+		}
+
+		if (timeless) {
+			date.setHours(0, 0, 0, 0);
+		}
+
+		return date;
+	};
+
+	equalDates = function equalDates(date1, date2) {
+		return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+	};
+
+	wrap = function wrap() {
+		wrapperElement = createElement("div", "flatpickr-wrapper");
+
+		if (self.config.inline || self.config.static) {
+			// Wrap input and place calendar underneath
+			self.element.parentNode.insertBefore(wrapperElement, self.element);
+			wrapperElement.appendChild(self.element);
+
+			wrapperElement.classList.add(self.config.inline ? "inline" : "static");
+		} else {
+			// Insert at bottom of BODY tag to display outside
+			// of relative positioned elements with css "overflow: hidden;"
+			// property set.
+			document.body.appendChild(wrapperElement);
+		}
+
+		if (self.config.altInput) {
+			// replicate self.element
+			self.altInput = createElement(self.input.nodeName, self.config.altInputClass + " flatpickr-input");
+			self.altInput.placeholder = self.input.placeholder;
+			self.altInput.type = "text";
+
+			self.input.type = "hidden";
+			self.input.parentNode.insertBefore(self.altInput, self.input.nextSibling);
+		}
+	};
+
+	getDaysinMonth = function getDaysinMonth() {
+		var month = arguments.length <= 0 || arguments[0] === undefined ? self.currentMonth : arguments[0];
+
+		var yr = self.currentYear;
+
+		if (month === 1 && (yr % 4 === 0 && yr % 100 !== 0 || yr % 400 === 0)) {
+			return 29;
+		}
+
+		return self.l10n.daysInMonth[month];
+	};
+
+	updateValue = function updateValue(e) {
+		if (self.config.noCalendar && !self.selectedDateObj) {
+			// picking time only and method triggered from picker
+			self.selectedDateObj = new Date();
+		} else if (!self.selectedDateObj) {
+			return;
+		}
+
+		if (e) {
+			e.target.blur();
+		}
+
+		var timeHasChanged = void 0;
+
+		if (self.config.enableTime) {
+			var previousTimestamp = self.selectedDateObj.getTime();
+
+			// update time
+			var hours = parseInt(self.hourElement.value, 10) || 0,
+			    seconds = void 0;
+
+			var minutes = (60 + (parseInt(self.minuteElement.value, 10) || 0)) % 60;
+
+			if (self.config.enableSeconds) {
+				seconds = (60 + parseInt(self.secondElement.value, 10) || 0) % 60;
+			}
+
+			if (!self.config.time_24hr) {
+				// the real number of hours for the date object
+				hours = hours % 12 + 12 * (self.amPM.innerHTML === "PM");
+			}
+
+			self.selectedDateObj.setHours(hours, minutes, seconds === undefined ? self.selectedDateObj.getSeconds() : seconds);
+
+			self.hourElement.value = pad(!self.config.time_24hr ? (12 + hours) % 12 + 12 * (hours % 12 === 0) : hours);
+			self.minuteElement.value = pad(minutes);
+
+			if (seconds !== undefined) {
+				self.secondElement.value = pad(seconds);
+			}
+
+			timeHasChanged = self.selectedDateObj.getTime() !== previousTimestamp;
+		}
+
+		self.input.value = self.formatDate(self.config.dateFormat);
+
+		if (self.altInput) {
+			self.altInput.value = self.formatDate(self.config.altFormat);
+		}
+
+		if (e && (timeHasChanged || e.target.classList.contains("flatpickr-day"))) {
+			triggerChange();
+		}
+
+		if (self.config.onValueUpdate) {
+			self.config.onValueUpdate(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	pad = function pad(num) {
+		return ("0" + num).slice(-2);
+	};
+
+	self.formatDate = function (dateFormat) {
+		var formattedDate = "";
+		var formatPieces = dateFormat.split("");
+
+		for (var i = 0; i < formatPieces.length; i++) {
+			var c = formatPieces[i];
+			if (self.formats.hasOwnProperty(c) && formatPieces[i - 1] !== "\\") {
+				formattedDate += self.formats[c]();
+			} else if (c !== "\\") {
+				formattedDate += c;
+			}
+		}
+
+		return formattedDate;
+	};
+
+	monthToStr = function monthToStr(date, shorthand) {
+		if (shorthand || self.config.shorthandCurrentMonth) {
+			return self.l10n.months.shorthand[date];
+		}
+
+		return self.l10n.months.longhand[date];
+	};
+
+	isEnabled = function isEnabled(dateToCheck) {
+		if (self.config.minDate && dateToCheck < self.config.minDate || self.config.maxDate && dateToCheck > self.config.maxDate) {
+			return false;
+		}
+
+		dateToCheck = uDate(dateToCheck, true); // timeless
+
+		var bool = self.config.enable.length > 0,
+		    array = bool ? self.config.enable : self.config.disable;
+
+		var d = void 0;
+
+		for (var i = 0; i < array.length; i++) {
+			d = array[i];
+
+			if (d instanceof Function && d(dateToCheck)) {
+				// disabled by function
+				return bool;
+			} else if ( // disabled weekday
+			typeof d === "string" && /^wkd/.test(d) && dateToCheck.getDay() === (parseInt(d.slice(-1), 10) + self.l10n.firstDayOfWeek - 1) % 7) {
+				return bool;
+			} else if ((d instanceof Date || typeof d === "string" && !/^wkd/.test(d)) && uDate(d, true).getTime() === dateToCheck.getTime()) {
+				// disabled by date string
+				return bool;
+			} else if ( // disabled by range
+			(typeof d === "undefined" ? "undefined" : _typeof(d)) === "object" && d.hasOwnProperty("from") && dateToCheck >= uDate(d.from) && dateToCheck <= uDate(d.to)) {
+				return bool;
+			}
+		}
+
+		return !bool;
+	};
+
+	yearScroll = function yearScroll(event) {
+		event.preventDefault();
+
+		var delta = Math.max(-1, Math.min(1, event.wheelDelta || -event.deltaY));
+		self.currentYear = event.target.value = parseInt(event.target.value, 10) + delta;
+		self.redraw();
+	};
+
+	timeWrapper = function timeWrapper(e) {
+		e.preventDefault();
+
+		var min = parseInt(e.target.min, 10),
+		    max = parseInt(e.target.max, 10),
+		    step = parseInt(e.target.step, 10),
+		    value = parseInt(e.target.value, 10);
+
+		var newValue = value;
+
+		if (e.type === "wheel") {
+			newValue = value + step * Math.max(-1, Math.min(1, e.wheelDelta || -e.deltaY));
+		}
+
+		if (newValue <= min) {
+			newValue = max - step;
+		} else if (newValue >= max) {
+			newValue = min + step;
+		}
+
+		e.target.value = pad(newValue);
+	};
+
+	updateNavigationCurrentMonth = function updateNavigationCurrentMonth() {
+		currentMonthElement.textContent = monthToStr(self.currentMonth) + " ";
+		currentYearElement.value = self.currentYear;
+	};
+
+	handleYearChange = function handleYearChange() {
+		if (self.currentMonth < 0 || self.currentMonth > 11) {
+			self.currentYear += self.currentMonth % 11;
+			self.currentMonth = (self.currentMonth + 12) % 12;
+		}
+	};
+
+	documentClick = function documentClick(e) {
+		var isCalendarElement = wrapperElement.contains(e.relatedTarget || e.target),
+		    isInput = self.element.contains(e.relatedTarget || e.target) || e.relatedTarget || e.target === self.altInput;
+
+		if (self.isOpen && !isCalendarElement && !isInput) {
+			self.close();
+		}
+	};
+
+	changeMonth = function changeMonth(offset) {
+		self.currentMonth += offset;
+
+		handleYearChange();
+		updateNavigationCurrentMonth();
+		buildDays();
+		(self.config.noCalendar ? timeContainer : calendar).focus();
+	};
+
+	selectDate = function selectDate(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (self.config.allowInput && e.target === (self.altInput || self.input) && e.which === 13) {
+			self.setDate((self.altInput || self.input).value);
+			self.redraw();
+		} else if (e.target.classList.contains("flatpickr-day")) {
+			var isPrevMonthDay = e.target.classList.contains("prevMonthDay"),
+			    isNextMonthDay = e.target.classList.contains("nextMonthDay"),
+			    monthNum = self.currentMonth - isPrevMonthDay + isNextMonthDay;
+
+			if (isPrevMonthDay || isNextMonthDay) {
+				changeMonth(+isNextMonthDay - isPrevMonthDay);
+			}
+
+			self.selectedDateObj = new Date(self.currentYear, monthNum, e.target.innerHTML);
+
+			updateValue(e);
+			buildDays();
+
+			if (!self.config.enableTime) {
+				self.close();
+			}
+		}
+	};
+
+	buildCalendar = function buildCalendar() {
+		calendarContainer = createElement("div", "flatpickr-calendar");
+		calendarContainer.id = getRandomCalendarIdStr();
+
+		calendar = createElement("div", "flatpickr-days");
+		calendar.tabIndex = -1;
+
+		if (!self.config.noCalendar) {
+			buildMonthNavigation();
+			buildWeekdays();
+
+			if (self.config.weekNumbers) {
+				buildWeeks();
+			}
+
+			buildDays();
+
+			calendarContainer.appendChild(calendar);
+		}
+
+		wrapperElement.appendChild(calendarContainer);
+
+		if (self.config.enableTime) {
+			buildTime();
+		}
+	};
+
+	buildMonthNavigation = function buildMonthNavigation() {
+		monthsNav = createElement("div", "flatpickr-month");
+
+		prevMonthNav = createElement("span", "flatpickr-prev-month");
+		prevMonthNav.innerHTML = self.config.prevArrow;
+
+		currentMonthElement = createElement("span", "cur_month");
+
+		currentYearElement = createElement("input", "cur_year");
+		currentYearElement.type = "number";
+		currentYearElement.title = self.l10n.scrollTitle;
+
+		nextMonthNav = createElement("span", "flatpickr-next-month");
+		nextMonthNav.innerHTML = self.config.nextArrow;
+
+		navigationCurrentMonth = createElement("span", "flatpickr-current-month");
+		navigationCurrentMonth.appendChild(currentMonthElement);
+		navigationCurrentMonth.appendChild(currentYearElement);
+
+		monthsNav.appendChild(prevMonthNav);
+		monthsNav.appendChild(navigationCurrentMonth);
+		monthsNav.appendChild(nextMonthNav);
+
+		calendarContainer.appendChild(monthsNav);
+		updateNavigationCurrentMonth();
+	};
+
+	buildWeekdays = function buildWeekdays() {
+		weekdayContainer = createElement("div", "flatpickr-weekdays");
+		var firstDayOfWeek = self.l10n.firstDayOfWeek;
+
+		var weekdays = self.l10n.weekdays.shorthand.slice();
+
+		if (firstDayOfWeek > 0 && firstDayOfWeek < weekdays.length) {
+			weekdays = [].concat(weekdays.splice(firstDayOfWeek, weekdays.length), weekdays.splice(0, firstDayOfWeek));
+		}
+
+		if (self.config.weekNumbers) {
+			weekdayContainer.innerHTML = "<span>" + self.l10n.weekAbbreviation + "</span>";
+		}
+
+		weekdayContainer.innerHTML += "<span>" + weekdays.join("</span><span>") + "</span>";
+
+		calendarContainer.appendChild(weekdayContainer);
+	};
+
+	buildWeeks = function buildWeeks() {
+		calendarContainer.classList.add("hasWeeks");
+
+		weekNumbers = createElement("div", "flatpickr-weeks");
+		calendarContainer.appendChild(weekNumbers);
+	};
+
+	buildDays = function buildDays() {
+		var firstOfMonth = (new Date(self.currentYear, self.currentMonth, 1).getDay() - self.l10n.firstDayOfWeek + 7) % 7,
+		    daysInMonth = getDaysinMonth(),
+		    prevMonthDays = getDaysinMonth((self.currentMonth - 1 + 12) % 12),
+		    days = document.createDocumentFragment();
+
+		var dayNumber = prevMonthDays + 1 - firstOfMonth,
+		    currentDate = void 0,
+		    dateIsDisabled = void 0;
+
+		if (self.config.weekNumbers) {
+			weekNumbers.innerHTML = "";
+		}
+
+		calendar.innerHTML = "";
+
+		self.config.minDate = uDate(self.config.minDate, true);
+		self.config.maxDate = uDate(self.config.maxDate, true);
+
+		// prepend days from the ending of previous month
+		for (; dayNumber <= prevMonthDays; dayNumber++) {
+			var curDate = new Date(self.currentYear, self.currentMonth - 1, dayNumber, 0, 0, 0, 0, 0),
+			    dateIsEnabled = isEnabled(curDate),
+			    dayElem = createElement("span", dateIsEnabled ? "flatpickr-day prevMonthDay" : "disabled", dayNumber);
+
+			if (dateIsEnabled) {
+				dayElem.tabIndex = 0;
+			}
+
+			days.appendChild(dayElem);
+		}
+
+		// Start at 1 since there is no 0th day
+		for (dayNumber = 1; dayNumber <= daysInMonth; dayNumber++) {
+			currentDate = new Date(self.currentYear, self.currentMonth, dayNumber, 0, 0, 0, 0, 0);
+
+			if (self.config.weekNumbers && dayNumber % 7 === 1) {
+				weekNumbers.appendChild(createElement("span", "disabled flatpickr-day", currentDate.fp_getWeek()));
+			}
+
+			dateIsDisabled = !isEnabled(currentDate);
+
+			var dayElement = createElement("span", dateIsDisabled ? "disabled" : "flatpickr-day", dayNumber);
+
+			if (!dateIsDisabled) {
+				dayElement.tabIndex = 0;
+
+				if (equalDates(currentDate, now)) {
+					dayElement.classList.add("today");
+				}
+
+				if (self.selectedDateObj && equalDates(currentDate, self.selectedDateObj)) {
+					dayElement.classList.add("selected");
+				}
+			}
+
+			days.appendChild(dayElement);
+		}
+
+		// append days from the next month
+		for (var dayNum = daysInMonth + 1; dayNum <= 42 - firstOfMonth; dayNum++) {
+			var _curDate = new Date(self.currentYear, self.currentMonth + 1, dayNum % daysInMonth, 0, 0, 0, 0, 0),
+			    _dateIsEnabled = isEnabled(_curDate),
+			    _dayElement = createElement("span", _dateIsEnabled ? "nextMonthDay flatpickr-day" : "disabled", dayNum % daysInMonth);
+
+			if (self.config.weekNumbers && dayNum % 7 === 1) {
+				weekNumbers.appendChild(createElement("span", "disabled", _curDate.fp_getWeek()));
+			}
+
+			if (_dateIsEnabled) {
+				_dayElement.tabIndex = 0;
+			}
+
+			days.appendChild(_dayElement);
+		}
+
+		calendar.appendChild(days);
+	};
+
+	buildTime = function buildTime() {
+		timeContainer = createElement("div", "flatpickr-time");
+		timeContainer.tabIndex = -1;
+		var separator = createElement("span", "flatpickr-time-separator", ":");
+
+		self.hourElement = createElement("input", "flatpickr-hour");
+		self.minuteElement = createElement("input", "flatpickr-minute");
+
+		self.hourElement.tabIndex = self.minuteElement.tabIndex = 0;
+		self.hourElement.type = self.minuteElement.type = "number";
+
+		self.hourElement.value = self.selectedDateObj ? pad(self.selectedDateObj.getHours()) : 12;
+
+		self.minuteElement.value = self.selectedDateObj ? pad(self.selectedDateObj.getMinutes()) : "00";
+
+		self.hourElement.step = self.config.hourIncrement;
+		self.minuteElement.step = self.config.minuteIncrement;
+
+		self.hourElement.min = -self.config.time_24hr;
+		self.hourElement.max = self.config.time_24hr ? 24 : 13;
+
+		self.minuteElement.min = -self.minuteElement.step;
+		self.minuteElement.max = 60;
+
+		self.hourElement.title = self.minuteElement.title = self.l10n.scrollTitle;
+
+		timeContainer.appendChild(self.hourElement);
+		timeContainer.appendChild(separator);
+		timeContainer.appendChild(self.minuteElement);
+
+		if (self.config.enableSeconds) {
+			timeContainer.classList.add("has-seconds");
+
+			self.secondElement = createElement("input", "flatpickr-second");
+			self.secondElement.type = "number";
+			self.secondElement.value = self.selectedDateObj ? pad(self.selectedDateObj.getSeconds()) : "00";
+
+			self.secondElement.step = self.minuteElement.step;
+			self.secondElement.min = self.minuteElement.min;
+			self.secondElement.max = self.minuteElement.max;
+
+			timeContainer.appendChild(createElement("span", "flatpickr-time-separator", ":"));
+			timeContainer.appendChild(self.secondElement);
+		}
+
+		if (!self.config.time_24hr) {
+			// add self.amPM if appropriate
+			self.amPM = createElement("span", "flatpickr-am-pm", ["AM", "PM"][self.hourElement.value > 11 | 0]);
+			self.amPM.title = self.l10n.toggleTitle;
+			self.amPM.tabIndex = 0;
+			timeContainer.appendChild(self.amPM);
+		}
+
+		calendarContainer.appendChild(timeContainer);
+	};
+
+	bind = function bind() {
+		document.addEventListener("keydown", onKeyDown);
+		window.addEventListener("resize", onResize);
+
+		if (self.config.clickOpens) {
+			(self.altInput || self.input).addEventListener("click", self.open);
+			(self.altInput || self.input).addEventListener("focus", self.open);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-open]")) {
+			self.element.querySelector("[data-open]").addEventListener("click", self.open);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-close]")) {
+			self.element.querySelector("[data-close]").addEventListener("click", self.close);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-toggle]")) {
+			self.element.querySelector("[data-toggle]").addEventListener("click", self.toggle);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-clear]")) {
+			self.element.querySelector("[data-clear]").addEventListener("click", self.clear);
+		}
+
+		if (!self.config.noCalendar) {
+			prevMonthNav.addEventListener("click", function () {
+				changeMonth(-1);
+			});
+
+			nextMonthNav.addEventListener("click", function () {
+				changeMonth(1);
+			});
+
+			currentYearElement.addEventListener("wheel", yearScroll);
+			currentYearElement.addEventListener("focus", currentYearElement.select);
+
+			currentYearElement.addEventListener("input", function (event) {
+				self.currentYear = parseInt(event.target.value, 10);
+				self.redraw();
+			});
+
+			calendar.addEventListener("click", selectDate);
+		}
+
+		document.addEventListener("click", documentClick, true);
+		document.addEventListener("focus", documentClick, true);
+
+		if (self.config.enableTime) {
+			self.hourElement.addEventListener("wheel", timeWrapper);
+			self.minuteElement.addEventListener("wheel", timeWrapper);
+
+			self.hourElement.addEventListener("input", timeWrapper);
+			self.minuteElement.addEventListener("input", timeWrapper);
+
+			self.hourElement.addEventListener("mouseout", updateValue);
+			self.minuteElement.addEventListener("mouseout", updateValue);
+
+			self.hourElement.addEventListener("change", updateValue);
+			self.minuteElement.addEventListener("change", updateValue);
+
+			self.hourElement.addEventListener("focus", self.hourElement.select);
+			self.minuteElement.addEventListener("focus", self.minuteElement.select);
+
+			if (self.config.enableSeconds) {
+				self.secondElement.addEventListener("wheel", timeWrapper);
+				self.secondElement.addEventListener("input", timeWrapper);
+				self.secondElement.addEventListener("mouseout", updateValue);
+				self.secondElement.addEventListener("change", updateValue);
+				self.secondElement.addEventListener("focus", self.secondElement.select);
+			}
+
+			if (!self.config.time_24hr) {
+				self.amPM.addEventListener("click", amPMToggle);
+
+				self.amPM.addEventListener("wheel", amPMToggle);
+				self.amPM.addEventListener("mouseout", updateValue);
+
+				self.amPM.addEventListener("keydown", function (e) {
+					if (e.which === 38 || e.which === 40) {
+						amPMToggle(e);
+					}
+				});
+			}
+		}
+
+		if (document.createEvent) {
+			clickEvt = document.createEvent("MouseEvent");
+			// without all these args ms edge spergs out
+			clickEvt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		} else {
+			clickEvt = new MouseEvent("click", {
+				view: window,
+				bubbles: true,
+				cancelable: true
+			});
+		}
+	};
+
+	self.open = function () {
+		if (self.isOpen || (self.altInput || self.input).disabled || self.config.inline) {
+			return;
+		} else if (!self.config.static) {
+			self.positionCalendar();
+		}
+
+		self.isOpen = true;
+
+		wrapperElement.classList.add("open");
+
+		if (!self.config.allowInput) {
+			(self.altInput || self.input).blur();
+			(self.config.noCalendar ? timeContainer : calendar).focus();
+		}
+
+		(self.altInput || self.input).classList.add("active");
+
+		if (self.config.onOpen) {
+			self.config.onOpen(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	// For calendars inserted in BODY (as opposed to inline wrapper)
+	// it"s necessary to properly calculate top/left position.
+	self.positionCalendar = function () {
+		var calendarHeight = calendarContainer.offsetHeight,
+		    input = self.altInput || self.input,
+		    inputBounds = input.getBoundingClientRect(),
+		    distanceFromBottom = window.innerHeight - inputBounds.bottom + input.offsetHeight;
+
+		var top = void 0,
+		    left = window.pageXOffset + inputBounds.left;
+
+		if (distanceFromBottom < calendarHeight) {
+			top = window.pageYOffset - calendarHeight + inputBounds.top - 2;
+			calendarContainer.classList.remove("arrowTop");
+			calendarContainer.classList.add("arrowBottom");
+		} else {
+			top = window.pageYOffset + input.offsetHeight + inputBounds.top + 2;
+			calendarContainer.classList.remove("arrowBottom");
+			calendarContainer.classList.add("arrowTop");
+		}
+
+		wrapperElement.style.top = top + "px";
+		wrapperElement.style.left = left + "px";
+	};
+
+	self.toggle = function () {
+		if (self.isOpen) {
+			self.close();
+		} else {
+			self.open();
+		}
+	};
+
+	self.close = function () {
+		self.isOpen = false;
+		wrapperElement.classList.remove("open");
+		(self.altInput || self.input).classList.remove("active");
+
+		if (self.config.onClose) {
+			self.config.onClose(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	self.clear = function () {
+		self.input.value = "";
+
+		if (self.altInput) {
+			self.altInput.value = "";
+		}
+
+		self.selectedDateObj = null;
+
+		triggerChange();
+		self.jumpToDate();
+	};
+
+	triggerChange = function triggerChange() {
+		self.input.dispatchEvent(clickEvt);
+
+		if (self.config.onChange) {
+			self.config.onChange(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	self.destroy = function () {
+		document.removeEventListener("click", documentClick, false);
+
+		if (self.altInput) {
+			self.altInput.parentNode.removeChild(self.altInput);
+		}
+
+		if (self.config.inline) {
+			var parent = self.element.parentNode,
+			    removedElement = parent.removeChild(self.element);
+
+			parent.removeChild(calendarContainer);
+			parent.parentNode.replaceChild(removedElement, parent);
+		} else {
+			document.getElementsByTagName("body")[0].removeChild(wrapperElement);
+		}
+	};
+
+	self.redraw = function () {
+		if (self.config.noCalendar) {
+			return;
+		}
+
+		updateNavigationCurrentMonth();
+		buildDays();
+	};
+
+	self.jumpToDate = function (jumpDate) {
+		jumpDate = uDate(jumpDate || self.selectedDateObj || self.config.defaultDate || self.config.minDate || now);
+
+		self.currentYear = jumpDate.getFullYear();
+		self.currentMonth = jumpDate.getMonth();
+		self.redraw();
+	};
+
+	self.setDate = function (date, triggerChangeEvent) {
+		date = uDate(date);
+
+		if (date instanceof Date && date.getTime()) {
+			self.selectedDateObj = uDate(date);
+			self.jumpToDate(self.selectedDateObj);
+			updateValue();
+
+			if (triggerChangeEvent) {
+				triggerChange();
+			}
+		}
+	};
+
+	self.setTime = function (hour, minute, triggerChangeEvent) {
+		if (!self.selectedDateObj) {
+			return;
+		}
+
+		self.hourElement.value = parseInt(hour, 10) % 24;
+		self.minuteElement.value = parseInt(minute || 0, 10) % 60;
+
+		if (!self.config.time_24hr) {
+			self.amPM.innerHTML = hour > 11 ? "PM" : "AM";
+		}
+
+		updateValue();
+
+		if (triggerChangeEvent) {
+			triggerChange();
+		}
+	};
+
+	self.set = function (key, value) {
+		if (key in self.config) {
+			self.config[key] = value;
+			self.jumpToDate();
+		}
+	};
+
+	amPMToggle = function amPMToggle(e) {
+		e.preventDefault();
+		self.amPM.textContent = ["AM", "PM"][self.amPM.innerHTML === "AM" | 0];
+	};
+
+	onKeyDown = function onKeyDown(e) {
+		if (!self.isOpen || self.config.enableTime && timeContainer.contains(e.target)) {
+			return;
+		}
+
+		switch (e.which) {
+			case 13:
+				selectDate(e);
+				break;
+
+			case 27:
+				self.close();
+				break;
+
+			case 37:
+				changeMonth(-1);
+				break;
+
+			case 38:
+				e.preventDefault();
+				self.currentYear++;
+				self.redraw();
+				break;
+
+			case 39:
+				changeMonth(1);
+				break;
+
+			case 40:
+				e.preventDefault();
+				self.currentYear--;
+				self.redraw();
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	onResize = debounce(function () {
+		if (self.isOpen && !self.config.inline && !self.config.static) {
+			self.positionCalendar();
+		}
+	}, 300);
+
+	try {
+		init();
+	} catch (error) {
+		// skip and carry on
+		console.error(error);
+		console.info(self.element);
+	}
+
+	return self;
 };
 
-},{"./_global":15,"./_is-object":18}],13:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var PROTOTYPE = 'prototype';
+flatpickr.init.prototype = {
 
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    // contains in native
-    own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
-    // export native or passed
-    out = own ? target[key] : source[key];
-    // prevent global pollution for namespaces
-    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
-    // bind timers to global for call from export context
-    : IS_BIND && own ? ctx(out, global)
-    // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
-            case 1: return new C(a);
-            case 2: return new C(a, b);
-          } return new C(a, b, c);
-        } return C.apply(this, arguments);
-      };
-      F[PROTOTYPE] = C[PROTOTYPE];
-      return F;
-    // make static versions for prototype methods
-    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
-      (exports.virtual || (exports.virtual = {}))[key] = out;
-      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
-    }
-  }
-};
-// type bitmap
-$export.F = 1;   // forced
-$export.G = 2;   // global
-$export.S = 4;   // static
-$export.P = 8;   // proto
-$export.B = 16;  // bind
-$export.W = 32;  // wrap
-$export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
-module.exports = $export;
+	defaultConfig: {},
 
-},{"./_core":9,"./_ctx":10,"./_global":15,"./_hide":16}],14:[function(require,module,exports){
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
+	l10n: {
+		weekdays: {
+			shorthand: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+			longhand: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+		},
+		months: {
+			shorthand: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			longhand: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+		},
+		daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+		firstDayOfWeek: 0,
+		ordinal: function ordinal(nth) {
+			var s = nth % 100;
+			if (s > 3 && s < 21) return "th";
+			switch (s % 10) {
+				case 1:
+					return "st";
+				case 2:
+					return "nd";
+				case 3:
+					return "rd";
+				default:
+					return "th";
+			}
+		},
+		weekAbbreviation: "Wk",
+		scrollTitle: "Scroll to increment",
+		toggleTitle: "Click to toggle"
+	}
+
 };
 
-},{}],15:[function(require,module,exports){
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
-},{}],16:[function(require,module,exports){
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
+Date.prototype.fp_incr = function (days) {
+	return new Date(this.getFullYear(), this.getMonth(), this.getDate() + parseInt(days, 10));
 };
 
-},{"./_descriptors":11,"./_object-dp":19,"./_property-desc":20}],17:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
-});
+Date.prototype.fp_isUTC = false;
+Date.prototype.fp_toUTC = function () {
+	var newDate = new Date(this.getTime() + this.getTimezoneOffset() * 60000);
+	newDate.fp_isUTC = true;
 
-},{"./_descriptors":11,"./_dom-create":12,"./_fails":14}],18:[function(require,module,exports){
-module.exports = function (it) {
-  return typeof it === 'object' ? it !== null : typeof it === 'function';
+	return newDate;
 };
 
-},{}],19:[function(require,module,exports){
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
+Date.prototype.fp_getWeek = function () {
+	var date = new Date(this.getTime());
+	date.setHours(0, 0, 0, 0);
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
+	// Thursday in current week decides the year.
+	date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+	// January 4 is always in week 1.
+	var week1 = new Date(date.getFullYear(), 0, 4);
+	// Adjust to Thursday in week 1 and count number of weeks from date to week1.
+	return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
 };
 
-},{"./_an-object":8,"./_descriptors":11,"./_ie8-dom-define":17,"./_to-primitive":21}],20:[function(require,module,exports){
-module.exports = function (bitmap, value) {
-  return {
-    enumerable: !(bitmap & 1),
-    configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
-  };
-};
+// classList polyfill
+if (!("classList" in document.documentElement) && Object.defineProperty && typeof HTMLElement !== "undefined") {
+	Object.defineProperty(HTMLElement.prototype, "classList", {
+		get: function get() {
+			var selfElements = this;
+			function update(fn) {
+				return function (value) {
+					var classes = selfElements.className.split(/\s+/);
+					var index = classes.indexOf(value);
 
-},{}],21:[function(require,module,exports){
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = require('./_is-object');
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
+					fn(classes, index, value);
+					selfElements.className = classes.join(" ");
+				};
+			}
 
-},{"./_is-object":18}],22:[function(require,module,exports){
-var $export = require('./_export');
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
+			var ret = {
+				add: update(function (classes, index, value) {
+					return ~index || classes.push(value);
+				}),
+				remove: update(function (classes, index) {
+					return ~index && classes.splice(index, 1);
+				}),
+				toggle: update(function (classes, index, value) {
+					if (~index) {
+						classes.splice(index, 1);
+					} else {
+						classes.push(value);
+					}
+				}),
+				contains: function contains(value) {
+					return !! ~selfElements.className.split(/\s+/).indexOf(value);
+				}
+			};
 
-},{"./_descriptors":11,"./_export":13,"./_object-dp":19}],23:[function(require,module,exports){
+			return ret;
+		}
+	});
+}
+
+if (typeof module !== "undefined") {
+	module.exports = flatpickr;
+}
+},{}],6:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -4709,7 +5812,7 @@ return hooks;
 
 })));
 
-},{}],24:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4895,7 +5998,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],25:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -5196,7 +6299,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],26:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -6766,2518 +7869,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":4}],27:[function(require,module,exports){
-(function (process){
-/**
-  * vue-router v2.7.0
-  * (c) 2017 Evan You
-  * @license MIT
-  */
-'use strict';
-
-/*  */
-
-function assert (condition, message) {
-  if (!condition) {
-    throw new Error(("[vue-router] " + message))
-  }
-}
-
-function warn (condition, message) {
-  if (process.env.NODE_ENV !== 'production' && !condition) {
-    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
-  }
-}
-
-function isError (err) {
-  return Object.prototype.toString.call(err).indexOf('Error') > -1
-}
-
-var View = {
-  name: 'router-view',
-  functional: true,
-  props: {
-    name: {
-      type: String,
-      default: 'default'
-    }
-  },
-  render: function render (_, ref) {
-    var props = ref.props;
-    var children = ref.children;
-    var parent = ref.parent;
-    var data = ref.data;
-
-    data.routerView = true;
-
-    // directly use parent context's createElement() function
-    // so that components rendered by router-view can resolve named slots
-    var h = parent.$createElement;
-    var name = props.name;
-    var route = parent.$route;
-    var cache = parent._routerViewCache || (parent._routerViewCache = {});
-
-    // determine current view depth, also check to see if the tree
-    // has been toggled inactive but kept-alive.
-    var depth = 0;
-    var inactive = false;
-    while (parent && parent._routerRoot !== parent) {
-      if (parent.$vnode && parent.$vnode.data.routerView) {
-        depth++;
-      }
-      if (parent._inactive) {
-        inactive = true;
-      }
-      parent = parent.$parent;
-    }
-    data.routerViewDepth = depth;
-
-    // render previous view if the tree is inactive and kept-alive
-    if (inactive) {
-      return h(cache[name], data, children)
-    }
-
-    var matched = route.matched[depth];
-    // render empty node if no matched route
-    if (!matched) {
-      cache[name] = null;
-      return h()
-    }
-
-    var component = cache[name] = matched.components[name];
-
-    // attach instance registration hook
-    // this will be called in the instance's injected lifecycle hooks
-    data.registerRouteInstance = function (vm, val) {
-      // val could be undefined for unregistration
-      var current = matched.instances[name];
-      if (
-        (val && current !== vm) ||
-        (!val && current === vm)
-      ) {
-        matched.instances[name] = val;
-      }
-    }
-
-    // also regiseter instance in prepatch hook
-    // in case the same component instance is reused across different routes
-    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
-      matched.instances[name] = vnode.componentInstance;
-    };
-
-    // resolve props
-    data.props = resolveProps(route, matched.props && matched.props[name]);
-
-    return h(component, data, children)
-  }
-};
-
-function resolveProps (route, config) {
-  switch (typeof config) {
-    case 'undefined':
-      return
-    case 'object':
-      return config
-    case 'function':
-      return config(route)
-    case 'boolean':
-      return config ? route.params : undefined
-    default:
-      if (process.env.NODE_ENV !== 'production') {
-        warn(
-          false,
-          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
-          "expecting an object, function or boolean."
-        );
-      }
-  }
-}
-
-/*  */
-
-var encodeReserveRE = /[!'()*]/g;
-var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
-var commaRE = /%2C/g;
-
-// fixed encodeURIComponent which is more conformant to RFC3986:
-// - escapes [!'()*]
-// - preserve commas
-var encode = function (str) { return encodeURIComponent(str)
-  .replace(encodeReserveRE, encodeReserveReplacer)
-  .replace(commaRE, ','); };
-
-var decode = decodeURIComponent;
-
-function resolveQuery (
-  query,
-  extraQuery,
-  _parseQuery
-) {
-  if ( extraQuery === void 0 ) extraQuery = {};
-
-  var parse = _parseQuery || parseQuery;
-  var parsedQuery;
-  try {
-    parsedQuery = parse(query || '');
-  } catch (e) {
-    process.env.NODE_ENV !== 'production' && warn(false, e.message);
-    parsedQuery = {};
-  }
-  for (var key in extraQuery) {
-    var val = extraQuery[key];
-    parsedQuery[key] = Array.isArray(val) ? val.slice() : val;
-  }
-  return parsedQuery
-}
-
-function parseQuery (query) {
-  var res = {};
-
-  query = query.trim().replace(/^(\?|#|&)/, '');
-
-  if (!query) {
-    return res
-  }
-
-  query.split('&').forEach(function (param) {
-    var parts = param.replace(/\+/g, ' ').split('=');
-    var key = decode(parts.shift());
-    var val = parts.length > 0
-      ? decode(parts.join('='))
-      : null;
-
-    if (res[key] === undefined) {
-      res[key] = val;
-    } else if (Array.isArray(res[key])) {
-      res[key].push(val);
-    } else {
-      res[key] = [res[key], val];
-    }
-  });
-
-  return res
-}
-
-function stringifyQuery (obj) {
-  var res = obj ? Object.keys(obj).map(function (key) {
-    var val = obj[key];
-
-    if (val === undefined) {
-      return ''
-    }
-
-    if (val === null) {
-      return encode(key)
-    }
-
-    if (Array.isArray(val)) {
-      var result = [];
-      val.forEach(function (val2) {
-        if (val2 === undefined) {
-          return
-        }
-        if (val2 === null) {
-          result.push(encode(key));
-        } else {
-          result.push(encode(key) + '=' + encode(val2));
-        }
-      });
-      return result.join('&')
-    }
-
-    return encode(key) + '=' + encode(val)
-  }).filter(function (x) { return x.length > 0; }).join('&') : null;
-  return res ? ("?" + res) : ''
-}
-
-/*  */
-
-
-var trailingSlashRE = /\/?$/;
-
-function createRoute (
-  record,
-  location,
-  redirectedFrom,
-  router
-) {
-  var stringifyQuery$$1 = router && router.options.stringifyQuery;
-  var route = {
-    name: location.name || (record && record.name),
-    meta: (record && record.meta) || {},
-    path: location.path || '/',
-    hash: location.hash || '',
-    query: location.query || {},
-    params: location.params || {},
-    fullPath: getFullPath(location, stringifyQuery$$1),
-    matched: record ? formatMatch(record) : []
-  };
-  if (redirectedFrom) {
-    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery$$1);
-  }
-  return Object.freeze(route)
-}
-
-// the starting route that represents the initial state
-var START = createRoute(null, {
-  path: '/'
-});
-
-function formatMatch (record) {
-  var res = [];
-  while (record) {
-    res.unshift(record);
-    record = record.parent;
-  }
-  return res
-}
-
-function getFullPath (
-  ref,
-  _stringifyQuery
-) {
-  var path = ref.path;
-  var query = ref.query; if ( query === void 0 ) query = {};
-  var hash = ref.hash; if ( hash === void 0 ) hash = '';
-
-  var stringify = _stringifyQuery || stringifyQuery;
-  return (path || '/') + stringify(query) + hash
-}
-
-function isSameRoute (a, b) {
-  if (b === START) {
-    return a === b
-  } else if (!b) {
-    return false
-  } else if (a.path && b.path) {
-    return (
-      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query)
-    )
-  } else if (a.name && b.name) {
-    return (
-      a.name === b.name &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query) &&
-      isObjectEqual(a.params, b.params)
-    )
-  } else {
-    return false
-  }
-}
-
-function isObjectEqual (a, b) {
-  if ( a === void 0 ) a = {};
-  if ( b === void 0 ) b = {};
-
-  var aKeys = Object.keys(a);
-  var bKeys = Object.keys(b);
-  if (aKeys.length !== bKeys.length) {
-    return false
-  }
-  return aKeys.every(function (key) {
-    var aVal = a[key];
-    var bVal = b[key];
-    // check nested equality
-    if (typeof aVal === 'object' && typeof bVal === 'object') {
-      return isObjectEqual(aVal, bVal)
-    }
-    return String(aVal) === String(bVal)
-  })
-}
-
-function isIncludedRoute (current, target) {
-  return (
-    current.path.replace(trailingSlashRE, '/').indexOf(
-      target.path.replace(trailingSlashRE, '/')
-    ) === 0 &&
-    (!target.hash || current.hash === target.hash) &&
-    queryIncludes(current.query, target.query)
-  )
-}
-
-function queryIncludes (current, target) {
-  for (var key in target) {
-    if (!(key in current)) {
-      return false
-    }
-  }
-  return true
-}
-
-/*  */
-
-// work around weird flow bug
-var toTypes = [String, Object];
-var eventTypes = [String, Array];
-
-var Link = {
-  name: 'router-link',
-  props: {
-    to: {
-      type: toTypes,
-      required: true
-    },
-    tag: {
-      type: String,
-      default: 'a'
-    },
-    exact: Boolean,
-    append: Boolean,
-    replace: Boolean,
-    activeClass: String,
-    exactActiveClass: String,
-    event: {
-      type: eventTypes,
-      default: 'click'
-    }
-  },
-  render: function render (h) {
-    var this$1 = this;
-
-    var router = this.$router;
-    var current = this.$route;
-    var ref = router.resolve(this.to, current, this.append);
-    var location = ref.location;
-    var route = ref.route;
-    var href = ref.href;
-
-    var classes = {};
-    var globalActiveClass = router.options.linkActiveClass;
-    var globalExactActiveClass = router.options.linkExactActiveClass;
-    // Support global empty active class
-    var activeClassFallback = globalActiveClass == null
-            ? 'router-link-active'
-            : globalActiveClass;
-    var exactActiveClassFallback = globalExactActiveClass == null
-            ? 'router-link-exact-active'
-            : globalExactActiveClass;
-    var activeClass = this.activeClass == null
-            ? activeClassFallback
-            : this.activeClass;
-    var exactActiveClass = this.exactActiveClass == null
-            ? exactActiveClassFallback
-            : this.exactActiveClass;
-    var compareTarget = location.path
-      ? createRoute(null, location, null, router)
-      : route;
-
-    classes[exactActiveClass] = isSameRoute(current, compareTarget);
-    classes[activeClass] = this.exact
-      ? classes[exactActiveClass]
-      : isIncludedRoute(current, compareTarget);
-
-    var handler = function (e) {
-      if (guardEvent(e)) {
-        if (this$1.replace) {
-          router.replace(location);
-        } else {
-          router.push(location);
-        }
-      }
-    };
-
-    var on = { click: guardEvent };
-    if (Array.isArray(this.event)) {
-      this.event.forEach(function (e) { on[e] = handler; });
-    } else {
-      on[this.event] = handler;
-    }
-
-    var data = {
-      class: classes
-    };
-
-    if (this.tag === 'a') {
-      data.on = on;
-      data.attrs = { href: href };
-    } else {
-      // find the first <a> child and apply listener and href
-      var a = findAnchor(this.$slots.default);
-      if (a) {
-        // in case the <a> is a static node
-        a.isStatic = false;
-        var extend = _Vue.util.extend;
-        var aData = a.data = extend({}, a.data);
-        aData.on = on;
-        var aAttrs = a.data.attrs = extend({}, a.data.attrs);
-        aAttrs.href = href;
-      } else {
-        // doesn't have <a> child, apply listener to self
-        data.on = on;
-      }
-    }
-
-    return h(this.tag, data, this.$slots.default)
-  }
-};
-
-function guardEvent (e) {
-  // don't redirect with control keys
-  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
-  // don't redirect when preventDefault called
-  if (e.defaultPrevented) { return }
-  // don't redirect on right click
-  if (e.button !== undefined && e.button !== 0) { return }
-  // don't redirect if `target="_blank"`
-  if (e.currentTarget && e.currentTarget.getAttribute) {
-    var target = e.currentTarget.getAttribute('target');
-    if (/\b_blank\b/i.test(target)) { return }
-  }
-  // this may be a Weex event which doesn't have this method
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  return true
-}
-
-function findAnchor (children) {
-  if (children) {
-    var child;
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      if (child.tag === 'a') {
-        return child
-      }
-      if (child.children && (child = findAnchor(child.children))) {
-        return child
-      }
-    }
-  }
-}
-
-var _Vue;
-
-function install (Vue) {
-  if (install.installed) { return }
-  install.installed = true;
-
-  _Vue = Vue;
-
-  var isDef = function (v) { return v !== undefined; };
-
-  var registerInstance = function (vm, callVal) {
-    var i = vm.$options._parentVnode;
-    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
-      i(vm, callVal);
-    }
-  };
-
-  Vue.mixin({
-    beforeCreate: function beforeCreate () {
-      if (isDef(this.$options.router)) {
-        this._routerRoot = this;
-        this._router = this.$options.router;
-        this._router.init(this);
-        Vue.util.defineReactive(this, '_route', this._router.history.current);
-      } else {
-        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
-      }
-      registerInstance(this, this);
-    },
-    destroyed: function destroyed () {
-      registerInstance(this);
-    }
-  });
-
-  Object.defineProperty(Vue.prototype, '$router', {
-    get: function get () { return this._routerRoot._router }
-  });
-
-  Object.defineProperty(Vue.prototype, '$route', {
-    get: function get () { return this._routerRoot._route }
-  });
-
-  Vue.component('router-view', View);
-  Vue.component('router-link', Link);
-
-  var strats = Vue.config.optionMergeStrategies;
-  // use the same hook merging strategy for route hooks
-  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
-}
-
-/*  */
-
-var inBrowser = typeof window !== 'undefined';
-
-/*  */
-
-function resolvePath (
-  relative,
-  base,
-  append
-) {
-  var firstChar = relative.charAt(0);
-  if (firstChar === '/') {
-    return relative
-  }
-
-  if (firstChar === '?' || firstChar === '#') {
-    return base + relative
-  }
-
-  var stack = base.split('/');
-
-  // remove trailing segment if:
-  // - not appending
-  // - appending to trailing slash (last segment is empty)
-  if (!append || !stack[stack.length - 1]) {
-    stack.pop();
-  }
-
-  // resolve relative path
-  var segments = relative.replace(/^\//, '').split('/');
-  for (var i = 0; i < segments.length; i++) {
-    var segment = segments[i];
-    if (segment === '..') {
-      stack.pop();
-    } else if (segment !== '.') {
-      stack.push(segment);
-    }
-  }
-
-  // ensure leading slash
-  if (stack[0] !== '') {
-    stack.unshift('');
-  }
-
-  return stack.join('/')
-}
-
-function parsePath (path) {
-  var hash = '';
-  var query = '';
-
-  var hashIndex = path.indexOf('#');
-  if (hashIndex >= 0) {
-    hash = path.slice(hashIndex);
-    path = path.slice(0, hashIndex);
-  }
-
-  var queryIndex = path.indexOf('?');
-  if (queryIndex >= 0) {
-    query = path.slice(queryIndex + 1);
-    path = path.slice(0, queryIndex);
-  }
-
-  return {
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function cleanPath (path) {
-  return path.replace(/\/\//g, '/')
-}
-
-var index$1 = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-/**
- * Expose `pathToRegexp`.
- */
-var index = pathToRegexp;
-var parse_1 = parse;
-var compile_1 = compile;
-var tokensToFunction_1 = tokensToFunction;
-var tokensToRegExp_1 = tokensToRegExp;
-
-/**
- * The main path matching regexp utility.
- *
- * @type {RegExp}
- */
-var PATH_REGEXP = new RegExp([
-  // Match escaped characters that would otherwise appear in future matches.
-  // This allows the user to escape special characters that won't transform.
-  '(\\\\.)',
-  // Match Express-style parameters and un-named parameters with a prefix
-  // and optional suffixes. Matches appear as:
-  //
-  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
-  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
-  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
-  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
-].join('|'), 'g');
-
-/**
- * Parse a string for the raw tokens.
- *
- * @param  {string}  str
- * @param  {Object=} options
- * @return {!Array}
- */
-function parse (str, options) {
-  var tokens = [];
-  var key = 0;
-  var index = 0;
-  var path = '';
-  var defaultDelimiter = options && options.delimiter || '/';
-  var res;
-
-  while ((res = PATH_REGEXP.exec(str)) != null) {
-    var m = res[0];
-    var escaped = res[1];
-    var offset = res.index;
-    path += str.slice(index, offset);
-    index = offset + m.length;
-
-    // Ignore already escaped sequences.
-    if (escaped) {
-      path += escaped[1];
-      continue
-    }
-
-    var next = str[index];
-    var prefix = res[2];
-    var name = res[3];
-    var capture = res[4];
-    var group = res[5];
-    var modifier = res[6];
-    var asterisk = res[7];
-
-    // Push the current path onto the tokens.
-    if (path) {
-      tokens.push(path);
-      path = '';
-    }
-
-    var partial = prefix != null && next != null && next !== prefix;
-    var repeat = modifier === '+' || modifier === '*';
-    var optional = modifier === '?' || modifier === '*';
-    var delimiter = res[2] || defaultDelimiter;
-    var pattern = capture || group;
-
-    tokens.push({
-      name: name || key++,
-      prefix: prefix || '',
-      delimiter: delimiter,
-      optional: optional,
-      repeat: repeat,
-      partial: partial,
-      asterisk: !!asterisk,
-      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
-    });
-  }
-
-  // Match any characters still remaining.
-  if (index < str.length) {
-    path += str.substr(index);
-  }
-
-  // If the path exists, push it onto the end.
-  if (path) {
-    tokens.push(path);
-  }
-
-  return tokens
-}
-
-/**
- * Compile a string to a template function for the path.
- *
- * @param  {string}             str
- * @param  {Object=}            options
- * @return {!function(Object=, Object=)}
- */
-function compile (str, options) {
-  return tokensToFunction(parse(str, options))
-}
-
-/**
- * Prettier encoding of URI path segments.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeURIComponentPretty (str) {
-  return encodeURI(str).replace(/[\/?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeAsterisk (str) {
-  return encodeURI(str).replace(/[?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Expose a method for transforming tokens into the path function.
- */
-function tokensToFunction (tokens) {
-  // Compile all the tokens into regexps.
-  var matches = new Array(tokens.length);
-
-  // Compile all the patterns before compilation.
-  for (var i = 0; i < tokens.length; i++) {
-    if (typeof tokens[i] === 'object') {
-      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
-    }
-  }
-
-  return function (obj, opts) {
-    var path = '';
-    var data = obj || {};
-    var options = opts || {};
-    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
-
-    for (var i = 0; i < tokens.length; i++) {
-      var token = tokens[i];
-
-      if (typeof token === 'string') {
-        path += token;
-
-        continue
-      }
-
-      var value = data[token.name];
-      var segment;
-
-      if (value == null) {
-        if (token.optional) {
-          // Prepend partial segment prefixes.
-          if (token.partial) {
-            path += token.prefix;
-          }
-
-          continue
-        } else {
-          throw new TypeError('Expected "' + token.name + '" to be defined')
-        }
-      }
-
-      if (index$1(value)) {
-        if (!token.repeat) {
-          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
-        }
-
-        if (value.length === 0) {
-          if (token.optional) {
-            continue
-          } else {
-            throw new TypeError('Expected "' + token.name + '" to not be empty')
-          }
-        }
-
-        for (var j = 0; j < value.length; j++) {
-          segment = encode(value[j]);
-
-          if (!matches[i].test(segment)) {
-            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
-          }
-
-          path += (j === 0 ? token.prefix : token.delimiter) + segment;
-        }
-
-        continue
-      }
-
-      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
-
-      if (!matches[i].test(segment)) {
-        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
-      }
-
-      path += token.prefix + segment;
-    }
-
-    return path
-  }
-}
-
-/**
- * Escape a regular expression string.
- *
- * @param  {string} str
- * @return {string}
- */
-function escapeString (str) {
-  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
-}
-
-/**
- * Escape the capturing group by escaping special characters and meaning.
- *
- * @param  {string} group
- * @return {string}
- */
-function escapeGroup (group) {
-  return group.replace(/([=!:$\/()])/g, '\\$1')
-}
-
-/**
- * Attach the keys as a property of the regexp.
- *
- * @param  {!RegExp} re
- * @param  {Array}   keys
- * @return {!RegExp}
- */
-function attachKeys (re, keys) {
-  re.keys = keys;
-  return re
-}
-
-/**
- * Get the flags for a regexp from the options.
- *
- * @param  {Object} options
- * @return {string}
- */
-function flags (options) {
-  return options.sensitive ? '' : 'i'
-}
-
-/**
- * Pull out keys from a regexp.
- *
- * @param  {!RegExp} path
- * @param  {!Array}  keys
- * @return {!RegExp}
- */
-function regexpToRegexp (path, keys) {
-  // Use a negative lookahead to match only capturing groups.
-  var groups = path.source.match(/\((?!\?)/g);
-
-  if (groups) {
-    for (var i = 0; i < groups.length; i++) {
-      keys.push({
-        name: i,
-        prefix: null,
-        delimiter: null,
-        optional: false,
-        repeat: false,
-        partial: false,
-        asterisk: false,
-        pattern: null
-      });
-    }
-  }
-
-  return attachKeys(path, keys)
-}
-
-/**
- * Transform an array into a regexp.
- *
- * @param  {!Array}  path
- * @param  {Array}   keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function arrayToRegexp (path, keys, options) {
-  var parts = [];
-
-  for (var i = 0; i < path.length; i++) {
-    parts.push(pathToRegexp(path[i], keys, options).source);
-  }
-
-  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
-
-  return attachKeys(regexp, keys)
-}
-
-/**
- * Create a path regexp from string input.
- *
- * @param  {string}  path
- * @param  {!Array}  keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function stringToRegexp (path, keys, options) {
-  return tokensToRegExp(parse(path, options), keys, options)
-}
-
-/**
- * Expose a function for taking tokens and returning a RegExp.
- *
- * @param  {!Array}          tokens
- * @param  {(Array|Object)=} keys
- * @param  {Object=}         options
- * @return {!RegExp}
- */
-function tokensToRegExp (tokens, keys, options) {
-  if (!index$1(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  var strict = options.strict;
-  var end = options.end !== false;
-  var route = '';
-
-  // Iterate over the tokens and create our regexp string.
-  for (var i = 0; i < tokens.length; i++) {
-    var token = tokens[i];
-
-    if (typeof token === 'string') {
-      route += escapeString(token);
-    } else {
-      var prefix = escapeString(token.prefix);
-      var capture = '(?:' + token.pattern + ')';
-
-      keys.push(token);
-
-      if (token.repeat) {
-        capture += '(?:' + prefix + capture + ')*';
-      }
-
-      if (token.optional) {
-        if (!token.partial) {
-          capture = '(?:' + prefix + '(' + capture + '))?';
-        } else {
-          capture = prefix + '(' + capture + ')?';
-        }
-      } else {
-        capture = prefix + '(' + capture + ')';
-      }
-
-      route += capture;
-    }
-  }
-
-  var delimiter = escapeString(options.delimiter || '/');
-  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
-
-  // In non-strict mode we allow a slash at the end of match. If the path to
-  // match already ends with a slash, we remove it for consistency. The slash
-  // is valid at the end of a path match, not in the middle. This is important
-  // in non-ending mode, where "/test/" shouldn't match "/test//route".
-  if (!strict) {
-    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
-  }
-
-  if (end) {
-    route += '$';
-  } else {
-    // In non-ending mode, we need the capturing groups to match as much as
-    // possible by using a positive lookahead to the end or next path segment.
-    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
-  }
-
-  return attachKeys(new RegExp('^' + route, flags(options)), keys)
-}
-
-/**
- * Normalize the given path string, returning a regular expression.
- *
- * An empty array can be passed in for the keys, which will hold the
- * placeholder key descriptions. For example, using `/user/:id`, `keys` will
- * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
- *
- * @param  {(string|RegExp|Array)} path
- * @param  {(Array|Object)=}       keys
- * @param  {Object=}               options
- * @return {!RegExp}
- */
-function pathToRegexp (path, keys, options) {
-  if (!index$1(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  if (path instanceof RegExp) {
-    return regexpToRegexp(path, /** @type {!Array} */ (keys))
-  }
-
-  if (index$1(path)) {
-    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
-  }
-
-  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
-}
-
-index.parse = parse_1;
-index.compile = compile_1;
-index.tokensToFunction = tokensToFunction_1;
-index.tokensToRegExp = tokensToRegExp_1;
-
-/*  */
-
-var regexpCompileCache = Object.create(null);
-
-function fillParams (
-  path,
-  params,
-  routeMsg
-) {
-  try {
-    var filler =
-      regexpCompileCache[path] ||
-      (regexpCompileCache[path] = index.compile(path));
-    return filler(params || {}, { pretty: true })
-  } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      warn(false, ("missing param for " + routeMsg + ": " + (e.message)));
-    }
-    return ''
-  }
-}
-
-/*  */
-
-function createRouteMap (
-  routes,
-  oldPathList,
-  oldPathMap,
-  oldNameMap
-) {
-  // the path list is used to control path matching priority
-  var pathList = oldPathList || [];
-  var pathMap = oldPathMap || Object.create(null);
-  var nameMap = oldNameMap || Object.create(null);
-
-  routes.forEach(function (route) {
-    addRouteRecord(pathList, pathMap, nameMap, route);
-  });
-
-  // ensure wildcard routes are always at the end
-  for (var i = 0, l = pathList.length; i < l; i++) {
-    if (pathList[i] === '*') {
-      pathList.push(pathList.splice(i, 1)[0]);
-      l--;
-      i--;
-    }
-  }
-
-  return {
-    pathList: pathList,
-    pathMap: pathMap,
-    nameMap: nameMap
-  }
-}
-
-function addRouteRecord (
-  pathList,
-  pathMap,
-  nameMap,
-  route,
-  parent,
-  matchAs
-) {
-  var path = route.path;
-  var name = route.name;
-  if (process.env.NODE_ENV !== 'production') {
-    assert(path != null, "\"path\" is required in a route configuration.");
-    assert(
-      typeof route.component !== 'string',
-      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
-      "string id. Use an actual component instead."
-    );
-  }
-
-  var normalizedPath = normalizePath(path, parent);
-  var pathToRegexpOptions = route.pathToRegexpOptions || {};
-
-  if (typeof route.caseSensitive === 'boolean') {
-    pathToRegexpOptions.sensitive = route.caseSensitive;
-  }
-
-  var record = {
-    path: normalizedPath,
-    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
-    components: route.components || { default: route.component },
-    instances: {},
-    name: name,
-    parent: parent,
-    matchAs: matchAs,
-    redirect: route.redirect,
-    beforeEnter: route.beforeEnter,
-    meta: route.meta || {},
-    props: route.props == null
-      ? {}
-      : route.components
-        ? route.props
-        : { default: route.props }
-  };
-
-  if (route.children) {
-    // Warn if route is named, does not redirect and has a default child route.
-    // If users navigate to this route by name, the default child will
-    // not be rendered (GH Issue #629)
-    if (process.env.NODE_ENV !== 'production') {
-      if (route.name && !route.redirect && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
-        warn(
-          false,
-          "Named Route '" + (route.name) + "' has a default child route. " +
-          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
-          "the default child route will not be rendered. Remove the name from " +
-          "this route and use the name of the default child route for named " +
-          "links instead."
-        );
-      }
-    }
-    route.children.forEach(function (child) {
-      var childMatchAs = matchAs
-        ? cleanPath((matchAs + "/" + (child.path)))
-        : undefined;
-      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
-    });
-  }
-
-  if (route.alias !== undefined) {
-    var aliases = Array.isArray(route.alias)
-      ? route.alias
-      : [route.alias];
-
-    aliases.forEach(function (alias) {
-      var aliasRoute = {
-        path: alias,
-        children: route.children
-      };
-      addRouteRecord(
-        pathList,
-        pathMap,
-        nameMap,
-        aliasRoute,
-        parent,
-        record.path || '/' // matchAs
-      );
-    });
-  }
-
-  if (!pathMap[record.path]) {
-    pathList.push(record.path);
-    pathMap[record.path] = record;
-  }
-
-  if (name) {
-    if (!nameMap[name]) {
-      nameMap[name] = record;
-    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
-      warn(
-        false,
-        "Duplicate named routes definition: " +
-        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
-      );
-    }
-  }
-}
-
-function compileRouteRegex (path, pathToRegexpOptions) {
-  var regex = index(path, [], pathToRegexpOptions);
-  if (process.env.NODE_ENV !== 'production') {
-    var keys = {};
-    regex.keys.forEach(function (key) {
-      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
-      keys[key.name] = true;
-    });
-  }
-  return regex
-}
-
-function normalizePath (path, parent) {
-  path = path.replace(/\/$/, '');
-  if (path[0] === '/') { return path }
-  if (parent == null) { return path }
-  return cleanPath(((parent.path) + "/" + path))
-}
-
-/*  */
-
-
-function normalizeLocation (
-  raw,
-  current,
-  append,
-  router
-) {
-  var next = typeof raw === 'string' ? { path: raw } : raw;
-  // named target
-  if (next.name || next._normalized) {
-    return next
-  }
-
-  // relative params
-  if (!next.path && next.params && current) {
-    next = assign({}, next);
-    next._normalized = true;
-    var params = assign(assign({}, current.params), next.params);
-    if (current.name) {
-      next.name = current.name;
-      next.params = params;
-    } else if (current.matched.length) {
-      var rawPath = current.matched[current.matched.length - 1].path;
-      next.path = fillParams(rawPath, params, ("path " + (current.path)));
-    } else if (process.env.NODE_ENV !== 'production') {
-      warn(false, "relative params navigation requires a current route.");
-    }
-    return next
-  }
-
-  var parsedPath = parsePath(next.path || '');
-  var basePath = (current && current.path) || '/';
-  var path = parsedPath.path
-    ? resolvePath(parsedPath.path, basePath, append || next.append)
-    : basePath;
-
-  var query = resolveQuery(
-    parsedPath.query,
-    next.query,
-    router && router.options.parseQuery
-  );
-
-  var hash = next.hash || parsedPath.hash;
-  if (hash && hash.charAt(0) !== '#') {
-    hash = "#" + hash;
-  }
-
-  return {
-    _normalized: true,
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function assign (a, b) {
-  for (var key in b) {
-    a[key] = b[key];
-  }
-  return a
-}
-
-/*  */
-
-
-function createMatcher (
-  routes,
-  router
-) {
-  var ref = createRouteMap(routes);
-  var pathList = ref.pathList;
-  var pathMap = ref.pathMap;
-  var nameMap = ref.nameMap;
-
-  function addRoutes (routes) {
-    createRouteMap(routes, pathList, pathMap, nameMap);
-  }
-
-  function match (
-    raw,
-    currentRoute,
-    redirectedFrom
-  ) {
-    var location = normalizeLocation(raw, currentRoute, false, router);
-    var name = location.name;
-
-    if (name) {
-      var record = nameMap[name];
-      if (process.env.NODE_ENV !== 'production') {
-        warn(record, ("Route with name '" + name + "' does not exist"));
-      }
-      if (!record) { return _createRoute(null, location) }
-      var paramNames = record.regex.keys
-        .filter(function (key) { return !key.optional; })
-        .map(function (key) { return key.name; });
-
-      if (typeof location.params !== 'object') {
-        location.params = {};
-      }
-
-      if (currentRoute && typeof currentRoute.params === 'object') {
-        for (var key in currentRoute.params) {
-          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
-            location.params[key] = currentRoute.params[key];
-          }
-        }
-      }
-
-      if (record) {
-        location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
-        return _createRoute(record, location, redirectedFrom)
-      }
-    } else if (location.path) {
-      location.params = {};
-      for (var i = 0; i < pathList.length; i++) {
-        var path = pathList[i];
-        var record$1 = pathMap[path];
-        if (matchRoute(record$1.regex, location.path, location.params)) {
-          return _createRoute(record$1, location, redirectedFrom)
-        }
-      }
-    }
-    // no match
-    return _createRoute(null, location)
-  }
-
-  function redirect (
-    record,
-    location
-  ) {
-    var originalRedirect = record.redirect;
-    var redirect = typeof originalRedirect === 'function'
-        ? originalRedirect(createRoute(record, location, null, router))
-        : originalRedirect;
-
-    if (typeof redirect === 'string') {
-      redirect = { path: redirect };
-    }
-
-    if (!redirect || typeof redirect !== 'object') {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(
-          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
-        );
-      }
-      return _createRoute(null, location)
-    }
-
-    var re = redirect;
-    var name = re.name;
-    var path = re.path;
-    var query = location.query;
-    var hash = location.hash;
-    var params = location.params;
-    query = re.hasOwnProperty('query') ? re.query : query;
-    hash = re.hasOwnProperty('hash') ? re.hash : hash;
-    params = re.hasOwnProperty('params') ? re.params : params;
-
-    if (name) {
-      // resolved named direct
-      var targetRecord = nameMap[name];
-      if (process.env.NODE_ENV !== 'production') {
-        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
-      }
-      return match({
-        _normalized: true,
-        name: name,
-        query: query,
-        hash: hash,
-        params: params
-      }, undefined, location)
-    } else if (path) {
-      // 1. resolve relative redirect
-      var rawPath = resolveRecordPath(path, record);
-      // 2. resolve params
-      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
-      // 3. rematch with existing query and hash
-      return match({
-        _normalized: true,
-        path: resolvedPath,
-        query: query,
-        hash: hash
-      }, undefined, location)
-    } else {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
-      }
-      return _createRoute(null, location)
-    }
-  }
-
-  function alias (
-    record,
-    location,
-    matchAs
-  ) {
-    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
-    var aliasedMatch = match({
-      _normalized: true,
-      path: aliasedPath
-    });
-    if (aliasedMatch) {
-      var matched = aliasedMatch.matched;
-      var aliasedRecord = matched[matched.length - 1];
-      location.params = aliasedMatch.params;
-      return _createRoute(aliasedRecord, location)
-    }
-    return _createRoute(null, location)
-  }
-
-  function _createRoute (
-    record,
-    location,
-    redirectedFrom
-  ) {
-    if (record && record.redirect) {
-      return redirect(record, redirectedFrom || location)
-    }
-    if (record && record.matchAs) {
-      return alias(record, location, record.matchAs)
-    }
-    return createRoute(record, location, redirectedFrom, router)
-  }
-
-  return {
-    match: match,
-    addRoutes: addRoutes
-  }
-}
-
-function matchRoute (
-  regex,
-  path,
-  params
-) {
-  var m = path.match(regex);
-
-  if (!m) {
-    return false
-  } else if (!params) {
-    return true
-  }
-
-  for (var i = 1, len = m.length; i < len; ++i) {
-    var key = regex.keys[i - 1];
-    var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
-    if (key) {
-      params[key.name] = val;
-    }
-  }
-
-  return true
-}
-
-function resolveRecordPath (path, record) {
-  return resolvePath(path, record.parent ? record.parent.path : '/', true)
-}
-
-/*  */
-
-
-var positionStore = Object.create(null);
-
-function setupScroll () {
-  window.addEventListener('popstate', function (e) {
-    saveScrollPosition();
-    if (e.state && e.state.key) {
-      setStateKey(e.state.key);
-    }
-  });
-}
-
-function handleScroll (
-  router,
-  to,
-  from,
-  isPop
-) {
-  if (!router.app) {
-    return
-  }
-
-  var behavior = router.options.scrollBehavior;
-  if (!behavior) {
-    return
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(typeof behavior === 'function', "scrollBehavior must be a function");
-  }
-
-  // wait until re-render finishes before scrolling
-  router.app.$nextTick(function () {
-    var position = getScrollPosition();
-    var shouldScroll = behavior(to, from, isPop ? position : null);
-    if (!shouldScroll) {
-      return
-    }
-    var isObject = typeof shouldScroll === 'object';
-    if (isObject && typeof shouldScroll.selector === 'string') {
-      var el = document.querySelector(shouldScroll.selector);
-      if (el) {
-        var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
-        offset = normalizeOffset(offset);
-        position = getElementPosition(el, offset);
-      } else if (isValidPosition(shouldScroll)) {
-        position = normalizePosition(shouldScroll);
-      }
-    } else if (isObject && isValidPosition(shouldScroll)) {
-      position = normalizePosition(shouldScroll);
-    }
-
-    if (position) {
-      window.scrollTo(position.x, position.y);
-    }
-  });
-}
-
-function saveScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    positionStore[key] = {
-      x: window.pageXOffset,
-      y: window.pageYOffset
-    };
-  }
-}
-
-function getScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    return positionStore[key]
-  }
-}
-
-function getElementPosition (el, offset) {
-  var docEl = document.documentElement;
-  var docRect = docEl.getBoundingClientRect();
-  var elRect = el.getBoundingClientRect();
-  return {
-    x: elRect.left - docRect.left - offset.x,
-    y: elRect.top - docRect.top - offset.y
-  }
-}
-
-function isValidPosition (obj) {
-  return isNumber(obj.x) || isNumber(obj.y)
-}
-
-function normalizePosition (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
-    y: isNumber(obj.y) ? obj.y : window.pageYOffset
-  }
-}
-
-function normalizeOffset (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : 0,
-    y: isNumber(obj.y) ? obj.y : 0
-  }
-}
-
-function isNumber (v) {
-  return typeof v === 'number'
-}
-
-/*  */
-
-var supportsPushState = inBrowser && (function () {
-  var ua = window.navigator.userAgent;
-
-  if (
-    (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
-    ua.indexOf('Mobile Safari') !== -1 &&
-    ua.indexOf('Chrome') === -1 &&
-    ua.indexOf('Windows Phone') === -1
-  ) {
-    return false
-  }
-
-  return window.history && 'pushState' in window.history
-})();
-
-// use User Timing api (if present) for more accurate key precision
-var Time = inBrowser && window.performance && window.performance.now
-  ? window.performance
-  : Date;
-
-var _key = genKey();
-
-function genKey () {
-  return Time.now().toFixed(3)
-}
-
-function getStateKey () {
-  return _key
-}
-
-function setStateKey (key) {
-  _key = key;
-}
-
-function pushState (url, replace) {
-  saveScrollPosition();
-  // try...catch the pushState call to get around Safari
-  // DOM Exception 18 where it limits to 100 pushState calls
-  var history = window.history;
-  try {
-    if (replace) {
-      history.replaceState({ key: _key }, '', url);
-    } else {
-      _key = genKey();
-      history.pushState({ key: _key }, '', url);
-    }
-  } catch (e) {
-    window.location[replace ? 'replace' : 'assign'](url);
-  }
-}
-
-function replaceState (url) {
-  pushState(url, true);
-}
-
-/*  */
-
-function runQueue (queue, fn, cb) {
-  var step = function (index) {
-    if (index >= queue.length) {
-      cb();
-    } else {
-      if (queue[index]) {
-        fn(queue[index], function () {
-          step(index + 1);
-        });
-      } else {
-        step(index + 1);
-      }
-    }
-  };
-  step(0);
-}
-
-/*  */
-
-function resolveAsyncComponents (matched) {
-  return function (to, from, next) {
-    var hasAsync = false;
-    var pending = 0;
-    var error = null;
-
-    flatMapComponents(matched, function (def, _, match, key) {
-      // if it's a function and doesn't have cid attached,
-      // assume it's an async component resolve function.
-      // we are not using Vue's default async resolving mechanism because
-      // we want to halt the navigation until the incoming component has been
-      // resolved.
-      if (typeof def === 'function' && def.cid === undefined) {
-        hasAsync = true;
-        pending++;
-
-        var resolve = once(function (resolvedDef) {
-          if (resolvedDef.__esModule && resolvedDef.default) {
-            resolvedDef = resolvedDef.default;
-          }
-          // save resolved on async factory in case it's used elsewhere
-          def.resolved = typeof resolvedDef === 'function'
-            ? resolvedDef
-            : _Vue.extend(resolvedDef);
-          match.components[key] = resolvedDef;
-          pending--;
-          if (pending <= 0) {
-            next();
-          }
-        });
-
-        var reject = once(function (reason) {
-          var msg = "Failed to resolve async component " + key + ": " + reason;
-          process.env.NODE_ENV !== 'production' && warn(false, msg);
-          if (!error) {
-            error = isError(reason)
-              ? reason
-              : new Error(msg);
-            next(error);
-          }
-        });
-
-        var res;
-        try {
-          res = def(resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
-        if (res) {
-          if (typeof res.then === 'function') {
-            res.then(resolve, reject);
-          } else {
-            // new syntax in Vue 2.3
-            var comp = res.component;
-            if (comp && typeof comp.then === 'function') {
-              comp.then(resolve, reject);
-            }
-          }
-        }
-      }
-    });
-
-    if (!hasAsync) { next(); }
-  }
-}
-
-function flatMapComponents (
-  matched,
-  fn
-) {
-  return flatten(matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) { return fn(
-      m.components[key],
-      m.instances[key],
-      m, key
-    ); })
-  }))
-}
-
-function flatten (arr) {
-  return Array.prototype.concat.apply([], arr)
-}
-
-// in Webpack 2, require.ensure now also returns a Promise
-// so the resolve/reject functions may get called an extra time
-// if the user uses an arrow function shorthand that happens to
-// return that Promise.
-function once (fn) {
-  var called = false;
-  return function () {
-    var args = [], len = arguments.length;
-    while ( len-- ) args[ len ] = arguments[ len ];
-
-    if (called) { return }
-    called = true;
-    return fn.apply(this, args)
-  }
-}
-
-/*  */
-
-var History = function History (router, base) {
-  this.router = router;
-  this.base = normalizeBase(base);
-  // start with a route object that stands for "nowhere"
-  this.current = START;
-  this.pending = null;
-  this.ready = false;
-  this.readyCbs = [];
-  this.readyErrorCbs = [];
-  this.errorCbs = [];
-};
-
-History.prototype.listen = function listen (cb) {
-  this.cb = cb;
-};
-
-History.prototype.onReady = function onReady (cb, errorCb) {
-  if (this.ready) {
-    cb();
-  } else {
-    this.readyCbs.push(cb);
-    if (errorCb) {
-      this.readyErrorCbs.push(errorCb);
-    }
-  }
-};
-
-History.prototype.onError = function onError (errorCb) {
-  this.errorCbs.push(errorCb);
-};
-
-History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
-    var this$1 = this;
-
-  var route = this.router.match(location, this.current);
-  this.confirmTransition(route, function () {
-    this$1.updateRoute(route);
-    onComplete && onComplete(route);
-    this$1.ensureURL();
-
-    // fire ready cbs once
-    if (!this$1.ready) {
-      this$1.ready = true;
-      this$1.readyCbs.forEach(function (cb) { cb(route); });
-    }
-  }, function (err) {
-    if (onAbort) {
-      onAbort(err);
-    }
-    if (err && !this$1.ready) {
-      this$1.ready = true;
-      this$1.readyErrorCbs.forEach(function (cb) { cb(err); });
-    }
-  });
-};
-
-History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
-    var this$1 = this;
-
-  var current = this.current;
-  var abort = function (err) {
-    if (isError(err)) {
-      if (this$1.errorCbs.length) {
-        this$1.errorCbs.forEach(function (cb) { cb(err); });
-      } else {
-        warn(false, 'uncaught error during route navigation:');
-        console.error(err);
-      }
-    }
-    onAbort && onAbort(err);
-  };
-  if (
-    isSameRoute(route, current) &&
-    // in the case the route map has been dynamically appended to
-    route.matched.length === current.matched.length
-  ) {
-    this.ensureURL();
-    return abort()
-  }
-
-  var ref = resolveQueue(this.current.matched, route.matched);
-    var updated = ref.updated;
-    var deactivated = ref.deactivated;
-    var activated = ref.activated;
-
-  var queue = [].concat(
-    // in-component leave guards
-    extractLeaveGuards(deactivated),
-    // global before hooks
-    this.router.beforeHooks,
-    // in-component update hooks
-    extractUpdateHooks(updated),
-    // in-config enter guards
-    activated.map(function (m) { return m.beforeEnter; }),
-    // async components
-    resolveAsyncComponents(activated)
-  );
-
-  this.pending = route;
-  var iterator = function (hook, next) {
-    if (this$1.pending !== route) {
-      return abort()
-    }
-    try {
-      hook(route, current, function (to) {
-        if (to === false || isError(to)) {
-          // next(false) -> abort navigation, ensure current URL
-          this$1.ensureURL(true);
-          abort(to);
-        } else if (
-          typeof to === 'string' ||
-          (typeof to === 'object' && (
-            typeof to.path === 'string' ||
-            typeof to.name === 'string'
-          ))
-        ) {
-          // next('/') or next({ path: '/' }) -> redirect
-          abort();
-          if (typeof to === 'object' && to.replace) {
-            this$1.replace(to);
-          } else {
-            this$1.push(to);
-          }
-        } else {
-          // confirm transition and pass on the value
-          next(to);
-        }
-      });
-    } catch (e) {
-      abort(e);
-    }
-  };
-
-  runQueue(queue, iterator, function () {
-    var postEnterCbs = [];
-    var isValid = function () { return this$1.current === route; };
-    // wait until async components are resolved before
-    // extracting in-component enter guards
-    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
-    var queue = enterGuards.concat(this$1.router.resolveHooks);
-    runQueue(queue, iterator, function () {
-      if (this$1.pending !== route) {
-        return abort()
-      }
-      this$1.pending = null;
-      onComplete(route);
-      if (this$1.router.app) {
-        this$1.router.app.$nextTick(function () {
-          postEnterCbs.forEach(function (cb) { cb(); });
-        });
-      }
-    });
-  });
-};
-
-History.prototype.updateRoute = function updateRoute (route) {
-  var prev = this.current;
-  this.current = route;
-  this.cb && this.cb(route);
-  this.router.afterHooks.forEach(function (hook) {
-    hook && hook(route, prev);
-  });
-};
-
-function normalizeBase (base) {
-  if (!base) {
-    if (inBrowser) {
-      // respect <base> tag
-      var baseEl = document.querySelector('base');
-      base = (baseEl && baseEl.getAttribute('href')) || '/';
-      // strip full URL origin
-      base = base.replace(/^https?:\/\/[^\/]+/, '');
-    } else {
-      base = '/';
-    }
-  }
-  // make sure there's the starting slash
-  if (base.charAt(0) !== '/') {
-    base = '/' + base;
-  }
-  // remove trailing slash
-  return base.replace(/\/$/, '')
-}
-
-function resolveQueue (
-  current,
-  next
-) {
-  var i;
-  var max = Math.max(current.length, next.length);
-  for (i = 0; i < max; i++) {
-    if (current[i] !== next[i]) {
-      break
-    }
-  }
-  return {
-    updated: next.slice(0, i),
-    activated: next.slice(i),
-    deactivated: current.slice(i)
-  }
-}
-
-function extractGuards (
-  records,
-  name,
-  bind,
-  reverse
-) {
-  var guards = flatMapComponents(records, function (def, instance, match, key) {
-    var guard = extractGuard(def, name);
-    if (guard) {
-      return Array.isArray(guard)
-        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
-        : bind(guard, instance, match, key)
-    }
-  });
-  return flatten(reverse ? guards.reverse() : guards)
-}
-
-function extractGuard (
-  def,
-  key
-) {
-  if (typeof def !== 'function') {
-    // extend now so that global mixins are applied.
-    def = _Vue.extend(def);
-  }
-  return def.options[key]
-}
-
-function extractLeaveGuards (deactivated) {
-  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
-}
-
-function extractUpdateHooks (updated) {
-  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
-}
-
-function bindGuard (guard, instance) {
-  if (instance) {
-    return function boundRouteGuard () {
-      return guard.apply(instance, arguments)
-    }
-  }
-}
-
-function extractEnterGuards (
-  activated,
-  cbs,
-  isValid
-) {
-  return extractGuards(activated, 'beforeRouteEnter', function (guard, _, match, key) {
-    return bindEnterGuard(guard, match, key, cbs, isValid)
-  })
-}
-
-function bindEnterGuard (
-  guard,
-  match,
-  key,
-  cbs,
-  isValid
-) {
-  return function routeEnterGuard (to, from, next) {
-    return guard(to, from, function (cb) {
-      next(cb);
-      if (typeof cb === 'function') {
-        cbs.push(function () {
-          // #750
-          // if a router-view is wrapped with an out-in transition,
-          // the instance may not have been registered at this time.
-          // we will need to poll for registration until current route
-          // is no longer valid.
-          poll(cb, match.instances, key, isValid);
-        });
-      }
-    })
-  }
-}
-
-function poll (
-  cb, // somehow flow cannot infer this is a function
-  instances,
-  key,
-  isValid
-) {
-  if (instances[key]) {
-    cb(instances[key]);
-  } else if (isValid()) {
-    setTimeout(function () {
-      poll(cb, instances, key, isValid);
-    }, 16);
-  }
-}
-
-/*  */
-
-
-var HTML5History = (function (History$$1) {
-  function HTML5History (router, base) {
-    var this$1 = this;
-
-    History$$1.call(this, router, base);
-
-    var expectScroll = router.options.scrollBehavior;
-
-    if (expectScroll) {
-      setupScroll();
-    }
-
-    window.addEventListener('popstate', function (e) {
-      var current = this$1.current;
-      this$1.transitionTo(getLocation(this$1.base), function (route) {
-        if (expectScroll) {
-          handleScroll(router, route, current, true);
-        }
-      });
-    });
-  }
-
-  if ( History$$1 ) HTML5History.__proto__ = History$$1;
-  HTML5History.prototype = Object.create( History$$1 && History$$1.prototype );
-  HTML5History.prototype.constructor = HTML5History;
-
-  HTML5History.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      pushState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      replaceState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.ensureURL = function ensureURL (push) {
-    if (getLocation(this.base) !== this.current.fullPath) {
-      var current = cleanPath(this.base + this.current.fullPath);
-      push ? pushState(current) : replaceState(current);
-    }
-  };
-
-  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getLocation(this.base)
-  };
-
-  return HTML5History;
-}(History));
-
-function getLocation (base) {
-  var path = window.location.pathname;
-  if (base && path.indexOf(base) === 0) {
-    path = path.slice(base.length);
-  }
-  return (path || '/') + window.location.search + window.location.hash
-}
-
-/*  */
-
-
-var HashHistory = (function (History$$1) {
-  function HashHistory (router, base, fallback) {
-    History$$1.call(this, router, base);
-    // check history fallback deeplinking
-    if (fallback && checkFallback(this.base)) {
-      return
-    }
-    ensureSlash();
-  }
-
-  if ( History$$1 ) HashHistory.__proto__ = History$$1;
-  HashHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  HashHistory.prototype.constructor = HashHistory;
-
-  // this is delayed until the app mounts
-  // to avoid the hashchange listener being fired too early
-  HashHistory.prototype.setupListeners = function setupListeners () {
-    var this$1 = this;
-
-    window.addEventListener('hashchange', function () {
-      if (!ensureSlash()) {
-        return
-      }
-      this$1.transitionTo(getHash(), function (route) {
-        replaceHash(route.fullPath);
-      });
-    });
-  };
-
-  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
-    this.transitionTo(location, function (route) {
-      pushHash(route.fullPath);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    this.transitionTo(location, function (route) {
-      replaceHash(route.fullPath);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HashHistory.prototype.ensureURL = function ensureURL (push) {
-    var current = this.current.fullPath;
-    if (getHash() !== current) {
-      push ? pushHash(current) : replaceHash(current);
-    }
-  };
-
-  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getHash()
-  };
-
-  return HashHistory;
-}(History));
-
-function checkFallback (base) {
-  var location = getLocation(base);
-  if (!/^\/#/.test(location)) {
-    window.location.replace(
-      cleanPath(base + '/#' + location)
-    );
-    return true
-  }
-}
-
-function ensureSlash () {
-  var path = getHash();
-  if (path.charAt(0) === '/') {
-    return true
-  }
-  replaceHash('/' + path);
-  return false
-}
-
-function getHash () {
-  // We can't use window.location.hash here because it's not
-  // consistent across browsers - Firefox will pre-decode it!
-  var href = window.location.href;
-  var index = href.indexOf('#');
-  return index === -1 ? '' : href.slice(index + 1)
-}
-
-function pushHash (path) {
-  window.location.hash = path;
-}
-
-function replaceHash (path) {
-  var href = window.location.href;
-  var i = href.indexOf('#');
-  var base = i >= 0 ? href.slice(0, i) : href;
-  window.location.replace((base + "#" + path));
-}
-
-/*  */
-
-
-var AbstractHistory = (function (History$$1) {
-  function AbstractHistory (router, base) {
-    History$$1.call(this, router, base);
-    this.stack = [];
-    this.index = -1;
-  }
-
-  if ( History$$1 ) AbstractHistory.__proto__ = History$$1;
-  AbstractHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  AbstractHistory.prototype.constructor = AbstractHistory;
-
-  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
-      this$1.index++;
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.go = function go (n) {
-    var this$1 = this;
-
-    var targetIndex = this.index + n;
-    if (targetIndex < 0 || targetIndex >= this.stack.length) {
-      return
-    }
-    var route = this.stack[targetIndex];
-    this.confirmTransition(route, function () {
-      this$1.index = targetIndex;
-      this$1.updateRoute(route);
-    });
-  };
-
-  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    var current = this.stack[this.stack.length - 1];
-    return current ? current.fullPath : '/'
-  };
-
-  AbstractHistory.prototype.ensureURL = function ensureURL () {
-    // noop
-  };
-
-  return AbstractHistory;
-}(History));
-
-/*  */
-
-var VueRouter = function VueRouter (options) {
-  if ( options === void 0 ) options = {};
-
-  this.app = null;
-  this.apps = [];
-  this.options = options;
-  this.beforeHooks = [];
-  this.resolveHooks = [];
-  this.afterHooks = [];
-  this.matcher = createMatcher(options.routes || [], this);
-
-  var mode = options.mode || 'hash';
-  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
-  if (this.fallback) {
-    mode = 'hash';
-  }
-  if (!inBrowser) {
-    mode = 'abstract';
-  }
-  this.mode = mode;
-
-  switch (mode) {
-    case 'history':
-      this.history = new HTML5History(this, options.base);
-      break
-    case 'hash':
-      this.history = new HashHistory(this, options.base, this.fallback);
-      break
-    case 'abstract':
-      this.history = new AbstractHistory(this, options.base);
-      break
-    default:
-      if (process.env.NODE_ENV !== 'production') {
-        assert(false, ("invalid mode: " + mode));
-      }
-  }
-};
-
-var prototypeAccessors = { currentRoute: {} };
-
-VueRouter.prototype.match = function match (
-  raw,
-  current,
-  redirectedFrom
-) {
-  return this.matcher.match(raw, current, redirectedFrom)
-};
-
-prototypeAccessors.currentRoute.get = function () {
-  return this.history && this.history.current
-};
-
-VueRouter.prototype.init = function init (app /* Vue component instance */) {
-    var this$1 = this;
-
-  process.env.NODE_ENV !== 'production' && assert(
-    install.installed,
-    "not installed. Make sure to call `Vue.use(VueRouter)` " +
-    "before creating root instance."
-  );
-
-  this.apps.push(app);
-
-  // main app already initialized.
-  if (this.app) {
-    return
-  }
-
-  this.app = app;
-
-  var history = this.history;
-
-  if (history instanceof HTML5History) {
-    history.transitionTo(history.getCurrentLocation());
-  } else if (history instanceof HashHistory) {
-    var setupHashListener = function () {
-      history.setupListeners();
-    };
-    history.transitionTo(
-      history.getCurrentLocation(),
-      setupHashListener,
-      setupHashListener
-    );
-  }
-
-  history.listen(function (route) {
-    this$1.apps.forEach(function (app) {
-      app._route = route;
-    });
-  });
-};
-
-VueRouter.prototype.beforeEach = function beforeEach (fn) {
-  return registerHook(this.beforeHooks, fn)
-};
-
-VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
-  return registerHook(this.resolveHooks, fn)
-};
-
-VueRouter.prototype.afterEach = function afterEach (fn) {
-  return registerHook(this.afterHooks, fn)
-};
-
-VueRouter.prototype.onReady = function onReady (cb, errorCb) {
-  this.history.onReady(cb, errorCb);
-};
-
-VueRouter.prototype.onError = function onError (errorCb) {
-  this.history.onError(errorCb);
-};
-
-VueRouter.prototype.push = function push (location, onComplete, onAbort) {
-  this.history.push(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
-  this.history.replace(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.go = function go (n) {
-  this.history.go(n);
-};
-
-VueRouter.prototype.back = function back () {
-  this.go(-1);
-};
-
-VueRouter.prototype.forward = function forward () {
-  this.go(1);
-};
-
-VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
-  var route = to
-    ? to.matched
-      ? to
-      : this.resolve(to).route
-    : this.currentRoute;
-  if (!route) {
-    return []
-  }
-  return [].concat.apply([], route.matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) {
-      return m.components[key]
-    })
-  }))
-};
-
-VueRouter.prototype.resolve = function resolve (
-  to,
-  current,
-  append
-) {
-  var location = normalizeLocation(
-    to,
-    current || this.history.current,
-    append,
-    this
-  );
-  var route = this.match(location, current);
-  var fullPath = route.redirectedFrom || route.fullPath;
-  var base = this.history.base;
-  var href = createHref(base, fullPath, this.mode);
-  return {
-    location: location,
-    route: route,
-    href: href,
-    // for backwards compat
-    normalizedTo: location,
-    resolved: route
-  }
-};
-
-VueRouter.prototype.addRoutes = function addRoutes (routes) {
-  this.matcher.addRoutes(routes);
-  if (this.history.current !== START) {
-    this.history.transitionTo(this.history.getCurrentLocation());
-  }
-};
-
-Object.defineProperties( VueRouter.prototype, prototypeAccessors );
-
-function registerHook (list, fn) {
-  list.push(fn);
-  return function () {
-    var i = list.indexOf(fn);
-    if (i > -1) { list.splice(i, 1); }
-  }
-}
-
-function createHref (base, fullPath, mode) {
-  var path = mode === 'hash' ? '#' + fullPath : fullPath;
-  return base ? cleanPath(base + '/' + path) : path
-}
-
-VueRouter.install = install;
-VueRouter.version = '2.7.0';
-
-if (inBrowser && window.Vue) {
-  window.Vue.use(VueRouter);
-}
-
-module.exports = VueRouter;
-
-}).call(this,require('_process'))
-},{"_process":24}],28:[function(require,module,exports){
+},{"got":2}],10:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -19518,7 +18110,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":24}],29:[function(require,module,exports){
+},{"_process":7}],11:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -19538,582 +18130,559 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],30:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-1cdadf1e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-1cdadf1e] {\n  margin-bottom: 4px;\n}\n#items-reviewed[_v-1cdadf1e] {\n}\n#rangetoggle[_v-1cdadf1e]{\n  color: #FF851B;\n  margin-left: 5px;\n  border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
+var _moment = require('moment');
 
-var _stringify2 = _interopRequireDefault(_stringify);
+var _moment2 = _interopRequireDefault(_moment);
 
-var _EventViewSideBar = require('./EventViewSideBar.vue');
+var _EventHscQueueItem = require('./EventHscQueueItem.vue');
 
-var _EventViewSideBar2 = _interopRequireDefault(_EventViewSideBar);
+var _EventHscQueueItem2 = _interopRequireDefault(_EventHscQueueItem);
 
-var _EventViewContent = require('./EventViewContent.vue');
+var _flatpickr = require('../directives/flatpickr.js');
 
-var _EventViewContent2 = _interopRequireDefault(_EventViewContent);
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-  components: { EventViewSideBar: _EventViewSideBar2.default, EventViewContent: _EventViewContent2.default },
-  props: ['varYearUnit', 'varMonthUnit', 'varDayUnit', 'eventid'],
+  directives: { flatpickr: _flatpickr2.default },
+  components: { EventQueueItem: _EventHscQueueItem2.default },
+  props: ['annrecords'],
   data: function data() {
     return {
-      startEventObject: {},
-      eventlist: [],
-      aobject: {
-        year: '',
-        monthUnit: '',
-        month: '',
-        day: ''
-      }
+      resource: {},
+      allitems: [],
+      otheritems: [],
+      appitems: [],
+      unappitems: [],
+      items: [],
+      xitems: [],
+      objs: {},
+      loading: true,
+      startdate: null,
+      enddate: null,
+      isEndDate: false
     };
   },
   ready: function ready() {
-    console.log('EventView Ready');
-    this.freshPageLand();
+    var twoWeeksEarlier = (0, _moment2.default)().subtract(1, 'w');
+    this.startdate = twoWeeksEarlier.format("YYYY-MM-DD");
+    this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
+    this.fetchAllRecords();
   },
 
-  methods: {
-    handleEventFetch: function handleEventFetch(eobject) {
-      eobject.cateid ? route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar + '/' + eobject.cateid : route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar;
-
-      this.$http.get(route).then(function (response) {
-        this.$broadcast('responseCalEvent', response.data);
-        console.log('handleEventFetch========' + (0, _stringify2.default)(response.data));
-      });
+  computed: {
+    top4: function top4() {},
+    currentDateAndTime: function currentDateAndTime() {
+      return (0, _moment2.default)();
     },
-    freshPageLand: function freshPageLand() {
-
-      this.startEventObject.yearVar = this.varYearUnit;
-      this.startEventObject.monthVar = this.varMonthUnit;
-      this.startEventObject.dayVar = this.varDayUnit;
-
-      this.$broadcast('startFromThisDate', this.startEventObject);
+    itemsPoints: function itemsPoints() {
+      return this.filterItemsPoints(this.allitems);
+    },
+    itemsNoPoints: function itemsNoPoints() {
+      return this.filterItemsNoPoints(this.allitems);
+    },
+    itemsNoPointsReviewed: function itemsNoPointsReviewed() {
+      return this.filterItemsNoPointsReviewed(this.allitems);
     }
   },
-  // the `events` option simply calls `$on` for you
-  // when the instance is created
+  methods: {
+    fetchAllRecords: function fetchAllRecords() {
+      var _this = this;
+
+      this.loading = true;
+
+      var routeurl = '/api/event/hscqueueload';
+      // if a start date is set, get stories whose start_date is on or after this date
+      if (this.startdate) {
+        routeurl = routeurl + '/' + this.startdate;
+      } else {
+        routeurl = routeurl + '/' + (0, _moment2.default)().subtract(2, 'w').format("YYYY-MM-DD");
+      }
+      // if a date range is set, get stories between the start date and end date
+      if (this.isEndDate) {
+        routeurl = routeurl + '/' + this.enddate;
+      }
+
+      this.$http.get(routeurl).then(function (response) {
+        _this.$set('allitems', response.data.data);
+        _this.checkOverDataFilter();
+        _this.loading = false;
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+    checkOverDataFilter: function checkOverDataFilter() {
+      console.log('items=' + this.items);
+    },
+    filterItemsNoPoints: function filterItemsNoPoints(items) {
+      return items.filter(function (item) {
+        return (item.hsc_rewards == false || item.hsc_rewards == null || item.hsc_rewards == 0) && item.hsc_reviewed == 0;
+      });
+    },
+    filterItemsNoPointsReviewed: function filterItemsNoPointsReviewed(items) {
+      return items.filter(function (item) {
+        return (item.hsc_rewards == false || item.hsc_rewards == null || item.hsc_rewards == 0) && item.hsc_reviewed == 1;
+      });
+    },
+    filterItemsPoints: function filterItemsPoints(items) {
+      return items.filter(function (item) {
+        return !(item.hsc_rewards == false || item.hsc_rewards == null || item.hsc_rewards == 0);
+      });
+    },
+
+    moveToApproved: function moveToApproved(changeditem) {
+      // changeditem.hsc_reviewed = 1;
+      // this.updateRecord(changeditem)
+    },
+    moveToUnApproved: function moveToUnApproved(changeditem) {
+      // changeditem.hsc_reviewed = 0;
+      // this.updateRecord(changeditem)
+    },
+    onCalendarChange: function onCalendarChange() {
+      // flatpickr directive method
+    },
+    movedItemIndex: function movedItemIndex(mid) {
+      return this.xitems.findIndex(function (item) {
+        return item.id == mid;
+      });
+    },
+    checkOverData: function checkOverData() {
+      console.log('this.items=' + this.allitems);
+      for (var i = 0; i < this.allitems.length; i++) {
+        if (this.allitems[i].hsc_reviewed == 1) {
+          this.items.push(this.allitems.splice(i, 1));
+        } else {
+          this.xitems.push(this.allitems.splice(i, 1));
+        }
+      }
+    },
+    toggleRange: function toggleRange() {
+      if (this.isEndDate) {
+        this.isEndDate = false;
+      } else {
+        this.isEndDate = true;
+      }
+    }
+  },
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-dc1c0446=\"\">\n    <div class=\"calendar-bar row\" _v-dc1c0446=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-dc1c0446=\"\">\n      <h4 _v-dc1c0446=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-dc1c0446=\"\">\n          <h4 _v-dc1c0446=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-dc1c0446=\"\">\n  <div id=\"calendar-content-bar\" _v-dc1c0446=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-dc1c0446=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-dc1c0446=\"\"></event-view-content>\n      <br _v-dc1c0446=\"\">\n            <p _v-dc1c0446=\"\">*All calendar items are subject to change.</p><br _v-dc1c0446=\"\">\n            <p _v-dc1c0446=\"\">The EMU calendar is maintained by the <a href=\"http://emich.edu/communications\" _v-dc1c0446=\"\">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p><br _v-dc1c0446=\"\">\n            <p _v-dc1c0446=\"\">Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p><br _v-dc1c0446=\"\">\n     </div>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-dc1c0446=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-dc1c0446=\"\"></event-view-side-bar>\n    </div>\n  </div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\" _v-1cdadf1e=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-1cdadf1e=\"\">\n      <form class=\"form-inline\" _v-1cdadf1e=\"\">\n        <div class=\"form-group\" _v-1cdadf1e=\"\">\n          <label for=\"start-date\" _v-1cdadf1e=\"\">Showing LBC events starting <span v-if=\"isEndDate\" _v-1cdadf1e=\"\">between</span><span v-else=\"\" _v-1cdadf1e=\"\">on or after</span></label>\n          <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-1cdadf1e=\"\">\n        </div>\n        <div v-if=\"isEndDate\" class=\"form-group\" _v-1cdadf1e=\"\">\n          <label for=\"start-date\" _v-1cdadf1e=\"\"> and </label>\n          <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-1cdadf1e=\"\">\n        </div>\n        <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-1cdadf1e=\"\">Filter</button>\n        <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-1cdadf1e=\"\"><span v-if=\"isEndDate\" _v-1cdadf1e=\"\"> - Remove </span><span v-else=\"\" _v-1cdadf1e=\"\"> + Add </span>Range</a>\n      </form>\n    </div>\n  </div>\n  <hr _v-1cdadf1e=\"\">\n\n  <div class=\"row\" _v-1cdadf1e=\"\">\n\n  <div class=\"col-md-4\" _v-1cdadf1e=\"\">\n      <h3 _v-1cdadf1e=\"\"><span class=\"badge\" _v-1cdadf1e=\"\">{{ itemsNoPointsReviewed ? itemsNoPointsReviewed.length : 0 }}</span> No Eagle Rewards Points | Reviewed</h3>\n      <div id=\"items-reviewed\" _v-1cdadf1e=\"\">\n        <event-queue-item pid=\"items-approved\" v-for=\"item in itemsNoPointsReviewed | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-1cdadf1e=\"\">\n        </event-queue-item>\n      </div>\n    </div><!-- /.col-md-6 -->\n\n    <div class=\"col-md-4\" _v-1cdadf1e=\"\">\n      <h3 _v-1cdadf1e=\"\"><span class=\"badge\" _v-1cdadf1e=\"\">{{ itemsNoPoints ? itemsNoPoints.length : 0 }}</span> No Eagle Rewards Points</h3>\n      <div _v-1cdadf1e=\"\">\n        <event-queue-item pid=\"items-approved\" v-for=\"item in itemsNoPoints | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-1cdadf1e=\"\">\n        </event-queue-item>\n      </div>\n      </div>\n\n  <div class=\"col-md-4\" _v-1cdadf1e=\"\">\n    <h3 _v-1cdadf1e=\"\"><span class=\"badge\" _v-1cdadf1e=\"\">{{ itemsPoints ? itemsPoints.length : 0 }}</span> Has Eagle Rewards Points <i class=\"fa fa-check green\" _v-1cdadf1e=\"\"></i></h3>\n    <div id=\"items-approved\" _v-1cdadf1e=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsPoints | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-1cdadf1e=\"\">\n    </event-queue-item>\n  </div>\n</div>\n</div><!-- /.col-md-6 -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n"] = false
+    __vueify_insert__.cache["\n#items-unapproved .box[_v-1cdadf1e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-1cdadf1e] {\n  margin-bottom: 4px;\n}\n#items-reviewed[_v-1cdadf1e] {\n}\n#rangetoggle[_v-1cdadf1e]{\n  color: #FF851B;\n  margin-left: 5px;\n  border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-dc1c0446", module.exports)
+    hotAPI.createRecord("_v-1cdadf1e", module.exports)
   } else {
-    hotAPI.update("_v-dc1c0446", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1cdadf1e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./EventViewContent.vue":31,"./EventViewSideBar.vue":32,"babel-runtime/core-js/json/stringify":1,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],31:[function(require,module,exports){
+},{"../directives/flatpickr.js":15,"./EventHscQueueItem.vue":13,"moment":6,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],13:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.calendar-bar {\n  background: #bebdbd;\n}\n.calendar-bar h4 {\n  text-transform: uppercase;\n  color: #fff;\n  font-size: 1.2rem;\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.calendar-content-title {\n  padding-top: 0.8rem;\n  background: #fff;\n}\n\n.calendar-content-title h4{\n  text-transform: uppercase;\n  color: #fff;\n  margin-top: 0.5rem;\n}\n.calendar-content-content{\n  background: #fff;\n}\n.calendar-content-content h4 {\n  line-height: 1.4rem;\n  font-size: 1.3rem;\n  font-weight: 600;\n}\n.calendar-content{\n  background: #fff;\n}\n.event-day {\n  margin: 0.8rem 0 0 0;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3c3019a4] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-3c3019a4] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-3c3019a4] {\n  padding: 3px;\n}\n.box-footer[_v-3c3019a4] {\n  padding: 3px;\n}\nh5.box-footer[_v-3c3019a4] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-3c3019a4] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-3c3019a4] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-3c3019a4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-3c3019a4] {\n  margin-bottom: 2px;\n}\n#applabel[_v-3c3019a4]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-3c3019a4],\n.btn-group-vertical[_v-3c3019a4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-3c3019a4] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-3c3019a4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-3c3019a4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n\n.form-group[_v-3c3019a4] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-3c3019a4]{\n  margin-bottom: 0;\n}\n.topitems[_v-3c3019a4] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-3c3019a4] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-3c3019a4] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-3c3019a4] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.reviewed-item[_v-3c3019a4] {\n  border-left: 6px solid #605CA8;\n  padding-left: 2px;\n}\n.time-is-short[_v-3c3019a4] {\n  color: #F39C12;\n}\n.time-is-long[_v-3c3019a4] {\n  color: #999999;\n}\n.time-is-over[_v-3c3019a4] {\n  color: #9B59B6;\n}\n.short-input[_v-3c3019a4] {\n  width: 8rem;\n  max-width: 8rem;\n}\n")
 'use strict';
 
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+var _stringify = require('babel-runtime/core-js/json/stringify');
 
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+var _stringify2 = _interopRequireDefault(_stringify);
 
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _EventViewSingle = require('./EventViewSingle.vue');
+var _VuiFlipSwitch = require('./VuiFlipSwitch.vue');
 
-var _EventViewSingle2 = _interopRequireDefault(_EventViewSingle);
+var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Vue = require('vue');
-var VueRouter = require('vue-router');
-
-Vue.use(VueRouter);
-
 module.exports = {
-  components: (0, _defineProperty3.default)({ EventViewSingle: _EventViewSingle2.default }, 'EventViewSingle', _EventViewSingle2.default),
-  props: {
-    elist: {},
-    eventlist: [],
-    eventid: null
-  },
+  components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
+  props: ['item', 'pid', 'index'],
   data: function data() {
     return {
-      monthVar: '',
-      yearVar: '',
-      dayVar: '',
-      firstDate: '',
-      lastDate: '',
-      monthVarUnit: '',
-      eventRange: {},
-      hasevents: 0
-    };
-  },
-  created: function created() {
-    console.log('EventViewContent Created');
-  },
-  ready: function ready() {
-    console.log('EventViewContent Ready');
-  },
-  computed: {
-    currentDate: function currentDate() {
-      return this.monthVar + ' ' + this.dayVar + ', ' + this.yearVar;
-    },
-    dateRange: function dateRange() {
-      return 'From ' + this.firstDate + ' thru ' + this.lastDate;
-    }
-  },
-  methods: {
-    sortKeyInt: function sortKeyInt($key) {
-      return parseInt($key);
-    },
-    updateCalEvent: function updateCalEvent(edata) {
-      this.monthVar = edata.monthVar;
-      this.yearVar = edata.yearVar;
-      this.dayVar = edata.dayVar;
-      this.elist = edata.groupedByDay;
-      this.firstDate = edata.firstDate;
-      this.lastDate = edata.lastDate;
-      console.log('fd=' + this.firstDate);
-      this.hasevents = this.elist ? 1 : 0;
-    },
-    fetchEventsByDay: function fetchEventsByDay(value) {
-      alert(value);
-    }
-  },
-  events: { 'responseCalEvent': 'updateCalEvent' },
-  watch: {},
-  filters: {
-    titleDay: function titleDay(value) {
-      return (0, _moment2.default)(value).format("ddd");
-    },
-    titleDate: function titleDate(value) {
-      return (0, _moment2.default)(value).format("MM/DD");
-    },
-    titleDateLongWithYear: function titleDateLongWithYear(value) {
-      console.log('titleDateLongWithYear=' + value);
-      var m = (0, _moment2.default)(value, "YYYY-MM-DD");
-      if (m.isValid()) {
-        return (0, _moment2.default)(m).format("ddd MMM D, YYYY");
-      } else {
-        console.log(m.invalidAt());
-      }
-    },
-    reformatDate: function reformatDate(value) {
-      var arr = value.split('-');
-      return arr[1] + '/' + arr[2] + '/' + arr[0];
-    },
-    yesNo: function yesNo(value) {
-      return value == 1 ? 'Yes' : 'No';
-    }
-  }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"calendar-content\">\n    <div class=\"calendar-content-title row\">\n      <div class=\"small-12 column\">\n        <h6>From {{firstDate}} thru {{lastDate}}</h6>\n      </div>\n    </div>\n    <div class=\"calendar-content-content row\">\n      <div class=\"small-12 columns\">\n        <div v-for=\"eitem in elist\">\n          <div class=\"event-day\">\n            <h4>{{$key | titleDateLongWithYear }}</h4>\n            <event-view-single v-for=\"item in eitem\" :item=\"item\" :index=\"$index\" :targeteventid=\"eventid\">\n          </event-view-single>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.calendar-bar {\n  background: #bebdbd;\n}\n.calendar-bar h4 {\n  text-transform: uppercase;\n  color: #fff;\n  font-size: 1.2rem;\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.calendar-content-title {\n  padding-top: 0.8rem;\n  background: #fff;\n}\n\n.calendar-content-title h4{\n  text-transform: uppercase;\n  color: #fff;\n  margin-top: 0.5rem;\n}\n.calendar-content-content{\n  background: #fff;\n}\n.calendar-content-content h4 {\n  line-height: 1.4rem;\n  font-size: 1.3rem;\n  font-weight: 600;\n}\n.calendar-content{\n  background: #fff;\n}\n.event-day {\n  margin: 0.8rem 0 0 0;\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-147bd0e8", module.exports)
-  } else {
-    hotAPI.update("_v-147bd0e8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"./EventViewSingle.vue":33,"babel-runtime/helpers/defineProperty":3,"moment":23,"vue":28,"vue-hot-reload-api":25,"vue-router":27,"vueify/lib/insert-css":29}],32:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n  .submit-calendar {\n    padding: 0;\n  }\n  .ypsi-graphic {\n    padding-bottom: 3rem;\n  }\n  .calendar-bar {\n    background: ##bebdbd;\n  }\n  .calendar-bar h4 {\n    text-transform: uppercase;\n    color: #fff;\n    font-size: 1.2rem;\n    margin-top: 0.5rem;\n    margin-bottom: 0.5rem;\n  }\n  .calendar-box {\n    background: #f2f2f3;\n    padding-top: 0.8rem;\n  }\n  .calendar-other-categories {\n    padding-top: 0.8rem;\n  }\n  /*.calendar-sidebar-content{\n  background: #ffffff;\n  }*/\n  .calendar-sidebar-title h4{\n    text-transform: uppercase;\n    color: #fff;\n    margin-top: 0.5rem;\n  }\n  .calendar-text-content p {\n    text-align: left;\n  }\n\n  .events-by-category .event-category a {\n    font-size: .9rem;\n  }\n  .events-by-category .event-category span.badge {\n    margin-right: 0.3rem;\n  }\n\n  /*.calendar ul {\n  padding: 15px;\n  background: #f3f3f3;\n  margin: 0;\n  }*/\n  .calendar .weekdays,\n  .calendar .days {\n    font-size: 12px;\n    color: #888;\n    text-align: center;\n    padding-top: 4px;\n    padding-bottom: 4px;\n  }\n  /*.calendar ul.days\n  {\n  border: 1px solid  #000;\n  padding: 10px 15px 3px;\n  background: #f9f9f9;\n}\n.calendar ul li {\nlist-style-type: none;\ndisplay: inline-block;\nwidth: 12.8%;\nheight: 25px;\nfont-size: 12px;\ncolor: #888;\ntext-align: center;\nmargin-bottom: 4px;\n\n}*/\n.calendar .event-category span {\n  font-size: 10px;\n  text-transform: uppercase;\n  font-weight: bold;\n}\n\n.calendar  a {\n  color: #0f654a;\n  display: block;\n  padding: 4px 0;\n  border: 1px solid  #f2f2f3;\n}\n.calendar a:hover {\n  border-radius: 5px;\n  /*background: #0f654a;*/\n  /*color: #fff;*/\n  text-decoration: none;\n  border: 1px solid  #0f654a;\n}\n.calendar  a.istoday {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n  /*padding: 2px 0;*/\n}\n.calendar  a.active {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n\n  background: #fff;\n  /*padding: 2px 0;*/\n}\n.calendar  a.noevents {\n  pointer-events: none;\n  color: #888;\n}\n.calendar  a.yes-events {\n  /*pointer-events: none;*/\n  color: #0f654a;\n}\n.calendar  a.no-events {\n  pointer-events: none;\n  color: #888;\n}\n\n.calendar-box caption{\n  font-weight:400;\n  margin-bottom: .3rem;\n}\n.calendar-caption p{\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n}\n\n.calendar-caption a {\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n  border: 1px none  #000;\n}\n.calendar-nav a {\n  border: none;\n}\n.calendar-nav a:hover {\n  border: none;\n}\n\n.calendar-title p {\n  font-weight: 400;\n  padding: 4px 0;\n}\n/*a#month-prev, a#month-next {\nborder: none;\n}\na#month-prev :hover, a#month-next :hover{\nborder: none;\n}*/\n")
-'use strict';
-
-module.exports = {
-  components: {},
-  props: {
-    elist: {}
-  },
-  data: function data() {
-    return {
-      categories: {},
-      calevents: {},
-      yearVar: '',
-      monthVar: '',
-      monthVarWord: '',
-      dayVar: '',
-      monthArray: [],
-      currentDay: '',
-      currentDate: {
-        yearVar: '',
-        monthVar: '',
-        monthVarWord: '',
-        dayVar: ''
+      hasPriorityChanged: 0,
+      formInputs: {
+        event_id: '',
+        attachment: ''
       },
-      selectedDate: {
-        yearVar: '',
-        monthVar: '',
-        monthVarWord: '',
-        dayVar: ''
-      },
-      newDate: {
-        yearVar: '',
-        monthVar: '',
-        monthVarWord: '',
-        dayVar: ''
-      },
-      yesEventClass: 'yes-events',
-      noEventClass: 'no-events',
-      haseventClass: 'no',
-      selectedDay: '',
-      calDaysArray: [],
-      eventObject: {
-        eoYear: '',
-        eoMonth: '',
-        eoDay: ''
-      }
-    };
-  },
-  created: function created() {
-    //  this.fetchCurrentEventsForCalendar();
-    // this.fetchCategoryList();
-  },
-  ready: function ready() {
-    console.log('EventSideBar Ready');
-  },
-  computed: {
-    currentDayInMonth: function currentDayInMonth() {
-      if (this.yearVar == this.currentDate.yearVar) {
-        if (this.monthVar == this.currentDate.monthVar) return this.currentDate.dayVar;
-      } else {
-        return '';
-      }
-    },
-    selectedDayInMonth: function selectedDayInMonth() {
-      if (this.yearVar == this.selectedDate.yearVar) {
-        if (this.monthVar == this.selectedDate.monthVar) return this.selectedDate.dayVar;
-      } else {
-        return '';
-      }
-    }
-  },
-  methods: {
-    fetchEvents: function fetchEvents() {
-      this.$http.get('/api/events', function (data) {
-        this.monthArray = response.data.monthArray;
-        this.currentDay = response.data.dayInMonth;
-      });
-    },
-    dispatchNewEvent: function dispatchNewEvent(value, cateid) {
-      console.log('event fetch: ' + value);
-      this.selectedDate.yearVar = this.yearVar;
-      // this.eventObject.eoYear = this.yearVar;
-      this.selectedDate.monthVar = this.monthVar;
-      // this.eventObject.eoMonth = this.monthVarUnit;
-      this.selectedDate.dayVar = value;
-      //this.eventObject.eoDay = value;
-      this.selectedDay = value;
-
-      // set category
-      cateid ? this.selectedDate.cateid = cateid : null;
-      // unset category
-      cateid === false ? this.selectedDate.cateid = null : null;
-
-      this.$dispatch('change-eobject', this.selectedDate);
-    },
-    // fetchEventsByDay: function(value) {
-    //
-    //   this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/'+ this.selectedDate.monthVar + '/' + value).then(function(response) {
-    //     this.selectedDate.yearVar = response.data.yearVar;
-    //     this.selectedDate.monthVar = response.data.monthVar;
-    //     this.selectedDate.monthVarWord = response.data.monthVa;
-    //   this.elist = response.data.groupedByDay;
-    //
-    //     console.log(response.data);
-    //   });
-    // },
-    newMonth: function newMonth(monthkey) {
-      console.log('this.yearVar=' + this.yearVar + ' this.monthVar= ' + this.monthVar);
-      var newMonthVarUnit;
-      var newYear;
-      if (monthkey == 'prev') {
-        if (this.monthVar == 1) {
-          newMonthVarUnit = 12;
-          newYearVar = this.yearVar - 1;
-        } else {
-          newMonthVarUnit = this.monthVar - 1;
-          newYearVar = this.yearVar;
-        }
-      } else {
-        if (this.monthVar == 12) {
-          newMonthVarUnit = 1;
-          newYearVar = this.yearVar + 1;
-        } else {
-          newMonthVarUnit = this.monthVar + 1;
-          newYearVar = this.yearVar;
-        }
-      }
-      this.fetchEventsForCalendarMonth(newYearVar, newMonthVarUnit);
-    },
-    fetchEventsForCalendarMonth: function fetchEventsForCalendarMonth(pyear, pmonth) {
-      this.yearVar = pyear;
-      this.monthVar = pmonth;
-      // this.monthVarWord = response.data.monthVarWord;
-      //this.dayVar = response.data.dayInMonth;
-      console.log('pyear=' + pyear + 'pmonth=' + pmonth);
-      apiurl = '/api/calendar/month/' + pyear + '/' + pmonth;
-      this.$http.get(apiurl).then(function (response) {
-
-        this.$set('calDaysArray', response.data.calDaysArray);
-        this.$set('monthArray', response.data.monthArray);
-
-        //    this.monthArray = response.data.monthArray;
-
-
-        //this.calDaysArray = response.data.calDaysArray;
-        this.selectedDate.yearVar = response.data.selectedYear;
-        this.selectedDate.monthVar = response.data.selectedMonth;
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord;
-        this.selectedDate.dayVar = response.data.selectedDay;
-
-        // this.yearVar = response.data.yearVar;
-        // this.monthVar = response.data.monthVar;
-        // this.monthVarWord = response.data.monthVarWord;
-        //this.dayVar = response.data.dayInMonth;
-        console.log(response.data);
-        //  this.pushFirstDateRange();
-        this.$emit('responseCategoriesEvent');
-      });
-    },
-    fetchCurrentEventsForCalendar: function fetchCurrentEventsForCalendar(startObject) {
-      this.yearVar = startObject.yearVar;
-      this.monthVar = startObject.monthVar;
-      this.dayVar = startObject.dayVar;
-      startapiurl = '/api/calendar/month/' + this.yearVar + '/' + this.monthVar + '/' + this.dayVar;
-      // this.$http.get('/api/calendar/month').then(function(response) {
-      this.$http.get(startapiurl).then(function (response) {
-        this.selectedDate.yearVar = response.data.selectedYear;
-        this.selectedDate.monthVar = response.data.selectedMonth;
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord;
-        this.selectedDate.dayVar = response.data.selectedDay;
-        this.currentDate.yearVar = response.data.currentYear;
-        this.currentDate.monthVar = response.data.currentMonth;
-        this.currentDate.monthVarWord = response.data.currentMonthWord;
-        this.currentDate.dayVar = response.data.currentDay;
-        this.calDaysArray = response.data.calDaysArray;
-        console.log(response.data);
-        this.pushFirstDateRange();
-        this.$emit('responseCategoriesEvent');
-      });
-    },
-    pushFirstDateRange: function pushFirstDateRange() {
-      this.$dispatch('change-eobject', this.selectedDate);
-      console.log('change-eobject');
-    },
-    fetchCategoryList: function fetchCategoryList() {
-      this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar).then(function (response) {
-        // console.log('response->categories=' + JSON.stringify(response.data));
-        this.categories = response.data;
-      }, function (response) {
-        //  this.$set(this.formErrors, response.data);
-        console.log(response);
-      });
-    }
-  },
-  watch: {},
-  events: {
-    'responseCategoriesEvent': 'fetchCategoryList',
-    'startFromThisDate': 'fetchCurrentEventsForCalendar'
-  },
-  filters: {
-    removex: function removex(value) {
-      return value[0] == 'x' ? '_' : value;
-    }
-  }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"calendar-box row\">\n  <div class=\"small-12 columns\">\n    <div class=\"calendar small-12 columns\" data-equalizer=\"\">\n      <div class=\"calendar-nav row small-collapse\">\n        <div class=\"small-2 columns\">\n          <a id=\"month-prev\" v-on:click.prevent=\"newMonth('prev')\" class=\"text-left\" href=\"\"><img src=\"/assets/imgs/calendar/green-calendar-arrow-before.png\" alt=\"arrow\"></a>\n        </div>\n        <div class=\"text-center calendar-title small-8 columns\">\n          <p>{{selectedDate.monthVarWord}} {{selectedDate.yearVar}}</p>\n        </div>\n        <div class=\"small-2 columns\">\n          <a id=\"month-next\" v-on:click.prevent=\"newMonth('next')\" class=\"text-right\" href=\"\"><img src=\"/assets/imgs/calendar/green-calendar-arrow-after.png\" alt=\"arrow\"></a>\n        </div>\n      </div>\n      <div class=\"weekdays row small-up-7 small-collapse\">\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Sun</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Mon</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Tue</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Wed</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Thu</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Fri</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Sat</span></div>\n      </div>\n      <div class=\"days row small-up-7 small-collapse\">\n        <div class=\"column\" v-for=\"item in calDaysArray\" data-equalizer-watch=\"\">\n\n          <a v-on:click.prevent=\"dispatchNewEvent( item.day )\" v-bind:class=\"[{'istoday': item.day == currentDayInMonth },{'no-events': item.hasevents == noEventClass },{'yes-events': item.hasevents == yesEventClass },{'active': item.day == selectedDayInMonth}]\" href=\"#\"> {{item.day | removex }}</a>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"row calendar-categories\">\n      <div class=\"small-12 column\">\n        <div class=\"calendar-other-categories\">\n          <a class=\"button hollow\" href=\"http://www.emich.edu/registrar/calendars/\">Academic Calendar <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i></a>\n          <h4>Event Categories</h4>\n          <ul>\n            <li class=\"event-category\">\n              <a v-on:click.prevent=\"dispatchNewEvent(selectedDayInMonth, false)\" href=\"#\">All Events</a>\n            </li>\n            <template v-for=\"category in categories\">\n              <li class=\"event-category\" v-if=\"category.events.length == 0 ?false:true\">\n                <a v-on:click.prevent=\"dispatchNewEvent(selectedDayInMonth, category.id)\" href=\"#\">{{category.category}}</a>\n              </li>\n            </template>\n          </ul>\n        </div>\n        <div class=\"calendar-other-categories\">\n          <h4>Other Calendars</h4>\n          <ul class=\"other\">\n            <li><a href=\"http://art.emich.edu/events/upcoming\">Art Galleries</a></li>\n            <li><a href=\"http://www.emueagles.com/calendar.aspx\">Athletics</a></li>\n            <li><a href=\"http://www.emich.edu/campuslife/calendars/index.php\">Campus Life</a></li>\n            <li><a href=\"http://www.emich.edu/hr/working/employment/holidays.php\">Holiday</a></li>\n            <li><a href=\"http://www.emich.edu/emutheatre/\">Theatre</a></li>\n          </ul>\n          <div class=\"submit-calendar\">\n            <a href=\"/calendar/event/form\" class=\"button emu-button\">Submit an Event</a>\n          </div>\n          <div class=\"ypsi-graphic\">\n            <a href=\"http://visitypsinow.com/local-events/\"><img src=\"/assets/imgs/calendar/visit-ypsi.png\" alt=\"Visit Ypsi Calendar\"></a>\n          </div>\n        </div>\n      </div>\n</div></div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n  .submit-calendar {\n    padding: 0;\n  }\n  .ypsi-graphic {\n    padding-bottom: 3rem;\n  }\n  .calendar-bar {\n    background: ##bebdbd;\n  }\n  .calendar-bar h4 {\n    text-transform: uppercase;\n    color: #fff;\n    font-size: 1.2rem;\n    margin-top: 0.5rem;\n    margin-bottom: 0.5rem;\n  }\n  .calendar-box {\n    background: #f2f2f3;\n    padding-top: 0.8rem;\n  }\n  .calendar-other-categories {\n    padding-top: 0.8rem;\n  }\n  /*.calendar-sidebar-content{\n  background: #ffffff;\n  }*/\n  .calendar-sidebar-title h4{\n    text-transform: uppercase;\n    color: #fff;\n    margin-top: 0.5rem;\n  }\n  .calendar-text-content p {\n    text-align: left;\n  }\n\n  .events-by-category .event-category a {\n    font-size: .9rem;\n  }\n  .events-by-category .event-category span.badge {\n    margin-right: 0.3rem;\n  }\n\n  /*.calendar ul {\n  padding: 15px;\n  background: #f3f3f3;\n  margin: 0;\n  }*/\n  .calendar .weekdays,\n  .calendar .days {\n    font-size: 12px;\n    color: #888;\n    text-align: center;\n    padding-top: 4px;\n    padding-bottom: 4px;\n  }\n  /*.calendar ul.days\n  {\n  border: 1px solid  #000;\n  padding: 10px 15px 3px;\n  background: #f9f9f9;\n}\n.calendar ul li {\nlist-style-type: none;\ndisplay: inline-block;\nwidth: 12.8%;\nheight: 25px;\nfont-size: 12px;\ncolor: #888;\ntext-align: center;\nmargin-bottom: 4px;\n\n}*/\n.calendar .event-category span {\n  font-size: 10px;\n  text-transform: uppercase;\n  font-weight: bold;\n}\n\n.calendar  a {\n  color: #0f654a;\n  display: block;\n  padding: 4px 0;\n  border: 1px solid  #f2f2f3;\n}\n.calendar a:hover {\n  border-radius: 5px;\n  /*background: #0f654a;*/\n  /*color: #fff;*/\n  text-decoration: none;\n  border: 1px solid  #0f654a;\n}\n.calendar  a.istoday {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n  /*padding: 2px 0;*/\n}\n.calendar  a.active {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n\n  background: #fff;\n  /*padding: 2px 0;*/\n}\n.calendar  a.noevents {\n  pointer-events: none;\n  color: #888;\n}\n.calendar  a.yes-events {\n  /*pointer-events: none;*/\n  color: #0f654a;\n}\n.calendar  a.no-events {\n  pointer-events: none;\n  color: #888;\n}\n\n.calendar-box caption{\n  font-weight:400;\n  margin-bottom: .3rem;\n}\n.calendar-caption p{\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n}\n\n.calendar-caption a {\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n  border: 1px none  #000;\n}\n.calendar-nav a {\n  border: none;\n}\n.calendar-nav a:hover {\n  border: none;\n}\n\n.calendar-title p {\n  font-weight: 400;\n  padding: 4px 0;\n}\n/*a#month-prev, a#month-next {\nborder: none;\n}\na#month-prev :hover, a#month-next :hover{\nborder: none;\n}*/\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-57b15ccf", module.exports)
-  } else {
-    hotAPI.update("_v-57b15ccf", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],33:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n")
-'use strict';
-
-module.exports = {
-  components: {},
-  props: ['item', '$index', 'targeteventid'],
-  data: function data() {
-    return {
       showBody: false,
-      eventRange: {}
+      showPanel: false,
+      initRecord: {
+        hsc_rewards: 0,
+        hsc_reviewed: 0
+      },
+      patchRecord: {
+        hsc_rewards: 0,
+        hsc_reviewed: 0
+      },
+      itemCurrent: 1,
+      currentDate: {},
+      record: {}
     };
   },
-  ready: function ready() {
-    if (this.item.id == this.targeteventid) {
-      this.showBody = true;
-    } else {
-      this.showBody = false;
-    }
-    console.log(this.item);
-    setTimeout(function () {
-      addeventatc.refresh();
-    }, 300);
+  created: function created() {
+    // this.hsc_rewards = this.item.approved;
+    // this.currentDate = moment();
+    // console.log('this.currentDate=' + this.currentDate)
   },
-
+  ready: function ready() {
+    this.initRecord.hsc_rewards = this.patchRecord.hsc_rewards = this.item.hsc_rewards;
+    this.initRecord.hsc_reviewed = this.patchRecord.hsc_reviewed = this.item.hsc_reviewed;
+  },
   computed: {
-
-    isOnCampus: function isOnCampus() {
-      if (this.item.building === null || this.item.building === "undefined") {
-        return false;
+    timeLeftStatus: function timeLeftStatus() {
+      var diff = this.timeDiffNow(this.item.end_date_time);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
       } else {
-        return true;
+        return 'time-is-long';
       }
     },
-    eventParticipation: function eventParticipation() {
-      switch (this.item.participants) {
-        case 'campus':
-          return 'Campus Only';
-          break;
-        case 'public':
-          return 'Open to Public';
-          break;
-        case 'students':
-          return 'Students Only';
-          break;
-        case 'invite':
-          return 'Invitation Only';
-          break;
-        case 'tickets':
-          return 'Tickets Required';
-          break;
-        default:
-          return '';
+
+    timeFromNowStatus: function timeFromNowStatus() {
+      var diff = this.timeDiffNow(this.item.start_date_time);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
       }
+    },
+    timefromNow: function timefromNow() {
+      return (0, _moment2.default)(this.item.start_date_time).fromNow();
+    },
+    timeLeft: function timeLeft() {
+
+      if ((0, _moment2.default)(this.item.start_date_time).isSameOrBefore((0, _moment2.default)())) {
+        var tlft = this.timeDiffNow(this.item.end_date_time);
+        // console.log('id='+ this.item.id + ' timeLeft'+tlft)
+        if (tlft < 0) {
+          this.itemCurrent = 0;
+          return 'Event Ended ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
+        } else {
+          this.itemCurrent = 1;
+          return ' and Ends ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
+        }
+      } else {
+        return '';
+      }
+    },
+    reviewedItem: function reviewedItem() {
+      // css class
+      return this.patchRecord.hsc_reviewed ? 'reviewed-item' : '';
+    },
+    liveTimeStatusClass: function liveTimeStatusClass() {
+      var timepartstatus = void 0;
+
+      if ((0, _moment2.default)().isBetween(this.item.start_date_time, this.item.end_date_time)) {
+        timepartstatus = 'ongoing';
+      } else {
+        if (this.timeDiffNow(this.item.start_date_time) < 0) {
+          timepartstatus = 'event-negative';
+        } else {
+          timepartstatus = 'event-positive';
+        }
+      }
+
+      return timepartstatus;
+    },
+    itemStatus: function itemStatus() {
+      var sclass = 'box-default';
+
+      // console.log('pid' + this.pid + ' index='+ this.index);
+      if (this.pid == 'items-live') {
+        if (this.index < 4) {
+          console.log('topitems');
+          sclass = 'topitems';
+        }
+      }
+      return sclass;
+    },
+    isApproved: function isApproved() {
+      return this.item.hsc_rewards;
+    },
+    isReviewed: function isReviewed() {
+      return this.item.hsc_reviewed;
+    },
+    itemPreviewPath: function itemPreviewPath() {
+      return '/preview/event/' + this.item.id;
     }
+
   },
   methods: {
-    toggleBody: function toggleBody(ev) {
+    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
+    // onFileChange(event) {
+    //     var files = this.$els.eventimg.files;
+    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
+    //     this.formInputs.attachment = event.target.file;
+    // },
+    // Handle the form submission here
+    timeDiffNow: function timeDiffNow(val) {
+      return (0, _moment2.default)(val).diff((0, _moment2.default)(), 'minutes');
+    },
+    changeIsReviewed: function changeIsReviewed() {
+      this.patchRecord.hsc_reviewed = this.item.hsc_reviewed === 0 ? 1 : 0;
+      this.updateItem();
+    },
+    changePoints: function changePoints() {
+      this.item.hsc_reviewed = this.patchRecord.hsc_reviewed = 1;
+      this.item.hsc_rewards = this.patchRecord.hsc_rewards;
+      this.updateItem();
+    },
+    updateItem: function updateItem() {
+      var _this = this;
 
+      //    this.patchRecord.hsc_rewards = this.item.hsc_rewards;
+      this.$http.patch('/api/event/updateitem/' + this.item.id, this.patchRecord, {
+        method: 'PATCH'
+      }).then(function (response) {
+        console.log('good?:: ' + (0, _stringify2.default)(response));
+        _this.checkAfterUpdate(response.data.newdata);
+      }, function (response) {
+        console.log('bad?' + response);
+      });
+    },
+    onCalendarChange: function onCalendarChange() {
+      // flatpickr directive method
+    },
+    checkAfterUpdate: function checkAfterUpdate(ndata) {
+      this.item.hsc_rewards = this.initRecord.hsc_rewards = ndata.hsc_rewards;
+      this.item.hsc_reviewed = this.initRecord.hsc_reviewed = ndata.hsc_reviewed;
+      console.log(ndata);
+    },
+    togglePanel: function togglePanel(ev) {
+      if (this.showPanel === false) {
+        this.showPanel = true;
+      } else {
+        this.showPanel = false;
+      }
+      console.log('this.showPanel' + this.showPanel);
+    },
+    toggleBody: function toggleBody(ev) {
       if (this.showBody == false) {
         this.showBody = true;
       } else {
         this.showBody = false;
       }
       console.log('toggleBody' + this.showBody);
-      setTimeout(function () {
-        addeventatc.refresh();
-      }, 300);
     },
-    sortKeyInt: function sortKeyInt($key) {
-      return parseInt($key);
+    doThis: function doThis(ev) {
+      this.item.hsc_rewards = this.hsc_rewards === 0 ? 1 : 0;
+      this.$emit('item-change', this.item);
     }
+    // addMediaFile: function(ev) {
+    //     var formData = new FormData();
+    //     formData.append('image', fileInput ,this.$els.finput.files[0]);
+    //
+    //     // var fileinputObject = this.$els.finput;
+    //     // console.log('fileinputObject.name= '+ fileinputObject.name)
+    //     // console.log('fileinputObject.value= '+ fileinputObject.value)
+    //     // console.log('fileinputObject.files= '+ fileinputObject.files[0])
+    //     console.log('ev ' + ev + 'this.item.id= '+  this.item)
+    // }
+
+  },
+  watch: {},
+  directives: {
+    // mydatedropper: require('../directives/mydatedropper.js')
+    // dtpicker: require('../directives/dtpicker.js')
   },
   filters: {
-    reformatDate: function reformatDate(value) {
-      var arr = value.split('-');
-      return arr[1] + '/' + arr[2] + '/' + arr[0];
-    },
-    calendarDate: function calendarDate(value) {
-      var arr = value.split(' ');
-      return arr[0];
-    },
-    amPm: function amPm(value) {
-      if (value) {
-        var arr = value.split(' ');
-
-        if (arr[1] == 'a.m.') {
-          return arr[0] + ' AM';
-        }
-        if (arr[1] == 'p.m.') {
-          return arr[0] + ' PM';
-        }
-        return value;
-      }
-      return;
-    },
     yesNo: function yesNo(value) {
       return value == true ? 'Yes' : 'No';
+    },
+    titleDay: function titleDay(value) {
+      return (0, _moment2.default)(value).format("ddd");
+    },
+    titleDate: function titleDate(value) {
+      return (0, _moment2.default)(value).format("MM/DD");
+    },
+    titleDateLong: function titleDateLong(value) {
+      return (0, _moment2.default)(value).format("ddd MM/DD");
     },
     hasHttp: function hasHttp(value) {
       // Checks if links given 'http'
       return value.substr(0, 4) == 'http' ? value : 'https://' + value;
     },
-    isNumeric: function isNumeric(n) {
-      return !isNaN(parseFloat(n)) && isFinite(n);
+    momentPretty: {
+      read: function read(val) {
+        console.log('read-val' + val);
+
+        return val ? (0, _moment2.default)(val).format('ddd, MM-DD-YYYY') : '';
+      },
+      write: function write(val, oldVal) {
+        console.log('write-val' + val + '--' + oldVal);
+
+        return (0, _moment2.default)(val).format('YYYY-MM-DD');
+      }
     }
   },
-  watch: {},
-  events: {}
+  events: {
+
+    // 'building-change':function(name) {
+    // 	this.newbuilding = '';
+    // 	this.newbuilding = name;
+    // 	console.log(this.newbuilding);
+    // },
+    // 'categories-change':function(list) {
+    // 	this.categories = '';
+    // 	this.categories = list;
+    // 	console.log(this.categories);
+    // }
+  }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <!-- AddEvent plugin script -->\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br><br>\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">\n      <template v-if=\"item.cost | isNumeric\">\n        Cost: {{item.cost | currency }}\n      </template>\n      <template v-else=\"\">\n        Cost: {{item.cost}}\n      </template>\n    </p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <p v-if=\"item.hsc_rewards\">Eagle Rewards: {{item.hsc_rewards}}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\"><a href=\"{{item.ticket_details_online | hasHttp}}\">Get Tickets Online</a></p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"reviewedItem\" _v-3c3019a4=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-3c3019a4=\"\">\n      <div class=\"box-header with-border\" _v-3c3019a4=\"\">\n        <div class=\"row\" _v-3c3019a4=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-3c3019a4=\"\">\n            <div class=\"box-date-top pull-left\" _v-3c3019a4=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <!-- REVIEWED switch -->\n          <div class=\"col-sm 12 col-md-4\" _v-3c3019a4=\"\">\n            <form class=\"form-inline pull-right\" _v-3c3019a4=\"\">\n              <div id=\"applabel\" class=\"form-group\" _v-3c3019a4=\"\">\n                <label _v-3c3019a4=\"\">reviewed:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-3c3019a4=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsReviewed\" :value.sync=\"patchRecord.hsc_reviewed\" _v-3c3019a4=\"\">\n                </vui-flip-switch>\n              </div>\n            </form>\n          </div><!-- /.col-sm-6 -->\n\n          <!-- POINTS -->\n          <div class=\"col-sm 12 col-md-4\" _v-3c3019a4=\"\">\n            <form class=\"form-inline pull-right\" v-on:submit.prevent=\"changePoints\" _v-3c3019a4=\"\">\n              <div class=\"form-group input-group\" _v-3c3019a4=\"\">\n                <span class=\"input-group-addon\" _v-3c3019a4=\"\"><label _v-3c3019a4=\"\">points:</label></span>\n                <input id=\"event-points-{{item.id}}\" type=\"number\" step=\"5\" class=\"form-control short-input\" min=\"0\" placeholder=\"0\" v-on:change.prevent=\"changePoints\" v-model:value=\"patchRecord.hsc_rewards\" _v-3c3019a4=\"\">\n                <span class=\"input-group-addon btn bg-orange\" v-on:click.prevent=\"changePoints\" _v-3c3019a4=\"\"><i class=\"fa fa-save\" _v-3c3019a4=\"\"></i></span>\n              </div>\n            </form>\n          </div><!-- /.col-sm-6 -->\n        </div><!-- /.row -->\n\n      <div class=\"row\" _v-3c3019a4=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-3c3019a4=\"\">\n          <div class=\"col-sm-12\" _v-3c3019a4=\"\">\n            <h6 class=\"box-title\" _v-3c3019a4=\"\">{{item.title}}</h6>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-3c3019a4=\"\">\n      <p _v-3c3019a4=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-3c3019a4=\"\">All Day Event</p>\n      </template>\n      <hr _v-3c3019a4=\"\">\n      <div class=\"item-info\" _v-3c3019a4=\"\">\n        <p _v-3c3019a4=\"\">Title: {{item.title}}</p>\n        <p v-if\"item.short_title\"=\"\" _v-3c3019a4=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-3c3019a4=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-3c3019a4=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-3c3019a4=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-3c3019a4=\"\">\n        <template v-else=\"\">\n          <p _v-3c3019a4=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-3c3019a4=\"\">Contact:</p>\n          <ul _v-3c3019a4=\"\">\n            <li v-if=\"item.contact_person\" _v-3c3019a4=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-3c3019a4=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-3c3019a4=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-3c3019a4=\"\">For more information, visit:</p>\n          <ul _v-3c3019a4=\"\">\n            <li _v-3c3019a4=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-3c3019a4=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-3c3019a4=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-3c3019a4=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-3c3019a4=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-3c3019a4=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-3c3019a4=\"\">\n        <p v-if=\"item.free\" _v-3c3019a4=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-3c3019a4=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-3c3019a4=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-3c3019a4=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-3c3019a4=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-3c3019a4=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-3c3019a4=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-3c3019a4=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-3c3019a4=\"\">\n        <p _v-3c3019a4=\"\">Submitted by: {{item.submitter}}</p>\n        <p _v-3c3019a4=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <p _v-3c3019a4=\"\">LBC Reviewed: {{item.lbc_reviewed | yesNo }}</p>\n        <p _v-3c3019a4=\"\">Eagle Rewards: {{item.hsc_rewards}}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div class=\"box-footer list-footer\" _v-3c3019a4=\"\">\n      <div class=\"row\" _v-3c3019a4=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-3c3019a4=\"\">\n          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-3c3019a4=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-3c3019a4=\"\">{{timeLeft}}</span>\n\n\n\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-3c3019a4=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-3c3019a4=\"\">\n\n            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-3c3019a4] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-3c3019a4] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-3c3019a4] {\n  padding: 3px;\n}\n.box-footer[_v-3c3019a4] {\n  padding: 3px;\n}\nh5.box-footer[_v-3c3019a4] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-3c3019a4] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-3c3019a4] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-3c3019a4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-3c3019a4] {\n  margin-bottom: 2px;\n}\n#applabel[_v-3c3019a4]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-3c3019a4],\n.btn-group-vertical[_v-3c3019a4] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-3c3019a4] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-3c3019a4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-3c3019a4] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n\n.form-group[_v-3c3019a4] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-3c3019a4]{\n  margin-bottom: 0;\n}\n.topitems[_v-3c3019a4] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-3c3019a4] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-3c3019a4] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-3c3019a4] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.reviewed-item[_v-3c3019a4] {\n  border-left: 6px solid #605CA8;\n  padding-left: 2px;\n}\n.time-is-short[_v-3c3019a4] {\n  color: #F39C12;\n}\n.time-is-long[_v-3c3019a4] {\n  color: #999999;\n}\n.time-is-over[_v-3c3019a4] {\n  color: #9B59B6;\n}\n.short-input[_v-3c3019a4] {\n  width: 8rem;\n  max-width: 8rem;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-378a9af6", module.exports)
+    hotAPI.createRecord("_v-3c3019a4", module.exports)
   } else {
-    hotAPI.update("_v-378a9af6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-3c3019a4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){
+},{"./VuiFlipSwitch.vue":14,"babel-runtime/core-js/json/stringify":1,"moment":6,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],14:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
 
-var _EventView = require('./components/EventView.vue');
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        disabled: Boolean,
+        checked: [Boolean, Number],
+        value: Number,
+        readonly: Boolean
+    },
+    ready: function ready() {
+        this.value == !!this.checked;
+    },
 
-var _EventView2 = _interopRequireDefault(_EventView);
+    data: function data() {
+        return {
+            // compval: $('#slct').val()
+        };
+    },
+    methods: {
+        vuiValueChange: function vuiValueChange(event) {
+            console.log('this.value' + this.value);
+        }
+    },
+    events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :readonly=\"readonly\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
+  } else {
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],15:[function(require,module,exports){
+'use strict';
+
+var _flatpickr = require('flatpickr');
+
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+    twoWay: true,
+    priority: 1000,
+    params: ['initval'],
+    bind: function bind() {
+        var self = this;
+        var options = { defaultDate: self.params.initval,
+            enableTime: false,
+            altFormat: "m-d-Y",
+            altInput: true,
+            altInputClass: "form-control",
+            dateFormat: "Y-m-d" };
+        options.onChange = this.onChange.bind(this);
+        this.pickr = (0, _flatpickr2.default)(this.el, options);
+    },
+    onChange: function onChange(dateObj, dateStr) {
+        this.vm.onCalendarChange();
+
+        this.set(dateStr);
+    }
+};
+
+},{"flatpickr":5}],16:[function(require,module,exports){
+'use strict';
+
+var _vueResource = require('vue-resource');
+
+var _vueResource2 = _interopRequireDefault(_vueResource);
+
+var _EventHscQueue = require('./components/EventHscQueue.vue');
+
+var _EventHscQueue2 = _interopRequireDefault(_EventHscQueue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('vue');
 
-var VueResource = require('vue-resource');
-Vue.use(VueResource);
+Vue.use(_vueResource2.default);
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
-var VueRouter = require('vue-router');
-Vue.use(VueRouter);
+// var moment = require('moment');
+
 
 new Vue({
-    el: '#vue-caleventview',
-
-    components: { EventView: _EventView2.default },
-
+    el: '#vue-event-queue',
+    components: { EventQueue: _EventHscQueue2.default },
+    // http: {
+    //     headers: {
+    //         // You could also store your token in a global object,
+    //         // and reference it here. APP.token
+    //         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+    //     }
+    //     },
     ready: function ready() {
-        // alert('vue ready');
+        console.log('new Vue Event HSC Queue ready');
     }
 });
 
-},{"./components/EventView.vue":30,"vue":28,"vue-resource":26,"vue-router":27}]},{},[34]);
+},{"./components/EventHscQueue.vue":12,"vue":10,"vue-resource":9}]},{},[16]);
 
-//# sourceMappingURL=vue-caleventview.js.map
+//# sourceMappingURL=vue-event-hscqueue.js.map
