@@ -25,3 +25,12 @@ $factory->define(Emutoday\Event::class, function (Faker\Generator $faker) {
     // 'author_id' =>
   ];
 });
+
+$factory->define(Emutoday\Email::class, function (Faker\Generator $faker) {
+  return [
+    'title' => $faker->name,
+    'frequency' => $faker->randomDigitNotNull,
+    'send_at' => $faker->dateTimeThisMonth,
+    'end_at' => $faker->dateTimeThisMonth,
+  ];
+});

@@ -163,6 +163,7 @@ return [
         Snowfire\Beautymail\BeautymailServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Roumen\Feed\FeedServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class,
 
         /*
          * Application Service Providers...
