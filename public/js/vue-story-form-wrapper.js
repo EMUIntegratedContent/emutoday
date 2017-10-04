@@ -21351,11 +21351,14 @@ module.exports = {
       }
     },
     editorType: function editorType() {
-      if (this.isAdmin) {
-        return 'admin';
+      /*
+      if(this.isAdmin){
+        return 'admin'
       } else {
-        return 'simple';
+        return 'simple'
       }
+      */
+      return 'admin';
     },
     s_types: function s_types() {
       // var data = localStorage[key];
@@ -21423,6 +21426,7 @@ module.exports = {
 
     nowOnReload: function nowOnReload() {
       var newurl = '/admin/' + this.qtype + '/' + this.gtype + '/' + this.response_stype + '/' + this.response_record_id + '/edit';
+      this.response_record_id + '/edit';
       document.location = newurl;
     },
 
@@ -21430,7 +21434,6 @@ module.exports = {
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
-
       this.recordId = this.currentRecordId;
       this.recordexists = true;
       this.fetchCurrentRecord();
@@ -21748,6 +21751,12 @@ module.exports = {
 
         _this12.response_record_id = response.data.newdata.record_id;
         _this12.response_stype = response.data.newdata.stype;
+
+        if (_this12.newform) {
+          _this12.nowOnReload();
+        } else {
+          _this12.onRefresh();
+        }
       }, function (response) {
         //error callback
         _this12.formErrors = response.data.error.message;

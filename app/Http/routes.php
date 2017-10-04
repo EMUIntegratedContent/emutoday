@@ -107,7 +107,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     })  ;
 
     Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
-        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();
+        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->orderBy('last_Name', 'asc')->get();
     });
 
     Route::get('contactlist', function() { // is there a way to concat first_name and last_name here?

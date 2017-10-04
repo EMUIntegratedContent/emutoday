@@ -74,221 +74,194 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 },{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],16:[function(require,module,exports){
 
 },{}],17:[function(require,module,exports){
-var core = require('../../modules/_core');
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+var core  = require('../../modules/_core')
+  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
-
 },{"../../modules/_core":35}],18:[function(require,module,exports){
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
-module.exports = function create(P, D) {
+module.exports = function create(P, D){
   return $Object.create(P, D);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.create":87}],19:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.create":88}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-properties');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperties(T, D) {
+module.exports = function defineProperties(T, D){
   return $Object.defineProperties(T, D);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.define-properties":88}],20:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.define-properties":89}],20:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc) {
+module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.define-property":89}],21:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.define-property":90}],21:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-descriptor');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyDescriptor(it, key) {
+module.exports = function getOwnPropertyDescriptor(it, key){
   return $Object.getOwnPropertyDescriptor(it, key);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-descriptor":90}],22:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-descriptor":91}],22:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-names');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyNames(it) {
+module.exports = function getOwnPropertyNames(it){
   return $Object.getOwnPropertyNames(it);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-names":91}],23:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-names":92}],23:[function(require,module,exports){
 require('../../modules/es6.symbol');
 module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
-
-},{"../../modules/_core":35,"../../modules/es6.symbol":98}],24:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.symbol":99}],24:[function(require,module,exports){
 require('../../modules/es6.object.get-prototype-of');
 module.exports = require('../../modules/_core').Object.getPrototypeOf;
-
-},{"../../modules/_core":35,"../../modules/es6.object.get-prototype-of":92}],25:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-prototype-of":93}],25:[function(require,module,exports){
 require('../../modules/es6.object.is-extensible');
 module.exports = require('../../modules/_core').Object.isExtensible;
-
-},{"../../modules/_core":35,"../../modules/es6.object.is-extensible":93}],26:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.is-extensible":94}],26:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
-
-},{"../../modules/_core":35,"../../modules/es6.object.keys":94}],27:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.keys":95}],27:[function(require,module,exports){
 require('../../modules/es6.object.prevent-extensions');
 module.exports = require('../../modules/_core').Object.preventExtensions;
-
-},{"../../modules/_core":35,"../../modules/es6.object.prevent-extensions":95}],28:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.prevent-extensions":96}],28:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-
-},{"../../modules/_core":35,"../../modules/es6.object.to-string":96,"../../modules/es6.symbol":98,"../../modules/es7.symbol.async-iterator":99,"../../modules/es7.symbol.observable":100}],29:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.to-string":97,"../../modules/es6.symbol":99,"../../modules/es7.symbol.async-iterator":100,"../../modules/es7.symbol.observable":101}],29:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":97,"../../modules/web.dom.iterable":101}],30:[function(require,module,exports){
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+},{"../../modules/_wks-ext":85,"../../modules/es6.string.iterator":98,"../../modules/web.dom.iterable":102}],30:[function(require,module,exports){
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-
 },{}],31:[function(require,module,exports){
-module.exports = function () { /* empty */ };
-
+module.exports = function(){ /* empty */ };
 },{}],32:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-
 },{"./_is-object":51}],33:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = require('./_to-iobject');
-var toLength = require('./_to-length');
-var toAbsoluteIndex = require('./_to-absolute-index');
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
+var toIObject = require('./_to-iobject')
+  , toLength  = require('./_to-length')
+  , toIndex   = require('./_to-index');
+module.exports = function(IS_INCLUDES){
+  return function($this, el, fromIndex){
+    var O      = toIObject($this)
+      , length = toLength(O.length)
+      , index  = toIndex(fromIndex, length)
+      , value;
     // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
+    if(IS_INCLUDES && el != el)while(length > index){
       value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
+      if(value != value)return true;
+    // Array#toIndex ignores holes, Array#includes - not
+    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+      if(O[index] === el)return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-
-},{"./_to-absolute-index":76,"./_to-iobject":78,"./_to-length":79}],34:[function(require,module,exports){
+},{"./_to-index":77,"./_to-iobject":79,"./_to-length":80}],34:[function(require,module,exports){
 var toString = {}.toString;
 
-module.exports = function (it) {
+module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-
 },{}],35:[function(require,module,exports){
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 },{}],36:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
+module.exports = function(fn, that, length){
   aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
       return fn.call(that, a);
     };
-    case 2: return function (a, b) {
+    case 2: return function(a, b){
       return fn.call(that, a, b);
     };
-    case 3: return function (a, b, c) {
+    case 3: return function(a, b, c){
       return fn.call(that, a, b, c);
     };
   }
-  return function (/* ...args */) {
+  return function(/* ...args */){
     return fn.apply(that, arguments);
   };
 };
-
 },{"./_a-function":30}],37:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-
 },{}],38:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_fails')(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_fails":43}],39:[function(require,module,exports){
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
+var isObject = require('./_is-object')
+  , document = require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-
 },{"./_global":44,"./_is-object":51}],40:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-
 },{}],41:[function(require,module,exports){
 // all enumerable object keys, includes symbols
-var getKeys = require('./_object-keys');
-var gOPS = require('./_object-gops');
-var pIE = require('./_object-pie');
-module.exports = function (it) {
-  var result = getKeys(it);
-  var getSymbols = gOPS.f;
-  if (getSymbols) {
-    var symbols = getSymbols(it);
-    var isEnum = pIE.f;
-    var i = 0;
-    var key;
-    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+var getKeys = require('./_object-keys')
+  , gOPS    = require('./_object-gops')
+  , pIE     = require('./_object-pie');
+module.exports = function(it){
+  var result     = getKeys(it)
+    , getSymbols = gOPS.f;
+  if(getSymbols){
+    var symbols = getSymbols(it)
+      , isEnum  = pIE.f
+      , i       = 0
+      , key;
+    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
   } return result;
 };
+},{"./_object-gops":65,"./_object-keys":68,"./_object-pie":69}],42:[function(require,module,exports){
+var global    = require('./_global')
+  , core      = require('./_core')
+  , ctx       = require('./_ctx')
+  , hide      = require('./_hide')
+  , PROTOTYPE = 'prototype';
 
-},{"./_object-gops":64,"./_object-keys":67,"./_object-pie":68}],42:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if(own && key in exports)continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -296,11 +269,11 @@ var $export = function (type, name, source) {
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -311,10 +284,10 @@ var $export = function (type, name, source) {
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
+    if(IS_PROTO){
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
     }
   }
 };
@@ -326,241 +299,232 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
-
 },{"./_core":35,"./_ctx":36,"./_global":44,"./_hide":46}],43:[function(require,module,exports){
-module.exports = function (exec) {
+module.exports = function(exec){
   try {
     return !!exec();
-  } catch (e) {
+  } catch(e){
     return true;
   }
 };
-
 },{}],44:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 },{}],45:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
+module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-
 },{}],46:[function(require,module,exports){
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
+var dP         = require('./_object-dp')
+  , createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
+} : function(object, key, value){
   object[key] = value;
   return object;
 };
-
-},{"./_descriptors":38,"./_object-dp":59,"./_property-desc":70}],47:[function(require,module,exports){
-var document = require('./_global').document;
-module.exports = document && document.documentElement;
-
+},{"./_descriptors":38,"./_object-dp":60,"./_property-desc":71}],47:[function(require,module,exports){
+module.exports = require('./_global').document && document.documentElement;
 },{"./_global":44}],48:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function(){
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_descriptors":38,"./_dom-create":39,"./_fails":43}],49:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-
 },{"./_cof":34}],50:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
-module.exports = Array.isArray || function isArray(arg) {
+module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
-
 },{"./_cof":34}],51:[function(require,module,exports){
-module.exports = function (it) {
+module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
 },{}],52:[function(require,module,exports){
 'use strict';
-var create = require('./_object-create');
-var descriptor = require('./_property-desc');
-var setToStringTag = require('./_set-to-string-tag');
-var IteratorPrototype = {};
+var create         = require('./_object-create')
+  , descriptor     = require('./_property-desc')
+  , setToStringTag = require('./_set-to-string-tag')
+  , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function(){ return this; });
 
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+module.exports = function(Constructor, NAME, next){
+  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-
-},{"./_hide":46,"./_object-create":58,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],53:[function(require,module,exports){
+},{"./_hide":46,"./_object-create":59,"./_property-desc":71,"./_set-to-string-tag":73,"./_wks":86}],53:[function(require,module,exports){
 'use strict';
-var LIBRARY = require('./_library');
-var $export = require('./_export');
-var redefine = require('./_redefine');
-var hide = require('./_hide');
-var has = require('./_has');
-var Iterators = require('./_iterators');
-var $iterCreate = require('./_iter-create');
-var setToStringTag = require('./_set-to-string-tag');
-var getPrototypeOf = require('./_object-gpo');
-var ITERATOR = require('./_wks')('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
+var LIBRARY        = require('./_library')
+  , $export        = require('./_export')
+  , redefine       = require('./_redefine')
+  , hide           = require('./_hide')
+  , has            = require('./_has')
+  , Iterators      = require('./_iterators')
+  , $iterCreate    = require('./_iter-create')
+  , setToStringTag = require('./_set-to-string-tag')
+  , getPrototypeOf = require('./_object-gpo')
+  , ITERATOR       = require('./_wks')('iterator')
+  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  , FF_ITERATOR    = '@@iterator'
+  , KEYS           = 'keys'
+  , VALUES         = 'values';
 
-var returnThis = function () { return this; };
+var returnThis = function(){ return this; };
 
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
+  var getMethod = function(kind){
+    if(!BUGGY && kind in proto)return proto[kind];
+    switch(kind){
+      case KEYS: return function keys(){ return new Constructor(this, kind); };
+      case VALUES: return function values(){ return new Constructor(this, kind); };
+    } return function entries(){ return new Constructor(this, kind); };
   };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
+  var TAG        = NAME + ' Iterator'
+    , DEF_VALUES = DEFAULT == VALUES
+    , VALUES_BUG = false
+    , proto      = Base.prototype
+    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+    , $default   = $native || getMethod(DEFAULT)
+    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+    , methods, key, IteratorPrototype;
   // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+  if($anyNative){
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+    if(IteratorPrototype !== Object.prototype){
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
+  if(DEF_VALUES && $native && $native.name !== VALUES){
     VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
+    $default = function values(){ return $native.call(this); };
   }
   // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
+  Iterators[TAG]  = returnThis;
+  if(DEFAULT){
     methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
+      values:  DEF_VALUES ? $default : getMethod(VALUES),
+      keys:    IS_SET     ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
+    if(FORCED)for(key in methods){
+      if(!(key in proto))redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-
-},{"./_export":42,"./_has":45,"./_hide":46,"./_iter-create":52,"./_iterators":55,"./_library":56,"./_object-gpo":65,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],54:[function(require,module,exports){
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
+},{"./_export":42,"./_has":45,"./_hide":46,"./_iter-create":52,"./_iterators":55,"./_library":57,"./_object-gpo":66,"./_redefine":72,"./_set-to-string-tag":73,"./_wks":86}],54:[function(require,module,exports){
+module.exports = function(done, value){
+  return {value: value, done: !!done};
 };
-
 },{}],55:[function(require,module,exports){
 module.exports = {};
-
 },{}],56:[function(require,module,exports){
+var getKeys   = require('./_object-keys')
+  , toIObject = require('./_to-iobject');
+module.exports = function(object, el){
+  var O      = toIObject(object)
+    , keys   = getKeys(O)
+    , length = keys.length
+    , index  = 0
+    , key;
+  while(length > index)if(O[key = keys[index++]] === el)return key;
+};
+},{"./_object-keys":68,"./_to-iobject":79}],57:[function(require,module,exports){
 module.exports = true;
-
-},{}],57:[function(require,module,exports){
-var META = require('./_uid')('meta');
-var isObject = require('./_is-object');
-var has = require('./_has');
-var setDesc = require('./_object-dp').f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
+},{}],58:[function(require,module,exports){
+var META     = require('./_uid')('meta')
+  , isObject = require('./_is-object')
+  , has      = require('./_has')
+  , setDesc  = require('./_object-dp').f
+  , id       = 0;
+var isExtensible = Object.isExtensible || function(){
   return true;
 };
-var FREEZE = !require('./_fails')(function () {
+var FREEZE = !require('./_fails')(function(){
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
+var setMeta = function(it){
+  setDesc(it, META, {value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  } });
+  }});
 };
-var fastKey = function (it, create) {
+var fastKey = function(it, create){
   // return primitive with prefix
-  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!has(it, META)) {
+  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
+    if(!isExtensible(it))return 'F';
     // not necessary to add metadata
-    if (!create) return 'E';
+    if(!create)return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function (it, create) {
-  if (!has(it, META)) {
+var getWeak = function(it, create){
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
+    if(!isExtensible(it))return true;
     // not necessary to add metadata
-    if (!create) return false;
+    if(!create)return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+var onFreeze = function(it){
+  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
+  KEY:      META,
+  NEED:     false,
+  fastKey:  fastKey,
+  getWeak:  getWeak,
   onFreeze: onFreeze
 };
-
-},{"./_fails":43,"./_has":45,"./_is-object":51,"./_object-dp":59,"./_uid":82}],58:[function(require,module,exports){
+},{"./_fails":43,"./_has":45,"./_is-object":51,"./_object-dp":60,"./_uid":83}],59:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = require('./_an-object');
-var dPs = require('./_object-dps');
-var enumBugKeys = require('./_enum-bug-keys');
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
+var anObject    = require('./_an-object')
+  , dPs         = require('./_object-dps')
+  , enumBugKeys = require('./_enum-bug-keys')
+  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
+  , Empty       = function(){ /* empty */ }
+  , PROTOTYPE   = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
+var createDict = function(){
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = require('./_dom-create')('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
+  var iframe = require('./_dom-create')('iframe')
+    , i      = enumBugKeys.length
+    , lt     = '<'
+    , gt     = '>'
+    , iframeDocument;
   iframe.style.display = 'none';
   require('./_html').appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -571,15 +535,15 @@ var createDict = function () {
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties) {
+module.exports = Object.create || function create(O, Properties){
   var result;
-  if (O !== null) {
+  if(O !== null){
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
+    result = new Empty;
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -587,318 +551,292 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":32,"./_dom-create":39,"./_enum-bug-keys":40,"./_html":47,"./_object-dps":60,"./_shared-key":73}],59:[function(require,module,exports){
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
+},{"./_an-object":32,"./_dom-create":39,"./_enum-bug-keys":40,"./_html":47,"./_object-dps":61,"./_shared-key":74}],60:[function(require,module,exports){
+var anObject       = require('./_an-object')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , toPrimitive    = require('./_to-primitive')
+  , dP             = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
+},{"./_an-object":32,"./_descriptors":38,"./_ie8-dom-define":48,"./_to-primitive":82}],61:[function(require,module,exports){
+var dP       = require('./_object-dp')
+  , anObject = require('./_an-object')
+  , getKeys  = require('./_object-keys');
 
-},{"./_an-object":32,"./_descriptors":38,"./_ie8-dom-define":48,"./_to-primitive":81}],60:[function(require,module,exports){
-var dP = require('./_object-dp');
-var anObject = require('./_an-object');
-var getKeys = require('./_object-keys');
-
-module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties){
   anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+  var keys   = getKeys(Properties)
+    , length = keys.length
+    , i = 0
+    , P;
+  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
+},{"./_an-object":32,"./_descriptors":38,"./_object-dp":60,"./_object-keys":68}],62:[function(require,module,exports){
+var pIE            = require('./_object-pie')
+  , createDesc     = require('./_property-desc')
+  , toIObject      = require('./_to-iobject')
+  , toPrimitive    = require('./_to-primitive')
+  , has            = require('./_has')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , gOPD           = Object.getOwnPropertyDescriptor;
 
-},{"./_an-object":32,"./_descriptors":38,"./_object-dp":59,"./_object-keys":67}],61:[function(require,module,exports){
-var pIE = require('./_object-pie');
-var createDesc = require('./_property-desc');
-var toIObject = require('./_to-iobject');
-var toPrimitive = require('./_to-primitive');
-var has = require('./_has');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var gOPD = Object.getOwnPropertyDescriptor;
-
-exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P){
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return gOPD(O, P);
-  } catch (e) { /* empty */ }
-  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch(e){ /* empty */ }
+  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 };
-
-},{"./_descriptors":38,"./_has":45,"./_ie8-dom-define":48,"./_object-pie":68,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],62:[function(require,module,exports){
+},{"./_descriptors":38,"./_has":45,"./_ie8-dom-define":48,"./_object-pie":69,"./_property-desc":71,"./_to-iobject":79,"./_to-primitive":82}],63:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = require('./_to-iobject');
-var gOPN = require('./_object-gopn').f;
-var toString = {}.toString;
+var toIObject = require('./_to-iobject')
+  , gOPN      = require('./_object-gopn').f
+  , toString  = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function (it) {
+var getWindowNames = function(it){
   try {
     return gOPN(it);
-  } catch (e) {
+  } catch(e){
     return windowNames.slice();
   }
 };
 
-module.exports.f = function getOwnPropertyNames(it) {
+module.exports.f = function getOwnPropertyNames(it){
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":63,"./_to-iobject":78}],63:[function(require,module,exports){
+},{"./_object-gopn":64,"./_to-iobject":79}],64:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = require('./_object-keys-internal');
-var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
+var $keys      = require('./_object-keys-internal')
+  , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
 };
-
-},{"./_enum-bug-keys":40,"./_object-keys-internal":66}],64:[function(require,module,exports){
+},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],65:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
-
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = require('./_has');
-var toObject = require('./_to-object');
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-var ObjectProto = Object.prototype;
+var has         = require('./_has')
+  , toObject    = require('./_to-object')
+  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
+  , ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function (O) {
+module.exports = Object.getPrototypeOf || function(O){
   O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+  if(has(O, IE_PROTO))return O[IE_PROTO];
+  if(typeof O.constructor == 'function' && O instanceof O.constructor){
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
+},{"./_has":45,"./_shared-key":74,"./_to-object":81}],67:[function(require,module,exports){
+var has          = require('./_has')
+  , toIObject    = require('./_to-iobject')
+  , arrayIndexOf = require('./_array-includes')(false)
+  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
 
-},{"./_has":45,"./_shared-key":73,"./_to-object":80}],66:[function(require,module,exports){
-var has = require('./_has');
-var toIObject = require('./_to-iobject');
-var arrayIndexOf = require('./_array-includes')(false);
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+module.exports = function(object, names){
+  var O      = toIObject(object)
+    , i      = 0
+    , result = []
+    , key;
+  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
+  while(names.length > i)if(has(O, key = names[i++])){
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
-
-},{"./_array-includes":33,"./_has":45,"./_shared-key":73,"./_to-iobject":78}],67:[function(require,module,exports){
+},{"./_array-includes":33,"./_has":45,"./_shared-key":74,"./_to-iobject":79}],68:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = require('./_object-keys-internal');
-var enumBugKeys = require('./_enum-bug-keys');
+var $keys       = require('./_object-keys-internal')
+  , enumBugKeys = require('./_enum-bug-keys');
 
-module.exports = Object.keys || function keys(O) {
+module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
-
-},{"./_enum-bug-keys":40,"./_object-keys-internal":66}],68:[function(require,module,exports){
+},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],69:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
-var $export = require('./_export');
-var core = require('./_core');
-var fails = require('./_fails');
-module.exports = function (KEY, exec) {
-  var fn = (core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
+var $export = require('./_export')
+  , core    = require('./_core')
+  , fails   = require('./_fails');
+module.exports = function(KEY, exec){
+  var fn  = (core.Object || {})[KEY] || Object[KEY]
+    , exp = {};
   exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
 };
-
-},{"./_core":35,"./_export":42,"./_fails":43}],70:[function(require,module,exports){
-module.exports = function (bitmap, value) {
+},{"./_core":35,"./_export":42,"./_fails":43}],71:[function(require,module,exports){
+module.exports = function(bitmap, value){
   return {
-    enumerable: !(bitmap & 1),
+    enumerable  : !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+    writable    : !(bitmap & 4),
+    value       : value
   };
 };
-
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = require('./_hide');
+},{"./_hide":46}],73:[function(require,module,exports){
+var def = require('./_object-dp').f
+  , has = require('./_has')
+  , TAG = require('./_wks')('toStringTag');
 
-},{"./_hide":46}],72:[function(require,module,exports){
-var def = require('./_object-dp').f;
-var has = require('./_has');
-var TAG = require('./_wks')('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+module.exports = function(it, tag, stat){
+  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-
-},{"./_has":45,"./_object-dp":59,"./_wks":85}],73:[function(require,module,exports){
-var shared = require('./_shared')('keys');
-var uid = require('./_uid');
-module.exports = function (key) {
+},{"./_has":45,"./_object-dp":60,"./_wks":86}],74:[function(require,module,exports){
+var shared = require('./_shared')('keys')
+  , uid    = require('./_uid');
+module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
-
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
-var global = require('./_global');
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
+},{"./_shared":75,"./_uid":83}],75:[function(require,module,exports){
+var global = require('./_global')
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-
-},{"./_global":44}],75:[function(require,module,exports){
-var toInteger = require('./_to-integer');
-var defined = require('./_defined');
+},{"./_global":44}],76:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , defined   = require('./_defined');
 // true  -> String#at
 // false -> String#codePointAt
-module.exports = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(defined(that));
-    var i = toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+module.exports = function(TO_STRING){
+  return function(that, pos){
+    var s = String(defined(that))
+      , i = toInteger(pos)
+      , l = s.length
+      , a, b;
+    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-
-},{"./_defined":37,"./_to-integer":77}],76:[function(require,module,exports){
-var toInteger = require('./_to-integer');
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
+},{"./_defined":37,"./_to-integer":78}],77:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , max       = Math.max
+  , min       = Math.min;
+module.exports = function(index, length){
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-
-},{"./_to-integer":77}],77:[function(require,module,exports){
+},{"./_to-integer":78}],78:[function(require,module,exports){
 // 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
+var ceil  = Math.ceil
+  , floor = Math.floor;
+module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject');
-var defined = require('./_defined');
-module.exports = function (it) {
+var IObject = require('./_iobject')
+  , defined = require('./_defined');
+module.exports = function(it){
   return IObject(defined(it));
 };
-
-},{"./_defined":37,"./_iobject":49}],79:[function(require,module,exports){
+},{"./_defined":37,"./_iobject":49}],80:[function(require,module,exports){
 // 7.1.15 ToLength
-var toInteger = require('./_to-integer');
-var min = Math.min;
-module.exports = function (it) {
+var toInteger = require('./_to-integer')
+  , min       = Math.min;
+module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-
-},{"./_to-integer":77}],80:[function(require,module,exports){
+},{"./_to-integer":78}],81:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
-module.exports = function (it) {
+module.exports = function(it){
   return Object(defined(it));
 };
-
-},{"./_defined":37}],81:[function(require,module,exports){
+},{"./_defined":37}],82:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function(it, S){
+  if(!isObject(it))return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-
-},{"./_is-object":51}],82:[function(require,module,exports){
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
+},{"./_is-object":51}],83:[function(require,module,exports){
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-
-},{}],83:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var LIBRARY = require('./_library');
-var wksExt = require('./_wks-ext');
-var defineProperty = require('./_object-dp').f;
-module.exports = function (name) {
+},{}],84:[function(require,module,exports){
+var global         = require('./_global')
+  , core           = require('./_core')
+  , LIBRARY        = require('./_library')
+  , wksExt         = require('./_wks-ext')
+  , defineProperty = require('./_object-dp').f;
+module.exports = function(name){
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 };
-
-},{"./_core":35,"./_global":44,"./_library":56,"./_object-dp":59,"./_wks-ext":84}],84:[function(require,module,exports){
+},{"./_core":35,"./_global":44,"./_library":57,"./_object-dp":60,"./_wks-ext":85}],85:[function(require,module,exports){
 exports.f = require('./_wks');
+},{"./_wks":86}],86:[function(require,module,exports){
+var store      = require('./_shared')('wks')
+  , uid        = require('./_uid')
+  , Symbol     = require('./_global').Symbol
+  , USE_SYMBOL = typeof Symbol == 'function';
 
-},{"./_wks":85}],85:[function(require,module,exports){
-var store = require('./_shared')('wks');
-var uid = require('./_uid');
-var Symbol = require('./_global').Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
+var $exports = module.exports = function(name){
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-
-},{"./_global":44,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+},{"./_global":44,"./_shared":75,"./_uid":83}],87:[function(require,module,exports){
 'use strict';
-var addToUnscopables = require('./_add-to-unscopables');
-var step = require('./_iter-step');
-var Iterators = require('./_iterators');
-var toIObject = require('./_to-iobject');
+var addToUnscopables = require('./_add-to-unscopables')
+  , step             = require('./_iter-step')
+  , Iterators        = require('./_iterators')
+  , toIObject        = require('./_to-iobject');
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = require('./_iter-define')(Array, 'Array', function (iterated, kind) {
+module.exports = require('./_iter-define')(Array, 'Array', function(iterated, kind){
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
+}, function(){
+  var O     = this._t
+    , kind  = this._k
+    , index = this._i++;
+  if(!O || index >= O.length){
     this._t = undefined;
     return step(1);
   }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
+  if(kind == 'keys'  )return step(0, index);
+  if(kind == 'values')return step(0, O[index]);
   return step(0, [index, O[index]]);
 }, 'values');
 
@@ -908,288 +846,278 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-
-},{"./_add-to-unscopables":31,"./_iter-define":53,"./_iter-step":54,"./_iterators":55,"./_to-iobject":78}],87:[function(require,module,exports){
-var $export = require('./_export');
+},{"./_add-to-unscopables":31,"./_iter-define":53,"./_iter-step":54,"./_iterators":55,"./_to-iobject":79}],88:[function(require,module,exports){
+var $export = require('./_export')
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', { create: require('./_object-create') });
-
-},{"./_export":42,"./_object-create":58}],88:[function(require,module,exports){
+$export($export.S, 'Object', {create: require('./_object-create')});
+},{"./_export":42,"./_object-create":59}],89:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperties: require('./_object-dps') });
-
-},{"./_descriptors":38,"./_export":42,"./_object-dps":60}],89:[function(require,module,exports){
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperties: require('./_object-dps')});
+},{"./_descriptors":38,"./_export":42,"./_object-dps":61}],90:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
-
-},{"./_descriptors":38,"./_export":42,"./_object-dp":59}],90:[function(require,module,exports){
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
+},{"./_descriptors":38,"./_export":42,"./_object-dp":60}],91:[function(require,module,exports){
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject = require('./_to-iobject');
-var $getOwnPropertyDescriptor = require('./_object-gopd').f;
+var toIObject                 = require('./_to-iobject')
+  , $getOwnPropertyDescriptor = require('./_object-gopd').f;
 
-require('./_object-sap')('getOwnPropertyDescriptor', function () {
-  return function getOwnPropertyDescriptor(it, key) {
+require('./_object-sap')('getOwnPropertyDescriptor', function(){
+  return function getOwnPropertyDescriptor(it, key){
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-
-},{"./_object-gopd":61,"./_object-sap":69,"./_to-iobject":78}],91:[function(require,module,exports){
+},{"./_object-gopd":62,"./_object-sap":70,"./_to-iobject":79}],92:[function(require,module,exports){
 // 19.1.2.7 Object.getOwnPropertyNames(O)
-require('./_object-sap')('getOwnPropertyNames', function () {
+require('./_object-sap')('getOwnPropertyNames', function(){
   return require('./_object-gopn-ext').f;
 });
-
-},{"./_object-gopn-ext":62,"./_object-sap":69}],92:[function(require,module,exports){
+},{"./_object-gopn-ext":63,"./_object-sap":70}],93:[function(require,module,exports){
 // 19.1.2.9 Object.getPrototypeOf(O)
-var toObject = require('./_to-object');
-var $getPrototypeOf = require('./_object-gpo');
+var toObject        = require('./_to-object')
+  , $getPrototypeOf = require('./_object-gpo');
 
-require('./_object-sap')('getPrototypeOf', function () {
-  return function getPrototypeOf(it) {
+require('./_object-sap')('getPrototypeOf', function(){
+  return function getPrototypeOf(it){
     return $getPrototypeOf(toObject(it));
   };
 });
-
-},{"./_object-gpo":65,"./_object-sap":69,"./_to-object":80}],93:[function(require,module,exports){
+},{"./_object-gpo":66,"./_object-sap":70,"./_to-object":81}],94:[function(require,module,exports){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = require('./_is-object');
 
-require('./_object-sap')('isExtensible', function ($isExtensible) {
-  return function isExtensible(it) {
+require('./_object-sap')('isExtensible', function($isExtensible){
+  return function isExtensible(it){
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-
-},{"./_is-object":51,"./_object-sap":69}],94:[function(require,module,exports){
+},{"./_is-object":51,"./_object-sap":70}],95:[function(require,module,exports){
 // 19.1.2.14 Object.keys(O)
-var toObject = require('./_to-object');
-var $keys = require('./_object-keys');
+var toObject = require('./_to-object')
+  , $keys    = require('./_object-keys');
 
-require('./_object-sap')('keys', function () {
-  return function keys(it) {
+require('./_object-sap')('keys', function(){
+  return function keys(it){
     return $keys(toObject(it));
   };
 });
-
-},{"./_object-keys":67,"./_object-sap":69,"./_to-object":80}],95:[function(require,module,exports){
+},{"./_object-keys":68,"./_object-sap":70,"./_to-object":81}],96:[function(require,module,exports){
 // 19.1.2.15 Object.preventExtensions(O)
-var isObject = require('./_is-object');
-var meta = require('./_meta').onFreeze;
+var isObject = require('./_is-object')
+  , meta     = require('./_meta').onFreeze;
 
-require('./_object-sap')('preventExtensions', function ($preventExtensions) {
-  return function preventExtensions(it) {
+require('./_object-sap')('preventExtensions', function($preventExtensions){
+  return function preventExtensions(it){
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
 });
-
-},{"./_is-object":51,"./_meta":57,"./_object-sap":69}],96:[function(require,module,exports){
+},{"./_is-object":51,"./_meta":58,"./_object-sap":70}],97:[function(require,module,exports){
 arguments[4][16][0].apply(exports,arguments)
-},{"dup":16}],97:[function(require,module,exports){
+},{"dup":16}],98:[function(require,module,exports){
 'use strict';
-var $at = require('./_string-at')(true);
+var $at  = require('./_string-at')(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-require('./_iter-define')(String, 'String', function (iterated) {
+require('./_iter-define')(String, 'String', function(iterated){
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
+}, function(){
+  var O     = this._t
+    , index = this._i
+    , point;
+  if(index >= O.length)return {value: undefined, done: true};
   point = $at(O, index);
   this._i += point.length;
-  return { value: point, done: false };
+  return {value: point, done: false};
 });
-
-},{"./_iter-define":53,"./_string-at":75}],98:[function(require,module,exports){
+},{"./_iter-define":53,"./_string-at":76}],99:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
-var global = require('./_global');
-var has = require('./_has');
-var DESCRIPTORS = require('./_descriptors');
-var $export = require('./_export');
-var redefine = require('./_redefine');
-var META = require('./_meta').KEY;
-var $fails = require('./_fails');
-var shared = require('./_shared');
-var setToStringTag = require('./_set-to-string-tag');
-var uid = require('./_uid');
-var wks = require('./_wks');
-var wksExt = require('./_wks-ext');
-var wksDefine = require('./_wks-define');
-var enumKeys = require('./_enum-keys');
-var isArray = require('./_is-array');
-var anObject = require('./_an-object');
-var toIObject = require('./_to-iobject');
-var toPrimitive = require('./_to-primitive');
-var createDesc = require('./_property-desc');
-var _create = require('./_object-create');
-var gOPNExt = require('./_object-gopn-ext');
-var $GOPD = require('./_object-gopd');
-var $DP = require('./_object-dp');
-var $keys = require('./_object-keys');
-var gOPD = $GOPD.f;
-var dP = $DP.f;
-var gOPN = gOPNExt.f;
-var $Symbol = global.Symbol;
-var $JSON = global.JSON;
-var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE = 'prototype';
-var HIDDEN = wks('_hidden');
-var TO_PRIMITIVE = wks('toPrimitive');
-var isEnum = {}.propertyIsEnumerable;
-var SymbolRegistry = shared('symbol-registry');
-var AllSymbols = shared('symbols');
-var OPSymbols = shared('op-symbols');
-var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
-var QObject = global.QObject;
+var global         = require('./_global')
+  , has            = require('./_has')
+  , DESCRIPTORS    = require('./_descriptors')
+  , $export        = require('./_export')
+  , redefine       = require('./_redefine')
+  , META           = require('./_meta').KEY
+  , $fails         = require('./_fails')
+  , shared         = require('./_shared')
+  , setToStringTag = require('./_set-to-string-tag')
+  , uid            = require('./_uid')
+  , wks            = require('./_wks')
+  , wksExt         = require('./_wks-ext')
+  , wksDefine      = require('./_wks-define')
+  , keyOf          = require('./_keyof')
+  , enumKeys       = require('./_enum-keys')
+  , isArray        = require('./_is-array')
+  , anObject       = require('./_an-object')
+  , toIObject      = require('./_to-iobject')
+  , toPrimitive    = require('./_to-primitive')
+  , createDesc     = require('./_property-desc')
+  , _create        = require('./_object-create')
+  , gOPNExt        = require('./_object-gopn-ext')
+  , $GOPD          = require('./_object-gopd')
+  , $DP            = require('./_object-dp')
+  , $keys          = require('./_object-keys')
+  , gOPD           = $GOPD.f
+  , dP             = $DP.f
+  , gOPN           = gOPNExt.f
+  , $Symbol        = global.Symbol
+  , $JSON          = global.JSON
+  , _stringify     = $JSON && $JSON.stringify
+  , PROTOTYPE      = 'prototype'
+  , HIDDEN         = wks('_hidden')
+  , TO_PRIMITIVE   = wks('toPrimitive')
+  , isEnum         = {}.propertyIsEnumerable
+  , SymbolRegistry = shared('symbol-registry')
+  , AllSymbols     = shared('symbols')
+  , OPSymbols      = shared('op-symbols')
+  , ObjectProto    = Object[PROTOTYPE]
+  , USE_NATIVE     = typeof $Symbol == 'function'
+  , QObject        = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function () {
+var setSymbolDesc = DESCRIPTORS && $fails(function(){
   return _create(dP({}, 'a', {
-    get: function () { return dP(this, 'a', { value: 7 }).a; }
+    get: function(){ return dP(this, 'a', {value: 7}).a; }
   })).a != 7;
-}) ? function (it, key, D) {
+}) ? function(it, key, D){
   var protoDesc = gOPD(ObjectProto, key);
-  if (protoDesc) delete ObjectProto[key];
+  if(protoDesc)delete ObjectProto[key];
   dP(it, key, D);
-  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
 } : dP;
 
-var wrap = function (tag) {
+var wrap = function(tag){
   var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
   return typeof it == 'symbol';
-} : function (it) {
+} : function(it){
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D) {
-  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D){
+  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
   anObject(it);
   key = toPrimitive(key, true);
   anObject(D);
-  if (has(AllSymbols, key)) {
-    if (!D.enumerable) {
-      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+  if(has(AllSymbols, key)){
+    if(!D.enumerable){
+      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _create(D, { enumerable: createDesc(0, false) });
+      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+      D = _create(D, {enumerable: createDesc(0, false)});
     } return setSymbolDesc(it, key, D);
   } return dP(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P) {
+var $defineProperties = function defineProperties(it, P){
   anObject(it);
-  var keys = enumKeys(P = toIObject(P));
-  var i = 0;
-  var l = keys.length;
-  var key;
-  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+  var keys = enumKeys(P = toIObject(P))
+    , i    = 0
+    , l = keys.length
+    , key;
+  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P) {
+var $create = function create(it, P){
   return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+var $propertyIsEnumerable = function propertyIsEnumerable(key){
   var E = isEnum.call(this, key = toPrimitive(key, true));
-  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
   return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-  it = toIObject(it);
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+  it  = toIObject(it);
   key = toPrimitive(key, true);
-  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
   var D = gOPD(it, key);
-  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN(toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it){
+  var names  = gOPN(toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-  var IS_OP = it === ObjectProto;
-  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+  var IS_OP  = it === ObjectProto
+    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if (!USE_NATIVE) {
-  $Symbol = function Symbol() {
-    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+if(!USE_NATIVE){
+  $Symbol = function Symbol(){
+    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
     var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function (value) {
-      if (this === ObjectProto) $set.call(OPSymbols, value);
-      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+    var $set = function(value){
+      if(this === ObjectProto)$set.call(OPSymbols, value);
+      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, createDesc(1, value));
     };
-    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
     return wrap(tag);
   };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
     return this._k;
   });
 
   $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f = $defineProperty;
+  $DP.f   = $defineProperty;
   require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
-  require('./_object-pie').f = $propertyIsEnumerable;
+  require('./_object-pie').f  = $propertyIsEnumerable;
   require('./_object-gops').f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !require('./_library')) {
+  if(DESCRIPTORS && !require('./_library')){
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  wksExt.f = function (name) {
+  wksExt.f = function(name){
     return wrap(wks(name));
-  };
+  }
 }
 
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
 
-for (var es6Symbols = (
+for(var symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
+).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
 
-for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
 
 $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function (key) {
+  'for': function(key){
     return has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(sym) {
-    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
-    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
+  keyFor: function keyFor(key){
+    if(isSymbol(key))return keyOf(SymbolRegistry, key);
+    throw TypeError(key + ' is not a symbol!');
   },
-  useSetter: function () { setter = true; },
-  useSimple: function () { setter = false; }
+  useSetter: function(){ setter = true; },
+  useSimple: function(){ setter = false; }
 });
 
 $export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -1208,24 +1136,24 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-    var args = [it];
-    var i = 1;
-    var replacer, $replacer;
-    while (arguments.length > i) args.push(arguments[i++]);
+  stringify: function stringify(it){
+    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+    var args = [it]
+      , i    = 1
+      , replacer, $replacer;
+    while(arguments.length > i)args.push(arguments[i++]);
     replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
-      if (!isSymbol(value)) return value;
+    if(typeof replacer == 'function')$replacer = replacer;
+    if($replacer || !isArray(replacer))replacer = function(key, value){
+      if($replacer)value = $replacer.call(this, key, value);
+      if(!isSymbol(value))return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -1240,35 +1168,25 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-
-},{"./_an-object":32,"./_descriptors":38,"./_enum-keys":41,"./_export":42,"./_fails":43,"./_global":44,"./_has":45,"./_hide":46,"./_is-array":50,"./_library":56,"./_meta":57,"./_object-create":58,"./_object-dp":59,"./_object-gopd":61,"./_object-gopn":63,"./_object-gopn-ext":62,"./_object-gops":64,"./_object-keys":67,"./_object-pie":68,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],99:[function(require,module,exports){
+},{"./_an-object":32,"./_descriptors":38,"./_enum-keys":41,"./_export":42,"./_fails":43,"./_global":44,"./_has":45,"./_hide":46,"./_is-array":50,"./_keyof":56,"./_library":57,"./_meta":58,"./_object-create":59,"./_object-dp":60,"./_object-gopd":62,"./_object-gopn":64,"./_object-gopn-ext":63,"./_object-gops":65,"./_object-keys":68,"./_object-pie":69,"./_property-desc":71,"./_redefine":72,"./_set-to-string-tag":73,"./_shared":75,"./_to-iobject":79,"./_to-primitive":82,"./_uid":83,"./_wks":86,"./_wks-define":84,"./_wks-ext":85}],100:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
-
-},{"./_wks-define":83}],100:[function(require,module,exports){
+},{"./_wks-define":84}],101:[function(require,module,exports){
 require('./_wks-define')('observable');
-
-},{"./_wks-define":83}],101:[function(require,module,exports){
+},{"./_wks-define":84}],102:[function(require,module,exports){
 require('./es6.array.iterator');
-var global = require('./_global');
-var hide = require('./_hide');
-var Iterators = require('./_iterators');
-var TO_STRING_TAG = require('./_wks')('toStringTag');
+var global        = require('./_global')
+  , hide          = require('./_hide')
+  , Iterators     = require('./_iterators')
+  , TO_STRING_TAG = require('./_wks')('toStringTag');
 
-var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-  'TextTrackList,TouchList').split(',');
-
-for (var i = 0; i < DOMIterables.length; i++) {
-  var NAME = DOMIterables[i];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+  var NAME       = collections[i]
+    , Collection = global[NAME]
+    , proto      = Collection && Collection.prototype;
+  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-
-},{"./_global":44,"./_hide":46,"./_iterators":55,"./_wks":85,"./es6.array.iterator":86}],102:[function(require,module,exports){
+},{"./_global":44,"./_hide":46,"./_iterators":55,"./_wks":86,"./es6.array.iterator":87}],103:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2602,7 +2520,7 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -7067,7 +6985,7 @@ return hooks;
 
 })));
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -7253,7 +7171,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -7554,7 +7472,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -9124,7 +9042,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":16}],107:[function(require,module,exports){
+},{"got":16}],108:[function(require,module,exports){
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -10065,7 +9983,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }]);
 });
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":15}],108:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":15}],109:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -20306,7 +20224,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":104}],109:[function(require,module,exports){
+},{"_process":105}],110:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -20326,7 +20244,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 /*!
  * Vuex v1.0.1
  * (c) 2017 Evan You
@@ -21050,7 +20968,7 @@ return index;
 
 })));
 
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.toolbar-row {\n  width: 100%;\ntext-align: right;\n}\n\n.toolbar-block {\n\n  display: inline-block;\n}​\n#items-unapproved .box {\n    margin-bottom: 4px;\n}\n#items-approved .box {\n    margin-bottom: 4px;\n\n}\n")
 'use strict';
@@ -21096,14 +21014,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2284220c", module.exports)
+    hotAPI.createRecord("_v-73b8fb11", module.exports)
   } else {
-    hotAPI.update("_v-2284220c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-73b8fb11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":108,"vue-hot-reload-api":105,"vueify/lib/insert-css":109}],112:[function(require,module,exports){
+},{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],113:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-1d3c7800] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-1d3c7800]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-1d3c7800]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-1d3c7800]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-1d3c7800]{\n    margin-top: 26px !important;\n}\np[_v-1d3c7800] {\n  margin: 0;\n}\n\nlabel[_v-1d3c7800] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1d3c7800] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1d3c7800] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1d3c7800] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1d3c7800] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1d3c7800] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1d3c7800] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1d3c7800] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1d3c7800] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1d3c7800] {\n  margin: 0;\n}\n\n[type='submit'][_v-1d3c7800],\n[type='button'][_v-1d3c7800] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1d3c7800] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1d3c7800] {\n  margin: 0;\n}\n\nh5.form-control[_v-1d3c7800] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-f7e430f6]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-f7e430f6]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-f7e430f6]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-f7e430f6]{\n    margin-top: 26px !important;\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -21632,24 +21550,24 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-1d3c7800=\"\">\n    <slot name=\"csrf\" _v-1d3c7800=\"\"></slot>\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-1d3c7800=\"\">\n          <h5 _v-1d3c7800=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-1d3c7800=\"\">\n          <h5 _v-1d3c7800=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <!-- Is approved? -->\n            <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n              <label _v-1d3c7800=\"\">Approved for Public Display? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_approved\" _v-1d3c7800=\"\"></label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <!-- Expert Type -->\n            <h4 _v-1d3c7800=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-1d3c7800=\"\">\n                <label _v-1d3c7800=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-1d3c7800=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-1d3c7800=\"\">\n                <label _v-1d3c7800=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-1d3c7800=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\"></span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md6col\" _v-1d3c7800=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-1d3c7800=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n            <label _v-1d3c7800=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-1d3c7800=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md6col\" _v-1d3c7800=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\"></span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-1d3c7800=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <!-- Interview preferences -->\n          <h4 _v-1d3c7800=\"\">Interview Preferences</h4>\n            <div class=\"checkbox\" _v-1d3c7800=\"\">\n              <label _v-1d3c7800=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-1d3c7800=\"\">Print Interviews</label>\n            </div>\n            <div class=\"checkbox\" _v-1d3c7800=\"\">\n              <label _v-1d3c7800=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-1d3c7800=\"\">Broadcast Media Interviews</label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <h4 _v-1d3c7800=\"\">Previous Titles</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-1d3c7800=\"\">\n              <label class=\"sr-only\" _v-1d3c7800=\"\">Previous Title</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"title.title\" _v-1d3c7800=\"\">\n              <span class=\"input-group-btn\" _v-1d3c7800=\"\">\n                  <button @click=\"delTitle(title)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-1d3c7800=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <p _v-1d3c7800=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <button @click=\"addTitle\" :class=\"btnSecondary\" type=\"button\" _v-1d3c7800=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <h4 _v-1d3c7800=\"\">Languages</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-1d3c7800=\"\">\n              <label class=\"sr-only\" _v-1d3c7800=\"\">Language</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"language.language\" _v-1d3c7800=\"\">\n              <span class=\"input-group-btn\" _v-1d3c7800=\"\">\n                  <button @click=\"delLanguage(language)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-1d3c7800=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <p _v-1d3c7800=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <button @click=\"addLanguage\" :class=\"btnSecondary\" type=\"button\" _v-1d3c7800=\"\">Add Language</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <h4 _v-1d3c7800=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-1d3c7800=\"\">\n              <label class=\"sr-only\" _v-1d3c7800=\"\">Education</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"ed.education\" _v-1d3c7800=\"\">\n              <span class=\"input-group-btn\" _v-1d3c7800=\"\">\n                  <button @click=\"delEducation(ed)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-1d3c7800=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <p _v-1d3c7800=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <button @click=\"addEducation\" :class=\"btnSecondary\" type=\"button\" _v-1d3c7800=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n        <!-- Fiels of expertise -->\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <h4 _v-1d3c7800=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-1d3c7800=\"\">\n              <label class=\"sr-only\" _v-1d3c7800=\"\">Field of Expertise</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"exp.expertise\" _v-1d3c7800=\"\">\n              <span class=\"input-group-btn\" _v-1d3c7800=\"\">\n                  <button @click=\"delExpertise(exp)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-1d3c7800=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <p _v-1d3c7800=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <button @click=\"addExpertise\" :class=\"btnSecondary\" type=\"button\" _v-1d3c7800=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <h4 _v-1d3c7800=\"\">Social Media Links</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n          <div v-for=\"soc in social\" _v-1d3c7800=\"\">\n              <label class=\"sr-only\" _v-1d3c7800=\"\">Social Media</label>\n              <div class=\"row\" _v-1d3c7800=\"\">\n                  <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n                      <label _v-1d3c7800=\"\">Title</label>\n                      <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"soc.title\" _v-1d3c7800=\"\">\n                  </div>\n                  <div v-bind:class=\"md6col\" class=\"input-group\" _v-1d3c7800=\"\">\n                      <label _v-1d3c7800=\"\">Full URL (e.g. http://facebook.com)</label>\n                      <input class=\"form-control social-list-item\" type=\"text\" v-model=\"soc.url\" _v-1d3c7800=\"\">\n                      <span class=\"input-group-btn\" _v-1d3c7800=\"\">\n                          <button @click=\"delSocial(soc)\" class=\"btn btn-warning social-list-btn\" type=\"button\" _v-1d3c7800=\"\">X</button>\n                      </span>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <p _v-1d3c7800=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n            <button @click=\"addSocial\" :class=\"btnSecondary\" type=\"button\" _v-1d3c7800=\"\">Add Social Link</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Expertise Categories</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"categories\" :options=\"categorieslist\" :multiple=\"true\" placeholder=\"Select expertise category\" label=\"category\" _v-1d3c7800=\"\">\n          </v-select>\n          <p v-if=\"formErrors.category\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.category}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <label _v-1d3c7800=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1d3c7800=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"200\" _v-1d3c7800=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-1d3c7800=\"\">Need biography.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-1d3c7800=\"\">\n     <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n       <!-- Teaser -->\n       <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n         <label _v-1d3c7800=\"\">Teaser (short description of expert for search results page)</label>\n         <textarea v-model=\"record.teaser\" class=\"form-control\" id=\"teaser\" name=\"teaser\" rows=\"2\" _v-1d3c7800=\"\"></textarea>\n         <p v-if=\"formErrors.teaser\" class=\"help-text invalid\" _v-1d3c7800=\"\">Need teaser.</p>\n       </div>\n     </div>\n   </div>\n  <!-- /.row -->\n   <div class=\"row\" _v-1d3c7800=\"\">\n     <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n         <h4 _v-1d3c7800=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-1d3c7800=\"\">\n     <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n         <label _v-1d3c7800=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-1d3c7800=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n         <label _v-1d3c7800=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-1d3c7800=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1d3c7800=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n         <label _v-1d3c7800=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-1d3c7800=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-1d3c7800=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-1d3c7800=\"\">\n      <div v-bind:class=\"md12col\" _v-1d3c7800=\"\">\n        <div v-bind:class=\"formGroup\" _v-1d3c7800=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-1d3c7800=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delExpert\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-1d3c7800=\"\">Delete Expert</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-f7e430f6=\"\">\n    <slot name=\"csrf\" _v-f7e430f6=\"\"></slot>\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-f7e430f6=\"\">\n          <h5 _v-f7e430f6=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <!-- Is approved? -->\n            <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\">Approved for Public Display? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_approved\" _v-f7e430f6=\"\"></label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <!-- Expert Type -->\n            <h4 _v-f7e430f6=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-f7e430f6=\"\">\n                <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-f7e430f6=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-f7e430f6=\"\">\n                <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-f7e430f6=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n            <label _v-f7e430f6=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-f7e430f6=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md6col\" _v-f7e430f6=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-f7e430f6=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <!-- Interview preferences -->\n          <h4 _v-f7e430f6=\"\">Interview Preferences</h4>\n            <div class=\"checkbox\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-f7e430f6=\"\">Print Interviews</label>\n            </div>\n            <div class=\"checkbox\" _v-f7e430f6=\"\">\n              <label _v-f7e430f6=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-f7e430f6=\"\">Broadcast Media Interviews</label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Previous Titles</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Previous Title</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"title.title\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delTitle(title)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addTitle\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Languages</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Language</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"language.language\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delLanguage(language)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addLanguage\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Language</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Education</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"ed.education\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delEducation(ed)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addEducation\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Fiels of expertise -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Field of Expertise</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"exp.expertise\" _v-f7e430f6=\"\">\n              <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                  <button @click=\"delExpertise(exp)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addExpertise\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <h4 _v-f7e430f6=\"\">Social Media Links</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n          <div v-for=\"soc in social\" _v-f7e430f6=\"\">\n              <label class=\"sr-only\" _v-f7e430f6=\"\">Social Media</label>\n              <div class=\"row\" _v-f7e430f6=\"\">\n                  <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n                      <label _v-f7e430f6=\"\">Title</label>\n                      <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"soc.title\" _v-f7e430f6=\"\">\n                  </div>\n                  <div v-bind:class=\"md6col\" class=\"input-group\" _v-f7e430f6=\"\">\n                      <label _v-f7e430f6=\"\">Full URL (e.g. http://facebook.com)</label>\n                      <input class=\"form-control social-list-item\" type=\"text\" v-model=\"soc.url\" _v-f7e430f6=\"\">\n                      <span class=\"input-group-btn\" _v-f7e430f6=\"\">\n                          <button @click=\"delSocial(soc)\" class=\"btn btn-warning social-list-btn\" type=\"button\" _v-f7e430f6=\"\">X</button>\n                      </span>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <p _v-f7e430f6=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n            <button @click=\"addSocial\" :class=\"btnSecondary\" type=\"button\" _v-f7e430f6=\"\">Add Social Link</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Expertise Categories</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"categories\" :options=\"categorieslist\" :multiple=\"true\" placeholder=\"Select expertise category\" label=\"category\" _v-f7e430f6=\"\">\n          </v-select>\n          <p v-if=\"formErrors.category\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.category}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <label _v-f7e430f6=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-f7e430f6=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"200\" _v-f7e430f6=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need biography.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n       <!-- Teaser -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Teaser (short description of expert for search results page)</label>\n         <textarea v-model=\"record.teaser\" class=\"form-control\" id=\"teaser\" name=\"teaser\" rows=\"2\" _v-f7e430f6=\"\"></textarea>\n         <p v-if=\"formErrors.teaser\" class=\"help-text invalid\" _v-f7e430f6=\"\">Need teaser.</p>\n       </div>\n     </div>\n   </div>\n  <!-- /.row -->\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n         <h4 _v-f7e430f6=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-f7e430f6=\"\">\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-f7e430f6=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n         <label _v-f7e430f6=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-f7e430f6=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-f7e430f6=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-f7e430f6=\"\">\n      <div v-bind:class=\"md12col\" _v-f7e430f6=\"\">\n        <div v-bind:class=\"formGroup\" _v-f7e430f6=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delExpert\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-f7e430f6=\"\">Delete Expert</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-1d3c7800] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-1d3c7800]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-1d3c7800]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-1d3c7800]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-1d3c7800]{\n    margin-top: 26px !important;\n}\np[_v-1d3c7800] {\n  margin: 0;\n}\n\nlabel[_v-1d3c7800] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1d3c7800] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1d3c7800] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1d3c7800] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1d3c7800] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1d3c7800] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1d3c7800] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1d3c7800] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1d3c7800] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1d3c7800] {\n  margin: 0;\n}\n\n[type='submit'][_v-1d3c7800],\n[type='button'][_v-1d3c7800] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1d3c7800] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1d3c7800] {\n  margin: 0;\n}\n\nh5.form-control[_v-1d3c7800] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-f7e430f6] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-f7e430f6]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-f7e430f6]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-f7e430f6]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-f7e430f6]{\n    margin-top: 26px !important;\n}\np[_v-f7e430f6] {\n  margin: 0;\n}\n\nlabel[_v-f7e430f6] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-f7e430f6] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-f7e430f6] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-f7e430f6] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-f7e430f6] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-f7e430f6] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-f7e430f6] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-f7e430f6] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-f7e430f6] {\n  margin: 0;\n}\n\n[type='submit'][_v-f7e430f6],\n[type='button'][_v-f7e430f6] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-f7e430f6] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-f7e430f6] {\n  margin: 0;\n}\n\nh5.form-control[_v-f7e430f6] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-1d3c7800", module.exports)
+    hotAPI.createRecord("_v-f7e430f6", module.exports)
   } else {
-    hotAPI.update("_v-1d3c7800", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-f7e430f6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../directives/ckrte.js":115,"../vuex/actions":117,"../vuex/getters":118,"./VuiFlipSwitch.vue":114,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":102,"moment":103,"vue":108,"vue-hot-reload-api":105,"vue-select":107,"vueify/lib/insert-css":109}],113:[function(require,module,exports){
+},{"../directives/ckrte.js":116,"../vuex/actions":118,"../vuex/getters":119,"./VuiFlipSwitch.vue":115,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],114:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.row[_v-3cc74809]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-3cc74809]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-3cc74809]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-3cc74809]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-3cc74809]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-3cc74809] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-3cc74809] {\n  margin: 0;\n}\n\nlabel[_v-3cc74809] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-3cc74809] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-3cc74809] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-3cc74809] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-3cc74809] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-3cc74809] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-3cc74809] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-3cc74809] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-3cc74809] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-3cc74809] {\n  margin: 0;\n}\n\n[type='submit'][_v-3cc74809],\n[type='button'][_v-3cc74809] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-3cc74809] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-3cc74809] {\n  margin: 0;\n}\n\nh5.form-control[_v-3cc74809] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.row[_v-1429f3ce]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-1429f3ce]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-1429f3ce]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-1429f3ce]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-1429f3ce]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-1429f3ce] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-1429f3ce] {\n  margin: 0;\n}\n\nlabel[_v-1429f3ce] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1429f3ce] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1429f3ce] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1429f3ce] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1429f3ce] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1429f3ce] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1429f3ce] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1429f3ce] {\n  margin: 0;\n}\n\n[type='submit'][_v-1429f3ce],\n[type='button'][_v-1429f3ce] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1429f3ce] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1429f3ce] {\n  margin: 0;\n}\n\nh5.form-control[_v-1429f3ce] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -22150,22 +22068,22 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-3cc74809=\"\">\n    <slot name=\"csrf\" _v-3cc74809=\"\"></slot>\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-3cc74809=\"\">\n          <h5 _v-3cc74809=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-3cc74809=\"\">\n          <h5 _v-3cc74809=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <!-- Expert Type -->\n            <h4 _v-3cc74809=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-3cc74809=\"\">\n                <label _v-3cc74809=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-3cc74809=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-3cc74809=\"\">\n                <label _v-3cc74809=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-3cc74809=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <!-- Interview preferences -->\n            <h4 _v-3cc74809=\"\">I will</h4>\n              <div class=\"checkbox\" _v-3cc74809=\"\">\n                <label _v-3cc74809=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-3cc74809=\"\">Do interviews for print media</label>\n              </div>\n              <div class=\"checkbox\" _v-3cc74809=\"\">\n                <label _v-3cc74809=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-3cc74809=\"\">Do interviews for broadcast media</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md6col\" _v-3cc74809=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-3cc74809=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md4col\" _v-3cc74809=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-3cc74809=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-3cc74809=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n            <label _v-3cc74809=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-3cc74809=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md6col\" _v-3cc74809=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-3cc74809=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-3cc74809=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <h4 _v-3cc74809=\"\">Additional Titles (Include official EMU Affiliations)</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-3cc74809=\"\">\n                <div class=\"input-group\" _v-3cc74809=\"\">\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"title.title\" _v-3cc74809=\"\">\n                  <div class=\"input-group-button\" _v-3cc74809=\"\">\n                    <button type=\"button\" class=\"button\" @click=\"delTitle(title)\" _v-3cc74809=\"\">X</button>\n                  </div>\n                </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"nofields\" _v-3cc74809=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <button @click=\"addTitle\" class=\"button secondary\" type=\"button\" _v-3cc74809=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-3cc74809=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <h4 _v-3cc74809=\"\">Languages Spoken</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-3cc74809=\"\">\n              <label class=\"sr-only\" _v-3cc74809=\"\">Language</label>\n              <div class=\"input-group\" _v-3cc74809=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"language.language\" _v-3cc74809=\"\">\n                <div class=\"input-group-button\" _v-3cc74809=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delLanguage(language)\" _v-3cc74809=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"nofields\" _v-3cc74809=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <button @click=\"addLanguage\" class=\"button secondary\" type=\"button\" _v-3cc74809=\"\">Add Language</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"callout primary\" _v-3cc74809=\"\">Besides English, in what languages are you comfortable being interviewed?</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-3cc74809=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <h4 _v-3cc74809=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-3cc74809=\"\">\n              <label class=\"sr-only\" _v-3cc74809=\"\">Education</label>\n              <div class=\"input-group\" _v-3cc74809=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"ed.education\" _v-3cc74809=\"\">\n                <div class=\"input-group-button\" _v-3cc74809=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delEducation(ed)\" _v-3cc74809=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"nofields\" _v-3cc74809=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <button @click=\"addEducation\" class=\"button secondary\" type=\"button\" _v-3cc74809=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-3cc74809=\"\">\n        <!-- Fields of expertise -->\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <h4 _v-3cc74809=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-3cc74809=\"\">\n              <label class=\"sr-only\" _v-3cc74809=\"\">Field of Expertise</label>\n              <div class=\"input-group\" _v-3cc74809=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"exp.expertise\" _v-3cc74809=\"\">\n                <div class=\"input-group-button\" _v-3cc74809=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delExpertise(exp)\" _v-3cc74809=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"nofields\" _v-3cc74809=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <button @click=\"addExpertise\" class=\"button secondary\" type=\"button\" _v-3cc74809=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-3cc74809=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <h4 _v-3cc74809=\"\">Related Links and Social Media</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n          <div v-for=\"soc in social\" class=\"input-group\" _v-3cc74809=\"\">\n              <div class=\"medium-6 columns\" _v-3cc74809=\"\">\n                  <label _v-3cc74809=\"\">Title</label>\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"soc.title\" _v-3cc74809=\"\">\n              </div>\n              <div class=\"medium-6 columns\" _v-3cc74809=\"\">\n                  <label _v-3cc74809=\"\">URL</label>\n                  <div class=\"input-group\" _v-3cc74809=\"\">\n                    <input class=\"input-group-field\" type=\"text\" v-model=\"soc.url\" _v-3cc74809=\"\">\n                    <div class=\"input-group-button\" _v-3cc74809=\"\">\n                      <button type=\"button\" class=\"button\" @click=\"delSocial(soc)\" _v-3cc74809=\"\">X</button>\n                    </div>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"nofields\" _v-3cc74809=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <button @click=\"addSocial\" class=\"button secondary\" type=\"button\" _v-3cc74809=\"\">Add Social Link</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n            <p class=\"callout primary\" _v-3cc74809=\"\">Enter related links like department/faculty websites and social media profiles. (e.g. Center for Research website, Twitter account)</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <label _v-3cc74809=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"20\" _v-3cc74809=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-3cc74809=\"\">You must enter a biography for this expert.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-3cc74809=\"\">\n     <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n         <h4 _v-3cc74809=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-3cc74809=\"\">\n     <div v-bind:class=\"md4col\" _v-3cc74809=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n         <label _v-3cc74809=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-3cc74809=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-3cc74809=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n         <label _v-3cc74809=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-3cc74809=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-3cc74809=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n         <label _v-3cc74809=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-3cc74809=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n   <div class=\"row\" v-show=\"!recordexists\" _v-3cc74809=\"\">\n     <div v-bind:class=\"md12col\" id=\"policies-container\" _v-3cc74809=\"\">\n         <!-- Terms and conditions -->\n         <h5 _v-3cc74809=\"\">Policies</h5>\n         <p _v-3cc74809=\"\">The Speakers &amp; Experts Directory is a community service of the Division of Communications.</p><br _v-3cc74809=\"\">\n         <p _v-3cc74809=\"\">Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>\n     </div>\n       <!-- /.small-12 columns -->\n     <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n         <!-- Is approved? -->\n           <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n             <label _v-3cc74809=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.accept_policies\" _v-3cc74809=\"\">I have read and accepted the policies <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-3cc74809=\"\">*</span></label>\n           </div>\n           <p v-if=\"formErrors.accept_policies\" class=\"help-text invalid\" _v-3cc74809=\"\">{{formErrors.accept_policies}}</p>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <div class=\"row\" v-show=\"recordexists\" _v-3cc74809=\"\">\n       <div v-bind:class=\"md12col\" id=\"policies-container\" _v-3cc74809=\"\">\n           <p _v-3cc74809=\"\">Please note that when you update this expert, he/she will be removed from the experts list until an administrator has approved the changes.</p>\n       </div>\n       <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-3cc74809=\"\">\n      <div v-bind:class=\"md12col\" _v-3cc74809=\"\">\n        <div v-bind:class=\"formGroup\" _v-3cc74809=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3cc74809=\"\">{{submitBtnLabel}}</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-1429f3ce=\"\">\n    <slot name=\"csrf\" _v-1429f3ce=\"\"></slot>\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-1429f3ce=\"\">\n          <h5 _v-1429f3ce=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-1429f3ce=\"\">\n          <h5 _v-1429f3ce=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <!-- Expert Type -->\n            <h4 _v-1429f3ce=\"\">I'd like to be listed as a <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></h4>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_community_speaker\" _v-1429f3ce=\"\">Community Speaker</label>\n              </div>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.is_media_expert\" _v-1429f3ce=\"\">Media Expert</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <!-- Interview preferences -->\n            <h4 _v-1429f3ce=\"\">I will</h4>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_print_interviews\" _v-1429f3ce=\"\">Do interviews for print media</label>\n              </div>\n              <div class=\"checkbox\" _v-1429f3ce=\"\">\n                <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.do_broadcast_interviews\" _v-1429f3ce=\"\">Do interviews for broadcast media</label>\n              </div>\n        </div>\n        <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- First Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">First Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.first_name\" class=\"form-control\" v-bind:class=\"[formErrors.first_name ? 'invalid-input' : '']\" name=\"first_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.first_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.first_name}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- Last Name -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Last Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.last_name\" class=\"form-control\" v-bind:class=\"[formErrors.last_name ? 'invalid-input' : '']\" name=\"last_name\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.last_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.last_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- EMU Title -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">EMU Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Office Phone -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Office Phone</label>\n          <input v-model=\"record.office_phone\" class=\"form-control\" v-bind:class=\"[formErrors.office_phone ? 'invalid-input' : '']\" name=\"office_phone\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.office_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.office_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Cell Phone -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Cell Phone (internal use only)</label>\n          <input v-model=\"record.cell_phone\" class=\"form-control\" v-bind:class=\"[formErrors.cell_phone ? 'invalid-input' : '']\" name=\"cell_phone\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.cell_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.cell_phone}}</p>\n        </div>\n      </div>\n      <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n        <!-- Release cell -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n            <label _v-1429f3ce=\"\">Release Cell Number?</label>\n            <input type=\"checkbox\" value=\"1\" v-model=\"record.release_cell_phone\" _v-1429f3ce=\"\">\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md6col\" _v-1429f3ce=\"\">\n        <!-- Email -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Email <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n          <input v-model=\"record.email\" class=\"form-control\" v-bind:class=\"[formErrors.email ? 'invalid-input' : '']\" name=\"email\" type=\"text\" _v-1429f3ce=\"\">\n          <p v-if=\"formErrors.email\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.email}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Previous Titles -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Additional Titles (Include official EMU Affiliations)</h4>\n        </div>\n        <div v-if=\"previousTitles.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"title in previousTitles\" class=\"input-group\" _v-1429f3ce=\"\">\n                <div class=\"input-group\" _v-1429f3ce=\"\">\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"title.title\" _v-1429f3ce=\"\">\n                  <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                    <button type=\"button\" class=\"button\" @click=\"delTitle(title)\" _v-1429f3ce=\"\">X</button>\n                  </div>\n                </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addTitle\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Title</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Languages -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Languages Spoken</h4>\n        </div>\n        <div v-if=\"languages.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"language in languages\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Language</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"language.language\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delLanguage(language)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addLanguage\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Language</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"callout primary\" _v-1429f3ce=\"\">Besides English, in what languages are you comfortable being interviewed?</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Education -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Education</h4>\n        </div>\n        <div v-if=\"education.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"ed in education\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Education</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"ed.education\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delEducation(ed)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addEducation\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Education</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Fields of expertise -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Fields of Expertise</h4>\n        </div>\n        <div v-if=\"expertise.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"exp in expertise\" class=\"input-group\" _v-1429f3ce=\"\">\n              <label class=\"sr-only\" _v-1429f3ce=\"\">Field of Expertise</label>\n              <div class=\"input-group\" _v-1429f3ce=\"\">\n                <input class=\"input-group-field\" type=\"text\" v-model=\"exp.expertise\" _v-1429f3ce=\"\">\n                <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                  <button type=\"button\" class=\"button\" @click=\"delExpertise(exp)\" _v-1429f3ce=\"\">X</button>\n                </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addExpertise\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Expertise</button>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row list-row\" _v-1429f3ce=\"\">\n        <!-- Social media links -->\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <h4 _v-1429f3ce=\"\">Related Links and Social Media</h4>\n        </div>\n        <div v-if=\"social.length > 0\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n          <div v-for=\"soc in social\" class=\"input-group\" _v-1429f3ce=\"\">\n              <div class=\"medium-6 columns\" _v-1429f3ce=\"\">\n                  <label _v-1429f3ce=\"\">Title</label>\n                  <input class=\"input-group-field\" type=\"text\" v-model=\"soc.title\" _v-1429f3ce=\"\">\n              </div>\n              <div class=\"medium-6 columns\" _v-1429f3ce=\"\">\n                  <label _v-1429f3ce=\"\">URL</label>\n                  <div class=\"input-group\" _v-1429f3ce=\"\">\n                    <input class=\"input-group-field\" type=\"text\" v-model=\"soc.url\" _v-1429f3ce=\"\">\n                    <div class=\"input-group-button\" _v-1429f3ce=\"\">\n                      <button type=\"button\" class=\"button\" @click=\"delSocial(soc)\" _v-1429f3ce=\"\">X</button>\n                    </div>\n                  </div>\n              </div>\n          </div>\n        </div>\n        <div v-else=\"\" v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"nofields\" _v-1429f3ce=\"\">None</p>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <button @click=\"addSocial\" class=\"button secondary\" type=\"button\" _v-1429f3ce=\"\">Add Social Link</button>\n        </div>\n        <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n            <p class=\"callout primary\" _v-1429f3ce=\"\">Enter related links like department/faculty websites and social media profiles. (e.g. Center for Research website, Twitter account)</p>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <!-- Biography -->\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <label _v-1429f3ce=\"\">Biography <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.biography\" id=\"biography\" name=\"biography\" v-ckrte=\"biography\" :type=\"editorType\" :biography=\"biography\" :fresh=\"isFresh\" rows=\"20\" _v-1429f3ce=\"\"></textarea>\n          <p v-if=\"formErrors.biography\" class=\"help-text invalid\" _v-1429f3ce=\"\">You must enter a biography for this expert.</p>\n        </div>\n      </div>\n    </div>\n   <!-- /.row -->\n   <div class=\"row\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n         <h4 _v-1429f3ce=\"\">Submitter Information</h4>\n     </div>\n   </div>\n   <div class=\"row\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Name -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Name</label>\n         <input v-model=\"record.submitter_name\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_name ? 'invalid-input' : '']\" name=\"submitter_name\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_name\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_name}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Email</label>\n         <input v-model=\"record.submitter_email\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_email ? 'invalid-input' : '']\" name=\"submitter_email\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_email\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_email}}</p>\n       </div>\n     </div>\n     <div v-bind:class=\"md4col\" _v-1429f3ce=\"\">\n       <!-- Submitter Phone -->\n       <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n         <label _v-1429f3ce=\"\">Submitter Phone</label>\n         <input v-model=\"record.submitter_phone\" class=\"form-control\" v-bind:class=\"[formErrors.submitter_phone ? 'invalid-input' : '']\" name=\"submitter_phone\" type=\"text\" _v-1429f3ce=\"\">\n         <p v-if=\"formErrors.submitter_phone\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.submitter_phone}}</p>\n       </div>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n   <div class=\"row\" v-show=\"!recordexists\" _v-1429f3ce=\"\">\n     <div v-bind:class=\"md12col\" id=\"policies-container\" _v-1429f3ce=\"\">\n         <!-- Terms and conditions -->\n         <h5 _v-1429f3ce=\"\">Policies</h5>\n         <p _v-1429f3ce=\"\">The Speakers &amp; Experts Directory is a community service of the Division of Communications.</p><br _v-1429f3ce=\"\">\n         <p _v-1429f3ce=\"\">Business dress is appropriate for most speaking engagements. If you are in doubt about what to wear, ask the person who requested you as a speaker what would be appropriate.</p>\n     </div>\n       <!-- /.small-12 columns -->\n     <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n         <!-- Is approved? -->\n           <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n             <label _v-1429f3ce=\"\"><input type=\"checkbox\" value=\"1\" v-model=\"record.accept_policies\" _v-1429f3ce=\"\">I have read and accepted the policies <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-1429f3ce=\"\">*</span></label>\n           </div>\n           <p v-if=\"formErrors.accept_policies\" class=\"help-text invalid\" _v-1429f3ce=\"\">{{formErrors.accept_policies}}</p>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <div class=\"row\" v-show=\"recordexists\" _v-1429f3ce=\"\">\n       <div v-bind:class=\"md12col\" id=\"policies-container\" _v-1429f3ce=\"\">\n           <p _v-1429f3ce=\"\">Please note that when you update this expert, he/she will be removed from the experts list until an administrator has approved the changes.</p>\n       </div>\n       <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-1429f3ce=\"\">\n      <div v-bind:class=\"md12col\" _v-1429f3ce=\"\">\n        <div v-bind:class=\"formGroup\" _v-1429f3ce=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-1429f3ce=\"\">{{submitBtnLabel}}</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.row[_v-3cc74809]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-3cc74809]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-3cc74809]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-3cc74809]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-3cc74809]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-3cc74809] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-3cc74809] {\n  margin: 0;\n}\n\nlabel[_v-3cc74809] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-3cc74809] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-3cc74809] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-3cc74809] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-3cc74809] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-3cc74809] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-3cc74809] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-3cc74809] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-3cc74809] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-3cc74809] {\n  margin: 0;\n}\n\n[type='submit'][_v-3cc74809],\n[type='button'][_v-3cc74809] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-3cc74809] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-3cc74809] {\n  margin: 0;\n}\n\nh5.form-control[_v-3cc74809] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.row[_v-1429f3ce]{\n    padding: 5px 0px 5px 0px;\n}\n.list-row[_v-1429f3ce]{\n    padding: 10px;\n    border: 1px solid #eeeeee;\n}\n.list-row h4[_v-1429f3ce]{\n    padding: 10px;\n    background: #eeeeee;\n}\n.nofields[_v-1429f3ce]{\n    padding: 10px;\n    font-style: italic;\n}\n#policies-container[_v-1429f3ce]{\n    height: 175px;\n    overflow: scroll;\n    padding: 16px;\n    background: #eeeeee;\n    border: 1px solid #999999;\n    margin: 10px;\n}\n.redBtn[_v-1429f3ce] {\n  background: hsl(0, 90%, 70%);\n}\np[_v-1429f3ce] {\n  margin: 0;\n}\n\nlabel[_v-1429f3ce] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-1429f3ce] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1429f3ce] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1429f3ce] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-1429f3ce] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-1429f3ce] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-1429f3ce] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-1429f3ce] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-1429f3ce] {\n  margin: 0;\n}\n\n[type='submit'][_v-1429f3ce],\n[type='button'][_v-1429f3ce] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-1429f3ce] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-1429f3ce] {\n  margin: 0;\n}\n\nh5.form-control[_v-1429f3ce] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3cc74809", module.exports)
+    hotAPI.createRecord("_v-1429f3ce", module.exports)
   } else {
-    hotAPI.update("_v-3cc74809", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1429f3ce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../directives/ckrte.js":115,"../vuex/actions":117,"../vuex/getters":118,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":102,"moment":103,"vue":108,"vue-hot-reload-api":105,"vue-select":107,"vueify/lib/insert-css":109}],114:[function(require,module,exports){
+},{"../directives/ckrte.js":116,"../vuex/actions":118,"../vuex/getters":119,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":109,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":110}],115:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -22207,12 +22125,12 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2d226fa9", module.exports)
+    hotAPI.createRecord("_v-c9c83bf8", module.exports)
   } else {
-    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":108,"vue-hot-reload-api":105,"vueify/lib/insert-css":109}],115:[function(require,module,exports){
+},{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -22250,7 +22168,7 @@ module.exports = {
 
 };
 
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -22314,7 +22232,7 @@ function assignEventListeners() {
 }
 assignEventListeners();
 
-},{"./components/ExpertBoxTools.vue":111,"./components/ExpertForm.vue":112,"./components/ExpertFormPublic.vue":113,"./vuex/store":119,"vue":108,"vue-resource":106}],117:[function(require,module,exports){
+},{"./components/ExpertBoxTools.vue":112,"./components/ExpertForm.vue":113,"./components/ExpertFormPublic.vue":114,"./vuex/store":120,"vue":109,"vue-resource":107}],118:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22342,7 +22260,7 @@ var updateRecordState = exports.updateRecordState = function updateRecordState(_
   dispatch('RECORD_STATE', value);
 };
 
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22361,7 +22279,7 @@ var getRecordState = exports.getRecordState = function getRecordState(state) {
   return state.recordState;
 };
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22404,6 +22322,6 @@ exports.default = new _vuex2.default.Store({
     mutations: mutations
 });
 
-},{"vue":108,"vuex":110}]},{},[116]);
+},{"vue":109,"vuex":111}]},{},[117]);
 
 //# sourceMappingURL=vue-expert-form.js.map
