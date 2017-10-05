@@ -30,96 +30,88 @@ exports.default = function (obj, key, value) {
 },{"../core-js/object/define-property":2}],4:[function(require,module,exports){
 
 },{}],5:[function(require,module,exports){
-var core = require('../../modules/_core');
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+var core  = require('../../modules/_core')
+  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
-
 },{"../../modules/_core":9}],6:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc) {
+module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-
 },{"../../modules/_core":9,"../../modules/es6.object.define-property":22}],7:[function(require,module,exports){
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-
 },{}],8:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-
 },{"./_is-object":18}],9:[function(require,module,exports){
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 },{}],10:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
+module.exports = function(fn, that, length){
   aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
       return fn.call(that, a);
     };
-    case 2: return function (a, b) {
+    case 2: return function(a, b){
       return fn.call(that, a, b);
     };
-    case 3: return function (a, b, c) {
+    case 3: return function(a, b, c){
       return fn.call(that, a, b, c);
     };
   }
-  return function (/* ...args */) {
+  return function(/* ...args */){
     return fn.apply(that, arguments);
   };
 };
-
 },{"./_a-function":7}],11:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_fails')(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_fails":14}],12:[function(require,module,exports){
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
+var isObject = require('./_is-object')
+  , document = require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-
 },{"./_global":15,"./_is-object":18}],13:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var PROTOTYPE = 'prototype';
+var global    = require('./_global')
+  , core      = require('./_core')
+  , ctx       = require('./_ctx')
+  , hide      = require('./_hide')
+  , PROTOTYPE = 'prototype';
 
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if(own && key in exports)continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -127,11 +119,11 @@ var $export = function (type, name, source) {
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -142,10 +134,10 @@ var $export = function (type, name, source) {
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
+    if(IS_PROTO){
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
     }
   }
 };
@@ -157,93 +149,81 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
-
 },{"./_core":9,"./_ctx":10,"./_global":15,"./_hide":16}],14:[function(require,module,exports){
-module.exports = function (exec) {
+module.exports = function(exec){
   try {
     return !!exec();
-  } catch (e) {
+  } catch(e){
     return true;
   }
 };
-
 },{}],15:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 },{}],16:[function(require,module,exports){
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
+var dP         = require('./_object-dp')
+  , createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
+} : function(object, key, value){
   object[key] = value;
   return object;
 };
-
 },{"./_descriptors":11,"./_object-dp":19,"./_property-desc":20}],17:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function(){
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_descriptors":11,"./_dom-create":12,"./_fails":14}],18:[function(require,module,exports){
-module.exports = function (it) {
+module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
 },{}],19:[function(require,module,exports){
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
+var anObject       = require('./_an-object')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , toPrimitive    = require('./_to-primitive')
+  , dP             = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
-
 },{"./_an-object":8,"./_descriptors":11,"./_ie8-dom-define":17,"./_to-primitive":21}],20:[function(require,module,exports){
-module.exports = function (bitmap, value) {
+module.exports = function(bitmap, value){
   return {
-    enumerable: !(bitmap & 1),
+    enumerable  : !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+    writable    : !(bitmap & 4),
+    value       : value
   };
 };
-
 },{}],21:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function(it, S){
+  if(!isObject(it))return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-
 },{"./_is-object":18}],22:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
-
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
 },{"./_descriptors":11,"./_export":13,"./_object-dp":19}],23:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
@@ -19540,7 +19520,7 @@ exports.insert = function (css) {
 
 },{}],30:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19604,19 +19584,19 @@ exports.default = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-dc1c0446=\"\">\n    <div class=\"calendar-bar row\" _v-dc1c0446=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-dc1c0446=\"\">\n      <h4 _v-dc1c0446=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-dc1c0446=\"\">\n          <h4 _v-dc1c0446=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-dc1c0446=\"\">\n  <div id=\"calendar-content-bar\" _v-dc1c0446=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-dc1c0446=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-dc1c0446=\"\"></event-view-content>\n      <br _v-dc1c0446=\"\">\n            <p _v-dc1c0446=\"\">*All calendar items are subject to change.</p><br _v-dc1c0446=\"\">\n            <p _v-dc1c0446=\"\">The EMU calendar is maintained by the <a href=\"http://emich.edu/communications\" _v-dc1c0446=\"\">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p><br _v-dc1c0446=\"\">\n            <p _v-dc1c0446=\"\">Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p><br _v-dc1c0446=\"\">\n     </div>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-dc1c0446=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-dc1c0446=\"\"></event-view-side-bar>\n    </div>\n  </div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-6520d5b8=\"\">\n    <div class=\"calendar-bar row\" _v-6520d5b8=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-6520d5b8=\"\">\n      <h4 _v-6520d5b8=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-6520d5b8=\"\">\n          <h4 _v-6520d5b8=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-6520d5b8=\"\">\n  <div id=\"calendar-content-bar\" _v-6520d5b8=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-6520d5b8=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-6520d5b8=\"\"></event-view-content>\n      <br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">*All calendar items are subject to change.</p><br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">The EMU calendar is maintained by the <a href=\"http://emich.edu/communications\" _v-6520d5b8=\"\">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p><br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p><br _v-6520d5b8=\"\">\n     </div>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-6520d5b8=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-6520d5b8=\"\"></event-view-side-bar>\n    </div>\n  </div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.pull-right[_v-dc1c0446] {\n    float:right;\n}\n#graybar[_v-dc1c0446]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-dc1c0446] {\n    background-color: #bebdbd;\n}\n"] = false
+    __vueify_insert__.cache["\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-dc1c0446", module.exports)
+    hotAPI.createRecord("_v-6520d5b8", module.exports)
   } else {
-    hotAPI.update("_v-dc1c0446", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6520d5b8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventViewContent.vue":31,"./EventViewSideBar.vue":32,"babel-runtime/core-js/json/stringify":1,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],31:[function(require,module,exports){
@@ -19732,9 +19712,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-147bd0e8", module.exports)
+    hotAPI.createRecord("_v-65b6795e", module.exports)
   } else {
-    hotAPI.update("_v-147bd0e8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-65b6795e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventViewSingle.vue":33,"babel-runtime/helpers/defineProperty":3,"moment":23,"vue":28,"vue-hot-reload-api":25,"vue-router":27,"vueify/lib/insert-css":29}],32:[function(require,module,exports){
@@ -19955,9 +19935,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-57b15ccf", module.exports)
+    hotAPI.createRecord("_v-2f140894", module.exports)
   } else {
-    hotAPI.update("_v-57b15ccf", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2f140894", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],33:[function(require,module,exports){
@@ -20072,7 +20052,7 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <!-- AddEvent plugin script -->\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br><br>\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">\n      <template v-if=\"item.cost | isNumeric\">\n        Cost: {{item.cost | currency }}\n      </template>\n      <template v-else=\"\">\n        Cost: {{item.cost}}\n      </template>\n    </p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\"><a href=\"{{item.ticket_details_online | hasHttp}}\">Get Tickets Online</a></p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <!-- AddEvent plugin script -->\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br><br>\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">\n      <template v-if=\"item.cost | isNumeric\">\n        Cost: {{item.cost | currency }}\n      </template>\n      <template v-else=\"\">\n        Cost: {{item.cost}}\n      </template>\n    </p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <p v-if=\"item.hsc_rewards\">Eagle Rewards: {{item.hsc_rewards}}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\"><a href=\"{{item.ticket_details_online | hasHttp}}\">Get Tickets Online</a></p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n  </div>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -20082,9 +20062,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-378a9af6", module.exports)
+    hotAPI.createRecord("_v-8cbe0bc0", module.exports)
   } else {
-    hotAPI.update("_v-378a9af6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-8cbe0bc0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){

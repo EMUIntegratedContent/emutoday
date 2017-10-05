@@ -32,6 +32,9 @@
 @can('lbc_approve', $currentUser)
 <li><a href="/admin/lbcqueue"><i class="fa fa-university"></i> <span>LBC Approve</span></a></li>
 @endcan
+@can('rewards', $currentUser)
+<li><a href="/admin/hscqueue"><i class="fa fa-graduation-cap"></i> <span>Eagle Rewards</span></a></li>
+@endcan
 @can('story_create', $currentUser)
 <li class="treeview {{ set_active('admin/story*') }}">
   <a href="#"><i class="fa fa-file-text-o"></i> <span>Stories</span> <!-- <i class="fa fa-angle-left pull-right"> --></i></a>

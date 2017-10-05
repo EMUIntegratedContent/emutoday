@@ -29,6 +29,7 @@ Route::get('/cas/logout', function(){
 # RSS Feeds
 Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
 Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
+Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
 
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
@@ -107,7 +108,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     })  ;
 
     Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
-        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();
+        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->orderBy('last_Name', 'asc')->get();
     });
 
     Route::get('contactlist', function() { // is there a way to concat first_name and last_name here?
@@ -148,6 +149,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('event/queueload/{fromDate?}/{toDate?}', 'Api\EventController@queueLoad')->name('api.event.queueload');
     Route::get('event/lbcqueueload/{fromDate?}/{toDate?}', 'Api\EventController@lbcQueueLoad')->name('api.event.lbcqueueload');
+    Route::get('event/hscqueueload/{fromDate?}/{toDate?}', 'Api\EventController@hscQueueLoad')->name('api.event.hscqueueload');
     Route::get('event/otherItems', 'Api\EventController@otherItems')->name('api.event.otheritems');
     Route::get('event/unapprovedItems', 'Api\EventController@unapprovedItems')->name('api.event.unapproveditems');
     Route::get('event/approvedItems', 'Api\EventController@approvedItems')->name('api.event.approveditems');
@@ -306,6 +308,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
         Route::get('event/queue', 'Admin\EventController@queue')->name('admin.event.queue');
         Route::get('/lbcqueue', 'Admin\EventController@lbcqueue')->name('admin.event.lbcqueue');
+        Route::get('/hscqueue', 'Admin\EventController@hscqueue')->name('admin.event.hscqueue');
         Route::get('event/form', 'Admin\EventController@form')->name('admin.event.form');
         Route::resource('event', 'Admin\EventController');
 
