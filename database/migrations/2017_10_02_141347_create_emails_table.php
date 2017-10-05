@@ -21,6 +21,18 @@ class CreateEmailsTable extends Migration
             $table->tinyInteger('is_ready');
             $table->timestamps();
         });
+
+        Schema::create('email_sendtimes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->dateTime('send_at');
+            $table->tinyInteger('is_sent');
+            $table->integer('email_id')->unsigned();
+            $table->foreign('email_id')
+                  ->references('id')->on('emails')
+                  ->onDelete('cascade');
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -31,5 +43,6 @@ class CreateEmailsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('emails');
+        Schema::dropIfExists('email_sendtimes');
     }
 }

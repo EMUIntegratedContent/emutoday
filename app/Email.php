@@ -16,4 +16,8 @@ class Email extends Model
     ];
 
   protected $dates = ['send_at', 'stop_at'];
+
+  public function sendTimes(){
+    return $this->hasMany('Emutoday\EmailSendTimes')
+  }
 }
