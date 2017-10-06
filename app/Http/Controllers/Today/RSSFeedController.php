@@ -75,7 +75,7 @@ END:VEVENT\r\n";
 
     // close calendar
     $output .=
-"END:VCALENDAR\n";
+"END:VCALENDAR\r\n";
 
     return $output;
   }
