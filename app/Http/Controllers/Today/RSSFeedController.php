@@ -47,10 +47,7 @@ class RSSFeedController extends Controller {
     define('DATE_ICAL', 'Ymd\THis\Z');
 
     $output =
-"BEGIN:VCALENDAR
-METHOD:PUBLISH
-VERSION:2.0
-PRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
+"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
 
     // loop over events
     foreach ($events as $event):
