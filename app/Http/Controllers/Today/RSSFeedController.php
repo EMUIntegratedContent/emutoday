@@ -56,9 +56,12 @@ class RSSFeedController extends Controller {
         $status = "CANCELED";
       }
 
+      // Descriptions can't be sent with newline characters or else it'll mess up the iCal feed
+      $description = str_replace("\n", '', $event->description);
+
      $output .=
 "BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "\r\nDTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "\r\nDTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "\r\nLAST-MODIFIED:"
-. date(DATE_ICAL, strtotime($event->updated_at)) . "\r\nORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "\r\nLOCATION:$event->location\r\nDESCRIPTION:" . trim($event->description) . "\r\nEND:VEVENT\r\n";
+. date(DATE_ICAL, strtotime($event->updated_at)) . "\r\nORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "\r\nLOCATION:$event->location\r\nDESCRIPTION:" . trim($description) . "\r\nEND:VEVENT\r\n";
     endforeach;
 
     // close calendar
