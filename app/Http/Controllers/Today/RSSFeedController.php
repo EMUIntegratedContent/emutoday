@@ -65,6 +65,7 @@ DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
 DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
 DTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "
 LAST-MODIFIED:" . date(DATE_ICAL, strtotime($event->updated_at)) . "
+ORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "
 LOCATION:$event->location
 END:VEVENT\n";
     endforeach;
