@@ -46,8 +46,6 @@ class RSSFeedController extends Controller {
     // the iCal date format. Note the Z on the end indicates a UTC timestamp.
     define('DATE_ICAL', 'Ymd\THis\Z');
 
-    // max line length is 75 chars. New line is \\n
-
     $output =
 "BEGIN:VCALENDAR
 METHOD:PUBLISH
@@ -56,11 +54,16 @@ PRODID:-//Eastern Michigan University//EMU Today Events//EN\n";
 
     // loop over events
     foreach ($events as $event):
+      $status = "CONFIRMED";
+      if($event->is_canceled){
+        $status = "CANCELED";
+      }
+
      $output .=
 "BEGIN:VEVENT
 SUMMARY:$event->title
 UID:$event->id
-STATUS:$event->is_canceled
+STATUS:$status
 DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
 DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
 DTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "
