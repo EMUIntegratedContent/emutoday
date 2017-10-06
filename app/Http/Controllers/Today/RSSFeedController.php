@@ -42,7 +42,8 @@ class RSSFeedController extends Controller {
   }
 
   public function getEventsICal(){
-    $events = Event::where([['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+    // Get all future events and past events of two months ago or less
+    $events = Event::where([ ['is_approved', 1], ['start_date', '>=', date('Y-m-d', strtotime(date("Y-m-d",strtotime("-2 months"))))] ])->orderBy('start_date', 'asc')->get();
     // the iCal date format. Note the Z on the end indicates a UTC timestamp.
     define('DATE_ICAL', 'Ymd\THis\Z');
 
@@ -64,8 +65,11 @@ class RSSFeedController extends Controller {
       $description = str_replace("\x0D", "\\n", $description);//lf - text: escaped new line
       $description = strip_tags(htmlspecialchars_decode($description));//clear html for plain text version
 
+      $start_date = date('Y-m-d', strtotime($event->start_date)) . date('H:i:s', strtotime($event->start_time));
+      $end_date = date('Y-m-d', strtotime($event->end_date)) . date('H:i:s', strtotime($event->end_time));
+
      $output .=
-"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "\r\nDTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "\r\nDTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "\r\nLAST-MODIFIED:"
+"BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:" . date(DATE_ICAL, strtotime($start_date)) . "\r\nDTEND:" . date(DATE_ICAL, strtotime($end_date)) . "\r\nDTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "\r\nLAST-MODIFIED:"
 . date(DATE_ICAL, strtotime($event->updated_at)) . "\r\nORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\nEND:VEVENT\r\n";
     endforeach;
 
