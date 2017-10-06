@@ -47,7 +47,10 @@ class RSSFeedController extends Controller {
     define('DATE_ICAL', 'Ymd\THis\Z');
 
     $output =
-"BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
+"BEGIN:VCALENDAR\r\n
+METHOD:PUBLISH\r\n
+VERSION:2.0\r\n
+PRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
 
     // loop over events
     foreach ($events as $event):
@@ -57,17 +60,17 @@ class RSSFeedController extends Controller {
       }
 
      $output .=
-"BEGIN:VEVENT
-SUMMARY:$event->title
-UID:$event->id
-STATUS:$status
-DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
-DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
-DTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "
-LAST-MODIFIED:" . date(DATE_ICAL, strtotime($event->updated_at)) . "
-ORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "
-LOCATION:$event->location
-END:VEVENT\n";
+"BEGIN:VEVENT\r\n
+SUMMARY:$event->title\r\n
+UID:$event->id\r\n
+STATUS:$status\r\n
+DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "\r\n
+DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "\r\n
+DTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "\r\n
+LAST-MODIFIED:" . date(DATE_ICAL, strtotime($event->updated_at)) . "\r\n
+ORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "\r\n
+LOCATION:$event->location\r\n
+END:VEVENT\r\n";
     endforeach;
 
     // close calendar
