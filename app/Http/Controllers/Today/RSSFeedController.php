@@ -56,12 +56,11 @@ class RSSFeedController extends Controller {
         $status = "CANCELLED";
       }
 
-      // Descriptions can't be sent with newline characters or else it'll mess up the iCal feed
-      $description = str_replace("\xA0", " ", $event->description);//nbsp - make space
-      $description = str_replace("\x0A", "", $description);//cr - remove
-
+      // Descriptions can't be sent with special characters or else it'll mess up the iCal feed
+      // Tutorial: https://stackoverflow.com/questions/30220243/php-creating-ics-file-hidden-characters-and-line-breaks-breaking-output
+      $description = str_replace("\xA0", " ", $event->description); //nbsp - make space
+      $description = str_replace("\x0A", "", $description); //cr - remove
       $desc_html = str_replace("\x0D","<br>",$description);//lf - html break
-
       $description = str_replace("\x0D", "\\n", $description);//lf - text: escaped new line
       $description = strip_tags(htmlspecialchars_decode($description));//clear html for plain text version
 
