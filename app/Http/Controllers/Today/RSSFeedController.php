@@ -60,7 +60,7 @@ PRODID:-//Eastern Michigan University//EMU Today Events//EN\n";
 "BEGIN:VEVENT
 SUMMARY:$event->title
 UID:$event->id
-STATUS:" . $event->is_canceled . "
+STATUS:$event->is_canceled
 DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
 DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
 DTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "
