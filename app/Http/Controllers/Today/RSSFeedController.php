@@ -53,7 +53,7 @@ class RSSFeedController extends Controller {
     foreach ($events as $event):
       $status = "CONFIRMED";
       if($event->is_canceled){
-        $status = "CANCELED";
+        $status = "CANCELLED";
       }
 
       // Descriptions can't be sent with newline characters or else it'll mess up the iCal feed
