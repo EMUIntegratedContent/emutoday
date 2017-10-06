@@ -48,10 +48,10 @@ class RSSFeedController extends Controller {
 
     // max line length is 75 chars. New line is \\n
 
-    $output = "BEGIN:VCALENDAR
-    METHOD:PUBLISH
-    VERSION:2.0
-    PRODID:-//Eastern Michigan University//EMU Today Events//EN\n";
+    $output = "BEGIN:VCALENDAR\r\n
+    METHOD:PUBLISH\r\n
+    VERSION:2.0\r\n
+    PRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
 
     // loop over events
     foreach ($events as $event):
