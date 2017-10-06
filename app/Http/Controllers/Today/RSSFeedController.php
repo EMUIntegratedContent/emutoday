@@ -57,8 +57,13 @@ class RSSFeedController extends Controller {
       }
 
       // Descriptions can't be sent with newline characters or else it'll mess up the iCal feed
-      $description = str_replace("\r\n", "\\n", $event->description);
-      $description = str_replace([':', '&', '|', ''], "", $description);
+      $description = str_replace("\xA0", " ", $event->description);//nbsp - make space
+      $description = str_replace("\x0A", "", $description);//cr - remove
+
+      $desc_html = str_replace("\x0D","<br>",$description);//lf - html break
+
+      $description = str_replace("\x0D", "\\n", $description);//lf - text: escaped new line
+      $description = strip_tags(htmlspecialchars_decode($description));//clear html for plain text version
 
      $output .=
 "BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "\r\nDTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "\r\nDTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "\r\nLAST-MODIFIED:"
