@@ -42,7 +42,7 @@ class RSSFeedController extends Controller {
   }
 
   public function getEventsICal(){
-    $events = Event::where([['is_approved', 1]])->orderBy('start_date', 'asc');
+    $events = Event::where([['is_approved', 1]])->orderBy('start_date', 'asc')->get();
     // the iCal date format. Note the Z on the end indicates a UTC timestamp.
     define('DATE_ICAL', 'Ymd\THis\Z');
 
