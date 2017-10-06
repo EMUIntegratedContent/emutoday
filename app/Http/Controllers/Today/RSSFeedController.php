@@ -63,6 +63,7 @@ UID:$event->id
 STATUS:" . $event->is_canceled . "
 DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
 DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
+DTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "
 LAST-MODIFIED:" . date(DATE_ICAL, strtotime($event->updated_at)) . "
 LOCATION:$event->location
 END:VEVENT\n";
