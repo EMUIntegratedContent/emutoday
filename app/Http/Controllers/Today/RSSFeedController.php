@@ -48,7 +48,8 @@ class RSSFeedController extends Controller {
 
     // max line length is 75 chars. New line is \\n
 
-    $output = "BEGIN:VCALENDAR
+    $output =
+"BEGIN:VCALENDAR
 METHOD:PUBLISH
 VERSION:2.0
 PRODID:-//Eastern Michigan University//EMU Today Events//EN\n";
@@ -56,19 +57,20 @@ PRODID:-//Eastern Michigan University//EMU Today Events//EN\n";
     // loop over events
     foreach ($events as $event):
      $output .=
-      "BEGIN:VEVENT
-      SUMMARY:$event->title
-      UID:$event->id
-      STATUS:" . $event->is_canceled . "
-      DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
-      DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
-      LAST-MODIFIED:" . date(DATE_ICAL, strtotime($event->updated_at)) . "
-      LOCATION:$event->location
-      END:VEVENT\n";
+"BEGIN:VEVENT
+SUMMARY:$event->title
+UID:$event->id
+STATUS:" . $event->is_canceled . "
+DTSTART:" . date(DATE_ICAL, strtotime($event->start_date)) . "
+DTEND:" . date(DATE_ICAL, strtotime($event->end_date)) . "
+LAST-MODIFIED:" . date(DATE_ICAL, strtotime($event->updated_at)) . "
+LOCATION:$event->location
+END:VEVENT\n";
     endforeach;
 
     // close calendar
-    $output .= "END:VCALENDAR";
+    $output .=
+"END:VCALENDAR";
 
     return $output;
   }
