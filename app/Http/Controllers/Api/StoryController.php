@@ -296,7 +296,7 @@ class StoryController extends ApiController
         $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
         $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
 
-        $story->user_id       	= $request->get('user_id');
+        //$story->user_id       	= $request->get('user_id');
         $story->title           	= $request->get('title');
         $story->slug           	= $request->get('slug');
         $story->subtitle           = $request->get('subtitle');
