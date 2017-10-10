@@ -45,7 +45,7 @@ class RSSFeedController extends Controller {
     // Get all future events and past events of two months ago or less
     $events = Event::where([ ['is_approved', 1], ['start_date', '>=', date('Y-m-d', strtotime(date("Y-m-d",strtotime("-2 months"))))] ])->orderBy('start_date', 'asc')->get();
     // the iCal date format. Note the Z on the end indicates a UTC timestamp.
-    define('DATE_ICAL', 'Ymd\THis\Z');
+    define('DATE_ICAL', 'Ymd\THis');
 
     $output =
 "BEGIN:VCALENDAR\r\nMETHOD:PUBLISH\r\nVERSION:2.0\r\nPRODID:-//Eastern Michigan University//EMU Today Events//EN\r\n";
@@ -70,7 +70,7 @@ class RSSFeedController extends Controller {
 
      $output .=
 "BEGIN:VEVENT\r\nSUMMARY:$event->title\r\nUID:$event->id\r\nSTATUS:$status\r\nDTSTART:" . date(DATE_ICAL, strtotime($start_date)) . "\r\nDTEND:" . date(DATE_ICAL, strtotime($end_date)) . "\r\nDTSTAMP:" . date(DATE_ICAL, strtotime($event->created_at)) . "\r\nLAST-MODIFIED:"
-. date(DATE_ICAL, strtotime($event->updated_at)) . "\r\nORGANIZER:" . date(DATE_ICAL, strtotime($event->contact_person)) . "\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\nEND:VEVENT\r\n";
+. date(DATE_ICAL, strtotime($event->updated_at)) . "\r\nORGANIZER:" . $event->contact_person . "\r\nLOCATION:$event->location\r\nDESCRIPTION:$description\r\nEND:VEVENT\r\n";
     endforeach;
 
     // close calendar
