@@ -6,8 +6,6 @@
 @section('style-plugin')
     @parent
 <!-- iCheck for checkboxes and radio inputs -->
-{{-- <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css"> --}}
-{{-- <link rel="stylesheet" href="/themes/plugins/eonasdan-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"> --}}
     <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
 
     @endsection
@@ -15,11 +13,9 @@
         @parent
         @endsection
         @section('scripthead')
-                    {{-- @include('admin.layouts.scriptshead') --}}
         @parent
     @endsection
 @section('content')
-
     <div id="vue-story-queue">
         <story-queue sroute="{{$sroute}}" gtype="{{$gtype}}" stype="{{$stype}}" qtype="{{$qtype}}" stypes="{{$stypes}}" cuser="{{$currentUser}}" role="{{$currentUser->roles->first()->name}}">
             <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">

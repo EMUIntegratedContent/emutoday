@@ -102,4 +102,8 @@ class User extends Authenticatable
     public function isExpertsEditor() {
         return $this->hasRole('experts');
     }
+
+    public function isEmailBuilder() {
+        return $this->hasRole('emails');
+    }
 }

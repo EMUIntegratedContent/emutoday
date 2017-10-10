@@ -34213,7 +34213,7 @@ exports.insert = function (css) {
 
 },{}],10:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box-body[_v-aaf4066e] {\n    /*height: 800px;*/\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34261,7 +34261,7 @@ exports.default = {
                 'type': 'date',
                 'label': 'End'
             }],
-            //   rows: this.rowsLoad,
+
             options: {
                 hAxis: { title: 'Date' },
                 vAxis: { title: '' },
@@ -34273,26 +34273,13 @@ exports.default = {
                 timeline: {
                     showRowLabels: false,
                     showBarLabels: true
-                    //   title: 'Company Performance',
-                    //   hAxis: {
-                    //       title: 'Dates',
-                    //       minValue: '2015',
-                    //       maxValue: '2017'
-                    //   },
-                    //   vAxis: {
-                    //       title: '',
-                    //       minValue: 300,
-                    //       maxValue: 1200
-                    //   },
-                    //   showRowLabels: false
-                    //   curveType: 'function'
-                } }
+                }
+            }
         };
     },
     computed: {
         rowsLoad: function rowsLoad() {
             var result = new Array();
-            //    var json_data = JSON.parse(this.alldata)
             var newdata = this.alldata;
 
             return newdata.map(function (item, index) {
@@ -34308,7 +34295,6 @@ exports.default = {
                 return item;
             });
             console.log('newdata' + newdata);
-            // return  this.formatReturn(this.gcols)
         }
     },
 
@@ -34317,30 +34303,20 @@ exports.default = {
             var _this = this;
 
             this.$http.get('/api/page/chartload').then(function (response) {
-                //response.status;
                 console.log('response.status=' + response.status);
                 console.log('response.ok=' + response.ok);
                 console.log('response.statusText=' + response.statusText);
                 console.log('response.data=' + response.data);
-                // data = response.data;
-                //
-                // this.$set('allitems', response.data.data)
                 _this.$set('alldata', response.data.data);
-                //    this.allitems = response.data.data;
-
-
                 _this.checkOverDataFilter();
             }, function (response) {
                 //error callback
                 console.log("ERRORS");
-
-                //  this.formErrors =  response.data.error.message;
             }).bind(this);
         },
         checkOverDataFilter: function checkOverDataFilter() {
             console.log('newRows= ' + this.alldata);
         },
-
         formatReturn: function formatReturn(items) {
             var itemsArray = [];
             for (item in items) {
@@ -34360,27 +34336,8 @@ exports.default = {
     },
 
     // the `events` option simply calls `$on` for you
-    events: {
-        // 'child-msg': function (msg) {
-        //   // `this` in event callbacks are automatically bound
-        //   // to the instance that registered it
-        //   this.messages.push(msg)
-        // }
-    },
-    filters: {
-        // momentPretty: {
-        // 	read: function(val) {
-        // 			console.log('read-val'+ val )
-        //
-        // 		return 	val ?  moment(val).format('MM-DD-YYYY') : '';
-        // 	},
-        // 	write: function(val, oldVal) {
-        // 		console.log('write-val'+ val + '--'+ oldVal)
-        //
-        // 		return moment(val).format('YYYY-MM-DD');
-        // 	}
-        // }
-    }
+    events: {},
+    filters: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"panel-body\" _v-aaf4066e=\"\">\n    <vue-chart :packages=\"gpackages\" :chart-type=\"chartType\" :columns=\"columns\" :rows=\"rowsLoad\" :options=\"options\" _v-aaf4066e=\"\"></vue-chart>\n</div>\n\n"
@@ -34389,7 +34346,7 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box-body[_v-aaf4066e] {\n    /*height: 800px;*/\n}\n"] = false
+    __vueify_insert__.cache["\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

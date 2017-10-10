@@ -91,6 +91,7 @@ elixir(function(mix) {
     mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
     mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');
+    mix.browserify('vue-email-form.js', 'public/js/vue-email-form.js');
     mix.browserify('vue-expert-form.js', 'public/js/vue-expert-form.js');
     mix.browserify('vue-expert-list.js', 'public/js/vue-expert-list.js');
     mix.browserify('vue-expert-request-list.js', 'public/js/vue-expert-request-list.js');

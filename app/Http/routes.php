@@ -57,6 +57,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
+    Route::get('email/stories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_stories');
+    Route::resource('email', 'Api\EmailController');
+
     Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
     Route::get('experts/{id}/edit', 'Api\ExpertsController@edit')->name('api_experts_edititem');
     Route::get('experts/category/{id?}', 'Api\ExpertsController@expertCategory')->name('api_experts_category');
@@ -283,6 +286,14 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
             Route::delete('expertimage/{expertimage}/delete', 'Admin\ExpertImageController@destroy')->name('admin_expertimage_destroy');
             Route::get('experts/{expert}/addnewexpertimage', 'Admin\ExpertImageController@addNewExpertImage')->name('admin_expertimage_add_new_expertimage');
             Route::get('expertimage/{expertimage}/confirm', 'Admin\ExpertImageController@confirm')->name('admin_expertimage_confirm');
+        });
+
+        /* EMAILS */
+        Route::group(['middleware' => 'Emutoday\Http\Middleware\EmailsMiddleware', 'middleware' => ['bindings']], function()
+        {
+            Route::get('email/form', 'Admin\EmailController@form')->name('admin_email_form');
+            Route::post('email/form', 'Admin\EmailController@store')->name('admin_email_store');
+            Route::resource('email', 'Admin\EmailController');
         });
 
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('admin_user_edit');

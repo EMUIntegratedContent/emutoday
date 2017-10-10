@@ -289,13 +289,7 @@
 
         }
         .special-item-last {
-            /*border-bottom: 6px solid #bfff00;
-            border-bottom-right-radius:3px;
-            border-bottom-left-radius: 3px;*/
         }
-        /*.box.box-solid.box-default {
-        border: 1px solid #999999;
-        }*/
 </style>
 <script>
 

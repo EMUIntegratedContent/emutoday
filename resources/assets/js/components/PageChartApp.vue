@@ -12,9 +12,7 @@
 
 </template>
 <style scoped>
-.box-body {
-    /*height: 800px;*/
-}
+
 </style>
 <script>
 import moment from 'moment';
@@ -54,7 +52,7 @@ export default  {
                       'type': 'date',
                       'label': 'End'
                   }],
-                //   rows: this.rowsLoad,
+
                   options: {
                     hAxis: {title: 'Date'},
                     vAxis: {title: ''},
@@ -67,26 +65,12 @@ export default  {
                           showRowLabels: false,
                           showBarLabels: true
                       }
-                    //   title: 'Company Performance',
-                    //   hAxis: {
-                    //       title: 'Dates',
-                    //       minValue: '2015',
-                    //       maxValue: '2017'
-                    //   },
-                    //   vAxis: {
-                    //       title: '',
-                    //       minValue: 300,
-                    //       maxValue: 1200
-                    //   },
-                    //   showRowLabels: false
-                    //   curveType: 'function'
                   }
               }
           },
        computed: {
            rowsLoad: function () {
                var result = new Array();
-            //    var json_data = JSON.parse(this.alldata)
                 let newdata =  this.alldata;
 
                 return newdata.map(function(item,index){
@@ -102,7 +86,6 @@ export default  {
                     return item
                 });
                 console.log('newdata'+ newdata)
-                // return  this.formatReturn(this.gcols)
            },
        },
 
@@ -111,78 +94,47 @@ export default  {
            this.$http.get('/api/page/chartload')
 
            .then((response) =>{
-               //response.status;
                console.log('response.status=' + response.status);
                console.log('response.ok=' + response.ok);
                console.log('response.statusText=' + response.statusText);
                console.log('response.data=' + response.data);
-               // data = response.data;
-               //
-               // this.$set('allitems', response.data.data)
                this.$set('alldata', response.data.data)
-            //    this.allitems = response.data.data;
-
-
                this.checkOverDataFilter();
            }, (response) => {
                //error callback
                console.log("ERRORS");
-
-               //  this.formErrors =  response.data.error.message;
-
            }).bind(this);
        },
        checkOverDataFilter:function() {
            console.log('newRows= ' + this.alldata);
 
        },
-
-
-
-         formatReturn: function (items) {
-             var itemsArray = [];
-             for (item in items) {
-                 var itemArray = [
-                     item.id,
-                     moment(item['start_date']).format('YYYY-MM-DD'),
-                     moment(item['end_date']).format('YYYY-MM-DD')
-                 ];
-                 itemsArray.push(itemArray);
-             }
-             console.log('itemsArray='+ itemsArray);
-             return itemsArray
+       formatReturn: function (items) {
+         var itemsArray = [];
+         for (item in items) {
+             var itemArray = [
+                 item.id,
+                 moment(item['start_date']).format('YYYY-MM-DD'),
+                 moment(item['end_date']).format('YYYY-MM-DD')
+             ];
+             itemsArray.push(itemArray);
+         }
+         console.log('itemsArray='+ itemsArray);
+         return itemsArray
         },
 
-           formatColumnValues: function(items) {
-               return items.filter(function(item) {
-                   return item.live === 1
-               });
-           },
+         formatColumnValues: function(items) {
+             return items.filter(function(item) {
+                 return item.live === 1
+             });
+         },
 
        },
-
 
        // the `events` option simply calls `$on` for you
        events: {
-           // 'child-msg': function (msg) {
-           //   // `this` in event callbacks are automatically bound
-           //   // to the instance that registered it
-           //   this.messages.push(msg)
-           // }
        },
        filters: {
-           // momentPretty: {
-           // 	read: function(val) {
-           // 			console.log('read-val'+ val )
-           //
-           // 		return 	val ?  moment(val).format('MM-DD-YYYY') : '';
-           // 	},
-           // 	write: function(val, oldVal) {
-           // 		console.log('write-val'+ val + '--'+ oldVal)
-           //
-           // 		return moment(val).format('YYYY-MM-DD');
-           // 	}
-           // }
        }
    }
 
