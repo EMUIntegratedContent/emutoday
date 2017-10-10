@@ -8,8 +8,11 @@
             60%
           </div>
         </div>
-        <template v-if="mainStory">
-          {{mainStory.title}}
+        <template v-if="mainStory.id">
+          <img :src="mainStory.email_images[0].image_path + mainStory.email_images[0].filename" :alt="mainStory.email_images[0].title" />
+          <h2>{{mainStory.title}}<h2>
+          {{{ mainStory.content | truncate '60' }}}
+          <p><a :href="mainStory.full_url">Read More</a></p>
         </template>
 
       </div>
@@ -17,13 +20,20 @@
       <div v-bind:class="md4col">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li class="active"><a href="#stories" role="tab" data-toggle="tab">Main Story</a></li>
+          <li class="active"><a href="#main-story" role="tab" data-toggle="tab">Main Story</a></li>
+          <li><a href="#stories" role="tab" data-toggle="tab">Other Stories</a></li>
           <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
           <li><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
-          <div class="tab-pane active" id="stories">
+          <div class="tab-pane active" id="main-story">
+            <email-main-story-queue
+            :stypes="stypes"
+            :main-story="mainStory"
+            ></email-main-story-queue>
+          </div>
+          <div class="tab-pane" id="stories">
             <email-story-queue
             :stypes="stypes"
             :main-story="mainStory"
@@ -174,12 +184,13 @@ import moment from 'moment';
 import flatpickr from 'flatpickr';
 import vSelect from "vue-select";
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
+import EmailMainStoryQueue from './EmailMainStoryQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
 import VueDraggable from 'vuedraggable'
 
 module.exports = {
   directives: {flatpickr},
-  components: {EmailStoryQueue, vSelect},
+  components: {EmailMainStoryQueue, EmailStoryQueue, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -383,7 +394,7 @@ module.exports = {
         this.sendtimes.push({value: '', expertise:''});
     },
 
-    displayMainStory: function(storyId){
+    setMainStory: function(storyId){
       this.$http.get('/api/story/' + storyId + '/edit')
 
       .then((response) => {
@@ -397,6 +408,9 @@ module.exports = {
   },
 
   filters: {
+    truncate: function(text, stop, clamp) {
+    	return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
+    }
   },
   events: {
     // Generated from the EmailStoryPod using the $dispatch property of the vm
@@ -405,7 +419,7 @@ module.exports = {
       if(mainStoryId){
         this.record.mainStoryId = mainStoryId // Set the main story ID for this email
         // Fetch the story for display in the builder
-        this.displayMainStory(this.record.mainStoryId)
+        this.setMainStory(this.record.mainStoryId)
       } else {
         this.record.mainStoryId = null
         this.mainStory = {}

@@ -6,13 +6,27 @@
             <li>Approved</li>
             <li>Not archived</li>
             <li>Flagged as "Ready"</li>
+            <li>Have a photo of type emutoday_email</li>
           </ol>
         </div>
     </div>
     <hr />
     <div class="row">
         <div class="col-md-12">
+            <h3>Main Story</h3>
+            <div v-if="mainStory.id" class="row">
+                <div class="col-md-12">
+                  <email-story-pod
+                      pid="main-story-item"
+                      :main-story-id="mainStory.id"
+                      pod-type="mainstory"
+                      :item="mainStory">
+                  </email-story-pod>
+                </div>
+            </div>
+            <p v-else>No main story set for this emails. Choose one from the queue below.</p>
             <p v-if="loading" class="col-md-12">Loading. Please Wait...</p>
+            <hr/>
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
@@ -40,7 +54,7 @@
                 <email-story-pod
                     pid="email-items"
                     :main-story-id="mainStory.id"
-                    pod-type="otherstory"
+                    pod-type="queue"
                     v-for="item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate"
                     :item="item">
                 </email-story-pod>
@@ -221,7 +235,7 @@ export default  {
       fetchAllRecords: function() {
           this.loading = true
 
-          var routeurl = '/api/email/stories/other';
+          var routeurl = '/api/email/stories/main';
 
           // if a start date is set, get stories whose start_date is on or after this date
           if(this.startdate){

@@ -15,7 +15,7 @@
                 <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
               </div><!-- /.col-md-12 -->
               <div class="col-sm-3">
-                <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStory()" :checked="isMainStory" /><i class="fa fa-times" aria-hidden="true"></i>
+                <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStory()" :checked="isMainStory"><i class="fa fa-times" aria-hidden="true"></i></button>
               </div><!-- /.col-md-12 -->
             </a>
           </div><!-- /.row -->
@@ -32,35 +32,15 @@
             <p>Live: {{item.is_live}}</p>
             <p>Archived: {{item.is_archived}}</p>
             <p>Start Date: {{item.start_date}}</p>
-            <template v-if="isPartOfHub">
-                <div class="btn-group btn-xs form-inline">
-                    <div class="form-group">
-                        <label>Hubs: </label>
-                    </div>
-                    <div class="form-group">
-                        <button  v-for="hub in connectedHubs" v-on:click.prevent="gotoHub(hub.id)" class="btn bg-hub btn-xs"  data-toggle="tooltip" data-placement="top" title="Edit Hub Id: {{hub.id}}"><i class="fa fa-newspaper-o"></i></button>
-                    </div>
-                </div>
-            </template>
-            <template v-if="isPartOfMag">
-                <div class="btn-group btn-xs form-inline">
-                    <div class="form-group">
-                        <label>Mags: </label>
-                    </div>
-                    <div class="form-group">
-                        <button  v-for="mag in connectedMags" v-on:click.prevent="gotoMag(mag.id)" class="btn bg-hub btn-xs"  data-toggle="tooltip" data-placement="top" title="Edit Mag Id: {{mag.id}}"><i class="fa fa-book"></i></button>
-                    </div>
-                </div>
-            </template>
       </div><!-- /.box-body -->
             <div class="box-footer list-footer">
                 <div class="row">
                     <div class="col-sm-6">
-                        Drag me into the template builder
+                        Live {{ timefromNow }}
                     </div><!-- /.col-md-6 -->
                     <div class="col-sm-6">
                         <div class="btn-group pull-right">
-                            <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn" :disabled="disabledPreview" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></button>
+                            <button class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></button>
                         </div>
                     </div><!-- /.col-md-6 -->
                 </div><!-- /.row -->
@@ -271,6 +251,9 @@ module.exports  = {
     ready: function() {
     },
     computed: {
+      timefromNow:function() {
+          return moment(this.item.start_date).fromNow()
+      },
       typeIcon: function() {
           switch (this.item.story_type) {
               case 'emutoday':

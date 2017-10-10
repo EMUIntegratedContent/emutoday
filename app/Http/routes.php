@@ -57,7 +57,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
-    Route::get('email/stories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_stories');
+    Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_main_email_stories');
+    Route::get('email/stories/other/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_other_email_stories');
     Route::resource('email', 'Api\EmailController');
 
     Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
@@ -192,9 +193,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::resource('story', 'Api\StoryController');
 
-
     Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
-
     Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
 
 });

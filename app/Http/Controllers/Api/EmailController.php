@@ -27,23 +27,45 @@ class EmailController extends ApiController
   { //
   }
 
-  public function getAllEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
-      $email_imagetype = ImageType::where('name', 'emutoday_email')->first()->id; //get email imagetype
+  /**
+   * Main Stories require an image with type 'emutoday_email' to be present with the story.
+   */
+  public function getMainEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
+      $email_imagetypes = ImageType::select('id')->where('type', 'email')->get(); //get email imagetype
 
       if($fromDate && !$toDate){
-          $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetype){
-                        $query->where('imagetype_id', $email_imagetype);
+          $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetypes){
+                        $query->whereIn('imagetype_id', $email_imagetypes);
                       })
-                      ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->get();
+                      ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
       } elseif($fromDate && $toDate){
-          $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetype){
-                        $query->where('imagetype_id', $email_imagetype);
+          $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetypes){
+                        $query->whereIn('imagetype_id', $email_imagetypes);
                       })
-                      ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->get();
+                      ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
       } else {
-          $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetype){
-                        $query->where('imagetype_id', $email_imagetype);
-                      })->get();
+          $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetypes){
+                        $query->whereIn('imagetype_id', $email_imagetypes);
+                      })->where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
+      }
+
+      $fractal = new Manager();
+      $resource = new Fractal\Resource\Collection($stories->all(), new FractalStoryTransformerModel);
+
+      return $this->setStatusCode(200)
+      ->respondUpdatedWithData('Got stories with email photo', $fractal->createData($resource)->toArray() );
+  }
+
+  /**
+   * Non-main Stories do not require an image with type 'emutoday_email' to be present with the story.
+   */
+  public function getAllEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
+      if($fromDate && !$toDate){
+          $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'asc')->get();
+      } elseif($fromDate && $toDate){
+          $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+      } else {
+          $stories  = Story::where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'asc')->get();
       }
 
       $fractal = new Manager();
