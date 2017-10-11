@@ -42,10 +42,7 @@
               <!-- '/admin/php/top_nav.php'); -->
               <ul id="tier2-nav-magazine">
                 <li><a class="{{ set_active('magazine/issue')}}" href="/magazine/issue"><i class="fa fa-play"></i>Current Issue</a></li>
-                <!-- Past Issues is a unbuild feature. Leave out for now -->
-                <!-- <li><a class="{{ set_active('index')}}" href="#"><i class="fa fa-play"></i>Past Issues</a></li> -->
-                {{-- <li><a class="{{ set_active('magazine/issue', 'right-arrow')}}" href="/magazine/issue">Current Issue</a></li>
-                <!-- <li><a class="{{ set_active('index', 'right-arrow')}}" href="#">Past Issues</a></li> --> --}}
+                <li><a href="http://www.emich.edu/magazine">Past Issues</a></li>
                 <li><a href="http://www.emich.edu/alumni">Alumni</a></li>
                 <li><a href="/hub">EMU Today</a></li>
               </ul>
