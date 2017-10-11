@@ -12,6 +12,23 @@
     <hr />
     <div class="row">
         <div class="col-md-12">
+            <h3>Side Stories</h3>
+            <template v-if="usedStories.length > 0">
+              <ul class="list-group" v-sortable>
+                  <li v-for="story in usedStories" class="list-group-item">
+                    <email-story-pod
+                        pid="otherstory-list-stories"
+                        pod-type="otherstory"
+                        :item="story"
+                        >
+                    </email-story-pod>
+                  </li>
+              </ul>
+            </template>
+            <template v-else>
+              <p>There are no side stories set for this email.</p>
+            </template>
+            <hr />
             <p v-if="loading" class="col-md-12">Loading. Please Wait...</p>
             <!-- Date filter -->
             <form class="form-inline">
@@ -30,21 +47,21 @@
                 <div class="btn-group btn-group-xs" role="group">
                     <label>Filter: </label>
                 </div>
-                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_filter_storytype">
+                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="stories_filter_storytype">
                      <template v-for="item in storyTypeIcons">
                          <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
                     </template>
                 </div>
             </div>
-            <div id="email-items">
+            <div id="email-stories">
                 <email-story-pod
-                    pid="email-items"
-                    :main-story-id="mainStory.id"
-                    pod-type="otherstory"
-                    v-for="item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate"
-                    :item="item">
+                    pid="otherstory-queue-stories"
+                    pod-type="otherstoryqueue"
+                    :item="story"
+                    :other-stories="usedStories"
+                    v-for="story in queueStories | filterBy filterByStoryType | paginate"
+                >
                 </email-story-pod>
-
                 <ul class="pagination">
                   <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
                     <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
@@ -61,7 +78,6 @@
     </div><!-- ./row -->
 </template>
 <style scoped>
-
     h4 {
         margin-top: 3px;
         font-size: 18px;
@@ -79,17 +95,7 @@
         background-color: #605ca8;
         color: #ffffff;
     }
-    #items-unapproved .box {
-        margin-bottom: 4px;
-    }
-    #items-approved .box {
-        margin-bottom: 4px;
 
-    }
-    #items-live .box {
-        margin-bottom: 4px;
-
-    }
     #rangetoggle{
         color: #FF851B;
         margin-left: 5px;
@@ -108,7 +114,7 @@ import flatpickr from "../../directives/flatpickr.js"
 export default  {
     directives: {iconradio, flatpickr},
     components: {EmailStoryPod,IconToggleBtn,Pagination},
-    props: ['stypes','mainStory'],
+    props: ['stypes','mainStory','otherStories'],
     created(){
     },
     ready() {
@@ -116,12 +122,15 @@ export default  {
         this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
         this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
         this.fetchAllRecords()
+
+        this.otherStories = this.usedStories
     },
     data: function() {
         return {
-            items_filter_storytype: '',
+            stories_filter_storytype: '',
             currentDate: moment(),
-            items: [],
+            usedStories: [],
+            queueStories: [],
             loading: true,
             eventMsg: null,
             startdate: null,
@@ -129,12 +138,12 @@ export default  {
             isEndDate: false,
             currentPage: 1,
             itemsPerPage: 10,
-            resultCount: 0
+            resultCount: 0,
         }
     },
     computed: {
         totalPages: function() {
-          return Math.ceil(this.items.length / this.itemsPerPage)
+          return Math.ceil(this.queueStories.length / this.itemsPerPage)
         },
         s_types:function(){
             try {
@@ -174,10 +183,10 @@ export default  {
           }
       },
       filterByStoryType: function (value) {
-          if (this.items_filter_storytype === '') {
+          if (this.stories_filter_storytype === '') {
               return value.story_type !== '';
           } else {
-              return value.story_type === this.items_filter_storytype;
+              return value.story_type === this.stories_filter_storytype;
           }
       },
       isString: function(val){
@@ -238,8 +247,8 @@ export default  {
           this.$http.get(routeurl)
 
           .then((response) =>{
-              this.$set('items', response.data.newdata.data)
-              this.resultCount = this.items.length
+              this.$set('queueStories', response.data.newdata.data)
+              this.resultCount = this.queueStories.length
               this.loading = false;
           }, (response) => {
               //error callback
@@ -302,7 +311,18 @@ export default  {
     },
 
     events: {
-
-    }
+      'other-story-added-queue': function (otherStoryObj) {
+        if(otherStoryObj){
+          this.usedStories.push(otherStoryObj)
+        }
+      },
+      'other-story-removed-queue': function (otherStoryObj) {
+        if(otherStoryObj){
+          this.usedStories.$remove(otherStoryObj)
+        }
+      }
+    },
+    watch: {
+    },
 }
 </script>

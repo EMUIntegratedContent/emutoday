@@ -398,8 +398,6 @@ module.exports  = {
       });
     },
     updateItem: function(){
-      //    this.patchRecord.is_approved = this.item.is_approved;
-      //    this.patchRecord.priority = this.item.priority;
       this.patchRecord.is_archived = this.item.is_archived;
 
       this.$http.patch('/api/announcement/updateitem/' + this.item.id , this.patchRecord , {

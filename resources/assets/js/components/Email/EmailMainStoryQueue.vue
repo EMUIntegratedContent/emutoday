@@ -14,11 +14,11 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Main Story</h3>
-            <div v-if="mainStory.id" class="row">
+            <div v-if="mainStoryId" class="row">
                 <div class="col-md-12">
                   <email-story-pod
                       pid="main-story-item"
-                      :main-story-id="mainStory.id"
+                      :main-story-id="mainStoryId"
                       pod-type="mainstory"
                       :item="mainStory">
                   </email-story-pod>
@@ -53,8 +53,8 @@
             <div id="email-items">
                 <email-story-pod
                     pid="email-items"
-                    :main-story-id="mainStory.id"
-                    pod-type="queue"
+                    :main-story-id="mainStoryId"
+                    pod-type="mainstoryqueue"
                     v-for="item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate"
                     :item="item">
                 </email-story-pod>
@@ -147,6 +147,9 @@ export default  {
         }
     },
     computed: {
+        mainStoryId: function(){
+          return this.mainStory ? this.mainStory.id : null
+        },
         totalPages: function() {
           return Math.ceil(this.items.length / this.itemsPerPage)
         },

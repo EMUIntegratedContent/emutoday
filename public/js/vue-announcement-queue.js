@@ -18677,8 +18677,6 @@ module.exports = {
     updateItem: function updateItem() {
       var _this2 = this;
 
-      //    this.patchRecord.is_approved = this.item.is_approved;
-      //    this.patchRecord.priority = this.item.priority;
       this.patchRecord.is_archived = this.item.is_archived;
 
       this.$http.patch('/api/announcement/updateitem/' + this.item.id, this.patchRecord, {

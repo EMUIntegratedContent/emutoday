@@ -4,8 +4,11 @@
         <div class="box-header with-border">
           <div class="row">
               <div class="col-sm-12">
-                  <div v-show="podType == 'queue'" class="pull-right">
-                      <label><input type="radio" @click="emitMainStory(item.id)" :checked="isMainStory" /> Make Main Story</label>
+                  <div v-show="podType == 'mainstoryqueue'" class="pull-right">
+                      <label><input type="radio" @click="emitMainStoryAdd(item)" :checked="isMainStory" />  Main Story</label>
+                  </div><!-- /.pull-left -->
+                  <div v-show="podType == 'otherstoryqueue'" class="pull-right">
+                      <label><input type="checkbox" @click="toggleEmitOtherStory(item)" v-model="checked" :checked="isOtherStory" /> Email Story</label>
                   </div><!-- /.pull-left -->
               </div>
           </div><!-- /.row -->
@@ -15,7 +18,8 @@
                 <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
               </div><!-- /.col-md-12 -->
               <div class="col-sm-3">
-                <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStory()" :checked="isMainStory"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button v-show="podType == 'otherstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitOtherStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </div><!-- /.col-md-12 -->
             </a>
           </div><!-- /.row -->
@@ -232,9 +236,10 @@ import moment from 'moment'
 module.exports  = {
     directives: {},
     components: {},
-    props: ['item','pid','mainStoryId','podType'],
+    props: ['item','pid','mainStoryId','podType','draggable','otherStories'],
     data: function() {
         return {
+            options: [],
             showBody: false,
             checkedMainStory: false,
             currentDate: {},
@@ -243,6 +248,10 @@ module.exports  = {
                 story_type: '',
                 start_date: ''
             },
+            patchRecord: {
+              priority: 0,
+            },
+            checked: false,
         }
     },
     created: function () {
@@ -253,6 +262,16 @@ module.exports  = {
     computed: {
       timefromNow:function() {
           return moment(this.item.start_date).fromNow()
+      },
+      hasPriorityChanged: function(){
+        /*
+        if (this.initRecord.priority != this.patchRecord.priority){
+          return true
+        } else {
+          return false
+        }
+        */
+        return
       },
       typeIcon: function() {
           switch (this.item.story_type) {
@@ -292,6 +311,14 @@ module.exports  = {
           return true
         }
         return false
+      },
+      isOtherStory: function(){
+        if(this.otherStories){
+          for(var i = 0; i < this.otherStories.length; i++) {
+            if(this.otherStories[i].id == this.item.id) return true;
+          }
+        }
+        return false
       }
     },
     methods: {
@@ -305,15 +332,48 @@ module.exports  = {
                 this.showBody = false;
             }
         },
-        emitMainStory: function(storyId){
+        emitMainStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          if(storyId){
-            this.$dispatch('main-story-selected', storyId)
+          this.$dispatch('main-story-added', storyObj)
+        },
+        emitMainStoryRemove: function(storyObj){
+          // Dispatch an event that propagates upward along the parent chain using $dispatch()
+          this.$dispatch('main-story-removed', storyObj)
+        },
+        emitOtherStoryAdd: function(storyObj){
+          // Dispatch an event that propagates upward along the parent chain using $dispatch()
+          this.$dispatch('other-story-added', storyObj)
+          this.$dispatch('other-story-added-queue', storyObj)
+        },
+        emitOtherStoryRemove: function(storyObj){
+          // Dispatch an event that propagates upward along the parent chain using $dispatch()
+          this.$dispatch('other-story-removed', storyObj)
+          this.$dispatch('other-story-removed-queue', storyObj)
+        },
+        toggleEmitOtherStory: function(storyObj){
+          // function will run before this.checked is switched
+          if(!this.checked){
+            this.emitOtherStoryAdd(storyObj)
           } else {
-            this.$dispatch('main-story-selected', '')
+            this.emitOtherStoryRemove(storyObj)
           }
+        },
+        updateItem: function(){
+          /*
+          this.patchRecord.is_archived = this.item.is_archived;
 
-        }
+          this.$http.patch('/api/email/stories/other/update' + this.item.id , this.patchRecord , {
+            method: 'PATCH'
+          } )
+          .then((response) => {
+            console.log('good?'+ response)
+            this.checkAfterUpdate(response.data.newdata)
+
+          }, (response) => {
+            console.log('bad?'+ response)
+          });
+          */
+        },
     },
     watch: {
     },

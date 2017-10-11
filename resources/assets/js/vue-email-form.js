@@ -1,7 +1,9 @@
 var Vue = require('vue');
 
 import VueResource from 'vue-resource';
+import Sortable from 'vue-sortable';
 Vue.use(VueResource);
+Vue.use(Sortable)
 
 import EmailForm from './components/Email/EmailForm.vue';
 //import EmailBoxTools from './components/EmailBoxTools.vue';

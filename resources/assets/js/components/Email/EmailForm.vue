@@ -1,78 +1,111 @@
 <template>
-  <form>
-    <slot name="csrf"></slot>
-    <div class="row">
-      <div v-bind:class="md8col">
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-            60%
+  <div>
+    <form>
+      <slot name="csrf"></slot>
+      <div class="row">
+        <!-- EMAIL LIVE BUILDER VIEW AREA -->
+        <!-- BUILDER TOOLS AREA -->
+        <div v-bind:class="[md12col, lg4col]">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li><a href="#main-story" role="tab" data-toggle="tab">Main Story</a></li>
+            <li class="active"><a href="#stories" role="tab" data-toggle="tab">Side Stories</a></li>
+            <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
+            <li><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div class="tab-pane" id="main-story">
+              <email-main-story-queue
+              :stypes="stypes"
+              :main-story="record.mainStory"
+              ></email-main-story-queue>
+            </div>
+            <div class="tab-pane active" id="stories">
+              <email-story-queue
+              :stypes="stypes"
+              :other-stories="record.otherStories"
+              ></email-story-queue>
+            </div>
+            <div class="tab-pane" id="events">
+              <!--<events-email-queue></events-email-queue>-->
+            </div>
+            <div class="tab-pane" id="announcements">
+              <!--<announcements-email-queue></announcements-email-queue>-->
+            </div>
           </div>
         </div>
-        <template v-if="mainStory.id">
-          <img :src="mainStory.email_images[0].image_path + mainStory.email_images[0].filename" :alt="mainStory.email_images[0].title" />
-          <h2>{{mainStory.title}}<h2>
-          {{{ mainStory.content | truncate '60' }}}
-          <p><a :href="mainStory.full_url">Read More</a></p>
-        </template>
-
+        <!-- /.medium-4 columns -->
+        <div v-bind:class="[md12col, lg8col]">
+          <!--<div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+              60%
+            </div>
+          </div>-->
+          <section id="email-live-container" style="margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px">
+            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
+                            <tr>
+                                <td valign="top" width="368">
+                                  <template v-if="record.mainStory">
+                                    <img :src="record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename" :alt="record.mainStory.email_images[0].title" />
+                                    <h2>{{record.mainStory.title}}<h2>
+                                    {{{ record.mainStory.content | truncate '60' }}}
+                                    <p><a :href="record.mainStory.full_url">Read More</a></p>
+                                  </template>
+                                  <template v-else>
+                                    No main story set.
+                                  </template>
+                                </td>
+                                <td cellpadding="10" valign="top" style="padding:0 0 0 15px; background:#e5e5e5">
+                                  <template v-if="record.otherStories.length > 0">
+                                    <article v-for="story in record.otherStories">
+                                      <h3>{{story.title}}<h3>
+                                      {{{ story.content | truncate '30' }}}
+                                      <p><a :href="story.full_url">Read More</a></p>
+                                    </article>
+                                  </template>
+                                  <template v-else>
+                                    No side stories set yet.
+                                  </template>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+          </section>
+        </div>
+        <!-- /.medium-8 columns -->
       </div>
-      <!-- /.medium-8 columns -->
-      <div v-bind:class="md4col">
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="active"><a href="#main-story" role="tab" data-toggle="tab">Main Story</a></li>
-          <li><a href="#stories" role="tab" data-toggle="tab">Other Stories</a></li>
-          <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
-          <li><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <div class="tab-pane active" id="main-story">
-            <email-main-story-queue
-            :stypes="stypes"
-            :main-story="mainStory"
-            ></email-main-story-queue>
+      <!-- /.row -->
+      <!--
+      <div class="row">
+          <div v-bind:class="md12col">
+              <h4>Send Times</h4>
           </div>
-          <div class="tab-pane" id="stories">
-            <email-story-queue
-            :stypes="stypes"
-            :main-story="mainStory"
-            ></email-story-queue>
+          <div v-if="sendtimes.length > 0" v-bind:class="md12col">
+            <div v-for="time in sendtimes" class="input-group">
+                <label class="sr-only">Time</label>
+                <input class="form-control dynamic-list-item" type="text" v-model="time.send_at">
+                <span class="input-group-btn">
+                    <button @click="delSendtime(time)" class="btn btn-warning dynamic-list-btn" type="button">X</button>
+                </span>
+            </div>
           </div>
-          <div class="tab-pane" id="events">
-            <!--<events-email-queue></events-email-queue>-->
+          <div v-else v-bind:class="md12col">
+              <p>None</p>
           </div>
-          <div class="tab-pane" id="announcements">
-            <!--<announcements-email-queue></announcements-email-queue>-->
-        </div>
+          <div v-bind:class="md12col">
+              <button @click="addSendtime" :class="btnSecondary" type="button">Add Send Time</button>
+          </div>
       </div>
-      <!-- /.medium-4 columns -->
-    </div>
-    <!-- /.row -->
-    <!--
-    <div class="row">
-        <div v-bind:class="md12col">
-            <h4>Send Times</h4>
-        </div>
-        <div v-if="sendtimes.length > 0" v-bind:class="md12col">
-          <div v-for="time in sendtimes" class="input-group">
-              <label class="sr-only">Time</label>
-              <input class="form-control dynamic-list-item" type="text" v-model="time.send_at">
-              <span class="input-group-btn">
-                  <button @click="delSendtime(time)" class="btn btn-warning dynamic-list-btn" type="button">X</button>
-              </span>
-          </div>
-        </div>
-        <div v-else v-bind:class="md12col">
-            <p>None</p>
-        </div>
-        <div v-bind:class="md12col">
-            <button @click="addSendtime" :class="btnSecondary" type="button">Add Send Time</button>
-        </div>
-    </div>
-    -->
-    <!-- /.row -->
-</form>
+      -->
+      <!-- /.row -->
+    </form>
+  </div>
 </template>
 
 <style scoped>
@@ -186,7 +219,6 @@ import vSelect from "vue-select";
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 import EmailMainStoryQueue from './EmailMainStoryQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
-import VueDraggable from 'vuedraggable'
 
 module.exports = {
   directives: {flatpickr},
@@ -222,13 +254,13 @@ module.exports = {
         isErr: false,
         msg: ''
       },
-      mainStory: {},
       newform: false,
       recordState: '',
       record: {
         id: '',
         sendtimes: [],
-        mainStoryId: null,
+        mainStory: null,
+        otherStories: [],
         title: null,
       },
       response: {},
@@ -259,6 +291,18 @@ module.exports = {
     },
     md4col: function() {
       return (this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4')
+    },
+    lg6col: function() {
+      return (this.framework == 'foundation' ? 'large-6 columns' : 'col-lg-6')
+    },
+    lg12col: function() {
+      return (this.framework == 'foundation' ? 'large-12 columns' : 'col-lg-12')
+    },
+    lg8col: function() {
+      return (this.framework == 'foundation' ? 'large-8 columns' : 'col-lg-8')
+    },
+    lg4col: function() {
+      return (this.framework == 'foundation' ? 'large-4 columns' : 'col-lg-4')
     },
     btnPrimary: function() {
       return (this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary')
@@ -302,7 +346,6 @@ module.exports = {
   },
 
   methods: {
-
     fetchCurrentEmail: function(recid) {
       this.$http.get('/api/email/' + recid + '/edit')
 
@@ -383,7 +426,6 @@ module.exports = {
         }
     },
 
-
     delSendtime: function(time) {
         if(confirm('Would you like to delete this send time?')==true){
             this.sendtimes.$remove(time);
@@ -393,7 +435,7 @@ module.exports = {
     addSendtime: function(){
         this.sendtimes.push({value: '', expertise:''});
     },
-
+/*
     setMainStory: function(storyId){
       this.$http.get('/api/story/' + storyId + '/edit')
 
@@ -403,6 +445,7 @@ module.exports = {
         this.formErrors = response.data.error.message;
       }).bind(this);
     },
+*/
   },
   watch: {
   },
@@ -415,14 +458,24 @@ module.exports = {
   events: {
     // Generated from the EmailStoryPod using the $dispatch property of the vm
     //https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
-    'main-story-selected': function (mainStoryId) {
-      if(mainStoryId){
-        this.record.mainStoryId = mainStoryId // Set the main story ID for this email
-        // Fetch the story for display in the builder
-        this.setMainStory(this.record.mainStoryId)
-      } else {
-        this.record.mainStoryId = null
-        this.mainStory = {}
+    'main-story-added': function (mainStoryObj) {
+      if(mainStoryObj){
+        this.record.mainStory = mainStoryObj // Set the main story for this email
+      }
+    },
+    'main-story-removed': function (mainStoryObj) {
+      if(mainStoryObj){
+        this.record.mainStory = null
+      }
+    },
+    'other-story-added': function (otherStoryObj) {
+      if(otherStoryObj){
+        this.record.otherStories.push(otherStoryObj)
+      }
+    },
+    'other-story-removed': function (otherStoryObj) {
+      if(otherStoryObj){
+        this.record.otherStories.$remove(otherStoryObj)
       }
     }
   }
