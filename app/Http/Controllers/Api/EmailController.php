@@ -6,6 +6,8 @@ namespace Emutoday\Http\Controllers\Api;
 use Emutoday\Email;
 use Emutoday\Story;
 use Emutoday\User;
+use Emutoday\Event;
+use Emutoday\Announcement;
 use Emutoday\ImageType;
 use Illuminate\Http\Request;
 
@@ -18,8 +20,9 @@ use League\Fractal;
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Serializer\DataArraySerializer;
 
-//use Emutoday\Today\Transformers\FractalEmailTransformerModel;
+use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 use Emutoday\Today\Transformers\FractalStoryTransformerModel;
+use Emutoday\Today\Transformers\FractalAnnouncementTransformerModel;
 
 class EmailController extends ApiController
 {
@@ -72,7 +75,47 @@ class EmailController extends ApiController
       $resource = new Fractal\Resource\Collection($stories->all(), new FractalStoryTransformerModel);
 
       return $this->setStatusCode(200)
-      ->respondUpdatedWithData('Got stories with email photo', $fractal->createData($resource)->toArray() );
+      ->respondUpdatedWithData('Got stories.', $fractal->createData($resource)->toArray() );
+  }
+
+  /**
+   * Events.
+   */
+  public function getAllEmailReadyEvents(Request $request, $fromDate = null, $toDate = null){
+      if($fromDate && !$toDate){
+          $events  = Event::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+      } elseif($fromDate && $toDate){
+          $events  = Event::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+      } else {
+          // By default, only get future events
+          $events  = Event::where([['start_date', '>=', date('Y-m-d')], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+      }
+
+      $fractal = new Manager();
+      $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
+
+      return $this->setStatusCode(200)
+      ->respondUpdatedWithData('Got events.', $fractal->createData($resource)->toArray() );
+  }
+
+  /**
+   * Events.
+   */
+  public function getAllEmailReadyAnnouncements(Request $request, $fromDate = null, $toDate = null){
+      if($fromDate && !$toDate){
+          $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+      } elseif($fromDate && $toDate){
+          $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+      } else {
+          // By default, only get future announcements
+          $announcements  = Announcement::where([['start_date', '>=', date('Y-m-d')], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+      }
+
+      $fractal = new Manager();
+      $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
+
+      return $this->setStatusCode(200)
+      ->respondUpdatedWithData('Got announcements.', $fractal->createData($resource)->toArray() );
   }
 
   /**

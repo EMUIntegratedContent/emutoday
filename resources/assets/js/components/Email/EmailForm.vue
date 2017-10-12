@@ -9,9 +9,9 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" role="tablist">
             <li><a href="#main-story" role="tab" data-toggle="tab">Main Story</a></li>
-            <li class="active"><a href="#stories" role="tab" data-toggle="tab">Side Stories</a></li>
+            <li><a href="#stories" role="tab" data-toggle="tab">Side Stories</a></li>
             <li><a href="#events" role="tab" data-toggle="tab">Events</a></li>
-            <li><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
+            <li class="active"><a href="#announcements" role="tab" data-toggle="tab">Announcements</a></li>
           </ul>
           <!-- Tab panes -->
           <div class="tab-content">
@@ -21,17 +21,21 @@
               :main-story="record.mainStory"
               ></email-main-story-queue>
             </div>
-            <div class="tab-pane active" id="stories">
+            <div class="tab-pane" id="stories">
               <email-story-queue
               :stypes="stypes"
               :other-stories="record.otherStories"
               ></email-story-queue>
             </div>
             <div class="tab-pane" id="events">
-              <!--<events-email-queue></events-email-queue>-->
+              <email-event-queue
+              :events="record.events"
+              ></email-event-queue>
             </div>
-            <div class="tab-pane" id="announcements">
-              <!--<announcements-email-queue></announcements-email-queue>-->
+            <div class="tab-pane active" id="announcements">
+              <email-announcement-queue
+              :announcements="record.announcements"
+              ></email-announcement-queue>
             </div>
           </div>
         </div>
@@ -43,34 +47,74 @@
             </div>
           </div>-->
           <section id="email-live-container" style="margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px">
-            <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+            <table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%" id="bodyTable">
                 <tr>
                     <td align="center" valign="top">
-                        <table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer">
+                        <table border="0" width="600" id="emailContainer">
                             <tr>
                                 <td valign="top" width="368">
                                   <template v-if="record.mainStory">
-                                    <img :src="record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename" :alt="record.mainStory.email_images[0].title" />
-                                    <h2>{{record.mainStory.title}}<h2>
-                                    {{{ record.mainStory.content | truncate '60' }}}
-                                    <p><a :href="record.mainStory.full_url">Read More</a></p>
-                                  </template>
-                                  <template v-else>
-                                    No main story set.
-                                  </template>
-                                </td>
-                                <td cellpadding="10" valign="top" style="padding:0 0 0 15px; background:#e5e5e5">
-                                  <template v-if="record.otherStories.length > 0">
-                                    <article v-for="story in record.otherStories">
-                                      <h3>{{story.title}}<h3>
-                                      {{{ story.content | truncate '30' }}}
-                                      <p><a :href="story.full_url">Read More</a></p>
+                                    <article style="padding:0 5px">
+                                      <img :src="record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename" :alt="record.mainStory.email_images[0].title"  style="border-right:5px solid #ffffff; width:368px; height:245px; "/>
+                                      <h2>{{record.mainStory.title}}</h2>
+                                      {{{ record.mainStory.content | truncate '60' }}}
+                                      <p><a :href="record.mainStory.full_url">Read More</a></p>
                                     </article>
                                   </template>
                                   <template v-else>
-                                    No side stories set yet.
+                                    <div style="background-color:#e5e5e5; position:relative; width:368px; height:245px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;">
+                                      <p style="position:absolute; left:38px; top:96px; font-size:3rem;">Main story image here.</p>
+                                    </div>
+                                    <h2 style="padding:0 5px">No main story set yet.</h2>
+                                    <p style="padding:0 5px">Select a main story from the "Main Story" tab.</p>
+                                  </template>
+                                  <hr />
+                                </td>
+                                <td rowspan="3" valign="top" width="232" style="background:#e5e5e5">
+                                  <template v-if="record.events.length > 0">
+                                    <h3 style="padding:0 5px">Upcoming Events</h3>
+                                    <article v-for="event in record.events" style="padding:0 5px">
+                                      <hr />
+                                      <h4>{{event.title}}<h4>
+                                      {{ event.start_date }} | {{ event.start_time }} | {{ event.location }}
+                                      <p><a :href="event.full_url">View Event</a></p>
+                                    </article>
+                                  </template>
+                                  <template v-else>
+                                    <p style="padding:0 5px">No events set yet. Select at least one from the "Events" tab.</p>
                                   </template>
                                 </td>
+                            </tr>
+                            <tr>
+                              <td valign="top">
+                                <template v-if="record.otherStories.length > 0">
+                                  <h3>Featured News Stories</h3>
+                                  <article v-for="story in record.otherStories" style="padding:0 5px">
+                                    <h4>{{story.title}}<h4>
+                                    {{{ story.content | truncate '30' }}}
+                                    <p><a :href="story.full_url">Read More</a></p>
+                                  </article>
+                                </template>
+                                <template v-else>
+                                  <p style="padding:0 5px">No side stories set yet. Select at least one from the "Side Stories" tab.</p>
+                                </template>
+                                <hr />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td valign="top">
+                                <template v-if="record.announcements.length > 0">
+                                  <h3>Announcements</h3>
+                                  <article v-for="announcement in record.announcements">
+                                    <h4>{{ announcement.title }}</h4>
+                                    <p>{{ announcement.announcement | truncate '30' }}</p>
+                                    <p><a :href="announcement.link">{{ announcement.link_txt }}</a></p>
+                                  </article>
+                                </template>
+                                <template v-else>
+                                  <p style="padding:0 5px">No announcements set yet. Select at least one from the "Announcements" tab.</p>
+                                </template>
+                              </td>
                             </tr>
                         </table>
                     </td>
@@ -112,103 +156,6 @@
 .redBtn {
   background: hsl(0, 90%, 70%);
 }
-.dynamic-list-item{
-    margin: 5px 0px 10px 0px !important;
-}
-.dynamic-list-btn{
-    margin-top: -4px !important;
-}
-.social-list-item{
-    margin: 2px 0px 2px 0px !important;
-}
-.social-list-btn{
-    margin-top: 26px !important;
-}
-p {
-  margin: 0;
-}
-
-label {
-  margin-top: 3px;
-  margin-bottom: 3px;
-  display: block;
-  /*margin-bottom: 1.5em;*/
-}
-
-label > span {
-  display: inline-block;
-  /*width: 8em;*/
-  vertical-align: top;
-}
-
-.valid-titleField {
-  background-color: #fefefe;
-  border-color: #cacaca;
-}
-
-.no-input {
-  background-color: #fefefe;
-  border-color: #cacaca;
-}
-
-.invalid-input {
-  background-color: rgba(236, 88, 64, 0.1);
-  border: 1px dotted red;
-}
-
-.invalid {
-  color: #ff0000;
-}
-
-fieldset label.radiobtns {
-  display: inline;
-  margin: 4px;
-  padding: 2px;
-}
-
-.reqstar {
-  font-size: .6rem;
-  color: #E33100;
-  vertical-align: text-top;
-}
-
-button.button-primary {
-  margin-top: 0.8rem;
-}
-
-select {
-  margin: 0;
-}
-
-[type='submit'],
-[type='button'] {
-  margin-top: 0;
-}
-
-input[type="number"] {
-  margin: 0;
-}
-
-input[type="text"] {
-  margin: 0;
-}
-
-h5.form-control {
-  margin: 0;
-  display: block;
-  width: 100%;
-  height: 2.4375rem;
-  padding: .5rem;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: #222222;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
 </style>
 
 
@@ -219,10 +166,12 @@ import vSelect from "vue-select";
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 import EmailMainStoryQueue from './EmailMainStoryQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
+import EmailEventQueue from './EmailEventQueue.vue'
+import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 
 module.exports = {
   directives: {flatpickr},
-  components: {EmailMainStoryQueue, EmailStoryQueue, vSelect},
+  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -261,6 +210,8 @@ module.exports = {
         sendtimes: [],
         mainStory: null,
         otherStories: [],
+        events: [],
+        announcements: [],
         title: null,
       },
       response: {},
@@ -477,7 +428,27 @@ module.exports = {
       if(otherStoryObj){
         this.record.otherStories.$remove(otherStoryObj)
       }
-    }
+    },
+    'event-added': function (eventObj) {
+      if(eventObj){
+        this.record.events.push(eventObj)
+      }
+    },
+    'event-removed': function (eventObj) {
+      if(eventObj){
+        this.record.events.$remove(eventObj)
+      }
+    },
+    'announcement-added': function (announcementObj) {
+      if(announcementObj){
+        this.record.announcements.push(announcementObj)
+      }
+    },
+    'announcement-removed': function (announcementObj) {
+      if(announcementObj){
+        this.record.announcements.$remove(announcementObj)
+      }
+    },
   }
 };
 

@@ -44,13 +44,12 @@
                     </div><!-- /.col-md-6 -->
                     <div class="col-sm-6">
                         <div class="btn-group pull-right">
-                            <button class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></button>
+                            <a :href="item.full_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></a>
                         </div>
                     </div><!-- /.col-md-6 -->
                 </div><!-- /.row -->
             </div><!-- /.box-footer -->
     </div><!-- /.box- -->
-</div>
 </div>
 </template>
 <style scoped>
@@ -315,9 +314,13 @@ module.exports  = {
       isOtherStory: function(){
         if(this.otherStories){
           for(var i = 0; i < this.otherStories.length; i++) {
-            if(this.otherStories[i].id == this.item.id) return true;
+            if(this.otherStories[i].id == this.item.id){
+              this.checked = true
+              return true
+            }
           }
         }
+        this.checked = false
         return false
       }
     },

@@ -57,8 +57,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
 
-    Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_main_email_stories');
-    Route::get('email/stories/other/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_other_email_stories');
+    Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_email_main_stories');
+    Route::get('email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_other_stories');
+    Route::get('email/events/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyEvents')->name('api_email_events');
+    Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
     Route::resource('email', 'Api\EmailController');
 
     Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');

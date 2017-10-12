@@ -106,7 +106,7 @@
       <hr/>
       <div class="item-info">
         <p>Title: {{item.title}}</p>
-        <p v-if"item.short_title">Short-title: {{item.shor_title}}</p>
+        <p v-if="item.short_title">Short-title: {{item.shor_title}}</p>
         <p>Description: {{item.description}}</p>
         <template v-if="isOnCampus">
           <p>Location: <a href="http://emich.edu/maps/?building={{item.building}}" target="_blank">{{item.location}}</a></p>

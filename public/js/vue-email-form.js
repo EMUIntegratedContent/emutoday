@@ -1,30 +1,55 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":16}],2:[function(require,module,exports){
+},{"core-js/library/fn/json/stringify":17}],2:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/create"), __esModule: true };
-},{"core-js/library/fn/object/create":17}],3:[function(require,module,exports){
+},{"core-js/library/fn/object/create":18}],3:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-properties"), __esModule: true };
-},{"core-js/library/fn/object/define-properties":18}],4:[function(require,module,exports){
+},{"core-js/library/fn/object/define-properties":19}],4:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":19}],5:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":20}],5:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-descriptor"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-descriptor":20}],6:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-descriptor":21}],6:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-names"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-names":21}],7:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-names":22}],7:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-own-property-symbols"), __esModule: true };
-},{"core-js/library/fn/object/get-own-property-symbols":22}],8:[function(require,module,exports){
+},{"core-js/library/fn/object/get-own-property-symbols":23}],8:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/get-prototype-of"), __esModule: true };
-},{"core-js/library/fn/object/get-prototype-of":23}],9:[function(require,module,exports){
+},{"core-js/library/fn/object/get-prototype-of":24}],9:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/is-extensible"), __esModule: true };
-},{"core-js/library/fn/object/is-extensible":24}],10:[function(require,module,exports){
+},{"core-js/library/fn/object/is-extensible":25}],10:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
-},{"core-js/library/fn/object/keys":25}],11:[function(require,module,exports){
+},{"core-js/library/fn/object/keys":26}],11:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/prevent-extensions"), __esModule: true };
-},{"core-js/library/fn/object/prevent-extensions":26}],12:[function(require,module,exports){
+},{"core-js/library/fn/object/prevent-extensions":27}],12:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
-},{"core-js/library/fn/symbol":27}],13:[function(require,module,exports){
+},{"core-js/library/fn/symbol":28}],13:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol/iterator"), __esModule: true };
-},{"core-js/library/fn/symbol/iterator":28}],14:[function(require,module,exports){
+},{"core-js/library/fn/symbol/iterator":29}],14:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+
+var _defineProperty = require("../core-js/object/define-property");
+
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (obj, key, value) {
+  if (key in obj) {
+    (0, _defineProperty2.default)(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+},{"../core-js/object/define-property":4}],15:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -46,83 +71,83 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 } : function (obj) {
   return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
-},{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],15:[function(require,module,exports){
+},{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],16:[function(require,module,exports){
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var core  = require('../../modules/_core')
   , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
 module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
-},{"../../modules/_core":34}],17:[function(require,module,exports){
+},{"../../modules/_core":35}],18:[function(require,module,exports){
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
 module.exports = function create(P, D){
   return $Object.create(P, D);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.create":87}],18:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.create":88}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-properties');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperties(T, D){
   return $Object.defineProperties(T, D);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.define-properties":88}],19:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.define-properties":89}],20:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.define-property":89}],20:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.define-property":90}],21:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-descriptor');
 var $Object = require('../../modules/_core').Object;
 module.exports = function getOwnPropertyDescriptor(it, key){
   return $Object.getOwnPropertyDescriptor(it, key);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":90}],21:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-descriptor":91}],22:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-names');
 var $Object = require('../../modules/_core').Object;
 module.exports = function getOwnPropertyNames(it){
   return $Object.getOwnPropertyNames(it);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":91}],22:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-names":92}],23:[function(require,module,exports){
 require('../../modules/es6.symbol');
 module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
-},{"../../modules/_core":34,"../../modules/es6.symbol":98}],23:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.symbol":99}],24:[function(require,module,exports){
 require('../../modules/es6.object.get-prototype-of');
 module.exports = require('../../modules/_core').Object.getPrototypeOf;
-},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":92}],24:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-prototype-of":93}],25:[function(require,module,exports){
 require('../../modules/es6.object.is-extensible');
 module.exports = require('../../modules/_core').Object.isExtensible;
-},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":93}],25:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.is-extensible":94}],26:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
-},{"../../modules/_core":34,"../../modules/es6.object.keys":94}],26:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.keys":95}],27:[function(require,module,exports){
 require('../../modules/es6.object.prevent-extensions');
 module.exports = require('../../modules/_core').Object.preventExtensions;
-},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":95}],27:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.prevent-extensions":96}],28:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-},{"../../modules/_core":34,"../../modules/es6.object.to-string":96,"../../modules/es6.symbol":98,"../../modules/es7.symbol.async-iterator":99,"../../modules/es7.symbol.observable":100}],28:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.to-string":97,"../../modules/es6.symbol":99,"../../modules/es7.symbol.async-iterator":100,"../../modules/es7.symbol.observable":101}],29:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":97,"../../modules/web.dom.iterable":101}],29:[function(require,module,exports){
+},{"../../modules/_wks-ext":85,"../../modules/es6.string.iterator":98,"../../modules/web.dom.iterable":102}],30:[function(require,module,exports){
 module.exports = function(it){
   if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-},{}],30:[function(require,module,exports){
-module.exports = function(){ /* empty */ };
 },{}],31:[function(require,module,exports){
+module.exports = function(){ /* empty */ };
+},{}],32:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function(it){
   if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-},{"./_is-object":50}],32:[function(require,module,exports){
+},{"./_is-object":51}],33:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject')
@@ -144,16 +169,16 @@ module.exports = function(IS_INCLUDES){
     } return !IS_INCLUDES && -1;
   };
 };
-},{"./_to-index":76,"./_to-iobject":78,"./_to-length":79}],33:[function(require,module,exports){
+},{"./_to-index":77,"./_to-iobject":79,"./_to-length":80}],34:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function(fn, that, length){
@@ -174,18 +199,18 @@ module.exports = function(fn, that, length){
     return fn.apply(that, arguments);
   };
 };
-},{"./_a-function":29}],36:[function(require,module,exports){
+},{"./_a-function":30}],37:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function(it){
   if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./_fails":42}],38:[function(require,module,exports){
+},{"./_fails":43}],39:[function(require,module,exports){
 var isObject = require('./_is-object')
   , document = require('./_global').document
   // in old IE typeof document.createElement is 'object'
@@ -193,12 +218,12 @@ var isObject = require('./_is-object')
 module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-},{"./_global":43,"./_is-object":50}],39:[function(require,module,exports){
+},{"./_global":44,"./_is-object":51}],40:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // all enumerable object keys, includes symbols
 var getKeys = require('./_object-keys')
   , gOPS    = require('./_object-gops')
@@ -214,7 +239,7 @@ module.exports = function(it){
     while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
   } return result;
 };
-},{"./_object-gops":64,"./_object-keys":67,"./_object-pie":68}],41:[function(require,module,exports){
+},{"./_object-gops":65,"./_object-keys":68,"./_object-pie":69}],42:[function(require,module,exports){
 var global    = require('./_global')
   , core      = require('./_core')
   , ctx       = require('./_ctx')
@@ -276,7 +301,7 @@ $export.W = 32;  // wrap
 $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library` 
 module.exports = $export;
-},{"./_core":34,"./_ctx":35,"./_global":43,"./_hide":45}],42:[function(require,module,exports){
+},{"./_core":35,"./_ctx":36,"./_global":44,"./_hide":46}],43:[function(require,module,exports){
 module.exports = function(exec){
   try {
     return !!exec();
@@ -284,17 +309,17 @@ module.exports = function(exec){
     return true;
   }
 };
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 var dP         = require('./_object-dp')
   , createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function(object, key, value){
@@ -303,29 +328,29 @@ module.exports = require('./_descriptors') ? function(object, key, value){
   object[key] = value;
   return object;
 };
-},{"./_descriptors":37,"./_object-dp":59,"./_property-desc":70}],46:[function(require,module,exports){
+},{"./_descriptors":38,"./_object-dp":60,"./_property-desc":71}],47:[function(require,module,exports){
 module.exports = require('./_global').document && document.documentElement;
-},{"./_global":43}],47:[function(require,module,exports){
+},{"./_global":44}],48:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function(){
   return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./_descriptors":37,"./_dom-create":38,"./_fails":42}],48:[function(require,module,exports){
+},{"./_descriptors":38,"./_dom-create":39,"./_fails":43}],49:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-},{"./_cof":33}],49:[function(require,module,exports){
+},{"./_cof":34}],50:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
-},{"./_cof":33}],50:[function(require,module,exports){
+},{"./_cof":34}],51:[function(require,module,exports){
 module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 var create         = require('./_object-create')
   , descriptor     = require('./_property-desc')
@@ -339,7 +364,7 @@ module.exports = function(Constructor, NAME, next){
   Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-},{"./_hide":45,"./_object-create":58,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],52:[function(require,module,exports){
+},{"./_hide":46,"./_object-create":59,"./_property-desc":71,"./_set-to-string-tag":73,"./_wks":86}],53:[function(require,module,exports){
 'use strict';
 var LIBRARY        = require('./_library')
   , $export        = require('./_export')
@@ -410,13 +435,13 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
   }
   return methods;
 };
-},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":56,"./_object-gpo":65,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],53:[function(require,module,exports){
+},{"./_export":42,"./_has":45,"./_hide":46,"./_iter-create":52,"./_iterators":55,"./_library":57,"./_object-gpo":66,"./_redefine":72,"./_set-to-string-tag":73,"./_wks":86}],54:[function(require,module,exports){
 module.exports = function(done, value){
   return {value: value, done: !!done};
 };
-},{}],54:[function(require,module,exports){
-module.exports = {};
 },{}],55:[function(require,module,exports){
+module.exports = {};
+},{}],56:[function(require,module,exports){
 var getKeys   = require('./_object-keys')
   , toIObject = require('./_to-iobject');
 module.exports = function(object, el){
@@ -427,9 +452,9 @@ module.exports = function(object, el){
     , key;
   while(length > index)if(O[key = keys[index++]] === el)return key;
 };
-},{"./_object-keys":67,"./_to-iobject":78}],56:[function(require,module,exports){
+},{"./_object-keys":68,"./_to-iobject":79}],57:[function(require,module,exports){
 module.exports = true;
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 var META     = require('./_uid')('meta')
   , isObject = require('./_is-object')
   , has      = require('./_has')
@@ -483,7 +508,7 @@ var meta = module.exports = {
   getWeak:  getWeak,
   onFreeze: onFreeze
 };
-},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":59,"./_uid":82}],58:[function(require,module,exports){
+},{"./_fails":43,"./_has":45,"./_is-object":51,"./_object-dp":60,"./_uid":83}],59:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject    = require('./_an-object')
   , dPs         = require('./_object-dps')
@@ -526,7 +551,7 @@ module.exports = Object.create || function create(O, Properties){
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":60,"./_shared-key":73}],59:[function(require,module,exports){
+},{"./_an-object":32,"./_dom-create":39,"./_enum-bug-keys":40,"./_html":47,"./_object-dps":61,"./_shared-key":74}],60:[function(require,module,exports){
 var anObject       = require('./_an-object')
   , IE8_DOM_DEFINE = require('./_ie8-dom-define')
   , toPrimitive    = require('./_to-primitive')
@@ -543,7 +568,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
-},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":81}],60:[function(require,module,exports){
+},{"./_an-object":32,"./_descriptors":38,"./_ie8-dom-define":48,"./_to-primitive":82}],61:[function(require,module,exports){
 var dP       = require('./_object-dp')
   , anObject = require('./_an-object')
   , getKeys  = require('./_object-keys');
@@ -557,7 +582,7 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   while(length > i)dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
-},{"./_an-object":31,"./_descriptors":37,"./_object-dp":59,"./_object-keys":67}],61:[function(require,module,exports){
+},{"./_an-object":32,"./_descriptors":38,"./_object-dp":60,"./_object-keys":68}],62:[function(require,module,exports){
 var pIE            = require('./_object-pie')
   , createDesc     = require('./_property-desc')
   , toIObject      = require('./_to-iobject')
@@ -574,7 +599,7 @@ exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor
   } catch(e){ /* empty */ }
   if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 };
-},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":68,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],62:[function(require,module,exports){
+},{"./_descriptors":38,"./_has":45,"./_ie8-dom-define":48,"./_object-pie":69,"./_property-desc":71,"./_to-iobject":79,"./_to-primitive":82}],63:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = require('./_to-iobject')
   , gOPN      = require('./_object-gopn').f
@@ -595,7 +620,7 @@ module.exports.f = function getOwnPropertyNames(it){
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":63,"./_to-iobject":78}],63:[function(require,module,exports){
+},{"./_object-gopn":64,"./_to-iobject":79}],64:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys      = require('./_object-keys-internal')
   , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
@@ -603,9 +628,9 @@ var $keys      = require('./_object-keys-internal')
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
 };
-},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],64:[function(require,module,exports){
+},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],65:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has         = require('./_has')
   , toObject    = require('./_to-object')
@@ -619,7 +644,7 @@ module.exports = Object.getPrototypeOf || function(O){
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
-},{"./_has":44,"./_shared-key":73,"./_to-object":80}],66:[function(require,module,exports){
+},{"./_has":45,"./_shared-key":74,"./_to-object":81}],67:[function(require,module,exports){
 var has          = require('./_has')
   , toIObject    = require('./_to-iobject')
   , arrayIndexOf = require('./_array-includes')(false)
@@ -637,7 +662,7 @@ module.exports = function(object, names){
   }
   return result;
 };
-},{"./_array-includes":32,"./_has":44,"./_shared-key":73,"./_to-iobject":78}],67:[function(require,module,exports){
+},{"./_array-includes":33,"./_has":45,"./_shared-key":74,"./_to-iobject":79}],68:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys       = require('./_object-keys-internal')
   , enumBugKeys = require('./_enum-bug-keys');
@@ -645,9 +670,9 @@ var $keys       = require('./_object-keys-internal')
 module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
-},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],68:[function(require,module,exports){
+},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],69:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
 var $export = require('./_export')
   , core    = require('./_core')
@@ -658,7 +683,7 @@ module.exports = function(KEY, exec){
   exp[KEY] = exec(fn);
   $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
 };
-},{"./_core":34,"./_export":41,"./_fails":42}],70:[function(require,module,exports){
+},{"./_core":35,"./_export":42,"./_fails":43}],71:[function(require,module,exports){
 module.exports = function(bitmap, value){
   return {
     enumerable  : !(bitmap & 1),
@@ -667,9 +692,9 @@ module.exports = function(bitmap, value){
     value       : value
   };
 };
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = require('./_hide');
-},{"./_hide":45}],72:[function(require,module,exports){
+},{"./_hide":46}],73:[function(require,module,exports){
 var def = require('./_object-dp').f
   , has = require('./_has')
   , TAG = require('./_wks')('toStringTag');
@@ -677,20 +702,20 @@ var def = require('./_object-dp').f
 module.exports = function(it, tag, stat){
   if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-},{"./_has":44,"./_object-dp":59,"./_wks":85}],73:[function(require,module,exports){
+},{"./_has":45,"./_object-dp":60,"./_wks":86}],74:[function(require,module,exports){
 var shared = require('./_shared')('keys')
   , uid    = require('./_uid');
 module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
+},{"./_shared":75,"./_uid":83}],75:[function(require,module,exports){
 var global = require('./_global')
   , SHARED = '__core-js_shared__'
   , store  = global[SHARED] || (global[SHARED] = {});
 module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-},{"./_global":43}],75:[function(require,module,exports){
+},{"./_global":44}],76:[function(require,module,exports){
 var toInteger = require('./_to-integer')
   , defined   = require('./_defined');
 // true  -> String#at
@@ -708,7 +733,7 @@ module.exports = function(TO_STRING){
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-},{"./_defined":36,"./_to-integer":77}],76:[function(require,module,exports){
+},{"./_defined":37,"./_to-integer":78}],77:[function(require,module,exports){
 var toInteger = require('./_to-integer')
   , max       = Math.max
   , min       = Math.min;
@@ -716,34 +741,34 @@ module.exports = function(index, length){
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-},{"./_to-integer":77}],77:[function(require,module,exports){
+},{"./_to-integer":78}],78:[function(require,module,exports){
 // 7.1.4 ToInteger
 var ceil  = Math.ceil
   , floor = Math.floor;
 module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject')
   , defined = require('./_defined');
 module.exports = function(it){
   return IObject(defined(it));
 };
-},{"./_defined":36,"./_iobject":48}],79:[function(require,module,exports){
+},{"./_defined":37,"./_iobject":49}],80:[function(require,module,exports){
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer')
   , min       = Math.min;
 module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-},{"./_to-integer":77}],80:[function(require,module,exports){
+},{"./_to-integer":78}],81:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function(it){
   return Object(defined(it));
 };
-},{"./_defined":36}],81:[function(require,module,exports){
+},{"./_defined":37}],82:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -756,13 +781,13 @@ module.exports = function(it, S){
   if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-},{"./_is-object":50}],82:[function(require,module,exports){
+},{"./_is-object":51}],83:[function(require,module,exports){
 var id = 0
   , px = Math.random();
 module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var global         = require('./_global')
   , core           = require('./_core')
   , LIBRARY        = require('./_library')
@@ -772,9 +797,9 @@ module.exports = function(name){
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
   if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 };
-},{"./_core":34,"./_global":43,"./_library":56,"./_object-dp":59,"./_wks-ext":84}],84:[function(require,module,exports){
+},{"./_core":35,"./_global":44,"./_library":57,"./_object-dp":60,"./_wks-ext":85}],85:[function(require,module,exports){
 exports.f = require('./_wks');
-},{"./_wks":85}],85:[function(require,module,exports){
+},{"./_wks":86}],86:[function(require,module,exports){
 var store      = require('./_shared')('wks')
   , uid        = require('./_uid')
   , Symbol     = require('./_global').Symbol
@@ -786,7 +811,7 @@ var $exports = module.exports = function(name){
 };
 
 $exports.store = store;
-},{"./_global":43,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+},{"./_global":44,"./_shared":75,"./_uid":83}],87:[function(require,module,exports){
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables')
   , step             = require('./_iter-step')
@@ -821,19 +846,19 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":78}],87:[function(require,module,exports){
+},{"./_add-to-unscopables":31,"./_iter-define":53,"./_iter-step":54,"./_iterators":55,"./_to-iobject":79}],88:[function(require,module,exports){
 var $export = require('./_export')
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 $export($export.S, 'Object', {create: require('./_object-create')});
-},{"./_export":41,"./_object-create":58}],88:[function(require,module,exports){
+},{"./_export":42,"./_object-create":59}],89:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperties: require('./_object-dps')});
-},{"./_descriptors":37,"./_export":41,"./_object-dps":60}],89:[function(require,module,exports){
+},{"./_descriptors":38,"./_export":42,"./_object-dps":61}],90:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
-},{"./_descriptors":37,"./_export":41,"./_object-dp":59}],90:[function(require,module,exports){
+},{"./_descriptors":38,"./_export":42,"./_object-dp":60}],91:[function(require,module,exports){
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
 var toIObject                 = require('./_to-iobject')
   , $getOwnPropertyDescriptor = require('./_object-gopd').f;
@@ -843,12 +868,12 @@ require('./_object-sap')('getOwnPropertyDescriptor', function(){
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-},{"./_object-gopd":61,"./_object-sap":69,"./_to-iobject":78}],91:[function(require,module,exports){
+},{"./_object-gopd":62,"./_object-sap":70,"./_to-iobject":79}],92:[function(require,module,exports){
 // 19.1.2.7 Object.getOwnPropertyNames(O)
 require('./_object-sap')('getOwnPropertyNames', function(){
   return require('./_object-gopn-ext').f;
 });
-},{"./_object-gopn-ext":62,"./_object-sap":69}],92:[function(require,module,exports){
+},{"./_object-gopn-ext":63,"./_object-sap":70}],93:[function(require,module,exports){
 // 19.1.2.9 Object.getPrototypeOf(O)
 var toObject        = require('./_to-object')
   , $getPrototypeOf = require('./_object-gpo');
@@ -858,7 +883,7 @@ require('./_object-sap')('getPrototypeOf', function(){
     return $getPrototypeOf(toObject(it));
   };
 });
-},{"./_object-gpo":65,"./_object-sap":69,"./_to-object":80}],93:[function(require,module,exports){
+},{"./_object-gpo":66,"./_object-sap":70,"./_to-object":81}],94:[function(require,module,exports){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = require('./_is-object');
 
@@ -867,7 +892,7 @@ require('./_object-sap')('isExtensible', function($isExtensible){
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-},{"./_is-object":50,"./_object-sap":69}],94:[function(require,module,exports){
+},{"./_is-object":51,"./_object-sap":70}],95:[function(require,module,exports){
 // 19.1.2.14 Object.keys(O)
 var toObject = require('./_to-object')
   , $keys    = require('./_object-keys');
@@ -877,7 +902,7 @@ require('./_object-sap')('keys', function(){
     return $keys(toObject(it));
   };
 });
-},{"./_object-keys":67,"./_object-sap":69,"./_to-object":80}],95:[function(require,module,exports){
+},{"./_object-keys":68,"./_object-sap":70,"./_to-object":81}],96:[function(require,module,exports){
 // 19.1.2.15 Object.preventExtensions(O)
 var isObject = require('./_is-object')
   , meta     = require('./_meta').onFreeze;
@@ -887,9 +912,9 @@ require('./_object-sap')('preventExtensions', function($preventExtensions){
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
 });
-},{"./_is-object":50,"./_meta":57,"./_object-sap":69}],96:[function(require,module,exports){
-arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],97:[function(require,module,exports){
+},{"./_is-object":51,"./_meta":58,"./_object-sap":70}],97:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"dup":16}],98:[function(require,module,exports){
 'use strict';
 var $at  = require('./_string-at')(true);
 
@@ -907,7 +932,7 @@ require('./_iter-define')(String, 'String', function(iterated){
   this._i += point.length;
   return {value: point, done: false};
 });
-},{"./_iter-define":52,"./_string-at":75}],98:[function(require,module,exports){
+},{"./_iter-define":53,"./_string-at":76}],99:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
 var global         = require('./_global')
@@ -1143,11 +1168,11 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_keyof":55,"./_library":56,"./_meta":57,"./_object-create":58,"./_object-dp":59,"./_object-gopd":61,"./_object-gopn":63,"./_object-gopn-ext":62,"./_object-gops":64,"./_object-keys":67,"./_object-pie":68,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],99:[function(require,module,exports){
+},{"./_an-object":32,"./_descriptors":38,"./_enum-keys":41,"./_export":42,"./_fails":43,"./_global":44,"./_has":45,"./_hide":46,"./_is-array":50,"./_keyof":56,"./_library":57,"./_meta":58,"./_object-create":59,"./_object-dp":60,"./_object-gopd":62,"./_object-gopn":64,"./_object-gopn-ext":63,"./_object-gops":65,"./_object-keys":68,"./_object-pie":69,"./_property-desc":71,"./_redefine":72,"./_set-to-string-tag":73,"./_shared":75,"./_to-iobject":79,"./_to-primitive":82,"./_uid":83,"./_wks":86,"./_wks-define":84,"./_wks-ext":85}],100:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
-},{"./_wks-define":83}],100:[function(require,module,exports){
+},{"./_wks-define":84}],101:[function(require,module,exports){
 require('./_wks-define')('observable');
-},{"./_wks-define":83}],101:[function(require,module,exports){
+},{"./_wks-define":84}],102:[function(require,module,exports){
 require('./es6.array.iterator');
 var global        = require('./_global')
   , hide          = require('./_hide')
@@ -1161,7 +1186,7 @@ for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList'
   if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":85,"./es6.array.iterator":86}],102:[function(require,module,exports){
+},{"./_global":44,"./_hide":46,"./_iterators":55,"./_wks":86,"./es6.array.iterator":87}],103:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2495,7 +2520,7 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -6960,7 +6985,7 @@ return hooks;
 
 })));
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -7146,7 +7171,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 /**!
  * Sortable
  * @author	RubaXa   <trash@rubaxa.org>
@@ -8639,7 +8664,7 @@ process.umask = function() { return 0; };
 	return Sortable;
 });
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -8940,7 +8965,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -10510,7 +10535,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":15}],108:[function(require,module,exports){
+},{"got":16}],109:[function(require,module,exports){
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -11451,7 +11476,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }]);
 });
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],109:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":15}],110:[function(require,module,exports){
 ;(function () {
 
   var vSortable = {}
@@ -11498,7 +11523,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 })()
 
-},{"sortablejs":105}],110:[function(require,module,exports){
+},{"sortablejs":106}],111:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -21739,7 +21764,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":104}],111:[function(require,module,exports){
+},{"_process":105}],112:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -21759,7 +21784,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 /*!
  * Vuex v1.0.1
  * (c) 2017 Evan You
@@ -22483,9 +22508,791 @@ return index;
 
 })));
 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-07a0c146]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-07a0c146]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-07a0c146]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-07a0c146]{\n    margin-top: 26px !important;\n}\np[_v-07a0c146] {\n  margin: 0;\n}\n\nlabel[_v-07a0c146] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-07a0c146] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-07a0c146] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-07a0c146] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-07a0c146] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-07a0c146] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-07a0c146] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-07a0c146] {\n  margin: 0;\n}\n\n[type='submit'][_v-07a0c146],\n[type='button'][_v-07a0c146] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-07a0c146] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-07a0c146] {\n  margin: 0;\n}\n\nh5.form-control[_v-07a0c146] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-b6abc628] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-b6abc628] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-b6abc628] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-b6abc628] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-b6abc628] {\n  color: #1B1B1B;\n}\n.zcallout[_v-b6abc628] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-b6abc628] {\n  margin-bottom: 2px;\n}\n#applabel[_v-b6abc628]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-b6abc628],\n.btn-group-vertical[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-b6abc628] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-b6abc628] {\n}\n.form-group label[_v-b6abc628]{\n  margin-bottom: 0;\n}\n.box-footer[_v-b6abc628] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-b6abc628] {\n  border: 1px solid #999999;\n}\n.topitems[_v-b6abc628] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-b6abc628] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-b6abc628] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-b6abc628] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-b6abc628] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-b6abc628] {\n  color: #F39C12;\n}\n.time-is-long[_v-b6abc628] {\n  color: #999999;\n}\n.time-is-over[_v-b6abc628] {\n  color: #9B59B6;\n}\n.special-item[_v-b6abc628] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-b6abc628] {\n  margin-bottom: 30px;\n}\n")
+'use strict';
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _computed;
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _VuiFlipSwitch = require('../VuiFlipSwitch.vue');
+
+var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+  directives: {},
+  components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
+  props: ['item', 'pid', 'podType', 'announcements'],
+  data: function data() {
+    return {
+      showBody: false,
+      checked: false
+    };
+  },
+  created: function created() {},
+  ready: function ready() {},
+  computed: (_computed = {
+    isEvent: function isEvent() {
+      if (this.announcements) {
+        for (var i = 0; i < this.announcements.length; i++) {
+          if (this.announcements[i].id == this.item.id) {
+            this.checked = true;
+            return true;
+          }
+        }
+      }
+      this.checked = false;
+      return false;
+    },
+    specialItem: function specialItem() {
+      var extrasep = void 0;
+      // if (this.pid == 'items-live' && this.index === 3) {
+      if (this.pid == 'items-live' && this.index < 5) {
+        if (this.index === 4) {
+          extrasep = 'special-item special-item-last';
+        } else {
+          extrasep = 'special-item';
+        }
+      } else {
+        extrasep = '';
+      }
+      return extrasep;
+    },
+    timefromNow: function timefromNow() {
+      return (0, _moment2.default)(this.item.start_date).fromNow();
+    },
+    itemEditPath: function itemEditPath() {
+      return '/admin/announcement/' + this.item.id + '/edit';
+    },
+    liveTimeStatusClass: function liveTimeStatusClass() {
+      var timepartstatus = void 0;
+      var extrasep = void 0;
+      if ((0, _moment2.default)().isBetween(this.item.start_date, this.item.end_date)) {
+        timepartstatus = 'ongoing';
+      } else {
+        if (this.timeDiffNow(this.item.start_date) < 0) {
+          timepartstatus = 'event-negative';
+        } else {
+          timepartstatus = 'event-positive';
+        }
+      }
+      if (this.pid == 'items-live' && this.index === 3) {
+        extrasep = 'last-special-event';
+      } else {
+        extrasep = '';
+      }
+      return timepartstatus + ' ' + extrasep;
+    },
+    timeLeftStatus: function timeLeftStatus() {
+      var diff = this.timeDiffNow(this.item.end_date);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
+      }
+    },
+    timeFromNowStatus: function timeFromNowStatus() {
+      var diff = this.timeDiffNow(this.item.start_date);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
+      }
+    }
+  }, (0, _defineProperty3.default)(_computed, 'timefromNow', function timefromNow() {
+    return (0, _moment2.default)(this.item.start_date).fromNow();
+  }), (0, _defineProperty3.default)(_computed, 'timeLeft', function timeLeft() {
+    if ((0, _moment2.default)(this.item.start_date).isSameOrBefore((0, _moment2.default)())) {
+      var tlft = this.timeDiffNow(this.item.end_date, 'hours');
+      console.log('id=' + this.item.id + '  -' + tlft);
+      if (tlft < 0) {
+        return 'Event Ended ' + (0, _moment2.default)(this.item.end_date).fromNow();
+      } else {
+        return ' and Ends ' + (0, _moment2.default)(this.item.end_date).fromNow();
+      }
+    } else {
+      return '';
+    }
+  }), _computed),
+  methods: {
+    timeDiffNow: function timeDiffNow(val) {
+      var mod = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'minutes';
+
+      return (0, _moment2.default)(val).diff((0, _moment2.default)(), mod);
+    },
+    editItem: function editItem(ev) {
+      window.location.href = this.itemEditPath;
+    },
+    toggleBody: function toggleBody(ev) {
+      if (this.showBody == false) {
+        this.showBody = true;
+      } else {
+        this.showBody = false;
+      }
+    },
+    emitAnnouncementAdd: function emitAnnouncementAdd(announcementObj) {
+      // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('announcement-added', announcementObj);
+      this.$dispatch('announcement-added-queue', announcementObj);
+    },
+    emitAnnouncementRemove: function emitAnnouncementRemove(announcementObj) {
+      // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('announcement-removed', announcementObj);
+      this.$dispatch('announcement-removed-queue', announcementObj);
+    },
+    toggleEmitAnnouncement: function toggleEmitAnnouncement(announcementObj) {
+      // function will run before this.checked is switched
+      if (!this.checked) {
+        this.emitAnnouncementAdd(announcementObj);
+      } else {
+        this.emitAnnouncementRemove(announcementObj);
+      }
+    },
+    updateItem: function updateItem() {
+      /*
+      this.patchRecord.is_archived = this.item.is_archived;
+       this.$http.patch('/api/announcement/updateitem/' + this.item.id , this.patchRecord , {
+        method: 'PATCH'
+      } )
+      .then((response) => {
+        console.log('good?'+ response)
+        this.checkAfterUpdate(response.data.newdata)
+       }, (response) => {
+        console.log('bad?'+ response)
+      });
+      */
+    }
+  },
+  watch: {},
+  events: {},
+  filters: {
+    titleDateLong: function titleDateLong(value) {
+      return (0, _moment2.default)(value).format("ddd MM/DD");
+    },
+    momentPretty: {
+      read: function read(val) {
+        return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
+      },
+      write: function write(val, oldVal) {
+        return (0, _moment2.default)(val).format('YYYY-MM-DD');
+      }
+    }
+  }
+
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-b6abc628=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-b6abc628=\"\">\n      <div class=\"box-header with-border\" _v-b6abc628=\"\">\n        <div class=\"row\" _v-b6abc628=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-b6abc628=\"\">\n            <div class=\"box-date-top pull-left\" _v-b6abc628=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-b6abc628=\"\">\n            <label v-show=\"podType == 'announcementqueue'\" class=\"pull-right\" _v-b6abc628=\"\"><input type=\"checkbox\" @click=\"toggleEmitAnnouncement(item)\" v-model=\"checked\" :checked=\"isAnnouncement\" _v-b6abc628=\"\"> Email Announcement</label>\n            <button v-show=\"podType == 'announcement'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitAnnouncementRemove(item)\" _v-b6abc628=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-b6abc628=\"\"></i></button>\n          </div><!-- /.col-md-12 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-b6abc628=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-b6abc628=\"\">\n            <div class=\"col-sm-12\" _v-b6abc628=\"\">\n              <h6 class=\"box-title\" _v-b6abc628=\"\">{{item.title}}</h6>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-b6abc628=\"\">\n      <p _v-b6abc628=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-b6abc628=\"\">\n        Submitted On: {{item.submission_date}}<br _v-b6abc628=\"\">\n        By: {{item.submitter}}<br _v-b6abc628=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-b6abc628=\"\">\n      <div class=\"row\" _v-b6abc628=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-b6abc628=\"\">\n          <span :class=\"timeFromNowStatus\" _v-b6abc628=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-b6abc628=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-b6abc628=\"\">\n          <div class=\"btn-group pull-right\" _v-b6abc628=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-b6abc628=\"\"><i class=\"fa fa-pencil\" _v-b6abc628=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.box[_v-b6abc628] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-b6abc628] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-b6abc628] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-b6abc628] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-b6abc628] {\n  color: #1B1B1B;\n}\n.zcallout[_v-b6abc628] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-b6abc628] {\n  margin-bottom: 2px;\n}\n#applabel[_v-b6abc628]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-b6abc628],\n.btn-group-vertical[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-b6abc628] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-b6abc628] {\n}\n.form-group label[_v-b6abc628]{\n  margin-bottom: 0;\n}\n.box-footer[_v-b6abc628] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-b6abc628] {\n  border: 1px solid #999999;\n}\n.topitems[_v-b6abc628] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-b6abc628] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-b6abc628] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-b6abc628] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-b6abc628] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-b6abc628] {\n  color: #F39C12;\n}\n.time-is-long[_v-b6abc628] {\n  color: #999999;\n}\n.time-is-over[_v-b6abc628] {\n  color: #9B59B6;\n}\n.special-item[_v-b6abc628] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-b6abc628] {\n  margin-bottom: 30px;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-b6abc628", module.exports)
+  } else {
+    hotAPI.update("_v-b6abc628", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../VuiFlipSwitch.vue":124,"babel-runtime/helpers/defineProperty":14,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],115:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n#rangetoggle[_v-59be5410]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _EmailAnnouncementPod = require('./EmailAnnouncementPod.vue');
+
+var _EmailAnnouncementPod2 = _interopRequireDefault(_EmailAnnouncementPod);
+
+var _Pagination = require('../Pagination.vue');
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
+var _flatpickr = require('../../directives/flatpickr.js');
+
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  directives: { flatpickr: _flatpickr2.default },
+  components: { EmailAnnouncementPod: _EmailAnnouncementPod2.default },
+  props: ['announcements'],
+  data: function data() {
+    return {
+      currentDate: (0, _moment2.default)(),
+      usedAnnouncements: [],
+      queueAnnouncements: [],
+      loading: true,
+      eventMsg: null,
+      startdate: null,
+      enddate: null,
+      isEndDate: false,
+      currentPage: 0,
+      itemsPerPage: 10,
+      resultCount: 0
+    };
+  },
+
+  ready: function ready() {
+    var today = (0, _moment2.default)();
+    this.startdate = today.format("YYYY-MM-DD");
+    this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD");
+    this.fetchAllRecords();
+    // set announcements from property to data
+    this.announcements = this.usedAnnouncements;
+  },
+
+
+  computed: {
+    totalPages: function totalPages() {
+      return Math.ceil(this.queueAnnouncements.length / this.itemsPerPage);
+    }
+  },
+
+  methods: (0, _defineProperty3.default)({
+    toggleRange: function toggleRange() {
+      if (this.isEndDate) {
+        this.isEndDate = false;
+      } else {
+        this.isEndDate = true;
+      }
+    },
+    onCalendarChange: function onCalendarChange() {
+      // flatpickr directive method
+    },
+    fetchAllRecords: function fetchAllRecords() {
+      var _this = this;
+
+      this.loading = true;
+
+      var routeurl = '/api/email/announcements';
+
+      // if a start date is set, get stories whose start_date is on or after this date
+      if (this.startdate) {
+        routeurl = routeurl + '/' + this.startdate;
+      } else {
+        routeurl = routeurl + '/' + (0, _moment2.default)().format("YYYY-MM-DD");
+      }
+
+      // if a date range is set, get stories between the start date and end date
+      if (this.isEndDate) {
+        routeurl = routeurl + '/' + this.enddate;
+      }
+
+      this.$http.get(routeurl).then(function (response) {
+        _this.$set('queueAnnouncements', response.data.newdata.data);
+        _this.resultCount = _this.queueAnnouncements.length;
+        _this.loading = false;
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+    setPage: function setPage(pageNumber) {
+      if (pageNumber > -1 && pageNumber < this.totalPages) {
+        this.currentPage = pageNumber;
+      }
+    }
+  }, 'onCalendarChange', function onCalendarChange() {
+    // flatpickr directive method
+  }),
+  filters: {
+    paginate: function paginate(list) {
+      // only run if there are items in the list
+      if (list.length == 0) {
+        return;
+      }
+      this.resultCount = list.length;
+      if (this.currentPage >= this.totalPages) {
+        this.currentPage = this.totalPages - 1;
+      }
+      var index = this.currentPage * this.itemsPerPage;
+      return list.slice(index, index + this.itemsPerPage);
+    }
+  },
+  // the `events` option simply calls `$on` for you
+  // when the instance is created
+  events: {
+    'announcement-added-queue': function announcementAddedQueue(announcementObj) {
+      if (announcementObj) {
+        this.usedAnnouncements.push(announcementObj);
+      }
+    },
+    'announcement-removed-queue': function announcementRemovedQueue(announcementObj) {
+      if (announcementObj) {
+        this.usedAnnouncements.$remove(announcementObj);
+      }
+    }
+  }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-59be5410=\"\">\n      <p _v-59be5410=\"\">You will only be presented announcements that are:</p>\n      <ol _v-59be5410=\"\">\n        <li _v-59be5410=\"\">Approved</li>\n        <li _v-59be5410=\"\">Not archived</li>\n        <li _v-59be5410=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-59be5410=\"\">\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-md-12\" _v-59be5410=\"\">\n        <h3 _v-59be5410=\"\">Announcements</h3>\n        <template v-if=\"usedAnnouncements.length > 0\">\n          <ul class=\"list-group\" v-sortable=\"\" _v-59be5410=\"\">\n              <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-59be5410=\"\">\n                <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-59be5410=\"\">\n                </email-announcement-pod>\n              </li>\n          </ul>\n        </template>\n        <template v-else=\"\">\n          <p _v-59be5410=\"\">There are no announcements set for this email.</p>\n        </template>\n        <hr _v-59be5410=\"\">\n        <p v-if=\"loading\" class=\"col-md-12\" _v-59be5410=\"\">Loading. Please Wait...</p>\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-59be5410=\"\">\n          <div class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\">Starting <span v-if=\"isEndDate\" _v-59be5410=\"\">between</span><span v-else=\"\" _v-59be5410=\"\">on or after</span></label>\n              <p _v-59be5410=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-59be5410=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\"> and </label>\n              <p _v-59be5410=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-59be5410=\"\"></p><p _v-59be5410=\"\">\n          </p></div>\n          <p _v-59be5410=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-59be5410=\"\">Filter</button></p>\n          <p _v-59be5410=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-59be5410=\"\"><span v-if=\"isEndDate\" _v-59be5410=\"\"> - Remove </span><span v-else=\"\" _v-59be5410=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-59be5410=\"\">\n            <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-59be5410=\"\">\n            </email-announcement-pod>\n            <ul class=\"pagination\" _v-59be5410=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-59be5410=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-59be5410=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-59be5410=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-59be5410=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-59be5410=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-59be5410=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-59be5410=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n#rangetoggle[_v-59be5410]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-59be5410", module.exports)
+  } else {
+    hotAPI.update("_v-59be5410", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../directives/flatpickr.js":125,"../Pagination.vue":123,"./EmailAnnouncementPod.vue":114,"babel-runtime/helpers/defineProperty":14,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],116:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-d506c566] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-d506c566] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-d506c566] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-d506c566] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-d506c566] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-d506c566] {\n  background-color: #ddd;\n}\n.box[_v-d506c566] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-d506c566] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-d506c566] {\n  padding: 3px;\n}\n.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nh5.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-d506c566] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-d506c566] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-d506c566] {\n  display:inline-block;\n}\nform.mediaform[_v-d506c566] {\n  margin-top: 1rem;\n}\n.form-group[_v-d506c566] {\n  margin-bottom: 2px;\n}\n#applabel[_v-d506c566]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-d506c566],\n.btn-group-vertical[_v-d506c566] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-d506c566] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-d506c566] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-d506c566]{\n  margin-bottom: 0;\n}\n.topitems[_v-d506c566] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-d506c566] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-d506c566] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-d506c566] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-d506c566] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-d506c566] {\n  color: #F39C12;\n}\n.time-is-long[_v-d506c566] {\n  color: #999999;\n}\n.time-is-over[_v-d506c566] {\n  color: #9B59B6;\n}\n\n.special-item[_v-d506c566] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-d506c566] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-d506c566] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-d506c566] {\n  margin-bottom: 30px;\n}\n")
+'use strict';
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _VuiFlipSwitch = require('../VuiFlipSwitch.vue');
+
+var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+  components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
+  props: ['item', 'pid', 'podType', 'events'],
+  data: function data() {
+    return {
+      showBody: false,
+      showPanel: false,
+      itemCurrent: 1,
+      checked: false
+    };
+  },
+  created: function created() {},
+  ready: function ready() {},
+  computed: {
+    isEvent: function isEvent() {
+      if (this.events) {
+        for (var i = 0; i < this.events.length; i++) {
+          if (this.events[i].id == this.item.id) {
+            this.checked = true;
+            return true;
+          }
+        }
+      }
+      this.checked = false;
+      return false;
+    },
+    addSeperator: function addSeperator() {
+      var asclass = 'box-footer-normal';
+      if (this.pid == 'items-live' && this.index == 3) {
+        asclass = 'box-footer-last-special';
+      }
+      return asclass;
+    },
+    timeLeftStatus: function timeLeftStatus() {
+      var diff = this.timeDiffNow(this.item.end_date_time);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
+      }
+    },
+
+    timeFromNowStatus: function timeFromNowStatus() {
+      var diff = this.timeDiffNow(this.item.start_date_time);
+      if (diff <= 0) {
+        return 'time-is-over';
+      } else if (diff > 0 && diff <= 720) {
+        return 'time-is-short';
+      } else {
+        return 'time-is-long';
+      }
+    },
+    timefromNow: function timefromNow() {
+      return (0, _moment2.default)(this.item.start_date_time).fromNow();
+    },
+    timeLeft: function timeLeft() {
+      if ((0, _moment2.default)(this.item.start_date_time).isSameOrBefore((0, _moment2.default)())) {
+        var tlft = this.timeDiffNow(this.item.end_date_time);
+        if (tlft < 0) {
+          this.itemCurrent = 0;
+          return 'Event Ended ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
+        } else {
+          this.itemCurrent = 1;
+          return ' and Ends ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
+        }
+      } else {
+        return '';
+      }
+    },
+    specialItem: function specialItem() {
+      var extrasep = void 0;
+
+      if (this.pid == 'items-live' && this.index < 9) {
+        if (this.item.home_priority > 0 && this.item.priority > 0) {
+          extrasep = 'special-item special-item-both';
+        } else if (this.item.home_priority > 0 && this.item.priority == 0) {
+          extrasep = 'special-item special-item-home';
+        } else if (this.item.home_priority == 0 && this.item.priority > 0) {
+          extrasep = 'special-item special-item-today';
+        }
+      } else {
+        extrasep = '';
+      }
+      return extrasep;
+    },
+    liveTimeStatusClass: function liveTimeStatusClass() {
+      var timepartstatus = void 0;
+
+      if ((0, _moment2.default)().isBetween(this.item.start_date_time, this.item.end_date_time)) {
+        timepartstatus = 'ongoing';
+      } else {
+        if (this.timeDiffNow(this.item.start_date_time) < 0) {
+          timepartstatus = 'event-negative';
+        } else {
+          timepartstatus = 'event-positive';
+        }
+      }
+      return timepartstatus;
+    },
+    promotedIcon: function promotedIcon() {
+      if (this.item.is_promoted === 1) {
+        pIcon = 'fa fa fa-star';
+      } else {
+        pIcon = '';
+      }
+      return pIcon;
+    },
+    imageUrl: function imageUrl() {
+      var pth = "/imagecache/smallthumb/";
+      var fname = this.item.eventimage;
+      return pth + fname;
+    },
+    isApproved: function isApproved() {
+      return this.item.is_approved;
+    },
+    itemEditPath: function itemEditPath() {
+      return '/admin/event/' + this.item.id + '/edit';
+    },
+    isOnCampus: function isOnCampus() {
+      if (this.item.building === null || this.item.building === "undefined") {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    eventParticipation: function eventParticipation() {
+      switch (this.item.participants) {
+        case 'campus':
+          return 'Campus Only';
+          break;
+        case 'public':
+          return 'Open to Public';
+          break;
+        case 'students':
+          return 'Students Only';
+          break;
+        case 'invite':
+          return 'Invitation Only';
+          break;
+        case 'tickets':
+          return 'Tickets Required';
+          break;
+        default:
+          return '';
+      }
+    }
+  },
+  methods: {
+    // Handle the form submission here
+    timeDiffNow: function timeDiffNow(val) {
+      return (0, _moment2.default)(val).diff((0, _moment2.default)(), 'minutes');
+    },
+    editItem: function editItem(ev) {
+      window.location.href = this.itemEditPath;
+    },
+    priorityChange: function priorityChange(event) {},
+    getFileName: function getFileName() {
+      var files = this.$els.eventimg.files;
+      this.eventimage = this.$els.eventimg.files[0].name;
+    },
+
+    togglePanel: function togglePanel(ev) {
+      if (this.showPanel === false) {
+        this.showPanel = true;
+      } else {
+        this.showPanel = false;
+      }
+    },
+    toggleBody: function toggleBody(ev) {
+      if (this.showBody == false) {
+        this.showBody = true;
+      } else {
+        this.showBody = false;
+      }
+    },
+    emitEventAdd: function emitEventAdd(eventObj) {
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('event-added', eventObj);
+      this.$dispatch('event-added-queue', eventObj);
+    },
+    emitEventRemove: function emitEventRemove(eventObj) {
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('event-removed', eventObj);
+      this.$dispatch('event-removed-queue', eventObj);
+    },
+    toggleEmitEvent: function toggleEmitEvent(eventObj) {
+      // function will run before this.checked is switched
+      if (!this.checked) {
+        this.emitEventAdd(eventObj);
+      } else {
+        this.emitEventRemove(eventObj);
+      }
+    },
+    updateItem: function updateItem() {
+      /*
+      this.patchRecord.is_archived = this.item.is_archived;
+       this.$http.patch('/api/email/stories/other/update' + this.item.id , this.patchRecord , {
+        method: 'PATCH'
+      } )
+      .then((response) => {
+        console.log('good?'+ response)
+        this.checkAfterUpdate(response.data.newdata)
+       }, (response) => {
+        console.log('bad?'+ response)
+      });
+      */
+    }
+
+  },
+  watch: {},
+  directives: {},
+
+  filters: {
+    yesNo: function yesNo(value) {
+      return value == true ? 'Yes' : 'No';
+    },
+    titleDay: function titleDay(value) {
+      return (0, _moment2.default)(value).format("ddd");
+    },
+    titleDate: function titleDate(value) {
+      return (0, _moment2.default)(value).format("MM/DD");
+    },
+    titleDateLong: function titleDateLong(value) {
+      return (0, _moment2.default)(value).format("ddd MM/DD");
+    },
+    hasHttp: function hasHttp(value) {
+      // Checks if links given 'http'
+      return value.substr(0, 4) == 'http' ? value : 'https://' + value;
+    },
+    momentPretty: {
+      read: function read(val) {
+        return val ? (0, _moment2.default)(val).format('ddd, MM-DD-YYYY') : '';
+      },
+      write: function write(val, oldVal) {
+        return (0, _moment2.default)(val).format('YYYY-MM-DD');
+      }
+    }
+  },
+  events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-d506c566=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-d506c566=\"\">\n      <div class=\"box-header with-border\" _v-d506c566=\"\">\n        <div class=\"row\" _v-d506c566=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-d506c566=\"\">\n            <div class=\"box-date-top pull-left\" _v-d506c566=\"\">{{item.start_date | titleDateLong}}</div>\n            <div class=\"pull-right\" _v-d506c566=\"\">\n              <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-d506c566=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-d506c566=\"\"></span></label>\n            </div><!-- /.pull-right -->\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-d506c566=\"\">\n            <label v-show=\"podType == 'eventqueue'\" class=\"pull-right\" _v-d506c566=\"\"><input type=\"checkbox\" @click=\"toggleEmitEvent(item)\" v-model=\"checked\" :checked=\"isEvent\" _v-d506c566=\"\"> Email Event</label>\n            <button v-show=\"podType == 'event'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitEventRemove(item)\" _v-d506c566=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-d506c566=\"\"></i></button>\n          </div><!-- /.col-sm-6 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-d506c566=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-d506c566=\"\">\n            <div class=\"col-sm-12\" _v-d506c566=\"\">\n              <h6 class=\"box-title\" _v-d506c566=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-d506c566=\"\"> - canceled</span>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-d506c566=\"\">\n      <p _v-d506c566=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-d506c566=\"\">All Day Event</p>\n      </template>\n      <hr _v-d506c566=\"\">\n      <div class=\"item-info\" _v-d506c566=\"\">\n        <p _v-d506c566=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-d506c566=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-d506c566=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-d506c566=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-d506c566=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-d506c566=\"\">\n        <template v-else=\"\">\n          <p _v-d506c566=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-d506c566=\"\">Contact:</p>\n          <ul _v-d506c566=\"\">\n            <li v-if=\"item.contact_person\" _v-d506c566=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-d506c566=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-d506c566=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-d506c566=\"\">For more information, visit:</p>\n          <ul _v-d506c566=\"\">\n            <li _v-d506c566=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-d506c566=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-d506c566=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-d506c566=\"\">\n        <p v-if=\"item.free\" _v-d506c566=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-d506c566=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-d506c566=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-d506c566=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-d506c566=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-d506c566=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-d506c566=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-d506c566=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-d506c566=\"\">\n        <p _v-d506c566=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-d506c566=\"\">\n        <p _v-d506c566=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-d506c566=\"\">\n      <div class=\"row\" _v-d506c566=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-d506c566=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-d506c566=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-d506c566=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-d506c566=\"\">\n          <div class=\"btn-group pull-right\" _v-d506c566=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-d506c566=\"\"><i class=\"fa fa-pencil\" _v-d506c566=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.file-upload[_v-d506c566] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-d506c566] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-d506c566] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-d506c566] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-d506c566] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-d506c566] {\n  background-color: #ddd;\n}\n.box[_v-d506c566] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-d506c566] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-d506c566] {\n  padding: 3px;\n}\n.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nh5.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-d506c566] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-d506c566] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-d506c566] {\n  display:inline-block;\n}\nform.mediaform[_v-d506c566] {\n  margin-top: 1rem;\n}\n.form-group[_v-d506c566] {\n  margin-bottom: 2px;\n}\n#applabel[_v-d506c566]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-d506c566],\n.btn-group-vertical[_v-d506c566] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-d506c566] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-d506c566] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-d506c566]{\n  margin-bottom: 0;\n}\n.topitems[_v-d506c566] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-d506c566] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-d506c566] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-d506c566] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-d506c566] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-d506c566] {\n  color: #F39C12;\n}\n.time-is-long[_v-d506c566] {\n  color: #999999;\n}\n.time-is-over[_v-d506c566] {\n  color: #9B59B6;\n}\n\n.special-item[_v-d506c566] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-d506c566] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-d506c566] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-d506c566] {\n  margin-bottom: 30px;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-d506c566", module.exports)
+  } else {
+    hotAPI.update("_v-d506c566", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../VuiFlipSwitch.vue":124,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],117:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n#automail-label[_v-4d567bce] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4d567bce]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _EmailEventPod = require('./EmailEventPod.vue');
+
+var _EmailEventPod2 = _interopRequireDefault(_EmailEventPod);
+
+var _flatpickr = require('../../directives/flatpickr.js');
+
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  directives: { flatpickr: _flatpickr2.default },
+  components: { EmailEventPod: _EmailEventPod2.default },
+  props: ['events'],
+  data: function data() {
+    return {
+      currentDate: (0, _moment2.default)(),
+      queueEvents: [],
+      usedEvents: [],
+      loading: true,
+      eventMsg: null,
+      startdate: null,
+      enddate: null,
+      isEndDate: false,
+      currentPage: 0,
+      itemsPerPage: 10,
+      resultCount: 0
+    };
+  },
+  ready: function ready() {
+    var today = (0, _moment2.default)();
+    this.startdate = today.format("YYYY-MM-DD");
+    this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD");
+    this.fetchAllRecords();
+    // set events from property to data
+    this.events = this.usedEvents;
+  },
+
+  computed: {
+    totalPages: function totalPages() {
+      return Math.ceil(this.queueEvents.length / this.itemsPerPage);
+    }
+  },
+  methods: {
+    fetchAllRecords: function fetchAllRecords() {
+      var _this = this;
+
+      this.loading = true;
+
+      var routeurl = '/api/email/events';
+
+      // if a start date is set, get stories whose start_date is on or after this date
+      if (this.startdate) {
+        routeurl = routeurl + '/' + this.startdate;
+      } else {
+        routeurl = routeurl + '/' + (0, _moment2.default)().format("YYYY-MM-DD");
+      }
+
+      // if a date range is set, get stories between the start date and end date
+      if (this.isEndDate) {
+        routeurl = routeurl + '/' + this.enddate;
+      }
+
+      this.$http.get(routeurl).then(function (response) {
+        _this.$set('queueEvents', response.data.newdata.data);
+        _this.resultCount = _this.queueEvents.length;
+        _this.loading = false;
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+      }).bind(this);
+    },
+    setPage: function setPage(pageNumber) {
+      if (pageNumber > -1 && pageNumber < this.totalPages) {
+        this.currentPage = pageNumber;
+      }
+    },
+    onCalendarChange: function onCalendarChange() {
+      // flatpickr directive method
+    },
+    toggleRange: function toggleRange() {
+      if (this.isEndDate) {
+        this.isEndDate = false;
+      } else {
+        this.isEndDate = true;
+      }
+    }
+
+  },
+  filters: {
+    paginate: function paginate(list) {
+      // only run if there are items in the list
+      if (list.length == 0) {
+        return;
+      }
+      this.resultCount = list.length;
+      if (this.currentPage >= this.totalPages) {
+        this.currentPage = this.totalPages - 1;
+      }
+      var index = this.currentPage * this.itemsPerPage;
+      return list.slice(index, index + this.itemsPerPage);
+    }
+  },
+
+  // the `events` option simply calls `$on` for you
+  // when the instance is created
+  events: {
+    'event-added-queue': function eventAddedQueue(eventObj) {
+      if (eventObj) {
+        this.usedEvents.push(eventObj);
+      }
+    },
+    'event-removed-queue': function eventRemovedQueue(eventObj) {
+      if (eventObj) {
+        this.usedEvents.$remove(eventObj);
+      }
+    }
+  }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-4d567bce=\"\">\n      <p _v-4d567bce=\"\">You will only be presented events that are:</p>\n      <ol _v-4d567bce=\"\">\n        <li _v-4d567bce=\"\">Approved</li>\n        <li _v-4d567bce=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-4d567bce=\"\">\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-md-12\" _v-4d567bce=\"\">\n        <h3 _v-4d567bce=\"\">Events</h3>\n        <template v-if=\"usedEvents.length > 0\">\n          <ul class=\"list-group\" v-sortable=\"\" _v-4d567bce=\"\">\n              <li v-for=\"event in usedEvents\" class=\"list-group-item\" _v-4d567bce=\"\">\n                <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"event\" _v-4d567bce=\"\">\n                </email-event-pod>\n              </li>\n          </ul>\n        </template>\n        <template v-else=\"\">\n          <p _v-4d567bce=\"\">There are no events set for this email.</p>\n        </template>\n        <hr _v-4d567bce=\"\">\n        <p v-if=\"loading\" class=\"col-md-12\" _v-4d567bce=\"\">Loading. Please Wait...</p>\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-4d567bce=\"\">\n          <div class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\">Starting <span v-if=\"isEndDate\" _v-4d567bce=\"\">between</span><span v-else=\"\" _v-4d567bce=\"\">on or after</span></label>\n              <p _v-4d567bce=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-4d567bce=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\"> and </label>\n              <p _v-4d567bce=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-4d567bce=\"\"></p><p _v-4d567bce=\"\">\n          </p></div>\n          <p _v-4d567bce=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-4d567bce=\"\">Filter</button></p>\n          <p _v-4d567bce=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-4d567bce=\"\"><span v-if=\"isEndDate\" _v-4d567bce=\"\"> - Remove </span><span v-else=\"\" _v-4d567bce=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-4d567bce=\"\">\n            <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-4d567bce=\"\">\n            </email-event-pod>\n            <ul class=\"pagination\" _v-4d567bce=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-4d567bce=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-4d567bce=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-4d567bce=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-4d567bce=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-4d567bce=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-4d567bce=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-4d567bce=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n#automail-label[_v-4d567bce] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4d567bce]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-4d567bce", module.exports)
+  } else {
+    hotAPI.update("_v-4d567bce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../directives/flatpickr.js":125,"./EmailEventPod.vue":116,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],118:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -22516,11 +23323,19 @@ var _EmailStoryQueue = require('./EmailStoryQueue.vue');
 
 var _EmailStoryQueue2 = _interopRequireDefault(_EmailStoryQueue);
 
+var _EmailEventQueue = require('./EmailEventQueue.vue');
+
+var _EmailEventQueue2 = _interopRequireDefault(_EmailEventQueue);
+
+var _EmailAnnouncementQueue = require('./EmailAnnouncementQueue.vue');
+
+var _EmailAnnouncementQueue2 = _interopRequireDefault(_EmailAnnouncementQueue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
   directives: { flatpickr: _flatpickr2.default },
-  components: { EmailMainStoryQueue: _EmailMainStoryQueue2.default, EmailStoryQueue: _EmailStoryQueue2.default, vSelect: _vueSelect2.default },
+  components: { EmailMainStoryQueue: _EmailMainStoryQueue2.default, EmailStoryQueue: _EmailStoryQueue2.default, EmailEventQueue: _EmailEventQueue2.default, EmailAnnouncementQueue: _EmailAnnouncementQueue2.default, vSelect: _vueSelect2.default },
   props: {
     cuserRoles: { default: {} },
     errors: {
@@ -22559,6 +23374,8 @@ module.exports = {
         sendtimes: [],
         mainStory: null,
         otherStories: [],
+        events: [],
+        announcements: [],
         title: null
       },
       response: {},
@@ -22774,17 +23591,37 @@ module.exports = {
       if (otherStoryObj) {
         this.record.otherStories.$remove(otherStoryObj);
       }
+    },
+    'event-added': function eventAdded(eventObj) {
+      if (eventObj) {
+        this.record.events.push(eventObj);
+      }
+    },
+    'event-removed': function eventRemoved(eventObj) {
+      if (eventObj) {
+        this.record.events.$remove(eventObj);
+      }
+    },
+    'announcement-added': function announcementAdded(announcementObj) {
+      if (announcementObj) {
+        this.record.announcements.push(announcementObj);
+      }
+    },
+    'announcement-removed': function announcementRemoved(announcementObj) {
+      if (announcementObj) {
+        this.record.announcements.$remove(announcementObj);
+      }
     }
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-07a0c146=\"\">\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n    <div class=\"row\" _v-07a0c146=\"\">\n      <!-- EMAIL LIVE BUILDER VIEW AREA -->\n      <!-- BUILDER TOOLS AREA -->\n      <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n        <!-- Nav tabs -->\n        <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n          <li _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Main Story</a></li>\n          <li class=\"active\" _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Side Stories</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Events</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Announcements</a></li>\n        </ul>\n        <!-- Tab panes -->\n        <div class=\"tab-content\" _v-07a0c146=\"\">\n          <div class=\"tab-pane\" id=\"main-story\" _v-07a0c146=\"\">\n            <email-main-story-queue :stypes=\"stypes\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-main-story-queue>\n          </div>\n          <div class=\"tab-pane active\" id=\"stories\" _v-07a0c146=\"\">\n            <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n            <!--<events-email-queue></events-email-queue>-->\n          </div>\n          <div class=\"tab-pane\" id=\"announcements\" _v-07a0c146=\"\">\n            <!--<announcements-email-queue></announcements-email-queue>-->\n          </div>\n        </div>\n      </div>\n      <!-- /.medium-4 columns -->\n      <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n        <!--<div class=\"progress\">\n          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 60%;\">\n            60%\n          </div>\n        </div>-->\n        <section id=\"email-live-container\" style=\"margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px\" _v-07a0c146=\"\">\n          <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\" _v-07a0c146=\"\">\n              <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                  <td align=\"center\" valign=\"top\" _v-07a0c146=\"\">\n                      <table border=\"0\" cellpadding=\"20\" cellspacing=\"0\" width=\"600\" id=\"emailContainer\" _v-07a0c146=\"\">\n                          <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                              <td valign=\"top\" width=\"368\" _v-07a0c146=\"\">\n                                <template v-if=\"record.mainStory\">\n                                  <img :src=\"record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename\" :alt=\"record.mainStory.email_images[0].title\" _v-07a0c146=\"\">\n                                  <h2 _v-07a0c146=\"\">{{record.mainStory.title}}</h2><h2 _v-07a0c146=\"\">\n                                  {{{ record.mainStory.content | truncate '60' }}}\n                                  <p _v-07a0c146=\"\"><a :href=\"record.mainStory.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                </h2></template>\n                                <template v-else=\"\">\n                                  No main story set.\n                                </template>\n                              </td>\n                              <td cellpadding=\"10\" valign=\"top\" style=\"padding:0 0 0 15px; background:#e5e5e5\" _v-07a0c146=\"\">\n                                <template v-if=\"record.otherStories.length > 0\">\n                                  <article v-for=\"story in record.otherStories\" _v-07a0c146=\"\">\n                                    <h3 _v-07a0c146=\"\">{{story.title}}</h3><h3 _v-07a0c146=\"\">\n                                    {{{ story.content | truncate '30' }}}\n                                    <p _v-07a0c146=\"\"><a :href=\"story.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                  </h3></article>\n                                </template>\n                                <template v-else=\"\">\n                                  No side stories set yet.\n                                </template>\n                              </td>\n                          </tr>\n                      </tbody></table>\n                  </td>\n              </tr>\n          </tbody></table>\n        </section>\n      </div>\n      <!-- /.medium-8 columns -->\n    </div>\n    <!-- /.row -->\n    <!--\n    <div class=\"row\">\n        <div v-bind:class=\"md12col\">\n            <h4>Send Times</h4>\n        </div>\n        <div v-if=\"sendtimes.length > 0\" v-bind:class=\"md12col\">\n          <div v-for=\"time in sendtimes\" class=\"input-group\">\n              <label class=\"sr-only\">Time</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"time.send_at\">\n              <span class=\"input-group-btn\">\n                  <button @click=\"delSendtime(time)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else v-bind:class=\"md12col\">\n            <p>None</p>\n        </div>\n        <div v-bind:class=\"md12col\">\n            <button @click=\"addSendtime\" :class=\"btnSecondary\" type=\"button\">Add Send Time</button>\n        </div>\n    </div>\n    -->\n    <!-- /.row -->\n  </form>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-07a0c146=\"\">\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n    <div class=\"row\" _v-07a0c146=\"\">\n      <!-- EMAIL LIVE BUILDER VIEW AREA -->\n      <!-- BUILDER TOOLS AREA -->\n      <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n        <!-- Nav tabs -->\n        <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n          <li _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Main Story</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Side Stories</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Events</a></li>\n          <li class=\"active\" _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Announcements</a></li>\n        </ul>\n        <!-- Tab panes -->\n        <div class=\"tab-content\" _v-07a0c146=\"\">\n          <div class=\"tab-pane\" id=\"main-story\" _v-07a0c146=\"\">\n            <email-main-story-queue :stypes=\"stypes\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-main-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n            <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n            <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n          </div>\n          <div class=\"tab-pane active\" id=\"announcements\" _v-07a0c146=\"\">\n            <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n          </div>\n        </div>\n      </div>\n      <!-- /.medium-4 columns -->\n      <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n        <!--<div class=\"progress\">\n          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 60%;\">\n            60%\n          </div>\n        </div>-->\n        <section id=\"email-live-container\" style=\"margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px\" _v-07a0c146=\"\">\n          <table border=\"0\" cellpadding=\"5\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\" _v-07a0c146=\"\">\n              <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                  <td align=\"center\" valign=\"top\" _v-07a0c146=\"\">\n                      <table border=\"0\" width=\"600\" id=\"emailContainer\" _v-07a0c146=\"\">\n                          <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                              <td valign=\"top\" width=\"368\" _v-07a0c146=\"\">\n                                <template v-if=\"record.mainStory\">\n                                  <article style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                    <img :src=\"record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename\" :alt=\"record.mainStory.email_images[0].title\" style=\"border-right:5px solid #ffffff; width:368px; height:245px; \" _v-07a0c146=\"\">\n                                    <h2 _v-07a0c146=\"\">{{record.mainStory.title}}</h2>\n                                    {{{ record.mainStory.content | truncate '60' }}}\n                                    <p _v-07a0c146=\"\"><a :href=\"record.mainStory.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                  </article>\n                                </template>\n                                <template v-else=\"\">\n                                  <div style=\"background-color:#e5e5e5; position:relative; width:368px; height:245px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-07a0c146=\"\">\n                                    <p style=\"position:absolute; left:38px; top:96px; font-size:3rem;\" _v-07a0c146=\"\">Main story image here.</p>\n                                  </div>\n                                  <h2 style=\"padding:0 5px\" _v-07a0c146=\"\">No main story set yet.</h2>\n                                  <p style=\"padding:0 5px\" _v-07a0c146=\"\">Select a main story from the \"Main Story\" tab.</p>\n                                </template>\n                                <hr _v-07a0c146=\"\">\n                              </td>\n                              <td rowspan=\"3\" valign=\"top\" width=\"232\" style=\"background:#e5e5e5\" _v-07a0c146=\"\">\n                                <template v-if=\"record.events.length > 0\">\n                                  <h3 style=\"padding:0 5px\" _v-07a0c146=\"\">Upcoming Events</h3>\n                                  <article v-for=\"event in record.events\" style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                    <hr _v-07a0c146=\"\">\n                                    <h4 _v-07a0c146=\"\">{{event.title}}</h4><h4 _v-07a0c146=\"\">\n                                    {{ event.start_date }} | {{ event.start_time }} | {{ event.location }}\n                                    <p _v-07a0c146=\"\"><a :href=\"event.full_url\" _v-07a0c146=\"\">View Event</a></p>\n                                  </h4></article>\n                                </template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" _v-07a0c146=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                </template>\n                              </td>\n                          </tr>\n                          <tr _v-07a0c146=\"\">\n                            <td valign=\"top\" _v-07a0c146=\"\">\n                              <template v-if=\"record.otherStories.length > 0\">\n                                <h3 _v-07a0c146=\"\">Featured News Stories</h3>\n                                <article v-for=\"story in record.otherStories\" style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                  <h4 _v-07a0c146=\"\">{{story.title}}</h4><h4 _v-07a0c146=\"\">\n                                  {{{ story.content | truncate '30' }}}\n                                  <p _v-07a0c146=\"\"><a :href=\"story.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                </h4></article>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" _v-07a0c146=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                              <hr _v-07a0c146=\"\">\n                            </td>\n                          </tr>\n                          <tr _v-07a0c146=\"\">\n                            <td valign=\"top\" _v-07a0c146=\"\">\n                              <template v-if=\"record.announcements.length > 0\">\n                                <h3 _v-07a0c146=\"\">Announcements</h3>\n                                <article v-for=\"announcement in record.announcements\" _v-07a0c146=\"\">\n                                  <h4 _v-07a0c146=\"\">{{ announcement.title }}</h4>\n                                  <p _v-07a0c146=\"\">{{ announcement.announcement | truncate '30' }}</p>\n                                  <p _v-07a0c146=\"\"><a :href=\"announcement.link\" _v-07a0c146=\"\">{{ announcement.link_txt }}</a></p>\n                                </article>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" _v-07a0c146=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                              </template>\n                            </td>\n                          </tr>\n                      </tbody></table>\n                  </td>\n              </tr>\n          </tbody></table>\n        </section>\n      </div>\n      <!-- /.medium-8 columns -->\n    </div>\n    <!-- /.row -->\n    <!--\n    <div class=\"row\">\n        <div v-bind:class=\"md12col\">\n            <h4>Send Times</h4>\n        </div>\n        <div v-if=\"sendtimes.length > 0\" v-bind:class=\"md12col\">\n          <div v-for=\"time in sendtimes\" class=\"input-group\">\n              <label class=\"sr-only\">Time</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"time.send_at\">\n              <span class=\"input-group-btn\">\n                  <button @click=\"delSendtime(time)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else v-bind:class=\"md12col\">\n            <p>None</p>\n        </div>\n        <div v-bind:class=\"md12col\">\n            <button @click=\"addSendtime\" :class=\"btnSecondary\" type=\"button\">Add Send Time</button>\n        </div>\n    </div>\n    -->\n    <!-- /.row -->\n  </form>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-07a0c146]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-07a0c146]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-07a0c146]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-07a0c146]{\n    margin-top: 26px !important;\n}\np[_v-07a0c146] {\n  margin: 0;\n}\n\nlabel[_v-07a0c146] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-07a0c146] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-07a0c146] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-07a0c146] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-07a0c146] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-07a0c146] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-07a0c146] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-07a0c146] {\n  margin: 0;\n}\n\n[type='submit'][_v-07a0c146],\n[type='button'][_v-07a0c146] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-07a0c146] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-07a0c146] {\n  margin: 0;\n}\n\nh5.form-control[_v-07a0c146] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -22793,7 +23630,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-07a0c146", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../VuiFlipSwitch.vue":119,"./EmailMainStoryQueue.vue":114,"./EmailStoryQueue.vue":116,"babel-runtime/core-js/json/stringify":1,"flatpickr":102,"moment":103,"vue":110,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":111}],114:[function(require,module,exports){
+},{"../VuiFlipSwitch.vue":124,"./EmailAnnouncementQueue.vue":115,"./EmailEventQueue.vue":117,"./EmailMainStoryQueue.vue":119,"./EmailStoryQueue.vue":121,"babel-runtime/core-js/json/stringify":1,"flatpickr":103,"moment":104,"vue":111,"vue-hot-reload-api":107,"vue-select":109,"vueify/lib/insert-css":112}],119:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-333ec737] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-333ec737]:active, .btn-default.active[_v-333ec737], .open > .dropdown-toggle.btn-default[_v-333ec737] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-333ec737]:active, .btn-default.active[_v-333ec737], .open > .dropdown-toggle.btn-default[_v-333ec737] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-333ec737]:active, span.item-type-icon.active[_v-333ec737]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-333ec737] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-333ec737] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-333ec737] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-333ec737]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
@@ -23046,7 +23883,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-333ec737", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../directives/flatpickr.js":120,"../../directives/iconradio.js":121,"../IconToggleBtn.vue":117,"../Pagination.vue":118,"./EmailStoryPod.vue":115,"babel-runtime/core-js/object/keys":10,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],115:[function(require,module,exports){
+},{"../../directives/flatpickr.js":125,"../../directives/iconradio.js":126,"../IconToggleBtn.vue":122,"../Pagination.vue":123,"./EmailStoryPod.vue":120,"babel-runtime/core-js/object/keys":10,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],120:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-8a7f6adc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-8a7f6adc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-8a7f6adc] {\n    padding: 3px;\n}\n.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\n\n#storyform[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-8a7f6adc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-8a7f6adc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-8a7f6adc],\n.btn-group-vertical[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-8a7f6adc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-8a7f6adc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-8a7f6adc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-8a7f6adc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-8a7f6adc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-8a7f6adc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-8a7f6adc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-8a7f6adc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-8a7f6adc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-8a7f6adc] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-8a7f6adc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-8a7f6adc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-8a7f6adc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-8a7f6adc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-8a7f6adc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-8a7f6adc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-8a7f6adc] {\n}\n")
 'use strict';
@@ -23137,9 +23974,13 @@ module.exports = {
     isOtherStory: function isOtherStory() {
       if (this.otherStories) {
         for (var i = 0; i < this.otherStories.length; i++) {
-          if (this.otherStories[i].id == this.item.id) return true;
+          if (this.otherStories[i].id == this.item.id) {
+            this.checked = true;
+            return true;
+          }
         }
       }
+      this.checked = false;
       return false;
     }
   },
@@ -23208,7 +24049,7 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-8a7f6adc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-8a7f6adc=\"\">\n        <div class=\"box-header with-border\" _v-8a7f6adc=\"\">\n          <div class=\"row\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-12\" _v-8a7f6adc=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"radio\" @click=\"emitMainStoryAdd(item)\" :checked=\"isMainStory\" _v-8a7f6adc=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-8a7f6adc=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-8a7f6adc=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-9\" _v-8a7f6adc=\"\">\n                <h6 class=\"box-title\" _v-8a7f6adc=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-8a7f6adc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-8a7f6adc=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-8a7f6adc=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-8a7f6adc=\"\">\n            <p _v-8a7f6adc=\"\">ID: {{item.id}}</p>\n            <p _v-8a7f6adc=\"\">Type: {{item.story_type}}</p>\n            <p _v-8a7f6adc=\"\">Title: {{item.title}}</p>\n            <p _v-8a7f6adc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-8a7f6adc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-8a7f6adc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-8a7f6adc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-8a7f6adc=\"\">Live: {{item.is_live}}</p>\n            <p _v-8a7f6adc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-8a7f6adc=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-8a7f6adc=\"\">\n                <div class=\"row\" _v-8a7f6adc=\"\">\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        <div class=\"btn-group pull-right\" _v-8a7f6adc=\"\">\n                            <button class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-8a7f6adc=\"\"><i class=\"fa fa-eye\" _v-8a7f6adc=\"\"></i></button>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-8a7f6adc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-8a7f6adc=\"\">\n        <div class=\"box-header with-border\" _v-8a7f6adc=\"\">\n          <div class=\"row\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-12\" _v-8a7f6adc=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"radio\" @click=\"emitMainStoryAdd(item)\" :checked=\"isMainStory\" _v-8a7f6adc=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-8a7f6adc=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-8a7f6adc=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-9\" _v-8a7f6adc=\"\">\n                <h6 class=\"box-title\" _v-8a7f6adc=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-8a7f6adc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-8a7f6adc=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-8a7f6adc=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-8a7f6adc=\"\">\n            <p _v-8a7f6adc=\"\">ID: {{item.id}}</p>\n            <p _v-8a7f6adc=\"\">Type: {{item.story_type}}</p>\n            <p _v-8a7f6adc=\"\">Title: {{item.title}}</p>\n            <p _v-8a7f6adc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-8a7f6adc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-8a7f6adc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-8a7f6adc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-8a7f6adc=\"\">Live: {{item.is_live}}</p>\n            <p _v-8a7f6adc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-8a7f6adc=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-8a7f6adc=\"\">\n                <div class=\"row\" _v-8a7f6adc=\"\">\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        <div class=\"btn-group pull-right\" _v-8a7f6adc=\"\">\n                            <a :href=\"item.full_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-8a7f6adc=\"\"><i class=\"fa fa-eye\" _v-8a7f6adc=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23223,7 +24064,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-8a7f6adc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],116:[function(require,module,exports){
+},{"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],121:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nh4[_v-873b9bc4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-873b9bc4]:active, span.item-type-icon.active[_v-873b9bc4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-873b9bc4]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
@@ -23268,11 +24109,11 @@ exports.default = {
     props: ['stypes', 'mainStory', 'otherStories'],
     created: function created() {},
     ready: function ready() {
-        var twoWeeksEarlier = (0, _moment2.default)().subtract(12, 'w');
+        var twoWeeksEarlier = (0, _moment2.default)().subtract(2, 'w');
         this.startdate = twoWeeksEarlier.format("YYYY-MM-DD");
         this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
         this.fetchAllRecords();
-
+        // set stories from property to data
         this.otherStories = this.usedStories;
     },
 
@@ -23380,7 +24221,7 @@ exports.default = {
 
             this.loading = true;
 
-            var routeurl = '/api/email/stories/other';
+            var routeurl = '/api/email/stories/otherstories';
 
             // if a start date is set, get stories whose start_date is on or after this date
             if (this.startdate) {
@@ -23488,7 +24329,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-873b9bc4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../directives/flatpickr.js":120,"../../directives/iconradio.js":121,"../IconToggleBtn.vue":117,"../Pagination.vue":118,"./EmailStoryPod.vue":115,"babel-runtime/core-js/object/keys":10,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],117:[function(require,module,exports){
+},{"../../directives/flatpickr.js":125,"../../directives/iconradio.js":126,"../IconToggleBtn.vue":122,"../Pagination.vue":123,"./EmailStoryPod.vue":120,"babel-runtime/core-js/object/keys":10,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],122:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.item-type-icon {\n    color: #1B1B1B;\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n")
 'use strict';
@@ -23559,7 +24400,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-fcf89270", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],118:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],123:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
 'use strict';
@@ -23675,7 +24516,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],119:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],124:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -23722,7 +24563,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],120:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],125:[function(require,module,exports){
 'use strict';
 
 var _flatpickr = require('flatpickr');
@@ -23753,7 +24594,7 @@ module.exports = {
     }
 };
 
-},{"flatpickr":102}],121:[function(require,module,exports){
+},{"flatpickr":103}],126:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -23796,7 +24637,7 @@ module.exports = {
     }
 };
 
-},{}],122:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -23849,7 +24690,7 @@ function assignEventListeners() {
 }
 assignEventListeners();
 
-},{"./components/Email/EmailForm.vue":113,"./vuex/store":123,"vue":110,"vue-resource":107,"vue-sortable":109}],123:[function(require,module,exports){
+},{"./components/Email/EmailForm.vue":118,"./vuex/store":128,"vue":111,"vue-resource":108,"vue-sortable":110}],128:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23892,6 +24733,6 @@ exports.default = new _vuex2.default.Store({
     mutations: mutations
 });
 
-},{"vue":110,"vuex":112}]},{},[122]);
+},{"vue":111,"vuex":113}]},{},[127]);
 
 //# sourceMappingURL=vue-email-form.js.map

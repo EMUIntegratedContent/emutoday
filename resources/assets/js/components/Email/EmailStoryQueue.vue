@@ -118,11 +118,11 @@ export default  {
     created(){
     },
     ready() {
-        let twoWeeksEarlier = moment().subtract(12, 'w')
+        let twoWeeksEarlier = moment().subtract(2, 'w')
         this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
         this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
         this.fetchAllRecords()
-
+        // set stories from property to data
         this.otherStories = this.usedStories
     },
     data: function() {
@@ -230,7 +230,7 @@ export default  {
       fetchAllRecords: function() {
           this.loading = true
 
-          var routeurl = '/api/email/stories/other';
+          var routeurl = '/api/email/stories/otherstories';
 
           // if a start date is set, get stories whose start_date is on or after this date
           if(this.startdate){
