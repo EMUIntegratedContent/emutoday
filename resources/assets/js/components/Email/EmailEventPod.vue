@@ -443,12 +443,11 @@ module.exports  = {
     emitEventAdd: function(eventObj){
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
       this.$dispatch('event-added', eventObj)
-      this.$dispatch('event-added-queue', eventObj)
     },
     emitEventRemove: function(eventObj){
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('event-removed', eventObj)
-      this.$dispatch('event-removed-queue', eventObj)
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('event-removed', eventObj.id)
     },
     toggleEmitEvent: function(eventObj){
       // function will run before this.checked is switched

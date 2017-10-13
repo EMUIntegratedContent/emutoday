@@ -262,16 +262,6 @@ module.exports  = {
       timefromNow:function() {
           return moment(this.item.start_date).fromNow()
       },
-      hasPriorityChanged: function(){
-        /*
-        if (this.initRecord.priority != this.patchRecord.priority){
-          return true
-        } else {
-          return false
-        }
-        */
-        return
-      },
       typeIcon: function() {
           switch (this.item.story_type) {
               case 'emutoday':
@@ -346,12 +336,11 @@ module.exports  = {
         emitOtherStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
           this.$dispatch('other-story-added', storyObj)
-          this.$dispatch('other-story-added-queue', storyObj)
         },
         emitOtherStoryRemove: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('other-story-removed', storyObj)
-          this.$dispatch('other-story-removed-queue', storyObj)
+          // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+          this.$dispatch('other-story-removed', storyObj.id)
         },
         toggleEmitOtherStory: function(storyObj){
           // function will run before this.checked is switched

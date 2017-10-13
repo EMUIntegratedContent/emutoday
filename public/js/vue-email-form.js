@@ -22542,7 +22542,7 @@ module.exports = {
   created: function created() {},
   ready: function ready() {},
   computed: (_computed = {
-    isEvent: function isEvent() {
+    isAnnouncement: function isAnnouncement() {
       if (this.announcements) {
         for (var i = 0; i < this.announcements.length; i++) {
           if (this.announcements[i].id == this.item.id) {
@@ -22644,15 +22644,15 @@ module.exports = {
         this.showBody = false;
       }
     },
+
     emitAnnouncementAdd: function emitAnnouncementAdd(announcementObj) {
       // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
       this.$dispatch('announcement-added', announcementObj);
-      this.$dispatch('announcement-added-queue', announcementObj);
     },
     emitAnnouncementRemove: function emitAnnouncementRemove(announcementObj) {
       // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('announcement-removed', announcementObj);
-      this.$dispatch('announcement-removed-queue', announcementObj);
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('announcement-removed', announcementObj.id);
     },
     toggleEmitAnnouncement: function toggleEmitAnnouncement(announcementObj) {
       // function will run before this.checked is switched
@@ -22750,7 +22750,8 @@ exports.default = {
       currentDate: (0, _moment2.default)(),
       usedAnnouncements: [],
       queueAnnouncements: [],
-      loading: true,
+      loadingQueue: true,
+      loadingUsed: true,
       eventMsg: null,
       startdate: null,
       enddate: null,
@@ -22766,10 +22767,7 @@ exports.default = {
     this.startdate = today.format("YYYY-MM-DD");
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
-    // set announcements from property to data
-    this.announcements = this.usedAnnouncements;
   },
-
 
   computed: {
     totalPages: function totalPages() {
@@ -22791,7 +22789,7 @@ exports.default = {
     fetchAllRecords: function fetchAllRecords() {
       var _this = this;
 
-      this.loading = true;
+      this.loadingQueue = true;
 
       var routeurl = '/api/email/announcements';
 
@@ -22810,7 +22808,7 @@ exports.default = {
       this.$http.get(routeurl).then(function (response) {
         _this.$set('queueAnnouncements', response.data.newdata.data);
         _this.resultCount = _this.queueAnnouncements.length;
-        _this.loading = false;
+        _this.loadingQueue = false;
       }, function (response) {
         //error callback
         console.log("ERRORS");
@@ -22840,21 +22838,18 @@ exports.default = {
   },
   // the `events` option simply calls `$on` for you
   // when the instance is created
-  events: {
-    'announcement-added-queue': function announcementAddedQueue(announcementObj) {
-      if (announcementObj) {
-        this.usedAnnouncements.push(announcementObj);
-      }
-    },
-    'announcement-removed-queue': function announcementRemovedQueue(announcementObj) {
-      if (announcementObj) {
-        this.usedAnnouncements.$remove(announcementObj);
-      }
+  events: {},
+
+  watch: {
+    announcements: function announcements(value) {
+      // set announcements from property to data ON FIRST PAGE LOAD ONLY!
+      this.usedAnnouncements = value;
+      this.loadingUsed = false;
     }
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-59be5410=\"\">\n      <p _v-59be5410=\"\">You will only be presented announcements that are:</p>\n      <ol _v-59be5410=\"\">\n        <li _v-59be5410=\"\">Approved</li>\n        <li _v-59be5410=\"\">Not archived</li>\n        <li _v-59be5410=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-59be5410=\"\">\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-md-12\" _v-59be5410=\"\">\n        <h3 _v-59be5410=\"\">Announcements</h3>\n        <template v-if=\"usedAnnouncements.length > 0\">\n          <ul class=\"list-group\" v-sortable=\"\" _v-59be5410=\"\">\n              <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-59be5410=\"\">\n                <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-59be5410=\"\">\n                </email-announcement-pod>\n              </li>\n          </ul>\n        </template>\n        <template v-else=\"\">\n          <p _v-59be5410=\"\">There are no announcements set for this email.</p>\n        </template>\n        <hr _v-59be5410=\"\">\n        <p v-if=\"loading\" class=\"col-md-12\" _v-59be5410=\"\">Loading. Please Wait...</p>\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-59be5410=\"\">\n          <div class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\">Starting <span v-if=\"isEndDate\" _v-59be5410=\"\">between</span><span v-else=\"\" _v-59be5410=\"\">on or after</span></label>\n              <p _v-59be5410=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-59be5410=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\"> and </label>\n              <p _v-59be5410=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-59be5410=\"\"></p><p _v-59be5410=\"\">\n          </p></div>\n          <p _v-59be5410=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-59be5410=\"\">Filter</button></p>\n          <p _v-59be5410=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-59be5410=\"\"><span v-if=\"isEndDate\" _v-59be5410=\"\"> - Remove </span><span v-else=\"\" _v-59be5410=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-59be5410=\"\">\n            <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-59be5410=\"\">\n            </email-announcement-pod>\n            <ul class=\"pagination\" _v-59be5410=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-59be5410=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-59be5410=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-59be5410=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-59be5410=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-59be5410=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-59be5410=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-59be5410=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-59be5410=\"\">\n      <p _v-59be5410=\"\">You will only be presented announcements that are:</p>\n      <ol _v-59be5410=\"\">\n        <li _v-59be5410=\"\">Approved</li>\n        <li _v-59be5410=\"\">Not archived</li>\n        <li _v-59be5410=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-59be5410=\"\">\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-md-12\" _v-59be5410=\"\">\n        <h3 _v-59be5410=\"\">Announcements</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedAnnouncements.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"\" _v-59be5410=\"\">\n                <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-59be5410=\"\">\n                  <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-59be5410=\"\">\n                  </email-announcement-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-59be5410=\"\">There are no announcements set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-59be5410=\"\">Loading this email's announcements. Please wait...</p>\n        </template>\n        <hr _v-59be5410=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-59be5410=\"\">\n          <div class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\">Starting <span v-if=\"isEndDate\" _v-59be5410=\"\">between</span><span v-else=\"\" _v-59be5410=\"\">on or after</span></label>\n              <p _v-59be5410=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-59be5410=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\"> and </label>\n              <p _v-59be5410=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-59be5410=\"\"></p><p _v-59be5410=\"\">\n          </p></div>\n          <p _v-59be5410=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-59be5410=\"\">Filter</button></p>\n          <p _v-59be5410=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-59be5410=\"\"><span v-if=\"isEndDate\" _v-59be5410=\"\"> - Remove </span><span v-else=\"\" _v-59be5410=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-59be5410=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueAnnouncements.length > 0\">\n              <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-59be5410=\"\">\n              </email-announcement-pod>\n              <ul class=\"pagination\" _v-59be5410=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-59be5410=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-59be5410=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-59be5410=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-59be5410=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-59be5410=\"\">There are no announcements for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-59be5410=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23064,12 +23059,11 @@ module.exports = {
     emitEventAdd: function emitEventAdd(eventObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
       this.$dispatch('event-added', eventObj);
-      this.$dispatch('event-added-queue', eventObj);
     },
     emitEventRemove: function emitEventRemove(eventObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('event-removed', eventObj);
-      this.$dispatch('event-removed-queue', eventObj);
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('event-removed', eventObj.id);
     },
     toggleEmitEvent: function toggleEmitEvent(eventObj) {
       // function will run before this.checked is switched
@@ -23174,7 +23168,8 @@ exports.default = {
       currentDate: (0, _moment2.default)(),
       queueEvents: [],
       usedEvents: [],
-      loading: true,
+      loadingQueue: true,
+      loadingUsed: true,
       eventMsg: null,
       startdate: null,
       enddate: null,
@@ -23189,8 +23184,6 @@ exports.default = {
     this.startdate = today.format("YYYY-MM-DD");
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
-    // set events from property to data
-    this.events = this.usedEvents;
   },
 
   computed: {
@@ -23202,7 +23195,7 @@ exports.default = {
     fetchAllRecords: function fetchAllRecords() {
       var _this = this;
 
-      this.loading = true;
+      this.loadingQueue = true;
 
       var routeurl = '/api/email/events';
 
@@ -23221,7 +23214,7 @@ exports.default = {
       this.$http.get(routeurl).then(function (response) {
         _this.$set('queueEvents', response.data.newdata.data);
         _this.resultCount = _this.queueEvents.length;
-        _this.loading = false;
+        _this.loadingQueue = false;
       }, function (response) {
         //error callback
         console.log("ERRORS");
@@ -23261,21 +23254,18 @@ exports.default = {
 
   // the `events` option simply calls `$on` for you
   // when the instance is created
-  events: {
-    'event-added-queue': function eventAddedQueue(eventObj) {
-      if (eventObj) {
-        this.usedEvents.push(eventObj);
-      }
-    },
-    'event-removed-queue': function eventRemovedQueue(eventObj) {
-      if (eventObj) {
-        this.usedEvents.$remove(eventObj);
-      }
+  events: {},
+
+  watch: {
+    events: function events(value) {
+      // set events from property to data
+      this.usedEvents = value;
+      this.loadingUsed = false;
     }
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-4d567bce=\"\">\n      <p _v-4d567bce=\"\">You will only be presented events that are:</p>\n      <ol _v-4d567bce=\"\">\n        <li _v-4d567bce=\"\">Approved</li>\n        <li _v-4d567bce=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-4d567bce=\"\">\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-md-12\" _v-4d567bce=\"\">\n        <h3 _v-4d567bce=\"\">Events</h3>\n        <template v-if=\"usedEvents.length > 0\">\n          <ul class=\"list-group\" v-sortable=\"\" _v-4d567bce=\"\">\n              <li v-for=\"event in usedEvents\" class=\"list-group-item\" _v-4d567bce=\"\">\n                <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"event\" _v-4d567bce=\"\">\n                </email-event-pod>\n              </li>\n          </ul>\n        </template>\n        <template v-else=\"\">\n          <p _v-4d567bce=\"\">There are no events set for this email.</p>\n        </template>\n        <hr _v-4d567bce=\"\">\n        <p v-if=\"loading\" class=\"col-md-12\" _v-4d567bce=\"\">Loading. Please Wait...</p>\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-4d567bce=\"\">\n          <div class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\">Starting <span v-if=\"isEndDate\" _v-4d567bce=\"\">between</span><span v-else=\"\" _v-4d567bce=\"\">on or after</span></label>\n              <p _v-4d567bce=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-4d567bce=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\"> and </label>\n              <p _v-4d567bce=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-4d567bce=\"\"></p><p _v-4d567bce=\"\">\n          </p></div>\n          <p _v-4d567bce=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-4d567bce=\"\">Filter</button></p>\n          <p _v-4d567bce=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-4d567bce=\"\"><span v-if=\"isEndDate\" _v-4d567bce=\"\"> - Remove </span><span v-else=\"\" _v-4d567bce=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-4d567bce=\"\">\n            <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-4d567bce=\"\">\n            </email-event-pod>\n            <ul class=\"pagination\" _v-4d567bce=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-4d567bce=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-4d567bce=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-4d567bce=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-4d567bce=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-4d567bce=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-4d567bce=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-4d567bce=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-4d567bce=\"\">\n      <p _v-4d567bce=\"\">You will only be presented events that are:</p>\n      <ol _v-4d567bce=\"\">\n        <li _v-4d567bce=\"\">Approved</li>\n        <li _v-4d567bce=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-4d567bce=\"\">\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-md-12\" _v-4d567bce=\"\">\n        <h3 _v-4d567bce=\"\">Events</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedEvents.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"\" _v-4d567bce=\"\">\n                <li v-for=\"event in usedEvents\" class=\"list-group-item\" _v-4d567bce=\"\">\n                  <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"event\" _v-4d567bce=\"\">\n                  </email-event-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-4d567bce=\"\">There are no events set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-4d567bce=\"\">Loading this email's events. Please wait...</p>\n        </template>\n        <hr _v-4d567bce=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-4d567bce=\"\">\n          <div class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\">Starting <span v-if=\"isEndDate\" _v-4d567bce=\"\">between</span><span v-else=\"\" _v-4d567bce=\"\">on or after</span></label>\n              <p _v-4d567bce=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-4d567bce=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\"> and </label>\n              <p _v-4d567bce=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-4d567bce=\"\"></p><p _v-4d567bce=\"\">\n          </p></div>\n          <p _v-4d567bce=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-4d567bce=\"\">Filter</button></p>\n          <p _v-4d567bce=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-4d567bce=\"\"><span v-if=\"isEndDate\" _v-4d567bce=\"\"> - Remove </span><span v-else=\"\" _v-4d567bce=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-4d567bce=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueEvents.length > 0\">\n              <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-4d567bce=\"\">\n              </email-event-pod>\n              <ul class=\"pagination\" _v-4d567bce=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-4d567bce=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-4d567bce=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-4d567bce=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-4d567bce=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-4d567bce=\"\">There are no events for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-4d567bce=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23388,11 +23378,10 @@ module.exports = {
   created: function created() {},
   ready: function ready() {
     if (this.recordexists) {
-      fetchCurrentEmail(this.recordid);
+      this.fetchCurrentEmail(this.recordid);
     }
   },
   computed: {
-
     // switch classes based on css framework. foundation or bootstrap
     md6col: function md6col() {
       return this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6';
@@ -23464,7 +23453,7 @@ module.exports = {
       var _this = this;
 
       this.$http.get('/api/email/' + recid + '/edit').then(function (response) {
-        _this.$set('record', response.data.data);
+        _this.$set('record', response.data.newdata.data);
       }, function (response) {
         _this.formErrors = response.data.error.message;
       }).bind(this);
@@ -23587,9 +23576,11 @@ module.exports = {
         this.record.otherStories.push(otherStoryObj);
       }
     },
-    'other-story-removed': function otherStoryRemoved(otherStoryObj) {
-      if (otherStoryObj) {
-        this.record.otherStories.$remove(otherStoryObj);
+    'other-story-removed': function otherStoryRemoved(otherStoryId) {
+      for (i = 0; i < this.record.otherStories.length; i++) {
+        if (otherStoryId == this.record.otherStories[i].id) {
+          this.record.otherStories.$remove(this.record.otherStories[i]);
+        }
       }
     },
     'event-added': function eventAdded(eventObj) {
@@ -23597,9 +23588,11 @@ module.exports = {
         this.record.events.push(eventObj);
       }
     },
-    'event-removed': function eventRemoved(eventObj) {
-      if (eventObj) {
-        this.record.events.$remove(eventObj);
+    'event-removed': function eventRemoved(eventId) {
+      for (i = 0; i < this.record.events.length; i++) {
+        if (eventId == this.record.events[i].id) {
+          this.record.events.$remove(this.record.events[i]);
+        }
       }
     },
     'announcement-added': function announcementAdded(announcementObj) {
@@ -23607,15 +23600,17 @@ module.exports = {
         this.record.announcements.push(announcementObj);
       }
     },
-    'announcement-removed': function announcementRemoved(announcementObj) {
-      if (announcementObj) {
-        this.record.announcements.$remove(announcementObj);
+    'announcement-removed': function announcementRemoved(announcementId) {
+      for (i = 0; i < this.record.announcements.length; i++) {
+        if (announcementId == this.record.announcements[i].id) {
+          this.record.announcements.$remove(this.record.announcements[i]);
+        }
       }
     }
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-07a0c146=\"\">\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n    <div class=\"row\" _v-07a0c146=\"\">\n      <!-- EMAIL LIVE BUILDER VIEW AREA -->\n      <!-- BUILDER TOOLS AREA -->\n      <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n        <!-- Nav tabs -->\n        <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n          <li _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Main Story</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Side Stories</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Events</a></li>\n          <li class=\"active\" _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Announcements</a></li>\n        </ul>\n        <!-- Tab panes -->\n        <div class=\"tab-content\" _v-07a0c146=\"\">\n          <div class=\"tab-pane\" id=\"main-story\" _v-07a0c146=\"\">\n            <email-main-story-queue :stypes=\"stypes\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-main-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n            <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n            <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n          </div>\n          <div class=\"tab-pane active\" id=\"announcements\" _v-07a0c146=\"\">\n            <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n          </div>\n        </div>\n      </div>\n      <!-- /.medium-4 columns -->\n      <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n        <!--<div class=\"progress\">\n          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 60%;\">\n            60%\n          </div>\n        </div>-->\n        <section id=\"email-live-container\" style=\"margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px\" _v-07a0c146=\"\">\n          <table border=\"0\" cellpadding=\"5\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\" _v-07a0c146=\"\">\n              <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                  <td align=\"center\" valign=\"top\" _v-07a0c146=\"\">\n                      <table border=\"0\" width=\"600\" id=\"emailContainer\" _v-07a0c146=\"\">\n                          <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                              <td valign=\"top\" width=\"368\" _v-07a0c146=\"\">\n                                <template v-if=\"record.mainStory\">\n                                  <article style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                    <img :src=\"record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename\" :alt=\"record.mainStory.email_images[0].title\" style=\"border-right:5px solid #ffffff; width:368px; height:245px; \" _v-07a0c146=\"\">\n                                    <h2 _v-07a0c146=\"\">{{record.mainStory.title}}</h2>\n                                    {{{ record.mainStory.content | truncate '60' }}}\n                                    <p _v-07a0c146=\"\"><a :href=\"record.mainStory.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                  </article>\n                                </template>\n                                <template v-else=\"\">\n                                  <div style=\"background-color:#e5e5e5; position:relative; width:368px; height:245px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-07a0c146=\"\">\n                                    <p style=\"position:absolute; left:38px; top:96px; font-size:3rem;\" _v-07a0c146=\"\">Main story image here.</p>\n                                  </div>\n                                  <h2 style=\"padding:0 5px\" _v-07a0c146=\"\">No main story set yet.</h2>\n                                  <p style=\"padding:0 5px\" _v-07a0c146=\"\">Select a main story from the \"Main Story\" tab.</p>\n                                </template>\n                                <hr _v-07a0c146=\"\">\n                              </td>\n                              <td rowspan=\"3\" valign=\"top\" width=\"232\" style=\"background:#e5e5e5\" _v-07a0c146=\"\">\n                                <template v-if=\"record.events.length > 0\">\n                                  <h3 style=\"padding:0 5px\" _v-07a0c146=\"\">Upcoming Events</h3>\n                                  <article v-for=\"event in record.events\" style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                    <hr _v-07a0c146=\"\">\n                                    <h4 _v-07a0c146=\"\">{{event.title}}</h4><h4 _v-07a0c146=\"\">\n                                    {{ event.start_date }} | {{ event.start_time }} | {{ event.location }}\n                                    <p _v-07a0c146=\"\"><a :href=\"event.full_url\" _v-07a0c146=\"\">View Event</a></p>\n                                  </h4></article>\n                                </template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" _v-07a0c146=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                </template>\n                              </td>\n                          </tr>\n                          <tr _v-07a0c146=\"\">\n                            <td valign=\"top\" _v-07a0c146=\"\">\n                              <template v-if=\"record.otherStories.length > 0\">\n                                <h3 _v-07a0c146=\"\">Featured News Stories</h3>\n                                <article v-for=\"story in record.otherStories\" style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                  <h4 _v-07a0c146=\"\">{{story.title}}</h4><h4 _v-07a0c146=\"\">\n                                  {{{ story.content | truncate '30' }}}\n                                  <p _v-07a0c146=\"\"><a :href=\"story.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                </h4></article>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" _v-07a0c146=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                              <hr _v-07a0c146=\"\">\n                            </td>\n                          </tr>\n                          <tr _v-07a0c146=\"\">\n                            <td valign=\"top\" _v-07a0c146=\"\">\n                              <template v-if=\"record.announcements.length > 0\">\n                                <h3 _v-07a0c146=\"\">Announcements</h3>\n                                <article v-for=\"announcement in record.announcements\" _v-07a0c146=\"\">\n                                  <h4 _v-07a0c146=\"\">{{ announcement.title }}</h4>\n                                  <p _v-07a0c146=\"\">{{ announcement.announcement | truncate '30' }}</p>\n                                  <p _v-07a0c146=\"\"><a :href=\"announcement.link\" _v-07a0c146=\"\">{{ announcement.link_txt }}</a></p>\n                                </article>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" _v-07a0c146=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                              </template>\n                            </td>\n                          </tr>\n                      </tbody></table>\n                  </td>\n              </tr>\n          </tbody></table>\n        </section>\n      </div>\n      <!-- /.medium-8 columns -->\n    </div>\n    <!-- /.row -->\n    <!--\n    <div class=\"row\">\n        <div v-bind:class=\"md12col\">\n            <h4>Send Times</h4>\n        </div>\n        <div v-if=\"sendtimes.length > 0\" v-bind:class=\"md12col\">\n          <div v-for=\"time in sendtimes\" class=\"input-group\">\n              <label class=\"sr-only\">Time</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"time.send_at\">\n              <span class=\"input-group-btn\">\n                  <button @click=\"delSendtime(time)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else v-bind:class=\"md12col\">\n            <p>None</p>\n        </div>\n        <div v-bind:class=\"md12col\">\n            <button @click=\"addSendtime\" :class=\"btnSecondary\" type=\"button\">Add Send Time</button>\n        </div>\n    </div>\n    -->\n    <!-- /.row -->\n  </form>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-07a0c146=\"\">\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n    <div class=\"row\" _v-07a0c146=\"\">\n      <!-- EMAIL LIVE BUILDER VIEW AREA -->\n      <!-- BUILDER TOOLS AREA -->\n      <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n        <!-- Nav tabs -->\n        <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n          <li _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Main Story</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Side Stories</a></li>\n          <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Events</a></li>\n          <li class=\"active\" _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Announcements</a></li>\n        </ul>\n        <!-- Tab panes -->\n        <div class=\"tab-content\" _v-07a0c146=\"\">\n          <div class=\"tab-pane\" id=\"main-story\" _v-07a0c146=\"\">\n            <email-main-story-queue :stypes=\"stypes\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-main-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n            <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n          </div>\n          <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n            <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n          </div>\n          <div class=\"tab-pane active\" id=\"announcements\" _v-07a0c146=\"\">\n            <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n          </div>\n        </div>\n      </div>\n      <!-- /.medium-4 columns -->\n      <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n        <!--<div class=\"progress\">\n          <div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 60%;\">\n            60%\n          </div>\n        </div>-->\n        <section id=\"email-live-container\" style=\"margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px\" _v-07a0c146=\"\">\n          <table border=\"0\" cellpadding=\"5\" cellspacing=\"0\" height=\"100%\" width=\"100%\" id=\"bodyTable\" _v-07a0c146=\"\">\n              <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                  <td align=\"center\" valign=\"top\" _v-07a0c146=\"\">\n                      <table border=\"0\" width=\"600\" id=\"emailContainer\" _v-07a0c146=\"\">\n                          <tbody _v-07a0c146=\"\"><tr _v-07a0c146=\"\">\n                              <td valign=\"top\" width=\"368\" _v-07a0c146=\"\">\n                                <template v-if=\"record.mainStory\">\n                                  <article style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                    <img :src=\"record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename\" :alt=\"record.mainStory.email_images[0].title\" style=\"border-right:5px solid #ffffff; width:368px; height:245px; \" _v-07a0c146=\"\">\n                                    <h2 _v-07a0c146=\"\">{{record.mainStory.title}}</h2>\n                                    {{{ record.mainStory.content | truncate '60' }}}\n                                    <p _v-07a0c146=\"\"><a :href=\"record.mainStory.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                  </article>\n                                </template>\n                                <template v-else=\"\">\n                                  <div style=\"background-color:#e5e5e5; position:relative; width:368px; height:245px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-07a0c146=\"\">\n                                    <p style=\"position:absolute; left:38px; top:96px; font-size:3rem;\" _v-07a0c146=\"\">Main story image here.</p>\n                                  </div>\n                                  <h2 style=\"padding:0 5px\" _v-07a0c146=\"\">No main story set yet.</h2>\n                                  <p style=\"padding:0 5px\" _v-07a0c146=\"\">Select a main story from the \"Main Story\" tab.</p>\n                                </template>\n                                <hr _v-07a0c146=\"\">\n                              </td>\n                              <td rowspan=\"3\" valign=\"top\" width=\"232\" style=\"background:#e5e5e5\" _v-07a0c146=\"\">\n                                <template v-if=\"record.events.length > 0\">\n                                  <h3 style=\"padding:0 5px\" _v-07a0c146=\"\">Upcoming Events</h3>\n                                  <article v-for=\"event in record.events\" style=\"padding:0 5px\" _v-07a0c146=\"\">\n                                    <hr _v-07a0c146=\"\">\n                                    <h4 _v-07a0c146=\"\">{{event.title}}</h4><h4 _v-07a0c146=\"\">\n                                    {{ event.start_date }} | {{ event.start_time }} | {{ event.location }}\n                                    <p _v-07a0c146=\"\"><a :href=\"event.full_url\" _v-07a0c146=\"\">View Event</a></p>\n                                  </h4></article>\n                                </template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" _v-07a0c146=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                </template>\n                              </td>\n                          </tr>\n                          <tr _v-07a0c146=\"\">\n                            <td valign=\"top\" _v-07a0c146=\"\">\n                              <template v-if=\"record.otherStories.length > 0\">\n                                <h3 _v-07a0c146=\"\">Featured News Stories</h3>\n                                <article v-for=\"story in record.otherStories\" _v-07a0c146=\"\">\n                                  <h4 _v-07a0c146=\"\">{{story.title}}</h4><h4 _v-07a0c146=\"\">\n                                  {{{ story.content | truncate '30' }}}\n                                  <p _v-07a0c146=\"\"><a :href=\"story.full_url\" _v-07a0c146=\"\">Read More</a></p>\n                                </h4></article>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" _v-07a0c146=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                              <hr _v-07a0c146=\"\">\n                            </td>\n                          </tr>\n                          <tr _v-07a0c146=\"\">\n                            <td valign=\"top\" _v-07a0c146=\"\">\n                              <template v-if=\"record.announcements.length > 0\">\n                                <h3 _v-07a0c146=\"\">Announcements</h3>\n                                <article v-for=\"announcement in record.announcements\" _v-07a0c146=\"\">\n                                  <h4 _v-07a0c146=\"\">{{ announcement.title }}</h4>\n                                  <p _v-07a0c146=\"\">{{ announcement.announcement | truncate '30' }}</p>\n                                  <p _v-07a0c146=\"\"><a :href=\"announcement.link\" _v-07a0c146=\"\">{{ announcement.link_txt }}</a></p>\n                                </article>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" _v-07a0c146=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                              </template>\n                            </td>\n                          </tr>\n                      </tbody></table>\n                  </td>\n              </tr>\n          </tbody></table>\n        </section>\n      </div>\n      <!-- /.medium-8 columns -->\n    </div>\n    <!-- /.row -->\n    <!--\n    <div class=\"row\">\n        <div v-bind:class=\"md12col\">\n            <h4>Send Times</h4>\n        </div>\n        <div v-if=\"sendtimes.length > 0\" v-bind:class=\"md12col\">\n          <div v-for=\"time in sendtimes\" class=\"input-group\">\n              <label class=\"sr-only\">Time</label>\n              <input class=\"form-control dynamic-list-item\" type=\"text\" v-model=\"time.send_at\">\n              <span class=\"input-group-btn\">\n                  <button @click=\"delSendtime(time)\" class=\"btn btn-warning dynamic-list-btn\" type=\"button\">X</button>\n              </span>\n          </div>\n        </div>\n        <div v-else v-bind:class=\"md12col\">\n            <p>None</p>\n        </div>\n        <div v-bind:class=\"md12col\">\n            <button @click=\"addSendtime\" :class=\"btnSecondary\" type=\"button\">Add Send Time</button>\n        </div>\n    </div>\n    -->\n    <!-- /.row -->\n  </form>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23686,7 +23681,8 @@ exports.default = {
             items_filter_storytype: '',
             currentDate: (0, _moment2.default)(),
             items: [],
-            loading: true,
+            loadingQueue: true,
+            loadingUsed: true,
             eventMsg: null,
             startdate: null,
             enddate: null,
@@ -23785,7 +23781,7 @@ exports.default = {
         fetchAllRecords: function fetchAllRecords() {
             var _this = this;
 
-            this.loading = true;
+            this.loadingQueue = true;
 
             var routeurl = '/api/email/stories/main';
 
@@ -23804,7 +23800,7 @@ exports.default = {
             this.$http.get(routeurl).then(function (response) {
                 _this.$set('items', response.data.newdata.data);
                 _this.resultCount = _this.items.length;
-                _this.loading = false;
+                _this.loadingQueue = false;
             }, function (response) {
                 //error callback
                 console.log("ERRORS");
@@ -23868,7 +23864,7 @@ exports.default = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-333ec737=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-333ec737=\"\">\n      <p _v-333ec737=\"\">You will only be presented stories that are:</p>\n      <ol _v-333ec737=\"\">\n        <li _v-333ec737=\"\">Approved</li>\n        <li _v-333ec737=\"\">Not archived</li>\n        <li _v-333ec737=\"\">Flagged as \"Ready\"</li>\n        <li _v-333ec737=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n    </div>\n</div>\n<hr _v-333ec737=\"\">\n<div class=\"row\" _v-333ec737=\"\">\n    <div class=\"col-md-12\" _v-333ec737=\"\">\n        <h3 _v-333ec737=\"\">Main Story</h3>\n        <div v-if=\"mainStoryId\" class=\"row\" _v-333ec737=\"\">\n            <div class=\"col-md-12\" _v-333ec737=\"\">\n              <email-story-pod pid=\"main-story-item\" :main-story-id=\"mainStoryId\" pod-type=\"mainstory\" :item=\"mainStory\" _v-333ec737=\"\">\n              </email-story-pod>\n            </div>\n        </div>\n        <p v-else=\"\" _v-333ec737=\"\">No main story set for this emails. Choose one from the queue below.</p>\n        <p v-if=\"loading\" class=\"col-md-12\" _v-333ec737=\"\">Loading. Please Wait...</p>\n        <hr _v-333ec737=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-333ec737=\"\">\n          <div class=\"form-group\" _v-333ec737=\"\">\n              <label for=\"start-date\" _v-333ec737=\"\">Starting <span v-if=\"isEndDate\" _v-333ec737=\"\">between</span><span v-else=\"\" _v-333ec737=\"\">on or after</span></label>\n              <p _v-333ec737=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-333ec737=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-333ec737=\"\">\n              <label for=\"start-date\" _v-333ec737=\"\"> and </label>\n              <p _v-333ec737=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-333ec737=\"\"></p><p _v-333ec737=\"\">\n          </p></div>\n          <p _v-333ec737=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-333ec737=\"\">Filter</button></p>\n          <p _v-333ec737=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-333ec737=\"\"><span v-if=\"isEndDate\" _v-333ec737=\"\"> - Remove </span><span v-else=\"\" _v-333ec737=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-333ec737=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-333ec737=\"\">\n                <label _v-333ec737=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-333ec737=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-333ec737=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-333ec737=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-333ec737=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-333ec737=\"\">\n            <email-story-pod pid=\"email-items\" :main-story-id=\"mainStoryId\" pod-type=\"mainstoryqueue\" v-for=\"item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate\" :item=\"item\" _v-333ec737=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-333ec737=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-333ec737=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-333ec737=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-333ec737=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-333ec737=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-333ec737=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-333ec737=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-333ec737=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-333ec737=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-333ec737=\"\">\n      <p _v-333ec737=\"\">You will only be presented stories that are:</p>\n      <ol _v-333ec737=\"\">\n        <li _v-333ec737=\"\">Approved</li>\n        <li _v-333ec737=\"\">Not archived</li>\n        <li _v-333ec737=\"\">Flagged as \"Ready\"</li>\n        <li _v-333ec737=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n    </div>\n</div>\n<hr _v-333ec737=\"\">\n<div class=\"row\" _v-333ec737=\"\">\n    <div class=\"col-md-12\" _v-333ec737=\"\">\n        <h3 _v-333ec737=\"\">Main Story</h3>\n        <div v-if=\"mainStoryId\" class=\"row\" _v-333ec737=\"\">\n            <div class=\"col-md-12\" _v-333ec737=\"\">\n              <email-story-pod pid=\"main-story-item\" :main-story-id=\"mainStoryId\" pod-type=\"mainstory\" :item=\"mainStory\" _v-333ec737=\"\">\n              </email-story-pod>\n            </div>\n        </div>\n        <p v-else=\"\" _v-333ec737=\"\">No main story set for this emails. Choose one from the queue below.</p>\n        <p v-if=\"loadingQueue\" class=\"col-md-12\" _v-333ec737=\"\">Loading. Please Wait...</p>\n        <hr _v-333ec737=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-333ec737=\"\">\n          <div class=\"form-group\" _v-333ec737=\"\">\n              <label for=\"start-date\" _v-333ec737=\"\">Starting <span v-if=\"isEndDate\" _v-333ec737=\"\">between</span><span v-else=\"\" _v-333ec737=\"\">on or after</span></label>\n              <p _v-333ec737=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-333ec737=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-333ec737=\"\">\n              <label for=\"start-date\" _v-333ec737=\"\"> and </label>\n              <p _v-333ec737=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-333ec737=\"\"></p><p _v-333ec737=\"\">\n          </p></div>\n          <p _v-333ec737=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-333ec737=\"\">Filter</button></p>\n          <p _v-333ec737=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-333ec737=\"\"><span v-if=\"isEndDate\" _v-333ec737=\"\"> - Remove </span><span v-else=\"\" _v-333ec737=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-333ec737=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-333ec737=\"\">\n                <label _v-333ec737=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-333ec737=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-333ec737=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-333ec737=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-333ec737=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-333ec737=\"\">\n            <email-story-pod pid=\"email-items\" :main-story-id=\"mainStoryId\" pod-type=\"mainstoryqueue\" v-for=\"item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate\" :item=\"item\" _v-333ec737=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-333ec737=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-333ec737=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-333ec737=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-333ec737=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-333ec737=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-333ec737=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-333ec737=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-333ec737=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23921,16 +23917,6 @@ module.exports = {
   computed: {
     timefromNow: function timefromNow() {
       return (0, _moment2.default)(this.item.start_date).fromNow();
-    },
-    hasPriorityChanged: function hasPriorityChanged() {
-      /*
-      if (this.initRecord.priority != this.patchRecord.priority){
-        return true
-      } else {
-        return false
-      }
-      */
-      return;
     },
     typeIcon: function typeIcon() {
       switch (this.item.story_type) {
@@ -24004,12 +23990,11 @@ module.exports = {
     emitOtherStoryAdd: function emitOtherStoryAdd(storyObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
       this.$dispatch('other-story-added', storyObj);
-      this.$dispatch('other-story-added-queue', storyObj);
     },
     emitOtherStoryRemove: function emitOtherStoryRemove(storyObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('other-story-removed', storyObj);
-      this.$dispatch('other-story-removed-queue', storyObj);
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('other-story-removed', storyObj.id);
     },
     toggleEmitOtherStory: function toggleEmitOtherStory(storyObj) {
       // function will run before this.checked is switched
@@ -24113,8 +24098,6 @@ exports.default = {
         this.startdate = twoWeeksEarlier.format("YYYY-MM-DD");
         this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
         this.fetchAllRecords();
-        // set stories from property to data
-        this.otherStories = this.usedStories;
     },
 
     data: function data() {
@@ -24123,7 +24106,8 @@ exports.default = {
             currentDate: (0, _moment2.default)(),
             usedStories: [],
             queueStories: [],
-            loading: true,
+            loadingQueue: true,
+            loadingUsed: true,
             eventMsg: null,
             startdate: null,
             enddate: null,
@@ -24219,7 +24203,7 @@ exports.default = {
         fetchAllRecords: function fetchAllRecords() {
             var _this = this;
 
-            this.loading = true;
+            this.loadingQueue = true;
 
             var routeurl = '/api/email/stories/otherstories';
 
@@ -24238,7 +24222,7 @@ exports.default = {
             this.$http.get(routeurl).then(function (response) {
                 _this.$set('queueStories', response.data.newdata.data);
                 _this.resultCount = _this.queueStories.length;
-                _this.loading = false;
+                _this.loadingQueue = false;
             }, function (response) {
                 //error callback
                 console.log("ERRORS");
@@ -24299,22 +24283,17 @@ exports.default = {
         }
     },
 
-    events: {
-        'other-story-added-queue': function otherStoryAddedQueue(otherStoryObj) {
-            if (otherStoryObj) {
-                this.usedStories.push(otherStoryObj);
-            }
-        },
-        'other-story-removed-queue': function otherStoryRemovedQueue(otherStoryObj) {
-            if (otherStoryObj) {
-                this.usedStories.$remove(otherStoryObj);
-            }
+    events: {},
+    watch: {
+        otherStories: function otherStories(value) {
+            // set events from property to data
+            this.usedStories = value;
+            this.loadingUsed = false;
         }
-    },
-    watch: {}
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-873b9bc4=\"\">\n      <p _v-873b9bc4=\"\">You will only be presented stories that are:</p>\n      <ol _v-873b9bc4=\"\">\n        <li _v-873b9bc4=\"\">Approved</li>\n        <li _v-873b9bc4=\"\">Not archived</li>\n        <li _v-873b9bc4=\"\">Flagged as \"Ready\"</li>\n      </ol>\n    </div>\n</div>\n<hr _v-873b9bc4=\"\">\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-md-12\" _v-873b9bc4=\"\">\n        <h3 _v-873b9bc4=\"\">Side Stories</h3>\n        <template v-if=\"usedStories.length > 0\">\n          <ul class=\"list-group\" v-sortable=\"\" _v-873b9bc4=\"\">\n              <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-873b9bc4=\"\">\n                <email-story-pod pid=\"otherstory-list-stories\" pod-type=\"otherstory\" :item=\"story\" _v-873b9bc4=\"\">\n                </email-story-pod>\n              </li>\n          </ul>\n        </template>\n        <template v-else=\"\">\n          <p _v-873b9bc4=\"\">There are no side stories set for this email.</p>\n        </template>\n        <hr _v-873b9bc4=\"\">\n        <p v-if=\"loading\" class=\"col-md-12\" _v-873b9bc4=\"\">Loading. Please Wait...</p>\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-873b9bc4=\"\">\n          <div class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\">Starting <span v-if=\"isEndDate\" _v-873b9bc4=\"\">between</span><span v-else=\"\" _v-873b9bc4=\"\">on or after</span></label>\n              <p _v-873b9bc4=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-873b9bc4=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\"> and </label>\n              <p _v-873b9bc4=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-873b9bc4=\"\"></p><p _v-873b9bc4=\"\">\n          </p></div>\n          <p _v-873b9bc4=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-873b9bc4=\"\">Filter</button></p>\n          <p _v-873b9bc4=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-873b9bc4=\"\"><span v-if=\"isEndDate\" _v-873b9bc4=\"\"> - Remove </span><span v-else=\"\" _v-873b9bc4=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-873b9bc4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-873b9bc4=\"\">\n                <label _v-873b9bc4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-873b9bc4=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-873b9bc4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-873b9bc4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-873b9bc4=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-stories\" _v-873b9bc4=\"\">\n            <email-story-pod pid=\"otherstory-queue-stories\" pod-type=\"otherstoryqueue\" :item=\"story\" :other-stories=\"usedStories\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-873b9bc4=\"\">\n            </email-story-pod>\n            <ul class=\"pagination\" _v-873b9bc4=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-873b9bc4=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-873b9bc4=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-873b9bc4=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-873b9bc4=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-873b9bc4=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-873b9bc4=\"\">\n      <p _v-873b9bc4=\"\">You will only be presented stories that are:</p>\n      <ol _v-873b9bc4=\"\">\n        <li _v-873b9bc4=\"\">Approved</li>\n        <li _v-873b9bc4=\"\">Not archived</li>\n        <li _v-873b9bc4=\"\">Flagged as \"Ready\"</li>\n      </ol>\n    </div>\n</div>\n<hr _v-873b9bc4=\"\">\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-md-12\" _v-873b9bc4=\"\">\n        <h3 _v-873b9bc4=\"\">Side Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"\" _v-873b9bc4=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-873b9bc4=\"\">\n                  <email-story-pod pid=\"otherstory-list-stories\" pod-type=\"otherstory\" :item=\"story\" _v-873b9bc4=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-873b9bc4=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-873b9bc4=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-873b9bc4=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-873b9bc4=\"\">\n          <div class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\">Starting <span v-if=\"isEndDate\" _v-873b9bc4=\"\">between</span><span v-else=\"\" _v-873b9bc4=\"\">on or after</span></label>\n              <p _v-873b9bc4=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-873b9bc4=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\"> and </label>\n              <p _v-873b9bc4=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-873b9bc4=\"\"></p><p _v-873b9bc4=\"\">\n          </p></div>\n          <p _v-873b9bc4=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-873b9bc4=\"\">Filter</button></p>\n          <p _v-873b9bc4=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-873b9bc4=\"\"><span v-if=\"isEndDate\" _v-873b9bc4=\"\"> - Remove </span><span v-else=\"\" _v-873b9bc4=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-873b9bc4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-873b9bc4=\"\">\n                <label _v-873b9bc4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-873b9bc4=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-873b9bc4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-873b9bc4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-873b9bc4=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-stories\" _v-873b9bc4=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueStories.length > 0\">\n              <email-story-pod pid=\"otherstory-queue-stories\" pod-type=\"otherstoryqueue\" :item=\"story\" :other-stories=\"usedStories\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-873b9bc4=\"\">\n              </email-story-pod>\n              <ul class=\"pagination\" _v-873b9bc4=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-873b9bc4=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-873b9bc4=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-873b9bc4=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-873b9bc4=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-873b9bc4=\"\">There are no stories for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-873b9bc4=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

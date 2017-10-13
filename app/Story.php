@@ -5,6 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
+use Emutoday\StoryType;
 
 class Story extends Model
 {
@@ -96,6 +97,11 @@ class Story extends Model
         return $this->belongsToMany('Emutoday\Page');
     }
 
+    public function emails()
+    {
+        return $this->belongsToMany('Emutoday\Email', 'email_story');
+    }
+
     public function magazines()
     {
       return $this->belongsToMany('Emutoday\Magazine');
@@ -111,8 +117,15 @@ class Story extends Model
 
     public function storyGroup()
     {
-            return $this->belongsTo('Emutoday\StoryType', 'story_type', 'shortname');
+        return $this->belongsTo('Emutoday\StoryType', 'story_type', 'shortname');
     }
+
+    public function group()
+    {
+        //$group = StoryType::
+        return "stags";
+    }
+
 
     /**
      * [tags description]
@@ -155,7 +168,6 @@ class Story extends Model
         {
           return $this->tags->lists('id')->all();
         }
-
 
         public function getPrettyStartDateAttribute()
         {

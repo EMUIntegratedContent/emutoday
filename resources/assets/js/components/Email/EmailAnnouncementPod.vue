@@ -165,7 +165,7 @@ module.exports  = {
   ready: function() {
   },
   computed: {
-    isEvent: function(){
+    isAnnouncement: function(){
       if(this.announcements){
         for(var i = 0; i < this.announcements.length; i++) {
           if(this.announcements[i].id == this.item.id){
@@ -269,15 +269,15 @@ module.exports  = {
         this.showBody = false;
       }
     },
+
     emitAnnouncementAdd: function(announcementObj){
       // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
       this.$dispatch('announcement-added', announcementObj)
-      this.$dispatch('announcement-added-queue', announcementObj)
     },
     emitAnnouncementRemove: function(announcementObj){
       // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('announcement-removed', announcementObj)
-      this.$dispatch('announcement-removed-queue', announcementObj)
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('announcement-removed', announcementObj.id)
     },
     toggleEmitAnnouncement: function(announcementObj){
       // function will run before this.checked is switched

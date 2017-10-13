@@ -12,23 +12,27 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Events</h3>
-            <template v-if="usedEvents.length > 0">
-              <ul class="list-group" v-sortable>
-                  <li v-for="event in usedEvents" class="list-group-item">
-                    <email-event-pod
-                        pid="event-list-events"
-                        pod-type="event"
-                        :item="event"
-                        >
-                    </email-event-pod>
-                  </li>
-              </ul>
+            <template v-if="!loadingUsed">
+              <template v-if="usedEvents.length > 0">
+                <ul class="list-group" v-sortable>
+                    <li v-for="event in usedEvents" class="list-group-item">
+                      <email-event-pod
+                          pid="event-list-events"
+                          pod-type="event"
+                          :item="event"
+                          >
+                      </email-event-pod>
+                    </li>
+                </ul>
+              </template>
+              <template v-else>
+                <p>There are no events set for this email.</p>
+              </template>
             </template>
             <template v-else>
-              <p>There are no events set for this email.</p>
+              <p>Loading this email's events. Please wait...</p>
             </template>
             <hr />
-            <p v-if="loading" class="col-md-12">Loading. Please Wait...</p>
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
@@ -43,25 +47,35 @@
               <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
             </form>
             <div id="email-events">
-                <email-event-pod
-                    pid="event-queue-events"
-                    pod-type="eventqueue"
-                    :item="event"
-                    :events="usedEvents"
-                    v-for="event in queueEvents | paginate"
-                >
-                </email-event-pod>
-                <ul class="pagination">
-                  <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
-                    <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
-                  </li>
-                  <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
-                    <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
-                  </li>
-                  <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
-                    <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
-                  </li>
-                </ul>
+              <template v-if="!loadingQueue">
+                <template v-if="queueEvents.length > 0">
+                  <email-event-pod
+                      pid="event-queue-events"
+                      pod-type="eventqueue"
+                      :item="event"
+                      :events="usedEvents"
+                      v-for="event in queueEvents | paginate"
+                  >
+                  </email-event-pod>
+                  <ul class="pagination">
+                    <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
+                      <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
+                    </li>
+                    <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
+                    </li>
+                    <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
+                      <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
+                    </li>
+                  </ul>
+                </template>
+                <template v-else>
+                  <p>There are no events for the date range you've specified.</p>
+                </template>
+              </template>
+              <template v-else>
+                <p>Loading queue. Please Wait...</p>
+              </template>
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
@@ -94,7 +108,8 @@ export default  {
       currentDate: moment(),
       queueEvents: [],
       usedEvents: [],
-      loading: true,
+      loadingQueue: true,
+      loadingUsed: true,
       eventMsg: null,
       startdate: null,
       enddate: null,
@@ -109,8 +124,6 @@ export default  {
     this.startdate = today.format("YYYY-MM-DD")
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
-    // set events from property to data
-    this.events = this.usedEvents
   },
   computed: {
     totalPages: function() {
@@ -119,7 +132,7 @@ export default  {
   },
   methods : {
     fetchAllRecords: function() {
-        this.loading = true
+        this.loadingQueue = true
 
         var routeurl = '/api/email/events';
 
@@ -140,7 +153,7 @@ export default  {
         .then((response) =>{
             this.$set('queueEvents', response.data.newdata.data)
             this.resultCount = this.queueEvents.length
-            this.loading = false;
+            this.loadingQueue = false;
         }, (response) => {
             //error callback
             console.log("ERRORS");
@@ -181,16 +194,14 @@ export default  {
   // the `events` option simply calls `$on` for you
   // when the instance is created
   events: {
-    'event-added-queue': function (eventObj) {
-      if(eventObj){
-        this.usedEvents.push(eventObj)
-      }
-    },
-    'event-removed-queue': function (eventObj) {
-      if(eventObj){
-        this.usedEvents.$remove(eventObj)
-      }
+  },
+
+  watch: {
+    events: function (value) {
+      // set events from property to data
+      this.usedEvents = value
+      this.loadingUsed = false
     }
-  }
+  },
 }
 </script>

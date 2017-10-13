@@ -23,6 +23,7 @@ use League\Fractal\Serializer\DataArraySerializer;
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 use Emutoday\Today\Transformers\FractalStoryTransformerModel;
 use Emutoday\Today\Transformers\FractalAnnouncementTransformerModel;
+use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 
 class EmailController extends ApiController
 {
@@ -31,9 +32,19 @@ class EmailController extends ApiController
   }
 
   /**
+   * Get the specified email
+   */
+   public function edit(Email $email){
+     $fractal = new Manager();
+     $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
+
+     return $this->setStatusCode(200)
+     ->respondUpdatedWithData('Got email.', $fractal->createData($resource)->toArray() );
+   }
+  /**
    * Main Stories require an image with type 'emutoday_email' to be present with the story.
    */
-  public function getMainEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
+   public function getMainEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
       $email_imagetypes = ImageType::select('id')->where('type', 'email')->get(); //get email imagetype
 
       if($fromDate && !$toDate){

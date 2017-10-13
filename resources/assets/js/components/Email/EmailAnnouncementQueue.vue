@@ -13,23 +13,27 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Announcements</h3>
-            <template v-if="usedAnnouncements.length > 0">
-              <ul class="list-group" v-sortable>
-                  <li v-for="announcement in usedAnnouncements" class="list-group-item">
-                    <email-announcement-pod
-                        pid="otherstory-list-stories"
-                        pod-type="announcement"
-                        :item="announcement"
-                        >
-                    </email-announcement-pod>
-                  </li>
-              </ul>
+            <template v-if="!loadingUsed">
+              <template v-if="usedAnnouncements.length > 0">
+                <ul class="list-group" v-sortable>
+                    <li v-for="announcement in usedAnnouncements" class="list-group-item">
+                      <email-announcement-pod
+                          pid="otherstory-list-stories"
+                          pod-type="announcement"
+                          :item="announcement"
+                          >
+                      </email-announcement-pod>
+                    </li>
+                </ul>
+              </template>
+              <template v-else>
+                <p>There are no announcements set for this email.</p>
+              </template>
             </template>
             <template v-else>
-              <p>There are no announcements set for this email.</p>
+              <p>Loading this email's announcements. Please wait...</p>
             </template>
             <hr />
-            <p v-if="loading" class="col-md-12">Loading. Please Wait...</p>
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
@@ -44,25 +48,35 @@
               <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
             </form>
             <div id="email-announcements">
-                <email-announcement-pod
-                    pid="announcement-queue-announcements"
-                    pod-type="announcementqueue"
-                    :item="announcement"
-                    :announcements="usedAnnouncements"
-                    v-for="announcement in queueAnnouncements | paginate"
-                >
-                </email-announcement-pod>
-                <ul class="pagination">
-                  <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
-                    <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
-                  </li>
-                  <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
-                    <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
-                  </li>
-                  <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
-                    <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
-                  </li>
-                </ul>
+              <template v-if="!loadingQueue">
+                <template v-if="queueAnnouncements.length > 0">
+                  <email-announcement-pod
+                      pid="announcement-queue-announcements"
+                      pod-type="announcementqueue"
+                      :item="announcement"
+                      :announcements="usedAnnouncements"
+                      v-for="announcement in queueAnnouncements | paginate"
+                  >
+                  </email-announcement-pod>
+                  <ul class="pagination">
+                    <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
+                      <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
+                    </li>
+                    <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
+                    </li>
+                    <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
+                      <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
+                    </li>
+                  </ul>
+                </template>
+                <template v-else>
+                  <p>There are no announcements for the date range you've specified.</p>
+                </template>
+              </template>
+              <template v-else>
+                <p>Loading queue. Please Wait...</p>
+              </template>
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
@@ -89,7 +103,8 @@ export default {
       currentDate: moment(),
       usedAnnouncements: [],
       queueAnnouncements: [],
-      loading: true,
+      loadingQueue: true,
+      loadingUsed: true,
       eventMsg: null,
       startdate: null,
       enddate: null,
@@ -100,13 +115,11 @@ export default {
     }
   },
 
-  ready() {
+  ready: function() {
     let today = moment()
     this.startdate = today.format("YYYY-MM-DD")
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
-    // set announcements from property to data
-    this.announcements = this.usedAnnouncements
   },
 
   computed: {
@@ -127,7 +140,7 @@ export default {
         // flatpickr directive method
     },
     fetchAllRecords: function() {
-        this.loading = true
+        this.loadingQueue = true
 
         var routeurl = '/api/email/announcements';
 
@@ -148,7 +161,7 @@ export default {
         .then((response) =>{
             this.$set('queueAnnouncements', response.data.newdata.data)
             this.resultCount = this.queueAnnouncements.length
-            this.loading = false;
+            this.loadingQueue = false;
         }, (response) => {
             //error callback
             console.log("ERRORS");
@@ -180,17 +193,15 @@ export default {
   // the `events` option simply calls `$on` for you
   // when the instance is created
   events: {
-    'announcement-added-queue': function (announcementObj) {
-      if(announcementObj){
-        this.usedAnnouncements.push(announcementObj)
-      }
-    },
-    'announcement-removed-queue': function (announcementObj) {
-      if(announcementObj){
-        this.usedAnnouncements.$remove(announcementObj)
-      }
+  },
+
+  watch: {
+    announcements: function (value) {
+      // set announcements from property to data ON FIRST PAGE LOAD ONLY!
+      this.usedAnnouncements = value
+      this.loadingUsed = false
     }
-  }
+  },
 }
 
 </script>

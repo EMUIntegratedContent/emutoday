@@ -52,9 +52,13 @@ class EmailController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function edit($id, Email $email)
+    public function edit(Email $email)
     {
-      return view('admin.email.form', compact('email'));
+      $user = \Auth::user();
+
+      // Get all story types for email story queue
+      $stypes  = collect(StoryType::select('name','shortname')->get());
+      return view('admin.email.form', compact('email', 'stypes'));
     }
 
     /**

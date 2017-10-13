@@ -13,23 +13,27 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Side Stories</h3>
-            <template v-if="usedStories.length > 0">
-              <ul class="list-group" v-sortable>
-                  <li v-for="story in usedStories" class="list-group-item">
-                    <email-story-pod
-                        pid="otherstory-list-stories"
-                        pod-type="otherstory"
-                        :item="story"
-                        >
-                    </email-story-pod>
-                  </li>
-              </ul>
+            <template v-if="!loadingUsed">
+              <template v-if="usedStories.length > 0">
+                <ul class="list-group" v-sortable>
+                    <li v-for="story in usedStories" class="list-group-item">
+                      <email-story-pod
+                          pid="otherstory-list-stories"
+                          pod-type="otherstory"
+                          :item="story"
+                          >
+                      </email-story-pod>
+                    </li>
+                </ul>
+              </template>
+              <template v-else>
+                <p>There are no side stories set for this email.</p>
+              </template>
             </template>
             <template v-else>
-              <p>There are no side stories set for this email.</p>
+              <p>Loading this email's stories. Please wait...</p>
             </template>
             <hr />
-            <p v-if="loading" class="col-md-12">Loading. Please Wait...</p>
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
@@ -54,25 +58,35 @@
                 </div>
             </div>
             <div id="email-stories">
-                <email-story-pod
-                    pid="otherstory-queue-stories"
-                    pod-type="otherstoryqueue"
-                    :item="story"
-                    :other-stories="usedStories"
-                    v-for="story in queueStories | filterBy filterByStoryType | paginate"
-                >
-                </email-story-pod>
-                <ul class="pagination">
-                  <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
-                    <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
-                  </li>
-                  <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
-                    <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
-                  </li>
-                  <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
-                    <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
-                  </li>
-                </ul>
+              <template v-if="!loadingQueue">
+                <template v-if="queueStories.length > 0">
+                  <email-story-pod
+                      pid="otherstory-queue-stories"
+                      pod-type="otherstoryqueue"
+                      :item="story"
+                      :other-stories="usedStories"
+                      v-for="story in queueStories | filterBy filterByStoryType | paginate"
+                  >
+                  </email-story-pod>
+                  <ul class="pagination">
+                    <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
+                      <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
+                    </li>
+                    <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
+                    </li>
+                    <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
+                      <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
+                    </li>
+                  </ul>
+                </template>
+                <template v-else>
+                  <p>There are no stories for the date range you've specified.</p>
+                </template>
+              </template>
+              <template v-else>
+                <p>Loading queue. Please Wait...</p>
+              </template>
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
@@ -122,8 +136,6 @@ export default  {
         this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
         this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
         this.fetchAllRecords()
-        // set stories from property to data
-        this.otherStories = this.usedStories
     },
     data: function() {
         return {
@@ -131,7 +143,8 @@ export default  {
             currentDate: moment(),
             usedStories: [],
             queueStories: [],
-            loading: true,
+            loadingQueue: true,
+            loadingUsed: true,
             eventMsg: null,
             startdate: null,
             enddate: null,
@@ -228,7 +241,7 @@ export default  {
       },
 
       fetchAllRecords: function() {
-          this.loading = true
+          this.loadingQueue = true
 
           var routeurl = '/api/email/stories/otherstories';
 
@@ -249,7 +262,7 @@ export default  {
           .then((response) =>{
               this.$set('queueStories', response.data.newdata.data)
               this.resultCount = this.queueStories.length
-              this.loading = false;
+              this.loadingQueue = false;
           }, (response) => {
               //error callback
               console.log("ERRORS");
@@ -311,18 +324,13 @@ export default  {
     },
 
     events: {
-      'other-story-added-queue': function (otherStoryObj) {
-        if(otherStoryObj){
-          this.usedStories.push(otherStoryObj)
-        }
-      },
-      'other-story-removed-queue': function (otherStoryObj) {
-        if(otherStoryObj){
-          this.usedStories.$remove(otherStoryObj)
-        }
-      }
     },
     watch: {
+      otherStories: function (value) {
+        // set events from property to data
+        this.usedStories = value
+        this.loadingUsed = false
+      }
     },
 }
 </script>

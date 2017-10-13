@@ -292,6 +292,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         /* EMAILS */
         Route::group(['middleware' => 'Emutoday\Http\Middleware\EmailsMiddleware', 'middleware' => ['bindings']], function()
         {
+            Route::get('email/{email}/edit', 'Admin\EmailController@edit')->name('admin_email_edit');
             Route::get('email/form', 'Admin\EmailController@form')->name('admin_email_form');
             Route::post('email/form', 'Admin\EmailController@store')->name('admin_email_store');
             Route::resource('email', 'Admin\EmailController');

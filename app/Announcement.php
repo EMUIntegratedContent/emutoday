@@ -46,4 +46,9 @@ class Announcement extends Model
     {
         return $this->belongsTo('Emutoday\AnnouncementType', 'shortname', 'type');
     }
+
+    public function emails()
+    {
+        return $this->belongsToMany('Emutoday\Email', 'email_announcement');
+    }
 }

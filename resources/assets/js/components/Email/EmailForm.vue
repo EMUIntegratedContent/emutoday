@@ -89,7 +89,7 @@
                               <td valign="top">
                                 <template v-if="record.otherStories.length > 0">
                                   <h3>Featured News Stories</h3>
-                                  <article v-for="story in record.otherStories" style="padding:0 5px">
+                                  <article v-for="story in record.otherStories">
                                     <h4>{{story.title}}<h4>
                                     {{{ story.content | truncate '30' }}}
                                     <p><a :href="story.full_url">Read More</a></p>
@@ -225,11 +225,10 @@ module.exports = {
   },
   ready: function() {
     if(this.recordexists){
-      fetchCurrentEmail(this.recordid)
+      this.fetchCurrentEmail(this.recordid)
     }
   },
   computed: {
-
     // switch classes based on css framework. foundation or bootstrap
     md6col: function() {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
@@ -301,7 +300,7 @@ module.exports = {
       this.$http.get('/api/email/' + recid + '/edit')
 
       .then((response) => {
-        this.$set('record', response.data.data)
+        this.$set('record', response.data.newdata.data)
       }, (response) => {
         this.formErrors = response.data.error.message;
       }).bind(this);
@@ -424,9 +423,11 @@ module.exports = {
         this.record.otherStories.push(otherStoryObj)
       }
     },
-    'other-story-removed': function (otherStoryObj) {
-      if(otherStoryObj){
-        this.record.otherStories.$remove(otherStoryObj)
+    'other-story-removed': function (otherStoryId) {
+      for(i = 0; i < this.record.otherStories.length; i++){
+        if(otherStoryId == this.record.otherStories[i].id){
+          this.record.otherStories.$remove(this.record.otherStories[i])
+        }
       }
     },
     'event-added': function (eventObj) {
@@ -434,9 +435,11 @@ module.exports = {
         this.record.events.push(eventObj)
       }
     },
-    'event-removed': function (eventObj) {
-      if(eventObj){
-        this.record.events.$remove(eventObj)
+    'event-removed': function (eventId) {
+      for(i = 0; i < this.record.events.length; i++){
+        if(eventId == this.record.events[i].id){
+          this.record.events.$remove(this.record.events[i])
+        }
       }
     },
     'announcement-added': function (announcementObj) {
@@ -444,9 +447,11 @@ module.exports = {
         this.record.announcements.push(announcementObj)
       }
     },
-    'announcement-removed': function (announcementObj) {
-      if(announcementObj){
-        this.record.announcements.$remove(announcementObj)
+    'announcement-removed': function (announcementId) {
+      for(i = 0; i < this.record.announcements.length; i++){
+        if(announcementId == this.record.announcements[i].id){
+          this.record.announcements.$remove(this.record.announcements[i])
+        }
       }
     },
   }

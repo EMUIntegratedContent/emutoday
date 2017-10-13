@@ -69,6 +69,11 @@ class Event extends Model
   {
     return $this->belongsToMany('Emutoday\MiniCalendar', 'cea_event_minicalendar', 'event_id', 'mini_calendar_id');
   }
+
+  public function emails()
+  {
+      return $this->belongsToMany('Emutoday\Email', 'email_event');
+  }
   /**
    * get a list of the mini calendars associated with this Event * @return [Array]
    */

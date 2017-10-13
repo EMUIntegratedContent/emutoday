@@ -25,7 +25,7 @@
                 </div>
             </div>
             <p v-else>No main story set for this emails. Choose one from the queue below.</p>
-            <p v-if="loading" class="col-md-12">Loading. Please Wait...</p>
+            <p v-if="loadingQueue" class="col-md-12">Loading. Please Wait...</p>
             <hr/>
             <!-- Date filter -->
             <form class="form-inline">
@@ -136,7 +136,8 @@ export default  {
             items_filter_storytype: '',
             currentDate: moment(),
             items: [],
-            loading: true,
+            loadingQueue: true,
+            loadingUsed: true,
             eventMsg: null,
             startdate: null,
             enddate: null,
@@ -236,7 +237,7 @@ export default  {
       },
 
       fetchAllRecords: function() {
-          this.loading = true
+          this.loadingQueue = true
 
           var routeurl = '/api/email/stories/main';
 
@@ -257,7 +258,7 @@ export default  {
           .then((response) =>{
               this.$set('items', response.data.newdata.data)
               this.resultCount = this.items.length
-              this.loading = false;
+              this.loadingQueue = false;
           }, (response) => {
               //error callback
               console.log("ERRORS");
