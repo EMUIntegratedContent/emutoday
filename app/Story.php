@@ -97,11 +97,12 @@ class Story extends Model
         return $this->belongsToMany('Emutoday\Page');
     }
 
+/*
     public function emails()
     {
-        return $this->belongsToMany('Emutoday\Email', 'email_story');
+        return $this->belongsToMany('Emutoday\Email');
     }
-
+*/
     public function magazines()
     {
       return $this->belongsToMany('Emutoday\Magazine');
@@ -118,12 +119,6 @@ class Story extends Model
     public function storyGroup()
     {
         return $this->belongsTo('Emutoday\StoryType', 'story_type', 'shortname');
-    }
-
-    public function group()
-    {
-        //$group = StoryType::
-        return "stags";
     }
 
 

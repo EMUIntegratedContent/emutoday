@@ -3,6 +3,7 @@
 namespace Emutoday\Today\Transformers;
 
 use Emutoday\Email;
+use Emutoday\Story;
 use League\Fractal;
 use Carbon\Carbon;
 
@@ -13,11 +14,22 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
 {
     public function transform(Email $email)
     {
-        // Other stories need to be packaged as a fractal to access the 'group' field
-        $otherStories = $email->stories()->orderBy('order', 'desc')->get();
+        // Other stories and main story need to be packaged as a fractal to access the 'group' field
+        $otherStories = $email->stories()->orderBy('order', 'asc')->get();
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($otherStories->all(), new FractalStoryTransformerModel);
         $otherStories = $fractal->createData($resource)->toArray();
+
+        $mainStory = Story::find($email->mainstory_id);
+        if($mainStory){
+          $resource = new Fractal\Resource\Item($mainStory, new FractalStoryTransformerModel);
+          $mainStory = $fractal->createData($resource)->toArray();
+        }
+
+        $sendAt = null;
+        if($email->send_at){
+          $sendAt = $email->send_at->toDateTimeString();
+        }
 
         return [
             'id'      => (int) $email->id,
@@ -25,9 +37,12 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'subheading' => $email->subheading,
             'is_approved' => $email->is_approved,
             'is_ready' => $email->is_ready,
-            'announcements' => $email->announcements()->orderBy('order', 'desc')->get(),
-            'events' => $email->events()->orderBy('order', 'desc')->get(),
+            'mainStory' => $mainStory['data'],
+            'announcements' => $email->announcements()->orderBy('order', 'asc')->get(),
+            'events' => $email->events()->orderBy('order', 'asc')->get(),
             'otherStories' => $otherStories['data'],
+            'send_at' => $sendAt,
+            'recipients' => $email->recipients()->get(),
         ];
     }
 }

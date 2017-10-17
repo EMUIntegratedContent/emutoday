@@ -9,6 +9,7 @@ use Emutoday\User;
 use Emutoday\Event;
 use Emutoday\Announcement;
 use Emutoday\ImageType;
+use Emutoday\MailingList;
 use Illuminate\Http\Request;
 
 
@@ -27,8 +28,11 @@ use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 
 class EmailController extends ApiController
 {
-  function __construct()
-  { //
+  protected $email;
+
+  function __construct(Email $email)
+  {
+    $this->email = $email;
   }
 
   /**
@@ -41,6 +45,181 @@ class EmailController extends ApiController
      return $this->setStatusCode(200)
      ->respondUpdatedWithData('Got email.', $fractal->createData($resource)->toArray() );
    }
+
+   /**
+    * Store a new
+    */
+    public function store(Request $request){
+      $validation = \Validator::make( Input::all(), [
+          'title'   => 'required|min:10',
+          'send_at' => 'nullable|date_format:Y-m-d H:i:s'
+         ]);
+
+      if( $validation->fails() ){
+          return $this->setStatusCode(422)
+                      ->respondWithError($validation->errors()->getMessages());
+      }
+
+      if($validation->passes()){
+          $email = new Email;
+
+          $sendAt = null;
+          if($request->get('send_at') != null){
+            $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
+          }
+
+          $email->title            = $request->get('title');
+          $email->subheading       = $request->get('subheading', null);
+          $email->mainstory_id     = $request->get('mainStory', null)['id'];
+          $email->is_approved      = $request->get('is_approved', 0);
+          $email->send_at          = $sendAt;
+
+          if($email->save()) {
+            // Sync announcements
+            // tutuorial: https://laravel.com/docs/5.5/eloquent-relationships#updating-many-to-many-relationships
+            $announcemntCount = 0;
+            $announcementIds = array();
+            foreach($request->get('announcements') as $announcement){
+              $announcementIds[$announcement['id']] = ['order' => $announcemntCount] ;
+              $announcemntCount++;
+            }
+            $email->announcements()->sync($announcementIds);
+
+            // Sync events
+            $eventCount = 0;
+            $eventIds = array();
+            foreach($request->get('events') as $event){
+              $eventIds[$event['id']] = ['order' => $eventCount];
+              $eventCount++;
+            }
+            $email->events()->sync($eventIds);
+
+            // Sync side stories
+            $otherStoryCount = 0;
+            $otherStoryIds = array();
+            foreach($request->get('otherStories') as $otherStory){
+              $otherStoryIds[$otherStory['id']] = ['order' => $otherStoryCount];
+              $otherStoryCount++;
+            }
+            $email->stories()->sync($otherStoryIds);
+
+            // Sync recipients
+            $recipientIds = array();
+            foreach($request->get('recipients') as $recipient){
+              $recipientIds[] = $recipient['id'];
+            }
+            $email->recipients()->sync($recipientIds);
+
+            // Analyze email for completeness and set send_at flag
+            $this->isEmailReady($email);
+
+            $fractal = new Manager();
+            $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
+
+            return $this->setStatusCode(200)
+             ->respondUpdatedWithData('Email has been created.', $fractal->createData($resource)->toArray() );
+          }
+      }
+    }
+
+  /**
+   * Update the specified email
+   */
+   public function update(Request $request, $id){
+     $email = $this->email->findOrFail($id);
+
+     $validation = \Validator::make( Input::all(), [
+         'title'   => 'required|min:10',
+         'send_at' => 'nullable|date_format:Y-m-d H:i:s'
+        ]);
+
+     if( $validation->fails() ){
+         return $this->setStatusCode(422)
+                     ->respondWithError($validation->errors()->getMessages());
+     }
+
+     if($validation->passes()){
+         $sendAt = null;
+         if($request->get('send_at')){
+           $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
+         }
+
+         $email->title           	= $request->get('title');
+         $email->subheading       = $request->get('subheading', null);
+         $email->mainstory_id     = $request->get('mainStory', null)['id'];
+         $email->is_approved      = $request->get('is_approved', 0);
+         $email->send_at          = $sendAt;
+
+         // Sync announcements
+         // tutuorial: https://laravel.com/docs/5.5/eloquent-relationships#updating-many-to-many-relationships
+         $announcemntCount = 0;
+         $announcementIds = array();
+         foreach($request->get('announcements') as $announcement){
+           $announcementIds[$announcement['id']] = ['order' => $announcemntCount] ;
+           $announcemntCount++;
+         }
+         $email->announcements()->sync($announcementIds);
+
+         // Sync events
+         $eventCount = 0;
+         $eventIds = array();
+         foreach($request->get('events') as $event){
+           $eventIds[$event['id']] = ['order' => $eventCount];
+           $eventCount++;
+         }
+         $email->events()->sync($eventIds);
+
+         // Sync side stories
+         $otherStoryCount = 0;
+         $otherStoryIds = array();
+         foreach($request->get('otherStories') as $otherStory){
+           $otherStoryIds[$otherStory['id']] = ['order' => $otherStoryCount];
+           $otherStoryCount++;
+         }
+         $email->stories()->sync($otherStoryIds);
+
+         // Sync recipients
+         $recipientIds = array();
+         foreach($request->get('recipients') as $recipient){
+           $recipientIds[] = $recipient['id'];
+         }
+         $email->recipients()->sync($recipientIds);
+
+         if($email->save()) {
+
+           // Analyze email for completeness and set send_at flag
+           $this->isEmailReady($email);
+
+           $fractal = new Manager();
+           $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
+
+           return $this->setStatusCode(200)
+            ->respondUpdatedWithData('Email has been updated.', $fractal->createData($resource)->toArray() );
+         }
+     }
+   }
+
+   /**
+    * Takes an Email object and analyzes it to see if it should be marked as "READY".
+    * Requirements: Must have main story, at least 1 side story, announcement, event, send date set in the future, at least one recipient
+    */
+   private function isEmailReady(Email $email){
+     $email->is_ready = 0;
+
+     if($email->mainstory_id &&
+        $email->announcements()->first() &&
+        $email->events()->first() &&
+        $email->stories()->first() &&
+        $email->recipients()->first() &&
+        \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s')
+      ){
+       $email->is_ready = 1;
+     }
+
+     $email->save();
+     return;
+   }
+
   /**
    * Main Stories require an image with type 'emutoday_email' to be present with the story.
    */
@@ -130,15 +309,52 @@ class EmailController extends ApiController
   }
 
   /**
+   * Get all email recipients.
+   */
+  public function getAllRecipients(Request $request){
+
+      $recipients  = MailingList::orderBy('email_address', 'asc')->get();
+
+      return $this->setStatusCode(200)
+      ->respondUpdatedWithData('Got announcements.', $recipients );
+  }
+
+  /**
+   * Save a previously-unlisted email recipient.
+   */
+  public function saveRecipient(Request $request){
+    $validation = \Validator::make( Input::all(), [
+        'email_address'   => 'required|email|unique:mailinglists,email_address' ]);
+
+    if( $validation->fails() ){
+        return $this->setStatusCode(422)
+                    ->respondWithError($validation->errors()->getMessages());
+    }
+
+    if($validation->passes()){
+        $recipient = new MailingList;
+        $recipient->email_address    = $request->get('email_address');
+        if($request->get('description')){
+          $recipient->description = $request->get('description');
+        }
+
+        if($recipient->save()) {
+            return $this->setStatusCode(201)
+            ->respondSavedWithData('Recipient has been created.', ['recipient' => $recipient] );
+        }
+    }
+  }
+
+  /**
    * Delete an email.
    *
    * @param int $id
    * @return array
    */
-  public function delete($id)
+  public function destroy($id)
   {
-    $expert = Email::findOrFail($id);
-    $expert->delete();
+    $email = $this->email->findOrFail($id);
+    $email->delete();
     return $this->setStatusCode(200)->respond('Email successfully deleted!');
   }
 }

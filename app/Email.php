@@ -10,26 +10,34 @@ class Email extends Model
   protected $table = 'emails';
   protected $fillable = [
       'title',
-      'frequency',
-      'send_at',
-      'stop_at',
+      'subheading',
+      'is_approved',
+      'is_ready',
+      'mainstory_id',
+      'is_sent',
+      'send_at'
     ];
 
-  protected $dates = ['send_at', 'stop_at'];
+  protected $dates = ['send_at', 'deleted_at'];
 
   public function announcements()
   {
-      return $this->belongsToMany('Emutoday\Announcement', 'email_announcement');
+      return $this->belongsToMany('Emutoday\Announcement', 'email_announcement')->withTimestamps();
   }
 
   public function events()
   {
-      return $this->belongsToMany('Emutoday\Event', 'email_event');
+      return $this->belongsToMany('Emutoday\Event', 'email_event')->withTimestamps();
   }
 
   public function stories()
   {
-      return $this->belongsToMany('Emutoday\Story', 'email_story');
+      return $this->belongsToMany('Emutoday\Story', 'email_story')->withTimestamps();
+  }
+
+  public function recipients()
+  {
+      return $this->belongsToMany('Emutoday\MailingList', 'email_recipients', 'email_id', 'mailinglist_id')->withTimestamps();
   }
 
 /*

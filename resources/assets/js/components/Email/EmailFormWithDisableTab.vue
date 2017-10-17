@@ -8,24 +8,17 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-sm-8">
-      <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
-        <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-        <h5>{{formMessage.msg}}</h5>
-      </div>
-      <div v-show="formMessage.isErr"  class="alert alert-danger alert-dismissible">
-        <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-        <h5>The email could not be {{ newform ? 'created' : 'updated' }}.</h5>
-      </div>
+
     </div>
     <div class="col-xs-12 col-sm-4 text-right">
-      <button class="btn btn-success" type="button" @click="submitForm">{{ newform ? 'Create Email' : 'Update Email' }}</button>
+      <button class="btn btn-success" type="button" @click="submitForm">Save changes</button>
       <button class="btn btn-default" type="button" @click="resetEmail">Undo changes</button>
     </div>
   </div>
   <ul class="nav nav-tabs" role="tablist">
     <li class="active"><a href="#step-1" role="tab" data-toggle="tab">Step 1: Basic Information</a></li>
-    <li><a href="#step-2" role="tab" data-toggle="tab">Step 2: Build Email</a></li>
-    <li><a href="#step-3" role="tab" data-toggle="tab">Step 3: Schedule &amp; Review</a></li>
+    <li><a href="#step-2" role="tab" :data-toggle="this.isStep1Done ? 'tab':''" :class="!this.isStep1Done ? 'disabled':''">Step 2: Build Email</a></li>
+    <li><a href="#step-3" role="tab" :data-toggle="this.isStep1Done && this.isStep2Done ? 'tab':''" :class="!this.isStep1Done || !this.isStep2Done ? 'disabled':''">Step 3: Schedule &amp; Review</a></li>
   </ul>
   <!-- Start form -->
   <form>
@@ -185,8 +178,7 @@
             :options="recipientsList"
             :multiple="true"
             placeholder="Select recipient(s)"
-            label="email_address"
-            >
+            label="email_address">
             </v-select>
           </label>
           <div class="row">
@@ -221,14 +213,8 @@
             <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email has a subheading.</li>
           </ul>
         </div>
+      <!-- /.row -->
     </div>
-    <!-- /.row -->
-    <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <button type="button" class="btn btn-danger" @click="delEmail">Delete Email</button>
-      </div>
-    </div>
-    <!-- /.row -->
   </div>
   </form><!-- /end form -->
 </template>
@@ -328,7 +314,6 @@ module.exports = {
       newform: false,
       recipientsList: [],
       recordState: '',
-      currentRecordId: null,
       record: {
         id: '',
         is_approved: false,
@@ -376,7 +361,6 @@ module.exports = {
     if(this.recordexists){
       this.fetchCurrentEmail(this.recordid)
     } else {
-      this.newform = true;
       this.setupDatePickers()
     }
 
@@ -447,6 +431,15 @@ module.exports = {
     submitBtnLabel:function(){
       return (this.recordexists)?'Update Email': 'Create Email'
     },
+    isStep1Done: function(){
+      return this.record.title ? true : false
+    },
+    isStep2Done: function(){
+      return this.record.mainStory && this.record.otherStories.length > 0 && this.record.announcements.length > 0 && this.record.events.length > 0 ? true : false
+    },
+    isStep3Done: function(){
+      return false
+    },
     // Progress of email bulider (adds up to 100%)
     progress: function(){
       let progress = 0
@@ -496,7 +489,7 @@ module.exports = {
       //this.$set('record', this.original)
     },
     nowOnReload:function() {
-      let newurl = '/admin/email/'+ this.currentRecordId+'/edit';
+      let newurl = '/admin/emial/'+ this.currentRecordId+'/edit';
       document.location = newurl;
     },
 
@@ -518,18 +511,21 @@ module.exports = {
 
       // Do this when response gets back.
       .then((response) => {
+        /*
         this.formMessage.msg = response.data.message;
         this.formMessage.isOk = response.ok; // Success message
+        this.currentRecordId = response.data.newdata.record_id;
+        this.record.id = response.data.newdata.record_id;
         this.formMessage.isErr = false;
-        this.currentRecordId = response.data.newdata.data.id;
         this.recordexists = true;
-        this.formErrors = {}; // Clear errors
-
+        this.formErrors = {}; // Clear errors?
         if (this.newform) {
           this.nowOnReload();
         } else {
           this.onRefresh();
         }
+        */
+        console.log(response.data)
       }, (response) => { // If invalid. error callback
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
@@ -538,16 +534,18 @@ module.exports = {
       }).bind(this);
     },
 
-    delEmail: function() {
+    delEmail: function(e) {
+        e.preventDefault();
         this.formMessage.isOk = false;
         this.formMessage.isErr = false;
 
-        if(confirm('Are you sure you would like to delete this email?')==true){
+        if(confirm('Would you like to delete this email?')==true){
+          $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-          this.$http.delete('/api/email/'+this.record.id)
+          this.$http.post('/api/email/'+this.record.id+'/delete')
 
           .then((response) =>{
-              window.location.href = "/admin/email/form";
+              window.location.href = "/admin/email/list";
           }, (response) => {
             console.log('Error: '+JSON.stringify(response))
           }).bind(this);
@@ -581,17 +579,24 @@ module.exports = {
       }).bind(this);
     },
 
-    toggleCallout:function(evt){
-      this.formMessage.isOk = false
-      this.formMessage.isErr = false
-    },
-
     /**
      * Controls if add recipient fiels are shown
      */
     toggleAddRecipient: function(){
       this.showAddRecipient ? this.showAddRecipient = false : this.showAddRecipient = true
     },
+
+    /*
+    delSendtime: function(time) {
+        if(confirm('Would you like to delete this send time?')==true){
+            this.sendtimes.$remove(time);
+        }
+    },
+
+    addSendtime: function(){
+        this.sendtimes.push({value: '', expertise:''});
+    },
+    */
 
     setupDatePickers:function(){
       let self = this

@@ -16,7 +16,7 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">{{$email->exists ? 'Edit Email' : 'New Email'}}</h3>
+        <h1 class="box-title">{{$email->exists ? 'Edit Email' : 'New Email'}}</h1>
         @include('admin.components.boxtools', ['rte' => 'email', 'path' => 'admin/email'])
       </div>	<!-- /.box-header -->
       <div class="box-body" id="vue-emails">

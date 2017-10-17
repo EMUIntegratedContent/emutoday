@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmailsTable extends Migration
+class UpdateEmailTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateEmailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('subheading')->nullable();
-            $table->tinyInteger('is_approved');
-            $table->tinyInteger('is_ready');
+        Schema::table('emails', function (Blueprint $table) {
+          /*
             $table->integer('mainstory_id')->unsigned()->nullable();
             $table->dateTime('send_at')->nullable();
             $table->tinyInteger('is_sent');
@@ -26,7 +22,7 @@ class CreateEmailsTable extends Migration
             $table->foreign('mainstory_id')
               ->references('id')->on('storys')
               ->onDelete('cascade');
-            $table->timestamps();
+              */
         });
     }
 
@@ -37,6 +33,10 @@ class CreateEmailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('emails');
+        Schema::table('emails', function (Blueprint $table) {
+            //$table->dropForeign(['mainstory_id']);
+            //$table->dropColumn('send_at');
+            //$table->dropColumn('is_sent');
+        });
     }
 }
