@@ -19,6 +19,7 @@
     "foundation-sites": "^6.2.3",
     "laravel-elixir-vueify": "^1.0.6",
     "moment": "^2.14.1",
+    "sortablejs": "^1.6.1",
     "vue-charts": "^0.1.14",
     "vue-resource": "^1.0.0",
     "vue-router": "^2.7.0",

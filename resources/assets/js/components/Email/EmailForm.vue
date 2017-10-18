@@ -19,7 +19,7 @@
     </div>
     <div class="col-xs-12 col-sm-4 text-right">
       <button class="btn btn-success" type="button" @click="submitForm">{{ newform ? 'Create Email' : 'Update Email' }}</button>
-      <button class="btn btn-default" type="button" @click="resetEmail">Undo changes</button>
+      <!--<button class="btn btn-default" type="button" @click="resetEmail">Undo changes</button>-->
     </div>
   </div>
   <ul class="nav nav-tabs" role="tablist">
@@ -208,17 +208,19 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <h3>Mandatory Criteria Checklist</h3>
-          <p>This email will not be makred as ready and will therfore not send unless all of the mandatory criteria are met.</p>
+          <p>This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>
           <ul class="list-group">
-            <li class="list-group-item"><i :class="record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email has a title.</li>
-            <li class="list-group-item"><i :class="record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email has a main story.</li>
-            <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email has a at least one side story.</li>
-            <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email has at least one event.</li>
-            <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email has at least one announcement.</li>
+            <li class="list-group-item"><i :class="record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>
+            <li class="list-group-item"><i :class="record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>
+            <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at least one side story.</li>
+            <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one event.</li>
+            <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.announcements.length > 0 ? 'has' : 'does not have' }} at least one announcement.</li>
+            <li class="list-group-item"><i :class="record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.recipients.length > 0 ? 'has' : 'does not have' }} at least one recipient.</li>
+            <li class="list-group-item"><i :class="record.is_approved && record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email send date and time {{ record.is_approved && record.send_at ? 'have' : 'have not' }} been confirmed.</li>
           </ul>
           <h3>Optional Criteria Checklist</h3>
           <ul class="list-group">
-            <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email has a subheading.</li>
+            <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>
           </ul>
         </div>
     </div>
@@ -257,7 +259,7 @@
   background-color: #3D9970 !important;
 }
 
-.fa-check-circle{
+.fa-check-circle, .fa-calendar{
   color: #3D9970;
 }
 
@@ -451,12 +453,13 @@ module.exports = {
     progress: function(){
       let progress = 0
 
-      this.record.title ? progress += 15 : ''
-      this.record.mainStory ? progress += 17 : ''
-      this.record.events.length > 0 ? progress += 17 : ''
-      this.record.announcements.length > 0 ? progress += 17 : ''
-      this.record.otherStories.length > 0 ? progress += 17 : ''
-      this.record.send_at ? progress += 17 : ''
+      this.record.title ? progress += 13 : ''
+      this.record.mainStory ? progress += 15 : ''
+      this.record.events.length > 0 ? progress += 15 : ''
+      this.record.announcements.length > 0 ? progress += 15 : ''
+      this.record.otherStories.length > 0 ? progress += 15 : ''
+      this.record.recipients.length > 0 ? progress += 14 : ''
+      this.record.send_at && this.record.is_approved ? progress += 13 : ''
 
       return progress
     },

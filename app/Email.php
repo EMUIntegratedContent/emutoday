@@ -22,17 +22,17 @@ class Email extends Model
 
   public function announcements()
   {
-      return $this->belongsToMany('Emutoday\Announcement', 'email_announcement')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Announcement', 'email_announcement')->withPivot('order')->withTimestamps();
   }
 
   public function events()
   {
-      return $this->belongsToMany('Emutoday\Event', 'email_event')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Event', 'email_event')->withPivot('order')->withTimestamps();
   }
 
   public function stories()
   {
-      return $this->belongsToMany('Emutoday\Story', 'email_story')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Story', 'email_story')->withPivot('order')->withTimestamps();
   }
 
   public function recipients()

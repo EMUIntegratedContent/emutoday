@@ -14,7 +14,7 @@
             <h3>Events</h3>
             <template v-if="!loadingUsed">
               <template v-if="usedEvents.length > 0">
-                <ul class="list-group" v-sortable>
+                <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
                     <li v-for="event in usedEvents" class="list-group-item">
                       <email-event-pod
                           pid="event-list-events"
@@ -98,6 +98,7 @@
 import moment from 'moment';
 import EmailEventPod from './EmailEventPod.vue'
 import flatpickr from "../../directives/flatpickr.js"
+//import sortable from "../../directives/sortable.js"
 
 export default  {
   directives: {flatpickr},
@@ -174,7 +175,12 @@ export default  {
             this.isEndDate = true
         }
     },
-
+    /**
+     * Uses vue-sortable
+     */
+    updateOrder: function(event){
+      console.log(event)
+    },
   },
   filters: {
     paginate: function(list) {
