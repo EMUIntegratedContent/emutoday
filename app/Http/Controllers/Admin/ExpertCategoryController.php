@@ -60,7 +60,7 @@ class ExpertCategoryController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function form()
+    public function show()
     {
         $expertCategory = $this->expertCategory;
 
