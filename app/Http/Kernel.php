@@ -32,6 +32,14 @@ class Kernel extends HttpKernel
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
+        'email' => [
+          \Emutoday\Http\Middleware\EmailsMiddleware::class,
+        ],
+
+        'experts' => [
+          \Emutoday\Http\Middleware\ExpertsMiddleware::class,
+        ],
+
         'api' => [
             'throttle:60,1',
         ],

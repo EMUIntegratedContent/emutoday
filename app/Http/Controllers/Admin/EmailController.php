@@ -40,10 +40,7 @@ class EmailController extends Controller
     */
     public function index()
     {
-      /*
-      $expertsPaginated = Expert::orderBy('last_name', 'asc')->paginate(10);
-      return view('admin.experts.index', compact('expertsPaginated'));
-      */
+      
     }
 
     /**
@@ -66,7 +63,7 @@ class EmailController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function form()
+    public function show()
     {
         $email = $this->email;
 
@@ -78,22 +75,7 @@ class EmailController extends Controller
             'cuser' => $user,
         ]);
 
-
         return view('admin.email.form', compact('email', 'stypes'));
-    }
-
-    /**
-     *  Update the expert from the admin/preview view (which uses CKEDITOR)
-     */
-    public function updateFromPreview(Request $request, $id)
-    {
-      /*
-        $expert = $this->expert->findOrFail($id);
-        $expert->biography = $request->get('biography');
-        $expert->save();
-        flash()->success('Expert biography has been updated.');
-        return redirect()->back();
-      */
     }
 
 }

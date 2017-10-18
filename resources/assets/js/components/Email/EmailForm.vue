@@ -225,7 +225,7 @@
         </div>
     </div>
     <!-- /.row -->
-    <div class="row">
+    <div class="row" v-show="recordexists">
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <button type="button" class="btn btn-danger" @click="delEmail">Delete Email</button>
       </div>
