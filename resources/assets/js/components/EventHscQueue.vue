@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
       <form class="form-inline">
         <div class="form-group">
-          <label for="start-date">Showing LBC events starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+          <label for="start-date">Showing all events starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
           <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
         </div>
         <div v-if="isEndDate" class="form-group">

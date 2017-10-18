@@ -602,9 +602,8 @@ module.exports  = {
   ready() {
     if(this.recordexists){
       this.fetchCurrentRecord(this.recordid)
-    } else {
-      this.setupDatePickers();
     }
+    this.setupDatePickers();
     this.fetchMiniCalsList();
     this.fetchForSelectBuildingList("");
     this.fetchForSelectCategoriesList("");
@@ -790,6 +789,7 @@ module.exports  = {
         noCalendar: true,
         enableTime: true,
         defaultDate: self.dateObject.startTimeDefault,
+        dateFormat: "h:i K",
         onChange(timeObject, timeString) {
           self.record.start_time = timeString;
           self.starttimePicker.value = timeString;
@@ -799,6 +799,7 @@ module.exports  = {
         noCalendar: true,
         enableTime: true,
         defaultDate: self.dateObject.endTimeDefault,
+        dateFormat: "h:i K",
         onChange(timeObject, timeString) {
           self.record.end_time = timeString;
           self.endtimePicker.value = timeString;
