@@ -790,6 +790,7 @@ module.exports  = {
         noCalendar: true,
         enableTime: true,
         defaultDate: self.dateObject.startTimeDefault,
+        log: console.log(self.dateObject.startTimeDefault),
         onChange(timeObject, timeString) {
           self.record.start_time = timeString;
           self.starttimePicker.value = timeString;
@@ -870,7 +871,7 @@ module.exports  = {
         this.record.locationoffcampus = this.record.location;
       }
 
-      this.setupDatePickers();
+      // this.setupDatePickers(); // Is it needed here? 
     },
     fetchForSelectCategoriesList(search,loading){
       loading ? loading(true): undefined;
