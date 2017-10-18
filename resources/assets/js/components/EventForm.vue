@@ -602,9 +602,8 @@ module.exports  = {
   ready() {
     if(this.recordexists){
       this.fetchCurrentRecord(this.recordid)
-    } else {
-      this.setupDatePickers();
     }
+    this.setupDatePickers();
     this.fetchMiniCalsList();
     this.fetchForSelectBuildingList("");
     this.fetchForSelectCategoriesList("");
@@ -871,7 +870,7 @@ module.exports  = {
         this.record.locationoffcampus = this.record.location;
       }
 
-      // this.setupDatePickers(); // Is it needed here? 
+      this.setupDatePickers();
     },
     fetchForSelectCategoriesList(search,loading){
       loading ? loading(true): undefined;
