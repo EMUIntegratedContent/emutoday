@@ -602,9 +602,8 @@ module.exports  = {
   ready() {
     if(this.recordexists){
       this.fetchCurrentRecord(this.recordid)
-    } else {
-      this.setupDatePickers();
     }
+    this.setupDatePickers();
     this.fetchMiniCalsList();
     this.fetchForSelectBuildingList("");
     this.fetchForSelectCategoriesList("");

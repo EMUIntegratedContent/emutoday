@@ -60,7 +60,7 @@
               <a href="/calendar/event/form" class="button emu-button">Submit an Event</a>
             </div>
             <div class="ypsi-graphic">
-              <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi.png" alt="Visit Ypsi Calendar"></a>
+              <a href="http://visitypsinow.com/local-events/"><img src="/assets/imgs/calendar/visit-ypsi-real.png" alt="Visit Ypsi Calendar"></a>
             </div>
           </div>
         </div>
@@ -72,6 +72,7 @@
   }
   .ypsi-graphic {
     padding-bottom: 3rem;
+    max-width: 140px;
   }
   .calendar-bar {
     background: ##bebdbd;
