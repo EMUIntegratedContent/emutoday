@@ -1,17 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":3}],2:[function(require,module,exports){
 
-},{}],3:[function(require,module,exports){
-var core  = require('../../modules/_core')
-  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-},{"../../modules/_core":4}],4:[function(require,module,exports){
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],5:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -1345,7 +1334,7 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],6:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 //! moment.js
 //! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -5810,7 +5799,7 @@ return hooks;
 
 })));
 
-},{}],7:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -5996,7 +5985,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],8:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -6297,7 +6286,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],9:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -7867,7 +7856,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":2}],10:[function(require,module,exports){
+},{"got":1}],7:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -18108,7 +18097,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":7}],11:[function(require,module,exports){
+},{"_process":4}],8:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -18128,9 +18117,9 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],12:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-37ae778e] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-37ae778e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-1b8b547f] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-1b8b547f] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-1b8b547f] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-1b8b547f]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -18141,11 +18130,7 @@ var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _EventQueueItem = require('./EventQueueItem.vue');
-
-var _EventQueueItem2 = _interopRequireDefault(_EventQueueItem);
-
-var _flatpickr = require('../directives/flatpickr.js');
+var _flatpickr = require('../../directives/flatpickr.js');
 
 var _flatpickr2 = _interopRequireDefault(_flatpickr);
 
@@ -18153,7 +18138,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = {
   directives: { flatpickr: _flatpickr2.default },
-  components: { EventQueueItem: _EventQueueItem2.default },
+  components: {},
   props: ['annrecords'],
   data: function data() {
     return {
@@ -18305,539 +18290,24 @@ exports.default = {
   // when the instance is created
   events: {}
 };
+//import EventQueueItem from './EventQueueItem.vue'
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-37ae778e=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-37ae778e=\"\">\n            <form class=\"form-inline\" _v-37ae778e=\"\">\n              <div class=\"form-group\" _v-37ae778e=\"\">\n                  <label for=\"start-date\" _v-37ae778e=\"\">Showing events starting <span v-if=\"isEndDate\" _v-37ae778e=\"\">between</span><span v-else=\"\" _v-37ae778e=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-37ae778e=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-37ae778e=\"\">\n                  <label for=\"start-date\" _v-37ae778e=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-37ae778e=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-37ae778e=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-37ae778e=\"\"><span v-if=\"isEndDate\" _v-37ae778e=\"\"> - Remove </span><span v-else=\"\" _v-37ae778e=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n    </div>\n    <hr _v-37ae778e=\"\">\n    <div class=\"row\" _v-37ae778e=\"\">\n        <div class=\"col-xs-12\" _v-37ae778e=\"\">\n            <label id=\"automail-label\" for=\"automail\" _v-37ae778e=\"\">Send notification email? <input type=\"checkbox\" name=\"automail\" id=\"automail\" _v-37ae778e=\"\"></label>\n        </div>\n    </div>\n  <div class=\"row\" _v-37ae778e=\"\">\n      <h2 v-if=\"loading\" class=\"col-md-12\" _v-37ae778e=\"\">Loading. Please Wait...</h2>\n    <div class=\"col-md-4\" _v-37ae778e=\"\">\n      <h3 _v-37ae778e=\"\"><span class=\"badge\" _v-37ae778e=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>\n      <div id=\"items-unapproved\" _v-37ae778e=\"\">\n        <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-37ae778e=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-37ae778e=\"\">\n    <h3 _v-37ae778e=\"\"><span class=\"badge\" _v-37ae778e=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>\n    <div id=\"items-approved\" _v-37ae778e=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-37ae778e=\"\">\n    </event-queue-item>\n  </div>\n</div><!-- /.col-md-6 -->\n<div class=\"col-md-4\" _v-37ae778e=\"\">\n  <h3 _v-37ae778e=\"\"><span class=\"badge\" _v-37ae778e=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live Events</h3>\n  <div id=\"items-live\" _v-37ae778e=\"\">\n    <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'priority+home_priority' -1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-37ae778e=\"\">\n  </event-queue-item>\n</div>\n</div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-1b8b547f=\"\">\n  <div class=\"col-sm-12\" _v-1b8b547f=\"\">\n  </div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#items-unapproved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-37ae778e] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-37ae778e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n#items-unapproved .box[_v-1b8b547f] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-1b8b547f] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-1b8b547f] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-1b8b547f]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-37ae778e", module.exports)
+    hotAPI.createRecord("_v-1b8b547f", module.exports)
   } else {
-    hotAPI.update("_v-37ae778e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1b8b547f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../directives/flatpickr.js":15,"./EventQueueItem.vue":13,"moment":6,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],13:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-94cdab7e] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-94cdab7e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-94cdab7e] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-94cdab7e] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-94cdab7e] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-94cdab7e] {\n  background-color: #ddd;\n}\n.box[_v-94cdab7e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-94cdab7e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-94cdab7e] {\n  padding: 3px;\n}\n.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nh5.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-94cdab7e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-94cdab7e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-94cdab7e] {\n  display:inline-block;\n}\nform.mediaform[_v-94cdab7e] {\n  margin-top: 1rem;\n}\n.form-group[_v-94cdab7e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-94cdab7e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-94cdab7e],\n.btn-group-vertical[_v-94cdab7e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-94cdab7e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-94cdab7e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-94cdab7e]{\n  margin-bottom: 0;\n}\n.topitems[_v-94cdab7e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-94cdab7e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-94cdab7e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-94cdab7e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-94cdab7e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-94cdab7e] {\n  color: #F39C12;\n}\n.time-is-long[_v-94cdab7e] {\n  color: #999999;\n}\n.time-is-over[_v-94cdab7e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-94cdab7e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-94cdab7e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-94cdab7e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-94cdab7e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n")
-'use strict';
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _VuiFlipSwitch = require('./VuiFlipSwitch.vue');
-
-var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-module.exports = {
-  components: { VuiFlipSwitch: _VuiFlipSwitch2.default },
-  props: ['item', 'pid', 'index'],
-  data: function data() {
-    return {
-      eventimage: '',
-      hasPriorityChanged: 0,
-      options: [{ text: '0', value: 0 }, { text: '1', value: 1 }, { text: '2', value: 2 }, { text: '3', value: 3 }, { text: '4', value: 4 }, { text: '5', value: 5 }, { text: '6', value: 6 }, { text: '7', value: 7 }, { text: '8', value: 8 }, { text: '9', value: 9 }, { text: '10', value: 10 }, { text: '99', value: 99 }],
-      formInputs: {
-        event_id: '',
-        attachment: '',
-        caption: ''
-      },
-      showBody: false,
-      showPanel: false,
-      initRecord: {
-        is_approved: 0,
-        priority: 0,
-        home_priority: 0,
-        is_canceled: 0,
-        eventimage: ''
-      },
-      patchRecord: {
-        is_approved: 0,
-        priority: 0,
-        home_priority: 0,
-        is_canceled: 0,
-        eventimage: ''
-      },
-      formMessage: {
-        msg: false,
-        err: false
-      },
-      itemCurrent: 1,
-      currentDate: {},
-      record: {}
-    };
-  },
-  created: function created() {
-    // this.is_approved = this.item.approved;
-    // this.currentDate = moment();
-    // console.log('this.currentDate=' + this.currentDate)
-  },
-  ready: function ready() {
-    this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
-    this.initRecord.priority = this.patchRecord.priority = this.item.priority;
-    this.initRecord.home_priority = this.patchRecord.home_priority = this.item.home_priority;
-    this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;
-    this.initRecord.eventimage = this.eventimage = this.patchRecord.eventimage = this.item.eventimage;
-    this.formInputs.caption = this.caption = this.patchRecord.caption = this.item.caption;
-  },
-  computed: {
-    addSeperator: function addSeperator() {
-      var asclass = 'box-footer-normal';
-      if (this.pid == 'items-live' && this.index == 3) {
-        asclass = 'box-footer-last-special';
-      }
-      return asclass;
-    },
-    hasPriorityChanged: function hasPriorityChanged() {
-      if (this.initRecord.home_priority != this.patchRecord.home_priority || this.initRecord.priority != this.patchRecord.priority) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    hasIsApprovedChanged: function hasIsApprovedChanged() {
-      if (this.initRecord.is_approved != this.patchRecord.is_approved) {
-        console.log('is_approved => initRecord=' + this.initRecord.is_approved + ' patchRecord=>' + this.patchRecord.is_approved);
-        return true;
-      } else {
-        return false;
-      }
-    },
-    timeLeftStatus: function timeLeftStatus() {
-      var diff = this.timeDiffNow(this.item.end_date_time);
-      if (diff <= 0) {
-        return 'time-is-over';
-      } else if (diff > 0 && diff <= 720) {
-        return 'time-is-short';
-      } else {
-        return 'time-is-long';
-      }
-    },
-
-    timeFromNowStatus: function timeFromNowStatus() {
-      var diff = this.timeDiffNow(this.item.start_date_time);
-      if (diff <= 0) {
-        return 'time-is-over';
-      } else if (diff > 0 && diff <= 720) {
-        return 'time-is-short';
-      } else {
-        return 'time-is-long';
-      }
-    },
-    timefromNow: function timefromNow() {
-      return (0, _moment2.default)(this.item.start_date_time).fromNow();
-    },
-    timeLeft: function timeLeft() {
-
-      if ((0, _moment2.default)(this.item.start_date_time).isSameOrBefore((0, _moment2.default)())) {
-        var tlft = this.timeDiffNow(this.item.end_date_time);
-        console.log('id=' + this.item.id + ' timeLeft' + tlft);
-        if (tlft < 0) {
-          this.itemCurrent = 0;
-          return 'Event Ended ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
-        } else {
-          this.itemCurrent = 1;
-          return ' and Ends ' + (0, _moment2.default)(this.item.end_date_time).fromNow();
-        }
-      } else {
-        return '';
-      }
-    },
-    specialItem: function specialItem() {
-      var extrasep = void 0;
-
-      if (this.pid == 'items-live' && this.index < 9) {
-        if (this.item.home_priority > 0 && this.item.priority > 0) {
-          extrasep = 'special-item special-item-both';
-        } else if (this.item.home_priority > 0 && this.item.priority == 0) {
-          extrasep = 'special-item special-item-home';
-        } else if (this.item.home_priority == 0 && this.item.priority > 0) {
-          extrasep = 'special-item special-item-today';
-        }
-      } else {
-        extrasep = '';
-      }
-      return extrasep;
-    },
-    liveTimeStatusClass: function liveTimeStatusClass() {
-      var timepartstatus = void 0;
-
-      if ((0, _moment2.default)().isBetween(this.item.start_date_time, this.item.end_date_time)) {
-        timepartstatus = 'ongoing';
-      } else {
-        if (this.timeDiffNow(this.item.start_date_time) < 0) {
-          timepartstatus = 'event-negative';
-        } else {
-          timepartstatus = 'event-positive';
-        }
-      }
-
-      return timepartstatus;
-    },
-    itemStatus: function itemStatus() {
-      var sclass = 'box-default';
-
-      // console.log('pid' + this.pid + ' index='+ this.index);
-      if (this.pid == 'items-live') {
-        if (this.index < 4) {
-          console.log('topitems');
-          sclass = 'topitems';
-        }
-      }
-      // if (this.item.is_promoted === 1){
-      //     pclass =  'is-promoted'
-      //   } else {
-      //      pclass = 'box-default'
-      //   }
-      return sclass;
-    },
-    promotedIcon: function promotedIcon() {
-      if (this.item.is_promoted === 1) {
-        pIcon = 'fa fa fa-star';
-      } else {
-        pIcon = '';
-      }
-      return pIcon;
-    },
-    hasEventImage: function hasEventImage() {
-      if (this.item.eventimage) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    canHaveImage: function canHaveImage() {
-      if (this.item.is_approved) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    imageUrl: function imageUrl() {
-      var pth = "/imagecache/smallthumb/";
-      var fname = this.item.eventimage;
-      console.log(pth + fname);
-      return pth + fname;
-    },
-
-    isApproved: function isApproved() {
-      return this.item.is_approved;
-    },
-    itemEditPath: function itemEditPath() {
-      return '/admin/event/' + this.item.id + '/edit';
-    },
-    itemPreviewPath: function itemPreviewPath() {
-      return '/preview/event/' + this.item.id;
-    },
-    isOnCampus: function isOnCampus() {
-      if (this.item.building === null || this.item.building === "undefined") {
-        return false;
-      } else {
-        return true;
-      }
-    },
-    eventParticipation: function eventParticipation() {
-      switch (this.item.participants) {
-        case 'campus':
-          return 'Campus Only';
-          break;
-        case 'public':
-          return 'Open to Public';
-          break;
-        case 'students':
-          return 'Students Only';
-          break;
-        case 'invite':
-          return 'Invitation Only';
-          break;
-        case 'tickets':
-          return 'Tickets Required';
-          break;
-        default:
-          return '';
-      }
-    }
-  },
-  methods: {
-    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
-    // onFileChange(event) {
-    //     var files = this.$els.eventimg.files;
-    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
-    //     this.formInputs.attachment = event.target.file;
-    // },
-    // Handle the form submission here
-    timeDiffNow: function timeDiffNow(val) {
-      return (0, _moment2.default)(val).diff((0, _moment2.default)(), 'minutes');
-    },
-    changeIsApproved: function changeIsApproved() {
-      this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
-      console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
-      this.updateItem();
-    },
-    editItem: function editItem(ev) {
-      window.location.href = this.itemEditPath;
-    },
-    priorityChange: function priorityChange(event) {
-      console.log('priority=' + this.item.priority);
-    },
-    getFileName: function getFileName() {
-      var files = this.$els.eventimg.files;
-      this.eventimage = this.$els.eventimg.files[0].name;
-      console.log(this.eventimage);
-    },
-    addMediaFile: function addMediaFile(event) {
-      var _this = this;
-
-      event.preventDefault();
-      event.stopPropagation();
-      this.formMessage.msg = false;
-      this.formMessage.err = false;
-
-      var files = this.$els.eventimg.files;
-      var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
-      data.append('caption', this.formInputs.caption);
-
-      if (files[0]) {
-        data.append('eventimg', files[0]);
-      }
-      var action = '/api/event/addMediaFile/' + this.formInputs.event_id;
-      this.$http.post(action, data).then(function (response) {
-        console.log('good?' + (0, _stringify2.default)(response));
-        _this.checkAfterUpdate(response.data.newdata);
-        _this.formMessage.msg = response.body.message;
-      }, function (response) {
-        _this.formMessage.err = "Something when wrong.";
-        console.log('bad?' + (0, _stringify2.default)(response));
-      });
-    },
-    removeMediaFile: function removeMediaFile(event) {
-      var _this2 = this;
-
-      event.preventDefault();
-      event.stopPropagation();
-      this.formMessage.msg = false;
-      this.formMessage.err = false;
-
-      var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
-      var action = '/api/event/removeMediaFile/' + this.formInputs.event_id;
-      this.$http.post(action, data).then(function (response) {
-        // console.log('good?'+ JSON.stringify(response))
-        _this2.formMessage.msg = response.body.message;
-        _this2.checkAfterUpdate(response.data.newdata);
-      }, function (response) {
-        _this2.formMessage.err = "Something when wrong.";
-        console.log('bad?' + (0, _stringify2.default)(response));
-      });
-    },
-
-    updateItem: function updateItem() {
-      var _this3 = this;
-
-      //    this.patchRecord.is_approved = this.item.is_approved;
-      //    this.patchRecord.priority = this.item.priority;
-
-      this.patchRecord.is_canceled = this.item.is_canceled;
-
-      this.formMessage.msg = false;
-      this.formMessage.err = false;
-
-      $("#automail").prop('checked') == true ? this.patchRecord.automail = true : this.patchRecord.automail = false;
-
-      console.log(">::patchRecord::< " + (0, _stringify2.default)(this.patchRecord));
-      this.$http.patch('/api/event/updateitem/' + this.item.id, this.patchRecord, {
-        method: 'PATCH'
-      }).then(function (response) {
-        console.log('good?' + response);
-        _this3.checkAfterUpdate(response.data.newdata);
-      }, function (response) {
-        console.log('bad?' + response);
-      });
-    },
-    checkAfterUpdate: function checkAfterUpdate(ndata) {
-      this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
-      this.item.is_promoted = this.initRecord.is_promoted = ndata.is_promoted;
-      this.item.priority = this.initRecord.priority = ndata.priority;
-      this.item.home_priority = this.initRecord.home_priority = ndata.home_priority;
-      this.item.is_canceled = this.initRecord.is_canceled = ndata.is_canceled;
-      this.item.eventimage = this.eventimage = this.initRecord.eventimage = ndata.eventimage;
-      this.hasPriorityChanged = 0;
-      console.log(ndata);
-
-      var self = this; // huiasd  k
-      setTimeout(function () {
-        self.formMessage.msg = false;
-        self.formMessage.err = false;
-      }, 5000);
-    },
-    togglePanel: function togglePanel(ev) {
-      if (this.showPanel === false) {
-        this.showPanel = true;
-      } else {
-        this.showPanel = false;
-      }
-      console.log('this.showPanel' + this.showPanel);
-    },
-    toggleBody: function toggleBody(ev) {
-      if (this.showBody == false) {
-        this.showBody = true;
-      } else {
-        this.showBody = false;
-      }
-      console.log('toggleBody' + this.showBody);
-    },
-    doThis: function doThis(ev) {
-      this.item.is_approved = this.is_approved === 0 ? 1 : 0;
-      this.$emit('item-change', this.item);
-      //console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
-    }
-    // addMediaFile: function(ev) {
-    //     var formData = new FormData();
-    //     formData.append('image', fileInput ,this.$els.finput.files[0]);
-    //
-    //     // var fileinputObject = this.$els.finput;
-    //     // console.log('fileinputObject.name= '+ fileinputObject.name)
-    //     // console.log('fileinputObject.value= '+ fileinputObject.value)
-    //     // console.log('fileinputObject.files= '+ fileinputObject.files[0])
-    //     this.$emit('add-media-file', formData);
-    //     console.log('ev ' + ev + 'this.item.id= '+  this.item)
-    // }
-
-  },
-  watch: {
-    priorityChanged: function priorityChanged(val, oldVal) {
-      if (val != oldVal) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  },
-  directives: {
-    // mydatedropper: require('../directives/mydatedropper.js')
-    // dtpicker: require('../directives/dtpicker.js')
-  },
-
-  filters: {
-    yesNo: function yesNo(value) {
-      return value == true ? 'Yes' : 'No';
-    },
-    titleDay: function titleDay(value) {
-      return (0, _moment2.default)(value).format("ddd");
-    },
-    titleDate: function titleDate(value) {
-      return (0, _moment2.default)(value).format("MM/DD");
-    },
-    titleDateLong: function titleDateLong(value) {
-      return (0, _moment2.default)(value).format("ddd MM/DD");
-    },
-    hasHttp: function hasHttp(value) {
-      // Checks if links given 'http'
-      return value.substr(0, 4) == 'http' ? value : 'https://' + value;
-    },
-    momentPretty: {
-      read: function read(val) {
-        console.log('read-val' + val);
-
-        return val ? (0, _moment2.default)(val).format('ddd, MM-DD-YYYY') : '';
-      },
-      write: function write(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal);
-
-        return (0, _moment2.default)(val).format('YYYY-MM-DD');
-      }
-    }
-  },
-  events: {
-
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
-  }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"specialItem\" _v-94cdab7e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-94cdab7e=\"\">\n\n      <div class=\"box-header with-border\" _v-94cdab7e=\"\">\n        <div class=\"row\" _v-94cdab7e=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-94cdab7e=\"\">\n            <div class=\"box-date-top pull-left\" _v-94cdab7e=\"\">{{item.start_date | titleDateLong}}</div>\n            <div class=\"pull-right\" _v-94cdab7e=\"\">\n              <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-94cdab7e=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-94cdab7e=\"\"></span></label>\n            </div><!-- /.pull-right -->\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-94cdab7e=\"\">\n            <form class=\"form-inline pull-right\" _v-94cdab7e=\"\">\n              <div class=\"form-group\" _v-94cdab7e=\"\">\n                <button v-if=\"hasPriorityChanged\" @click.prevent=\"updateItem\" class=\"btn footer-btn bg-orange btn-xs\" href=\"#\" _v-94cdab7e=\"\"><span class=\"fa fa-floppy-o\" _v-94cdab7e=\"\"></span></button>\n              </div><!-- /.form-group -->\n\n              <!-- Previously for the EMU home page\n              <div title=\"Display order for Eastern's index page\" class=\"form-group\">\n                <label for=\"home-priority-number\" class=\"priority\">Home:</label>\n                <select id=\"home-priority-{{item.id}}\" v-model=\"patchRecord.home_priority\" @change=\"priorityChange($event)\" number>\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>&nbsp;&nbsp;&nbsp;\n              -->\n\n              <div title=\"Display order for News Hub\" class=\"form-group\" _v-94cdab7e=\"\"> <!-- For the NEWS HUB page. -->\n                <label for=\"priority-number\" class=\"priority\" _v-94cdab7e=\"\">Rank:</label>\n                <select id=\"priority-{{item.id}}\" v-model=\"patchRecord.priority\" @change=\"priorityChange($event)\" number=\"\" _v-94cdab7e=\"\">\n                  <option v-for=\"option in options\" v-bind:value=\"option.value\" _v-94cdab7e=\"\">\n                    {{option.text}}\n                  </option>\n                </select>\n              </div>\n\n              <div id=\"applabel\" class=\"form-group\" _v-94cdab7e=\"\">\n                <label _v-94cdab7e=\"\">Approved:&nbsp;</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-94cdab7e=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-94cdab7e=\"\">\n              </vui-flip-switch>\n            </div>\n          </form>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n\n      <div class=\"row\" _v-94cdab7e=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-94cdab7e=\"\">\n          <div class=\"col-sm-12\" _v-94cdab7e=\"\">\n            <h6 class=\"box-title\" _v-94cdab7e=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-94cdab7e=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-94cdab7e=\"\">\n      <!-- <div class=\"box-body\"> -->\n      <div v-show=\"formMessage.msg\" class=\"callout bg-success\" _v-94cdab7e=\"\">\n        <h5 _v-94cdab7e=\"\">{{formMessage.msg}}</h5>\n      </div>\n      <div v-show=\"formMessage.err\" class=\"callout bg-danger\" _v-94cdab7e=\"\">\n        <h5 _v-94cdab7e=\"\">{{formMessage.err}}</h5>\n      </div>\n      <template v-if=\"canHaveImage\">\n        <img v-if=\"hasEventImage\" :src=\"imageUrl\" _v-94cdab7e=\"\"><br _v-94cdab7e=\"\">\n        <a v-on:click.prevent=\"togglePanel\" style=\"width: 100px\" class=\"btn btn-info btn-sm\" href=\"#\" _v-94cdab7e=\"\">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>\n\n        <div v-show=\"showPanel\" _v-94cdab7e=\"\">\n          <!-- <div class=\"panel\"> -->\n          <div _v-94cdab7e=\"\">\n            <form id=\"form-mediafile-upload{{item.id}}\" @submit.prevent=\"addMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/addMediaFile/{{item.id}}\" enctype=\"multipart/form-data\" files=\"true\" _v-94cdab7e=\"\">\n              <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-94cdab7e=\"\">\n              <input type=\"text\" class=\"hidden\" name=\"caption\" id=\"caption\" v-model=\"formInputs.caption\" _v-94cdab7e=\"\">\n              <div class=\"fa fa-photo btn btn-info btn-sm block m-b file-upload\" _v-94cdab7e=\"\">\n                <input v-el:eventimg=\"\" type=\"file\" @change=\"getFileName\" class=\"file-input\" name=\"eventimg\" id=\"eventimg\" _v-94cdab7e=\"\">\n              </div>\n              <button v-if=\"eventimage\" id=\"btn-mediafile-upload\" type=\"submit\" class=\"fa fa-floppy-o btn btn-sm bg-orange block m-b\" _v-94cdab7e=\"\"></button>\n              <span class=\"file-input-helpertext\" id=\"file-name\" _v-94cdab7e=\"\">{{eventimage}}</span><br _v-94cdab7e=\"\">\n            </form>\n            <form v-if=\"hasEventImage\" id=\"form-mediafile-remove{{item.id}}\" @submit.prevent=\"removeMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/removeMediaFile/{{item.id}}\" _v-94cdab7e=\"\">\n              <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-94cdab7e=\"\">\n              <button id=\"btn-mediafile-remove\" type=\"submit\" class=\"fa fa-eraser btn btn-sm btn-danger block m-b\" _v-94cdab7e=\"\"></button>\n            </form>\n          </div>\n          <div class=\"input-group caption\" v-if=\"hasEventImage\" _v-94cdab7e=\"\">\n            <span class=\"input-group-addon caption\" _v-94cdab7e=\"\">Caption: </span>\n            <input class=\"form-control\" type=\"text\" v-model=\"formInputs.caption\" _v-94cdab7e=\"\">\n          </div>\n        </div><!-- /.panel mediaform -->\n\n        <hr _v-94cdab7e=\"\">\n      </template>\n\n      <p _v-94cdab7e=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-94cdab7e=\"\">All Day Event</p>\n      </template>\n      <hr _v-94cdab7e=\"\">\n      <div class=\"item-info\" _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-94cdab7e=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-94cdab7e=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-94cdab7e=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-94cdab7e=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <template v-else=\"\">\n          <p _v-94cdab7e=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-94cdab7e=\"\">Contact:</p>\n          <ul _v-94cdab7e=\"\">\n            <li v-if=\"item.contact_person\" _v-94cdab7e=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-94cdab7e=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-94cdab7e=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-94cdab7e=\"\">For more information, visit:</p>\n          <ul _v-94cdab7e=\"\">\n            <li _v-94cdab7e=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-94cdab7e=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-94cdab7e=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <p v-if=\"item.free\" _v-94cdab7e=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-94cdab7e=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-94cdab7e=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-94cdab7e=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-94cdab7e=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-94cdab7e=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-94cdab7e=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-94cdab7e=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-94cdab7e=\"\">\n      <div class=\"row\" _v-94cdab7e=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-94cdab7e=\"\">\n          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-94cdab7e=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-94cdab7e=\"\">{{timeLeft}}</span>\n\n\n\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-94cdab7e=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-94cdab7e=\"\">\n\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" _v-94cdab7e=\"\"><i class=\"fa fa-pencil\" _v-94cdab7e=\"\"></i></button>\n            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.file-upload[_v-94cdab7e] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-94cdab7e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-94cdab7e] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-94cdab7e] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-94cdab7e] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-94cdab7e] {\n  background-color: #ddd;\n}\n.box[_v-94cdab7e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-94cdab7e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-94cdab7e] {\n  padding: 3px;\n}\n.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nh5.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-94cdab7e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-94cdab7e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-94cdab7e] {\n  display:inline-block;\n}\nform.mediaform[_v-94cdab7e] {\n  margin-top: 1rem;\n}\n.form-group[_v-94cdab7e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-94cdab7e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-94cdab7e],\n.btn-group-vertical[_v-94cdab7e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-94cdab7e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-94cdab7e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-94cdab7e]{\n  margin-bottom: 0;\n}\n.topitems[_v-94cdab7e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-94cdab7e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-94cdab7e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-94cdab7e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-94cdab7e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-94cdab7e] {\n  color: #F39C12;\n}\n.time-is-long[_v-94cdab7e] {\n  color: #999999;\n}\n.time-is-over[_v-94cdab7e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-94cdab7e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-94cdab7e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-94cdab7e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-94cdab7e] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-94cdab7e", module.exports)
-  } else {
-    hotAPI.update("_v-94cdab7e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"./VuiFlipSwitch.vue":14,"babel-runtime/core-js/json/stringify":1,"moment":6,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],14:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    props: {
-        disabled: Boolean,
-        checked: [Boolean, Number],
-        value: Number,
-        readonly: Boolean
-    },
-    ready: function ready() {
-        this.value == !!this.checked;
-    },
-
-    data: function data() {
-        return {
-            // compval: $('#slct').val()
-        };
-    },
-    methods: {
-        vuiValueChange: function vuiValueChange(event) {
-            console.log('this.value' + this.value);
-        }
-    },
-    events: {}
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :readonly=\"readonly\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-c9c83bf8", module.exports)
-  } else {
-    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],15:[function(require,module,exports){
+},{"../../directives/flatpickr.js":10,"moment":3,"vue":7,"vue-hot-reload-api":5,"vueify/lib/insert-css":8}],10:[function(require,module,exports){
 'use strict';
 
 var _flatpickr = require('flatpickr');
@@ -18868,44 +18338,34 @@ module.exports = {
     }
 };
 
-},{"flatpickr":5}],16:[function(require,module,exports){
+},{"flatpickr":2}],11:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
 
 var _vueResource2 = _interopRequireDefault(_vueResource);
 
-var _EventQueue = require('./components/EventQueue.vue');
+var _EmailQueue = require('./components/Email/EmailQueue.vue');
 
-var _EventQueue2 = _interopRequireDefault(_EventQueue);
+var _EmailQueue2 = _interopRequireDefault(_EmailQueue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
-// Remember the token we created in the <head> tags? Get it here.
-var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
-Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 // var moment = require('moment');
 
 
 new Vue({
-    el: '#vue-event-queue',
-    components: { EventQueue: _EventQueue2.default },
-    // http: {
-    //     headers: {
-    //         // You could also store your token in a global object,
-    //         // and reference it here. APP.token
-    //         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-    //     }
-    //     },
+    el: '#vue-email-queue',
+    components: { EmailQueue: _EmailQueue2.default },
     ready: function ready() {
-        console.log('new Vue Event Queue ready');
+        console.log('Email Queue ready');
     }
 });
 
-},{"./components/EventQueue.vue":12,"vue":10,"vue-resource":9}]},{},[16]);
+},{"./components/Email/EmailQueue.vue":9,"vue":7,"vue-resource":6}]},{},[11]);
 
 //# sourceMappingURL=vue-queue-form.js.map

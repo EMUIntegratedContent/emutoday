@@ -13,7 +13,7 @@ var vm = new Vue({
     el: '#vue-emails',
     components: {
         EmailForm,
-        //ExpertBoxTools
+        //EmailBoxTools
     },
     store,
     ready() {

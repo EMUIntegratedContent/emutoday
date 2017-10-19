@@ -15,7 +15,7 @@
             <h3>Side Stories</h3>
             <template v-if="!loadingUsed">
               <template v-if="usedStories.length > 0">
-                <ul class="list-group" v-sortable>
+                <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
                     <li v-for="story in usedStories" class="list-group-item">
                       <email-story-pod
                           pid="otherstory-list-stories"
@@ -277,6 +277,17 @@ export default  {
 
       onCalendarChange: function(){
           // flatpickr directive method
+      },
+      /**
+       * Uses vue-sortable
+       */
+      updateOrder: function(event){
+        // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+        let oldIndex = event.oldIndex
+        let newIndex = event.newIndex
+
+        // move the item in the underlying array
+        this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
       },
     },
     filters: {

@@ -15,7 +15,7 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
     public function transform(Email $email)
     {
         // Other stories and main story need to be packaged as a fractal to access the 'group' field
-        $otherStories = $email->stories()->orderBy('order', 'asc')->get();
+        $otherStories = $email->stories()->orderBy('email_story.order', 'asc')->get();
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($otherStories->all(), new FractalStoryTransformerModel);
         $otherStories = $fractal->createData($resource)->toArray();
@@ -38,8 +38,8 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'is_approved' => $email->is_approved,
             'is_ready' => $email->is_ready,
             'mainStory' => $mainStory['data'],
-            'announcements' => $email->announcements()->orderBy('order', 'asc')->get(),
-            'events' => $email->events()->orderBy('order', 'asc')->get(),
+            'announcements' => $email->announcements()->orderBy('email_announcement.order', 'asc')->get(),
+            'events' => $email->events()->orderBy('email_event.order', 'asc')->get(),
             'otherStories' => $otherStories['data'],
             'send_at' => $sendAt,
             'recipients' => $email->recipients()->get(),

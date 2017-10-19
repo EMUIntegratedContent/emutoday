@@ -4,9 +4,13 @@ namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
 use Sofa\Eloquence\Eloquence;
+use Laracasts\Presenter\PresentableTrait;
 
 class Email extends Model
 {
+  use PresentableTrait;
+  protected $presenter = 'Emutoday\Presenters\EmailPresenter';
+
   protected $table = 'emails';
   protected $fillable = [
       'title',

@@ -287,6 +287,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         /* EMAILS */
         Route::group(['middleware' => ['email']], function()
         {
+            Route::get('email/destroy/{id}', 'Admin\EmailController@delete')->name('admin_email_delete'); // in addition to DELETE action
             Route::resource('email', 'Admin\EmailController');
         });
 

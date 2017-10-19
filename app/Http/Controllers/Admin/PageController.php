@@ -57,14 +57,8 @@ class PageController extends Controller
             ['is_ready', 0],
             ['end_date', '<' ,$currentDate ]
             ])->orderBy('start_date', 'asc')->get();
-                //  dd($pages_notready_current, $pages_ready_current);
-
-//         Page::has('storys', '<', 5)->orderBy('start_date', 'asc')->get();
-// $pages_past =
         $pgselect = Page::has('storys', '>=', 5)->select('id', 'template','start_date', 'end_date')->get();
 
-        // = \DB::table('pages')->where('storys',5)->select('id', 'template','start_date', 'end_date')->get();
-        // $strys = \DB::table('storys')->select('id', 'title', 'start_date', 'end_date')->get();
         $pgs = collect($pgselect)->toJson();
 
         JavaScript::put([
@@ -73,10 +67,7 @@ class PageController extends Controller
 
         ]);
 
-
         return view('admin.page.index',compact('pages_ready_current','pages_notready_current','pages_ready_past','pages_notready_past', 'pgs'));
-
-        // return view('admin.page.index',compact('pages','pgs','strys'));
     }
 
     public function form(Page $page)

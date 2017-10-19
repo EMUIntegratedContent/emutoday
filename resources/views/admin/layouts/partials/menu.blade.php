@@ -139,7 +139,7 @@
     <li class="treeview {{ set_active('admin/email*') }}">
       <a href="#"><i class="fa fa-envelope"></i> <span>Email Builder</span></a>
       <ul class="treeview-menu">
-        <li class="{{ set_active('admin/email*') }}"><a href="/admin/email/queue"><i class="fa fa-rocket"></i> <span>Queue</span></a></li>
+        <li class="{{ set_active('admin/email*') }}"><a href="/admin/email"><i class="fa fa-list"></i> <span>List</span></a></li>
         <li class="{{ set_active('admin/email*') }}"><a href="/admin/email/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
       </ul>
     </li>

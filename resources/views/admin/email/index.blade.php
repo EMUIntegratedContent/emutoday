@@ -1,0 +1,286 @@
+@extends('admin.layouts.adminlte')
+@section('title','EventQueue')
+@section('style-vendor')
+  @parent
+@endsection
+@section('style-plugin')
+  @parent
+<link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+<style>
+.fa-check-circle{
+  color: #3D9970;
+}
+.fa-times-circle{
+  color:hsl(0, 90%, 70%);
+}
+</style>
+@endsection
+@section('style-app')
+  @parent
+@endsection
+@section('scripthead')
+  @parent
+@endsection
+@section('content')
+<h1 class="page-header">EMU Today Email Builder</h1>
+@if (session('email_deleted'))
+    <div class="alert alert-success alert-dismissible">
+      <button class="btn btn-sm close"><i class="fa fa-times"></i></button>
+      {{ session('email_deleted') }}
+    </div>
+@endif
+<h2>Future Emails</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><span class="badge">{{ $emails_notready_current->total() }}</span> Not Ready: <small><em>These emails are not confirmed and/or are missing critical items.</em></small></h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Title</th>
+                                <th class="text-center">Ready?</th>
+                                <th class="text-center">Confirmed?</th>
+                                <th class="text-center"><span class="fa fa-calendar" aria-hidden="true"></span></th>
+                                <th class="text-center"><span class="fa fa-pencil" aria-hidden="true"></span></th>
+                                <th class="text-center"><span class="fa fa-trash" aria-hidden="true"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($emails_notready_current))
+                                @foreach($emails_notready_current as $email)
+                                    <tr class="{{ $email->present()->emailScheduleStatus }}">
+                                        <td>{{ $email->title }}</td>
+                                        <td class="text-center">
+                                          @if($email->is_ready)
+                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                          @else
+                                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                          @endif
+                                        </td>
+                                        <td class="text-center">
+                                          @if($email->is_approved)
+                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                          @else
+                                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                          @endif
+                                        </td>
+                                        <td class="text-center"><small>{{ $email->present()->prettySendAtDate }}</small></td>
+                                        <td class="text-center">
+                                            <a href="{{ route('email.edit', $email->id) }}">
+                                                <span class="fa fa-pencil" aria-hidden="true"></span>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/admin/email/destroy/{{ $email->id }}">
+                                                <span class="fa fa-trash" aria-hidden="true"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer">
+                  {{-- MULTIPLE PAGINATION TUTORIAL: https://stackoverflow.com/questions/24086269/laravel-multiple-pagination-in-one-page/25553245#25553245 --}}
+                  {{ $emails_notready_current->appends(
+                      [
+                        'ready_current' => $emails_notready_current->currentPage(),
+                        'sent' => $emails_sent->currentPage(),
+                        'notsent_past' => $emails_notsent_past->currentPage()
+                      ]
+                    )->links() }}
+                </div><!-- /.box-footer -->
+                <!-- /.box-body -->
+            </div><!-- /.box -->
+        </div><!-- /.col-md-6 -->
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><span class="badge">{{ $emails_ready_current->total() }}</span> Ready: <small><em>These emails are confirmed and have all necessary assets. They will be sent at the specified date and time.</em></small></h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Title</th>
+                                <th class="text-center"><span class="fa fa-calendar" aria-hidden="true"></span></th>
+                                <th class="text-center"><span class="fa fa-pencil" aria-hidden="true"></span></th>
+                                <th class="text-center"><span class="fa fa-trash" aria-hidden="true"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($emails_ready_current))
+                                @foreach($emails_ready_current as $email)
+                                    <tr class="{{ $email->present()->emailScheduleStatus }}">
+                                        <td>{{ $email->title }}</td>
+                                        <td class="text-center"><small>{{ $email->present()->prettySendAtDate }}</small></td>
+                                        <td class="text-center">
+                                            <a href="{{ route('email.edit', $email->id) }}">
+                                                <span class="fa fa-pencil" aria-hidden="true"></span>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="/admin/email/destroy/{{ $email->id }}">
+                                                <span class="fa fa-trash" aria-hidden="true"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  {{ $emails_ready_current->appends(
+                      [
+                        'notready_current' => $emails_notready_current->currentPage(),
+                        'sent' => $emails_sent->currentPage(),
+                        'notsent_past' => $emails_notsent_past->currentPage()
+                      ]
+                    )->links() }}
+                </div><!-- /.box-footer -->
+            </div><!-- /.box -->
+    </div><!-- /.col-md-6 -->
+</div><!-- /.row -->
+
+<h2>Past Emails</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><span class="badge">{{ $emails_notsent_past->total() }}</span> Past (not sent): <small><em>These emails were never sent.</em></small></h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <table class="table table-bordered">
+                      <thead>
+                          <tr>
+                              <th class="text-left">Title</th>
+                              <th class="text-center"><span class="fa fa-calendar" aria-hidden="true"></span></th>
+                              <th class="text-center"><span class="fa fa-pencil" aria-hidden="true"></span></th>
+                              <th class="text-center"><span class="fa fa-trash" aria-hidden="true"></span></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if(isset($emails_notsent_past))
+                              @foreach($emails_notsent_past as $email)
+                                  <tr class="{{ $email->present()->emailScheduleStatus }}">
+                                      <td>{{ $email->title }}</td>
+                                      <td class="text-center"><small>{{ $email->present()->prettySendAtDate }}</small></td>
+                                      <td class="text-center">
+                                          <a href="{{ route('email.edit', $email->id) }}">
+                                              <span class="fa fa-pencil" aria-hidden="true"></span>
+                                          </a>
+                                      </td>
+                                      <td class="text-center">
+                                          <a href="/admin/email/destroy/{{ $email->id }}">
+                                              <span class="fa fa-trash" aria-hidden="true"></span>
+                                          </a>
+                                      </td>
+                                  </tr>
+                              @endforeach
+                          @endif
+                      </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  {{ $emails_notsent_past->appends(
+                      [
+                        'notready_current' => $emails_notready_current->currentPage(),
+                        'ready_current' => $emails_ready_current->currentPage(),
+                        'sent' => $emails_sent->currentPage()
+                      ]
+                    )->links() }}
+                </div><!-- /.box-footer -->
+            </div><!-- /.box -->
+        </div><!-- /.col-md-6 -->
+    <div class="col-md-6">
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title"><span class="badge">{{ $emails_sent->total() }}</span> Sent: <small><em>Nothing left to do here but view the statistics.</em></small></h3>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body no-padding">
+                    <table class="table table-bordered">
+                      <thead>
+                          <tr>
+                              <th class="text-left">Title</th>
+                              <th class="text-center"><span class="fa fa-calendar" aria-hidden="true"></span></th>
+                              <th class="text-center"><span class="fa fa-bar-chart" aria-hidden="true"></span></th>
+                              <th class="text-center"><span class="fa fa-trash" aria-hidden="true"></span></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @if(isset($emails_sent))
+                              @foreach($emails_sent as $email)
+                                  <tr class="{{ $email->present()->emailScheduleStatus }}">
+                                      <td>{{ $email->title }}</td>
+                                      <td class="text-center"><small>{{ $email->present()->prettySendAtDate }}</small></td>
+                                      <td class="text-center">
+                                          <!--<a href="{{ route('email.edit', $email->id) }}">-->
+                                              <span class="fa fa-bar-chart" aria-hidden="true">
+                                          <!--</a>-->
+                                      </td>
+                                      <td class="text-center">
+                                          <a href="/admin/email/destroy/{{ $email->id }}">
+                                              <span class="fa fa-trash" aria-hidden="true"></span>
+                                          </a>
+                                      </td>
+                                  </tr>
+                              @endforeach
+                          @endif
+                      </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                  {{ $emails_sent->appends(
+                      [
+                        'notready_current' => $emails_notready_current->currentPage(),
+                        'ready_current' => $emails_ready_current->currentPage(),
+                        'notsent_past' => $emails_notsent_past->currentPage()
+                      ]
+                    )->links() }}
+                </div><!-- /.box-footer -->
+            </div><!-- /.box -->
+    </div><!-- /.col-md-6 -->
+</div><!-- /.row -->
+@endsection
+@section('footer-vendor')
+  @parent
+@endsection
+@section('footer-plugin')
+  @parent
+@endsection
+@section('footer-app')
+  @parent
+@endsection
+@section('footer-script')
+  @parent
+  <script>
+  </script>
+@endsection

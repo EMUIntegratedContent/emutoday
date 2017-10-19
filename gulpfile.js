@@ -168,7 +168,6 @@ elixir(function(mix) {
         mix.browserify('vue-announcement-queue.js', 'public/js/vue-announcement-queue.js');
         mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');
         mix.browserify('vue-email-form.js', 'public/js/vue-email-form.js');
-        mix.browserify('vue-email-queue.js', 'public/js/vue-queue-form.js');
         mix.browserify('vue-event-queue.js', 'public/js/vue-event-queue.js');
         mix.browserify('vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js');
         mix.browserify('vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js');

@@ -5,15 +5,16 @@ namespace Emutoday\Http\Controllers\Admin;
 
 use Emutoday\Email;
 use Emutoday\StoryType;
-use Emutoday\Imagetype;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
 use Emutoday\Helpers\Interfaces\IBug;
+use Illuminate\Pagination\Paginator;
 
 use Illuminate\Support\Facades\View;
 use JavaScript;
 use Emutoday\User;
+use Carbon\Carbon;
 
 class EmailController extends Controller
 {
@@ -38,13 +39,40 @@ class EmailController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function index()
+    public function index(Request $request)
     {
-      
+      $currentDate = Carbon::now();
+      // MULTIPLE PAGINATION TUTORIAL: https://stackoverflow.com/questions/24086269/laravel-multiple-pagination-in-one-page/25553245#25553245
+      $emails_notready_current = $this->email
+        ->where([ ['send_at', '>=' ,$currentDate], ['is_sent', 0] ])
+        ->where(function($query){
+            $query->where('is_approved', 0)
+                  ->orWhere('is_ready', 0);
+          })
+          ->orderBy('send_at', 'asc')->paginate(4, ["*"], 'notready_current');
+
+      $emails_ready_current = $this->email->where([
+          ['is_ready', 1],
+          ['is_approved', 1],
+          ['is_sent', 0],
+          ['send_at', '>=' ,$currentDate ]
+          ])->orderBy('send_at', 'asc')->paginate(4, ["*"], 'ready_current');
+
+      $emails_sent = $this->email->where([
+          ['is_sent', 1],
+          ['send_at', '<' ,$currentDate ]
+          ])->orderBy('send_at', 'asc')->paginate(4, ["*"], 'sent');
+
+      $emails_notsent_past = $this->email->where([
+          ['is_sent', 0],
+          ['send_at', '<' ,$currentDate ]
+          ])->orderBy('send_at', 'asc')->paginate(4, ["*"], 'notsent_past');
+
+      return view('admin.email.index',compact('emails_ready_current','emails_notready_current','emails_sent','emails_notsent_past'));
     }
 
     /**
-    * Show the form for editing the specified resource.
+    * Show the form for editing the specified email.
     *
     * @param  int  $id
     * @return \Illuminate\Http\Response
@@ -59,7 +87,7 @@ class EmailController extends Controller
     }
 
     /**
-    * Show the form for creating a new resource.
+    * Show the form for creating a new email.
     *
     * @return \Illuminate\Http\Response
     */
@@ -76,6 +104,22 @@ class EmailController extends Controller
         ]);
 
         return view('admin.email.form', compact('email', 'stypes'));
+    }
+
+    /**
+     * Delete an email.
+     * NOTE: there is a DELETE HTTP verb that performs this automatically when this controller is defined as a resource in the router file, but GET verb is also needed.
+     *
+     * @param int $id
+     * @return array
+     */
+    public function delete($id)
+    {
+      $email = $this->email->findOrFail($id);
+      $title = $email->title;
+      $email->delete();
+
+      return back()->with('email_deleted', 'Email "' . $title . '" was successfully deleted.');
     }
 
 }

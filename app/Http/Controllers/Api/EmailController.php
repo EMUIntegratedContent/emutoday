@@ -200,24 +200,16 @@ class EmailController extends ApiController
    }
 
    /**
-    * Takes an Email object and analyzes it to see if it should be marked as "READY".
-    * Requirements: Must have main story, at least 1 side story, announcement, event, send date set in the future, at least one recipient
+    * Delete an email.
+    *
+    * @param int $id
+    * @return array
     */
-   private function isEmailReady(Email $email){
-     $email->is_ready = 0;
-
-     if($email->mainstory_id &&
-        $email->announcements()->first() &&
-        $email->events()->first() &&
-        $email->stories()->first() &&
-        $email->recipients()->first() &&
-        \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s')
-      ){
-       $email->is_ready = 1;
-     }
-
-     $email->save();
-     return;
+   public function destroy($id)
+   {
+     $email = $this->email->findOrFail($id);
+     $email->delete();
+     return $this->setStatusCode(200)->respond('Email successfully deleted!');
    }
 
   /**
@@ -346,15 +338,23 @@ class EmailController extends ApiController
   }
 
   /**
-   * Delete an email.
-   *
-   * @param int $id
-   * @return array
+   * Takes an Email object and analyzes it to see if it should be marked as "READY".
+   * Requirements: Must have main story, at least 1 side story, announcement, event, send date set in the future, at least one recipient
    */
-  public function destroy($id)
-  {
-    $email = $this->email->findOrFail($id);
-    $email->delete();
-    return $this->setStatusCode(200)->respond('Email successfully deleted!');
+  private function isEmailReady(Email $email){
+    $email->is_ready = 0;
+
+    if($email->mainstory_id &&
+       $email->announcements()->first() &&
+       $email->events()->first() &&
+       $email->stories()->first() &&
+       $email->recipients()->first() &&
+       \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s')
+     ){
+      $email->is_ready = 1;
+    }
+
+    $email->save();
+    return;
   }
 }

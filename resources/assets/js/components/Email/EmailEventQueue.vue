@@ -15,14 +15,14 @@
             <template v-if="!loadingUsed">
               <template v-if="usedEvents.length > 0">
                 <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
-                    <li v-for="event in usedEvents" class="list-group-item">
-                      <email-event-pod
-                          pid="event-list-events"
-                          pod-type="event"
-                          :item="event"
-                          >
-                      </email-event-pod>
-                    </li>
+                  <li v-for="usedEvent in usedEvents" class="list-group-item">
+                    <email-event-pod
+                        pid="event-list-events"
+                        pod-type="event"
+                        :item="usedEvent"
+                        >
+                    </email-event-pod>
+                  </li>
                 </ul>
               </template>
               <template v-else>
@@ -98,7 +98,6 @@
 import moment from 'moment';
 import EmailEventPod from './EmailEventPod.vue'
 import flatpickr from "../../directives/flatpickr.js"
-//import sortable from "../../directives/sortable.js"
 
 export default  {
   directives: {flatpickr},
@@ -179,7 +178,12 @@ export default  {
      * Uses vue-sortable
      */
     updateOrder: function(event){
-      console.log(event)
+      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+      let oldIndex = event.oldIndex
+      let newIndex = event.newIndex
+
+      // move the item in the underlying array
+      this.usedEvents.splice(newIndex, 0, this.usedEvents.splice(oldIndex, 1)[0]);
     },
   },
   filters: {
