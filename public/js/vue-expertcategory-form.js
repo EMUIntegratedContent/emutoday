@@ -20465,7 +20465,7 @@ module.exports = {
         $('html, body').animate({ scrollTop: 0 }, 'fast');
 
         this.$http.post('/api/expertcategory/' + this.record.id + '/delete').then(function (response) {
-          window.location.href = "/admin/expertcategory/list";
+          window.location.href = "/admin/expertcategory";
         }, function (response) {
           console.log('Error: ' + (0, _stringify2.default)(response));
         }).bind(this);

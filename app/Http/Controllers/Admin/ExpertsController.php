@@ -49,7 +49,7 @@ class ExpertsController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function edit($id, Expert $expert)
+    public function edit($id)
     {
         $expert = $this->expert->findOrFail($id);
 
@@ -112,7 +112,7 @@ class ExpertsController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function form()
+    public function show()
     {
         $expert = $this->expert;
 

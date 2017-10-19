@@ -55,10 +55,10 @@ export default  {
             return '/preview/experts/' + this.recordId;
         },
         listLink:function() {
-             return '/admin/experts/list';
+             return '/admin/experts';
         },
         createNewLink:function() {
-            return '/admin/experts/form';
+            return '/admin/experts/show';
         }
 
     },

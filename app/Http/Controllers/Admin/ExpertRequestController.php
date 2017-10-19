@@ -49,7 +49,7 @@ class ExpertRequestController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function edit($id, ExpertMediaRequest $request)
+    public function edit($id)
     {
         $request = $this->expertMediaRequest->findOrFail($id);
 

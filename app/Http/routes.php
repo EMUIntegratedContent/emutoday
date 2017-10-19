@@ -271,24 +271,17 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         /* EXPERTS */
         Route::group(['middleware' => ['experts']], function()
         {
-            Route::put('experts/{id}/updatefrompreview', 'Admin\ExpertsController@updateFromPreview')->name('admin_preview_expert_update');
-            Route::get('experts/{id}/edit', 'Admin\ExpertsController@edit')->name('experts_edititem');
-            Route::get('experts/list', 'Admin\ExpertsController@index')->name('experts_list');
-            Route::get('experts/form', 'Admin\ExpertsController@form')->name('experts_form');
-            Route::resource('experts', 'Admin\ExpertsController');
-
-            Route::get('expertcategory/list', 'Admin\ExpertCategoryController@index')->name('expertcategory_list');
-            Route::get('expertcategory/form', 'Admin\ExpertCategoryController@form')->name('expertcategory_form');
-            Route::resource('expertcategory', 'Admin\ExpertCategoryController');
-
-            Route::get('expertrequests/{id}/edit', 'Admin\ExpertRequestController@edit')->name('expertrequests_edititem');
-            Route::get('expertrequests/list', 'Admin\ExpertRequestController@index')->name('expertrequests_list');
-            Route::resource('expertrequests', 'Admin\ExpertRequestController');
-
             Route::patch('expertimage/{expertimage}/update', 'Admin\ExpertImageController@update')->name('admin_expertimage_update');
             Route::delete('expertimage/{expertimage}/delete', 'Admin\ExpertImageController@destroy')->name('admin_expertimage_destroy');
             Route::get('experts/{expert}/addnewexpertimage', 'Admin\ExpertImageController@addNewExpertImage')->name('admin_expertimage_add_new_expertimage');
             Route::get('expertimage/{expertimage}/confirm', 'Admin\ExpertImageController@confirm')->name('admin_expertimage_confirm');
+
+            Route::put('experts/{id}/updatefrompreview', 'Admin\ExpertsController@updateFromPreview')->name('admin_preview_expert_update');
+            Route::resource('experts', 'Admin\ExpertsController');
+
+            Route::resource('expertcategory', 'Admin\ExpertCategoryController');
+
+            Route::resource('expertrequests', 'Admin\ExpertRequestController');
         });
 
         /* EMAILS */

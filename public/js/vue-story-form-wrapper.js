@@ -20967,16 +20967,7 @@ exports.default = {
         }
     },
 
-    ready: function ready() {
-        console.log("G:");
-        console.log(this.gtype);
-        console.log("Q:");
-        console.log(this.qtype);
-        console.log("S:");
-        console.log(this.stype);
-        console.log("ROUTE:");
-        console.log(this.sroute);
-    },
+    ready: function ready() {},
 
     data: function data() {
         return {};

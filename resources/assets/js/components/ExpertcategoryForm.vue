@@ -364,7 +364,7 @@ module.exports = {
         this.$http.post('/api/expertcategory/'+this.record.id+'/delete')
 
         .then((response) =>{
-            window.location.href = "/admin/expertcategory/list";
+            window.location.href = "/admin/expertcategory";
         }, (response) => {
           console.log('Error: '+JSON.stringify(response))
         }).bind(this);

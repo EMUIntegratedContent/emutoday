@@ -99,8 +99,8 @@
             <i class="fa fa-angle-left pull-right"></i>
             </span></a>
             <ul class="treeview-menu {{ set_active('admin/expert*') }}">
-                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/list"><i class="fa fa-list"></i> <span>List</span></a></li>
-                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts"><i class="fa fa-list"></i> <span>List</span></a></li>
+                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/show"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
             </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o"></i>Media Requests <span class="pull-right-container">
@@ -110,15 +110,15 @@
             <i class="fa fa-angle-left pull-right"></i>
             </span></a>
             <ul class="treeview-menu {{ set_active('admin/experts/requests*') }}">
-                <li class="{{ set_active('admin/expertrequests/*') }}"><a href="/admin/expertrequests/list"><i class="fa fa-list"></i> <span>List</span></a></li>
+                <li class="{{ set_active('admin/expertrequests/*') }}"><a href="/admin/expertrequests"><i class="fa fa-list"></i> <span>List</span></a></li>
             </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o"></i>Categories <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
             </span></a>
             <ul class="treeview-menu {{ set_active('admin/experts/category*') }}">
-                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/list"><i class="fa fa-list"></i> <span>List</span></a></li>
-                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory"><i class="fa fa-list"></i> <span>List</span></a></li>
+                <li class="{{ set_active('admin/expertcategory/*') }}"><a href="/admin/expertcategory/show"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
             </ul>
         </li>
       </ul>
