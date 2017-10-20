@@ -332,6 +332,9 @@ class ExternalApiController extends ApiController
           $existingEvent->reg_deadline = null;
         }
 
+        $minical = MiniCalendar::find(47); // 47 is the campus life minical on www as of 10/20/17
+        $existingEvent->minicalendars()->sync($minical);
+
         if($existingEvent->save()) {
           return $this->setStatusCode(201)
           ->respondSavedWithData('Event successfully updated!', [ 'laravel_event' => $existingEvent, 'cma_event' => $request->all(), 'all-day' => $request->input('all-day') ]);
@@ -431,6 +434,9 @@ class ExternalApiController extends ApiController
         }
 
         if($event->save()) {
+          $minical = MiniCalendar::find(47); // 47 is the campus life minical on www as of 10/20/17
+          $event->minicalendars()->sync($minical);
+
           $to      = "calendar_events@emich.edu";
           $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
           $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
@@ -568,6 +574,9 @@ class ExternalApiController extends ApiController
       }
 
       if($event->save()) {
+        $minical = MiniCalendar::find(47); // 47 is the campus life minical on www as of 10/20/17
+        $event->minicalendars()->sync($minical);
+        
         $to      = "calendar_events@emich.edu";
         $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
         $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
