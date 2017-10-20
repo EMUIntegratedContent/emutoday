@@ -25,10 +25,33 @@
 <h1 class="page-header">EMU Today Email Builder</h1>
 @if (session('email_deleted'))
     <div class="alert alert-success alert-dismissible">
-      <button class="btn btn-sm close"><i class="fa fa-times"></i></button>
+      <button class="btn btn-sm close" data-dismiss="alert" aria-label="close"><i class="fa fa-times"></i></button>
       {{ session('email_deleted') }}
     </div>
 @endif
+<!--MODAL-->
+<div id="deleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete email</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete "<span id="modal-title"></span>"? Type the word <strong>"delete"</strong> to confirm.</p>
+        <div class="form-group">
+          <label for="deleteConfirm" class="sr-only" aria-hidden="true">Type "confirm" to delete</label>
+          <input type="text" class="form-control" id="deleteConfirm"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelBtn" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="deleteBtn" class="btn btn-danger" data-dismiss="modal" disabled="">Delete Email</button>
+      </div>
+    </div>
+  </div>
+</div><!--/end modal-->
 <h2>Future Emails</h2>
 <div class="row">
     <div class="col-md-6">
@@ -79,8 +102,16 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="/admin/email/destroy/{{ $email->id }}">
+                                            {{--<a href="/admin/email/destroy/{{ $email->id }}">
                                                 <span class="fa fa-trash" aria-hidden="true"></span>
+                                            </a>--}}
+                                            <a
+                                               href="#"
+                                               data-toggle="modal"
+                                               data-id="{{ $email->id }}"
+                                               data-title="{{ $email->title }}"
+                                               data-target="#deleteModal">
+                                              <span class="fa fa-trash" aria-hidden="true"></span>
                                             </a>
                                         </td>
                                     </tr>
@@ -282,5 +313,25 @@
 @section('footer-script')
   @parent
   <script>
+    // Handle deletion of an email via the modal
+    $(document).ready(function(){
+      let emailId = null;
+      $('#deleteModal').on("show.bs.modal", function (e) {
+           $("#modal-title").html($(e.relatedTarget).data('title'));
+           emailId = $(e.relatedTarget).data('id');
+      });
+
+      $('#deleteConfirm').on('keyup', function(){
+        if($(this).val() == 'delete'){
+          $('#deleteBtn').removeAttr('disabled');
+        } else {
+          $('#deleteBtn').attr('disabled', true);
+        }
+      });
+
+      $('#deleteBtn').on('click', function(){
+        window.location.href = '/admin/email/destroy/' + emailId;
+      })
+    })
   </script>
 @endsection

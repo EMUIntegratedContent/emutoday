@@ -49,24 +49,24 @@ class EmailController extends Controller
             $query->where('is_approved', 0)
                   ->orWhere('is_ready', 0);
           })
-          ->orderBy('send_at', 'asc')->paginate(4, ["*"], 'notready_current');
+          ->orderBy('send_at', 'asc')->paginate(10, ["*"], 'notready_current');
 
       $emails_ready_current = $this->email->where([
           ['is_ready', 1],
           ['is_approved', 1],
           ['is_sent', 0],
           ['send_at', '>=' ,$currentDate ]
-          ])->orderBy('send_at', 'asc')->paginate(4, ["*"], 'ready_current');
+          ])->orderBy('send_at', 'asc')->paginate(10, ["*"], 'ready_current');
 
       $emails_sent = $this->email->where([
           ['is_sent', 1],
           ['send_at', '<' ,$currentDate ]
-          ])->orderBy('send_at', 'asc')->paginate(4, ["*"], 'sent');
+          ])->orderBy('send_at', 'asc')->paginate(10, ["*"], 'sent');
 
       $emails_notsent_past = $this->email->where([
           ['is_sent', 0],
           ['send_at', '<' ,$currentDate ]
-          ])->orderBy('send_at', 'asc')->paginate(4, ["*"], 'notsent_past');
+          ])->orderBy('send_at', 'asc')->paginate(10, ["*"], 'notsent_past');
 
       return view('admin.email.index',compact('emails_ready_current','emails_notready_current','emails_sent','emails_notsent_past'));
     }

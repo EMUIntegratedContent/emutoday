@@ -1,4 +1,7 @@
 <template>
+  <email-delete-modal
+  :email="record"
+  ></email-delete-modal>
   <div class="progress">
     <div class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
     aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
@@ -10,11 +13,14 @@
     <div class="col-xs-12 col-sm-8">
       <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
         <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-        <h5>{{formMessage.msg}}</h5>
+        <p>{{formMessage.msg}}</p>
       </div>
       <div v-show="formMessage.isErr"  class="alert alert-danger alert-dismissible">
         <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-        <h5>The email could not be {{ newform ? 'created' : 'updated' }}.</h5>
+        <p>The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>
+        <ul v-if="formErrors">
+          <li v-for="error in formErrors">{{error}}</li>
+        </ul>
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 text-right">
@@ -34,8 +40,9 @@
     <div class="tab-pane active" id="step-1">
       <h2>Basic Email Information</h2>
       <div class="form-group">
-        <label for="email-title">Email Headline</label>
-        <input type="text" class="form-control" id="email-title" v-model="record.title" placeholder="Email headline goes here.">
+        <label for="email-title">Email Headline <span class="character-counter help-text invalid" v-if="insufficientTitle">({{ minTitleChars - record.title.length }} characters left)</span></label>
+        <input type="text" class="form-control" id="email-title" v-bind:class="[formErrors.title ? 'invalid-input' : '']" v-model="record.title" placeholder="Email headline goes here.">
+        <p v-if="formErrors.title" class="help-text invalid">Title must be at least 10 characters in length.</p>
       </div>
       <div class="form-group">
         <label for="subheading">Subheading (optional)</label>
@@ -202,7 +209,6 @@
                 </div><!-- /input-group -->
                 <p v-show="showAddRecipient && formErrors.email_address" class="help-text invalid">{{ formErrors.email_address }}</p>
                 <p v-show="showAddRecipient && formSuccess.email_address" class="help-text valid">{{ formSuccess.email_address }}</p>
-
             </div>
           </div>
         </div>
@@ -227,7 +233,8 @@
     <!-- /.row -->
     <div class="row" v-show="recordexists">
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <button type="button" class="btn btn-danger" @click="delEmail">Delete Email</button>
+        <!-- Trigger the delete modal -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email</button>
       </div>
     </div>
     <!-- /.row -->
@@ -274,8 +281,24 @@
 .valid{
   color:#3c763d;
 }
+
 .invalid {
   color: #ff0000;
+}
+
+.valid-titleField {
+  background-color: #fefefe;
+  border-color: #cacaca;
+}
+
+.no-input {
+  background-color: #fefefe;
+  border-color: #cacaca;
+}
+
+.invalid-input {
+  background-color: rgba(236, 88, 64, 0.1);
+  border: 1px dotted red;
 }
 </style>
 
@@ -289,10 +312,11 @@ import EmailMainStoryQueue from './EmailMainStoryQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
+import EmailDeleteModal from './EmailDeleteModal.vue'
 
 module.exports = {
   directives: {},
-  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, vSelect},
+  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -321,6 +345,7 @@ module.exports = {
       formSuccess: {
         email_address: [],
       },
+      minTitleChars: 10, // minimum title characters allowed
       formInputs: {},
       formMessage: {
         isOk: false,
@@ -434,6 +459,12 @@ module.exports = {
     inputGroupLabel:function(){
       return (this.framework=='foundation')?'input-group-label':'input-group-addon'
     },
+    insufficientTitle: function(){
+      if(this.record.title && this.record.title.length < this.minTitleChars){
+        return true;
+      }
+      return false;
+    },
     isAdmin:function(){
       if(this.userRoles.indexOf('admin')!= -1) {
         return true;
@@ -541,22 +572,6 @@ module.exports = {
       }).bind(this);
     },
 
-    delEmail: function() {
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = false;
-
-        if(confirm('Are you sure you would like to delete this email?')==true){
-
-          this.$http.delete('/api/email/'+this.record.id)
-
-          .then((response) =>{
-              window.location.href = "/admin/email/form";
-          }, (response) => {
-            console.log('Error: '+JSON.stringify(response))
-          }).bind(this);
-        }
-    },
-
     /**
      * Save a previously unlisted email address to the mailinglists database table
      */
@@ -571,15 +586,11 @@ module.exports = {
 
       // Do this when response gets back.
       .then((response) => {
-        this.formMessage.isOk = true
-        this.formMessage.isErr = false
-        this.formErrors = {} //clear form errors
+        this.formSuccess.email_address = [] //clear form success
         this.formSuccess.email_address.push(response.data.message) //create success message
 
         this.fetchRecipientsList() //get updated list of recipients
       }, (response) => { // If invalid. error callback
-        this.formMessage.isOk = false
-        this.formMessage.isErr = true
         this.formErrors = response.data.error.message; // Set errors from validation to vue data
       }).bind(this);
     },
