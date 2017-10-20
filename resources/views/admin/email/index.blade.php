@@ -262,6 +262,7 @@
                               <th class="text-left">Title</th>
                               <th class="text-center"><span class="fa fa-calendar" aria-hidden="true"></span></th>
                               <th class="text-center"><span class="fa fa-bar-chart" aria-hidden="true"></span></th>
+                              <th class="text-center"><span class="fa fa-eye" aria-hidden="true"></span></th>
                               <th class="text-center"><span class="fa fa-trash" aria-hidden="true"></span></th>
                           </tr>
                       </thead>
@@ -275,6 +276,11 @@
                                           <!--<a href="{{ route('email.edit', $email->id) }}">-->
                                               <span class="fa fa-bar-chart" aria-hidden="true">
                                           <!--</a>-->
+                                      </td>
+                                      <td class="text-center">
+                                          <a href="{{ route('email.edit', $email->id) }}">
+                                              <span class="fa fa-eye" aria-hidden="true">
+                                          </a>
                                       </td>
                                       <td class="text-center">
                                           <a href="/admin/email/destroy/{{ $email->id }}">

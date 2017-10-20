@@ -1,245 +1,213 @@
 <template>
-  <email-delete-modal
-  :email="record"
-  ></email-delete-modal>
-  <div class="progress">
-    <div class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
-    aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
-      <span v-if="progress < 100">{{ progress }}% Complete</span>
-      <span v-else>I'm Ready!</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-8">
-      <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
-        <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-        <p>{{formMessage.msg}}</p>
-      </div>
-      <div v-show="formMessage.isErr"  class="alert alert-danger alert-dismissible">
-        <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-        <p>The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>
-        <ul v-if="formErrors">
-          <li v-for="error in formErrors">{{error}}</li>
-        </ul>
+  <template v-if="!record.is_sent">
+    <div class="progress">
+      <div class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
+      aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
+        <span v-if="progress < 100">{{ progress }}% Complete</span>
+        <span v-else>I'm Ready!</span>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-4 text-right">
-      <button class="btn btn-success" type="button" @click="submitForm">{{ newform ? 'Create Email' : 'Update Email' }}</button>
-      <!--<button class="btn btn-default" type="button" @click="resetEmail">Undo changes</button>-->
-    </div>
-  </div>
-  <ul class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#step-1" role="tab" data-toggle="tab">Step 1: Basic Information</a></li>
-    <li><a href="#step-2" role="tab" data-toggle="tab">Step 2: Build Email</a></li>
-    <li><a href="#step-3" role="tab" data-toggle="tab">Step 3: Schedule &amp; Review</a></li>
-  </ul>
-  <!-- Start form -->
-  <form>
-    <slot name="csrf"></slot>
-  <div class="tab-content">
-    <div class="tab-pane active" id="step-1">
-      <h2>Basic Email Information</h2>
-      <div class="form-group">
-        <label for="email-title">Email Headline <span class="character-counter help-text invalid" v-if="insufficientTitle">({{ minTitleChars - record.title.length }} characters left)</span></label>
-        <input type="text" class="form-control" id="email-title" v-bind:class="[formErrors.title ? 'invalid-input' : '']" v-model="record.title" placeholder="Email headline goes here.">
-        <p v-if="formErrors.title" class="help-text invalid">Title must be at least 10 characters in length.</p>
+    <div class="row">
+      <div class="col-xs-12 col-sm-8">
+        <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
+          <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
+          <p>{{formMessage.msg}}</p>
+        </div>
+        <div v-show="formMessage.isErr"  class="alert alert-danger alert-dismissible">
+          <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
+          <p>The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>
+          <ul v-if="formErrors">
+            <li v-for="error in formErrors">{{error}}</li>
+          </ul>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="subheading">Subheading (optional)</label>
-        <textarea class="form-control" id="subheading" v-model="record.subheading"></textarea>
+      <div class="col-xs-12 col-sm-4 text-right">
+        <button class="btn btn-success" type="button" @click="submitForm">{{ newform ? 'Create Email' : 'Update Email' }}</button>
+        <!--<button class="btn btn-default" type="button" @click="resetEmail">Undo changes</button>-->
       </div>
     </div>
-    <div class="tab-pane" id="step-2">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active"><a href="#step-1" role="tab" data-toggle="tab">Step 1: Basic Information</a></li>
+      <li><a href="#step-2" role="tab" data-toggle="tab">Step 2: Build Email</a></li>
+      <li><a href="#step-3" role="tab" data-toggle="tab">Step 3: Schedule &amp; Review</a></li>
+    </ul>
+    <!-- Start form -->
+    <form>
+      <slot name="csrf"></slot>
+    <div class="tab-content">
+      <div class="tab-pane active" id="step-1">
+        <h2>Basic Email Information</h2>
+        <div class="form-group">
+          <label for="email-title">Email Headline <span class="character-counter help-text invalid" v-if="insufficientTitle">({{ minTitleChars - record.title.length }} characters left)</span></label>
+          <input type="text" class="form-control" id="email-title" v-bind:class="[formErrors.title ? 'invalid-input' : '']" v-model="record.title" placeholder="Email headline goes here.">
+          <p v-if="formErrors.title" class="help-text invalid">Title must be at least 10 characters in length.</p>
+        </div>
+        <div class="form-group">
+          <label for="subheading">Subheading (optional)</label>
+          <textarea class="form-control" id="subheading" v-model="record.subheading"></textarea>
+        </div>
+      </div>
+      <div class="tab-pane" id="step-2">
+          <div class="row">
+            <!-- EMAIL LIVE BUILDER VIEW AREA -->
+            <!-- BUILDER TOOLS AREA -->
+            <div v-bind:class="[md12col, lg4col]">
+              <h2>Build Your Email</h2>
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="!record.mainStory ? 'insufficient' : ''">Main Story ({{ record.mainStory ? '1' : '0' }}/1)</a></li>
+                <li><a href="#stories" role="tab" data-toggle="tab" :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{ record.otherStories.length }})</a></li>
+                <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
+                <li><a href="#announcements" role="tab" data-toggle="tab" :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{ record.announcements.length }})</a></li>
+              </ul>
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div class="tab-pane active" id="main-story">
+                  <email-main-story-queue
+                  :stypes="stypes"
+                  :main-story="record.mainStory"
+                  ></email-main-story-queue>
+                </div>
+                <div class="tab-pane" id="stories">
+                  <email-story-queue
+                  :stypes="stypes"
+                  :other-stories="record.otherStories"
+                  ></email-story-queue>
+                </div>
+                <div class="tab-pane" id="events">
+                  <email-event-queue
+                  :events="record.events"
+                  ></email-event-queue>
+                </div>
+                <div class="tab-pane" id="announcements">
+                  <email-announcement-queue
+                  :announcements="record.announcements"
+                  ></email-announcement-queue>
+                </div>
+              </div>
+            </div>
+            <!-- /.medium-4 columns -->
+            <div v-bind:class="[md12col, lg8col]">
+              <email-live-view
+              :email="record"
+              :announcements="record.announcements"
+              :events="record.events"
+              :other-stories="record.otherStories"
+              :main-story="record.mainStory"
+              ></email-live-view>
+            </div>
+            <!-- /.medium-8 columns -->
+          </div>
+          <!-- /.row -->
+      </div>
+      <div class="tab-pane" id="step-3">
+        <h2>Schedule and Review</h2>
         <div class="row">
-          <!-- EMAIL LIVE BUILDER VIEW AREA -->
-          <!-- BUILDER TOOLS AREA -->
-          <div v-bind:class="[md12col, lg4col]">
-            <h2>Build Your Email</h2>
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-              <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="!record.mainStory ? 'insufficient' : ''">Main Story ({{ record.mainStory ? '1' : '0' }}/1)</a></li>
-              <li><a href="#stories" role="tab" data-toggle="tab" :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{ record.otherStories.length }})</a></li>
-              <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
-              <li><a href="#announcements" role="tab" data-toggle="tab" :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{ record.announcements.length }})</a></li>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h3>When should this email be sent?</h3>
+            <p>Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <input type="checkbox" v-model="record.is_approved" aria-label="Set as time">
+              </span>
+              <input id="send-at" type="text" class="form-control" v-model="record.send_at" aria-describedby="errorSendAt" />
+            </div><!-- /input-group -->
+            <h3>To which mailing list(s) should this email be sent?</h3>
+            <ul>
+              <li v-for="recipient in record.recipients">{{ recipient.email_address }}</li>
             </ul>
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div class="tab-pane active" id="main-story">
-                <email-main-story-queue
-                :stypes="stypes"
-                :main-story="record.mainStory"
-                ></email-main-story-queue>
-              </div>
-              <div class="tab-pane" id="stories">
-                <email-story-queue
-                :stypes="stypes"
-                :other-stories="record.otherStories"
-                ></email-story-queue>
-              </div>
-              <div class="tab-pane" id="events">
-                <email-event-queue
-                :events="record.events"
-                ></email-event-queue>
-              </div>
-              <div class="tab-pane" id="announcements">
-                <email-announcement-queue
-                :announcements="record.announcements"
-                ></email-announcement-queue>
+            <label for="recipients">Select recipient(s)
+              <v-select id="minical"
+              :value.sync="record.recipients"
+              :options="recipientsList"
+              :multiple="true"
+              placeholder="Select recipient(s)"
+              label="email_address"
+              >
+              </v-select>
+            </label>
+            <div class="row">
+              <div class="col-sm-12">
+                  <div class="input-group" :class="successFailure">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary" type="button" @click.prevent="toggleAddRecipient">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>
+                    </span>
+                    <input v-show="showAddRecipient" type="text" v-model="newRecipient" class="form-control" placeholder="mailing_list@emich.edu">
+                    <span v-show="showAddRecipient" class="input-group-btn">
+                      <button class="btn btn-default" type="button" @click.prevent="saveUnlistedRecipient"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                    </span>
+                  </div><!-- /input-group -->
+                  <p v-show="showAddRecipient && formErrors.email_address" class="help-text invalid">{{ formErrors.email_address }}</p>
+                  <p v-show="showAddRecipient && formSuccess.email_address" class="help-text valid">{{ formSuccess.email_address }}</p>
               </div>
             </div>
           </div>
-          <!-- /.medium-4 columns -->
-          <div v-bind:class="[md12col, lg8col]">
-            <section id="email-live-container" style="margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px">
-              <table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%" id="bodyTable">
-                  <tr>
-                      <td align="center" valign="top">
-                          <table border="0" width="600" id="emailContainer">
-                              <tr>
-                                  <td valign="top" width="368">
-                                    <template v-if="record.mainStory">
-                                      <article style="padding:0 5px">
-                                        <img :src="record.mainStory.email_images[0].image_path + record.mainStory.email_images[0].filename" :alt="record.mainStory.email_images[0].title"  style="border-right:5px solid #ffffff; width:368px; height:245px; "/>
-                                        <h2>{{record.mainStory.title}}</h2>
-                                        {{{ record.mainStory.content | truncate '60' }}}
-                                        <p><a :href="record.mainStory.full_url">Read More</a></p>
-                                      </article>
-                                    </template>
-                                    <template v-else>
-                                      <div style="background-color:#e5e5e5; position:relative; width:368px; height:245px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;">
-                                        <p style="position:absolute; left:38px; top:96px; font-size:3rem;">Main story image here.</p>
-                                      </div>
-                                      <h2 style="padding:0 5px" class="insufficient">No main story set yet.</h2>
-                                      <p style="padding:0 5px">Select a main story from the "Main Story" tab.</p>
-                                    </template>
-                                    <hr />
-                                  </td>
-                                  <td rowspan="3" valign="top" width="232" style="background:#e5e5e5">
-                                    <template v-if="record.events.length > 0">
-                                      <h3 style="padding:0 5px">Upcoming Events</h3>
-                                      <article v-for="event in record.events" style="padding:0 5px">
-                                        <hr />
-                                        <h4>{{event.title}}<h4>
-                                        {{ event.start_date }} | {{ event.start_time }} | {{ event.location }}
-                                        <p><a :href="event.full_url">View Event</a></p>
-                                      </article>
-                                    </template>
-                                    <template v-else>
-                                      <p style="padding:0 5px" class="insufficient">No events set yet. Select at least one from the "Events" tab.</p>
-                                    </template>
-                                  </td>
-                              </tr>
-                              <tr>
-                                <td valign="top">
-                                  <template v-if="record.otherStories.length > 0">
-                                    <h3>Featured News Stories</h3>
-                                    <article v-for="story in record.otherStories">
-                                      <h4>{{story.title}}<h4>
-                                      {{{ story.content | truncate '30' }}}
-                                      <p><a :href="story.full_url">Read More</a></p>
-                                    </article>
-                                  </template>
-                                  <template v-else>
-                                    <p style="padding:0 5px" class="insufficient">No side stories set yet. Select at least one from the "Side Stories" tab.</p>
-                                  </template>
-                                  <hr />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td valign="top">
-                                  <template v-if="record.announcements.length > 0">
-                                    <h3>Announcements</h3>
-                                    <article v-for="announcement in record.announcements">
-                                      <h4>{{ announcement.title }}</h4>
-                                      <p>{{ announcement.announcement | truncate '30' }}</p>
-                                      <p><a :href="announcement.link">{{ announcement.link_txt }}</a></p>
-                                    </article>
-                                  </template>
-                                  <template v-else>
-                                    <p style="padding:0 5px" class="insufficient">No announcements set yet. Select at least one from the "Announcements" tab.</p>
-                                  </template>
-                                </td>
-                              </tr>
-                          </table>
-                      </td>
-                  </tr>
-              </table>
-            </section>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h3>Mandatory Criteria Checklist</h3>
+            <p>This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>
+            <ul class="list-group">
+              <li class="list-group-item"><i :class="record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>
+              <li class="list-group-item"><i :class="record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>
+              <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at least one side story.</li>
+              <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one event.</li>
+              <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.announcements.length > 0 ? 'has' : 'does not have' }} at least one announcement.</li>
+              <li class="list-group-item"><i :class="record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.recipients.length > 0 ? 'has' : 'does not have' }} at least one recipient.</li>
+              <li class="list-group-item"><i :class="record.is_approved && record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email send date and time {{ record.is_approved && record.send_at ? 'have' : 'have not' }} been confirmed.</li>
+            </ul>
+            <h3>Optional Criteria Checklist</h3>
+            <ul class="list-group">
+              <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>
+            </ul>
           </div>
-          <!-- /.medium-8 columns -->
-        </div>
-        <!-- /.row -->
-    </div>
-    <div class="tab-pane" id="step-3">
-      <h2>Schedule and Review</h2>
-      <div class="row">
+      </div>
+      <!-- /.row -->
+      <div class="row" v-show="recordexists">
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-          <h3>When should this email be sent?</h3>
-          <p>Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>
-          <div class="input-group">
-            <span class="input-group-addon">
-              <input type="checkbox" v-model="record.is_approved" aria-label="Set as time">
-            </span>
-            <input id="send-at" type="text" class="form-control" v-model="record.send_at" aria-describedby="errorSendAt" />
-          </div><!-- /input-group -->
-          <h3>To which mailing list(s) should this email be sent?</h3>
+          <!-- Trigger the delete modal -->
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email</button>
+        </div>
+      </div>
+      <!-- /.row -->
+    </div>
+    </form><!-- /end form -->
+  </template><!-- end if !record.is_sent -->
+  <template v-else>
+    <div class="row">
+      <div v-bind:class="[md12col, lg4col]">
+        <h2>This email has already been sent!</h2>
+        <h3>Sent</h3>
+        <p>{{ record.send_at | formatDate }}</p>
+        <h3>Recipients</h3>
+        <template v-if="record.recipients.length > 0">
           <ul>
             <li v-for="recipient in record.recipients">{{ recipient.email_address }}</li>
           </ul>
-          <label for="recipients">Select recipient(s)
-            <v-select id="minical"
-            :value.sync="record.recipients"
-            :options="recipientsList"
-            :multiple="true"
-            placeholder="Select recipient(s)"
-            label="email_address"
-            >
-            </v-select>
-          </label>
-          <div class="row">
-            <div class="col-sm-12">
-                <div class="input-group" :class="successFailure">
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" @click.prevent="toggleAddRecipient">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>
-                  </span>
-                  <input v-show="showAddRecipient" type="text" v-model="newRecipient" class="form-control" placeholder="mailing_list@emich.edu">
-                  <span v-show="showAddRecipient" class="input-group-btn">
-                    <button class="btn btn-default" type="button" @click.prevent="saveUnlistedRecipient"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
-                  </span>
-                </div><!-- /input-group -->
-                <p v-show="showAddRecipient && formErrors.email_address" class="help-text invalid">{{ formErrors.email_address }}</p>
-                <p v-show="showAddRecipient && formSuccess.email_address" class="help-text valid">{{ formSuccess.email_address }}</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-          <h3>Mandatory Criteria Checklist</h3>
-          <p>This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>
-          <ul class="list-group">
-            <li class="list-group-item"><i :class="record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>
-            <li class="list-group-item"><i :class="record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>
-            <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at least one side story.</li>
-            <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one event.</li>
-            <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.announcements.length > 0 ? 'has' : 'does not have' }} at least one announcement.</li>
-            <li class="list-group-item"><i :class="record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.recipients.length > 0 ? 'has' : 'does not have' }} at least one recipient.</li>
-            <li class="list-group-item"><i :class="record.is_approved && record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email send date and time {{ record.is_approved && record.send_at ? 'have' : 'have not' }} been confirmed.</li>
-          </ul>
-          <h3>Optional Criteria Checklist</h3>
-          <ul class="list-group">
-            <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>
-          </ul>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row" v-show="recordexists">
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <!-- Trigger the delete modal -->
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email</button>
+        </template>
+        <template v-else>
+          <p>Nobody</p>
+        </template>
+        <h3>Statistics</h3>
+          <p><a class="btn btn-info" :href="'/admin/email/stats/' + record.id"><span class="fa fa-bar-chart" aria-hidden="true"></span> View statistics</a></p>
+        <h3>Actions</h3>
+          <p><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email</button></p>
       </div>
+      <!-- /.medium-4 columns -->
+      <div v-bind:class="[md12col, lg8col]">
+        <email-live-view
+        :email="record"
+        :announcements="record.announcements"
+        :events="record.events"
+        :other-stories="record.otherStories"
+        :main-story="record.mainStory"
+        ></email-live-view>
+      </div>
+      <!-- /.medium-8 columns -->
     </div>
     <!-- /.row -->
-  </div>
-  </form><!-- /end form -->
+  </template>
+  <email-delete-modal
+  :email="record"
+  ></email-delete-modal>
 </template>
 
 <style scoped>
@@ -313,10 +281,11 @@ import EmailStoryQueue from './EmailStoryQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 import EmailDeleteModal from './EmailDeleteModal.vue'
+import EmailLiveView from './EmailLiveView.vue'
 
 module.exports = {
   directives: {},
-  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, vSelect},
+  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailLiveView, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -635,9 +604,11 @@ module.exports = {
   },
 
   filters: {
-    truncate: function(text, stop, clamp) {
-    	return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
-    }
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value)).format('LLLL')
+      }
+    },
   },
   events: {
     // Generated from the EmailStoryPod using the $dispatch property of the vm

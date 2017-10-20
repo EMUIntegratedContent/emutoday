@@ -43,6 +43,7 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'otherStories' => $otherStories['data'],
             'send_at' => $sendAt,
             'recipients' => $email->recipients()->get(),
+            'is_sent' => $email->is_sent,
         ];
     }
 }
