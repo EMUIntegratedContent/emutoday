@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use Snowfire\Beautymail\Beautymail;
 use Emutoday\Email;
+use Emutoday\Story;
+use Emutoday\ImageType;
 
 class SendTodayEmails extends Command
 {
@@ -40,38 +42,34 @@ class SendTodayEmails extends Command
      */
     public function handle()
     {
-      /*
-      $email_id = $this->argument('email');
-
-      $email = Email::findOrFail($email_id);
-
-      $beautymail = app()->make(Beautymail::class);
-      $beautymail->send('public.todayemail.email', [], function($message) use($email)
-      {
-          $message
-        ->from('noreply@today.emich.edu')
-        ->to('cpuzzuol@emich.edu', 'Chris Puzzuoli')
-        ->subject($email->title);
-      });
-      */
-      /*
-      approved => 1
-      is_ready => 1
-      send_at is now or in the past
-      stop_at is new or in the future
-      */
-
-      $emails = Email::where([ ['is_approved', '=', 1], ['send_at', '<=', date('Y-m-d H:i')], ['stop_at', '>=', date('Y-m-d H:i')] ])->get();
+      /**
+       * Emails must be:
+       * 1) Approved
+       * 2) Ready
+       * 3) Not already sent
+       * 4) Marked with a send time in the past
+       */
+      $emails = Email::where([ ['is_approved', '=', 1], ['is_ready', '=', 1], ['is_sent', '=', 0], ['send_at', '<=', date('Y-m-d H:i')] ])->get();
 
       foreach($emails as $email){
-        $beautymail = app()->make(Beautymail::class);
-        $beautymail->send('public.todayemail.email', [], function($message) use($email)
-        {
-            $message
-          ->from('noreply@today.emich.edu')
-          ->to('cpuzzuol@emich.edu', 'Chris Puzzuoli')
-          ->subject($email->title);
-        });
+        $mainStory = Story::findOrFail($email->mainstory_id);
+        $emailImageTypeIds = ImageType::select('id')->where('type', 'email')->get(); // get email image types
+        $mainStoryImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
+
+        // Send one email to each recipient/mailing list
+        foreach($email->recipients as $recipient){
+          $beautymail = app()->make(Beautymail::class);
+          $beautymail->send('public.todayemail.email', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function($message) use($email, $recipient)
+          {
+              $message
+            ->from('noreply@today.emich.edu')
+            ->to($recipient->email_address, $recipient->description)
+            ->subject("EMU Today: " . $email->title);
+          });
+        }
+        // IMPORTANT! Mark this email as sent!
+        $email->is_sent = 1;
+        $email->save();
       }
     }
 }
