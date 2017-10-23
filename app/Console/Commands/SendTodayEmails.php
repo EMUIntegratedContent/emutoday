@@ -57,7 +57,7 @@ class SendTodayEmails extends Command
         $mainStoryImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
 
         // Send one email to each recipient/mailing list
-        foreach($email->recipientscd  as $recipient){
+        foreach($email->recipients  as $recipient){
           $beautymail = app()->make(Beautymail::class);
           $beautymail->send('public.todayemail.email', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function($message) use($email, $recipient)
           {
