@@ -20,7 +20,7 @@ return [
     'view' => [
         'senderName'  => null,
         'reminder'    => null,
-        'unsubscribe' => null,
+        'unsubscribe' => 'https://atari.emich.edu/sympa/auto_signoff/emu-today',
         'address'     => null,
 
         'logo'        => [
