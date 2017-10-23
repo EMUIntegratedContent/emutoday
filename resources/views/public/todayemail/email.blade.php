@@ -78,7 +78,7 @@
 													</ul>
 												</td>
 												<td valign="top" width="232" style="padding:5px; text-align:center">
-													<a style="color:#ffffff" href="https://today.emich.edu">EMU Today</a> | <a style="color:#ffffff" href="https://today.emich.edu/magazine">Eastern Magazine</a>
+													<a style="color:#ffffff" href="{{ url('/') }}">EMU Today</a> | <a style="color:#ffffff" href="{{ url('/') }}/magazine">Eastern Magazine</a>
 												</td>
 										</tr>
 								</table>
