@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Snowfire\Beautymail\Beautymail;
 use Emutoday\Email;
 use Emutoday\Story;
-use Emutoday\ImageType;
+use Emutoday\Imagetype;
 
 class SendTodayEmails extends Command
 {
@@ -53,7 +53,7 @@ class SendTodayEmails extends Command
 
       foreach($emails as $email){
         $mainStory = Story::findOrFail($email->mainstory_id);
-        $emailImageTypeIds = ImageType::select('id')->where('type', 'email')->get(); // get email image types
+        $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get(); // get email image types
         $mainStoryImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
 
         // Send one email to each recipient/mailing list
