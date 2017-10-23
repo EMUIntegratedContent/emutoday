@@ -4,7 +4,7 @@ namespace Emutoday\Today\Transformers;
 
 use Emutoday\Story;
 use Emutoday\Author;
-use Emutoday\ImageType;
+use Emutoday\Imagetype;
 use League\Fractal;
 use Carbon\Carbon;
 
@@ -12,7 +12,7 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
 {
     public function transform(Story $story)
     {
-        $emailImageTypeIds = ImageType::select('id')->where('type', 'email')->get();
+        $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get();
         $author = Author::find($story->author_id);
 
         return [

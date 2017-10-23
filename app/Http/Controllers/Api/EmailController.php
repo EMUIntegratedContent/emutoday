@@ -8,7 +8,7 @@ use Emutoday\Story;
 use Emutoday\User;
 use Emutoday\Event;
 use Emutoday\Announcement;
-use Emutoday\ImageType;
+use Emutoday\Imagetype;
 use Emutoday\MailingList;
 use Illuminate\Http\Request;
 
@@ -216,7 +216,7 @@ class EmailController extends ApiController
    * Main Stories require an image with type 'emutoday_email' to be present with the story.
    */
    public function getMainEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
-      $email_imagetypes = ImageType::select('id')->where('type', 'email')->get(); //get email imagetype
+      $email_imagetypes = Imagetype::select('id')->where('type', 'email')->get(); //get email imagetype
 
       if($fromDate && !$toDate){
           $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetypes){
