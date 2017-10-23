@@ -81,7 +81,7 @@ return [
     |
     */
 
-    'username' => env('cpuzzuol@emich.edu'),
+    'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +94,7 @@ return [
     |
     */
 
-    'password' => env('AP9WXy6sRqey'),
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
