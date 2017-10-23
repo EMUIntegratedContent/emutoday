@@ -8,6 +8,7 @@ use Snowfire\Beautymail\Beautymail;
 use Emutoday\Email;
 use Emutoday\Story;
 use Emutoday\Imagetype;
+use Mail;
 
 class SendTodayEmails extends Command
 {
@@ -49,6 +50,7 @@ class SendTodayEmails extends Command
        * 3) Not already sent
        * 4) Marked with a send time in the past
        */
+       /*
       $emails = Email::where([ ['is_approved', '=', 1], ['is_ready', '=', 1], ['is_sent', '=', 0], ['send_at', '<=', date('Y-m-d H:i')] ])->get();
 
       foreach($emails as $email){
@@ -71,5 +73,10 @@ class SendTodayEmails extends Command
         $email->is_sent = 1;
         $email->save();
       }
+      */
+      Mail::raw('Sending emails with Mailgun and Laravel is easy!', function($message)
+    	{
+    		$message->to('cpuzzuol@emich.edu');
+    	});
     }
 }
