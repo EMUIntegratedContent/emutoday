@@ -74,6 +74,9 @@ class SendTodayEmails extends Command
               $message->subject($email->title);
               $message->to($recipient->email_address);
 
+              // IMPORTANT: tag this email as an EMU Today mailer!
+              // Mailgun Docs: http://mailgun-documentation.readthedocs.io/en/latest/api-sending.html#sending
+              // Tutuorial: https://stackoverflow.com/questions/35848266/using-laravels-mailgun-driver-how-do-you-gracefully-send-custom-data-and-tag
               $headers = $message->getHeaders();
               $headers->addTextHeader('X-Mailgun-Tag', 'today-mailer');
           });
