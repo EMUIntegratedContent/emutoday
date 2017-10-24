@@ -17,7 +17,7 @@ class MailgunApiController extends ApiController
   }
 
   public function postClick(Request $request){
-    //Log::info('MAILGUN WUZ HERE');
+    Log::info('MAILGUN WUZ HERE');
 
     return $this->setStatusCode(200)
     ->respondUpdatedWithData('Hello API world!',[]);
