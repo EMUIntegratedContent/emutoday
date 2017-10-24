@@ -16,9 +16,7 @@ class MailgunApiController extends ApiController
   }
 
   public function postClick(Request $request){
-    Log::info('MAILGUN WUZ HERE\r\n');
-    Log::info('MAILGUN WUZ HERE\r\n');
-    Log::info('MAILGUN WUZ HERE\r\n');
+    Log::info('MAILGUN CLICK REGISTERED. Info below:');
     Log::info($request->all());
     $mailgun_post_data = $request->all();
 

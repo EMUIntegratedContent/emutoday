@@ -79,6 +79,7 @@ class SendTodayEmails extends Command
               // Tutuorial: https://stackoverflow.com/questions/35848266/using-laravels-mailgun-driver-how-do-you-gracefully-send-custom-data-and-tag
               $headers = $message->getHeaders();
               $headers->addTextHeader('X-Mailgun-Tag', 'today-mailer');
+              $headers->addTextHeader('X-Mailgun-TodayID', $email->id); //custom variable. Allows email ID in today to be linked to Mailgun's email ID via webhooks.
           });
         }
         // IMPORTANT! Mark this email as sent!
