@@ -25,7 +25,7 @@ class MailgunApiController extends ApiController
      * TUTORIAL: https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
      * Note: API key comes from .env file
      **/
-    if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['token'], $mailgun_post_data->['timestamp'], $mailgun_post_data->['signature'])){
+    if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['token'], $mailgun_post_data['timestamp'], $mailgun_post_data['signature'])){
       return $this->setStatusCode(200)
       ->respond('Hello API world!');
     }
