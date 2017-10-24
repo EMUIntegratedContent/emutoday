@@ -13,7 +13,7 @@ class MailgunApiController extends ApiController
 {
   function __construct()
   {
-    $this->middleware('cors');
+    //$this->middleware('cors');
   }
 
   public function postClick(Request $request){
