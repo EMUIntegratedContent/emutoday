@@ -19,7 +19,17 @@ class MailgunApiController extends ApiController
   public function postClick(Request $request){
     //Log::info('MAILGUN WUZ HERE');
 
-    return $this->setStatusCode(200)
-    ->respond('Hello API world!');
+    if($this->verify){
+      return $this->setStatusCode(200)
+      ->respond('Hello API world!');
+    }
+
+    return $this->setStatusCode(401)
+    ->respond('Unauthenticated usage of this route!');
+
+  }
+
+  protected function verify($api_key, $token, $timestamp, $signature){
+    return false;
   }
 }
