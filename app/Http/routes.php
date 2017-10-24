@@ -23,7 +23,7 @@ use GuzzleHttp\Client;
 
 Route::group(['prefix' => 'mailgun'], function() {
     Route::post('click', 'Api\MailgunApiController@postClick');
-}
+});
 
 Route::get('/cas/logout', function(){
     Auth::logout();
