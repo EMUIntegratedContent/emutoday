@@ -20,7 +20,7 @@ use GuzzleHttp\Client;
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::post('/mailgun/click', 'Api/MailgunApiController@postClick');
+Route::post('/mailgun/click', 'Api\MailgunApiController@postClick');
 
 //->middleware('auth:api')
 
