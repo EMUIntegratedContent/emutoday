@@ -16,7 +16,10 @@ class MailgunApiController extends ApiController
   }
 
   public function postClick(Request $request){
-    Log::info('MAILGUN WUZ HERE');
+    Log::info('MAILGUN WUZ HERE\r\n');
+    Log::info('MAILGUN WUZ HERE\r\n');
+    Log::info('MAILGUN WUZ HERE\r\n');
+    Log::info($request->all());
     $mailgun_post_data = $request->all();
 
     // Secure the Webhook endpoint (Note: API key comes from .env file)
