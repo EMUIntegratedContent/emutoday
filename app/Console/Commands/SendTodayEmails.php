@@ -63,7 +63,7 @@ class SendTodayEmails extends Command
           $beautymail->send('public.todayemail.email', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function($message) use($email, $recipient)
           {
               $message
-            ->from('noreply@today.emich.edu')
+            ->from('postmaster@todaytest.emich.edu')
             ->to($recipient->email_address, $recipient->description)
             ->subject("EMU Today: " . $email->title);
           });
