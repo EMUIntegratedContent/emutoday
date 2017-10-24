@@ -187,7 +187,7 @@
           <p>Nobody</p>
         </template>
         <h3>Statistics</h3>
-          <p><a class="btn btn-info" :href="'/admin/email/stats/' + record.id"><span class="fa fa-bar-chart" aria-hidden="true"></span> View statistics</a></p>
+          <p><button type="button" class="btn btn-info" data-toggle="modal" data-target="#statsModal"><span class="fa fa-bar-chart" aria-hidden="true"></span> View Statistics</button></p>
         <h3>Actions</h3>
           <p><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email</button></p>
       </div>
@@ -208,6 +208,9 @@
   <email-delete-modal
   :email="record"
   ></email-delete-modal>
+  <email-stats-modal
+  :email="record"
+  ></email-stats-modal>
 </template>
 
 <style scoped>
@@ -281,11 +284,12 @@ import EmailStoryQueue from './EmailStoryQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 import EmailDeleteModal from './EmailDeleteModal.vue'
+import EmailStatsModal from './EmailStatsModal.vue'
 import EmailLiveView from './EmailLiveView.vue'
 
 module.exports = {
   directives: {},
-  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailLiveView, vSelect},
+  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailLiveView, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -329,6 +333,9 @@ module.exports = {
         id: '',
         is_approved: false,
         is_ready: false,
+        mailgun_clicks:0,
+        mailgun_opens:0,
+        mailgun_spam:0,
         mainStory: null,
         send_at: null,
         subheading: null,

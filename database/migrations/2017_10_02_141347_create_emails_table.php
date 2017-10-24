@@ -22,6 +22,9 @@ class CreateEmailsTable extends Migration
             $table->integer('mainstory_id')->unsigned()->nullable();
             $table->dateTime('send_at')->nullable();
             $table->tinyInteger('is_sent');
+            $table->integer('mailgun_opens'); // to be incremented by Mailgun Webhooks
+            $table->integer('mailgun_clicks'); // to be incremented by Mailgun Webhooks
+            $table->integer('mailgun_spam'); // to be incremented by Mailgun Webhooks
             $table->softDeletes();
             $table->foreign('mainstory_id')
               ->references('id')->on('storys')

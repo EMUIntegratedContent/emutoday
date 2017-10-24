@@ -44,6 +44,9 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'send_at' => $sendAt,
             'recipients' => $email->recipients()->get(),
             'is_sent' => $email->is_sent,
+            'mailgun_opens' => $email->mailgun_opens,
+            'mailgun_clicks' => $email->mailgun_clicks,
+            'mailgun_spam' => $email->mailgun_spam
         ];
     }
 }

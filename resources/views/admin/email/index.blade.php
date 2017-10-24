@@ -29,7 +29,7 @@
       {{ session('email_deleted') }}
     </div>
 @endif
-<!--MODAL-->
+<!--DELETE MODAL-->
 <div id="deleteModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
@@ -48,6 +48,48 @@
       <div class="modal-footer">
         <button type="button" id="cancelBtn" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" id="deleteBtn" class="btn btn-danger" data-dismiss="modal" disabled="">Delete Email</button>
+      </div>
+    </div>
+  </div>
+</div><!--/end modal-->
+<!--STATS MODAL-->
+<div id="statsModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Email statistics</h4>
+      </div>
+      <div class="modal-body">
+        <p><span id="modal-email-title"></span> basic statistics.</p>
+        <ul>
+          <li><span id="modal-send-date"></span></li>
+        </ul>
+        <div class="row text-center">
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <h5>Opens</h5>
+            <span id="modal-mailgun-opens"></span>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <h5>Clicks</h5>
+            <span id="modal-mailgun-clicks"></span>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <h5>Marked as Spam</h5>
+            <span id="modal-mailgun-spam"></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8">
+            <p>For more complete statistcs, log in to <a href="https://app.mailgun.org" target="_blank">Mailgun</a></p>
+          </div>
+          <div class="col-xs-12 col-sm-4 text-right">
+            <button type="button" id="closeBtn" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -102,9 +144,6 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            {{--<a href="/admin/email/destroy/{{ $email->id }}">
-                                                <span class="fa fa-trash" aria-hidden="true"></span>
-                                            </a>--}}
                                             <a
                                                href="#"
                                                data-toggle="modal"
@@ -165,8 +204,13 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            <a href="/admin/email/destroy/{{ $email->id }}">
-                                                <span class="fa fa-trash" aria-hidden="true"></span>
+                                            <a
+                                               href="#"
+                                               data-toggle="modal"
+                                               data-id="{{ $email->id }}"
+                                               data-title="{{ $email->title }}"
+                                               data-target="#deleteModal">
+                                              <span class="fa fa-trash" aria-hidden="true"></span>
                                             </a>
                                         </td>
                                     </tr>
@@ -223,8 +267,13 @@
                                           </a>
                                       </td>
                                       <td class="text-center">
-                                          <a href="/admin/email/destroy/{{ $email->id }}">
-                                              <span class="fa fa-trash" aria-hidden="true"></span>
+                                          <a
+                                             href="#"
+                                             data-toggle="modal"
+                                             data-id="{{ $email->id }}"
+                                             data-title="{{ $email->title }}"
+                                             data-target="#deleteModal">
+                                            <span class="fa fa-trash" aria-hidden="true"></span>
                                           </a>
                                       </td>
                                   </tr>
@@ -273,9 +322,18 @@
                                       <td>{{ $email->title }}</td>
                                       <td class="text-center"><small>{{ $email->present()->prettySendAtDate }}</small></td>
                                       <td class="text-center">
-                                          <!--<a href="{{ route('email.edit', $email->id) }}">-->
-                                              <span class="fa fa-bar-chart" aria-hidden="true">
-                                          <!--</a>-->
+                                          <a
+                                             href="#"
+                                             data-toggle="modal"
+                                             data-id="{{ $email->id }}"
+                                             data-title="{{ $email->title }}"
+                                             data-sent="{{ $email->present()->prettySendAtDate }}"
+                                             data-opens="{{ $email->mailgun_opens }}"
+                                             data-clicks="{{ $email->mailgun_clicks }}"
+                                             data-spam="{{ $email->mailgun_spam }}"
+                                             data-target="#statsModal">
+                                            <span class="fa fa-bar-chart" aria-hidden="true"></span>
+                                          </a>
                                       </td>
                                       <td class="text-center">
                                           <a href="{{ route('email.edit', $email->id) }}">
@@ -283,8 +341,13 @@
                                           </a>
                                       </td>
                                       <td class="text-center">
-                                          <a href="/admin/email/destroy/{{ $email->id }}">
-                                              <span class="fa fa-trash" aria-hidden="true"></span>
+                                          <a
+                                             href="#"
+                                             data-toggle="modal"
+                                             data-id="{{ $email->id }}"
+                                             data-title="{{ $email->title }}"
+                                             data-target="#deleteModal">
+                                            <span class="fa fa-trash" aria-hidden="true"></span>
                                           </a>
                                       </td>
                                   </tr>
@@ -337,7 +400,16 @@
 
       $('#deleteBtn').on('click', function(){
         window.location.href = '/admin/email/destroy/' + emailId;
-      })
+      });
+
+      $('#statsModal').on("show.bs.modal", function (e) {
+           $("#modal-email-title").html($(e.relatedTarget).data('title'));
+           $("#modal-send-date").html($(e.relatedTarget).data('sent'));
+           $("#modal-mailgun-opens").html($(e.relatedTarget).data('opens'));
+           $("#modal-mailgun-clicks").html($(e.relatedTarget).data('clicks'));
+           $("#modal-mailgun-spam").html($(e.relatedTarget).data('spam'));
+      });
+
     })
   </script>
 @endsection
