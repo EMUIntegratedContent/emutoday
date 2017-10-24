@@ -59,6 +59,7 @@ class SendTodayEmails extends Command
 
         // Send one email to each recipient/mailing list
         foreach($email->recipients  as $recipient){
+          /*
           $beautymail = app()->make(Beautymail::class);
           $beautymail->send('public.todayemail.email', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function($message) use($email, $recipient)
           {
@@ -66,6 +67,12 @@ class SendTodayEmails extends Command
             ->from('postmaster@todaytest.emich.edu')
             ->to($recipient->email_address, $recipient->description)
             ->subject("EMU Today: " . $email->title);
+          });
+          */
+          Mail::send('public.todayemail.email0', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function ($message) {
+              $message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'EMU Today');
+              $message->subject($email->title);
+              $message->to($recipient->email_address);
           });
         }
         // IMPORTANT! Mark this email as sent!
