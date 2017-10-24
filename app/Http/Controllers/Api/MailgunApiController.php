@@ -18,15 +18,20 @@ class MailgunApiController extends ApiController
 
   public function postClick(Request $request){
     //Log::info('MAILGUN WUZ HERE');
+    $mailgun_post_data = $request->all();
 
-/*
-    if($this->verify()){
+    /**
+     * Secure the Webhook endpoint
+     * TUTORIAL: https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
+     * Note: API key comes from .env file
+     **/
+    if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data->token, $mailgun_post_data->timestamp, $mailgun_post_data->signature)){
       return $this->setStatusCode(200)
       ->respond('Hello API world!');
     }
-*/
+
     return $this->setStatusCode(401)
-    ->respondUpdatedWithData('here is some data', $request->all());
+    ->respond('Unauthenticated usage of this route!');
 
   }
 
