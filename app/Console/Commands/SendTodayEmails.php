@@ -73,6 +73,9 @@ class SendTodayEmails extends Command
               $message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'EMU Today');
               $message->subject($email->title);
               $message->to($recipient->email_address);
+
+              $headers = $message->getHeaders();
+              $headers->addTextHeader('X-Mailgun-Tag', 'today-mailer');
           });
         }
         // IMPORTANT! Mark this email as sent!
