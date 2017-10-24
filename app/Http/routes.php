@@ -20,9 +20,10 @@ use GuzzleHttp\Client;
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::post('/mailgun/click', 'Api\MailgunApiController@postClick');
 
-//->middleware('auth:api')
+Route::group(['prefix' => 'mailgun'], function() {
+    Route::post('click', 'Api\MailgunApiController@postClick');
+}
 
 Route::get('/cas/logout', function(){
     Auth::logout();
@@ -103,7 +104,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('buildinglist', function() {
         $text = Input::get('q');
         return Building::likeSearch('name', $text)->select('name')->orderBy('name', 'asc')->get();
-        //return Building::ofMapType('illustrated')->get();
     });
     /**
      * List of Categories for EventForm

@@ -13,18 +13,13 @@ class MailgunApiController extends ApiController
 {
   function __construct()
   {
-    //$this->middleware('auth:api');
   }
 
   public function postClick(Request $request){
-    //Log::info('MAILGUN WUZ HERE');
+    Log::info('MAILGUN WUZ HERE');
     $mailgun_post_data = $request->all();
 
-    /**
-     * Secure the Webhook endpoint
-     * TUTORIAL: https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
-     * Note: API key comes from .env file
-     **/
+    // Secure the Webhook endpoint (Note: API key comes from .env file)
     if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['token'], $mailgun_post_data['timestamp'], $mailgun_post_data['signature'])){
       return $this->setStatusCode(200)
       ->respond('Hello API world!');
@@ -35,6 +30,15 @@ class MailgunApiController extends ApiController
 
   }
 
+  /**
+   * To ensure the authenticity of event requests, Mailgun signs them and posts the signature along with other webhook parameters:
+   * DOCS: https://documentation.mailgun.com/en/latest/user_manual.html#webhooks
+   * @param String token      "token" property sent in mailgun POST request
+   * @param String timestamp  "timestamp" property sent in mailgun POST request
+   * @param String signature  "signature" property sent in mailgun POST request
+   *
+   * @return boolean
+   */
   private function verify($apiKey, $token, $timestamp, $signature){
     //check if the timestamp is fresh
     if (abs(time() - $timestamp) > 15) {
