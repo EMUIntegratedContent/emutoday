@@ -1,4 +1,4 @@
-<div width="600px" style="border:1px solid #000000; padding:5px; margin: 0 auto;">
+<div style="border:1px solid #000000; padding:5px; margin: 0 auto; width:600px">
 	<table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%">
 			<tr>
 					<td align="center" valign="top">
