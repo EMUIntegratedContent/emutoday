@@ -15,8 +15,8 @@ return [
     */
 
     'mailgun' => [
-        'domain' => env('todaytest.emich.edu'),
-        'secret' => env('key-a227a59f6b182285c8924f71c1b18fb4'),
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
     ],
 
     'ses' => [
