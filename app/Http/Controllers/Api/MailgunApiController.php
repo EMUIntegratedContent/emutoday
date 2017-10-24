@@ -13,7 +13,7 @@ class MailgunApiController extends ApiController
 {
   function __construct()
   {
-    $this->middleware('auth:api');
+    //$this->middleware('auth:api');
   }
 
   public function postClick(Request $request){
