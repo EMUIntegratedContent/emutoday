@@ -69,7 +69,7 @@ class SendTodayEmails extends Command
             ->subject("EMU Today: " . $email->title);
           });
           */
-          Mail::send('public.todayemail.email0', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function ($message) {
+          Mail::send('public.todayemail.email0', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function ($message) use ($email, $recipient){
               $message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'EMU Today');
               $message->subject($email->title);
               $message->to($recipient->email_address);
