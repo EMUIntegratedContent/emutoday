@@ -74,7 +74,7 @@ class SendTodayEmails extends Command
         $email->save();
       }
       */
-      Mail::send('Text to e-mail', function ($message) {
+      Mail::raw('Text to e-mail', function ($message) {
         $message->from('postmaster@todaytest.emich.edu', 'Laravel');
 
         $message->to('cpuzzuol@emich.edu');
