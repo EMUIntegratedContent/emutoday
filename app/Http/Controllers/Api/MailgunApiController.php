@@ -20,6 +20,6 @@ class MailgunApiController extends ApiController
     //Log::info('MAILGUN WUZ HERE');
 
     return $this->setStatusCode(200)
-    ->respondSuccessWithData('Hello API world!',[]);
+    ->respondSavedWithData('Hello API world!',[]);
   }
 }
