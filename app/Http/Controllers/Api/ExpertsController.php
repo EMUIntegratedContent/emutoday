@@ -58,14 +58,20 @@ class ExpertsController extends ApiController
                 $query->where('first_name', 'like', '%'. $term . '%')
                       ->orWhere('last_name', 'like', '%'. $term .'%');
               });
+            if($request->get('type_filter') == 'unapproved'){
+              $result = $result->where('is_approved', 0)->whereRaw('created_at != updated_at');
+            }
             if($request->get('type_filter') == 'new'){
-              $result = $result->where('is_approved', 0);
+              $result = $result->where('is_approved', 0)->whereRaw('created_at = updated_at');
             }
             $result = $result->with('expertImages')->paginate(10);
         } else {
             $result = Expert::orderBy('last_name', 'asc');
+            if($request->get('type_filter') == 'unapproved'){
+              $result = $result->where('is_approved', 0)->whereRaw('created_at != updated_at');
+            }
             if($request->get('type_filter') == 'new'){
-              $result = $result->where('is_approved', 0);
+              $result = $result->where('is_approved', '=', 0)->whereRaw('created_at = updated_at');
             }
             $result = $result->with('expertImages')->paginate(10);
         }
