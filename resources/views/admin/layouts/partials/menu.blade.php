@@ -94,7 +94,7 @@
       <ul class="treeview-menu">
         <li><a href="#"><i class="fa fa-circle-o"></i>Eastern Experts <span class="pull-right-container">
             @if(count($bugExperts) > 0)
-            <span class="label label-success">{{ count($bugExperts) }} PEND.</span>
+            <span class="label label-success">{{ count($bugExperts) }} NEW</span>
             @endif
             <i class="fa fa-angle-left pull-right"></i>
             </span></a>

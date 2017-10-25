@@ -32,7 +32,7 @@ class Bug implements IBug{
     }
 
     public function getUnapprovedExperts() {
-        $bugExperts = Expert::where('is_approved', 0)->orderBy('created_at', 'desc')->get();
+        $bugExperts = Expert::where('is_approved', 0)->whereRaw('created_at = updated_at')->orderBy('created_at', 'desc')->get();
 
         return $bugExperts;
     }

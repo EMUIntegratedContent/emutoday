@@ -18,7 +18,10 @@
                       <input type="radio" name="typeFilter" value="all" autocomplete="off"> All
                     </label>
                     <label class="btn btn-info">
-                      <input type="radio" name="typeFilter" value="new" autocomplete="off"> Unapproved
+                      <input type="radio" name="typeFilter" value="unapproved" autocomplete="off"> Unapproved
+                    </label>
+                    <label class="btn btn-info">
+                      <input type="radio" name="typeFilter" value="new" autocomplete="off"> New
                     </label>
                   </div>
                   <div class="input-group">
@@ -55,8 +58,9 @@
               <td>{{ expert.first_name }}</td>
               <td>{{ expert.title }}</td>
               <td>
-                <span v-if="expert.is_approved" class="label label-success">Yes</span>
-                <span v-else class="label label-danger">No</span>
+                <span v-show="expert.is_approved" class="label label-success">Yes</span>
+                <span v-show="!expert.is_approved && (expert.created_at != expert.updated_at)" class="label label-danger">No</span>
+                <span v-show="!expert.is_approved && (expert.created_at == expert.updated_at)" class="label label-info">New</span>
               </td>
               <td>
                 <a href="/admin/experts/{{ expert.id }}/edit" class="button success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>

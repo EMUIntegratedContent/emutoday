@@ -6,7 +6,7 @@
         <span class="label label-info">{{ count($bugExperts) + count($bugExpertMediaRequests) }}</span>
     </a>
     <ul class="dropdown-menu">
-        <li class="header">There are {{ count($bugExperts) }} upapproved experts and {{ count($bugExpertMediaRequests) }} new media requests.</li>
+        <li class="header">There are {{ count($bugExperts) }} new experts and {{ count($bugExpertMediaRequests) }} new media requests.</li>
         <li>
             <!-- inner menu: contains the messages -->
             <ul class="menu">
