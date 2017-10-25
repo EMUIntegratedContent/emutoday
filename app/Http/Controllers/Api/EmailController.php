@@ -202,7 +202,7 @@ class EmailController extends ApiController
    /**
     * Clone an existing email (same as store() except exclude recipients, send_at, approve, live. Include id of original email as clone_id)
     */
-    public function clone(Request $request){
+    public function cloneEmail(Request $request){
       $validation = \Validator::make( Input::all(), [
           'title'   => 'required|min:10',
           'send_at' => 'nullable|date_format:Y-m-d H:i:s'
