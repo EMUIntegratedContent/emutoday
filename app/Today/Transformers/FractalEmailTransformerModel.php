@@ -47,7 +47,7 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'mailgun_opens' => $email->mailgun_opens,
             'mailgun_clicks' => $email->mailgun_clicks,
             'mailgun_spam' => $email->mailgun_spam,
-            'clone' => $email->clone()->select('id', 'title')->get(),
+            'clone' => $email->clonedEmail()->select('id', 'title')->get(),
             'created_at' => $email->created_at->format('n/j/y @ g:i A'),
         ];
     }
