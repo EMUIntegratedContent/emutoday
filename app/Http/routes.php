@@ -70,6 +70,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
     Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
     Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');
+    Route::post('email/clone', 'Api\EmailController@clone')->name('api_email_clone');
     Route::resource('email', 'Api\EmailController');
 
     Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');

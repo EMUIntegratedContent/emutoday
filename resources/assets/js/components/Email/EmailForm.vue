@@ -23,7 +23,7 @@
       </div>
       <div class="col-xs-12 col-sm-4 text-right">
         <button class="btn btn-success" type="button" @click="submitForm">{{ newform ? 'Create Email' : 'Update Email' }}</button>
-        <!--<button class="btn btn-default" type="button" @click="resetEmail">Undo changes</button>-->
+        <button v-if="!newform" class="btn btn-warning" type="button" data-toggle="modal" data-target="#cloneModal">Clone Email</button>
       </div>
     </div>
     <ul class="nav nav-tabs" role="tablist">
@@ -37,6 +37,9 @@
     <div class="tab-content">
       <div class="tab-pane active" id="step-1">
         <h2>Basic Email Information</h2>
+        <div v-if="record.clone.length > 0"  class="alert alert-info alert-dismissible">
+          <p>This email was cloned from <a :href="'/admin/email/'+ record.clone[0].id +'/edit'">this email</a> on {{ record.created_at }}.</p>
+        </div>
         <div class="form-group">
           <label for="email-title">Email Headline <span class="character-counter help-text invalid" v-if="insufficientTitle">({{ minTitleChars - record.title.length }} characters left)</span></label>
           <input type="text" class="form-control" id="email-title" v-bind:class="[formErrors.title ? 'invalid-input' : '']" v-model="record.title" placeholder="Email headline goes here.">
@@ -211,6 +214,9 @@
   <email-stats-modal
   :email="record"
   ></email-stats-modal>
+  <email-clone-modal
+  :email="record"
+  ></email-clone-modal>
 </template>
 
 <style scoped>
@@ -285,11 +291,12 @@ import EmailEventQueue from './EmailEventQueue.vue'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 import EmailDeleteModal from './EmailDeleteModal.vue'
 import EmailStatsModal from './EmailStatsModal.vue'
+import EmailCloneModal from './EmailCloneModal.vue'
 import EmailLiveView from './EmailLiveView.vue'
 
 module.exports = {
   directives: {},
-  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailLiveView, vSelect},
+  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailCloneModal, EmailLiveView, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -331,6 +338,8 @@ module.exports = {
       currentRecordId: null,
       record: {
         id: '',
+        clone: [],
+        created_at: null,
         is_approved: false,
         is_ready: false,
         mailgun_clicks:0,

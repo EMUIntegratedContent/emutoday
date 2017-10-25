@@ -94,6 +94,11 @@
     </div>
   </div>
 </div><!--/end modal-->
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-4 text-right">
+    <a class="btn btn-info" href="/admin/email/show">+ New Email</a>
+  </div>
+</div>
 <h2>Future Emails</h2>
 <div class="row">
     <div class="col-md-6">

@@ -44,6 +44,11 @@ class Email extends Model
       return $this->belongsToMany('Emutoday\MailingList', 'email_recipients', 'email_id', 'mailinglist_id')->withTimestamps();
   }
 
+  public function clone()
+  {
+      return $this->belongsTo('Emutoday\Email', 'clone_email_id');
+  }
+
 /*
   public function sendTimes(){
     return $this->hasMany('Emutoday\EmailSendTimes')

@@ -47,7 +47,7 @@ class EmailController extends ApiController
    }
 
    /**
-    * Store a new
+    * Store a new email
     */
     public function store(Request $request){
       $validation = \Validator::make( Input::all(), [
@@ -198,6 +198,71 @@ class EmailController extends ApiController
          }
      }
    }
+
+   /**
+    * Clone an existing email (same as store() except exclude recipients, send_at, approve, live. Include id of original email as clone_id)
+    */
+    public function clone(Request $request){
+      $validation = \Validator::make( Input::all(), [
+          'title'   => 'required|min:10',
+          'send_at' => 'nullable|date_format:Y-m-d H:i:s'
+         ]);
+
+      if( $validation->fails() ){
+          return $this->setStatusCode(422)
+                      ->respondWithError($validation->errors()->getMessages());
+      }
+
+      if($validation->passes()){
+          $email = new Email;
+
+          $sendAt = null;
+          if($request->get('send_at') != null){
+            $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
+          }
+
+          $email->title            = $request->get('title');
+          $email->subheading       = $request->get('subheading', null);
+          $email->mainstory_id     = $request->get('mainStory', null)['id'];
+          $email->clone_email_id   = $request->get('id'); // mark from which email this one was cloned
+
+          if($email->save()) {
+            // Sync announcements
+            // tutuorial: https://laravel.com/docs/5.5/eloquent-relationships#updating-many-to-many-relationships
+            $announcemntCount = 0;
+            $announcementIds = array();
+            foreach($request->get('announcements') as $announcement){
+              $announcementIds[$announcement['id']] = ['order' => $announcemntCount] ;
+              $announcemntCount++;
+            }
+            $email->announcements()->sync($announcementIds);
+
+            // Sync events
+            $eventCount = 0;
+            $eventIds = array();
+            foreach($request->get('events') as $event){
+              $eventIds[$event['id']] = ['order' => $eventCount];
+              $eventCount++;
+            }
+            $email->events()->sync($eventIds);
+
+            // Sync side stories
+            $otherStoryCount = 0;
+            $otherStoryIds = array();
+            foreach($request->get('otherStories') as $otherStory){
+              $otherStoryIds[$otherStory['id']] = ['order' => $otherStoryCount];
+              $otherStoryCount++;
+            }
+            $email->stories()->sync($otherStoryIds);
+
+            $fractal = new Manager();
+            $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
+
+            return $this->setStatusCode(201)
+             ->respondUpdatedWithData('Email has been cloned.', $fractal->createData($resource)->toArray() );
+          }
+      }
+    }
 
    /**
     * Delete an email.

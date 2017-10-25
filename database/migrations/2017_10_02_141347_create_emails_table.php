@@ -20,6 +20,7 @@ class CreateEmailsTable extends Migration
             $table->tinyInteger('is_approved');
             $table->tinyInteger('is_ready');
             $table->integer('mainstory_id')->unsigned()->nullable();
+            $table->integer('clone_email_id')->unsigned()->nullable(); // if this email is cloned, mark from which one
             $table->dateTime('send_at')->nullable();
             $table->tinyInteger('is_sent');
             $table->integer('mailgun_opens'); // to be incremented by Mailgun Webhooks
@@ -29,6 +30,9 @@ class CreateEmailsTable extends Migration
             $table->foreign('mainstory_id')
               ->references('id')->on('storys')
               ->onDelete('cascade');
+            $table->foreign('clone_email_id')
+              ->references('id')->on('emails')
+              ->onDelete('set null');
             $table->timestamps();
         });
     }

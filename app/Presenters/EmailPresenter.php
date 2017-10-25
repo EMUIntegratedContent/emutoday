@@ -21,7 +21,11 @@ class EmailPresenter extends Presenter
 
     public function prettySendAtDate()
     {
+      if($this->send_at){
         return $this->send_at->format('D m-d-Y @ g:i A');
+      }
+
+      return 'Date not set.';
     }
 
 }
