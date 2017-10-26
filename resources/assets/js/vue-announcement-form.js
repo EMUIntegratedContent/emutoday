@@ -3,13 +3,12 @@ var Vue = require('vue');
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
-// var moment = require('moment');
 import AnnouncementForm from './components/AnnouncementForm.vue';
 
 var vm = new Vue({
     el: '#vue-announcements',
     components: {AnnouncementForm},
-    // http: {
+    //http: {
     //     headers: {
     //         // You could also store your token in a global object,
     //         // and reference it here. APP.token
