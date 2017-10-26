@@ -21847,7 +21847,6 @@ new Vue({
         StoryForm: _StoryForm2.default,
         BoxTools: _BoxTools2.default
     }
-
 });
 
 },{"./components/BoxTools.vue":111,"./components/StoryForm.vue":112,"./vuex/store":118,"vue":108,"vue-resource":106}],116:[function(require,module,exports){

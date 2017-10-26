@@ -18604,13 +18604,10 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-// var moment = require('moment');
-
-
 var vm = new Vue({
   el: '#vue-announcements',
   components: { AnnouncementForm: _AnnouncementForm2.default },
-  // http: {
+  //http: {
   //     headers: {
   //         // You could also store your token in a global object,
   //         // and reference it here. APP.token

@@ -18,6 +18,5 @@ new Vue({
   components: {
       StoryForm: StoryForm,
       BoxTools: BoxTools
-  }
-
+  },
 });
