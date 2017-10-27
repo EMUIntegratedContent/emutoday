@@ -20454,8 +20454,9 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-// var moment = require('moment');
-
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 var vm = new Vue({
     el: '#vue-expertmediarequest-form',

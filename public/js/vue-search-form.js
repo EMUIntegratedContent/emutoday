@@ -12380,6 +12380,10 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+
 new Vue({
     el: '#vue-search-form',
     components: { SearchForm: _SearchForm2.default },
