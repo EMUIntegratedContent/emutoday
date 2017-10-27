@@ -1,10 +1,10 @@
 <template>
   <section id="email-live-container" style="margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; overflow:scroll; overflow-y: hidden; margin-bottom:20px">
-    <table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%" id="bodyTable">
+    <table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%" id="bodyTable" style="font-family:arial, sans-serif;">
         <tr>
             <td align="center" valign="top">
                 <table border="0" width="600" id="emailContainer">
-                    <tr valign="top" id="header-row">
+                    <tr valign="top" id="header-row" style="font-family:arial, sans-serif;">
                       <td colspan="2">
                         <img src="/assets/imgs/email/emailblast_logo_template_600x120.png" width="600" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo"/>
                       </td>
@@ -56,7 +56,7 @@
                         <template v-if="email.otherStories.length > 0">
                           <h3>Featured News Stories</h3>
                           <article v-for="story in email.otherStories">
-                            <h4>{{story.title}}<h4>
+                            <h4>{{story.title}}</h4>
                             {{{ story.content | truncate '30' }}}
                             <p><a :href="story.full_url">Read More</a></p>
                           </article>
@@ -104,7 +104,53 @@
   </section>
 </template>
 <style scoped>
-
+h1 {
+    display: block;
+    font-size: 2em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+p {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    margin: 0;
+}
+h3 {
+    display: block;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+body, td, input, textarea, select {
+    font-family: arial,sans-serif;
+}
+h4 {
+    display: block;
+    font-size: 1em;
+    -webkit-margin-before: 1.33em;
+    -webkit-margin-after: 1.33em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
 </style>
 <script>
 export default {

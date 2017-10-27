@@ -5,6 +5,9 @@ import Sortable from 'vue-sortable';
 Vue.use(VueResource);
 Vue.use(Sortable)
 
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+
 import EmailForm from './components/Email/EmailForm.vue';
 //import EmailBoxTools from './components/EmailBoxTools.vue';
 import store from './vuex/store';
