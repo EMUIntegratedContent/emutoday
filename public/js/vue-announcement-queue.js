@@ -18956,23 +18956,18 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-// var moment = require('moment');
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 new Vue({
-    el: '#vue-announcement-queue',
-    components: {
-        AnnouncementQueue: _AnnouncementQueue2.default
-    },
-    // http: {
-    //         headers: {
-    //                 // You could also store your token in a global object,
-    //                 // and reference it here. APP.token
-    //                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-    //         }
-    // },
-    ready: function ready() {
-        console.log('new Vue Announcement Queue ready');
-    }
+  el: '#vue-announcement-queue',
+  components: {
+    AnnouncementQueue: _AnnouncementQueue2.default
+  },
+  ready: function ready() {
+    console.log('new Vue Announcement Queue ready');
+  }
 });
 
 },{"./components/AnnouncementQueue.vue":28,"vue":26,"vue-resource":25}]},{},[33]);
