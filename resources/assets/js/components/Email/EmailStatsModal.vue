@@ -6,12 +6,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Email statistics</h4>
+          <h4 class="modal-title">Email basic statistics</h4>
         </div>
         <div class="modal-body">
-          <p>{{ email.title }} basic statistics.</p>
           <ul>
-            <li>{{ email.send_at }}</li>
+            <li><strong>Title:</strong> {{ email.title }}</li>
+            <li><strong>Sent At:</strong> {{ email.send_at }}</li>
           </ul>
           <div class="row text-center">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -44,7 +44,7 @@
 </template>
 <style scoped>
   h5, .statistic{
-    font-size: 3rem;
+    font-size: 2rem;
   }
 </style>
 <script>

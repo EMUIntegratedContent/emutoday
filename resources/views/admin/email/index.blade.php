@@ -59,12 +59,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Email statistics</h4>
+        <h4 class="modal-title">Email basic statistics</h4>
       </div>
       <div class="modal-body">
-        <p><span id="modal-email-title"></span> basic statistics.</p>
         <ul>
-          <li><span id="modal-send-date"></span></li>
+          <li><strong>Email title:</strong> <span id="modal-email-title"></span></li>
+          <li><strong>Sent At:</strong> <span id="modal-send-date"></span></li>
         </ul>
         <div class="row text-center">
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
