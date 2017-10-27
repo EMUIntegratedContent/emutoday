@@ -21842,6 +21842,13 @@ new Vue({
         console.log('vue-story-form');
     },
 
+    http: {
+        headers: {
+            // You could also store your token in a global object,
+            // and reference it here. APP.token
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        }
+    },
     store: _store2.default,
     components: {
         StoryForm: _StoryForm2.default,

@@ -5,9 +5,6 @@ Vue.use(VueResource);
 
 import AnnouncementForm from './components/AnnouncementForm.vue';
 
-var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
-Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
-
 var vm = new Vue({
     el: '#vue-announcements',
     components: {AnnouncementForm},
