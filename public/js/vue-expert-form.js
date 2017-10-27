@@ -22197,6 +22197,10 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+
 // var moment = require('moment');
 
 
