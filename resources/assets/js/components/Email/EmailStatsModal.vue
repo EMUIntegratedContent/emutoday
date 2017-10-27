@@ -11,7 +11,7 @@
         <div class="modal-body">
           <ul>
             <li><strong>Title:</strong> {{ email.title }}</li>
-            <li><strong>Sent At:</strong> {{ moment(email.send_at).format("YYYY-MM-DD") }}</li>
+            <li><strong>Sent At:</strong> {{ email.send_at | formatDate }}</li>
           </ul>
           <div class="row text-center">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -68,7 +68,11 @@ export default {
 
   },
   filters: {
-
+    formatDate: function(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY hh:mm A')
+      }
+    },
   },
   events: {
 
