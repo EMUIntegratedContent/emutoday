@@ -3,6 +3,8 @@ var Vue = require('vue');
 import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 import StoryForm from './components/StoryForm.vue'
 import BoxTools from './components/BoxTools.vue'
@@ -19,9 +21,4 @@ new Vue({
       StoryForm: StoryForm,
       BoxTools: BoxTools
   },
-});
-
-Vue.http.interceptors.push(function (request, next) {
-    request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
-    next();
 });

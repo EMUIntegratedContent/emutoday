@@ -21836,6 +21836,9 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+
 new Vue({
     el: '#vue-story-form-wrapper',
     ready: function ready() {
@@ -21847,11 +21850,6 @@ new Vue({
         StoryForm: _StoryForm2.default,
         BoxTools: _BoxTools2.default
     }
-});
-
-Vue.http.interceptors.push(function (request, next) {
-    request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
-    next();
 });
 
 },{"./components/BoxTools.vue":111,"./components/StoryForm.vue":112,"./vuex/store":118,"vue":108,"vue-resource":106}],116:[function(require,module,exports){
