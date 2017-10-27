@@ -15,16 +15,16 @@
           </ul>
           <div class="row text-center">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-              <h5>Opens</h5>
-              {{ email.mailgun_opens }}
+              <h5 class="email-statistic">Opens</h5>
+              <span class="email-statistic">{{ email.mailgun_opens }}</span>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-              <h5>Clicks</h5>
-              {{ email.mailgun_clicks }}
+              <h5 class="email-statistic">Clicks</h5>
+              <span class="email-statistic">{{ email.mailgun_clicks }}</span>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-              <h5>Marked as Spam</h5>
-              {{ email.mailgun_spam }}
+              <h5 class="email-statistic">Marked as Spam</h5>
+              <span class="email-statistic">{{ email.mailgun_spam }}</span>
             </div>
           </div>
         </div>
@@ -43,7 +43,9 @@
   </div><!--/end modal-->
 </template>
 <style scoped>
-
+  h5, .statistic{
+    font-size: 3rem;
+  }
 </style>
 <script>
 export default {

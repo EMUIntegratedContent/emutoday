@@ -68,16 +68,16 @@
         </ul>
         <div class="row text-center">
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <h5>Opens</h5>
-            <span id="modal-mailgun-opens"></span>
+            <h5 class="email-statistic">Opens</h5>
+            <span class="email-statistic" id="modal-mailgun-opens"></span>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <h5>Clicks</h5>
-            <span id="modal-mailgun-clicks"></span>
+            <h5 class="email-statistic">Clicks</h5>
+            <span class="email-statistic" id="modal-mailgun-clicks"></span>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-            <h5>Marked as Spam</h5>
-            <span id="modal-mailgun-spam"></span>
+            <h5 class="email-statistic">Marked as Spam</h5>
+            <span class="email-statistic" id="modal-mailgun-spam"></span>
           </div>
         </div>
       </div>
