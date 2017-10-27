@@ -21849,6 +21849,11 @@ new Vue({
     }
 });
 
+Vue.http.interceptors.push(function (request, next) {
+    request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
+    next();
+});
+
 },{"./components/BoxTools.vue":111,"./components/StoryForm.vue":112,"./vuex/store":118,"vue":108,"vue-resource":106}],116:[function(require,module,exports){
 'use strict';
 

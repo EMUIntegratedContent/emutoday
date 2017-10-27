@@ -36,11 +36,6 @@ $(document).ready(function () {
     }
 });
 
-Vue.http.interceptors.push(function (request, next) {
-    request.headers.set('X-CSRF-TOKEN', MyApp.csrfToken);
-    next();
-});
-
 /*
 Vue.component(
     'passport-clients',

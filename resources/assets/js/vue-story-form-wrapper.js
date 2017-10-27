@@ -20,3 +20,8 @@ new Vue({
       BoxTools: BoxTools
   },
 });
+
+Vue.http.interceptors.push(function (request, next) {
+    request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
+    next();
+});
