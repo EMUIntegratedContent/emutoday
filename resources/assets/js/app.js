@@ -34,6 +34,11 @@ $(document).ready(function() {
 
 });
 
+Vue.http.interceptors.push((request, next) => {
+    request.headers.set('X-CSRF-TOKEN', MyApp.csrfToken);
+    next();
+});
+
 /*
 Vue.component(
     'passport-clients',
