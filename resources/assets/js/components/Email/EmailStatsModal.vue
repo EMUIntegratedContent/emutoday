@@ -70,7 +70,7 @@ export default {
   filters: {
     formatDate: function(value) {
       if (value) {
-        return moment(String(value)).format('MM/DD/YYYY hh:mm A')
+        return moment(String(value)).format('MM/DD/YYYY @ h:mm A')
       }
     },
   },

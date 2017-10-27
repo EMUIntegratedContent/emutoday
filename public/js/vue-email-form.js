@@ -24214,7 +24214,7 @@ exports.default = {
   filters: {
     formatDate: function formatDate(value) {
       if (value) {
-        return (0, _moment2.default)(String(value)).format('MM/DD/YYYY hh:mm A');
+        return (0, _moment2.default)(String(value)).format('MM/DD/YYYY @ h:mm A');
       }
     }
   },
