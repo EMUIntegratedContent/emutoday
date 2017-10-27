@@ -25011,35 +25011,20 @@ var Vue = require('vue');
 Vue.use(_vueResource2.default);
 Vue.use(_vueSortable2.default);
 
+// Remember the token we created in the <head> tags? Get it here.
 var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
 Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
-//import EmailBoxTools from './components/EmailBoxTools.vue';
-
 
 var vm = new Vue({
-  el: '#vue-emails',
-  components: {
-    EmailForm: _EmailForm2.default
-    //EmailBoxTools
-  },
-  store: _store2.default,
-  ready: function ready() {
-    console.log('Email Form ready');
-  }
+    el: '#vue-emails',
+    components: {
+        EmailForm: _EmailForm2.default
+    },
+    store: _store2.default,
+    ready: function ready() {
+        console.log('Email Form ready');
+    }
 });
-
-function assignEventListeners() {
-  // Cancel and edit buttons need to call vue object methods
-  /*
-  $("#experts-area").on("click", ".editBtn", function(event){
-    vmpublic.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
-  });
-  $("#experts-area").on("click", ".cancelBtn", function(event){
-    vmpublic.$refs.foo.cancelRecord(this.parentNode.id);
-  });
-  */
-}
-assignEventListeners();
 
 },{"./components/Email/EmailForm.vue":120,"./vuex/store":132,"vue":111,"vue-resource":108,"vue-sortable":110}],132:[function(require,module,exports){
 'use strict';
