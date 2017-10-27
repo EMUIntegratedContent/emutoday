@@ -89,7 +89,7 @@
 }
 </style>
 <script>
-import moment from 'moment';
+import moment from 'moment'
 import EmailAnnouncementPod from './EmailAnnouncementPod.vue'
 import Pagination from '../Pagination.vue'
 import flatpickr from "../../directives/flatpickr.js"

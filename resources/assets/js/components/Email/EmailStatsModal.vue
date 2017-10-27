@@ -11,7 +11,7 @@
         <div class="modal-body">
           <ul>
             <li><strong>Title:</strong> {{ email.title }}</li>
-            <li><strong>Sent At:</strong> {{ email.send_at }}</li>
+            <li><strong>Sent At:</strong> {{ moment(email.send_at).format("YYYY-MM-DD") }}</li>
           </ul>
           <div class="row text-center">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -43,11 +43,12 @@
   </div><!--/end modal-->
 </template>
 <style scoped>
-  h5, .statistic{
+  .statistic{
     font-size: 2rem;
   }
 </style>
 <script>
+import moment from 'moment'
 export default {
   directives: {},
   components: {},
