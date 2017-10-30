@@ -4,8 +4,8 @@ import VueResource from 'vue-resource';
 Vue.use(VueResource);
 
 // Remember the token we created in the <head> tags? Get it here.
-var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
-Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+//var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+//Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 import EventForm from './components/EventForm.vue'
 var vm = new Vue({
