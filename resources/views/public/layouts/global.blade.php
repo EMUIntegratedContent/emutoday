@@ -19,6 +19,7 @@
     @include('public.layouts.scriptshead')
     @include('include.js')
     @yield('addthisMeta')
+    <meta name="_token" content="{{ csrf_token() }}">
   </head>
   <body>
     <script>

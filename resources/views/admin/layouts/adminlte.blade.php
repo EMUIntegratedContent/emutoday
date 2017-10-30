@@ -85,10 +85,6 @@ Sidebar Menu
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        {{-- <h1>
-        {{Route::current()->getName()}}
-        <small>	{{Route::current()->getActionName()}}</small>
-    </h1> --}}
     <div class="row">
 
         <div class="col-xs-6">
@@ -101,9 +97,6 @@ Sidebar Menu
 
         </div><!-- /.col-xs-6 -->
         <div class="col-xs-6">
-            {{-- {!! link_to(URL::previous(), 'Cancel', ['class' => 'btn btn-default pull-right']) !!} --}}
-
-            {{-- <a href="{{URL::previous()}}"><i class="fa fa-arrow-circle-left pull-right bg-yellow"></i></a> --}}
         </div><!-- /.col-xs-6 -->
 
     </div><!-- /.row -->
