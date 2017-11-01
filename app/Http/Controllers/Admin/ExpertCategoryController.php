@@ -27,6 +27,8 @@ class ExpertCategoryController extends Controller
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
         View::share('bugStories', $this->bugService->getUnapprovedStories());
+        View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+        View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
     }
 
     /**
@@ -53,23 +55,12 @@ class ExpertCategoryController extends Controller
         return view('admin.expertcategory.form', compact('expertCategory'));
     }
 
-    public function queue($atype = null) {
-        if (is_null($atype)) {
-            $atype = 'general';
-        } else {
-            $atype = $atype;
-        }
-        $announcement = $this->announcement;
-
-        //return view('admin.announcement.queue', compact('announcements', 'atype'));
-    }
-
     /**
     * Show the form for creating a new resource.
     *
     * @return \Illuminate\Http\Response
     */
-    public function form()
+    public function show()
     {
         $expertCategory = $this->expertCategory;
 

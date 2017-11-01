@@ -2,6 +2,7 @@
 
 namespace Emutoday\Http\Controllers\Today;
 
+use Illuminate\Http\Request;
 use Emutoday\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Emutoday\Story;
@@ -24,29 +25,49 @@ class StoryController extends Controller
     }
 
 
-    public function story($stype, $id = null)
+    public function story(Request $request, $stype, $id = null)
     {
+      $newsAdvisoryStatementFilter = $request->get('filter');
       $currentDate = Carbon::now();
         if ($id == null) {
-          $storys = $this->storys->where('story_type', 'story')
-                                  ->where([
-                                      ['start_date', '<=', $currentDate], // start_date has past
-                                      // while NOW() minus one year less than start_date?
-                                      // ['start_date', '>', $currentDate->subYear()], // Older than one year
-                                      ['is_approved', 1],
-                                      ['is_archived', 0]
-                                  ])
-                                  ->orWhere('story_type', 'news')
-                                  ->where([
-                                      ['start_date', '<=', $currentDate], // start_date has past
-                                      // ['start_date', '>', $currentDate->subYear()], // Older than one year
-                                      ['is_approved', 1],
-                                      ['is_archived', 0]
-                                  ])
-                                  ->orderBy('start_date', 'desc')
-                                  ->paginate(12);
-
-          return view('public.story.index', compact('storys'));
+          if(!$newsAdvisoryStatementFilter){
+            $storys = $this->storys->where('story_type', 'story')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orWhere('story_type', 'news')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orWhere('story_type', 'advisory')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orWhere('story_type', 'statement')
+                                    ->where([
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orderBy('start_date', 'desc')
+                                    ->paginate(12);
+          } else {
+            $storys = $this->storys->where([
+                                        ['story_type', $newsAdvisoryStatementFilter],
+                                        ['start_date', '<=', $currentDate], // start_date has past
+                                        ['is_approved', 1],
+                                        ['is_archived', 0]
+                                    ])
+                                    ->orderBy('start_date', 'desc')
+                                    ->paginate(12);
+          }
+          return view('public.story.index', compact('storys', 'newsAdvisoryStatementFilter'));
 
         } else {
         // dd($stype . 'story==== '.$id );
@@ -56,11 +77,11 @@ class StoryController extends Controller
             return redirect($rurl);
         } else {
             $story = $this->storys->findOrFail($id);
-            // $mainStoryImage = $story->storyImages()->ofType('imagemain')->first();
+
             $mainStoryImage = null;
             $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
             $addThisImage = $story->storyImages()->where('image_type','social')->first();
-            // dd($mainStoryImage);
+
             foreach($mainStoryImages as $mainimg){
                 if($mainimg->imgtype->type == 'story') {
                     $mainStoryImage = $mainimg;
@@ -84,7 +105,7 @@ class StoryController extends Controller
             //Removed Student Side Bar until firther notice
             $sideStudentBlurbs = null;
 
-            $viewfolder = ($stype == 'news')? 'story': $stype;
+            $viewfolder = ($stype == 'news' || $stype == 'statement' || $stype == 'advisory')? 'story': $stype;
             JavaScript::put([
                     'jsis' => 'hi',
                     'mainStoryImage' => $mainStoryImage,

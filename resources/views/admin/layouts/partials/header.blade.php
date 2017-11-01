@@ -14,7 +14,6 @@
     <!-- Navbar Right Menu -->
     <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-            {{-- dd($currentUser) --}}
             <!-- /.messages-menu -->
             @can('super', $currentUser)
 
@@ -22,12 +21,10 @@
                 @include('admin.layouts.partials.notifications.announcements')
                 @include('admin.layouts.partials.notifications.storys')
             @endcan
+            @if(Gate::check('admin') || Gate::check('experts'))
+                @include('admin.layouts.partials.notifications.experts')
+            @endif
         @include('admin.layouts.partials.usermenu')
-
-<!-- Control Sidebar Toggle Button -->
-<!--<li>
-    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-</li>-->
 </ul>
 </div>
 </nav>

@@ -26,7 +26,7 @@
           </div><!-- large-9 -->
           <div class="large-3 large-pull-9 show-for-large columns">
             <div id="logo-box-magazine" data-equalizer-watch>
-              <a href="/magazine"><img class="magazine-logo show-for-medium" alt="Eastern Michigan University" src="/assets/imgs/magazine/eatern-mag-logo.png"></a>
+              <a href="/magazine"><img class="magazine-logo show-for-medium" alt="Eastern Michigan University" src="/assets/imgs/magazine/eastern-mag-logo.png"></a>
             </div><!-- logo-box-magazine -->
           </div><!-- large-3 -->
 
@@ -42,10 +42,7 @@
               <!-- '/admin/php/top_nav.php'); -->
               <ul id="tier2-nav-magazine">
                 <li><a class="{{ set_active('magazine/issue')}}" href="/magazine/issue"><i class="fa fa-play"></i>Current Issue</a></li>
-                <!-- Past Issues is a unbuild feature. Leave out for now -->
-                <!-- <li><a class="{{ set_active('index')}}" href="#"><i class="fa fa-play"></i>Past Issues</a></li> -->
-                {{-- <li><a class="{{ set_active('magazine/issue', 'right-arrow')}}" href="/magazine/issue">Current Issue</a></li>
-                <!-- <li><a class="{{ set_active('index', 'right-arrow')}}" href="#">Past Issues</a></li> --> --}}
+                <li><a href="http://www.emich.edu/magazine">Past Issues</a></li>
                 <li><a href="http://www.emich.edu/alumni">Alumni</a></li>
                 <li><a href="/hub">EMU Today</a></li>
               </ul>

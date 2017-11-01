@@ -3,12 +3,14 @@
 namespace Emutoday;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Emutoday\Mediafile;
 use Sofa\Eloquence\Eloquence;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasRoles;
+    use HasRoles, Notifiable, HasApiTokens;
     /**
     * The attributes that are mass assignable.
     *
@@ -29,15 +31,6 @@ class User extends Authenticatable
     ];
     use Eloquence;
     protected $searchableColumns = ['last_name', 'first_name', 'email'];
-
-    // /**
-    //  * [setPasswordAttribute description]
-    //  * @param [type] $value [description]
-    //  */
-    // public function setPasswordAttribute($value)
-    // {
-    //     $this->attributes['password'] = bcrypt($value);
-    // }
 
     /**
      * [getFullNameAttribute description]

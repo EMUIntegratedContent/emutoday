@@ -17,7 +17,7 @@
                 @elseif($rte == 'all')
 
                     <a href="/admin/story/story/setup" class="btn bg-orange btn-sm {{ set_active($path.'/setup', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
-                    
+
                 @elseif($rte == 'magazine')
                         @if(isset($id))
                             <a href="/preview/{{$rte}}/{{$id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
@@ -38,7 +38,9 @@
                     <a href="/admin/{{$rte}}/form" class="btn bg-orange {{ set_active($path.'/create', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
                     <a href="/admin/{{$rte}}/queue" class="btn bg-orange {{ set_active($path, 'disabled') }}"><i class="fa fa-list-alt"></i></a>
 
-
+                @elseif($rte == 'expertcategory')
+                    <a href="/admin/{{$rte}}/show" class="btn bg-orange {{ set_active($path.'/create', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
+                    <a href="/admin/{{$rte}}" class="btn bg-orange {{ set_active($path, 'disabled') }}"><i class="fa fa-list-alt"></i></a>
                 @else
                         <a href="/admin/{{$rte}}/form" class="btn bg-purple {{ set_active($path.'/create', 'disabled') }}"><i class="fa fa-plus-square"></i></a>
                 @endif

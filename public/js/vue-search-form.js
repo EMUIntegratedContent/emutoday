@@ -12348,7 +12348,11 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
+<<<<<<< HEAD
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-e3d3b7f0=\"\">\n  <div class=\"input-group\" _v-e3d3b7f0=\"\">\n    <span class=\"show-for-sr\" _v-e3d3b7f0=\"\">Search</span>\n    <input class=\"input-group-field\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-e3d3b7f0=\"\">\n    <div class=\"input-group-button\" _v-e3d3b7f0=\"\">\n      <button type=\"submit\" class=\"button secondary small\" _v-e3d3b7f0=\"\"><i class=\"fa fa-search\" _v-e3d3b7f0=\"\"></i></button>\n    </div>\n  </div>\n</form>\n"
+=======
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-03270103=\"\">\n  <div class=\"input-group\" _v-03270103=\"\">\n    <label for=\"top-site-search\" class=\"show-for-sr\" _v-03270103=\"\">Search</label>\n    <input class=\"input-group-field\" id=\"top-site-search\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-03270103=\"\">\n    <div class=\"input-group-button\" _v-03270103=\"\">\n      <button type=\"submit\" class=\"button secondary small\" alt=\"submit search\" aria-label=\"submit site search\" _v-03270103=\"\"><i class=\"fa fa-search\" _v-03270103=\"\"></i></button>\n    </div>\n  </div>\n</form>\n"
+>>>>>>> 04357951aa6c74c22f865f30e31d2350fe86ccfe
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -12379,6 +12383,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
+
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 new Vue({
     el: '#vue-search-form',

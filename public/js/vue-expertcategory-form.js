@@ -20547,7 +20547,7 @@ module.exports = {
         $('html, body').animate({ scrollTop: 0 }, 'fast');
 
         this.$http.post('/api/expertcategory/' + this.record.id + '/delete').then(function (response) {
-          window.location.href = "/admin/expertcategory/list";
+          window.location.href = "/admin/expertcategory";
         }, function (response) {
           console.log('Error: ' + (0, _stringify2.default)(response));
         }).bind(this);
@@ -20592,8 +20592,9 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-// var moment = require('moment');
-
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 var vm = new Vue({
     el: '#vue-expertcategory',

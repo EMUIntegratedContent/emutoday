@@ -16,6 +16,12 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
         if($event->user_id != null){
             $user_id    = $event->user_id;
         }
+
+        $start_time = new \DateTime($event->start_time);
+        $start_time = Carbon::instance($start_time);
+        $end_time = new \DateTime($event->end_time);
+        $end_time = Carbon::instance($end_time);
+
     return [
       'id'                => (int) $event->id,
       'user_id'           => $user_id,
@@ -25,11 +31,11 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'location'           => $event->location,
       'building'           => $event->building,
       'room'               => $event->room,
-      'start_date'   => is_null($event->start_date)?null:$event->start_date->toDateString(),
-      'start_time'           => $event->start_time,
-      'start_date_time' => $event->start_date_time->toDateTimeString(),
-      'end_date'   => is_null($event->end_date) ?null: $event->end_date->toDateString(),
-      'end_time'            => $event->end_time,
+      'start_date'        => is_null($event->start_date)?null : $event->start_date->toDateString(),
+      'start_time'           => $start_time->format('g:i A'),
+      'start_date_time'   => $event->start_date_time->toDateTimeString(),
+      'end_date'          => is_null($event->end_date) ? null : $event->end_date->toDateString(),
+      'end_time'            => $end_time->format('g:i A'),
       'end_date_time' => $event->end_date_time->toDateTimeString(),
       'all_day'           => $event->all_day,
       'no_end_time'           => $event->no_end_time,
@@ -42,7 +48,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'related_link_2_txt'           => $event->related_link_2_txt,
       'related_link_3'           => $event->related_link_3,
       'related_link_3_txt'           => $event->related_link_3_txt,
-      'reg_deadline'   => is_null($event->reg_deadline)?null:$event->reg_deadline->toDateString(),
+      'reg_deadline'   => is_null($event->reg_deadline)?null : $event->reg_deadline->toDateString(),
       // 'reg_deadline'           => $event->reg_deadline,
       'cost'           => $event->cost,
       'free'           => $event->free,
@@ -61,6 +67,9 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'ticket_details_other'           => $event->ticket_details_other,
       'submission_date' => is_null($event->submission_date) ? null: $event->submission_date->toDateString(),
       'approved_date' => is_null($event->approved_date) ?null :  $event->approved_date->toDateString(),
+
+      'hsc_reviewed'           => $event->hsc_reviewed,
+      'hsc_rewards'           => $event->hsc_rewards,
 
       'contact_fax'           => $event->contact_fax,
       'mini_calendar'           => $event->mini_calendar,

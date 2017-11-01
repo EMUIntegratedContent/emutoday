@@ -37,9 +37,10 @@ class EventController extends ApiController
   function __construct()
   {
     // $this->middleware('auth');
-    $this->middleware(['web','auth'], ['only' => [
+    $this->middleware(['web','cas.auth'], ['only' => [
       'queueLoad',
-      'lbcQueueLoad'
+      'lbcQueueLoad',
+      'hscQueueLoad'
       ]]);
     }
 
@@ -110,6 +111,31 @@ class EventController extends ApiController
             } else {
                 $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->get();
             }
+        }
+
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
+        return $fractal->createData($resource)->toArray();
+      } else {
+        return $this->setStatusCode(501)->respondWithError('Error');
+      }
+    }
+
+    public function hscQueueLoad($fromDate = null, $toDate = null)
+    { // Return all events for HSC rewards program
+      $currentDate = Carbon::now();
+
+      if (\Auth::check()) {
+        $user = \Auth::user();
+
+        if ($user->hasRole('hsc_rewards')){
+          if($fromDate && !$toDate){
+            $events  = Event::where([['is_approved','=','1'],['start_date', '>=', $fromDate]])->get();
+          } elseif($fromDate && $toDate){
+            $events  = Event::where('is_approved','=','1')->whereBetween('start_date', array($fromDate, $toDate))->get();
+          } else {
+            $events  = Event::where('is_approved','=','1')->get();
+          }
         }
 
         $fractal = new Manager();
@@ -253,6 +279,14 @@ class EventController extends ApiController
           $event->lbc_approved						= $request->get('lbc_approved');
           $event->submission_date 				= \Carbon\Carbon::now();
 
+          // Reset Approvals
+          if($request->input('admin_pre_approved')){
+            $event->is_approved       = 1;
+            $createMessage = "Event successfully created and approved.";
+          } else {
+            $createMessage = "Event successfully created.";
+          }
+
           if($event->save()) { // Record successfully stored
             // Send event has been submitted email
             $to      = "calendar_events@emich.edu";
@@ -278,7 +312,7 @@ class EventController extends ApiController
             // Save and return
             $event->save();
             return $this->setStatusCode(201)
-            ->respondSavedWithData('Event successfully created!',[ 'record_id' => $event->id ]);
+            ->respondSavedWithData($createMessage,[ 'record_id' => $event->id ]);
           }
         }
       }
@@ -359,10 +393,6 @@ class EventController extends ApiController
             $imgFileName = $mediafile->name . '.' . $mediafile->ext;
             $image = Image::make($imgFilePath)
             ->save(public_path() . $destinationFolder . $imgFileName);
-            //  ->fit(100)
-            //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
-            // 	}
-            //
             $mediafile->filename = $imgFileName;
             $mediafile->caption = $request->input('caption');
             $mediafile->save();
@@ -372,8 +402,6 @@ class EventController extends ApiController
               $returnData = ['eventimage' => $mediafile->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('Event Image Updated',$returnData );
-              // return $this->setStatusCode(201)
-              //             ->respondCreated('Event successfully updated');
             }
           }
         }
@@ -397,6 +425,16 @@ class EventController extends ApiController
 
             if($event->save()) {
               $returnData = ['lbc_reviewed' => $event->lbc_reviewed, 'lbc_approved' => $event->lbc_approved];
+              return $this->setStatusCode(201)
+              ->respondUpdatedWithData('event updated',$returnData );
+            }
+          } else if ($request->get('hsc_rewards') !== null || $request->get('hsc_reviewed') !== null){
+            // Condition for hsc eagle rewards
+            $event->hsc_reviewed = $request->get('hsc_reviewed');
+            $event->hsc_rewards = $request->get('hsc_rewards');
+
+            if($event->save()) {
+              $returnData = ['hsc_reviewed' => $event->hsc_reviewed, 'hsc_rewards' => $event->hsc_rewards];
               return $this->setStatusCode(201)
               ->respondUpdatedWithData('event updated',$returnData );
             }
@@ -556,8 +594,17 @@ class EventController extends ApiController
             $event->submission_date 				= \Carbon\Carbon::now();
 
             // Reset Approvals
-            $event->is_approved       = 0; // events must go back into approver queue when updated
-            $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
+            if($request->input('admin_pre_approved')){
+              $event->is_approved       = 1;
+
+              $updateMessage = "Event successfully updated and approved.";
+            } else {
+              $event->is_approved       = 0; // events must go back into approver queue when updated
+              $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
+
+              $updateMessage = "Event successfully updated.";
+            }
+
 
             if($event->save()) { // Record successfully Saved
               // Make event categories and mini calendars
@@ -570,10 +617,12 @@ class EventController extends ApiController
               $event->eventcategories()->sync($categoriesRequest);
               $event->minicalendars()->sync($minicalsRequest);
 
+
               // Save and return
               $event->save();
+
               return $this->setStatusCode(201)
-              ->respondSavedWithData('Event successfully updated!',[ 'record_id' => $event->id ]);
+              ->respondSavedWithData($updateMessage,[ 'record_id' => $event->id ]);
             }
           }
         }

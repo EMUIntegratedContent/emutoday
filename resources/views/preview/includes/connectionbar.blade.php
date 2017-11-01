@@ -6,14 +6,14 @@
           <div class="large-9 large-push-3 medium-10 medium-push-2 small-10 small-push-2 columns">
             <div class="row">
               <div class="large-5 medium-7 small-12 columns">
-                <h1><a href="/emu-today/hub"><span class="first-word">EMU</span> Today</a></h1>
+                <h1><a href="/hub"><span class="first-word">EMU</span> Today</a></h1>
               </div>
               <div class="large-7 medium-5 small-12 columns">
                 <div class="icon-menu float-right">
                   <span class="search-area"><a href="#">Search <i class="fa fa-search"></i></a></span>
                   <span class="menu-area show-for-small-only"><a href="#" data-toggle="offCanvasRight">Menu <i class="fa fa-bars"></i></a></span>
                 </div> <!-- .icon-menu -->
-                
+
                 {{--
                   <li class="search-area"><a class="search-glass" href="">Search</a></li>
                   <li class="menu-area"><a class="menu-icon" href="">Menu</a></li> --}}

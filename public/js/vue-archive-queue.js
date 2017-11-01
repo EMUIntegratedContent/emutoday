@@ -16949,13 +16949,19 @@ exports.default = {
                     faicon = 'fa-graduation-cap';
                     break;
                 case 'external':
-                    faicon = 'fa-file-o';
+                    faicon = 'fa-external-link';
                     break;
                 case 'article':
                     faicon = 'fa-newspaper-o';
                     break;
                 case '':
                     faicon = 'fa-asterisk';
+                    break;
+                case 'advisory':
+                    faicon = 'fa-warning';
+                    break;
+                case 'statement':
+                    faicon = 'fa-commenting';
                     break;
                 default:
                     faicon = 'fa-file-o';
@@ -16984,7 +16990,11 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"../directives/iconradio.js":12,"./ArchiveQueueItem.vue":9,"./Pagination.vue":10,"moment":2,"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],9:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
+<<<<<<< HEAD
 var __vueify_style__ = __vueify_insert__.insert("\n.announcement[_v-ca6826c4]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-ca6826c4] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-ca6826c4]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-ca6826c4] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-ca6826c4] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-ca6826c4] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-ca6826c4] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-ca6826c4] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-ca6826c4] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-ca6826c4]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-ca6826c4]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-ca6826c4] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-ca6826c4] {\n    display: inline-block;\n}\n\nform.mediaform[_v-ca6826c4] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-ca6826c4] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-ca6826c4],\n.btn-group-vertical[_v-ca6826c4] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-ca6826c4]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-ca6826c4] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-ca6826c4] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-ca6826c4]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-ca6826c4] {\n    margin-bottom: 0;\n}\n\n.news[_v-ca6826c4]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n\n.success[_v-ca6826c4]{\n    color: #00a65a;\n}\n\n.unarchived[_v-ca6826c4] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-ca6826c4]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-ca6826c4] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n")
+=======
+var __vueify_style__ = __vueify_insert__.insert("\n.announcement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-86f83d4e]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.news[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.advisory[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-86f83d4e]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n")
+>>>>>>> 04357951aa6c74c22f865f30e31d2350fe86ccfe
 'use strict';
 
 var _moment = require('moment');
@@ -17073,6 +17083,8 @@ module.exports = {
             switch (this.entityType) {
                 case 'announcements':
                     return "/admin/announcement/" + item.id + "/edit";
+                case 'stories':
+                    return "/admin/queueall/story/" + item.story_type + "/" + item.id + "/edit";
                 default:
                     return;
             }
@@ -17117,7 +17129,11 @@ if (module.hot) {(function () {  module.hot.accept()
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
+<<<<<<< HEAD
     __vueify_insert__.cache["\n.announcement[_v-ca6826c4]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-ca6826c4] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-ca6826c4]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-ca6826c4] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-ca6826c4] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-ca6826c4] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-ca6826c4] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-ca6826c4] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-ca6826c4] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-ca6826c4]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-ca6826c4]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-ca6826c4] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-ca6826c4] {\n    display: inline-block;\n}\n\nform.mediaform[_v-ca6826c4] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-ca6826c4] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-ca6826c4],\n.btn-group-vertical[_v-ca6826c4] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-ca6826c4]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-ca6826c4] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-ca6826c4] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-ca6826c4]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-ca6826c4] {\n    margin-bottom: 0;\n}\n\n.news[_v-ca6826c4]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n\n.success[_v-ca6826c4]{\n    color: #00a65a;\n}\n\n.unarchived[_v-ca6826c4] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-ca6826c4]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-ca6826c4] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n"] = false
+=======
+    __vueify_insert__.cache["\n.announcement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-86f83d4e]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.news[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.advisory[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-86f83d4e]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n"] = false
+>>>>>>> 04357951aa6c74c22f865f30e31d2350fe86ccfe
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -17302,18 +17318,14 @@ module.exports = {
             var initValue = $(this).find('input').get(0).value;
             if (initValue === '') {
                 $(this).addClass('active');
-                //   $(this).addClass('bg-purple');
             }
             $(this).on('click', function () {
                 self.set(initValue);
-                //var v = $(this).find('input').get(0).value
-                //   self.set(v);
             });
         });
     },
     update: function update() {
         var value = this._watcher.value;
-        console.log('xxxxxxxxxvalue=' + value);
         if (value) {
             this.set(value);
 
@@ -17322,7 +17334,6 @@ module.exports = {
                 $(this).removeClass('active');
                 $(this).removeClass('bg-purple');
                 var v = $(this).find('input').get(0).value;
-                //   $(this).find('span').removeClass('prpstyle');
                 if (v === value) {
                     $(this).addClass('active');
                     $(this).addClass('bg-purple');
@@ -17332,7 +17343,6 @@ module.exports = {
             var input = $(this.el).find('.active input').get(0);
             if (input) {
                 this.set(input.value);
-                console.log('input.value=' + input.value);
             }
         }
     }

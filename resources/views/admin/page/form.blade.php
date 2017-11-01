@@ -37,7 +37,7 @@
                 <div class="box box-primary">
         {!! Form::model($page, [
             'method' =>  'post',
-            'route' => ['admin.page.store']
+            'route' => ['admin_page_store']
         ]) !!}
         {{ csrf_field() }}
         <div class="box-header with-border">

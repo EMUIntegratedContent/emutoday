@@ -8,7 +8,6 @@ Vue.use(VueResource);
 var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
 Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
-
 import ArchiveQueue from './components/ArchiveQueue.vue'
 
 new Vue({

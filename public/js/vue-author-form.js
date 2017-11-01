@@ -18380,19 +18380,13 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
-// var moment = require('moment');
-
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
 var vm = new Vue({
     el: '#vue-authors',
     components: { AuthorForm: _AuthorForm2.default },
-    // http: {
-    //     headers: {
-    //         // You could also store your token in a global object,
-    //         // and reference it here. APP.token
-    //         'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-    //     }
-    // },
     ready: function ready() {
         console.log('AuthorForm ready');
     }

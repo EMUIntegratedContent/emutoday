@@ -8,7 +8,7 @@
 
     <meta name="description" content="@yield('description')" />
     <meta name="keywords" content="@yield('keywords')" />
-    
+
     @if (array_key_exists('magazine-title', View::getSections())) <!-- Check for Magazine title -->
       <title>@yield('magazine-title', 'Eastern Magazine') - Eastern Magazine</title>
     @else
@@ -19,6 +19,7 @@
     @include('public.layouts.scriptshead')
     @include('include.js')
     @yield('addthisMeta')
+    <meta name="_token" content="{{ csrf_token() }}">
   </head>
   <body>
     <script>
@@ -67,7 +68,7 @@
               <li><a href="http://www.emueagles.com/">Athletics</a></li>
             </ul>
             <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
-              <li><a href="http://www.emich.edu/media_highlights/">Media Highlights</a></li>
+              <li><a href="/experts">Experts</a></li>
               <li><a href="/magazine">Eastern Magazine</a></li>
               <li><a href="/calendar/event/form">Submit an Event</a></li>
               <li><a href="/announcement/form">Submit an Announcement</a></li>
@@ -106,10 +107,6 @@
                                                 <a href="http://www.emich.edu"><img class="full-logo show-for-large" alt="Eastern Michigan University" src="/assets/imgs/home/logo.png"></a>
                                                 <a href="http://www.emich.edu"><img class="emu show-for-medium-only" alt="Eastern Michigan University" src="/assets/imgs/home/emu.png"></a>
                                                 <a href="http://www.emich.edu"><img class="block-e show-for-small-only" alt="Eastern Michigan University" src="/assets/imgs/home/blockewhiteplain.png"></a>
-
-                                                {{-- <a href="http://www.emich.edu">
-                                                    <img data-interchange="[/assets/imgs/home/emu.png, small], [/assets/imgs/home/blockewhiteplain.png, medium], [/assets/imgs/home/logo.png, large]">
-                                                </a> --}}
                                             </div><!-- logo-box -->
                                         </div><!-- large-3 -->
                                     </div><!-- row -->
@@ -143,8 +140,7 @@
                                         <div class="row">
                                             <div class="large-12 show-for-medium columns">
                                             <ul>
-                                                <!-- '/admin/php/secondary_nav.php'); -->
-                                                <li><a href="http://www.emich.edu/communications/media/">For the Media</a></li>
+                                                <li><a href="/experts">Experts</a></li>
                                                 <li><a href="/magazine">Eastern Magazine</a></li>
                                                 <li><a href="/calendar/event/form">Submit an Event</a></li>
                                                 <li><a href="/announcement/form">Submit an Announcement</a></li>

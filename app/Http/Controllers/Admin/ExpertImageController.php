@@ -32,6 +32,8 @@ class ExpertImageController extends Controller
     View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
     View::share('bugEvents', $this->bugService->getUnapprovedEvents());
     View::share('bugStories', $this->bugService->getUnapprovedStories());
+    View::share('bugExperts', $this->bugService->getUnapprovedExperts());
+    View::share('bugExpertMediaRequests', $this->bugService->getNewExpertMediaRequests());
 
     parent::__construct();
 
@@ -78,7 +80,6 @@ class ExpertImageController extends Controller
 
     //define the image paths
     $destinationFolder = '/imgs/expert/';
-
     //assign the image paths to new model, so we can save them to DB
     $expertImage->image_path = $destinationFolder;
 
@@ -153,7 +154,7 @@ class ExpertImageController extends Controller
        flash()->warning('Image was not found and could not be deleted.');
     }
 
-    $story->save();
+    $expert->save();
 
     return redirect()->back();//->with('status', 'Record has been deleted.');
   }

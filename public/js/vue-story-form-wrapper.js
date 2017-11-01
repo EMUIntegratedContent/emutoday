@@ -21049,16 +21049,7 @@ exports.default = {
         }
     },
 
-    ready: function ready() {
-        console.log("G:");
-        console.log(this.gtype);
-        console.log("Q:");
-        console.log(this.qtype);
-        console.log("S:");
-        console.log(this.stype);
-        console.log("ROUTE:");
-        console.log(this.sroute);
-    },
+    ready: function ready() {},
 
     data: function data() {
         return {};
@@ -21138,7 +21129,11 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"../vuex/getters":116,"vue":107,"vue-hot-reload-api":104,"vueify/lib/insert-css":108}],111:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
+<<<<<<< HEAD
 var __vueify_style__ = __vueify_insert__.insert("\np[_v-0c15640d] {\n  margin:0;\n}\nlabel[_v-0c15640d] {\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-0c15640d] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-0c15640d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-0c15640d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-0c15640d] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-0c15640d] {\n  color: #ff0000;\n}\n.user-display[_v-0c15640d] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-0c15640d] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-0c15640d] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-0c15640d]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-0c15640d], [type='password'][_v-0c15640d], [type='date'][_v-0c15640d], [type='datetime'][_v-0c15640d], [type='datetime-local'][_v-0c15640d], [type='month'][_v-0c15640d], [type='week'][_v-0c15640d], [type='email'][_v-0c15640d], [type='number'][_v-0c15640d], [type='search'][_v-0c15640d], [type='tel'][_v-0c15640d], [type='time'][_v-0c15640d], [type='url'][_v-0c15640d], [type='color'][_v-0c15640d],\ntextarea[_v-0c15640d] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-0c15640d], [type='checkbox'][_v-0c15640d], [type='radio'][_v-0c15640d] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-0c15640d] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-0c15640d]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-0c15640d]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-0c15640d] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-0c15640d] {\n  vertical-align: bottom;\n}\n")
+=======
+var __vueify_style__ = __vueify_insert__.insert("\np[_v-8571089c] {\n  margin:0;\n}\nlabel[_v-8571089c] {\n  display: block;\n}\nlabel > span[_v-8571089c] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-8571089c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-8571089c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-8571089c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-8571089c] {\n  color: #ff0000;\n}\n.user-display[_v-8571089c] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-8571089c] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-8571089c] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-8571089c]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-8571089c], [type='password'][_v-8571089c], [type='date'][_v-8571089c], [type='datetime'][_v-8571089c], [type='datetime-local'][_v-8571089c], [type='month'][_v-8571089c], [type='week'][_v-8571089c], [type='email'][_v-8571089c], [type='number'][_v-8571089c], [type='search'][_v-8571089c], [type='tel'][_v-8571089c], [type='time'][_v-8571089c], [type='url'][_v-8571089c], [type='color'][_v-8571089c],\ntextarea[_v-8571089c] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-8571089c], [type='checkbox'][_v-8571089c], [type='radio'][_v-8571089c] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-8571089c] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-8571089c]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-8571089c]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-8571089c] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-8571089c] {\n  vertical-align: bottom;\n}\n")
+>>>>>>> 04357951aa6c74c22f865f30e31d2350fe86ccfe
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -21309,7 +21304,6 @@ module.exports = {
       this.currentRecordId = this.editid;
       this.singleStype = true;
       this.newform = false;
-      // this.record.user_id = this.cuser.id;
       this.fetchCurrentRecord();
     } else {
       this.newform = true;
@@ -21328,6 +21322,9 @@ module.exports = {
   },
 
   computed: {
+    isAdvisoryOrStatement: function isAdvisoryOrStatement() {
+      return this.stype == 'advisory' || this.stype == 'statement';
+    },
     authorBtnLabel: function authorBtnLabel() {
       return this.hasAuthor ? 'Update Author' : 'New Author';
     },
@@ -21349,11 +21346,14 @@ module.exports = {
       }
     },
     editorType: function editorType() {
-      if (this.isAdmin) {
-        return 'admin';
+      /*
+      if(this.isAdmin){
+        return 'admin'
       } else {
-        return 'simple';
+        return 'simple'
       }
+      */
+      return 'admin';
     },
     s_types: function s_types() {
       // var data = localStorage[key];
@@ -21362,7 +21362,6 @@ module.exports = {
         return JSON.parse(this.stypes);
       } catch (e) {
         this.singleStype = true;
-        // this.record.story_type = this.stypes;
         return this.stypes;
       }
     },
@@ -21421,8 +21420,8 @@ module.exports = {
     },
 
     nowOnReload: function nowOnReload() {
-      //   {qtype}/{gtype}/{stype}/{story}/edit
       var newurl = '/admin/' + this.qtype + '/' + this.gtype + '/' + this.response_stype + '/' + this.response_record_id + '/edit';
+      this.response_record_id + '/edit';
       document.location = newurl;
     },
 
@@ -21430,7 +21429,6 @@ module.exports = {
       this.updateRecordId(this.currentRecordId);
       this.recordState = 'edit';
       this.recordIsDirty = false;
-
       this.recordId = this.currentRecordId;
       this.recordexists = true;
       this.fetchCurrentRecord();
@@ -21586,7 +21584,13 @@ module.exports = {
       var _this8 = this;
 
       //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
-      this.$http.get('/api/authorbyuser/' + userId).then(function (response) {
+      var url = '/api/authorbyuser/';
+      if (this.isAdvisoryOrStatement) {
+        url += 1; // Jane Doe in the users table
+      } else {
+        url += userId;
+      }
+      this.$http.get(url).then(function (response) {
         if (response.data.newdata) {
           _this8.$set('author', response.data.newdata);
         } else {
@@ -21742,6 +21746,7 @@ module.exports = {
 
         _this12.response_record_id = response.data.newdata.record_id;
         _this12.response_stype = response.data.newdata.stype;
+
         if (_this12.newform) {
           _this12.nowOnReload();
         } else {
@@ -21774,16 +21779,25 @@ module.exports = {
   },
   watch: {
     selectedAuthor: function selectedAuthor() {
-      // console.log(this.selectedAuthor);
       this.fetchAuthor();
       this.hasAuthor = false;
     },
     selectedContact: function selectedContact() {
-      // console.log(this.selectedAuthor);
       this.fetchContact();
       this.hasAuthor = false;
     },
     'record.story_type': function recordStory_type(val) {
+      // Change author to "Official Statements" if this is an advisory or statement story type
+      var previousStype = this.stype;
+      var newStype = val;
+      this.stype = newStype; // change the stype
+      if (this.stype == 'statement' || this.stype == 'advisory') {
+        this.resetAuthor(); // changes author to "Official Statement"
+      }
+      if ((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')) {
+        this.resetAuthor(); // changes author back to current user
+      }
+
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
       if (!this.contactManuallyChanged && !this.recordexists) {
         if (!this.record.contact) {
@@ -21799,13 +21813,21 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
+<<<<<<< HEAD
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-0c15640d=\"\">\n    <slot name=\"csrf\" _v-0c15640d=\"\"></slot>\n    <!-- <slot name=\"author_id\" v-model=\"newevent.author_id\"></slot> -->\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-12\" _v-0c15640d=\"\">\n        <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-0c15640d=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-0c15640d=\"\"><i class=\"fa fa-times\" _v-0c15640d=\"\"></i></button>\n          <h5 _v-0c15640d=\"\">{{formMessage.msg}}</h5>\n        </div>\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-12\" _v-0c15640d=\"\">\n        <div class=\"form-group\" _v-0c15640d=\"\">\n          <label _v-0c15640d=\"\">Title <i class=\"fi-star reqstar\" _v-0c15640d=\"\"></i></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-0c15640d=\"\">Please enter a title</p>\n          <input v-model=\"record.title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-0c15640d=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-0c15640d=\"\">\tPlease Include a Title!</p>\n        </div>\n      </div>\n    </div><!-- /.row -->\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-12\" _v-0c15640d=\"\">\n        <div class=\"form-group\" _v-0c15640d=\"\">\n          <label _v-0c15640d=\"\">Slug <i class=\"fi-star reqstar\" _v-0c15640d=\"\"></i></label>\n          <p class=\"help-text\" id=\"slug-helptext\" _v-0c15640d=\"\">Automatic Readable link for sharing and social media</p>\n          <input v-model=\"recordSlug\" v-bind:class=\"[formErrors.slug ? 'invalid-input' : '']\" name=\"slug\" type=\"text\" _v-0c15640d=\"\">\n          <p v-if=\"formErrors.slug\" class=\"help-text invalid\" _v-0c15640d=\"\">needs slug!</p>\n        </div>\n      </div><!-- /.col-md-12 -->\n    </div>\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-12\" _v-0c15640d=\"\">\n        <div class=\"form-group\" _v-0c15640d=\"\">\n          <label _v-0c15640d=\"\">Subtitle</label>\n          <p class=\"help-text\" id=\"subtitle-helptext\" _v-0c15640d=\"\">Visible in some cases</p>\n          <input v-model=\"record.subtitle\" v-bind:class=\"[formErrors.subtitle ? 'invalid-input' : '']\" @blur=\"onBlur\" name=\"subtitle\" type=\"text\" _v-0c15640d=\"\">\n          <p v-if=\"formErrors.subtitle\" class=\"help-text invalid\" _v-0c15640d=\"\"></p>\n        </div>\n        <div class=\"form-group\" _v-0c15640d=\"\">\n          <label _v-0c15640d=\"\">Content <i class=\"fi-star reqstar\" _v-0c15640d=\"\"></i></label>\n          <p class=\"help-text\" id=\"content-helptext\" _v-0c15640d=\"\">Enter the story content</p>\n          <textarea v-if=\"hasContent\" id=\"content\" name=\"content\" v-ckrte=\"content\" :type=\"editorType\" :content=\"content\" :fresh=\"isFresh\" rows=\"200\" _v-0c15640d=\"\"></textarea>\n          <p v-if=\"formErrors.content\" class=\"help-text invalid\" _v-0c15640d=\"\">Need Content!</p>\n        </div>\n        <div class=\"form-group user-display\" _v-0c15640d=\"\">\n          <div class=\"user-name\" _v-0c15640d=\"\">Author: {{author.first_name}} {{author.last_name}}</div>\n          <div v-if=\"contact.id != 0\" class=\"user-info\" _v-0c15640d=\"\">Contact: {{contact.first_name}} {{contact.last_name}}, {{contact.email}}, {{contact.phone}}</div>\n          <div v-if=\"contact.id == 0\" class=\"user-info\" _v-0c15640d=\"\">Contact: {{defaultcontact.first_name}} {{defaultcontact.last_name}}, {{defaultcontact.email}}, {{defaultcontact.phone}}</div>\n        </div><!-- /.frm-group -->\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-6\" _v-0c15640d=\"\">\n        <div v-show=\"saveAuthorMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-0c15640d=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-0c15640d=\"\"><i class=\"fa fa-times\" _v-0c15640d=\"\"></i></button>\n          <h5 _v-0c15640d=\"\">{{saveAuthorMessage.msg}}</h5>\n        </div>\n        <a v-if=\"!needAuthor\" @click.prevent=\"changeAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-0c15640d=\"\">Change Author</a>\n        <a v-if=\"hasAuthor\" @click.prevent=\"resetAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-0c15640d=\"\">Reset Author</a>\n        <a @click.prevent=\"changeContact\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-0c15640d=\"\">Change Contact</a>\n        <div v-if=\"needAuthor &amp;&amp; isAdmin\" class=\"form-inline author\" _v-0c15640d=\"\">\n            <label _v-0c15640d=\"\">Choose existing Author:</label>\n            <v-select :value.sync=\"selectedAuthor\" :options=\"optionsAuthorlist\" :multiple=\"false\" placeholder=\"Author (leaving this blank will set you as the author)\" label=\"name\" _v-0c15640d=\"\"> </v-select>\n        </div>\n        </div>\n      </div><!-- /.col-md-12 -->\n    <!-- /.row -->\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-6\" _v-0c15640d=\"\">\n        <div v-if=\"isAdmin &amp;&amp; needContact\" class=\"form-inline author\" _v-0c15640d=\"\">\n            <label _v-0c15640d=\"\">Story contact:</label>\n            <v-select :value.sync=\"selectedContact\" :options=\"optionsContactlist\" :multiple=\"false\" placeholder=\"Contact (leaving this blank will set the system default as the contact)\" label=\"name\" _v-0c15640d=\"\"> </v-select>\n        </div>\n      </div><!-- /.col-md-6 -->\n    </div>\n    <div class=\"row\" _v-0c15640d=\"\">\n      <div class=\"col-md-6\" _v-0c15640d=\"\">\n        <div class=\"form-group\" _v-0c15640d=\"\">\n          <label for=\"start-date\" _v-0c15640d=\"\">Start Date: <i class=\"fi-star reqstar\" _v-0c15640d=\"\"></i></label>\n          <input v-if=\"fdate\" type=\"text\" :value=\"fdate\" :initval=\"fdate\" v-flatpickr=\"fdate\" _v-0c15640d=\"\">\n          <p _v-0c15640d=\"\">NOTE: For external story with \"video\" tag, treat this field as the END Date.</p>\n          <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-0c15640d=\"\">Need a Start Date</p>\n        </div><!--form-group -->\n      </div><!-- /.small-6 columns -->\n      <div class=\"col-md-6\" _v-0c15640d=\"\">\n        <div v-if=\"isAdmin\" class=\"form-group\" _v-0c15640d=\"\">\n          <label for=\"tags\" _v-0c15640d=\"\">Tags:</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"tags\" :options=\"taglist\" :multiple=\"true\" placeholder=\"Select tags\" label=\"name\" _v-0c15640d=\"\">\n        </v-select>\n\n      </div><!-- /.form-group -->\n    </div><!-- /.small-6 columns -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-0c15640d=\"\">\n    <div class=\"col-md-6\" _v-0c15640d=\"\">\n  </div><!-- /.col-md-6-->\n  <div class=\"col-md-6\" _v-0c15640d=\"\">\n    <!-- <div class=\"form-group pull-right\">\n    {{record | json}}\n  </div> -->\n</div><!-- /.col-md-12 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-0c15640d=\"\">\n  <div class=\"col-md-6\" _v-0c15640d=\"\">\n    <template v-if=\"singleStype\">\n      <input v-model=\"record.story_type\" :value=\"s_types\" type=\"text\" disabled=\"disabled\" _v-0c15640d=\"\">\n    </template>\n    <template v-else=\"\">\n      <label _v-0c15640d=\"\">Story Type</label>\n      <select v-model=\"record.story_type\" _v-0c15640d=\"\">\n        <option v-for=\"stype in s_types\" v-bind:value=\"stype.shortname\" selected=\"{{ stype.shortname == 'news' }}\" _v-0c15640d=\"\">\n          {{ stype.name }}\n        </option>\n      </select>\n    </template>\n</div><!-- /.col-md-6 -->\n\n<div class=\"col-md-6\" _v-0c15640d=\"\">\n\n</div><!-- /.col-md-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-0c15640d=\"\">\n\n\n  <div class=\"col-md-12\" _v-0c15640d=\"\">\n    <div class=\"form-group\" _v-0c15640d=\"\">\n      <button v-on:click=\"submitForm\" type=\"submit\" class=\"btn btn-primary\" _v-0c15640d=\"\">{{submitBtnLabel}}</button>\n    </div>\n  </div><!-- /.column -->\n</div>\n</form>\n"
+=======
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-8571089c=\"\">\n    <slot name=\"csrf\" _v-8571089c=\"\"></slot>\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-12\" _v-8571089c=\"\">\n        <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-8571089c=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-8571089c=\"\"><i class=\"fa fa-times\" _v-8571089c=\"\"></i></button>\n          <h5 _v-8571089c=\"\">{{formMessage.msg}}</h5>\n        </div>\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-12\" _v-8571089c=\"\">\n        <template v-if=\"singleStype\">\n          <label _v-8571089c=\"\">Story Type: {{record.story_type | capitalize}}</label>\n          <input v-model=\"record.story_type\" :value=\"s_types\" type=\"hidden\" disabled=\"disabled\" _v-8571089c=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-8571089c=\"\">Story Type</label>\n          <select v-model=\"record.story_type\" _v-8571089c=\"\">\n            <option v-for=\"stype in s_types\" v-bind:value=\"stype.shortname\" selected=\"{{ stype.shortname == 'news' }}\" _v-8571089c=\"\">\n              {{ stype.name }}\n            </option>\n          </select>\n        </template>\n        <hr _v-8571089c=\"\">\n      </div><!-- /.col-md-6 -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-12\" _v-8571089c=\"\">\n        <div class=\"form-group\" _v-8571089c=\"\">\n          <label _v-8571089c=\"\">Title <i class=\"fi-star reqstar\" _v-8571089c=\"\"></i></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-8571089c=\"\">Please enter a title</p>\n          <input v-model=\"record.title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" _v-8571089c=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-8571089c=\"\">\tPlease Include a Title!</p>\n        </div>\n      </div>\n    </div><!-- /.row -->\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-12\" _v-8571089c=\"\">\n        <div class=\"form-group\" _v-8571089c=\"\">\n          <label _v-8571089c=\"\">Slug <i class=\"fi-star reqstar\" _v-8571089c=\"\"></i></label>\n          <p class=\"help-text\" id=\"slug-helptext\" _v-8571089c=\"\">Automatic Readable link for sharing and social media</p>\n          <input v-model=\"recordSlug\" v-bind:class=\"[formErrors.slug ? 'invalid-input' : '']\" name=\"slug\" type=\"text\" _v-8571089c=\"\">\n          <p v-if=\"formErrors.slug\" class=\"help-text invalid\" _v-8571089c=\"\">needs slug!</p>\n        </div>\n      </div><!-- /.col-md-12 -->\n    </div>\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-12\" _v-8571089c=\"\">\n        <div class=\"form-group\" _v-8571089c=\"\">\n          <label _v-8571089c=\"\">Subtitle</label>\n          <p class=\"help-text\" id=\"subtitle-helptext\" _v-8571089c=\"\">Visible in some cases</p>\n          <input v-model=\"record.subtitle\" v-bind:class=\"[formErrors.subtitle ? 'invalid-input' : '']\" @blur=\"onBlur\" name=\"subtitle\" type=\"text\" _v-8571089c=\"\">\n          <p v-if=\"formErrors.subtitle\" class=\"help-text invalid\" _v-8571089c=\"\"></p>\n        </div>\n        <div class=\"form-group\" _v-8571089c=\"\">\n          <label _v-8571089c=\"\">Content <i class=\"fi-star reqstar\" _v-8571089c=\"\"></i></label>\n          <p class=\"help-text\" id=\"content-helptext\" _v-8571089c=\"\">Enter the story content</p>\n          <textarea v-if=\"hasContent\" id=\"content\" name=\"content\" v-ckrte=\"content\" :type=\"editorType\" :content=\"content\" :fresh=\"isFresh\" rows=\"200\" _v-8571089c=\"\"></textarea>\n          <p v-if=\"formErrors.content\" class=\"help-text invalid\" _v-8571089c=\"\">Need Content!</p>\n        </div>\n        <div class=\"form-group user-display\" _v-8571089c=\"\">\n          <div class=\"user-name\" _v-8571089c=\"\">Author: {{author.first_name}} {{author.last_name}}</div>\n          <div v-if=\"contact.id != 0\" class=\"user-info\" _v-8571089c=\"\">Contact: {{contact.first_name}} {{contact.last_name}}, {{contact.email}}, {{contact.phone}}</div>\n          <div v-if=\"contact.id == 0\" class=\"user-info\" _v-8571089c=\"\">Contact: {{defaultcontact.first_name}} {{defaultcontact.last_name}}, {{defaultcontact.email}}, {{defaultcontact.phone}}</div>\n        </div><!-- /.frm-group -->\n      </div><!-- /.small-12 columns -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-6\" _v-8571089c=\"\">\n        <div v-show=\"saveAuthorMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-8571089c=\"\">\n          <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-8571089c=\"\"><i class=\"fa fa-times\" _v-8571089c=\"\"></i></button>\n          <h5 _v-8571089c=\"\">{{saveAuthorMessage.msg}}</h5>\n        </div>\n        <a v-if=\"!needAuthor\" @click.prevent=\"changeAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-8571089c=\"\">Change Author</a>\n        <a v-if=\"hasAuthor\" @click.prevent=\"resetAuthor\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-8571089c=\"\">Reset Author</a>\n        <a @click.prevent=\"changeContact\" href=\"#\" class=\"btn btn-primary btn-sm\" _v-8571089c=\"\">Change Contact</a>\n        <div v-if=\"needAuthor &amp;&amp; isAdmin\" class=\"form-inline author\" _v-8571089c=\"\">\n            <label _v-8571089c=\"\">Choose existing Author:</label>\n            <v-select :value.sync=\"selectedAuthor\" :options=\"optionsAuthorlist\" :multiple=\"false\" placeholder=\"Author (leaving this blank will set you as the author)\" label=\"name\" _v-8571089c=\"\"> </v-select>\n        </div>\n        </div>\n      </div><!-- /.col-md-12 -->\n    <!-- /.row -->\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-6\" _v-8571089c=\"\">\n        <div v-if=\"isAdmin &amp;&amp; needContact\" class=\"form-inline author\" _v-8571089c=\"\">\n            <label _v-8571089c=\"\">Story contact:</label>\n            <v-select :value.sync=\"selectedContact\" :options=\"optionsContactlist\" :multiple=\"false\" placeholder=\"Contact (leaving this blank will set the system default as the contact)\" label=\"name\" _v-8571089c=\"\"> </v-select>\n        </div>\n      </div><!-- /.col-md-6 -->\n    </div>\n    <div class=\"row\" _v-8571089c=\"\">\n      <div class=\"col-md-6\" _v-8571089c=\"\">\n        <div class=\"form-group\" _v-8571089c=\"\">\n          <label for=\"start-date\" _v-8571089c=\"\">Start Date: <i class=\"fi-star reqstar\" _v-8571089c=\"\"></i></label>\n          <input v-if=\"fdate\" type=\"text\" :value=\"fdate\" :initval=\"fdate\" v-flatpickr=\"fdate\" _v-8571089c=\"\">\n          <p _v-8571089c=\"\">NOTE: For external story with \"video\" tag, treat this field as the END Date.</p>\n          <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-8571089c=\"\">Need a Start Date</p>\n        </div><!--form-group -->\n      </div><!-- /.small-6 columns -->\n      <div class=\"col-md-6\" _v-8571089c=\"\">\n        <div v-if=\"isAdmin\" class=\"form-group\" _v-8571089c=\"\">\n          <label for=\"tags\" _v-8571089c=\"\">Tags:</label>\n          <v-select :class=\"[formErrors.tags ? 'invalid-input' : '']\" :value.sync=\"tags\" :options=\"taglist\" :multiple=\"true\" placeholder=\"Select tags\" label=\"name\" _v-8571089c=\"\">\n        </v-select>\n\n      </div><!-- /.form-group -->\n    </div><!-- /.small-6 columns -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-8571089c=\"\">\n    <div class=\"col-md-6\" _v-8571089c=\"\">\n    </div><!-- /.col-md-6-->\n    <div class=\"col-md-6\" _v-8571089c=\"\">\n    </div><!-- /.col-md-6 -->\n  </div><!-- /.row -->\n\n<div class=\"row\" _v-8571089c=\"\">\n\n\n  <div class=\"col-md-12\" _v-8571089c=\"\">\n    <div class=\"form-group\" _v-8571089c=\"\">\n      <button v-on:click=\"submitForm\" type=\"submit\" class=\"btn btn-primary\" _v-8571089c=\"\">{{submitBtnLabel}}</button>\n    </div>\n  </div><!-- /.column -->\n</div>\n</form>\n"
+>>>>>>> 04357951aa6c74c22f865f30e31d2350fe86ccfe
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
+<<<<<<< HEAD
     __vueify_insert__.cache["\np[_v-0c15640d] {\n  margin:0;\n}\nlabel[_v-0c15640d] {\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-0c15640d] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-0c15640d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-0c15640d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-0c15640d] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-0c15640d] {\n  color: #ff0000;\n}\n.user-display[_v-0c15640d] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-0c15640d] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-0c15640d] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-0c15640d]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-0c15640d], [type='password'][_v-0c15640d], [type='date'][_v-0c15640d], [type='datetime'][_v-0c15640d], [type='datetime-local'][_v-0c15640d], [type='month'][_v-0c15640d], [type='week'][_v-0c15640d], [type='email'][_v-0c15640d], [type='number'][_v-0c15640d], [type='search'][_v-0c15640d], [type='tel'][_v-0c15640d], [type='time'][_v-0c15640d], [type='url'][_v-0c15640d], [type='color'][_v-0c15640d],\ntextarea[_v-0c15640d] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-0c15640d], [type='checkbox'][_v-0c15640d], [type='radio'][_v-0c15640d] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-0c15640d] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-0c15640d]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-0c15640d]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-0c15640d] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-0c15640d] {\n  vertical-align: bottom;\n}\n"] = false
+=======
+    __vueify_insert__.cache["\np[_v-8571089c] {\n  margin:0;\n}\nlabel[_v-8571089c] {\n  display: block;\n}\nlabel > span[_v-8571089c] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[_v-8571089c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-8571089c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-8571089c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-8571089c] {\n  color: #ff0000;\n}\n.user-display[_v-8571089c] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[_v-8571089c] {\n\n  font-style: italic;\n}\n.user-display .user-info[_v-8571089c] {\n  font-size: 14px;\n}\n\nfieldset label.radiobtns[_v-8571089c]  {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n[type='text'][_v-8571089c], [type='password'][_v-8571089c], [type='date'][_v-8571089c], [type='datetime'][_v-8571089c], [type='datetime-local'][_v-8571089c], [type='month'][_v-8571089c], [type='week'][_v-8571089c], [type='email'][_v-8571089c], [type='number'][_v-8571089c], [type='search'][_v-8571089c], [type='tel'][_v-8571089c], [type='time'][_v-8571089c], [type='url'][_v-8571089c], [type='color'][_v-8571089c],\ntextarea[_v-8571089c] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][_v-8571089c], [type='checkbox'][_v-8571089c], [type='radio'][_v-8571089c] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[_v-8571089c] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nbutton.button-primary[_v-8571089c]{\n  margin-top: 1rem;\n}\n\n.form-group[_v-8571089c]{\n  margin-bottom: 5px;\n}\n\n.callout[_v-8571089c] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[_v-8571089c] {\n  vertical-align: bottom;\n}\n"] = false
+>>>>>>> 04357951aa6c74c22f865f30e31d2350fe86ccfe
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -21818,34 +21840,38 @@ if (module.hot) {(function () {  module.hot.accept()
 'use strict';
 
 module.exports = {
-    twoWay: true,
-    priority: 1000,
-    params: ['content', 'type'],
-    bind: function bind() {
+  twoWay: true,
+  priority: 1000,
+  params: ['content', 'type'],
+  bind: function bind() {
+    this.vm.$nextTick(this.setupEditor.bind(this));
+  },
+  setupEditor: function setUpEditor() {
+    var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
+    var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
+    var self = this;
+    CKEDITOR.replace(this.el.id, {
+      customConfig: editorConfig
+    });
 
-        console.log(this.setupEditor);
-        this.vm.$nextTick(this.setupEditor.bind(this));
-    },
-    setupEditor: function setUpEditor() {
-        var editorConfigType = this.params.type == undefined || this.params.type == null || this.params.type == "" ? 'admin' : this.params.type;
-        var editorConfig = '/themes/ckeditor_config_' + editorConfigType + '.js';
-        var self = this;
-        CKEDITOR.replace(this.el.id, {
-            customConfig: editorConfig
-        });
+    CKEDITOR.instances[this.el.id].setData(this.params.content);
+    CKEDITOR.instances[this.el.id].on('change', function () {
+      self.set(CKEDITOR.instances[self.el.id].getData());
+    });
+  },
+  update: function update(value, binding, vnode, oldVnode) {
+    if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
 
-        CKEDITOR.instances[this.el.id].setData(this.params.content);
-        CKEDITOR.instances[this.el.id].on('change', function () {
-            self.set(CKEDITOR.instances[self.el.id].getData());
-        });
-    },
-    update: function update(value) {
-        if (!CKEDITOR.instances[this.el.id]) return this.vm.$nextTick(this.update.bind(this, value));
-        this.vm.onContentChange();
-    },
-    unbind: function unbind() {
-        CKEDITOR.instances[this.el.id].destroy();
-    }
+    // For public experts form's ckedior: set ckload to false after first update to prevent cursor from moving to top of editor
+    if (this.vm.ckload) CKEDITOR.instances[this.el.id].setData(value);
+
+    this.vm.ckload = false;
+    this.vm.onContentChange();
+  },
+  unbind: function unbind() {
+    CKEDITOR.instances[this.el.id].destroy();
+  }
+
 };
 
 },{}],113:[function(require,module,exports){
@@ -21904,6 +21930,10 @@ var Vue = require('vue');
 
 Vue.use(_vueResource2.default);
 
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+
 new Vue({
     el: '#vue-story-form-wrapper',
     ready: function ready() {
@@ -21915,7 +21945,6 @@ new Vue({
         StoryForm: _StoryForm2.default,
         BoxTools: _BoxTools2.default
     }
-
 });
 
 },{"./components/BoxTools.vue":110,"./components/StoryForm.vue":111,"./vuex/store":117,"vue":107,"vue-resource":105}],115:[function(require,module,exports){
