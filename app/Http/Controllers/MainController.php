@@ -67,19 +67,16 @@ class MainController extends Controller
         ->orderBy('start_date','asc')
         ->take($this->recordLimitNews)->get();
 
-        //make sure there are enough announcements with a priority over 0
+        //make sure there are enough stories with a priority over 0
         //if not requery with out priority limitation
         if($currentStorysBasic->count() < $this->recordLimitNews ){
           $currentStorysBasic = $this->story->where([
-            ['story_type', 'news'],
-            ['story_type', 'advisory'],
-            ['story_type', 'statement'],
             ['is_approved', 1],
             ['is_archived', 0],
             ['start_date', '<=', $currentDateTimeStart]
-          ])
+          ])->whereIn('story_type', ['news', 'statement', 'advisory'])
           ->orderBy('priority','desc')
-          ->orderBy('start_date','asc')
+          ->orderBy('start_date','desc')
           ->take($this->recordLimitNews)->get();
         }
 

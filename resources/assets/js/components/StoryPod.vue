@@ -20,28 +20,21 @@
                     </div>
                         <div class="col-sm-12 col-md-6">
                         <div id="storyform" class="form-inline pull-right">
-                            <template v-if="isLiveColumn">
-                            <div class="form-group">
-                                <button v-if="hasPriorityChanged" @click.prevent="updateItem" class="btn footer-btn bg-orange btn-xs" href="#"><span class="fa fa-floppy-o"></span></button>
-                            </div><!-- /.form-group -->
-                          <div class="form-group">
-                            <label class="sr-only" for="priority-number">Priority</label>
-                                <select id="priority-{{item.id}}" v-show="this.item.story_type != 'article'" v-model="patchRecord.priority" @change="priorityChange($event)" class="form-control" number>
-                                    <option v-for="option in priorityOptions" v-bind:value="option.value">
-                                        {{option.text}}
-                                    </option>
-                                </select>
-                          </div>
+                          <template v-if="pid == 'items-live'">
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                Elevate
+                                <input type="checkbox" class="form-check-input" @click="toggleEmitStoryElevate(item)" v-model="checked" :checked="isElevatedStory" /> |
+                              </label>
+                            </div>
                           </template>
-                          <template v-if="canApprove">
+                          <template v-if="canApprove && pid != 'item-elevated'">
                             <template v-if="recordIsReady">
                                 <div id="applabel" class="form-group">
                                     <label>approved:</label>
                                 </div><!-- /.form-group -->
                                 <div class="form-group">
-
                                     <vui-flip-switch id="switch-{{item.id}}"
-
                                     v-on:click.prevent="changeIsApproved"
                                     :value.sync="patchRecord.is_approved" >
                                     </vui-flip-switch>
@@ -53,6 +46,7 @@
                                 </div><!-- /.form-group -->
                             </template>
                           </template>
+                          <button v-show="pid == 'item-elevated'" type="button" class="btn btn-sm btn-danger pull-right remove-story-btn" @click="emitStoryDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
                         </div><!-- /.pull-right -->
                     </div><!-- /.col-md-12-->
                 </div><!-- /.row -->
@@ -290,6 +284,9 @@
         }
         .special-item-last {
         }
+        .remove-story-btn{
+          margin-left: 10px;
+        }
 </style>
 <script>
 
@@ -299,14 +296,14 @@ import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
     directives: {},
     components: {VuiFlipSwitch},
-    props: ['item','pid','sroute','qtype','gtype','stype','index','role'],
+    props: ['item','pid','sroute','qtype','gtype','stype','index','role','elevatedStorys'],
     data: function() {
         return {
+            checked:false,
             response_msg: '',
             response_approval: '',
             showBody: false,
             currentDate: {},
-            priorityOptions: [],
             record: {
                 title: '',
                 story_type: '',
@@ -367,26 +364,6 @@ module.exports  = {
                 return true;
             } else {
                 return false;
-            }
-        },
-        priorityOptions: function(){
-            let opts = [];
-            opts.push({ text: '0' , value: 0 });
-            for (var i=1, l = 10 ; i<l ; i++){
-                opts.push({ text: i.toString() , value: i })
-            }
-            for (var j=1, l2 = 10 ; j<l2 ; j++){
-                let jten = j * 10;
-                opts.push({ text: jten.toString() , value: jten })
-            }
-            opts.push({ text: '99' , value:  99 });
-            return opts;
-        },
-        hasPriorityChanged: function(){
-            if (this.initRecord.priority != this.patchRecord.priority){
-                return true
-            } else {
-                return false
             }
         },
         hasIsApprovedChanged: function(){
@@ -471,14 +448,11 @@ module.exports  = {
         },
         homeIcon: function() {},
                  archivedIcon: function() {
-
                       if (this.item.archived === 1){
                           aIcon = 'fa fa-archive'
                       } else {
                           aIcon = ''
-                        //   featuredicon = 'fa-star-o'
                       }
-
                       return aIcon
                   },
                   featuredIcon: function() {
@@ -486,10 +460,8 @@ module.exports  = {
                       if (this.item.is_featured === 1){
                           featuredicon = 'fa fa-star'
                       } else {
-                        //   featuredicon = ''
                           featuredicon = ''
                       }
-
                       return featuredicon
                   },
                   isReadyStatus: function(){
@@ -526,9 +498,7 @@ module.exports  = {
                           faicon = 'fa-file-o'
                           break
                       }
-
                       return 'fa '+ faicon + ' fa-fw'
-
                   },
                   recordIsReady:function(){
                       switch(this.item.story_type){
@@ -561,10 +531,20 @@ module.exports  = {
                           return false
                       } else {
                          return true
-
                       }
-                  }
-
+                  },
+                  isElevatedStory: function(){
+                    if(this.elevatedStorys){
+                      for(var i = 0; i < this.elevatedStorys.length; i++) {
+                        if(this.elevatedStorys[i].id == this.item.id){
+                          this.checked = true
+                          return true
+                        }
+                      }
+                    }
+                    this.checked = false
+                    return false
+                  },
               },
               methods: {
                   gotoHub: function(itemid){
@@ -578,9 +558,6 @@ module.exports  = {
                   },
                   previewItem: function(ev) {
                       window.location.href = this.itemPreviewPath;
-                  },
-                  priorityChange(event){
-
                   },
                     toggleBody: function(ev) {
                         if(this.showBody == false) {
@@ -632,10 +609,12 @@ module.exports  = {
                         this.item.priority = this.initRecord.priority =  ndata.priority;
                         this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
 
-                        this.hasPriorityChanged = 0;
+                        // Unapproved stories lose priority status
+                        if(!this.item.is_approved){
+                          this.emitStoryDemote(this.item)
+                        }
                     },
                     updateRecordStatus: function(){
-                        // this.item.is_approved = (this.is_approved === 0)?1:0;
                         let self = this
                         this.$http.patch('/api/story/updateQueue' , this.item , {
                             method: 'PATCH'
@@ -651,12 +630,28 @@ module.exports  = {
                             self.itemMsgStatus.level = 'danger';
                             self.itemMsgStatus.msg = response.data.error.message;
                         });
-                },
+                    },
                     doThis: function(ev) {
                         this.item.is_approved = (this.is_approved === 0)?1:0;
                        this.$emit('item-change',this.item);
                     },
-
+                    emitStoryElevate: function(storyObj){
+                      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+                      this.$dispatch('story-elevated', storyObj)
+                    },
+                    emitStoryDemote: function(storyObj){
+                      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+                      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+                      this.$dispatch('story-demoted', storyObj.id)
+                    },
+                    toggleEmitStoryElevate: function(storyObj){
+                      // function will run before this.checked is switched
+                      if(!this.checked){
+                        this.emitStoryElevate(storyObj)
+                      } else {
+                        this.emitStoryDemote(storyObj)
+                      }
+                    },
                 },
                 watch: {
                     'isapproved': function(val, oldVal) {

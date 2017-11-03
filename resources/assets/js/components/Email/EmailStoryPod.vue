@@ -350,22 +350,6 @@ module.exports  = {
             this.emitOtherStoryRemove(storyObj)
           }
         },
-        updateItem: function(){
-          /*
-          this.patchRecord.is_archived = this.item.is_archived;
-
-          this.$http.patch('/api/email/stories/other/update' + this.item.id , this.patchRecord , {
-            method: 'PATCH'
-          } )
-          .then((response) => {
-            console.log('good?'+ response)
-            this.checkAfterUpdate(response.data.newdata)
-
-          }, (response) => {
-            console.log('bad?'+ response)
-          });
-          */
-        },
     },
     watch: {
     },

@@ -80,33 +80,59 @@
         </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
-        <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has passed</small></h4>
-        <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
-            <div class="btn-group btn-group-xs" role="group">
-                <label>Filter: </label>
-            </div>
-            <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_live_filter_storytype">
-                 <template v-for="item in storyTypeIcons">
-                     <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
-                </template>
-          </div>
-      </div>
         <div id="items-live">
-            <story-pod
-                pid="items-live"
-                :role="role"
-                :sroute="sroute"
-                :stype="stype"
-                :gtype="gtype"
-                :qtype="qtype"
-                v-for="item in itemsLive | orderBy 'priority' -1 | filterBy filterLiveByStoryType"
-                @item-change="moveToUnApproved"
-
-                :item="item"
-                :index="$index"
-                :is="items-live">
-            </story-pod>
-        </div>
+          <!-- ELEVATED ANNOUNCEMENTS -->
+          <template v-if="canElevate">
+            <h3><span class="badge">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated (all story types)</h3>
+            <p>To rearrange the order of stories, drag the pod to the desired location. To demote a story, click the red 'X' on the pod. Changes are saved automatically. Note: this list is NOT filtered by date.</p>
+            <template v-if="elevateditems.length > 0">
+              <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
+                <li v-for="item in elevateditems" class="list-group-item">
+                  <story-pod
+                      pid="item-elevated"
+                      :role="role"
+                      :sroute="sroute"
+                      :stype="stype"
+                      :gtype="gtype"
+                      :qtype="qtype"
+                      :item="item"
+                      :is="item-elevated"
+                      >
+                  </story-pod>
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <p>There are no elevated stories.</p>
+            </template>
+          </template>
+          <hr /> <!-- End elevated announcements -->
+          <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has passed</small></h4>
+          <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
+              <div class="btn-group btn-group-xs" role="group">
+                  <label>Filter: </label>
+              </div>
+              <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_live_filter_storytype">
+                   <template v-for="item in storyTypeIcons">
+                       <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+                  </template>
+            </div>
+          </div>
+          <story-pod
+              pid="items-live"
+              :role="role"
+              :sroute="sroute"
+              :stype="stype"
+              :gtype="gtype"
+              :qtype="qtype"
+              v-for="item in itemsLive | orderBy 'start_date' -1 | filterBy filterLiveByStoryType"
+              @item-change="moveToUnApproved"
+              :elevated-storys="elevateditems"
+              :item="item"
+              :index="$index"
+              :is="items-live">
+          </story-pod>
+      </div>
     </div><!-- /.col-md-4 -->
 </div><!-- ./row -->
 </template>
@@ -179,6 +205,7 @@ export default  {
             changestorytype:'',
             currentDate: moment(),
             allitems: [],
+            elevateditems: [],
             items: [],
             xitems: [],
             items_unapproved_filtered: [],
@@ -207,6 +234,12 @@ export default  {
         },
         canApprove: function(){
           if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'contributor_2' || this.role === 'editor'){
+              return true
+          }
+          return false
+        },
+        canElevate: function(){
+          if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'editor'){
               return true
           }
           return false
@@ -416,7 +449,56 @@ export default  {
                 //error callback
                 console.log("ERRORS");
             }).bind(this);
+
+            this.fetchElevatedRecords(); //get elevated records regardless of date
         },
+
+        /**
+         * Get elevated records REGARDLESS of date range!
+         */
+        fetchElevatedRecords: function(){
+          this.loading = true
+
+          var routeurl = '/api/story/elevated';
+          this.$http.get(routeurl)
+
+          .then((response) =>{
+              this.$set('elevateditems', response.data.data)
+              this.loading = false;
+          }, (response) => {
+              //error callback
+              console.log("ERRORS");
+          }).bind(this);
+        },
+
+        /**
+         * Uses vue-sortable
+         */
+        updateOrder: function(story){
+          // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+          let oldIndex = story.oldIndex
+          let newIndex = story.newIndex
+
+          // move the item in the underlying array
+          this.elevateditems.splice(newIndex, 0, this.elevateditems.splice(oldIndex, 1)[0]);
+
+          // now update the priority order in the database
+          this.updateElevatedOrder()
+        },
+        /**
+         * Change the priority ranking of elevated stories in the database
+         */
+         updateElevatedOrder: function(){
+           var routeurl = '/api/story/elevated/reorder';
+           this.$http.put(routeurl, this.elevateditems)
+
+           .then((response) =>{
+               this.$set('elevateditems', response.data.data)
+           }, (response) => {
+               //error callback
+               console.log("ERRORS");
+           }).bind(this);
+         }
     },
     filters: {
         byObject: function(array, options) {
@@ -450,7 +532,20 @@ export default  {
     },
 
     events: {
-
+      'story-elevated': function (storyObj) {
+        if(storyObj){
+          this.elevateditems.push(storyObj)
+          this.updateElevatedOrder()
+        }
+      },
+      'story-demoted': function (storyId) {
+        for(i = 0; i < this.elevateditems.length; i++){
+          if(storyId == this.elevateditems[i].id){
+            this.elevateditems.$remove(this.elevateditems[i])
+            this.updateElevatedOrder()
+          }
+        }
+      },
     }
 }
 </script>

@@ -15,43 +15,29 @@
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
-              <div class="form-group">
-                <button v-if="hasPriorityChanged" @click.prevent="updateItem" class="btn footer-btn bg-orange btn-xs" href="#"><span class="fa fa-floppy-o"></span></button>
-              </div><!-- /.form-group -->
-
-              <!-- Previously for the EMU home page
-              <div title="Display order for Eastern's index page" class="form-group">
-                <label for="home-priority-number" class="priority">Home:</label>
-                <select id="home-priority-{{item.id}}" v-model="patchRecord.home_priority" @change="priorityChange($event)" number>
-                  <option v-for="option in options" v-bind:value="option.value">
-                    {{option.text}}
-                  </option>
-                </select>
-              </div>&nbsp;&nbsp;&nbsp;
-              -->
-
-              <div title="Display order for News Hub" class="form-group"> <!-- For the NEWS HUB page. -->
-                <label for="priority-number" class="priority">Rank:</label>
-                <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" number>
-                  <option v-for="option in options" v-bind:value="option.value">
-                    {{option.text}}
-                  </option>
-                </select>
-              </div>
-
-              <div id="applabel" class="form-group">
-                <label>Approved:&nbsp;</label>
-              </div><!-- /.form-group -->
-              <div class="form-group">
-                <vui-flip-switch id="switch-{{item.id}}"
-                v-on:click.prevent="changeIsApproved"
-                :value.sync="patchRecord.is_approved" >
-              </vui-flip-switch>
-            </div>
+              <template v-if="pid == 'items-live'">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    Elevate
+                    <input type="checkbox" class="form-check-input" @click="toggleEmitEventElevate(item)" v-model="checked" :checked="isElevatedEvent" /> |
+                  </label>
+                </div>
+              </template>
+              <template v-if="pid != 'item-elevated'">
+                <div id="applabel" class="form-group">
+                  <label> approved:</label>
+                </div><!-- /.form-group -->
+                <div class="form-group">
+                  <vui-flip-switch id="switch-{{item.id}}"
+                  v-on:click.prevent="changeIsApproved"
+                  :value.sync="patchRecord.is_approved" >
+                  </vui-flip-switch>
+                </div>
+              </template>
+              <button v-show="pid == 'item-elevated'" type="button" class="btn btn-sm btn-danger pull-right remove-event-btn" @click="emitEventDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
           </form>
         </div><!-- /.col-sm-6 -->
       </div><!-- /.row -->
-
       <div class="row">
         <a v-on:click.prevent="toggleBody" href="#">
           <div class="col-sm-12">
@@ -72,7 +58,6 @@
       <template v-if="canHaveImage">
         <img v-if="hasEventImage" :src="imageUrl" /><br/>
         <a v-on:click.prevent="togglePanel" style="width: 100px" class="btn btn-info btn-sm" href="#">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>
-
         <div v-show="showPanel">
           <!-- <div class="panel"> -->
           <div>
@@ -98,7 +83,6 @@
 
         <hr/>
       </template>
-
       <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
       <template v-if="item.all_day">
         <p>All Day Event</p>
@@ -161,21 +145,13 @@
     <div :class="addSeperator" class="box-footer list-footer">
       <div class="row">
         <div class="col-sm-12 col-md-9">
-          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->
-
           <span v-if="itemCurrent" :class="timeFromNowStatus">Live {{timefromNow}}</span> <span :class="timeLeftStatus">{{timeLeft}}</span>
-
-
-
         </div><!-- /.col-md-7 -->
         <div class="col-sm-12 col-md-3">
           {{item.id}}
           <div class="btn-group pull-right">
-
             <button v-on:click.prevent="editItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-pencil"></i></button>
-            <!-- <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-eye"></i></button> -->
           </div><!-- /.btn-toolbar -->
-
         </div><!-- /.col-md-7 -->
       </div><!-- /.row -->
     </div><!-- /.box-footer -->
@@ -336,10 +312,13 @@ h5 {
   border-left: 6px solid #00bfff;
 }
 .special-item-last {
-  /*border-bottom: 6px solid #bfff00;
-  border-bottom-right-radius:3px;
-  border-bottom-left-radius: 3px;*/
   margin-bottom: 30px;
+}
+.remove-event-btn{
+  margin-left: 10px;
+}
+.form-check{
+  display:inline;
 }
 </style>
 <script>
@@ -347,25 +326,11 @@ import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
   components: {VuiFlipSwitch},
-  props: ['item','pid','index'],
+  props: ['item','pid','index','elevatedEvents'],
   data: function() {
     return {
+      checked: false,
       eventimage: '',
-      hasPriorityChanged:0,
-      options: [
-        { text: '0', value: 0 },
-        { text: '1', value: 1 },
-        { text: '2', value: 2 },
-        { text: '3', value: 3 },
-        { text: '4', value: 4 },
-        { text: '5', value: 5 },
-        { text: '6', value: 6 },
-        { text: '7', value: 7 },
-        { text: '8', value: 8 },
-        { text: '9', value: 9 },
-        { text: '10', value: 10 },
-        { text: '99', value: 99 }
-      ],
       formInputs: {
         event_id: '',
         attachment: '',
@@ -398,9 +363,6 @@ module.exports  = {
     }
   },
   created: function () {
-    // this.is_approved = this.item.approved;
-    // this.currentDate = moment();
-    // console.log('this.currentDate=' + this.currentDate)
   },
   ready: function() {
     this.initRecord.is_approved = this.patchRecord.is_approved =  this.item.is_approved;
@@ -418,16 +380,8 @@ module.exports  = {
       }
       return asclass;
     },
-    hasPriorityChanged: function(){
-      if (this.initRecord.home_priority != this.patchRecord.home_priority || this.initRecord.priority != this.patchRecord.priority){
-        return true
-      } else {
-        return false
-      }
-    },
     hasIsApprovedChanged: function(){
       if (this.initRecord.is_approved != this.patchRecord.is_approved){
-        console.log('is_approved => initRecord='+ this.initRecord.is_approved  + ' patchRecord=>' +this.patchRecord.is_approved );
         return true
       } else {
         return false
@@ -442,8 +396,6 @@ module.exports  = {
       } else {
         return 'time-is-long'
       }
-
-
     },
 
     timeFromNowStatus: function(){
@@ -460,10 +412,8 @@ module.exports  = {
       return moment(this.item.start_date_time).fromNow()
     },
     timeLeft: function() {
-
       if(moment(this.item.start_date_time).isSameOrBefore(moment())){
         let tlft = this.timeDiffNow(this.item.end_date_time);
-        console.log('id='+ this.item.id + ' timeLeft'+tlft)
         if (tlft < 0) {
           this.itemCurrent = 0;
           return 'Event Ended ' + moment(this.item.end_date_time).fromNow()
@@ -471,12 +421,9 @@ module.exports  = {
           this.itemCurrent = 1;
           return  ' and Ends ' + moment(this.item.end_date_time).fromNow()
         }
-
       }  else {
         return ''
       }
-
-
     },
     specialItem: function(){
       let extrasep;
@@ -505,32 +452,19 @@ module.exports  = {
           timepartstatus = 'event-negative';
         } else {
           timepartstatus = 'event-positive';
-
         }
-
       }
-
       return timepartstatus;
-
-
     },
     itemStatus : function() {
       let sclass = 'box-default';
-
-      // console.log('pid' + this.pid + ' index='+ this.index);
       if (this.pid == 'items-live'){
         if(this.index < 4){
           console.log('topitems');
           sclass = 'topitems';
         }
       }
-      // if (this.item.is_promoted === 1){
-      //     pclass =  'is-promoted'
-      //   } else {
-      //      pclass = 'box-default'
-      //   }
       return sclass;
-
     },
     promotedIcon: function() {
       if (this.item.is_promoted === 1){
@@ -546,7 +480,6 @@ module.exports  = {
       } else {
         return false;
       }
-
     },
     canHaveImage:function() {
       if(this.item.is_approved){
@@ -554,15 +487,12 @@ module.exports  = {
       } else {
         return false;
       }
-
     },
     imageUrl:function() {
       var pth = "/imagecache/smallthumb/";
       var fname = this.item.eventimage;
-      console.log(pth + fname)
       return pth + fname;
     },
-
     isApproved: function() {
       return this.item.is_approved;
     },
@@ -599,7 +529,19 @@ module.exports  = {
         default:
         return ''
       }
-    }
+    },
+    isElevatedEvent: function(){
+      if(this.elevatedEvents){
+        for(var i = 0; i < this.elevatedEvents.length; i++) {
+          if(this.elevatedEvents[i].id == this.item.id){
+            this.checked = true
+            return true
+          }
+        }
+      }
+      this.checked = false
+      return false
+    },
   },
   methods:{
     // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
@@ -675,9 +617,6 @@ module.exports  = {
       });
     },
     updateItem: function(){
-      //    this.patchRecord.is_approved = this.item.is_approved;
-      //    this.patchRecord.priority = this.item.priority;
-
       this.patchRecord.is_canceled = this.item.is_canceled;
 
       this.formMessage.msg = false;
@@ -704,8 +643,11 @@ module.exports  = {
       this.item.home_priority = this.initRecord.home_priority =  ndata.home_priority;
       this.item.is_canceled = this.initRecord.is_canceled = ndata.is_canceled;
       this.item.eventimage = this.eventimage = this.initRecord.eventimage = ndata.eventimage;
-      this.hasPriorityChanged = 0;
-      console.log(ndata);
+
+      // Unapproved events lose priority status
+      if(!this.item.is_approved){
+        this.emitEventDemote(this.item)
+      }
 
       var self = this; // huiasd  k
       setTimeout(function(){
@@ -732,19 +674,24 @@ module.exports  = {
     doThis: function(ev) {
       this.item.is_approved = (this.is_approved === 0)?1:0;
       this.$emit('item-change',this.item);
-      //console.log('ev ' + ev + 'this.item.id= '+  this.item.priority)
     },
-    // addMediaFile: function(ev) {
-    //     var formData = new FormData();
-    //     formData.append('image', fileInput ,this.$els.finput.files[0]);
-    //
-    //     // var fileinputObject = this.$els.finput;
-    //     // console.log('fileinputObject.name= '+ fileinputObject.name)
-    //     // console.log('fileinputObject.value= '+ fileinputObject.value)
-    //     // console.log('fileinputObject.files= '+ fileinputObject.files[0])
-    //     this.$emit('add-media-file', formData);
-    //     console.log('ev ' + ev + 'this.item.id= '+  this.item)
-    // }
+    emitEventElevate: function(eventObj){
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('event-elevated', eventObj)
+    },
+    emitEventDemote: function(eventObj){
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('event-demoted', eventObj.id)
+    },
+    toggleEmitEventElevate: function(eventObj){
+      // function will run before this.checked is switched
+      if(!this.checked){
+        this.emitEventElevate(eventObj)
+      } else {
+        this.emitEventDemote(eventObj)
+      }
+    },
 
   },
   watch: {
@@ -757,8 +704,6 @@ module.exports  = {
     }
   },
   directives: {
-    // mydatedropper: require('../directives/mydatedropper.js')
-    // dtpicker: require('../directives/dtpicker.js')
   },
 
   filters: {
@@ -791,17 +736,6 @@ module.exports  = {
     }
   },
   events: {
-
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
   }
 };
 

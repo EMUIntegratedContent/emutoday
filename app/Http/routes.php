@@ -173,13 +173,17 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::patch('event/updateitem/{id}', 'Api\EventController@updateItem')->name('api_event_updateitem');
     Route::post('event/{id}/delete', 'Api\EventController@delete')->name('api_event_deleteitem');
     Route::patch('event/{id}/cancel', 'Api\EventController@cancel')->name('api_event_cancelitem');
+    Route::put('event/elevated/reorder', 'Api\EventController@reorderElevatedEvents')->name('api_event_elevated_reorder');
+    Route::get('event/elevated', 'Api\EventController@getElevatedEvents')->name('api_event_elevated');
     Route::resource('event', 'Api\EventController');
 
     Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', 'Api\AnnouncementController@queueLoad')->name('api_announcement_queueload');
+    Route::put('announcement/elevated/reorder', 'Api\AnnouncementController@reorderElevatedAnnouncements')->name('api_announcement_elevated_reorder');
     Route::patch('announcement/updateitem/{id}', 'Api\AnnouncementController@updateItem')->name('api_announcement_updateitem');
     Route::patch('announcement/archiveitem/{id}', 'Api\AnnouncementController@archiveItem')->name('api_announcement_archiveitem');
     Route::post('announcement/{id}/delete', 'Api\AnnouncementController@delete')->name('api_announcement_deleteitem');
     Route::get('announcement/archive', 'Api\AnnouncementController@archives')->name('api_announcement_archive');
+    Route::get('announcement/elevated', 'Api\AnnouncementController@getElevatedAnnouncements')->name('api_announcement_elevated');
     Route::post('announcement', 'Api\AnnouncementController@store')->name('api_announcement_storeitem'); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
@@ -200,8 +204,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('users/{selectedUser?}', 'Api\AuthorController@getUsers')->name('users_find_authorapi');
     Route::get('authorbyuser/{userId?}', 'Api\AuthorController@getAuthorByUser')->name('authorbyuser');
 
+    Route::put('story/elevated/reorder', 'Api\StoryController@reorderElevatedStorys')->name('api_story_elevated_reorder');
     Route::patch('story/archiveitem/{id}', 'Api\StoryController@archiveItem')->name('api_story_archiveitem');
-
+    Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
     Route::resource('story', 'Api\StoryController');
 
     Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');

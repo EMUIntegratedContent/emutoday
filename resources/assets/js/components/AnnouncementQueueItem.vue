@@ -8,26 +8,26 @@
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
-              <div class="form-group">
-                <button v-if="hasPriorityChanged" @click.prevent="updateItem" class="btn footer-btn bg-orange btn-xs" href="#"><span class="fa fa-floppy-o"></span></button>
-              </div><!-- /.form-group -->
-              <div class="form-group">
-                <label class="sr-only" for="priority-number">Priority</label>
-                <select id="priority-{{item.id}}" v-model="patchRecord.priority" @change="priorityChange($event)" number>
-                  <option v-for="option in options" v-bind:value="option.value">
-                    {{option.text}}
-                  </option>
-                </select>
-              </div>
-              <div id="applabel" class="form-group ">
-                <label>  approved:</label>
-              </div><!-- /.form-group -->
-              <div class="form-group">
-                <vui-flip-switch id="switch-{{item.id}}"
-                v-on:click.prevent="changeIsApproved"
-                :value.sync="patchRecord.is_approved" >
-              </vui-flip-switch>
-            </div>
+              <template v-if="pid == 'items-live'">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    Elevate
+                    <input type="checkbox" class="form-check-input" @click="toggleEmitAnnouncementElevate(item)" v-model="checked" :checked="isElevatedAnnouncement" /> |
+                  </label>
+                </div>
+              </template>
+              <template v-if="pid != 'item-elevated'">
+                <div id="applabel" class="form-group ">
+                  <label>  approved:</label>
+                </div><!-- /.form-group -->
+                <div class="form-group">
+                  <vui-flip-switch id="switch-{{item.id}}"
+                  v-on:click.prevent="changeIsApproved"
+                  :value.sync="patchRecord.is_approved" >
+                  </vui-flip-switch>
+                </div>
+              </template>
+              <button v-show="pid == 'item-elevated'" type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
           </form>
         </div><!-- /.col-md-12 -->
       </div><!-- /.row -->
@@ -38,10 +38,7 @@
           </div><!-- /.col-md-12 -->
         </a>
       </div><!-- /.row -->
-
     </div>  <!-- /.box-header -->
-
-
     <div v-if="showBody" class="box-body">
       <p>{{item.announcement}}</p>
       <div class="announcement-info">
@@ -49,7 +46,6 @@
         By: {{item.submitter}}</br>
         Dates: {{item.start_date}} - {{item.end_date}}
       </div>
-
     </div><!-- /.box-body -->
     <div class="box-footer list-footer">
       <div class="row">
@@ -187,10 +183,10 @@ h5 {
 
 }
 .special-item-last {
-  /*border-bottom: 6px solid #bfff00;
-  border-bottom-right-radius:3px;
-  border-bottom-left-radius: 3px;*/
   margin-bottom: 30px;
+}
+.remove-announcement-btn{
+  margin-left: 10px;
 }
 </style>
 <script>
@@ -201,24 +197,10 @@ import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
   directives: {},
   components: {VuiFlipSwitch},
-  props: ['item','pid','index'],
+  props: ['item','pid','index','elevatedAnnouncements'],
   data: function() {
     return {
-      options: [
-        { text: '0', value: 0 },
-        { text: '1', value: 1 },
-        { text: '2', value: 2 },
-        { text: '3', value: 3 },
-        { text: '4', value: 4 },
-        { text: '5', value: 5 },
-        { text: '6', value: 6 },
-        { text: '7', value: 7 },
-        { text: '8', value: 8 },
-        { text: '9', value: 9 },
-        { text: '10', value: 10 },
-        { text: '99', value: 99 },
-        { text: 'TOP',  value: 100},
-      ],
+      checked: false,
       showBody: false,
       currentDate: {},
       record: {
@@ -271,13 +253,6 @@ module.exports  = {
     itemEditPath: function(){
       return '/admin/announcement/'+ this.item.id + '/edit'
     },
-    hasPriorityChanged: function(){
-      if (this.initRecord.priority != this.patchRecord.priority){
-        return true
-      } else {
-        return false
-      }
-    },
     hasIsApprovedChanged: function(){
       if (this.initRecord.is_approved != this.patchRecord.is_approved){
         console.log('is_approved => initRecord='+ this.initRecord.is_approved  + ' patchRecord=>' +this.patchRecord.is_approved );
@@ -300,16 +275,12 @@ module.exports  = {
         }
 
       }
-
       if (this.pid == 'items-live' && this.index === 3) {
         extrasep = 'last-special-event'
       } else {
         extrasep = ''
       }
-
       return timepartstatus + ' ' + extrasep;
-
-
     },
     timeLeftStatus: function(){
       let diff = this.timeDiffNow(this.item.end_date)
@@ -320,8 +291,6 @@ module.exports  = {
       } else {
         return 'time-is-long'
       }
-
-
     },
 
     timeFromNowStatus: function(){
@@ -338,28 +307,33 @@ module.exports  = {
       return moment(this.item.start_date).fromNow()
     },
     timeLeft: function() {
-
       if(moment(this.item.start_date).isSameOrBefore(moment())){
         let tlft = this.timeDiffNow(this.item.end_date, 'hours');
-        console.log('id='+ this.item.id + '  -'+ tlft)
         if (tlft < 0) {
           return 'Event Ended ' + moment(this.item.end_date).fromNow()
         } else {
           return  ' and Ends ' + moment(this.item.end_date).fromNow()
         }
-
       }  else {
         return ''
       }
-
-
     },
-
+    isElevatedAnnouncement: function(){
+      if(this.elevatedAnnouncements){
+        for(var i = 0; i < this.elevatedAnnouncements.length; i++) {
+          if(this.elevatedAnnouncements[i].id == this.item.id){
+            this.checked = true
+            return true
+          }
+        }
+      }
+      this.checked = false
+      return false
+    },
   },
   methods: {
     timeDiffNow:function(val, mod = 'minutes'){
       return  moment(val).diff(moment(), mod);
-
     },
     editItem: function(ev) {
       window.location.href = this.itemEditPath;
@@ -375,12 +349,9 @@ module.exports  = {
       }
       console.log('toggleBody' + this.showBody)
     },
-
     changeIsApproved: function(){
       this.patchRecord.is_approved = (this.item.is_approved === 0)?1:0;
-      console.log('this.patchRecord.is_approved ='+this.patchRecord.is_approved );
       this.updateItem();
-
     },
     archiveItem:function(){
       this.patchRecord.is_archived = 1;
@@ -404,9 +375,7 @@ module.exports  = {
         method: 'PATCH'
       } )
       .then((response) => {
-        console.log('good?'+ response)
         this.checkAfterUpdate(response.data.newdata)
-
       }, (response) => {
         console.log('bad?'+ response)
       });
@@ -415,14 +384,29 @@ module.exports  = {
       this.item.is_approved = this.initRecord.is_approved =   ndata.is_approved;
       this.item.priority = this.initRecord.priority =  ndata.priority;
       this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
-      this.hasPriorityChanged = 0;
 
-      console.log(ndata);
+      // Unapproved announcements lose priority status
+      if(!this.item.is_approved){
+        this.emitAnnouncementDemote(this.item)
+      }
     },
-    priorityChange(event){
-      console.log('priority=' + this.item.priority)
+    emitAnnouncementElevate: function(announcementObj){
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('announcement-elevated', announcementObj)
     },
-
+    emitAnnouncementDemote: function(announcementObj){
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('announcement-demoted', announcementObj.id)
+    },
+    toggleEmitAnnouncementElevate: function(announcementObj){
+      // function will run before this.checked is switched
+      if(!this.checked){
+        this.emitAnnouncementElevate(announcementObj)
+      } else {
+        this.emitAnnouncementDemote(announcementObj)
+      }
+    },
 
   },
   watch: {
