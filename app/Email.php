@@ -34,6 +34,17 @@ class Email extends Model
       return $this->belongsToMany('Emutoday\Event', 'email_event')->withPivot('order')->withTimestamps();
   }
 
+  /**
+   * The main stories (with pictures). Each email must have 1 main story but can have 3.
+   */
+  public function mainstories()
+  {
+      return $this->belongsToMany('Emutoday\Story', 'email_mainstory')->withPivot('order')->withTimestamps();
+  }
+
+  /**
+   * The list of stories
+   */
   public function stories()
   {
       return $this->belongsToMany('Emutoday\Story', 'email_story')->withPivot('order')->withTimestamps();

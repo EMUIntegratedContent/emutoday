@@ -156,7 +156,7 @@ h4 {
 export default {
   directives: {},
   components: {},
-  props: ['announcements','events','otherStories','mainStory','email'],
+  props: ['announcements','events','otherStories','mainStories','email'],
   data: function() {
     return {
       deleteConfirm: null,

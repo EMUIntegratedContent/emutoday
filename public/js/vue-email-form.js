@@ -23500,9 +23500,9 @@ var _VuiFlipSwitch = require('../VuiFlipSwitch.vue');
 
 var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
 
-var _EmailMainStoryQueue = require('./EmailMainStoryQueue.vue');
+var _EmailMainStoriesQueue = require('./EmailMainStoriesQueue.vue');
 
-var _EmailMainStoryQueue2 = _interopRequireDefault(_EmailMainStoryQueue);
+var _EmailMainStoriesQueue2 = _interopRequireDefault(_EmailMainStoriesQueue);
 
 var _EmailStoryQueue = require('./EmailStoryQueue.vue');
 
@@ -23536,7 +23536,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 module.exports = {
   directives: {},
-  components: { EmailMainStoryQueue: _EmailMainStoryQueue2.default, EmailStoryQueue: _EmailStoryQueue2.default, EmailEventQueue: _EmailEventQueue2.default, EmailAnnouncementQueue: _EmailAnnouncementQueue2.default, EmailDeleteModal: _EmailDeleteModal2.default, EmailStatsModal: _EmailStatsModal2.default, EmailCloneModal: _EmailCloneModal2.default, EmailLiveView: _EmailLiveView2.default, vSelect: _vueSelect2.default },
+  components: { EmailMainStoriesQueue: _EmailMainStoriesQueue2.default, EmailStoryQueue: _EmailStoryQueue2.default, EmailEventQueue: _EmailEventQueue2.default, EmailAnnouncementQueue: _EmailAnnouncementQueue2.default, EmailDeleteModal: _EmailDeleteModal2.default, EmailStatsModal: _EmailStatsModal2.default, EmailCloneModal: _EmailCloneModal2.default, EmailLiveView: _EmailLiveView2.default, vSelect: _vueSelect2.default },
   props: {
     cuserRoles: { default: {} },
     errors: {
@@ -23585,26 +23585,30 @@ module.exports = {
         mailgun_clicks: 0,
         mailgun_opens: 0,
         mailgun_spam: 0,
-        mainStory: null,
         send_at: null,
         subheading: null,
         title: null,
         announcements: [],
         events: [],
+        mainStories: [],
         otherStories: [],
         recipients: []
       },
       original: {
         id: '',
+        clone: [],
+        created_at: null,
         is_approved: false,
         is_ready: false,
-        mainStory: null,
+        mailgun_clicks: 0,
+        mailgun_opens: 0,
+        mailgun_spam: 0,
         send_at: null,
-        setTime: false,
         subheading: null,
         title: null,
         announcements: [],
         events: [],
+        mainStories: [],
         otherStories: [],
         recipients: []
       },
@@ -23709,7 +23713,7 @@ module.exports = {
       var progress = 0;
 
       this.record.title ? progress += 13 : '';
-      this.record.mainStory ? progress += 15 : '';
+      this.record.mainStories.length > 0 ? progress += 15 : '';
       this.record.events.length > 0 ? progress += 15 : '';
       this.record.announcements.length > 0 ? progress += 15 : '';
       this.record.otherStories.length > 0 ? progress += 15 : '';
@@ -23875,12 +23879,14 @@ module.exports = {
     //https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
     'main-story-added': function mainStoryAdded(mainStoryObj) {
       if (mainStoryObj) {
-        this.record.mainStory = mainStoryObj; // Set the main story for this email
+        this.record.mainStories.push(mainStoryObj);
       }
     },
-    'main-story-removed': function mainStoryRemoved(mainStoryObj) {
-      if (mainStoryObj) {
-        this.record.mainStory = null;
+    'main-story-removed': function mainStoryRemoved(mainStoryId) {
+      for (i = 0; i < this.record.mainStories.length; i++) {
+        if (mainStoryId == this.record.mainStories[i].id) {
+          this.record.mainStories.$remove(this.record.mainStories[i]);
+        }
       }
     },
     'other-story-added': function otherStoryAdded(otherStoryObj) {
@@ -23922,7 +23928,7 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<template v-if=\"!record.is_sent\">\n  <div class=\"progress\" _v-07a0c146=\"\">\n    <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-07a0c146=\"\">\n      <span v-if=\"progress < 100\" _v-07a0c146=\"\">{{ progress }}% Complete</span>\n      <span v-else=\"\" _v-07a0c146=\"\">I'm Ready!</span>\n    </div>\n  </div>\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div class=\"col-xs-12 col-sm-8\" _v-07a0c146=\"\">\n      <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">{{formMessage.msg}}</p>\n      </div>\n      <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>\n        <ul v-if=\"formErrors\" _v-07a0c146=\"\">\n          <li v-for=\"error in formErrors\" _v-07a0c146=\"\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 text-right\" _v-07a0c146=\"\">\n      <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-07a0c146=\"\">{{ newform ? 'Create Email' : 'Update Email' }}</button>\n      <button v-if=\"!newform\" class=\"btn btn-warning\" type=\"button\" data-toggle=\"modal\" data-target=\"#cloneModal\" _v-07a0c146=\"\">Clone Email</button>\n    </div>\n  </div>\n  <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n    <li class=\"active\" _v-07a0c146=\"\"><a href=\"#step-1\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 1: Basic Information</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-2\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 2: Build Email</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-3\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 3: Schedule &amp; Review</a></li>\n  </ul>\n  <!-- Start form -->\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n  <div class=\"tab-content\" _v-07a0c146=\"\">\n    <div class=\"tab-pane active\" id=\"step-1\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Basic Email Information</h2>\n      <div v-if=\"record.clone.length > 0\" class=\"alert alert-info alert-dismissible\" _v-07a0c146=\"\">\n        <p _v-07a0c146=\"\">This email was cloned from <a :href=\"'/admin/email/'+ record.clone[0].id +'/edit'\" _v-07a0c146=\"\">this email</a> on {{ record.created_at }}.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"email-title\" _v-07a0c146=\"\">Email Headline <span class=\"character-counter help-text invalid\" v-if=\"insufficientTitle\" _v-07a0c146=\"\">({{ minTitleChars - record.title.length }} characters left)</span></label>\n        <input type=\"text\" class=\"form-control\" id=\"email-title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" v-model=\"record.title\" placeholder=\"Email headline goes here.\" _v-07a0c146=\"\">\n        <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-07a0c146=\"\">Title must be at least 10 characters in length.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"subheading\" _v-07a0c146=\"\">Subheading (optional)</label>\n        <textarea class=\"form-control\" id=\"subheading\" v-model=\"record.subheading\" _v-07a0c146=\"\"></textarea>\n      </div>\n    </div>\n    <div class=\"tab-pane\" id=\"step-2\" _v-07a0c146=\"\">\n        <div class=\"row\" _v-07a0c146=\"\">\n          <!-- EMAIL LIVE BUILDER VIEW AREA -->\n          <!-- BUILDER TOOLS AREA -->\n          <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n            <h2 _v-07a0c146=\"\">Build Your Email</h2>\n            <!-- Nav tabs -->\n            <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n              <li class=\"active\" _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" :class=\"!record.mainStory ? 'insufficient' : ''\" _v-07a0c146=\"\">Main Story ({{ record.mainStory ? '1' : '0' }}/1)</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" :class=\"record.otherStories.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Side Stories ({{ record.otherStories.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" :class=\"record.events.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Events ({{ record.events.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" :class=\"record.announcements.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Announcements ({{ record.announcements.length }})</a></li>\n            </ul>\n            <!-- Tab panes -->\n            <div class=\"tab-content\" _v-07a0c146=\"\">\n              <div class=\"tab-pane active\" id=\"main-story\" _v-07a0c146=\"\">\n                <email-main-story-queue :stypes=\"stypes\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-main-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n                <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n                <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"announcements\" _v-07a0c146=\"\">\n                <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n              </div>\n            </div>\n          </div>\n          <!-- /.medium-4 columns -->\n          <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n            <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-live-view>\n          </div>\n          <!-- /.medium-8 columns -->\n        </div>\n        <!-- /.row -->\n    </div>\n    <div class=\"tab-pane\" id=\"step-3\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Schedule and Review</h2>\n      <div class=\"row\" _v-07a0c146=\"\">\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">When should this email be sent?</h3>\n          <p _v-07a0c146=\"\">Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>\n          <div class=\"input-group\" _v-07a0c146=\"\">\n            <span class=\"input-group-addon\" _v-07a0c146=\"\">\n              <input type=\"checkbox\" v-model=\"record.is_approved\" aria-label=\"Set as time\" _v-07a0c146=\"\">\n            </span>\n            <input id=\"send-at\" type=\"text\" class=\"form-control\" v-model=\"record.send_at\" aria-describedby=\"errorSendAt\" _v-07a0c146=\"\">\n          </div><!-- /input-group -->\n          <h3 _v-07a0c146=\"\">To which mailing list(s) should this email be sent?</h3>\n          <ul _v-07a0c146=\"\">\n            <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n          </ul>\n          <label for=\"recipients\" _v-07a0c146=\"\">Select recipient(s)\n            <v-select id=\"minical\" :value.sync=\"record.recipients\" :options=\"recipientsList\" :multiple=\"true\" placeholder=\"Select recipient(s)\" label=\"email_address\" _v-07a0c146=\"\">\n            </v-select>\n          </label>\n          <div class=\"row\" _v-07a0c146=\"\">\n            <div class=\"col-sm-12\" _v-07a0c146=\"\">\n                <div class=\"input-group\" :class=\"successFailure\" _v-07a0c146=\"\">\n                  <span class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-primary\" type=\"button\" @click.prevent=\"toggleAddRecipient\" _v-07a0c146=\"\">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>\n                  </span>\n                  <input v-show=\"showAddRecipient\" type=\"text\" v-model=\"newRecipient\" class=\"form-control\" placeholder=\"mailing_list@emich.edu\" _v-07a0c146=\"\">\n                  <span v-show=\"showAddRecipient\" class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"saveUnlistedRecipient\" _v-07a0c146=\"\"><i class=\"fa fa-plus-square\" aria-hidden=\"true\" _v-07a0c146=\"\"></i></button>\n                  </span>\n                </div><!-- /input-group -->\n                <p v-show=\"showAddRecipient &amp;&amp; formErrors.email_address\" class=\"help-text invalid\" _v-07a0c146=\"\">{{ formErrors.email_address }}</p>\n                <p v-show=\"showAddRecipient &amp;&amp; formSuccess.email_address\" class=\"help-text valid\" _v-07a0c146=\"\">{{ formSuccess.email_address }}</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">Mandatory Criteria Checklist</h3>\n          <p _v-07a0c146=\"\">This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.otherStories.length &gt; 0 ? 'has' : 'does not have' }} at least one side story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.events.length &gt; 0 ? 'has' : 'does not have' }} at least one event.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.announcements.length &gt; 0 ? 'has' : 'does not have' }} at least one announcement.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.recipients.length &gt; 0 ? 'has' : 'does not have' }} at least one recipient.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.is_approved &amp;&amp; record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email send date and time {{ record.is_approved &amp;&amp; record.send_at ? 'have' : 'have not' }} been confirmed.</li>\n          </ul>\n          <h3 _v-07a0c146=\"\">Optional Criteria Checklist</h3>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>\n          </ul>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" v-show=\"recordexists\" _v-07a0c146=\"\">\n      <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n        <!-- Trigger the delete modal -->\n        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button>\n      </div>\n    </div>\n    <!-- /.row -->\n  </div>\n  </div></form><!-- /end form -->\n</template><!-- end if !record.is_sent -->\n<template v-else=\"\">\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">This email has already been sent!</h2>\n      <h3 _v-07a0c146=\"\">Sent</h3>\n      <p _v-07a0c146=\"\">{{ record.send_at | formatDate }}</p>\n      <h3 _v-07a0c146=\"\">Recipients</h3>\n      <template v-if=\"record.recipients.length > 0\">\n        <ul _v-07a0c146=\"\">\n          <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n        </ul>\n      </template>\n      <template v-else=\"\">\n        <p _v-07a0c146=\"\">Nobody</p>\n      </template>\n      <h3 _v-07a0c146=\"\">Statistics</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#statsModal\" _v-07a0c146=\"\"><span class=\"fa fa-bar-chart\" aria-hidden=\"true\" _v-07a0c146=\"\"></span> View Statistics</button></p>\n      <h3 _v-07a0c146=\"\">Actions</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button></p>\n    </div>\n    <!-- /.medium-4 columns -->\n    <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n      <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-story=\"record.mainStory\" _v-07a0c146=\"\"></email-live-view>\n    </div>\n    <!-- /.medium-8 columns -->\n  </div>\n  <!-- /.row -->\n</template>\n<email-delete-modal :email=\"record\" _v-07a0c146=\"\"></email-delete-modal>\n<email-stats-modal :email=\"record\" _v-07a0c146=\"\"></email-stats-modal>\n<email-clone-modal :email=\"record\" _v-07a0c146=\"\"></email-clone-modal>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<template v-if=\"!record.is_sent\">\n  <div class=\"progress\" _v-07a0c146=\"\">\n    <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-07a0c146=\"\">\n      <span v-if=\"progress < 100\" _v-07a0c146=\"\">{{ progress }}% Complete</span>\n      <span v-else=\"\" _v-07a0c146=\"\">I'm Ready!</span>\n    </div>\n  </div>\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div class=\"col-xs-12 col-sm-8\" _v-07a0c146=\"\">\n      <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">{{formMessage.msg}}</p>\n      </div>\n      <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>\n        <ul v-if=\"formErrors\" _v-07a0c146=\"\">\n          <li v-for=\"error in formErrors\" _v-07a0c146=\"\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 text-right\" _v-07a0c146=\"\">\n      <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-07a0c146=\"\">{{ newform ? 'Create Email' : 'Update Email' }}</button>\n      <button v-if=\"!newform\" class=\"btn btn-warning\" type=\"button\" data-toggle=\"modal\" data-target=\"#cloneModal\" _v-07a0c146=\"\">Clone Email</button>\n    </div>\n  </div>\n  <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n    <li class=\"active\" _v-07a0c146=\"\"><a href=\"#step-1\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 1: Basic Information</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-2\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 2: Build Email</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-3\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 3: Schedule &amp; Review</a></li>\n  </ul>\n  <!-- Start form -->\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n  <div class=\"tab-content\" _v-07a0c146=\"\">\n    <div class=\"tab-pane active\" id=\"step-1\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Basic Email Information</h2>\n      <div v-if=\"record.clone.length > 0\" class=\"alert alert-info alert-dismissible\" _v-07a0c146=\"\">\n        <p _v-07a0c146=\"\">This email was cloned from <a :href=\"'/admin/email/'+ record.clone[0].id +'/edit'\" _v-07a0c146=\"\">this email</a> on {{ record.created_at }}.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"email-title\" _v-07a0c146=\"\">Email Headline <span class=\"character-counter help-text invalid\" v-if=\"insufficientTitle\" _v-07a0c146=\"\">({{ minTitleChars - record.title.length }} characters left)</span></label>\n        <input type=\"text\" class=\"form-control\" id=\"email-title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" v-model=\"record.title\" placeholder=\"Email headline goes here.\" _v-07a0c146=\"\">\n        <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-07a0c146=\"\">Title must be at least 10 characters in length.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"subheading\" _v-07a0c146=\"\">Subheading (optional)</label>\n        <textarea class=\"form-control\" id=\"subheading\" v-model=\"record.subheading\" _v-07a0c146=\"\"></textarea>\n      </div>\n    </div>\n    <div class=\"tab-pane\" id=\"step-2\" _v-07a0c146=\"\">\n        <div class=\"row\" _v-07a0c146=\"\">\n          <!-- EMAIL LIVE BUILDER VIEW AREA -->\n          <!-- BUILDER TOOLS AREA -->\n          <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n            <h2 _v-07a0c146=\"\">Build Your Email</h2>\n            <!-- Nav tabs -->\n            <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n              <li class=\"active\" _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" :class=\"!record.mainStory ? 'insufficient' : ''\" _v-07a0c146=\"\">Main Story ({{ record.mainStory ? '1' : '0' }}/1)</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" :class=\"record.otherStories.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Side Stories ({{ record.otherStories.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" :class=\"record.events.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Events ({{ record.events.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" :class=\"record.announcements.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Announcements ({{ record.announcements.length }})</a></li>\n            </ul>\n            <!-- Tab panes -->\n            <div class=\"tab-content\" _v-07a0c146=\"\">\n              <div class=\"tab-pane active\" id=\"main-story\" _v-07a0c146=\"\">\n                <email-main-stories-queue :stypes=\"stypes\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-main-stories-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n                <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n                <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"announcements\" _v-07a0c146=\"\">\n                <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n              </div>\n            </div>\n          </div>\n          <!-- /.medium-4 columns -->\n          <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n            <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-live-view>\n          </div>\n          <!-- /.medium-8 columns -->\n        </div>\n        <!-- /.row -->\n    </div>\n    <div class=\"tab-pane\" id=\"step-3\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Schedule and Review</h2>\n      <div class=\"row\" _v-07a0c146=\"\">\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">When should this email be sent?</h3>\n          <p _v-07a0c146=\"\">Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>\n          <div class=\"input-group\" _v-07a0c146=\"\">\n            <span class=\"input-group-addon\" _v-07a0c146=\"\">\n              <input type=\"checkbox\" v-model=\"record.is_approved\" aria-label=\"Set as time\" _v-07a0c146=\"\">\n            </span>\n            <input id=\"send-at\" type=\"text\" class=\"form-control\" v-model=\"record.send_at\" aria-describedby=\"errorSendAt\" _v-07a0c146=\"\">\n          </div><!-- /input-group -->\n          <h3 _v-07a0c146=\"\">To which mailing list(s) should this email be sent?</h3>\n          <ul _v-07a0c146=\"\">\n            <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n          </ul>\n          <label for=\"recipients\" _v-07a0c146=\"\">Select recipient(s)\n            <v-select id=\"minical\" :value.sync=\"record.recipients\" :options=\"recipientsList\" :multiple=\"true\" placeholder=\"Select recipient(s)\" label=\"email_address\" _v-07a0c146=\"\">\n            </v-select>\n          </label>\n          <div class=\"row\" _v-07a0c146=\"\">\n            <div class=\"col-sm-12\" _v-07a0c146=\"\">\n                <div class=\"input-group\" :class=\"successFailure\" _v-07a0c146=\"\">\n                  <span class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-primary\" type=\"button\" @click.prevent=\"toggleAddRecipient\" _v-07a0c146=\"\">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>\n                  </span>\n                  <input v-show=\"showAddRecipient\" type=\"text\" v-model=\"newRecipient\" class=\"form-control\" placeholder=\"mailing_list@emich.edu\" _v-07a0c146=\"\">\n                  <span v-show=\"showAddRecipient\" class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"saveUnlistedRecipient\" _v-07a0c146=\"\"><i class=\"fa fa-plus-square\" aria-hidden=\"true\" _v-07a0c146=\"\"></i></button>\n                  </span>\n                </div><!-- /input-group -->\n                <p v-show=\"showAddRecipient &amp;&amp; formErrors.email_address\" class=\"help-text invalid\" _v-07a0c146=\"\">{{ formErrors.email_address }}</p>\n                <p v-show=\"showAddRecipient &amp;&amp; formSuccess.email_address\" class=\"help-text valid\" _v-07a0c146=\"\">{{ formSuccess.email_address }}</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">Mandatory Criteria Checklist</h3>\n          <p _v-07a0c146=\"\">This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.otherStories.length &gt; 0 ? 'has' : 'does not have' }} at least one side story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.events.length &gt; 0 ? 'has' : 'does not have' }} at least one event.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.announcements.length &gt; 0 ? 'has' : 'does not have' }} at least one announcement.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.recipients.length &gt; 0 ? 'has' : 'does not have' }} at least one recipient.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.is_approved &amp;&amp; record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email send date and time {{ record.is_approved &amp;&amp; record.send_at ? 'have' : 'have not' }} been confirmed.</li>\n          </ul>\n          <h3 _v-07a0c146=\"\">Optional Criteria Checklist</h3>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>\n          </ul>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" v-show=\"recordexists\" _v-07a0c146=\"\">\n      <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n        <!-- Trigger the delete modal -->\n        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button>\n      </div>\n    </div>\n    <!-- /.row -->\n  </div>\n  </div></form><!-- /end form -->\n</template><!-- end if !record.is_sent -->\n<template v-else=\"\">\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">This email has already been sent!</h2>\n      <h3 _v-07a0c146=\"\">Sent</h3>\n      <p _v-07a0c146=\"\">{{ record.send_at | formatDate }}</p>\n      <h3 _v-07a0c146=\"\">Recipients</h3>\n      <template v-if=\"record.recipients.length > 0\">\n        <ul _v-07a0c146=\"\">\n          <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n        </ul>\n      </template>\n      <template v-else=\"\">\n        <p _v-07a0c146=\"\">Nobody</p>\n      </template>\n      <h3 _v-07a0c146=\"\">Statistics</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#statsModal\" _v-07a0c146=\"\"><span class=\"fa fa-bar-chart\" aria-hidden=\"true\" _v-07a0c146=\"\"></span> View Statistics</button></p>\n      <h3 _v-07a0c146=\"\">Actions</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button></p>\n    </div>\n    <!-- /.medium-4 columns -->\n    <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n      <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-live-view>\n    </div>\n    <!-- /.medium-8 columns -->\n  </div>\n  <!-- /.row -->\n</template>\n<email-delete-modal :email=\"record\" _v-07a0c146=\"\"></email-delete-modal>\n<email-stats-modal :email=\"record\" _v-07a0c146=\"\"></email-stats-modal>\n<email-clone-modal :email=\"record\" _v-07a0c146=\"\"></email-clone-modal>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23937,7 +23943,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-07a0c146", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../VuiFlipSwitch.vue":128,"./EmailAnnouncementQueue.vue":115,"./EmailCloneModal.vue":116,"./EmailDeleteModal.vue":117,"./EmailEventQueue.vue":119,"./EmailLiveView.vue":121,"./EmailMainStoryQueue.vue":122,"./EmailStatsModal.vue":123,"./EmailStoryQueue.vue":125,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":111,"vue-hot-reload-api":107,"vue-select":109,"vueify/lib/insert-css":112}],121:[function(require,module,exports){
+},{"../VuiFlipSwitch.vue":128,"./EmailAnnouncementQueue.vue":115,"./EmailCloneModal.vue":116,"./EmailDeleteModal.vue":117,"./EmailEventQueue.vue":119,"./EmailLiveView.vue":121,"./EmailMainStoriesQueue.vue":122,"./EmailStatsModal.vue":123,"./EmailStoryQueue.vue":125,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":111,"vue-hot-reload-api":107,"vue-select":109,"vueify/lib/insert-css":112}],121:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\nh1[_v-2c477ab3] {\n    display: block;\n    font-size: 2em;\n    -webkit-margin-before: 0.67em;\n    -webkit-margin-after: 0.67em;\n    -webkit-margin-start: 0px;\n    -webkit-margin-end: 0px;\n    font-weight: bold;\n}\np[_v-2c477ab3] {\n    display: block;\n    -webkit-margin-before: 1em;\n    -webkit-margin-after: 1em;\n    -webkit-margin-start: 0px;\n    -webkit-margin-end: 0px;\n    margin: 0;\n}\nh3[_v-2c477ab3] {\n    display: block;\n    font-size: 1.17em;\n    -webkit-margin-before: 1em;\n    -webkit-margin-after: 1em;\n    -webkit-margin-start: 0px;\n    -webkit-margin-end: 0px;\n    font-weight: bold;\n}\nh2[_v-2c477ab3] {\n    display: block;\n    font-size: 1.5em;\n    -webkit-margin-before: 0.83em;\n    -webkit-margin-after: 0.83em;\n    -webkit-margin-start: 0px;\n    -webkit-margin-end: 0px;\n    font-weight: bold;\n}\nbody[_v-2c477ab3], td[_v-2c477ab3], input[_v-2c477ab3], textarea[_v-2c477ab3], select[_v-2c477ab3] {\n    font-family: arial,sans-serif;\n}\nh4[_v-2c477ab3] {\n    display: block;\n    font-size: 1em;\n    -webkit-margin-before: 1.33em;\n    -webkit-margin-after: 1.33em;\n    -webkit-margin-start: 0px;\n    -webkit-margin-end: 0px;\n    font-weight: bold;\n}\n")
 'use strict';
@@ -23948,7 +23954,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   directives: {},
   components: {},
-  props: ['announcements', 'events', 'otherStories', 'mainStory', 'email'],
+  props: ['announcements', 'events', 'otherStories', 'mainStories', 'email'],
   data: function data() {
     return {
       deleteConfirm: null
@@ -23983,7 +23989,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],122:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-333ec737] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-333ec737]:active, .btn-default.active[_v-333ec737], .open > .dropdown-toggle.btn-default[_v-333ec737] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-333ec737]:active, .btn-default.active[_v-333ec737], .open > .dropdown-toggle.btn-default[_v-333ec737] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-333ec737]:active, span.item-type-icon.active[_v-333ec737]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-333ec737] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-333ec737] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-333ec737] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-333ec737]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-7f9a74d9] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-7f9a74d9]:active, span.item-type-icon.active[_v-7f9a74d9]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-7f9a74d9]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24023,7 +24029,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = {
     directives: { iconradio: _iconradio2.default, flatpickr: _flatpickr2.default },
     components: { EmailStoryPod: _EmailStoryPod2.default, IconToggleBtn: _IconToggleBtn2.default, Pagination: _Pagination2.default },
-    props: ['stypes', 'mainStory'],
+    props: ['stypes', 'mainStories'],
     created: function created() {},
     ready: function ready() {
         var twoWeeksEarlier = (0, _moment2.default)().subtract(12, 'w');
@@ -24036,6 +24042,7 @@ exports.default = {
         return {
             items_filter_storytype: '',
             currentDate: (0, _moment2.default)(),
+            usedStories: [],
             items: [],
             loadingQueue: true,
             loadingUsed: true,
@@ -24216,23 +24223,29 @@ exports.default = {
             return result;
         }
     },
-
-    events: {}
+    events: {},
+    watch: {
+        mainStories: function mainStories(value) {
+            // set events from property to data
+            this.usedStories = value;
+            this.loadingUsed = false;
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-333ec737=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-333ec737=\"\">\n      <p _v-333ec737=\"\">You will only be presented stories that are:</p>\n      <ol _v-333ec737=\"\">\n        <li _v-333ec737=\"\">Approved</li>\n        <li _v-333ec737=\"\">Not archived</li>\n        <li _v-333ec737=\"\">Flagged as \"Ready\"</li>\n        <li _v-333ec737=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n    </div>\n</div>\n<hr _v-333ec737=\"\">\n<div class=\"row\" _v-333ec737=\"\">\n    <div class=\"col-md-12\" _v-333ec737=\"\">\n        <h3 _v-333ec737=\"\">Main Story</h3>\n        <div v-if=\"mainStoryId\" class=\"row\" _v-333ec737=\"\">\n            <div class=\"col-md-12\" _v-333ec737=\"\">\n              <email-story-pod pid=\"main-story-item\" :main-story-id=\"mainStoryId\" pod-type=\"mainstory\" :item=\"mainStory\" _v-333ec737=\"\">\n              </email-story-pod>\n            </div>\n        </div>\n        <p v-else=\"\" _v-333ec737=\"\">No main story set for this emails. Choose one from the queue below.</p>\n        <p v-if=\"loadingQueue\" class=\"col-md-12\" _v-333ec737=\"\">Loading. Please Wait...</p>\n        <hr _v-333ec737=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-333ec737=\"\">\n          <div class=\"form-group\" _v-333ec737=\"\">\n              <label for=\"start-date\" _v-333ec737=\"\">Starting <span v-if=\"isEndDate\" _v-333ec737=\"\">between</span><span v-else=\"\" _v-333ec737=\"\">on or after</span></label>\n              <p _v-333ec737=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-333ec737=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-333ec737=\"\">\n              <label for=\"start-date\" _v-333ec737=\"\"> and </label>\n              <p _v-333ec737=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-333ec737=\"\"></p><p _v-333ec737=\"\">\n          </p></div>\n          <p _v-333ec737=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-333ec737=\"\">Filter</button></p>\n          <p _v-333ec737=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-333ec737=\"\"><span v-if=\"isEndDate\" _v-333ec737=\"\"> - Remove </span><span v-else=\"\" _v-333ec737=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-333ec737=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-333ec737=\"\">\n                <label _v-333ec737=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-333ec737=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-333ec737=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-333ec737=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-333ec737=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-333ec737=\"\">\n            <email-story-pod pid=\"email-items\" :main-story-id=\"mainStoryId\" pod-type=\"mainstoryqueue\" v-for=\"item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate\" :item=\"item\" _v-333ec737=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-333ec737=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-333ec737=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-333ec737=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-333ec737=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-333ec737=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-333ec737=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-333ec737=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-333ec737=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-7f9a74d9=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-7f9a74d9=\"\">\n      <p _v-7f9a74d9=\"\">You will only be presented stories that are:</p>\n      <ol _v-7f9a74d9=\"\">\n        <li _v-7f9a74d9=\"\">Approved</li>\n        <li _v-7f9a74d9=\"\">Not archived</li>\n        <li _v-7f9a74d9=\"\">Flagged as \"Ready\"</li>\n        <li _v-7f9a74d9=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n    </div>\n</div>\n<hr _v-7f9a74d9=\"\">\n<div class=\"row\" _v-7f9a74d9=\"\">\n    <div class=\"col-md-12\" _v-7f9a74d9=\"\">\n        <h3 _v-7f9a74d9=\"\">Main Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-7f9a74d9=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-7f9a74d9=\"\">\n                  <email-story-pod pid=\"main-story-item\" pod-type=\"mainstory\" :item=\"story\" _v-7f9a74d9=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-7f9a74d9=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-7f9a74d9=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-7f9a74d9=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-7f9a74d9=\"\">\n          <div class=\"form-group\" _v-7f9a74d9=\"\">\n              <label for=\"start-date\" _v-7f9a74d9=\"\">Starting <span v-if=\"isEndDate\" _v-7f9a74d9=\"\">between</span><span v-else=\"\" _v-7f9a74d9=\"\">on or after</span></label>\n              <p _v-7f9a74d9=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-7f9a74d9=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-7f9a74d9=\"\">\n              <label for=\"start-date\" _v-7f9a74d9=\"\"> and </label>\n              <p _v-7f9a74d9=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-7f9a74d9=\"\"></p><p _v-7f9a74d9=\"\">\n          </p></div>\n          <p _v-7f9a74d9=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-7f9a74d9=\"\">Filter</button></p>\n          <p _v-7f9a74d9=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-7f9a74d9=\"\"><span v-if=\"isEndDate\" _v-7f9a74d9=\"\"> - Remove </span><span v-else=\"\" _v-7f9a74d9=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-7f9a74d9=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-7f9a74d9=\"\">\n                <label _v-7f9a74d9=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-7f9a74d9=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-7f9a74d9=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-7f9a74d9=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-7f9a74d9=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-7f9a74d9=\"\">\n            <email-story-pod pid=\"email-items\" :main-stories=\"usedStories\" pod-type=\"mainstoryqueue\" v-for=\"item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate\" :item=\"item\" _v-7f9a74d9=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-7f9a74d9=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-7f9a74d9=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-7f9a74d9=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-7f9a74d9=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-7f9a74d9=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\nh4[_v-333ec737] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-333ec737]:active, .btn-default.active[_v-333ec737], .open > .dropdown-toggle.btn-default[_v-333ec737] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-333ec737]:active, .btn-default.active[_v-333ec737], .open > .dropdown-toggle.btn-default[_v-333ec737] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-333ec737]:active, span.item-type-icon.active[_v-333ec737]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-333ec737] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-333ec737] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-333ec737] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-333ec737]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n\nh4[_v-7f9a74d9] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-7f9a74d9]:active, span.item-type-icon.active[_v-7f9a74d9]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-7f9a74d9]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-333ec737", module.exports)
+    hotAPI.createRecord("_v-7f9a74d9", module.exports)
   } else {
-    hotAPI.update("_v-333ec737", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7f9a74d9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../../directives/flatpickr.js":129,"../../directives/iconradio.js":130,"../IconToggleBtn.vue":126,"../Pagination.vue":127,"./EmailStoryPod.vue":124,"babel-runtime/core-js/object/keys":10,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],123:[function(require,module,exports){
@@ -24301,135 +24314,159 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /** Show all stories with a emutoday_email picture type set **/
 module.exports = {
-    directives: {},
-    components: {},
-    props: ['item', 'pid', 'mainStoryId', 'podType', 'draggable', 'otherStories'],
-    data: function data() {
-        return {
-            options: [],
-            showBody: false,
-            checkedMainStory: false,
-            currentDate: {},
-            record: {
-                title: '',
-                story_type: '',
-                start_date: ''
-            },
-            patchRecord: {
-                priority: 0
-            },
-            checked: false
-        };
+  directives: {},
+  components: {},
+  props: ['item', 'pid', 'mainStories', 'podType', 'draggable', 'otherStories'],
+  data: function data() {
+    return {
+      options: [],
+      showBody: false,
+      currentDate: {},
+      record: {
+        title: '',
+        story_type: '',
+        start_date: ''
+      },
+      patchRecord: {
+        priority: 0
+      },
+      checked: false
+    };
+  },
+  created: function created() {},
+  ready: function ready() {},
+  computed: {
+    timefromNow: function timefromNow() {
+      return (0, _moment2.default)(this.item.start_date).fromNow();
     },
-    created: function created() {},
-    ready: function ready() {},
-    computed: {
-        timefromNow: function timefromNow() {
-            return (0, _moment2.default)(this.item.start_date).fromNow();
-        },
-        typeIcon: function typeIcon() {
-            switch (this.item.story_type) {
-                case 'emutoday':
-                case 'story':
-                    faicon = 'fa-file-image-o';
-                    break;
-                case 'news':
-                    faicon = 'fa-file-text-o';
-                    break;
-                case 'student':
-                    faicon = 'fa-graduation-cap';
-                    break;
-                case 'external':
-                    faicon = 'fa-external-link';
-                    break;
-                case 'article':
-                    faicon = 'fa-newspaper-o';
-                    break;
-                case '':
-                    faicon = 'fa-asterisk';
-                    break;
-                case 'advisory':
-                    faicon = 'fa-warning';
-                    break;
-                case 'statement':
-                    faicon = 'fa-commenting';
-                    break;
-                default:
-                    faicon = 'fa-file-o';
-                    break;
-            }
-            return 'fa ' + faicon + ' fa-fw';
-        },
-        isMainStory: function isMainStory() {
-            if (this.mainStoryId == this.item.id) {
-                return true;
-            }
-            return false;
-        },
-        isOtherStory: function isOtherStory() {
-            if (this.otherStories) {
-                for (var i = 0; i < this.otherStories.length; i++) {
-                    if (this.otherStories[i].id == this.item.id) {
-                        this.checked = true;
-                        return true;
-                    }
-                }
-            }
-            this.checked = false;
-            return false;
+    typeIcon: function typeIcon() {
+      switch (this.item.story_type) {
+        case 'emutoday':
+        case 'story':
+          faicon = 'fa-file-image-o';
+          break;
+        case 'news':
+          faicon = 'fa-file-text-o';
+          break;
+        case 'student':
+          faicon = 'fa-graduation-cap';
+          break;
+        case 'external':
+          faicon = 'fa-external-link';
+          break;
+        case 'article':
+          faicon = 'fa-newspaper-o';
+          break;
+        case '':
+          faicon = 'fa-asterisk';
+          break;
+        case 'advisory':
+          faicon = 'fa-warning';
+          break;
+        case 'statement':
+          faicon = 'fa-commenting';
+          break;
+        default:
+          faicon = 'fa-file-o';
+          break;
+      }
+      return 'fa ' + faicon + ' fa-fw';
+    },
+    isMainStory: function isMainStory() {
+      if (this.mainStories) {
+        for (var i = 0; i < this.mainStories.length; i++) {
+          if (this.mainStories[i].id == this.item.id) {
+            this.checked = true;
+            return true;
+          }
         }
+      }
+      this.checked = false;
+      return false;
     },
-    methods: {
-        fetchEmailReadyStories: function fetchEmailReadyStories() {},
-        toggleBody: function toggleBody(ev) {
-            if (this.showBody == false) {
-                this.showBody = true;
-            } else {
-                this.showBody = false;
-            }
-        },
-        emitMainStoryAdd: function emitMainStoryAdd(storyObj) {
-            // Dispatch an event that propagates upward along the parent chain using $dispatch()
-            this.$dispatch('main-story-added', storyObj);
-        },
-        emitMainStoryRemove: function emitMainStoryRemove(storyObj) {
-            // Dispatch an event that propagates upward along the parent chain using $dispatch()
-            this.$dispatch('main-story-removed', storyObj);
-        },
-        emitOtherStoryAdd: function emitOtherStoryAdd(storyObj) {
-            // Dispatch an event that propagates upward along the parent chain using $dispatch()
-            this.$dispatch('other-story-added', storyObj);
-        },
-        emitOtherStoryRemove: function emitOtherStoryRemove(storyObj) {
-            // Dispatch an event that propagates upward along the parent chain using $dispatch()
-            // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-            this.$dispatch('other-story-removed', storyObj.id);
-        },
-        toggleEmitOtherStory: function toggleEmitOtherStory(storyObj) {
-            // function will run before this.checked is switched
-            if (!this.checked) {
-                this.emitOtherStoryAdd(storyObj);
-            } else {
-                this.emitOtherStoryRemove(storyObj);
-            }
+    isOtherStory: function isOtherStory() {
+      if (this.otherStories) {
+        for (var i = 0; i < this.otherStories.length; i++) {
+          if (this.otherStories[i].id == this.item.id) {
+            this.checked = true;
+            return true;
+          }
         }
+      }
+      this.checked = false;
+      return false;
+    }
+  },
+  methods: {
+    fetchEmailReadyStories: function fetchEmailReadyStories() {},
+    toggleBody: function toggleBody(ev) {
+      if (this.showBody == false) {
+        this.showBody = true;
+      } else {
+        this.showBody = false;
+      }
     },
-    watch: {},
+    emitMainStoryAdd: function emitMainStoryAdd(storyObj) {
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('main-story-added', storyObj);
+    },
+    emitMainStoryRemove: function emitMainStoryRemove(storyObj) {
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('main-story-removed', storyObj.id);
+    },
+    emitOtherStoryAdd: function emitOtherStoryAdd(storyObj) {
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('other-story-added', storyObj);
+    },
+    emitOtherStoryRemove: function emitOtherStoryRemove(storyObj) {
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
+      this.$dispatch('other-story-removed', storyObj.id);
+    },
+    toggleEmitMainStory: function toggleEmitMainStory(storyObj) {
+      // function will run before this.checked is switched
+      if (!this.checked) {
+        this.emitMainStoryAdd(storyObj);
+      } else {
+        this.emitMainStoryRemove(storyObj);
+      }
+    },
+    toggleEmitOtherStory: function toggleEmitOtherStory(storyObj) {
+      // function will run before this.checked is switched
+      if (!this.checked) {
+        this.emitOtherStoryAdd(storyObj);
+      } else {
+        this.emitOtherStoryRemove(storyObj);
+      }
+    },
+    /**
+     * Uses vue-sortable
+     */
+    updateOrder: function updateOrder(event) {
+      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+      var oldIndex = event.oldIndex;
+      var newIndex = event.newIndex;
 
-    filters: {
-        momentPretty: {
-            read: function read(val) {
-                return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
-            },
-            write: function write(val, oldVal) {
-                return (0, _moment2.default)(val).format('YYYY-MM-DD');
-            }
-        }
-    },
-    events: {}
+      // move the item in the underlying array
+      this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
+    }
+  },
+  watch: {},
+
+  filters: {
+    momentPretty: {
+      read: function read(val) {
+        return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
+      },
+      write: function write(val, oldVal) {
+        return (0, _moment2.default)(val).format('YYYY-MM-DD');
+      }
+    }
+  },
+  events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-8a7f6adc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-8a7f6adc=\"\">\n        <div class=\"box-header with-border\" _v-8a7f6adc=\"\">\n          <div class=\"row\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-12\" _v-8a7f6adc=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"radio\" @click=\"emitMainStoryAdd(item)\" :checked=\"isMainStory\" _v-8a7f6adc=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-8a7f6adc=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-8a7f6adc=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-9\" _v-8a7f6adc=\"\">\n                <h6 class=\"box-title\" _v-8a7f6adc=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-8a7f6adc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-8a7f6adc=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-8a7f6adc=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-8a7f6adc=\"\">\n            <p _v-8a7f6adc=\"\">ID: {{item.id}}</p>\n            <p _v-8a7f6adc=\"\">Type: {{item.story_type}}</p>\n            <p _v-8a7f6adc=\"\">Title: {{item.title}}</p>\n            <p _v-8a7f6adc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-8a7f6adc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-8a7f6adc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-8a7f6adc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-8a7f6adc=\"\">Live: {{item.is_live}}</p>\n            <p _v-8a7f6adc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-8a7f6adc=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-8a7f6adc=\"\">\n                <div class=\"row\" _v-8a7f6adc=\"\">\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        <div class=\"btn-group pull-right\" _v-8a7f6adc=\"\">\n                            <a :href=\"item.full_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-8a7f6adc=\"\"><i class=\"fa fa-eye\" _v-8a7f6adc=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-8a7f6adc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-8a7f6adc=\"\">\n        <div class=\"box-header with-border\" _v-8a7f6adc=\"\">\n          <div class=\"row\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-12\" _v-8a7f6adc=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitMainStory(item)\" v-model=\"checked\" :checked=\"isMainStory\" _v-8a7f6adc=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-8a7f6adc=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-8a7f6adc=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-9\" _v-8a7f6adc=\"\">\n                <h6 class=\"box-title\" _v-8a7f6adc=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-8a7f6adc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-8a7f6adc=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-8a7f6adc=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-8a7f6adc=\"\">\n            <p _v-8a7f6adc=\"\">ID: {{item.id}}</p>\n            <p _v-8a7f6adc=\"\">Type: {{item.story_type}}</p>\n            <p _v-8a7f6adc=\"\">Title: {{item.title}}</p>\n            <p _v-8a7f6adc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-8a7f6adc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-8a7f6adc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-8a7f6adc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-8a7f6adc=\"\">Live: {{item.is_live}}</p>\n            <p _v-8a7f6adc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-8a7f6adc=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-8a7f6adc=\"\">\n                <div class=\"row\" _v-8a7f6adc=\"\">\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        <div class=\"btn-group pull-right\" _v-8a7f6adc=\"\">\n                            <a :href=\"item.full_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-8a7f6adc=\"\"><i class=\"fa fa-eye\" _v-8a7f6adc=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

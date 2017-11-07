@@ -13,19 +13,27 @@
     <hr />
     <div class="row">
         <div class="col-md-12">
-            <h3>Main Story</h3>
-            <div v-if="mainStoryId" class="row">
-                <div class="col-md-12">
-                  <email-story-pod
-                      pid="main-story-item"
-                      :main-story-id="mainStoryId"
-                      pod-type="mainstory"
-                      :item="mainStory">
-                  </email-story-pod>
-                </div>
-            </div>
-            <p v-else>No main story set for this emails. Choose one from the queue below.</p>
-            <p v-if="loadingQueue" class="col-md-12">Loading. Please Wait...</p>
+            <h3>Main Stories</h3>
+            <template v-if="!loadingUsed">
+              <template v-if="usedStories.length > 0">
+                <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
+                    <li v-for="story in usedStories" class="list-group-item">
+                      <email-story-pod
+                          pid="main-story-item"
+                          pod-type="mainstory"
+                          :item="story"
+                          >
+                      </email-story-pod>
+                    </li>
+                </ul>
+              </template>
+              <template v-else>
+                <p>There are no side stories set for this email.</p>
+              </template>
+            </template>
+            <template v-else>
+              <p>Loading this email's stories. Please wait...</p>
+            </template>
             <hr/>
             <!-- Date filter -->
             <form class="form-inline">
@@ -53,7 +61,7 @@
             <div id="email-items">
                 <email-story-pod
                     pid="email-items"
-                    :main-story-id="mainStoryId"
+                    :main-stories="usedStories"
                     pod-type="mainstoryqueue"
                     v-for="item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate"
                     :item="item">
@@ -122,7 +130,7 @@ import flatpickr from "../../directives/flatpickr.js"
 export default  {
     directives: {iconradio, flatpickr},
     components: {EmailStoryPod,IconToggleBtn,Pagination},
-    props: ['stypes','mainStory'],
+    props: ['stypes','mainStories'],
     created(){
     },
     ready() {
@@ -135,6 +143,7 @@ export default  {
         return {
             items_filter_storytype: '',
             currentDate: moment(),
+            usedStories: [],
             items: [],
             loadingQueue: true,
             loadingUsed: true,
@@ -318,9 +327,15 @@ export default  {
             return result;
           }
     },
-
     events: {
 
-    }
+    },
+    watch: {
+      mainStories: function (value) {
+        // set events from property to data
+        this.usedStories = value
+        this.loadingUsed = false
+      }
+    },
 }
 </script>

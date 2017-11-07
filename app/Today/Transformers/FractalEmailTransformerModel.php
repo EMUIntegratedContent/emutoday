@@ -14,17 +14,24 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
 {
     public function transform(Email $email)
     {
-        // Other stories and main story need to be packaged as a fractal to access the 'group' field
+        // Other stories and main stories need to be packaged as a fractal to access the 'group' field
         $otherStories = $email->stories()->orderBy('email_story.order', 'asc')->get();
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($otherStories->all(), new FractalStoryTransformerModel);
         $otherStories = $fractal->createData($resource)->toArray();
 
+        $mainStories = $email->mainstories()->orderBy('email_mainstory.order', 'asc')->get();
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($mainStories->all(), new FractalStoryTransformerModel);
+        $mainStories = $fractal->createData($resource)->toArray();
+
+        /*
         $mainStory = Story::find($email->mainstory_id);
         if($mainStory){
           $resource = new Fractal\Resource\Item($mainStory, new FractalStoryTransformerModel);
           $mainStory = $fractal->createData($resource)->toArray();
         }
+        */
 
         $sendAt = null;
         if($email->send_at){
@@ -37,7 +44,8 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'subheading' => $email->subheading,
             'is_approved' => $email->is_approved,
             'is_ready' => $email->is_ready,
-            'mainStory' => $mainStory['data'],
+            //'mainStory' => $mainStory['data'],
+            'mainStories' => $mainStories['data'],
             'announcements' => $email->announcements()->orderBy('email_announcement.order', 'asc')->get(),
             'events' => $email->events()->orderBy('email_event.order', 'asc')->get(),
             'otherStories' => $otherStories['data'],

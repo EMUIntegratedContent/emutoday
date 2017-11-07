@@ -66,10 +66,10 @@
               <!-- Tab panes -->
               <div class="tab-content">
                 <div class="tab-pane active" id="main-story">
-                  <email-main-story-queue
+                  <email-main-stories-queue
                   :stypes="stypes"
-                  :main-story="record.mainStory"
-                  ></email-main-story-queue>
+                  :main-stories="record.mainStories"
+                  ></email-main-stories-queue>
                 </div>
                 <div class="tab-pane" id="stories">
                   <email-story-queue
@@ -96,7 +96,7 @@
               :announcements="record.announcements"
               :events="record.events"
               :other-stories="record.otherStories"
-              :main-story="record.mainStory"
+              :main-stories="record.mainStories"
               ></email-live-view>
             </div>
             <!-- /.medium-8 columns -->
@@ -201,7 +201,7 @@
         :announcements="record.announcements"
         :events="record.events"
         :other-stories="record.otherStories"
-        :main-story="record.mainStory"
+        :main-stories="record.mainStories"
         ></email-live-view>
       </div>
       <!-- /.medium-8 columns -->
@@ -285,7 +285,7 @@ import moment from 'moment';
 import flatpickr from 'flatpickr';
 import vSelect from "vue-select";
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
-import EmailMainStoryQueue from './EmailMainStoryQueue.vue'
+import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
@@ -296,7 +296,7 @@ import EmailLiveView from './EmailLiveView.vue'
 
 module.exports = {
   directives: {},
-  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailCloneModal, EmailLiveView, vSelect},
+  components: {EmailMainStoriesQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailCloneModal, EmailLiveView, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -345,26 +345,30 @@ module.exports = {
         mailgun_clicks:0,
         mailgun_opens:0,
         mailgun_spam:0,
-        mainStory: null,
         send_at: null,
         subheading: null,
         title: null,
         announcements: [],
         events: [],
+        mainStories: [],
         otherStories: [],
         recipients: [],
       },
       original: {
         id: '',
+        clone: [],
+        created_at: null,
         is_approved: false,
         is_ready: false,
-        mainStory: null,
+        mailgun_clicks:0,
+        mailgun_opens:0,
+        mailgun_spam:0,
         send_at: null,
-        setTime: false,
         subheading: null,
         title: null,
         announcements: [],
         events: [],
+        mainStories: [],
         otherStories: [],
         recipients: [],
       },
@@ -470,7 +474,7 @@ module.exports = {
       let progress = 0
 
       this.record.title ? progress += 13 : ''
-      this.record.mainStory ? progress += 15 : ''
+      this.record.mainStories.length > 0 ? progress += 15 : ''
       this.record.events.length > 0 ? progress += 15 : ''
       this.record.announcements.length > 0 ? progress += 15 : ''
       this.record.otherStories.length > 0 ? progress += 15 : ''
@@ -631,12 +635,14 @@ module.exports = {
     //https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
     'main-story-added': function (mainStoryObj) {
       if(mainStoryObj){
-        this.record.mainStory = mainStoryObj // Set the main story for this email
+        this.record.mainStories.push(mainStoryObj)
       }
     },
-    'main-story-removed': function (mainStoryObj) {
-      if(mainStoryObj){
-        this.record.mainStory = null
+    'main-story-removed': function (mainStoryId) {
+      for(i = 0; i < this.record.mainStories.length; i++){
+        if(mainStoryId == this.record.mainStories[i].id){
+          this.record.mainStories.$remove(this.record.mainStories[i])
+        }
       }
     },
     'other-story-added': function (otherStoryObj) {
