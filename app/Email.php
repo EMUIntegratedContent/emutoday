@@ -17,7 +17,6 @@ class Email extends Model
       'subheading',
       'is_approved',
       'is_ready',
-      'mainstory_id',
       'is_sent',
       'send_at'
     ];

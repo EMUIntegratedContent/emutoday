@@ -42,7 +42,8 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'contact' => ($story->contact_id == 0)? null:$story->contact,
             'author_object' => $author,
             'email_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->get(), // need for email builder
-            'full_url' => url('/') . '/story/' . $story->story_type . '/' . $story->id
+            'full_url' => url('/') . '/story/' . $story->story_type . '/' . $story->id,
+            'edit_url' => url('/') . '/admin/queueall/story/' . $story->story_type . '/' . $story->id . '/edit'
         ];
     }
 }

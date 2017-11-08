@@ -70,7 +70,6 @@ class EmailController extends ApiController
 
           $email->title            = $request->get('title');
           $email->subheading       = $request->get('subheading', null);
-          $email->mainstory_id     = $request->get('mainStory', null)['id'];
           $email->is_approved      = $request->get('is_approved', 0);
           $email->send_at          = $sendAt;
 
@@ -93,6 +92,15 @@ class EmailController extends ApiController
               $eventCount++;
             }
             $email->events()->sync($eventIds);
+
+            // Sync main stories
+            $mainStoryCount = 0;
+            $mainStoryIds = array();
+            foreach($request->get('mainStories') as $mainStory){
+              $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
+              $mainStoryCount++;
+            }
+            $email->mainstories()->sync($mainStoryIds);
 
             // Sync side stories
             $otherStoryCount = 0;
@@ -146,7 +154,6 @@ class EmailController extends ApiController
 
          $email->title           	= $request->get('title');
          $email->subheading       = $request->get('subheading', null);
-         $email->mainstory_id     = $request->get('mainStory', null)['id'];
          $email->is_approved      = $request->get('is_approved', 0);
          $email->send_at          = $sendAt;
 
@@ -168,6 +175,15 @@ class EmailController extends ApiController
            $eventCount++;
          }
          $email->events()->sync($eventIds);
+
+         // Sync main stories
+         $mainStoryCount = 0;
+         $mainStoryIds = array();
+         foreach($request->get('mainStories') as $mainStory){
+           $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
+           $mainStoryCount++;
+         }
+         $email->mainstories()->sync($mainStoryIds);
 
          // Sync side stories
          $otherStoryCount = 0;
@@ -223,7 +239,6 @@ class EmailController extends ApiController
 
           $email->title            = $request->get('title');
           $email->subheading       = $request->get('subheading', null);
-          $email->mainstory_id     = $request->get('mainStory', null)['id'];
           $email->clone_email_id   = $request->get('id'); // mark from which email this one was cloned
 
           if($email->save()) {
@@ -245,6 +260,15 @@ class EmailController extends ApiController
               $eventCount++;
             }
             $email->events()->sync($eventIds);
+
+            // Sync main stories
+            $mainStoryCount = 0;
+            $mainStoryIds = array();
+            foreach($request->get('mainStories') as $mainStory){
+              $mainStoryIds[$mainStory['id']] = ['order' => $mainStoryCount];
+              $mainStoryCount++;
+            }
+            $email->mainstories()->sync($mainStoryIds);
 
             // Sync side stories
             $otherStoryCount = 0;
@@ -409,7 +433,8 @@ class EmailController extends ApiController
   private function isEmailReady(Email $email){
     $email->is_ready = 0;
 
-    if($email->mainstory_id &&
+    if($email->mainstories()->first() &&
+       ($email->mainstories()->count() == 1 || $email->mainstories()->count() == 3) &&
        $email->announcements()->first() &&
        $email->events()->first() &&
        $email->stories()->first() &&

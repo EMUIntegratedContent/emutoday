@@ -9,11 +9,6 @@ use Emutoday\Email;
 use Emutoday\Story;
 use Emutoday\Imagetype;
 use Mail;
-use Illuminate\Support\Facades\Log;
-
-use League\Fractal\Manager;
-use League\Fractal;
-use Emutoday\Today\Transformers\FractalEmailTransformerModel;
 
 class SendTodayEmails extends Command
 {
@@ -58,20 +53,15 @@ class SendTodayEmails extends Command
       $emails = Email::where([ ['is_approved', '=', 1], ['is_ready', '=', 1], ['is_sent', '=', 0], ['send_at', '<=', date('Y-m-d H:i')] ])->get();
 
       foreach($emails as $email){
-        $mainStories = $email->mainstories()->orderBy('order', 'asc')->get(); // need main stories in order as they appear in the email
+        $mainStory = Story::findOrFail($email->mainstory_id);
         $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get(); // get email image types
-
-        $mainStoryImages = array(); // collect email story images
-        foreach($mainStories as $mainStory){
-          $storyImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
-          $mainStoryImages[] = $storyImage;
-        }
+        $mainStoryImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
 
         // Send one email to each recipient/mailing list
-        foreach($email->recipients as $recipient){
-          Mail::send('public.todayemail.email', ['email' => $email, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages], function ($message) use ($email, $recipient){
-              //$message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'EMU Today');
-              $message->from('noreply@today.emich.edu', 'EMU Today');
+        foreach($email->recipients  as $recipient){
+
+          Mail::send('public.todayemail.email0', ['email' => $email, 'mainStory' => $mainStory, 'mainStoryImage' => $mainStoryImage], function ($message) use ($email, $recipient){
+              $message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'EMU Today');
               $message->subject($email->title);
               $message->to($recipient->email_address);
 
@@ -82,10 +72,9 @@ class SendTodayEmails extends Command
               $headers->addTextHeader('X-Mailgun-Tag', 'today-mailer');
               $headers->addTextHeader('X-Mailgun-Variables', '{"today-email-id":"'.$email->id.'"}'); //custom variable. Allows email ID in today to be linked to Mailgun's email ID via webhooks.
           });
-
         }
         // IMPORTANT! Mark this email as sent!
-        //$email->is_sent = 1;
+        $email->is_sent = 1;
         $email->save();
       }
     }

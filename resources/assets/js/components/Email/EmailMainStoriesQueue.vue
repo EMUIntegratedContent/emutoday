@@ -283,6 +283,17 @@ export default  {
       onCalendarChange: function(){
           // flatpickr directive method
       },
+      /**
+       * Uses vue-sortable
+       */
+      updateOrder: function(event){
+        // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+        let oldIndex = event.oldIndex
+        let newIndex = event.newIndex
+
+        // move the item in the underlying array
+        this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
+      },
     },
     filters: {
       paginate: function(list) {

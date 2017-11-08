@@ -44,7 +44,7 @@
                     </div><!-- /.col-md-6 -->
                     <div class="col-sm-6">
                         <div class="btn-group pull-right">
-                            <a :href="item.full_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></a>
+                            <a :href="item.edit_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-pencil"></i></a>
                         </div>
                     </div><!-- /.col-md-6 -->
                 </div><!-- /.row -->

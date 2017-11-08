@@ -1,7 +1,7 @@
 @inject('yearList', 'Emutoday\Http\Utilities\YearList')
 @inject('seasonList', 'Emutoday\Http\Utilities\SeasonList')
 @extends('admin.layouts.adminlte')
-@section('title', 'Create New Email')
+@section('title', $email->exists ? 'Edit Email' : 'Create New Email')
 @section('style-plugin')
   @parent
   <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css">

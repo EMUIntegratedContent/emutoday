@@ -58,7 +58,7 @@
               <h2>Build Your Email</h2>
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="!record.mainStory ? 'insufficient' : ''">Main Story ({{ record.mainStory ? '1' : '0' }}/1)</a></li>
+                <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="(record.mainStories.length != 1 && record.mainStories.length != 3) ? 'insufficient' : ''">Main Stories ({{ record.mainStories.length }})</a></li>
                 <li><a href="#stories" role="tab" data-toggle="tab" :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{ record.otherStories.length }})</a></li>
                 <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
                 <li><a href="#announcements" role="tab" data-toggle="tab" :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{ record.announcements.length }})</a></li>
@@ -150,7 +150,8 @@
             <p>This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>
             <ul class="list-group">
               <li class="list-group-item"><i :class="record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>
-              <li class="list-group-item"><i :class="record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>
+              <li class="list-group-item"><i :class="record.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStories.length > 0 ? 'has' : 'does not have' }} a main story.</li>
+              <li class="list-group-item"><i :class="record.mainStories.length == 2 ? 'fa fa-times-circle fa-3x' : 'fa fa-check-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStories.length == 2 ? 'only has 1 sub-main story (0 or 2 required)' : 'has 0 or 2 sub-main stories' }}.</li>
               <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at least one side story.</li>
               <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one event.</li>
               <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.announcements.length > 0 ? 'has' : 'does not have' }} at least one announcement.</li>
@@ -159,7 +160,7 @@
             </ul>
             <h3>Optional Criteria Checklist</h3>
             <ul class="list-group">
-              <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>
+              <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>
             </ul>
           </div>
       </div>
@@ -474,7 +475,7 @@ module.exports = {
       let progress = 0
 
       this.record.title ? progress += 13 : ''
-      this.record.mainStories.length > 0 ? progress += 15 : ''
+      this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
       this.record.events.length > 0 ? progress += 15 : ''
       this.record.announcements.length > 0 ? progress += 15 : ''
       this.record.otherStories.length > 0 ? progress += 15 : ''

@@ -24,15 +24,6 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
         $fractal = new Manager();
         $resource = new Fractal\Resource\Collection($mainStories->all(), new FractalStoryTransformerModel);
         $mainStories = $fractal->createData($resource)->toArray();
-
-        /*
-        $mainStory = Story::find($email->mainstory_id);
-        if($mainStory){
-          $resource = new Fractal\Resource\Item($mainStory, new FractalStoryTransformerModel);
-          $mainStory = $fractal->createData($resource)->toArray();
-        }
-        */
-
         $sendAt = null;
         if($email->send_at){
           $sendAt = $email->send_at->toDateTimeString();
@@ -44,7 +35,6 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'subheading' => $email->subheading,
             'is_approved' => $email->is_approved,
             'is_ready' => $email->is_ready,
-            //'mainStory' => $mainStory['data'],
             'mainStories' => $mainStories['data'],
             'announcements' => $email->announcements()->orderBy('email_announcement.order', 'asc')->get(),
             'events' => $email->events()->orderBy('email_event.order', 'asc')->get(),
