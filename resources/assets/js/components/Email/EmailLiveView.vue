@@ -10,7 +10,7 @@
                         <img src="/assets/imgs/email/emailblast_logo_template_600x120.png" width="600" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo"/>
                       </td>
                       -->
-                      <h1>EMU Today Digest</h1>
+                      <h2>EMU Today Digest</h2>
                     </tr>
                     <!--
                     <tr valign="top" id="title-row">

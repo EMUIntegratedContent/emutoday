@@ -1,5 +1,15 @@
-<div style="border:1px solid #000000; padding:5px; margin: 0 auto; width:610px">
-	<table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%">
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,600,700" rel="stylesheet">
+
+<style type="text/css" media="screen">
+a{ color:#046A38; text-decoration: none; }
+a:visited { color:#046A38; text-decoration: none; }
+a:hover { color:#2b873b; text-decoration: none; }
+a:active { color:#046A38; text-decoration: underline; }
+h1, h2, h3, h4, h5, h6 {font-weight: 500;}
+</style>
+
+<div style="border:1px solid #000000; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;">
+	<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
 			<tr>
 					<td align="center" valign="top">
 							<table border="0" width="600" id="emailContainer">
@@ -8,24 +18,24 @@
 											<img src="{{ url('/') }}/assets/imgs/email/emailblast_logo_template_600x120.png" width="600" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo"/>
 										</td>
 										--}}
-										<h1>EMU Today Digest</h1>
+										<h2 style="padding: 0; margin: 0px; font-size: 30px; font-weight: 600; border-top: 3px solid #97D700;"><span style="color: #046A38">EMU</span> Today Digest</h2>
 									</tr>
 									{{--
-									<tr valign="top" id="title-row">
+									<tr valign="top" id="title-row" style="padding: 0; margin: 0;">
 										<td colspan="2" style="text-align:center">
 											<header>
-												<h1>{{ $email->title }}</h1>
+												<h2>{{ $email->title }}</h2>
 												<p>{{ $email->subheading }}</p>
 											</header>
 										</td>
 									</tr>
 									--}}
 									<tr>
-										<td valign="top">
+										<td valign="top" style="padding: 0; margin: 0;">
 											<article>
 												<img alt="{{ $mainStoryImages[0]->caption }}"
 														 src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}"
-														 style="border-right:5px solid #ffffff; width:600px; height:282px;"/>
+														 style="border-right:0px solid #ffffff; width:600px; height:282px; border-top: 3px solid #97D700;"/>
 												<h2><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }}</a></h2>
 												{!! str_limit($mainStoryImages[0]->teaser, $limit = 90, $end = '...') !!}
 											</article>
@@ -45,7 +55,7 @@
 													<article>
 														<img alt="{{ $mainStoryImages[1]->caption }}"
 																 src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}"
-																 style="border-right:5px solid #ffffff; width:231px; height:210px;"/>
+																 style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:231px; height:210px;"/>
 														<h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
 														{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}
 													</article>
