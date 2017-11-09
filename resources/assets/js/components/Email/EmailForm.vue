@@ -58,7 +58,7 @@
               <h2>Build Your Email</h2>
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="!record.mainStory ? 'insufficient' : ''">Main Story ({{ record.mainStory ? '1' : '0' }}/1)</a></li>
+                <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="(record.mainStories.length != 1 && record.mainStories.length != 3) ? 'insufficient' : ''">Main Stories ({{ record.mainStories.length }})</a></li>
                 <li><a href="#stories" role="tab" data-toggle="tab" :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{ record.otherStories.length }})</a></li>
                 <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
                 <li><a href="#announcements" role="tab" data-toggle="tab" :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{ record.announcements.length }})</a></li>
@@ -66,10 +66,10 @@
               <!-- Tab panes -->
               <div class="tab-content">
                 <div class="tab-pane active" id="main-story">
-                  <email-main-story-queue
+                  <email-main-stories-queue
                   :stypes="stypes"
-                  :main-story="record.mainStory"
-                  ></email-main-story-queue>
+                  :main-stories="record.mainStories"
+                  ></email-main-stories-queue>
                 </div>
                 <div class="tab-pane" id="stories">
                   <email-story-queue
@@ -96,7 +96,7 @@
               :announcements="record.announcements"
               :events="record.events"
               :other-stories="record.otherStories"
-              :main-story="record.mainStory"
+              :main-stories="record.mainStories"
               ></email-live-view>
             </div>
             <!-- /.medium-8 columns -->
@@ -150,7 +150,8 @@
             <p>This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>
             <ul class="list-group">
               <li class="list-group-item"><i :class="record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>
-              <li class="list-group-item"><i :class="record.mainStory ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStory ? 'has' : 'does not have' }} a main story.</li>
+              <li class="list-group-item"><i :class="record.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStories.length > 0 ? 'has' : 'does not have' }} a main story.</li>
+              <li class="list-group-item"><i :class="record.mainStories.length == 2 ? 'fa fa-times-circle fa-3x' : 'fa fa-check-circle fa-3x'" aria-hidden="true"></i> Email {{ record.mainStories.length == 2 ? 'only has 1 sub-main story (0 or 2 required)' : 'has 0 or 2 sub-main stories' }}.</li>
               <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at least one side story.</li>
               <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one event.</li>
               <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.announcements.length > 0 ? 'has' : 'does not have' }} at least one announcement.</li>
@@ -159,7 +160,7 @@
             </ul>
             <h3>Optional Criteria Checklist</h3>
             <ul class="list-group">
-              <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }}  a subheading.</li>
+              <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>
             </ul>
           </div>
       </div>
@@ -201,7 +202,7 @@
         :announcements="record.announcements"
         :events="record.events"
         :other-stories="record.otherStories"
-        :main-story="record.mainStory"
+        :main-stories="record.mainStories"
         ></email-live-view>
       </div>
       <!-- /.medium-8 columns -->
@@ -285,7 +286,7 @@ import moment from 'moment';
 import flatpickr from 'flatpickr';
 import vSelect from "vue-select";
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
-import EmailMainStoryQueue from './EmailMainStoryQueue.vue'
+import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
@@ -296,7 +297,7 @@ import EmailLiveView from './EmailLiveView.vue'
 
 module.exports = {
   directives: {},
-  components: {EmailMainStoryQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailCloneModal, EmailLiveView, vSelect},
+  components: {EmailMainStoriesQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailDeleteModal, EmailStatsModal, EmailCloneModal, EmailLiveView, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -345,26 +346,30 @@ module.exports = {
         mailgun_clicks:0,
         mailgun_opens:0,
         mailgun_spam:0,
-        mainStory: null,
         send_at: null,
         subheading: null,
         title: null,
         announcements: [],
         events: [],
+        mainStories: [],
         otherStories: [],
         recipients: [],
       },
       original: {
         id: '',
+        clone: [],
+        created_at: null,
         is_approved: false,
         is_ready: false,
-        mainStory: null,
+        mailgun_clicks:0,
+        mailgun_opens:0,
+        mailgun_spam:0,
         send_at: null,
-        setTime: false,
         subheading: null,
         title: null,
         announcements: [],
         events: [],
+        mainStories: [],
         otherStories: [],
         recipients: [],
       },
@@ -470,7 +475,7 @@ module.exports = {
       let progress = 0
 
       this.record.title ? progress += 13 : ''
-      this.record.mainStory ? progress += 15 : ''
+      this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
       this.record.events.length > 0 ? progress += 15 : ''
       this.record.announcements.length > 0 ? progress += 15 : ''
       this.record.otherStories.length > 0 ? progress += 15 : ''
@@ -631,12 +636,14 @@ module.exports = {
     //https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
     'main-story-added': function (mainStoryObj) {
       if(mainStoryObj){
-        this.record.mainStory = mainStoryObj // Set the main story for this email
+        this.record.mainStories.push(mainStoryObj)
       }
     },
-    'main-story-removed': function (mainStoryObj) {
-      if(mainStoryObj){
-        this.record.mainStory = null
+    'main-story-removed': function (mainStoryId) {
+      for(i = 0; i < this.record.mainStories.length; i++){
+        if(mainStoryId == this.record.mainStories[i].id){
+          this.record.mainStories.$remove(this.record.mainStories[i])
+        }
       }
     },
     'other-story-added': function (otherStoryObj) {

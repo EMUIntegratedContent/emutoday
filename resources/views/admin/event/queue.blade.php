@@ -16,9 +16,9 @@
 @section('content')
 
     <div id="vue-event-queue">
-            <event-queue>
+            <event-queue role="{{$currentUser->roles->first()->name}}">
             </event-queue>
-    </div><!-- /.vue-announcement-app -->
+    </div><!-- /.vue-event-app -->
 
 @endsection
 @section('footer-vendor')

@@ -5,7 +5,7 @@
           <div class="row">
               <div class="col-sm-12">
                   <div v-show="podType == 'mainstoryqueue'" class="pull-right">
-                      <label><input type="radio" @click="emitMainStoryAdd(item)" :checked="isMainStory" />  Main Story</label>
+                      <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
                   </div><!-- /.pull-left -->
                   <div v-show="podType == 'otherstoryqueue'" class="pull-right">
                       <label><input type="checkbox" @click="toggleEmitOtherStory(item)" v-model="checked" :checked="isOtherStory" /> Email Story</label>
@@ -44,7 +44,7 @@
                     </div><!-- /.col-md-6 -->
                     <div class="col-sm-6">
                         <div class="btn-group pull-right">
-                            <a :href="item.full_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-eye"></i></a>
+                            <a :href="item.edit_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-pencil"></i></a>
                         </div>
                     </div><!-- /.col-md-6 -->
                 </div><!-- /.row -->
@@ -235,12 +235,11 @@ import moment from 'moment'
 module.exports  = {
     directives: {},
     components: {},
-    props: ['item','pid','mainStoryId','podType','draggable','otherStories'],
+    props: ['item','pid','mainStories','podType','draggable','otherStories'],
     data: function() {
         return {
             options: [],
             showBody: false,
-            checkedMainStory: false,
             currentDate: {},
             record: {
                 title: '',
@@ -259,6 +258,9 @@ module.exports  = {
     ready: function() {
     },
     computed: {
+      mainStoriesFull: function(){
+        return !this.checked && this.mainStories.length == 3 ? true : false
+      },
       timefromNow:function() {
           return moment(this.item.start_date).fromNow()
       },
@@ -296,9 +298,15 @@ module.exports  = {
           return 'fa '+ faicon + ' fa-fw'
       },
       isMainStory: function(){
-        if(this.mainStoryId == this.item.id){
-          return true
+        if(this.mainStories){
+          for(var i = 0; i < this.mainStories.length; i++) {
+            if(this.mainStories[i].id == this.item.id){
+              this.checked = true
+              return true
+            }
+          }
         }
+        this.checked = false
         return false
       },
       isOtherStory: function(){
@@ -331,7 +339,7 @@ module.exports  = {
         },
         emitMainStoryRemove: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('main-story-removed', storyObj)
+          this.$dispatch('main-story-removed', storyObj.id)
         },
         emitOtherStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
@@ -342,6 +350,14 @@ module.exports  = {
           // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
           this.$dispatch('other-story-removed', storyObj.id)
         },
+        toggleEmitMainStory: function(storyObj){
+          // function will run before this.checked is switched
+          if(!this.checked){
+            this.emitMainStoryAdd(storyObj)
+          } else {
+            this.emitMainStoryRemove(storyObj)
+          }
+        },
         toggleEmitOtherStory: function(storyObj){
           // function will run before this.checked is switched
           if(!this.checked){
@@ -350,21 +366,16 @@ module.exports  = {
             this.emitOtherStoryRemove(storyObj)
           }
         },
-        updateItem: function(){
-          /*
-          this.patchRecord.is_archived = this.item.is_archived;
+        /**
+         * Uses vue-sortable
+         */
+        updateOrder: function(event){
+          // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+          let oldIndex = event.oldIndex
+          let newIndex = event.newIndex
 
-          this.$http.patch('/api/email/stories/other/update' + this.item.id , this.patchRecord , {
-            method: 'PATCH'
-          } )
-          .then((response) => {
-            console.log('good?'+ response)
-            this.checkAfterUpdate(response.data.newdata)
-
-          }, (response) => {
-            console.log('bad?'+ response)
-          });
-          */
+          // move the item in the underlying array
+          this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
         },
     },
     watch: {

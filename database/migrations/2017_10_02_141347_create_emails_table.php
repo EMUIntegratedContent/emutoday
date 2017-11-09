@@ -19,7 +19,7 @@ class CreateEmailsTable extends Migration
             $table->string('subheading')->nullable();
             $table->tinyInteger('is_approved');
             $table->tinyInteger('is_ready');
-            $table->integer('mainstory_id')->unsigned()->nullable();
+            //$table->integer('mainstory_id')->unsigned()->nullable();
             $table->integer('clone_email_id')->unsigned()->nullable(); // if this email is cloned, mark from which one
             $table->dateTime('send_at')->nullable();
             $table->tinyInteger('is_sent');
@@ -27,9 +27,9 @@ class CreateEmailsTable extends Migration
             $table->integer('mailgun_clicks'); // to be incremented by Mailgun Webhooks
             $table->integer('mailgun_spam'); // to be incremented by Mailgun Webhooks
             $table->softDeletes();
-            $table->foreign('mainstory_id')
-              ->references('id')->on('storys')
-              ->onDelete('cascade');
+            //$table->foreign('mainstory_id')
+              //->references('id')->on('storys')
+              //->onDelete('cascade');
             $table->foreign('clone_email_id')
               ->references('id')->on('emails')
               ->onDelete('set null');

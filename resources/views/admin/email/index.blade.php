@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title','EventQueue')
+@section('title','EMU Today Emails')
 @section('style-vendor')
   @parent
 @endsection

@@ -67,11 +67,34 @@
   </div>
 </div>
 <div class="col-md-4">
-  <h3><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live</h3>
+
   <div id="items-live">
+    <!-- ELEVATED ANNOUNCEMENTS -->
+    <template v-if="canElevate">
+      <h3><span class="badge">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated</h3>
+      <p>To rearrange the order of announcements, drag the pod to the desired location. To demote an announcement, click the red 'X' on the pod. Changes are saved automatically. Note: this list is NOT filtered by date.</p>
+      <template v-if="elevateditems.length > 0">
+        <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
+          <li v-for="item in elevateditems" class="list-group-item">
+            <announcement-queue-item
+              pid="item-elevated"
+              :item="item"
+              :is="item-elevated"
+            >
+            </announcement-queue-item>
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <p>There are no elevated announcements.</p>
+      </template>
+    </template>
+    <hr /> <!-- End elevated announcements -->
+    <h3><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live</h3>
     <announcement-queue-item
     pid="items-live"
-    v-for="item in itemsLive | orderBy 'priority' -1"
+    v-for="item in itemsLive | orderBy 'start_date' -1"
+    :elevated-announcements="elevateditems"
     :item="item"
     :index="$index"
     :is="items-live"
@@ -99,6 +122,7 @@ export default {
     return {
       resource: {},
       allitems: [],
+      elevateditems: [],
       items: [],
       xitems: [],
       objs: {},
@@ -113,7 +137,7 @@ export default {
       let twoWeeksEarlier = moment().subtract(2, 'w')
       this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
       this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
-    this.fetchAllRecords();
+      this.fetchAllRecords();
   },
 
   computed: {
@@ -125,7 +149,13 @@ export default {
     },
     itemsLive:function() {
       return  this.filterItemsLive(this.allitems);
-    }
+    },
+    canElevate: function(){
+      if (this.role === 'admin' || this.role === 'admin_super' || this.role === 'editor'){
+          return true
+      }
+      return false
+    },
   },
 
   methods: {
@@ -156,19 +186,34 @@ export default {
       this.$http.get(routeurl)
 
       .then((response) =>{
-          console.log(routeurl)
           this.$set('allitems', response.data.data)
-          this.checkOverDataFilter();
+          this.loading = false;
+      }, (response) => {
+          //error callback
+          console.log("ERRORS");
+      }).bind(this);
+
+      this.fetchElevatedRecords(); //get elevated records regardless of date
+    },
+
+    /**
+     * Get elevated records REGARDLESS of date range!
+     */
+    fetchElevatedRecords: function(){
+      this.loading = true
+
+      var routeurl = '/api/announcement/elevated';
+      this.$http.get(routeurl)
+
+      .then((response) =>{
+          this.$set('elevateditems', response.data.data)
           this.loading = false;
       }, (response) => {
           //error callback
           console.log("ERRORS");
       }).bind(this);
     },
-    checkOverData: function() {
-      console.log('this.items=' + this.allitems)
 
-    },
     filterItemsApproved: function(items) {
       return items.filter(function(item) {
         return moment(item.start_date).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0;
@@ -188,14 +233,53 @@ export default {
     onCalendarChange: function(){
         // flatpickr directive method
     },
-    checkOverDataFilter: function() {
-      console.log('items=' + this.items)
-    }
+    /**
+     * Uses vue-sortable
+     */
+    updateOrder: function(announcement){
+      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+      let oldIndex = announcement.oldIndex
+      let newIndex = announcement.newIndex
+
+      // move the item in the underlying array
+      this.elevateditems.splice(newIndex, 0, this.elevateditems.splice(oldIndex, 1)[0]);
+
+      // now update the priority order in the database
+      this.updateElevatedOrder()
+    },
+    /**
+     * Change the priority ranking of elevated announcements in the database
+     */
+     updateElevatedOrder: function(){
+       var routeurl = '/api/announcement/elevated/reorder';
+       this.$http.put(routeurl, this.elevateditems)
+
+       .then((response) =>{
+           this.$set('elevateditems', response.data.data)
+       }, (response) => {
+           //error callback
+           console.log("ERRORS");
+       }).bind(this);
+     }
   },
 
   // the `events` option simply calls `$on` for you
   // when the instance is created
   events: {
+    'announcement-elevated': function (announcementObj) {
+      if(announcementObj){
+        this.elevateditems.push(announcementObj)
+        this.updateElevatedOrder()
+      }
+    },
+    'announcement-demoted': function (announcementId) {
+      for(i = 0; i < this.elevateditems.length; i++){
+        if(announcementId == this.elevateditems[i].id){
+          this.elevateditems.$remove(this.elevateditems[i])
+          this.updateElevatedOrder()
+        }
+      }
+    },
   }
 }
 

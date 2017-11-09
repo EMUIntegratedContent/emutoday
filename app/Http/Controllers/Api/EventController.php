@@ -37,7 +37,7 @@ class EventController extends ApiController
   function __construct()
   {
     // $this->middleware('auth');
-    $this->middleware(['web','cas.auth'], ['only' => [
+    $this->middleware('web', ['only' => [
       'queueLoad',
       'lbcQueueLoad',
       'hscQueueLoad'
@@ -601,7 +601,7 @@ class EventController extends ApiController
             } else {
               $event->is_approved       = 0; // events must go back into approver queue when updated
               $event->lbc_reviewed      = 0; // events must go back into approver queue when updated
-
+              $event->priority          = 0; // events requiring re-approval lose priority
               $updateMessage = "Event successfully updated.";
             }
 
@@ -626,4 +626,55 @@ class EventController extends ApiController
             }
           }
         }
-      }
+
+        /**
+         * Any event with a 'priority' > 0
+         */
+        public function getElevatedEvents()
+        {
+          $currentDate = Carbon::now();
+          if (\Auth::check()) {
+
+            $user = \Auth::user();
+            if ($user->hasRole('contributor_1')){
+                return $this->setStatusCode(401)->respondWithError('You do not have sufficient privileges to see elevated events.');
+            } else {
+                $events  = Event::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+            }
+
+            $fractal = new Manager();
+            $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
+            // Turn all of that into a Array string
+            return $fractal->createData($resource)->toArray();
+
+          } else {
+            return $this->setStatusCode(501)->respondWithError('Error');
+          }
+        }
+
+        /**
+         * Takes in elevated events and re-arranges their priority in array order.
+         */
+        public function reorderElevatedEvents(Request $request)
+        {
+          $elevatedEvents = $request->all();
+
+          $elevatedEventIds = array();
+          for($i = 0; $i < count($elevatedEvents); $i++){
+            $event = Event::findOrFail($elevatedEvents[$i]['id']);
+            $event->priority = count($elevatedEvents) - $i; //set new priority
+            $event->save();
+            $elevatedEventIds[] = $event->id; //prevent this event's priority from being set to 0
+          }
+
+          // Set all other event priorities to 0
+          Event::whereNotIn('id', $elevatedEventIds)->update(['priority' => 0]);
+
+          // Get updated list of priority events
+          $events  = Event::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+          $fractal = new Manager();
+          $resource = new Fractal\Resource\Collection($events->all(), new FractalEventTransformerModelFull);
+          // Turn all of that into a Array string
+          return $fractal->createData($resource)->toArray();
+        }
+}
