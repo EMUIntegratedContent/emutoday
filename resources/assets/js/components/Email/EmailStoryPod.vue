@@ -5,7 +5,7 @@
           <div class="row">
               <div class="col-sm-12">
                   <div v-show="podType == 'mainstoryqueue'" class="pull-right">
-                      <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" />  Main Story</label>
+                      <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
                   </div><!-- /.pull-left -->
                   <div v-show="podType == 'otherstoryqueue'" class="pull-right">
                       <label><input type="checkbox" @click="toggleEmitOtherStory(item)" v-model="checked" :checked="isOtherStory" /> Email Story</label>
@@ -258,6 +258,9 @@ module.exports  = {
     ready: function() {
     },
     computed: {
+      mainStoriesFull: function(){
+        return !this.checked && this.mainStories.length == 3 ? true : false
+      },
       timefromNow:function() {
           return moment(this.item.start_date).fromNow()
       },
