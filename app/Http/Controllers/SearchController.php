@@ -21,12 +21,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchController extends Controller
 {
-    public function __construct(Story $story, Announcement $announcement, Event $event)
+    public function __construct(Story $story, Announcement $announcement, Event $event, ISearch $searchProvider)
 
     {
         $this->story = $story;
         $this->announcement = $announcement;
         $this->event = $event;
+        $this->searchProvider = $searchProvider;
     }
 
 
