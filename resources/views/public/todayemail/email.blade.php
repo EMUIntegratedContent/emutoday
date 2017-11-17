@@ -141,9 +141,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" valign="top" style="padding-bottom: 16px;">
-                             <div class="indent-more">
+                        <td colspan="2" valign="top" style="padding-bottom: 16px; padding-left:46px;">
+                             
                             <h2><a href="{{ url('/') }}/announcement">Announcements</a></h2>
+                            <div class="indent-more">
                             <ul style="padding-bottom: 0px; padding-top: 0px; margin-left: 0px; padding-left:20px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
