@@ -1,7 +1,9 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,600,700" rel="stylesheet">
 
 <style type="text/css" media="screen">
-    
+    table {
+    border-collapse: collapse;
+    }
     a {
         color: #046A38;
         text-decoration: underline;
@@ -161,7 +163,7 @@
                     </tr>
                     <tr style="background:#515151; margin-top:5px; color:#ffffff; border:0;">
                         <td style="padding-top:6px; padding-bottom: 6px; border:0;">
-                            <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px; border-collapse: collapse;">
+                            <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px;">
                                 <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:0;">
                                     <td><a style="color: #ffffff; padding-left: 0; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></td>
                                     <td><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></td>
@@ -174,7 +176,7 @@
                     </tr>
                     <tr id="footer-row" style="background:#333333; margin-top:5px; color:#ffffff; border:0;">
                         <td colspan="2" style="border:0;">
-                            <table style="margin-left: auto; margin-right: auto; border-collapse: collapse;">
+                            <table style="margin-left: auto; margin-right: auto;">
                                 <tr style="border:none;">
                                     <td valign="top" style="padding:5px; border:0;">
                                         <ul style="padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;">
