@@ -52,9 +52,7 @@
     .img-circle {
         border-radius: 50%;
     }
-    .contain{
-        width: 508px;
-    }
+    
 </style>
 
 <div style="border:1px solid #000000; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;">
@@ -108,8 +106,8 @@
                             </tr>
                             <tr>
                             
-                                <div class="contain"> 
-                                <td valign="top">
+                               
+                                <td valign="top" width="200px">
                                      
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:100%; height:auto;" />
@@ -119,14 +117,14 @@
                                    
                                 </td>
                                 
-                                <td valign="top">
+                                <td valign="top" width="200px">
                                     <article>
                                         <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:5px solid #ffffff; width:100%; height:auto;" />
                                         <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                 </td>
-                               </div>
+                              
                             </tr>
                                  
                         </table>
