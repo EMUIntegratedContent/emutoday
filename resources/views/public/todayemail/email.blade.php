@@ -117,18 +117,21 @@
                     </tr>
                     @endif
                     <tr>
-                        <td colspan="2" valign="top" class="indent-more">
+                        <td colspan="2" valign="top" >
+                            <div class="indent-more">   
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 22px;  margin-left: 0px; padding-left: 20px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
-                                <li style="padding-bottom: 5px; color:#046A38;">
+                                <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     <a style="text-decoration: none;" href="{{ url('/') . '/story/' . $story->story_type . '/' . $story->id }}">{{ $story->title }}</a>
                                 </li>
                                 @endforeach
                             </ul>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" valign="top" class="indent-more" style="padding-bottom: 16px;">
+                        <td colspan="2" valign="top" style="padding-bottom: 16px;">
+                             <div class="indent-more">
                             <h2><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                             <ul style="padding-bottom: 0px; padding-top: 0px; margin-left: 0px; padding-left:20px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
@@ -137,6 +140,7 @@
                                 </li>
                                 @endforeach
                             </ul>
+                            </div>
                         </td>
                     </tr>
                     <tr>
