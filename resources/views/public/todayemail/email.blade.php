@@ -106,7 +106,7 @@
                             <tr>
                             
                                  
-                                <td valign="top">
+                                <td valign="top" style="margin: 0 10px;">
                                      
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:100%; height:auto;" />
@@ -116,9 +116,9 @@
                                    
                                 </td>
                                 
-                                <td valign="top">
+                                <td valign="top" style="margin: 0 10px;">
                                     <article>
-                                        <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:5px solid #ffffff; width:231px; height:210px;" />
+                                        <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:5px solid #ffffff; width:100%; height:auto;" />
                                         <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
