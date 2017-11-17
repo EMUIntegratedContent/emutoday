@@ -97,10 +97,13 @@
                         <table class="indent-more">
                             <tr>
                                 <td colspan="2">
+                                    <div class="indent-more"> 
                                     <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
+                                <div class="indent-more"> 
                                 <td valign="top" width="254px" style="padding-left: 23px;">
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:231px; height:210px;" />
@@ -115,6 +118,7 @@
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                 </td>
+                                </div>
                             </tr>
                         </table>
                     </tr>
