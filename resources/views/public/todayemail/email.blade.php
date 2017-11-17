@@ -103,9 +103,9 @@
                                     
                                 </td>
                             </tr>
-                            <tr width="508px" style="margin-left:23px;">
+                            <tr width="508px" style="margin-left: auto; margin-right: auto;">
                                  
-                                <td valign="top" width="254px" style="padding-left:0;">
+                                <td valign="top" width="254px" style="padding-left:0px;">
                                      
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:231px; height:210px;" />
