@@ -97,10 +97,10 @@
                         <table class="indent-more">
                              
                             <tr>
-                                <td colspan="2">
-                                   <div class="indent">  
+                                <td colspan="2" style="margin-left:23px;">
+                                  
                                     <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
-                                    </div>
+                                    
                                 </td>
                             </tr>
                             <tr>
@@ -114,7 +114,7 @@
                                     </article>
                                    
                                 </td>
-                                <td valign="top" width="254px" style="padding-right: 23px;">
+                                <td valign="top" width="254px" style="padding-right: 23px; margin-left:23px;">
                                     <article>
                                         <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:5px solid #ffffff; width:231px; height:210px;" />
                                         <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
