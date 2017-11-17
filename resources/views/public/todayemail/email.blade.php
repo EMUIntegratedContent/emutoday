@@ -96,16 +96,16 @@
                     <tr>
                         <table class="indent-more">
                              
-                            <tr>
-                                <td colspan="2" style="margin-left:23px;">
+                            <tr >
+                                <td colspan="2" style="margin-left:46px;">
                                   
                                     <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
                                     
                                 </td>
                             </tr>
-                            <tr>
+                            <tr >
                                  
-                                <td valign="top" width="254px" style="padding-left: 23px; margin-left:23px;">
+                                <td valign="top" width="254px" style=" margin-left:46px;">
                                      
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:231px; height:210px;" />
@@ -114,7 +114,7 @@
                                     </article>
                                    
                                 </td>
-                                <td valign="top" width="254px" style="padding-right: 23px; margin-left:23px;">
+                                <td valign="top" width="254px" style="margin-left:23px;">
                                     <article>
                                         <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:5px solid #ffffff; width:231px; height:210px;" />
                                         <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
