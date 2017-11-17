@@ -95,15 +95,14 @@
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
                     <tr>
                         <table class="indent-more">
+                             <div class="indent-more">
                             <tr>
-                                <td colspan="2">
-                                    <div class="indent-more"> 
-                                    <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2>
-                                    </div>
+                                <td colspan="2">  
+                                    <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2>  
                                 </td>
                             </tr>
                             <tr>
-                                <div class="indent-more"> 
+                                 
                                 <td valign="top" width="254px" style="padding-left: 23px;">
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:231px; height:210px;" />
@@ -118,8 +117,9 @@
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                 </td>
-                                </div>
+                               
                             </tr>
+                                 </div>
                         </table>
                     </tr>
                     @endif
