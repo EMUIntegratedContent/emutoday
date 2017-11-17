@@ -1,9 +1,7 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,600,700" rel="stylesheet">
 
 <style type="text/css" media="screen">
-    table {
-    border-collapse: collapse;
-    }
+    
     a {
         color: #046A38;
         text-decoration: underline;
@@ -55,7 +53,7 @@
 </style>
 
 <div style="border:1px solid #000000; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;">
-    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" style="border-collapse: collapse;">
 
         <tr>
             <td align="center" valign="top">
