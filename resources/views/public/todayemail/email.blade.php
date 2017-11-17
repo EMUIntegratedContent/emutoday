@@ -135,7 +135,7 @@
                             <h2><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                             <ul style="padding-bottom: 0px; padding-top: 0px; margin-left: 0px; padding-left:20px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
-                                <li style="padding-bottom: 5px; color:#046A38;">
+                                <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
                                 </li>
                                 @endforeach
