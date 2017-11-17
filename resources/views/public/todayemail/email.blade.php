@@ -98,14 +98,14 @@
                              
                             <tr>
                                 <td colspan="2">
-                                   <div class="indent-more">  
+                                   <div class="indent">  
                                     <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="indent-more">
+                            <tr>
                                  
-                                <td valign="top" width="254px" style="padding-left: 23px;">
+                                <td valign="top" width="254px" style="padding-left: 23px; margin-left:23px;">
                                      
                                     <article>
                                         <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:231px; height:210px;" />
