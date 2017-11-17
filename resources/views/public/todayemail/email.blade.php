@@ -145,7 +145,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" valign="top" style="padding-bottom: 18px;">
+                        <td colspan="2" valign="top" style="padding-bottom: 18px;  border:0;">
                             <div class="indent" style="border-top: 3px solid #97D700; padding-top: 8px;">
                                 <h2><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
                                 <ul style="margin-left: 0; padding-left: 0;">
@@ -159,10 +159,10 @@
                             </div>
                         </td>
                     </tr>
-                    <tr style="background:#515151; margin-top:5px; color:#ffffff; padding-top:6px; padding-bottom: 6px;">
-                        <td>
+                    <tr style="background:#515151; margin-top:5px; color:#ffffff; border:0;">
+                        <td style="padding-top:6px; padding-bottom: 6px; border:0;">
                             <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px; border-collapse: collapse;">
-                                <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:none;">
+                                <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:0;">
                                     <td><a style="color: #ffffff; padding-left: 0; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></td>
                                     <td><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></td>
                                     <td><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></td>
@@ -172,11 +172,11 @@
                             </table>
                         </td>
                     </tr>
-                    <tr id="footer-row" style="background:#333333; margin-top:5px; color:#ffffff;">
-                        <td colspan="2">
+                    <tr id="footer-row" style="background:#333333; margin-top:5px; color:#ffffff; border:0;">
+                        <td colspan="2" style="border:0;">
                             <table style="margin-left: auto; margin-right: auto; border-collapse: collapse;">
                                 <tr style="border:none;">
-                                    <td valign="top" style="padding:5px; border:none;">
+                                    <td valign="top" style="padding:5px; border:0;">
                                         <ul style="padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;">
                                             <li style="display: inline-block; list-style-type:none; padding-right:10px;">
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/facebook-base-icons.png"></a>
