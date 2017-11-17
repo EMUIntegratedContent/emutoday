@@ -94,7 +94,7 @@
                     </tr>
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
                     <tr>
-                        <table class="indent-more">
+                        <table width="508px;" style="margin-left: 23px;">
                              
                             <tr >
                                 <td colspan="2" style="padding-left:46px;">
@@ -103,7 +103,7 @@
                                     
                                 </td>
                             </tr>
-                            <tr width="508px" style="margin-left: auto; margin-right: auto;">
+                            <tr width="508px">
                                  
                                 <td valign="top" width="254px" style="padding-left:0px;">
                                      
