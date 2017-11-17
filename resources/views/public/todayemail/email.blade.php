@@ -152,7 +152,7 @@
                                 <h2><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
                                 <ul style="margin-left: 0; padding-left: 0;">
                                     @foreach($email->events as $event)
-                                    <li style="list-style: none;">
+                                    <li style="list-style: none; margin-left: 0;">
                                         <div style="width: 12%; display: inline-block; float: left;">{{ $event->start_date->format('M j') }} </div>
                                         <div style="width: 88%; display: inline-block; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" href="{{ url('/') . '/calendar/' . $event->start_date->format('Y') . '/' . $event->start_date->format('m') . '/' . $event->start_date->format('d') . '/' . $event->id }}">{{ $event->title }}</a></div>
                                     </li>
@@ -163,8 +163,8 @@
                     </tr>
                     <tr style="background:#515151; margin-top:5px; color:#ffffff;">
                         <td>
-                            <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px;">
-                                <tr style="text-align:center; font-size: 15px; text-transform: uppercase;">
+                            <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px; border-collapse: collapse;">
+                                <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:none;">
                                     <td><a style="color: #ffffff; padding-left: 0; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></td>
                                     <td><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></td>
                                     <td><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></td>
@@ -176,9 +176,9 @@
                     </tr>
                     <tr id="footer-row" style="background:#333333; margin-top:5px; color:#ffffff;">
                         <td colspan="2">
-                            <table style="margin-left: auto; margin-right: auto;">
-                                <tr>
-                                    <td valign="top" style="padding:5px;">
+                            <table style="margin-left: auto; margin-right: auto; border-collapse: collapse;">
+                                <tr style="border:none;">
+                                    <td valign="top" style="padding:5px; border:none;">
                                         <ul style="padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;">
                                             <li style="display: inline-block; list-style-type:none; padding-right:10px;">
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/facebook-base-icons.png"></a>
