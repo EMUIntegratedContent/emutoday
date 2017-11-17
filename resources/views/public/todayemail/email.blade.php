@@ -1,9 +1,7 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,600,700" rel="stylesheet">
 
 <style type="text/css" media="screen">
-    table {
-    border-collapse: collapse;
-    }
+    
     a {
         color: #046A38;
         text-decoration: underline;
@@ -161,7 +159,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr style="background:#515151; margin-top:5px; color:#ffffff;">
+                    <tr style="background:#515151; margin-top:5px; color:#ffffff; padding-top:6px; padding-bottom: 6px;">
                         <td>
                             <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px; border-collapse: collapse;">
                                 <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:none;">
