@@ -103,7 +103,7 @@
                                     
                                 </td>
                             </tr>
-                            <tr style="text-align:center;">
+                            <tr width="508px" style="padding-left:23px;">
                                  
                                 <td valign="top" width="254px" style="padding-left:0;">
                                      
