@@ -104,26 +104,27 @@
                                     
                                 </td>
                             </tr>
-                            <tr style="text-align:center;">
-                            
+                            <tr>
+                                <td valign="top" width="46px">&nbsp;</td>
                                
                                 <td valign="top" width="250px">
                                      
                                     <article>
-                                        <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:5px solid #ffffff; width:100%; height:auto;" />
+                                        <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" style="padding: 0; margin: 0; border-right:0px solid #ffffff; width:100%; height:auto;" />
                                         <h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
                                         <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                    
                                 </td>
-                                
+                                 <td valign="top" width="23px">&nbsp;</td>
                                 <td valign="top" width="250px">
                                     <article>
-                                        <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:5px solid #ffffff; width:100%; height:auto;" />
+                                        <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:0px solid #ffffff; width:100%; height:auto;" />
                                         <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                 </td>
+                                 <td valign="top" width="46px">&nbsp;</td>
                               
                             </tr>
                                  
