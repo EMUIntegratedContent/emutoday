@@ -60,8 +60,8 @@
     }
     
     .indent-more {
-        padding-left: 40px;
-        padding-right: 40px;
+        padding-left: 35px;
+        padding-right: 35px;
     }
     .img-circle {
         border-radius: 50%;
@@ -115,7 +115,7 @@
                                 <td valign="top" width="40px">&nbsp;</td>
                                 <td colspan="2">
                                   
-                                    <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
+                                    <h2 style="padding-bottom: 5px;"><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
                                     
                                 </td>
                             </tr>
