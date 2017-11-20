@@ -37,6 +37,9 @@
         padding: 12px 0 5px;
         margin: 0;
     }
+    h2{
+        font-size: 18px;
+    }
  
     p {
         padding: 0;
