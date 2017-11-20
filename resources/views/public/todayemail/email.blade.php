@@ -1,6 +1,9 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,600,700" rel="stylesheet">
 
 <style type="text/css" media="screen">
+    body{
+        font-size:16px;
+    }
     table {
     border-collapse: collapse;
     }
@@ -46,8 +49,8 @@
     }
     
     .indent-more {
-        padding-left: 2.2rem;
-        padding-right: 2.2rem;
+        padding-left: 40px;
+        padding-right: 40px;
     }
     .img-circle {
         border-radius: 50%;
@@ -98,14 +101,15 @@
                         <table>
                              
                             <tr >
-                                <td colspan="2">
+                                <td colspan="1" valign="top" width="40px">&nbsp;</td>
+                                <td colspan="4">
                                   
                                     <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
                                     
                                 </td>
                             </tr>
                             <tr>
-                                <td valign="top" width="46px">&nbsp;</td>
+                                <td valign="top" width="40px">&nbsp;</td>
                                
                                 <td valign="top" width="250px">
                                      
@@ -116,7 +120,7 @@
                                     </article>
                                    
                                 </td>
-                                 <td valign="top" width="23px">&nbsp;</td>
+                                 <td valign="top" width="20px">&nbsp;</td>
                                 <td valign="top" width="250px">
                                     <article>
                                         <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:0px solid #ffffff; width:100%; height:auto;" />
@@ -124,7 +128,7 @@
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                 </td>
-                                 <td valign="top" width="46px">&nbsp;</td>
+                                 <td valign="top" width="40px">&nbsp;</td>
                               
                             </tr>
                                  
@@ -145,7 +149,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" valign="top" style="padding-bottom: 16px; padding-left:46px;">
+                        <td colspan="2" valign="top" style="padding-bottom: 16px;">
+                            <div class="indent-more">   
                              
                             <h2><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                            
@@ -156,6 +161,7 @@
                                 </li>
                                 @endforeach
                             </ul>
+                            </div>
                             
                         </td>
                     </tr>
