@@ -38,9 +38,17 @@
         margin: 0;
     }
     h2{
+        font-size: 22px;
+    }
+    h3{
+        font-size: 20px;
+    }
+    h4{
         font-size: 18px;
     }
- 
+    h5, h6{
+        font-size: 16px;
+    }
     p {
         padding: 0;
         margin: 4px 0 6px;
