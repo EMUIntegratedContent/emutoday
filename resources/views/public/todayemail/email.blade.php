@@ -38,13 +38,7 @@
         margin: 0;
     }
     .backline{
-        background: repeating-linear-gradient(
-          to right,
-          #f6ba52,
-          #f6ba52 10px,
-          #ffd180 10px,
-          #ffd180 20px
-        );
+        background-color:red;
     }
     
     p {
