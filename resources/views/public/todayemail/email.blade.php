@@ -37,18 +37,7 @@
         padding: 12px 0 5px;
         margin: 0;
     }
-    .backline{
-        display: block;
-        
-    }
-    .backline::before{
-        border-top: 3px solid #97D700;
-        content:"";
-        margin: 0 auto; /* this centers the line to the full width specified */
-        position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-        top: 12px; left: 0; right: 0; bottom: 0;
-        z-index: -1;
-    }
+ 
     p {
         padding: 0;
         margin: 4px 0 6px;
@@ -76,8 +65,8 @@
             <td align="center" valign="top">
                 <table border="0" width="600" id="emailContainer">
                     <tr>
-                        <td class="backline" style="position: relative; border-bottom: 3px solid #97D700; display: block;" colspan="2">
-                            <a href="http://www.emich.edu/"><img style="postion: relative; margin-bottom:-16px; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo" /></a>
+                        <td style="position: relative; border-bottom: 3px solid #97D700; display: block;" colspan="2">
+                            <a href="http://www.emich.edu/"><img style="postion: relative; margin-bottom:-16px; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" alt="EMU Today email blast logo" /></a>
                         </td>
 
                     </tr>
