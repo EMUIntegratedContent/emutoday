@@ -64,15 +64,15 @@
         <tr>
             <td align="center" valign="top">
                 <table border="0" width="600" id="emailContainer">
-                    <tr height="58px">
-                        <td style="padding-bottom: 0; margin-bottom 0; position: relative;" colspan="2" height="58px">
+                    <tr height="54px">
+                        <td style="padding-bottom: 0; margin-bottom 0; position: relative;" colspan="2" height="54px">
                             <a href="http://www.emich.edu/" style="margin: 0; padding: 0;"><img width="600px" style="padding: 0; margin: 0; position: relative;" src="{{ url('/') }}/assets/imgs/email/topsection.png" alt="EMU Today email blast logo" /></a>
                         </td>
 
                     </tr>
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td colspan="2">
-                            <h2 style="padding: 0 0 5px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; font-weight: 600;"><span style="color: #046A38">EMU</span> Today Digest</h2>
+                            <h2 style="padding: 0 0 5px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 34px; font-weight: 600;"><span style="color: #046A38">EMU</span> Today Digest</h2>
                         </td>
                     </tr>
                     {{--
