@@ -37,6 +37,15 @@
         padding: 12px 0 5px;
         margin: 0;
     }
+    .backline{
+        background: repeating-linear-gradient(
+          to right,
+          #f6ba52,
+          #f6ba52 10px,
+          #ffd180 10px,
+          #ffd180 20px
+        );
+    }
     
     p {
         padding: 0;
@@ -65,8 +74,8 @@
             <td align="center" valign="top">
                 <table border="0" width="600" id="emailContainer">
                     <tr>
-                        <td valign="top" style="position: relative; border-bottom: 3px solid #97D700;" colspan="2">
-                            <a href="http://www.emich.edu/"><img style="postion: absolute; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo" /></a>
+                        <td class="backline" style="position: relative; border-bottom: 3px solid #97D700;" colspan="2">
+                            <a href="http://www.emich.edu/"><img style="postion: relative; margin-bottom:-16px; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo" /></a>
                         </td>
 
                     </tr>
@@ -101,8 +110,8 @@
                         <table>
                              
                             <tr >
-                                <td colspan="1" valign="top" width="40px">&nbsp;</td>
-                                <td colspan="4">
+                                <td valign="top" width="40px">&nbsp;</td>
+                                <td colspan="2">
                                   
                                     <h2><a href="{{ url('/') }}/story/news">News Stories</a></h2> 
                                     
