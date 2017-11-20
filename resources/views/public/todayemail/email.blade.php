@@ -210,7 +210,7 @@
                                 <tr style="border:none;">
                                     <td valign="top" style="padding:5px; border:0;">
                                         <ul style="padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;">
-                                            <li style="display: inline-block; list-style-type:none; padding-right:10px;">
+                                            <li style="display: inline-block; list-style-type:none; padding-right:5px;">
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/facebook-base-icons.png"></a>
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:5px;">
