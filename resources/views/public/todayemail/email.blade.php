@@ -69,8 +69,8 @@
     
 </style>
 
-<div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
-    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="600px">
+<div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;  display: block;">
+    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
 
         <tr>
             <td align="center" valign="top">
