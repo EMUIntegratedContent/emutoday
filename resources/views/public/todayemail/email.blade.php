@@ -38,6 +38,7 @@
         margin: 0;
     }
     .backline{
+        display: block;
         
     }
     .backline::before{
