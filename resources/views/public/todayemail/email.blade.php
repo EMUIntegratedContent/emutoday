@@ -66,7 +66,7 @@
                 <table border="0" width="600" id="emailContainer">
                     <tr>
                         <td style="padding-bottom: 0; margin-bottom 0; position: relative; border-bottom: 3px solid #97D700;" colspan="2">
-                            <a href="http://www.emich.edu/" style="padding-bottom:0; margin-bottom: 0;"><img style="position: absolute; padding-top: 16px; padding-bottom:-16px; margin-bottom:-16px; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" alt="EMU Today email blast logo" /></a>
+                            <a href="http://www.emich.edu/" style="padding-bottom:0; margin-bottom: 0;"><img style="position: absolute; padding-bottom:-16px; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" alt="EMU Today email blast logo" /></a>
                         </td>
 
                     </tr>
