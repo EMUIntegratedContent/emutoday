@@ -181,7 +181,7 @@
                         </td>
                     </tr>
                     <tr style="background:#515151; margin-top:5px; color:#ffffff; border:0;">
-                        <td style="padding-top:6px; padding-bottom: 6px; border:0;">
+                        <td style="padding-top:7px; padding-bottom: 7px; border:0;">
                             <table style="margin-left: auto; margin-right: auto; padding-top: 14px; padding-bottom: 14px;">
                                 <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:0;">
                                     <td><a style="color: #ffffff; padding-left: 0; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></td>
