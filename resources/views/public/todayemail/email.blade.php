@@ -163,7 +163,7 @@
                         <td colspan="2" valign="top" style="padding-bottom: 16px;">
                             <div class="indent-more">   
                              
-                            <h2><a href="{{ url('/') }}/announcement">Announcements</a></h2>
+                            <h2 style="padding-left:2px;"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                            
                             <ul style="padding-bottom: 0px; padding-top: 0px; margin-left: 0px; padding-left:20px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
