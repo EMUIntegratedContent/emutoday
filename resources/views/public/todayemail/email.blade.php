@@ -75,7 +75,7 @@
             <td align="center" valign="top">
                 <table border="0" width="600" id="emailContainer">
                     <tr>
-                        <td style="position: relative; border-bottom: 3px solid #97D700; display: block;" colspan="2">
+                        <td class="backline" style="position: relative; border-bottom: 3px solid #97D700; display: block;" colspan="2">
                             <a href="http://www.emich.edu/"><img style="postion: relative; margin-bottom:-16px; padding-left: 10px;" src="{{ url('/') }}/assets/imgs/email/inline-eastern-email2.png" style="padding:5px 0px 5px 0px" alt="EMU Today email blast logo" /></a>
                         </td>
 
