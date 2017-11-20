@@ -69,7 +69,7 @@
     
 </style>
 
-<div style="border:1px solid #000000; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;">
+<div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;">
     <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
 
         <tr>
