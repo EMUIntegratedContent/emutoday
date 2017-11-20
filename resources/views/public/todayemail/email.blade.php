@@ -120,7 +120,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td valign="top" width="40px">&nbsp;</td>
+                                <td valign="top" width="35px">&nbsp;</td>
                                
                                 <td valign="top" width="250px">
                                      
@@ -131,7 +131,7 @@
                                     </article>
                                    
                                 </td>
-                                 <td valign="top" width="20px">&nbsp;</td>
+                                 <td valign="top" width="30px">&nbsp;</td>
                                 <td valign="top" width="250px">
                                     <article>
                                         <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" style="border-right:0px solid #ffffff; width:100%; height:auto;" />
@@ -139,7 +139,7 @@
                                         <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                     </article>
                                 </td>
-                                 <td valign="top" width="40px">&nbsp;</td>
+                                 <td valign="top" width="35px">&nbsp;</td>
                               
                             </tr>
                                  
