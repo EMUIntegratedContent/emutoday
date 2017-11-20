@@ -69,8 +69,8 @@
     
 </style>
 
-<div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:610px; font-family: 'Poppins', arial, sans-serif;">
-    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%">
+<div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
+    <table border="0" cellpadding="0" cellspacing="0" height="100%" width="610px">
 
         <tr>
             <td align="center" valign="top">
@@ -213,19 +213,19 @@
                                             <li style="display: inline-block; list-style-type:none; padding-right:10px;">
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/facebook-base-icons.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:10px;">
+                                            <li style="display: inline-block; list-style-type:none; padding-right:5px;">
                                                 <a href="http://www.emich.edu/twitter/"><img class="img-circle" alt="Twitter" src="{{ url('/') }}/assets/imgs/icons/twitter-base-icons.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:10px;">
+                                            <li style="display: inline-block; list-style-type:none; padding-right:5px;">
                                                 <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube" src="{{ url('/') }}/assets/imgs/icons/you-tube-base-icons.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:10px;">
+                                            <li style="display: inline-block; list-style-type:none; padding-right:5px;">
                                                 <a href="https://instagram.com/easternmichigan/"><img class="img-circle" alt="Instagram" src="{{ url('/') }}/assets/imgs/icons/instagram-base-icons-new.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:10px;">
+                                            <li style="display: inline-block; list-style-type:none; padding-right:5px;">
                                                 <a href="https://www.linkedin.com/edu/school?id=18604"><img class="img-circle" alt="Linked-In" src="{{ url('/') }}/assets/imgs/icons/linked-in-base-icons.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:10px;">
+                                            <li style="display: inline-block; list-style-type:none; padding-right:5px;">
                                                 <a href="http://blogemu.com/"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/e-base-icons.png"></a>
                                             </li>
                                         </ul>
