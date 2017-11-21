@@ -49,6 +49,7 @@
     h5, h6{
         font-size: 16px;
     }
+    h2.moveover{padding: 12px 0 5px 6px;}
     p {
         padding: 0;
         margin: 4px 0 6px;
@@ -163,7 +164,7 @@
                         <td colspan="2" valign="top" style="padding-bottom: 16px;">
                             <div class="indent-more">   
                              
-                            <h2><a href="{{ url('/') }}/announcement">Announcements</a></h2>
+                            <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                            
                             <ul style="padding-bottom: 0px; padding-top: 0px; margin-left: 0px; padding-left:20px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
