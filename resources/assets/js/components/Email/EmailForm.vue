@@ -60,8 +60,8 @@
               <ul class="nav nav-tabs" role="tablist">
                 <li class="active"><a href="#main-story" role="tab" data-toggle="tab" :class="(record.mainStories.length != 1 && record.mainStories.length != 3) ? 'insufficient' : ''">Main Stories ({{ record.mainStories.length }})</a></li>
                 <li><a href="#stories" role="tab" data-toggle="tab" :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{ record.otherStories.length }})</a></li>
-                <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
                 <li><a href="#announcements" role="tab" data-toggle="tab" :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{ record.announcements.length }})</a></li>
+                <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
@@ -77,15 +77,15 @@
                   :other-stories="record.otherStories"
                   ></email-story-queue>
                 </div>
-                <div class="tab-pane" id="events">
-                  <email-event-queue
-                  :events="record.events"
-                  ></email-event-queue>
-                </div>
                 <div class="tab-pane" id="announcements">
                   <email-announcement-queue
                   :announcements="record.announcements"
                   ></email-announcement-queue>
+                </div>
+                <div class="tab-pane" id="events">
+                  <email-event-queue
+                  :events="record.events"
+                  ></email-event-queue>
                 </div>
               </div>
             </div>

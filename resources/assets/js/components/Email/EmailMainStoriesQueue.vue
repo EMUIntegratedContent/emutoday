@@ -63,7 +63,7 @@
                     pid="email-items"
                     :main-stories="usedStories"
                     pod-type="mainstoryqueue"
-                    v-for="item in items | orderBy 'start_date' 1 | filterBy filterByStoryType | paginate"
+                    v-for="item in items | filterBy filterByStoryType | paginate"
                     :item="item">
                 </email-story-pod>
 
@@ -268,6 +268,8 @@ export default  {
               this.$set('items', response.data.newdata.data)
               this.resultCount = this.items.length
               this.loadingQueue = false;
+              console.log("ITEMS!")
+              console.log(this.items)
           }, (response) => {
               //error callback
               console.log("ERRORS");
