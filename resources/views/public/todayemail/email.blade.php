@@ -221,7 +221,7 @@
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
                     <tr>
                         <td class="two-column">
-                            <h2 style="text-align:left; margin-left: 100px;"><a href="https://today.emich.edu/story/news">More News</a></h2>
+                            <h2 style="text-align:left; margin-left: 120px;"><a href="https://today.emich.edu/story/news">More News</a></h2>
                             <!--[if (gte mso 9)|(IE)]>
                             <table width="100%">
                             <tr>
