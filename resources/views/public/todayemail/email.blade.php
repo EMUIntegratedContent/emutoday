@@ -311,11 +311,11 @@
                                 <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:0;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0;">
-                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 0px; padding-right: 5px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
-                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
-                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
-                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
-                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
+                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
+                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
+                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
+                                    <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
                                     
                                         </ul>
                                     </td>
