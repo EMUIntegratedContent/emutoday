@@ -87,7 +87,7 @@
         /*margin: 4px 0 6px;*/
     }
     
-    
+   
     .indent {
         margin-left: 1.5rem;
         margin-right: 1.5rem;
@@ -219,7 +219,7 @@
                         </td>
                     </tr>
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
-                    <tr><td><h2 class="indent"><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
+                    <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
                     <tr>
                         <td class="two-column">
                             
