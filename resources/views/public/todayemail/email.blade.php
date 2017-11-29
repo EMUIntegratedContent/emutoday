@@ -80,7 +80,7 @@
     h5, h6{
         font-size: 16px;
     }
-    h2.moveover{padding: 12px 0 5px 8px;}
+    h2.moveover{padding: 12px 0 5px 7px;}
     p {
         padding: 0;
         margin: 0;
