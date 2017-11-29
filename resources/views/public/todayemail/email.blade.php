@@ -308,7 +308,7 @@
                         
                         <td style="border:0;">
                             <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
-                                <tr style="text-align:center; font-size: 15px; text-transform: uppercase; border:0;">
+                                <tr style="text-align:center; font-size: 14px; text-transform: uppercase; border:0;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0;">
                                     <li style="display: inline-block; padding: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 2px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
