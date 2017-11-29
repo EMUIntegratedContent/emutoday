@@ -284,7 +284,7 @@
                     <tr>
                         <td valign="top" >
                     
-                            <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 22px;  margin-left: 0px; padding-left: 20px; margin-bottom: 5px;">
+                            <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     <a style="text-decoration: none;" href="{{ url('/') . '/story/' . $story->story_type . '/' . $story->id }}">{{ $story->title }}</a>
@@ -300,7 +300,7 @@
                              
                             <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                            
-                            <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:22px; margin-bottom: 5px; margin-top: 5px;">
+                            <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
