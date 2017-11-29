@@ -335,11 +335,11 @@ class EmailController extends ApiController
    */
   public function getAllEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
       if($fromDate && !$toDate){
-          $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'asc')->get();
+          $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
       } elseif($fromDate && $toDate){
-          $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+          $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
       } else {
-          $stories  = Story::where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'asc')->get();
+          $stories  = Story::where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
       }
 
       $fractal = new Manager();
@@ -354,12 +354,12 @@ class EmailController extends ApiController
    */
   public function getAllEmailReadyEvents(Request $request, $fromDate = null, $toDate = null){
       if($fromDate && !$toDate){
-          $events  = Event::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+          $events  = Event::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->orderBy('start_date', 'desc')->get();
       } elseif($fromDate && $toDate){
-          $events  = Event::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+          $events  = Event::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
       } else {
           // By default, only get future events
-          $events  = Event::where([['start_date', '>=', date('Y-m-d')], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+          $events  = Event::where([['start_date', '>=', date('Y-m-d')], ['is_approved', 1]])->orderBy('start_date', 'desc')->get();
       }
 
       $fractal = new Manager();
@@ -374,12 +374,12 @@ class EmailController extends ApiController
    */
   public function getAllEmailReadyAnnouncements(Request $request, $fromDate = null, $toDate = null){
       if($fromDate && !$toDate){
-          $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+          $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->orderBy('start_date', 'desc')->get();
       } elseif($fromDate && $toDate){
-          $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+          $announcements  = Announcement::where([['start_date', '>=', $fromDate], ['is_approved', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
       } else {
           // By default, only get future announcements
-          $announcements  = Announcement::where([['start_date', '>=', date('Y-m-d')], ['is_approved', 1]])->orderBy('start_date', 'asc')->get();
+          $announcements  = Announcement::where([['start_date', '>=', date('Y-m-d')], ['is_approved', 1]])->orderBy('start_date', 'desc')->get();
       }
 
       $fractal = new Manager();

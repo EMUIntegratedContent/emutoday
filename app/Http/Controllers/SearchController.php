@@ -21,8 +21,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchController extends Controller
 {
-
-    //public function __construct(Story $story, Announcement $announcement, Event $event)
     public function __construct(Story $story, Announcement $announcement, Event $event, ISearch $searchProvider)
 
     {
@@ -151,12 +149,13 @@ class SearchController extends Controller
      */
     public function expertSearch(Request $request){
         $searchterm = $request->get('q');
+
         $searchCategory = $request->get('category');
         // Fields and scores set in Emutoday/Expert model class
         if($searchCategory){
             // Expert::search creates some odd alphebetizing when used with an empty search
             if($searchterm){
-              $experts = Expert::search('%'.$searchterm.'%')
+              $experts = Expert::search($searchterm)
                               ->where('is_approved', 1)
                               ->whereHas('expertCategories', function($query) use ($searchCategory){
                                   $query->where('category', $searchCategory);
@@ -174,7 +173,7 @@ class SearchController extends Controller
         } else {
           // Expert::search creates some odd alphebetizing when used with an empty search
           if($searchterm){
-            $experts = Expert::search('%'.$searchterm.'%')->where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
+            $experts = Expert::search($searchterm)->where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
           } else {
             $experts = Expert::where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
           }

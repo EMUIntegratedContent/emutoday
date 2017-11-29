@@ -374,7 +374,7 @@
 <div class="row">
   <div :class="md6col">
     <div :class="formGroup">
-      <label for="lbc-approved">LBC Approved: <em>(pre-approval required)</em>
+      <label for="lbc-approved">Request for LBC
         <input id="lbc-approved" name="lbc-approved" type="checkbox" value="1" v-model="record.lbc_approved"/>
       </label>
     </div>

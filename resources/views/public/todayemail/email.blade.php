@@ -210,9 +210,8 @@
                                             <td class="inner">
                                                 <table class="contents">
                                                     <tr>
-                                                            <td>
-                                                                     <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
-                                                            </td>
+                                                        <td><img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                             <td class="text">

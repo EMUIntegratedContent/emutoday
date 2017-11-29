@@ -3,16 +3,14 @@ module.exports = { "default": require("core-js/library/fn/json/stringify"), __es
 },{"core-js/library/fn/json/stringify":3}],2:[function(require,module,exports){
 
 },{}],3:[function(require,module,exports){
-var core = require('../../modules/_core');
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+var core  = require('../../modules/_core')
+  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
-
 },{"../../modules/_core":4}],4:[function(require,module,exports){
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 },{}],5:[function(require,module,exports){
 "use strict";
 
@@ -1349,7 +1347,7 @@ if (typeof module !== "undefined") {
 }
 },{}],6:[function(require,module,exports){
 //! moment.js
-//! version : 2.18.1
+//! version : 2.19.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -1383,12 +1381,17 @@ function isObject(input) {
 }
 
 function isObjectEmpty(obj) {
-    var k;
-    for (k in obj) {
-        // even if its not own property I'd still call it non-empty
-        return false;
+    if (Object.getOwnPropertyNames) {
+        return (Object.getOwnPropertyNames(obj).length === 0);
+    } else {
+        var k;
+        for (k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
 }
 
 function isUndefined(input) {
@@ -1482,12 +1485,10 @@ if (Array.prototype.some) {
     };
 }
 
-var some$1 = some;
-
 function isValid(m) {
     if (m._isValid == null) {
         var flags = getParsingFlags(m);
-        var parsedParts = some$1.call(flags.parsedDateParts, function (i) {
+        var parsedParts = some.call(flags.parsedDateParts, function (i) {
             return i != null;
         });
         var isNowValid = !isNaN(m._d.getTime()) &&
@@ -1495,6 +1496,7 @@ function isValid(m) {
             !flags.empty &&
             !flags.invalidMonth &&
             !flags.invalidWeekday &&
+            !flags.weekdayMismatch &&
             !flags.nullInput &&
             !flags.invalidFormat &&
             !flags.userInvalidated &&
@@ -1760,8 +1762,6 @@ if (Object.keys) {
     };
 }
 
-var keys$1 = keys;
-
 var defaultCalendar = {
     sameDay : '[Today at] LT',
     nextDay : '[Tomorrow at] LT',
@@ -1885,56 +1885,6 @@ function getPrioritizedUnits(unitsObj) {
         return a.priority - b.priority;
     });
     return units;
-}
-
-function makeGetSet (unit, keepTime) {
-    return function (value) {
-        if (value != null) {
-            set$1(this, unit, value);
-            hooks.updateOffset(this, keepTime);
-            return this;
-        } else {
-            return get(this, unit);
-        }
-    };
-}
-
-function get (mom, unit) {
-    return mom.isValid() ?
-        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-}
-
-function set$1 (mom, unit, value) {
-    if (mom.isValid()) {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-    }
-}
-
-// MOMENTS
-
-function stringGet (units) {
-    units = normalizeUnits(units);
-    if (isFunction(this[units])) {
-        return this[units]();
-    }
-    return this;
-}
-
-
-function stringSet (units, value) {
-    if (typeof units === 'object') {
-        units = normalizeObjectUnits(units);
-        var prioritized = getPrioritizedUnits(units);
-        for (var i = 0; i < prioritized.length; i++) {
-            this[prioritized[i].unit](units[prioritized[i].unit]);
-        }
-    } else {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units](value);
-        }
-    }
-    return this;
 }
 
 function zeroFill(number, targetLength, forceSign) {
@@ -2127,6 +2077,131 @@ var MILLISECOND = 6;
 var WEEK = 7;
 var WEEKDAY = 8;
 
+// FORMATTING
+
+addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? '' + y : '+' + y;
+});
+
+addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+});
+
+addFormatToken(0, ['YYYY',   4],       0, 'year');
+addFormatToken(0, ['YYYYY',  5],       0, 'year');
+addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+// ALIASES
+
+addUnitAlias('year', 'y');
+
+// PRIORITIES
+
+addUnitPriority('year', 1);
+
+// PARSING
+
+addRegexToken('Y',      matchSigned);
+addRegexToken('YY',     match1to2, match2);
+addRegexToken('YYYY',   match1to4, match4);
+addRegexToken('YYYYY',  match1to6, match6);
+addRegexToken('YYYYYY', match1to6, match6);
+
+addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+});
+addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+});
+addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+});
+
+// HELPERS
+
+function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+}
+
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+// HOOKS
+
+hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+};
+
+// MOMENTS
+
+var getSetYear = makeGetSet('FullYear', true);
+
+function getIsLeapYear () {
+    return isLeapYear(this.year());
+}
+
+function makeGetSet (unit, keepTime) {
+    return function (value) {
+        if (value != null) {
+            set$1(this, unit, value);
+            hooks.updateOffset(this, keepTime);
+            return this;
+        } else {
+            return get(this, unit);
+        }
+    };
+}
+
+function get (mom, unit) {
+    return mom.isValid() ?
+        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+}
+
+function set$1 (mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+        if (unit === 'FullYear' && isLeapYear(mom.year())) {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+        }
+        else {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
+    }
+}
+
+// MOMENTS
+
+function stringGet (units) {
+    units = normalizeUnits(units);
+    if (isFunction(this[units])) {
+        return this[units]();
+    }
+    return this;
+}
+
+
+function stringSet (units, value) {
+    if (typeof units === 'object') {
+        units = normalizeObjectUnits(units);
+        var prioritized = getPrioritizedUnits(units);
+        for (var i = 0; i < prioritized.length; i++) {
+            this[prioritized[i].unit](units[prioritized[i].unit]);
+        }
+    } else {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units](value);
+        }
+    }
+    return this;
+}
+
+function mod(n, x) {
+    return ((n % x) + x) % x;
+}
+
 var indexOf;
 
 if (Array.prototype.indexOf) {
@@ -2144,10 +2219,13 @@ if (Array.prototype.indexOf) {
     };
 }
 
-var indexOf$1 = indexOf;
-
 function daysInMonth(year, month) {
-    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    if (isNaN(year) || isNaN(month)) {
+        return NaN;
+    }
+    var modMonth = mod(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? (isLeapYear(year) ? 29 : 28) : (31 - modMonth % 7 % 2);
 }
 
 // FORMATTING
@@ -2236,26 +2314,26 @@ function handleStrictParse(monthName, format, strict) {
 
     if (strict) {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -2412,72 +2490,6 @@ function computeMonthsParse () {
     this._monthsShortRegex = this._monthsRegex;
     this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-}
-
-// FORMATTING
-
-addFormatToken('Y', 0, 0, function () {
-    var y = this.year();
-    return y <= 9999 ? '' + y : '+' + y;
-});
-
-addFormatToken(0, ['YY', 2], 0, function () {
-    return this.year() % 100;
-});
-
-addFormatToken(0, ['YYYY',   4],       0, 'year');
-addFormatToken(0, ['YYYYY',  5],       0, 'year');
-addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-// ALIASES
-
-addUnitAlias('year', 'y');
-
-// PRIORITIES
-
-addUnitPriority('year', 1);
-
-// PARSING
-
-addRegexToken('Y',      matchSigned);
-addRegexToken('YY',     match1to2, match2);
-addRegexToken('YYYY',   match1to4, match4);
-addRegexToken('YYYYY',  match1to6, match6);
-addRegexToken('YYYYYY', match1to6, match6);
-
-addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-addParseToken('YYYY', function (input, array) {
-    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-});
-addParseToken('YY', function (input, array) {
-    array[YEAR] = hooks.parseTwoDigitYear(input);
-});
-addParseToken('Y', function (input, array) {
-    array[YEAR] = parseInt(input, 10);
-});
-
-// HELPERS
-
-function daysInYear(year) {
-    return isLeapYear(year) ? 366 : 365;
-}
-
-function isLeapYear(year) {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
-
-// HOOKS
-
-hooks.parseTwoDigitYear = function (input) {
-    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-};
-
-// MOMENTS
-
-var getSetYear = makeGetSet('FullYear', true);
-
-function getIsLeapYear () {
-    return isLeapYear(this.year());
 }
 
 function createDate (y, m, d, h, M, s, ms) {
@@ -2747,48 +2759,48 @@ function handleStrictParse$1(weekdayName, format, strict) {
 
     if (strict) {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -3177,11 +3189,10 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            require('./locale/' + name);
-            // because defineLocale currently also sets the global locale, we
-            // want to undo that for lazy loaded locales
+            var aliasedRequire = require;
+            aliasedRequire('./locale/' + name);
             getSetGlobalLocale(oldLocale);
-        } catch (e) { }
+        } catch (e) {}
     }
     return locales[name];
 }
@@ -3307,7 +3318,7 @@ function getLocale (key) {
 }
 
 function listLocales() {
-    return keys$1(locales);
+    return keys(locales);
 }
 
 function checkOverflow (m) {
@@ -3338,6 +3349,154 @@ function checkOverflow (m) {
     }
 
     return m;
+}
+
+// Pick the first defined of two or three arguments.
+function defaults(a, b, c) {
+    if (a != null) {
+        return a;
+    }
+    if (b != null) {
+        return b;
+    }
+    return c;
+}
+
+function currentDateArray(config) {
+    // hooks is actually the exported moment object
+    var nowValue = new Date(hooks.now());
+    if (config._useUTC) {
+        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+    }
+    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+}
+
+// convert an array to a date.
+// the array should mirror the parameters below
+// note: all values past the year are optional and will default to the lowest possible value.
+// [year, month, day , hour, minute, second, millisecond]
+function configFromArray (config) {
+    var i, date, input = [], currentDate, yearToUse;
+
+    if (config._d) {
+        return;
+    }
+
+    currentDate = currentDateArray(config);
+
+    //compute day of the year from weeks and weekdays
+    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+        dayOfYearFromWeekInfo(config);
+    }
+
+    //if the day of the year is set, figure out what it is
+    if (config._dayOfYear != null) {
+        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+            getParsingFlags(config)._overflowDayOfYear = true;
+        }
+
+        date = createUTCDate(yearToUse, 0, config._dayOfYear);
+        config._a[MONTH] = date.getUTCMonth();
+        config._a[DATE] = date.getUTCDate();
+    }
+
+    // Default to current date.
+    // * if no year, month, day of month are given, default to today
+    // * if day of month is given, default month and year
+    // * if month is given, default only year
+    // * if year is given, don't default anything
+    for (i = 0; i < 3 && config._a[i] == null; ++i) {
+        config._a[i] = input[i] = currentDate[i];
+    }
+
+    // Zero out whatever was not defaulted, including time
+    for (; i < 7; i++) {
+        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+    }
+
+    // Check for 24:00:00.000
+    if (config._a[HOUR] === 24 &&
+            config._a[MINUTE] === 0 &&
+            config._a[SECOND] === 0 &&
+            config._a[MILLISECOND] === 0) {
+        config._nextDay = true;
+        config._a[HOUR] = 0;
+    }
+
+    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    // Apply timezone offset from input. The actual utcOffset can be changed
+    // with parseZone.
+    if (config._tzm != null) {
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+    }
+
+    if (config._nextDay) {
+        config._a[HOUR] = 24;
+    }
+
+    // check for mismatching day of week
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== config._d.getDay()) {
+        getParsingFlags(config).weekdayMismatch = true;
+    }
+}
+
+function dayOfYearFromWeekInfo(config) {
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+    w = config._w;
+    if (w.GG != null || w.W != null || w.E != null) {
+        dow = 1;
+        doy = 4;
+
+        // TODO: We need to take the current isoWeekYear, but that depends on
+        // how we interpret now (local, utc, fixed offset). So create
+        // a now version of current config (take local/utc/offset flags, and
+        // create now).
+        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+        week = defaults(w.W, 1);
+        weekday = defaults(w.E, 1);
+        if (weekday < 1 || weekday > 7) {
+            weekdayOverflow = true;
+        }
+    } else {
+        dow = config._locale._week.dow;
+        doy = config._locale._week.doy;
+
+        var curWeek = weekOfYear(createLocal(), dow, doy);
+
+        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+        // Default to current week.
+        week = defaults(w.w, curWeek.week);
+
+        if (w.d != null) {
+            // weekday -- low day numbers are considered next week
+            weekday = w.d;
+            if (weekday < 0 || weekday > 6) {
+                weekdayOverflow = true;
+            }
+        } else if (w.e != null) {
+            // local weekday -- counting starts from begining of week
+            weekday = w.e + dow;
+            if (w.e < 0 || w.e > 6) {
+                weekdayOverflow = true;
+            }
+        } else {
+            // default to begining of week
+            weekday = dow;
+        }
+    }
+    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+        getParsingFlags(config)._overflowWeeks = true;
+    } else if (weekdayOverflow != null) {
+        getParsingFlags(config)._overflowWeekday = true;
+    } else {
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
+    }
 }
 
 // iso 8601 regex
@@ -3431,70 +3590,94 @@ function configFromISO(config) {
 }
 
 // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-var basicRfcRegex = /^((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d?\d\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(?:\d\d)?\d\d\s)(\d\d:\d\d)(\:\d\d)?(\s(?:UT|GMT|[ECMP][SD]T|[A-IK-Za-ik-z]|[+-]\d{4}))$/;
+var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [
+        untruncateYear(yearStr),
+        defaultLocaleMonthsShort.indexOf(monthStr),
+        parseInt(dayStr, 10),
+        parseInt(hourStr, 10),
+        parseInt(minuteStr, 10)
+    ];
+
+    if (secondStr) {
+        result.push(parseInt(secondStr, 10));
+    }
+
+    return result;
+}
+
+function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
+    if (year <= 49) {
+        return 2000 + year;
+    } else if (year <= 999) {
+        return 1900 + year;
+    }
+    return year;
+}
+
+function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').trim();
+}
+
+function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+        var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+            weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+        if (weekdayProvided !== weekdayActual) {
+            getParsingFlags(config).weekdayMismatch = true;
+            config._isValid = false;
+            return false;
+        }
+    }
+    return true;
+}
+
+var obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60
+};
+
+function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+        return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+        // the only allowed military tz is Z
+        return 0;
+    } else {
+        var hm = parseInt(numOffset, 10);
+        var m = hm % 100, h = (hm - m) / 100;
+        return h * 60 + m;
+    }
+}
 
 // date and time from ref 2822 format
 function configFromRFC2822(config) {
-    var string, match, dayFormat,
-        dateFormat, timeFormat, tzFormat;
-    var timezones = {
-        ' GMT': ' +0000',
-        ' EDT': ' -0400',
-        ' EST': ' -0500',
-        ' CDT': ' -0500',
-        ' CST': ' -0600',
-        ' MDT': ' -0600',
-        ' MST': ' -0700',
-        ' PDT': ' -0700',
-        ' PST': ' -0800'
-    };
-    var military = 'YXWVUTSRQPONZABCDEFGHIKLM';
-    var timezone, timezoneIndex;
-
-    string = config._i
-        .replace(/\([^\)]*\)|[\n\t]/g, ' ') // Remove comments and folding whitespace
-        .replace(/(\s\s+)/g, ' ') // Replace multiple-spaces with a single space
-        .replace(/^\s|\s$/g, ''); // Remove leading and trailing spaces
-    match = basicRfcRegex.exec(string);
-
+    var match = rfc2822.exec(preprocessRFC2822(config._i));
     if (match) {
-        dayFormat = match[1] ? 'ddd' + ((match[1].length === 5) ? ', ' : ' ') : '';
-        dateFormat = 'D MMM ' + ((match[2].length > 10) ? 'YYYY ' : 'YY ');
-        timeFormat = 'HH:mm' + (match[4] ? ':ss' : '');
-
-        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-        if (match[1]) { // day of week given
-            var momentDate = new Date(match[2]);
-            var momentDay = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][momentDate.getDay()];
-
-            if (match[1].substr(0,3) !== momentDay) {
-                getParsingFlags(config).weekdayMismatch = true;
-                config._isValid = false;
-                return;
-            }
+        var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+        if (!checkWeekday(match[1], parsedArray, config)) {
+            return;
         }
 
-        switch (match[5].length) {
-            case 2: // military
-                if (timezoneIndex === 0) {
-                    timezone = ' +0000';
-                } else {
-                    timezoneIndex = military.indexOf(match[5][1].toUpperCase()) - 12;
-                    timezone = ((timezoneIndex < 0) ? ' -' : ' +') +
-                        (('' + timezoneIndex).replace(/^-?/, '0')).match(/..$/)[0] + '00';
-                }
-                break;
-            case 4: // Zone
-                timezone = timezones[match[5]];
-                break;
-            default: // UT or +/-9999
-                timezone = timezones[' GMT'];
-        }
-        match[5] = timezone;
-        config._i = match.splice(1).join('');
-        tzFormat = ' ZZ';
-        config._f = dayFormat + dateFormat + timeFormat + tzFormat;
-        configFromStringAndFormat(config);
+        config._a = parsedArray;
+        config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+        config._d = createUTCDate.apply(null, config._a);
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
         getParsingFlags(config).rfc2822 = true;
     } else {
         config._isValid = false;
@@ -3537,149 +3720,6 @@ hooks.createFromInputFallback = deprecate(
         config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
     }
 );
-
-// Pick the first defined of two or three arguments.
-function defaults(a, b, c) {
-    if (a != null) {
-        return a;
-    }
-    if (b != null) {
-        return b;
-    }
-    return c;
-}
-
-function currentDateArray(config) {
-    // hooks is actually the exported moment object
-    var nowValue = new Date(hooks.now());
-    if (config._useUTC) {
-        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
-    }
-    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
-}
-
-// convert an array to a date.
-// the array should mirror the parameters below
-// note: all values past the year are optional and will default to the lowest possible value.
-// [year, month, day , hour, minute, second, millisecond]
-function configFromArray (config) {
-    var i, date, input = [], currentDate, yearToUse;
-
-    if (config._d) {
-        return;
-    }
-
-    currentDate = currentDateArray(config);
-
-    //compute day of the year from weeks and weekdays
-    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-        dayOfYearFromWeekInfo(config);
-    }
-
-    //if the day of the year is set, figure out what it is
-    if (config._dayOfYear != null) {
-        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
-
-        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-            getParsingFlags(config)._overflowDayOfYear = true;
-        }
-
-        date = createUTCDate(yearToUse, 0, config._dayOfYear);
-        config._a[MONTH] = date.getUTCMonth();
-        config._a[DATE] = date.getUTCDate();
-    }
-
-    // Default to current date.
-    // * if no year, month, day of month are given, default to today
-    // * if day of month is given, default month and year
-    // * if month is given, default only year
-    // * if year is given, don't default anything
-    for (i = 0; i < 3 && config._a[i] == null; ++i) {
-        config._a[i] = input[i] = currentDate[i];
-    }
-
-    // Zero out whatever was not defaulted, including time
-    for (; i < 7; i++) {
-        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
-    }
-
-    // Check for 24:00:00.000
-    if (config._a[HOUR] === 24 &&
-            config._a[MINUTE] === 0 &&
-            config._a[SECOND] === 0 &&
-            config._a[MILLISECOND] === 0) {
-        config._nextDay = true;
-        config._a[HOUR] = 0;
-    }
-
-    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-    // Apply timezone offset from input. The actual utcOffset can be changed
-    // with parseZone.
-    if (config._tzm != null) {
-        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-    }
-
-    if (config._nextDay) {
-        config._a[HOUR] = 24;
-    }
-}
-
-function dayOfYearFromWeekInfo(config) {
-    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
-
-    w = config._w;
-    if (w.GG != null || w.W != null || w.E != null) {
-        dow = 1;
-        doy = 4;
-
-        // TODO: We need to take the current isoWeekYear, but that depends on
-        // how we interpret now (local, utc, fixed offset). So create
-        // a now version of current config (take local/utc/offset flags, and
-        // create now).
-        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
-        week = defaults(w.W, 1);
-        weekday = defaults(w.E, 1);
-        if (weekday < 1 || weekday > 7) {
-            weekdayOverflow = true;
-        }
-    } else {
-        dow = config._locale._week.dow;
-        doy = config._locale._week.doy;
-
-        var curWeek = weekOfYear(createLocal(), dow, doy);
-
-        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
-
-        // Default to current week.
-        week = defaults(w.w, curWeek.week);
-
-        if (w.d != null) {
-            // weekday -- low day numbers are considered next week
-            weekday = w.d;
-            if (weekday < 0 || weekday > 6) {
-                weekdayOverflow = true;
-            }
-        } else if (w.e != null) {
-            // local weekday -- counting starts from begining of week
-            weekday = w.e + dow;
-            if (w.e < 0 || w.e > 6) {
-                weekdayOverflow = true;
-            }
-        } else {
-            // default to begining of week
-            weekday = dow;
-        }
-    }
-    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-        getParsingFlags(config)._overflowWeeks = true;
-    } else if (weekdayOverflow != null) {
-        getParsingFlags(config)._overflowWeekday = true;
-    } else {
-        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-        config._a[YEAR] = temp.year;
-        config._dayOfYear = temp.dayOfYear;
-    }
-}
 
 // constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
@@ -4005,7 +4045,7 @@ var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'se
 
 function isDurationValid(m) {
     for (var key in m) {
-        if (!(ordering.indexOf(key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+        if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
             return false;
         }
     }
@@ -4056,7 +4096,7 @@ function Duration (duration) {
     // day when working around DST, we need to store them separately
     this._days = +days +
         weeks * 7;
-    // It is impossible translate months into days without knowing
+    // It is impossible to translate months into days without knowing
     // which months you are are talking about, so we have to store
     // it separately.
     this._months = +months +
@@ -4303,12 +4343,12 @@ function isUtc () {
 }
 
 // ASP.NET json date format regex
-var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
+var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
 // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
 // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
 // and further modified to allow for strings containing both week and day
-var isoRegex = /^(-)?P(?:(-?[0-9,.]*)Y)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)W)?(?:(-?[0-9,.]*)D)?(?:T(?:(-?[0-9,.]*)H)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)S)?)?$/;
+var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
 
 function createDuration (input, key) {
     var duration = input,
@@ -4342,7 +4382,7 @@ function createDuration (input, key) {
             ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
         };
     } else if (!!(match = isoRegex.exec(input))) {
-        sign = (match[1] === '-') ? -1 : 1;
+        sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
         duration = {
             y : parseIso(match[2], sign),
             M : parseIso(match[3], sign),
@@ -4445,14 +4485,14 @@ function addSubtract (mom, duration, isAdding, updateOffset) {
 
     updateOffset = updateOffset == null ? true : updateOffset;
 
-    if (milliseconds) {
-        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+    if (months) {
+        setMonth(mom, get(mom, 'Month') + months * isAdding);
     }
     if (days) {
         set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
     }
-    if (months) {
-        setMonth(mom, get(mom, 'Month') + months * isAdding);
+    if (milliseconds) {
+        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
     }
     if (updateOffset) {
         hooks.updateOffset(mom, days || months);
@@ -4562,22 +4602,18 @@ function diff (input, units, asFloat) {
 
     units = normalizeUnits(units);
 
-    if (units === 'year' || units === 'month' || units === 'quarter') {
-        output = monthDiff(this, that);
-        if (units === 'quarter') {
-            output = output / 3;
-        } else if (units === 'year') {
-            output = output / 12;
-        }
-    } else {
-        delta = this - that;
-        output = units === 'second' ? delta / 1e3 : // 1000
-            units === 'minute' ? delta / 6e4 : // 1000 * 60
-            units === 'hour' ? delta / 36e5 : // 1000 * 60 * 60
-            units === 'day' ? (delta - zoneDelta) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
-            units === 'week' ? (delta - zoneDelta) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
-            delta;
+    switch (units) {
+        case 'year': output = monthDiff(this, that) / 12; break;
+        case 'month': output = monthDiff(this, that); break;
+        case 'quarter': output = monthDiff(this, that) / 3; break;
+        case 'second': output = (this - that) / 1e3; break; // 1000
+        case 'minute': output = (this - that) / 6e4; break; // 1000 * 60
+        case 'hour': output = (this - that) / 36e5; break; // 1000 * 60 * 60
+        case 'day': output = (this - that - zoneDelta) / 864e5; break; // 1000 * 60 * 60 * 24, negate dst
+        case 'week': output = (this - that - zoneDelta) / 6048e5; break; // 1000 * 60 * 60 * 24 * 7, negate dst
+        default: output = this - that;
     }
+
     return asFloat ? output : absFloor(output);
 }
 
@@ -5555,6 +5591,10 @@ var asWeeks        = makeAs('w');
 var asMonths       = makeAs('M');
 var asYears        = makeAs('y');
 
+function clone$1 () {
+    return createDuration(this);
+}
+
 function get$2 (units) {
     units = normalizeUnits(units);
     return this.isValid() ? this[units + 's']() : NaN;
@@ -5664,6 +5704,10 @@ function humanize (withSuffix) {
 
 var abs$1 = Math.abs;
 
+function sign(x) {
+    return ((x > 0) - (x < 0)) || +x;
+}
+
 function toISOString$1() {
     // for ISO strings we do not use the normal bubbling rules:
     //  * milliseconds bubble up until they become hours
@@ -5698,7 +5742,7 @@ function toISOString$1() {
     var D = days;
     var h = hours;
     var m = minutes;
-    var s = seconds;
+    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
     var total = this.asSeconds();
 
     if (!total) {
@@ -5707,15 +5751,19 @@ function toISOString$1() {
         return 'P0D';
     }
 
-    return (total < 0 ? '-' : '') +
-        'P' +
-        (Y ? Y + 'Y' : '') +
-        (M ? M + 'M' : '') +
-        (D ? D + 'D' : '') +
+    var totalSign = total < 0 ? '-' : '';
+    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+    return totalSign + 'P' +
+        (Y ? ymSign + Y + 'Y' : '') +
+        (M ? ymSign + M + 'M' : '') +
+        (D ? daysSign + D + 'D' : '') +
         ((h || m || s) ? 'T' : '') +
-        (h ? h + 'H' : '') +
-        (m ? m + 'M' : '') +
-        (s ? s + 'S' : '');
+        (h ? hmsSign + h + 'H' : '') +
+        (m ? hmsSign + m + 'M' : '') +
+        (s ? hmsSign + s + 'S' : '');
 }
 
 var proto$2 = Duration.prototype;
@@ -5735,6 +5783,7 @@ proto$2.asMonths       = asMonths;
 proto$2.asYears        = asYears;
 proto$2.valueOf        = valueOf$1;
 proto$2._bubble        = bubble;
+proto$2.clone          = clone$1;
 proto$2.get            = get$2;
 proto$2.milliseconds   = milliseconds;
 proto$2.seconds        = seconds;
@@ -5776,7 +5825,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.18.1';
+hooks.version = '2.19.1';
 
 setHookCallback(createLocal);
 
@@ -5803,7 +5852,7 @@ hooks.updateLocale          = updateLocale;
 hooks.locales               = listLocales;
 hooks.weekdaysShort         = listWeekdaysShort;
 hooks.normalizeUnits        = normalizeUnits;
-hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+hooks.relativeTimeRounding  = getSetRelativeTimeRounding;
 hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
 hooks.calendarFormat        = getCalendarFormat;
 hooks.prototype             = proto;
@@ -18132,7 +18181,7 @@ exports.insert = function (css) {
 
 },{}],12:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-f482075c] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-f482075c] {\n  margin-bottom: 4px;\n}\n#items-reviewed[_v-f482075c] {\n  border-radius: 5px;\n\tbackground-color: #eff3fa;\n  border: 1px solid #bbb;\n}\n#rangetoggle[_v-f482075c]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-c9ba8d12] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-c9ba8d12] {\n  margin-bottom: 4px;\n}\n#items-reviewed[_v-c9ba8d12] {\n  border-radius: 5px;\n\tbackground-color: #eff3fa;\n  border: 1px solid #bbb;\n}\n#rangetoggle[_v-c9ba8d12]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -18267,24 +18316,24 @@ exports.default = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\" _v-f482075c=\"\">\n      <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-f482075c=\"\">\n          <form class=\"form-inline\" _v-f482075c=\"\">\n            <div class=\"form-group\" _v-f482075c=\"\">\n                <label for=\"start-date\" _v-f482075c=\"\">Showing LBC events starting <span v-if=\"isEndDate\" _v-f482075c=\"\">between</span><span v-else=\"\" _v-f482075c=\"\">on or after</span></label>\n                <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-f482075c=\"\">\n            </div>\n            <div v-if=\"isEndDate\" class=\"form-group\" _v-f482075c=\"\">\n                <label for=\"start-date\" _v-f482075c=\"\"> and </label>\n                <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-f482075c=\"\">\n            </div>\n            <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-f482075c=\"\">Filter</button>\n            <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-f482075c=\"\"><span v-if=\"isEndDate\" _v-f482075c=\"\"> - Remove </span><span v-else=\"\" _v-f482075c=\"\"> + Add </span>Range</a>\n          </form>\n      </div>\n  </div>\n  <hr _v-f482075c=\"\">\n<div class=\"row\" _v-f482075c=\"\">\n  <div class=\"col-md-6\" _v-f482075c=\"\">\n    <h3 _v-f482075c=\"\"><span class=\"badge\" _v-f482075c=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>\n    <div id=\"items-approved\" _v-f482075c=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-f482075c=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n\n  <div class=\"col-md-6\" _v-f482075c=\"\">\n    <h3 _v-f482075c=\"\"><span class=\"badge\" _v-f482075c=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>\n    <div id=\"items-approved\" _v-f482075c=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-f482075c=\"\">\n      </event-queue-item>\n    </div>\n  </div>\n</div><!-- /.col-md-6 -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\" _v-c9ba8d12=\"\">\n      <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-c9ba8d12=\"\">\n          <form class=\"form-inline\" _v-c9ba8d12=\"\">\n            <div class=\"form-group\" _v-c9ba8d12=\"\">\n                <label for=\"start-date\" _v-c9ba8d12=\"\">Showing LBC events starting <span v-if=\"isEndDate\" _v-c9ba8d12=\"\">between</span><span v-else=\"\" _v-c9ba8d12=\"\">on or after</span></label>\n                <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-c9ba8d12=\"\">\n            </div>\n            <div v-if=\"isEndDate\" class=\"form-group\" _v-c9ba8d12=\"\">\n                <label for=\"start-date\" _v-c9ba8d12=\"\"> and </label>\n                <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-c9ba8d12=\"\">\n            </div>\n            <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-c9ba8d12=\"\">Filter</button>\n            <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-c9ba8d12=\"\"><span v-if=\"isEndDate\" _v-c9ba8d12=\"\"> - Remove </span><span v-else=\"\" _v-c9ba8d12=\"\"> + Add </span>Range</a>\n          </form>\n      </div>\n  </div>\n  <hr _v-c9ba8d12=\"\">\n<div class=\"row\" _v-c9ba8d12=\"\">\n  <div class=\"col-md-6\" _v-c9ba8d12=\"\">\n    <h3 _v-c9ba8d12=\"\"><span class=\"badge\" _v-c9ba8d12=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>\n    <div id=\"items-approved\" _v-c9ba8d12=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-c9ba8d12=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n\n  <div class=\"col-md-6\" _v-c9ba8d12=\"\">\n    <h3 _v-c9ba8d12=\"\"><span class=\"badge\" _v-c9ba8d12=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>\n    <div id=\"items-approved\" _v-c9ba8d12=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-c9ba8d12=\"\">\n      </event-queue-item>\n    </div>\n  </div>\n</div><!-- /.col-md-6 -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#items-unapproved .box[_v-f482075c] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-f482075c] {\n  margin-bottom: 4px;\n}\n#items-reviewed[_v-f482075c] {\n  border-radius: 5px;\n\tbackground-color: #eff3fa;\n  border: 1px solid #bbb;\n}\n#rangetoggle[_v-f482075c]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n#items-unapproved .box[_v-c9ba8d12] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-c9ba8d12] {\n  margin-bottom: 4px;\n}\n#items-reviewed[_v-c9ba8d12] {\n  border-radius: 5px;\n\tbackground-color: #eff3fa;\n  border: 1px solid #bbb;\n}\n#rangetoggle[_v-c9ba8d12]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-f482075c", module.exports)
+    hotAPI.createRecord("_v-c9ba8d12", module.exports)
   } else {
-    hotAPI.update("_v-f482075c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-c9ba8d12", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/flatpickr.js":15,"./EventLbcQueueItem.vue":13,"moment":6,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],13:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-6adca5f6] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-6adca5f6] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-6adca5f6] {\n  padding: 3px;\n}\n.box-footer[_v-6adca5f6] {\n  padding: 3px;\n}\nh5.box-footer[_v-6adca5f6] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-6adca5f6] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-6adca5f6] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-6adca5f6] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-6adca5f6] {\n  margin-bottom: 2px;\n}\n#applabel[_v-6adca5f6]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-6adca5f6],\n.btn-group-vertical[_v-6adca5f6] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-6adca5f6] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-6adca5f6] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-6adca5f6] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n\n.form-group[_v-6adca5f6] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-6adca5f6]{\n  margin-bottom: 0;\n}\n.topitems[_v-6adca5f6] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-6adca5f6] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-6adca5f6] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-6adca5f6] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.time-is-short[_v-6adca5f6] {\n  color: #F39C12;\n}\n.time-is-long[_v-6adca5f6] {\n  color: #999999;\n}\n.time-is-over[_v-6adca5f6] {\n  color: #9B59B6;\n}\n\n.special-item[_v-6adca5f6] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-6adca5f6] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-404f60ac] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-404f60ac] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-404f60ac] {\n  padding: 3px;\n}\n.box-footer[_v-404f60ac] {\n  padding: 3px;\n}\nh5.box-footer[_v-404f60ac] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-404f60ac] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-404f60ac] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-404f60ac] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-404f60ac] {\n  margin-bottom: 2px;\n}\n#applabel[_v-404f60ac]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-404f60ac],\n.btn-group-vertical[_v-404f60ac] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-404f60ac] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-404f60ac] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-404f60ac] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n\n.form-group[_v-404f60ac] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-404f60ac]{\n  margin-bottom: 0;\n}\n.topitems[_v-404f60ac] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-404f60ac] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-404f60ac] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-404f60ac] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.time-is-short[_v-404f60ac] {\n  color: #F39C12;\n}\n.time-is-long[_v-404f60ac] {\n  color: #999999;\n}\n.time-is-over[_v-404f60ac] {\n  color: #9B59B6;\n}\n\n.special-item[_v-404f60ac] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-404f60ac] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -18566,19 +18615,19 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"specialItem\" _v-6adca5f6=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-6adca5f6=\"\">\n\n      <div class=\"box-header with-border\" _v-6adca5f6=\"\">\n        <div class=\"row\" _v-6adca5f6=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-6adca5f6=\"\">\n            <div class=\"box-date-top pull-left\" _v-6adca5f6=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <!-- REVIEWED switch -->\n          <div class=\"col-sm 12 col-md-4\" _v-6adca5f6=\"\">\n            <form class=\"form-inline pull-right\" _v-6adca5f6=\"\">\n              <div id=\"applabel\" class=\"form-group\" _v-6adca5f6=\"\">\n                <label _v-6adca5f6=\"\">reviewed:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-6adca5f6=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsReviewed\" :value.sync=\"patchRecord.lbc_reviewed\" _v-6adca5f6=\"\">\n                </vui-flip-switch>\n              </div>\n            </form>\n          </div><!-- /.col-sm-6 -->\n\n          <!-- APPROVED switch -->\n          <div class=\"col-sm 12 col-md-4\" _v-6adca5f6=\"\">\n            <form class=\"form-inline pull-right\" _v-6adca5f6=\"\">\n              <div id=\"applabel\" class=\"form-group\" _v-6adca5f6=\"\">\n                <label _v-6adca5f6=\"\">approved:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-6adca5f6=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.lbc_approved\" _v-6adca5f6=\"\">\n                </vui-flip-switch>\n              </div>\n            </form>\n          </div><!-- /.col-sm-6 -->\n        </div><!-- /.row -->\n\n      <div class=\"row\" _v-6adca5f6=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-6adca5f6=\"\">\n          <div class=\"col-sm-12\" _v-6adca5f6=\"\">\n            <h6 class=\"box-title\" _v-6adca5f6=\"\">{{item.title}}</h6>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-6adca5f6=\"\">\n      <p _v-6adca5f6=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-6adca5f6=\"\">All Day Event</p>\n      </template>\n      <hr _v-6adca5f6=\"\">\n      <div class=\"item-info\" _v-6adca5f6=\"\">\n        <p _v-6adca5f6=\"\">Title: {{item.title}}</p>\n        <p v-if\"item.short_title\"=\"\" _v-6adca5f6=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-6adca5f6=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-6adca5f6=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-6adca5f6=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-6adca5f6=\"\">\n        <template v-else=\"\">\n          <p _v-6adca5f6=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-6adca5f6=\"\">Contact:</p>\n          <ul _v-6adca5f6=\"\">\n            <li v-if=\"item.contact_person\" _v-6adca5f6=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-6adca5f6=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-6adca5f6=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-6adca5f6=\"\">For more information, visit:</p>\n          <ul _v-6adca5f6=\"\">\n            <li _v-6adca5f6=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-6adca5f6=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-6adca5f6=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-6adca5f6=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-6adca5f6=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-6adca5f6=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-6adca5f6=\"\">\n        <p v-if=\"item.free\" _v-6adca5f6=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-6adca5f6=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-6adca5f6=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-6adca5f6=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-6adca5f6=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-6adca5f6=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-6adca5f6=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-6adca5f6=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-6adca5f6=\"\">\n        <p _v-6adca5f6=\"\">Submitted by: {{item.submitter}}</p>\n        <p _v-6adca5f6=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <p _v-6adca5f6=\"\">LBC Reviewed: {{item.lbc_reviewed | yesNo }}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-6adca5f6=\"\">\n      <div class=\"row\" _v-6adca5f6=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-6adca5f6=\"\">\n          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-6adca5f6=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-6adca5f6=\"\">{{timeLeft}}</span>\n\n\n\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-6adca5f6=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-6adca5f6=\"\">\n\n            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"specialItem\" _v-404f60ac=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-404f60ac=\"\">\n\n      <div class=\"box-header with-border\" _v-404f60ac=\"\">\n        <div class=\"row\" _v-404f60ac=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-404f60ac=\"\">\n            <div class=\"box-date-top pull-left\" _v-404f60ac=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <!-- REVIEWED switch -->\n          <div class=\"col-sm 12 col-md-4\" _v-404f60ac=\"\">\n            <form class=\"form-inline pull-right\" _v-404f60ac=\"\">\n              <div id=\"applabel\" class=\"form-group\" _v-404f60ac=\"\">\n                <label _v-404f60ac=\"\">reviewed:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-404f60ac=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsReviewed\" :value.sync=\"patchRecord.lbc_reviewed\" _v-404f60ac=\"\">\n                </vui-flip-switch>\n              </div>\n            </form>\n          </div><!-- /.col-sm-6 -->\n\n          <!-- APPROVED switch -->\n          <div class=\"col-sm 12 col-md-4\" _v-404f60ac=\"\">\n            <form class=\"form-inline pull-right\" _v-404f60ac=\"\">\n              <div id=\"applabel\" class=\"form-group\" _v-404f60ac=\"\">\n                <label _v-404f60ac=\"\">approved:</label>\n              </div><!-- /.form-group -->\n              <div class=\"form-group\" _v-404f60ac=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.lbc_approved\" _v-404f60ac=\"\">\n                </vui-flip-switch>\n              </div>\n            </form>\n          </div><!-- /.col-sm-6 -->\n        </div><!-- /.row -->\n\n      <div class=\"row\" _v-404f60ac=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-404f60ac=\"\">\n          <div class=\"col-sm-12\" _v-404f60ac=\"\">\n            <h6 class=\"box-title\" _v-404f60ac=\"\">{{item.title}}</h6>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-404f60ac=\"\">\n      <p _v-404f60ac=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-404f60ac=\"\">All Day Event</p>\n      </template>\n      <hr _v-404f60ac=\"\">\n      <div class=\"item-info\" _v-404f60ac=\"\">\n        <p _v-404f60ac=\"\">Title: {{item.title}}</p>\n        <p v-if\"item.short_title\"=\"\" _v-404f60ac=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-404f60ac=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-404f60ac=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-404f60ac=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-404f60ac=\"\">\n        <template v-else=\"\">\n          <p _v-404f60ac=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-404f60ac=\"\">Contact:</p>\n          <ul _v-404f60ac=\"\">\n            <li v-if=\"item.contact_person\" _v-404f60ac=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-404f60ac=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-404f60ac=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-404f60ac=\"\">For more information, visit:</p>\n          <ul _v-404f60ac=\"\">\n            <li _v-404f60ac=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-404f60ac=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-404f60ac=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-404f60ac=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-404f60ac=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-404f60ac=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-404f60ac=\"\">\n        <p v-if=\"item.free\" _v-404f60ac=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-404f60ac=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-404f60ac=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-404f60ac=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-404f60ac=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-404f60ac=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-404f60ac=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-404f60ac=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-404f60ac=\"\">\n        <p _v-404f60ac=\"\">Submitted by: {{item.submitter}}</p>\n        <p _v-404f60ac=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <p _v-404f60ac=\"\">LBC Reviewed: {{item.lbc_reviewed | yesNo }}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-404f60ac=\"\">\n      <div class=\"row\" _v-404f60ac=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-404f60ac=\"\">\n          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->\n\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-404f60ac=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-404f60ac=\"\">{{timeLeft}}</span>\n\n\n\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-404f60ac=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-404f60ac=\"\">\n\n            <!-- <button v-on:click.prevent=\"previewItem\" class=\"btn bg-orange btn-xs footer-btn\"><i class=\"fa fa-eye\"></i></button> -->\n          </div><!-- /.btn-toolbar -->\n\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-6adca5f6] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-6adca5f6] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-6adca5f6] {\n  padding: 3px;\n}\n.box-footer[_v-6adca5f6] {\n  padding: 3px;\n}\nh5.box-footer[_v-6adca5f6] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-6adca5f6] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-6adca5f6] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-6adca5f6] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-6adca5f6] {\n  margin-bottom: 2px;\n}\n#applabel[_v-6adca5f6]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-6adca5f6],\n.btn-group-vertical[_v-6adca5f6] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-6adca5f6] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-6adca5f6] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-6adca5f6] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n\n.form-group[_v-6adca5f6] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-6adca5f6]{\n  margin-bottom: 0;\n}\n.topitems[_v-6adca5f6] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-6adca5f6] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-6adca5f6] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-6adca5f6] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.time-is-short[_v-6adca5f6] {\n  color: #F39C12;\n}\n.time-is-long[_v-6adca5f6] {\n  color: #999999;\n}\n.time-is-over[_v-6adca5f6] {\n  color: #9B59B6;\n}\n\n.special-item[_v-6adca5f6] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-6adca5f6] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n"] = false
+    __vueify_insert__.cache["\n.box[_v-404f60ac] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-404f60ac] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-404f60ac] {\n  padding: 3px;\n}\n.box-footer[_v-404f60ac] {\n  padding: 3px;\n}\nh5.box-footer[_v-404f60ac] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-404f60ac] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-404f60ac] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-404f60ac] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-404f60ac] {\n  margin-bottom: 2px;\n}\n#applabel[_v-404f60ac]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-404f60ac],\n.btn-group-vertical[_v-404f60ac] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-404f60ac] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-404f60ac] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-404f60ac] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n\n.form-group[_v-404f60ac] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-404f60ac]{\n  margin-bottom: 0;\n}\n.topitems[_v-404f60ac] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-404f60ac] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-404f60ac] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-404f60ac] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.time-is-short[_v-404f60ac] {\n  color: #F39C12;\n}\n.time-is-long[_v-404f60ac] {\n  color: #999999;\n}\n.time-is-over[_v-404f60ac] {\n  color: #9B59B6;\n}\n\n.special-item[_v-404f60ac] {\n  border-left: 6px solid #bfff00;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-last[_v-404f60ac] {\n  /*border-bottom: 6px solid #bfff00;\n  border-bottom-right-radius:3px;\n  border-bottom-left-radius: 3px;*/\n  margin-bottom: 30px;\n}\n/*.box.box-solid.box-default {\nborder: 1px solid #999999;\n}\n.box-body {\npadding: 3px 6px;\n}*/\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6adca5f6", module.exports)
+    hotAPI.createRecord("_v-404f60ac", module.exports)
   } else {
-    hotAPI.update("_v-6adca5f6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-404f60ac", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./VuiFlipSwitch.vue":14,"babel-runtime/core-js/json/stringify":1,"moment":6,"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],14:[function(require,module,exports){
@@ -18623,9 +18672,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-f48fb642", module.exports)
+    hotAPI.createRecord("_v-c9c83bf8", module.exports)
   } else {
-    hotAPI.update("_v-f48fb642", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":10,"vue-hot-reload-api":8,"vueify/lib/insert-css":11}],15:[function(require,module,exports){
