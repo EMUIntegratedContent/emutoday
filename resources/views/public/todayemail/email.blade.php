@@ -156,6 +156,27 @@
         .two-column .text {
             padding-top: 10px;
         }
+    /*Media Queries*/
+@media screen and (max-width: 400px) {
+    .two-column .column,
+    .three-column .column {
+        max-width: 100% !important;
+    }
+    .two-column img {
+        max-width: 100% !important;
+    }
+    .three-column img {
+        max-width: 50% !important;
+    }
+}
+    @media screen and (min-width: 401px) and (max-width: 620px) {
+.       three-column .column {
+        max-width: 33% !important;
+    }
+    .two-column .column {
+        max-width: 50% !important;
+    }
+}
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
