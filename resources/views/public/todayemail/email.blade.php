@@ -137,7 +137,8 @@
     }
     .two-column .column {
         width: 100%;
-        max-width: 300px;
+        /*max-width: 300px;*/
+        max-width: 50%;
         display: inline-block;
         vertical-align: top;
     }
