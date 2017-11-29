@@ -308,14 +308,14 @@
                         
                         <td style="border:0;">
                             <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
-                                <tr style="text-align:center; font-size: 14px; text-transform: uppercase; border:0;">
+                                <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0;">
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 2px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 2px; padding-right: 2px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 2px; padding-right: 2px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 2px; padding-right: 2px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 2px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
                                     
                                         </ul>
                                     </td>
@@ -354,9 +354,9 @@
                                 <tr style="text-align:center;">
                                     <td>
                                          <ul style="list-style: none; padding-left: 0;">
-                                             <li style="display: inline-block;"><a style="color: #ffffff; padding-left: 0; padding-right: 3px; text-decoration: none;" href="https://www.emich.edu/communications/">Division of Communications</a></li>
-                                             <li style="display: inline-block; color: #ffffff;"> | </li>
-                                           <li style="display: inline-block;"> <a style="color: #ffffff; padding-left: 0; padding-left: 3px; text-decoration: none;" href="https://www.emich.edu">Eastern Michigan University</a></li>
+                                             <li style="display: inline-block;"><a style="font-size: 13px; color: #ffffff; padding-left: 0; padding-right: 3px; text-decoration: none;" href="https://www.emich.edu/communications/">Division of Communications</a></li>
+                                             <li style="font-size: 13px; display: inline-block; color: #ffffff;"> | </li>
+                                           <li style="display: inline-block;"> <a style="font-size: 13px; color: #ffffff; padding-left: 0; padding-left: 3px; text-decoration: none;" href="https://www.emich.edu">Eastern Michigan University</a></li>
                                         </ul>
                                     </td>
                                 </tr>
