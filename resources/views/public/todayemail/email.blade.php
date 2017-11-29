@@ -219,7 +219,7 @@
                         </td>
                     </tr>
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
-                    <tr style="margin-left: 20px;"><td style="text-align:left;"><h2><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
+                    <tr style="padding-left: 20px;"><td><h2><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
                     <tr>
                         <td class="two-column">
                             
