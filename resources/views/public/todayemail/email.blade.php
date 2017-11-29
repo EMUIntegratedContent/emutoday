@@ -300,7 +300,7 @@
                              
                             <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                            
-                            <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:20px; margin-bottom: 5px; margin-top: 5px;">
+                            <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:22px; margin-bottom: 5px; margin-top: 5px;">
                                 @foreach($email->announcements as $announcement)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
@@ -316,7 +316,7 @@
                             <div style="border-top: 3px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
                                  
-                                <ul style="margin-left: 0; padding-left: 5px; float: left; padding-bottom: 5px;">
+                                <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
                                         <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 12px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ $event->start_date->format('M j') }} </div>
