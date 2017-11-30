@@ -165,8 +165,8 @@
     /*Media Queries*/
      @media only screen and (min-width: 610px) {
         .two-column .column {
-            max-width: 49.9% !important;
-            width: 49.9%;
+            max-width: 49% !important;
+            width: 49%;
         }
         /*.two-column img {
             max-width: 100% !important;
@@ -180,7 +180,7 @@
 
 @media only screen and (min-width: 480px) and (max-width: 610px) {
         .two-column .column {
-            max-width: 49.9% !important;    
+            max-width: 49% !important;    
             
         }
          /*.two-column img {
