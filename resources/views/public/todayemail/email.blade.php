@@ -175,15 +175,11 @@
       
     }
 
-@media only screen and (min-width: 480px) and (max-width: 539px) {
+@media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
             max-width: 49% !important;    
             
         }
-         /*.two-column img {
-            max-width: 100% !important;
-            display: none!important;
-        }*/
          img.col-img{
             max-width: 100% !important;
             width: 100%;
