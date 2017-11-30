@@ -267,7 +267,7 @@
                                         <td width="50%" valign="top">
                                         <![endif]-->
                                         <div class="column">
-                                            <table width="100%">
+                                            <table>
                                                     <tr>
                                                         <td class="inner">
                                                             <table class="contents">
@@ -290,7 +290,7 @@
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
                                         <div class="column">
-                                            <table width="100%">
+                                            <table>
                                                     <tr>
                                                         <td class="inner">
                                                             <table class="contents">
