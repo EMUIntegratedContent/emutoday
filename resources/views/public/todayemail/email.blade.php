@@ -137,6 +137,7 @@
         font-size: 0;
         /*width: auto;*/
         position: relative;
+        box-sizing: border-box;
     }
     .two-column .column {
         /*width: 100%;*/
@@ -146,6 +147,7 @@
         display: inline-block;
         vertical-align: top;
         position: relative;
+        box-sizing: border-box;
     }
     .contents {
         /*width: 100%;*/
