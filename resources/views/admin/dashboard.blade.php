@@ -25,46 +25,60 @@
         </div>
     @endif
  <div class="row">
-   {{--
+   @can('admin', $currentUser)
      <div class="col-md-6">
-            <div class="box box-default">
-                <div class="box-header with-border">
-                    <h3 class="box-title">box-default</h3>
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
+        <div class="box box-default">
+          <div class="box-header with-border">
+            <h3 class="box-title">Top 20 page views (last 3 months)</h3>
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div><!-- /.box-header -->
+          <div class="box-body">
+            <ul class="list-group">
+              @foreach($mostVisitedLast3Months as $item)
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <a href="{{ $item['url'] }}">{{ $item['pageTitle'] }}</a>
+                  <span class="badge badge-primary badge-pill">{{ number_format($item['pageViews']) }}</span>
+                </li>
+              @endforeach
+            </ul>
+          </div>
+          <!-- /.box-body -->
+          <div class="box-footer">
+          </div>
+        </div><!-- /.box -->
+    </div><!-- /.col-md-6 -->
+    <div class="col-md-6">
+      <div class="box box-danger">
+        <div class="box-header">
+            <h3 class="box-title">Top 20 referrers (last 3 months)</h3>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="box-body">
+              <ul class="list-group">
+                @foreach($topReferrersLast3Months as $item)
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ $item['url'] }}">{{ $item['url'] }}</a>
+                    <span class="badge badge-primary badge-pill">{{ number_format($item['pageViews']) }}</span>
+                  </li>
+                @endforeach
+              </ul>
+            </div>
+            <!-- /.box-body -->
         </div>
         <!-- /.box-body -->
-        <div class="box-footer">
-        </div>
-    </div><!-- /.box -->
-
-        </div><!-- /.col-md-6 -->
-        <div class="col-md-6">
-            <div class="box box-danger">
-                        <div class="box-header">
-                            <h3 class="box-title">box-danger</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <div class="box-body">
-
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-
-        </div><!-- /.col-md-6 -->
-        --}}
-    <div class="col-sm-12">
-      <p class="text-center"><img src="{{ url('/assets/imgs/emu-today/thats-true-lg.png') }}" alt="That's TRUE logo" /></p>
-    </div>
+      </div>
+      <!-- /.box -->
+    </div><!-- /.col-md-6 -->
+   @else
+     <div class="col-sm-12">
+       <p class="text-center"><img src="{{ url('/assets/imgs/emu-today/thats-true-lg.png') }}" alt="That's TRUE logo" /></p>
+     </div>
+   @endcan
   </div><!-- /.row -->
 
 
