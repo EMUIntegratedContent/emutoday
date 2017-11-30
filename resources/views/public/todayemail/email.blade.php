@@ -125,7 +125,7 @@
     /* One column layout */
     .one-column .contents {
         text-align: left;
-        width: 100%;
+        /*width: 100%;*/
     }
     .one-column p {
         font-size: 14px;
@@ -177,8 +177,7 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
-            max-width: 49% !important;    
-            
+            max-width: 49% !important;       
         }
          img.col-img{
             max-width: 100% !important;
