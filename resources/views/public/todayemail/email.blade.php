@@ -166,7 +166,7 @@
      @media only screen and (min-width: 620px) {
         .two-column .column {
             max-width: 50% !important;
-            width: 50%;
+            width: 49%;
         }
         /*.two-column img {
             max-width: 100% !important;
@@ -180,7 +180,7 @@
 
 @media only screen and (min-width: 480px) and (max-width: 620px) {
         .two-column .column {
-            max-width: 49.5% !important;    
+            max-width: 49% !important;    
             
         }
          /*.two-column img {
