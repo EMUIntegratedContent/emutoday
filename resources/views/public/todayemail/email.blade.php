@@ -5,13 +5,14 @@
         font-size:16px;
         margin: 0 !important;
         padding: 0;
-        background-color: #ffffff;
+        background-color: #f3f2ee;
     }
     table {
         border-collapse: collapse;
         border-spacing: 0;
         font-family: 'Poppins', arial, sans-serif;;
         color: #333333;
+        background-color: #ffffff;
     }
     td {
         padding: 0;
@@ -89,8 +90,8 @@
     
    
     .indent {
-        margin-left: 1.5rem;
-        margin-right: 1.5rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
     
     .indent-more {
@@ -112,15 +113,15 @@
         height: auto;
     }
     .inner {
-    padding: 10px;
-    }
-   
+        padding-top: 0px;
+         padding-bottom: 10px;
+         padding-left: 10px;
+         padding-right: 10px;
+    } 
     /*a {
         color: #ee6a56;
         text-decoration: underline;
     }*/
-   
-
     /* One column layout */
     .one-column .contents {
         text-align: left;
@@ -129,7 +130,6 @@
         font-size: 14px;
         Margin-bottom: 10px;
     }
-    
     /*Two column layout*/
     .two-column {
         text-align: center;
@@ -137,8 +137,9 @@
     }
     .two-column .column {
         width: 100%;
-        max-width: 300px;
+        /*max-width: 300px;*/
         /*max-width: 50%;*/
+        /*max-width: 280px;*/
         display: inline-block;
         vertical-align: top;
     }
@@ -147,37 +148,67 @@
         }
     .two-column .contents {
         font-size: 14px;
-            text-align: left;
+        text-align: left;
         }
-        .two-column img {
+    /*.two-column img {
             width: 100%;
-            max-width: 280px;
             height: auto;
+        }*/
+    .two-column .text {
+            padding-top: 0px;
         }
-        .two-column .text {
-            padding-top: 10px;
-        }
+    
     /*Media Queries*/
-    @media screen and (max-width: 400px) {
-        .two-column .column,
-        .three-column .column {
-            max-width: 100% !important;
-        }
-        .two-column img {
-            max-width: 100% !important;
-        }
-        .three-column img {
-            max-width: 50% !important;
-        }
-    }
-    @media screen and (min-width: 401px) and (max-width: 620px) {
-        .three-column .column {
-            max-width: 33% !important;
-        }
+     @media only screen and (min-width: 620px) {
         .two-column .column {
             max-width: 50% !important;
         }
+        /*.two-column img {
+            max-width: 100% !important;
+        }*/
+         img.col-img{
+            max-width: 100% !important;
+             width: 100%;
+        }
+      
+    }
+
+    @media only screen and (min-width: 480px) and (max-width: 620px) {
+        .two-column .column {
+            max-width: 50% !important;
+        }
+         /*.two-column img {
+            max-width: 100% !important;
+            display: none!important;
+        }*/
+         img.col-img{
+            max-width: 100% !important;
+            width: 100%;
+        }
+   
 }
+  @media only screen and (min-width: 10px) and (max-width: 479px){
+      .two-column .column {
+            max-width: 100% !important;
+        }
+      img.col-img{
+            display: none!important;
+        }
+      .two-column .text {
+            padding-top: 0px;
+        }
+      .two-column .column h3{
+          padding-top: 0;
+        }
+     .inner {
+        padding-top: 0px;   
+    }
+    
+    .inner h3{
+        padding-top: 0px;
+        padding-bottom: 0px;
+    } 
+    }
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
@@ -211,7 +242,7 @@
                         <td valign="top" class="full-width-image">
                             <article>
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
-                                <div style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
+                                <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
                                     <h2><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }}</a></h2>
                                     <p>{!! str_limit($mainStoryImages[0]->teaser, $limit = 90, $end = '...') !!}</p>
                                 </div>
@@ -219,70 +250,83 @@
                         </td>
                     </tr>
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
-                    <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
+                    
                     <tr>
-                        <td class="two-column">
+                        <td >
+                            <table class="indent">
                             
-                            <!--[if (gte mso 9)|(IE)]>
-                            <table width="100%">
-                            <tr>
-                            <td width="50%" valign="top">
-                            <![endif]-->
-                            <div class="column">
-                                <table width="100%">
+                            
+                                <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
+                                <tr>
+
+                                    <td class="two-column">
+
+                                        <!--[if (gte mso 9)|(IE)]>
+                                        <table width="100%">
                                         <tr>
-                                            <td class="inner">
-                                                <table class="contents">
+                                        <td width="50%" valign="top">
+                                        <![endif]-->
+                                        <div class="column">
+                                            <table width="100%">
                                                     <tr>
-                                                        <td><img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
+                                                        <td class="inner">
+                                                            <table class="contents">
+                                                                <tr>
+                                                                    <td><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td class="text">
+                                                                                <h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
+                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
+                                                                        </td>
+                                                                </tr>
+                                                            </table>
                                                         </td>
                                                     </tr>
+                                                </table>
+                                            </div>
+                                        <!--[if (gte mso 9)|(IE)]>
+                                        </td><td width="50%" valign="top">
+                                        <![endif]-->
+                                        <div class="column">
+                                            <table width="100%">
                                                     <tr>
-                                                            <td class="text">
-                                                                    <h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
-                                                                    <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
-                                                            </td>
+                                                        <td class="inner">
+                                                            <table class="contents">
+                                                                <tr>
+                                                                        <td>
+                                                                                <img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" />
+                                                                        </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td class="text">
+                                                                               <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
+                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
+                                                                        </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
                                                     </tr>
                                                 </table>
-                                            </td>
+                                            </div>
+                                        <!--[if (gte mso 9)|(IE)]>
+                                        </td>
                                         </tr>
-                                    </table>
-                                </div>
-                            <!--[if (gte mso 9)|(IE)]>
-                            </td><td width="50%" valign="top">
-                            <![endif]-->
-                            <div class="column">
-                                <table width="100%">
-                                        <tr>
-                                            <td class="inner">
-                                                <table class="contents">
-                                                    <tr>
-                                                            <td>
-                                                                    <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" />
-                                                            </td>
-                                                    </tr>
-                                                    <tr>
-                                                            <td class="text">
-                                                                   <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
-                                                                <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
-                                                            </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            <!--[if (gte mso 9)|(IE)]>
-                            </td>
-                            </tr>
+                                        </table>
+                                        <![endif]-->
+                                    </td>
+                                </tr>
+                                
+                                
+                                
                             </table>
-                            <![endif]-->
                         </td>
-                        
                     </tr>
                     @endif
                     <tr>
                         <td valign="top" >
+                            <div class="indent">
                     
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
@@ -291,36 +335,36 @@
                                 </li>
                                 @endforeach
                             </ul>
-                            
+                           </div> 
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
                             
-                             
-                            <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
-                           
-                            <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
-                                @foreach($email->announcements as $announcement)
-                                <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
-                                    <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
-                                </li>
-                                @endforeach
-                            </ul>
-                         
+                            <div class="indent">
+                                <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
+
+                                <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
+                                    @foreach($email->announcements as $announcement)
+                                    <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
+                                        <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
+                                    </li>
+                                    @endforeach
+                                </ul>
+                            </div>
                             
                         </td>
                     </tr>
                     <tr>
                         <td valign="middle">
-                            <div style="border-top: 3px solid #97D700; padding-top: 5px;">
+                            <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
                                  
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
                                         <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 12px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ $event->start_date->format('M j') }} </div>
-                                        <div style="width: 75%; display: inline-block; padding-top: 5px; float: left;"><a style="text-decoration: none;" href="{{ url('/') . '/calendar/' . $event->start_date->format('Y') . '/' . $event->start_date->format('m') . '/' . $event->start_date->format('d') . '/' . $event->id }}">{{ $event->title }}</a></div>
+                                        <div style="width: 75%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" href="{{ url('/') . '/calendar/' . $event->start_date->format('Y') . '/' . $event->start_date->format('m') . '/' . $event->start_date->format('d') . '/' . $event->id }}">{{ $event->title }}</a></div>
                                     </li>
                                     @endforeach
                                 </ul>
@@ -329,12 +373,11 @@
                         </td>
                     </tr>
                     <tr style="background:#515151; color:#ffffff; border:0;">
-                        
-                        <td style="border:0;">
+                        <td style="border:0; ">
                             <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
-                                <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0;">
+                                <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
                                   <td>
-                                    <ul style="list-style: none; padding-left: 0;">
+                                    <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
@@ -348,11 +391,11 @@
                         </td>
                             
                     </tr>
-                    <tr id="footer-row" style="background:#333333; margin-top:5px; color:#ffffff; border:0;">
-                        <td style="border:0;">
-                            <table style="margin-left: auto; margin-right: auto; margin-bottom: 20px;">
-                                <tr style="border:none;">
-                                    <td valign="top" style="padding:5px; border:0;">
+                    <tr id="footer-row" style="background-color: #333333; margin-top: 5px; color: #ffffff; border:0;">
+                        <td style="border:0; background-color: #333333; color: #ffffff;">
+                            <table style="margin-left: auto; margin-right: auto; margin-bottom: 20px;  background-color: #333333; color: #ffffff;">
+                                <tr style="border:none; background-color: #333333; color: #ffffff;">
+                                    <td valign="top" style="padding:5px; border:0; background-color: #333333; color: #ffffff;">
                                         <ul style="padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;">
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/facebook-base-icons.png"></a>
