@@ -139,7 +139,7 @@
         position: relative;
     }
     .two-column .column {
-        width: 100%;
+        /*width: 100%;*/
         /*max-width: 300px;*/
         /*max-width: 50%;*/
         /*max-width: 280px;*/
@@ -165,7 +165,7 @@
     /*Media Queries*/
      @media only screen and (min-width: 620px) {
         .two-column .column {
-            max-width: 50% !important;
+            max-width: 49% !important;
             width: 49%;
         }
         /*.two-column img {
