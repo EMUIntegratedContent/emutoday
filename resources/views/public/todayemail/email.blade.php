@@ -180,8 +180,7 @@
 
 @media only screen and (min-width: 480px) and (max-width: 620px) {
         .two-column .column {
-            max-width: 49% !important;
-           
+            max-width: 49% !important;    
             
         }
          /*.two-column img {
@@ -280,11 +279,11 @@
                                                         <td class="inner">
                                                             <table class="contents">
                                                                 <tr>
-                                                                    <td><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
+                                                                    <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                        <td class="text">
+                                                                        <td class="text" style="text-align:left;">
                                                                                 <h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
                                                                                 <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
                                                                         </td>
