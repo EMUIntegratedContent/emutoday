@@ -125,6 +125,7 @@
     /* One column layout */
     .one-column .contents {
         text-align: left;
+        width: 100%;
     }
     .one-column p {
         font-size: 14px;
@@ -135,6 +136,7 @@
         text-align: center;
         font-size: 0;
         width: 100%;
+        position: relative;
     }
     .two-column .column {
         width: 100%;
@@ -143,6 +145,7 @@
         /*max-width: 280px;*/
         display: inline-block;
         vertical-align: top;
+        position: relative;
     }
     .contents {
         width: 100%;
@@ -177,7 +180,7 @@
 @media only screen and (min-width: 480px) and (max-width: 620px) {
         .two-column .column {
             max-width: 49% !important;
-            position: relative;
+            
         }
          /*.two-column img {
             max-width: 100% !important;
