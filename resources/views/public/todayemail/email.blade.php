@@ -135,7 +135,7 @@
     .two-column {
         text-align: center;
         font-size: 0;
-        width: 100%;
+        /*width: auto;*/
         position: relative;
     }
     .two-column .column {
