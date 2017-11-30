@@ -134,6 +134,7 @@
     .two-column {
         text-align: center;
         font-size: 0;
+        width: 100%;
     }
     .two-column .column {
         width: 100%;
@@ -175,7 +176,8 @@
 
 @media only screen and (min-width: 480px) and (max-width: 620px) {
         .two-column .column {
-            max-width: 45% !important;
+            max-width: 49% !important;
+            position: relative;
         }
          /*.two-column img {
             max-width: 100% !important;
