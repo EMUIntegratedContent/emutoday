@@ -167,10 +167,9 @@
     /*Media Queries*/
    @media only screen and (min-width: 610px) {
         .two-column .column {
-            /*max-width: 49.9% !important;
-            width: 49.9%;*/
-             max-width: 50% !important;
-            width: 50%;
+            max-width: 49.9% !important;
+            width: 49.9%;
+             
         }
          img.col-img{
             max-width: 100% !important;
@@ -181,10 +180,8 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
-            /*max-width: 49.9% !important;
-            width: 49.9%;*/
-            max-width: 50% !important;
-            width: 50%;
+            max-width: 49.9% !important;
+            width: 49.9%;
         }
          img.col-img{
             max-width: 100% !important;
