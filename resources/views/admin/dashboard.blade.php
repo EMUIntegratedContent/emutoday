@@ -25,7 +25,7 @@
         </div>
     @endif
  <div class="row">
-   @can('admin', $currentUser)
+   {{-- @can('admin', $currentUser)
      <div class="col-md-6">
         <div class="box box-default">
           <div class="box-header with-border">
@@ -75,10 +75,11 @@
       <!-- /.box -->
     </div><!-- /.col-md-6 -->
    @else
+   --}}
      <div class="col-sm-12">
        <p class="text-center"><img src="{{ url('/assets/imgs/emu-today/thats-true-lg.png') }}" alt="That's TRUE logo" /></p>
      </div>
-   @endcan
+   {{-- @endcan -->
   </div><!-- /.row -->
 
 

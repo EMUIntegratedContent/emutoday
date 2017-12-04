@@ -11,8 +11,7 @@ use Emutoday\User;
 use Emutoday\Tweet;
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
-use Analytics;
-use Spatie\Analytics\Period; // spatie\laravel-analytics package (Google analytics)
+//use Spatie\Analytics\Period; // spatie\laravel-analytics package (Google analytics)
 
 // For search
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -50,10 +49,12 @@ class DashboardController extends Controller
             }
         }
 
-        $mostVisitedLast3Months = Analytics::fetchMostVisitedPages(Period::months(3), 20);
-        $topReferrersLast3Months = Analytics::fetchTopReferrers(Period::months(3), 20);
+        //SPATIE LARAVEL ANALYTICS ONLY COMPATIBLE WITH PHP 7!
+        //$mostVisitedLast3Months = Analytics::fetchMostVisitedPages(Period::months(3), 20);
+        //$topReferrersLast3Months = Analytics::fetchTopReferrers(Period::months(3), 20);
 
-        return view('admin.dashboard', compact('mostVisitedLast3Months', 'topReferrersLast3Months'));
+        //return view('admin.dashboard', compact('mostVisitedLast3Months', 'topReferrersLast3Months'));
+        return view('admin.dashboard');
     }
 
     public function search(Request $request, ISearch $searchProvider)

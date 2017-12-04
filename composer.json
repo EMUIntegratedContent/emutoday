@@ -24,8 +24,7 @@
         "snowfire/beautymail": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
         "roumen/feed": "~2.10",
-        "laravel/tinker": "^1.0",
-        "spatie/laravel-analytics": "^3.3"
+        "laravel/tinker": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

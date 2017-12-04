@@ -164,7 +164,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Roumen\Feed\FeedServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
-        Spatie\Analytics\AnalyticsServiceProvider::class,
+        //Spatie\Analytics\AnalyticsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -228,7 +228,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Cas' => Subfission\Cas\Facades\Cas::class,
         'Feed' => Roumen\Feed\Feed::class,
-        'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
+        //'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
 
     ],
 

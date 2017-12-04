@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac70e652b71dc920b952355e517f4381",
+    "content-hash": "ea3af9e04d5477d7a6ae5e44db6f352c",
     "packages": [
         {
             "name": "barryvdh/laravel-cors",
@@ -829,16 +829,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.36",
+            "version": "v0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "2fd7d2876fbc0174faddba3241956a1393536159"
+                "reference": "75fb5412eec7cfc9f78ac0f8d23e907ce07c2330"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/2fd7d2876fbc0174faddba3241956a1393536159",
-                "reference": "2fd7d2876fbc0174faddba3241956a1393536159",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/75fb5412eec7cfc9f78ac0f8d23e907ce07c2330",
+                "reference": "75fb5412eec7cfc9f78ac0f8d23e907ce07c2330",
                 "shasum": ""
             },
             "require": {
@@ -862,7 +862,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2017-11-25T00:23:12+00:00"
+            "time": "2017-12-02T00:23:18+00:00"
         },
         {
             "name": "google/auth",
@@ -2183,54 +2183,6 @@
             "time": "2017-08-03T15:09:23+00:00"
         },
         {
-            "name": "madewithlove/illuminate-psr-cache-bridge",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/madewithlove/illuminate-psr-cache-bridge.git",
-                "reference": "68927525577666617603820e81b42e625f4685b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/madewithlove/illuminate-psr-cache-bridge/zipball/68927525577666617603820e81b42e625f4685b6",
-                "reference": "68927525577666617603820e81b42e625f4685b6",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^5.0",
-                "php": ">=5.6.0",
-                "psr/cache": "^1.0"
-            },
-            "provide": {
-                "psr/cache-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "cache/integration-tests": "^0.16.0",
-                "illuminate/cache": "^5.0",
-                "nesbot/carbon": "^1.3.0",
-                "phpunit/phpunit": "^4.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Madewithlove\\IlluminatePsrCacheBridge\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "keywords": [
-                "Bridge",
-                "adapter",
-                "cache",
-                "implementation",
-                "laravel",
-                "psr-6"
-            ],
-            "time": "2017-06-19T13:31:41+00:00"
-        },
-        {
             "name": "maximebf/debugbar",
             "version": "1.13.1",
             "source": {
@@ -3072,12 +3024,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Snowfire/Beautymail.git",
-                "reference": "f0f9a7b55b2110c462270ce6a0cfa907a3ed489e"
+                "reference": "cc964baf349e6dfa0709a41686ab2b9d8b30e609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Snowfire/Beautymail/zipball/f0f9a7b55b2110c462270ce6a0cfa907a3ed489e",
-                "reference": "f0f9a7b55b2110c462270ce6a0cfa907a3ed489e",
+                "url": "https://api.github.com/repos/Snowfire/Beautymail/zipball/cc964baf349e6dfa0709a41686ab2b9d8b30e609",
+                "reference": "cc964baf349e6dfa0709a41686ab2b9d8b30e609",
                 "shasum": ""
             },
             "require": {
@@ -3107,7 +3059,7 @@
                 "html",
                 "laravel"
             ],
-            "time": "2017-10-26T21:36:17+00:00"
+            "time": "2017-12-01T16:32:21+00:00"
         },
         {
             "name": "sofa/eloquence",
@@ -3210,73 +3162,6 @@
                 "laravel"
             ],
             "time": "2017-05-27T15:48:52+00:00"
-        },
-        {
-            "name": "spatie/laravel-analytics",
-            "version": "3.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-analytics.git",
-                "reference": "85c2198131bf3822f3fc270e362223ee6406a436"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/85c2198131bf3822f3fc270e362223ee6406a436",
-                "reference": "85c2198131bf3822f3fc270e362223ee6406a436",
-                "shasum": ""
-            },
-            "require": {
-                "google/apiclient": "^2.0",
-                "illuminate/contracts": "~5.4.0|~5.5.0",
-                "illuminate/support": "~5.4.0|~5.5.0",
-                "madewithlove/illuminate-psr-cache-bridge": "^1.0",
-                "nesbot/carbon": "^1.21",
-                "php": "^7.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^0.9.5",
-                "orchestra/testbench": "~3.4.6|~3.5.0",
-                "phpunit/phpunit": "^6.1"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\Analytics\\AnalyticsServiceProvider"
-                    ],
-                    "aliases": {
-                        "Analytics": "Spatie\\Analytics\\AnalyticsFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Analytics\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://murze.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Laravel 5 package to retrieve Google Analytics data.",
-            "homepage": "https://github.com/spatie/laravel-analytics",
-            "keywords": [
-                "analytics",
-                "google",
-                "laravel",
-                "reports",
-                "retrieve",
-                "spatie"
-            ],
-            "time": "2017-11-03T08:54:13+00:00"
         },
         {
             "name": "subfission/cas",
@@ -3573,30 +3458,30 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.0.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "6223fb2b68e7059e8d5843c0103999a84e7275cf"
+                "reference": "ca20b8f9ef149f40ff656d52965f240d85f7a8e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/6223fb2b68e7059e8d5843c0103999a84e7275cf",
-                "reference": "6223fb2b68e7059e8d5843c0103999a84e7275cf",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/ca20b8f9ef149f40ff656d52965f240d85f7a8e4",
+                "reference": "ca20b8f9ef149f40ff656d52965f240d85f7a8e4",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3"
+                "php": "^5.5.9|>=7.0.8"
             },
             "conflict": {
-                "symfony/dependency-injection": "<3.4"
+                "symfony/dependency-injection": "<3.3"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "~3.4|~4.0",
-                "symfony/dependency-injection": "~3.4|~4.0",
-                "symfony/expression-language": "~3.4|~4.0",
-                "symfony/stopwatch": "~3.4|~4.0"
+                "symfony/config": "~2.8|~3.0|~4.0",
+                "symfony/dependency-injection": "~3.3|~4.0",
+                "symfony/expression-language": "~2.8|~3.0|~4.0",
+                "symfony/stopwatch": "~2.8|~3.0|~4.0"
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -3605,7 +3490,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -3632,7 +3517,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-09T17:30:28+00:00"
+            "time": "2017-11-09T14:14:31+00:00"
         },
         {
             "name": "symfony/finder",
@@ -4102,25 +3987,25 @@
         },
         {
             "name": "symfony/psr-http-message-bridge",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/psr-http-message-bridge.git",
-                "reference": "66085f246d3893cbdbcec5f5ad15ac60546cf0de"
+                "reference": "b2098405d8644f6dc4c36febcee6a77c0fdecdff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/66085f246d3893cbdbcec5f5ad15ac60546cf0de",
-                "reference": "66085f246d3893cbdbcec5f5ad15ac60546cf0de",
+                "url": "https://api.github.com/repos/symfony/psr-http-message-bridge/zipball/b2098405d8644f6dc4c36febcee6a77c0fdecdff",
+                "reference": "b2098405d8644f6dc4c36febcee6a77c0fdecdff",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "psr/http-message": "~1.0",
-                "symfony/http-foundation": "~2.3|~3.0"
+                "symfony/http-foundation": "~2.3|~3.0|~4.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "~2.7|~3.0"
+                "symfony/phpunit-bridge": "~3.2|4.0"
             },
             "suggest": {
                 "psr/http-message-implementation": "To use the HttpFoundation factory",
@@ -4158,7 +4043,7 @@
                 "http-message",
                 "psr-7"
             ],
-            "time": "2016-09-14T18:37:20+00:00"
+            "time": "2017-07-23T09:13:43+00:00"
         },
         {
             "name": "symfony/routing",
@@ -5206,16 +5091,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.11",
+            "version": "1.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7"
+                "reference": "1ce90ba27c42e4e44e6d8458241466380b51fa16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/e03f8f67534427a787e21a385a67ec3ca6978ea7",
-                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/1ce90ba27c42e4e44e6d8458241466380b51fa16",
+                "reference": "1ce90ba27c42e4e44e6d8458241466380b51fa16",
                 "shasum": ""
             },
             "require": {
@@ -5251,7 +5136,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27T10:12:30+00:00"
+            "time": "2017-12-04T08:55:13+00:00"
         },
         {
             "name": "phpunit/phpunit",
