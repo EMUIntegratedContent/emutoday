@@ -71,7 +71,7 @@ class SendTodayEmails extends Command
         foreach($email->recipients as $recipient){
           Mail::send('public.todayemail.email', ['email' => $email, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages], function ($message) use ($email, $recipient){
               //$message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'EMU Today');
-              $message->from('noreply@today.emich.edu', 'EMU Today');
+              $message->from(env('MAIL_FROM'), 'EMU Today');
               $message->subject($email->title);
               $message->to($recipient->email_address);
 
@@ -79,7 +79,7 @@ class SendTodayEmails extends Command
               // Mailgun Docs: http://mailgun-documentation.readthedocs.io/en/latest/api-sending.html#sending
               // Tutuorial: https://stackoverflow.com/questions/35848266/using-laravels-mailgun-driver-how-do-you-gracefully-send-custom-data-and-tag
               $headers = $message->getHeaders();
-              $headers->addTextHeader('X-Mailgun-Tag', 'today-mailer');
+              $headers->addTextHeader('X-Mailgun-Tag', env('MAILGUN_GROUP'));
               $headers->addTextHeader('X-Mailgun-Variables', '{"today-email-id":"'.$email->id.'"}'); //custom variable. Allows email ID in today to be linked to Mailgun's email ID via webhooks.
           });
 
