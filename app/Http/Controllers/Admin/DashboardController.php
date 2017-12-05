@@ -50,11 +50,10 @@ class DashboardController extends Controller
         }
 
         //SPATIE LARAVEL ANALYTICS ONLY COMPATIBLE WITH PHP 7!
-        //$mostVisitedLast3Months = Analytics::fetchMostVisitedPages(Period::months(3), 20);
-        //$topReferrersLast3Months = Analytics::fetchTopReferrers(Period::months(3), 20);
+        $mostVisitedLast3Months = Analytics::fetchMostVisitedPages(Period::months(3), 20);
+        $topReferrersLast3Months = Analytics::fetchTopReferrers(Period::months(3), 20);
 
-        //return view('admin.dashboard', compact('mostVisitedLast3Months', 'topReferrersLast3Months'));
-        return view('admin.dashboard');
+        return view('admin.dashboard', compact('mostVisitedLast3Months', 'topReferrersLast3Months'));
     }
 
     public function search(Request $request, ISearch $searchProvider)
