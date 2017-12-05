@@ -11,6 +11,7 @@ use Emutoday\User;
 use Emutoday\Tweet;
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
+use Analytics;
 use Spatie\Analytics\Period; // spatie\laravel-analytics package (Google analytics)
 
 // For search
