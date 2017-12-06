@@ -6,9 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.4.*",
+        "laravel/framework": "5.5.*",
         "laravel/passport": "~3.0",
-        "laravelcollective/html": "5.4.*",
+        "laravelcollective/html": "5.5.*",
         "laracasts/presenter": "^0.2.1",
         "laracasts/utilities": "~2.0",
         "laracasts/flash": "^2.0",
@@ -19,7 +19,7 @@
         "barryvdh/laravel-debugbar": "^2.2",
  	      "subfission/cas": "dev-master",
         "google/apiclient": "dev-master",
-        "barryvdh/laravel-cors": "^0.8.2",
+        "barryvdh/laravel-cors": "^0.10.0",
         "doctrine/dbal": "~2.3",
         "snowfire/beautymail": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
@@ -30,10 +30,11 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0",
+        "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
-        "laravel/homestead": "^5.0"
+        "laravel/homestead": "^5.0",
+        "filp/whoops": "~2.0"
     },
     "autoload": {
         "classmap": [
@@ -65,6 +66,10 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
+        ],
+        "post-autoload-dump": [
+          "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+          "@php artisan package:discover"
         ]
     },
     "config": {

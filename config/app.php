@@ -157,7 +157,6 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
-        Sofa\Eloquence\ServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Snowfire\Beautymail\BeautymailServiceProvider::class,
