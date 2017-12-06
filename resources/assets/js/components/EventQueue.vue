@@ -55,7 +55,21 @@
     <!-- ELEVATED ANNOUNCEMENTS -->
     <template v-if="canElevate">
       <h3><span class="badge">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated</h3>
-      <p>To rearrange the order of events, drag the pod to the desired location. To demote an event, click the red 'X' on the pod. Changes are saved automatically. Note: this list is NOT filtered by date.</p>
+      <p>To rearrange the order of events, drag the pod to the desired location. To demote an event, click the red 'X' on the pod. Click "save order" button when done. Note: this list is NOT filtered by date.</p>
+      <div v-show="ordersave.isOk"  class="alert alert-success alert-dismissible">
+        <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
+        <h5>{{ordersave.msg}}</h5>
+      </div>
+      <div v-show="ordersave.isErr"  class="alert alert-danger alert-dismissible">
+        <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
+        <h5>{{ordersave.msg}}</h5>
+      </div>
+      <template v-if="elevateditemschanged">
+        <div class="ordersave-container">
+          <button @click="updateElevatedOrder" class="btn btn-info">Save Order</button>
+          <button @click="resetElevatedOrder" class="btn btn-default">Reset</button>
+        </div>
+      </template>
       <template v-if="elevateditems.length > 0">
         <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
           <li v-for="item in elevateditems" class="list-group-item">
@@ -106,6 +120,9 @@
     margin-left: 5px;
     border-bottom: 2px #FF851B dotted;
 }
+.ordersave-container{
+  margin-bottom:10px;
+}
 </style>
 <script>
 import moment from 'moment';
@@ -121,6 +138,7 @@ export default  {
       resource: {},
       allitems: [],
       elevateditems: [],
+      originalelevateditems: [],
       otheritems: [],
       appitems: [],
       unappitems: [],
@@ -131,6 +149,12 @@ export default  {
       startdate: null,
       enddate: null,
       isEndDate: false,
+      elevateditemschanged: false,
+      ordersave: {
+        isOk: false,
+        isErr: false,
+        msg: '',
+      }
     }
   },
   ready() {
@@ -288,30 +312,52 @@ export default  {
      * Uses vue-sortable
      */
     updateOrder: function(eventItem){
+      // Save the original order the first time this method is called
+      if(!this.elevateditemschanged){
+          // https://forum-archive.vuejs.org/topic/3679/global-method-to-clone-object-in-vuejs-rather-then-reference-it-to-avoid-code-duplication/5
+          this.$set('originalelevateditems', JSON.parse(JSON.stringify(this.elevateditems)))
+          this.elevateditemschanged = true
+      }
       // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
       let oldIndex = eventItem.oldIndex
       let newIndex = eventItem.newIndex
-
       // move the item in the underlying array
       this.elevateditems.splice(newIndex, 0, this.elevateditems.splice(oldIndex, 1)[0]);
-
-      // now update the priority order in the database
-      this.updateElevatedOrder()
     },
     /**
      * Change the priority ranking of elevated events in the database
      */
      updateElevatedOrder: function(){
+       this.ordersave.isOk = false
+       this.ordersave.isErr = false
+
        var routeurl = '/api/event/elevated/reorder';
        this.$http.put(routeurl, this.elevateditems)
 
        .then((response) =>{
            this.$set('elevateditems', response.data.data)
+           this.ordersave.isOk = true
+           this.ordersave.msg = "Order was updated"
        }, (response) => {
            //error callback
-           console.log("ERRORS");
+           this.ordersave.isErr = true
+           this.ordersave.msg = "Order was not updated"
+           console.log("ERRORS")
        }).bind(this);
-     }
+
+       this.elevateditemschanged = false;
+     },
+     toggleCallout:function(evt){
+       this.ordersave.isOk = false
+       this.ordersave.isErr = false
+     },
+
+     resetElevatedOrder: function(){
+       this.elevateditems = this.originalelevateditems
+       this.originalelevateditems = [];
+       this.elevateditemschanged = false
+     },
+
 
   },
 
