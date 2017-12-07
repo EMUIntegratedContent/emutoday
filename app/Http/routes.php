@@ -52,6 +52,10 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
+    Route::get('mediahighlights/taglist', 'Api\MediaHighlightController@getTaglist');
+    Route::post('mediahighlights/tag/store', 'Api\MediaHighlightController@storeTag');
+    Route::resource('mediahighlights', 'Api\MediaHighlightController');
+
     Route::patch('authors/updateitem/{id}', 'Api\AuthorController@updateItem')->name('api_authors_updateitem');
     Route::get('authors/{id}/edit', 'Api\AuthorController@edit')->name('api_authors_edititem');
     Route::get('authors/primarycontact', 'Api\AuthorController@getCurrentPrimaryContact')->name('api_authors_updateitem');
@@ -271,6 +275,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
+        Route::get('mediahighlights', 'Admin\MediaHighlightController@index')->name('media_highlights_list');
+        Route::get('mediahighlights/{id}/edit', 'Admin\MediaHighlightController@edit')->name('media_highlights_edit');
+        Route::get('mediahighlights/form', 'Admin\MediaHighlightController@form')->name('media_highlights_form');
+
         Route::get('oauth/list', 'Admin\OAuthController@listClients')->name('list_user_oauth_clients');
 
         Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
@@ -292,7 +300,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
             Route::resource('experts', 'Admin\ExpertsController');
 
             Route::resource('expertcategory', 'Admin\ExpertCategoryController');
-
             Route::resource('expertrequests', 'Admin\ExpertRequestController');
         });
 
