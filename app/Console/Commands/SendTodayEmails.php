@@ -84,7 +84,7 @@ class SendTodayEmails extends Command
 
         }
         // IMPORTANT! Mark this email as sent!
-        //$email->is_sent = 1;
+        $email->is_sent = 1;
         $email->save();
       }
     }
