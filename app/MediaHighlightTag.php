@@ -15,6 +15,6 @@ class MediaHighlightTag extends Model
   ];
 
   public function mediahighlights(){
-    return $this->belongsToMany('Emutoday\MediaHighlight', 'mediahighlights_tags', 'mediahighlight_id', 'tag_id');
+    return $this->belongsToMany('Emutoday\MediaHighlight', 'mediahighlights_tags');
   }
 }

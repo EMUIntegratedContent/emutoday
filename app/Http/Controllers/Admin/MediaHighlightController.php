@@ -48,6 +48,7 @@ class MediaHighlightController extends Controller
     */
     public function edit($id)
     {
+        $user = \Auth::user();
         $highlight = $this->highlight->findOrFail($id);
 
         return view('admin.mediahighlight.form', compact('highlight'));

@@ -79,7 +79,7 @@
               <button class="btn btn-default" type="button" @click.prevent="saveNewTag"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
             </span>
           </div><!-- /input-group -->
-          <p v-show="showAddTag && formErrors.tags" class="help-text invalid">{{ formErrors.tags }}</p>
+          <p v-show="showAddTag && formErrors.name" class="help-text invalid">{{ formErrors.name }}</p>
           <p v-show="showAddTag && formSuccess.tags" class="help-text valid">{{ formSuccess.tags }}</p>
       </div><!-- /.small-6 columns -->
     </div> <!-- /.row -->
@@ -125,6 +125,10 @@ label > span {
 .invalid-input {
   background-color: rgba(236, 88, 64, 0.1);
   border: 1px dotted red;
+}
+
+.valid{
+  color:#3c763d;
 }
 
 .invalid {
@@ -220,8 +224,8 @@ module.exports = {
       totalChars: {
         title: 100,
       },
+      newTag: null,
       showAddTag: false,
-      newRecipient: null,
       response: {},
       formMessage: {
         isOk: false,
@@ -295,8 +299,8 @@ module.exports = {
     },
     successFailure: function(){
       return {
-        'has-success': this.formSuccess.tag != '',
-        'has-error': this.formErrors.tag
+        'has-success': this.formSuccess.tags != '',
+        'has-error': this.formErrors.name
       }
     },
   },
@@ -316,6 +320,7 @@ module.exports = {
       this.$http.get('/api/mediahighlights/' + recid + '/edit')
 
       .then((response) => {
+        console.log(response.data.data)
         this.$set('record', response.data.data)
         this.user_id = response.data.data.user_id
 
@@ -432,11 +437,12 @@ module.exports = {
       // Do this when response gets back.
       .then((response) => {
         this.formSuccess.tags = [] //clear form success
+        this.formErrors = {}
         this.formSuccess.tags.push(response.data.message) //create success message
 
         this.fetchTagsList() //get updated list of recipients
       }, (response) => { // If invalid. error callback
-        console.log(response.data.error.message)
+        this.formSuccess.tags = []
         this.formErrors = response.data.error.message // Set errors from validation to vue data
       }).bind(this);
     },
@@ -451,6 +457,9 @@ module.exports = {
      */
     toggleAddTag: function(){
       this.showAddTag ? this.showAddTag = false : this.showAddTag = true
+      this.formSuccess.tags = []
+      this.formErrors = {}
+      this.newTag = null
     },
   },
   watch: {

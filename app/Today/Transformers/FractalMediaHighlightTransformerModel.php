@@ -7,9 +7,6 @@ use Emutoday\MediaHighlightTag;
 use League\Fractal;
 use Carbon\Carbon;
 
-use League\Fractal\Manager;
-use Emutoday\Today\Transformers\FractalStoryTransformerModel;
-
 class FractalMediaHighlightTransformerModel extends Fractal\TransformerAbstract
 {
     public function transform(MediaHighlight $highlight)

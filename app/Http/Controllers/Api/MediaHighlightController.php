@@ -74,6 +74,13 @@ class MediaHighlightController extends ApiController
       $highlight->added_by      = $user_id;
 
       if($highlight->save()) {
+        // Sync tags
+        $tagIds = array();
+        foreach($request->get('tags') as $tag){
+          $tagIds[] = $tag['id'];
+        }
+        $highlight->tags()->sync($tagIds);
+
         return $this->setStatusCode(201)
         ->respondSavedWithData('Highlight successfully saved!',[ 'record_id' => $highlight->id ]);
       }
@@ -99,12 +106,12 @@ class MediaHighlightController extends ApiController
   */
   public function update(Request $request, $id)
   {
-    $author = Author::findOrFail($id);
-
+    $highlight = MediaHighlight::findOrFail($id);
     $validation = \Validator::make( Input::all(), [
-      'first_name'          => 'required|max:80|min:2',
-      'last_name'           => 'required|max:80|min:2',
-      'email'               => 'required',
+      'title'          => 'required|max:100',
+      'url'            => 'required',
+      'source'         => 'required',
+      'start_date'     => 'required|date_format:Y-m-d'
     ]);
 
     if( $validation->fails() )
@@ -114,43 +121,23 @@ class MediaHighlightController extends ApiController
     }
     if($validation->passes())
     {
-      $author->first_name           = $request->get('first_name');
-      $author->last_name      	    = $request->get('last_name');
-      $author->email      	        = $request->get('email');
-      $author->phone     	        = $request->get('phone');
-      $author->user_id              = $request->get('user_id', null);
+      $highlight->title         = $request->get('title');
+      $highlight->url      	    = $request->get('url');
+      $highlight->source      	= $request->get('source');
+      $highlight->start_date    = $request->get('start_date');
 
-      //If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
-      if($request->get('is_principal_contact') == 1){
-          $author->is_principal_contact = 1;
-          $author->is_contact = 1;
-          Author::where('id', '!=', $author->id)->update(['is_principal_contact'=> 0]);
-      } else {
-        $author->is_principal_contact = 0;
-        if($request->get('is_contact') == 1){
-            $author->is_contact = 1;
-        } else {
-            $author->is_contact = 0;
+      if($highlight->save()) {
+        // Sync tags
+        $tagIds = array();
+        foreach($request->get('tags') as $tag){
+          $tagIds[] = $tag['id'];
         }
-      }
+        $highlight->tags()->sync($tagIds);
 
-      //If this author is set as the PRIMARY MAGAZINE contact, set all other authors' is_principal_magazine_contact fields to 0 and mark this author as a contact automatically
-      if($request->get('is_principal_magazine_contact') == 1){
-          $author->is_principal_magazine_contact = 1;
-          $author->is_contact = 1;
-          Author::where('id', '!=', $author->id)->update(['is_principal_magazine_contact'=> 0]);
-      } else {
-        $author->is_principal_magazine_contact = 0;
-        if($request->get('is_contact') == 1){
-            $author->is_contact = 1;
-        } else {
-            $author->is_contact = 0;
+        if($highlight->save()) {
+          return $this->setStatusCode(201)
+          ->respondSavedWithData('Media highlight successfully Updated!',[ 'record_id' => $highlight->id ]);
         }
-      }
-
-      if($author->save()) {
-        return $this->setStatusCode(201)
-        ->respondSavedWithData('Author successfully Updated!',[ 'record_id' => $author->id ]);
       }
     }
   }
@@ -166,8 +153,12 @@ class MediaHighlightController extends ApiController
    * Save a previously-unlisted tag.
    */
   public function storeTag(Request $request){
+    $messages = array(
+      'name.required' => 'Please specify a tag name.',
+      'name.unique' => 'That tag already exists.',
+    );
     $validation = \Validator::make( Input::all(), [
-        'name'   => 'required|unique:media_highlight_tags,name' ]);
+        'name'   => 'required|unique:media_highlight_tags,name' ], $messages);
 
     if( $validation->fails() ){
         return $this->setStatusCode(422)
@@ -184,55 +175,4 @@ class MediaHighlightController extends ApiController
         }
     }
   }
-
-  /**
-   *  Get the one user in the authors table set as the PRINCIPAL STORY contact
-   */
-  public function getCurrentPrimaryContact(){
-    $author = Author::select(\DB::raw('CONCAT(first_Name, " ", last_Name) AS name'))->where('is_principal_contact', 1)->first();
-
-    if($author){
-      $primaryContact = $author;
-    } else {
-      $primaryContact = null;
-    }
-    return $this->setStatusCode(201)
-    ->respondUpdatedWithData('Primary Contact', $primaryContact );
-  }
-
-  /**
-   *  Get the one user in the authors table set as the PRINCIPAL MAGAZINE contact
-   */
-  public function getCurrentPrimaryMagazineContact(){
-    $author = Author::select(\DB::raw('CONCAT(first_Name, " ", last_Name) AS name'))->where('is_principal_magazine_contact', 1)->first();
-
-    if($author){
-      $primaryContact = $author;
-    } else {
-      $primaryContact = null;
-    }
-    return $this->setStatusCode(201)
-    ->respondUpdatedWithData('Primary Magazine Contact', $primaryContact );
-  }
-
-  /**
-   *  Get the one user in the authors table set as the PRINCIPAL MAGAZINE contact
-   */
-  public function getUsers($selectedUser = null){
-    $users = User::leftJoin('authors', 'users.id', '=', 'authors.user_id')->select('users.id', 'users.first_name', 'users.last_name')->whereNull('authors.user_id')->orWhere('authors.user_id', $selectedUser)->orderby('last_name')->get();
-
-    return $this->setStatusCode(201)
-    ->respondUpdatedWithData($selectedUser, $users);
-  }
-
-  /**
-   * Get the author tied to the corresponding user id
-   */
-  public function getAuthorByUser($userId){
-      $author = Author::select('id', 'last_name', 'first_name', 'email', 'phone')->where('user_id', $userId)->first();
-
-      return $this->setStatusCode(201)
-      ->respondUpdatedWithData('Author conntected to user', $author);
-  }
-
 }

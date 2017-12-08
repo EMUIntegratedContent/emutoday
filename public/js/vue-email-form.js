@@ -23820,11 +23820,13 @@ module.exports = {
       // Do this when response gets back.
       .then(function (response) {
         _this4.formSuccess.email_address = []; //clear form success
+        _this4.formErrors = {};
         _this4.formSuccess.email_address.push(response.data.message); //create success message
 
         _this4.fetchRecipientsList(); //get updated list of recipients
       }, function (response) {
         // If invalid. error callback
+        _this4.formSuccess.email_address = [];
         _this4.formErrors = response.data.error.message; // Set errors from validation to vue data
       }).bind(this);
     },
@@ -23839,6 +23841,9 @@ module.exports = {
      */
     toggleAddRecipient: function toggleAddRecipient() {
       this.showAddRecipient ? this.showAddRecipient = false : this.showAddRecipient = true;
+      this.formSuccess.email_address = [];
+      this.formErrors = {};
+      this.newRecipient = null;
     },
 
     setupDatePickers: function setupDatePickers() {
