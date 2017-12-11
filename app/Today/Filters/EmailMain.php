@@ -9,7 +9,7 @@ class EmailMain implements FilterInterface
 {
     public function applyFilter(Image $image)
     {
-        return $image->resize(600, 282, function ($constraint) {
+        return $image->resize(600, 500, function ($constraint) {
             $constraint->aspectRatio();
         });
     }

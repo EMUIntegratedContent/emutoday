@@ -20,7 +20,7 @@
     img {
         /*border: 0;*/
     }
-    div[style*="margin: 16px 0"] { 
+    div[style*="margin: 16px 0"] {
         margin:0 !important;
     }
     .wrapper {
@@ -33,27 +33,27 @@
         max-width: 600px;
         margin: 0 auto;
     }
-    
+
     a {
         color: #046A38;
         text-decoration: underline;
     }
-    
+
     a:visited {
         color: #046A38;
         text-decoration: none;
     }
-    
+
     a:hover {
         color: #2b873b;
         text-decoration: underline;
     }
-    
+
     a:active {
         color: #046A38;
         text-decoration: underline;
     }
-    
+
     h1,
     h2,
     h3,
@@ -66,11 +66,11 @@
     }
     .h1 {
         font-size: 24px;
-       
+
     }
     h2{
         font-size: 22px;
-       
+
     }
     h3{
         font-size: 20px;
@@ -87,13 +87,13 @@
         margin: 0;
         /*margin: 4px 0 6px;*/
     }
-    
-   
+
+
     .indent {
         margin-left: 1rem;
         margin-right: 1rem;
     }
-    
+
     .indent-more {
         padding-left: 35px;
         padding-right: 35px;
@@ -101,7 +101,7 @@
     .img-circle {
         border-radius: 50%;
     }
-    
+
     .outer {
         margin: 0 auto;
         width: 100%;
@@ -117,7 +117,7 @@
          padding-bottom: 10px;
          padding-left: 10px;
          padding-right: 10px;
-    } 
+    }
     /*a {
         color: #ee6a56;
         text-decoration: underline;
@@ -163,19 +163,19 @@
     .two-column .text {
             padding-top: 0px;
         }
-    
+
     /*Media Queries*/
    @media only screen and (min-width: 610px) {
         .two-column .column {
             max-width: 49.9% !important;
             width: 49.9%;
-             
+
         }
          img.col-img{
             max-width: 100% !important;
              width: 100%;
         }
-      
+
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
@@ -187,7 +187,7 @@
             max-width: 100% !important;
             width: 100%;
         }
-   
+
 }
   @media only screen and (min-width: 10px) and (max-width: 479px){
       .two-column .column {
@@ -204,13 +204,13 @@
           padding-top: 0;
         }
      .inner {
-        padding-top: 0px;   
+        padding-top: 0px;
     }
-    
+
     .inner h3{
         padding-top: 0px;
         padding-bottom: 0px;
-    } 
+    }
     }
 </style>
 
@@ -253,12 +253,12 @@
                         </td>
                     </tr>
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
-                    
+
                     <tr>
                         <td >
                             <table class="indent">
-                            
-                            
+
+
                                 <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
                                 <tr>
 
@@ -275,7 +275,7 @@
                                                         <td class="inner">
                                                             <table class="contents">
                                                                 <tr>
-                                                                    <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[1]->filename}}" />
+                                                                    <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/ddfront/{{$mainStoryImages[1]->filename}}" />
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -299,7 +299,7 @@
                                                             <table class="contents">
                                                                 <tr>
                                                                         <td>
-                                                                                <img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$mainStoryImages[2]->filename}}" />
+                                                                                <img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/ddfront/{{$mainStoryImages[2]->filename}}" />
                                                                         </td>
                                                                 </tr>
                                                                 <tr>
@@ -320,9 +320,9 @@
                                         <![endif]-->
                                     </td>
                                 </tr>
-                                
-                                
-                                
+
+
+
                             </table>
                         </td>
                     </tr>
@@ -330,7 +330,7 @@
                     <tr>
                         <td valign="top" >
                             <div class="indent">
-                    
+
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
@@ -338,12 +338,12 @@
                                 </li>
                                 @endforeach
                             </ul>
-                           </div> 
+                           </div>
                         </td>
                     </tr>
                     <tr>
                         <td valign="top">
-                            
+
                             <div class="indent">
                                 <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
 
@@ -355,14 +355,14 @@
                                     @endforeach
                                 </ul>
                             </div>
-                            
+
                         </td>
                     </tr>
                     <tr>
                         <td valign="middle">
                             <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
-                                 
+
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
@@ -371,7 +371,7 @@
                                     </li>
                                     @endforeach
                                 </ul>
-                               
+
                             </div>
                         </td>
                     </tr>
@@ -386,13 +386,13 @@
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
-                                    
+
                                         </ul>
                                     </td>
                                 </tr>
                             </table>
                         </td>
-                            
+
                     </tr>
                     <tr id="footer-row" style="background-color: #333333; margin-top: 5px; color: #ffffff; border:0;">
                         <td style="border:0; background-color: #333333; color: #ffffff;">

@@ -282,9 +282,9 @@
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
-import vSelect from "vue-select";
+import moment from 'moment'
+import flatpickr from 'flatpickr'
+import vSelect from "vue-select"
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
