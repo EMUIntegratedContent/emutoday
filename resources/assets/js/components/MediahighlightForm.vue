@@ -49,7 +49,7 @@
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
           <label for="start-date">Highlight Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input id="start-date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" :value="record.start_date"/>
+          <input id="start-date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" v-model="record.start_date"/>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a highlight date</p>
         </div> <!--form-group -->
       </div> <!-- /.small-6 columns -->
@@ -245,7 +245,7 @@ module.exports = {
     if(this.recordexists){
       this.fetchCurrentRecord(this.recordid)
     } else {
-      this.newform = true;
+      this.newform = true
       this.setupDatePickers()
     }
     this.fetchTagsList()
@@ -323,7 +323,7 @@ module.exports = {
         console.log(response.data.data)
         this.$set('record', response.data.data)
         this.user_id = response.data.data.user_id
-
+        this.setupDatePickers()
         this.fetchCurrentTags()
       }, (response) => {
         this.formErrors = response.data.error.message;
@@ -414,9 +414,9 @@ module.exports = {
     },
 
     fetchCurrentTags: function(){
-        this.$http.get('/api/mediahighlights/'+ this.recordid + '/tags')
+        this.$http.get('/api/mediahighlights/taglist/'+ this.recordid)
             .then((response) => {
-              this.$set('tags', response.data)
+              this.$set('tags', response.data.newdata)
             }, (response) => {
               this.formErrors = response.data.error.message
             });

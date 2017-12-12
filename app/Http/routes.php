@@ -53,6 +53,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('mediahighlights/taglist', 'Api\MediaHighlightController@getTaglist');
+    Route::get('mediahighlights/taglist/{id}', 'Api\MediaHighlightController@getTaglist');
     Route::post('mediahighlights/tag/store', 'Api\MediaHighlightController@storeTag');
     Route::resource('mediahighlights', 'Api\MediaHighlightController');
 

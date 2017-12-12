@@ -20,6 +20,6 @@ class MediaHighlight extends Model
     ];
 
     public function tags(){
-      return $this->belongsToMany('Emutoday\MediaHighlight', 'mediahighlights_tags', 'mediahighlight_id', 'tag_id')->withTimestamps();
+      return $this->belongsToMany('Emutoday\MediaHighlightTag', 'mediahighlights_tags', 'mediahighlight_id', 'tag_id')->withTimestamps();
     }
 }

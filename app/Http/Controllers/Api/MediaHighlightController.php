@@ -142,11 +142,21 @@ class MediaHighlightController extends ApiController
     }
   }
 
-  public function getTaglist(){
-    $tags = MediaHighlightTag::orderBy('name', 'asc')->get();
+  /**
+   * Get all tags in the database or, if id is passed, tags that match the highlight id
+   */
+  public function getTaglist($id = null){
+    if($id){
+      $tags = MediaHighlight::find($id)->tags;
+      $message = "Tags for this record.";
+    } else {
+      $tags = MediaHighlightTag::orderBy('name', 'asc')->get();
+      $message = "All media highlight tags.";
+    }
+
 
     return $this->setStatusCode(201)
-    ->respondUpdatedWithData('All media highlight tags.', $tags);
+    ->respondUpdatedWithData($message, $tags);
   }
 
   /**

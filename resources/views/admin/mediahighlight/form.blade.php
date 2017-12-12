@@ -6,7 +6,7 @@
 @section('style-plugin')
     @parent
     <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
-
+    <link rel="stylesheet" href="/themes/admin-lte/plugins/select2/select2.min.css">
     @endsection
     @section('style-app')
         @parent
@@ -25,8 +25,12 @@
           </div>	<!-- /.box-header -->
           <div class="box-body">
             <div id="vue-mediahighlight">
-              <mediahighlight-form errors="{{ json_encode($errors) }}" framework="bootstrap" user_id="{{$currentUser->id}}" recordexists="{{$highlight->exists ? true: false}}" recordid="{{$highlight->exists ? $highlight->id : null }}">
-                  <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
+              <mediahighlight-form
+                errors="{{ json_encode($errors) }}"
+                framework="bootstrap"
+                user_id="{{$currentUser->id}}"
+                recordexists="{{$highlight->exists ? true: false}}"
+                recordid="{{$highlight->exists ? $highlight->id : null }}">
               </mediahighlight-form>
             </div><!-- /#vue-event-form -->
           </div><!-- /.box-body -->
@@ -37,18 +41,19 @@
 @endsection
 @section('footer-vendor')
     @parent
-    <script src="/js/admintools.js"></script>
+    <!--<script src="/js/admintools.js"></script>-->
 @endsection
 
 @section('footer-plugin')
     @parent
+    <!-- Select2 -->
+    <script src="/themes/admin-lte/plugins/select2/select2.full.min.js"></script>
+@endsection
 
-    @endsection
-
-    @section('footer-app')
+@section('footer-app')
     @parent
     <script type="text/javascript" src="/js/vue-mediahighlight-form.js"></script>
-    @endsection
+@endsection
 @section('footer-script')
         @parent
 
