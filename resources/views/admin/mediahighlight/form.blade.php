@@ -17,7 +17,7 @@
 @section('content')
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-9">
         <div class="box box-primary">
           <div class="box-header with-border">
             <h3 class="box-title">{{$highlight->exists ? 'Edit Meida Highlight' : 'New Media Highlight'}}</h3>

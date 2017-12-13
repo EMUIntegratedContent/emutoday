@@ -4,12 +4,15 @@ namespace Emutoday\Http\Controllers\Admin;
 
 
 use Emutoday\MediaHighlight;
+use Emutoday\MediaHighlightTag;
 use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
 use Emutoday\Helpers\Interfaces\IBug;
 
 use Illuminate\Support\Facades\View;
+
+use DB;
 
 class MediaHighlightController extends Controller
 {
@@ -36,8 +39,14 @@ class MediaHighlightController extends Controller
     */
     public function index($atype = null)
     {
-      $highlightsPaginated = MediaHighlight::orderBy('start_date', 'asc')->paginate(10);
-      return view('admin.mediahighlight.index', compact('highlightsPaginated'));
+      $highlightsPaginated = MediaHighlight::orderBy('start_date', 'desc')->paginate(20);
+      $topTagsPaginated = MediaHighlightTag::join('mediahighlights_tags', 'mediahighlights_tags.tag_id', '=', 'media_highlight_tags.id')
+                                             ->groupBy('media_highlight_tags.id')
+                                             ->orderBy('tag_count', 'desc')
+                                             ->select(['media_highlight_tags.id', 'media_highlight_tags.name', DB::raw('count(media_highlight_tags.id) as tag_count')])
+                                             ->paginate(20);
+
+      return view('admin.mediahighlight.index', compact('highlightsPaginated', 'topTagsPaginated'));
     }
 
     /**
@@ -64,6 +73,19 @@ class MediaHighlightController extends Controller
         $highlight = $this->highlight;
 
         return view('admin.mediahighlight.form', compact('highlight'));
+    }
+
+    /**
+    * Delete the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function destroy($id)
+    {
+        $highlight = $this->highlight->findOrFail($id);
+        $title = $highlight->title;
+        $highlight->delete();
+        return back()->with('highlight_deleted', 'Highlight "' . $title . '" was successfully deleted.');
     }
 
 }

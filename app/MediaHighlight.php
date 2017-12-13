@@ -12,7 +12,7 @@ class MediaHighlight extends Model
       'source',
       'priority',
       'is_archived',
-      'added_by_user'
+      'added_by'
     ];
 
     protected $dates = [
@@ -21,5 +21,13 @@ class MediaHighlight extends Model
 
     public function tags(){
       return $this->belongsToMany('Emutoday\MediaHighlightTag', 'mediahighlights_tags', 'mediahighlight_id', 'tag_id')->withTimestamps();
+    }
+
+    public function addedBy(){
+        return $this->belongsTo('Emutoday\User', 'added_by');
+    }
+
+    public function getFullNameAttribute(){
+        return $this->addedBy()->first()->first_name . ' '. $this->addedBy()->first()->last_name;
     }
 }

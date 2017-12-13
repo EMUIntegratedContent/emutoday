@@ -185,4 +185,11 @@ class MediaHighlightController extends ApiController
         }
     }
   }
+
+  public function destroy($id)
+  {
+    $highlight = MediaHighlight::findOrFail($id);
+    $highlight->delete();
+    return $this->setStatusCode(200)->respond('Media highlight successfully deleted!');
+  }
 }

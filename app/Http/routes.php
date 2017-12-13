@@ -279,6 +279,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('mediahighlights', 'Admin\MediaHighlightController@index')->name('media_highlights_list');
         Route::get('mediahighlights/{id}/edit', 'Admin\MediaHighlightController@edit')->name('media_highlights_edit');
         Route::get('mediahighlights/form', 'Admin\MediaHighlightController@form')->name('media_highlights_form');
+        Route::get('mediahighlights/{id}/destroy', 'Admin\MediaHighlightController@destroy')->name('media_highlights_destroy');
+
+        Route::get('mediahighlightstags/{id}/destroy', 'Admin\MediaHighlightTagController@destroy');
 
         Route::get('oauth/list', 'Admin\OAuthController@listClients')->name('list_user_oauth_clients');
 
