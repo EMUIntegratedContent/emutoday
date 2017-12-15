@@ -79,9 +79,9 @@
         font-size: 20px;
     }
     h3.mid{
-        font-size: 19px;
+        font-size: 18px;
         padding: 12px 0 8px;
-        line-height: 23px;
+        line-height: 22px;
     }
    
     h4{
@@ -90,7 +90,7 @@
     h5, h6{
         font-size: 16px;
     }
-    h2.moveover{padding: 12px 0 5px 8px;}
+    h2.moveover{padding: 12px 0 8px 8px;}
     p {
         padding: 0;
         margin: 0;
