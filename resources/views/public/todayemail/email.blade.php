@@ -78,6 +78,11 @@
     h3{
         font-size: 20px;
     }
+    h3.mid{
+        font-size: 19px;
+        padding: 12px 0 8px;
+        line-height: 23px;
+    }
    
     h4{
         font-size: 18px;
@@ -294,7 +299,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
-                                                                                <h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
+                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
                                                                                 <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
@@ -318,7 +323,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td class="text">
-                                                                               <h3><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
+                                                                               <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
                                                                             <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
