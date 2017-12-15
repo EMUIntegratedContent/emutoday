@@ -410,6 +410,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('{qtype}/{gtype}/{stype}/{story}', 'PreviewController@story')->name('preview_story');
     });
 
+    Route::group(['prefix' => 'mediahighlights'], function(){
+        Route::get('/', 'Today\MediaHighlightController@index')->name('mediahighlights_index');
+    });
+
     Route::get('/testoauth', function () {
         return response()->json("Now that's what I call a secure API!");
     })->middleware('client_credentials');

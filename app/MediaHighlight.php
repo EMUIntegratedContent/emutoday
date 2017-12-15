@@ -3,9 +3,13 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use Emutoday\MediaHighlight\Searchable;
+use Sofa\Eloquence\Eloquence;
 
 class MediaHighlight extends Model
 {
+    use Eloquence;
+    
     protected $fillable = [
       'title',
       'url',
@@ -13,6 +17,11 @@ class MediaHighlight extends Model
       'priority',
       'is_archived',
       'added_by'
+    ];
+
+    protected $searchableColumns = [
+        'title' => 100,
+        'source' => 90
     ];
 
     protected $dates = [
