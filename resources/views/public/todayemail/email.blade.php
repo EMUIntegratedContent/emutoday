@@ -88,7 +88,14 @@
         margin: 0;
         /*margin: 4px 0 6px;*/
     }
-
+    p.direct-today-link {
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+    p.sub-title {
+        margin-bottom: 10px;
+    }
 
     .indent {
         margin-left: 1rem;
@@ -216,7 +223,7 @@
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
-    <p style="font-size: 12px; text-align: center;"><a href="https://today.emich.edu/">Read EMU Today online</a></p>
+    <p class="direct-today-link"><a href="https://today.emich.edu/">Read EMU Today online</a></p>
     <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer" style="padding-top: .3rem;">
 
         <tr>
@@ -231,7 +238,7 @@
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
                             <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 32px; line-height: 34px; font-weight: 500;">The Week at EMU</h2>
-                            <p style="margin-bottom: 10px;">A Weekly Digest from <span style="color: #046A38">EMU</span> Today </p>
+                            <p class="sub-title">A Weekly Digest from <span style="color: #046A38">EMU</span> Today </p>
                         </td>
                     </tr>
                     {{--
