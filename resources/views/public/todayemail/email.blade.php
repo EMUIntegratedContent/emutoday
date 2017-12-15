@@ -5,7 +5,8 @@
         font-size:16px;
         margin: 0 !important;
         padding: 0;
-        background-color: #f3f2ee;
+        /*background-color: #f3f2ee;*/
+        background-color: #d6d2c4;
     }
     table {
         border-collapse: collapse;
@@ -104,7 +105,7 @@
 
     .outer {
         margin: 0 auto;
-        width: 100%;
+        width: 98%;
         max-width: 600px;
         }
     .full-width-image img {
@@ -215,7 +216,8 @@
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
-    <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer">
+    <p style="font-size: 12px; text-align: center;"><a href="https://today.emich.edu/">Read EMU Today online</a></p>
+    <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer" style="padding-top: .3rem;">
 
         <tr>
             <td align="center" valign="top">
@@ -228,8 +230,8 @@
                     </tr>
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
-                            <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 32px; font-weight: 600;">The Week at EMU</h2>
-                            <p>A Weekly Digest from <span style="color: #046A38">EMU</span> Today </p>
+                            <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 32px; line-height: 34px; font-weight: 500;">The Week at EMU</h2>
+                            <p style="margin-bottom: 10px;">A Weekly Digest from <span style="color: #046A38">EMU</span> Today </p>
                         </td>
                     </tr>
                     {{--
