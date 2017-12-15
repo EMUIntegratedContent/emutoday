@@ -82,6 +82,10 @@
         font-size: 18px;
         padding: 12px 0 8px;
         line-height: 22px;
+        text-decoration: none;
+    }
+    h3.mid a{
+        text-decoration: none;
     }
    
     h4{
