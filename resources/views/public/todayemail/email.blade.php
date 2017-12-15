@@ -228,7 +228,8 @@
                     </tr>
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
-                            <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 32px; font-weight: 600;"><span style="color: #046A38">EMU</span> Today Digest</h2>
+                            <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 32px; font-weight: 600;">The Week at EMU</h2>
+                            <p>A Weekly Digest from <span style="color: #046A38">EMU</span> Today </p>
                         </td>
                     </tr>
                     {{--
