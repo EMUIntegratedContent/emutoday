@@ -8,7 +8,7 @@
         /*background-color: #f3f2ee;*/
         /*background-color: #d6d2c4;*/
         /*background-color: #e6e6e6;*/
-        background-color: #cccccc;
+        background-color: #d6d6d6;
     }
     table {
         border-collapse: collapse;
