@@ -79,8 +79,7 @@
         font-size: 20px;
     }
     h3.smaller{
-        font-size: 18px;
-        line-height: 22px;
+        font-size: 19px;
     }
     h4{
         font-size: 18px;
@@ -297,7 +296,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
-                                                                                <h3><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
+                                                                                <h3.smaller><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
                                                                                 <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
