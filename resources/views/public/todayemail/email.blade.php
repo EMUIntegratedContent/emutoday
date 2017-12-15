@@ -118,6 +118,11 @@
         margin-left: 1rem;
         margin-right: 1rem;
     }
+    .indent-less {
+        margin-left: .5rem;
+        margin-right: .5rem;
+    }
+
 
     .indent-more {
         padding-left: 35px;
@@ -283,7 +288,7 @@
 
                     <tr>
                         <td >
-                            <table class="indent">
+                            <table class="indent-less">
 
 
                                 <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
@@ -356,7 +361,7 @@
                     @endif
                     <tr>
                         <td valign="top" >
-                            <div class="indent">
+                            <div class="indent-less">
 
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
@@ -371,7 +376,7 @@
                     <tr>
                         <td valign="top">
 
-                            <div class="indent">
+                            <div class="indent-less">
                                 <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
 
                                 <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
@@ -387,7 +392,7 @@
                     </tr>
                     <tr>
                         <td valign="middle">
-                            <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
+                            <div class="indent-less" style="border-top: 3px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
 
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
