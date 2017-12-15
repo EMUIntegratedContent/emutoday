@@ -259,7 +259,7 @@
                     </tr>
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
-                            <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 32px; line-height: 38px; font-weight: 500;">The Week at EMU</h2>
+                            <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;">The Week at EMU</h2>
                             <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="https://today.emich.edu/"><span style="color: #046A38">EMU</span> Today </a></p>
                         </td>
                     </tr>
