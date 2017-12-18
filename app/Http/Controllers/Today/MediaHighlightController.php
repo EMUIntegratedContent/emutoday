@@ -28,7 +28,7 @@ class MediaHighlightController extends Controller
    */
   public function index(Request $request)
   {
-      $perPage = $request->get('perpage', 10);
+      $perPage = $request->get('perpage', 20);
       $searchterm = $request->get('q');
       $searchTag = $request->get('tag', null);
 

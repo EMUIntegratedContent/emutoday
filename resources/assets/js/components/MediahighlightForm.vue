@@ -15,7 +15,7 @@
     <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
-        <!-- First Name -->
+        <!-- Title -->
         <div v-bind:class="formGroup">
           <label>
             Title <span v-bind:class="iconStar" class="reqstar"></span>
@@ -28,10 +28,13 @@
     </div>
     <div class="row">
       <div v-bind:class="md12col">
-        <!-- Last Name -->
+        <!-- URL -->
         <div v-bind:class="formGroup">
           <label>URL <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.url" class="form-control" v-bind:class="[formErrors.url ? 'invalid-input' : '']" name="url" type="text">
+          <div class="input-group">
+            <span class="input-group-addon">http://</span>
+            <input v-model="record.url" class="form-control" v-bind:class="[formErrors.url ? 'invalid-input' : '']" name="url" type="text">
+          </div>
           <p v-if="formErrors.url" class="help-text invalid">{{formErrors.url}}</p>
         </div>
       </div>
