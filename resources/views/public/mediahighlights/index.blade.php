@@ -3,6 +3,7 @@
 <div id="experts-area">
     <div class="row">
         <div class="large-3 medium-3 small-12 columns">
+          <h3>Search Highlights</h3>
           @include('public.mediahighlights.subviews.searchform')
         </div>
         <div class="large-9 medium-9 small-12 columns ">

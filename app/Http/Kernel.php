@@ -40,6 +40,10 @@ class Kernel extends HttpKernel
           \Emutoday\Http\Middleware\ExpertsMiddleware::class,
         ],
 
+        'mediahighlights' => [
+          \Emutoday\Http\Middleware\MediaHighlightMiddleware::class,
+        ],
+
         'api' => [
             'throttle:60,1',
         ],

@@ -16,7 +16,7 @@ class CreateMediaHighlightsTable extends Migration
         Schema::create('media_highlights', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('added_by')->unsigned()->nullable();
-            $table->string('title', 100);
+            $table->string('title', 255);
             $table->string('url');
             $table->string('source');
             $table->dateTime('start_date');

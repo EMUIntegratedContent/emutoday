@@ -99,6 +99,10 @@ class User extends Authenticatable
         return false;
     }
 
+    public function isEditor() {
+        return $this->hasRole('editor');
+    }
+
     public function isExpertsEditor() {
         return $this->hasRole('experts');
     }
