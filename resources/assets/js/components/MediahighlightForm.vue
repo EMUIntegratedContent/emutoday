@@ -454,7 +454,7 @@ module.exports = {
       this.formMessage.isOk = false
       this.formMessage.isErr = false
     },
-
+    
     /**
      * Controls if add tag fiels are shown
      */
