@@ -91,7 +91,7 @@
     h3.mid a{
         text-decoration: none;
     }
-   
+
     h4{
         font-size: 18px;
     }
@@ -99,6 +99,7 @@
         font-size: 16px;
     }
     h2.moveover{padding: 8px 0 8px 8px;}
+    h2 a{text-decoration: none;}
     p {
         padding: 0;
         margin: 0;

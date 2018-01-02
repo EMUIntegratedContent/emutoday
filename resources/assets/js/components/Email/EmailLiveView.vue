@@ -25,7 +25,7 @@
                                     <img :alt="email.mainStories[0].email_images[0].caption" :src="email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                     <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
                                         <h2><a :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}</a></h2>
-                                        {{ email.mainStories[0].email_images[0].teaser | truncate '60' }}
+                                        {{ email.mainStories[0].email_images[0].teaser | truncate '90' }}
                                     </div>
                                 </article>
                               </template>
@@ -151,7 +151,7 @@
                                     <template v-if="email.events.length > 0">
                                       <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                         <li v-for="evt in email.events" style="list-style: none; margin-left: 0; clear: both;">
-                                          <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 12px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ evt.start_date | dateParse }} </div>
+                                          <div style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ evt.start_date | dateParse }} </div>
                                           <div style="width: 75%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" :href="event.full_url">{{ evt.title }}</a></div>
                                         </li>
                                       <ul>
@@ -296,14 +296,20 @@ h6 {
 }
 .h1 {
     font-size: 24px;
-
 }
 h2{
     font-size: 22px;
-
+}
+h2 a{
+    font-size: 22px;
+    font-weight: bold;
 }
 h3{
     font-size: 20px;
+}
+h3 a{
+  font-weight: bold;
+  text-decoration: none;
 }
 h4{
     font-size: 18px;
@@ -311,7 +317,10 @@ h4{
 h5, h6{
     font-size: 16px;
 }
-h2.moveover{padding: 12px 0 5px 8px;}
+h2.moveover{
+  padding: 12px 0 5px 8px;
+  font-weight: bold;
+}
 p {
     padding: 0;
     margin: 0;
