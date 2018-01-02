@@ -314,7 +314,7 @@
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
                                                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
-                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
+                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 105, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
                                                             </table>
@@ -338,7 +338,7 @@
                                                                 <tr>
                                                                         <td class="text">
                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
-                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
+                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 105, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
                                                             </table>

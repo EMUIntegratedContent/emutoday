@@ -60,7 +60,7 @@
                                                                   <tr>
                                                                           <td class="text" style="text-align:left;">
                                                                                   <h3><a :href="email.mainStories[1].full_url">{{ email.mainStories[1].email_images[0].title }}</a></h3>
-                                                                                  <p>{{ email.mainStories[1].email_images[0].teaser | truncate '90' }}</p>
+                                                                                  <p>{{ email.mainStories[1].email_images[0].teaser | truncate '105' }}</p>
                                                                           </td>
                                                                   </tr>
                                                               </table>
@@ -89,7 +89,7 @@
                                                                     <tr>
                                                                             <td class="text">
                                                                                     <h3><a :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}</a></h3>
-                                                                                    <p>{{ email.mainStories[2].email_images[0].teaser | truncate '90' }}</p>
+                                                                                    <p>{{ email.mainStories[2].email_images[0].teaser | truncate '105' }}</p>
                                                                             </td>
                                                                     </tr>
                                                                 </table>
