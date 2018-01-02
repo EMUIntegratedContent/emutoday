@@ -57,28 +57,28 @@ class MainController extends Controller
 
       }
 
-        $currentStorysBasic = $this->story->where([
-          ['is_approved', 1],
-          ['is_archived', 0],
-          ['start_date', '<=', $currentDateTimeStart],
-          ['priority', '>', 0]
-        ])->whereIn('story_type', ['news', 'statement', 'advisory'])
-        ->orderBy('priority','desc')
-        ->orderBy('start_date','asc')
-        ->take($this->recordLimitNews)->get();
+      $currentStorysBasic = $this->story->where([
+        ['is_approved', 1],
+        ['is_archived', 0],
+        ['start_date', '<=', $currentDateTimeStart],
+        ['priority', '>', 0]
+      ])
+      ->whereIn('story_type', ['story', 'news', 'statement', 'advisory'])
+      ->orderBy('priority','desc')
+      ->orderBy('start_date','asc')
+      ->take($this->recordLimitNews)->get();
 
-        //make sure there are enough stories with a priority over 0
-        //if not requery with out priority limitation
-        if($currentStorysBasic->count() < $this->recordLimitNews ){
-          $currentStorysBasic = $this->story->where([
-            ['is_approved', 1],
-            ['is_archived', 0],
-            ['start_date', '<=', $currentDateTimeStart]
-          ])->whereIn('story_type', ['news', 'statement', 'advisory'])
-          ->orderBy('priority','desc')
-          ->orderBy('start_date','desc')
-          ->take($this->recordLimitNews)->get();
-        }
+      //make sure there are enough announcements with a priority over 0
+      //if not requery with out priority limitation
+      //if($currentStorysBasic->count() < $this->recordLimitNews ){
+      //  $currentStorysBasic = $this->story->where([
+      //    ['is_approved', 1],
+      //    ['is_archived', 0],
+      //    ['start_date', '<=', $currentDateTimeStart]
+      //  ])->whereIn('story_type', ['news', 'statement', 'advisory'])
+      //  ->orderBy('start_date','asc')
+      //  ->take($this->recordLimitNews)->get();
+      //}
 
 
         $currentAnnouncements = $this->announcement->where([
