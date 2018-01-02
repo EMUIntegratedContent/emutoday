@@ -213,12 +213,13 @@
         .two-column .column {
             max-width: 49.9% !important;
             width: 49.9%;
-            background-color: red;
-            color: red;
         }
          img.col-img{
             max-width: 100% !important;
             width: 100%;
+        }
+        *{
+          color:red;
         }
 
 }
