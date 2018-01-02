@@ -98,7 +98,7 @@
     h5, h6{
         font-size: 16px;
     }
-    h2.moveover{padding: 8px 0 8px 8px;}
+    h2.moveover{padding: 8px 0 8px 8px; text-decoration: underline;;}
     h2 a{text-decoration: none;}
     p {
         padding: 0;
