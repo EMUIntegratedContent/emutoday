@@ -248,7 +248,6 @@
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:96%; font-family: 'Poppins', arial, sans-serif;">
     <p class="direct-today-link"><a href="https://today.emich.edu/">Read EMU Today online</a></p>
     <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer" style="padding-top: .3rem;">
-
         <tr>
             <td align="center" valign="top">
                 <table border="0" style="max-width: 100%;" id="emailContainer">
@@ -256,7 +255,6 @@
                         <td class="full-width-image">
                             <a href="http://www.emich.edu/" style="margin: 0; padding: 0;"><img src="{{ url('/') }}/assets/imgs/email/topsection.png" alt="EMU Today email blast logo" /></a>
                         </td>
-
                     </tr>
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
@@ -280,23 +278,18 @@
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                 <div style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
                                     <h2 class="indent"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }}</a></h2>
-                                    <p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 90, $end = '...') !!}</p>
+                                    <p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>
                                 </div>
                             </article>
                         </td>
                     </tr>
                     {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
-
                     <tr>
                         <td >
                             <table class="indent-less">
-
-
                                 <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
                                 <tr>
-
                                     <td class="two-column">
-
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
@@ -314,7 +307,7 @@
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
                                                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
-                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
+                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
                                                             </table>
@@ -338,7 +331,7 @@
                                                                 <tr>
                                                                         <td class="text">
                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
-                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
+                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
                                                             </table>
@@ -353,9 +346,6 @@
                                         <![endif]-->
                                     </td>
                                 </tr>
-
-
-
                             </table>
                         </td>
                     </tr>
@@ -363,7 +353,6 @@
                     <tr>
                         <td valign="top" >
                             <div class="indent">
-
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
@@ -376,10 +365,8 @@
                     </tr>
                     <tr>
                         <td valign="top">
-
                             <div class="indent">
                                 <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
-
                                 <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                     @foreach($email->announcements as $announcement)
                                     <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
@@ -388,14 +375,12 @@
                                     @endforeach
                                 </ul>
                             </div>
-
                         </td>
                     </tr>
                     <tr>
                         <td valign="middle">
                             <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
-
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
@@ -404,7 +389,6 @@
                                     </li>
                                     @endforeach
                                 </ul>
-
                             </div>
                         </td>
                     </tr>
@@ -425,7 +409,6 @@
                                 </tr>
                             </table>
                         </td>
-
                     </tr>
                     <tr id="footer-row" style="background-color: #333333; margin-top: 5px; color: #ffffff; border:0;">
                         <td style="border:0; background-color: #333333; color: #ffffff;">
