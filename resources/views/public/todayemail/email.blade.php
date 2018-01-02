@@ -211,15 +211,12 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
-            max-width: 49.9% !important;
-            width: 49.9%;
+            max-width: 49% !important;
+            width: 49%;
         }
          img.col-img{
             max-width: 100% !important;
             width: 100%;
-        }
-        *{
-          color:red;
         }
 
 }
