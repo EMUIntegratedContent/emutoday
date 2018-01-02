@@ -292,7 +292,7 @@
                             <table class="indent-less">
 
 
-                                <tr><td><h2 class="moveover" style="margin-left:8px;"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
+                                <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
                                 <tr>
 
                                     <td class="two-column">
