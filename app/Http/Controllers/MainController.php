@@ -88,7 +88,6 @@ class MainController extends Controller
           ['start_date', '<=', $currentDateTimeStart],
           ['end_date', '>=', $currentDateTimeEnd],
         ])
-        ->whereBetween('priority', [0,99])
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
         ->take($this->recordLimitAnnouncements)->get();
