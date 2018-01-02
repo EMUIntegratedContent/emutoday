@@ -321,6 +321,7 @@ h5, h6{
 h2.moveover{
   padding: 12px 0 5px 8px;
   font-weight: bold;
+  text-decoration: underline;
 }
 p {
     padding: 0;
