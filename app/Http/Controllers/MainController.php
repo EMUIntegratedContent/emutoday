@@ -54,7 +54,6 @@ class MainController extends Controller
               ['is_archived', 0],
               ['start_date', '<=', $currentDateTimeStart]
           ])->first();
-
       }
 
       $currentStorysBasic = $this->story->where([
@@ -79,7 +78,6 @@ class MainController extends Controller
       //  ->orderBy('start_date','asc')
       //  ->take($this->recordLimitNews)->get();
       //}
-
 
         $currentAnnouncements = $this->announcement->where([
           ['is_approved', 1],
@@ -167,7 +165,6 @@ class MainController extends Controller
                 } else {
                     $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
                 }
-
               } else {
                 $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
               }
@@ -176,7 +173,6 @@ class MainController extends Controller
         } else {
             $storyImages = null;
         }
-
 
         $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
           $query->where('name', 'video');

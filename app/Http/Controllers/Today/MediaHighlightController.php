@@ -59,7 +59,10 @@ class MediaHighlightController extends Controller
                                 return $item->start_date->format('M d, Y');
                               });
           } else {
-            $highlightDates = MediaHighlight::orderBy('start_date', 'desc');
+            $highlightDates = MediaHighlight::
+                                whereHas('tags', function($query) use ($searchTag){
+                                    $query->where('name', $searchTag);
+                                })->orderBy('start_date', 'desc');
 
             // Get total number of records prior to offset for pagination!
             $totalRecords = $highlightDates->count();
@@ -67,9 +70,7 @@ class MediaHighlightController extends Controller
             $highlightDates = $highlightDates
                               ->skip($offset)
                               ->take($perPage)
-                              ->whereHas('tags', function($query) use ($searchTag){
-                                $query->where('name', $searchTag);
-                              })
+
                               ->get()
                               ->groupBy(function($item){
                                 return $item->start_date->format('M d, Y');
