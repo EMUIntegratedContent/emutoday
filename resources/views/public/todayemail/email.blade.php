@@ -175,7 +175,7 @@
         /*max-width: 300px;*/
         /*max-width: 50%;*/
         /*max-width: 280px;*/
-        max-width: 48%;
+        max-width: 30%;
         display: inline-block;
         vertical-align: top;
         position: relative;
