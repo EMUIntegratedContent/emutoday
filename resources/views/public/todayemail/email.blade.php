@@ -175,6 +175,7 @@
         /*max-width: 300px;*/
         /*max-width: 50%;*/
         /*max-width: 280px;*/
+        max-width: 48%;
         display: inline-block;
         vertical-align: top;
         position: relative;
@@ -209,7 +210,7 @@
 
     }
 
-@media only screen and (min-width: 480px) and (max-width: 610px) {
+@media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
             max-width: 49.9% !important;
             width: 49.9%;
@@ -220,7 +221,7 @@
         }
 
 }
-  @media only screen and (min-width: 10px) and (max-width: 480px){
+  @media only screen and (min-width: 10px) and (max-width: 479px){
       .two-column .column {
             max-width: 100% !important;
             width: 100%;
