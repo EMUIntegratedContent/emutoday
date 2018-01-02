@@ -209,7 +209,7 @@
 
     }
 
-@media only screen and (min-width: 480px) and (max-width: 609px) {
+@media only screen and (min-width: 480px) and (max-width: 610px) {
         .two-column .column {
             max-width: 49.9% !important;
             width: 49.9%;
@@ -220,7 +220,7 @@
         }
 
 }
-  @media only screen and (min-width: 10px) and (max-width: 479px){
+  @media only screen and (min-width: 10px) and (max-width: 480px){
       .two-column .column {
             max-width: 100% !important;
             width: 100%;
