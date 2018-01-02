@@ -24,6 +24,7 @@ class MailgunApiController extends ApiController
 
     // Secure the Webhook endpoint (Note: API key comes from .env file)
     if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['token'], $mailgun_post_data['timestamp'], $mailgun_post_data['signature'])){
+      var_dump($mailgun_post_data);
       if(!$this->incrementMailgunStat($mailgun_post_data['today-email-id'], 'open')){
         return $this->setStatusCode(400)
         ->respond('Email not found.');
