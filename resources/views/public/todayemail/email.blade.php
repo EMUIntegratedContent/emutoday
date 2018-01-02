@@ -261,7 +261,7 @@
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
                             <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;">The Week at EMU</h2>
-                            <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="{{ url('/') }}"><span style="color: #046A38">EMU</span> Today </a></p>
+                            <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="https://today.emich.edu/"><span style="color: #046A38">EMU</span> Today </a></p>
                         </td>
                     </tr>
                     {{--
@@ -280,7 +280,7 @@
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                 <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
                                     <h2><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }}</a></h2>
-                                    <p>{!! str_limit($mainStoryImages[0]->teaser, $limit = 135, $end = '...') !!}</p>
+                                    <p>{!! str_limit($mainStoryImages[0]->teaser, $limit = 90, $end = '...') !!}</p>
                                 </div>
                             </article>
                         </td>
@@ -314,7 +314,7 @@
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
                                                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
-                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>
+                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 90, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
                                                             </table>
@@ -338,7 +338,7 @@
                                                                 <tr>
                                                                         <td class="text">
                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
-                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>
+                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 90, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
                                                             </table>
