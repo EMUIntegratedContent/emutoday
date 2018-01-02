@@ -175,7 +175,6 @@
         /*max-width: 300px;*/
         /*max-width: 50%;*/
         /*max-width: 280px;*/
-        max-width: 30%;
         display: inline-block;
         vertical-align: top;
         position: relative;
@@ -214,6 +213,8 @@
         .two-column .column {
             max-width: 49.9% !important;
             width: 49.9%;
+            background-color: red;
+            color: red;
         }
          img.col-img{
             max-width: 100% !important;
