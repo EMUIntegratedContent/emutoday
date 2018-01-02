@@ -25,7 +25,7 @@
                                     <img :alt="email.mainStories[0].email_images[0].caption" :src="email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                     <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
                                         <h2><a :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}</a></h2>
-                                        {{ email.mainStories[0].email_images[0].teaser | truncate '130' }}
+                                        {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}
                                     </div>
                                 </article>
                               </template>
