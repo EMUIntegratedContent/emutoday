@@ -115,7 +115,7 @@ class MainController extends Controller
           ['type', 'general'],
           ['start_date', '<=', $currentDateTimeStart],
           ['end_date', '>=', $currentDateTimeEnd],
-          ['priority', 100],
+          ['priority', 1000000],
         ])
         ->orderBy('start_date', 'desc')
         ->first();

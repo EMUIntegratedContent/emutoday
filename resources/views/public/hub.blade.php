@@ -96,7 +96,10 @@
                   <div class="large-6 medium-12 small-12 large-pull-6 columns">
                     <ul>
                       @foreach ($currentAnnouncements as $announcement)
-                      <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
+                        {{-- priority of 1000000 is a special announcement and will appear in its own box --}}
+                        @if($announcement->priority != 1000000)
+                          <li><a href="/announcement/{{$announcement->id}}">{{$announcement->title}}</a></li>
+                        @endif
                       @endforeach
                       <li><a href="/announcement" class="bottom-tab-link">More Announcements</a></li>
                     </ul>

@@ -27,7 +27,10 @@
                   </vui-flip-switch>
                 </div>
               </template>
-              <button v-show="pid == 'item-elevated'" type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
+              <template v-if="pid == 'item-elevated'">
+                  <label><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
+                  <button type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
+              </template>
           </form>
         </div><!-- /.col-md-12 -->
       </div><!-- /.row -->
@@ -229,6 +232,16 @@ module.exports  = {
     this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
   },
   computed: {
+    isSpecialAnnouncementPresent: function(){
+      if(this.elevatedAnnouncements){
+        for(i = 0; i < this.elevatedAnnouncements.length; i++){
+          if(this.elevatedAnnouncements[i].priority == 1000000){
+            return true;
+          }
+        }
+      }
+      return false;
+    },
     specialItem: function(){
       let extrasep;
       // if (this.pid == 'items-live' && this.index === 3) {
@@ -271,9 +284,7 @@ module.exports  = {
           timepartstatus = 'event-negative';
         } else {
           timepartstatus = 'event-positive';
-
         }
-
       }
       if (this.pid == 'items-live' && this.index === 3) {
         extrasep = 'last-special-event'
@@ -405,6 +416,22 @@ module.exports  = {
         this.emitAnnouncementElevate(announcementObj)
       } else {
         this.emitAnnouncementDemote(announcementObj)
+      }
+    },
+    emitSpecialAnnouncementAdd: function(announcementObj){
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('special-announcement-added', announcementObj)
+    },
+    emitSpecialAnnouncementRemove: function(announcementObj){
+      // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      this.$dispatch('special-announcement-removed', announcementObj)
+    },
+    toggleEmitSpecialAnnouncement: function(announcementObj){
+      // function will run before this.checked is switched
+      if(!this.checked){
+        this.emitSpecialAnnouncementAdd(announcementObj)
+      } else {
+        this.emitSpecialAnnouncementRemove(announcementObj)
       }
     },
 

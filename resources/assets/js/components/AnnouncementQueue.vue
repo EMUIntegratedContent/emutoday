@@ -94,6 +94,7 @@
               pid="item-elevated"
               :item="item"
               :is="item-elevated"
+              :elevated-announcements="elevateditems"
             >
             </announcement-queue-item>
           </li>
@@ -325,6 +326,18 @@ export default {
           this.elevateditems.$remove(this.elevateditems[i])
           this.updateElevatedOrder()
         }
+      }
+    },
+    'special-announcement-added': function (announcementObj) {
+      if(announcementObj){
+        announcementObj.priority = 1000000 // 1000000 is an arbitrary high number used to denote a special announcement. There can only be ONE special announcement.
+        this.updateElevatedOrder()
+      }
+    },
+    'special-announcement-removed': function (announcementObj) {
+      if(announcementObj){
+        announcementObj.priority = this.elevateditems.length // remove the priority of 1000000 and set it to the length of the elevated items array
+        this.updateElevatedOrder()
       }
     },
   }

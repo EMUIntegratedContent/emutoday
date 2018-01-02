@@ -261,11 +261,17 @@ class AnnouncementController extends ApiController
   public function reorderElevatedAnnouncements(Request $request)
   {
     $elevatedAnnouncements = $request->all();
-
     $elevatedAnnouncementIds = array();
     for($i = 0; $i < count($elevatedAnnouncements); $i++){
       $announcement = Announcement::findOrFail($elevatedAnnouncements[$i]['id']);
-      $announcement->priority = count($elevatedAnnouncements) - $i; //set new priority
+
+      // Set new priority.
+      if($elevatedAnnouncements[$i]['priority'] == 1000000){
+        $announcement->priority = 1000000; //this was checked as a special announcement
+      } else {
+        $announcement->priority = count($elevatedAnnouncements) - $i;
+      }
+
       $announcement->save();
       $elevatedAnnouncementIds[] = $announcement->id; //prevent this announcement's priority from being set to 0
     }

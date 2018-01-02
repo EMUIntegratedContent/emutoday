@@ -145,7 +145,7 @@
     </li>
 @endif
 @if(Gate::check('admin') || Gate::check('editor'))
-    <li class="treeview {{ set_active('admin/email*') }}">
+    <li class="treeview {{ set_active('admin/mediahighlights*') }}">
       <a href="#"><i class="fa fa-newspaper-o"></i> <span>Media Highlights</span></a>
       <ul class="treeview-menu">
         <li class="{{ set_active('admin/mediahighlights*') }}"><a href="/admin/mediahighlights"><i class="fa fa-list"></i> <span>List</span></a></li>
