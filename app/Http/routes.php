@@ -237,6 +237,11 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('hub', 'MainController@index');
 
+    Route::get('feedback', function() {
+      return view('public.feedback');
+    });
+    Route::post('feedback', 'MainController@feedbackForm');
+
     Route::get('search','SearchController@search' );
     Route::get('search/story/{id}','SearchController@story' );
     Route::get('search/event/{id}','SearchController@event' );
