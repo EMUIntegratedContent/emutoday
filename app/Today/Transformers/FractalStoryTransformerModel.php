@@ -13,6 +13,8 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
     public function transform(Story $story)
     {
         $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get();
+        $smallImageTypeIds = Imagetype::select('id')->where('type', 'small')->get();
+
         $author = Author::find($story->author_id);
 
         return [
@@ -41,7 +43,8 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'author' => ($story->author_id == 0)? null:$story->author,
             'contact' => ($story->contact_id == 0)? null:$story->contact,
             'author_object' => $author,
-            'email_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->get(), // need for email builder
+            'small_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $smallImageTypeIds)->get(), // need for email builder (sub-main stories)
+            'email_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->get(), // need for email builder (main stories)
             'full_url' => url('/') . '/story/' . $story->story_type . '/' . $story->id,
             'edit_url' => url('/') . '/admin/queueall/story/' . $story->story_type . '/' . $story->id . '/edit'
         ];

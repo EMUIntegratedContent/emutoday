@@ -8,6 +8,10 @@
             <li>Flagged as "Ready"</li>
             <li>Have a photo of type emutoday_email</li>
           </ol>
+          <ul>
+            <li>The <strong>top story</strong> image comes from the <mark>emutoday_email</mark> image type as defined in the story's admin area.</li>
+            <li>The <strong>sub-main</strong> images come from the <mark>emutoday_small</mark> image type as defined in the story's admin area.</li>
+            <li>For the main and both sub-main stories, the <strong>story title</strong> comes from the <mark>"Title/Header"</mark> field in the story's <mark>emutoday_email</mark> image editor area, while the <strong>subtext</strong> comes from the <mark>"Teaser/Byline"</mark> field of that same area.</p>
         </div>
     </div>
     <hr />

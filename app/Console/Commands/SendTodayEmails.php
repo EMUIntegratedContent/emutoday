@@ -60,16 +60,21 @@ class SendTodayEmails extends Command
       foreach($emails as $email){
         $mainStories = $email->mainstories()->orderBy('order', 'asc')->get(); // need main stories in order as they appear in the email
         $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get(); // get email image types
+        $smallImageTypeIds = Imagetype::select('id')->where('type', 'small')->get(); // get small image types (for sub-main stories)
 
         $mainStoryImages = array(); // collect email story images
+        $smallStoryImages = array(); // collect small story images (for sub-main stories)
         foreach($mainStories as $mainStory){
           $storyImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $emailImageTypeIds)->first(); // get email image for the main story
           $mainStoryImages[] = $storyImage;
+
+          $smallStoryImage = $mainStory->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text')->whereIn('imagetype_id', $smallImageTypeIds)->first(); // get email image for the main story
+          $smallStoryImages[] = $smallStoryImage;
         }
 
         // Send one email to each recipient/mailing list
         foreach($email->recipients as $recipient){
-          Mail::send('public.todayemail.email', ['email' => $email, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages], function ($message) use ($email, $recipient){
+          Mail::send('public.todayemail.email', ['email' => $email, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages], function ($message) use ($email, $recipient){
               $message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'The Week at EMU');
               $message->subject($email->title);
               $message->to($recipient->email_address);
