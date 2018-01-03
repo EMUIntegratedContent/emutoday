@@ -252,4 +252,8 @@ class MainController extends Controller
 
         return view('public.searchresults', compact('searchTerm', 'searchStoryResults','searchEventResults','searchAnnouncementResults'));
       }
+
+      public function forTheMediaIndex(){
+        return view('public.forthemedia');
+      }
     }
