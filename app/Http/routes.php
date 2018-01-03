@@ -220,6 +220,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 });
 
     Route::get('/', 'MainController@index')->name('/');
+    Route::get('forthemedia', 'MainController@forTheMediaIndex');
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
     Route::get('announcement/user/announcements', 'Today\AnnouncementController@userAnnouncements');

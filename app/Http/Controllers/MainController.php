@@ -248,9 +248,11 @@ class MainController extends Controller
         $searchEventResults = Event::search($searhTermWild, false)->select('title','description','submitter','id')->paginate(10);
         $searchAnnouncementResults = Announcement::search($searhTermWild, false)->select('title','announcement','submitter','id')->paginate(10);
 
-
-
         return view('public.searchresults', compact('searchTerm', 'searchStoryResults','searchEventResults','searchAnnouncementResults'));
+      }
+
+      public function forTheMediaIndex(){
+        return view('public.forthemedia');
       }
 
       /**
@@ -282,18 +284,5 @@ class MainController extends Controller
         // Return success to view
         $data = 'Thank you, we apprieciate your feedback!';
         return view('public.feedback', compact('data'));
-      }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    //
+  }
