@@ -270,12 +270,11 @@ class MainController extends Controller
         $subscribe = empty($request->subscribe) ? false:true;
 
         // Send feeback to emu_today
-        // $to      = "emu_today@emich.edu";
-        $to      = "bkosciel@emich.edu";
+        $to      = "emu_today@emich.edu";
         $subject = $request->email." has sent feedback:\n\n";
         $message = $request->email." has sent feedback:\n\n" .
                    $request->comments . "\n\n".
-                   ($subscribe ? "P.S. I would like to subscribe for This Week at EMU" : "") .
+                   ($subscribe ? "P.S. I would like to subscribe for This Week at EMU" : "");
         $headers = 'From: '.$request->email. "\r\n" .
         'Reply-To: '.$request->email."\r\n" .
         'X-Mailer: PHP/' . phpversion();
