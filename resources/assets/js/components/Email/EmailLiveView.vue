@@ -153,7 +153,7 @@
                                       <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                         <li v-for="evt in email.events" style="list-style: none; margin-left: 0; clear: both;">
                                           <div style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ evt.start_date | dateParse }} </div>
-                                          <div style="width: 75%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" :href="event.full_url">{{ evt.title }}</a></div>
+                                          <div style="width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" :href="event.full_url">{{ evt.title }}</a></div>
                                         </li>
                                       <ul>
                                     </template>

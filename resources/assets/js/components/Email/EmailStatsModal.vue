@@ -31,7 +31,7 @@
         <div class="modal-footer">
           <div class="row">
             <div class="col-xs-12 col-sm-8">
-              <p>For more complete statistcs, log in to <a href="https://app.mailgun.org" target="_blank">Mailgun</a></p>
+              <p>For more complete statistcs, log in to <a href="https://app.mailgun.com" target="_blank">Mailgun</a></p>
             </div>
             <div class="col-xs-12 col-sm-4 text-right">
               <button type="button" id="closeBtn" class="btn btn-default" data-dismiss="modal">Close</button>
