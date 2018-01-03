@@ -99,7 +99,7 @@ class PageController extends Controller
             $storys = Story::where([
                                 ['story_type','!=' ,'news'],
                                 ['is_approved',1],
-                    ])->with('images')->get();
+                    ])->with('images')->orderBy('id', 'desc')->get();
             $storyimgs = $this->storyImage->where([
                                                 ['group','!=','news'],
                                                 ['image_type', 'small'],
