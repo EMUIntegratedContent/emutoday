@@ -370,7 +370,11 @@
                                 <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                     @foreach($email->announcements as $announcement)
                                     <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
+                                      @if($announcement->link != '')
                                         <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
+                                      @else
+                                        <a style="text-decoration: none; " href="{{ url('/') . '/announcement/' . $announcement->id }}">{{ $announcement->title }}</a>
+                                      @endif
                                     </li>
                                     @endforeach
                                 </ul>

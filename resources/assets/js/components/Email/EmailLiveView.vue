@@ -134,7 +134,8 @@
                                   <template v-if="email.announcements.length > 0">
                                     <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                       <li v-for="announcement in email.announcements" style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
-                                        <a style="text-decoration: none;" :href="announcement.link">{{ announcement.title }}</a>
+                                        <a v-if="announcement.link != ''" style="text-decoration: none;" :href="announcement.link">{{ announcement.title }}</a>
+                                        <a v-else style="text-decoration: none; " :href="'https://today.emich.edu/announcement/' + announcement.id">{{ announcement.title }}</a>
                                       </li>
                                     <ul>
                                   </template>
