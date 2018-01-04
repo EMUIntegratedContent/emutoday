@@ -391,7 +391,7 @@
                             <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
-                                    @foreach($events as $event)
+                                    @foreach($email->events as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
                                         <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 12px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ $event->start_date->format('M j') }} </div>
                                         <div style="width: 75%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" href="{{ url('/') . '/calendar/' . $event->start_date->format('Y') . '/' . $event->start_date->format('m') . '/' . $event->start_date->format('d') . '/' . $event->id }}">{{ $event->title }}</a></div>
