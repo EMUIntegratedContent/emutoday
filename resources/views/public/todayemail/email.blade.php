@@ -356,7 +356,12 @@
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
-                                    <a style="text-decoration: none;" href="{{ url('/') . '/story/' . $story->story_type . '/' . $story->id }}">{{ $story->title }}</a>
+                                    @if($story->story_type == 'external')
+                                      {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
+                                      <a style="text-decoration: none;" href="{{$story->small_images[0]->link}}">{{ $story->title }}</a>
+                                    @else
+                                      <a style="text-decoration: none;" href="{{ url('/') . '/story/' . $story->story_type . '/' . $story->id }}">{{ $story->title }}</a>
+                                    @endif
                                 </li>
                                 @endforeach
                             </ul>
