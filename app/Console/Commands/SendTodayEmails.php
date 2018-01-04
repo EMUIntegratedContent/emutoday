@@ -72,9 +72,11 @@ class SendTodayEmails extends Command
           $smallStoryImages[] = $smallStoryImage;
         }
 
+        $events = $email->events()->sortBy('order');
+
         // Send one email to each recipient/mailing list
         foreach($email->recipients as $recipient){
-          Mail::send('public.todayemail.email', ['email' => $email, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages], function ($message) use ($email, $recipient){
+          Mail::send('public.todayemail.email', ['email' => $email, 'events' => $events, 'mainStories' => $mainStories, 'mainStoryImages' => $mainStoryImages, 'smallStoryImages' => $smallStoryImages], function ($message) use ($email, $recipient){
               $message->from(env('MAIL_USERNAME', 'noreply@today.emich.edu'), 'The Week at EMU');
               $message->subject($email->title);
               $message->to($recipient->email_address);
