@@ -30,7 +30,7 @@ class Email extends Model
 
   public function events()
   {
-      return $this->belongsToMany('Emutoday\Event', 'email_event')->withPivot('order')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Event', 'email_event')->withPivot('order')->orderBy('order')->withTimestamps();
   }
 
   /**
