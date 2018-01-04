@@ -287,7 +287,7 @@
                     <tr>
                         <td >
                             <table class="indent-less">
-                                <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">News Stories</a></h2></td></tr>
+                                <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">More Stories</a></h2></td></tr>
                                 <tr>
                                     <td class="two-column">
                                         <!--[if (gte mso 9)|(IE)]>
