@@ -72,7 +72,7 @@ class SendTodayEmails extends Command
           $smallStoryImages[] = $smallStoryImage;
         }
 
-        $events = $email->events()->sortBy('order');
+        $events = $email->events()->orderBy('order');
 
         // Send one email to each recipient/mailing list
         foreach($email->recipients as $recipient){
