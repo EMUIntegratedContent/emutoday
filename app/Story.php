@@ -203,6 +203,14 @@ class Story extends Model
 
         }
 
+        public function getExternalLink(){
+          if($this->story_type == 'external'){
+            return 'https://bills.nfl.com';
+          }
+
+          return;
+        }
+
 
 
         /** ************* ACCESSORS ************** */

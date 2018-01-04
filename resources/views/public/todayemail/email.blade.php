@@ -358,7 +358,7 @@
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
-                                      <a style="text-decoration: none;" href="{{$story->small_images[0]->link}}">{{ $story->title }}</a>
+                                      <a style="text-decoration: none;" href="{{$story->getExternalLink()}}">{{ $story->title }}</a>
                                     @else
                                       <a style="text-decoration: none;" href="{{ url('/') . '/story/' . $story->story_type . '/' . $story->id }}">{{ $story->title }}</a>
                                     @endif
