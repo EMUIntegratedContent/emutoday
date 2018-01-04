@@ -354,7 +354,7 @@
                         <td valign="top" >
                             <div class="indent">
                             <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
-                                @foreach($email->stories as $story)
+                                @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
@@ -373,7 +373,7 @@
                             <div class="indent">
                                 <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                                 <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
-                                    @foreach($email->announcements as $announcement)
+                                    @foreach($email->announcements()->get() as $announcement)
                                     <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                       @if($announcement->link != '')
                                         <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>

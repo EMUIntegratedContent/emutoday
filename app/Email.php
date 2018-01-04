@@ -25,7 +25,7 @@ class Email extends Model
 
   public function announcements()
   {
-      return $this->belongsToMany('Emutoday\Announcement', 'email_announcement')->withPivot('order')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Announcement', 'email_announcement')->withPivot('order')->orderBy('order')->withTimestamps();
   }
 
   public function events()
@@ -38,7 +38,7 @@ class Email extends Model
    */
   public function mainstories()
   {
-      return $this->belongsToMany('Emutoday\Story', 'email_mainstory')->withPivot('order')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Story', 'email_mainstory')->withPivot('order')->orderBy('order')->withTimestamps();
   }
 
   /**
@@ -46,7 +46,7 @@ class Email extends Model
    */
   public function stories()
   {
-      return $this->belongsToMany('Emutoday\Story', 'email_story')->withPivot('order')->withTimestamps();
+      return $this->belongsToMany('Emutoday\Story', 'email_story')->withPivot('order')->orderBy('order')->withTimestamps();
   }
 
   public function recipients()
