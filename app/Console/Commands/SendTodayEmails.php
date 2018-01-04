@@ -72,7 +72,7 @@ class SendTodayEmails extends Command
           $smallStoryImages[] = $smallStoryImage;
         }
 
-        $events = $email->events();
+        $events = $email->events()->get();
 
         // Send one email to each recipient/mailing list
         foreach($email->recipients as $recipient){
