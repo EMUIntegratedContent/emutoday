@@ -243,6 +243,11 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     });
     Route::post('feedback', 'MainController@feedbackForm');
 
+    Route::get('subscribe', function() {
+      return view('public.subscribe');
+    });
+    Route::post('subscribe', 'MainController@subscribeForm');
+
     Route::get('search','SearchController@search' );
     Route::get('search/story/{id}','SearchController@story' );
     Route::get('search/event/{id}','SearchController@event' );

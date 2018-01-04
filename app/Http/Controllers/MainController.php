@@ -266,15 +266,14 @@ class MainController extends Controller
           'comments' => 'required'
         ]);
 
-        // Does this person want to subscribe for the email?
-        $subscribe = empty($request->subscribe) ? false:true;
+        // Who is sending feedback?
+        $person = !empty($request->fname.$request->lname) ? $request->fname.' '.$request->lname : $request->email;
 
         // Send feeback to emu_today
         $to      = "emu_today@emich.edu";
-        $subject = $request->email." has sent feedback:\n\n";
-        $message = $request->email." has sent feedback:\n\n" .
-                   $request->comments . "\n\n".
-                   ($subscribe ? "P.S. I would like to subscribe for This Week at EMU" : "");
+        $subject = $person." has sent feedback:\n\n";
+        $message = $person." has sent feedback:\n\n" .
+                   $request->comments . "\n\n";
         $headers = 'From: '.$request->email. "\r\n" .
         'Reply-To: '.$request->email."\r\n" .
         'X-Mailer: PHP/' . phpversion();
@@ -283,5 +282,29 @@ class MainController extends Controller
         // Return success to view
         $data = 'Thank you, we apprieciate your feedback!';
         return view('public.feedback', compact('data'));
-    }
+      }
+
+      /**
+      * Process subscribe form
+      */
+      public function subscribeForm(Request $request)
+      {
+        // Validate, return errors if not valid
+        $this->validate($request,[
+          'email' => 'required|email',
+        ]);
+
+        // Send
+        $to      = "emu_today@emich.edu";
+        $subject = $request->email." would like to subscribe to EMU Today\n\n";
+        $message = $request->email." would like to subscribe to EMU Today\n\n";
+        $headers = 'From: '.$request->email. "\r\n" .
+        'Reply-To: '.$request->email."\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $message, $headers);
+
+        // Return success to view
+        $data = "Thank you, you have subscribed to EMU Today.";
+        return view('public.subscribe', compact('data'));
+      }
   }
