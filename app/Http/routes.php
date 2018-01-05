@@ -183,12 +183,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::resource('event', 'Api\EventController');
 
     Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', 'Api\AnnouncementController@queueLoad')->name('api_announcement_queueload');
-    Route::put('announcement/elevated/reorder', 'Api\AnnouncementController@reorderElevatedAnnouncements')->name('api_announcement_elevated_reorder');
+    Route::put('announcement/elevated/reorder/{atype?}', 'Api\AnnouncementController@reorderElevatedAnnouncements')->name('api_announcement_elevated_reorder');
     Route::patch('announcement/updateitem/{id}', 'Api\AnnouncementController@updateItem')->name('api_announcement_updateitem');
     Route::patch('announcement/archiveitem/{id}', 'Api\AnnouncementController@archiveItem')->name('api_announcement_archiveitem');
     Route::post('announcement/{id}/delete', 'Api\AnnouncementController@delete')->name('api_announcement_deleteitem');
     Route::get('announcement/archive', 'Api\AnnouncementController@archives')->name('api_announcement_archive');
-    Route::get('announcement/elevated', 'Api\AnnouncementController@getElevatedAnnouncements')->name('api_announcement_elevated');
+    Route::get('announcement/elevated/{atype?}', 'Api\AnnouncementController@getElevatedAnnouncements')->name('api_announcement_elevated');
     Route::post('announcement', 'Api\AnnouncementController@store')->name('api_announcement_storeitem'); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 

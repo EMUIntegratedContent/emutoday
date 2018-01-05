@@ -74,221 +74,194 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 },{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],16:[function(require,module,exports){
 
 },{}],17:[function(require,module,exports){
-var core = require('../../modules/_core');
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+var core  = require('../../modules/_core')
+  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
+module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
-
 },{"../../modules/_core":35}],18:[function(require,module,exports){
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
-module.exports = function create(P, D) {
+module.exports = function create(P, D){
   return $Object.create(P, D);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.create":87}],19:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.create":88}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-properties');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperties(T, D) {
+module.exports = function defineProperties(T, D){
   return $Object.defineProperties(T, D);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.define-properties":88}],20:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.define-properties":89}],20:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc) {
+module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.define-property":89}],21:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.define-property":90}],21:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-descriptor');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyDescriptor(it, key) {
+module.exports = function getOwnPropertyDescriptor(it, key){
   return $Object.getOwnPropertyDescriptor(it, key);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-descriptor":90}],22:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-descriptor":91}],22:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-names');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyNames(it) {
+module.exports = function getOwnPropertyNames(it){
   return $Object.getOwnPropertyNames(it);
 };
-
-},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-names":91}],23:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-own-property-names":92}],23:[function(require,module,exports){
 require('../../modules/es6.symbol');
 module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
-
-},{"../../modules/_core":35,"../../modules/es6.symbol":98}],24:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.symbol":99}],24:[function(require,module,exports){
 require('../../modules/es6.object.get-prototype-of');
 module.exports = require('../../modules/_core').Object.getPrototypeOf;
-
-},{"../../modules/_core":35,"../../modules/es6.object.get-prototype-of":92}],25:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.get-prototype-of":93}],25:[function(require,module,exports){
 require('../../modules/es6.object.is-extensible');
 module.exports = require('../../modules/_core').Object.isExtensible;
-
-},{"../../modules/_core":35,"../../modules/es6.object.is-extensible":93}],26:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.is-extensible":94}],26:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
-
-},{"../../modules/_core":35,"../../modules/es6.object.keys":94}],27:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.keys":95}],27:[function(require,module,exports){
 require('../../modules/es6.object.prevent-extensions');
 module.exports = require('../../modules/_core').Object.preventExtensions;
-
-},{"../../modules/_core":35,"../../modules/es6.object.prevent-extensions":95}],28:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.prevent-extensions":96}],28:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-
-},{"../../modules/_core":35,"../../modules/es6.object.to-string":96,"../../modules/es6.symbol":98,"../../modules/es7.symbol.async-iterator":99,"../../modules/es7.symbol.observable":100}],29:[function(require,module,exports){
+},{"../../modules/_core":35,"../../modules/es6.object.to-string":97,"../../modules/es6.symbol":99,"../../modules/es7.symbol.async-iterator":100,"../../modules/es7.symbol.observable":101}],29:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":97,"../../modules/web.dom.iterable":101}],30:[function(require,module,exports){
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+},{"../../modules/_wks-ext":85,"../../modules/es6.string.iterator":98,"../../modules/web.dom.iterable":102}],30:[function(require,module,exports){
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-
 },{}],31:[function(require,module,exports){
-module.exports = function () { /* empty */ };
-
+module.exports = function(){ /* empty */ };
 },{}],32:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-
 },{"./_is-object":51}],33:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = require('./_to-iobject');
-var toLength = require('./_to-length');
-var toAbsoluteIndex = require('./_to-absolute-index');
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
+var toIObject = require('./_to-iobject')
+  , toLength  = require('./_to-length')
+  , toIndex   = require('./_to-index');
+module.exports = function(IS_INCLUDES){
+  return function($this, el, fromIndex){
+    var O      = toIObject($this)
+      , length = toLength(O.length)
+      , index  = toIndex(fromIndex, length)
+      , value;
     // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
+    if(IS_INCLUDES && el != el)while(length > index){
       value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
+      if(value != value)return true;
+    // Array#toIndex ignores holes, Array#includes - not
+    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+      if(O[index] === el)return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-
-},{"./_to-absolute-index":76,"./_to-iobject":78,"./_to-length":79}],34:[function(require,module,exports){
+},{"./_to-index":77,"./_to-iobject":79,"./_to-length":80}],34:[function(require,module,exports){
 var toString = {}.toString;
 
-module.exports = function (it) {
+module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-
 },{}],35:[function(require,module,exports){
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 },{}],36:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
+module.exports = function(fn, that, length){
   aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
       return fn.call(that, a);
     };
-    case 2: return function (a, b) {
+    case 2: return function(a, b){
       return fn.call(that, a, b);
     };
-    case 3: return function (a, b, c) {
+    case 3: return function(a, b, c){
       return fn.call(that, a, b, c);
     };
   }
-  return function (/* ...args */) {
+  return function(/* ...args */){
     return fn.apply(that, arguments);
   };
 };
-
 },{"./_a-function":30}],37:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-
 },{}],38:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_fails')(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_fails":43}],39:[function(require,module,exports){
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
+var isObject = require('./_is-object')
+  , document = require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-
 },{"./_global":44,"./_is-object":51}],40:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-
 },{}],41:[function(require,module,exports){
 // all enumerable object keys, includes symbols
-var getKeys = require('./_object-keys');
-var gOPS = require('./_object-gops');
-var pIE = require('./_object-pie');
-module.exports = function (it) {
-  var result = getKeys(it);
-  var getSymbols = gOPS.f;
-  if (getSymbols) {
-    var symbols = getSymbols(it);
-    var isEnum = pIE.f;
-    var i = 0;
-    var key;
-    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+var getKeys = require('./_object-keys')
+  , gOPS    = require('./_object-gops')
+  , pIE     = require('./_object-pie');
+module.exports = function(it){
+  var result     = getKeys(it)
+    , getSymbols = gOPS.f;
+  if(getSymbols){
+    var symbols = getSymbols(it)
+      , isEnum  = pIE.f
+      , i       = 0
+      , key;
+    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
   } return result;
 };
+},{"./_object-gops":65,"./_object-keys":68,"./_object-pie":69}],42:[function(require,module,exports){
+var global    = require('./_global')
+  , core      = require('./_core')
+  , ctx       = require('./_ctx')
+  , hide      = require('./_hide')
+  , PROTOTYPE = 'prototype';
 
-},{"./_object-gops":64,"./_object-keys":67,"./_object-pie":68}],42:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if(own && key in exports)continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -296,11 +269,11 @@ var $export = function (type, name, source) {
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -311,10 +284,10 @@ var $export = function (type, name, source) {
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
+    if(IS_PROTO){
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
     }
   }
 };
@@ -326,241 +299,232 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
-
 },{"./_core":35,"./_ctx":36,"./_global":44,"./_hide":46}],43:[function(require,module,exports){
-module.exports = function (exec) {
+module.exports = function(exec){
   try {
     return !!exec();
-  } catch (e) {
+  } catch(e){
     return true;
   }
 };
-
 },{}],44:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 },{}],45:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
+module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-
 },{}],46:[function(require,module,exports){
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
+var dP         = require('./_object-dp')
+  , createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
+} : function(object, key, value){
   object[key] = value;
   return object;
 };
-
-},{"./_descriptors":38,"./_object-dp":59,"./_property-desc":70}],47:[function(require,module,exports){
-var document = require('./_global').document;
-module.exports = document && document.documentElement;
-
+},{"./_descriptors":38,"./_object-dp":60,"./_property-desc":71}],47:[function(require,module,exports){
+module.exports = require('./_global').document && document.documentElement;
 },{"./_global":44}],48:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function(){
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_descriptors":38,"./_dom-create":39,"./_fails":43}],49:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-
 },{"./_cof":34}],50:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
-module.exports = Array.isArray || function isArray(arg) {
+module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
-
 },{"./_cof":34}],51:[function(require,module,exports){
-module.exports = function (it) {
+module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
 },{}],52:[function(require,module,exports){
 'use strict';
-var create = require('./_object-create');
-var descriptor = require('./_property-desc');
-var setToStringTag = require('./_set-to-string-tag');
-var IteratorPrototype = {};
+var create         = require('./_object-create')
+  , descriptor     = require('./_property-desc')
+  , setToStringTag = require('./_set-to-string-tag')
+  , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function(){ return this; });
 
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+module.exports = function(Constructor, NAME, next){
+  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-
-},{"./_hide":46,"./_object-create":58,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],53:[function(require,module,exports){
+},{"./_hide":46,"./_object-create":59,"./_property-desc":71,"./_set-to-string-tag":73,"./_wks":86}],53:[function(require,module,exports){
 'use strict';
-var LIBRARY = require('./_library');
-var $export = require('./_export');
-var redefine = require('./_redefine');
-var hide = require('./_hide');
-var has = require('./_has');
-var Iterators = require('./_iterators');
-var $iterCreate = require('./_iter-create');
-var setToStringTag = require('./_set-to-string-tag');
-var getPrototypeOf = require('./_object-gpo');
-var ITERATOR = require('./_wks')('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
+var LIBRARY        = require('./_library')
+  , $export        = require('./_export')
+  , redefine       = require('./_redefine')
+  , hide           = require('./_hide')
+  , has            = require('./_has')
+  , Iterators      = require('./_iterators')
+  , $iterCreate    = require('./_iter-create')
+  , setToStringTag = require('./_set-to-string-tag')
+  , getPrototypeOf = require('./_object-gpo')
+  , ITERATOR       = require('./_wks')('iterator')
+  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  , FF_ITERATOR    = '@@iterator'
+  , KEYS           = 'keys'
+  , VALUES         = 'values';
 
-var returnThis = function () { return this; };
+var returnThis = function(){ return this; };
 
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
+  var getMethod = function(kind){
+    if(!BUGGY && kind in proto)return proto[kind];
+    switch(kind){
+      case KEYS: return function keys(){ return new Constructor(this, kind); };
+      case VALUES: return function values(){ return new Constructor(this, kind); };
+    } return function entries(){ return new Constructor(this, kind); };
   };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
+  var TAG        = NAME + ' Iterator'
+    , DEF_VALUES = DEFAULT == VALUES
+    , VALUES_BUG = false
+    , proto      = Base.prototype
+    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+    , $default   = $native || getMethod(DEFAULT)
+    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+    , methods, key, IteratorPrototype;
   // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+  if($anyNative){
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+    if(IteratorPrototype !== Object.prototype){
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
+  if(DEF_VALUES && $native && $native.name !== VALUES){
     VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
+    $default = function values(){ return $native.call(this); };
   }
   // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
+  Iterators[TAG]  = returnThis;
+  if(DEFAULT){
     methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
+      values:  DEF_VALUES ? $default : getMethod(VALUES),
+      keys:    IS_SET     ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
+    if(FORCED)for(key in methods){
+      if(!(key in proto))redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-
-},{"./_export":42,"./_has":45,"./_hide":46,"./_iter-create":52,"./_iterators":55,"./_library":56,"./_object-gpo":65,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],54:[function(require,module,exports){
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
+},{"./_export":42,"./_has":45,"./_hide":46,"./_iter-create":52,"./_iterators":55,"./_library":57,"./_object-gpo":66,"./_redefine":72,"./_set-to-string-tag":73,"./_wks":86}],54:[function(require,module,exports){
+module.exports = function(done, value){
+  return {value: value, done: !!done};
 };
-
 },{}],55:[function(require,module,exports){
 module.exports = {};
-
 },{}],56:[function(require,module,exports){
+var getKeys   = require('./_object-keys')
+  , toIObject = require('./_to-iobject');
+module.exports = function(object, el){
+  var O      = toIObject(object)
+    , keys   = getKeys(O)
+    , length = keys.length
+    , index  = 0
+    , key;
+  while(length > index)if(O[key = keys[index++]] === el)return key;
+};
+},{"./_object-keys":68,"./_to-iobject":79}],57:[function(require,module,exports){
 module.exports = true;
-
-},{}],57:[function(require,module,exports){
-var META = require('./_uid')('meta');
-var isObject = require('./_is-object');
-var has = require('./_has');
-var setDesc = require('./_object-dp').f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
+},{}],58:[function(require,module,exports){
+var META     = require('./_uid')('meta')
+  , isObject = require('./_is-object')
+  , has      = require('./_has')
+  , setDesc  = require('./_object-dp').f
+  , id       = 0;
+var isExtensible = Object.isExtensible || function(){
   return true;
 };
-var FREEZE = !require('./_fails')(function () {
+var FREEZE = !require('./_fails')(function(){
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
+var setMeta = function(it){
+  setDesc(it, META, {value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  } });
+  }});
 };
-var fastKey = function (it, create) {
+var fastKey = function(it, create){
   // return primitive with prefix
-  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!has(it, META)) {
+  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
+    if(!isExtensible(it))return 'F';
     // not necessary to add metadata
-    if (!create) return 'E';
+    if(!create)return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function (it, create) {
-  if (!has(it, META)) {
+var getWeak = function(it, create){
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
+    if(!isExtensible(it))return true;
     // not necessary to add metadata
-    if (!create) return false;
+    if(!create)return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+var onFreeze = function(it){
+  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
+  KEY:      META,
+  NEED:     false,
+  fastKey:  fastKey,
+  getWeak:  getWeak,
   onFreeze: onFreeze
 };
-
-},{"./_fails":43,"./_has":45,"./_is-object":51,"./_object-dp":59,"./_uid":82}],58:[function(require,module,exports){
+},{"./_fails":43,"./_has":45,"./_is-object":51,"./_object-dp":60,"./_uid":83}],59:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = require('./_an-object');
-var dPs = require('./_object-dps');
-var enumBugKeys = require('./_enum-bug-keys');
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
+var anObject    = require('./_an-object')
+  , dPs         = require('./_object-dps')
+  , enumBugKeys = require('./_enum-bug-keys')
+  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
+  , Empty       = function(){ /* empty */ }
+  , PROTOTYPE   = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
+var createDict = function(){
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = require('./_dom-create')('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
+  var iframe = require('./_dom-create')('iframe')
+    , i      = enumBugKeys.length
+    , lt     = '<'
+    , gt     = '>'
+    , iframeDocument;
   iframe.style.display = 'none';
   require('./_html').appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -571,15 +535,15 @@ var createDict = function () {
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties) {
+module.exports = Object.create || function create(O, Properties){
   var result;
-  if (O !== null) {
+  if(O !== null){
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
+    result = new Empty;
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -587,318 +551,292 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":32,"./_dom-create":39,"./_enum-bug-keys":40,"./_html":47,"./_object-dps":60,"./_shared-key":73}],59:[function(require,module,exports){
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
+},{"./_an-object":32,"./_dom-create":39,"./_enum-bug-keys":40,"./_html":47,"./_object-dps":61,"./_shared-key":74}],60:[function(require,module,exports){
+var anObject       = require('./_an-object')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , toPrimitive    = require('./_to-primitive')
+  , dP             = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
+},{"./_an-object":32,"./_descriptors":38,"./_ie8-dom-define":48,"./_to-primitive":82}],61:[function(require,module,exports){
+var dP       = require('./_object-dp')
+  , anObject = require('./_an-object')
+  , getKeys  = require('./_object-keys');
 
-},{"./_an-object":32,"./_descriptors":38,"./_ie8-dom-define":48,"./_to-primitive":81}],60:[function(require,module,exports){
-var dP = require('./_object-dp');
-var anObject = require('./_an-object');
-var getKeys = require('./_object-keys');
-
-module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties){
   anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+  var keys   = getKeys(Properties)
+    , length = keys.length
+    , i = 0
+    , P;
+  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
+},{"./_an-object":32,"./_descriptors":38,"./_object-dp":60,"./_object-keys":68}],62:[function(require,module,exports){
+var pIE            = require('./_object-pie')
+  , createDesc     = require('./_property-desc')
+  , toIObject      = require('./_to-iobject')
+  , toPrimitive    = require('./_to-primitive')
+  , has            = require('./_has')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , gOPD           = Object.getOwnPropertyDescriptor;
 
-},{"./_an-object":32,"./_descriptors":38,"./_object-dp":59,"./_object-keys":67}],61:[function(require,module,exports){
-var pIE = require('./_object-pie');
-var createDesc = require('./_property-desc');
-var toIObject = require('./_to-iobject');
-var toPrimitive = require('./_to-primitive');
-var has = require('./_has');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var gOPD = Object.getOwnPropertyDescriptor;
-
-exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P){
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return gOPD(O, P);
-  } catch (e) { /* empty */ }
-  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch(e){ /* empty */ }
+  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 };
-
-},{"./_descriptors":38,"./_has":45,"./_ie8-dom-define":48,"./_object-pie":68,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],62:[function(require,module,exports){
+},{"./_descriptors":38,"./_has":45,"./_ie8-dom-define":48,"./_object-pie":69,"./_property-desc":71,"./_to-iobject":79,"./_to-primitive":82}],63:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = require('./_to-iobject');
-var gOPN = require('./_object-gopn').f;
-var toString = {}.toString;
+var toIObject = require('./_to-iobject')
+  , gOPN      = require('./_object-gopn').f
+  , toString  = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function (it) {
+var getWindowNames = function(it){
   try {
     return gOPN(it);
-  } catch (e) {
+  } catch(e){
     return windowNames.slice();
   }
 };
 
-module.exports.f = function getOwnPropertyNames(it) {
+module.exports.f = function getOwnPropertyNames(it){
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":63,"./_to-iobject":78}],63:[function(require,module,exports){
+},{"./_object-gopn":64,"./_to-iobject":79}],64:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = require('./_object-keys-internal');
-var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
+var $keys      = require('./_object-keys-internal')
+  , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
 };
-
-},{"./_enum-bug-keys":40,"./_object-keys-internal":66}],64:[function(require,module,exports){
+},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],65:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
-
-},{}],65:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = require('./_has');
-var toObject = require('./_to-object');
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-var ObjectProto = Object.prototype;
+var has         = require('./_has')
+  , toObject    = require('./_to-object')
+  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
+  , ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function (O) {
+module.exports = Object.getPrototypeOf || function(O){
   O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+  if(has(O, IE_PROTO))return O[IE_PROTO];
+  if(typeof O.constructor == 'function' && O instanceof O.constructor){
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
+},{"./_has":45,"./_shared-key":74,"./_to-object":81}],67:[function(require,module,exports){
+var has          = require('./_has')
+  , toIObject    = require('./_to-iobject')
+  , arrayIndexOf = require('./_array-includes')(false)
+  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
 
-},{"./_has":45,"./_shared-key":73,"./_to-object":80}],66:[function(require,module,exports){
-var has = require('./_has');
-var toIObject = require('./_to-iobject');
-var arrayIndexOf = require('./_array-includes')(false);
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+module.exports = function(object, names){
+  var O      = toIObject(object)
+    , i      = 0
+    , result = []
+    , key;
+  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
+  while(names.length > i)if(has(O, key = names[i++])){
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
-
-},{"./_array-includes":33,"./_has":45,"./_shared-key":73,"./_to-iobject":78}],67:[function(require,module,exports){
+},{"./_array-includes":33,"./_has":45,"./_shared-key":74,"./_to-iobject":79}],68:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = require('./_object-keys-internal');
-var enumBugKeys = require('./_enum-bug-keys');
+var $keys       = require('./_object-keys-internal')
+  , enumBugKeys = require('./_enum-bug-keys');
 
-module.exports = Object.keys || function keys(O) {
+module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
-
-},{"./_enum-bug-keys":40,"./_object-keys-internal":66}],68:[function(require,module,exports){
+},{"./_enum-bug-keys":40,"./_object-keys-internal":67}],69:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-
-},{}],69:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
-var $export = require('./_export');
-var core = require('./_core');
-var fails = require('./_fails');
-module.exports = function (KEY, exec) {
-  var fn = (core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
+var $export = require('./_export')
+  , core    = require('./_core')
+  , fails   = require('./_fails');
+module.exports = function(KEY, exec){
+  var fn  = (core.Object || {})[KEY] || Object[KEY]
+    , exp = {};
   exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
 };
-
-},{"./_core":35,"./_export":42,"./_fails":43}],70:[function(require,module,exports){
-module.exports = function (bitmap, value) {
+},{"./_core":35,"./_export":42,"./_fails":43}],71:[function(require,module,exports){
+module.exports = function(bitmap, value){
   return {
-    enumerable: !(bitmap & 1),
+    enumerable  : !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+    writable    : !(bitmap & 4),
+    value       : value
   };
 };
-
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = require('./_hide');
+},{"./_hide":46}],73:[function(require,module,exports){
+var def = require('./_object-dp').f
+  , has = require('./_has')
+  , TAG = require('./_wks')('toStringTag');
 
-},{"./_hide":46}],72:[function(require,module,exports){
-var def = require('./_object-dp').f;
-var has = require('./_has');
-var TAG = require('./_wks')('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+module.exports = function(it, tag, stat){
+  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-
-},{"./_has":45,"./_object-dp":59,"./_wks":85}],73:[function(require,module,exports){
-var shared = require('./_shared')('keys');
-var uid = require('./_uid');
-module.exports = function (key) {
+},{"./_has":45,"./_object-dp":60,"./_wks":86}],74:[function(require,module,exports){
+var shared = require('./_shared')('keys')
+  , uid    = require('./_uid');
+module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
-
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
-var global = require('./_global');
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
+},{"./_shared":75,"./_uid":83}],75:[function(require,module,exports){
+var global = require('./_global')
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-
-},{"./_global":44}],75:[function(require,module,exports){
-var toInteger = require('./_to-integer');
-var defined = require('./_defined');
+},{"./_global":44}],76:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , defined   = require('./_defined');
 // true  -> String#at
 // false -> String#codePointAt
-module.exports = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(defined(that));
-    var i = toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+module.exports = function(TO_STRING){
+  return function(that, pos){
+    var s = String(defined(that))
+      , i = toInteger(pos)
+      , l = s.length
+      , a, b;
+    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-
-},{"./_defined":37,"./_to-integer":77}],76:[function(require,module,exports){
-var toInteger = require('./_to-integer');
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
+},{"./_defined":37,"./_to-integer":78}],77:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , max       = Math.max
+  , min       = Math.min;
+module.exports = function(index, length){
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-
-},{"./_to-integer":77}],77:[function(require,module,exports){
+},{"./_to-integer":78}],78:[function(require,module,exports){
 // 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
+var ceil  = Math.ceil
+  , floor = Math.floor;
+module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject');
-var defined = require('./_defined');
-module.exports = function (it) {
+var IObject = require('./_iobject')
+  , defined = require('./_defined');
+module.exports = function(it){
   return IObject(defined(it));
 };
-
-},{"./_defined":37,"./_iobject":49}],79:[function(require,module,exports){
+},{"./_defined":37,"./_iobject":49}],80:[function(require,module,exports){
 // 7.1.15 ToLength
-var toInteger = require('./_to-integer');
-var min = Math.min;
-module.exports = function (it) {
+var toInteger = require('./_to-integer')
+  , min       = Math.min;
+module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-
-},{"./_to-integer":77}],80:[function(require,module,exports){
+},{"./_to-integer":78}],81:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
-module.exports = function (it) {
+module.exports = function(it){
   return Object(defined(it));
 };
-
-},{"./_defined":37}],81:[function(require,module,exports){
+},{"./_defined":37}],82:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function(it, S){
+  if(!isObject(it))return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-
-},{"./_is-object":51}],82:[function(require,module,exports){
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
+},{"./_is-object":51}],83:[function(require,module,exports){
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-
-},{}],83:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var LIBRARY = require('./_library');
-var wksExt = require('./_wks-ext');
-var defineProperty = require('./_object-dp').f;
-module.exports = function (name) {
+},{}],84:[function(require,module,exports){
+var global         = require('./_global')
+  , core           = require('./_core')
+  , LIBRARY        = require('./_library')
+  , wksExt         = require('./_wks-ext')
+  , defineProperty = require('./_object-dp').f;
+module.exports = function(name){
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 };
-
-},{"./_core":35,"./_global":44,"./_library":56,"./_object-dp":59,"./_wks-ext":84}],84:[function(require,module,exports){
+},{"./_core":35,"./_global":44,"./_library":57,"./_object-dp":60,"./_wks-ext":85}],85:[function(require,module,exports){
 exports.f = require('./_wks');
+},{"./_wks":86}],86:[function(require,module,exports){
+var store      = require('./_shared')('wks')
+  , uid        = require('./_uid')
+  , Symbol     = require('./_global').Symbol
+  , USE_SYMBOL = typeof Symbol == 'function';
 
-},{"./_wks":85}],85:[function(require,module,exports){
-var store = require('./_shared')('wks');
-var uid = require('./_uid');
-var Symbol = require('./_global').Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
+var $exports = module.exports = function(name){
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-
-},{"./_global":44,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+},{"./_global":44,"./_shared":75,"./_uid":83}],87:[function(require,module,exports){
 'use strict';
-var addToUnscopables = require('./_add-to-unscopables');
-var step = require('./_iter-step');
-var Iterators = require('./_iterators');
-var toIObject = require('./_to-iobject');
+var addToUnscopables = require('./_add-to-unscopables')
+  , step             = require('./_iter-step')
+  , Iterators        = require('./_iterators')
+  , toIObject        = require('./_to-iobject');
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = require('./_iter-define')(Array, 'Array', function (iterated, kind) {
+module.exports = require('./_iter-define')(Array, 'Array', function(iterated, kind){
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
+}, function(){
+  var O     = this._t
+    , kind  = this._k
+    , index = this._i++;
+  if(!O || index >= O.length){
     this._t = undefined;
     return step(1);
   }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
+  if(kind == 'keys'  )return step(0, index);
+  if(kind == 'values')return step(0, O[index]);
   return step(0, [index, O[index]]);
 }, 'values');
 
@@ -908,288 +846,278 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-
-},{"./_add-to-unscopables":31,"./_iter-define":53,"./_iter-step":54,"./_iterators":55,"./_to-iobject":78}],87:[function(require,module,exports){
-var $export = require('./_export');
+},{"./_add-to-unscopables":31,"./_iter-define":53,"./_iter-step":54,"./_iterators":55,"./_to-iobject":79}],88:[function(require,module,exports){
+var $export = require('./_export')
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', { create: require('./_object-create') });
-
-},{"./_export":42,"./_object-create":58}],88:[function(require,module,exports){
+$export($export.S, 'Object', {create: require('./_object-create')});
+},{"./_export":42,"./_object-create":59}],89:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperties: require('./_object-dps') });
-
-},{"./_descriptors":38,"./_export":42,"./_object-dps":60}],89:[function(require,module,exports){
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperties: require('./_object-dps')});
+},{"./_descriptors":38,"./_export":42,"./_object-dps":61}],90:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
-
-},{"./_descriptors":38,"./_export":42,"./_object-dp":59}],90:[function(require,module,exports){
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
+},{"./_descriptors":38,"./_export":42,"./_object-dp":60}],91:[function(require,module,exports){
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject = require('./_to-iobject');
-var $getOwnPropertyDescriptor = require('./_object-gopd').f;
+var toIObject                 = require('./_to-iobject')
+  , $getOwnPropertyDescriptor = require('./_object-gopd').f;
 
-require('./_object-sap')('getOwnPropertyDescriptor', function () {
-  return function getOwnPropertyDescriptor(it, key) {
+require('./_object-sap')('getOwnPropertyDescriptor', function(){
+  return function getOwnPropertyDescriptor(it, key){
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-
-},{"./_object-gopd":61,"./_object-sap":69,"./_to-iobject":78}],91:[function(require,module,exports){
+},{"./_object-gopd":62,"./_object-sap":70,"./_to-iobject":79}],92:[function(require,module,exports){
 // 19.1.2.7 Object.getOwnPropertyNames(O)
-require('./_object-sap')('getOwnPropertyNames', function () {
+require('./_object-sap')('getOwnPropertyNames', function(){
   return require('./_object-gopn-ext').f;
 });
-
-},{"./_object-gopn-ext":62,"./_object-sap":69}],92:[function(require,module,exports){
+},{"./_object-gopn-ext":63,"./_object-sap":70}],93:[function(require,module,exports){
 // 19.1.2.9 Object.getPrototypeOf(O)
-var toObject = require('./_to-object');
-var $getPrototypeOf = require('./_object-gpo');
+var toObject        = require('./_to-object')
+  , $getPrototypeOf = require('./_object-gpo');
 
-require('./_object-sap')('getPrototypeOf', function () {
-  return function getPrototypeOf(it) {
+require('./_object-sap')('getPrototypeOf', function(){
+  return function getPrototypeOf(it){
     return $getPrototypeOf(toObject(it));
   };
 });
-
-},{"./_object-gpo":65,"./_object-sap":69,"./_to-object":80}],93:[function(require,module,exports){
+},{"./_object-gpo":66,"./_object-sap":70,"./_to-object":81}],94:[function(require,module,exports){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = require('./_is-object');
 
-require('./_object-sap')('isExtensible', function ($isExtensible) {
-  return function isExtensible(it) {
+require('./_object-sap')('isExtensible', function($isExtensible){
+  return function isExtensible(it){
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-
-},{"./_is-object":51,"./_object-sap":69}],94:[function(require,module,exports){
+},{"./_is-object":51,"./_object-sap":70}],95:[function(require,module,exports){
 // 19.1.2.14 Object.keys(O)
-var toObject = require('./_to-object');
-var $keys = require('./_object-keys');
+var toObject = require('./_to-object')
+  , $keys    = require('./_object-keys');
 
-require('./_object-sap')('keys', function () {
-  return function keys(it) {
+require('./_object-sap')('keys', function(){
+  return function keys(it){
     return $keys(toObject(it));
   };
 });
-
-},{"./_object-keys":67,"./_object-sap":69,"./_to-object":80}],95:[function(require,module,exports){
+},{"./_object-keys":68,"./_object-sap":70,"./_to-object":81}],96:[function(require,module,exports){
 // 19.1.2.15 Object.preventExtensions(O)
-var isObject = require('./_is-object');
-var meta = require('./_meta').onFreeze;
+var isObject = require('./_is-object')
+  , meta     = require('./_meta').onFreeze;
 
-require('./_object-sap')('preventExtensions', function ($preventExtensions) {
-  return function preventExtensions(it) {
+require('./_object-sap')('preventExtensions', function($preventExtensions){
+  return function preventExtensions(it){
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
 });
-
-},{"./_is-object":51,"./_meta":57,"./_object-sap":69}],96:[function(require,module,exports){
+},{"./_is-object":51,"./_meta":58,"./_object-sap":70}],97:[function(require,module,exports){
 arguments[4][16][0].apply(exports,arguments)
-},{"dup":16}],97:[function(require,module,exports){
+},{"dup":16}],98:[function(require,module,exports){
 'use strict';
-var $at = require('./_string-at')(true);
+var $at  = require('./_string-at')(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-require('./_iter-define')(String, 'String', function (iterated) {
+require('./_iter-define')(String, 'String', function(iterated){
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
+}, function(){
+  var O     = this._t
+    , index = this._i
+    , point;
+  if(index >= O.length)return {value: undefined, done: true};
   point = $at(O, index);
   this._i += point.length;
-  return { value: point, done: false };
+  return {value: point, done: false};
 });
-
-},{"./_iter-define":53,"./_string-at":75}],98:[function(require,module,exports){
+},{"./_iter-define":53,"./_string-at":76}],99:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
-var global = require('./_global');
-var has = require('./_has');
-var DESCRIPTORS = require('./_descriptors');
-var $export = require('./_export');
-var redefine = require('./_redefine');
-var META = require('./_meta').KEY;
-var $fails = require('./_fails');
-var shared = require('./_shared');
-var setToStringTag = require('./_set-to-string-tag');
-var uid = require('./_uid');
-var wks = require('./_wks');
-var wksExt = require('./_wks-ext');
-var wksDefine = require('./_wks-define');
-var enumKeys = require('./_enum-keys');
-var isArray = require('./_is-array');
-var anObject = require('./_an-object');
-var toIObject = require('./_to-iobject');
-var toPrimitive = require('./_to-primitive');
-var createDesc = require('./_property-desc');
-var _create = require('./_object-create');
-var gOPNExt = require('./_object-gopn-ext');
-var $GOPD = require('./_object-gopd');
-var $DP = require('./_object-dp');
-var $keys = require('./_object-keys');
-var gOPD = $GOPD.f;
-var dP = $DP.f;
-var gOPN = gOPNExt.f;
-var $Symbol = global.Symbol;
-var $JSON = global.JSON;
-var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE = 'prototype';
-var HIDDEN = wks('_hidden');
-var TO_PRIMITIVE = wks('toPrimitive');
-var isEnum = {}.propertyIsEnumerable;
-var SymbolRegistry = shared('symbol-registry');
-var AllSymbols = shared('symbols');
-var OPSymbols = shared('op-symbols');
-var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
-var QObject = global.QObject;
+var global         = require('./_global')
+  , has            = require('./_has')
+  , DESCRIPTORS    = require('./_descriptors')
+  , $export        = require('./_export')
+  , redefine       = require('./_redefine')
+  , META           = require('./_meta').KEY
+  , $fails         = require('./_fails')
+  , shared         = require('./_shared')
+  , setToStringTag = require('./_set-to-string-tag')
+  , uid            = require('./_uid')
+  , wks            = require('./_wks')
+  , wksExt         = require('./_wks-ext')
+  , wksDefine      = require('./_wks-define')
+  , keyOf          = require('./_keyof')
+  , enumKeys       = require('./_enum-keys')
+  , isArray        = require('./_is-array')
+  , anObject       = require('./_an-object')
+  , toIObject      = require('./_to-iobject')
+  , toPrimitive    = require('./_to-primitive')
+  , createDesc     = require('./_property-desc')
+  , _create        = require('./_object-create')
+  , gOPNExt        = require('./_object-gopn-ext')
+  , $GOPD          = require('./_object-gopd')
+  , $DP            = require('./_object-dp')
+  , $keys          = require('./_object-keys')
+  , gOPD           = $GOPD.f
+  , dP             = $DP.f
+  , gOPN           = gOPNExt.f
+  , $Symbol        = global.Symbol
+  , $JSON          = global.JSON
+  , _stringify     = $JSON && $JSON.stringify
+  , PROTOTYPE      = 'prototype'
+  , HIDDEN         = wks('_hidden')
+  , TO_PRIMITIVE   = wks('toPrimitive')
+  , isEnum         = {}.propertyIsEnumerable
+  , SymbolRegistry = shared('symbol-registry')
+  , AllSymbols     = shared('symbols')
+  , OPSymbols      = shared('op-symbols')
+  , ObjectProto    = Object[PROTOTYPE]
+  , USE_NATIVE     = typeof $Symbol == 'function'
+  , QObject        = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function () {
+var setSymbolDesc = DESCRIPTORS && $fails(function(){
   return _create(dP({}, 'a', {
-    get: function () { return dP(this, 'a', { value: 7 }).a; }
+    get: function(){ return dP(this, 'a', {value: 7}).a; }
   })).a != 7;
-}) ? function (it, key, D) {
+}) ? function(it, key, D){
   var protoDesc = gOPD(ObjectProto, key);
-  if (protoDesc) delete ObjectProto[key];
+  if(protoDesc)delete ObjectProto[key];
   dP(it, key, D);
-  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
 } : dP;
 
-var wrap = function (tag) {
+var wrap = function(tag){
   var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
   return typeof it == 'symbol';
-} : function (it) {
+} : function(it){
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D) {
-  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D){
+  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
   anObject(it);
   key = toPrimitive(key, true);
   anObject(D);
-  if (has(AllSymbols, key)) {
-    if (!D.enumerable) {
-      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+  if(has(AllSymbols, key)){
+    if(!D.enumerable){
+      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _create(D, { enumerable: createDesc(0, false) });
+      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+      D = _create(D, {enumerable: createDesc(0, false)});
     } return setSymbolDesc(it, key, D);
   } return dP(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P) {
+var $defineProperties = function defineProperties(it, P){
   anObject(it);
-  var keys = enumKeys(P = toIObject(P));
-  var i = 0;
-  var l = keys.length;
-  var key;
-  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+  var keys = enumKeys(P = toIObject(P))
+    , i    = 0
+    , l = keys.length
+    , key;
+  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P) {
+var $create = function create(it, P){
   return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+var $propertyIsEnumerable = function propertyIsEnumerable(key){
   var E = isEnum.call(this, key = toPrimitive(key, true));
-  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
   return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-  it = toIObject(it);
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+  it  = toIObject(it);
   key = toPrimitive(key, true);
-  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
   var D = gOPD(it, key);
-  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN(toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it){
+  var names  = gOPN(toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-  var IS_OP = it === ObjectProto;
-  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+  var IS_OP  = it === ObjectProto
+    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if (!USE_NATIVE) {
-  $Symbol = function Symbol() {
-    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+if(!USE_NATIVE){
+  $Symbol = function Symbol(){
+    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
     var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function (value) {
-      if (this === ObjectProto) $set.call(OPSymbols, value);
-      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+    var $set = function(value){
+      if(this === ObjectProto)$set.call(OPSymbols, value);
+      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, createDesc(1, value));
     };
-    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
     return wrap(tag);
   };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
     return this._k;
   });
 
   $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f = $defineProperty;
+  $DP.f   = $defineProperty;
   require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
-  require('./_object-pie').f = $propertyIsEnumerable;
+  require('./_object-pie').f  = $propertyIsEnumerable;
   require('./_object-gops').f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !require('./_library')) {
+  if(DESCRIPTORS && !require('./_library')){
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  wksExt.f = function (name) {
+  wksExt.f = function(name){
     return wrap(wks(name));
-  };
+  }
 }
 
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
 
-for (var es6Symbols = (
+for(var symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
+).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
 
-for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
 
 $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function (key) {
+  'for': function(key){
     return has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(sym) {
-    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
-    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
+  keyFor: function keyFor(key){
+    if(isSymbol(key))return keyOf(SymbolRegistry, key);
+    throw TypeError(key + ' is not a symbol!');
   },
-  useSetter: function () { setter = true; },
-  useSimple: function () { setter = false; }
+  useSetter: function(){ setter = true; },
+  useSimple: function(){ setter = false; }
 });
 
 $export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -1208,24 +1136,24 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-    var args = [it];
-    var i = 1;
-    var replacer, $replacer;
-    while (arguments.length > i) args.push(arguments[i++]);
+  stringify: function stringify(it){
+    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+    var args = [it]
+      , i    = 1
+      , replacer, $replacer;
+    while(arguments.length > i)args.push(arguments[i++]);
     replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
-      if (!isSymbol(value)) return value;
+    if(typeof replacer == 'function')$replacer = replacer;
+    if($replacer || !isArray(replacer))replacer = function(key, value){
+      if($replacer)value = $replacer.call(this, key, value);
+      if(!isSymbol(value))return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -1240,35 +1168,25 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-
-},{"./_an-object":32,"./_descriptors":38,"./_enum-keys":41,"./_export":42,"./_fails":43,"./_global":44,"./_has":45,"./_hide":46,"./_is-array":50,"./_library":56,"./_meta":57,"./_object-create":58,"./_object-dp":59,"./_object-gopd":61,"./_object-gopn":63,"./_object-gopn-ext":62,"./_object-gops":64,"./_object-keys":67,"./_object-pie":68,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],99:[function(require,module,exports){
+},{"./_an-object":32,"./_descriptors":38,"./_enum-keys":41,"./_export":42,"./_fails":43,"./_global":44,"./_has":45,"./_hide":46,"./_is-array":50,"./_keyof":56,"./_library":57,"./_meta":58,"./_object-create":59,"./_object-dp":60,"./_object-gopd":62,"./_object-gopn":64,"./_object-gopn-ext":63,"./_object-gops":65,"./_object-keys":68,"./_object-pie":69,"./_property-desc":71,"./_redefine":72,"./_set-to-string-tag":73,"./_shared":75,"./_to-iobject":79,"./_to-primitive":82,"./_uid":83,"./_wks":86,"./_wks-define":84,"./_wks-ext":85}],100:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
-
-},{"./_wks-define":83}],100:[function(require,module,exports){
+},{"./_wks-define":84}],101:[function(require,module,exports){
 require('./_wks-define')('observable');
-
-},{"./_wks-define":83}],101:[function(require,module,exports){
+},{"./_wks-define":84}],102:[function(require,module,exports){
 require('./es6.array.iterator');
-var global = require('./_global');
-var hide = require('./_hide');
-var Iterators = require('./_iterators');
-var TO_STRING_TAG = require('./_wks')('toStringTag');
+var global        = require('./_global')
+  , hide          = require('./_hide')
+  , Iterators     = require('./_iterators')
+  , TO_STRING_TAG = require('./_wks')('toStringTag');
 
-var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-  'TextTrackList,TouchList').split(',');
-
-for (var i = 0; i < DOMIterables.length; i++) {
-  var NAME = DOMIterables[i];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+  var NAME       = collections[i]
+    , Collection = global[NAME]
+    , proto      = Collection && Collection.prototype;
+  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-
-},{"./_global":44,"./_hide":46,"./_iterators":55,"./_wks":85,"./es6.array.iterator":86}],102:[function(require,module,exports){
+},{"./_global":44,"./_hide":46,"./_iterators":55,"./_wks":86,"./es6.array.iterator":87}],103:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2602,9 +2520,9 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 //! moment.js
-//! version : 2.18.1
+//! version : 2.19.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -2638,12 +2556,17 @@ function isObject(input) {
 }
 
 function isObjectEmpty(obj) {
-    var k;
-    for (k in obj) {
-        // even if its not own property I'd still call it non-empty
-        return false;
+    if (Object.getOwnPropertyNames) {
+        return (Object.getOwnPropertyNames(obj).length === 0);
+    } else {
+        var k;
+        for (k in obj) {
+            if (obj.hasOwnProperty(k)) {
+                return false;
+            }
+        }
+        return true;
     }
-    return true;
 }
 
 function isUndefined(input) {
@@ -2737,12 +2660,10 @@ if (Array.prototype.some) {
     };
 }
 
-var some$1 = some;
-
 function isValid(m) {
     if (m._isValid == null) {
         var flags = getParsingFlags(m);
-        var parsedParts = some$1.call(flags.parsedDateParts, function (i) {
+        var parsedParts = some.call(flags.parsedDateParts, function (i) {
             return i != null;
         });
         var isNowValid = !isNaN(m._d.getTime()) &&
@@ -2750,6 +2671,7 @@ function isValid(m) {
             !flags.empty &&
             !flags.invalidMonth &&
             !flags.invalidWeekday &&
+            !flags.weekdayMismatch &&
             !flags.nullInput &&
             !flags.invalidFormat &&
             !flags.userInvalidated &&
@@ -3015,8 +2937,6 @@ if (Object.keys) {
     };
 }
 
-var keys$1 = keys;
-
 var defaultCalendar = {
     sameDay : '[Today at] LT',
     nextDay : '[Tomorrow at] LT',
@@ -3140,56 +3060,6 @@ function getPrioritizedUnits(unitsObj) {
         return a.priority - b.priority;
     });
     return units;
-}
-
-function makeGetSet (unit, keepTime) {
-    return function (value) {
-        if (value != null) {
-            set$1(this, unit, value);
-            hooks.updateOffset(this, keepTime);
-            return this;
-        } else {
-            return get(this, unit);
-        }
-    };
-}
-
-function get (mom, unit) {
-    return mom.isValid() ?
-        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
-}
-
-function set$1 (mom, unit, value) {
-    if (mom.isValid()) {
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-    }
-}
-
-// MOMENTS
-
-function stringGet (units) {
-    units = normalizeUnits(units);
-    if (isFunction(this[units])) {
-        return this[units]();
-    }
-    return this;
-}
-
-
-function stringSet (units, value) {
-    if (typeof units === 'object') {
-        units = normalizeObjectUnits(units);
-        var prioritized = getPrioritizedUnits(units);
-        for (var i = 0; i < prioritized.length; i++) {
-            this[prioritized[i].unit](units[prioritized[i].unit]);
-        }
-    } else {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units](value);
-        }
-    }
-    return this;
 }
 
 function zeroFill(number, targetLength, forceSign) {
@@ -3382,6 +3252,131 @@ var MILLISECOND = 6;
 var WEEK = 7;
 var WEEKDAY = 8;
 
+// FORMATTING
+
+addFormatToken('Y', 0, 0, function () {
+    var y = this.year();
+    return y <= 9999 ? '' + y : '+' + y;
+});
+
+addFormatToken(0, ['YY', 2], 0, function () {
+    return this.year() % 100;
+});
+
+addFormatToken(0, ['YYYY',   4],       0, 'year');
+addFormatToken(0, ['YYYYY',  5],       0, 'year');
+addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+// ALIASES
+
+addUnitAlias('year', 'y');
+
+// PRIORITIES
+
+addUnitPriority('year', 1);
+
+// PARSING
+
+addRegexToken('Y',      matchSigned);
+addRegexToken('YY',     match1to2, match2);
+addRegexToken('YYYY',   match1to4, match4);
+addRegexToken('YYYYY',  match1to6, match6);
+addRegexToken('YYYYYY', match1to6, match6);
+
+addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+addParseToken('YYYY', function (input, array) {
+    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+});
+addParseToken('YY', function (input, array) {
+    array[YEAR] = hooks.parseTwoDigitYear(input);
+});
+addParseToken('Y', function (input, array) {
+    array[YEAR] = parseInt(input, 10);
+});
+
+// HELPERS
+
+function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+}
+
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+
+// HOOKS
+
+hooks.parseTwoDigitYear = function (input) {
+    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+};
+
+// MOMENTS
+
+var getSetYear = makeGetSet('FullYear', true);
+
+function getIsLeapYear () {
+    return isLeapYear(this.year());
+}
+
+function makeGetSet (unit, keepTime) {
+    return function (value) {
+        if (value != null) {
+            set$1(this, unit, value);
+            hooks.updateOffset(this, keepTime);
+            return this;
+        } else {
+            return get(this, unit);
+        }
+    };
+}
+
+function get (mom, unit) {
+    return mom.isValid() ?
+        mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+}
+
+function set$1 (mom, unit, value) {
+    if (mom.isValid() && !isNaN(value)) {
+        if (unit === 'FullYear' && isLeapYear(mom.year())) {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value, mom.month(), daysInMonth(value, mom.month()));
+        }
+        else {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
+    }
+}
+
+// MOMENTS
+
+function stringGet (units) {
+    units = normalizeUnits(units);
+    if (isFunction(this[units])) {
+        return this[units]();
+    }
+    return this;
+}
+
+
+function stringSet (units, value) {
+    if (typeof units === 'object') {
+        units = normalizeObjectUnits(units);
+        var prioritized = getPrioritizedUnits(units);
+        for (var i = 0; i < prioritized.length; i++) {
+            this[prioritized[i].unit](units[prioritized[i].unit]);
+        }
+    } else {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units](value);
+        }
+    }
+    return this;
+}
+
+function mod(n, x) {
+    return ((n % x) + x) % x;
+}
+
 var indexOf;
 
 if (Array.prototype.indexOf) {
@@ -3399,10 +3394,13 @@ if (Array.prototype.indexOf) {
     };
 }
 
-var indexOf$1 = indexOf;
-
 function daysInMonth(year, month) {
-    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    if (isNaN(year) || isNaN(month)) {
+        return NaN;
+    }
+    var modMonth = mod(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? (isLeapYear(year) ? 29 : 28) : (31 - modMonth % 7 % 2);
 }
 
 // FORMATTING
@@ -3491,26 +3489,26 @@ function handleStrictParse(monthName, format, strict) {
 
     if (strict) {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'MMM') {
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._longMonthsParse, llc);
+            ii = indexOf.call(this._longMonthsParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortMonthsParse, llc);
+            ii = indexOf.call(this._shortMonthsParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -3667,72 +3665,6 @@ function computeMonthsParse () {
     this._monthsShortRegex = this._monthsRegex;
     this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
     this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
-}
-
-// FORMATTING
-
-addFormatToken('Y', 0, 0, function () {
-    var y = this.year();
-    return y <= 9999 ? '' + y : '+' + y;
-});
-
-addFormatToken(0, ['YY', 2], 0, function () {
-    return this.year() % 100;
-});
-
-addFormatToken(0, ['YYYY',   4],       0, 'year');
-addFormatToken(0, ['YYYYY',  5],       0, 'year');
-addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-// ALIASES
-
-addUnitAlias('year', 'y');
-
-// PRIORITIES
-
-addUnitPriority('year', 1);
-
-// PARSING
-
-addRegexToken('Y',      matchSigned);
-addRegexToken('YY',     match1to2, match2);
-addRegexToken('YYYY',   match1to4, match4);
-addRegexToken('YYYYY',  match1to6, match6);
-addRegexToken('YYYYYY', match1to6, match6);
-
-addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-addParseToken('YYYY', function (input, array) {
-    array[YEAR] = input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-});
-addParseToken('YY', function (input, array) {
-    array[YEAR] = hooks.parseTwoDigitYear(input);
-});
-addParseToken('Y', function (input, array) {
-    array[YEAR] = parseInt(input, 10);
-});
-
-// HELPERS
-
-function daysInYear(year) {
-    return isLeapYear(year) ? 366 : 365;
-}
-
-function isLeapYear(year) {
-    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-}
-
-// HOOKS
-
-hooks.parseTwoDigitYear = function (input) {
-    return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-};
-
-// MOMENTS
-
-var getSetYear = makeGetSet('FullYear', true);
-
-function getIsLeapYear () {
-    return isLeapYear(this.year());
 }
 
 function createDate (y, m, d, h, M, s, ms) {
@@ -4002,48 +3934,48 @@ function handleStrictParse$1(weekdayName, format, strict) {
 
     if (strict) {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     } else {
         if (format === 'dddd') {
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else if (format === 'ddd') {
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         } else {
-            ii = indexOf$1.call(this._minWeekdaysParse, llc);
+            ii = indexOf.call(this._minWeekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._weekdaysParse, llc);
+            ii = indexOf.call(this._weekdaysParse, llc);
             if (ii !== -1) {
                 return ii;
             }
-            ii = indexOf$1.call(this._shortWeekdaysParse, llc);
+            ii = indexOf.call(this._shortWeekdaysParse, llc);
             return ii !== -1 ? ii : null;
         }
     }
@@ -4432,11 +4364,10 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            require('./locale/' + name);
-            // because defineLocale currently also sets the global locale, we
-            // want to undo that for lazy loaded locales
+            var aliasedRequire = require;
+            aliasedRequire('./locale/' + name);
             getSetGlobalLocale(oldLocale);
-        } catch (e) { }
+        } catch (e) {}
     }
     return locales[name];
 }
@@ -4562,7 +4493,7 @@ function getLocale (key) {
 }
 
 function listLocales() {
-    return keys$1(locales);
+    return keys(locales);
 }
 
 function checkOverflow (m) {
@@ -4593,6 +4524,154 @@ function checkOverflow (m) {
     }
 
     return m;
+}
+
+// Pick the first defined of two or three arguments.
+function defaults(a, b, c) {
+    if (a != null) {
+        return a;
+    }
+    if (b != null) {
+        return b;
+    }
+    return c;
+}
+
+function currentDateArray(config) {
+    // hooks is actually the exported moment object
+    var nowValue = new Date(hooks.now());
+    if (config._useUTC) {
+        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+    }
+    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+}
+
+// convert an array to a date.
+// the array should mirror the parameters below
+// note: all values past the year are optional and will default to the lowest possible value.
+// [year, month, day , hour, minute, second, millisecond]
+function configFromArray (config) {
+    var i, date, input = [], currentDate, yearToUse;
+
+    if (config._d) {
+        return;
+    }
+
+    currentDate = currentDateArray(config);
+
+    //compute day of the year from weeks and weekdays
+    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+        dayOfYearFromWeekInfo(config);
+    }
+
+    //if the day of the year is set, figure out what it is
+    if (config._dayOfYear != null) {
+        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
+            getParsingFlags(config)._overflowDayOfYear = true;
+        }
+
+        date = createUTCDate(yearToUse, 0, config._dayOfYear);
+        config._a[MONTH] = date.getUTCMonth();
+        config._a[DATE] = date.getUTCDate();
+    }
+
+    // Default to current date.
+    // * if no year, month, day of month are given, default to today
+    // * if day of month is given, default month and year
+    // * if month is given, default only year
+    // * if year is given, don't default anything
+    for (i = 0; i < 3 && config._a[i] == null; ++i) {
+        config._a[i] = input[i] = currentDate[i];
+    }
+
+    // Zero out whatever was not defaulted, including time
+    for (; i < 7; i++) {
+        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+    }
+
+    // Check for 24:00:00.000
+    if (config._a[HOUR] === 24 &&
+            config._a[MINUTE] === 0 &&
+            config._a[SECOND] === 0 &&
+            config._a[MILLISECOND] === 0) {
+        config._nextDay = true;
+        config._a[HOUR] = 0;
+    }
+
+    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+    // Apply timezone offset from input. The actual utcOffset can be changed
+    // with parseZone.
+    if (config._tzm != null) {
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+    }
+
+    if (config._nextDay) {
+        config._a[HOUR] = 24;
+    }
+
+    // check for mismatching day of week
+    if (config._w && typeof config._w.d !== 'undefined' && config._w.d !== config._d.getDay()) {
+        getParsingFlags(config).weekdayMismatch = true;
+    }
+}
+
+function dayOfYearFromWeekInfo(config) {
+    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+    w = config._w;
+    if (w.GG != null || w.W != null || w.E != null) {
+        dow = 1;
+        doy = 4;
+
+        // TODO: We need to take the current isoWeekYear, but that depends on
+        // how we interpret now (local, utc, fixed offset). So create
+        // a now version of current config (take local/utc/offset flags, and
+        // create now).
+        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
+        week = defaults(w.W, 1);
+        weekday = defaults(w.E, 1);
+        if (weekday < 1 || weekday > 7) {
+            weekdayOverflow = true;
+        }
+    } else {
+        dow = config._locale._week.dow;
+        doy = config._locale._week.doy;
+
+        var curWeek = weekOfYear(createLocal(), dow, doy);
+
+        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
+
+        // Default to current week.
+        week = defaults(w.w, curWeek.week);
+
+        if (w.d != null) {
+            // weekday -- low day numbers are considered next week
+            weekday = w.d;
+            if (weekday < 0 || weekday > 6) {
+                weekdayOverflow = true;
+            }
+        } else if (w.e != null) {
+            // local weekday -- counting starts from begining of week
+            weekday = w.e + dow;
+            if (w.e < 0 || w.e > 6) {
+                weekdayOverflow = true;
+            }
+        } else {
+            // default to begining of week
+            weekday = dow;
+        }
+    }
+    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+        getParsingFlags(config)._overflowWeeks = true;
+    } else if (weekdayOverflow != null) {
+        getParsingFlags(config)._overflowWeekday = true;
+    } else {
+        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+        config._a[YEAR] = temp.year;
+        config._dayOfYear = temp.dayOfYear;
+    }
 }
 
 // iso 8601 regex
@@ -4686,70 +4765,94 @@ function configFromISO(config) {
 }
 
 // RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
-var basicRfcRegex = /^((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d?\d\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(?:\d\d)?\d\d\s)(\d\d:\d\d)(\:\d\d)?(\s(?:UT|GMT|[ECMP][SD]T|[A-IK-Za-ik-z]|[+-]\d{4}))$/;
+var rfc2822 = /^(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d{1,2})\s(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(\d{2,4})\s(\d\d):(\d\d)(?::(\d\d))?\s(?:(UT|GMT|[ECMP][SD]T)|([Zz])|([+-]\d{4}))$/;
+
+function extractFromRFC2822Strings(yearStr, monthStr, dayStr, hourStr, minuteStr, secondStr) {
+    var result = [
+        untruncateYear(yearStr),
+        defaultLocaleMonthsShort.indexOf(monthStr),
+        parseInt(dayStr, 10),
+        parseInt(hourStr, 10),
+        parseInt(minuteStr, 10)
+    ];
+
+    if (secondStr) {
+        result.push(parseInt(secondStr, 10));
+    }
+
+    return result;
+}
+
+function untruncateYear(yearStr) {
+    var year = parseInt(yearStr, 10);
+    if (year <= 49) {
+        return 2000 + year;
+    } else if (year <= 999) {
+        return 1900 + year;
+    }
+    return year;
+}
+
+function preprocessRFC2822(s) {
+    // Remove comments and folding whitespace and replace multiple-spaces with a single space
+    return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').trim();
+}
+
+function checkWeekday(weekdayStr, parsedInput, config) {
+    if (weekdayStr) {
+        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+        var weekdayProvided = defaultLocaleWeekdaysShort.indexOf(weekdayStr),
+            weekdayActual = new Date(parsedInput[0], parsedInput[1], parsedInput[2]).getDay();
+        if (weekdayProvided !== weekdayActual) {
+            getParsingFlags(config).weekdayMismatch = true;
+            config._isValid = false;
+            return false;
+        }
+    }
+    return true;
+}
+
+var obsOffsets = {
+    UT: 0,
+    GMT: 0,
+    EDT: -4 * 60,
+    EST: -5 * 60,
+    CDT: -5 * 60,
+    CST: -6 * 60,
+    MDT: -6 * 60,
+    MST: -7 * 60,
+    PDT: -7 * 60,
+    PST: -8 * 60
+};
+
+function calculateOffset(obsOffset, militaryOffset, numOffset) {
+    if (obsOffset) {
+        return obsOffsets[obsOffset];
+    } else if (militaryOffset) {
+        // the only allowed military tz is Z
+        return 0;
+    } else {
+        var hm = parseInt(numOffset, 10);
+        var m = hm % 100, h = (hm - m) / 100;
+        return h * 60 + m;
+    }
+}
 
 // date and time from ref 2822 format
 function configFromRFC2822(config) {
-    var string, match, dayFormat,
-        dateFormat, timeFormat, tzFormat;
-    var timezones = {
-        ' GMT': ' +0000',
-        ' EDT': ' -0400',
-        ' EST': ' -0500',
-        ' CDT': ' -0500',
-        ' CST': ' -0600',
-        ' MDT': ' -0600',
-        ' MST': ' -0700',
-        ' PDT': ' -0700',
-        ' PST': ' -0800'
-    };
-    var military = 'YXWVUTSRQPONZABCDEFGHIKLM';
-    var timezone, timezoneIndex;
-
-    string = config._i
-        .replace(/\([^\)]*\)|[\n\t]/g, ' ') // Remove comments and folding whitespace
-        .replace(/(\s\s+)/g, ' ') // Replace multiple-spaces with a single space
-        .replace(/^\s|\s$/g, ''); // Remove leading and trailing spaces
-    match = basicRfcRegex.exec(string);
-
+    var match = rfc2822.exec(preprocessRFC2822(config._i));
     if (match) {
-        dayFormat = match[1] ? 'ddd' + ((match[1].length === 5) ? ', ' : ' ') : '';
-        dateFormat = 'D MMM ' + ((match[2].length > 10) ? 'YYYY ' : 'YY ');
-        timeFormat = 'HH:mm' + (match[4] ? ':ss' : '');
-
-        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
-        if (match[1]) { // day of week given
-            var momentDate = new Date(match[2]);
-            var momentDay = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][momentDate.getDay()];
-
-            if (match[1].substr(0,3) !== momentDay) {
-                getParsingFlags(config).weekdayMismatch = true;
-                config._isValid = false;
-                return;
-            }
+        var parsedArray = extractFromRFC2822Strings(match[4], match[3], match[2], match[5], match[6], match[7]);
+        if (!checkWeekday(match[1], parsedArray, config)) {
+            return;
         }
 
-        switch (match[5].length) {
-            case 2: // military
-                if (timezoneIndex === 0) {
-                    timezone = ' +0000';
-                } else {
-                    timezoneIndex = military.indexOf(match[5][1].toUpperCase()) - 12;
-                    timezone = ((timezoneIndex < 0) ? ' -' : ' +') +
-                        (('' + timezoneIndex).replace(/^-?/, '0')).match(/..$/)[0] + '00';
-                }
-                break;
-            case 4: // Zone
-                timezone = timezones[match[5]];
-                break;
-            default: // UT or +/-9999
-                timezone = timezones[' GMT'];
-        }
-        match[5] = timezone;
-        config._i = match.splice(1).join('');
-        tzFormat = ' ZZ';
-        config._f = dayFormat + dateFormat + timeFormat + tzFormat;
-        configFromStringAndFormat(config);
+        config._a = parsedArray;
+        config._tzm = calculateOffset(match[8], match[9], match[10]);
+
+        config._d = createUTCDate.apply(null, config._a);
+        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+
         getParsingFlags(config).rfc2822 = true;
     } else {
         config._isValid = false;
@@ -4792,149 +4895,6 @@ hooks.createFromInputFallback = deprecate(
         config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
     }
 );
-
-// Pick the first defined of two or three arguments.
-function defaults(a, b, c) {
-    if (a != null) {
-        return a;
-    }
-    if (b != null) {
-        return b;
-    }
-    return c;
-}
-
-function currentDateArray(config) {
-    // hooks is actually the exported moment object
-    var nowValue = new Date(hooks.now());
-    if (config._useUTC) {
-        return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
-    }
-    return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
-}
-
-// convert an array to a date.
-// the array should mirror the parameters below
-// note: all values past the year are optional and will default to the lowest possible value.
-// [year, month, day , hour, minute, second, millisecond]
-function configFromArray (config) {
-    var i, date, input = [], currentDate, yearToUse;
-
-    if (config._d) {
-        return;
-    }
-
-    currentDate = currentDateArray(config);
-
-    //compute day of the year from weeks and weekdays
-    if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
-        dayOfYearFromWeekInfo(config);
-    }
-
-    //if the day of the year is set, figure out what it is
-    if (config._dayOfYear != null) {
-        yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
-
-        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
-            getParsingFlags(config)._overflowDayOfYear = true;
-        }
-
-        date = createUTCDate(yearToUse, 0, config._dayOfYear);
-        config._a[MONTH] = date.getUTCMonth();
-        config._a[DATE] = date.getUTCDate();
-    }
-
-    // Default to current date.
-    // * if no year, month, day of month are given, default to today
-    // * if day of month is given, default month and year
-    // * if month is given, default only year
-    // * if year is given, don't default anything
-    for (i = 0; i < 3 && config._a[i] == null; ++i) {
-        config._a[i] = input[i] = currentDate[i];
-    }
-
-    // Zero out whatever was not defaulted, including time
-    for (; i < 7; i++) {
-        config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
-    }
-
-    // Check for 24:00:00.000
-    if (config._a[HOUR] === 24 &&
-            config._a[MINUTE] === 0 &&
-            config._a[SECOND] === 0 &&
-            config._a[MILLISECOND] === 0) {
-        config._nextDay = true;
-        config._a[HOUR] = 0;
-    }
-
-    config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
-    // Apply timezone offset from input. The actual utcOffset can be changed
-    // with parseZone.
-    if (config._tzm != null) {
-        config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
-    }
-
-    if (config._nextDay) {
-        config._a[HOUR] = 24;
-    }
-}
-
-function dayOfYearFromWeekInfo(config) {
-    var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
-
-    w = config._w;
-    if (w.GG != null || w.W != null || w.E != null) {
-        dow = 1;
-        doy = 4;
-
-        // TODO: We need to take the current isoWeekYear, but that depends on
-        // how we interpret now (local, utc, fixed offset). So create
-        // a now version of current config (take local/utc/offset flags, and
-        // create now).
-        weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(createLocal(), 1, 4).year);
-        week = defaults(w.W, 1);
-        weekday = defaults(w.E, 1);
-        if (weekday < 1 || weekday > 7) {
-            weekdayOverflow = true;
-        }
-    } else {
-        dow = config._locale._week.dow;
-        doy = config._locale._week.doy;
-
-        var curWeek = weekOfYear(createLocal(), dow, doy);
-
-        weekYear = defaults(w.gg, config._a[YEAR], curWeek.year);
-
-        // Default to current week.
-        week = defaults(w.w, curWeek.week);
-
-        if (w.d != null) {
-            // weekday -- low day numbers are considered next week
-            weekday = w.d;
-            if (weekday < 0 || weekday > 6) {
-                weekdayOverflow = true;
-            }
-        } else if (w.e != null) {
-            // local weekday -- counting starts from begining of week
-            weekday = w.e + dow;
-            if (w.e < 0 || w.e > 6) {
-                weekdayOverflow = true;
-            }
-        } else {
-            // default to begining of week
-            weekday = dow;
-        }
-    }
-    if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
-        getParsingFlags(config)._overflowWeeks = true;
-    } else if (weekdayOverflow != null) {
-        getParsingFlags(config)._overflowWeekday = true;
-    } else {
-        temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
-        config._a[YEAR] = temp.year;
-        config._dayOfYear = temp.dayOfYear;
-    }
-}
 
 // constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
@@ -5260,7 +5220,7 @@ var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'se
 
 function isDurationValid(m) {
     for (var key in m) {
-        if (!(ordering.indexOf(key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+        if (!(indexOf.call(ordering, key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
             return false;
         }
     }
@@ -5311,7 +5271,7 @@ function Duration (duration) {
     // day when working around DST, we need to store them separately
     this._days = +days +
         weeks * 7;
-    // It is impossible translate months into days without knowing
+    // It is impossible to translate months into days without knowing
     // which months you are are talking about, so we have to store
     // it separately.
     this._months = +months +
@@ -5558,12 +5518,12 @@ function isUtc () {
 }
 
 // ASP.NET json date format regex
-var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
+var aspNetRegex = /^(\-|\+)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)(\.\d*)?)?$/;
 
 // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
 // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
 // and further modified to allow for strings containing both week and day
-var isoRegex = /^(-)?P(?:(-?[0-9,.]*)Y)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)W)?(?:(-?[0-9,.]*)D)?(?:T(?:(-?[0-9,.]*)H)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)S)?)?$/;
+var isoRegex = /^(-|\+)?P(?:([-+]?[0-9,.]*)Y)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)W)?(?:([-+]?[0-9,.]*)D)?(?:T(?:([-+]?[0-9,.]*)H)?(?:([-+]?[0-9,.]*)M)?(?:([-+]?[0-9,.]*)S)?)?$/;
 
 function createDuration (input, key) {
     var duration = input,
@@ -5597,7 +5557,7 @@ function createDuration (input, key) {
             ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
         };
     } else if (!!(match = isoRegex.exec(input))) {
-        sign = (match[1] === '-') ? -1 : 1;
+        sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
         duration = {
             y : parseIso(match[2], sign),
             M : parseIso(match[3], sign),
@@ -5700,14 +5660,14 @@ function addSubtract (mom, duration, isAdding, updateOffset) {
 
     updateOffset = updateOffset == null ? true : updateOffset;
 
-    if (milliseconds) {
-        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
+    if (months) {
+        setMonth(mom, get(mom, 'Month') + months * isAdding);
     }
     if (days) {
         set$1(mom, 'Date', get(mom, 'Date') + days * isAdding);
     }
-    if (months) {
-        setMonth(mom, get(mom, 'Month') + months * isAdding);
+    if (milliseconds) {
+        mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
     }
     if (updateOffset) {
         hooks.updateOffset(mom, days || months);
@@ -5817,22 +5777,18 @@ function diff (input, units, asFloat) {
 
     units = normalizeUnits(units);
 
-    if (units === 'year' || units === 'month' || units === 'quarter') {
-        output = monthDiff(this, that);
-        if (units === 'quarter') {
-            output = output / 3;
-        } else if (units === 'year') {
-            output = output / 12;
-        }
-    } else {
-        delta = this - that;
-        output = units === 'second' ? delta / 1e3 : // 1000
-            units === 'minute' ? delta / 6e4 : // 1000 * 60
-            units === 'hour' ? delta / 36e5 : // 1000 * 60 * 60
-            units === 'day' ? (delta - zoneDelta) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
-            units === 'week' ? (delta - zoneDelta) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
-            delta;
+    switch (units) {
+        case 'year': output = monthDiff(this, that) / 12; break;
+        case 'month': output = monthDiff(this, that); break;
+        case 'quarter': output = monthDiff(this, that) / 3; break;
+        case 'second': output = (this - that) / 1e3; break; // 1000
+        case 'minute': output = (this - that) / 6e4; break; // 1000 * 60
+        case 'hour': output = (this - that) / 36e5; break; // 1000 * 60 * 60
+        case 'day': output = (this - that - zoneDelta) / 864e5; break; // 1000 * 60 * 60 * 24, negate dst
+        case 'week': output = (this - that - zoneDelta) / 6048e5; break; // 1000 * 60 * 60 * 24 * 7, negate dst
+        default: output = this - that;
     }
+
     return asFloat ? output : absFloor(output);
 }
 
@@ -6810,6 +6766,10 @@ var asWeeks        = makeAs('w');
 var asMonths       = makeAs('M');
 var asYears        = makeAs('y');
 
+function clone$1 () {
+    return createDuration(this);
+}
+
 function get$2 (units) {
     units = normalizeUnits(units);
     return this.isValid() ? this[units + 's']() : NaN;
@@ -6919,6 +6879,10 @@ function humanize (withSuffix) {
 
 var abs$1 = Math.abs;
 
+function sign(x) {
+    return ((x > 0) - (x < 0)) || +x;
+}
+
 function toISOString$1() {
     // for ISO strings we do not use the normal bubbling rules:
     //  * milliseconds bubble up until they become hours
@@ -6953,7 +6917,7 @@ function toISOString$1() {
     var D = days;
     var h = hours;
     var m = minutes;
-    var s = seconds;
+    var s = seconds ? seconds.toFixed(3).replace(/\.?0+$/, '') : '';
     var total = this.asSeconds();
 
     if (!total) {
@@ -6962,15 +6926,19 @@ function toISOString$1() {
         return 'P0D';
     }
 
-    return (total < 0 ? '-' : '') +
-        'P' +
-        (Y ? Y + 'Y' : '') +
-        (M ? M + 'M' : '') +
-        (D ? D + 'D' : '') +
+    var totalSign = total < 0 ? '-' : '';
+    var ymSign = sign(this._months) !== sign(total) ? '-' : '';
+    var daysSign = sign(this._days) !== sign(total) ? '-' : '';
+    var hmsSign = sign(this._milliseconds) !== sign(total) ? '-' : '';
+
+    return totalSign + 'P' +
+        (Y ? ymSign + Y + 'Y' : '') +
+        (M ? ymSign + M + 'M' : '') +
+        (D ? daysSign + D + 'D' : '') +
         ((h || m || s) ? 'T' : '') +
-        (h ? h + 'H' : '') +
-        (m ? m + 'M' : '') +
-        (s ? s + 'S' : '');
+        (h ? hmsSign + h + 'H' : '') +
+        (m ? hmsSign + m + 'M' : '') +
+        (s ? hmsSign + s + 'S' : '');
 }
 
 var proto$2 = Duration.prototype;
@@ -6990,6 +6958,7 @@ proto$2.asMonths       = asMonths;
 proto$2.asYears        = asYears;
 proto$2.valueOf        = valueOf$1;
 proto$2._bubble        = bubble;
+proto$2.clone          = clone$1;
 proto$2.get            = get$2;
 proto$2.milliseconds   = milliseconds;
 proto$2.seconds        = seconds;
@@ -7031,7 +7000,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.18.1';
+hooks.version = '2.19.1';
 
 setHookCallback(createLocal);
 
@@ -7058,7 +7027,7 @@ hooks.updateLocale          = updateLocale;
 hooks.locales               = listLocales;
 hooks.weekdaysShort         = listWeekdaysShort;
 hooks.normalizeUnits        = normalizeUnits;
-hooks.relativeTimeRounding = getSetRelativeTimeRounding;
+hooks.relativeTimeRounding  = getSetRelativeTimeRounding;
 hooks.relativeTimeThreshold = getSetRelativeTimeThreshold;
 hooks.calendarFormat        = getCalendarFormat;
 hooks.prototype             = proto;
@@ -7067,7 +7036,7 @@ return hooks;
 
 })));
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -7253,7 +7222,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 /**!
  * Sortable
  * @author	RubaXa   <trash@rubaxa.org>
@@ -8746,7 +8715,7 @@ process.umask = function() { return 0; };
 	return Sortable;
 });
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -9047,7 +9016,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 /*!
  * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
@@ -10617,7 +10586,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":16}],108:[function(require,module,exports){
+},{"got":16}],109:[function(require,module,exports){
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -11558,7 +11527,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }]);
 });
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":15}],109:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":15}],110:[function(require,module,exports){
 ;(function () {
 
   var vSortable = {}
@@ -11605,7 +11574,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 })()
 
-},{"sortablejs":105}],110:[function(require,module,exports){
+},{"sortablejs":106}],111:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -21846,7 +21815,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":104}],111:[function(require,module,exports){
+},{"_process":105}],112:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -21866,7 +21835,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 /*!
  * Vuex v1.0.1
  * (c) 2017 Evan You
@@ -22590,9 +22559,9 @@ return index;
 
 })));
 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-3e4495f1] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-3e4495f1] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-3e4495f1] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-3e4495f1] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-3e4495f1] {\n  color: #1B1B1B;\n}\n.zcallout[_v-3e4495f1] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-3e4495f1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-3e4495f1] {\n  margin-bottom: 2px;\n}\n#applabel[_v-3e4495f1]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-3e4495f1],\n.btn-group-vertical[_v-3e4495f1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-3e4495f1] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-3e4495f1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-3e4495f1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-3e4495f1] {\n}\n.form-group label[_v-3e4495f1]{\n  margin-bottom: 0;\n}\n.box-footer[_v-3e4495f1] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-3e4495f1] {\n  border: 1px solid #999999;\n}\n.topitems[_v-3e4495f1] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-3e4495f1] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-3e4495f1] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-3e4495f1] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-3e4495f1] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-3e4495f1] {\n  color: #F39C12;\n}\n.time-is-long[_v-3e4495f1] {\n  color: #999999;\n}\n.time-is-over[_v-3e4495f1] {\n  color: #9B59B6;\n}\n.special-item[_v-3e4495f1] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-3e4495f1] {\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-b6abc628] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-b6abc628] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-b6abc628] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-b6abc628] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-b6abc628] {\n  color: #1B1B1B;\n}\n.zcallout[_v-b6abc628] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-b6abc628] {\n  margin-bottom: 2px;\n}\n#applabel[_v-b6abc628]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-b6abc628],\n.btn-group-vertical[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-b6abc628] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-b6abc628] {\n}\n.form-group label[_v-b6abc628]{\n  margin-bottom: 0;\n}\n.box-footer[_v-b6abc628] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-b6abc628] {\n  border: 1px solid #999999;\n}\n.topitems[_v-b6abc628] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-b6abc628] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-b6abc628] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-b6abc628] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-b6abc628] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-b6abc628] {\n  color: #F39C12;\n}\n.time-is-long[_v-b6abc628] {\n  color: #999999;\n}\n.time-is-over[_v-b6abc628] {\n  color: #9B59B6;\n}\n.special-item[_v-b6abc628] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-b6abc628] {\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
@@ -22777,24 +22746,24 @@ module.exports = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-3e4495f1=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-3e4495f1=\"\">\n      <div class=\"box-header with-border\" _v-3e4495f1=\"\">\n        <div class=\"row\" _v-3e4495f1=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-3e4495f1=\"\">\n            <div class=\"box-date-top pull-left\" _v-3e4495f1=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-3e4495f1=\"\">\n            <label v-show=\"podType == 'announcementqueue'\" class=\"pull-right\" _v-3e4495f1=\"\"><input type=\"checkbox\" @click=\"toggleEmitAnnouncement(item)\" v-model=\"checked\" :checked=\"isAnnouncement\" _v-3e4495f1=\"\"> Email Announcement</label>\n            <button v-show=\"podType == 'announcement'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitAnnouncementRemove(item)\" _v-3e4495f1=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-3e4495f1=\"\"></i></button>\n          </div><!-- /.col-md-12 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-3e4495f1=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-3e4495f1=\"\">\n            <div class=\"col-sm-12\" _v-3e4495f1=\"\">\n              <h6 class=\"box-title\" _v-3e4495f1=\"\">{{item.title}}</h6>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-3e4495f1=\"\">\n      <p _v-3e4495f1=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-3e4495f1=\"\">\n        Submitted On: {{item.submission_date}}<br _v-3e4495f1=\"\">\n        By: {{item.submitter}}<br _v-3e4495f1=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-3e4495f1=\"\">\n      <div class=\"row\" _v-3e4495f1=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-3e4495f1=\"\">\n          <span :class=\"timeFromNowStatus\" _v-3e4495f1=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-3e4495f1=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-3e4495f1=\"\">\n          <div class=\"btn-group pull-right\" _v-3e4495f1=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-3e4495f1=\"\"><i class=\"fa fa-pencil\" _v-3e4495f1=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-b6abc628=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-b6abc628=\"\">\n      <div class=\"box-header with-border\" _v-b6abc628=\"\">\n        <div class=\"row\" _v-b6abc628=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-b6abc628=\"\">\n            <div class=\"box-date-top pull-left\" _v-b6abc628=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-b6abc628=\"\">\n            <label v-show=\"podType == 'announcementqueue'\" class=\"pull-right\" _v-b6abc628=\"\"><input type=\"checkbox\" @click=\"toggleEmitAnnouncement(item)\" v-model=\"checked\" :checked=\"isAnnouncement\" _v-b6abc628=\"\"> Email Announcement</label>\n            <button v-show=\"podType == 'announcement'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitAnnouncementRemove(item)\" _v-b6abc628=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-b6abc628=\"\"></i></button>\n          </div><!-- /.col-md-12 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-b6abc628=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-b6abc628=\"\">\n            <div class=\"col-sm-12\" _v-b6abc628=\"\">\n              <h6 class=\"box-title\" _v-b6abc628=\"\">{{item.title}}</h6>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-b6abc628=\"\">\n      <p _v-b6abc628=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-b6abc628=\"\">\n        Submitted On: {{item.submission_date}}<br _v-b6abc628=\"\">\n        By: {{item.submitter}}<br _v-b6abc628=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-b6abc628=\"\">\n      <div class=\"row\" _v-b6abc628=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-b6abc628=\"\">\n          <span :class=\"timeFromNowStatus\" _v-b6abc628=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-b6abc628=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-b6abc628=\"\">\n          <div class=\"btn-group pull-right\" _v-b6abc628=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-b6abc628=\"\"><i class=\"fa fa-pencil\" _v-b6abc628=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-3e4495f1] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-3e4495f1] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-3e4495f1] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-3e4495f1] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-3e4495f1] {\n  color: #1B1B1B;\n}\n.zcallout[_v-3e4495f1] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-3e4495f1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-3e4495f1] {\n  margin-bottom: 2px;\n}\n#applabel[_v-3e4495f1]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-3e4495f1],\n.btn-group-vertical[_v-3e4495f1] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-3e4495f1] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-3e4495f1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-3e4495f1] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-3e4495f1] {\n}\n.form-group label[_v-3e4495f1]{\n  margin-bottom: 0;\n}\n.box-footer[_v-3e4495f1] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-3e4495f1] {\n  border: 1px solid #999999;\n}\n.topitems[_v-3e4495f1] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-3e4495f1] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-3e4495f1] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-3e4495f1] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-3e4495f1] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-3e4495f1] {\n  color: #F39C12;\n}\n.time-is-long[_v-3e4495f1] {\n  color: #999999;\n}\n.time-is-over[_v-3e4495f1] {\n  color: #9B59B6;\n}\n.special-item[_v-3e4495f1] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-3e4495f1] {\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-b6abc628] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-b6abc628] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-b6abc628] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-b6abc628] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-b6abc628] {\n  color: #1B1B1B;\n}\n.zcallout[_v-b6abc628] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-b6abc628] {\n  margin-bottom: 2px;\n}\n#applabel[_v-b6abc628]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-b6abc628],\n.btn-group-vertical[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-b6abc628] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-b6abc628] {\n}\n.form-group label[_v-b6abc628]{\n  margin-bottom: 0;\n}\n.box-footer[_v-b6abc628] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-b6abc628] {\n  border: 1px solid #999999;\n}\n.topitems[_v-b6abc628] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-b6abc628] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-b6abc628] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-b6abc628] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-b6abc628] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-b6abc628] {\n  color: #F39C12;\n}\n.time-is-long[_v-b6abc628] {\n  color: #999999;\n}\n.time-is-over[_v-b6abc628] {\n  color: #9B59B6;\n}\n.special-item[_v-b6abc628] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-b6abc628] {\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3e4495f1", module.exports)
+    hotAPI.createRecord("_v-b6abc628", module.exports)
   } else {
-    hotAPI.update("_v-3e4495f1", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-b6abc628", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../VuiFlipSwitch.vue":127,"babel-runtime/helpers/defineProperty":14,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],114:[function(require,module,exports){
+},{"../VuiFlipSwitch.vue":128,"babel-runtime/helpers/defineProperty":14,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],115:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#rangetoggle[_v-700121bd]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#rangetoggle[_v-59be5410]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22940,22 +22909,22 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-700121bd=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-700121bd=\"\">\n      <p _v-700121bd=\"\">You will only be presented announcements that are:</p>\n      <ol _v-700121bd=\"\">\n        <li _v-700121bd=\"\">Approved</li>\n        <li _v-700121bd=\"\">Not archived</li>\n        <li _v-700121bd=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-700121bd=\"\">\n<div class=\"row\" _v-700121bd=\"\">\n    <div class=\"col-md-12\" _v-700121bd=\"\">\n        <h3 _v-700121bd=\"\">Announcements</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedAnnouncements.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-700121bd=\"\">\n                <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-700121bd=\"\">\n                  <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-700121bd=\"\">\n                  </email-announcement-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-700121bd=\"\">There are no announcements set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-700121bd=\"\">Loading this email's announcements. Please wait...</p>\n        </template>\n        <hr _v-700121bd=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-700121bd=\"\">\n          <div class=\"form-group\" _v-700121bd=\"\">\n              <label for=\"start-date\" _v-700121bd=\"\">Starting <span v-if=\"isEndDate\" _v-700121bd=\"\">between</span><span v-else=\"\" _v-700121bd=\"\">on or after</span></label>\n              <p _v-700121bd=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-700121bd=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-700121bd=\"\">\n              <label for=\"start-date\" _v-700121bd=\"\"> and </label>\n              <p _v-700121bd=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-700121bd=\"\"></p><p _v-700121bd=\"\">\n          </p></div>\n          <p _v-700121bd=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-700121bd=\"\">Filter</button></p>\n          <p _v-700121bd=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-700121bd=\"\"><span v-if=\"isEndDate\" _v-700121bd=\"\"> - Remove </span><span v-else=\"\" _v-700121bd=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-700121bd=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueAnnouncements.length > 0\">\n              <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-700121bd=\"\">\n              </email-announcement-pod>\n              <ul class=\"pagination\" _v-700121bd=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-700121bd=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-700121bd=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-700121bd=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-700121bd=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-700121bd=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-700121bd=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-700121bd=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-700121bd=\"\">There are no announcements for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-700121bd=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-59be5410=\"\">\n      <p _v-59be5410=\"\">You will only be presented announcements that are:</p>\n      <ol _v-59be5410=\"\">\n        <li _v-59be5410=\"\">Approved</li>\n        <li _v-59be5410=\"\">Not archived</li>\n        <li _v-59be5410=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-59be5410=\"\">\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-md-12\" _v-59be5410=\"\">\n        <h3 _v-59be5410=\"\">Announcements</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedAnnouncements.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-59be5410=\"\">\n                <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-59be5410=\"\">\n                  <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-59be5410=\"\">\n                  </email-announcement-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-59be5410=\"\">There are no announcements set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-59be5410=\"\">Loading this email's announcements. Please wait...</p>\n        </template>\n        <hr _v-59be5410=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-59be5410=\"\">\n          <div class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\">Starting <span v-if=\"isEndDate\" _v-59be5410=\"\">between</span><span v-else=\"\" _v-59be5410=\"\">on or after</span></label>\n              <p _v-59be5410=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-59be5410=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\"> and </label>\n              <p _v-59be5410=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-59be5410=\"\"></p><p _v-59be5410=\"\">\n          </p></div>\n          <p _v-59be5410=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-59be5410=\"\">Filter</button></p>\n          <p _v-59be5410=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-59be5410=\"\"><span v-if=\"isEndDate\" _v-59be5410=\"\"> - Remove </span><span v-else=\"\" _v-59be5410=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-59be5410=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueAnnouncements.length > 0\">\n              <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-59be5410=\"\">\n              </email-announcement-pod>\n              <ul class=\"pagination\" _v-59be5410=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-59be5410=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-59be5410=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-59be5410=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-59be5410=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-59be5410=\"\">There are no announcements for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-59be5410=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#rangetoggle[_v-700121bd]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n#rangetoggle[_v-59be5410]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-700121bd", module.exports)
+    hotAPI.createRecord("_v-59be5410", module.exports)
   } else {
-    hotAPI.update("_v-700121bd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-59be5410", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../directives/flatpickr.js":128,"../Pagination.vue":126,"./EmailAnnouncementPod.vue":113,"babel-runtime/helpers/defineProperty":14,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],115:[function(require,module,exports){
+},{"../../directives/flatpickr.js":129,"../Pagination.vue":127,"./EmailAnnouncementPod.vue":114,"babel-runtime/helpers/defineProperty":14,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],116:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -23006,7 +22975,7 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"cloneModal\" class=\"modal fade\" role=\"dialog\" _v-9834a3a6=\"\">\n  <div class=\"modal-dialog\" _v-9834a3a6=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-9834a3a6=\"\">\n      <div class=\"modal-header\" _v-9834a3a6=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-9834a3a6=\"\">×</button>\n        <h4 class=\"modal-title\" _v-9834a3a6=\"\">Clone email</h4>\n      </div>\n      <div class=\"modal-body\" _v-9834a3a6=\"\">\n        <p v-if=\"!disableClone\" _v-9834a3a6=\"\">Are you sure you want to clone \"{{ email.title }}\"?</p>\n        <div v-show=\"cloneStatus.is_set &amp;&amp; cloneStatus.is_success\" class=\"alert\" :class=\"'alert-' + [cloneStatus.is_success ? 'success' : 'danger']\" _v-9834a3a6=\"\">\n          <p _v-9834a3a6=\"\">{{{ cloneStatus.message }}}</p>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-9834a3a6=\"\">\n        <template v-if=\"!disableClone\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-9834a3a6=\"\">Cancel</button>\n          <button type=\"button\" class=\"btn btn-success\" @click=\"cloneEmail\" _v-9834a3a6=\"\">Clone</button>\n        </template>\n        <template v-else=\"\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-9834a3a6=\"\">Close</button>\n        </template>\n      </div>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"cloneModal\" class=\"modal fade\" role=\"dialog\" _v-abbf135c=\"\">\n  <div class=\"modal-dialog\" _v-abbf135c=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-abbf135c=\"\">\n      <div class=\"modal-header\" _v-abbf135c=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-abbf135c=\"\">×</button>\n        <h4 class=\"modal-title\" _v-abbf135c=\"\">Clone email</h4>\n      </div>\n      <div class=\"modal-body\" _v-abbf135c=\"\">\n        <p v-if=\"!disableClone\" _v-abbf135c=\"\">Are you sure you want to clone \"{{ email.title }}\"?</p>\n        <div v-show=\"cloneStatus.is_set &amp;&amp; cloneStatus.is_success\" class=\"alert\" :class=\"'alert-' + [cloneStatus.is_success ? 'success' : 'danger']\" _v-abbf135c=\"\">\n          <p _v-abbf135c=\"\">{{{ cloneStatus.message }}}</p>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-abbf135c=\"\">\n        <template v-if=\"!disableClone\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-abbf135c=\"\">Cancel</button>\n          <button type=\"button\" class=\"btn btn-success\" @click=\"cloneEmail\" _v-abbf135c=\"\">Clone</button>\n        </template>\n        <template v-else=\"\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-abbf135c=\"\">Close</button>\n        </template>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23016,12 +22985,12 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-9834a3a6", module.exports)
+    hotAPI.createRecord("_v-abbf135c", module.exports)
   } else {
-    hotAPI.update("_v-9834a3a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-abbf135c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],116:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],117:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
@@ -23065,7 +23034,7 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"deleteModal\" class=\"modal fade\" role=\"dialog\" _v-4c2e8496=\"\">\n  <div class=\"modal-dialog\" _v-4c2e8496=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-4c2e8496=\"\">\n      <div class=\"modal-header\" _v-4c2e8496=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-4c2e8496=\"\">×</button>\n        <h4 class=\"modal-title\" _v-4c2e8496=\"\">Delete email</h4>\n      </div>\n      <div class=\"modal-body\" _v-4c2e8496=\"\">\n        <p _v-4c2e8496=\"\">Are you sure you want to delete \"{{ email.title }}\"? Type the word <strong _v-4c2e8496=\"\">\"delete\"</strong> to confirm.</p>\n        <div class=\"form-group\" _v-4c2e8496=\"\">\n          <label for=\"deleteConfirm\" class=\"sr-only\" aria-hidden=\"true\" _v-4c2e8496=\"\">Type \"confirm\" to delete</label>\n          <input type=\"text\" v-model=\"deleteConfirm\" class=\"form-control\" id=\"deleteConfirm\" _v-4c2e8496=\"\">\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-4c2e8496=\"\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-4c2e8496=\"\">Cancel</button>\n        <button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\" @click=\"delEmail\" :disabled=\"deleteConfirm != 'delete'\" _v-4c2e8496=\"\">Delete Email</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"deleteModal\" class=\"modal fade\" role=\"dialog\" _v-a9f20ba0=\"\">\n  <div class=\"modal-dialog\" _v-a9f20ba0=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-a9f20ba0=\"\">\n      <div class=\"modal-header\" _v-a9f20ba0=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-a9f20ba0=\"\">×</button>\n        <h4 class=\"modal-title\" _v-a9f20ba0=\"\">Delete email</h4>\n      </div>\n      <div class=\"modal-body\" _v-a9f20ba0=\"\">\n        <p _v-a9f20ba0=\"\">Are you sure you want to delete \"{{ email.title }}\"? Type the word <strong _v-a9f20ba0=\"\">\"delete\"</strong> to confirm.</p>\n        <div class=\"form-group\" _v-a9f20ba0=\"\">\n          <label for=\"deleteConfirm\" class=\"sr-only\" aria-hidden=\"true\" _v-a9f20ba0=\"\">Type \"confirm\" to delete</label>\n          <input type=\"text\" v-model=\"deleteConfirm\" class=\"form-control\" id=\"deleteConfirm\" _v-a9f20ba0=\"\">\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-a9f20ba0=\"\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-a9f20ba0=\"\">Cancel</button>\n        <button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\" @click=\"delEmail\" :disabled=\"deleteConfirm != 'delete'\" _v-a9f20ba0=\"\">Delete Email</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23075,14 +23044,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4c2e8496", module.exports)
+    hotAPI.createRecord("_v-a9f20ba0", module.exports)
   } else {
-    hotAPI.update("_v-4c2e8496", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-a9f20ba0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"babel-runtime/core-js/json/stringify":1,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],117:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],118:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-9157e030] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-9157e030] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-9157e030] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-9157e030] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-9157e030] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-9157e030] {\n  background-color: #ddd;\n}\n.box[_v-9157e030] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-9157e030] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-9157e030] {\n  padding: 3px;\n}\n.box-footer[_v-9157e030] {\n  padding: 3px;\n}\nh5.box-footer[_v-9157e030] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-9157e030] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-9157e030] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-9157e030] {\n  display:inline-block;\n}\nform.mediaform[_v-9157e030] {\n  margin-top: 1rem;\n}\n.form-group[_v-9157e030] {\n  margin-bottom: 2px;\n}\n#applabel[_v-9157e030]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-9157e030],\n.btn-group-vertical[_v-9157e030] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-9157e030] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-9157e030] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-9157e030] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-9157e030] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-9157e030]{\n  margin-bottom: 0;\n}\n.topitems[_v-9157e030] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-9157e030] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-9157e030] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-9157e030] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-9157e030] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-9157e030] {\n  color: #F39C12;\n}\n.time-is-long[_v-9157e030] {\n  color: #999999;\n}\n.time-is-over[_v-9157e030] {\n  color: #9B59B6;\n}\n\n.special-item[_v-9157e030] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-9157e030] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-9157e030] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-9157e030] {\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-d506c566] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-d506c566] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-d506c566] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-d506c566] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-d506c566] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-d506c566] {\n  background-color: #ddd;\n}\n.box[_v-d506c566] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-d506c566] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-d506c566] {\n  padding: 3px;\n}\n.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nh5.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-d506c566] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-d506c566] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-d506c566] {\n  display:inline-block;\n}\nform.mediaform[_v-d506c566] {\n  margin-top: 1rem;\n}\n.form-group[_v-d506c566] {\n  margin-bottom: 2px;\n}\n#applabel[_v-d506c566]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-d506c566],\n.btn-group-vertical[_v-d506c566] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-d506c566] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-d506c566] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-d506c566]{\n  margin-bottom: 0;\n}\n.topitems[_v-d506c566] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-d506c566] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-d506c566] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-d506c566] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-d506c566] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-d506c566] {\n  color: #F39C12;\n}\n.time-is-long[_v-d506c566] {\n  color: #999999;\n}\n.time-is-over[_v-d506c566] {\n  color: #9B59B6;\n}\n\n.special-item[_v-d506c566] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-d506c566] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-d506c566] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-d506c566] {\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -23337,24 +23306,24 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"specialItem\" _v-9157e030=\"\">\n  <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-9157e030=\"\">\n    <div class=\"box-header with-border\" _v-9157e030=\"\">\n      <div class=\"row\" _v-9157e030=\"\">\n        <div class=\"col-sm 12 col-md-4\" _v-9157e030=\"\">\n          <div class=\"box-date-top pull-left\" _v-9157e030=\"\">{{item.start_date | titleDateLong}}</div>\n          <div class=\"pull-right\" _v-9157e030=\"\">\n            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-9157e030=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-9157e030=\"\"></span></label>\n          </div><!-- /.pull-right -->\n        </div><!-- /.col-sm-6 -->\n        <div class=\"col-sm 12 col-md-8\" _v-9157e030=\"\">\n          <label v-show=\"podType == 'eventqueue'\" class=\"pull-right\" _v-9157e030=\"\"><input type=\"checkbox\" @click=\"toggleEmitEvent(item)\" v-model=\"checked\" :checked=\"isEvent\" _v-9157e030=\"\"> Email Event</label>\n          <button v-show=\"podType == 'event'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitEventRemove(item)\" _v-9157e030=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-9157e030=\"\"></i></button>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-9157e030=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-9157e030=\"\">\n          <div class=\"col-sm-12\" _v-9157e030=\"\">\n            <h6 class=\"box-title\" _v-9157e030=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-9157e030=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n    <div v-if=\"showBody\" class=\"box-body\" _v-9157e030=\"\">\n      <p _v-9157e030=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-9157e030=\"\">All Day Event</p>\n      </template>\n      <hr _v-9157e030=\"\">\n      <div class=\"item-info\" _v-9157e030=\"\">\n        <p _v-9157e030=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-9157e030=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-9157e030=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-9157e030=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-9157e030=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-9157e030=\"\">\n        <template v-else=\"\">\n          <p _v-9157e030=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-9157e030=\"\">Contact:</p>\n          <ul _v-9157e030=\"\">\n            <li v-if=\"item.contact_person\" _v-9157e030=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-9157e030=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-9157e030=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-9157e030=\"\">For more information, visit:</p>\n          <ul _v-9157e030=\"\">\n            <li _v-9157e030=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-9157e030=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-9157e030=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-9157e030=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-9157e030=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-9157e030=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-9157e030=\"\">\n        <p v-if=\"item.free\" _v-9157e030=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-9157e030=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-9157e030=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-9157e030=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-9157e030=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-9157e030=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-9157e030=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-9157e030=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-9157e030=\"\">\n        <p _v-9157e030=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-9157e030=\"\">\n        <p _v-9157e030=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-9157e030=\"\">\n      <div class=\"row\" _v-9157e030=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-9157e030=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-9157e030=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-9157e030=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-9157e030=\"\">\n          <div class=\"btn-group pull-right\" _v-9157e030=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-9157e030=\"\"><i class=\"fa fa-pencil\" _v-9157e030=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"specialItem\" _v-d506c566=\"\">\n  <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-d506c566=\"\">\n    <div class=\"box-header with-border\" _v-d506c566=\"\">\n      <div class=\"row\" _v-d506c566=\"\">\n        <div class=\"col-sm 12 col-md-4\" _v-d506c566=\"\">\n          <div class=\"box-date-top pull-left\" _v-d506c566=\"\">{{item.start_date | titleDateLong}}</div>\n          <div class=\"pull-right\" _v-d506c566=\"\">\n            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-d506c566=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-d506c566=\"\"></span></label>\n          </div><!-- /.pull-right -->\n        </div><!-- /.col-sm-6 -->\n        <div class=\"col-sm 12 col-md-8\" _v-d506c566=\"\">\n          <label v-show=\"podType == 'eventqueue'\" class=\"pull-right\" _v-d506c566=\"\"><input type=\"checkbox\" @click=\"toggleEmitEvent(item)\" v-model=\"checked\" :checked=\"isEvent\" _v-d506c566=\"\"> Email Event</label>\n          <button v-show=\"podType == 'event'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitEventRemove(item)\" _v-d506c566=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-d506c566=\"\"></i></button>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-d506c566=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-d506c566=\"\">\n          <div class=\"col-sm-12\" _v-d506c566=\"\">\n            <h6 class=\"box-title\" _v-d506c566=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-d506c566=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n    <div v-if=\"showBody\" class=\"box-body\" _v-d506c566=\"\">\n      <p _v-d506c566=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-d506c566=\"\">All Day Event</p>\n      </template>\n      <hr _v-d506c566=\"\">\n      <div class=\"item-info\" _v-d506c566=\"\">\n        <p _v-d506c566=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-d506c566=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-d506c566=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-d506c566=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-d506c566=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-d506c566=\"\">\n        <template v-else=\"\">\n          <p _v-d506c566=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-d506c566=\"\">Contact:</p>\n          <ul _v-d506c566=\"\">\n            <li v-if=\"item.contact_person\" _v-d506c566=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-d506c566=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-d506c566=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-d506c566=\"\">For more information, visit:</p>\n          <ul _v-d506c566=\"\">\n            <li _v-d506c566=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-d506c566=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-d506c566=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-d506c566=\"\">\n        <p v-if=\"item.free\" _v-d506c566=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-d506c566=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-d506c566=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-d506c566=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-d506c566=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-d506c566=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-d506c566=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-d506c566=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-d506c566=\"\">\n        <p _v-d506c566=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-d506c566=\"\">\n        <p _v-d506c566=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-d506c566=\"\">\n      <div class=\"row\" _v-d506c566=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-d506c566=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-d506c566=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-d506c566=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-d506c566=\"\">\n          <div class=\"btn-group pull-right\" _v-d506c566=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-d506c566=\"\"><i class=\"fa fa-pencil\" _v-d506c566=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.file-upload[_v-9157e030] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-9157e030] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-9157e030] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-9157e030] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-9157e030] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-9157e030] {\n  background-color: #ddd;\n}\n.box[_v-9157e030] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-9157e030] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-9157e030] {\n  padding: 3px;\n}\n.box-footer[_v-9157e030] {\n  padding: 3px;\n}\nh5.box-footer[_v-9157e030] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-9157e030] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-9157e030] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-9157e030] {\n  display:inline-block;\n}\nform.mediaform[_v-9157e030] {\n  margin-top: 1rem;\n}\n.form-group[_v-9157e030] {\n  margin-bottom: 2px;\n}\n#applabel[_v-9157e030]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-9157e030],\n.btn-group-vertical[_v-9157e030] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-9157e030] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-9157e030] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-9157e030] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-9157e030] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-9157e030]{\n  margin-bottom: 0;\n}\n.topitems[_v-9157e030] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-9157e030] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-9157e030] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-9157e030] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-9157e030] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-9157e030] {\n  color: #F39C12;\n}\n.time-is-long[_v-9157e030] {\n  color: #999999;\n}\n.time-is-over[_v-9157e030] {\n  color: #9B59B6;\n}\n\n.special-item[_v-9157e030] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-9157e030] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-9157e030] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-9157e030] {\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.file-upload[_v-d506c566] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-d506c566] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-d506c566] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-d506c566] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-d506c566] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-d506c566] {\n  background-color: #ddd;\n}\n.box[_v-d506c566] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-d506c566] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-d506c566] {\n  padding: 3px;\n}\n.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nh5.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-d506c566] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-d506c566] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-d506c566] {\n  display:inline-block;\n}\nform.mediaform[_v-d506c566] {\n  margin-top: 1rem;\n}\n.form-group[_v-d506c566] {\n  margin-bottom: 2px;\n}\n#applabel[_v-d506c566]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-d506c566],\n.btn-group-vertical[_v-d506c566] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-d506c566] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-d506c566] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-d506c566]{\n  margin-bottom: 0;\n}\n.topitems[_v-d506c566] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-d506c566] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-d506c566] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-d506c566] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-d506c566] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-d506c566] {\n  color: #F39C12;\n}\n.time-is-long[_v-d506c566] {\n  color: #999999;\n}\n.time-is-over[_v-d506c566] {\n  color: #9B59B6;\n}\n\n.special-item[_v-d506c566] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-d506c566] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-d506c566] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-d506c566] {\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-9157e030", module.exports)
+    hotAPI.createRecord("_v-d506c566", module.exports)
   } else {
-    hotAPI.update("_v-9157e030", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-d506c566", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../VuiFlipSwitch.vue":127,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],118:[function(require,module,exports){
+},{"../VuiFlipSwitch.vue":128,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],119:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#automail-label[_v-39cc0c18] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-39cc0c18]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#automail-label[_v-4d567bce] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4d567bce]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23491,24 +23460,24 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-39cc0c18=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-39cc0c18=\"\">\n      <p _v-39cc0c18=\"\">You will only be presented events that are:</p>\n      <ol _v-39cc0c18=\"\">\n        <li _v-39cc0c18=\"\">Approved</li>\n        <li _v-39cc0c18=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-39cc0c18=\"\">\n<div class=\"row\" _v-39cc0c18=\"\">\n    <div class=\"col-md-12\" _v-39cc0c18=\"\">\n        <h3 _v-39cc0c18=\"\">Events</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedEvents.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-39cc0c18=\"\">\n              <li v-for=\"usedEvent in usedEvents\" class=\"list-group-item\" _v-39cc0c18=\"\">\n                <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"usedEvent\" _v-39cc0c18=\"\">\n                </email-event-pod>\n              </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-39cc0c18=\"\">There are no events set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-39cc0c18=\"\">Loading this email's events. Please wait...</p>\n        </template>\n        <hr _v-39cc0c18=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-39cc0c18=\"\">\n          <div class=\"form-group\" _v-39cc0c18=\"\">\n              <label for=\"start-date\" _v-39cc0c18=\"\">Starting <span v-if=\"isEndDate\" _v-39cc0c18=\"\">between</span><span v-else=\"\" _v-39cc0c18=\"\">on or after</span></label>\n              <p _v-39cc0c18=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-39cc0c18=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-39cc0c18=\"\">\n              <label for=\"start-date\" _v-39cc0c18=\"\"> and </label>\n              <p _v-39cc0c18=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-39cc0c18=\"\"></p><p _v-39cc0c18=\"\">\n          </p></div>\n          <p _v-39cc0c18=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-39cc0c18=\"\">Filter</button></p>\n          <p _v-39cc0c18=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-39cc0c18=\"\"><span v-if=\"isEndDate\" _v-39cc0c18=\"\"> - Remove </span><span v-else=\"\" _v-39cc0c18=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-39cc0c18=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueEvents.length > 0\">\n              <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-39cc0c18=\"\">\n              </email-event-pod>\n              <ul class=\"pagination\" _v-39cc0c18=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-39cc0c18=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-39cc0c18=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-39cc0c18=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-39cc0c18=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-39cc0c18=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-39cc0c18=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-39cc0c18=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-39cc0c18=\"\">There are no events for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-39cc0c18=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-4d567bce=\"\">\n      <p _v-4d567bce=\"\">You will only be presented events that are:</p>\n      <ol _v-4d567bce=\"\">\n        <li _v-4d567bce=\"\">Approved</li>\n        <li _v-4d567bce=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-4d567bce=\"\">\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-md-12\" _v-4d567bce=\"\">\n        <h3 _v-4d567bce=\"\">Events</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedEvents.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-4d567bce=\"\">\n              <li v-for=\"usedEvent in usedEvents\" class=\"list-group-item\" _v-4d567bce=\"\">\n                <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"usedEvent\" _v-4d567bce=\"\">\n                </email-event-pod>\n              </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-4d567bce=\"\">There are no events set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-4d567bce=\"\">Loading this email's events. Please wait...</p>\n        </template>\n        <hr _v-4d567bce=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-4d567bce=\"\">\n          <div class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\">Starting <span v-if=\"isEndDate\" _v-4d567bce=\"\">between</span><span v-else=\"\" _v-4d567bce=\"\">on or after</span></label>\n              <p _v-4d567bce=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-4d567bce=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\"> and </label>\n              <p _v-4d567bce=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-4d567bce=\"\"></p><p _v-4d567bce=\"\">\n          </p></div>\n          <p _v-4d567bce=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-4d567bce=\"\">Filter</button></p>\n          <p _v-4d567bce=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-4d567bce=\"\"><span v-if=\"isEndDate\" _v-4d567bce=\"\"> - Remove </span><span v-else=\"\" _v-4d567bce=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-4d567bce=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueEvents.length > 0\">\n              <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-4d567bce=\"\">\n              </email-event-pod>\n              <ul class=\"pagination\" _v-4d567bce=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-4d567bce=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-4d567bce=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-4d567bce=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-4d567bce=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-4d567bce=\"\">There are no events for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-4d567bce=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#automail-label[_v-39cc0c18] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-39cc0c18]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n#automail-label[_v-4d567bce] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4d567bce]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-39cc0c18", module.exports)
+    hotAPI.createRecord("_v-4d567bce", module.exports)
   } else {
-    hotAPI.update("_v-39cc0c18", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4d567bce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../directives/flatpickr.js":128,"./EmailEventPod.vue":117,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],119:[function(require,module,exports){
+},{"../../directives/flatpickr.js":129,"./EmailEventPod.vue":118,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],120:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-87908d3e] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-87908d3e], .nav-tabs > li.active > a[_v-87908d3e]:hover, .nav-tabs > li.active > a[_v-87908d3e]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-87908d3e]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-87908d3e]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-87908d3e]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-87908d3e]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-87908d3e], .fa-calendar[_v-87908d3e]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-87908d3e]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-87908d3e]{\n  color: #FFCC00;\n}\n\n.valid[_v-87908d3e]{\n  color:#3c763d;\n}\n\n.invalid[_v-87908d3e] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-87908d3e] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-87908d3e] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-87908d3e] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-07a0c146], .nav-tabs > li.active > a[_v-07a0c146]:hover, .nav-tabs > li.active > a[_v-07a0c146]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-07a0c146]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-07a0c146]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-07a0c146]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-07a0c146]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-07a0c146], .fa-calendar[_v-07a0c146]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-07a0c146]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-07a0c146]{\n  color: #FFCC00;\n}\n\n.valid[_v-07a0c146]{\n  color:#3c763d;\n}\n\n.invalid[_v-07a0c146] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-07a0c146] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n")
 'use strict';
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
@@ -23964,24 +23933,24 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<template v-if=\"!record.is_sent\">\n  <div class=\"progress\" _v-87908d3e=\"\">\n    <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-87908d3e=\"\">\n      <span v-if=\"progress < 100\" _v-87908d3e=\"\">{{ progress }}% Complete</span>\n      <span v-else=\"\" _v-87908d3e=\"\">I'm Ready!</span>\n    </div>\n  </div>\n  <div class=\"row\" _v-87908d3e=\"\">\n    <div class=\"col-xs-12 col-sm-8\" _v-87908d3e=\"\">\n      <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-87908d3e=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-87908d3e=\"\"><i class=\"fa fa-times\" _v-87908d3e=\"\"></i></button>\n        <p _v-87908d3e=\"\">{{formMessage.msg}}</p>\n      </div>\n      <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-87908d3e=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-87908d3e=\"\"><i class=\"fa fa-times\" _v-87908d3e=\"\"></i></button>\n        <p _v-87908d3e=\"\">The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>\n        <ul v-if=\"formErrors\" _v-87908d3e=\"\">\n          <li v-for=\"error in formErrors\" _v-87908d3e=\"\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 text-right\" _v-87908d3e=\"\">\n      <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-87908d3e=\"\">{{ newform ? 'Create Email' : 'Update Email' }}</button>\n      <button v-if=\"!newform\" class=\"btn btn-warning\" type=\"button\" data-toggle=\"modal\" data-target=\"#cloneModal\" _v-87908d3e=\"\">Clone Email</button>\n    </div>\n  </div>\n  <ul class=\"nav nav-tabs\" role=\"tablist\" _v-87908d3e=\"\">\n    <li class=\"active\" _v-87908d3e=\"\"><a href=\"#step-1\" role=\"tab\" data-toggle=\"tab\" _v-87908d3e=\"\">Step 1: Basic Information</a></li>\n    <li _v-87908d3e=\"\"><a href=\"#step-2\" role=\"tab\" data-toggle=\"tab\" _v-87908d3e=\"\">Step 2: Build Email</a></li>\n    <li _v-87908d3e=\"\"><a href=\"#step-3\" role=\"tab\" data-toggle=\"tab\" _v-87908d3e=\"\">Step 3: Schedule &amp; Review</a></li>\n  </ul>\n  <!-- Start form -->\n  <form _v-87908d3e=\"\">\n    <slot name=\"csrf\" _v-87908d3e=\"\"></slot>\n  <div class=\"tab-content\" _v-87908d3e=\"\">\n    <div class=\"tab-pane active\" id=\"step-1\" _v-87908d3e=\"\">\n      <h2 _v-87908d3e=\"\">Basic Email Information</h2>\n      <div v-if=\"record.clone.length > 0\" class=\"alert alert-info alert-dismissible\" _v-87908d3e=\"\">\n        <p _v-87908d3e=\"\">This email was cloned from <a :href=\"'/admin/email/'+ record.clone[0].id +'/edit'\" _v-87908d3e=\"\">this email</a> on {{ record.created_at }}.</p>\n      </div>\n      <div class=\"form-group\" _v-87908d3e=\"\">\n        <label for=\"email-title\" _v-87908d3e=\"\">Email Headline <span class=\"character-counter help-text invalid\" v-if=\"insufficientTitle\" _v-87908d3e=\"\">({{ minTitleChars - record.title.length }} characters left)</span></label>\n        <input type=\"text\" class=\"form-control\" id=\"email-title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" v-model=\"record.title\" placeholder=\"Email headline goes here.\" _v-87908d3e=\"\">\n        <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-87908d3e=\"\">Title must be at least 10 characters in length.</p>\n      </div>\n      <div class=\"form-group\" _v-87908d3e=\"\">\n        <label for=\"subheading\" _v-87908d3e=\"\">Subheading (optional)</label>\n        <textarea class=\"form-control\" id=\"subheading\" v-model=\"record.subheading\" _v-87908d3e=\"\"></textarea>\n      </div>\n    </div>\n    <div class=\"tab-pane\" id=\"step-2\" _v-87908d3e=\"\">\n        <div class=\"row\" _v-87908d3e=\"\">\n          <!-- EMAIL LIVE BUILDER VIEW AREA -->\n          <!-- BUILDER TOOLS AREA -->\n          <div v-bind:class=\"[md12col, lg4col]\" _v-87908d3e=\"\">\n            <h2 _v-87908d3e=\"\">Build Your Email</h2>\n            <!-- Nav tabs -->\n            <ul class=\"nav nav-tabs\" role=\"tablist\" _v-87908d3e=\"\">\n              <li class=\"active\" _v-87908d3e=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" :class=\"(record.mainStories.length != 1 &amp;&amp; record.mainStories.length != 3) ? 'insufficient' : ''\" _v-87908d3e=\"\">Main Stories ({{ record.mainStories.length }})</a></li>\n              <li _v-87908d3e=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" :class=\"record.otherStories.length < 1 ? 'insufficient' : ''\" _v-87908d3e=\"\">Side Stories ({{ record.otherStories.length }})</a></li>\n              <li _v-87908d3e=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" :class=\"record.announcements.length < 1 ? 'insufficient' : ''\" _v-87908d3e=\"\">Announcements ({{ record.announcements.length }})</a></li>\n              <li _v-87908d3e=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" :class=\"record.events.length < 1 ? 'insufficient' : ''\" _v-87908d3e=\"\">Events ({{ record.events.length }})</a></li>\n            </ul>\n            <!-- Tab panes -->\n            <div class=\"tab-content\" _v-87908d3e=\"\">\n              <div class=\"tab-pane active\" id=\"main-story\" _v-87908d3e=\"\">\n                <email-main-stories-queue :stypes=\"stypes\" :main-stories=\"record.mainStories\" _v-87908d3e=\"\"></email-main-stories-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"stories\" _v-87908d3e=\"\">\n                <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-87908d3e=\"\"></email-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"announcements\" _v-87908d3e=\"\">\n                <email-announcement-queue :announcements=\"record.announcements\" _v-87908d3e=\"\"></email-announcement-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"events\" _v-87908d3e=\"\">\n                <email-event-queue :events=\"record.events\" _v-87908d3e=\"\"></email-event-queue>\n              </div>\n            </div>\n          </div>\n          <!-- /.medium-4 columns -->\n          <div v-bind:class=\"[md12col, lg8col]\" _v-87908d3e=\"\">\n            <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-87908d3e=\"\"></email-live-view>\n          </div>\n          <!-- /.medium-8 columns -->\n        </div>\n        <!-- /.row -->\n    </div>\n    <div class=\"tab-pane\" id=\"step-3\" _v-87908d3e=\"\">\n      <h2 _v-87908d3e=\"\">Schedule and Review</h2>\n      <div class=\"row\" _v-87908d3e=\"\">\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-87908d3e=\"\">\n          <h3 _v-87908d3e=\"\">When should this email be sent?</h3>\n          <p _v-87908d3e=\"\">Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>\n          <div class=\"input-group\" _v-87908d3e=\"\">\n            <span class=\"input-group-addon\" _v-87908d3e=\"\">\n              <input type=\"checkbox\" v-model=\"record.is_approved\" aria-label=\"Set as time\" _v-87908d3e=\"\">\n            </span>\n            <input id=\"send-at\" type=\"text\" class=\"form-control\" v-model=\"record.send_at\" aria-describedby=\"errorSendAt\" _v-87908d3e=\"\">\n          </div><!-- /input-group -->\n          <h3 _v-87908d3e=\"\">To which mailing list(s) should this email be sent?</h3>\n          <ul _v-87908d3e=\"\">\n            <li v-for=\"recipient in record.recipients\" _v-87908d3e=\"\">{{ recipient.email_address }}</li>\n          </ul>\n          <label for=\"recipients\" _v-87908d3e=\"\">Select recipient(s)\n            <v-select id=\"minical\" :value.sync=\"record.recipients\" :options=\"recipientsList\" :multiple=\"true\" placeholder=\"Select recipient(s)\" label=\"email_address\" _v-87908d3e=\"\">\n            </v-select>\n          </label>\n          <div class=\"row\" _v-87908d3e=\"\">\n            <div class=\"col-sm-12\" _v-87908d3e=\"\">\n                <div class=\"input-group\" :class=\"successFailure\" _v-87908d3e=\"\">\n                  <span class=\"input-group-btn\" _v-87908d3e=\"\">\n                    <button class=\"btn btn-primary\" type=\"button\" @click.prevent=\"toggleAddRecipient\" _v-87908d3e=\"\">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>\n                  </span>\n                  <input v-show=\"showAddRecipient\" type=\"text\" v-model=\"newRecipient\" class=\"form-control\" placeholder=\"mailing_list@emich.edu\" _v-87908d3e=\"\">\n                  <span v-show=\"showAddRecipient\" class=\"input-group-btn\" _v-87908d3e=\"\">\n                    <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"saveUnlistedRecipient\" _v-87908d3e=\"\"><i class=\"fa fa-plus-square\" aria-hidden=\"true\" _v-87908d3e=\"\"></i></button>\n                  </span>\n                </div><!-- /input-group -->\n                <p v-show=\"showAddRecipient &amp;&amp; formErrors.email_address\" class=\"help-text invalid\" _v-87908d3e=\"\">{{ formErrors.email_address }}</p>\n                <p v-show=\"showAddRecipient &amp;&amp; formSuccess.email_address\" class=\"help-text valid\" _v-87908d3e=\"\">{{ formSuccess.email_address }}</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-87908d3e=\"\">\n          <h3 _v-87908d3e=\"\">Mandatory Criteria Checklist</h3>\n          <p _v-87908d3e=\"\">This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>\n          <ul class=\"list-group\" _v-87908d3e=\"\">\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.mainStories.length &gt; 0 ? 'has' : 'does not have' }} a main story.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.mainStories.length == 2 ? 'fa fa-times-circle fa-3x' : 'fa fa-check-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.mainStories.length == 2 ? 'only has 1 sub-main story (0 or 2 required)' : 'has 0 or 2 sub-main stories' }}.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.otherStories.length &gt; 0 ? 'has' : 'does not have' }} at least one side story.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.events.length &gt; 0 ? 'has' : 'does not have' }} at least one event.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.announcements.length &gt; 0 ? 'has' : 'does not have' }} at least one announcement.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.recipients.length &gt; 0 ? 'has' : 'does not have' }} at least one recipient.</li>\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.is_approved &amp;&amp; record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email send date and time {{ record.is_approved &amp;&amp; record.send_at ? 'have' : 'have not' }} been confirmed.</li>\n          </ul>\n          <h3 _v-87908d3e=\"\">Optional Criteria Checklist</h3>\n          <ul class=\"list-group\" _v-87908d3e=\"\">\n            <li class=\"list-group-item\" _v-87908d3e=\"\"><i :class=\"record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-87908d3e=\"\"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>\n          </ul>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" v-show=\"recordexists\" _v-87908d3e=\"\">\n      <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-87908d3e=\"\">\n        <!-- Trigger the delete modal -->\n        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-87908d3e=\"\">Delete Email</button>\n      </div>\n    </div>\n    <!-- /.row -->\n  </div>\n  </div></form><!-- /end form -->\n</template><!-- end if !record.is_sent -->\n<template v-else=\"\">\n  <div class=\"row\" _v-87908d3e=\"\">\n    <div v-bind:class=\"[md12col, lg4col]\" _v-87908d3e=\"\">\n      <h2 _v-87908d3e=\"\">This email has already been sent!</h2>\n      <h3 _v-87908d3e=\"\">Sent</h3>\n      <p _v-87908d3e=\"\">{{ record.send_at | formatDate }}</p>\n      <h3 _v-87908d3e=\"\">Recipients</h3>\n      <template v-if=\"record.recipients.length > 0\">\n        <ul _v-87908d3e=\"\">\n          <li v-for=\"recipient in record.recipients\" _v-87908d3e=\"\">{{ recipient.email_address }}</li>\n        </ul>\n      </template>\n      <template v-else=\"\">\n        <p _v-87908d3e=\"\">Nobody</p>\n      </template>\n      <h3 _v-87908d3e=\"\">Statistics</h3>\n        <p _v-87908d3e=\"\"><button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#statsModal\" _v-87908d3e=\"\"><span class=\"fa fa-bar-chart\" aria-hidden=\"true\" _v-87908d3e=\"\"></span> View Statistics</button></p>\n      <h3 _v-87908d3e=\"\">Actions</h3>\n        <p _v-87908d3e=\"\"><button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-87908d3e=\"\">Delete Email</button></p>\n    </div>\n    <!-- /.medium-4 columns -->\n    <div v-bind:class=\"[md12col, lg8col]\" _v-87908d3e=\"\">\n      <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-87908d3e=\"\"></email-live-view>\n    </div>\n    <!-- /.medium-8 columns -->\n  </div>\n  <!-- /.row -->\n</template>\n<email-delete-modal :email=\"record\" _v-87908d3e=\"\"></email-delete-modal>\n<email-stats-modal :email=\"record\" _v-87908d3e=\"\"></email-stats-modal>\n<email-clone-modal :email=\"record\" _v-87908d3e=\"\"></email-clone-modal>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<template v-if=\"!record.is_sent\">\n  <div class=\"progress\" _v-07a0c146=\"\">\n    <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-07a0c146=\"\">\n      <span v-if=\"progress < 100\" _v-07a0c146=\"\">{{ progress }}% Complete</span>\n      <span v-else=\"\" _v-07a0c146=\"\">I'm Ready!</span>\n    </div>\n  </div>\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div class=\"col-xs-12 col-sm-8\" _v-07a0c146=\"\">\n      <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">{{formMessage.msg}}</p>\n      </div>\n      <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>\n        <ul v-if=\"formErrors\" _v-07a0c146=\"\">\n          <li v-for=\"error in formErrors\" _v-07a0c146=\"\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 text-right\" _v-07a0c146=\"\">\n      <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-07a0c146=\"\">{{ newform ? 'Create Email' : 'Update Email' }}</button>\n      <button v-if=\"!newform\" class=\"btn btn-warning\" type=\"button\" data-toggle=\"modal\" data-target=\"#cloneModal\" _v-07a0c146=\"\">Clone Email</button>\n    </div>\n  </div>\n  <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n    <li class=\"active\" _v-07a0c146=\"\"><a href=\"#step-1\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 1: Basic Information</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-2\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 2: Build Email</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-3\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 3: Schedule &amp; Review</a></li>\n  </ul>\n  <!-- Start form -->\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n  <div class=\"tab-content\" _v-07a0c146=\"\">\n    <div class=\"tab-pane active\" id=\"step-1\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Basic Email Information</h2>\n      <div v-if=\"record.clone.length > 0\" class=\"alert alert-info alert-dismissible\" _v-07a0c146=\"\">\n        <p _v-07a0c146=\"\">This email was cloned from <a :href=\"'/admin/email/'+ record.clone[0].id +'/edit'\" _v-07a0c146=\"\">this email</a> on {{ record.created_at }}.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"email-title\" _v-07a0c146=\"\">Email Headline <span class=\"character-counter help-text invalid\" v-if=\"insufficientTitle\" _v-07a0c146=\"\">({{ minTitleChars - record.title.length }} characters left)</span></label>\n        <input type=\"text\" class=\"form-control\" id=\"email-title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" v-model=\"record.title\" placeholder=\"Email headline goes here.\" _v-07a0c146=\"\">\n        <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-07a0c146=\"\">Title must be at least 10 characters in length.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"subheading\" _v-07a0c146=\"\">Subheading (optional)</label>\n        <textarea class=\"form-control\" id=\"subheading\" v-model=\"record.subheading\" _v-07a0c146=\"\"></textarea>\n      </div>\n    </div>\n    <div class=\"tab-pane\" id=\"step-2\" _v-07a0c146=\"\">\n        <div class=\"row\" _v-07a0c146=\"\">\n          <!-- EMAIL LIVE BUILDER VIEW AREA -->\n          <!-- BUILDER TOOLS AREA -->\n          <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n            <h2 _v-07a0c146=\"\">Build Your Email</h2>\n            <!-- Nav tabs -->\n            <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n              <li class=\"active\" _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" :class=\"(record.mainStories.length != 1 &amp;&amp; record.mainStories.length != 3) ? 'insufficient' : ''\" _v-07a0c146=\"\">Main Stories ({{ record.mainStories.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" :class=\"record.otherStories.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Side Stories ({{ record.otherStories.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" :class=\"record.announcements.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Announcements ({{ record.announcements.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" :class=\"record.events.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Events ({{ record.events.length }})</a></li>\n            </ul>\n            <!-- Tab panes -->\n            <div class=\"tab-content\" _v-07a0c146=\"\">\n              <div class=\"tab-pane active\" id=\"main-story\" _v-07a0c146=\"\">\n                <email-main-stories-queue :stypes=\"stypes\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-main-stories-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n                <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"announcements\" _v-07a0c146=\"\">\n                <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n                <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n              </div>\n            </div>\n          </div>\n          <!-- /.medium-4 columns -->\n          <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n            <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-live-view>\n          </div>\n          <!-- /.medium-8 columns -->\n        </div>\n        <!-- /.row -->\n    </div>\n    <div class=\"tab-pane\" id=\"step-3\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Schedule and Review</h2>\n      <div class=\"row\" _v-07a0c146=\"\">\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">When should this email be sent?</h3>\n          <p _v-07a0c146=\"\">Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>\n          <div class=\"input-group\" _v-07a0c146=\"\">\n            <span class=\"input-group-addon\" _v-07a0c146=\"\">\n              <input type=\"checkbox\" v-model=\"record.is_approved\" aria-label=\"Set as time\" _v-07a0c146=\"\">\n            </span>\n            <input id=\"send-at\" type=\"text\" class=\"form-control\" v-model=\"record.send_at\" aria-describedby=\"errorSendAt\" _v-07a0c146=\"\">\n          </div><!-- /input-group -->\n          <h3 _v-07a0c146=\"\">To which mailing list(s) should this email be sent?</h3>\n          <ul _v-07a0c146=\"\">\n            <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n          </ul>\n          <label for=\"recipients\" _v-07a0c146=\"\">Select recipient(s)\n            <v-select id=\"minical\" :value.sync=\"record.recipients\" :options=\"recipientsList\" :multiple=\"true\" placeholder=\"Select recipient(s)\" label=\"email_address\" _v-07a0c146=\"\">\n            </v-select>\n          </label>\n          <div class=\"row\" _v-07a0c146=\"\">\n            <div class=\"col-sm-12\" _v-07a0c146=\"\">\n                <div class=\"input-group\" :class=\"successFailure\" _v-07a0c146=\"\">\n                  <span class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-primary\" type=\"button\" @click.prevent=\"toggleAddRecipient\" _v-07a0c146=\"\">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>\n                  </span>\n                  <input v-show=\"showAddRecipient\" type=\"text\" v-model=\"newRecipient\" class=\"form-control\" placeholder=\"mailing_list@emich.edu\" _v-07a0c146=\"\">\n                  <span v-show=\"showAddRecipient\" class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"saveUnlistedRecipient\" _v-07a0c146=\"\"><i class=\"fa fa-plus-square\" aria-hidden=\"true\" _v-07a0c146=\"\"></i></button>\n                  </span>\n                </div><!-- /input-group -->\n                <p v-show=\"showAddRecipient &amp;&amp; formErrors.email_address\" class=\"help-text invalid\" _v-07a0c146=\"\">{{ formErrors.email_address }}</p>\n                <p v-show=\"showAddRecipient &amp;&amp; formSuccess.email_address\" class=\"help-text valid\" _v-07a0c146=\"\">{{ formSuccess.email_address }}</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">Mandatory Criteria Checklist</h3>\n          <p _v-07a0c146=\"\">This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.mainStories.length &gt; 0 ? 'has' : 'does not have' }} a main story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.mainStories.length == 2 ? 'fa fa-times-circle fa-3x' : 'fa fa-check-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.mainStories.length == 2 ? 'only has 1 sub-main story (0 or 2 required)' : 'has 0 or 2 sub-main stories' }}.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.otherStories.length &gt; 0 ? 'has' : 'does not have' }} at least one side story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.events.length &gt; 0 ? 'has' : 'does not have' }} at least one event.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.announcements.length &gt; 0 ? 'has' : 'does not have' }} at least one announcement.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.recipients.length &gt; 0 ? 'has' : 'does not have' }} at least one recipient.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.is_approved &amp;&amp; record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email send date and time {{ record.is_approved &amp;&amp; record.send_at ? 'have' : 'have not' }} been confirmed.</li>\n          </ul>\n          <h3 _v-07a0c146=\"\">Optional Criteria Checklist</h3>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>\n          </ul>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" v-show=\"recordexists\" _v-07a0c146=\"\">\n      <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n        <!-- Trigger the delete modal -->\n        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button>\n      </div>\n    </div>\n    <!-- /.row -->\n  </div>\n  </div></form><!-- /end form -->\n</template><!-- end if !record.is_sent -->\n<template v-else=\"\">\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">This email has already been sent!</h2>\n      <h3 _v-07a0c146=\"\">Sent</h3>\n      <p _v-07a0c146=\"\">{{ record.send_at | formatDate }}</p>\n      <h3 _v-07a0c146=\"\">Recipients</h3>\n      <template v-if=\"record.recipients.length > 0\">\n        <ul _v-07a0c146=\"\">\n          <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n        </ul>\n      </template>\n      <template v-else=\"\">\n        <p _v-07a0c146=\"\">Nobody</p>\n      </template>\n      <h3 _v-07a0c146=\"\">Statistics</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#statsModal\" _v-07a0c146=\"\"><span class=\"fa fa-bar-chart\" aria-hidden=\"true\" _v-07a0c146=\"\"></span> View Statistics</button></p>\n      <h3 _v-07a0c146=\"\">Actions</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button></p>\n    </div>\n    <!-- /.medium-4 columns -->\n    <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n      <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-live-view>\n    </div>\n    <!-- /.medium-8 columns -->\n  </div>\n  <!-- /.row -->\n</template>\n<email-delete-modal :email=\"record\" _v-07a0c146=\"\"></email-delete-modal>\n<email-stats-modal :email=\"record\" _v-07a0c146=\"\"></email-stats-modal>\n<email-clone-modal :email=\"record\" _v-07a0c146=\"\"></email-clone-modal>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-87908d3e] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-87908d3e], .nav-tabs > li.active > a[_v-87908d3e]:hover, .nav-tabs > li.active > a[_v-87908d3e]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-87908d3e]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-87908d3e]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-87908d3e]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-87908d3e]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-87908d3e], .fa-calendar[_v-87908d3e]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-87908d3e]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-87908d3e]{\n  color: #FFCC00;\n}\n\n.valid[_v-87908d3e]{\n  color:#3c763d;\n}\n\n.invalid[_v-87908d3e] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-87908d3e] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-87908d3e] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-87908d3e] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-07a0c146], .nav-tabs > li.active > a[_v-07a0c146]:hover, .nav-tabs > li.active > a[_v-07a0c146]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-07a0c146]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-07a0c146]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-07a0c146]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-07a0c146]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-07a0c146], .fa-calendar[_v-07a0c146]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-07a0c146]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-07a0c146]{\n  color: #FFCC00;\n}\n\n.valid[_v-07a0c146]{\n  color:#3c763d;\n}\n\n.invalid[_v-07a0c146] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-07a0c146] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-87908d3e", module.exports)
+    hotAPI.createRecord("_v-07a0c146", module.exports)
   } else {
-    hotAPI.update("_v-87908d3e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-07a0c146", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../VuiFlipSwitch.vue":127,"./EmailAnnouncementQueue.vue":114,"./EmailCloneModal.vue":115,"./EmailDeleteModal.vue":116,"./EmailEventQueue.vue":118,"./EmailLiveView.vue":120,"./EmailMainStoriesQueue.vue":121,"./EmailStatsModal.vue":122,"./EmailStoryQueue.vue":124,"babel-runtime/helpers/defineProperty":14,"flatpickr":102,"moment":103,"vue":110,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":111}],120:[function(require,module,exports){
+},{"../VuiFlipSwitch.vue":128,"./EmailAnnouncementQueue.vue":115,"./EmailCloneModal.vue":116,"./EmailDeleteModal.vue":117,"./EmailEventQueue.vue":119,"./EmailLiveView.vue":121,"./EmailMainStoriesQueue.vue":122,"./EmailStatsModal.vue":123,"./EmailStoryQueue.vue":125,"babel-runtime/helpers/defineProperty":14,"flatpickr":103,"moment":104,"vue":111,"vue-hot-reload-api":107,"vue-select":109,"vueify/lib/insert-css":112}],121:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.insufficient[_v-4e1eed4e]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-4e1eed4e]{\n    font-size:16px;\n    margin: 0 !important;\n    padding: 0;\n    background-color: #f3f2ee;\n}\ntable[_v-4e1eed4e] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-4e1eed4e] {\n    padding: 0;\n}\nimg[_v-4e1eed4e] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-4e1eed4e] {\n    margin:0 !important;\n}\n.wrapper[_v-4e1eed4e] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-4e1eed4e] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-4e1eed4e] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-4e1eed4e]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-4e1eed4e]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-4e1eed4e]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\n\nh1[_v-4e1eed4e],\nh2[_v-4e1eed4e],\nh3[_v-4e1eed4e],\nh4[_v-4e1eed4e],\nh5[_v-4e1eed4e],\nh6[_v-4e1eed4e] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-4e1eed4e] {\n    font-size: 24px;\n}\nh2[_v-4e1eed4e]{\n    font-size: 22px;\n}\nh2 a[_v-4e1eed4e]{\n    font-size: 22px;\n    font-weight: bold;\n    text-decoration: none;\n}\nh3[_v-4e1eed4e]{\n    font-size: 20px;\n}\nh3 a[_v-4e1eed4e]{\n  font-weight: bold;\n  text-decoration: none;\n}\nh4[_v-4e1eed4e]{\n    font-size: 18px;\n}\nh5[_v-4e1eed4e], h6[_v-4e1eed4e]{\n    font-size: 16px;\n}\nh2.moveover[_v-4e1eed4e]{\n  padding: 12px 0 5px 8px;\n  font-weight: bold;\n  text-decoration: underline;\n}\np[_v-4e1eed4e] {\n    padding: 0;\n    margin: 0;\n}\n\n\n.indent[_v-4e1eed4e] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n\n.indent-more[_v-4e1eed4e] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-4e1eed4e] {\n    border-radius: 50%;\n}\n\n.outer[_v-4e1eed4e] {\n    margin: 0 auto;\n    width: 100%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-4e1eed4e] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-4e1eed4e] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-4e1eed4e] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-4e1eed4e] {\n    font-size: 14px;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-4e1eed4e] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n}\n.two-column .column[_v-4e1eed4e] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-4e1eed4e] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-4e1eed4e] {\n    font-size: 14px;\n    text-align: left;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-4e1eed4e] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-4e1eed4e] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-4e1eed4e]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-4e1eed4e] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n    }\n     img.col-img[_v-4e1eed4e]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-4e1eed4e] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-4e1eed4e]{\n        display: none!important;\n    }\n  .two-column .text[_v-4e1eed4e] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-4e1eed4e]{\n      padding-top: 0;\n    }\n     .inner[_v-4e1eed4e] {\n        padding-top: 0px;\n    }\n\n    .inner h3[_v-4e1eed4e]{\n        padding-top: 0px;\n        padding-bottom: 0px;\n    }\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.insufficient[_v-2c477ab3]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-2c477ab3]{\n    font-size:16px;\n    margin: 0 !important;\n    padding: 0;\n    background-color: #f3f2ee;\n}\ntable[_v-2c477ab3] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-2c477ab3] {\n    padding: 0;\n}\nimg[_v-2c477ab3] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-2c477ab3] {\n    margin:0 !important;\n}\n.wrapper[_v-2c477ab3] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-2c477ab3] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-2c477ab3] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-2c477ab3]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\n\nh1[_v-2c477ab3],\nh2[_v-2c477ab3],\nh3[_v-2c477ab3],\nh4[_v-2c477ab3],\nh5[_v-2c477ab3],\nh6[_v-2c477ab3] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-2c477ab3] {\n    font-size: 24px;\n}\nh2[_v-2c477ab3]{\n    font-size: 22px;\n}\nh2 a[_v-2c477ab3]{\n    font-size: 22px;\n    font-weight: bold;\n    text-decoration: none;\n}\nh3[_v-2c477ab3]{\n    font-size: 20px;\n}\nh3 a[_v-2c477ab3]{\n  font-weight: bold;\n  text-decoration: none;\n}\nh4[_v-2c477ab3]{\n    font-size: 18px;\n}\nh5[_v-2c477ab3], h6[_v-2c477ab3]{\n    font-size: 16px;\n}\nh2.moveover[_v-2c477ab3]{\n  padding: 12px 0 5px 8px;\n  font-weight: bold;\n  text-decoration: underline;\n}\np[_v-2c477ab3] {\n    padding: 0;\n    margin: 0;\n}\n\n\n.indent[_v-2c477ab3] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n\n.indent-more[_v-2c477ab3] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-2c477ab3] {\n    border-radius: 50%;\n}\n\n.outer[_v-2c477ab3] {\n    margin: 0 auto;\n    width: 100%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-2c477ab3] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-2c477ab3] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-2c477ab3] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-2c477ab3] {\n    font-size: 14px;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-2c477ab3] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n}\n.two-column .column[_v-2c477ab3] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-2c477ab3] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-2c477ab3] {\n    font-size: 14px;\n    text-align: left;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-2c477ab3] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-2c477ab3]{\n        display: none!important;\n    }\n  .two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-2c477ab3]{\n      padding-top: 0;\n    }\n     .inner[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n\n    .inner h3[_v-2c477ab3]{\n        padding-top: 0px;\n        padding-bottom: 0px;\n    }\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24022,24 +23991,24 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section id=\"email-live-container\" style=\"margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; margin-bottom:20px\" _v-4e1eed4e=\"\">\n  <div style=\"border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;\" _v-4e1eed4e=\"\">\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" align=\"center\" class=\"outer\" _v-4e1eed4e=\"\">\n\n          <tbody _v-4e1eed4e=\"\"><tr _v-4e1eed4e=\"\">\n              <td align=\"center\" valign=\"top\" _v-4e1eed4e=\"\">\n                  <table border=\"0\" style=\"max-width: 100%;\" id=\"emailContainer\" _v-4e1eed4e=\"\">\n                      <tbody _v-4e1eed4e=\"\"><tr height=\"54px\" _v-4e1eed4e=\"\">\n                          <td class=\"full-width-image\" _v-4e1eed4e=\"\">\n                              <a href=\"http://www.emich.edu/\" style=\"margin: 0; padding: 0;\" _v-4e1eed4e=\"\"><img src=\"/assets/imgs/email/topsection.png\" alt=\"EMU Today email blast logo\" _v-4e1eed4e=\"\"></a>\n                          </td>\n                      </tr>\n\n                      <tr valign=\"top\" id=\"header-row\" style=\"text-align:center\" _v-4e1eed4e=\"\">\n                          <td _v-4e1eed4e=\"\">\n                              <h2 style=\"padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 32px; font-weight: 600;\" _v-4e1eed4e=\"\"><span style=\"color: #046A38\" _v-4e1eed4e=\"\">EMU</span> Today Digest</h2>\n                          </td>\n                      </tr>\n\n                      <tr _v-4e1eed4e=\"\">\n                          <td valign=\"top\" class=\"full-width-image\" _v-4e1eed4e=\"\">\n                            <template v-if=\"email.mainStories[0]\">\n                              <article _v-4e1eed4e=\"\">\n                                  <img :alt=\"email.mainStories[0].email_images[0].caption\" :src=\"email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename\" style=\"border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;\" _v-4e1eed4e=\"\">\n                                  <div class=\"indent\" style=\"padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;\" _v-4e1eed4e=\"\">\n                                      <h2 _v-4e1eed4e=\"\"><a :href=\"email.mainStories[0].full_url\" _v-4e1eed4e=\"\">{{ email.mainStories[0].email_images[0].title }}</a></h2>\n                                      {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}\n                                  </div>\n                              </article>\n                            </template>\n                            <template v-else=\"\">\n                              <div style=\"background-color:#e5e5e5; position:relative; width:600px; height:282px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-4e1eed4e=\"\">\n                                <p style=\"position:absolute; left:143px; top:121px; font-size:3rem;\" _v-4e1eed4e=\"\">Main story image here.</p>\n                              </div>\n                              <h2 style=\"padding:0 5px\" class=\"insufficient\" _v-4e1eed4e=\"\">No main story set yet.</h2>\n                              <p style=\"padding:0 5px\" _v-4e1eed4e=\"\">Select a main story from the \"Main Story\" tab.</p>\n                            </template>\n                          </td>\n                      </tr>\n                      <!-- some emails might not have sub stories! -->\n                      <template v-if=\"email.mainStories.length == 3\">\n                      <tr _v-4e1eed4e=\"\">\n                          <td _v-4e1eed4e=\"\">\n                              <table class=\"indent\" _v-4e1eed4e=\"\">\n                                  <tbody _v-4e1eed4e=\"\"><tr _v-4e1eed4e=\"\"><td _v-4e1eed4e=\"\"><h2 class=\"moveover\" _v-4e1eed4e=\"\"><a href=\"https://today.emich.edu/story/news\" _v-4e1eed4e=\"\">More News</a></h2></td></tr>\n                                  <tr _v-4e1eed4e=\"\">\n                                      <td class=\"two-column\" _v-4e1eed4e=\"\">\n                                          <div class=\"column\" _v-4e1eed4e=\"\">\n                                            <table _v-4e1eed4e=\"\">\n                                                    <tbody _v-4e1eed4e=\"\"><tr _v-4e1eed4e=\"\">\n                                                        <td class=\"inner\" _v-4e1eed4e=\"\">\n                                                          <template v-if=\"email.mainStories[1]\">\n                                                            <table class=\"contents\" _v-4e1eed4e=\"\">\n                                                                <tbody _v-4e1eed4e=\"\"><tr _v-4e1eed4e=\"\">\n                                                                  <!-- -->\n                                                                    <td style=\"text-align:left;\" _v-4e1eed4e=\"\"><img class=\"col-img\" :alt=\"email.mainStories[1].small_images[0].caption\" :src=\"'/imagecache/ddfront/' + email.mainStories[1].small_images[0].filename\" _v-4e1eed4e=\"\">\n                                                                    </td>\n                                                                </tr>\n                                                                <tr _v-4e1eed4e=\"\">\n                                                                        <td class=\"text\" style=\"text-align:left;\" _v-4e1eed4e=\"\">\n                                                                                <h3 _v-4e1eed4e=\"\"><a :href=\"email.mainStories[1].full_url\" _v-4e1eed4e=\"\">{{ email.mainStories[1].email_images[0].title }}</a></h3>\n                                                                                <p _v-4e1eed4e=\"\">{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>\n                                                                        </td>\n                                                                </tr>\n                                                            </tbody></table>\n                                                          </template>\n                                                          <template v-else=\"\">\n                                                            <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-4e1eed4e=\"\">\n                                                              <p style=\"font-size:3rem;\" _v-4e1eed4e=\"\">First sub story image here.</p>\n                                                            </div>\n                                                            <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-4e1eed4e=\"\">No first sub story set yet.</h3>\n                                                            <p style=\"padding:0 5px\" _v-4e1eed4e=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                          </template>\n                                                        </td>\n                                                    </tr>\n                                                </tbody></table>\n                                            </div>\n                                            <div class=\"column\" _v-4e1eed4e=\"\">\n                                              <table _v-4e1eed4e=\"\">\n                                                      <tbody _v-4e1eed4e=\"\"><tr _v-4e1eed4e=\"\">\n                                                          <td class=\"inner\" _v-4e1eed4e=\"\">\n                                                            <template v-if=\"email.mainStories[2]\">\n                                                              <table class=\"contents\" _v-4e1eed4e=\"\">\n                                                                  <tbody _v-4e1eed4e=\"\"><tr _v-4e1eed4e=\"\">\n                                                                      <td _v-4e1eed4e=\"\"><img class=\"col-img\" :alt=\"email.mainStories[2].small_images[0].caption\" :src=\"'/imagecache/ddfront/' + email.mainStories[2].small_images[0].filename\" _v-4e1eed4e=\"\">\n                                                                      </td>\n                                                                  </tr>\n                                                                  <tr _v-4e1eed4e=\"\">\n                                                                          <td class=\"text\" _v-4e1eed4e=\"\">\n                                                                                  <h3 _v-4e1eed4e=\"\"><a :href=\"email.mainStories[2].full_url\" _v-4e1eed4e=\"\">{{ email.mainStories[2].email_images[0].title }}</a></h3>\n                                                                                  <p _v-4e1eed4e=\"\">{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>\n                                                                          </td>\n                                                                  </tr>\n                                                              </tbody></table>\n                                                            </template>\n                                                            <template v-else=\"\">\n                                                              <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-4e1eed4e=\"\">\n                                                                <p style=\"font-size:3rem;\" _v-4e1eed4e=\"\">First sub story image here.</p>\n                                                              </div>\n                                                              <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-4e1eed4e=\"\">No first sub story set yet.</h3>\n                                                              <p style=\"padding:0 5px\" _v-4e1eed4e=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                            </template>\n                                                          </td>\n                                                      </tr>\n                                                  </tbody></table>\n                                              </div>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                    </template>\n                      <tr _v-4e1eed4e=\"\">\n                          <td valign=\"top\" _v-4e1eed4e=\"\">\n                            <div class=\"indent\" _v-4e1eed4e=\"\">\n                              <template v-if=\"email.otherStories.length > 0\">\n                                <ul style=\"border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;\" _v-4e1eed4e=\"\">\n                                  <li v-for=\"story in email.otherStories\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-4e1eed4e=\"\">\n                                    <a v-if=\"story.story_type == 'external'\" style=\"text-decoration: none;\" :href=\"story.small_images[0].link\" _v-4e1eed4e=\"\">{{ story.title }}</a>\n                                    <a v-else=\"\" style=\"text-decoration: none;\" :href=\"story.full_url\" _v-4e1eed4e=\"\">{{ story.title }}</a>\n                                  </li>\n                                <ul _v-4e1eed4e=\"\">\n                              </ul></ul></template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" class=\"insufficient\" _v-4e1eed4e=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                            </div>\n                          </td>\n                      </tr>\n                      <tr _v-4e1eed4e=\"\">\n                          <td valign=\"top\" _v-4e1eed4e=\"\">\n                              <div class=\"indent\" _v-4e1eed4e=\"\">\n                                <h2 class=\"moveover\" _v-4e1eed4e=\"\"><a href=\"/announcement\" _v-4e1eed4e=\"\">Announcements</a></h2>\n                                <template v-if=\"email.announcements.length > 0\">\n                                  <ul style=\"padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;\" _v-4e1eed4e=\"\">\n                                    <li v-for=\"announcement in email.announcements\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-4e1eed4e=\"\">\n                                      <a v-if=\"announcement.link != ''\" style=\"text-decoration: none;\" :href=\"announcement.link\" _v-4e1eed4e=\"\">{{ announcement.title }}</a>\n                                      <a v-else=\"\" style=\"text-decoration: none; \" :href=\"'https://today.emich.edu/announcement/' + announcement.id\" _v-4e1eed4e=\"\">{{ announcement.title }}</a>\n                                    </li>\n                                  <ul _v-4e1eed4e=\"\">\n                                </ul></ul></template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" class=\"insufficient\" _v-4e1eed4e=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                                </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr _v-4e1eed4e=\"\">\n                          <td valign=\"middle\" _v-4e1eed4e=\"\">\n                              <div class=\"indent\" style=\"border-top: 3px solid #97D700; padding-top: 5px;\" _v-4e1eed4e=\"\">\n                                  <h2 class=\"moveover\" _v-4e1eed4e=\"\"><a href=\"/calendar\" _v-4e1eed4e=\"\">What's Happening at EMU</a></h2>\n                                  <template v-if=\"email.events.length > 0\">\n                                    <ul style=\"margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;\" _v-4e1eed4e=\"\">\n                                      <li v-for=\"evt in email.events\" style=\"list-style: none; margin-left: 0; clear: both;\" _v-4e1eed4e=\"\">\n                                        <div style=\"font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;\" _v-4e1eed4e=\"\">{{ evt.start_date | dateParse }} </div>\n                                        <div style=\"width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;\" _v-4e1eed4e=\"\"><a style=\"text-decoration: none;\" :href=\"event.full_url\" _v-4e1eed4e=\"\">{{ evt.title }}</a></div>\n                                      </li>\n                                    <ul _v-4e1eed4e=\"\">\n                                  </ul></ul></template>\n                                  <template v-else=\"\">\n                                    <p style=\"padding:0 5px\" class=\"insufficient\" _v-4e1eed4e=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                  </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr style=\"background:#515151; color:#ffffff; border:0;\" _v-4e1eed4e=\"\">\n                          <td style=\"border:0; \" _v-4e1eed4e=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;\" _v-4e1eed4e=\"\">\n                                  <tbody _v-4e1eed4e=\"\"><tr style=\"text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;\" _v-4e1eed4e=\"\">\n                                    <td _v-4e1eed4e=\"\">\n                                      <ul style=\"list-style: none; padding-left: 0; background:#515151; color:#ffffff;\" _v-4e1eed4e=\"\">\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-4e1eed4e=\"\"><a style=\"color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;\" href=\"https://today.emich.edu/\" _v-4e1eed4e=\"\">EMU Today</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-4e1eed4e=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;\" href=\"https://today.emich.edu/calendar\" _v-4e1eed4e=\"\">Calendar</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-4e1eed4e=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;\" href=\"https://today.emich.edu/announcement\" _v-4e1eed4e=\"\">Announcements</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-4e1eed4e=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;\" href=\"https://today.emich.edu/story/news\" _v-4e1eed4e=\"\">News</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-4e1eed4e=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;\" href=\"https://today.emich.edu/magazine\" _v-4e1eed4e=\"\">Eastern Magazine</a></li>\n\n                                          </ul>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                      <tr id=\"footer-row\" style=\"background-color: #333333; margin-top: 5px; color: #ffffff; border:0;\" _v-4e1eed4e=\"\">\n                          <td style=\"border:0; background-color: #333333; color: #ffffff;\" _v-4e1eed4e=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-bottom: 20px;  background-color: #333333; color: #ffffff;\" _v-4e1eed4e=\"\">\n                                  <tbody _v-4e1eed4e=\"\"><tr style=\"border:none; background-color: #333333; color: #ffffff;\" _v-4e1eed4e=\"\">\n                                      <td valign=\"top\" style=\"padding:5px; border:0; background-color: #333333; color: #ffffff;\" _v-4e1eed4e=\"\">\n                                          <ul style=\"padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;\" _v-4e1eed4e=\"\">\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-4e1eed4e=\"\">\n                                                  <a href=\"https://www.facebook.com/EasternMichU/\" _v-4e1eed4e=\"\"><img class=\"img-circle\" alt=\"Facebook\" src=\"/assets/imgs/icons/facebook-base-icons.png\" _v-4e1eed4e=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-4e1eed4e=\"\">\n                                                  <a href=\"http://www.emich.edu/twitter/\" _v-4e1eed4e=\"\"><img class=\"img-circle\" alt=\"Twitter\" src=\"/assets/imgs/icons/twitter-base-icons.png\" _v-4e1eed4e=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-4e1eed4e=\"\">\n                                                  <a href=\"https://www.youtube.com/user/emichigan08\" _v-4e1eed4e=\"\"><img class=\"img-circle\" alt=\"YouTube\" src=\"/assets/imgs/icons/you-tube-base-icons.png\" _v-4e1eed4e=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-4e1eed4e=\"\">\n                                                  <a href=\"https://instagram.com/easternmichigan/\" _v-4e1eed4e=\"\"><img class=\"img-circle\" alt=\"Instagram\" src=\"/assets/imgs/icons/instagram-base-icons-new.png\" _v-4e1eed4e=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-4e1eed4e=\"\">\n                                                  <a href=\"https://www.linkedin.com/edu/school?id=18604\" _v-4e1eed4e=\"\"><img class=\"img-circle\" alt=\"Linked-In\" src=\"/assets/imgs/icons/linked-in-base-icons.png\" _v-4e1eed4e=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-4e1eed4e=\"\">\n                                                  <a href=\"http://blogemu.com/\" _v-4e1eed4e=\"\"><img class=\"img-circle\" alt=\"Blog EMU\" src=\"/assets/imgs/icons/e-base-icons.png\" _v-4e1eed4e=\"\"></a>\n                                              </li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                                  <tr style=\"text-align:center;\" _v-4e1eed4e=\"\">\n                                      <td _v-4e1eed4e=\"\">\n                                           <ul style=\"list-style: none; padding-left: 0;\" _v-4e1eed4e=\"\">\n                                               <li style=\"display: inline-block;\" _v-4e1eed4e=\"\"><a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-right: 3px; text-decoration: none;\" href=\"https://www.emich.edu/communications/\" _v-4e1eed4e=\"\">Division of Communications</a></li>\n                                               <li style=\"font-size: 13px; display: inline-block; color: #ffffff;\" _v-4e1eed4e=\"\"> | </li>\n                                             <li style=\"display: inline-block;\" _v-4e1eed4e=\"\"> <a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-left: 3px; text-decoration: none;\" href=\"https://www.emich.edu\" _v-4e1eed4e=\"\">Eastern Michigan University</a></li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                  </tbody></table>\n              </td>\n          </tr>\n      </tbody></table>\n  </div>\n</section>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section id=\"email-live-container\" style=\"margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; margin-bottom:20px\" _v-2c477ab3=\"\">\n  <div style=\"border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;\" _v-2c477ab3=\"\">\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" align=\"center\" class=\"outer\" _v-2c477ab3=\"\">\n\n          <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n              <td align=\"center\" valign=\"top\" _v-2c477ab3=\"\">\n                  <table border=\"0\" style=\"max-width: 100%;\" id=\"emailContainer\" _v-2c477ab3=\"\">\n                      <tbody _v-2c477ab3=\"\"><tr height=\"54px\" _v-2c477ab3=\"\">\n                          <td class=\"full-width-image\" _v-2c477ab3=\"\">\n                              <a href=\"http://www.emich.edu/\" style=\"margin: 0; padding: 0;\" _v-2c477ab3=\"\"><img src=\"/assets/imgs/email/topsection.png\" alt=\"EMU Today email blast logo\" _v-2c477ab3=\"\"></a>\n                          </td>\n                      </tr>\n\n                      <tr valign=\"top\" id=\"header-row\" style=\"text-align:center\" _v-2c477ab3=\"\">\n                          <td _v-2c477ab3=\"\">\n                              <h2 style=\"padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 32px; font-weight: 600;\" _v-2c477ab3=\"\"><span style=\"color: #046A38\" _v-2c477ab3=\"\">EMU</span> Today Digest</h2>\n                          </td>\n                      </tr>\n\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"top\" class=\"full-width-image\" _v-2c477ab3=\"\">\n                            <template v-if=\"email.mainStories[0]\">\n                              <article _v-2c477ab3=\"\">\n                                  <img :alt=\"email.mainStories[0].email_images[0].caption\" :src=\"email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename\" style=\"border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;\" _v-2c477ab3=\"\">\n                                  <div class=\"indent\" style=\"padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;\" _v-2c477ab3=\"\">\n                                      <h2 _v-2c477ab3=\"\"><a :href=\"email.mainStories[0].full_url\" _v-2c477ab3=\"\">{{ email.mainStories[0].email_images[0].title }}</a></h2>\n                                      {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}\n                                  </div>\n                              </article>\n                            </template>\n                            <template v-else=\"\">\n                              <div style=\"background-color:#e5e5e5; position:relative; width:600px; height:282px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-2c477ab3=\"\">\n                                <p style=\"position:absolute; left:143px; top:121px; font-size:3rem;\" _v-2c477ab3=\"\">Main story image here.</p>\n                              </div>\n                              <h2 style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No main story set yet.</h2>\n                              <p style=\"padding:0 5px\" _v-2c477ab3=\"\">Select a main story from the \"Main Story\" tab.</p>\n                            </template>\n                          </td>\n                      </tr>\n                      <!-- some emails might not have sub stories! -->\n                      <template v-if=\"email.mainStories.length == 3\">\n                      <tr _v-2c477ab3=\"\">\n                          <td _v-2c477ab3=\"\">\n                              <table class=\"indent\" _v-2c477ab3=\"\">\n                                  <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\"><td _v-2c477ab3=\"\"><h2 class=\"moveover\" _v-2c477ab3=\"\"><a href=\"https://today.emich.edu/story/news\" _v-2c477ab3=\"\">More News</a></h2></td></tr>\n                                  <tr _v-2c477ab3=\"\">\n                                      <td class=\"two-column\" _v-2c477ab3=\"\">\n                                          <div class=\"column\" _v-2c477ab3=\"\">\n                                            <table _v-2c477ab3=\"\">\n                                                    <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                        <td class=\"inner\" _v-2c477ab3=\"\">\n                                                          <template v-if=\"email.mainStories[1]\">\n                                                            <table class=\"contents\" _v-2c477ab3=\"\">\n                                                                <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                                  <!-- -->\n                                                                    <td style=\"text-align:left;\" _v-2c477ab3=\"\"><img class=\"col-img\" :alt=\"email.mainStories[1].small_images[0].caption\" :src=\"'/imagecache/ddfront/' + email.mainStories[1].small_images[0].filename\" _v-2c477ab3=\"\">\n                                                                    </td>\n                                                                </tr>\n                                                                <tr _v-2c477ab3=\"\">\n                                                                        <td class=\"text\" style=\"text-align:left;\" _v-2c477ab3=\"\">\n                                                                                <h3 _v-2c477ab3=\"\"><a :href=\"email.mainStories[1].full_url\" _v-2c477ab3=\"\">{{ email.mainStories[1].email_images[0].title }}</a></h3>\n                                                                                <p _v-2c477ab3=\"\">{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>\n                                                                        </td>\n                                                                </tr>\n                                                            </tbody></table>\n                                                          </template>\n                                                          <template v-else=\"\">\n                                                            <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-2c477ab3=\"\">\n                                                              <p style=\"font-size:3rem;\" _v-2c477ab3=\"\">First sub story image here.</p>\n                                                            </div>\n                                                            <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No first sub story set yet.</h3>\n                                                            <p style=\"padding:0 5px\" _v-2c477ab3=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                          </template>\n                                                        </td>\n                                                    </tr>\n                                                </tbody></table>\n                                            </div>\n                                            <div class=\"column\" _v-2c477ab3=\"\">\n                                              <table _v-2c477ab3=\"\">\n                                                      <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                          <td class=\"inner\" _v-2c477ab3=\"\">\n                                                            <template v-if=\"email.mainStories[2]\">\n                                                              <table class=\"contents\" _v-2c477ab3=\"\">\n                                                                  <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                                      <td _v-2c477ab3=\"\"><img class=\"col-img\" :alt=\"email.mainStories[2].small_images[0].caption\" :src=\"'/imagecache/ddfront/' + email.mainStories[2].small_images[0].filename\" _v-2c477ab3=\"\">\n                                                                      </td>\n                                                                  </tr>\n                                                                  <tr _v-2c477ab3=\"\">\n                                                                          <td class=\"text\" _v-2c477ab3=\"\">\n                                                                                  <h3 _v-2c477ab3=\"\"><a :href=\"email.mainStories[2].full_url\" _v-2c477ab3=\"\">{{ email.mainStories[2].email_images[0].title }}</a></h3>\n                                                                                  <p _v-2c477ab3=\"\">{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>\n                                                                          </td>\n                                                                  </tr>\n                                                              </tbody></table>\n                                                            </template>\n                                                            <template v-else=\"\">\n                                                              <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-2c477ab3=\"\">\n                                                                <p style=\"font-size:3rem;\" _v-2c477ab3=\"\">First sub story image here.</p>\n                                                              </div>\n                                                              <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No first sub story set yet.</h3>\n                                                              <p style=\"padding:0 5px\" _v-2c477ab3=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                            </template>\n                                                          </td>\n                                                      </tr>\n                                                  </tbody></table>\n                                              </div>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                    </template>\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"top\" _v-2c477ab3=\"\">\n                            <div class=\"indent\" _v-2c477ab3=\"\">\n                              <template v-if=\"email.otherStories.length > 0\">\n                                <ul style=\"border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;\" _v-2c477ab3=\"\">\n                                  <li v-for=\"story in email.otherStories\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-2c477ab3=\"\">\n                                    <a v-if=\"story.story_type == 'external'\" style=\"text-decoration: none;\" :href=\"story.small_images[0].link\" _v-2c477ab3=\"\">{{ story.title }}</a>\n                                    <a v-else=\"\" style=\"text-decoration: none;\" :href=\"story.full_url\" _v-2c477ab3=\"\">{{ story.title }}</a>\n                                  </li>\n                                <ul _v-2c477ab3=\"\">\n                              </ul></ul></template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                            </div>\n                          </td>\n                      </tr>\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"top\" _v-2c477ab3=\"\">\n                              <div class=\"indent\" _v-2c477ab3=\"\">\n                                <h2 class=\"moveover\" _v-2c477ab3=\"\"><a href=\"/announcement\" _v-2c477ab3=\"\">Announcements</a></h2>\n                                <template v-if=\"email.announcements.length > 0\">\n                                  <ul style=\"padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;\" _v-2c477ab3=\"\">\n                                    <li v-for=\"announcement in email.announcements\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-2c477ab3=\"\">\n                                      <a v-if=\"announcement.link != ''\" style=\"text-decoration: none;\" :href=\"announcement.link\" _v-2c477ab3=\"\">{{ announcement.title }}</a>\n                                      <a v-else=\"\" style=\"text-decoration: none; \" :href=\"'https://today.emich.edu/announcement/' + announcement.id\" _v-2c477ab3=\"\">{{ announcement.title }}</a>\n                                    </li>\n                                  <ul _v-2c477ab3=\"\">\n                                </ul></ul></template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                                </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"middle\" _v-2c477ab3=\"\">\n                              <div class=\"indent\" style=\"border-top: 3px solid #97D700; padding-top: 5px;\" _v-2c477ab3=\"\">\n                                  <h2 class=\"moveover\" _v-2c477ab3=\"\"><a href=\"/calendar\" _v-2c477ab3=\"\">What's Happening at EMU</a></h2>\n                                  <template v-if=\"email.events.length > 0\">\n                                    <ul style=\"margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;\" _v-2c477ab3=\"\">\n                                      <li v-for=\"evt in email.events\" style=\"list-style: none; margin-left: 0; clear: both;\" _v-2c477ab3=\"\">\n                                        <div style=\"font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;\" _v-2c477ab3=\"\">{{ evt.start_date | dateParse }} </div>\n                                        <div style=\"width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;\" _v-2c477ab3=\"\"><a style=\"text-decoration: none;\" :href=\"event.full_url\" _v-2c477ab3=\"\">{{ evt.title }}</a></div>\n                                      </li>\n                                    <ul _v-2c477ab3=\"\">\n                                  </ul></ul></template>\n                                  <template v-else=\"\">\n                                    <p style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                  </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr style=\"background:#515151; color:#ffffff; border:0;\" _v-2c477ab3=\"\">\n                          <td style=\"border:0; \" _v-2c477ab3=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;\" _v-2c477ab3=\"\">\n                                  <tbody _v-2c477ab3=\"\"><tr style=\"text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;\" _v-2c477ab3=\"\">\n                                    <td _v-2c477ab3=\"\">\n                                      <ul style=\"list-style: none; padding-left: 0; background:#515151; color:#ffffff;\" _v-2c477ab3=\"\">\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;\" href=\"https://today.emich.edu/\" _v-2c477ab3=\"\">EMU Today</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;\" href=\"https://today.emich.edu/calendar\" _v-2c477ab3=\"\">Calendar</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;\" href=\"https://today.emich.edu/announcement\" _v-2c477ab3=\"\">Announcements</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;\" href=\"https://today.emich.edu/story/news\" _v-2c477ab3=\"\">News</a></li>\n                                      <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;\" href=\"https://today.emich.edu/magazine\" _v-2c477ab3=\"\">Eastern Magazine</a></li>\n\n                                          </ul>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                      <tr id=\"footer-row\" style=\"background-color: #333333; margin-top: 5px; color: #ffffff; border:0;\" _v-2c477ab3=\"\">\n                          <td style=\"border:0; background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-bottom: 20px;  background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                                  <tbody _v-2c477ab3=\"\"><tr style=\"border:none; background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                                      <td valign=\"top\" style=\"padding:5px; border:0; background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                                          <ul style=\"padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;\" _v-2c477ab3=\"\">\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.facebook.com/EasternMichU/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Facebook\" src=\"/assets/imgs/icons/facebook-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"http://www.emich.edu/twitter/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Twitter\" src=\"/assets/imgs/icons/twitter-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.youtube.com/user/emichigan08\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"YouTube\" src=\"/assets/imgs/icons/you-tube-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://instagram.com/easternmichigan/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Instagram\" src=\"/assets/imgs/icons/instagram-base-icons-new.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.linkedin.com/edu/school?id=18604\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Linked-In\" src=\"/assets/imgs/icons/linked-in-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"http://blogemu.com/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Blog EMU\" src=\"/assets/imgs/icons/e-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                                  <tr style=\"text-align:center;\" _v-2c477ab3=\"\">\n                                      <td _v-2c477ab3=\"\">\n                                           <ul style=\"list-style: none; padding-left: 0;\" _v-2c477ab3=\"\">\n                                               <li style=\"display: inline-block;\" _v-2c477ab3=\"\"><a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-right: 3px; text-decoration: none;\" href=\"https://www.emich.edu/communications/\" _v-2c477ab3=\"\">Division of Communications</a></li>\n                                               <li style=\"font-size: 13px; display: inline-block; color: #ffffff;\" _v-2c477ab3=\"\"> | </li>\n                                             <li style=\"display: inline-block;\" _v-2c477ab3=\"\"> <a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-left: 3px; text-decoration: none;\" href=\"https://www.emich.edu\" _v-2c477ab3=\"\">Eastern Michigan University</a></li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                  </tbody></table>\n              </td>\n          </tr>\n      </tbody></table>\n  </div>\n</section>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.insufficient[_v-4e1eed4e]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-4e1eed4e]{\n    font-size:16px;\n    margin: 0 !important;\n    padding: 0;\n    background-color: #f3f2ee;\n}\ntable[_v-4e1eed4e] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-4e1eed4e] {\n    padding: 0;\n}\nimg[_v-4e1eed4e] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-4e1eed4e] {\n    margin:0 !important;\n}\n.wrapper[_v-4e1eed4e] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-4e1eed4e] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-4e1eed4e] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-4e1eed4e]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-4e1eed4e]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-4e1eed4e]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\n\nh1[_v-4e1eed4e],\nh2[_v-4e1eed4e],\nh3[_v-4e1eed4e],\nh4[_v-4e1eed4e],\nh5[_v-4e1eed4e],\nh6[_v-4e1eed4e] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-4e1eed4e] {\n    font-size: 24px;\n}\nh2[_v-4e1eed4e]{\n    font-size: 22px;\n}\nh2 a[_v-4e1eed4e]{\n    font-size: 22px;\n    font-weight: bold;\n    text-decoration: none;\n}\nh3[_v-4e1eed4e]{\n    font-size: 20px;\n}\nh3 a[_v-4e1eed4e]{\n  font-weight: bold;\n  text-decoration: none;\n}\nh4[_v-4e1eed4e]{\n    font-size: 18px;\n}\nh5[_v-4e1eed4e], h6[_v-4e1eed4e]{\n    font-size: 16px;\n}\nh2.moveover[_v-4e1eed4e]{\n  padding: 12px 0 5px 8px;\n  font-weight: bold;\n  text-decoration: underline;\n}\np[_v-4e1eed4e] {\n    padding: 0;\n    margin: 0;\n}\n\n\n.indent[_v-4e1eed4e] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n\n.indent-more[_v-4e1eed4e] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-4e1eed4e] {\n    border-radius: 50%;\n}\n\n.outer[_v-4e1eed4e] {\n    margin: 0 auto;\n    width: 100%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-4e1eed4e] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-4e1eed4e] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-4e1eed4e] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-4e1eed4e] {\n    font-size: 14px;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-4e1eed4e] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n}\n.two-column .column[_v-4e1eed4e] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-4e1eed4e] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-4e1eed4e] {\n    font-size: 14px;\n    text-align: left;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-4e1eed4e] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-4e1eed4e] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-4e1eed4e]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-4e1eed4e] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n    }\n     img.col-img[_v-4e1eed4e]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-4e1eed4e] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-4e1eed4e]{\n        display: none!important;\n    }\n  .two-column .text[_v-4e1eed4e] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-4e1eed4e]{\n      padding-top: 0;\n    }\n     .inner[_v-4e1eed4e] {\n        padding-top: 0px;\n    }\n\n    .inner h3[_v-4e1eed4e]{\n        padding-top: 0px;\n        padding-bottom: 0px;\n    }\n}\n"] = false
+    __vueify_insert__.cache["\n.insufficient[_v-2c477ab3]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-2c477ab3]{\n    font-size:16px;\n    margin: 0 !important;\n    padding: 0;\n    background-color: #f3f2ee;\n}\ntable[_v-2c477ab3] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-2c477ab3] {\n    padding: 0;\n}\nimg[_v-2c477ab3] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-2c477ab3] {\n    margin:0 !important;\n}\n.wrapper[_v-2c477ab3] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-2c477ab3] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-2c477ab3] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-2c477ab3]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\n\nh1[_v-2c477ab3],\nh2[_v-2c477ab3],\nh3[_v-2c477ab3],\nh4[_v-2c477ab3],\nh5[_v-2c477ab3],\nh6[_v-2c477ab3] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-2c477ab3] {\n    font-size: 24px;\n}\nh2[_v-2c477ab3]{\n    font-size: 22px;\n}\nh2 a[_v-2c477ab3]{\n    font-size: 22px;\n    font-weight: bold;\n    text-decoration: none;\n}\nh3[_v-2c477ab3]{\n    font-size: 20px;\n}\nh3 a[_v-2c477ab3]{\n  font-weight: bold;\n  text-decoration: none;\n}\nh4[_v-2c477ab3]{\n    font-size: 18px;\n}\nh5[_v-2c477ab3], h6[_v-2c477ab3]{\n    font-size: 16px;\n}\nh2.moveover[_v-2c477ab3]{\n  padding: 12px 0 5px 8px;\n  font-weight: bold;\n  text-decoration: underline;\n}\np[_v-2c477ab3] {\n    padding: 0;\n    margin: 0;\n}\n\n\n.indent[_v-2c477ab3] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n\n.indent-more[_v-2c477ab3] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-2c477ab3] {\n    border-radius: 50%;\n}\n\n.outer[_v-2c477ab3] {\n    margin: 0 auto;\n    width: 100%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-2c477ab3] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-2c477ab3] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-2c477ab3] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-2c477ab3] {\n    font-size: 14px;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-2c477ab3] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n}\n.two-column .column[_v-2c477ab3] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-2c477ab3] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-2c477ab3] {\n    font-size: 14px;\n    text-align: left;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-2c477ab3] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-2c477ab3]{\n        display: none!important;\n    }\n  .two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-2c477ab3]{\n      padding-top: 0;\n    }\n     .inner[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n\n    .inner h3[_v-2c477ab3]{\n        padding-top: 0px;\n        padding-bottom: 0px;\n    }\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4e1eed4e", module.exports)
+    hotAPI.createRecord("_v-2c477ab3", module.exports)
   } else {
-    hotAPI.update("_v-4e1eed4e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2c477ab3", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],121:[function(require,module,exports){
+},{"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],122:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-194f1c74] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-194f1c74]:active, .btn-default.active[_v-194f1c74], .open > .dropdown-toggle.btn-default[_v-194f1c74] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-194f1c74]:active, .btn-default.active[_v-194f1c74], .open > .dropdown-toggle.btn-default[_v-194f1c74] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-194f1c74]:active, span.item-type-icon.active[_v-194f1c74]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-194f1c74] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-194f1c74] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-194f1c74] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-194f1c74]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-7f9a74d9] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-7f9a74d9]:active, span.item-type-icon.active[_v-7f9a74d9]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-7f9a74d9]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24296,24 +24265,24 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-194f1c74=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-194f1c74=\"\">\n      <p _v-194f1c74=\"\">You will only be presented stories that are:</p>\n      <ol _v-194f1c74=\"\">\n        <li _v-194f1c74=\"\">Approved</li>\n        <li _v-194f1c74=\"\">Not archived</li>\n        <li _v-194f1c74=\"\">Flagged as \"Ready\"</li>\n        <li _v-194f1c74=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n      <ul _v-194f1c74=\"\">\n        <li _v-194f1c74=\"\">The <strong _v-194f1c74=\"\">top story</strong> image comes from the <mark _v-194f1c74=\"\">emutoday_email</mark> image type as defined in the story's admin area.</li>\n        <li _v-194f1c74=\"\">The <strong _v-194f1c74=\"\">sub-main</strong> images come from the <mark _v-194f1c74=\"\">emutoday_small</mark> image type as defined in the story's admin area.</li>\n        <li _v-194f1c74=\"\">For the main and both sub-main stories, the <strong _v-194f1c74=\"\">story title</strong> comes from the <mark _v-194f1c74=\"\">\"Title/Header\"</mark> field in the story's <mark _v-194f1c74=\"\">emutoday_email</mark> image editor area, while the <strong _v-194f1c74=\"\">subtext</strong> comes from the <mark _v-194f1c74=\"\">\"Teaser/Byline\"</mark> field of that same area.<p _v-194f1c74=\"\"></p>\n    </li></ul></div>\n</div>\n<hr _v-194f1c74=\"\">\n<div class=\"row\" _v-194f1c74=\"\">\n    <div class=\"col-md-12\" _v-194f1c74=\"\">\n        <h3 _v-194f1c74=\"\">Main Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-194f1c74=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-194f1c74=\"\">\n                  <email-story-pod pid=\"main-story-item\" pod-type=\"mainstory\" :item=\"story\" _v-194f1c74=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-194f1c74=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-194f1c74=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-194f1c74=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-194f1c74=\"\">\n          <div class=\"form-group\" _v-194f1c74=\"\">\n              <label for=\"start-date\" _v-194f1c74=\"\">Starting <span v-if=\"isEndDate\" _v-194f1c74=\"\">between</span><span v-else=\"\" _v-194f1c74=\"\">on or after</span></label>\n              <p _v-194f1c74=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-194f1c74=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-194f1c74=\"\">\n              <label for=\"start-date\" _v-194f1c74=\"\"> and </label>\n              <p _v-194f1c74=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-194f1c74=\"\"></p><p _v-194f1c74=\"\">\n          </p></div>\n          <p _v-194f1c74=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-194f1c74=\"\">Filter</button></p>\n          <p _v-194f1c74=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-194f1c74=\"\"><span v-if=\"isEndDate\" _v-194f1c74=\"\"> - Remove </span><span v-else=\"\" _v-194f1c74=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-194f1c74=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-194f1c74=\"\">\n                <label _v-194f1c74=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-194f1c74=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-194f1c74=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-194f1c74=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-194f1c74=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-194f1c74=\"\">\n            <email-story-pod pid=\"email-items\" :main-stories=\"usedStories\" pod-type=\"mainstoryqueue\" v-for=\"item in items | filterBy filterByStoryType | paginate\" :item=\"item\" _v-194f1c74=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-194f1c74=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-194f1c74=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-194f1c74=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-194f1c74=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-194f1c74=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-194f1c74=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-194f1c74=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-194f1c74=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-7f9a74d9=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-7f9a74d9=\"\">\n      <p _v-7f9a74d9=\"\">You will only be presented stories that are:</p>\n      <ol _v-7f9a74d9=\"\">\n        <li _v-7f9a74d9=\"\">Approved</li>\n        <li _v-7f9a74d9=\"\">Not archived</li>\n        <li _v-7f9a74d9=\"\">Flagged as \"Ready\"</li>\n        <li _v-7f9a74d9=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n      <ul _v-7f9a74d9=\"\">\n        <li _v-7f9a74d9=\"\">The <strong _v-7f9a74d9=\"\">top story</strong> image comes from the <mark _v-7f9a74d9=\"\">emutoday_email</mark> image type as defined in the story's admin area.</li>\n        <li _v-7f9a74d9=\"\">The <strong _v-7f9a74d9=\"\">sub-main</strong> images come from the <mark _v-7f9a74d9=\"\">emutoday_small</mark> image type as defined in the story's admin area.</li>\n        <li _v-7f9a74d9=\"\">For the main and both sub-main stories, the <strong _v-7f9a74d9=\"\">story title</strong> comes from the <mark _v-7f9a74d9=\"\">\"Title/Header\"</mark> field in the story's <mark _v-7f9a74d9=\"\">emutoday_email</mark> image editor area, while the <strong _v-7f9a74d9=\"\">subtext</strong> comes from the <mark _v-7f9a74d9=\"\">\"Teaser/Byline\"</mark> field of that same area.<p _v-7f9a74d9=\"\"></p>\n    </li></ul></div>\n</div>\n<hr _v-7f9a74d9=\"\">\n<div class=\"row\" _v-7f9a74d9=\"\">\n    <div class=\"col-md-12\" _v-7f9a74d9=\"\">\n        <h3 _v-7f9a74d9=\"\">Main Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-7f9a74d9=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-7f9a74d9=\"\">\n                  <email-story-pod pid=\"main-story-item\" pod-type=\"mainstory\" :item=\"story\" _v-7f9a74d9=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-7f9a74d9=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-7f9a74d9=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-7f9a74d9=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-7f9a74d9=\"\">\n          <div class=\"form-group\" _v-7f9a74d9=\"\">\n              <label for=\"start-date\" _v-7f9a74d9=\"\">Starting <span v-if=\"isEndDate\" _v-7f9a74d9=\"\">between</span><span v-else=\"\" _v-7f9a74d9=\"\">on or after</span></label>\n              <p _v-7f9a74d9=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-7f9a74d9=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-7f9a74d9=\"\">\n              <label for=\"start-date\" _v-7f9a74d9=\"\"> and </label>\n              <p _v-7f9a74d9=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-7f9a74d9=\"\"></p><p _v-7f9a74d9=\"\">\n          </p></div>\n          <p _v-7f9a74d9=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-7f9a74d9=\"\">Filter</button></p>\n          <p _v-7f9a74d9=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-7f9a74d9=\"\"><span v-if=\"isEndDate\" _v-7f9a74d9=\"\"> - Remove </span><span v-else=\"\" _v-7f9a74d9=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-7f9a74d9=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-7f9a74d9=\"\">\n                <label _v-7f9a74d9=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-7f9a74d9=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-7f9a74d9=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-7f9a74d9=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-7f9a74d9=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-7f9a74d9=\"\">\n            <email-story-pod pid=\"email-items\" :main-stories=\"usedStories\" pod-type=\"mainstoryqueue\" v-for=\"item in items | filterBy filterByStoryType | paginate\" :item=\"item\" _v-7f9a74d9=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-7f9a74d9=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-7f9a74d9=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-7f9a74d9=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-7f9a74d9=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-7f9a74d9=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\nh4[_v-194f1c74] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-194f1c74]:active, .btn-default.active[_v-194f1c74], .open > .dropdown-toggle.btn-default[_v-194f1c74] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-194f1c74]:active, .btn-default.active[_v-194f1c74], .open > .dropdown-toggle.btn-default[_v-194f1c74] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-194f1c74]:active, span.item-type-icon.active[_v-194f1c74]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-194f1c74] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-194f1c74] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-194f1c74] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-194f1c74]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n\nh4[_v-7f9a74d9] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-7f9a74d9]:active, span.item-type-icon.active[_v-7f9a74d9]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-7f9a74d9]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-194f1c74", module.exports)
+    hotAPI.createRecord("_v-7f9a74d9", module.exports)
   } else {
-    hotAPI.update("_v-194f1c74", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7f9a74d9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../directives/flatpickr.js":128,"../../directives/iconradio.js":129,"../IconToggleBtn.vue":125,"../Pagination.vue":126,"./EmailStoryPod.vue":123,"babel-runtime/core-js/object/keys":10,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],122:[function(require,module,exports){
+},{"../../directives/flatpickr.js":129,"../../directives/iconradio.js":130,"../IconToggleBtn.vue":126,"../Pagination.vue":127,"./EmailStoryPod.vue":124,"babel-runtime/core-js/object/keys":10,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],123:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.statistic[_v-98f85daa]{\n  font-size: 2rem;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.statistic[_v-ac82cd60]{\n  font-size: 2rem;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24349,24 +24318,24 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div id=\"statsModal\" class=\"modal fade\" role=\"dialog\" _v-98f85daa=\"\">\n  <div class=\"modal-dialog\" _v-98f85daa=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-98f85daa=\"\">\n      <div class=\"modal-header\" _v-98f85daa=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-98f85daa=\"\">×</button>\n        <h4 class=\"modal-title\" _v-98f85daa=\"\">Email basic statistics</h4>\n      </div>\n      <div class=\"modal-body\" _v-98f85daa=\"\">\n        <ul _v-98f85daa=\"\">\n          <li _v-98f85daa=\"\"><strong _v-98f85daa=\"\">Title:</strong> {{ email.title }}</li>\n          <li _v-98f85daa=\"\"><strong _v-98f85daa=\"\">Sent At:</strong> {{ email.send_at | formatDate }}</li>\n        </ul>\n        <div class=\"row text-center\" _v-98f85daa=\"\">\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-98f85daa=\"\">\n            <h5 class=\"email-statistic\" _v-98f85daa=\"\">Opens</h5>\n            <span class=\"email-statistic\" _v-98f85daa=\"\">{{ email.mailgun_opens }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-98f85daa=\"\">\n            <h5 class=\"email-statistic\" _v-98f85daa=\"\">Clicks</h5>\n            <span class=\"email-statistic\" _v-98f85daa=\"\">{{ email.mailgun_clicks }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-98f85daa=\"\">\n            <h5 class=\"email-statistic\" _v-98f85daa=\"\">Marked as Spam</h5>\n            <span class=\"email-statistic\" _v-98f85daa=\"\">{{ email.mailgun_spam }}</span>\n          </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-98f85daa=\"\">\n        <div class=\"row\" _v-98f85daa=\"\">\n          <div class=\"col-xs-12 col-sm-8\" _v-98f85daa=\"\">\n            <p _v-98f85daa=\"\">For more complete statistcs, log in to <a href=\"https://app.mailgun.com\" target=\"_blank\" _v-98f85daa=\"\">Mailgun</a></p>\n          </div>\n          <div class=\"col-xs-12 col-sm-4 text-right\" _v-98f85daa=\"\">\n            <button type=\"button\" id=\"closeBtn\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-98f85daa=\"\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div id=\"statsModal\" class=\"modal fade\" role=\"dialog\" _v-ac82cd60=\"\">\n  <div class=\"modal-dialog\" _v-ac82cd60=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-ac82cd60=\"\">\n      <div class=\"modal-header\" _v-ac82cd60=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-ac82cd60=\"\">×</button>\n        <h4 class=\"modal-title\" _v-ac82cd60=\"\">Email basic statistics</h4>\n      </div>\n      <div class=\"modal-body\" _v-ac82cd60=\"\">\n        <ul _v-ac82cd60=\"\">\n          <li _v-ac82cd60=\"\"><strong _v-ac82cd60=\"\">Title:</strong> {{ email.title }}</li>\n          <li _v-ac82cd60=\"\"><strong _v-ac82cd60=\"\">Sent At:</strong> {{ email.send_at | formatDate }}</li>\n        </ul>\n        <div class=\"row text-center\" _v-ac82cd60=\"\">\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-ac82cd60=\"\">\n            <h5 class=\"email-statistic\" _v-ac82cd60=\"\">Opens</h5>\n            <span class=\"email-statistic\" _v-ac82cd60=\"\">{{ email.mailgun_opens }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-ac82cd60=\"\">\n            <h5 class=\"email-statistic\" _v-ac82cd60=\"\">Clicks</h5>\n            <span class=\"email-statistic\" _v-ac82cd60=\"\">{{ email.mailgun_clicks }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-ac82cd60=\"\">\n            <h5 class=\"email-statistic\" _v-ac82cd60=\"\">Marked as Spam</h5>\n            <span class=\"email-statistic\" _v-ac82cd60=\"\">{{ email.mailgun_spam }}</span>\n          </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-ac82cd60=\"\">\n        <div class=\"row\" _v-ac82cd60=\"\">\n          <div class=\"col-xs-12 col-sm-8\" _v-ac82cd60=\"\">\n            <p _v-ac82cd60=\"\">For more complete statistcs, log in to <a href=\"https://app.mailgun.com\" target=\"_blank\" _v-ac82cd60=\"\">Mailgun</a></p>\n          </div>\n          <div class=\"col-xs-12 col-sm-4 text-right\" _v-ac82cd60=\"\">\n            <button type=\"button\" id=\"closeBtn\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-ac82cd60=\"\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.statistic[_v-98f85daa]{\n  font-size: 2rem;\n}\n"] = false
+    __vueify_insert__.cache["\n.statistic[_v-ac82cd60]{\n  font-size: 2rem;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-98f85daa", module.exports)
+    hotAPI.createRecord("_v-ac82cd60", module.exports)
   } else {
-    hotAPI.update("_v-98f85daa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ac82cd60", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],123:[function(require,module,exports){
+},{"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],124:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-46d085a6] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-46d085a6] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-46d085a6] {\n    padding: 3px;\n}\n.box-footer[_v-46d085a6] {\n    padding: 3px;\n}\n\n#storyform[_v-46d085a6] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-46d085a6] {\n    margin-bottom: 2px;\n}\n#applabel[_v-46d085a6]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-46d085a6],\n.btn-group-vertical[_v-46d085a6] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-46d085a6] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-46d085a6] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-46d085a6] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-46d085a6] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-46d085a6] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-46d085a6] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-46d085a6] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-46d085a6] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-46d085a6] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-46d085a6] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-46d085a6] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-46d085a6] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-46d085a6] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-46d085a6] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-46d085a6] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-46d085a6] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-46d085a6] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-46d085a6]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-46d085a6] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-46d085a6] {\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-8a7f6adc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-8a7f6adc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-8a7f6adc] {\n    padding: 3px;\n}\n.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\n\n#storyform[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-8a7f6adc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-8a7f6adc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-8a7f6adc],\n.btn-group-vertical[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-8a7f6adc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-8a7f6adc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-8a7f6adc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-8a7f6adc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-8a7f6adc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-8a7f6adc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-8a7f6adc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-8a7f6adc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-8a7f6adc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-8a7f6adc] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-8a7f6adc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-8a7f6adc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-8a7f6adc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-8a7f6adc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-8a7f6adc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-8a7f6adc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-8a7f6adc] {\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -24532,24 +24501,24 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-46d085a6=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-46d085a6=\"\">\n        <div class=\"box-header with-border\" _v-46d085a6=\"\">\n          <div class=\"row\" _v-46d085a6=\"\">\n              <div class=\"col-sm-12\" _v-46d085a6=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-46d085a6=\"\">\n                      <label _v-46d085a6=\"\"><input type=\"checkbox\" @click=\"toggleEmitMainStory(item)\" v-model=\"checked\" :checked=\"isMainStory\" :disabled=\"mainStoriesFull\" _v-46d085a6=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-46d085a6=\"\">\n                      <label _v-46d085a6=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-46d085a6=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-46d085a6=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-46d085a6=\"\">\n              <div class=\"col-sm-9\" _v-46d085a6=\"\">\n                <h6 class=\"box-title\" _v-46d085a6=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-46d085a6=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-46d085a6=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-46d085a6=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-46d085a6=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-46d085a6=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-46d085a6=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-46d085a6=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-46d085a6=\"\">\n            <p _v-46d085a6=\"\">ID: {{item.id}}</p>\n            <p _v-46d085a6=\"\">Type: {{item.story_type}}</p>\n            <p _v-46d085a6=\"\">Title: {{item.title}}</p>\n            <p _v-46d085a6=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-46d085a6=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-46d085a6=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-46d085a6=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-46d085a6=\"\">Live: {{item.is_live}}</p>\n            <p _v-46d085a6=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-46d085a6=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-46d085a6=\"\">\n                <div class=\"row\" _v-46d085a6=\"\">\n                    <div class=\"col-sm-6\" _v-46d085a6=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-46d085a6=\"\">\n                        <div class=\"btn-group pull-right\" _v-46d085a6=\"\">\n                            <a :href=\"item.edit_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-46d085a6=\"\"><i class=\"fa fa-pencil\" _v-46d085a6=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-8a7f6adc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-8a7f6adc=\"\">\n        <div class=\"box-header with-border\" _v-8a7f6adc=\"\">\n          <div class=\"row\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-12\" _v-8a7f6adc=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitMainStory(item)\" v-model=\"checked\" :checked=\"isMainStory\" :disabled=\"mainStoriesFull\" _v-8a7f6adc=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-8a7f6adc=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-8a7f6adc=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-9\" _v-8a7f6adc=\"\">\n                <h6 class=\"box-title\" _v-8a7f6adc=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-8a7f6adc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-8a7f6adc=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-8a7f6adc=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-8a7f6adc=\"\">\n            <p _v-8a7f6adc=\"\">ID: {{item.id}}</p>\n            <p _v-8a7f6adc=\"\">Type: {{item.story_type}}</p>\n            <p _v-8a7f6adc=\"\">Title: {{item.title}}</p>\n            <p _v-8a7f6adc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-8a7f6adc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-8a7f6adc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-8a7f6adc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-8a7f6adc=\"\">Live: {{item.is_live}}</p>\n            <p _v-8a7f6adc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-8a7f6adc=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-8a7f6adc=\"\">\n                <div class=\"row\" _v-8a7f6adc=\"\">\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        <div class=\"btn-group pull-right\" _v-8a7f6adc=\"\">\n                            <a :href=\"item.edit_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-8a7f6adc=\"\"><i class=\"fa fa-pencil\" _v-8a7f6adc=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-46d085a6] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-46d085a6] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-46d085a6] {\n    padding: 3px;\n}\n.box-footer[_v-46d085a6] {\n    padding: 3px;\n}\n\n#storyform[_v-46d085a6] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-46d085a6] {\n    margin-bottom: 2px;\n}\n#applabel[_v-46d085a6]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-46d085a6],\n.btn-group-vertical[_v-46d085a6] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-46d085a6] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-46d085a6] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-46d085a6] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-46d085a6] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-46d085a6] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-46d085a6] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-46d085a6] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-46d085a6] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-46d085a6] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-46d085a6] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-46d085a6]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-46d085a6] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-46d085a6] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-46d085a6] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-46d085a6] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-46d085a6] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-46d085a6] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-46d085a6] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-46d085a6]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-46d085a6] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-46d085a6] {\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-8a7f6adc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-8a7f6adc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-8a7f6adc] {\n    padding: 3px;\n}\n.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\n\n#storyform[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-8a7f6adc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-8a7f6adc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-8a7f6adc],\n.btn-group-vertical[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-8a7f6adc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-8a7f6adc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-8a7f6adc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-8a7f6adc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-8a7f6adc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-8a7f6adc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-8a7f6adc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-8a7f6adc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-8a7f6adc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.zcallout[_v-8a7f6adc] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-8a7f6adc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-8a7f6adc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-8a7f6adc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-8a7f6adc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-8a7f6adc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-8a7f6adc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-8a7f6adc] {\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-46d085a6", module.exports)
+    hotAPI.createRecord("_v-8a7f6adc", module.exports)
   } else {
-    hotAPI.update("_v-46d085a6", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-8a7f6adc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],124:[function(require,module,exports){
+},{"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],125:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nh4[_v-73b12c0e] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-73b12c0e]:active, .btn-default.active[_v-73b12c0e], .open > .dropdown-toggle.btn-default[_v-73b12c0e] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-73b12c0e]:active, .btn-default.active[_v-73b12c0e], .open > .dropdown-toggle.btn-default[_v-73b12c0e] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-73b12c0e]:active, span.item-type-icon.active[_v-73b12c0e]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-73b12c0e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\nh4[_v-873b9bc4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-873b9bc4]:active, span.item-type-icon.active[_v-873b9bc4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-873b9bc4]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24802,22 +24771,22 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-73b12c0e=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-73b12c0e=\"\">\n      <p _v-73b12c0e=\"\">You will only be presented stories that are:</p>\n      <ol _v-73b12c0e=\"\">\n        <li _v-73b12c0e=\"\">Approved</li>\n        <li _v-73b12c0e=\"\">Not archived</li>\n        <li _v-73b12c0e=\"\">Flagged as \"Ready\"</li>\n      </ol>\n    </div>\n</div>\n<hr _v-73b12c0e=\"\">\n<div class=\"row\" _v-73b12c0e=\"\">\n    <div class=\"col-md-12\" _v-73b12c0e=\"\">\n        <h3 _v-73b12c0e=\"\">Side Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-73b12c0e=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-73b12c0e=\"\">\n                  <email-story-pod pid=\"otherstory-list-stories\" pod-type=\"otherstory\" :item=\"story\" _v-73b12c0e=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-73b12c0e=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-73b12c0e=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-73b12c0e=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-73b12c0e=\"\">\n          <div class=\"form-group\" _v-73b12c0e=\"\">\n              <label for=\"start-date\" _v-73b12c0e=\"\">Starting <span v-if=\"isEndDate\" _v-73b12c0e=\"\">between</span><span v-else=\"\" _v-73b12c0e=\"\">on or after</span></label>\n              <p _v-73b12c0e=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-73b12c0e=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-73b12c0e=\"\">\n              <label for=\"start-date\" _v-73b12c0e=\"\"> and </label>\n              <p _v-73b12c0e=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-73b12c0e=\"\"></p><p _v-73b12c0e=\"\">\n          </p></div>\n          <p _v-73b12c0e=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-73b12c0e=\"\">Filter</button></p>\n          <p _v-73b12c0e=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-73b12c0e=\"\"><span v-if=\"isEndDate\" _v-73b12c0e=\"\"> - Remove </span><span v-else=\"\" _v-73b12c0e=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-73b12c0e=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-73b12c0e=\"\">\n                <label _v-73b12c0e=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-73b12c0e=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-73b12c0e=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-73b12c0e=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-73b12c0e=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-stories\" _v-73b12c0e=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueStories.length > 0\">\n              <email-story-pod pid=\"otherstory-queue-stories\" pod-type=\"otherstoryqueue\" :item=\"story\" :other-stories=\"usedStories\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-73b12c0e=\"\">\n              </email-story-pod>\n              <ul class=\"pagination\" _v-73b12c0e=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-73b12c0e=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-73b12c0e=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-73b12c0e=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-73b12c0e=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-73b12c0e=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-73b12c0e=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-73b12c0e=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-73b12c0e=\"\">There are no stories for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-73b12c0e=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-873b9bc4=\"\">\n      <p _v-873b9bc4=\"\">You will only be presented stories that are:</p>\n      <ol _v-873b9bc4=\"\">\n        <li _v-873b9bc4=\"\">Approved</li>\n        <li _v-873b9bc4=\"\">Not archived</li>\n        <li _v-873b9bc4=\"\">Flagged as \"Ready\"</li>\n      </ol>\n    </div>\n</div>\n<hr _v-873b9bc4=\"\">\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-md-12\" _v-873b9bc4=\"\">\n        <h3 _v-873b9bc4=\"\">Side Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-873b9bc4=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-873b9bc4=\"\">\n                  <email-story-pod pid=\"otherstory-list-stories\" pod-type=\"otherstory\" :item=\"story\" _v-873b9bc4=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-873b9bc4=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-873b9bc4=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-873b9bc4=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-873b9bc4=\"\">\n          <div class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\">Starting <span v-if=\"isEndDate\" _v-873b9bc4=\"\">between</span><span v-else=\"\" _v-873b9bc4=\"\">on or after</span></label>\n              <p _v-873b9bc4=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-873b9bc4=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\"> and </label>\n              <p _v-873b9bc4=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-873b9bc4=\"\"></p><p _v-873b9bc4=\"\">\n          </p></div>\n          <p _v-873b9bc4=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-873b9bc4=\"\">Filter</button></p>\n          <p _v-873b9bc4=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-873b9bc4=\"\"><span v-if=\"isEndDate\" _v-873b9bc4=\"\"> - Remove </span><span v-else=\"\" _v-873b9bc4=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-873b9bc4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-873b9bc4=\"\">\n                <label _v-873b9bc4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-873b9bc4=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-873b9bc4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-873b9bc4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-873b9bc4=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-stories\" _v-873b9bc4=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueStories.length > 0\">\n              <email-story-pod pid=\"otherstory-queue-stories\" pod-type=\"otherstoryqueue\" :item=\"story\" :other-stories=\"usedStories\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-873b9bc4=\"\">\n              </email-story-pod>\n              <ul class=\"pagination\" _v-873b9bc4=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 0)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-873b9bc4=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: pageNumber == currentPage}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber)\" _v-873b9bc4=\"\">{{ pageNumber+1 }} <span v-if=\"pageNumber == currentPage\" class=\"sr-only\" _v-873b9bc4=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages-1)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-873b9bc4=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-873b9bc4=\"\">There are no stories for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-873b9bc4=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\nh4[_v-73b12c0e] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-73b12c0e]:active, .btn-default.active[_v-73b12c0e], .open > .dropdown-toggle.btn-default[_v-73b12c0e] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-73b12c0e]:active, .btn-default.active[_v-73b12c0e], .open > .dropdown-toggle.btn-default[_v-73b12c0e] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-73b12c0e]:active, span.item-type-icon.active[_v-73b12c0e]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-73b12c0e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\nh4[_v-873b9bc4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-873b9bc4]:active, span.item-type-icon.active[_v-873b9bc4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-873b9bc4]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-73b12c0e", module.exports)
+    hotAPI.createRecord("_v-873b9bc4", module.exports)
   } else {
-    hotAPI.update("_v-73b12c0e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-873b9bc4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../../directives/flatpickr.js":128,"../../directives/iconradio.js":129,"../IconToggleBtn.vue":125,"../Pagination.vue":126,"./EmailStoryPod.vue":123,"babel-runtime/core-js/object/keys":10,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],125:[function(require,module,exports){
+},{"../../directives/flatpickr.js":129,"../../directives/iconradio.js":130,"../IconToggleBtn.vue":126,"../Pagination.vue":127,"./EmailStoryPod.vue":124,"babel-runtime/core-js/object/keys":10,"moment":104,"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],126:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.item-type-icon {\n    color: #1B1B1B;\n    /*position:absolute;\n    top: 5px;\n    left: 5px;*/\n\n}\n")
 'use strict';
@@ -24883,14 +24852,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6c1ff9a3", module.exports)
+    hotAPI.createRecord("_v-fcf89270", module.exports)
   } else {
-    hotAPI.update("_v-6c1ff9a3", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-fcf89270", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],126:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],127:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-0c4d5bd4]{\n    cursor: pointer;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
 'use strict';
 
 module.exports = {
@@ -24989,22 +24958,22 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-0c4d5bd4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-0c4d5bd4=\"\">\n        <ul class=\"pagination\" _v-0c4d5bd4=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-0c4d5bd4=\"\"><span _v-0c4d5bd4=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-0c4d5bd4=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-0c4d5bd4=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-0c4d5bd4=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-0c4d5bd4=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-0c4d5bd4=\"\"><span _v-0c4d5bd4=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-0c4d5bd4=\"\">\n        <div class=\"form-group\" _v-0c4d5bd4=\"\">\n            <label for=\"resultsPerPage\" _v-0c4d5bd4=\"\">Per Page</label>\n            <div class=\"input-group\" _v-0c4d5bd4=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-0c4d5bd4=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-0c4d5bd4=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-0c4d5bd4=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-6eea2f11=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.cursor[_v-0c4d5bd4]{\n    cursor: pointer;\n}\n"] = false
+    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-0c4d5bd4", module.exports)
+    hotAPI.createRecord("_v-6eea2f11", module.exports)
   } else {
-    hotAPI.update("_v-0c4d5bd4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],127:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],128:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
 'use strict';
@@ -25046,12 +25015,12 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-f48fb642", module.exports)
+    hotAPI.createRecord("_v-c9c83bf8", module.exports)
   } else {
-    hotAPI.update("_v-f48fb642", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],128:[function(require,module,exports){
+},{"vue":111,"vue-hot-reload-api":107,"vueify/lib/insert-css":112}],129:[function(require,module,exports){
 'use strict';
 
 var _flatpickr = require('flatpickr');
@@ -25082,7 +25051,7 @@ module.exports = {
     }
 };
 
-},{"flatpickr":102}],129:[function(require,module,exports){
+},{"flatpickr":103}],130:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -25125,7 +25094,7 @@ module.exports = {
     }
 };
 
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -25166,7 +25135,7 @@ var vm = new Vue({
     }
 });
 
-},{"./components/Email/EmailForm.vue":119,"./vuex/store":131,"vue":110,"vue-resource":107,"vue-sortable":109}],131:[function(require,module,exports){
+},{"./components/Email/EmailForm.vue":120,"./vuex/store":132,"vue":111,"vue-resource":108,"vue-sortable":110}],132:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25209,6 +25178,6 @@ exports.default = new _vuex2.default.Store({
     mutations: mutations
 });
 
-},{"vue":110,"vuex":112}]},{},[130]);
+},{"vue":111,"vuex":113}]},{},[131]);
 
 //# sourceMappingURL=vue-email-form.js.map

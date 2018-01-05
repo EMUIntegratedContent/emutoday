@@ -184,7 +184,7 @@ module.exports = function xhrAdapter(config) {
 };
 
 }).call(this,require('_process'))
-},{"../core/createError":9,"./../core/settle":12,"./../helpers/btoa":16,"./../helpers/buildURL":17,"./../helpers/cookies":19,"./../helpers/isURLSameOrigin":21,"./../helpers/parseHeaders":23,"./../utils":25,"_process":94}],3:[function(require,module,exports){
+},{"../core/createError":9,"./../core/settle":12,"./../helpers/btoa":16,"./../helpers/buildURL":17,"./../helpers/cookies":19,"./../helpers/isURLSameOrigin":21,"./../helpers/parseHeaders":23,"./../utils":25,"_process":95}],3:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -737,7 +737,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":2,"./adapters/xhr":2,"./helpers/normalizeHeaderName":22,"./utils":25,"_process":94}],15:[function(require,module,exports){
+},{"./adapters/http":2,"./adapters/xhr":2,"./helpers/normalizeHeaderName":22,"./utils":25,"_process":95}],15:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -1402,7 +1402,7 @@ module.exports = {
   trim: trim
 };
 
-},{"./helpers/bind":15,"is-buffer":93}],26:[function(require,module,exports){
+},{"./helpers/bind":15,"is-buffer":94}],26:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
 },{"core-js/library/fn/symbol":29}],27:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol/iterator"), __esModule: true };
@@ -1434,154 +1434,138 @@ require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-
-},{"../../modules/_core":36,"../../modules/es6.object.to-string":87,"../../modules/es6.symbol":89,"../../modules/es7.symbol.async-iterator":90,"../../modules/es7.symbol.observable":91}],30:[function(require,module,exports){
+},{"../../modules/_core":36,"../../modules/es6.object.to-string":88,"../../modules/es6.symbol":90,"../../modules/es7.symbol.async-iterator":91,"../../modules/es7.symbol.observable":92}],30:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":88,"../../modules/web.dom.iterable":92}],31:[function(require,module,exports){
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+},{"../../modules/_wks-ext":85,"../../modules/es6.string.iterator":89,"../../modules/web.dom.iterable":93}],31:[function(require,module,exports){
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-
 },{}],32:[function(require,module,exports){
-module.exports = function () { /* empty */ };
-
+module.exports = function(){ /* empty */ };
 },{}],33:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-
 },{"./_is-object":52}],34:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = require('./_to-iobject');
-var toLength = require('./_to-length');
-var toAbsoluteIndex = require('./_to-absolute-index');
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
+var toIObject = require('./_to-iobject')
+  , toLength  = require('./_to-length')
+  , toIndex   = require('./_to-index');
+module.exports = function(IS_INCLUDES){
+  return function($this, el, fromIndex){
+    var O      = toIObject($this)
+      , length = toLength(O.length)
+      , index  = toIndex(fromIndex, length)
+      , value;
     // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
+    if(IS_INCLUDES && el != el)while(length > index){
       value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
+      if(value != value)return true;
+    // Array#toIndex ignores holes, Array#includes - not
+    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+      if(O[index] === el)return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-
-},{"./_to-absolute-index":76,"./_to-iobject":78,"./_to-length":79}],35:[function(require,module,exports){
+},{"./_to-index":77,"./_to-iobject":79,"./_to-length":80}],35:[function(require,module,exports){
 var toString = {}.toString;
 
-module.exports = function (it) {
+module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-
 },{}],36:[function(require,module,exports){
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 },{}],37:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function (fn, that, length) {
+module.exports = function(fn, that, length){
   aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
       return fn.call(that, a);
     };
-    case 2: return function (a, b) {
+    case 2: return function(a, b){
       return fn.call(that, a, b);
     };
-    case 3: return function (a, b, c) {
+    case 3: return function(a, b, c){
       return fn.call(that, a, b, c);
     };
   }
-  return function (/* ...args */) {
+  return function(/* ...args */){
     return fn.apply(that, arguments);
   };
 };
-
 },{"./_a-function":31}],38:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-
 },{}],39:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_fails')(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_fails":44}],40:[function(require,module,exports){
-var isObject = require('./_is-object');
-var document = require('./_global').document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
+var isObject = require('./_is-object')
+  , document = require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-
 },{"./_global":45,"./_is-object":52}],41:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
-
 },{}],42:[function(require,module,exports){
 // all enumerable object keys, includes symbols
-var getKeys = require('./_object-keys');
-var gOPS = require('./_object-gops');
-var pIE = require('./_object-pie');
-module.exports = function (it) {
-  var result = getKeys(it);
-  var getSymbols = gOPS.f;
-  if (getSymbols) {
-    var symbols = getSymbols(it);
-    var isEnum = pIE.f;
-    var i = 0;
-    var key;
-    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+var getKeys = require('./_object-keys')
+  , gOPS    = require('./_object-gops')
+  , pIE     = require('./_object-pie');
+module.exports = function(it){
+  var result     = getKeys(it)
+    , getSymbols = gOPS.f;
+  if(getSymbols){
+    var symbols = getSymbols(it)
+      , isEnum  = pIE.f
+      , i       = 0
+      , key;
+    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
   } return result;
 };
+},{"./_object-gops":66,"./_object-keys":69,"./_object-pie":70}],43:[function(require,module,exports){
+var global    = require('./_global')
+  , core      = require('./_core')
+  , ctx       = require('./_ctx')
+  , hide      = require('./_hide')
+  , PROTOTYPE = 'prototype';
 
-},{"./_object-gops":65,"./_object-keys":68,"./_object-pie":69}],43:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var ctx = require('./_ctx');
-var hide = require('./_hide');
-var PROTOTYPE = 'prototype';
-
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if(own && key in exports)continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -1589,11 +1573,11 @@ var $export = function (type, name, source) {
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -1604,10 +1588,10 @@ var $export = function (type, name, source) {
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
+    if(IS_PROTO){
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
     }
   }
 };
@@ -1619,241 +1603,232 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
-
 },{"./_core":36,"./_ctx":37,"./_global":45,"./_hide":47}],44:[function(require,module,exports){
-module.exports = function (exec) {
+module.exports = function(exec){
   try {
     return !!exec();
-  } catch (e) {
+  } catch(e){
     return true;
   }
 };
-
 },{}],45:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 },{}],46:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
+module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-
 },{}],47:[function(require,module,exports){
-var dP = require('./_object-dp');
-var createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function (object, key, value) {
+var dP         = require('./_object-dp')
+  , createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
+} : function(object, key, value){
   object[key] = value;
   return object;
 };
-
-},{"./_descriptors":39,"./_object-dp":60,"./_property-desc":70}],48:[function(require,module,exports){
-var document = require('./_global').document;
-module.exports = document && document.documentElement;
-
+},{"./_descriptors":39,"./_object-dp":61,"./_property-desc":71}],48:[function(require,module,exports){
+module.exports = require('./_global').document && document.documentElement;
 },{"./_global":45}],49:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function () {
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function(){
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 },{"./_descriptors":39,"./_dom-create":40,"./_fails":44}],50:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-
 },{"./_cof":35}],51:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
-module.exports = Array.isArray || function isArray(arg) {
+module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
-
 },{"./_cof":35}],52:[function(require,module,exports){
-module.exports = function (it) {
+module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
 },{}],53:[function(require,module,exports){
 'use strict';
-var create = require('./_object-create');
-var descriptor = require('./_property-desc');
-var setToStringTag = require('./_set-to-string-tag');
-var IteratorPrototype = {};
+var create         = require('./_object-create')
+  , descriptor     = require('./_property-desc')
+  , setToStringTag = require('./_set-to-string-tag')
+  , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function(){ return this; });
 
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+module.exports = function(Constructor, NAME, next){
+  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-
-},{"./_hide":47,"./_object-create":59,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],54:[function(require,module,exports){
+},{"./_hide":47,"./_object-create":60,"./_property-desc":71,"./_set-to-string-tag":73,"./_wks":86}],54:[function(require,module,exports){
 'use strict';
-var LIBRARY = require('./_library');
-var $export = require('./_export');
-var redefine = require('./_redefine');
-var hide = require('./_hide');
-var has = require('./_has');
-var Iterators = require('./_iterators');
-var $iterCreate = require('./_iter-create');
-var setToStringTag = require('./_set-to-string-tag');
-var getPrototypeOf = require('./_object-gpo');
-var ITERATOR = require('./_wks')('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
+var LIBRARY        = require('./_library')
+  , $export        = require('./_export')
+  , redefine       = require('./_redefine')
+  , hide           = require('./_hide')
+  , has            = require('./_has')
+  , Iterators      = require('./_iterators')
+  , $iterCreate    = require('./_iter-create')
+  , setToStringTag = require('./_set-to-string-tag')
+  , getPrototypeOf = require('./_object-gpo')
+  , ITERATOR       = require('./_wks')('iterator')
+  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  , FF_ITERATOR    = '@@iterator'
+  , KEYS           = 'keys'
+  , VALUES         = 'values';
 
-var returnThis = function () { return this; };
+var returnThis = function(){ return this; };
 
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
+  var getMethod = function(kind){
+    if(!BUGGY && kind in proto)return proto[kind];
+    switch(kind){
+      case KEYS: return function keys(){ return new Constructor(this, kind); };
+      case VALUES: return function values(){ return new Constructor(this, kind); };
+    } return function entries(){ return new Constructor(this, kind); };
   };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
+  var TAG        = NAME + ' Iterator'
+    , DEF_VALUES = DEFAULT == VALUES
+    , VALUES_BUG = false
+    , proto      = Base.prototype
+    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+    , $default   = $native || getMethod(DEFAULT)
+    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+    , methods, key, IteratorPrototype;
   // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+  if($anyNative){
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+    if(IteratorPrototype !== Object.prototype){
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
+  if(DEF_VALUES && $native && $native.name !== VALUES){
     VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
+    $default = function values(){ return $native.call(this); };
   }
   // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
+  Iterators[TAG]  = returnThis;
+  if(DEFAULT){
     methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
+      values:  DEF_VALUES ? $default : getMethod(VALUES),
+      keys:    IS_SET     ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
+    if(FORCED)for(key in methods){
+      if(!(key in proto))redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-
-},{"./_export":43,"./_has":46,"./_hide":47,"./_iter-create":53,"./_iterators":56,"./_library":57,"./_object-gpo":66,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],55:[function(require,module,exports){
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
+},{"./_export":43,"./_has":46,"./_hide":47,"./_iter-create":53,"./_iterators":56,"./_library":58,"./_object-gpo":67,"./_redefine":72,"./_set-to-string-tag":73,"./_wks":86}],55:[function(require,module,exports){
+module.exports = function(done, value){
+  return {value: value, done: !!done};
 };
-
 },{}],56:[function(require,module,exports){
 module.exports = {};
-
 },{}],57:[function(require,module,exports){
+var getKeys   = require('./_object-keys')
+  , toIObject = require('./_to-iobject');
+module.exports = function(object, el){
+  var O      = toIObject(object)
+    , keys   = getKeys(O)
+    , length = keys.length
+    , index  = 0
+    , key;
+  while(length > index)if(O[key = keys[index++]] === el)return key;
+};
+},{"./_object-keys":69,"./_to-iobject":79}],58:[function(require,module,exports){
 module.exports = true;
-
-},{}],58:[function(require,module,exports){
-var META = require('./_uid')('meta');
-var isObject = require('./_is-object');
-var has = require('./_has');
-var setDesc = require('./_object-dp').f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
+},{}],59:[function(require,module,exports){
+var META     = require('./_uid')('meta')
+  , isObject = require('./_is-object')
+  , has      = require('./_has')
+  , setDesc  = require('./_object-dp').f
+  , id       = 0;
+var isExtensible = Object.isExtensible || function(){
   return true;
 };
-var FREEZE = !require('./_fails')(function () {
+var FREEZE = !require('./_fails')(function(){
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
+var setMeta = function(it){
+  setDesc(it, META, {value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  } });
+  }});
 };
-var fastKey = function (it, create) {
+var fastKey = function(it, create){
   // return primitive with prefix
-  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!has(it, META)) {
+  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
+    if(!isExtensible(it))return 'F';
     // not necessary to add metadata
-    if (!create) return 'E';
+    if(!create)return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function (it, create) {
-  if (!has(it, META)) {
+var getWeak = function(it, create){
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
+    if(!isExtensible(it))return true;
     // not necessary to add metadata
-    if (!create) return false;
+    if(!create)return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+var onFreeze = function(it){
+  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
+  KEY:      META,
+  NEED:     false,
+  fastKey:  fastKey,
+  getWeak:  getWeak,
   onFreeze: onFreeze
 };
-
-},{"./_fails":44,"./_has":46,"./_is-object":52,"./_object-dp":60,"./_uid":82}],59:[function(require,module,exports){
+},{"./_fails":44,"./_has":46,"./_is-object":52,"./_object-dp":61,"./_uid":83}],60:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = require('./_an-object');
-var dPs = require('./_object-dps');
-var enumBugKeys = require('./_enum-bug-keys');
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
+var anObject    = require('./_an-object')
+  , dPs         = require('./_object-dps')
+  , enumBugKeys = require('./_enum-bug-keys')
+  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
+  , Empty       = function(){ /* empty */ }
+  , PROTOTYPE   = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
+var createDict = function(){
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = require('./_dom-create')('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
+  var iframe = require('./_dom-create')('iframe')
+    , i      = enumBugKeys.length
+    , lt     = '<'
+    , gt     = '>'
+    , iframeDocument;
   iframe.style.display = 'none';
   require('./_html').appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -1864,15 +1839,15 @@ var createDict = function () {
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties) {
+module.exports = Object.create || function create(O, Properties){
   var result;
-  if (O !== null) {
+  if(O !== null){
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
+    result = new Empty;
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -1880,306 +1855,281 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":33,"./_dom-create":40,"./_enum-bug-keys":41,"./_html":48,"./_object-dps":61,"./_shared-key":73}],60:[function(require,module,exports){
-var anObject = require('./_an-object');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var toPrimitive = require('./_to-primitive');
-var dP = Object.defineProperty;
+},{"./_an-object":33,"./_dom-create":40,"./_enum-bug-keys":41,"./_html":48,"./_object-dps":62,"./_shared-key":74}],61:[function(require,module,exports){
+var anObject       = require('./_an-object')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , toPrimitive    = require('./_to-primitive')
+  , dP             = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
+},{"./_an-object":33,"./_descriptors":39,"./_ie8-dom-define":49,"./_to-primitive":82}],62:[function(require,module,exports){
+var dP       = require('./_object-dp')
+  , anObject = require('./_an-object')
+  , getKeys  = require('./_object-keys');
 
-},{"./_an-object":33,"./_descriptors":39,"./_ie8-dom-define":49,"./_to-primitive":81}],61:[function(require,module,exports){
-var dP = require('./_object-dp');
-var anObject = require('./_an-object');
-var getKeys = require('./_object-keys');
-
-module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties){
   anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+  var keys   = getKeys(Properties)
+    , length = keys.length
+    , i = 0
+    , P;
+  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
+},{"./_an-object":33,"./_descriptors":39,"./_object-dp":61,"./_object-keys":69}],63:[function(require,module,exports){
+var pIE            = require('./_object-pie')
+  , createDesc     = require('./_property-desc')
+  , toIObject      = require('./_to-iobject')
+  , toPrimitive    = require('./_to-primitive')
+  , has            = require('./_has')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , gOPD           = Object.getOwnPropertyDescriptor;
 
-},{"./_an-object":33,"./_descriptors":39,"./_object-dp":60,"./_object-keys":68}],62:[function(require,module,exports){
-var pIE = require('./_object-pie');
-var createDesc = require('./_property-desc');
-var toIObject = require('./_to-iobject');
-var toPrimitive = require('./_to-primitive');
-var has = require('./_has');
-var IE8_DOM_DEFINE = require('./_ie8-dom-define');
-var gOPD = Object.getOwnPropertyDescriptor;
-
-exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P){
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return gOPD(O, P);
-  } catch (e) { /* empty */ }
-  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch(e){ /* empty */ }
+  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 };
-
-},{"./_descriptors":39,"./_has":46,"./_ie8-dom-define":49,"./_object-pie":69,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],63:[function(require,module,exports){
+},{"./_descriptors":39,"./_has":46,"./_ie8-dom-define":49,"./_object-pie":70,"./_property-desc":71,"./_to-iobject":79,"./_to-primitive":82}],64:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = require('./_to-iobject');
-var gOPN = require('./_object-gopn').f;
-var toString = {}.toString;
+var toIObject = require('./_to-iobject')
+  , gOPN      = require('./_object-gopn').f
+  , toString  = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function (it) {
+var getWindowNames = function(it){
   try {
     return gOPN(it);
-  } catch (e) {
+  } catch(e){
     return windowNames.slice();
   }
 };
 
-module.exports.f = function getOwnPropertyNames(it) {
+module.exports.f = function getOwnPropertyNames(it){
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":64,"./_to-iobject":78}],64:[function(require,module,exports){
+},{"./_object-gopn":65,"./_to-iobject":79}],65:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = require('./_object-keys-internal');
-var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
+var $keys      = require('./_object-keys-internal')
+  , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
 };
-
-},{"./_enum-bug-keys":41,"./_object-keys-internal":67}],65:[function(require,module,exports){
+},{"./_enum-bug-keys":41,"./_object-keys-internal":68}],66:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
-
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = require('./_has');
-var toObject = require('./_to-object');
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-var ObjectProto = Object.prototype;
+var has         = require('./_has')
+  , toObject    = require('./_to-object')
+  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
+  , ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function (O) {
+module.exports = Object.getPrototypeOf || function(O){
   O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+  if(has(O, IE_PROTO))return O[IE_PROTO];
+  if(typeof O.constructor == 'function' && O instanceof O.constructor){
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
+},{"./_has":46,"./_shared-key":74,"./_to-object":81}],68:[function(require,module,exports){
+var has          = require('./_has')
+  , toIObject    = require('./_to-iobject')
+  , arrayIndexOf = require('./_array-includes')(false)
+  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
 
-},{"./_has":46,"./_shared-key":73,"./_to-object":80}],67:[function(require,module,exports){
-var has = require('./_has');
-var toIObject = require('./_to-iobject');
-var arrayIndexOf = require('./_array-includes')(false);
-var IE_PROTO = require('./_shared-key')('IE_PROTO');
-
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+module.exports = function(object, names){
+  var O      = toIObject(object)
+    , i      = 0
+    , result = []
+    , key;
+  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
+  while(names.length > i)if(has(O, key = names[i++])){
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
-
-},{"./_array-includes":34,"./_has":46,"./_shared-key":73,"./_to-iobject":78}],68:[function(require,module,exports){
+},{"./_array-includes":34,"./_has":46,"./_shared-key":74,"./_to-iobject":79}],69:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = require('./_object-keys-internal');
-var enumBugKeys = require('./_enum-bug-keys');
+var $keys       = require('./_object-keys-internal')
+  , enumBugKeys = require('./_enum-bug-keys');
 
-module.exports = Object.keys || function keys(O) {
+module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
-
-},{"./_enum-bug-keys":41,"./_object-keys-internal":67}],69:[function(require,module,exports){
+},{"./_enum-bug-keys":41,"./_object-keys-internal":68}],70:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-
-},{}],70:[function(require,module,exports){
-module.exports = function (bitmap, value) {
+},{}],71:[function(require,module,exports){
+module.exports = function(bitmap, value){
   return {
-    enumerable: !(bitmap & 1),
+    enumerable  : !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+    writable    : !(bitmap & 4),
+    value       : value
   };
 };
-
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = require('./_hide');
+},{"./_hide":47}],73:[function(require,module,exports){
+var def = require('./_object-dp').f
+  , has = require('./_has')
+  , TAG = require('./_wks')('toStringTag');
 
-},{"./_hide":47}],72:[function(require,module,exports){
-var def = require('./_object-dp').f;
-var has = require('./_has');
-var TAG = require('./_wks')('toStringTag');
-
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+module.exports = function(it, tag, stat){
+  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-
-},{"./_has":46,"./_object-dp":60,"./_wks":85}],73:[function(require,module,exports){
-var shared = require('./_shared')('keys');
-var uid = require('./_uid');
-module.exports = function (key) {
+},{"./_has":46,"./_object-dp":61,"./_wks":86}],74:[function(require,module,exports){
+var shared = require('./_shared')('keys')
+  , uid    = require('./_uid');
+module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
-
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
-var global = require('./_global');
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
+},{"./_shared":75,"./_uid":83}],75:[function(require,module,exports){
+var global = require('./_global')
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-
-},{"./_global":45}],75:[function(require,module,exports){
-var toInteger = require('./_to-integer');
-var defined = require('./_defined');
+},{"./_global":45}],76:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , defined   = require('./_defined');
 // true  -> String#at
 // false -> String#codePointAt
-module.exports = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(defined(that));
-    var i = toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+module.exports = function(TO_STRING){
+  return function(that, pos){
+    var s = String(defined(that))
+      , i = toInteger(pos)
+      , l = s.length
+      , a, b;
+    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-
-},{"./_defined":38,"./_to-integer":77}],76:[function(require,module,exports){
-var toInteger = require('./_to-integer');
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
+},{"./_defined":38,"./_to-integer":78}],77:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , max       = Math.max
+  , min       = Math.min;
+module.exports = function(index, length){
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-
-},{"./_to-integer":77}],77:[function(require,module,exports){
+},{"./_to-integer":78}],78:[function(require,module,exports){
 // 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
+var ceil  = Math.ceil
+  , floor = Math.floor;
+module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject');
-var defined = require('./_defined');
-module.exports = function (it) {
+var IObject = require('./_iobject')
+  , defined = require('./_defined');
+module.exports = function(it){
   return IObject(defined(it));
 };
-
-},{"./_defined":38,"./_iobject":50}],79:[function(require,module,exports){
+},{"./_defined":38,"./_iobject":50}],80:[function(require,module,exports){
 // 7.1.15 ToLength
-var toInteger = require('./_to-integer');
-var min = Math.min;
-module.exports = function (it) {
+var toInteger = require('./_to-integer')
+  , min       = Math.min;
+module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-
-},{"./_to-integer":77}],80:[function(require,module,exports){
+},{"./_to-integer":78}],81:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
-module.exports = function (it) {
+module.exports = function(it){
   return Object(defined(it));
 };
-
-},{"./_defined":38}],81:[function(require,module,exports){
+},{"./_defined":38}],82:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function(it, S){
+  if(!isObject(it))return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-
-},{"./_is-object":52}],82:[function(require,module,exports){
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
+},{"./_is-object":52}],83:[function(require,module,exports){
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-
-},{}],83:[function(require,module,exports){
-var global = require('./_global');
-var core = require('./_core');
-var LIBRARY = require('./_library');
-var wksExt = require('./_wks-ext');
-var defineProperty = require('./_object-dp').f;
-module.exports = function (name) {
+},{}],84:[function(require,module,exports){
+var global         = require('./_global')
+  , core           = require('./_core')
+  , LIBRARY        = require('./_library')
+  , wksExt         = require('./_wks-ext')
+  , defineProperty = require('./_object-dp').f;
+module.exports = function(name){
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 };
-
-},{"./_core":36,"./_global":45,"./_library":57,"./_object-dp":60,"./_wks-ext":84}],84:[function(require,module,exports){
+},{"./_core":36,"./_global":45,"./_library":58,"./_object-dp":61,"./_wks-ext":85}],85:[function(require,module,exports){
 exports.f = require('./_wks');
+},{"./_wks":86}],86:[function(require,module,exports){
+var store      = require('./_shared')('wks')
+  , uid        = require('./_uid')
+  , Symbol     = require('./_global').Symbol
+  , USE_SYMBOL = typeof Symbol == 'function';
 
-},{"./_wks":85}],85:[function(require,module,exports){
-var store = require('./_shared')('wks');
-var uid = require('./_uid');
-var Symbol = require('./_global').Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
+var $exports = module.exports = function(name){
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-
-},{"./_global":45,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+},{"./_global":45,"./_shared":75,"./_uid":83}],87:[function(require,module,exports){
 'use strict';
-var addToUnscopables = require('./_add-to-unscopables');
-var step = require('./_iter-step');
-var Iterators = require('./_iterators');
-var toIObject = require('./_to-iobject');
+var addToUnscopables = require('./_add-to-unscopables')
+  , step             = require('./_iter-step')
+  , Iterators        = require('./_iterators')
+  , toIObject        = require('./_to-iobject');
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = require('./_iter-define')(Array, 'Array', function (iterated, kind) {
+module.exports = require('./_iter-define')(Array, 'Array', function(iterated, kind){
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
+}, function(){
+  var O     = this._t
+    , kind  = this._k
+    , index = this._i++;
+  if(!O || index >= O.length){
     this._t = undefined;
     return step(1);
   }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
+  if(kind == 'keys'  )return step(0, index);
+  if(kind == 'values')return step(0, O[index]);
   return step(0, [index, O[index]]);
 }, 'values');
 
@@ -2189,213 +2139,212 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
+},{"./_add-to-unscopables":32,"./_iter-define":54,"./_iter-step":55,"./_iterators":56,"./_to-iobject":79}],88:[function(require,module,exports){
 
-},{"./_add-to-unscopables":32,"./_iter-define":54,"./_iter-step":55,"./_iterators":56,"./_to-iobject":78}],87:[function(require,module,exports){
-
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
-var $at = require('./_string-at')(true);
+var $at  = require('./_string-at')(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-require('./_iter-define')(String, 'String', function (iterated) {
+require('./_iter-define')(String, 'String', function(iterated){
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
+}, function(){
+  var O     = this._t
+    , index = this._i
+    , point;
+  if(index >= O.length)return {value: undefined, done: true};
   point = $at(O, index);
   this._i += point.length;
-  return { value: point, done: false };
+  return {value: point, done: false};
 });
-
-},{"./_iter-define":54,"./_string-at":75}],89:[function(require,module,exports){
+},{"./_iter-define":54,"./_string-at":76}],90:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
-var global = require('./_global');
-var has = require('./_has');
-var DESCRIPTORS = require('./_descriptors');
-var $export = require('./_export');
-var redefine = require('./_redefine');
-var META = require('./_meta').KEY;
-var $fails = require('./_fails');
-var shared = require('./_shared');
-var setToStringTag = require('./_set-to-string-tag');
-var uid = require('./_uid');
-var wks = require('./_wks');
-var wksExt = require('./_wks-ext');
-var wksDefine = require('./_wks-define');
-var enumKeys = require('./_enum-keys');
-var isArray = require('./_is-array');
-var anObject = require('./_an-object');
-var toIObject = require('./_to-iobject');
-var toPrimitive = require('./_to-primitive');
-var createDesc = require('./_property-desc');
-var _create = require('./_object-create');
-var gOPNExt = require('./_object-gopn-ext');
-var $GOPD = require('./_object-gopd');
-var $DP = require('./_object-dp');
-var $keys = require('./_object-keys');
-var gOPD = $GOPD.f;
-var dP = $DP.f;
-var gOPN = gOPNExt.f;
-var $Symbol = global.Symbol;
-var $JSON = global.JSON;
-var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE = 'prototype';
-var HIDDEN = wks('_hidden');
-var TO_PRIMITIVE = wks('toPrimitive');
-var isEnum = {}.propertyIsEnumerable;
-var SymbolRegistry = shared('symbol-registry');
-var AllSymbols = shared('symbols');
-var OPSymbols = shared('op-symbols');
-var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
-var QObject = global.QObject;
+var global         = require('./_global')
+  , has            = require('./_has')
+  , DESCRIPTORS    = require('./_descriptors')
+  , $export        = require('./_export')
+  , redefine       = require('./_redefine')
+  , META           = require('./_meta').KEY
+  , $fails         = require('./_fails')
+  , shared         = require('./_shared')
+  , setToStringTag = require('./_set-to-string-tag')
+  , uid            = require('./_uid')
+  , wks            = require('./_wks')
+  , wksExt         = require('./_wks-ext')
+  , wksDefine      = require('./_wks-define')
+  , keyOf          = require('./_keyof')
+  , enumKeys       = require('./_enum-keys')
+  , isArray        = require('./_is-array')
+  , anObject       = require('./_an-object')
+  , toIObject      = require('./_to-iobject')
+  , toPrimitive    = require('./_to-primitive')
+  , createDesc     = require('./_property-desc')
+  , _create        = require('./_object-create')
+  , gOPNExt        = require('./_object-gopn-ext')
+  , $GOPD          = require('./_object-gopd')
+  , $DP            = require('./_object-dp')
+  , $keys          = require('./_object-keys')
+  , gOPD           = $GOPD.f
+  , dP             = $DP.f
+  , gOPN           = gOPNExt.f
+  , $Symbol        = global.Symbol
+  , $JSON          = global.JSON
+  , _stringify     = $JSON && $JSON.stringify
+  , PROTOTYPE      = 'prototype'
+  , HIDDEN         = wks('_hidden')
+  , TO_PRIMITIVE   = wks('toPrimitive')
+  , isEnum         = {}.propertyIsEnumerable
+  , SymbolRegistry = shared('symbol-registry')
+  , AllSymbols     = shared('symbols')
+  , OPSymbols      = shared('op-symbols')
+  , ObjectProto    = Object[PROTOTYPE]
+  , USE_NATIVE     = typeof $Symbol == 'function'
+  , QObject        = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function () {
+var setSymbolDesc = DESCRIPTORS && $fails(function(){
   return _create(dP({}, 'a', {
-    get: function () { return dP(this, 'a', { value: 7 }).a; }
+    get: function(){ return dP(this, 'a', {value: 7}).a; }
   })).a != 7;
-}) ? function (it, key, D) {
+}) ? function(it, key, D){
   var protoDesc = gOPD(ObjectProto, key);
-  if (protoDesc) delete ObjectProto[key];
+  if(protoDesc)delete ObjectProto[key];
   dP(it, key, D);
-  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
 } : dP;
 
-var wrap = function (tag) {
+var wrap = function(tag){
   var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
   return typeof it == 'symbol';
-} : function (it) {
+} : function(it){
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D) {
-  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D){
+  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
   anObject(it);
   key = toPrimitive(key, true);
   anObject(D);
-  if (has(AllSymbols, key)) {
-    if (!D.enumerable) {
-      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+  if(has(AllSymbols, key)){
+    if(!D.enumerable){
+      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _create(D, { enumerable: createDesc(0, false) });
+      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+      D = _create(D, {enumerable: createDesc(0, false)});
     } return setSymbolDesc(it, key, D);
   } return dP(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P) {
+var $defineProperties = function defineProperties(it, P){
   anObject(it);
-  var keys = enumKeys(P = toIObject(P));
-  var i = 0;
-  var l = keys.length;
-  var key;
-  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+  var keys = enumKeys(P = toIObject(P))
+    , i    = 0
+    , l = keys.length
+    , key;
+  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P) {
+var $create = function create(it, P){
   return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+var $propertyIsEnumerable = function propertyIsEnumerable(key){
   var E = isEnum.call(this, key = toPrimitive(key, true));
-  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
   return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-  it = toIObject(it);
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+  it  = toIObject(it);
   key = toPrimitive(key, true);
-  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
   var D = gOPD(it, key);
-  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN(toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it){
+  var names  = gOPN(toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-  var IS_OP = it === ObjectProto;
-  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+  var IS_OP  = it === ObjectProto
+    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if (!USE_NATIVE) {
-  $Symbol = function Symbol() {
-    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+if(!USE_NATIVE){
+  $Symbol = function Symbol(){
+    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
     var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function (value) {
-      if (this === ObjectProto) $set.call(OPSymbols, value);
-      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+    var $set = function(value){
+      if(this === ObjectProto)$set.call(OPSymbols, value);
+      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, createDesc(1, value));
     };
-    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
     return wrap(tag);
   };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
     return this._k;
   });
 
   $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f = $defineProperty;
+  $DP.f   = $defineProperty;
   require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
-  require('./_object-pie').f = $propertyIsEnumerable;
+  require('./_object-pie').f  = $propertyIsEnumerable;
   require('./_object-gops').f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !require('./_library')) {
+  if(DESCRIPTORS && !require('./_library')){
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  wksExt.f = function (name) {
+  wksExt.f = function(name){
     return wrap(wks(name));
-  };
+  }
 }
 
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
 
-for (var es6Symbols = (
+for(var symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
+).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
 
-for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
 
 $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function (key) {
+  'for': function(key){
     return has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(sym) {
-    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
-    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
+  keyFor: function keyFor(key){
+    if(isSymbol(key))return keyOf(SymbolRegistry, key);
+    throw TypeError(key + ' is not a symbol!');
   },
-  useSetter: function () { setter = true; },
-  useSimple: function () { setter = false; }
+  useSetter: function(){ setter = true; },
+  useSimple: function(){ setter = false; }
 });
 
 $export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -2414,24 +2363,24 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-    var args = [it];
-    var i = 1;
-    var replacer, $replacer;
-    while (arguments.length > i) args.push(arguments[i++]);
+  stringify: function stringify(it){
+    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+    var args = [it]
+      , i    = 1
+      , replacer, $replacer;
+    while(arguments.length > i)args.push(arguments[i++]);
     replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
-      if (!isSymbol(value)) return value;
+    if(typeof replacer == 'function')$replacer = replacer;
+    if($replacer || !isArray(replacer))replacer = function(key, value){
+      if($replacer)value = $replacer.call(this, key, value);
+      if(!isSymbol(value))return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -2446,35 +2395,25 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-
-},{"./_an-object":33,"./_descriptors":39,"./_enum-keys":42,"./_export":43,"./_fails":44,"./_global":45,"./_has":46,"./_hide":47,"./_is-array":51,"./_library":57,"./_meta":58,"./_object-create":59,"./_object-dp":60,"./_object-gopd":62,"./_object-gopn":64,"./_object-gopn-ext":63,"./_object-gops":65,"./_object-keys":68,"./_object-pie":69,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],90:[function(require,module,exports){
+},{"./_an-object":33,"./_descriptors":39,"./_enum-keys":42,"./_export":43,"./_fails":44,"./_global":45,"./_has":46,"./_hide":47,"./_is-array":51,"./_keyof":57,"./_library":58,"./_meta":59,"./_object-create":60,"./_object-dp":61,"./_object-gopd":63,"./_object-gopn":65,"./_object-gopn-ext":64,"./_object-gops":66,"./_object-keys":69,"./_object-pie":70,"./_property-desc":71,"./_redefine":72,"./_set-to-string-tag":73,"./_shared":75,"./_to-iobject":79,"./_to-primitive":82,"./_uid":83,"./_wks":86,"./_wks-define":84,"./_wks-ext":85}],91:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
-
-},{"./_wks-define":83}],91:[function(require,module,exports){
+},{"./_wks-define":84}],92:[function(require,module,exports){
 require('./_wks-define')('observable');
-
-},{"./_wks-define":83}],92:[function(require,module,exports){
+},{"./_wks-define":84}],93:[function(require,module,exports){
 require('./es6.array.iterator');
-var global = require('./_global');
-var hide = require('./_hide');
-var Iterators = require('./_iterators');
-var TO_STRING_TAG = require('./_wks')('toStringTag');
+var global        = require('./_global')
+  , hide          = require('./_hide')
+  , Iterators     = require('./_iterators')
+  , TO_STRING_TAG = require('./_wks')('toStringTag');
 
-var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-  'TextTrackList,TouchList').split(',');
-
-for (var i = 0; i < DOMIterables.length; i++) {
-  var NAME = DOMIterables[i];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+  var NAME       = collections[i]
+    , Collection = global[NAME]
+    , proto      = Collection && Collection.prototype;
+  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-
-},{"./_global":45,"./_hide":47,"./_iterators":56,"./_wks":85,"./es6.array.iterator":86}],93:[function(require,module,exports){
+},{"./_global":45,"./_hide":47,"./_iterators":56,"./_wks":86,"./es6.array.iterator":87}],94:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -2497,7 +2436,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2683,7 +2622,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -2984,7 +2923,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],96:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -13225,7 +13164,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":94}],97:[function(require,module,exports){
+},{"_process":95}],98:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -13245,9 +13184,9 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],98:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.action-link[_v-16794fc7] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-16794fc7] {\n    margin-bottom: 0;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.action-link[_v-38314482] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-38314482] {\n    margin-bottom: 0;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13407,22 +13346,22 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-16794fc7=\"\">\n    <div class=\"panel panel-default\" _v-16794fc7=\"\">\n        <div class=\"panel-heading\" _v-16794fc7=\"\">\n            <div style=\"display: flex; justify-content: space-between; align-items: center;\" _v-16794fc7=\"\">\n                <span _v-16794fc7=\"\">\n                    OAuth Clients\n                </span>\n\n                <a class=\"action-link\" @click=\"showCreateClientForm\" _v-16794fc7=\"\">\n                    Create New Client\n                </a>\n            </div>\n        </div>\n\n        <div class=\"panel-body\" _v-16794fc7=\"\">\n            <!-- Current Clients -->\n            <p class=\"m-b-none\" v-if=\"clients.length === 0\" _v-16794fc7=\"\">\n                You have not created any OAuth clients.\n            </p>\n\n            <table class=\"table table-borderless m-b-none\" v-if=\"clients.length > 0\" _v-16794fc7=\"\">\n                <thead _v-16794fc7=\"\">\n                    <tr _v-16794fc7=\"\">\n                        <th _v-16794fc7=\"\">Client ID</th>\n                        <th _v-16794fc7=\"\">Name</th>\n                        <th _v-16794fc7=\"\">Secret</th>\n                        <th _v-16794fc7=\"\"></th>\n                        <th _v-16794fc7=\"\"></th>\n                    </tr>\n                </thead>\n\n                <tbody _v-16794fc7=\"\">\n                    <tr v-for=\"client in clients\" _v-16794fc7=\"\">\n                        <!-- ID -->\n                        <td style=\"vertical-align: middle;\" _v-16794fc7=\"\">\n                            {{ client.id }}\n                        </td>\n\n                        <!-- Name -->\n                        <td style=\"vertical-align: middle;\" _v-16794fc7=\"\">\n                            {{ client.name }}\n                        </td>\n\n                        <!-- Secret -->\n                        <td style=\"vertical-align: middle;\" _v-16794fc7=\"\">\n                            <code _v-16794fc7=\"\">{{ client.secret }}</code>\n                        </td>\n\n                        <!-- Edit Button -->\n                        <td style=\"vertical-align: middle;\" _v-16794fc7=\"\">\n                            <a class=\"action-link\" @click=\"edit(client)\" _v-16794fc7=\"\">\n                                Edit\n                            </a>\n                        </td>\n\n                        <!-- Delete Button -->\n                        <td style=\"vertical-align: middle;\" _v-16794fc7=\"\">\n                            <a class=\"action-link text-danger\" @click=\"destroy(client)\" _v-16794fc7=\"\">\n                                Delete\n                            </a>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n\n    <!-- Create Client Modal -->\n    <div class=\"modal fade\" id=\"modal-create-client\" tabindex=\"-1\" role=\"dialog\" _v-16794fc7=\"\">\n        <div class=\"modal-dialog\" _v-16794fc7=\"\">\n            <div class=\"modal-content\" _v-16794fc7=\"\">\n                <div class=\"modal-header\" _v-16794fc7=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-16794fc7=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-16794fc7=\"\">\n                        Create Client\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-16794fc7=\"\">\n                    <!-- Form Errors -->\n                    <div class=\"alert alert-danger\" v-if=\"createForm.errors.length > 0\" _v-16794fc7=\"\">\n                        <p _v-16794fc7=\"\"><strong _v-16794fc7=\"\">Whoops!</strong> Something went wrong!</p>\n                        <br _v-16794fc7=\"\">\n                        <ul _v-16794fc7=\"\">\n                            <li v-for=\"error in createForm.errors\" _v-16794fc7=\"\">\n                                {{ error }}\n                            </li>\n                        </ul>\n                    </div>\n\n                    <!-- Create Client Form -->\n                    <form class=\"form-horizontal\" role=\"form\" _v-16794fc7=\"\">\n                        <!-- Name -->\n                        <div class=\"form-group\" _v-16794fc7=\"\">\n                            <label class=\"col-md-3 control-label\" _v-16794fc7=\"\">Name</label>\n\n                            <div class=\"col-md-7\" _v-16794fc7=\"\">\n                                <input id=\"create-client-name\" type=\"text\" class=\"form-control\" @keyup.enter=\"store\" v-model=\"createForm.name\" _v-16794fc7=\"\">\n\n                                <span class=\"help-block\" _v-16794fc7=\"\">\n                                    Something your users will recognize and trust.\n                                </span>\n                            </div>\n                        </div>\n\n                        <!-- Redirect URL -->\n                        <div class=\"form-group\" _v-16794fc7=\"\">\n                            <label class=\"col-md-3 control-label\" _v-16794fc7=\"\">Redirect URL</label>\n\n                            <div class=\"col-md-7\" _v-16794fc7=\"\">\n                                <input type=\"text\" class=\"form-control\" name=\"redirect\" @keyup.enter=\"store\" v-model=\"createForm.redirect\" _v-16794fc7=\"\">\n\n                                <span class=\"help-block\" _v-16794fc7=\"\">\n                                    Your application's authorization callback URL.\n                                </span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-16794fc7=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-16794fc7=\"\">Close</button>\n\n                    <button type=\"button\" class=\"btn btn-primary\" @click=\"store\" _v-16794fc7=\"\">\n                        Create\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Edit Client Modal -->\n    <div class=\"modal fade\" id=\"modal-edit-client\" tabindex=\"-1\" role=\"dialog\" _v-16794fc7=\"\">\n        <div class=\"modal-dialog\" _v-16794fc7=\"\">\n            <div class=\"modal-content\" _v-16794fc7=\"\">\n                <div class=\"modal-header\" _v-16794fc7=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-16794fc7=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-16794fc7=\"\">\n                        Edit Client\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-16794fc7=\"\">\n                    <!-- Form Errors -->\n                    <div class=\"alert alert-danger\" v-if=\"editForm.errors.length > 0\" _v-16794fc7=\"\">\n                        <p _v-16794fc7=\"\"><strong _v-16794fc7=\"\">Whoops!</strong> Something went wrong!</p>\n                        <br _v-16794fc7=\"\">\n                        <ul _v-16794fc7=\"\">\n                            <li v-for=\"error in editForm.errors\" _v-16794fc7=\"\">\n                                {{ error }}\n                            </li>\n                        </ul>\n                    </div>\n\n                    <!-- Edit Client Form -->\n                    <form class=\"form-horizontal\" role=\"form\" _v-16794fc7=\"\">\n                        <!-- Name -->\n                        <div class=\"form-group\" _v-16794fc7=\"\">\n                            <label class=\"col-md-3 control-label\" _v-16794fc7=\"\">Name</label>\n\n                            <div class=\"col-md-7\" _v-16794fc7=\"\">\n                                <input id=\"edit-client-name\" type=\"text\" class=\"form-control\" @keyup.enter=\"update\" v-model=\"editForm.name\" _v-16794fc7=\"\">\n\n                                <span class=\"help-block\" _v-16794fc7=\"\">\n                                    Something your users will recognize and trust.\n                                </span>\n                            </div>\n                        </div>\n\n                        <!-- Redirect URL -->\n                        <div class=\"form-group\" _v-16794fc7=\"\">\n                            <label class=\"col-md-3 control-label\" _v-16794fc7=\"\">Redirect URL</label>\n\n                            <div class=\"col-md-7\" _v-16794fc7=\"\">\n                                <input type=\"text\" class=\"form-control\" name=\"redirect\" @keyup.enter=\"update\" v-model=\"editForm.redirect\" _v-16794fc7=\"\">\n\n                                <span class=\"help-block\" _v-16794fc7=\"\">\n                                    Your application's authorization callback URL.\n                                </span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-16794fc7=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-16794fc7=\"\">Close</button>\n\n                    <button type=\"button\" class=\"btn btn-primary\" @click=\"update\" _v-16794fc7=\"\">\n                        Save Changes\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-38314482=\"\">\n    <div class=\"panel panel-default\" _v-38314482=\"\">\n        <div class=\"panel-heading\" _v-38314482=\"\">\n            <div style=\"display: flex; justify-content: space-between; align-items: center;\" _v-38314482=\"\">\n                <span _v-38314482=\"\">\n                    OAuth Clients\n                </span>\n\n                <a class=\"action-link\" @click=\"showCreateClientForm\" _v-38314482=\"\">\n                    Create New Client\n                </a>\n            </div>\n        </div>\n\n        <div class=\"panel-body\" _v-38314482=\"\">\n            <!-- Current Clients -->\n            <p class=\"m-b-none\" v-if=\"clients.length === 0\" _v-38314482=\"\">\n                You have not created any OAuth clients.\n            </p>\n\n            <table class=\"table table-borderless m-b-none\" v-if=\"clients.length > 0\" _v-38314482=\"\">\n                <thead _v-38314482=\"\">\n                    <tr _v-38314482=\"\">\n                        <th _v-38314482=\"\">Client ID</th>\n                        <th _v-38314482=\"\">Name</th>\n                        <th _v-38314482=\"\">Secret</th>\n                        <th _v-38314482=\"\"></th>\n                        <th _v-38314482=\"\"></th>\n                    </tr>\n                </thead>\n\n                <tbody _v-38314482=\"\">\n                    <tr v-for=\"client in clients\" _v-38314482=\"\">\n                        <!-- ID -->\n                        <td style=\"vertical-align: middle;\" _v-38314482=\"\">\n                            {{ client.id }}\n                        </td>\n\n                        <!-- Name -->\n                        <td style=\"vertical-align: middle;\" _v-38314482=\"\">\n                            {{ client.name }}\n                        </td>\n\n                        <!-- Secret -->\n                        <td style=\"vertical-align: middle;\" _v-38314482=\"\">\n                            <code _v-38314482=\"\">{{ client.secret }}</code>\n                        </td>\n\n                        <!-- Edit Button -->\n                        <td style=\"vertical-align: middle;\" _v-38314482=\"\">\n                            <a class=\"action-link\" @click=\"edit(client)\" _v-38314482=\"\">\n                                Edit\n                            </a>\n                        </td>\n\n                        <!-- Delete Button -->\n                        <td style=\"vertical-align: middle;\" _v-38314482=\"\">\n                            <a class=\"action-link text-danger\" @click=\"destroy(client)\" _v-38314482=\"\">\n                                Delete\n                            </a>\n                        </td>\n                    </tr>\n                </tbody>\n            </table>\n        </div>\n    </div>\n\n    <!-- Create Client Modal -->\n    <div class=\"modal fade\" id=\"modal-create-client\" tabindex=\"-1\" role=\"dialog\" _v-38314482=\"\">\n        <div class=\"modal-dialog\" _v-38314482=\"\">\n            <div class=\"modal-content\" _v-38314482=\"\">\n                <div class=\"modal-header\" _v-38314482=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-38314482=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-38314482=\"\">\n                        Create Client\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-38314482=\"\">\n                    <!-- Form Errors -->\n                    <div class=\"alert alert-danger\" v-if=\"createForm.errors.length > 0\" _v-38314482=\"\">\n                        <p _v-38314482=\"\"><strong _v-38314482=\"\">Whoops!</strong> Something went wrong!</p>\n                        <br _v-38314482=\"\">\n                        <ul _v-38314482=\"\">\n                            <li v-for=\"error in createForm.errors\" _v-38314482=\"\">\n                                {{ error }}\n                            </li>\n                        </ul>\n                    </div>\n\n                    <!-- Create Client Form -->\n                    <form class=\"form-horizontal\" role=\"form\" _v-38314482=\"\">\n                        <!-- Name -->\n                        <div class=\"form-group\" _v-38314482=\"\">\n                            <label class=\"col-md-3 control-label\" _v-38314482=\"\">Name</label>\n\n                            <div class=\"col-md-7\" _v-38314482=\"\">\n                                <input id=\"create-client-name\" type=\"text\" class=\"form-control\" @keyup.enter=\"store\" v-model=\"createForm.name\" _v-38314482=\"\">\n\n                                <span class=\"help-block\" _v-38314482=\"\">\n                                    Something your users will recognize and trust.\n                                </span>\n                            </div>\n                        </div>\n\n                        <!-- Redirect URL -->\n                        <div class=\"form-group\" _v-38314482=\"\">\n                            <label class=\"col-md-3 control-label\" _v-38314482=\"\">Redirect URL</label>\n\n                            <div class=\"col-md-7\" _v-38314482=\"\">\n                                <input type=\"text\" class=\"form-control\" name=\"redirect\" @keyup.enter=\"store\" v-model=\"createForm.redirect\" _v-38314482=\"\">\n\n                                <span class=\"help-block\" _v-38314482=\"\">\n                                    Your application's authorization callback URL.\n                                </span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-38314482=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-38314482=\"\">Close</button>\n\n                    <button type=\"button\" class=\"btn btn-primary\" @click=\"store\" _v-38314482=\"\">\n                        Create\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Edit Client Modal -->\n    <div class=\"modal fade\" id=\"modal-edit-client\" tabindex=\"-1\" role=\"dialog\" _v-38314482=\"\">\n        <div class=\"modal-dialog\" _v-38314482=\"\">\n            <div class=\"modal-content\" _v-38314482=\"\">\n                <div class=\"modal-header\" _v-38314482=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-38314482=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-38314482=\"\">\n                        Edit Client\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-38314482=\"\">\n                    <!-- Form Errors -->\n                    <div class=\"alert alert-danger\" v-if=\"editForm.errors.length > 0\" _v-38314482=\"\">\n                        <p _v-38314482=\"\"><strong _v-38314482=\"\">Whoops!</strong> Something went wrong!</p>\n                        <br _v-38314482=\"\">\n                        <ul _v-38314482=\"\">\n                            <li v-for=\"error in editForm.errors\" _v-38314482=\"\">\n                                {{ error }}\n                            </li>\n                        </ul>\n                    </div>\n\n                    <!-- Edit Client Form -->\n                    <form class=\"form-horizontal\" role=\"form\" _v-38314482=\"\">\n                        <!-- Name -->\n                        <div class=\"form-group\" _v-38314482=\"\">\n                            <label class=\"col-md-3 control-label\" _v-38314482=\"\">Name</label>\n\n                            <div class=\"col-md-7\" _v-38314482=\"\">\n                                <input id=\"edit-client-name\" type=\"text\" class=\"form-control\" @keyup.enter=\"update\" v-model=\"editForm.name\" _v-38314482=\"\">\n\n                                <span class=\"help-block\" _v-38314482=\"\">\n                                    Something your users will recognize and trust.\n                                </span>\n                            </div>\n                        </div>\n\n                        <!-- Redirect URL -->\n                        <div class=\"form-group\" _v-38314482=\"\">\n                            <label class=\"col-md-3 control-label\" _v-38314482=\"\">Redirect URL</label>\n\n                            <div class=\"col-md-7\" _v-38314482=\"\">\n                                <input type=\"text\" class=\"form-control\" name=\"redirect\" @keyup.enter=\"update\" v-model=\"editForm.redirect\" _v-38314482=\"\">\n\n                                <span class=\"help-block\" _v-38314482=\"\">\n                                    Your application's authorization callback URL.\n                                </span>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-38314482=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-38314482=\"\">Close</button>\n\n                    <button type=\"button\" class=\"btn btn-primary\" @click=\"update\" _v-38314482=\"\">\n                        Save Changes\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.action-link[_v-16794fc7] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-16794fc7] {\n    margin-bottom: 0;\n}\n"] = false
+    __vueify_insert__.cache["\n.action-link[_v-38314482] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-38314482] {\n    margin-bottom: 0;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-16794fc7", module.exports)
+    hotAPI.createRecord("_v-38314482", module.exports)
   } else {
-    hotAPI.update("_v-16794fc7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-38314482", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"axios":1,"babel-runtime/helpers/typeof":28,"vue":96,"vue-hot-reload-api":95,"vueify/lib/insert-css":97}],99:[function(require,module,exports){
+},{"axios":1,"babel-runtime/helpers/typeof":28,"vue":97,"vue-hot-reload-api":96,"vueify/lib/insert-css":98}],100:[function(require,module,exports){
 'use strict';
 
 var _Clients = require('./components/passport/Clients.vue');
@@ -13438,6 +13377,6 @@ new Vue({
     components: { OauthClientForm: _Clients2.default }
 });
 
-},{"./components/passport/Clients.vue":98,"vue":96}]},{},[99]);
+},{"./components/passport/Clients.vue":99,"vue":97}]},{},[100]);
 
 //# sourceMappingURL=vue-oauth-clients.js.map

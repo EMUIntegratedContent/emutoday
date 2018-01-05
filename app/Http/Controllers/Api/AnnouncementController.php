@@ -232,8 +232,9 @@ class AnnouncementController extends ApiController
 
   /**
    * Any announcement with a 'priority' > 0
+   * @param string $atype    'general' or 'hr' announcement
    */
-  public function getElevatedAnnouncements()
+  public function getElevatedAnnouncements($atype = 'general')
   {
     $currentDate = Carbon::now();
     if (\Auth::check()) {
@@ -242,7 +243,7 @@ class AnnouncementController extends ApiController
       if ($user->hasRole('contributor_1')){
           return $this->setStatusCode(401)->respondWithError('You do not have sufficient privileges to see elevated announcements.');
       } else {
-          $announcements  = Announcement::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+          $announcements  = Announcement::where([['priority', '>', 0], ['type', '=', $atype]])->orderBy('priority', 'desc')->get();
       }
 
       $fractal = new Manager();
@@ -258,7 +259,7 @@ class AnnouncementController extends ApiController
   /**
    * Takes in elevated announcements and re-arranges their priority in array order.
    */
-  public function reorderElevatedAnnouncements(Request $request)
+  public function reorderElevatedAnnouncements(Request $request, $atype = 'general')
   {
     $elevatedAnnouncements = $request->all();
     $elevatedAnnouncementIds = array();
@@ -277,10 +278,10 @@ class AnnouncementController extends ApiController
     }
 
     // Set all other announcement priorities to 0
-    Announcement::whereNotIn('id', $elevatedAnnouncementIds)->update(['priority' => 0]);
+    Announcement::where('type', $atype)->whereNotIn('id', $elevatedAnnouncementIds)->update(['priority' => 0]);
 
     // Get updated list of priority announcements
-    $announcements  = Announcement::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+    $announcements  = Announcement::where([['priority', '>', 0], ['type', '=', $atype]])->orderBy('priority', 'desc')->get();
     $fractal = new Manager();
     $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
     // Turn all of that into a Array string

@@ -195,7 +195,7 @@ export default {
     fetchAllRecords: function() {
       this.loading = true
 
-      var routeurl = '/api/announcement/queueload/' + this.atype;
+      var routeurl = '/api/announcement/queueload/' + this.atype
 
       // if a start date is set, get stories whose start_date is on or after this date
       if(this.startdate){
@@ -228,7 +228,7 @@ export default {
     fetchElevatedRecords: function(){
       this.loading = true
 
-      var routeurl = '/api/announcement/elevated';
+      var routeurl = '/api/announcement/elevated/' + this.atype;
       this.$http.get(routeurl)
 
       .then((response) =>{
@@ -282,7 +282,7 @@ export default {
        this.ordersave.isOk = false
        this.ordersave.isErr = false
 
-       var routeurl = '/api/announcement/elevated/reorder';
+       var routeurl = '/api/announcement/elevated/reorder/' + this.atype;
        this.$http.put(routeurl, this.elevateditems)
 
        .then((response) =>{
