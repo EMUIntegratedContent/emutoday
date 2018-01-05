@@ -360,8 +360,8 @@
                         <td valign="top" >
 
                             <div class="indent">
-                            <h2 class="moveover" style="padding-top: 5px;"><a href="{{ url('/') }}/story/news">More News</a></h2>
-                            <ul style="padding-bottom: 12px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
+                            <h2 class="moveover" style="padding-top: 8px;"><a href="{{ url('/') }}/story/news">More News</a></h2>
+                            <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
@@ -380,7 +380,7 @@
                         <td valign="top">
                             <div class="indent" >
                                 <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
-                                <ul style="padding-bottom: 12px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
+                                <ul style="padding-bottom: 8px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                     @foreach($email->announcements()->get() as $announcement)
                                     <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                       @if($announcement->link != '')
