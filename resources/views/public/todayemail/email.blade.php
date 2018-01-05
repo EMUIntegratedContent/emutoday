@@ -102,9 +102,10 @@
     }
     h2.moveover{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
     
-    h3.moveover{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
+    h3.moveover{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}
     
     h2 a{text-decoration: none;}
+    h3 a{text-decoration: none;}
     p {
         padding: 0;
         margin: 0;
