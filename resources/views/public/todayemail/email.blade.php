@@ -100,7 +100,7 @@
     h5, h6{
         font-size: 16px;
     }
-    h2.moveover{padding: 14px 0 6px 8px; margin-top: .9rem; text-decoration: none;}
+    h2.moveover{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
     h2 a{text-decoration: none;}
     p {
         padding: 0;
