@@ -366,7 +366,7 @@
                         <td valign="top" >
 
                             <div class="indent">
-                            <h2 class="moveover" style="padding-top: 8px;"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h2>
+                            <h2 class="moveover"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h2>
                             <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
@@ -385,7 +385,7 @@
                     <tr>
                         <td valign="top">
                             <div class="indent" >
-                                <h2 class="moveover" style="border-top: 1px solid #97D700; padding-top: 5px;"><a href="{{ url('/') }}/announcement">Announcements &#10137;</a></h2>
+                                <h2 class="moveover" style="border-top: 3px double #97D700; padding-top: 12px;"><a href="{{ url('/') }}/announcement">Announcements &#10137;</a></h2>
                                 <ul style="padding-bottom: 8px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                     @foreach($email->announcements()->get() as $announcement)
                                     <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
@@ -403,7 +403,7 @@
                     <tr>
                         <td valign="middle">
                             <div class="indent" >
-                                <h2 class="moveover" style="border-top: 1px solid #97D700; padding-top: 5px;"><a href="{{ url('/') }}/calendar">What's Happening at EMU &#10137;</a></h2>
+                                <h2 class="moveover" style="border-top: 3px double #97D700; padding-top: 12px;"><a href="{{ url('/') }}/calendar">What's Happening at EMU &#10137;</a></h2>
                                 <ul style="margin-left: 0; margin-top:8px; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events()->get() as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
