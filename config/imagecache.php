@@ -61,7 +61,9 @@ return array(
         'magazinecover' => 'Emutoday\Today\Filters\MagazineCover',
         'featuredevent' => 'Emutoday\Today\Filters\FeaturedEvent',
         'expertthumb' => 'Emutoday\Today\Filters\ExpertThumb',
-        'expertmedium' => 'Emutoday\Today\Filters\ExpertMedium'
+        'expertmedium' => 'Emutoday\Today\Filters\ExpertMedium',
+        'emailmain' => 'Emutoday\Today\Filters\EmailMain',
+        'emailsub' => 'Emutoday\Today\Filters\EmailSub'
     ),
     /*
     |--------------------------------------------------------------------------

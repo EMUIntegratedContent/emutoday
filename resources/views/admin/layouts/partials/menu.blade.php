@@ -80,7 +80,7 @@
 
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/page*') }}">
-  <a href="#"><i class="fa fa-newspaper-o"></i> <span>Hub</span></a>
+  <a href="#"><i class="fa fa-sitemap"></i> <span>Hub</span></a>
   <ul class="treeview-menu">
     <li class="{{ set_active('admin/page*') }}"><a href="/admin/page"><i class="fa fa-list"></i> <span>List</span></a></li>
     <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
@@ -124,10 +124,9 @@
       </ul>
     </li>
 @endif
-
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/magazine*') }}">
-  <a href="#"><i class="fa fa-book"></i> <span>Magazine</span> <!-- <i class="fa fa-angle-left pull-right"></i> --> </a>
+  <a href="#"><i class="fa fa-book"></i> <span>Magazine</span></a>
   <ul class="treeview-menu">
     <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine"><i class="fa fa-list"></i> <span>List</span></a></li>
     <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/magazine/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
@@ -135,11 +134,29 @@
     <li class="{{ set_active('admin/magazine*') }}"><a href="/admin/queuearticle/magazine/article/form"><i class="fa fa-plus-square"></i><span>Add Article</span></a></li>
   </ul>
 </li>
+@endcan
+@if(Gate::check('admin') || Gate::check('emails'))
+    <li class="treeview {{ set_active('admin/email*') }}">
+      <a href="#"><i class="fa fa-envelope"></i> <span>Email Builder</span></a>
+      <ul class="treeview-menu">
+        <li class="{{ set_active('admin/email*') }}"><a href="/admin/email"><i class="fa fa-list"></i> <span>List</span></a></li>
+        <li class="{{ set_active('admin/email*') }}"><a href="/admin/email/show"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+      </ul>
+    </li>
+@endif
+@if(Gate::check('admin') || Gate::check('editor'))
+    <li class="treeview {{ set_active('admin/mediahighlights*') }}">
+      <a href="#"><i class="fa fa-newspaper-o"></i> <span>Media Highlights</span></a>
+      <ul class="treeview-menu">
+        <li class="{{ set_active('admin/mediahighlights*') }}"><a href="/admin/mediahighlights"><i class="fa fa-list"></i> <span>List</span></a></li>
+        <li class="{{ set_active('admin/mediahighlights*') }}"><a href="/admin/mediahighlights/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+      </ul>
+    </li>
+@endif
+@can('admin', $currentUser)
 <li><a href="/admin/authors/list"><i class="fa fa-pencil"></i> <span>Authors</span></a></li>
 @endcan
 @can('super', $currentUser)
 <hr/> <!-- //////////////////////////////// -->
-
 <li class="{{ set_active('admin/user*') }}"><a href="/admin/user"><i class="fa fa-users"></i> <span>Users</span></a></li>
-
-  @endcan
+@endcan

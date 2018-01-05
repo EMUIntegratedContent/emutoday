@@ -54,35 +54,18 @@ class MainController extends Controller
               ['is_archived', 0],
               ['start_date', '<=', $currentDateTimeStart]
           ])->first();
-
       }
 
-        $currentStorysBasic = $this->story->where([
-          ['is_approved', 1],
-          ['is_archived', 0],
-          ['start_date', '<=', $currentDateTimeStart],
-          ['priority', '>', 0]
-        ])->whereIn('story_type', ['news', 'statement', 'advisory'])
-        ->orderBy('priority','desc')
-        ->orderBy('start_date','asc')
-        ->take($this->recordLimitNews)->get();
-
-        //make sure there are enough announcements with a priority over 0
-        //if not requery with out priority limitation
-        if($currentStorysBasic->count() < $this->recordLimitNews ){
-          $currentStorysBasic = $this->story->where([
-            ['story_type', 'news'],
-            ['story_type', 'advisory'],
-            ['story_type', 'statement'],
-            ['is_approved', 1],
-            ['is_archived', 0],
-            ['start_date', '<=', $currentDateTimeStart]
-          ])
-          ->orderBy('priority','desc')
-          ->orderBy('start_date','asc')
-          ->take($this->recordLimitNews)->get();
-        }
-
+      $currentStorysBasic = $this->story->where([
+        ['is_approved', 1],
+        ['is_archived', 0],
+        ['start_date', '<=', $currentDateTimeStart],
+        ['priority', '>', 0]
+      ])
+      ->whereIn('story_type', ['story', 'news', 'statement', 'advisory'])
+      ->orderBy('priority','desc')
+      ->orderBy('start_date','asc')
+      ->take($this->recordLimitNews)->get();
 
         $currentAnnouncements = $this->announcement->where([
           ['is_approved', 1],
@@ -91,7 +74,6 @@ class MainController extends Controller
           ['start_date', '<=', $currentDateTimeStart],
           ['end_date', '>=', $currentDateTimeEnd],
         ])
-        ->whereBetween('priority', [0,99])
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
         ->take($this->recordLimitAnnouncements)->get();
@@ -111,14 +93,14 @@ class MainController extends Controller
           ->take($this->recordLimitAnnouncements)->get();
         }
 
-        // Find the first announcement marked "TOP" (value of 100), if there is one.
+        // Find a special announcement (value of 1000000), if there is one.
         $topAnnouncement = $this->announcement->where([
           ['is_approved', 1],
           ['is_archived', 0],
           ['type', 'general'],
           ['start_date', '<=', $currentDateTimeStart],
           ['end_date', '>=', $currentDateTimeEnd],
-          ['priority', 100],
+          ['priority', 1000000],
         ])
         ->orderBy('start_date', 'desc')
         ->first();
@@ -171,7 +153,6 @@ class MainController extends Controller
                 } else {
                     $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
                 }
-
               } else {
                 $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
               }
@@ -180,7 +161,6 @@ class MainController extends Controller
         } else {
             $storyImages = null;
         }
-
 
         $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
           $query->where('name', 'video');
@@ -256,8 +236,40 @@ class MainController extends Controller
         $searchEventResults = Event::search($searhTermWild, false)->select('title','description','submitter','id')->paginate(10);
         $searchAnnouncementResults = Announcement::search($searhTermWild, false)->select('title','announcement','submitter','id')->paginate(10);
 
-
-
         return view('public.searchresults', compact('searchTerm', 'searchStoryResults','searchEventResults','searchAnnouncementResults'));
       }
+
+      public function forTheMediaIndex(){
+        return view('public.forthemedia');
+      }
+
+      /**
+      * Process Feedback form
+      */
+      public function feedbackForm(Request $request)
+      {
+        // Validate, return errors if not valid
+        $this->validate($request,[
+          'email' => 'required|email',
+          'comments' => 'required'
+        ]);
+
+        // Does this person want to subscribe for the email?
+        $subscribe = empty($request->subscribe) ? false:true;
+
+        // Send feeback to emu_today
+        $to      = "emu_today@emich.edu";
+        $subject = $request->email." has sent feedback:\n\n";
+        $message = $request->email." has sent feedback:\n\n" .
+                   $request->comments . "\n\n".
+                   ($subscribe ? "P.S. I would like to subscribe for This Week at EMU" : "");
+        $headers = 'From: '.$request->email. "\r\n" .
+        'Reply-To: '.$request->email."\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $message, $headers);
+
+        // Return success to view
+        $data = 'Thank you, we apprieciate your feedback!';
+        return view('public.feedback', compact('data'));
     }
+  }

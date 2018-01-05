@@ -1,4 +1,5 @@
-{{-- announcement --}} @extends('public.layouts.global') @section('title', 'Experts') @section('content')
+{{-- experts --}}
+@extends('public.layouts.global') @section('title', 'Experts') @section('content')
 <div id="experts-area">
     <!--<div class="row">
         <div class="large-12 medium-12 small-12 columns">

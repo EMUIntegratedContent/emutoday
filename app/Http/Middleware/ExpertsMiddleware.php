@@ -16,7 +16,7 @@ class ExpertsMiddleware
     public function handle($request, Closure $next)
     {
         //Admins and experts editors may access everything within the scope of this Middleware, others may not
-        if (!$request->user()->isAdmin() &&  !$request->user()->isExpertsEditor())
+        if (!$request->user()->isAdmin() && !$request->user()->isExpertsEditor())
         {
             $request->session()->flash('status', "You don't have permission to manage experts");
             $request->session()->flash('alert-class', 'alert-danger');

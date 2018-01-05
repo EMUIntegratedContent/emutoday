@@ -20,12 +20,13 @@ return [
     'view' => [
         'senderName'  => null,
         'reminder'    => null,
-        'unsubscribe' => null,
+        'unsubscribe' => 'https://atari.emich.edu/sympa/auto_signoff/emu-today',
         'address'     => null,
 
         'logo'        => [
             //'path'   => '%PUBLIC%/vendor/beautymail/assets/images/sunny/logo.png',
             'path'   => '%PUBLIC%/assets/imgs/email/email-logo.png',
+            'path'   => '',
             'width'  => '',
             'height' => '',
         ],

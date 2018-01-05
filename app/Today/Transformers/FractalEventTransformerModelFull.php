@@ -10,13 +10,16 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
 {
   public function transform(Event $event)
   {
-
         $user_id    = null;
 
         if($event->user_id != null){
             $user_id    = $event->user_id;
         }
 
+        $start_date = new \DateTime($event->start_date);
+        $start_date = Carbon::instance($start_date);
+        $end_date = new \DateTime($event->end_date);
+        $end_date = Carbon::instance($end_date);
         $start_time = new \DateTime($event->start_time);
         $start_time = Carbon::instance($start_time);
         $end_time = new \DateTime($event->end_time);
@@ -87,7 +90,8 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'priority'           => $event->priority,
       'home_priority'           => $event->home_priority,
       'minicalendars' => $event->minicalendars()->select('calendar', 'id as value')->get(),
-      'eventcategories' => $event->eventcategories()->select('category', 'id as value')->get()
+      'eventcategories' => $event->eventcategories()->select('category', 'id as value')->get(),
+      'full_url' => url('/') . '/calendar/' . $start_date->format('Y') . '/' . $start_date->format('m') . '/' . $start_date->format('d') . '/' . $event->id
     ];
   }
 }

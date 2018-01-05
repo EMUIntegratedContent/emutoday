@@ -60,7 +60,6 @@
                 </div><!-- /.btn-toolbar -->
 
             </div><!-- /.box-tools -->
-                    {{-- @include('admin.layouts.components.boxtools', ['rte' => 'page', 'path' => 'admin/page/', 'cuser'=>$currentUser, 'id'=>$page->id]) --}}
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
@@ -132,9 +131,7 @@
                         <button class="btn bg-orange btn-sm" disabled="disabled"><i class="fa fa-eye"></i></button>
                         @else
                         <a href="/preview/page/{{$page->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
-
                         @endif
-
                     </div><!-- /.btn-toolbar -->
                 </div><!-- /.box-tools -->
             </div>
@@ -151,10 +148,8 @@
 </div><!-- /.row -->
 @endsection
 @section('footer-vendor')
-
     @parent
 @endsection
-
 @section('footer-plugin')
     @parent
     <script src="/themes/admin-lte/plugins/select2/select2.full.min.js"></script>
@@ -162,74 +157,60 @@
     <script src="/themes/admin-lte/plugins/input-mask/jquery.inputmask.js"></script>
     <script src="/themes/admin-lte/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
     <script src="/themes/admin-lte/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-    <!-- date-range-picker -->
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script> --}}
     <!-- iCheck 1.0.1 -->
     <script src="/themes/admin-lte/plugins/iCheck/icheck.min.js"></script>
-
-    {{-- <script src="/themes/plugins/eonasdan-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script> --}}
-
-
 @endsection
-
 @section('footer-app')
     @parent
       <script src="/js/pagebuild-redips.js"></script>
 @endsection
-
 @section('footer-script')
     @parent
-
     <script>
+      $(function(){
+          //Initialize Select2 Elements
+          $(".select2").select2();
 
-    $(function(){
-        //Initialize Select2 Elements
-        $(".select2").select2();
+          $('input[type="radio"]').iCheck({
+              checkboxClass: 'icheckbox_flat-blue',
+              radioClass: 'iradio_flat-blue'
+          })
+          $('#is-ready').iCheck('disable');
 
+          //iCheck for checkbox and radio inputs
+          $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+              checkboxClass: 'icheckbox_minimal-blue',
+              radioClass: 'iradio_minimal-blue'
+          });
+          //Red color scheme for iCheck
+          $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+              checkboxClass: 'icheckbox_minimal-red',
+              radioClass: 'iradio_minimal-red'
+          });
+          //Flat red color scheme for iCheck
+          $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+              checkboxClass: 'icheckbox_flat-green',
+              radioClass: 'iradio_flat-green'
+          });
+      });
 
-        $('input[type="radio"]').iCheck({
-            checkboxClass: 'icheckbox_flat-blue',
-            radioClass: 'iradio_flat-blue'
-        })
-        // $('#is-featured-no').iCheck('check');
-        $('#is-ready').iCheck('disable');
-
-        //iCheck for checkbox and radio inputs
-        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-            checkboxClass: 'icheckbox_minimal-blue',
-            radioClass: 'iradio_minimal-blue'
-        });
-        //Red color scheme for iCheck
-        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-            checkboxClass: 'icheckbox_minimal-red',
-            radioClass: 'iradio_minimal-red'
-        });
-        //Flat red color scheme for iCheck
-        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-            checkboxClass: 'icheckbox_flat-green',
-            radioClass: 'iradio_flat-green'
-        });
-    });
-
-
-    var check_in = document.getElementById("start-date").flatpickr({
-                        altInput: true,
-                        altInputClass: "form-control",
-                        altFormat: "m-d-Y",
-                        //minDate: new Date(),
-                        onChange: function(dateObj, dateStr, instance) {
-                            check_out.set("minDate", dateObj.fp_incr(1));
-                        }
-                        });
-    var check_out =document.getElementById("end-date").flatpickr({
-                        altInput: true,
-                          altFormat: "m-d-Y",
+      var check_in = document.getElementById("start-date").flatpickr({
+                          altInput: true,
                           altInputClass: "form-control",
-                             //minDate: new Date(),
-                             onChange: function(dateObj, dateStr, instance) {
-                                 check_in.set("maxDate", dateObj.fp_incr(-1));
-                             }
-                         });
-
+                          altFormat: "m-d-Y",
+                          //minDate: new Date(),
+                          onChange: function(dateObj, dateStr, instance) {
+                              check_out.set("minDate", dateObj.fp_incr(1));
+                          }
+                          });
+      var check_out =document.getElementById("end-date").flatpickr({
+                          altInput: true,
+                            altFormat: "m-d-Y",
+                            altInputClass: "form-control",
+                               //minDate: new Date(),
+                               onChange: function(dateObj, dateStr, instance) {
+                                   check_in.set("maxDate", dateObj.fp_incr(-1));
+                               }
+                           });
     </script>
 @endsection
