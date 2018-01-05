@@ -289,7 +289,7 @@
                     <tr>
                         <td >
                             <table class="indent-less">
-                                <tr><td><h2 class="moveover"><a href="{{ url('/') . '/story/news' }}">More News</a></h2></td></tr>
+                              
                                 <tr>
                                     <td class="two-column">
                                         <!--[if (gte mso 9)|(IE)]>
@@ -360,8 +360,8 @@
                         <td valign="top" >
 
                             <div class="indent">
-                            <h2 class="moveover" style="border-top: 1px solid #ccc;"><a href="{{ url('/') }}/story/news">More News</a></h2>
-                            <ul style="padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
+                            <h2 class="moveover"><a href="{{ url('/') }}/story/news">More News</a></h2>
+                            <ul style="padding-bottom: 0px; padding-top: 5px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
