@@ -412,15 +412,15 @@
                     <tr style="background:#515151; color:#ffffff; border:0;">
                         <td style="border:0; ">
                             <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
-                                <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
+                                <tr style="text-align:center; font-size: 12px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
 
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="{{ url('/') }}">EMU Today</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 4px;  text-decoration: none;" href="{{ url('/') }}">EMU Today</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
 
 
                                         </ul>
