@@ -246,7 +246,7 @@
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:96%; font-family: 'Poppins', arial, sans-serif;">
-    <p class="direct-today-link"><a href="https://today.emich.edu/">Read EMU Today online</a></p>
+    <p class="direct-today-link"><a href="{{ url('/') }}">Read EMU Today online</a></p>
     <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer" style="padding-top: .3rem;">
         <tr>
             <td align="center" valign="top">
@@ -259,7 +259,7 @@
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
                             <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;">The Week at EMU</h2>
-                            <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="https://today.emich.edu/"><span style="color: #046A38">EMU</span> Today </a></p>
+                            <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="{{ url('/') }}"><span style="color: #046A38">EMU</span> Today </a></p>
                         </td>
                     </tr>
                     {{--
@@ -283,11 +283,12 @@
                             </article>
                         </td>
                     </tr>
-                    {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
+                    {{-- some emails might not have sub stories! --}}
+                    @if($email->mainstories->count() == 3)
                     <tr>
                         <td >
                             <table class="indent-less">
-                                <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
+                                <tr><td><h2 class="moveover"><a href="{{ url('/') . '/story/news' }}">More News</a></h2></td></tr>
                                 <tr>
                                     <td class="two-column">
                                         <!--[if (gte mso 9)|(IE)]>
@@ -407,11 +408,11 @@
                                 <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="{{ url('/') }}">EMU Today</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
 
                                         </ul>
                                     </td>
