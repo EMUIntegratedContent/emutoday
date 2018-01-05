@@ -118,7 +118,6 @@
           </div>
           <div class="tabs-panel newshub-tab-front" id="newshub-headlines-front">
             <ul>
-              {{ dd($currentStorysBasic) }}
               @foreach ($currentStorysBasic as $basicstory)
               <li>
                 @if($basicstory->story_type == 'advisory')
