@@ -361,7 +361,7 @@
 
                             <div class="indent">
                             <h2 class="moveover"><a href="{{ url('/') }}/story/news">More News</a></h2>
-                            <ul style="padding-bottom: 0px; padding-top: 5px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
+                            <ul style="padding-bottom: 0px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
@@ -378,7 +378,7 @@
                     </tr>
                     <tr>
                         <td valign="top">
-                            <div class="indent">
+                            <div class="indent" style="border-top: 1px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/announcement">Announcements</a></h2>
                                 <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                     @foreach($email->announcements()->get() as $announcement)
@@ -396,7 +396,7 @@
                     </tr>
                     <tr>
                         <td valign="middle">
-                            <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
+                            <div class="indent" style="border-top: 1px solid #97D700; padding-top: 5px;">
                                 <h2 class="moveover"><a href="{{ url('/') }}/calendar">What's Happening at EMU</a></h2>
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events()->get() as $event)
@@ -416,11 +416,11 @@
                                   <td>
                                     <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
 
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 4px;  text-decoration: none;" href="{{ url('/') }}">EMU Today</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 5px;  text-decoration: none;" href="{{ url('/') }}">EMU Today</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
 
 
                                         </ul>
