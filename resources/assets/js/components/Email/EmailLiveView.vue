@@ -477,7 +477,7 @@ export default {
   filters: {
     truncate: function(text, stop, clamp) {
       if(text.length > stop){
-        return text.slice(0, stop) + (stop < text.length ? clamp || '...' : '')
+        return text.substring(0, stop).replace(/\w+$/, '...')
       } else {
         return text
       }

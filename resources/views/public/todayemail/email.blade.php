@@ -246,7 +246,7 @@
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:96%; font-family: 'Poppins', arial, sans-serif;">
-    <p class="direct-today-link"><a href="https://today.emich.edu/">Read EMU Today online</a></p>
+    <p class="direct-today-link"><a href="{{ url('/') }}">Read EMU Today online</a></p>
     <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer" style="padding-top: .3rem;">
         <tr>
             <td align="center" valign="top">
@@ -259,7 +259,7 @@
                     <tr valign="top" id="header-row" style="text-align:center">
                         <td>
                             <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;">The Week at EMU</h2>
-                            <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="https://today.emich.edu/"><span style="color: #046A38">EMU</span> Today </a></p>
+                            <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="{{ url('/') }}"><span style="color: #046A38">EMU</span> Today </a></p>
                         </td>
                     </tr>
                     {{--
@@ -278,16 +278,18 @@
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                 <div style="padding-bottom: 16px; margin-bottom: 10px;">
                                     <h2 class="indent"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }}</a></h2>
-                                    <p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>
+                                    {{--<p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>--}}
+                                    <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
                                 </div>
                             </article>
                         </td>
                     </tr>
-                    {{-- some emails might not have sub stories! --}} @if($email->mainstories->count() == 3)
+                    {{-- some emails might not have sub stories! --}}
+                    @if($email->mainstories->count() == 3)
                     <tr>
                         <td >
                             <table class="indent-less">
-                               
+                                <tr><td><h2 class="moveover"><a href="{{ url('/') . '/story/news' }}">More News</a></h2></td></tr>
                                 <tr>
                                     <td class="two-column">
                                         <!--[if (gte mso 9)|(IE)]>
@@ -307,7 +309,8 @@
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
                                                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
-                                                                                <p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>
+                                                                                {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
                                                                         </td>
                                                                 </tr>
                                                             </table>
@@ -330,8 +333,11 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td class="text">
-                                                                               <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#8594;</a></h3>
-                                                                            <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>
+
+                                                                               <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
+                                                                               {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                               {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
+
                                                                         </td>
                                                                 </tr>
                                                             </table>
@@ -352,7 +358,7 @@
                     @endif
                     <tr>
                         <td valign="top" >
-                             
+
                             <div class="indent">
                             <h2 class="moveover" style="border-top: 1px solid #ccc;"><a href="{{ url('/') }}/story/news">More News</a></h2>
                             <ul style="padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
@@ -409,11 +415,13 @@
                                 <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 4px;  text-decoration: none; font-size: 11px;" href="https://today.emich.edu/">EMU Today</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/calendar">Calendar</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/announcement">Announcements</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 0; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
+
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="{{ url('/') }}">EMU Today</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
+
 
                                         </ul>
                                     </td>
