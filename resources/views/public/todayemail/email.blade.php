@@ -309,7 +309,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td class="text" style="text-align:left;">
-                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }}</a></h3>
+                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#8594;</a></h3>
                                                                                 {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
                                                                                 {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
                                                                         </td>
@@ -402,7 +402,7 @@
                                 <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events()->get() as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
-                                        <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 12px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ $event->start_date->format('M j') }} </div>
+                                        <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 12px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color: #ffffff; background-color: #2b873b;">{{ $event->start_date->format('M j') }} </div>
                                         <div style="width: 75%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" href="{{ url('/') . '/calendar/' . $event->start_date->format('Y') . '/' . $event->start_date->format('m') . '/' . $event->start_date->format('d') . '/' . $event->id }}">{{ $event->title }}</a></div>
                                     </li>
                                     @endforeach
