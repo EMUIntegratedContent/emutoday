@@ -10,7 +10,7 @@
         /*background-color: #d6d2c4;*/
         /*background-color: #e6e6e6;*/
         background-color: #e1e1e1;
-        color: #333;
+        color: #636363;
     }
     table {
         border-collapse: collapse;
@@ -100,7 +100,7 @@
     h5, h6{
         font-size: 16px;
     }
-    h2.moveover{padding: 8px 0 2px 8px; text-decoration: none;}
+    h2.moveover{padding: 8px 0 6px 8px; text-decoration: none;}
     h2 a{text-decoration: none;}
     p {
         padding: 0;
@@ -282,8 +282,8 @@
                         <td valign="top" class="full-width-image">
                             <article>
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
-                                <div style="padding-left: 1rem; padding-right: 1rem; padding-top: .8rem; padding-bottom: 16px; margin-bottom: 10px;">
-                                    <h2 class="indent"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a></h2>
+                                <div style="padding-left: 1rem; padding-right: 1rem; padding-top: .6rem; padding-bottom: 16px; margin-bottom: 10px;">
+                                    <h2 class="indent" style="margin-bottom: .8rem;"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a></h2>
                                     {{--<p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>--}}
                                     <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
                                 </div>
