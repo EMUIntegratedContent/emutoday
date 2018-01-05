@@ -48,6 +48,7 @@
         :item="item"
         :index="$index"
         :is="unapproved-list"
+        :atype="atype"
         >
       </announcement-queue-item>
     </div>
@@ -62,6 +63,7 @@
       :item="item"
       :index="$index"
       :is="approved-list"
+      :atype="atype"
       >
     </announcement-queue-item>
   </div>
@@ -95,6 +97,7 @@
               :item="item"
               :is="item-elevated"
               :elevated-announcements="elevateditems"
+              :atype="atype"
             >
             </announcement-queue-item>
           </li>
@@ -113,6 +116,7 @@
     :item="item"
     :index="$index"
     :is="items-live"
+    :atype="atype"
     >
   </announcement-queue-item>
 </div>

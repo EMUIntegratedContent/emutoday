@@ -27,8 +27,8 @@
                   </vui-flip-switch>
                 </div>
               </template>
-              <template v-if="pid == 'item-elevated' && this.atype == 'general'">
-                  <label><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
+              <template v-if="pid == 'item-elevated'">
+                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
                   <button type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </template>
           </form>
@@ -200,7 +200,7 @@ import VuiFlipSwitch from './VuiFlipSwitch.vue'
 module.exports  = {
   directives: {},
   components: {VuiFlipSwitch},
-  props: ['item','pid','index','elevatedAnnouncements'],
+  props: ['item','pid','index','elevatedAnnouncements','atype'],
   data: function() {
     return {
       checked: false,
