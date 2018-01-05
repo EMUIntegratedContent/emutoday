@@ -26,7 +26,7 @@ function set_active($path, $active = 'active', $complex = 0)
  * @param int $limit       Maximum length of string
  */
 function truncateLimitWords($text, $limit){
-  if(count($text) > $limit){
+  if(strlen($text) > $limit){
     $text = substr( $text, 0, strrpos( substr( $text, 0, $limit), ' ' ) );
     $text = $text . '...';
 
