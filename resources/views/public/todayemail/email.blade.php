@@ -121,11 +121,11 @@
         margin-right: 1rem;
     }
     .indent-less {
-        margin-left: .5rem;
-        margin-right: .5rem;
+        /*margin-left: .5rem;
+        margin-right: .5rem;*/
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
-
-
     .indent-more {
         padding-left: 35px;
         padding-right: 35px;
