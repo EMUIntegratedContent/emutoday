@@ -6,6 +6,7 @@ namespace Emutoday\Http\Controllers\Api;
 use Emutoday\Story;
 use Emutoday\User;
 use Emutoday\Author;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Input as Input;
 use Illuminate\Http\Request;
@@ -244,7 +245,7 @@ class StoryController extends ApiController
     }
 
     /**
-     * [API Call from AnnouncementItem to change some variables]
+     * [API Call from StoryItem to change some variables]
      * @param  [type]  $id      [description]
      * @param  Request $request [description]
      * @return [type]           [description]
@@ -380,7 +381,7 @@ class StoryController extends ApiController
        {
            $story = Story::findOrFail($id);
            $story->is_approved = $request->get('is_approved',0);
-           $story->priority = $request->get('priority', 0);
+           $story->priority = 0; // archived stories lose their priority
            $story->is_archived = 1;
 
 
@@ -494,5 +495,56 @@ class StoryController extends ApiController
             }
         }
         return false;
+    }
+
+    /**
+     * Any story with a 'priority' > 0
+     */
+    public function getElevatedStorys()
+    {
+      $currentDate = Carbon::now();
+      if (\Auth::check()) {
+
+        $user = \Auth::user();
+        if ($user->hasRole('contributor_1')){
+            return $this->setStatusCode(401)->respondWithError('You do not have sufficient privileges to see elevated stories.');
+        } else {
+            $stories  = Story::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+        }
+
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($stories->all(), new FractalStoryTransformerModel);
+        // Turn all of that into a Array string
+        return $fractal->createData($resource)->toArray();
+
+      } else {
+        return $this->setStatusCode(501)->respondWithError('Error');
+      }
+    }
+
+    /**
+     * Takes in elevated stories and re-arranges their priority in array order.
+     */
+    public function reorderElevatedStorys(Request $request)
+    {
+      $elevatedStories = $request->all();
+
+      $elevatedStoryIds = array();
+      for($i = 0; $i < count($elevatedStories); $i++){
+        $story = Story::findOrFail($elevatedStories[$i]['id']);
+        $story->priority = count($elevatedStories) - $i; //set new priority
+        $story->save();
+        $elevatedStoryIds[] = $story->id; //prevent this story's priority from being set to 0
+      }
+
+      // Set all other announcement priorities to 0
+      Story::whereNotIn('id', $elevatedStoryIds)->update(['priority' => 0]);
+
+      // Get updated list of priority announcements
+      $stories  = Story::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+      $fractal = new Manager();
+      $resource = new Fractal\Resource\Collection($stories->all(), new FractalStoryTransformerModel);
+      // Turn all of that into a Array string
+      return $fractal->createData($resource)->toArray();
     }
 }

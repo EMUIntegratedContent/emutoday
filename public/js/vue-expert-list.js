@@ -12471,7 +12471,6 @@ module.exports = {
         this.$http.get(url).then(function (response) {
           _this.$set('experts', response.body.newdata.data);
           _this.makePagination(response.body.newdata);
-          console.log(url);
         }, function (response) {
           _this.formErrors = response.data.error.message;
         }).bind(this);

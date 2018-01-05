@@ -121,7 +121,7 @@ class AnnouncementController extends ApiController
       $announcement->is_promoted       	=  0;
       $announcement->type               = $request->get('type', 'general');
 
-      $announcement->priority     	    = $request->get('priority', 0);
+      $announcement->priority     	    = 0; //priority can be set in the queue after creation
       $announcement->is_archived      	= $request->get('is_archived', 0);
 
       // Reset Approvals
@@ -191,18 +191,16 @@ class AnnouncementController extends ApiController
       $announcement->approved_date     = $request->get('approved_date', null);
       $announcement->is_promoted     	= $request->get('is_promoted', 0);
 
-      $announcement->priority     	    = $request->get('priority', 0);
       $announcement->is_archived     	= $request->get('is_archived', 0);
       $announcement->type             = $request->get('type', 'general');
 
       // Reset Approvals
       if($request->input('admin_pre_approved')){
         $announcement->is_approved       = 1;
-
         $updateMessage = "Announcement successfully updated and approved.";
       } else {
-        $announcement->is_approved       = 0; // events must go back into approver queue when updated
-
+        $announcement->is_approved       = 0; // announcements must go back into approver queue when updated
+        $announcement->priority          = 0; // announcements requiring re-approval lose priority
         $updateMessage = "Announcement successfully updated.";
       }
 
@@ -223,16 +221,72 @@ class AnnouncementController extends ApiController
   {
     $announcement = Announcement::findOrFail($id);
     $announcement->is_approved = $request->get('is_approved',0);
-    $announcement->priority = $request->get('priority', 0);
+    $announcement->priority = 0; // archived items lose priority
     $announcement->is_archived = 1;
     if($announcement->save()) {
       $returnData = ['is_approved' => $announcement->is_approved,'priority'=> $announcement->priority, 'is_archived'=> $announcement->is_archived];
       return $this->setStatusCode(201)
       ->respondUpdatedWithData('announcement archived',$returnData );
-      // return $this->setStatusCode(201)
-      //             ->respondUpdated('Announcement successfully Updated!');
     }
   }
+
+  /**
+   * Any announcement with a 'priority' > 0
+   */
+  public function getElevatedAnnouncements()
+  {
+    $currentDate = Carbon::now();
+    if (\Auth::check()) {
+
+      $user = \Auth::user();
+      if ($user->hasRole('contributor_1')){
+          return $this->setStatusCode(401)->respondWithError('You do not have sufficient privileges to see elevated announcements.');
+      } else {
+          $announcements  = Announcement::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+      }
+
+      $fractal = new Manager();
+      $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
+      // Turn all of that into a Array string
+      return $fractal->createData($resource)->toArray();
+
+    } else {
+      return $this->setStatusCode(501)->respondWithError('Error');
+    }
+  }
+
+  /**
+   * Takes in elevated announcements and re-arranges their priority in array order.
+   */
+  public function reorderElevatedAnnouncements(Request $request)
+  {
+    $elevatedAnnouncements = $request->all();
+    $elevatedAnnouncementIds = array();
+    for($i = 0; $i < count($elevatedAnnouncements); $i++){
+      $announcement = Announcement::findOrFail($elevatedAnnouncements[$i]['id']);
+
+      // Set new priority.
+      if($elevatedAnnouncements[$i]['priority'] == 1000000){
+        $announcement->priority = 1000000; //this was checked as a special announcement
+      } else {
+        $announcement->priority = count($elevatedAnnouncements) - $i;
+      }
+
+      $announcement->save();
+      $elevatedAnnouncementIds[] = $announcement->id; //prevent this announcement's priority from being set to 0
+    }
+
+    // Set all other announcement priorities to 0
+    Announcement::whereNotIn('id', $elevatedAnnouncementIds)->update(['priority' => 0]);
+
+    // Get updated list of priority announcements
+    $announcements  = Announcement::where([['priority', '>', 0]])->orderBy('priority', 'desc')->get();
+    $fractal = new Manager();
+    $resource = new Fractal\Resource\Collection($announcements->all(), new FractalAnnouncementTransformerModel);
+    // Turn all of that into a Array string
+    return $fractal->createData($resource)->toArray();
+  }
+
   public function delete($id)
   {
     $announcement = Announcement::findOrFail($id);

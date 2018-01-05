@@ -13,6 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         'externalapi/*',
-        'oauth/*'
+        'oauth/*',
+        'mailgun/*'
     ];
 }

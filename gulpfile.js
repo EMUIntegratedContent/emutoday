@@ -90,7 +90,6 @@ elixir(function(mix) {
     mix.browserify('vue-caleventview.js', 'public/js/vue-caleventview.js');
     mix.browserify('vue-event-form.js', 'public/js/vue-event-form.js');
     mix.browserify('vue-announcement-form.js', 'public/js/vue-announcement-form.js');
-    mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');
     mix.browserify('vue-expert-form.js', 'public/js/vue-expert-form.js');
     mix.browserify('vue-expert-list.js', 'public/js/vue-expert-list.js');
     mix.browserify('vue-expert-request-list.js', 'public/js/vue-expert-request-list.js');
@@ -167,9 +166,12 @@ elixir(function(mix) {
 
 
         mix.browserify('vue-announcement-queue.js', 'public/js/vue-announcement-queue.js');
+        mix.browserify('vue-author-form.js', 'public/js/vue-author-form.js');
+        mix.browserify('vue-email-form.js', 'public/js/vue-email-form.js');
         mix.browserify('vue-event-queue.js', 'public/js/vue-event-queue.js');
         mix.browserify('vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js');
         mix.browserify('vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js');
+        mix.browserify('vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');

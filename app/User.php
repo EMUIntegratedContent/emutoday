@@ -93,13 +93,21 @@ class User extends Authenticatable
     }
 
     public function isAdmin() {
-        if($this->hasRole('admin') || $this->hasRole('super_admin')){
+        if($this->hasRole('admin') || $this->hasRole('admin_super')){
             return true;
         }
         return false;
     }
 
+    public function isEditor() {
+        return $this->hasRole('editor');
+    }
+
     public function isExpertsEditor() {
         return $this->hasRole('experts');
+    }
+
+    public function isEmailBuilder() {
+        return $this->hasRole('emails');
     }
 }

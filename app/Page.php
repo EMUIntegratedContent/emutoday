@@ -27,9 +27,5 @@ class Page extends Model
             ->withPivot('page_position', 'note')
             ->withTimestamps();
     }
-    // public function storyImages()
-    // {
-    //     return $this->hasManyThrough('emutoday\StoryImage', 'emutoday\Story');
-    // }
 
 }

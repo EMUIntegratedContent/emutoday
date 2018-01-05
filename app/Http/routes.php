@@ -20,6 +20,13 @@ use GuzzleHttp\Client;
 | and give it the controller to call when that URI is requested.
 |
 */
+
+Route::group(['prefix' => 'mailgun'], function() {
+    Route::post('open', 'Api\MailgunApiController@postOpen');
+    Route::post('click', 'Api\MailgunApiController@postClick');
+    Route::post('spam', 'Api\MailgunApiController@postSpam');
+});
+
 Route::get('/cas/logout', function(){
     Auth::logout();
     Session::flush();
@@ -45,6 +52,11 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
+    Route::get('mediahighlights/taglist', 'Api\MediaHighlightController@getTaglist');
+    Route::get('mediahighlights/taglist/{id}', 'Api\MediaHighlightController@getTaglist');
+    Route::post('mediahighlights/tag/store', 'Api\MediaHighlightController@storeTag');
+    Route::resource('mediahighlights', 'Api\MediaHighlightController');
+
     Route::patch('authors/updateitem/{id}', 'Api\AuthorController@updateItem')->name('api_authors_updateitem');
     Route::get('authors/{id}/edit', 'Api\AuthorController@edit')->name('api_authors_edititem');
     Route::get('authors/primarycontact', 'Api\AuthorController@getCurrentPrimaryContact')->name('api_authors_updateitem');
@@ -56,6 +68,15 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('calendar/month/{year?}/{month?}/{day?}','Api\CalendarController@eventsInMonth');
     Route::get('calendar/events/{year?}/{month?}/{day?}/{id?}','Api\CalendarController@eventsByDay');
+
+    Route::get('email/stories/main/{fromDate?}/{toDate?}', 'Api\EmailController@getMainEmailReadyStories')->name('api_email_main_stories');
+    Route::get('email/stories/otherstories/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyStories')->name('api_email_other_stories');
+    Route::get('email/events/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyEvents')->name('api_email_events');
+    Route::get('email/announcements/{fromDate?}/{toDate?}', 'Api\EmailController@getAllEmailReadyAnnouncements')->name('api_email_announcements');
+    Route::get('email/recipients', 'Api\EmailController@getAllRecipients')->name('api_email_recipients_get');
+    Route::post('email/recipients', 'Api\EmailController@saveRecipient')->name('api_email_recipients_save');
+    Route::post('email/clone', 'Api\EmailController@cloneEmail')->name('api_email_clone');
+    Route::resource('email', 'Api\EmailController');
 
     Route::patch('experts/updateitem/{id}', 'Api\ExpertsController@updateItem')->name('api_experts_updateitem');
     Route::get('experts/{id}/edit', 'Api\ExpertsController@edit')->name('api_experts_edititem');
@@ -91,7 +112,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('buildinglist', function() {
         $text = Input::get('q');
         return Building::likeSearch('name', $text)->select('name')->orderBy('name', 'asc')->get();
-        //return Building::ofMapType('illustrated')->get();
     });
     /**
      * List of Categories for EventForm
@@ -158,13 +178,17 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::patch('event/updateitem/{id}', 'Api\EventController@updateItem')->name('api_event_updateitem');
     Route::post('event/{id}/delete', 'Api\EventController@delete')->name('api_event_deleteitem');
     Route::patch('event/{id}/cancel', 'Api\EventController@cancel')->name('api_event_cancelitem');
+    Route::put('event/elevated/reorder', 'Api\EventController@reorderElevatedEvents')->name('api_event_elevated_reorder');
+    Route::get('event/elevated', 'Api\EventController@getElevatedEvents')->name('api_event_elevated');
     Route::resource('event', 'Api\EventController');
 
     Route::get('announcement/queueload/{atype}/{fromDate?}/{toDate?}', 'Api\AnnouncementController@queueLoad')->name('api_announcement_queueload');
+    Route::put('announcement/elevated/reorder', 'Api\AnnouncementController@reorderElevatedAnnouncements')->name('api_announcement_elevated_reorder');
     Route::patch('announcement/updateitem/{id}', 'Api\AnnouncementController@updateItem')->name('api_announcement_updateitem');
     Route::patch('announcement/archiveitem/{id}', 'Api\AnnouncementController@archiveItem')->name('api_announcement_archiveitem');
     Route::post('announcement/{id}/delete', 'Api\AnnouncementController@delete')->name('api_announcement_deleteitem');
     Route::get('announcement/archive', 'Api\AnnouncementController@archives')->name('api_announcement_archive');
+    Route::get('announcement/elevated', 'Api\AnnouncementController@getElevatedAnnouncements')->name('api_announcement_elevated');
     Route::post('announcement', 'Api\AnnouncementController@store')->name('api_announcement_storeitem'); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
@@ -185,18 +209,18 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('users/{selectedUser?}', 'Api\AuthorController@getUsers')->name('users_find_authorapi');
     Route::get('authorbyuser/{userId?}', 'Api\AuthorController@getAuthorByUser')->name('authorbyuser');
 
+    Route::put('story/elevated/reorder', 'Api\StoryController@reorderElevatedStorys')->name('api_story_elevated_reorder');
     Route::patch('story/archiveitem/{id}', 'Api\StoryController@archiveItem')->name('api_story_archiveitem');
-
+    Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
     Route::resource('story', 'Api\StoryController');
 
-
     Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
-
     Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
 
 });
 
     Route::get('/', 'MainController@index')->name('/');
+    Route::get('forthemedia', 'MainController@forTheMediaIndex');
 
     Route::get('announcement/form', 'Today\AnnouncementController@announcementForm');
     Route::get('announcement/user/announcements', 'Today\AnnouncementController@userAnnouncements');
@@ -213,6 +237,11 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
 
     Route::get('hub', 'MainController@index');
+
+    Route::get('feedback', function() {
+      return view('public.feedback');
+    });
+    Route::post('feedback', 'MainController@feedbackForm');
 
     Route::get('search','SearchController@search' );
     Route::get('search/story/{id}','SearchController@story' );
@@ -247,12 +276,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
         Route::get('story/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
         Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-
-
     });
 
     Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
+        Route::get('mediahighlightstags/{id}/destroy', 'Admin\MediaHighlightTagController@destroy');
+
         Route::get('oauth/list', 'Admin\OAuthController@listClients')->name('list_user_oauth_clients');
 
         Route::get('authors/list', 'Admin\AuthorsController@index')->name('authors_list');
@@ -274,8 +303,23 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
             Route::resource('experts', 'Admin\ExpertsController');
 
             Route::resource('expertcategory', 'Admin\ExpertCategoryController');
-
             Route::resource('expertrequests', 'Admin\ExpertRequestController');
+        });
+
+        /* EMAILS */
+        Route::group(['middleware' => ['email']], function()
+        {
+            Route::get('email/destroy/{id}', 'Admin\EmailController@delete')->name('admin_email_delete'); // in addition to DELETE action
+            Route::resource('email', 'Admin\EmailController');
+        });
+
+        /* MEDIA HIGHLIGHTS */
+        Route::group(['middleware' => ['mediahighlights']], function()
+        {
+          Route::get('mediahighlights', 'Admin\MediaHighlightController@index')->name('media_highlights_list');
+          Route::get('mediahighlights/{id}/edit', 'Admin\MediaHighlightController@edit')->name('media_highlights_edit');
+          Route::get('mediahighlights/form', 'Admin\MediaHighlightController@form')->name('media_highlights_form');
+          Route::get('mediahighlights/{id}/destroy', 'Admin\MediaHighlightController@destroy')->name('media_highlights_destroy');
         });
 
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('admin_user_edit');
@@ -372,6 +416,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
 
         Route::get('{qtype}/{gtype}/{stype}/{story}', 'PreviewController@story')->name('preview_story');
+    });
+
+    Route::group(['prefix' => 'mediahighlights'], function(){
+        Route::get('/', 'Today\MediaHighlightController@index')->name('mediahighlights_index');
     });
 
     Route::get('/testoauth', function () {

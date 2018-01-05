@@ -24,13 +24,13 @@
           </div>
         </div>
       </div>
-    </div> 
+    </div>
 
     <div v-if="generalForm" class="row">
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <div v-bind:class="formGroup">
-            <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span></i>
+            <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span>
               <p class="help-text" id="announcement-helptext">({{descriptionChars}} characters left)</p>
             </label>
             <textarea v-model="record.announcement" class="form-control" v-bind:class="[formErrors.announcement ? 'invalid-input' : '']" name="announcement" type="textarea" rows="8" maxlength="255"></textarea>
@@ -426,18 +426,6 @@ module.exports = {
   },
 
   methods: {
-    //     checkSetEndDate: function() {
-    //         document.getElementById("end-date").flatpickr({
-    //             disable: [
-    //                 {
-    //                     from: "2016-08-16",
-    //                     to: "2016-08-19"
-    //                 },
-    //         "2016-08-24",
-    //         new Date().fp_incr(30) // 30 days from now
-    //     ]
-    // });
-    //     },
     readyAgain: function() {
 
     },
@@ -469,36 +457,17 @@ module.exports = {
       this.$http.get('/api/announcement/' + recid + '/edit')
 
       .then((response) => {
-        //response.status;
-        //console.log('response.status=' + response.status);
-        //console.log('response.ok=' + response.ok);
-        //console.log('response.statusText=' + response.statusText);
-        //console.log('response.data=' + response.data);
-        // data = response.data;
         this.$set('record', response.data.data)
-        //this.record = response.data.data;
-        //console.log('this.record= ' + this.record);
 
         this.checkOverData();
         this.updatePreview();
         this.record.start_time = response.data.data.start_time;
       }, (response) => {
-        //error callback
-        //console.log("why?"+JSON.stringify(response));
-
         this.formErrors = response.data.error.message;
-
       }).bind(this);
     },
     checkOverData: function() {
-      //console.log('this.record' + this.record.id)
-
-      // if(this.startdatePicker === null){
         this.setupDatePickers();
-      // }
-      // this.setupDatePickers();
-      //this.startdate = this.record.start_date;
-
     },
     delAnnouncement: function(e) {
       e.preventDefault();
@@ -552,7 +521,6 @@ module.exports = {
 
     setupDatePickers:function(){
       var self = this;
-      //console.log("setupDatePickers");
       if (this.record.start_date === '') {
         this.dateObject.startDateMin = this.currentDate;
         this.dateObject.startDateDefault = null;
@@ -619,10 +587,6 @@ module.exports = {
 
       // Do this when response gets back.
       .then((response) => { // If valid
-        //console.log('response.status=' + response.status);
-        //console.log('response.ok=' + response.ok);
-        //console.log('response.statusText=' + response.statusText);
-        //console.log('response.data=' + response.data.message);
         this.formMessage.msg = response.data.message;
         this.formMessage.isOk = response.ok; // Success message
         this.currentRecordId = response.data.newdata.record_id;

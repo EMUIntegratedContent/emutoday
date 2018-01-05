@@ -186,7 +186,6 @@ module.exports = {
         .then((response) => {
           this.$set('experts', response.body.newdata.data)
           this.makePagination(response.body.newdata)
-          console.log(url)
         }, (response) => {
           this.formErrors = response.data.error.message;
         }).bind(this);

@@ -9,6 +9,6 @@ class DDFront implements FilterInterface
 {
     public function applyFilter(Image $image)
     {
-        return $image->fit(200, 100);
+        return $image->fit(300, 200);
     }
 }

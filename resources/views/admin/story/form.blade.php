@@ -84,7 +84,7 @@
                                 {{-- display the appropriate for for the required images --}}
                                 @if ($currentRequiredImages->count() > 0)
                                     {{-- there is at least 1 requireed image in the collection
-                                        so loop thru the required images collection and display form --}}
+                                        so loop thru the required images collection and display EDIT form --}}
                                     @foreach($currentRequiredImages as $currentRequiredImage)
                                         @if($currentRequiredImage->image_type == 'small')
                                             @include('admin.storyimages.subviews.smallimage',['storyImage' => $currentRequiredImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
@@ -98,9 +98,9 @@
                             @endif
 
                             @if($currentOtherImages !== null)
-
                                 @if($currentOtherImages->count() > 0)
-
+                                  {{-- there is at least 1 optional image in the collection
+                                      so loop thru the optional images collection and display EDIT form --}}
                                     @foreach($currentOtherImages as $currentOtherImage)
                                         @if($currentOtherImage->image_type == 'front')
                                             @include('admin.storyimages.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
@@ -111,8 +111,9 @@
                                 @endif
                             @endif
                             @if($stillNeedTheseImgs !== null)
-
                                 @if($stillNeedTheseImgs->count() > 0)
+                                    {{-- there is at least 1 required image for this story type that hasn't been created
+                                      so loop thru the required images collection and display ADD form --}}
                                     @foreach($stillNeedTheseImgs as $stillNeedTheseImg)
                                         @include('admin.storyimages.subviews.addstoryimage',['otherImage' => $stillNeedTheseImg, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                     @endforeach

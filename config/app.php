@@ -157,12 +157,13 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
-        Sofa\Eloquence\ServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         Snowfire\Beautymail\BeautymailServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Roumen\Feed\FeedServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class,
+        Spatie\Analytics\AnalyticsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -219,7 +220,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Flash' => Laracasts\Flash\Flash::class,
@@ -227,7 +227,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Cas' => Subfission\Cas\Facades\Cas::class,
         'Feed' => Roumen\Feed\Feed::class,
-
+        'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
 
     ],
 

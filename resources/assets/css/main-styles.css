@@ -106,6 +106,9 @@ h5{
 h6{
     font-size: 1rem;
 }
+h2.mediahighlight-date{
+  font-size: 1.3rem;
+}
 ul.social-icons {
     list-style: none;
     float:right;
