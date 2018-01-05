@@ -101,6 +101,9 @@
         font-size: 16px;
     }
     h2.moveover{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
+    
+    h3.moveover{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
+    
     h2 a{text-decoration: none;}
     p {
         padding: 0;
@@ -366,7 +369,7 @@
                         <td valign="top" >
 
                             <div class="indent">
-                            <h2 class="moveover"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h2>
+                            <h3 class="moveover"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h3>
                             <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
