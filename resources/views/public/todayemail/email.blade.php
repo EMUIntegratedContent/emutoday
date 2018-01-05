@@ -286,7 +286,7 @@
                         <td valign="top" class="full-width-image">
                             <article>
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
-                                <div style="padding-left: 1rem; padding-right: 1rem; padding-top: .6rem; padding-bottom: 16px; margin-bottom: 10px;">
+                                <div style="padding-left: 1.1rem; padding-right: 1.1rem; padding-top: .6rem; padding-bottom: 16px; margin-bottom: 10px;">
                                     <h2 class="indent" style="margin-bottom: .8rem;"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a></h2>
                                     {{--<p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>--}}
                                     <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
@@ -297,7 +297,7 @@
                     {{-- some emails might not have sub stories! --}}
                     @if($email->mainstories->count() == 3)
                     <tr>
-                        <td >
+                        <td>
                             <table class="indent-less">
                               
                                 <tr>
@@ -373,7 +373,7 @@
                             <h3 class="moveover"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h3>
                             <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
                                 @foreach($email->stories()->get() as $story)
-                                <li style="padding-bottom: 7px; margin-left: 0; color:#046A38;">
+                                <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                       <a style="text-decoration: none;" href="{{$story->getExternalLink()}}">{{ $story->title }}</a>
@@ -392,7 +392,7 @@
                                 <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="{{ url('/') }}/announcement">Announcements &#10137;</a></h2>
                                 <ul style="padding-bottom: 8px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
                                     @foreach($email->announcements()->get() as $announcement)
-                                    <li style="padding-bottom: 7px; margin-left: 0; color:#046A38;">
+                                    <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
                                       @if($announcement->link != '')
                                         <a style="text-decoration: none; " href="{{ $announcement->link }}">{{ $announcement->title }}</a>
                                       @else
