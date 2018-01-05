@@ -276,7 +276,7 @@
                         <td valign="top" class="full-width-image">
                             <article>
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
-                                <div style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
+                                <div style="padding-bottom: 16px; margin-bottom: 10px;">
                                     <h2 class="indent"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }}</a></h2>
                                     <p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>
                                 </div>
@@ -330,7 +330,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td class="text">
-                                                                               <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }}</a></h3>
+                                                                               <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#8594;</a></h3>
                                                                             <p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>
                                                                         </td>
                                                                 </tr>
@@ -354,8 +354,8 @@
                         <td valign="top" >
                              
                             <div class="indent">
-                            <h2 class="moveover"><a href="{{ url('/') }}/story/news">More News</a></h2>
-                            <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
+                            <h2 class="moveover" style="border-top: 1px solid #ccc;"><a href="{{ url('/') }}/story/news">More News</a></h2>
+                            <ul style="padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                     @if($story->story_type == 'external')
@@ -409,11 +409,11 @@
                                 <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
                                   <td>
                                     <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 4px;  text-decoration: none; font-size: 11px;" href="https://today.emich.edu/">EMU Today</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/calendar">Calendar</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/announcement">Announcements</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 4px; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/story/news">News</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 4px; padding-right: 0; text-decoration: none; font-size: 11px;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
 
                                         </ul>
                                     </td>
@@ -441,6 +441,9 @@
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                                                 <a href="https://www.linkedin.com/edu/school?id=18604"><img class="img-circle" alt="Linked-In" src="{{ url('/') }}/assets/imgs/icons/linked-in-base-icons.png"></a>
+                                            </li>
+                                            <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
+                                                <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle" alt="Snap Chat" src="{{ url('/') }}/assets/imgs/icons/snapchat.png"></a>
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                                                 <a href="http://blogemu.com/"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/e-base-icons.png"></a>
