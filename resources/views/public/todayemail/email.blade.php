@@ -2,8 +2,8 @@
 
 <style type="text/css" media="screen">
     body{
-        font-size: 1rem;
-        line-height: 1.4rem; 
+        font-size: .9rem;
+        line-height: 1.3rem; 
         margin: 0 !important;
         padding: 0;
         /*background-color: #f3f2ee;*/
