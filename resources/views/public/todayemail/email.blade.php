@@ -185,7 +185,7 @@
     .two-column .contents {
         font-size: 14px;
         text-align: left;
-        margin-bottom: 1rem;
+        margin-bottom: .5rem;
         }
     /*.two-column img {
             width: 100%;
