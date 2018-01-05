@@ -408,7 +408,7 @@
                         <td valign="middle">
                             <div class="indent" >
                                 <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="{{ url('/') }}/calendar">What's Happening at EMU &#10137;</a></h2>
-                                <ul style="margin-left: 0; margin-top:8px; padding-left: 7px; float: left; padding-bottom: 5px;">
+                                <ul style="margin-left: 0; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px;">
                                     @foreach($email->events()->get() as $event)
                                     <li style="list-style: none; margin-left: 0; clear: both;">
                                         <div style="font-size: 18px; font-weight: 500; line-height: 110%; display: inline-block; width: 40px; height: 40px;  padding: 8px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color: #ffffff; background-color: #2b873b; text-decoration: none;">{{ $event->start_date->format('M j') }} </div>
