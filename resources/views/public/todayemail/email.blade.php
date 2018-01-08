@@ -190,10 +190,10 @@
         position: relative;
         box-sizing: border-box;*/
     }
-    .contents {
-        /*width: 100%;*/
+    .two-column .column .contents {
+        width: 100%;
         }
-    .two-column .contents {
+    .two-column .column .contents {
         font-size: 14px;
         text-align: left;
         margin-bottom: .3rem;
