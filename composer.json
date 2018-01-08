@@ -17,7 +17,7 @@
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
         "barryvdh/laravel-debugbar": "^2.2",
- 	      "subfission/cas": "dev-master",
+ 	      "subfission/cas": "~2.0.9",
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.11.0",
         "doctrine/dbal": "~2.3",

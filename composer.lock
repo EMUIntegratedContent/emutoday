@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "baef92d3fd3d38b9ae2f7189f2cbe20f",
+    "content-hash": "5d24324f559d8609ebe8375ef8a592e3",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1421,21 +1421,21 @@
         },
         {
             "name": "jasig/phpcas",
-            "version": "1.3.5",
+            "version": "1.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/apereo/phpCAS.git",
-                "reference": "61c8899c8f91204e8b9135d795461e50fe5c2db0"
+                "reference": "8c74d21630f74278270830fdbdb0c1317bce3f0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/apereo/phpCAS/zipball/61c8899c8f91204e8b9135d795461e50fe5c2db0",
-                "reference": "61c8899c8f91204e8b9135d795461e50fe5c2db0",
+                "url": "https://api.github.com/repos/apereo/phpCAS/zipball/8c74d21630f74278270830fdbdb0c1317bce3f0a",
+                "reference": "8c74d21630f74278270830fdbdb0c1317bce3f0a",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": ">=5.4.0"
+                "php": ">=5.0.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~3.7.10"
@@ -1471,7 +1471,7 @@
                 "cas",
                 "jasig"
             ],
-            "time": "2017-04-10T19:12:45+00:00"
+            "time": "2015-11-16T20:44:36+00:00"
         },
         {
             "name": "jeremeamia/SuperClosure",
@@ -3796,38 +3796,27 @@
         },
         {
             "name": "subfission/cas",
-            "version": "dev-master",
+            "version": "v2.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/subfission/cas.git",
-                "reference": "419655b87ac9f6ebe381aa0a409b6d6793359f56"
+                "reference": "6adb5b127f3dc42777715b77ddd567a630300298"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/subfission/cas/zipball/419655b87ac9f6ebe381aa0a409b6d6793359f56",
-                "reference": "419655b87ac9f6ebe381aa0a409b6d6793359f56",
+                "url": "https://api.github.com/repos/subfission/cas/zipball/6adb5b127f3dc42777715b77ddd567a630300298",
+                "reference": "6adb5b127f3dc42777715b77ddd567a630300298",
                 "shasum": ""
             },
             "require": {
-                "illuminate/http": "5.x",
                 "illuminate/support": "5.x",
-                "jasig/phpcas": "~1.3.4",
+                "jasig/phpcas": "1.3.4",
                 "php": ">=5.5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.*"
             },
             "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Subfission\\Cas\\CasServiceProvider"
-                    ],
-                    "aliases": {
-                        "Cas": "Subfission\\Cas\\Facades\\Cas"
-                    }
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Subfission\\Cas\\": "src/Subfission/Cas/"
@@ -3854,7 +3843,7 @@
                 "laravel 5",
                 "phpCAS"
             ],
-            "time": "2018-01-01T19:12:33+00:00"
+            "time": "2017-03-06T19:37:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6890,7 +6879,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "subfission/cas": 20,
         "google/apiclient": 20,
         "snowfire/beautymail": 20
     },
