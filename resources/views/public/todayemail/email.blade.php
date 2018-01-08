@@ -219,7 +219,7 @@
         display: block;
     }
        .two-column .column {
-        width: 49%; box-sizing: border-box; position: relative; display: inline-block;
+        width: 260px; box-sizing: border-box; position: relative; display: inline-block;
     }
         .two-column .column {
             /*max-width: 48% !important;
@@ -246,7 +246,10 @@
         display: block;
     }
     .two-column .column {
-        width: 49%; box-sizing: border-box; position: relative; display: inline-block;
+        width: 220px; 
+        box-sizing: border-box; 
+        position: relative; 
+        display: inline-block;
         
     }
         .two-column .column {
