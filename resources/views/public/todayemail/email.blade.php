@@ -256,6 +256,9 @@
 
 }
   @media only screen and (min-width: 10px) and (max-width: 479px){
+      tr.two-images-up{
+        display:none !important;
+        }
       .two-column{
           display: none !important;
       }
