@@ -137,6 +137,8 @@
     .img-circle {
         border-radius: 50%;
     }
+    </style>
+<style>
 /*from others*/
     .outer {
         margin: 0 auto;
@@ -194,7 +196,8 @@
     .two-column .column .text {
             padding-top: 0px;
         }
-
+</style>
+<style>
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
        
