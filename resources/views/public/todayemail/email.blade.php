@@ -219,7 +219,7 @@
         display: block;
     }
        .two-column .column {
-        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
+        width: 49%; box-sizing: border-box; position: relative; display: inline-block;
     }
         .two-column .column {
             /*max-width: 48% !important;
@@ -246,7 +246,8 @@
         display: block;
     }
     .two-column .column {
-        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
+        width: 49%; box-sizing: border-box; position: relative; display: inline-block;
+        
     }
         .two-column .column {
             /*max-width: 48% !important;
@@ -330,13 +331,13 @@
                             <table class="indent-less">
 
                                 <tr>
-                                    <td class="two-column" style="width: auto; box-sizing: border-box; position: relative; display: block;">
+                                    <td class="two-column" >
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative; display: inline-block;">
+                                        <div class="column" >
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -360,7 +361,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative;  display: inline-block;">
+                                        <div class="column" >
                                             <table>
                                                     <tr>
                                                         <td class="inner">
