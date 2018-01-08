@@ -313,7 +313,7 @@
                                                         <td class="inner">
                                                             <table class="contents">
                                                                 <tr>
-                                                                    <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/ddfront/{{$smallStoryImages[1]->filename}}" />
+                                                                    <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/original/{{$smallStoryImages[1]->filename}}" />
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -338,7 +338,7 @@
                                                             <table class="contents">
                                                                 <tr>
                                                                         <td>
-                                                                                <img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/ddfront/{{$smallStoryImages[2]->filename}}" />
+                                                                                <img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/original/{{$smallStoryImages[2]->filename}}" />
                                                                         </td>
                                                                 </tr>
                                                                 <tr>
