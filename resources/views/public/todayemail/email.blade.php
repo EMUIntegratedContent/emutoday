@@ -176,8 +176,8 @@
         /*width: auto;*/
         position: relative;
         box-sizing: border-box;
-        margin-left: 1rem;
-        margin-right: 1rem;
+        margin-left: 0rem;
+        margin-right: 0rem;
         background-color: greenyellow;
         display: block;
     }
@@ -305,7 +305,7 @@
                             <table class="indent-less" style="width: 100%; box-sizing: border-box;">
 
                                 <tr>
-                                    <td class="two-column" style="width: 100%; box-sizing: border-box; position: relative; display: block;">
+                                    <td class="two-column" style="width: auto; box-sizing: border-box; position: relative; display: block;">
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
