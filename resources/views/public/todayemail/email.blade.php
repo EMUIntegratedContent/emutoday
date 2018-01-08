@@ -310,7 +310,7 @@
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column">
+                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -334,7 +334,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column">
+                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
