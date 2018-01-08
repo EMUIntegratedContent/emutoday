@@ -227,6 +227,11 @@
             background-color: purple;*/
 
         }
+       .two-column .column .text{
+           box-sizing: border-box;
+            width: 260px;
+           
+       }
          img.col-img{
             max-width: 100% !important;
              width: 100%;
@@ -252,6 +257,11 @@
         display: inline-block;
         
     }
+     .two-column .column .text{
+           box-sizing: border-box;
+            width: 220px;
+           
+       }
         .two-column .column {
             /*max-width: 48% !important;
             width: 48%;
