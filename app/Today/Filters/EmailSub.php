@@ -9,6 +9,8 @@ class EmailSub implements FilterInterface
 {
     public function applyFilter(Image $image)
     {
-        return $image->crop(231,210);
+        return $image->resize(268, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
     }
 }

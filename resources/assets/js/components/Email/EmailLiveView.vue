@@ -54,7 +54,7 @@
                                                               <table class="contents">
                                                                   <tr>
                                                                     <!-- -->
-                                                                      <td style="text-align:left;"><img class="col-img" :alt="email.mainStories[1].small_images[0].caption" :src="'/imagecache/original/' + email.mainStories[1].small_images[0].filename" />
+                                                                      <td style="text-align:left;"><img class="col-img" :alt="email.mainStories[1].small_images[0].caption" :src="'/imagecache/emailsub/' + email.mainStories[1].small_images[0].filename" />
                                                                       </td>
                                                                   </tr>
                                                                   <tr>
@@ -83,7 +83,7 @@
                                                               <template v-if="email.mainStories[2]">
                                                                 <table class="contents">
                                                                     <tr>
-                                                                        <td><img class="col-img" :alt="email.mainStories[2].small_images[0].caption" :src="'/imagecache/original/' + email.mainStories[2].small_images[0].filename" />
+                                                                        <td><img class="col-img" :alt="email.mainStories[2].small_images[0].caption" :src="'/imagecache/emailsub/' + email.mainStories[2].small_images[0].filename" />
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
