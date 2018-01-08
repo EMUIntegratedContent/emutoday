@@ -178,6 +178,7 @@
         box-sizing: border-box;
         margin-left: 1rem;
         margin-right: 1rem;
+        background-color: greenyellow;
     }
     .two-column .column {
         /*width: 100%;*/
@@ -201,15 +202,16 @@
             width: 100%;
             height: auto;
         }*/
-    .two-column .text {
+    .two-column .column .text {
             padding-top: 0px;
         }
 
     /*Media Queries*/
    @media only screen and (min-width: 610px) {
         .two-column .column {
-            max-width: 45% !important;
-            width: 45%;
+            max-width: 48% !important;
+            width: 48%;
+            background-color: purple;
 
         }
          img.col-img{
@@ -221,8 +223,9 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
-            max-width: 45% !important;
-            width: 45%;
+            max-width: 48% !important;
+            width: 48%;
+             background-color: blue;
         }
          img.col-img{
             max-width: 100% !important;
@@ -307,7 +310,7 @@
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width:45%;">
+                                        <div class="column">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -331,7 +334,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width:45%;">
+                                        <div class="column">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
