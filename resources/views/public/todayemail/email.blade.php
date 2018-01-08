@@ -227,10 +227,10 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
     tr.two-images-up{
-        display:none;
+        display:none !important;
     }
     .two-column {
-        
+        display:none !important;
         text-align: center;
         font-size: 0;
         width: 440px;
@@ -241,12 +241,14 @@
         display: block;
     }
     .two-column .column {
+        display:none !important;
         width: 40%; 
         box-sizing: border-box; 
         position: relative; 
         display: inline-block;"
     }
     img.col-img{
+        display:none !important;
             max-width: 100% !important;
             width: 100%  !important;
             position: relative;
@@ -255,9 +257,10 @@
 }
   @media only screen and (min-width: 10px) and (max-width: 479px){
       .two-column{
-          display: none;
+          display: none !important;
       }
-      /*.two-column .column {
+     .two-column .column {
+         display:none;
             max-width: 100% !important;
             width: 100%;
         }
@@ -272,7 +275,7 @@
         }
      .inner {
         padding-top: 0px;
-    }*/
+    }
 
     .inner h3{
         padding-top: 0px;
