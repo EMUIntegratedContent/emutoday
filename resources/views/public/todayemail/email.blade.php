@@ -179,16 +179,17 @@
         margin-left: 1rem;
         margin-right: 1rem;
         background-color: greenyellow;
+        display: block;
     }
     .two-column .column {
         /*width: 100%;*/
         /*max-width: 300px;*/
         /*max-width: 50%;*/
         /*max-width: 280px;*/
-        display: inline-block;
+        /*display: inline-block;
         vertical-align: top;
         position: relative;
-        box-sizing: border-box;
+        box-sizing: border-box;*/
     }
     .contents {
         /*width: 100%;*/
@@ -209,9 +210,9 @@
     /*Media Queries*/
    @media only screen and (min-width: 610px) {
         .two-column .column {
-            max-width: 48% !important;
+            /*max-width: 48% !important;
             width: 48%;
-            background-color: purple;
+            background-color: purple;*/
 
         }
          img.col-img{
@@ -223,9 +224,9 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
-            max-width: 48% !important;
+            /*max-width: 48% !important;
             width: 48%;
-             background-color: blue;
+             background-color: blue;*/
         }
          img.col-img{
             max-width: 100% !important;
@@ -304,13 +305,13 @@
                             <table class="indent-less">
 
                                 <tr>
-                                    <td class="two-column">
+                                    <td class="two-column" style="width: 100%; box-sizing: border-box; position: relative; display: block;">
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">
+                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative; display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -334,7 +335,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">
+                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative;  display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
