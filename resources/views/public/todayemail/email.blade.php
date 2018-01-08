@@ -178,8 +178,10 @@
         margin-left: 0rem;
         margin-right: 0rem;
         display: block;
+        
     }
     .two-column .column {
+        width: 48%; box-sizing: border-box; position: relative; display: inline-block;
     }
     .contents {
         }
@@ -189,7 +191,6 @@
         margin-bottom: .3rem;
         }
     img.col-img{
-        
             max-width: 100% !important;
             width: 100%  !important;
             position: relative;
