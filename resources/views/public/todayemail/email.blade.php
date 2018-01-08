@@ -200,11 +200,10 @@
         }
 </style>
 <style>
+    
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
-     tr.two-images-up{
-        display:none !important;
-    }   
+       
     .two-column {
         width: 560px;
     }
@@ -215,6 +214,9 @@
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
+    .two-column {
+        width: 300px;
+    }
     tr.two-images-up{
         display:none !important;
     }
