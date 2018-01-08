@@ -232,7 +232,7 @@
     .two-column {
         text-align: center;
         font-size: 0;
-        width: 480px;
+        width: 440px;
         position: relative;
         box-sizing: border-box;
         margin-left: 0rem;
@@ -240,7 +240,7 @@
         display: block;
     }
     .two-column .column {
-        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
+        width: 40%; box-sizing: border-box; position: relative; display: inline-block;"
     }
         .two-column .column {
             /*max-width: 48% !important;
