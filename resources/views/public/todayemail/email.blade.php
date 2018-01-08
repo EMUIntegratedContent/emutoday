@@ -228,6 +228,7 @@
 @media only screen and (min-width: 480px) and (max-width: 609px) {
    
     .two-column {
+        display:none;
         text-align: center;
         font-size: 0;
         width: 440px;
