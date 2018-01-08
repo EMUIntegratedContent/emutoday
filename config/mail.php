@@ -56,7 +56,7 @@ return [
     */
 
     //'from' => ['address' => 'emu_today@emich.edu', 'name' => 'EMU Today'],
-    'from' => ['address' => 'postmaster@todaytest.emich.edu', 'name' => 'EMU Today'],
+    'from' => ['address' => env('MAIL_USERNAME', 'postmaster@todaytest.emich.edu'), 'name' => 'EMU Today'],
 
     /*
     |--------------------------------------------------------------------------
