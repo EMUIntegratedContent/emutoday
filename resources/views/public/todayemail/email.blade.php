@@ -320,10 +320,10 @@
                     @if($email->mainstories->count() == 3)
                     <tr>
                         <td>
-                            <table class="indent-less" style="width: 540px; box-sizing: border-box; position: relative; display: block;>
+                            <table class="indent-less" style="width: 560px; box-sizing: border-box; position: relative; display: block;>
 
                                 <tr>
-                                    <td class="two-column" style="width: 540px; box-sizing: border-box; position: relative; display: block;">
+                                    <td class="two-column" style="width: 560px; box-sizing: border-box; position: relative; display: block;">
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
