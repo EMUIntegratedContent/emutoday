@@ -173,7 +173,6 @@
     .two-column {
         text-align: center;
         font-size: 0;
-        /*width: auto;*/
         position: relative;
         box-sizing: border-box;
         margin-left: 0rem;
@@ -181,17 +180,10 @@
         display: block;
     }
     .two-column .column {
-        /*width: 100%;*/
-        /*max-width: 300px;*/
-        /*max-width: 50%;*/
-        /*max-width: 280px;*/
-        /*display: inline-block;
-        vertical-align: top;
-        position: relative;
-        box-sizing: border-box;*/
+    
     }
     .contents {
-        /*width: 100%;*/
+    
         }
     .two-column .contents {
         font-size: 14px;
@@ -207,7 +199,7 @@
         }
 
     /*Media Queries*/
-   @media only screen and (min-width: 610px) {
+@media only screen and (min-width: 610px) {
        .two-column {
         text-align: center;
         font-size: 0;
@@ -235,9 +227,7 @@
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
-    .two-column {
-       display: none;
-    }
+   
     .two-column .column {
         width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
     }
@@ -320,10 +310,10 @@
                     @if($email->mainstories->count() == 3)
                     <tr>
                         <td>
-                            <table class="indent-less" style="width: 560px; box-sizing: border-box; position: relative; display: block;>
+                            <table class="indent-less">
 
                                 <tr>
-                                    <td class="two-column" style="width: 560px; box-sizing: border-box; position: relative; display: block;">
+                                    <td class="two-column">
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
