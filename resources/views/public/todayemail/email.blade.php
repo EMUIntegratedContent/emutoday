@@ -302,7 +302,7 @@
                     @if($email->mainstories->count() == 3)
                     <tr>
                         <td>
-                            <table class="indent-less" style="width: 100%; box-sizing: border-box;">
+                            <table class="indent-less" style="width: 529px; box-sizing: border-box;">
 
                                 <tr>
                                     <td class="two-column" style="width: auto; box-sizing: border-box; position: relative; display: block;">
