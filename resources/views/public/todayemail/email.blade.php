@@ -187,8 +187,8 @@
         margin-bottom: .3rem;
         }
    .two-column img {
-            width: 100% !important;
-            height: auto;
+        width: 100% !important;
+        height: auto;
         position: relative;
         }
     .two-column .column .text {
@@ -238,22 +238,23 @@
         display: block;
     }
     .two-column .column {
-        width: 40%; box-sizing: border-box; position: relative; display: inline-block;"
+        width: 40%; 
+        box-sizing: border-box; 
+        position: relative; 
+        display: inline-block;"
     }
-        .two-column .column {
-            /*max-width: 48% !important;
-            width: 48%;
-             background-color: blue;*/
-        }
-         img.col-img{
+    img.col-img{
             max-width: 100% !important;
             width: 100%  !important;
-             position: relative;
+            position: relative;
         }
 
 }
   @media only screen and (min-width: 10px) and (max-width: 479px){
-      .two-column .column {
+      .two-column{
+          display: none;
+      }
+      /*.two-column .column {
             max-width: 100% !important;
             width: 100%;
         }
@@ -268,7 +269,7 @@
         }
      .inner {
         padding-top: 0px;
-    }
+    }*/
 
     .inner h3{
         padding-top: 0px;
@@ -318,7 +319,7 @@
                     </tr>
                     {{-- some emails might not have sub stories! --}}
                     @if($email->mainstories->count() == 3)
-                    <tr>
+                    <tr class="two-images-up">
                         <td>
                             <table class="indent-less">
 
@@ -329,7 +330,7 @@
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative; display: inline-block;">
+                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -353,7 +354,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative;  display: inline-block;">
+                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
