@@ -201,7 +201,9 @@
 <style>
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
-       
+     tr.two-images-up{
+        display:none !important;
+    }   
     .two-column {
         width: 560px;
     }
@@ -215,7 +217,7 @@
     tr.two-images-up{
         display:none !important;
     }
-    .two-column {
+    /*.two-column {
         display:none !important;
         text-align: center;
         font-size: 0;
@@ -232,7 +234,7 @@
         box-sizing: border-box; 
         position: relative; 
         display: inline-block;"
-    }
+    }*/
    
 
 }
@@ -240,7 +242,7 @@
       tr.two-images-up{
         display:none !important;
         }
-      .two-column{
+      /*.two-column{
           display: none !important;
       }
      .two-column .column {
@@ -259,7 +261,7 @@
         }
      .inner {
         padding-top: 0px;
-    }
+    }*/
 
     .inner h3{
         padding-top: 0px;
@@ -320,7 +322,8 @@
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">
+                                        <div class="column">
+                                            <!--<div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">-->
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -344,7 +347,8 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">
+                                        <div class="column">
+                                            <!--<div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">-->
                                             <table>
                                                     <tr>
                                                         <td class="inner">
