@@ -32,6 +32,10 @@ class Kernel extends HttpKernel
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
+        'cors' => [
+           \Barryvdh\Cors\HandleCors::class,
+        ],
+
         'email' => [
           \Emutoday\Http\Middleware\EmailsMiddleware::class,
         ],

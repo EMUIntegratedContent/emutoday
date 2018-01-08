@@ -4,27 +4,80 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "190fba34440161454e7e6ed170f5b02f",
+    "content-hash": "baef92d3fd3d38b9ae2f7189f2cbe20f",
     "packages": [
         {
-            "name": "barryvdh/laravel-cors",
-            "version": "v0.10.1",
+            "name": "asm89/stack-cors",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/barryvdh/laravel-cors.git",
-                "reference": "b64caccbfc33b9ee2ba7dcce3307590882ede9ad"
+                "url": "https://github.com/asm89/stack-cors.git",
+                "reference": "c163e2b614550aedcf71165db2473d936abbced6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/b64caccbfc33b9ee2ba7dcce3307590882ede9ad",
-                "reference": "b64caccbfc33b9ee2ba7dcce3307590882ede9ad",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/c163e2b614550aedcf71165db2473d936abbced6",
+                "reference": "c163e2b614550aedcf71165db2473d936abbced6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.3.x|5.4.x|5.5.x",
                 "php": ">=5.5.9",
-                "symfony/http-foundation": "~3.1",
-                "symfony/http-kernel": "~3.1"
+                "symfony/http-foundation": "~2.7|~3.0|~4.0",
+                "symfony/http-kernel": "~2.7|~3.0|~4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.0 || ^4.8.10",
+                "squizlabs/php_codesniffer": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Asm89\\Stack\\": "src/Asm89/Stack/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
+                }
+            ],
+            "description": "Cross-origin resource sharing library and stack middleware",
+            "homepage": "https://github.com/asm89/stack-cors",
+            "keywords": [
+                "cors",
+                "stack"
+            ],
+            "time": "2017-12-20T14:37:45+00:00"
+        },
+        {
+            "name": "barryvdh/laravel-cors",
+            "version": "v0.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-cors.git",
+                "reference": "6ba64a654b4258a3ecc11aba6614c932b3442e30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/6ba64a654b4258a3ecc11aba6614c932b3442e30",
+                "reference": "6ba64a654b4258a3ecc11aba6614c932b3442e30",
+                "shasum": ""
+            },
+            "require": {
+                "asm89/stack-cors": "^1.2",
+                "illuminate/support": "5.3.x|5.4.x|5.5.x|5.6.x",
+                "php": ">=5.5.9",
+                "symfony/http-foundation": "^3.1|^4",
+                "symfony/http-kernel": "^3.1|^4"
             },
             "require-dev": {
                 "orchestra/testbench": "3.x",
@@ -34,7 +87,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.10-dev"
+                    "dev-master": "0.11-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -45,10 +98,7 @@
             "autoload": {
                 "psr-4": {
                     "Barryvdh\\Cors\\": "src/"
-                },
-                "classmap": [
-                    "tests"
-                ]
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -67,7 +117,7 @@
                 "crossdomain",
                 "laravel"
             ],
-            "time": "2017-12-19T21:08:24+00:00"
+            "time": "2018-01-04T06:59:27+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -896,16 +946,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.40",
+            "version": "v0.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "5f474421169fc2d830cb46035cbc27f88c53ba8f"
+                "reference": "b3715dfaad3cd91304c84bf3ce36c5cade851b35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/5f474421169fc2d830cb46035cbc27f88c53ba8f",
-                "reference": "5f474421169fc2d830cb46035cbc27f88c53ba8f",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/b3715dfaad3cd91304c84bf3ce36c5cade851b35",
+                "reference": "b3715dfaad3cd91304c84bf3ce36c5cade851b35",
                 "shasum": ""
             },
             "require": {
@@ -929,7 +979,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2017-12-23T00:23:13+00:00"
+            "time": "2018-01-06T00:23:20+00:00"
         },
         {
             "name": "google/auth",
@@ -2652,29 +2702,29 @@
         },
         {
             "name": "pelago/emogrifier",
-            "version": "V1.2.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jjriv/emogrifier.git",
-                "reference": "a1db453bb504597d821efcc04b21c79a6021e00c"
+                "url": "https://github.com/MyIntervals/emogrifier.git",
+                "reference": "8babf8ddbf348f26b29674e2f84db66ff7e3d95e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jjriv/emogrifier/zipball/a1db453bb504597d821efcc04b21c79a6021e00c",
-                "reference": "a1db453bb504597d821efcc04b21c79a6021e00c",
+                "url": "https://api.github.com/repos/MyIntervals/emogrifier/zipball/8babf8ddbf348f26b29674e2f84db66ff7e3d95e",
+                "reference": "8babf8ddbf348f26b29674e2f84db66ff7e3d95e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0,<=7.1.99"
+                "php": "^5.5.0 || ~7.0.0 || ~7.1.0 || ~7.2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.8.27",
-                "squizlabs/php_codesniffer": "2.6.0"
+                "phpunit/phpunit": "^4.8.0",
+                "squizlabs/php_codesniffer": "^3.1.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "2.1.x-dev"
                 }
             },
             "autoload": {
@@ -2698,17 +2748,26 @@
                     "name": "Jaime Prado"
                 },
                 {
-                    "name": "Oliver Klee",
-                    "email": "typo3-coding@oliverklee.de"
-                },
-                {
                     "name": "Roman Ožana",
                     "email": "ozana@omdesign.cz"
+                },
+                {
+                    "name": "Oliver Klee",
+                    "email": "github@oliverklee.de"
+                },
+                {
+                    "name": "Zoli Szabó",
+                    "email": "zoli.szabo+github@gmail.com"
                 }
             ],
             "description": "Converts CSS styles into inline style attributes in your HTML code",
-            "homepage": "http://www.pelagodesign.com/sidecar/emogrifier/",
-            "time": "2017-03-02T12:51:48+00:00"
+            "homepage": "https://www.myintervals.com/emogrifier.php",
+            "keywords": [
+                "css",
+                "email",
+                "pre-processing"
+            ],
+            "time": "2018-01-05T23:30:21+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -3670,16 +3729,16 @@
         },
         {
             "name": "spatie/laravel-analytics",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-analytics.git",
-                "reference": "85c2198131bf3822f3fc270e362223ee6406a436"
+                "reference": "7fee273f730b02013b93b7c968ed8c72cd5205c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/85c2198131bf3822f3fc270e362223ee6406a436",
-                "reference": "85c2198131bf3822f3fc270e362223ee6406a436",
+                "url": "https://api.github.com/repos/spatie/laravel-analytics/zipball/7fee273f730b02013b93b7c968ed8c72cd5205c1",
+                "reference": "7fee273f730b02013b93b7c968ed8c72cd5205c1",
                 "shasum": ""
             },
             "require": {
@@ -3691,7 +3750,7 @@
                 "php": "^7.0"
             },
             "require-dev": {
-                "mockery/mockery": "^0.9.5",
+                "mockery/mockery": "^1.0",
                 "orchestra/testbench": "~3.4.6|~3.5.0",
                 "phpunit/phpunit": "^6.1"
             },
@@ -3733,7 +3792,7 @@
                 "retrieve",
                 "spatie"
             ],
-            "time": "2017-11-03T08:54:13+00:00"
+            "time": "2018-01-08T14:38:23+00:00"
         },
         {
             "name": "subfission/cas",
@@ -6007,16 +6066,16 @@
         },
         {
             "name": "phpunit/phpunit-mock-objects",
-            "version": "5.0.5",
+            "version": "5.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "283b9f4f670e3a6fd6c4ff95c51a952eb5c75933"
+                "reference": "33fd41a76e746b8fa96d00b49a23dadfa8334cdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/283b9f4f670e3a6fd6c4ff95c51a952eb5c75933",
-                "reference": "283b9f4f670e3a6fd6c4ff95c51a952eb5c75933",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/33fd41a76e746b8fa96d00b49a23dadfa8334cdf",
+                "reference": "33fd41a76e746b8fa96d00b49a23dadfa8334cdf",
                 "shasum": ""
             },
             "require": {
@@ -6062,7 +6121,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-12-10T08:01:53+00:00"
+            "time": "2018-01-06T05:45:45+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

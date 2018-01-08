@@ -19,7 +19,7 @@
         "barryvdh/laravel-debugbar": "^2.2",
  	      "subfission/cas": "dev-master",
         "google/apiclient": "dev-master",
-        "barryvdh/laravel-cors": "^0.10.0",
+        "barryvdh/laravel-cors": "^0.11.0",
         "doctrine/dbal": "~2.3",
         "snowfire/beautymail": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
