@@ -189,7 +189,7 @@
         margin-bottom: .3rem;
         }
     img.col-img{
-           
+           display:none;
             max-width: 100% !important;
             width: 100%  !important;
             position: relative;
@@ -203,26 +203,13 @@
 @media only screen and (min-width: 610px) {
        
     .two-column {
-        text-align: center;
-        font-size: 0;
         width: 560px;
-        position: relative;
-        box-sizing: border-box;
-        margin-left: 0rem;
-        margin-right: 0rem;
-        display: block;
     }
        .two-column .column {
-        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
+       
     }
-        .two-column .column {
-            /*max-width: 48% !important;
-            width: 48%;
-            background-color: purple;*/
-
-        }
          img.col-img{
-            display:none !important;
+            display:block !important;
             max-width: 100% !important;
              width: 100%  !important;
              position: relative;
