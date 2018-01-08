@@ -208,6 +208,19 @@
 
     /*Media Queries*/
    @media only screen and (min-width: 610px) {
+       .two-column {
+        text-align: center;
+        font-size: 0;
+        width: 560px;
+        position: relative;
+        box-sizing: border-box;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        display: block;
+    }
+       .two-column .column {
+        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
+    }
         .two-column .column {
             /*max-width: 48% !important;
             width: 48%;
@@ -222,6 +235,19 @@
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
+    .two-column {
+        text-align: center;
+        font-size: 0;
+        width: 480px;
+        position: relative;
+        box-sizing: border-box;
+        margin-left: 0rem;
+        margin-right: 0rem;
+        display: block;
+    }
+    .two-column .column {
+        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
+    }
         .two-column .column {
             /*max-width: 48% !important;
             width: 48%;
@@ -301,7 +327,7 @@
                     @if($email->mainstories->count() == 3)
                     <tr>
                         <td>
-                            <table class="indent-less" style="width: 560px; box-sizing: border-box;">
+                            <table class="indent-less">
 
                                 <tr>
                                     <td class="two-column" style="width: auto; box-sizing: border-box; position: relative; display: block;">
