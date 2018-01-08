@@ -178,7 +178,6 @@
         box-sizing: border-box;
         margin-left: 0rem;
         margin-right: 0rem;
-        background-color: greenyellow;
         display: block;
     }
     .two-column .column {
@@ -302,7 +301,7 @@
                     @if($email->mainstories->count() == 3)
                     <tr>
                         <td>
-                            <table class="indent-less" style="width: 550px; box-sizing: border-box;">
+                            <table class="indent-less" style="width: 560px; box-sizing: border-box;">
 
                                 <tr>
                                     <td class="two-column" style="width: auto; box-sizing: border-box; position: relative; display: block;">
