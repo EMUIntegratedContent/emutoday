@@ -1,5 +1,5 @@
 <template>
-  <section id="email-live-container" style="margin:0 auto; width:620px; padding:10px; border:1px solid #d1d1d1; margin-bottom:20px">
+  <section id="email-live-container" style="margin:0 auto; width:620px; border:1px solid #d1d1d1; margin-bottom:20px">
     <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;">
         <table border="0" cellpadding="0" cellspacing="0" height="100%" align="center" class="outer">
 
@@ -14,7 +14,8 @@
 
                         <tr valign="top" id="header-row" style="text-align:center">
                             <td>
-                                <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 30px; line-height: 32px; font-weight: 600;"><span style="color: #046A38">EMU</span> Today Digest</h2>
+                                <h2 style="padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;">The Week at EMU</h2>
+                                <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="/"><span style="color: #046A38">EMU</span> Today </a></p>
                             </td>
                         </tr>
 
@@ -23,8 +24,8 @@
                               <template v-if="email.mainStories[0]">
                                 <article>
                                     <img :alt="email.mainStories[0].email_images[0].caption" :src="email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
-                                    <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px; border-bottom: 3px solid #97D700;">
-                                        <h2><a :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}</a></h2>
+                                    <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px;">
+                                        <h2><a :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a></h2>
                                         {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}
                                     </div>
                                 </article>
@@ -42,8 +43,7 @@
                         <template v-if="email.mainStories.length == 3">
                         <tr>
                             <td >
-                                <table class="indent">
-                                    <tr><td><h2 class="moveover"><a href="https://today.emich.edu/story/news">More News</a></h2></td></tr>
+                                <table>
                                     <tr>
                                         <td class="two-column">
                                             <div class="column">
@@ -59,7 +59,7 @@
                                                                   </tr>
                                                                   <tr>
                                                                           <td class="text" style="text-align:left;">
-                                                                                  <h3><a :href="email.mainStories[1].full_url">{{ email.mainStories[1].email_images[0].title }}</a></h3>
+                                                                                  <h3><a :href="email.mainStories[1].full_url">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a></h3>
                                                                                   <p>{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>
                                                                           </td>
                                                                   </tr>
@@ -88,7 +88,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                             <td class="text">
-                                                                                    <h3><a :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}</a></h3>
+                                                                                    <h3><a :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a></h3>
                                                                                     <p>{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>
                                                                             </td>
                                                                     </tr>
@@ -112,10 +112,11 @@
                         </tr>
                       </template>
                         <tr>
-                            <td valign="top" >
-                              <div class="indent">
+                            <td valign="top">
+                              <div>
+                                <h2 class="moveover"><a href="/story/news">More News &#10137;</a></h2>
                                 <template v-if="email.otherStories.length > 0">
-                                  <ul style="border-top: 1px solid #ccc; padding-bottom: 0px; padding-top: 20px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
+                                  <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                     <li v-for="story in email.otherStories" style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                       <a v-if="story.story_type == 'external'" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
                                       <a v-else style="text-decoration: none;" :href="story.full_url">{{ story.title }}</a>
@@ -130,13 +131,13 @@
                         </tr>
                         <tr>
                             <td valign="top">
-                                <div class="indent">
-                                  <h2 class="moveover"><a href="/announcement">Announcements</a></h2>
+                                <div>
+                                  <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/announcement">Announcements  &#10137;</a></h2>
                                   <template v-if="email.announcements.length > 0">
-                                    <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-bottom: 5px; margin-top: 5px;">
+                                    <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-top: 5px;">
                                       <li v-for="announcement in email.announcements" style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                                         <a v-if="announcement.link != ''" style="text-decoration: none;" :href="announcement.link">{{ announcement.title }}</a>
-                                        <a v-else style="text-decoration: none; " :href="'https://today.emich.edu/announcement/' + announcement.id">{{ announcement.title }}</a>
+                                        <a v-else style="text-decoration: none; " :href="'/announcement/' + announcement.id">{{ announcement.title }}</a>
                                       </li>
                                     <ul>
                                   </template>
@@ -148,12 +149,12 @@
                         </tr>
                         <tr>
                             <td valign="middle">
-                                <div class="indent" style="border-top: 3px solid #97D700; padding-top: 5px;">
-                                    <h2 class="moveover"><a href="/calendar">What's Happening at EMU</a></h2>
+                                <div style="padding-top: 5px;">
+                                    <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/calendar">What's Happening at EMU  &#10137;</a></h2>
                                     <template v-if="email.events.length > 0">
                                       <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
                                         <li v-for="evt in email.events" style="list-style: none; margin-left: 0; clear: both;">
-                                          <div style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; background-color: #a2e600;">{{ evt.start_date | dateParse }} </div>
+                                          <div style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;">{{ evt.start_date | dateParse }} </div>
                                           <div style="width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" :href="event.full_url">{{ evt.title }}</a></div>
                                         </li>
                                       <ul>
@@ -167,17 +168,16 @@
                         <tr style="background:#515151; color:#ffffff; border:0;">
                             <td style="border:0; ">
                                 <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">
-                                    <tr style="text-align:center; font-size: 13px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
+                                    <tr style="text-align:center; font-size: 12px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;">
                                       <td>
                                         <ul style="list-style: none; padding-left: 0; background:#515151; color:#ffffff;">
-                                        <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 3px;  text-decoration: none;" href="https://today.emich.edu/">EMU Today</a></li>
-                                        <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/calendar">Calendar</a></li>
-                                        <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/announcement">Announcements</a></li>
-                                        <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 3px; text-decoration: none;" href="https://today.emich.edu/story/news">News</a></li>
-                                        <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 3px; padding-right: 0; text-decoration: none;" href="https://today.emich.edu/magazine">Eastern Magazine</a></li>
-
-                                            </ul>
-                                        </td>
+                                          <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 0px; padding-right: 5px;  text-decoration: none;" href="/">EMU Today</a></li>
+                                          <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="/calendar">Calendar</a></li>
+                                          <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="/announcement">Announcements</a></li>
+                                          <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="/story/news">News</a></li>
+                                          <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;" href="/magazine">Eastern Magazine</a></li>
+                                        </ul>
+                                      </td>
                                     </tr>
                                 </table>
                             </td>
@@ -202,6 +202,9 @@
                                                 </li>
                                                 <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                                                     <a href="https://www.linkedin.com/edu/school?id=18604"><img class="img-circle" alt="Linked-In" src="/assets/imgs/icons/linked-in-base-icons.png"></a>
+                                                </li>
+                                                <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
+                                                    <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle" alt="Snap Chat" src="/assets/imgs/icons/snapchat.png"></a>
                                                 </li>
                                                 <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                                                     <a href="http://blogemu.com/"><img class="img-circle" alt="Blog EMU" src="/assets/imgs/icons/e-base-icons.png"></a>
@@ -234,10 +237,15 @@
 }
 
 body{
-    font-size:16px;
+    font-size: .9rem;
+    line-height: 1.3rem;
     margin: 0 !important;
     padding: 0;
-    background-color: #f3f2ee;
+    /*background-color: #f3f2ee;*/
+    /*background-color: #d6d2c4;*/
+    /*background-color: #e6e6e6;*/
+    background-color: #e1e1e1;
+    color: #636363;
 }
 table {
     border-collapse: collapse;
@@ -285,6 +293,10 @@ a:active {
     color: #046A38;
     text-decoration: underline;
 }
+a.uppertitle{
+    text-decoration: none;
+    color: #333333;
+}
 
 h1,
 h2,
@@ -298,44 +310,61 @@ h6 {
 }
 .h1 {
     font-size: 24px;
+
 }
 h2{
     font-size: 22px;
-}
-h2 a{
-    font-size: 22px;
-    font-weight: bold;
-    text-decoration: none;
+
 }
 h3{
     font-size: 20px;
 }
-h3 a{
-  font-weight: bold;
-  text-decoration: none;
+h3.mid{
+    font-size: 18px;
+    padding: 12px 0 8px;
+    line-height: 22px;
+    text-decoration: none;
 }
+h3.mid a{
+    text-decoration: none;
+}
+
 h4{
     font-size: 18px;
 }
 h5, h6{
     font-size: 16px;
 }
-h2.moveover{
-  padding: 12px 0 5px 8px;
-  font-weight: bold;
-  text-decoration: underline;
-}
+h2.moveover{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
+
+h3.moveover{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}
+
+h2 a{text-decoration: none; color: #636363 !important; font-weight: bold;}
+h3 a{text-decoration: none; color: #636363 !important; font-weight: bold;}
 p {
     padding: 0;
     margin: 0;
 }
-
+p.direct-today-link {
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 8px;
+    padding-top: 5px;
+}
+p.sub-title {
+    margin-bottom: 10px;
+}
 
 .indent {
     margin-left: 1rem;
     margin-right: 1rem;
 }
-
+.indent-less {
+    /*margin-left: .5rem;
+    margin-right: .5rem;*/
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
 .indent-more {
     padding-left: 35px;
     padding-right: 35px;
@@ -346,7 +375,7 @@ p {
 
 .outer {
     margin: 0 auto;
-    width: 100%;
+    width: 98%;
     max-width: 600px;
     }
 .full-width-image img {
@@ -370,7 +399,9 @@ p {
     /*width: 100%;*/
 }
 .one-column p {
-    font-size: 14px;
+    /*font-size: 14px;*/
+    font-size: .9rem;
+    line-height: 1.3rem;
     Margin-bottom: 10px;
 }
 /*Two column layout*/
@@ -380,6 +411,8 @@ p {
     /*width: auto;*/
     position: relative;
     box-sizing: border-box;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 .two-column .column {
     /*width: 100%;*/
@@ -397,6 +430,7 @@ p {
 .two-column .contents {
     font-size: 14px;
     text-align: left;
+    margin-bottom: .3rem;
     }
 /*.two-column img {
         width: 100%;
@@ -422,8 +456,8 @@ p {
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
     .two-column .column {
-        max-width: 49.9% !important;
-        width: 49.9%;
+        max-width: 49.2% !important;
+        width: 49.2%;
     }
      img.col-img{
         max-width: 100% !important;
@@ -445,14 +479,14 @@ p {
   .two-column .column h3{
       padding-top: 0;
     }
-     .inner {
-        padding-top: 0px;
-    }
+ .inner {
+    padding-top: 0px;
+}
 
-    .inner h3{
-        padding-top: 0px;
-        padding-bottom: 0px;
-    }
+.inner h3{
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
 }
 </style>
 <script>

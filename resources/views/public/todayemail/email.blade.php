@@ -3,7 +3,7 @@
 <style type="text/css" media="screen">
     body{
         font-size: .9rem;
-        line-height: 1.3rem; 
+        line-height: 1.3rem;
         margin: 0 !important;
         padding: 0;
         /*background-color: #f3f2ee;*/
@@ -101,9 +101,9 @@
         font-size: 16px;
     }
     h2.moveover{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}
-    
+
     h3.moveover{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}
-    
+
     h2 a{text-decoration: none; color: #636363;}
     h3 a{text-decoration: none; color: #636363;}
     p {
@@ -299,7 +299,7 @@
                     <tr>
                         <td>
                             <table class="indent-less">
-                              
+
                                 <tr>
                                     <td class="two-column">
                                         <!--[if (gte mso 9)|(IE)]>
