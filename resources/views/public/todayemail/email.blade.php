@@ -190,10 +190,10 @@
         position: relative;
         box-sizing: border-box;*/
     }
-    .two-column .column .contents {
-        width: 100%;
+    .contents {
+        /*width: 100%;*/
         }
-    .two-column .column .contents {
+    .two-column .contents {
         font-size: 14px;
         text-align: left;
         margin-bottom: .3rem;
@@ -219,7 +219,7 @@
         display: block;
     }
        .two-column .column {
-        width: 260px; box-sizing: border-box; position: relative; display: inline-block;
+        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
     }
         .two-column .column {
             /*max-width: 48% !important;
@@ -227,11 +227,6 @@
             background-color: purple;*/
 
         }
-       .two-column .column .text{
-           box-sizing: border-box;
-            width: 260px;
-           
-       }
          img.col-img{
             max-width: 100% !important;
              width: 100%;
@@ -241,27 +236,11 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
     .two-column {
-        text-align: center;
-        font-size: 0;
-        width: 480px;
-        position: relative;
-        box-sizing: border-box;
-        margin-left: 0rem;
-        margin-right: 0rem;
-        display: block;
+       display: none;
     }
     .two-column .column {
-        width: 220px; 
-        box-sizing: border-box; 
-        position: relative; 
-        display: inline-block;
-        
+        width: 49%; box-sizing: border-box; position: relative; display: inline-block;"
     }
-     .two-column .column .text{
-           box-sizing: border-box;
-            width: 220px;
-           
-       }
         .two-column .column {
             /*max-width: 48% !important;
             width: 48%;
@@ -341,16 +320,16 @@
                     @if($email->mainstories->count() == 3)
                     <tr>
                         <td>
-                            <table class="indent-less">
+                            <table class="indent-less" style="width: 540px; box-sizing: border-box; position: relative; display: block;>
 
                                 <tr>
-                                    <td class="two-column" >
+                                    <td class="two-column" style="width: 540px; box-sizing: border-box; position: relative; display: block;">
                                         <!--[if (gte mso 9)|(IE)]>
                                         <table width="100%">
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" >
+                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative; display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -374,7 +353,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column" >
+                                        <div class="column" style="width: 49%; box-sizing: border-box; position: relative;  display: inline-block;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
