@@ -48,6 +48,8 @@ class SendTodayEmails extends Command
      */
     public function handle()
     {
+      \Log::info("Email command executed.");
+      
       /**
        * Emails must be:
        * 1) Approved
