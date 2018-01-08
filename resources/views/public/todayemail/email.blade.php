@@ -307,7 +307,7 @@
                                         <tr>
                                         <td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column">
+                                        <div class="column" style="width:45%;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
@@ -331,7 +331,7 @@
                                         <!--[if (gte mso 9)|(IE)]>
                                         </td><td width="50%" valign="top">
                                         <![endif]-->
-                                        <div class="column">
+                                        <div class="column" style="width:45%;">
                                             <table>
                                                     <tr>
                                                         <td class="inner">
