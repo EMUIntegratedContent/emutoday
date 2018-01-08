@@ -188,10 +188,11 @@
         text-align: left;
         margin-bottom: .3rem;
         }
-   .two-column img {
-        width: 100% !important;
-        height: auto;
-        position: relative;
+    img.col-img{
+            display:none !important;
+            max-width: 100% !important;
+            width: 100%  !important;
+            position: relative;
         }
     .two-column .column .text {
             padding-top: 0px;
@@ -250,12 +251,7 @@
         position: relative; 
         display: inline-block;"
     }
-    img.col-img{
-        display:none !important;
-            max-width: 100% !important;
-            width: 100%  !important;
-            position: relative;
-        }
+   
 
 }
   @media only screen and (min-width: 10px) and (max-width: 479px){
