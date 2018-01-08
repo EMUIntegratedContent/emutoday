@@ -189,7 +189,7 @@
         margin-bottom: .3rem;
         }
     img.col-img{
-           display:none;
+        
             max-width: 100% !important;
             width: 100%  !important;
             position: relative;
@@ -205,14 +205,8 @@
     .two-column {
         width: 560px;
     }
-       .two-column .column {
-       
-    }
-         img.col-img{
-            display:block !important;
-            max-width: 100% !important;
-             width: 100%  !important;
-             position: relative;
+     img.col-img{
+            display:none !important;
         }
 
     }
