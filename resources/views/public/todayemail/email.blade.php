@@ -208,8 +208,8 @@
     /*Media Queries*/
    @media only screen and (min-width: 610px) {
         .two-column .column {
-            max-width: 49.9% !important;
-            width: 49.9%;
+            max-width: 45% !important;
+            width: 45%;
 
         }
          img.col-img{
@@ -221,8 +221,8 @@
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
         .two-column .column {
-            max-width: 49.2% !important;
-            width: 49.2%;
+            max-width: 45% !important;
+            width: 45%;
         }
          img.col-img{
             max-width: 100% !important;
