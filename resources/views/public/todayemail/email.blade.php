@@ -235,7 +235,20 @@
     }*/
     
      /*Media Queries*/
-   @media only screen and (min-width: 610px) {
+    /*Media Queries*/
+@media screen and (max-width: 400px) {
+.two-column .column,
+    .three-column .column {
+        max-width: 100% !important;
+    }
+    .two-column img {
+        max-width: 100% !important;
+    }
+    .three-column img {
+        max-width: 50% !important;
+    }
+}
+  /* @media only screen and (min-width: 610px) {
         
        
     }
@@ -249,7 +262,7 @@
   
 
    
-    }
+    }*/
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:96%; font-family: 'Poppins', arial, sans-serif;">
