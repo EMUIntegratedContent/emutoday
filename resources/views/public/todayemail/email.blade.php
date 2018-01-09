@@ -174,7 +174,7 @@
     }
     
      .card-container .card.right-card{
-        margin-left: 0; width: 46%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
+        margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
     }
     
     
@@ -210,6 +210,7 @@
     
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
+    
        
     /*.two-column {
         width: 560px;
@@ -247,14 +248,13 @@
    
 
 }
-  @media only screen and (min-width: 10px) and (max-width: 479px){
+  @media only screen and (max-width: 479px){
      /* tr.two-images-up{
         display:none !important;
         }*/
-      .card-container .card .imagebox{
-          display: none;
-      }
-
+      .card-container {
+        display: none; margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;
+    }
     .inner h3{
         padding-top: 0px;
         padding-bottom: 0px;
