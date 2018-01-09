@@ -137,11 +137,10 @@
     }
     .unsubscribe-container{
         text-align: center;
-    }
-    p.direct-today-link{
-        text-align: center;
+        width: 100%;
         
     }
+ 
 /*from others*/
     .outer {
         margin: 0 auto;
