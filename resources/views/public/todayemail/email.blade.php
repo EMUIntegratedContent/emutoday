@@ -298,11 +298,7 @@
                               
                                 <tr>
                                     <td class="two-column">
-                                        <!--[if (gte mso 9)|(IE)]>
-                                        <table width="100%">
-                                        <tr>
-                                        <td width="50%" valign="top">
-                                        <![endif]-->
+                                     
                                         <div class="column">
                                             <table>
                                                     <tr>
@@ -324,9 +320,7 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                        <!--[if (gte mso 9)|(IE)]>
-                                        </td><td width="50%" valign="top">
-                                        <![endif]-->
+                                     
                                         <div class="column">
                                             <table>
                                                     <tr>
@@ -351,11 +345,7 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                        <!--[if (gte mso 9)|(IE)]>
-                                        </td>
-                                        </tr>
-                                        </table>
-                                        <![endif]-->
+                                     
                                     </td>
                                 </tr>
                             </table>
