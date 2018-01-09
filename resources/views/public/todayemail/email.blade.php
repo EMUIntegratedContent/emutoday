@@ -248,12 +248,13 @@
    
 
 }
-  @media only screen and (max-width: 479px){
-     /* tr.two-images-up{
-        display:none !important;
-        }*/
-      .card-container {
-        display: none; margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;
+  @media only screen and (max-width: 480px){
+    
+      div[class="card-container"]  {
+        display: none;
+        height: 0;
+          width:0;
+          max-width: 0;
     }
     .inner h3{
         padding-top: 0px;
