@@ -171,21 +171,19 @@
            
     }
     
-    .card-container .card.{
+    .card-container .card{
         margin-left: 0; width: 46%; margin-right: 4%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%; background-color: pink;
     }
     
      .card-container .card.right-card{
-        float: right; background-color: orange;
+        margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
     }
-     .card-container .card .imagebox{margin-bottom: 0px; color: #ffffff; text-decoration: none;  position: relative; box-sizing: border-box;}
-     .card-container .card .text-box{padding-top: 5px; padding-bottom: 10px; position: relative; box-sizing: border-box;}
-    
+
     
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
-    div[class="card-container"]{
-        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: green;
+    div[class="card"]{
+        margin-left: 0.8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; width: 100%; max-width: 100%; box-sizing: border-box; background-color: green;
     }
     }
 
@@ -258,12 +256,12 @@
                                         <!--<div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">-->
                                             <div class="card">
 
-                                                <div class="imagebox"><img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
-                                                
-                                                 <div class="text-box">
-                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                   {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                   {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
+                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
+
+                                            <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
+                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                    {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                    {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
                                                 </div>
 
                                         </div>
@@ -271,13 +269,12 @@
                                        <!-- <div class="card right-card" style="margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">-->
                                             <div class="card right-card">
 
-                                            <div class="imagebox"><img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
+                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
 
-                                            <div class="text-box">
+                                            <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
                                                                                    {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                   {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
-                                                </div>
+                                                                                   {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}</div>
 
                                         </div>
                                    
