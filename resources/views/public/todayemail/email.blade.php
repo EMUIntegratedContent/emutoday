@@ -182,7 +182,7 @@
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
  .card-container .card.right-card{
-        display: block; margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
+        margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
     }
     }
 
