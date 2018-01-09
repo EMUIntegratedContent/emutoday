@@ -177,79 +177,19 @@
      .card-container .card.right-card{
         margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
     }
-    
-    
-    
-    
-    
-    /*Two column*/
-    /*.two-column {
-        text-align: center;
-        font-size: 0;
-        position: relative;
-        box-sizing: border-box;
-        margin-left: 0rem;
-        margin-right: 0rem;
-        display: block;
-        
-    }
-    .two-column .column {
-        width: 48%; box-sizing: border-box; position: relative; display: inline-block;
-    }
-    .contents {
-        }
-    .two-column .contents {
-        font-size: 14px;
-        text-align: left;
-        margin-bottom: .3rem;
-        }
-   
-    .two-column .column .text {
-            padding-top: 0px;
-        }*/
 
     
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
-    
-       
-    /*.two-column {
-        width: 560px;
+    .card-container {
+        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: green;
     }
-     img.col-img{
-            display:none !important;
-        }*/
-
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
     
-    .card-container .card{
-        display: none;
-    }
-    .card-container .card.right-card{
-        display: none;
-    }
-     .card-container .card.right-card .imagebox{
-        display: none;
-    }
-     .card-container .card.right-card .imagebox img.col-img{
-        display: none;
-    }
-     .card-container .card.right-card .text-box{
-        display: none;
-    }
-    /*div[class="card-container"]  {
-        display: none;
-        height: 0;
-          width:0;
-          max-width: 0;
-    }
-*/
 }
   @media only screen and (max-width: 480px){
-    
-   
     .inner h3{
         padding-top: 0px;
         padding-bottom: 0px;
