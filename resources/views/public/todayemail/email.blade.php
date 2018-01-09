@@ -176,23 +176,23 @@
         font-size: 12px;
         text-align: left;
         }
-        .two-column img {
+    .two-column img {
             width: 100%;
-            max-width: 280px;
+            max-width: 260px;
             height: auto;
         }
-        .two-column .text {
+    .two-column .text {
             padding-top: 10px;
 }
     /*Two column layout*/
-     img.col-img{
+     /*img.col-img{
           max-width: 100% !important;
-            /*width: 100%  !important;*/
+            
             position: relative;
-        }
+        }*/
     /*Card version*/
     
-   .card-container{
+   /*.card-container{
         margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;     
     }
     
@@ -211,7 +211,7 @@
     
     .card-container .card .text-box{
         padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;
-    }
+    }*/
 
 
 /*@media only screen and (min-device-width: 610px) {
