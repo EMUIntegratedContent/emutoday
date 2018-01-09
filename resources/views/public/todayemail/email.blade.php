@@ -166,9 +166,8 @@
         }
     /*Card version*/
     
-   div[class="card-container"]{
-        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;
-           
+   .card-container{
+        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;     
     }
     
     .card-container .card{
@@ -182,9 +181,7 @@
     
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
-    div[class="card"]{
-        margin-left: 0.8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; width: 100%; max-width: 100%; box-sizing: border-box; background-color: green;
-    }
+ 
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
