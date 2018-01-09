@@ -190,8 +190,6 @@
     .two-column .text {
         padding-top: 0px;
         padding-bottom: 10px;
-        padding-left: 1rem;
-        padding-right: 1rem;
        
 }
     
