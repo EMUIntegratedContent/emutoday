@@ -145,8 +145,7 @@
     .full-width-image img {
         width: 100%;
         max-width: 600px;
-        height: auto;
-       
+        height: auto;    
     }
     .inner {
         padding-top: 0px;
@@ -159,6 +158,32 @@
         line-height: 1.3rem;
         Margin-bottom: 10px;
     }
+    /*Two column from https://webdesign.tutsplus.com/tutorials/creating-a-future-proof-responsive-email-without-media-queries--cms-23919*/
+    .two-column {
+        text-align: center;
+            font-size: 0;
+        }
+    .two-column .column {
+            width: 100%;
+            max-width: 300px;
+            display: inline-block;
+            vertical-align: top;
+        }
+    .contents {
+        width: 100%;
+        }
+    .two-column .contents {
+        font-size: 12px;
+        text-align: left;
+        }
+        .two-column img {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+        }
+        .two-column .text {
+            padding-top: 10px;
+}
     /*Two column layout*/
      img.col-img{
           max-width: 100% !important;
@@ -211,16 +236,11 @@
      /*Media Queries*/
    @media only screen and (min-width: 610px) {
         
-       .card-container .card .imagebox{
-           display: none !important;
-       }
-
+       
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
-         .card-container .card .imagebox{
-           display: none !important;
-       }
+    
         }
 
 }
@@ -274,19 +294,79 @@
                     @if($email->mainstories->count() == 3)
                    
                     @endif
-                 
-                         
+                 <tr>
+                     <td class="two-column">
+                        <!--[if (gte mso 9)|(IE)]>
+                        <table width="100%">
+                        <tr>
+                        <td width="50%" valign="top">
+                        <![endif]-->
+                        <div class="column">
+                            <table width="100%">
+                                    <tr>
+                                        <td class="inner">
+                                            <table class="contents">
+                                                    <tr>
+                                                            <td>
+                                                                    <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" />
+                                                            </td>
+                                                    </tr>
+                                                    <tr>
+                                                            <td class="text">
+                                                                   <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                                            {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                                            {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!} 
+                                                            </td>
+                                                    </tr>
+                                            </table> 
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        <!--[if (gte mso 9)|(IE)]>
+                        </td><td width="50%" valign="top">
+                        <![endif]-->
+                        <div class="column">
+                        <table width="100%">
+                                <tr>
+                                    <td class="inner">
+                                         <table class="contents">
+                                                    <tr>
+                                                            <td>
+                                                                    <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" />
+                                                            </td>
+                                                    </tr>
+                                                    <tr>
+                                                            <td class="text">
+                                                                   <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                                            {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                                            {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!} 
+                                                            </td>
+                                                    </tr>
+                                            </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                        </tr>
+                        </table>
+                        <![endif]-->
+                    </td>
+                   
+                     </tr>
                     
                     
                     <!--test-->
-                         <tr>
+                        <!-- <tr>
                         <td valign="top">
                             <div class="indent" >
                                 
-                                    <!--<div class="card-container" style="margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;">-->
+                                   
                                         <div class="card-container">
                                     
-                                        <!--<div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">-->
+                                       
                                             <div class="card">
 
                                             <div class="imagebox"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
@@ -299,7 +379,7 @@
 
                                         </div>
                                   
-                                       <!-- <div class="card right-card" style="margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">-->
+                                       
                                             <div class="card right-card">
 
                                             <div class="imagebox"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
@@ -314,7 +394,7 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr>-->
                     
                     
                     
