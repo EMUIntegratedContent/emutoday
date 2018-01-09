@@ -403,7 +403,7 @@
                                 
                                     <div class="card-container" style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;">
                                     
-                                        <div class="card" style="margin-left: 0; width: 45%; margin-right: 5%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+                                        <div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
 
                                             <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
 
@@ -415,7 +415,7 @@
 
                                         </div>
                                   
-                                        <div class="card" style="list-style: none; margin-left: 0; width: 45%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+                                        <div class="card" style="list-style: none; margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
 
                                             <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
 
