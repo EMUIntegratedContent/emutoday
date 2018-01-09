@@ -169,7 +169,13 @@
     .card-container {
         margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;
     }
+    .card-container .card{
+        margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;
+    }
     
+     .card-container .card.right-card{
+        margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;
+    }
     
     
     
@@ -311,7 +317,8 @@
                                     <!--<div class="card-container" style="margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;">-->
                                         <div class="card-container">
                                     
-                                        <div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
+                                        <!--<div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">-->
+                                            <div class="card">
 
                                             <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
 
@@ -323,7 +330,8 @@
 
                                         </div>
                                   
-                                        <div class="card" style="list-style: none; margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
+                                       <!-- <div class="card right-card" style="margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">-->
+                                            <div class="card right-card">
 
                                             <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
 
