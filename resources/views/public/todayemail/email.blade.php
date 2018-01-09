@@ -287,77 +287,7 @@
                     </tr>
                     {{-- some emails might not have sub stories! --}}
                     @if($email->mainstories->count() == 3)
-                    <tr class="two-images-up">
-                        <td>
-                            <table class="indent-less">
-
-                                <tr>
-                                    <td class="two-column">
-                                        <!--[if (gte mso 9)|(IE)]>
-                                        <table width="100%">
-                                        <tr>
-                                        <td width="50%" valign="top">
-                                        <![endif]-->
-                                        <div class="column">
-                                            <!--<div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">-->
-                                            <table>
-                                                    <tr>
-                                                        <td class="inner"  valign="top">
-                                                            <table class="contents">
-                                                                <tr>
-                                                                    <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" />
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td class="text" style="text-align:left;">
-                                                                                <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
-                                                                        </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        <!--[if (gte mso 9)|(IE)]>
-                                        </td><td width="50%" valign="top">
-                                        <![endif]-->
-                                        <div class="column">
-                                            <!--<div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">-->
-                                            <table>
-                                                    <tr>
-                                                        <td class="inner" valign="top">
-                                                            <table class="contents">
-                                                                <tr>
-                                                                        <td>
-                                                                                <img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" />
-                                                                        </td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td class="text">
-
-                                                                               <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
-                                                                               {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                               {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
-
-                                                                        </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        <!--[if (gte mso 9)|(IE)]>
-                                        </td>
-                                        </tr>
-                                        </table>
-                                        <![endif]-->
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
+                   
                     @endif
                  
                          
