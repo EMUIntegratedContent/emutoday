@@ -185,54 +185,6 @@
         padding-top: 0px;
         padding-bottom: 10px;
 }
-    /*Two column layout*/
-     /*img.col-img{
-          max-width: 100% !important;
-            
-            position: relative;
-        }*/
-    /*Card version*/
-    
-   /*.card-container{
-        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;     
-    }
-    
-    .card-container .card{
-        margin-left: 0; width: 46%; margin-right: 4%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%; 
-    }
-    
-     .card-container .card.right-card{
-        margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;
-    }
-    
-    
-    .card-container .card .imagebox{
-        margin-bottom: 0px; color: #ffffff; text-decoration: none; position: relative; box-sizing: border-box;
-    }
-    
-    .card-container .card .text-box{
-        padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;
-    }*/
-
-
-/*@media only screen and (min-device-width: 610px) {
-  .card-container{
-        display: none;  
-    }
-    }
-
-@media only screen and (min-device-width: 480px) and (max-device-width: 609px) {
-     .card-container{
-        display: none;  
-    }
-    
-}
-@media only screen and (max-device-width: 480px){
-     .card-container{
-        display: none;  
-    }
-
-    }*/
     
    
     /*Media Queries*/
@@ -259,21 +211,7 @@
     }
    
 }
-  /* @media only screen and (min-width: 610px) {
-        
-       
-    }
 
-@media only screen and (min-width: 480px) and (max-width: 609px) {
-    
-        }
-
-}
-  @media only screen and (min-width: 10px) and (max-width: 479px){
-  
-
-   
-    }*/
 </style>
 
 <div style="border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:96%; font-family: 'Poppins', arial, sans-serif;">
@@ -381,49 +319,6 @@
                     </td>
                    
                      </tr>
-                    
-                    
-                    <!--test-->
-                        <!-- <tr>
-                        <td valign="top">
-                            <div class="indent" >
-                                
-                                   
-                                        <div class="card-container">
-                                    
-                                       
-                                            <div class="card">
-
-                                            <div class="imagebox"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
-
-                                            <div class="text-box">
-                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                    {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                    {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
-                                                </div>
-
-                                        </div>
-                                  
-                                       
-                                            <div class="card right-card">
-
-                                            <div class="imagebox"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
-
-                                            <div class="text-box">
-                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
-                                                                                   {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                   {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}</div>
-
-                                        </div>
-                                   
-                                </div>
-                            </div>
-                        </td>
-                    </tr>-->
-                    
-                    
-                    
-                    
                     
                     
                      <tr>
