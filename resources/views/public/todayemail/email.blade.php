@@ -161,7 +161,7 @@
     /*Two column from https://webdesign.tutsplus.com/tutorials/creating-a-future-proof-responsive-email-without-media-queries--cms-23919*/
     .two-column {
         text-align: center;
-            font-size: 0;
+        font-size: 0;
         }
     .two-column .column {
            width: 100%;
@@ -174,7 +174,7 @@
         width: 100%;
         }
     .two-column .contents {
-        font-size: 12px;
+        font-size: .9rem;
         text-align: left;
         }
     .two-column img {
