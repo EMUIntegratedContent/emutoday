@@ -164,10 +164,16 @@
             font-size: 0;
         }
     .two-column .column {
-            width: 100%;
+           /* width: 100%;
             max-width: 280px;
             display: inline-block;
-            vertical-align: top;
+            vertical-align: top;*/
+        text-align: center;
+        font-size: 0;
+        position: relative;
+        box-sizing: border-box;
+        margin-left: 1rem;
+        margin-right: 1rem;
         }
     .contents {
         width: 100%;
