@@ -178,7 +178,7 @@
         }
     .two-column img {
             width: 100%;
-            max-width: 260px;
+            max-width: 200px;
             height: auto;
         }
     .two-column .text {
