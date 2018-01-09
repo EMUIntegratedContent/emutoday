@@ -6,9 +6,6 @@
         line-height: 1.3rem;
         margin: 0 !important;
         padding: 0;
-        /*background-color: #f3f2ee;*/
-        /*background-color: #d6d2c4;*/
-        /*background-color: #e6e6e6;*/
         background-color: #e1e1e1;
         color: #636363;
     }
@@ -23,7 +20,7 @@
         padding: 0;
     }
     img {
-        /*border: 0;*/
+
     }
     div[style*="margin: 16px 0"] {
         margin:0 !important;
@@ -137,8 +134,7 @@
     .img-circle {
         border-radius: 50%;
     }
-    </style>
-<style>
+
 /*from others*/
     .outer {
         margin: 0 auto;
@@ -198,8 +194,7 @@
     .two-column .column .text {
             padding-top: 0px;
         }
-</style>
-<style>
+
     
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
@@ -244,26 +239,6 @@
       tr.two-images-up{
         display:none !important;
         }
-      /*.two-column{
-          display: none !important;
-      }
-     .two-column .column {
-         display:none;
-            max-width: 100% !important;
-            width: 100%;
-        }
-      img.col-img{
-            display: none!important;
-        }
-      .two-column .text {
-            padding-top: 0px;
-        }
-      .two-column .column h3{
-          padding-top: 0;
-        }
-     .inner {
-        padding-top: 0px;
-    }*/
 
     .inner h3{
         padding-top: 0px;
@@ -328,7 +303,7 @@
                                             <!--<div class="column" style="width: 48%; box-sizing: border-box; position: relative; display: inline-block;">-->
                                             <table>
                                                     <tr>
-                                                        <td class="inner">
+                                                        <td class="inner"  valign="top">
                                                             <table class="contents">
                                                                 <tr>
                                                                     <td style="text-align:left;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" />
@@ -353,7 +328,7 @@
                                             <!--<div class="column" style="width: 48%; box-sizing: border-box; position: relative;  display: inline-block;">-->
                                             <table>
                                                     <tr>
-                                                        <td class="inner">
+                                                        <td class="inner" valign="top">
                                                             <table class="contents">
                                                                 <tr>
                                                                         <td>
@@ -385,7 +360,83 @@
                         </td>
                     </tr>
                     @endif
-                    <tr>
+                   <!--test-->
+                         <tr>
+                        <td valign="top">
+                            <div class="indent" >
+                                
+                                <ul style="margin-left: 0; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box;">
+                                    
+                                    <li style="list-style: none; margin-left: 0; width: 45%; margin-right: 10%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+                                        
+                                        <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
+                                        
+                                        <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
+                                             <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
+                                            </div>
+                                        
+                                    </li>
+                                  
+                                    <li style="list-style: none; margin-left: 0; width: 45%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+                                        
+                                        <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
+                                        
+                                        <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
+                                            <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
+                                                                               {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                               {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}</div>
+                                        
+                                    </li>
+                                   
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    
+                    <!--test2-->
+                         <tr>
+                        <td valign="top">
+                            <div class="indent" >
+                                
+                                    <div class="card-container" style="margin-left: 0; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box;">
+                                    
+                                        <div class="card" style="margin-left: 0; width: 45%; margin-right: 10%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+
+                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
+
+                                            <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
+                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                    {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                    {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
+                                                </div>
+
+                                        </div>
+                                  
+                                        <div class="card" style="list-style: none; margin-left: 0; width: 45%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+
+                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
+
+                                            <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
+                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
+                                                                                   {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                   {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}</div>
+
+                                        </div>
+                                   
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                    
+                    
+                    
+                     <tr>
                         <td valign="top" >
 
                             <div class="indent">
