@@ -135,7 +135,7 @@
     .img-circle {
         border-radius: 50%;
     }
-    .m_6584178245507779971unsubscribe-container{
+    div[class="unsubscribe-container"]{
         text-align: center;
         width: 100%;
         display: block;   
