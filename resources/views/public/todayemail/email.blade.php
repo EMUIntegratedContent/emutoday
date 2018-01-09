@@ -333,14 +333,14 @@
                                          <table class="contents">
                                                     <tr>
                                                             <td>
-                                                                    <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" />
+                                                                    <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" />
                                                             </td>
                                                     </tr>
                                                     <tr>
                                                             <td class="text">
-                                                                   <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                                            {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                                            {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!} 
+                                                                   <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
+                                                                                                            {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                                            {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!} 
                                                             </td>
                                                     </tr>
                                             </table>
