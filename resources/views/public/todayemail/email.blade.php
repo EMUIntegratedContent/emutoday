@@ -173,8 +173,8 @@
         font-size: 0;
         position: relative;
         box-sizing: border-box;
-        margin-left: 1rem;
-        margin-right: 1rem;
+        /*margin-left: 1rem;
+        margin-right: 1rem;*/
         }
     .contents {
         width: 100%;
