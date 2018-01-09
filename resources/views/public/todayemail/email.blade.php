@@ -291,8 +291,7 @@
                         </td>
                     </tr>
                     
-                    {{-- some emails might not have sub stories! --}}
-                    @if($email->mainstories->count() == 3)
+                 
                     <tr>
                         <td>
                             <table class="indent-less">
@@ -362,10 +361,9 @@
                             </table>
                         </td>
                     </tr>
-                    @endif
+                 
                     <tr>
-                    {{-- some emails might not have sub stories! --}}
-                    @if($email->mainstories->count() == 3)
+                 
                    
                     
                 
