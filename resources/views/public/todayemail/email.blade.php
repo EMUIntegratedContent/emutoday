@@ -175,25 +175,34 @@
     }
     
      .card-container .card.right-card{
-        display: none;
-    }
-
-    
-    /*Media Queries*/
-@media only screen and (min-width: 610px) {
- .card-container .card.right-card{
         margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
     }
+
+</style>
+
+
+<style>
+    /*Media Queries*/
+@media only screen and (min-device-width: 610px) {
+  .card-container{
+        display: none;  
+    }
     }
 
-@media only screen and (min-width: 480px) and (max-width: 609px) {
+@media only screen and (min-device-width: 480px) and (max-device-width: 609px) {
+     .card-container{
+        display: none;  
+    }
     
 }
-  @media only screen and (max-width: 480px){
-    .inner h3{
+@media only screen and (max-device-width: 480px){
+     .card-container{
+        display: none;  
+    }
+ /*   .inner h3{
         padding-top: 0px;
         padding-bottom: 0px;
-    }
+    }*/
     }
 </style>
 
