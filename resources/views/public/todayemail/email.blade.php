@@ -367,7 +367,7 @@
                                 
                                 <ul style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box;">
                                     
-                                    <li style="list-style: none; margin-left: 0; width: 45%; margin-right: 10%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+                                    <li style="list-style: none; margin-left: 0; width: 45%; margin-right: 5%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
                                         
                                         <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
                                         
@@ -401,9 +401,9 @@
                         <td valign="top">
                             <div class="indent" >
                                 
-                                    <div class="card-container" style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box;">
+                                    <div class="card-container" style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box; background-color: blue;">
                                     
-                                        <div class="card" style="margin-left: 0; width: 45%; margin-right: 10%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
+                                        <div class="card" style="margin-left: 0; width: 45%; margin-right: 5%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
 
                                             <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
 
