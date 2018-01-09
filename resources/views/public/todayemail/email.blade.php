@@ -168,6 +168,7 @@
             max-width: 280px;
             display: inline-block;
             vertical-align: top;*/
+        max-width: 280px;
         text-align: center;
         font-size: 0;
         position: relative;
