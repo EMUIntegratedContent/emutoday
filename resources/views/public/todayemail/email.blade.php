@@ -168,6 +168,10 @@
     
    .card-container {
         margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;
+           @media only screen and (min-width: 610px) {
+            .card-container {
+                margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: green;
+            }
     }
     
     .card-container .card{
