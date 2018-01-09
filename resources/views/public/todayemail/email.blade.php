@@ -138,7 +138,12 @@
     .unsubscribe-container{
         text-align: center;
         width: 100%;
-        
+        display: block;   
+    }
+    .unsubscribe-container p{
+        margin-left: auto;
+        margin-right: auto;
+         text-align: center;
     }
  
 /*from others*/
