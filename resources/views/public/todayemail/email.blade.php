@@ -84,7 +84,7 @@
     }
     h3.mid{
         font-size: 18px;
-        padding: 12px 0 8px;
+        padding: 8px 0 8px;
         line-height: 22px;
         text-decoration: none;
     }
@@ -183,7 +183,7 @@
             height: auto;
         }
     .two-column .text {
-        padding-top: 5px;
+        padding-top: 0px;
         padding-bottom: 10px;
 }
     /*Two column layout*/
