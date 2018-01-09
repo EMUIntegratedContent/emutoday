@@ -135,7 +135,13 @@
     .img-circle {
         border-radius: 50%;
     }
-
+    .unsubscribe-container{
+        text-align: center;
+    }
+    p.direct-today-link{
+        text-align: center;
+        
+    }
 /*from others*/
     .outer {
         margin: 0 auto;
@@ -184,6 +190,8 @@
     .two-column .text {
         padding-top: 0px;
         padding-bottom: 10px;
+        padding-left:.5rem;
+        padding-right:.5rem;
 }
     
    
