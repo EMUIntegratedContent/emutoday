@@ -190,6 +190,8 @@
     .two-column .text {
         padding-top: 0px;
         padding-bottom: 10px;
+        padding-left: 1rem;
+        padding-right: 1rem;
        
 }
     
@@ -282,7 +284,7 @@
                                                             </td>
                                                     </tr>
                                                     <tr>
-                                                            <td class="text indent">
+                                                            <td class="text">
                                                                    <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
                                                                                                             {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
                                                                                                             {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!} 
@@ -307,7 +309,7 @@
                                                             </td>
                                                     </tr>
                                                     <tr>
-                                                            <td class="text indent">
+                                                            <td class="text">
                                                                    <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
                                                                                                             {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
                                                                                                             {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!} 
