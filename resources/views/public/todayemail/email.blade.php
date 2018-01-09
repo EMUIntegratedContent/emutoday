@@ -247,10 +247,7 @@
     .three-column img {
         max-width: 50% !important;
     }
-    .two-column .column {
-        max-width: 80% !important;
-       
-    }
+  
 }
 @media screen and (min-width: 401px) and (max-width: 620px) {
    .three-column .column {
