@@ -1,6 +1,7 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:400,400i,500,600,700" rel="stylesheet">
 
 <style type="text/css" media="screen">
+
     body{
         font-size: .9rem;
         line-height: 1.3rem;
@@ -188,7 +189,7 @@
     }
 
 
-@media only screen and (min-device-width: 610px) {
+/*@media only screen and (min-device-width: 610px) {
   .card-container{
         display: none;  
     }
@@ -205,6 +206,27 @@
         display: none;  
     }
 
+    }*/
+    
+     /*Media Queries*/
+   @media only screen and (min-width: 610px) {
+        
+       .card-container .card .imagebox{
+           display: none !important;
+       }
+
+    }
+
+@media only screen and (min-width: 480px) and (max-width: 609px) {
+        
+       
+        }
+
+}
+  @media only screen and (min-width: 10px) and (max-width: 479px){
+  
+
+   
     }
 </style>
 
