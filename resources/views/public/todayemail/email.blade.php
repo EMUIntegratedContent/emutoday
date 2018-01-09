@@ -153,8 +153,6 @@
          padding-left: 10px;
          padding-right: 10px;
     }
-  
-  
     .one-column p {
         font-size: .9rem;
         line-height: 1.3rem;
@@ -166,6 +164,18 @@
             /*width: 100%  !important;*/
             position: relative;
         }
+    /*Card version*/
+    
+    .card-container {
+        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;
+    }
+    
+    
+    
+    
+    
+    
+    /*Two column*/
     /*.two-column {
         text-align: center;
         font-size: 0;
@@ -195,12 +205,12 @@
     /*Media Queries*/
 @media only screen and (min-width: 610px) {
        
-    .two-column {
+    /*.two-column {
         width: 560px;
     }
      img.col-img{
-            /*display:none !important;*/
-        }
+            display:none !important;
+        }*/
 
     }
 
@@ -298,11 +308,12 @@
                         <td valign="top">
                             <div class="indent" >
                                 
-                                    <div class="card-container" style="margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;">
+                                    <!--<div class="card-container" style="margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;">-->
+                                        <div class="card-container">
                                     
                                         <div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
 
-                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
+                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
 
                                             <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
                                                  <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
@@ -314,7 +325,7 @@
                                   
                                         <div class="card" style="list-style: none; margin-left: 0; width: 47%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
 
-                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
+                                            <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
 
                                             <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
