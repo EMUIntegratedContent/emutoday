@@ -234,7 +234,7 @@
 
     }*/
     
-     /*Media Queries*/
+   
     /*Media Queries*/
 @media screen and (max-width: 400px) {
 .two-column .column,
@@ -246,6 +246,15 @@
     }
     .three-column img {
         max-width: 50% !important;
+    }
+}
+@media screen and (min-width: 401px) and (max-width: 620px) {
+   .three-column .column {
+        max-width: 33% !important;
+    }
+    .two-column .column {
+        max-width: 50% !important;
+        background-color: blue;
     }
 }
   /* @media only screen and (min-width: 610px) {
