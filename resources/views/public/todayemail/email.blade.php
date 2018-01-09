@@ -401,7 +401,7 @@
                         <td valign="top">
                             <div class="indent" >
                                 
-                                    <div class="card-container" style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box; background-color: blue;">
+                                    <div class="card-container" style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;">
                                     
                                         <div class="card" style="margin-left: 0; width: 45%; margin-right: 5%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
 
