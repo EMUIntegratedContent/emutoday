@@ -187,10 +187,7 @@
         padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;
     }
 
-</style>
 
-
-<style>
 @media only screen and (min-device-width: 610px) {
   .card-container{
         display: none;  
@@ -207,10 +204,7 @@
      .card-container{
         display: none;  
     }
- /*   .inner h3{
-        padding-top: 0px;
-        padding-bottom: 0px;
-    }*/
+
     }
 </style>
 
@@ -261,7 +255,7 @@
                          
                     
                     
-                    <!--test2-->
+                    <!--test-->
                          <tr>
                         <td valign="top">
                             <div class="indent" >
