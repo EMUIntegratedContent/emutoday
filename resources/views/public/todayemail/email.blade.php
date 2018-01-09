@@ -239,7 +239,7 @@
      /* tr.two-images-up{
         display:none !important;
         }*/
-      .imagebox{
+      .card-container .card .imagebox{
           display: none;
       }
 
@@ -363,40 +363,8 @@
                         </td>
                     </tr>
                     @endif
-                   <!--test-->
-                         <tr>
-                        <td valign="top">
-                            <div class="indent" >
-                                
-                                <ul style="margin-left: 1rem; margin-right: 1rem; margin-top:10px; padding-left: 7px; float: left; padding-bottom: 5px; position: relative; width:100%; max-width: 100%; box-sizing: border-box;">
-                                    
-                                    <li style="list-style: none; margin-left: 0; width: 45%; margin-right: 5%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
-                                        
-                                        <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img class="col-img" alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
-                                        
-                                        <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
-                                             <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
-                                            </div>
-                                        
-                                    </li>
-                                  
-                                    <li style="list-style: none; margin-left: 0; width: 45%;  float: left; position: relative; box-sizing: border-box; display: inline-block;">
-                                        
-                                        <div class="imagebox" style="margin-bottom: 0px; color: #ffffff; background-color: #2b873b; text-decoration: none;"><img  class="col-img" alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" /></div>
-                                        
-                                        <div class="text-box" style="padding-top: 5px; padding-bottom: 10px; float: left; position: relative; box-sizing: border-box;">
-                                            <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
-                                                                               {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                               {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}</div>
-                                        
-                                    </li>
-                                   
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                 
+                         
                     
                     
                     <!--test2-->
