@@ -176,7 +176,7 @@
     }
     
      .card-container .card.right-card{
-        margin-left: 0; width: 46%; margin-right: 0; float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
+        float: right; background-color: orange;
     }
      .card-container .card .imagebox{margin-bottom: 0px; color: #ffffff; text-decoration: none;  position: relative; box-sizing: border-box;}
      .card-container .card .text-box{padding-top: 5px; padding-bottom: 10px; position: relative; box-sizing: border-box;}
@@ -259,12 +259,12 @@
                                             <div class="card">
 
                                                 <div class="imagebox"><img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[1]->filename}}" /></div>
-
-                                                <div class="text-box">
-                                                     <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                        {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                        {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
-                                                    </div>
+                                                
+                                                 <div class="text-box">
+                                                <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                   {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
+                                                                                   {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
+                                                </div>
 
                                         </div>
                                   
@@ -276,7 +276,8 @@
                                             <div class="text-box">
                                                 <h3 class="mid"><a href="{{ url('/') . '/story/' .$mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
                                                                                    {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                   {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}</div>
+                                                                                   {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
+                                                </div>
 
                                         </div>
                                    
