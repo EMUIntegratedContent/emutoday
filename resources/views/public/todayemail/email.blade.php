@@ -183,7 +183,8 @@
             height: auto;
         }
     .two-column .text {
-            padding-top: 10px;
+        padding-top: 5px;
+        padding-bottom: 10px;
 }
     /*Two column layout*/
      /*img.col-img{
@@ -254,7 +255,7 @@
     }
     .two-column .column {
         max-width: 50% !important;
-        background-color: blue;
+       
     }
 }
   /* @media only screen and (min-width: 610px) {
