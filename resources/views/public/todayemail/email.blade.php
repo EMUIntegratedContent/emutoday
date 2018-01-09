@@ -222,40 +222,17 @@
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
-   
-   /* tr.two-images-up table{
-         width: 300px;
-        display:none !important;
-    }*/
-    /*.two-column {
-        display:none !important;
-        text-align: center;
-        font-size: 0;
-        width: 440px;
-        position: relative;
-        box-sizing: border-box;
-        margin-left: 0rem;
-        margin-right: 0rem;
-        display: block;
-    }
-    .two-column .column {
-        display:none !important;
-        width: 40%; 
-        box-sizing: border-box; 
-        position: relative; 
-        display: inline-block;"
-    }*/
-   
-
-}
-  @media only screen and (max-width: 480px){
-    
       div[class="card-container"]  {
         display: none;
         height: 0;
           width:0;
           max-width: 0;
     }
+
+}
+  @media only screen and (max-width: 480px){
+    
+   
     .inner h3{
         padding-top: 0px;
         padding-bottom: 0px;
