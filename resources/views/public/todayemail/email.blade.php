@@ -167,14 +167,14 @@
     /*Card version*/
     
     .card-container {
-        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;
+        margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;
     }
     .card-container .card{
-        margin-left: 0; width: 46%; margin-right: 4%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;
+        margin-left: 0; width: 46%; margin-right: 4%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%; background-color: pink;
     }
     
      .card-container .card.right-card{
-        margin-left: 0; width: 46%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;
+        margin-left: 0; width: 46%;  float: right; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;background-color: orange;
     }
     
     
