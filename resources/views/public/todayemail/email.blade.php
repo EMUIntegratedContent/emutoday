@@ -218,8 +218,9 @@
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
-        
-       
+         .card-container .card .imagebox{
+           display: none !important;
+       }
         }
 
 }
