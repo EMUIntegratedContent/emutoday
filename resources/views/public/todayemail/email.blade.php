@@ -165,7 +165,7 @@
         }
     .two-column .column {
             width: 100%;
-            max-width: 300px;
+            max-width: 280px;
             display: inline-block;
             vertical-align: top;
         }
@@ -178,7 +178,7 @@
         }
     .two-column img {
             width: 100%;
-            max-width: 200px;
+            max-width: 260px;
             height: auto;
         }
     .two-column .text {
