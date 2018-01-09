@@ -203,17 +203,17 @@
         width: 560px;
     }
      img.col-img{
-            display:none !important;
+            /*display:none !important;*/
         }
 
     }
 
 @media only screen and (min-width: 480px) and (max-width: 609px) {
    
-    tr.two-images-up table{
+   /* tr.two-images-up table{
          width: 300px;
-        /*display:none !important;*/
-    }
+        display:none !important;
+    }*/
     /*.two-column {
         display:none !important;
         text-align: center;
@@ -236,9 +236,12 @@
 
 }
   @media only screen and (min-width: 10px) and (max-width: 479px){
-      tr.two-images-up{
+     /* tr.two-images-up{
         display:none !important;
-        }
+        }*/
+      .imagebox{
+          display: none;
+      }
 
     .inner h3{
         padding-top: 0px;
@@ -401,7 +404,7 @@
                         <td valign="top">
                             <div class="indent" >
                                 
-                                    <div class="card-container" style="margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box; background-color: blue;">
+                                    <div class="card-container" style="margin-left: .8rem; margin-right: .8rem; margin-top:10px; padding: 0; float: left; position: relative; max-width: 100%; box-sizing: border-box;">
                                     
                                         <div class="card" style="margin-left: 0; width: 47%; margin-right: 6%;  float: left; position: relative; box-sizing: border-box; display: inline-block; max-width: 100%;">
 
