@@ -15,7 +15,7 @@
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
-              <template v-if="pid == 'items-live'">
+              <template v-if="pid == 'items-live' || pid == 'items-approved'">
                 <div class="form-check">
                   <label class="form-check-label">
                     Elevate

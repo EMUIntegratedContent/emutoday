@@ -245,6 +245,15 @@
                     </table>
                 </div>
                 <!-- /.box-body -->
+                <div class="box-footer">
+                  {{ $pages_notready_past->appends(
+                      [
+                        'notready_current' => $pages_notready_current->currentPage(),
+                        'ready_current' => $pages_ready_current->currentPage(),
+                        'ready_past' => $pages_ready_past->currentPage()
+                      ]
+                    )->links() }}
+                </div><!-- /.box-footer -->
             </div><!-- /.box -->
         </div><!-- /.col-md-6 -->
     <div class="col-md-6">
@@ -302,6 +311,15 @@
                     </table>
                 </div>
                 <!-- /.box-body -->
+                <div class="box-footer">
+                  {{ $pages_ready_past->appends(
+                      [
+                        'notready_current' => $pages_notready_current->currentPage(),
+                        'ready_current' => $pages_ready_current->currentPage(),
+                        'notready_past' => $pages_notready_past->currentPage()
+                      ]
+                    )->links() }}
+                </div><!-- /.box-footer -->
             </div><!-- /.box -->
     </div><!-- /.col-md-6 -->
 </div><!-- /.row -->

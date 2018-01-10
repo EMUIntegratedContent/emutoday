@@ -53,7 +53,7 @@ class MainController extends Controller
               ['is_ready', 1],
               ['is_archived', 0],
               ['start_date', '<=', $currentDateTimeStart]
-          ])->first();
+          ])->orderBy('start_date', 'desc')->first();
       }
 
       $currentStorysBasic = $this->story->where([
