@@ -2,10 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-        <meta id="token" name="token" value="{{ csrf_token() }}">
+    <meta id="token" name="token" value="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=9">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name="description" content="@yield('description')" />
     <meta name="keywords" content="@yield('keywords')" />
 
@@ -105,9 +104,9 @@
                                         </div><!-- large-9 -->
                                         <div class="large-3 large-pull-9 medium-2 medium-pull-10 small-2 small-pull-10 columns">
                                             <div id="logo-box" data-equalizer-watch>
-                                                <a href="http://www.emich.edu"><img class="full-logo show-for-large" alt="Eastern Michigan University" src="/assets/imgs/home/logo.png"></a>
-                                                <a href="http://www.emich.edu"><img class="emu show-for-medium-only" alt="Eastern Michigan University" src="/assets/imgs/home/emu.png"></a>
-                                                <a href="http://www.emich.edu"><img class="block-e show-for-small-only" alt="Eastern Michigan University" src="/assets/imgs/home/blockewhiteplain.png"></a>
+                                                <a href="https://www.emich.edu"><img class="full-logo show-for-large" alt="Eastern Michigan University" src="/assets/imgs/home/logo.png"></a>
+                                                <a href="https://www.emich.edu"><img class="emu show-for-medium-only" alt="Eastern Michigan University" src="/assets/imgs/home/emu.png"></a>
+                                                <a href="https://www.emich.edu"><img class="block-e show-for-small-only" alt="Eastern Michigan University" src="/assets/imgs/home/blockewhiteplain.png"></a>
                                             </div><!-- logo-box -->
                                         </div><!-- large-3 -->
                                     </div><!-- row -->
