@@ -3,11 +3,11 @@
 <!--[if IE]>
     <script type="text/javascript" src="/js/foundation.min.js"></script>
 <![endif]-->
-<script type="text/javascript" src="/js/vue-search-form.js" async></script>
-<script type="text/javascript" src="/js/vue-search-form-offcanvas.js" async></script>
-<script type="text/javascript" src="/js/emergency.js" async></script>
-<script type="text/javascript" src="/js/jquery.magnific-popup.js" async></script>
-<script type="text/javascript" src="/js/app.js" async></script>
+<script type="text/javascript" src="/js/vue-search-form.js"></script>
+<script type="text/javascript" src="/js/vue-search-form-offcanvas.js"></script>
+<script type="text/javascript" src="/js/emergency.js"></script>
+<script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
+<script type="text/javascript" src="/js/app.js"></script>
 <!-- AddEvent -->
 <script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 <!-- AddEvent Settings -->
