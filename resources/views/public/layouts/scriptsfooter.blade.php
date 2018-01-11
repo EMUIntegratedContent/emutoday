@@ -34,7 +34,7 @@ $(document).ready(function(){
             $( "#emergency-title" ).html( data.title )
             $( "#emergency-message" ).html( data.message )
             $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.title + '</h3>')
-            $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message '</p>')
+            $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message + '</p>')
 
             if( data.severity == "yellow" ){
                 $("#emergency-bar").addClass("emergency-yellow")
