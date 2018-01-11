@@ -35,9 +35,7 @@
         {{-- EMU campus-wide emergency message area --}}
         <div id="emergency-bar" class="no emergency">
             <div class="row">
-                <div class="large-12 columns">
-                    <h3 id="emergency-title"></h3>
-                    <p id="emergency-message"></p>
+                <div class="large-12 columns" id="emergency-bar-content">
                 </div>
             </div>
         </div>

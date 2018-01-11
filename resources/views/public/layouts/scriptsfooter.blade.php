@@ -30,16 +30,18 @@ window.addeventasync = function(){
 $(document).ready(function(){
     $.getJSON( "https://www.emich.edu/admin/api/emergency_api.php", function( data ) {
         if(data.display == "yes"){
-            $( "#emergency-bar" ).removeClass("no");
-            $( "#emergency-title" ).html( data.title );
-            $( "#emergency-message" ).html( data.message );
+            $( "#emergency-bar" ).removeClass("no")
+            $( "#emergency-title" ).html( data.title )
+            $( "#emergency-message" ).html( data.message )
+            $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.title + '</h3>')
+            $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message '</p>')
 
             if( data.severity == "yellow" ){
-                $("#emergency-bar").addClass("emergency-yellow");
+                $("#emergency-bar").addClass("emergency-yellow")
             }
 
             if( data.severity == "red" ){
-                $("#emergency-bar").addClass("emergency-red");
+                $("#emergency-bar").addClass("emergency-red")
             }
         }
     });
