@@ -205,6 +205,11 @@
             background-color: #C9A0DC;
             border: 1px solid #C9A0DC;
         }
+        .featurephoto  {
+            color: #1B1B1B;
+            background-color: #488dd8;
+            border: 1px solid #488dd8;
+        }
         .article  {
             color: #1B1B1B;
             background-color: #29AB87;
@@ -493,6 +498,9 @@ module.exports  = {
                           break
                           case 'statement':
                           faicon = 'fa-commenting'
+                          break
+                          case 'featurephoto':
+                          faicon = 'fa-camera-retro'
                           break
                           default:
                           faicon = 'fa-file-o'

@@ -64,6 +64,8 @@
                     <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - Read Story" class="button readmore">Read Story&nbsp;<i class="fa fa-external-link"></i></a>
                   @endif
               @endif
+            @elseif($barImgs[$i]->story->story_type == 'featurephoto')
+                <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" aria-label="{{$barImgs[$i]->caption}} - View" class="button readmore">View Image&nbsp;<i class="fa fa-camera-retro"></i></a>
             @else
                 <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}</a>
             @endif

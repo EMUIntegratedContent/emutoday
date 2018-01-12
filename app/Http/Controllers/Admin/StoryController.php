@@ -63,11 +63,11 @@ class StoryController extends Controller
 
     public function updateFromPreview(Request $request, $id)
     {
-    $story = $this->story->findOrFail($id);
-    $story->content = $request->get('content');
-    $story->save();
-    flash()->success('Story Content has been updated.');
-    return redirect()->back();
+      $story = $this->story->findOrFail($id);
+      $story->content = $request->get('content');
+      $story->save();
+      flash()->success('Story Content has been updated.');
+      return redirect()->back();
     }
 
     public function promoteStory(Request $request)

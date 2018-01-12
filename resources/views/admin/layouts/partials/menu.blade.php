@@ -39,13 +39,23 @@
 <li class="treeview {{ set_active('admin/story*') }}">
   <a href="#"><i class="fa fa-file-text-o"></i> <span>Stories</span> <!-- <i class="fa fa-angle-left pull-right"> --></i></a>
   <ul class="treeview-menu">
-    <li><a href="#"><i class="fa fa-circle-o"></i>News <span class="pull-right-container">
-      <i class="fa fa-angle-left pull-right"></i>
-    </span></a>
-    <ul class="treeview-menu {{ set_active('admin/story/news*') }}">
-      <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
-      <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/news/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
-    </ul>
+    <li>
+      <a href="#">
+        <i class="fa fa-circle-o"></i>News <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+      </a>
+      <ul class="treeview-menu {{ set_active('admin/story/news*') }}">
+        <li class="{{ set_active('admin/story/news*') }}"><a href="/admin/story/news/queuenews"><i class="fa fa-rocket"></i> <span>News Queue</span></a></li>
+        <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/news/news/form"><i class="fa fa-plus-square"></i><span>New News Story</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">
+        <i class="fa fa-circle-o"></i>Featured Photos <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+      </a>
+      <ul class="treeview-menu {{ set_active('admin/story/featurephoto*') }}">
+        <li class="{{ set_active('admin/story/featurephoto*') }}"><a href="/admin/story/featurephoto/queuefeaturephoto"><i class="fa fa-rocket"></i> <span>Photo Queue</span></a></li>
+        <li class="{{ set_active('admin/story*') }}"><a href="/admin/queuenews/featurephoto/featurephoto/form"><i class="fa fa-plus-square"></i><span>New Photo</span></a></li>
+      </ul>
     </li>
   @can('story_promote', $currentUser)
     <li><a href="#"><i class="fa fa-circle-o"></i>Media Advisories <span class="pull-right-container">

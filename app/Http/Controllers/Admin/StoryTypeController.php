@@ -468,7 +468,6 @@ public function update(Requests\UpdateStoryRequest $request, $id)
     $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
     $countRequiredImages = $requiredImages->count();
 
-
     $currentStoryImages = $story->storyImages()->where('is_active', 1)->get();
     $countCurrentStoryImages = $currentStoryImages->count();
 

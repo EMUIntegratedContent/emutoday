@@ -54,7 +54,13 @@
           <input v-model="record.subtitle" v-bind:class="[formErrors.subtitle ? 'invalid-input' : '']" @blur="onBlur" name="subtitle" type="text">
           <p v-if="formErrors.subtitle" class="help-text invalid"></p>
         </div>
-        <div class="form-group">
+        <div class="form-group" v-if="this.stype == 'featurephoto'">
+          <label>Photo credit</label>
+          <p class="help-text" id="photo_credit-helptext">Who took this photo?</p>
+          <input v-model="record.photo_credit" v-bind:class="[formErrors.photo_credit ? 'invalid-input' : '']" @blur="onBlur" name="photo_credit" type="text">
+          <p v-if="formErrors.photo_credit" class="help-text invalid"></p>
+        </div>
+        <div class="form-group" v-show="this.stype != 'featurephoto'">
           <label>Content <i class="fi-star reqstar"></i></label>
           <p class="help-text" id="content-helptext">Enter the story content</p>
           <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType" :content="content" :fresh="isFresh" rows="200"></textarea>
@@ -133,8 +139,6 @@
   </div><!-- /.row -->
 
 <div class="row">
-
-
   <div class="col-md-12">
     <div class="form-group">
       <button v-on:click="submitForm" type="submit" class="btn btn-primary">{{submitBtnLabel}}</button>
@@ -327,6 +331,7 @@ module.exports  = {
         content: '',
         start_date: '',
         contact: '',
+        photo_credit: ''
       },
       record: {
         id: '',
@@ -336,6 +341,7 @@ module.exports  = {
         content: '',
         start_date: '',
         contact: '',
+        photo_credit: '',
         tags: []
       },
       fdate: null,

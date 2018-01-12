@@ -3,7 +3,7 @@
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
             <form class="form-inline">
               <div class="form-group">
-                  <label for="start-date">Showing stories starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                  <label for="start-date">Showing <template v-if="this.stype == 'featurephoto'">photos</template><template v-else>stories</template> starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
                   <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
               </div>
               <div v-if="isEndDate" class="form-group">
@@ -388,6 +388,9 @@ export default  {
                 break
                 case 'statement':
                 faicon = 'fa-commenting'
+                break
+                case 'featurephoto':
+                faicon = 'fa-camera-retro'
                 break
                 default:
                 faicon = 'fa-file-o'

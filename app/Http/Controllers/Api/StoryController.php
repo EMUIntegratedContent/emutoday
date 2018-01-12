@@ -151,12 +151,25 @@ class StoryController extends ApiController
 
     public function store(Request $request)
     {
+      if($request->get('story_type') == 'featurephoto'){
+        $content = 'not used';
+        $photo_credit = $request->get('photo_credit');
+        $validation = \Validator::make( Input::all(), [
+            'title'           => 'required',
+            'start_date'      => 'required',
+            'story_type'    => 'required',
+            'photo_credit'     => 'required',
+            'user_id'   => 'required' ]);
+      } else {
+        $content = $request->get('content');
+        $photo_credit = null;
         $validation = \Validator::make( Input::all(), [
             'title'           => 'required',
             'start_date'      => 'required',
             'story_type'    => 'required',
             'content'     => 'required',
             'user_id'   => 'required' ]);
+      }
 
         if( $validation->fails() ){
             return $this->setStatusCode(422)
@@ -182,9 +195,10 @@ class StoryController extends ApiController
             $story->teaser      = $request->get('teaser');
             $story->story_type  = $request->get('story_type');
             $story->user_id     = $request->get('user_id');
-            $story->content     = $request->get('content');
+            $story->content     = $content;
             $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
             $story->author_id   = $request->get('author_id', 0);
+            $story->photo_credit = $photo_credit;
             $story->contact_id  = $contact_id;
             $story->is_approved = $approval_level;
 
@@ -280,20 +294,32 @@ class StoryController extends ApiController
      public function update(Request $request, $id)
      {
         $story = $this->story->findOrFail($id);
-        $validation = \Validator::make( Input::all(), [
-                     'title'           => 'required',
-                     'start_date'      => 'required',
-                     'user_id'   => 'required',
-                     'content'     => 'required'
-             ]);
 
-      if( $validation->fails() )
-      {
+        if($request->get('story_type') == 'featurephoto'){
+          $content = 'not used';
+          $photo_credit = $request->get('photo_credit');
+          $validation = \Validator::make( Input::all(), [
+              'title'           => 'required',
+              'start_date'      => 'required',
+              'story_type'    => 'required',
+              'photo_credit'     => 'required',
+              'user_id'   => 'required' ]);
+        } else {
+          $content = $request->get('content');
+          $photo_credit = null;
+          $validation = \Validator::make( Input::all(), [
+              'title'           => 'required',
+              'start_date'      => 'required',
+              'story_type'    => 'required',
+              'content'     => 'required',
+              'user_id'   => 'required' ]);
+        }
+
+      if( $validation->fails() ){
           return $this->setStatusCode(422)
                                   ->respondWithError($validation->errors()->getMessages());
       }
-      if($validation->passes())
-      {
+      if($validation->passes()){
         $defaultContact = $this->getCurrentPrimaryContact(); // the default primary contact if none specified in the story.
         $request->get('contact_id') != '' ? $contact_id = $request->get('contact_id') : $contact_id = $defaultContact->id;
 
@@ -305,7 +331,8 @@ class StoryController extends ApiController
         $story->story_type         = $request->get('story_type');
         $story->author_id        = $request->get('author_id', 0);
         $story->author_info        = $request->get('author_info', null);
-        $story->content     	    = $request->get('content');
+        $story->photo_credit  = $photo_credit;
+        $story->content     	    = $content;
         $story->is_ready     	= 1;
         $story->is_approved     	= $request->get('is_approved', 0);
         $story->is_promoted          = $request->get('is_promoted', 0);
@@ -316,7 +343,6 @@ class StoryController extends ApiController
         $story->end_date      	= \Carbon\Carbon::parse($request->get('end_date', null));
         $story->contact_id    	= $contact_id;
 
-
         $tags = array_pluck($request->input('tags'),'value');
         $story->tags()->sync($tags);
 
@@ -325,7 +351,6 @@ class StoryController extends ApiController
 
              return $this->setStatusCode(201)
              ->respondSavedWithData('Story updated.',[ 'record_id' => $record_id, 'stype'=> $story->story_type, 'ready' => $story->is_ready] );
-
              }
          }
 
