@@ -50,7 +50,7 @@
         <div id="story-content" class="row">
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns">
-            <h3>{{ $story->title }}</h3>
+            <h3>Featured Photo: {{ $story->title }}</h3>
             @include('public.vendor.addthis')
           @if(isset($mainStoryImage))
             <div id="big-feature-image">
