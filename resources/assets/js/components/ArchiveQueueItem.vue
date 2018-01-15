@@ -238,6 +238,11 @@ h5 {
     background-color: #FFA500;
     border: 1px solid #FFA500;
 }
+.featurephoto  {
+    color: #1B1B1B;
+    background-color: #488dd8;
+    border: 1px solid #488dd8;
+}
 
 .success{
     color: #00a65a;

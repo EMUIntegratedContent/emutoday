@@ -54,7 +54,17 @@
                     <span class="help-block">Small to Medium size text limited to a couple of lines, visible directly under image. Visible on article page.</span>
                 </div>
 
-
+            @elseif($storyImage->group == 'featurephoto')
+                <div class="form-group">
+                    {!! Form::label('title', 'Title/Header') !!}
+                    {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+                    <span class="help-block">Large Bold text limited to a couple of words. </span>
+                </div>
+                <div class="form-group">
+                    {!! Form::label('caption', 'Caption/Subtitle') !!}
+                    {!! Form::text('caption', null, ['class' => 'form-control input-sm']) !!}
+                    <span class="help-block">Small to Medium size text limited to a couple of lines, visible when photo is shown on its own page. </span>
+                </div>
             @else
                 <div class="form-group">
                     {!! Form::label('title', 'Title/Header') !!}

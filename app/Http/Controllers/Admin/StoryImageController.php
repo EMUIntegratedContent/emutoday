@@ -130,7 +130,7 @@ class StoryImageController extends Controller
 
       $storyImage->filename = $imgFileName;
     }
-
+    
     $storyImage->save();
     $story = $storyImage->story;
     $stype = $story->story_type;

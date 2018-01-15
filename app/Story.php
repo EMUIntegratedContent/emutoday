@@ -195,6 +195,9 @@ class Story extends Model
               case 'bulletin':
                 $type = 'bulletin';
                 break;
+              case 'featurephoto':
+                $type = 'featurephoto';
+                break;
               default:
                 $type = $this->story_type;
               }

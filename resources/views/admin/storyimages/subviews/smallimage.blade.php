@@ -92,6 +92,17 @@
                                 {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
                                 <span class="help-block">Fully qualified URL of YouTube video </span>
                             </div>
+                        @elseif($storyImage->group == 'featurephoto')
+                            <div class="form-group">
+                                {!! Form::label('title', 'Title/Header') !!}
+                                {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+                                <span class="help-block">Large Bold text limited to a couple of words. </span>
+                            </div>
+                            <div class="form-group">
+                                {!! Form::label('caption', 'Caption/Subtitle') !!}
+                                {!! Form::text('caption', null, ['class' => 'form-control input-sm']) !!}
+                                <span class="help-block">Small to Medium size text limited to a couple of lines, visible when photo is Featured on homepage, emu-today hub, or in a sidebar</span>
+                            </div>
                         @else
                             <div class="form-group">
                                 {!! Form::label('title', 'Title/Header') !!}

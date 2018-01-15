@@ -199,6 +199,9 @@ export default {
               case 'statement':
               faicon = 'fa-commenting'
               break
+              case 'featurephoto':
+              faicon = 'fa-camera-retro'
+              break
               default:
               faicon = 'fa-file-o'
               break

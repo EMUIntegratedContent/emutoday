@@ -333,7 +333,7 @@ class StoryController extends ApiController
         $story->author_info        = $request->get('author_info', null);
         $story->photo_credit  = $photo_credit;
         $story->content     	    = $content;
-        $story->is_ready     	= 1;
+        //$story->is_ready     	= 1;
         $story->is_approved     	= $request->get('is_approved', 0);
         $story->is_promoted          = $request->get('is_promoted', 0);
         $story->is_featured    	= $request->get('is_featured', 0);

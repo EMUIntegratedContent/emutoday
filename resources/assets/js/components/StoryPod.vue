@@ -514,12 +514,18 @@ module.exports  = {
                           case 'story':
                           case 'student':
                           case 'external':
-                          if(this.item.is_promoted === 1) {
+                            if(this.item.is_promoted === 1) {
+                                return true
+                            } else {
+                                return false
+                            }
+                            break;
+                          case 'featurephoto':
+                            if(this.item.is_ready === 1){
                               return true
-                          } else {
-                              return false
-                          }
-                          break;
+                            }
+                            return false
+                            break;
                           default:
                             return true;
                         }

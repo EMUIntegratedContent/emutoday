@@ -88,6 +88,9 @@ class EventServiceProvider extends ServiceProvider
         $story->is_ready = ($story->storyImages->where('is_active',1)->count()>0)?1:0;
         $story->is_promoted = ($story->storyImages->where('is_active',1)->count()>0)?1:0;
         break;
+        case 'featurephoto':
+        $story->is_ready = ($story->storyImages->where('is_active',1)->count()<2)?0:1;
+        break;
         case 'story':
         case 'article':
         case 'student':

@@ -20507,6 +20507,12 @@ module.exports = {
                         return false;
                     }
                     break;
+                case 'featurephoto':
+                    if (this.item.is_ready === 1) {
+                        return true;
+                    }
+                    return false;
+                    break;
                 default:
                     return true;
             }

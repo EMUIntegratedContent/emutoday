@@ -162,6 +162,11 @@
             background-color: #FFA500;
             border: 1px solid #FFA500;
         }
+        .featurephoto  {
+            color: #1B1B1B;
+            background-color: #488dd8;
+            border: 1px solid #488dd8;
+        }
         .zcallout {
             border-radius: 5px;
             border-left: 50px solid #ff0000;
@@ -290,6 +295,9 @@ module.exports  = {
               break
               case 'statement':
               faicon = 'fa-commenting'
+              break
+              case 'featurephoto':
+              faicon = 'fa-camera-retro'
               break
               default:
               faicon = 'fa-file-o'

@@ -1,31 +1,31 @@
-<!-- Preview Story Page -->
+  <!-- Preview Story Page -->
 
-@extends('public.layouts.global')
-@section('styles')
+  @extends('public.layouts.global')
+  @section('styles')
     @parent
     @include('preview.includes.previewcoverstyle')
-@endsection
-@section('scriptshead')
+  @endsection
+  @section('scriptshead')
     <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
     <script src="/themes/plugins/ckeditor/ckeditor.js"></script>
     @parent
-@endsection
-@section('bodytop')
+  @endsection
+  @section('bodytop')
     @include('preview.includes.previewstory',['stype'=> $stype, 'gtype'=> $gtype, 'recordid' => $story->id, 'qtype'=> $qtype] )
-@endsection
-@section('offcanvaslist')
+  @endsection
+  @section('offcanvaslist')
     @include('preview.includes.offcanvaslist')
-@endsection
+  @endsection
   @section('connectionbar')
     @include('preview.includes.connectionbar')
   @endsection
-@section('content')
+  @section('content')
   <div id="news-story-bar">
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
         <!-- Story Page Title group -->
         <div id="title-grouping" class="row">
-          <div class="large-5 medium-4 small-6 columns"><{{-- <h3 class="news-caps">{{$story->story_type}}</h3> --}}</div>
+          <div class="large-5 medium-4 small-6 columns">{{-- <h3 class="news-caps">{{$story->story_type}}</h3> --}}</div>
           <div class="large-2 medium-4 small-6 columns">
             <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
           </div>
@@ -44,8 +44,10 @@
           <div class="large-9 medium-8 small-12 columns">
             <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>
             <h3>{{ $story->title }}</h3>
-            @if(isset($story->subtitle))
-                <h5>{{ $story->subtitle }}</h5>
+            @if($story->story_type != 'featurephoto')
+              @if(isset($story->subtitle))
+                  <h5>{{ $story->subtitle }}</h5>
+              @endif
             @endif
             @if(isset($mainStoryImage))
             <div id="big-feature-image">
@@ -54,15 +56,22 @@
               <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
             </div>
           @endif
-            <div id="story-content-edit">
-            {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
-        </div>
-        @if($story->author_id === 0)
-        <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-        <p class="news-contacts">Contact {{ $story->user->first_name }} {{ $story->user->last_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
+            @if($story->story_type != 'featurephoto' && $story->story_type != 'external')
+              <div id="story-content-edit">
+              {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+              </div>
+            @endif
+
+        @if($story->story_type != 'featurephoto')
+          @if($story->author_id === 0)
+          <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
+          <p class="news-contacts">Contact {{ $story->user->first_name }} {{ $story->user->last_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
+          @else
+          <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
+          <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
+          @endif
         @else
-        <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-        <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
+          <p class="news-contacts">Photo credit: {{$story->photo_credit}}</p>
         @endif
           </div>
           <!-- Page Side Bar Column -->
@@ -75,7 +84,7 @@
                         @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
 
                     @endif
-@endif
+  @endif
                     </div>
                 </div>
 
@@ -108,9 +117,9 @@
     </div>
   </div>
 
-@endsection
+  @endsection
 
-@section('scriptsfooter')
+  @section('scriptsfooter')
   @parent
     <script>
     $(function () {
