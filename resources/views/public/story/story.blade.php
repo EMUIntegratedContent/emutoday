@@ -50,7 +50,7 @@
         <div id="story-content" class="row">
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns">
-            <h3>{{ $story->title }}</h3>
+            <h3>@if($story->story_type == 'featurephoto')Featured Photo: @endif{{ $story->title }}</h3>
             <h5>{{ $story->subtitle }}</h5>
             @include('public.vendor.addthis')
           @if(isset($mainStoryImage))

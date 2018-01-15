@@ -43,7 +43,7 @@
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns">
             <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>
-            <h3>{{ $story->title }}</h3>
+            <h3>@if($story->story_type == 'featurephoto')Featured Photo: @endif {{ $story->title }}</h3>
             @if($story->story_type != 'featurephoto')
               @if(isset($story->subtitle))
                   <h5>{{ $story->subtitle }}</h5>
