@@ -50,6 +50,7 @@
         <div id="story-content" class="row">
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns">
+            {{ dd($story->story_type) }}
             <h3>@if($story->story_type == 'featurephoto')Featured Photo: @endif{{ $story->title }}</h3>
             @if($story->story_type != 'featurephoto')
               <h5>{{ $story->subtitle }}</h5>
