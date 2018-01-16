@@ -92,6 +92,7 @@ class StoryController extends Controller
               ['story_type', 'story'],
               ['id', '<>', $id],
               ['is_approved', 1],
+              ['is_live', 1],
               ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query){
                   $query->where('image_type', '=', 'small');
               })->limit(3)->get();
