@@ -71,7 +71,7 @@
           <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
           @endif
         @else
-          <p class="news-contacts">Photo credit: {{$story->photo_credit}}</p>
+          <p class="news-contacts">Photo {{$story->photo_credit}}</p>
         @endif
           </div>
           <!-- Page Side Bar Column -->

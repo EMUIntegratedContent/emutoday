@@ -56,7 +56,7 @@
         </div>
         <div class="form-group" v-if="this.stype == 'featurephoto'">
           <label>Photo credit</label>
-          <p class="help-text" id="photo_credit-helptext">Who took this photo?</p>
+          <p class="help-text" id="photo_credit-helptext">e.g. 'submitted by John Smith'</p>
           <input v-model="record.photo_credit" v-bind:class="[formErrors.photo_credit ? 'invalid-input' : '']" @blur="onBlur" name="photo_credit" type="text">
           <p v-if="formErrors.photo_credit" class="help-text invalid"></p>
         </div>

@@ -59,7 +59,7 @@
               <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
             </div>
           @endif
-            <p class="news-contacts">Photo credit: {{ $story->photo_credit }}</p>
+            <p class="news-contacts">Photo {{ $story->photo_credit }}</p>
 
           </div>
           <!-- Page Side Bar Column -->
