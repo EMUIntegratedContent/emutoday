@@ -170,7 +170,7 @@
 <div class="row">
   <div :class="md6col">
     <div class="form-group">
-      <label>Contact Phone <span :class="iconStar" class="reqstar"></span> <em>(ex. 734.487.1849)</em>
+      <label>Contact Phone: <span :class="iconStar" class="reqstar"></span> <em>(ex. 734.487.1849)</em>
         <input v-model="record.contact_phone" class="form-control" :class="[formErrors.contact_phone ? 'invalid-input' : '']" name="contact-phone" type="text" maxlength="80">
         <p v-if="formErrors.contact_phone" class="help-text invalid">Need a Contact Phone!</p>
       </label>
@@ -1031,9 +1031,27 @@ module.exports  = {
       .replace(/^-+|-+$/g, '');
     },
     convertFromSlug:function(value){
-      return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
-        return arguments[0].toUpperCase();
-      });
+
+      /* READ: for some reason, buildings do not have foreign key relations to events;
+       * they are merely being stored as slugs in the events table.
+       * This causes problems when trying to reproduce names that have capital letters other than the first letter
+       * (e.g. "McKenny Hall" or "Rec/IM Building")
+       * In lieu of breaking the entire events table, whenever a slug has special formatting, just put it in a conditional statement
+       *
+       * CP 1/22/18
+       */
+      if(value == 'mckenny-hall'){
+        return 'McKenny Hall'
+      } else if(value == 'recim-building' || value == 'rec/im-building') {
+        return 'Rec/IM Building'
+      } else if (value == 'rec/im-softball-complex'){
+        return 'Rec/IM Softball Complex'
+      } else {
+        return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
+          return arguments[0].toUpperCase()
+        })
+      }
+
     }
   }
 };
