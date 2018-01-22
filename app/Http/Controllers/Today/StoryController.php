@@ -92,7 +92,7 @@ class StoryController extends Controller
               ['story_type', 'story'],
               ['id', '<>', $id],
               ['is_approved', 1],
-              ['start_date', '<=', date('Y-m-d')],
+              ['start_date', '<=', $currentDate],
               ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query){
                   $query->where('image_type', '=', 'small');
               })->limit(3)->get();

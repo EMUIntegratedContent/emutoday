@@ -6,11 +6,11 @@ module.exports = {
     bind: function () {
         var self = this
         var options = { defaultDate: self.params.initval,
-                        enableTime: false,
-                        altFormat: "m-d-Y",
+                        enableTime: true,
+                        altFormat: "m-d-Y h:i K",
                         altInput: true,
                         altInputClass:"form-control",
-                        dateFormat: "Y-m-d"}
+                        dateFormat: "Y-m-d H:i:S"}
         options.onChange = this.onChange.bind(this)
         this.pickr = flatpickr(this.el, options )
     },

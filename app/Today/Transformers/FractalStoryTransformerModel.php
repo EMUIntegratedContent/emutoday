@@ -36,7 +36,7 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'is_live' =>  $story->is_live,
             'is_archived' =>  $story->is_archived,
             'tags' => $story->tags()->select('name', 'id as value')->get(),
-            'start_date'   =>  $story->start_date->toDateString(),
+            'start_date'   =>  $story->start_date->toDateTimeString(),
             'priority' => $story->priority,
             'magazines' => $story->magazines,
             'pages' => $story->pages,

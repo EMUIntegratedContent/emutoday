@@ -196,6 +196,7 @@ class StoryController extends ApiController
             $story->story_type  = $request->get('story_type');
             $story->user_id     = $request->get('user_id');
             $story->content     = $content;
+            \Log::info(\Carbon\Carbon::parse($request->get('start_date')));
             $story->start_date  = \Carbon\Carbon::parse($request->get('start_date'));
             $story->author_id   = $request->get('author_id', 0);
             $story->photo_credit = $photo_credit;

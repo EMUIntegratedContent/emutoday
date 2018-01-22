@@ -35,15 +35,18 @@ class MainController extends Controller
 
   public function index()
   {
-    //Set current date time to begining of day and end of day
-    $currentDateTimeStart = Carbon::now()->startOfDay();
-    $currentDateTimeEnd = Carbon::now()->endOfDay();
+    //Set current date to begining of day and end of day
+    $currentDateStart = Carbon::now()->startOfDay();
+    $currentDateEnd = Carbon::now()->endOfDay();
+
+    $currentTime = Carbon::now();
+
 
     $page = $this->page->where([
       ['is_ready', 1],
       ['is_archived', 0],
-      ['start_date', '<=', $currentDateTimeStart],
-      ['end_date', '>=',  $currentDateTimeEnd]
+      ['start_date', '<=', $currentDateStart],
+      ['end_date', '>=',  $currentDateEnd]
       ])->first();
 
       //in case no new page has been set
@@ -52,14 +55,14 @@ class MainController extends Controller
           $page = $this->page->where([
               ['is_ready', 1],
               ['is_archived', 0],
-              ['start_date', '<=', $currentDateTimeStart]
+              ['start_date', '<=', $currentDateStart]
           ])->orderBy('start_date', 'desc')->first();
       }
 
       $currentStorysBasic = $this->story->where([
         ['is_approved', 1],
         ['is_archived', 0],
-        ['start_date', '<=', $currentDateTimeStart],
+        ['start_date', '<=', $currentTime],
         ['priority', '>', 0]
       ])
       ->whereIn('story_type', ['story', 'news', 'statement', 'advisory'])
@@ -71,8 +74,8 @@ class MainController extends Controller
           ['is_approved', 1],
           ['is_archived', 0],
           ['type', 'general'],
-          ['start_date', '<=', $currentDateTimeStart],
-          ['end_date', '>=', $currentDateTimeEnd],
+          ['start_date', '<=', $currentDateStart],
+          ['end_date', '>=', $currentDateEnd],
         ])
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
@@ -85,8 +88,8 @@ class MainController extends Controller
             ['is_approved', 1],
             ['is_archived', 0],
             ['type', 'general'],
-            ['start_date', '<=', $currentDateTimeStart],
-            ['end_date', '>=', $currentDateTimeEnd]
+            ['start_date', '<=', $currentDateStart],
+            ['end_date', '>=', $currentDateEnd]
           ])
           ->orderBy('priority','desc')
           ->orderBy('start_date','asc')
@@ -98,8 +101,8 @@ class MainController extends Controller
           ['is_approved', 1],
           ['is_archived', 0],
           ['type', 'general'],
-          ['start_date', '<=', $currentDateTimeStart],
-          ['end_date', '>=', $currentDateTimeEnd],
+          ['start_date', '<=', $currentDateStart],
+          ['end_date', '>=', $currentDateEnd],
           ['priority', 1000000],
         ])
         ->orderBy('start_date', 'desc')
@@ -108,7 +111,7 @@ class MainController extends Controller
         $events = $this->event->where([
           ['is_approved', 1],
           ['priority', '>', 0],
-          ['end_date', '>=', $currentDateTimeStart]
+          ['end_date', '>=', $currentDateStart]
         ])
         ->orderBy('priority','desc')
         ->orderBy('start_date','desc')
@@ -118,8 +121,8 @@ class MainController extends Controller
           ['is_approved', 1],
           ['is_archived', 0],
           ['type', 'hr'],
-          ['start_date', '<=', $currentDateTimeStart],
-          ['end_date', '>=', $currentDateTimeEnd],
+          ['start_date', '<=', $currentDateStart],
+          ['end_date', '>=', $currentDateEnd],
           ['priority', '>', 0]
         ])
         ->orderBy('priority','desc')
@@ -133,8 +136,8 @@ class MainController extends Controller
             ['is_approved', 1],
             ['is_archived', 0],
             ['type', 'hr'],
-            ['start_date', '<=', $currentDateTimeStart],
-            ['end_date', '>=', $currentDateTimeEnd]
+            ['start_date', '<=', $currentDateStart],
+            ['end_date', '>=', $currentDateEnd]
           ])
           ->orderBy('priority','desc')
           ->orderBy('start_date','asc')

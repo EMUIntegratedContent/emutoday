@@ -70,7 +70,7 @@
             <p>Featured: {{item.is_featured}}</p>
             <p>Live: {{item.is_live}}</p>
             <p>Archived: {{item.is_archived}}</p>
-            <p>Start Date: {{item.start_date}}</p>
+            <p>Start Date/Time: {{item.start_date | momentFull}}</p>
             <template v-if="isPartOfHub">
                 <div class="btn-group btn-xs form-inline">
                     <div class="form-group">
@@ -675,7 +675,6 @@ module.exports  = {
                 },
 
                 filters: {
-
                         momentPretty: {
                             read: function(val) {
                                 return 	val ?  moment(val).format('MM-DD-YYYY') : '';
@@ -683,7 +682,16 @@ module.exports  = {
                             write: function(val, oldVal) {
                                 return moment(val).format('YYYY-MM-DD');
                             }
-                        }
+                        },
+                        momentFull: {
+                            read: function(val) {
+                                return 	val ?  moment(val).format('ddd MMM gg, YYYY @ h:mm a') : '';
+                            },
+                            write: function(val, oldVal) {
+                                return moment(val).format('YYYY-MM-DD HH:mm:ss');
+                            }
+                        },
+
                     },
                     events: {
                 }

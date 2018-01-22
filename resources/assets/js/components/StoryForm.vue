@@ -345,18 +345,7 @@ module.exports  = {
         tags: []
       },
       fdate: null,
-      dateOptions: {
-        minDate: "today",
-        enableTime: false,
-        altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass:"form-control",
-        dateFormat: "Y-m-d",
-      },
-
-      response: {
-
-      },
+      response: {},
       formMessage: {
         isOk: false,
         msg: ''
@@ -483,8 +472,6 @@ module.exports  = {
   methods: {
     getUserRoles(){
       let roles = this.cuser.roles;
-      console.log("USER")
-      console.log(this.cuser)
       let self = this;
       this.userRoles = [];
       if (roles.length > 0) {
@@ -843,25 +830,7 @@ module.exports  = {
       }).bind(this);
     }
   },
-  filters: {
-    momentstart: {
-      read: function(val) {
-
-        return 	val ?  val : '';
-      },
-      write: function(val, oldVal) {
-        return moment(val).format('MM-DD-YYYY');
-      }
-    },
-    momentfilter: {
-      read: function(val) {
-        return 	val ?  moment(val).format('MM-DD-YYYY') : '';
-      },
-      write: function(val, oldVal) {
-        return moment(val).format('YYYY-MM-DD');
-      }
-    },
-  },
+  filters: {},
   watch: {
     selectedAuthor: function(){
       this.fetchAuthor();

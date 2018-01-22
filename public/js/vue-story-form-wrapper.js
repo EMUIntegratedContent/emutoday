@@ -21239,15 +21239,6 @@ module.exports = {
         tags: []
       },
       fdate: null,
-      dateOptions: {
-        minDate: "today",
-        enableTime: false,
-        altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d"
-      },
-
       response: {},
       formMessage: {
         isOk: false,
@@ -21373,8 +21364,6 @@ module.exports = {
   methods: {
     getUserRoles: function getUserRoles() {
       var roles = this.cuser.roles;
-      console.log("USER");
-      console.log(this.cuser);
       var self = this;
       this.userRoles = [];
       if (roles.length > 0) {
@@ -21725,25 +21714,7 @@ module.exports = {
       }).bind(this);
     }
   },
-  filters: {
-    momentstart: {
-      read: function read(val) {
-
-        return val ? val : '';
-      },
-      write: function write(val, oldVal) {
-        return (0, _moment2.default)(val).format('MM-DD-YYYY');
-      }
-    },
-    momentfilter: {
-      read: function read(val) {
-        return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
-      },
-      write: function write(val, oldVal) {
-        return (0, _moment2.default)(val).format('YYYY-MM-DD');
-      }
-    }
-  },
+  filters: {},
   watch: {
     selectedAuthor: function selectedAuthor() {
       this.fetchAuthor();
@@ -21849,11 +21820,11 @@ module.exports = {
     bind: function bind() {
         var self = this;
         var options = { defaultDate: self.params.initval,
-            enableTime: false,
-            altFormat: "m-d-Y",
+            enableTime: true,
+            altFormat: "m-d-Y h:i K",
             altInput: true,
             altInputClass: "form-control",
-            dateFormat: "Y-m-d" };
+            dateFormat: "Y-m-d H:i:S" };
         options.onChange = this.onChange.bind(this);
         this.pickr = (0, _flatpickr2.default)(this.el, options);
     },
