@@ -45,9 +45,9 @@ class MainController extends Controller
     $page = $this->page->where([
       ['is_ready', 1],
       ['is_archived', 0],
-      ['start_date', '<=', $currentDateStart],
-      ['end_date', '>=',  $currentDateEnd]
-      ])->first();
+      ['start_date', '<=', $currentTime],
+      ['end_date', '>=',  $currentTime]
+      ])->orderBy('start_date', 'desc')->first();
 
       //in case no new page has been set
       //pull last one to expire

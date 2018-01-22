@@ -88,20 +88,22 @@
     @parent
     <script>
     var check_in = document.getElementById("start-date").flatpickr({
+      altFormat: "m-d-Y h:i K",
       altInput: true,
-      altInputClass: "form-control",
-      altFormat: "m-d-Y",
-      //minDate: new Date(),
+      altInputClass:"form-control",
+      dateFormat: "Y-m-d H:i:S",
+      enableTime: true,
       onChange: function(dateObj, dateStr, instance) {
         check_out.set("minDate", dateObj.fp_incr(1));
       }
     });
 
     var check_out =document.getElementById("end-date").flatpickr({
+      altFormat: "m-d-Y h:i K",
       altInput: true,
-      altFormat: "m-d-Y",
-      altInputClass: "form-control",
-      //minDate: new Date(),
+      altInputClass:"form-control",
+      dateFormat: "Y-m-d H:i:S",
+      enableTime: true,
       onChange: function(dateObj, dateStr, instance) {
         check_in.set("maxDate", dateObj.fp_incr(-1));
       }

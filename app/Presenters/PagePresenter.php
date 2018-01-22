@@ -57,11 +57,11 @@ class PagePresenter extends Presenter
 
     public function prettyStartDate()
     {
-        return $this->start_date->format('m-d-Y');
+        return $this->start_date->format('m-d-Y @ h:i a');
     }
     public function prettyEndDate()
     {
-        return $this->end_date->format('m-d-Y');
+        return $this->end_date->format('m-d-Y @ h:i a');
     }
 
 

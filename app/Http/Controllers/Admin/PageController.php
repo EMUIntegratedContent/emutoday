@@ -41,12 +41,12 @@ class PageController extends Controller
         $pages_notready_current = Page::where([
             ['is_ready', 0],
             ['end_date', '>=' ,$currentDate ]
-            ])->orderBy('start_date', 'asc')->paginate(10, ["*"], 'notready_current');
+            ])->orderBy('start_date', 'desc')->paginate(10, ["*"], 'notready_current');
 
         $pages_ready_current = Page::where([
             ['is_ready', 1],
             ['end_date', '>=' ,$currentDate ]
-            ])->orderBy('start_date', 'asc')->paginate(10, ["*"], 'ready_current');
+            ])->orderBy('start_date', 'desc')->paginate(10, ["*"], 'ready_current');
 
         $pages_ready_past = Page::where([
             ['is_ready', 1],
