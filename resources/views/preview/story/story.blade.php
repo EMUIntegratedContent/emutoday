@@ -56,7 +56,7 @@
               <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
             </div>
           @endif
-            @if($story->story_type != 'featurephoto' && $story->story_type != 'external')
+            @if($story->story_type != 'external')
               <div id="story-content-edit">
               {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
               </div>

@@ -60,9 +60,9 @@
           <input v-model="record.photo_credit" v-bind:class="[formErrors.photo_credit ? 'invalid-input' : '']" @blur="onBlur" name="photo_credit" type="text">
           <p v-if="formErrors.photo_credit" class="help-text invalid"></p>
         </div>
-        <div class="form-group" v-show="this.stype != 'featurephoto'">
-          <label>Content <i class="fi-star reqstar"></i></label>
-          <p class="help-text" id="content-helptext">Enter the story content</p>
+        <div class="form-group">
+          <label>Content <i v-show="this.stype != 'featurephoto'" class="fi-star reqstar"></i></label>
+          <p class="help-text" id="content-helptext">Enter the story content <span v-show="this.stype == 'featurephoto'">(optional)</span></p>
           <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType" :content="content" :fresh="isFresh" rows="200"></textarea>
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
         </div>

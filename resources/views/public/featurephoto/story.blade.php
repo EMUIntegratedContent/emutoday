@@ -59,8 +59,10 @@
               <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
             </div>
           @endif
+            <div id="story-content-edit">
+              {!! $story->content !!}
+            </div>
             <p class="news-contacts">Photo {{ $story->photo_credit }}</p>
-
           </div>
           <!-- Page Side Bar Column -->
           <div class="large-3 medium-4 small-12 columns featurepadding">
