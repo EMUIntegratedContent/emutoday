@@ -1,4 +1,11 @@
 @extends('public.layouts.global')
+@section('keywords')
+eastern michigan university news, emu news, news at eastern, news at eastern michigan university, ypsilanti news, emu today, emu stories, eastern michigan headlines, emu university calendar, emu events, eastern michigan university calendar, ypsilanti events, breaking news ypsilanti
+@endsection
+@section('description')
+EMU Today is Eastern Michigan University's digital hub for stories and news around campus. Discover upcoming events and important announcements to stay current on what's happening at EMU.
+@endsection
+
 @section('content')
 {{-- emu-today hub page --}}
 <div id="content-area">
