@@ -1,5 +1,6 @@
 <template>
   <template v-if="!record.is_sent">
+    <!-- PROGRESS BAR -->
     <div class="progress">
       <div class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
       aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
@@ -7,6 +8,7 @@
         <span v-else>I'm Ready!</span>
       </div>
     </div>
+    <!-- SUCCESS/FAIL MESSAGES -->
     <div class="row">
       <div class="col-xs-12 col-sm-8">
         <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
@@ -26,15 +28,17 @@
         <button v-if="!newform" class="btn btn-warning" type="button" data-toggle="modal" data-target="#cloneModal">Clone Email</button>
       </div>
     </div>
+    <!-- TABS: BUILD STEPS -->
     <ul class="nav nav-tabs" role="tablist">
       <li class="active"><a href="#step-1" role="tab" data-toggle="tab">Step 1: Basic Information</a></li>
       <li><a href="#step-2" role="tab" data-toggle="tab">Step 2: Build Email</a></li>
       <li><a href="#step-3" role="tab" data-toggle="tab">Step 3: Schedule &amp; Review</a></li>
     </ul>
-    <!-- Start form -->
+    <!-- EMAIL FORM -->
     <form>
       <slot name="csrf"></slot>
     <div class="tab-content">
+      <!-- MAIN TAB 1 CONTENT -->
       <div class="tab-pane active" id="step-1">
         <h2>Basic Email Information</h2>
         <div v-if="record.clone.length > 0"  class="alert alert-info alert-dismissible">
@@ -50,6 +54,7 @@
           <textarea class="form-control" id="subheading" v-model="record.subheading"></textarea>
         </div>
       </div>
+      <!-- MAIN TAB 2 CONTENT -->
       <div class="tab-pane" id="step-2">
           <div class="row">
             <!-- EMAIL LIVE BUILDER VIEW AREA -->
@@ -90,6 +95,7 @@
               </div>
             </div>
             <!-- /.medium-4 columns -->
+            <!-- "LIVE VIEW" OF EMAIL -->
             <div v-bind:class="[md12col, lg8col]">
               <email-live-view
               :email="record"
@@ -103,6 +109,7 @@
           </div>
           <!-- /.row -->
       </div>
+      <!-- MAIN TAB 3 CONTENT -->
       <div class="tab-pane" id="step-3">
         <h2>Schedule and Review</h2>
         <div class="row">

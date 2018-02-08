@@ -69,13 +69,13 @@
                   >
                   </email-story-pod>
                   <ul class="pagination">
-                    <li v-bind:class="{disabled: (currentPage <= 0)}" class="page-item">
+                    <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
                       <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
                     </li>
-                    <li v-for="pageNumber in totalPages" :class="{active: pageNumber == currentPage}" class="page-item">
-                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber+1 }} <span v-if="pageNumber == currentPage" class="sr-only">(current)</span></a>
+                    <li v-for="pageNumber in totalPages" :class="{active: (pageNumber+1) == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber+1)">{{ pageNumber+1 }} <span v-if="(pageNumber+1) == currentPage" class="sr-only">(current)</span></a>
                     </li>
-                    <li v-bind:class="{disabled: (currentPage == totalPages-1)}" class="page-item">
+                    <li v-bind:class="{disabled: (currentPage == totalPages)}" class="page-item">
                       <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
                     </li>
                   </ul>
@@ -265,6 +265,7 @@ export default  {
           .then((response) =>{
               this.$set('queueStories', response.data.newdata.data)
               this.resultCount = this.queueStories.length
+              this.setPage(1) // reset paginator
               this.loadingQueue = false;
           }, (response) => {
               //error callback
@@ -273,7 +274,7 @@ export default  {
       },
 
       setPage: function(pageNumber) {
-        if(pageNumber > -1 && pageNumber < this.totalPages){
+        if(pageNumber > 0 && pageNumber <= this.totalPages){
           this.currentPage = pageNumber
         }
       },
@@ -299,12 +300,12 @@ export default  {
         if(list.length == 0){
           return
         }
-          this.resultCount = list.length
-          if (this.currentPage >= this.totalPages) {
-            this.currentPage = this.totalPages - 1
-          }
-          var index = this.currentPage * this.itemsPerPage
-          return list.slice(index, index + this.itemsPerPage)
+        this.resultCount = list.length
+        if (this.currentPage > this.totalPages) {
+          this.currentPage = 1
+        }
+        var index = (this.currentPage-1) * this.itemsPerPage
+        return list.slice(index, index + this.itemsPerPage)
       },
 
         byObject: function(array, options) {
