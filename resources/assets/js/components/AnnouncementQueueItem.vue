@@ -11,7 +11,7 @@
               <template v-if="pid == 'items-live'">
                 <div class="form-check">
                   <label class="form-check-label">
-                    Elevate {{checked}}
+                    Elevate
                     <input type="checkbox" class="form-check-input" @click="toggleEmitAnnouncementElevate(item)" v-model="checked" :checked="isElevatedAnnouncement" /> |
                   </label>
                 </div>
@@ -416,14 +416,12 @@ module.exports  = {
       //Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
       // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
       if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
-        console.log("SAFARI")
         if(this.checked === true){
           this.emitAnnouncementElevate(announcementObj)
         } else {
           this.emitAnnouncementDemote(announcementObj)
         }
       } else {
-        console.log("NOT SAFARI")
         if(this.checked === false){
           this.emitAnnouncementElevate(announcementObj)
         } else {
@@ -445,14 +443,12 @@ module.exports  = {
       //Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
       // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
       if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
-        console.log("SAFARI")
         if(this.checked === true){
           this.emitSpecialAnnouncementAdd(announcementObj)
         } else {
           this.emitSpecialAnnouncementRemove(announcementObj)
         }
       } else {
-        console.log("NOT SAFARI")
         if(this.checked === false){
           this.emitSpecialAnnouncementAdd(announcementObj)
         } else {

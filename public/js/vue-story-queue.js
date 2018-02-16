@@ -20642,10 +20642,23 @@ module.exports = {
         },
         toggleEmitStoryElevate: function toggleEmitStoryElevate(storyObj) {
             // function will run before this.checked is switched
-            if (!this.checked) {
-                this.emitStoryElevate(storyObj);
+
+            //Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
+            // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
+            if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+                console.log("SAFARI");
+                if (this.checked === true) {
+                    this.emitStoryElevate(storyObj);
+                } else {
+                    this.emitStoryDemote(storyObj);
+                }
             } else {
-                this.emitStoryDemote(storyObj);
+                console.log("NOT SAFARI");
+                if (this.checked === false) {
+                    this.emitStoryElevate(storyObj);
+                } else {
+                    this.emitStoryDemote(storyObj);
+                }
             }
         }
     },
