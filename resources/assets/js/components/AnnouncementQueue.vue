@@ -23,6 +23,7 @@
               <div class="form-group">
                   <label for="start-date">Showing announcements starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
                   <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
+                  <input type="checkbox" class="form-check-input" @click="beef()" />
               </div>
               <div v-if="isEndDate" class="form-group">
                   <label for="start-date"> and </label>
@@ -189,6 +190,9 @@ export default {
   },
 
   methods: {
+    beef: function(){
+      console.log("BEEFY!")
+    },
       toggleRange: function(){
           if(this.isEndDate){
               this.isEndDate = false
