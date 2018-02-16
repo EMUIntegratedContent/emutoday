@@ -20443,6 +20443,7 @@ module.exports = {
       this.$dispatch('special-announcement-removed', announcementObj);
     },
     toggleEmitSpecialAnnouncement: function toggleEmitSpecialAnnouncement(announcementObj) {
+      console.log("TED CRUZ!");
       // function will run before this.checked is switched
       if (!this.checked) {
         this.emitSpecialAnnouncementAdd(announcementObj);
