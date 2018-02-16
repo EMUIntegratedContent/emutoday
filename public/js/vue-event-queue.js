@@ -20389,10 +20389,21 @@ module.exports = {
     },
     toggleEmitEventElevate: function toggleEmitEventElevate(eventObj) {
       // function will run before this.checked is switched
-      if (!this.checked) {
-        this.emitEventElevate(eventObj);
+
+      // Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
+      // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
+      if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+        if (this.checked === true) {
+          this.emitEventElevate(eventObj);
+        } else {
+          this.emitEventDemote(eventObj);
+        }
       } else {
-        this.emitEventDemote(eventObj);
+        if (this.checked === false) {
+          this.emitEventElevate(eventObj);
+        } else {
+          this.emitEventDemote(eventObj);
+        }
       }
     }
 
