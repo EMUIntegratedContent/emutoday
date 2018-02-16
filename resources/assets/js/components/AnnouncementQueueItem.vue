@@ -11,8 +11,8 @@
               <template v-if="pid == 'items-live'">
                 <div class="form-check">
                   <label class="form-check-label">
-                    Elevate
-                    <input type="checkbox" class="form-check-input" @click="toggleEmitAnnouncementElevate(item)" v-model="is_checked" :checked="isElevatedAnnouncement" /> |
+                    Elevate {{checked}}
+                    <input type="checkbox" class="form-check-input" @click="toggleEmitAnnouncementElevate(item)" v-model="checked" :checked="isElevatedAnnouncement" /> |
                   </label>
                 </div>
               </template>
@@ -28,7 +28,7 @@
                 </div>
               </template>
               <template v-if="pid == 'item-elevated'">
-                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="is_checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
+                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
                   <button type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </template>
           </form>
@@ -203,7 +203,7 @@ module.exports  = {
   props: ['item','pid','index','elevatedAnnouncements','atype'],
   data: function() {
     return {
-      is_checked: false,
+      checked: false,
       showBody: false,
       currentDate: {},
       record: {
@@ -333,12 +333,12 @@ module.exports  = {
       if(this.elevatedAnnouncements){
         for(var i = 0; i < this.elevatedAnnouncements.length; i++) {
           if(this.elevatedAnnouncements[i].id == this.item.id){
-            this.is_checked = true
+            this.checked = true
             return true
           }
         }
       }
-      this.is_checked = false
+      this.checked = false
       return false
     },
   },
@@ -411,8 +411,8 @@ module.exports  = {
       this.$dispatch('announcement-demoted', announcementObj.id)
     },
     toggleEmitAnnouncementElevate: function(announcementObj){
-      // function will run before this.is_checked is switched
-      if(!this.is_checked){
+      // function will run before this.checked is switched
+      if(!this.checked){
         this.emitAnnouncementElevate(announcementObj)
       } else {
         this.emitAnnouncementDemote(announcementObj)
@@ -427,8 +427,8 @@ module.exports  = {
       this.$dispatch('special-announcement-removed', announcementObj)
     },
     toggleEmitSpecialAnnouncement: function(announcementObj){
-      // function will run before this.is_checked is switched
-      if(!this.is_checked){
+      // function will run before this.checked is switched
+      if(!this.checked){
         this.emitSpecialAnnouncementAdd(announcementObj)
       } else {
         this.emitSpecialAnnouncementRemove(announcementObj)
