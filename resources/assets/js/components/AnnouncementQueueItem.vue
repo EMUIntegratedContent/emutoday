@@ -428,11 +428,21 @@ module.exports  = {
     },
     toggleEmitSpecialAnnouncement: function(announcementObj){
       // function will run before this.checked is switched
-      if(this.checked === true){
-        this.emitSpecialAnnouncementAdd(announcementObj)
+      //Check if browser is Safari
+      if (navigator.userAgent.search("Safari") & gt; = 0 & amp; & amp; navigator.userAgent.search("Chrome") & lt; 0) {
+        if(this.checked === true){
+          this.emitSpecialAnnouncementAdd(announcementObj)
+        } else {
+          this.emitSpecialAnnouncementRemove(announcementObj)
+        }
       } else {
-        this.emitSpecialAnnouncementRemove(announcementObj)
+        if(this.checked === false){
+          this.emitSpecialAnnouncementAdd(announcementObj)
+        } else {
+          this.emitSpecialAnnouncementRemove(announcementObj)
+        }
       }
+
     },
 
   },
