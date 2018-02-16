@@ -4,7 +4,7 @@
       <div class="box-header with-border" >
         <div class="row">
           <div class="col-sm 12 col-md-4">
-            <div class="box-date-top pull-left">{{item.start_date | titleDateLong}} {{this.checked}}</div>
+            <div class="box-date-top pull-left">{{item.start_date | titleDateLong}} {{checked}}</div>
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
