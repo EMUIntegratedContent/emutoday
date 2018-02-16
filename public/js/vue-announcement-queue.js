@@ -20414,6 +20414,7 @@ module.exports = {
     },
     emitAnnouncementElevate: function emitAnnouncementElevate(announcementObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      console.log("Announcement elevated");
       this.$dispatch('announcement-elevated', announcementObj);
     },
     emitAnnouncementDemote: function emitAnnouncementDemote(announcementObj) {
@@ -20431,6 +20432,7 @@ module.exports = {
     },
     emitSpecialAnnouncementAdd: function emitSpecialAnnouncementAdd(announcementObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
+      console.log("Special announcement emitted");
       this.$dispatch('special-announcement-added', announcementObj);
     },
     emitSpecialAnnouncementRemove: function emitSpecialAnnouncementRemove(announcementObj) {
