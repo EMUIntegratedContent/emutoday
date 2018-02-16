@@ -412,6 +412,7 @@ module.exports  = {
     },
     toggleEmitAnnouncementElevate: function(announcementObj){
       // function will run before this.checked is switched
+      console.log(this.checked)
       if(this.checked === false){
         this.emitAnnouncementElevate(announcementObj)
       } else {
