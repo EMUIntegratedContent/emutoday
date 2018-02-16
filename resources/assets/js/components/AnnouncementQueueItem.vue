@@ -412,10 +412,23 @@ module.exports  = {
     },
     toggleEmitAnnouncementElevate: function(announcementObj){
       // function will run before this.checked is switched
-      if(this.checked === true){
-        this.emitAnnouncementElevate(announcementObj)
+
+      //Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
+      // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
+      if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+        console.log("SAFARI")
+        if(this.checked === true){
+          this.emitAnnouncementElevate(announcementObj)
+        } else {
+          this.emitAnnouncementDemote(announcementObj)
+        }
       } else {
-        this.emitAnnouncementDemote(announcementObj)
+        console.log("NOT SAFARI")
+        if(this.checked === false){
+          this.emitAnnouncementElevate(announcementObj)
+        } else {
+          this.emitAnnouncementDemote(announcementObj)
+        }
       }
     },
     emitSpecialAnnouncementAdd: function(announcementObj){
@@ -428,7 +441,9 @@ module.exports  = {
     },
     toggleEmitSpecialAnnouncement: function(announcementObj){
       // function will run before this.checked is switched
-      //Check if browser is Safari
+
+      //Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
+      // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
       if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
         console.log("SAFARI")
         if(this.checked === true){
