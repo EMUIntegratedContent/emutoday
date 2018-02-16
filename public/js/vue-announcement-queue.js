@@ -20435,7 +20435,6 @@ module.exports = {
     },
     emitSpecialAnnouncementAdd: function emitSpecialAnnouncementAdd(announcementObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      console.log("Special announcement emitted");
       this.$dispatch('special-announcement-added', announcementObj);
     },
     emitSpecialAnnouncementRemove: function emitSpecialAnnouncementRemove(announcementObj) {
@@ -20443,11 +20442,13 @@ module.exports = {
       this.$dispatch('special-announcement-removed', announcementObj);
     },
     toggleEmitSpecialAnnouncement: function toggleEmitSpecialAnnouncement(announcementObj) {
-      console.log("TED CRUZ!");
+      console.log("LET'S GO!");
       // function will run before this.checked is switched
       if (!this.checked) {
+        console.log("WASN'T CHECKED");
         this.emitSpecialAnnouncementAdd(announcementObj);
       } else {
+        console.log("CHECKED");
         this.emitSpecialAnnouncementRemove(announcementObj);
       }
     }
