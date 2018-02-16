@@ -4,7 +4,7 @@
       <div class="box-header with-border" >
         <div class="row">
           <div class="col-sm 12 col-md-4">
-            <div class="box-date-top pull-left">{{item.start_date | titleDateLong}} {{checked}}</div>
+            <div class="box-date-top pull-left">{{item.start_date | titleDateLong}}</div>
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
@@ -12,7 +12,7 @@
                 <div class="form-check">
                   <label class="form-check-label">
                     Elevate
-                    <input type="checkbox" class="form-check-input" @click="toggleEmitAnnouncementElevate(item)" v-model="checked" :checked="isElevatedAnnouncement" /> |
+                    <input type="checkbox" class="form-check-input" @click="toggleEmitAnnouncementElevate(item)" v-model="is_checked" :checked="isElevatedAnnouncement" /> |
                   </label>
                 </div>
               </template>
@@ -28,7 +28,7 @@
                 </div>
               </template>
               <template v-if="pid == 'item-elevated'">
-                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
+                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="is_checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
                   <button type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </template>
           </form>
@@ -203,7 +203,7 @@ module.exports  = {
   props: ['item','pid','index','elevatedAnnouncements','atype'],
   data: function() {
     return {
-      checked: false,
+      is_checked: false,
       showBody: false,
       currentDate: {},
       record: {
@@ -333,12 +333,12 @@ module.exports  = {
       if(this.elevatedAnnouncements){
         for(var i = 0; i < this.elevatedAnnouncements.length; i++) {
           if(this.elevatedAnnouncements[i].id == this.item.id){
-            this.checked = true
+            this.is_checked = true
             return true
           }
         }
       }
-      this.checked = false
+      this.is_checked = false
       return false
     },
   },
@@ -403,7 +403,6 @@ module.exports  = {
     },
     emitAnnouncementElevate: function(announcementObj){
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      console.log("Announcement elevated")
       this.$dispatch('announcement-elevated', announcementObj)
     },
     emitAnnouncementDemote: function(announcementObj){
@@ -412,12 +411,10 @@ module.exports  = {
       this.$dispatch('announcement-demoted', announcementObj.id)
     },
     toggleEmitAnnouncementElevate: function(announcementObj){
-      // function will run before this.checked is switched
-      if(!this.checked){
-        console.log("WASN'T ELEVATED")
+      // function will run before this.is_checked is switched
+      if(!this.is_checked){
         this.emitAnnouncementElevate(announcementObj)
       } else {
-        console.log("WAS ELEVATED")
         this.emitAnnouncementDemote(announcementObj)
       }
     },
@@ -430,13 +427,10 @@ module.exports  = {
       this.$dispatch('special-announcement-removed', announcementObj)
     },
     toggleEmitSpecialAnnouncement: function(announcementObj){
-      console.log("LET'S GO!")
-      // function will run before this.checked is switched
-      if(!this.checked){
-        console.log("WASN'T CHECKED")
+      // function will run before this.is_checked is switched
+      if(!this.is_checked){
         this.emitSpecialAnnouncementAdd(announcementObj)
       } else {
-        console.log("CHECKED")
         this.emitSpecialAnnouncementRemove(announcementObj)
       }
     },
