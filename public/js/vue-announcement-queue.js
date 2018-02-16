@@ -20423,8 +20423,7 @@ module.exports = {
     },
     toggleEmitAnnouncementElevate: function toggleEmitAnnouncementElevate(announcementObj) {
       // function will run before this.checked is switched
-      console.log(this.checked);
-      if (this.checked === false) {
+      if (this.checked === true) {
         this.emitAnnouncementElevate(announcementObj);
       } else {
         this.emitAnnouncementDemote(announcementObj);
@@ -20440,7 +20439,7 @@ module.exports = {
     },
     toggleEmitSpecialAnnouncement: function toggleEmitSpecialAnnouncement(announcementObj) {
       // function will run before this.checked is switched
-      if (this.checked === false) {
+      if (this.checked === true) {
         this.emitSpecialAnnouncementAdd(announcementObj);
       } else {
         this.emitSpecialAnnouncementRemove(announcementObj);
