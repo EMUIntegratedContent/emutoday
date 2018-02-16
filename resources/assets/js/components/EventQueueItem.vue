@@ -703,7 +703,6 @@ module.exports  = {
         }
       }
     },
-
   },
   watch: {
     priorityChanged: function(val, oldVal) {

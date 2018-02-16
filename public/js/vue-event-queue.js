@@ -20406,7 +20406,6 @@ module.exports = {
         }
       }
     }
-
   },
   watch: {
     priorityChanged: function priorityChanged(val, oldVal) {
