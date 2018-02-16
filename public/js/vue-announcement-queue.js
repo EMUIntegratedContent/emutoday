@@ -20439,10 +20439,21 @@ module.exports = {
     },
     toggleEmitSpecialAnnouncement: function toggleEmitSpecialAnnouncement(announcementObj) {
       // function will run before this.checked is switched
-      if (this.checked === true) {
-        this.emitSpecialAnnouncementAdd(announcementObj);
+      //Check if browser is Safari
+      if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+        console.log("SAFARI");
+        if (this.checked === true) {
+          this.emitSpecialAnnouncementAdd(announcementObj);
+        } else {
+          this.emitSpecialAnnouncementRemove(announcementObj);
+        }
       } else {
-        this.emitSpecialAnnouncementRemove(announcementObj);
+        console.log("NOT SAFARI");
+        if (this.checked === false) {
+          this.emitSpecialAnnouncementAdd(announcementObj);
+        } else {
+          this.emitSpecialAnnouncementRemove(announcementObj);
+        }
       }
     }
 
