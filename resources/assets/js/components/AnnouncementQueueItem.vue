@@ -430,12 +430,14 @@ module.exports  = {
       // function will run before this.checked is switched
       //Check if browser is Safari
       if (navigator.userAgent.search("Safari") & gt; = 0 & amp; & amp; navigator.userAgent.search("Chrome") & lt; 0) {
+        console.log("SAFARI")
         if(this.checked === true){
           this.emitSpecialAnnouncementAdd(announcementObj)
         } else {
           this.emitSpecialAnnouncementRemove(announcementObj)
         }
       } else {
+        console.log("NOT SAFARI")
         if(this.checked === false){
           this.emitSpecialAnnouncementAdd(announcementObj)
         } else {
