@@ -88,7 +88,10 @@
                                                                     </tr>
                                                                     <tr>
                                                                             <td class="text">
-                                                                                    <h3><a :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a></h3>
+                                                                              <h3>
+                                                                                <a v-if="email.mainStories[2].story_type == 'external'" style="text-decoration: none;" :href="email.mainStories[2].small_images[0].link">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
+                                                                                <a v-else style="text-decoration: none;" :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
+                                                                              </h3>
                                                                                     <p>{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>
                                                                             </td>
                                                                     </tr>
