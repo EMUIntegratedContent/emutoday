@@ -260,7 +260,7 @@
                                     <h2 class="indent" style="margin-bottom: .8rem;">
                                     @if($mainStories[0]->story_type == 'external')
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
-                                      <a href="{{$mainStories[0]->getExternalLink()}}">{{ $mainStoryImages[0]->title }}</a>
+                                      <a href="{{$mainStories[0]->getExternalLink()}}">{{ $mainStoryImages[0]->title }} &#10137;</a>
                                     @else
                                       <a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a>
                                     @endif
@@ -299,7 +299,7 @@
                                                                 <h3 class="mid">
                                                                   @if($mainStories[1]->story_type == 'external')
                                                                     {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
-                                                                    <a href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }}</a>
+                                                                    <a href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }} &#10137;</a>
                                                                   @else
                                                                     <a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a>
                                                                   @endif
@@ -333,7 +333,7 @@
                                                                <h3 class="mid">
                                                                  @if($mainStories[2]->story_type == 'external')
                                                                    {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
-                                                                   <a href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }}</a>
+                                                                   <a href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }} &#10137;</a>
                                                                  @else
                                                                    <a href="{{ url('/') . '/story/' . $mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a>
                                                                  @endif
