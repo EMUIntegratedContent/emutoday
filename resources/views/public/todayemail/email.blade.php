@@ -253,8 +253,18 @@
                             <article>
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                 <div style="padding-left: 1rem; padding-right: 1rem; padding-top: .6rem; padding-bottom: 16px; margin-bottom: 10px;">
+                                    {{--
                                     <h2 class="indent" style="margin-bottom: .8rem;"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a></h2>
-                                    {{--<p class="indent">{!! str_limit($mainStoryImages[0]->teaser, $limit = 130, $end = '...') !!}</p>--}}
+                                    <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
+                                    --}}
+                                    <h2 class="indent" style="margin-bottom: .8rem;">
+                                    @if($mainStories[0]->story_type == 'external')
+                                      {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
+                                      <a href="{{$mainStories[0]->getExternalLink()}}">{{ $mainStoryImages[0]->title }}</a>
+                                    @else
+                                      <a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a>
+                                    @endif
+                                    </h2>
                                     <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
                                 </div>
                             </article>
@@ -289,7 +299,7 @@
                                                                 <h3 class="mid">
                                                                   @if($mainStories[1]->story_type == 'external')
                                                                     {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
-                                                                    <a style="text-decoration: none;" href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }}</a>
+                                                                    <a href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }}</a>
                                                                   @else
                                                                     <a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a>
                                                                   @endif
@@ -323,7 +333,7 @@
                                                                <h3 class="mid">
                                                                  @if($mainStories[2]->story_type == 'external')
                                                                    {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
-                                                                   <a style="text-decoration: none;" href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }}</a>
+                                                                   <a href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }}</a>
                                                                  @else
                                                                    <a href="{{ url('/') . '/story/' . $mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a>
                                                                  @endif
