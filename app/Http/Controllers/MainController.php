@@ -170,7 +170,7 @@ class MainController extends Controller
         })->where([
           ['is_approved',1],
           ['story_type', 'external'],
-          ['start_date', '>=', Carbon::now()->startOfDay()]
+          ['start_date', '>=', Carbon::now()]
         ])
         ->with('storyImages')->get();
 
