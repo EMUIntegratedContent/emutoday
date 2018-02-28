@@ -138,10 +138,10 @@
     div.unsubscribe-container{
         text-align: center;
         width: 100%;
-        display: block;   
+        display: block;
     }
-    
- 
+
+
 /*from others*/
     .outer {
         margin: 0 auto;
@@ -151,7 +151,7 @@
     .full-width-image img {
         width: 100%;
         max-width: 600px;
-        height: auto;    
+        height: auto;
     }
     .inner {
         padding-top: 0px;
@@ -190,10 +190,10 @@
     .two-column .text {
         padding-top: 0px;
         padding-bottom: 10px;
-       
+
 }
-    
-   
+
+
     /*Media Queries*/
 @media screen and (max-width: 400px) {
 .two-column .column,
@@ -206,7 +206,7 @@
     .three-column img {
         max-width: 50% !important;
     }
-  
+
 }
 @media screen and (min-width: 401px) and (max-width: 620px) {
    .three-column .column {
@@ -214,9 +214,9 @@
     }
     .two-column .column {
         max-width: 50% !important;
-       
+
     }
-   
+
 }
 
 </style>
@@ -262,7 +262,7 @@
                     </tr>
                     {{-- some emails might not have sub stories! --}}
                     @if($email->mainstories->count() == 3)
-                   
+
                     @endif
                  <tr>
                      <td class="two-column">
@@ -283,12 +283,21 @@
                                                     </tr>
                                                     <tr>
                                                             <td class="text">
-                                                                   <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                                            {{--<p>{!! str_limit($mainStoryImages[1]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                                            {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!} 
+                                                                  {{-- <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
+                                                                                                            {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
+                                                                  --}}
+                                                                <h3 class="mid">
+                                                                  @if($mainStories[1]->story_type == 'external')
+                                                                    {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
+                                                                    <a style="text-decoration: none;" href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }}</a>
+                                                                  @else
+                                                                    <a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a>
+                                                                  @endif
+                                                                </h3>
+                                                                {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
                                                             </td>
                                                     </tr>
-                                            </table> 
+                                            </table>
                                         </td>
                                     </tr>
                                 </table>
@@ -303,14 +312,23 @@
                                          <table class="contents">
                                                     <tr>
                                                             <td>
-                                                                    <img alt="{{ $mainStoryImages[1]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" />
+                                                                    <img alt="{{ $mainStoryImages[2]->caption }}" src="{{ url('/') }}/imagecache/emailsub/{{$smallStoryImages[2]->filename}}" />
                                                             </td>
                                                     </tr>
                                                     <tr>
+                                                      {{-- <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
+                                                                                                {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
+                                                      --}}
                                                             <td class="text">
-                                                                   <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
-                                                                                                            {{--<p>{!! str_limit($mainStoryImages[2]->teaser, $limit = 110, $end = '...') !!}</p>--}}
-                                                                                                            {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!} 
+                                                               <h3 class="mid">
+                                                                 @if($mainStories[2]->story_type == 'external')
+                                                                   {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
+                                                                   <a style="text-decoration: none;" href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }}</a>
+                                                                 @else
+                                                                   <a href="{{ url('/') . '/story/' . $mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a>
+                                                                 @endif
+                                                               </h3>
+                                                               {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
                                                             </td>
                                                     </tr>
                                             </table>
@@ -324,10 +342,10 @@
                         </table>
                         <![endif]-->
                     </td>
-                   
+
                      </tr>
-                    
-                    
+
+
                      <tr>
                         <td valign="top" >
 
