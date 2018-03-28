@@ -112,7 +112,7 @@ class ExpertsController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function form()
+    public function show()
     {
         $expert = $this->expert;
 
@@ -123,11 +123,6 @@ class ExpertsController extends Controller
         ]);
 
         return view('admin.experts.form', compact('expert'));
-    }
-
-    public function show($id)
-    {
-      return;
     }
 
     /**
