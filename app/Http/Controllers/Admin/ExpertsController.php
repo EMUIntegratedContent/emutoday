@@ -126,6 +126,11 @@ class ExpertsController extends Controller
         return view('admin.experts.form', compact('expert'));
     }
 
+    public function show($id)
+    {
+      return;
+    }
+
     /**
      *  Update the expert from the admin/preview view (which uses CKEDITOR)
      */
