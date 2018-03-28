@@ -108,7 +108,7 @@ class CalendarController extends Controller
               // The user is logged in...
               $user = \Auth::user();
 
-              return redirect()->action('Admin\EventController@form');
+              return redirect()->action('Admin\EventController@show', []);
             } else {
               $user = cas()->user();
 
