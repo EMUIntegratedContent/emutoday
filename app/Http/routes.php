@@ -305,7 +305,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
             Route::get('expertimage/{expertimage}/confirm', 'Admin\ExpertImageController@confirm')->name('admin_expertimage_confirm');
 
             Route::put('experts/{id}/updatefrompreview', 'Admin\ExpertsController@updateFromPreview')->name('admin_preview_expert_update');
-            Route::get('experts/edit/{id}', 'Admin\ExpertsController@edit')->name('admin_expert_edit');
+            Route::get('experts/{id}/edit', 'Admin\ExpertsController@edit')->name('admin_expert_edit');
             Route::get('experts/form', 'Admin\ExpertsController@form')->name('admin_expert_form');
             Route::get('experts', 'Admin\ExpertsController@index')->name('admin_experts');
             //Route::resource('experts', 'Admin\ExpertsController');
