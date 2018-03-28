@@ -81,7 +81,7 @@ class ExpertsController extends Controller
         // The user is logged in...
         $user = \Auth::user();
 
-        return redirect()->route('Admin\ExpertsController@show');
+        return redirect()->action('Admin\ExpertsController@show');
       } else {
         $user = cas()->user();
 
