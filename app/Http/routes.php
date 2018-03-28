@@ -266,7 +266,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('experts/mediarequest/{expertId?}', 'Today\ExpertMediaRequestController@index');
     Route::get('experts', 'Today\ExpertsController@index');
     Route::resource('experts', 'Today\ExpertsController');
-    Route::resource('expertrequest', 'Today\ExpertRequestController');
+    //Route::resource('expertrequest', 'Today\ExpertRequestController');
 
     Route::auth();
     //watch out for match anything ROUTES

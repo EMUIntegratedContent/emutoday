@@ -112,7 +112,7 @@ class ExpertsController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function show()
+    public function show($id)
     {
         $expert = $this->expert;
 
