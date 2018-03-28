@@ -110,7 +110,7 @@
             </span></a>
             <ul class="treeview-menu {{ set_active('admin/expert*') }}">
                 <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts"><i class="fa fa-list"></i> <span>List</span></a></li>
-                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/show"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
+                <li class="{{ set_active('admin/experts*') }}"><a href="/admin/experts/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
             </ul>
         </li>
         <li><a href="#"><i class="fa fa-circle-o"></i>Media Requests <span class="pull-right-container">

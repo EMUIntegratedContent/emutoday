@@ -107,22 +107,16 @@ class ExpertsController extends Controller
         }
     }
 
-    /**
-    * Show the form for creating a new resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    public function show()
-    {
-        $expert = $this->expert;
+    public function form(){
+      $expert = $this->expert;
 
-        $user = \Auth::user();
+      $user = \Auth::user();
 
-        JavaScript::put([
-            'cuser' => $user,
-        ]);
+      JavaScript::put([
+          'cuser' => $user,
+      ]);
 
-        return view('admin.experts.form', compact('expert'));
+      return view('admin.experts.form', compact('expert'));
     }
 
     /**
