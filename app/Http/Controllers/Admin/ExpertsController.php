@@ -114,7 +114,6 @@ class ExpertsController extends Controller
     */
     public function form()
     {
-      echo "WONK";
         $expert = $this->expert;
 
         $user = \Auth::user();
