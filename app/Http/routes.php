@@ -40,6 +40,7 @@ Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_ev
 
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
+    Route::get('hscevents/{limit?}/{startDate?}/{endDate?}', 'Api\ExternalApiController@getHscEvents');
     Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
     Route::get('eventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEventsByDates');
     Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');

@@ -54,6 +54,35 @@ class ExternalApiController extends ApiController
   }
 
   /**
+   *  Get a list of HSC events from the database.
+   *
+   *  @param  int    $limit         Limit the number of events
+   *  @param  String $startDate     Start date for events
+   *  @param  String $endDate       End date for events
+   *  @return json                  A JSON representation of all events
+   */
+  public function getHscEvents($limit = 10, $startDate = null, $endDate = null){
+    $conditions = array(); //conditions for the where clause
+    $conditions[] = array('is_approved', 1);
+    $conditions[] = array('is_canceled', 0);
+    $conditions[] = array('hsc_reviewed', 1);
+    $conditions[] = array('hsc_rewards', '>', 0);
+
+    if($startDate){
+      $conditions[] = array('start_date', '>=', $startDate);
+    }
+    if($endDate){
+      $conditions[] = array('end_date', '<=', $endDate);
+    }
+
+    $events = Event::select('*');
+    $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
+
+    $result = $events->get();
+    return $result->toJson();
+  }
+
+  /**
    *  Get a list of events from the database with a home_priority.
    *
    *  @param  int    $limit      Limit the number of events
@@ -576,7 +605,7 @@ class ExternalApiController extends ApiController
       if($event->save()) {
         $minical = MiniCalendar::find(47); // 47 is the campus life minical on www as of 10/20/17
         $event->minicalendars()->sync($minical);
-        
+
         $to      = "calendar_events@emich.edu";
         $subject = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n";
         $message = $event->submitter."@emich.edu has submitted the following new calendar event:\n\n" .
