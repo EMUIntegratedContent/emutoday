@@ -213,6 +213,64 @@ class ExternalApiController extends ApiController
   }
 
   /**
+   * Same as getEventsByDates, but for any event that has HSC points and is HSC approved
+   *
+   * @param int       $limit                     How many dates to get events for.
+   * @param String    $referenceDate             The date to search before or after.
+   * @param boolean   $previous                  TRUE = search past dates in relation to $referenceDate.
+   *                                             FALSE = search future dates in relation to $referenceDate.
+   * @param boolean   $includeSelectedDate       TRUE = search dates that include the $referenceDate.
+   *                                             FALSE = do not search dates that include the $referenceDate.
+   * @return Array                               The array of dates with corresponding events and the number of total results found.
+   */
+  public function getHscEventsByDates($limit = 10, $referenceDate = null, $previous = false, $includeSelectedDate = false){
+      $conditions = array(); //conditions for the where clause
+      $conditions[] = array('is_approved', 1);
+      $conditions[] = array('hsc_reviewed', 1);
+      $conditions[] = array('hsc_rewards', '>', 0);
+
+      $orderBy = 'asc';
+
+      // includeSelectedDate variable gives the option of including the $referenceDate in the query
+      if($includeSelectedDate){
+          $dateOperator = '=';
+      } else {
+          $dateOperator = '';
+      }
+
+      // 'previous' flag is only relevant if referenceDate is set
+      if($referenceDate){
+          if($previous){
+              $conditions[] = array('start_date', '<'.$dateOperator, $referenceDate);
+              $orderBy = 'desc'; //start with most recent rather than oldest
+          } else {
+              $conditions[] = array('start_date', '>'.$dateOperator, $referenceDate);
+          }
+      } else {
+          $conditions[] = array('start_date', '>'.$dateOperator, date('Y-m-d'));
+      }
+
+      // No minicalendar set
+      $dates = Event::distinct()->select('start_date')->where($conditions);
+      $numDatesGross = $dates->count();
+
+      // groupBy is the key here...it allows to select distinct dates (as opposed to the default of 'id')
+      $dates->take($limit)->orderBy('start_date', $orderBy)->groupBy('start_date');;
+      $dates = $dates->get();
+
+      // Get all the events that fall on each date
+      $eventsArr = array();
+      foreach($dates as $date){
+          $events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('title', 'asc');
+          $events = $events->get();
+          //add the day's events into the eventsArray
+          $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+      }
+      $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
+      return $return;
+  }
+
+  /**
    * Get all homecoming events (events that have homecoming-related minicalendars related to them)
    *
    * @param Request   $request                   The HTTP request (which will contain an array of minicalendars in this case).

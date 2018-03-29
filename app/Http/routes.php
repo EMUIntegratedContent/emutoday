@@ -43,6 +43,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
     Route::get('hscevents/{limit?}/{startDate?}/{endDate?}', 'Api\ExternalApiController@getHscEvents');
     Route::get('homecomingevents/{firstDate}/{lastDate}', 'Api\ExternalApiController@getHomecomingEvents');
     Route::get('eventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEventsByDates');
+    Route::get('hsceventsbydates/{limit?}/{referenceDate?}/{previous?}/{includeSelectedDate?}', 'Api\ExternalApiController@getHscEventsByDates');
     Route::get('eventshome/{limit?}/{sortBy?}', 'Api\ExternalApiController@getHomeFeaturedEvents');
     Route::get('news/current/{limit?}', 'Api\ExternalApiController@getCurrentNews');
     Route::post('events/campuslife/update/{id}', 'Api\ExternalApiController@updateCampusLifeEvent');
