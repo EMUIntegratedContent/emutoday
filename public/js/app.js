@@ -3,55 +3,42 @@
 
 $(document).foundation();
 $(document).ready(function () {
-    $('.popup-youtube').magnificPopup({
-        type: 'iframe',
-        mainClass: 'mfp-fade',
-        removalDelay: 160,
-        preloader: false,
-        fixedContentPos: false
-    });
+  $('.popup-youtube').magnificPopup({
+    type: 'iframe',
+    mainClass: 'mfp-fade',
+    removalDelay: 160,
+    preloader: false,
+    fixedContentPos: false
+  });
 
-    /**
-     * These blocks ensure image captions do not stretch image dimensions on news stories
-     */
+  /**
+   * These blocks ensure image captions do not stretch image dimensions on news stories
+   */
+  $.each($('figure img'), function () {
+    var imgWidth = $(this).width();
+    var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
+    $(this).closest('figure').css({ 'width': figureWidth, 'overflow-wrap': 'break-word' });
+  });
+  $.each($('.visbox img'), function () {
+    var imgWidth = $(this).width();
+    $(this).closest('div.visbox').css({ 'width': imgWidth, 'overflow-wrap': 'break-word' });
+  });
 
-    $.each($('figure img'), function () {
-        var imgWidth = $(this).width();
-        var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
-        $(this).closest('figure').css({ 'width': figureWidth, 'overflow-wrap': 'break-word' });
-
-        console.log(imgWidth);
-    });
-    $.each($('.visbox img'), function () {
-        var imgWidth = $(this).width();
-        $(this).closest('div.visbox').css({ 'width': imgWidth, 'overflow-wrap': 'break-word' });
-
-        console.log(imgWidth);
-    });
-
-    // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
-    var isIE = /*@cc_on!@*/false || !!document.documentMode;
-    if (isIE) {
-        $('#outdated-browser-container').html('<p class="browserupgrade">EMU Today does not support Internet Explorer 10 or below. Please download the latest versions of <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&utm_source=firefox-com" class="firefox">Firefox</a> or <a href="https://www.google.com/chrome/" class="chrome">Chrome</a> to improve your viewing experience.</p>');
+  /**
+   * Any story image floated left should have no left margin, and a right margin
+   */
+  $.each($('#story-content figure'), function () {
+    if ($(this).css('float') == 'left') {
+      $(this).css({ 'margin-left': 0, 'margin-right': '1.11111rem' });
     }
+  });
+
+  // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
+  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+  if (isIE) {
+    $('#outdated-browser-container').html('<p class="browserupgrade">EMU Today does not support Internet Explorer 10 or below. Please download the latest versions of <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&utm_source=firefox-com" class="firefox">Firefox</a> or <a href="https://www.google.com/chrome/" class="chrome">Chrome</a> to improve your viewing experience.</p>');
+  }
 });
-
-/*
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue')
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue')
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue')
-);
-*/
 
 },{}]},{},[1]);
 

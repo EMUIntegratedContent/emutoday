@@ -11,20 +11,24 @@ $(document).ready(function() {
   /**
    * These blocks ensure image captions do not stretch image dimensions on news stories
    */
-
   $.each($('figure img'), function() {
       var imgWidth = $(this).width();
       var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
       $(this).closest('figure').css({'width': figureWidth, 'overflow-wrap': 'break-word'});
-
-      console.log(imgWidth);
   });
   $.each($('.visbox img'), function() {
       var imgWidth = $(this).width();
       $(this).closest('div.visbox').css({'width': imgWidth, 'overflow-wrap': 'break-word'});
-
-      console.log(imgWidth);
   });
+
+  /**
+   * Any story image floated left should have no left margin, and a right margin
+   */
+  $.each($('#story-content figure'), function(){
+    if($(this).css('float') == 'left'){
+      $(this).css({'margin-left': 0, 'margin-right': '1.11111rem'});
+    }
+  })
 
   // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
   var isIE = /*@cc_on!@*/false || !!document.documentMode;
@@ -33,20 +37,3 @@ $(document).ready(function() {
   }
 
 });
-
-/*
-Vue.component(
-    'passport-clients',
-    require('./components/passport/Clients.vue')
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue')
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue')
-);
-*/
