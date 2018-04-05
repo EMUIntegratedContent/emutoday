@@ -76,6 +76,7 @@ class MainController extends Controller
           ['type', 'general'],
           ['start_date', '<=', $currentDateStart],
           ['end_date', '>=', $currentDateEnd],
+          ['priority', '<', 1000000] // don't count special announcements.
         ])
         ->orderBy('priority','desc')
         ->orderBy('start_date','asc')
@@ -89,7 +90,7 @@ class MainController extends Controller
             ['is_archived', 0],
             ['type', 'general'],
             ['start_date', '<=', $currentDateStart],
-            ['end_date', '>=', $currentDateEnd]
+            ['end_date', '>=', $currentDateEnd],
           ])
           ->orderBy('priority','desc')
           ->orderBy('start_date','asc')
