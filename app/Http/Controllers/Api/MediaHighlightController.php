@@ -68,7 +68,7 @@ class MediaHighlightController extends ApiController
     {
       $user_id = Auth::user()->id;
       $highlight->title         = $request->get('title');
-      $highlight->url      	    = $request->get('url');
+      $highlight->url      	    = trim($request->get('url'));
       $highlight->source      	= $request->get('source');
       $highlight->start_date    = $request->get('start_date');
       $highlight->added_by      = $user_id;
@@ -122,7 +122,7 @@ class MediaHighlightController extends ApiController
     if($validation->passes())
     {
       $highlight->title         = $request->get('title');
-      $highlight->url      	    = $request->get('url');
+      $highlight->url      	    = trim($request->get('url'));
       $highlight->source      	= $request->get('source');
       $highlight->start_date    = $request->get('start_date');
 

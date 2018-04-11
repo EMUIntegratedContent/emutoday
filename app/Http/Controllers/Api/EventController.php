@@ -256,9 +256,9 @@ class EventController extends ApiController
           $event->contact_phone           = $request->get('contact_phone');
           $event->contact_email           = $request->get('contact_email');
           $event->contact_fax			      	= $request->get('contact_fax');
-          $event->related_link_1					= $request->get('related_link_1');
-          $event->related_link_2					= $request->get('related_link_2');
-          $event->related_link_3					= $request->get('related_link_3');
+          $event->related_link_1					= trim($request->get('related_link_1'));
+          $event->related_link_2					= trim($request->get('related_link_2'));
+          $event->related_link_3					= trim($request->get('related_link_3'));
           $event->related_link_1_txt			= $request->get('related_link_1_txt');
           $event->related_link_2_txt			= $request->get('related_link_2_txt');
           $event->related_link_3_txt			= $request->get('related_link_3_txt');
@@ -570,9 +570,9 @@ class EventController extends ApiController
             $event->contact_phone           = $request->get('contact_phone');
             $event->contact_email           = $request->get('contact_email');
             $event->contact_fax			      	= $request->get('contact_fax');
-            $event->related_link_1					= $request->get('related_link_1');
-            $event->related_link_2					= $request->get('related_link_2');
-            $event->related_link_3					= $request->get('related_link_3');
+            $event->related_link_1					= trim($request->get('related_link_1'));
+            $event->related_link_2					= trim($request->get('related_link_2'));
+            $event->related_link_3					= trim($request->get('related_link_3'));
             $event->related_link_1_txt			= $request->get('related_link_1_txt');
             $event->related_link_2_txt			= $request->get('related_link_2_txt');
             $event->related_link_3_txt			= $request->get('related_link_3_txt');

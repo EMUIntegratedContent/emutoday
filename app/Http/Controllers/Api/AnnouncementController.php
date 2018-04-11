@@ -112,7 +112,7 @@ class AnnouncementController extends ApiController
       $announcement->end_date      	= Carbon::parse($request->get('end_date'))->endOfDay();
       $announcement->announcement     	= $request->get('announcement');
 
-      $announcement->link               = $request->get('link', null);
+      $announcement->link               = trim($request->get('link', null));
       $announcement->link_txt           = $request->get('link_txt', null);
       $announcement->email_link         = $request->get('email_link', null);
       $announcement->email_link_txt     = $request->get('email_link_txt', null);
@@ -181,7 +181,7 @@ class AnnouncementController extends ApiController
       $announcement->start_date      	= $request->get('start_date');
       $announcement->end_date      	=  \Carbon\Carbon::parse($request->get('end_date'))->endOfDay();
       $announcement->announcement     	= $request->get('announcement');
-      $announcement->link              = $request->get('link', null);
+      $announcement->link              = trim($request->get('link', null));
       $announcement->link_txt          = $request->get('link_txt', null);
       $announcement->email_link              = $request->get('email_link', null);
       $announcement->email_link_txt          = $request->get('email_link_txt', null);
