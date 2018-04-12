@@ -66,6 +66,9 @@
             <p v-if="formErrors.link_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
           </div>
         </div>
+        <div v-if="record.link != ''":class="md12col">
+          <p>For more information visit: <a :href="record.link">{{ record.link_txt }}</a></p>
+        </div>
       </div>
     </div>
 

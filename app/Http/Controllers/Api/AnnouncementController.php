@@ -86,13 +86,21 @@ class AnnouncementController extends ApiController
   }
 
   public function store(Request $request)
-  { // Validate and store announcement request submission
+  {
+    if($request->get('link') != ''){
+        $link_txt_rules = 'required';
+    } else {
+        $link_txt_rules = '';
+    }
+
+    // Validate and store announcement request submission
     $validation = \Validator::make( Input::all(), [
       // Give validator request input, and rule to check against
       'title'           => 'required|max:80|min:10',
       'start_date'      => 'required|date',
       'end_date'        => 'required|date',
-      'announcement'     => 'required|max:255'
+      'announcement'     => 'required|max:255',
+      'link_txt'        => $link_txt_rules
     ]);
 
     if($validation->fails() )
@@ -163,11 +171,18 @@ class AnnouncementController extends ApiController
   {
     $announcement = Announcement::findOrFail($id);
 
+    if($request->get('link') != ''){
+        $link_txt_rules = 'required';
+    } else {
+        $link_txt_rules = '';
+    }
+
     $validation = \Validator::make( Input::all(), [
       'title'           => 'required|max:80|min:10',
       'start_date'      => 'required|date',
       'end_date'        => 'required|date',
-      'announcement'     => 'required|max:255'
+      'announcement'     => 'required|max:255',
+      'link_txt'        => $link_txt_rules,
     ]);
 
     if( $validation->fails() )
