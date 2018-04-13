@@ -87,7 +87,7 @@ class AnnouncementController extends ApiController
 
   public function store(Request $request)
   {
-    if($request->get('link') != ''){
+    if($request->get('link') != '' && $request->get('type') == 'general'){
         $link_txt_rules = 'required';
     } else {
         $link_txt_rules = '';
@@ -171,7 +171,7 @@ class AnnouncementController extends ApiController
   {
     $announcement = Announcement::findOrFail($id);
 
-    if($request->get('link') != ''){
+    if($request->get('link') != '' && $request->get('type') == 'general'){
         $link_txt_rules = 'required';
     } else {
         $link_txt_rules = '';
