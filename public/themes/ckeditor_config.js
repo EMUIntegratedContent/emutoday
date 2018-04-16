@@ -15,13 +15,14 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'about', groups: [ 'about' ] }
     ];
     config.extraPlugins = 'autogrow';
+    config.extraAllowedContent = 'div(*){*}';
     config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
     config.pasteFilter = 'plain-text';
     config.height ='25em';
     config.filebrowserWindowFeatures = 'resizable=no';
     // config.filebrowserBrowseUrl = '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files';
-   config.filebrowserImageBrowseUrl= '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images';
-  // config.filebrowserUploadUrl ='/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files';
-   config.filebrowserImageUploadUrl = '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images';
-   //  });
+    config.filebrowserImageBrowseUrl= '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images';
+    // config.filebrowserUploadUrl ='/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files';
+    config.filebrowserImageUploadUrl = '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images';
+    //  });
 };

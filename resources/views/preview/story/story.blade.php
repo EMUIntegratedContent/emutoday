@@ -87,10 +87,8 @@
   @endif
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="medium-8 columns">
-
                     </div><!-- /.medium-8 columns -->
                     <div class="medium-4 columns">
                         <h6 class="subheader text-right">Start Date: {{$story->start_date}}</h6>
@@ -101,10 +99,7 @@
                         <div class="button-group">
                                 {!! Form::submit('Update Story', ['class' => 'button']) !!}
                                 {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
-
                         </div><!-- /.button-group -->
-
-
                         {!! Form::close() !!}
                     </div><!-- /.medium-6 columns -->
                     <div class="medium-6 columns">

@@ -25,6 +25,7 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'about' }
     ];
 
+    config.extraAllowedContent = 'div(*){*}';
     // The default plugins included in the basic setup define some buttons that
     // are not needed in a basic editor. They are removed here.
     config.removeButtons = 'Preview,PasteFromWord,NumberedList,BulletedList,Outdent,Indent,Paste,Undo,Redo,Link,Unlink,Anchor,Underline,Strike,Subscript,Superscript';
