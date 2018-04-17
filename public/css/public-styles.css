@@ -5605,6 +5605,9 @@ html, body {
 .wordbreak {
   word-break: break-all;
 }
+.newspaper ul{
+  list-style-type: none !important;
+}
 author{
     font-style: italic;
 }
