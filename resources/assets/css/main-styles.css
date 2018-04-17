@@ -18,6 +18,9 @@ html, body {
 .wordbreak {
   word-break: break-all;
 }
+.newspaper ul{
+  list-style-type: none;
+}
 author{
     font-style: italic;
 }
