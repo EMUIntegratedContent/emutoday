@@ -5607,6 +5607,7 @@ html, body {
 }
 .newspaper ul{
   list-style-type: none !important;
+  margin-bottom: 10px !important;
 }
 author{
     font-style: italic;
