@@ -71,6 +71,12 @@
                             </div>
 
                             <div class="form-group">
+                                {!! Form::label('link', 'External Link (if tagging an article as \'external\')') !!}
+                                {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
+                                <span class="help-block">Fully qualified URL of link.</span>
+                            </div>
+
+                            <div class="form-group">
                                 {!! Form::label('moretext', 'More Text Link') !!}
                                 {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
                                 <span class="help-block">Text used to link to full story from homepage and emu-today hub page</span>

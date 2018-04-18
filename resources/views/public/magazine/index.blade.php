@@ -24,7 +24,17 @@
         <div class="row small-up-2 medium-up-2 large-up-5">
           @foreach ($barImgs as $barImg)
             <div class="column">
-              <a class="article-link" href="/magazine/article/{{$barImg->story->id}}">
+              <a class="article-link"
+              @if($barImg->story->tags()->first())
+                  @if($barImg->story->tags()->first()->name == 'external')
+                    href="{{$barImg->link}}"
+                  @else
+                    href="/magazine/article/{{$barImg->story->id}}"
+                  @endif
+              @else
+                href="/magazine/article/{{$barImg->story->id}}"
+              @endif
+              >
                 <img class="topic-image" src="/imagecache/original/{{$barImg->filename}}"  alt="topic image"/>
                 <div class="profile-content">
                   <div class="profile-text-content magazine" data-equalizer-watch>

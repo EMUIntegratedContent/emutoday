@@ -21653,14 +21653,27 @@ module.exports = {
         this.contact.email = '';
       }
     },
-
+    // Check to see if the story type is 'article' and tag is 'external'
+    isArticleExternal: function isArticleExternal() {
+      if (this.record.story_type == 'article') {
+        // forEach can't be exited out of, so set a match flag before entering
+        var match = false;
+        this.tags.forEach(function (tag) {
+          if (tag.name == 'external' && match === false) {
+            match = true;
+          }
+        });
+        return match;
+      }
+      return false;
+    },
     submitForm: function submitForm(e) {
       var _this12 = this;
 
       e.preventDefault();
       this.formMessage.isOk = '';
       this.record.user_id = this.cuser.id;
-      if (this.record.story_type === 'external') {
+      if (this.record.story_type === 'external' || this.isArticleExternal()) {
         this.record.content = 'not used';
       } else {
         this.record.content = this.content;
