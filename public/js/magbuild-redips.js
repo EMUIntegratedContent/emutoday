@@ -35,7 +35,7 @@ redipsInit = function () {
         rd.init();
         original_story_ids = JSvars.original_story_ids;
         mainrecord_id = JSvars.mainrecordid;
-     
+
     // enable shift animation
     //rd.shift.animation = true;
     // save initial DIV positions to "pos" object (it should go after initialization)
@@ -78,6 +78,7 @@ showContent = function () {
         magstory3 = getContent('magstory3'),
         magstory4 = getContent('magstory4'),
         magstory5 = getContent('magstory5'),
+        magstory6 = getContent('magstory6'),
         // set reference to the message DIV (below tables)
         message = document.getElementById('message');
         story_ids[0] = magstory0;
@@ -86,6 +87,7 @@ showContent = function () {
         story_ids[3] = magstory3;
         story_ids[4] = magstory4;
         story_ids[5] = magstory5;
+        story_ids[6] = magstory6;
 
     // show block content
     message.innerHTML = 'Main Featured Story = ' + magstory0 + '<br>' +
@@ -93,7 +95,8 @@ showContent = function () {
                         'Featured Story 2 = ' + magstory2 + '<br>' +
                         'Featured Story 3 = ' + magstory3 + '<br>' +
                         'Featured Story 4 = ' + magstory4 + '<br>' +
-                        'Featured Story 5 = ' + magstory5;
+                        'Featured Story 5 = ' + magstory5 + '<br>' +
+                        'Featured Story 6 = ' + magstory6;
 
     document.getElementById("story_ids").value = story_ids.toString();
 };
@@ -422,9 +425,9 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
     var articlepath = '/admin/queuearticle/magazine/article/'+ parentBtnId +'/edit';
     ev.stopPropagation(); //prevent more than one tab from opening
     window.open(articlepath); //open the article in a new tab
-    
+
     /***
-     *  Convoluted code from the original developer to display a pop-up window 
+     *  Convoluted code from the original developer to display a pop-up window
      *  with an option to save the form before going to the edit screen of the story
      * /
     ev.preventDefault();
@@ -482,7 +485,7 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
             if (canSave){
                 saveasbtn.disabled =false;
                 saveasbtn.addEventListener("click", function(e){
-                    
+
                     //Take all of the exsiting magazine data, and throw it into a serialized object
                     //http://stackoverflow.com/questions/23287067/converting-serialized-forms-data-to-json-object
                     var data = $("#edit_magazine_form").serialize().split("&");
@@ -490,7 +493,7 @@ $('#table2 table').on('click', '.fa-pencil', function (ev) {
                     for(var key in data){
                         obj[data[key].split("=")[0]] = data[key].split("=")[1];
                     }
-                    
+
                     var sids =  story_ids.toString();
                     console.log(sids);
                     e.preventDefault();

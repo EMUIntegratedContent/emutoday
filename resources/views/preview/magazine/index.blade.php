@@ -40,7 +40,6 @@
                   </a>
                 </div>
             @endfor
-            {{-- @each('public.layouts.components.smallimg', $barImgs, 'barImg') --}}
             </div>
         </div>
       </div>

@@ -232,7 +232,7 @@ class PreviewController extends Controller
           }
 
 
-          foreach ($magazine->storys as $story) {
+          foreach ($magazine->storys()->take(6)->get() as $story) {
                       if ($story->pivot->story_position === 0) {
                               $heroImg = $story->storyImages()->where('image_type', 'front')->first();
                       } else {

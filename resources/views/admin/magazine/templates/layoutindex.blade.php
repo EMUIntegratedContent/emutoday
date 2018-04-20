@@ -45,9 +45,10 @@
 
 <!-- right container -->
 <div id="right" class="col-md-6">
+  <p>NOTE: Sixth sub-story (outlined in red) will only show in the list on the /magazine/issue page. It will NOT be visible on the magazine homepage.</p>
     <table id="table2">
         <colgroup>
-            <col width="550" />
+            <col width="660" />
         </colgroup>
         <tr>
             <td class="redips-mark">
@@ -71,6 +72,7 @@
             <td class="redips-mark">
                 <table id="small-story-table-group">
                     <colgroup>
+                        <col width="110"/>
                         <col width="110"/>
                         <col width="110"/>
                         <col width="110"/>
@@ -162,6 +164,24 @@
                     </tr>
                     <tr>
                         <td id="magstory5" class="redips-single small-story-btn">
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+            <td class="redips-mark" style="border:2px solid red;">
+                <table class="small-story-table" id="small-story-table6">
+                    <colgroup>
+                        <col width="110"/>
+                    </colgroup>
+
+                    <tr>
+                    <td id="storyview6" class="redips-mark small-story-view">
+
+                    </td>
+                    </tr>
+                    <tr>
+                        <td id="magstory6" class="redips-single small-story-btn">
                         </td>
                     </tr>
 

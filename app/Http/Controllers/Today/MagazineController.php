@@ -62,7 +62,7 @@ class MagazineController extends Controller
                 $magazineExtra = $magazine->mediafiles()->where('type','extra')->first();
 
         //order magazine stories by their position
-        $stories = $magazine->storys()->orderBy('story_position')->get();
+        $stories = $magazine->storys()->orderBy('story_position')->take(6)->get();
         if ($currentIssue){
 
           foreach ($stories as $story) {
@@ -116,7 +116,7 @@ class MagazineController extends Controller
         $barImgs = collect();
 
 
-        foreach ($magazine->storys as $story) {
+        foreach ($magazine->storys()->orderBy('pivot_story_position')->get() as $story) {
             if ($story->pivot->story_position === 0) {
                 $barImgs->push( $story->storyImages()->where('image_type', 'small')->first() );
             } else {
