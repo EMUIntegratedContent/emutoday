@@ -230,7 +230,7 @@ class MagazineController extends Controller
                 ])
                 ->with(['images' => function($query){
                     $query->where('group','=','article');
-                    }])->get();
+                  }])->orderBy('id', 'desc')->get();
 
 
 

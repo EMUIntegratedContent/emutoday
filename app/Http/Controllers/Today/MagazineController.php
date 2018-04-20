@@ -18,7 +18,6 @@ class MagazineController extends Controller
     {
         $this->magazine = $magazine;
         $this->story = $story;
-
     }
     public function index($year = null, $season = null)
     {
@@ -44,34 +43,27 @@ class MagazineController extends Controller
                 ['season', $season],
             ])->whereDate('start_date', '<', $currentDateTime)->orderBy('start_date', 'DESC')->first();
           }
-
         }
-
         // If there are no magazines published and set to begin at a past date
         if(!$magazine){
             return $this->noCurrentIssue();
         }
-
         JavaScript::put([
             'jsis' => 'hi',
         ]);
-
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
                 $magazineCover = $magazine->mediafiles()->where('type','cover')->first();
                 $magazineExtra = $magazine->mediafiles()->where('type','extra')->first();
-
         //order magazine stories by their position
         $stories = $magazine->storys()->orderBy('story_position')->take(6)->get();
         if ($currentIssue){
-
           foreach ($stories as $story) {
                 if ($story->pivot->story_position === 0) {
                     $heroImg = $story->storyImages()->where('image_type', 'front')->first();
                 } else {
                     $barImgs->push( $story->storyImages()->where('image_type', 'small')->first() );
                 }
-
             }
           return view('public.magazine.index', compact('magazine', 'storyImages', 'heroImg', 'barImgs', 'magazineCover','magazineExtra'));
         } else {
@@ -81,17 +73,10 @@ class MagazineController extends Controller
               } else {
                   $barImgs->push( $story->storyImages()->where('image_type', 'small')->first() );
               }
-
           }
-
-
           return view('public.magazine.issue', compact('magazine', 'storyImages', 'barImgs','magazineCover','magazineExtra'));
-
         }
-        //
-
     }
-
 
     public function issue($year = null, $season = null)
     {
@@ -114,7 +99,6 @@ class MagazineController extends Controller
 
         $storyImages = $this->magazine->storyImages();
         $barImgs = collect();
-
 
         foreach ($magazine->storys()->orderBy('pivot_story_position')->get() as $story) {
             if ($story->pivot->story_position === 0) {
@@ -142,24 +126,14 @@ class MagazineController extends Controller
         if($story->magazines){
             $magazine = $story->magazines->first();
         }
-
-        //$story = $magazine->storys()->where('id', $id)->first();
         $mainImage = $story->storyImages()->where('image_type', 'story')->first();
-                // dd($mainImage);
         $sideFeaturedStorys = $this->story
                                   ->where([
                                     ['story_type', 'article'],
                                     ['id', '<>', $id],
                                     ['is_approved', 1],
-                                    ['start_date', '<=', date('Y-m-d')],
+                                    ['start_date', '<=', date('Y-m-d H:i:s')],
                                   ])
-                                  /*
-                                  ->orWhere([
-                                    ['story_type', 'student'],
-                                    ['id', '<>', $id],
-                                                                        ['is_approved', 1],
-                                  ])
-                                  */
                                   ->orderBy('created_at', 'desc')->with('storyImages')->take(3)->get();
 
         $sideStoryBlurbs = collect();
@@ -169,17 +143,13 @@ class MagazineController extends Controller
                                                                 ->where('image_type', 'small')
                                                                 ->first());
             }
-
-
         $sideNewsStorys = $this->story
                             ->where([
                               ['story_type', 'news'],
                               ['id', '<>', $id],
                                                             ['is_approved', 1],
                                 ])->orderBy('created_at', 'desc')->take(3)->get();
-
         return view('public.magazine.article', compact('magazine','story', 'mainImage','sideStoryBlurbs','sideNewsStorys'));
-
     }
 
     /**
