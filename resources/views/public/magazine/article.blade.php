@@ -39,7 +39,6 @@
         </div>
         <div class="large-4 medium-4 small-12 columns noleftpadding">
           <div class="addthis_sharing_toolbox"><a class="addthis magazine-top" width="50px"></a></div>
-          <!-- <div class="addthis magazine-top"><a href=""><img src="/assets/imgs/icons/fake-addthis.png" alt="addthis "></a></div> -->
         </div>
       </div>
       <div class="row">
@@ -53,7 +52,6 @@
 
         <div class="feature-image-caption">{{ $mainImage->caption }}</div>
       </div>
-      <!-- <div class="magazine-titlebar"><img src="/assets/imgs/graphic-title.png" alt="Lost Voices"></div> -->
       {!! $story->content !!}
       @if($story->author_id === 0)
       <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>

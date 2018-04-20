@@ -24,7 +24,17 @@
               <div id="story-listing" class="row">
                                   @foreach ($barImgs as $barImg)
                                         <div class="article-listing row column">
-                                        <a class="magazine-article-button" href="/magazine/article/{{$barImg->story->id}}">
+                                        <a class="magazine-article-button"
+                                        @if($barImg->story->tags()->first())
+                                            @if($barImg->story->tags()->first()->name == 'external')
+                                              href="{{$barImg->link}}"
+                                            @else
+                                              href="/magazine/article/{{$barImg->story->id}}"
+                                            @endif
+                                        @else
+                                          href="/magazine/article/{{$barImg->story->id}}"
+                                        @endif
+                                        >
                                         <div class="article-img small-12 medium-5 large-3 columns">
                                                 <img src="/imagecache/original/{{$barImg->filename}}">
                                         </div>
