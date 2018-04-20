@@ -68,12 +68,12 @@
                 <div class="form-group">
                     {!! Form::label('link') !!}
                     {!! Form::text('link', null, ['class' => 'form-control']) !!}
-                    <span class="help-block">Currently Not Used for Extra Images</span>
+                    <span class="help-block">Will display as a button using the Link text.</span>
                 </div>
                 <div class="form-group">
                     {!! Form::label('link_text') !!}
                     {!! Form::text('link_text', null, ['class' => 'form-control']) !!}
-                    <span class="help-block">Currently Not Used for Extra Images</span>
+                    <span class="help-block">What should the button say?</span>
                 </div>
             @endif
                 <div class="form-group">

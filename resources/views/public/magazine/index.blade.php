@@ -57,6 +57,9 @@
                 <h5>{{$magazineExtra->headline}}</h5>
                 {!! $magazineExtra->teaser !!}
                 <p class="author">{{$magazineExtra->caption}}</p>
+                @if($magazineExtra->link != '')
+                  <p class="button-container"><a class="button expanded magazine-button" href="{{$magazineExtra->link}}">{{$magazineExtra->link_text}}</a></p>
+                @endif
               </div>
 
             </div>
