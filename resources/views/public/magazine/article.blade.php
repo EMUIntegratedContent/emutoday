@@ -67,7 +67,17 @@
         <h6 class="headline-block">Popular Articles</h6>
         <ul class="feature-list">
           @foreach ($sideStoryBlurbs as $ssblurb)
-          <li><a href="/magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}">{{$ssblurb->caption}}</a></li>
+            <li><a href="
+            @if($ssblurb->story->tags()->first())
+                @if($ssblurb->story->tags()->first()->name == 'external')
+                  {{$ssblurb->link}}
+                @else
+                  /magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}
+                @endif
+            @else
+              /magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}
+            @endif
+            ">{{$ssblurb->caption}}</a></li>
           @endforeach
         </ul>
       </div>
