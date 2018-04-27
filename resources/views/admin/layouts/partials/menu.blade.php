@@ -83,6 +83,8 @@
     </ul>
   </li>
   <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
+  @endcan
+  @can('edit_all', $currentUser)
   <li><a href="/admin/storyideas"><i class="fa fa-lightbulb-o"></i>Ideas <span class="pull-right-container"></a></li>
   @endcan
 </ul>

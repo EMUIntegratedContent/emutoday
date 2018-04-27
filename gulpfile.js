@@ -176,6 +176,7 @@ elixir(function(mix) {
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
         mix.browserify('vue-archive-queue.js', 'public/js/vue-archive-queue.js');
+        mix.browserify('vue-storyideas-list.js', 'public/js/vue-storyideas-list.js');
         mix.browserify('app.js', 'public/js/app.js');
 
 });

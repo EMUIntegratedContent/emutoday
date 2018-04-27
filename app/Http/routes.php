@@ -298,6 +298,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
         Route::get('search', 'Admin\DashboardController@search')->name('admin.search');
 
+        /* STORY IDEAS */
+        Route::group(['middleware' => ['storyideas']], function()
+        {
+            Route::resource('storyideas', 'Admin\StoryIdeaController');
+        });
+
         /* EXPERTS */
         Route::group(['middleware' => ['experts']], function()
         {
