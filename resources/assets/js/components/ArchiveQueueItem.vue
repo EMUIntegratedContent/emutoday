@@ -25,6 +25,11 @@
                 {{ item.title }}
             </div>
 
+            <!--Story Ideas Body-->
+            <div v-if="entityType == 'storyideas'">
+                <i class="fa fa-lightbulb-o" aria-hidden="true"></i> {{ item.idea }}
+            </div>
+
             <!--Story Body-->
             <div v-if="entityType == 'stories'">
                 <div class="table-responsive">
@@ -71,6 +76,7 @@
                 <div class="col-sm-12 col-md-9">
                     <p v-show="entityType == 'announcements'">Submitted on {{ formatDate(item.start_date) }} by {{ item.submitter }}</p>
                     <p v-show="entityType == 'stories'">Story started on {{ formatDate(item.start_date) }}</p>
+                    <p v-show="entityType == 'storyideas'"><strong>Medium:</strong> {{ item.medium.medium }} | <strong>Due date:</strong> {{ formatDate(item.deadline.date) }}</p>
                 </div>
                 <div class="col-sm-12 col-md-3">
                     <div v-show="showArchivedButtons">
@@ -297,7 +303,7 @@ module.exports = {
                 // For archives of type 'story' (and any subtypes thereof)
                 return this.item.story_type
             } else {
-                if( this.entityType == 'announcements' && !this.isUnarchived && !this.isDeleted && !this.isFailedDeleted && !this.isFailedUnarchived){
+                if( (this.entityType == 'announcements' || this.entityType == 'storyideas') && !this.isUnarchived && !this.isDeleted && !this.isFailedDeleted && !this.isFailedUnarchived){
                     return 'announcement'
                 }
                 if (this.isUnarchived) {
@@ -325,7 +331,6 @@ module.exports = {
             var url = '/api/archive/' + this.entityType + '/' + item.id + '/unarchive'
             this.$http.put(url, item)
                 .then((response) => {
-                    console.log(response)
                     this.$emit("unarchived", item.id)
                     this.showArchivedButtons = false
                     this.showUnarchivedButtons = true
@@ -344,6 +349,8 @@ module.exports = {
             switch(this.entityType){
                 case 'announcements':
                     return "/admin/announcement/" + item.id + "/edit"
+                case 'storyideas':
+                    return "/admin/storyideas/story/" + item.id + "/edit"
                 case 'stories':
                     return "/admin/queueall/story/" + item.story_type + "/" + item.id + "/edit"
                 default:
@@ -357,7 +364,6 @@ module.exports = {
             var url = '/api/archive/' + this.entityType + '/' + item.id + '/delete'
             this.$http.delete(url)
                 .then((response) => {
-                    console.log(response)
                     this.$emit("deleted", item.id)
                     this.showArchivedButtons = false
                     this.showUnarchivedButtons = false

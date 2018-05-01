@@ -24,12 +24,14 @@ use Emutoday\Building;
 use Emutoday\Mediafile;
 use Emutoday\Mediatype;
 use Emutoday\Story;
+use Emutoday\StoryIdea;
 
 use Carbon\Carbon;
 
 use Emutoday\Today\Transformers\FractalAnnouncementTransformerModel;
 use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
 use Emutoday\Today\Transformers\FractalStoryTransformerModel;
+use Emutoday\Today\Transformers\FractalStoryIdeaTransformerModel;
 
 use Illuminate\Http\Request;
 
@@ -95,7 +97,14 @@ class ArchiveController extends ApiController
                 case 'advisory':
                     $paginator = Story::where(['is_archived' => 1, 'story_type' => 'advisory'])->orderBy('start_date', 'desc')->paginate($perPage);
                     break;
+                case 'storyideas':
+                    $paginator = StoryIdea::where('is_archived', 1)->orderBy('deadline', 'desc')->paginate($perPage);
+                    $archivedItems = $paginator->getCollection();
 
+                    $resource = new Fractal\Resource\Collection($archivedItems, new FractalStoryIdeaTransformerModel);
+                    $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+
+                    return $fractal->createData($resource)->toArray();
                 default;
                     $archivedItems = array();
                     return $archivedItems;
@@ -139,6 +148,20 @@ class ArchiveController extends ApiController
 
                     $item->is_archived = 0;
                     $item->is_approved = 0;
+
+                    break;
+
+                case 'storyideas':
+                    $item = StoryIdea::findOrFail($id);
+
+                    $validation = \Validator::make( Input::all(), [
+                      'title'           => 'required',
+                      'idea'            => 'required',
+                      'creator'         => 'required',
+                      'deadline'        => 'required',
+                    ]);
+
+                    $item->is_archived = 0;
 
                     break;
 
@@ -190,6 +213,10 @@ class ArchiveController extends ApiController
               switch($archiveType){
                   case 'announcements':
                       $item = Announcement::findOrFail($id);
+                      break;
+
+                  case 'storyideas':
+                      $item = StoryIdea::findOrFail($id);
                       break;
 
                   case 'stories':

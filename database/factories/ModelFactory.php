@@ -10,7 +10,7 @@
 | database. Just tell the factory how a default model should look.
 |
 */
-
+/*
 $factory->define(Emutoday\User::class, function (Faker\Generator $faker) {
   return [
     'name' => $faker->name,
@@ -32,5 +32,17 @@ $factory->define(Emutoday\Email::class, function (Faker\Generator $faker) {
     'frequency' => $faker->randomDigitNotNull,
     'send_at' => $faker->dateTimeThisMonth,
     'end_at' => $faker->dateTimeThisMonth,
+  ];
+});
+*/
+$factory->define(Emutoday\StoryIdea::class, function (Faker\Generator $faker) {
+  return [
+    'title' => $faker->name,
+    'assignee' => Emutoday\User::all()->random()->id,
+    'creator' => Emutoday\User::all()->random()->id,
+    'medium' => Emutoday\StoryIdeaMedium::all()->random()->id,
+    'is_completed' => 0,
+    'deadline' => $faker->dateTimeThisMonth,
+    'idea' => $faker->sentences(3, true),
   ];
 });

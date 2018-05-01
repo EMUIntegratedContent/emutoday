@@ -9,9 +9,6 @@ use Emutoday\StoryType;
 
 class Story extends Model
 {
-
-
-
     /**
      * The database table used by the model.
      *

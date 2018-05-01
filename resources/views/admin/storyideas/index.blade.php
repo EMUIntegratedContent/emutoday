@@ -16,7 +16,7 @@
 @endsection
 @section('content')
   <div id="vue-storyideas-list">
-    <storyideas-list></storyideas-list>
+    <storyideas-list role="{{$currentUser->roles->first()->name}}"></storyideas-list>
   </div>
 @endsection
 @section('footer-vendor')

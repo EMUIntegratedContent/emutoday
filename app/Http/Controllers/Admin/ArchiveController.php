@@ -33,7 +33,6 @@ class ArchiveController extends Controller
         return view('admin.archive.queue', compact('entityType', 'storyTypes'));
     }
 
-
     /**
     * Process deletion of an archived item.
     *

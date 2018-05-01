@@ -53,12 +53,17 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
+    /* STORY IDEAS */
+    Route::get('storyideas', 'Api\StoryIdeasController@getIdeas');
+    Route::patch('storyideas/update/{idea}', 'Api\StoryIdeasController@updateIdea');
 
+    /* MEDIA HIGHLIGHTS */
     Route::get('mediahighlights/taglist', 'Api\MediaHighlightController@getTaglist');
     Route::get('mediahighlights/taglist/{id}', 'Api\MediaHighlightController@getTaglist');
     Route::post('mediahighlights/tag/store', 'Api\MediaHighlightController@storeTag');
     Route::resource('mediahighlights', 'Api\MediaHighlightController');
 
+    /* AUTHORS */
     Route::patch('authors/updateitem/{id}', 'Api\AuthorController@updateItem')->name('api_authors_updateitem');
     Route::get('authors/{id}/edit', 'Api\AuthorController@edit')->name('api_authors_edititem');
     Route::get('authors/primarycontact', 'Api\AuthorController@getCurrentPrimaryContact')->name('api_authors_updateitem');

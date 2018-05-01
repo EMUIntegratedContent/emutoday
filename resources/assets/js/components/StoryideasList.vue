@@ -1,8 +1,25 @@
 <template>
   <div>
+    <h1>Story Ideas</h1>
     <div class="row">
-      <div v-bind:class="md12col">
-        <h1>Story Ideas</h1>
+      <div class="col-md-8">
+        <div class="form-check form-check-inline" v-for="storytype in ideasByCategory">
+          <input class="form-check-input" type="checkbox" :id="'display-' + slugify(storytype.categoryName)" v-model="storytype.display">
+          <label class="form-check-label" :for="'display-' + slugify(storytype.categoryName)">{{ storytype.categoryName }}</label>
+        </div>
+      </div>
+      <div v-if="role == 'admin' || role == 'admin_super'" class="col-md-4 text-right">
+        <a class="btn btn-sm btn-default" href="/admin/archive/queue/storyideas"><i class="fa fa-archive"></i> Archived Ideas</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-4" v-for="storytype in ideasByCategory" v-if="storytype.display">
+        <storyideas-panel
+          :story-idea-type="storytype.categoryName"
+          :stories="storytype.stories"
+          :role="role"
+        >
+        </storyideas-panel>
       </div>
     </div>
   </div>
@@ -11,22 +28,52 @@
 
 </style>
 <script>
-import VuiFlipSwitch from './VuiFlipSwitch.vue'
+import StoryideasPanel from './StoryideasPanel.vue'
 
 module.exports = {
-  components: {},
-  props: {
-    framework: {
-      default: 'bootstrap'
-    },
-    type: {
-      default: 'general'
-    },
-  },
+  components: {StoryideasPanel},
+  props: ['role'],
   data: function() {
     return {
       currentSearch: '',
-      experts: [],
+      ideasByCategory: {
+        easternMagazine: {
+          categoryName: 'Eastern Magazine',
+          stories: [],
+          display: true
+        },
+        emuToday: {
+          categoryName: 'EMU Today',
+          stories: [],
+          display: true
+        },
+        homepage: {
+          categoryName: 'Homepage',
+          stories: [],
+          display: true
+        },
+        mediaAdvisory: {
+          categoryName: 'Media Advisory',
+          stories: [],
+          display: true
+        },
+        mediaPitch: {
+          categoryName: 'Media Pitch',
+          stories: [],
+          display: true
+        },
+        newsletter: {
+          categoryName: 'Newsletter',
+          stories: [],
+          display: true
+        },
+        newsRelease: {
+          categoryName: 'News Release',
+          stories: [],
+          display: true
+        },
+      },
+      ideas: [],
       formErrors: '',
       pagination: {
         current_page: 1,
@@ -39,7 +86,6 @@ module.exports = {
       last_page: 1, //need a second last page in case search results turn up 0 pages
       hasPrevious: true,
       hasNext: true,
-      type_filter: 'all'
     }
   },
   created: function () {
@@ -55,49 +101,50 @@ module.exports = {
     hasNext: function(){
       return this.pagination.next_page_url
     },
-    // switch classes based on css framework. foundation or bootstrap
-    md6col: function() {
-      return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
-    },
-    md12col: function() {
-      return (this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12')
-    },
-    md8col: function() {
-      return (this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8')
-    },
-    md4col: function() {
-      return (this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4')
-    },
-    btnPrimary: function() {
-      return (this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary')
-    },
-    formGroup: function() {
-      return (this.framework == 'foundation' ? 'form-group' : 'form-group')
-    },
-    formControl: function() {
-      return (this.framework == 'foundation' ? '' : 'form-control')
-    },
-    calloutSuccess:function(){
-      return (this.framework == 'foundation')? 'callout success':'alert alert-success'
-    },
-    calloutFail:function(){
-      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
-    },
-    iconStar: function() {
-      return (this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star')
-    },
-    inputGroupLabel:function(){
-      return (this.framework=='foundation')?'input-group-label':'input-group-addon'
-    },
-    table: function(){
-      return (this.framework=='foundation')?'table':'table'
-    },
   },
 
   methods: {
-    fetchIdeas: function() {
+    // separate out each story idea into categories
+    categorizeIdeas: function(){
+      var self = this
+      this.ideas.forEach(function(idea){
+        switch(idea.medium.medium){
+          case 'Eastern Magazine':
+            self.ideasByCategory.easternMagazine.stories.push(idea)
+            break
+          case 'EMU Today':
+            self.ideasByCategory.emuToday.stories.push(idea)
+            break
+          case 'Homepage':
+            self.ideasByCategory.homepage.stories.push(idea)
+            break
+          case 'Media Advisory':
+            self.ideasByCategory.mediaAdvisory.stories.push(idea)
+            break
+          case 'Media Pitch':
+            self.ideasByCategory.mediaPitch.stories.push(idea)
+            break
+          case 'News Release':
+            self.ideasByCategory.newsRelease.stories.push(idea)
+            break
+          case 'Newsletter':
+            self.ideasByCategory.newsletter.stories.push(idea)
+            break
+        }
+      })
     },
-
+    fetchIdeas: function() {
+      var self = this
+      this.$http.get('/api/storyideas')
+      .then((response) =>{
+        this.$set('ideas', response.data.newdata.data)
+        // separate out each story idea into categories
+        this.categorizeIdeas()
+      }, (response) => {
+        //error callback
+        this.formErrors =  response.data.error.message
+      }).bind(this)
+    },
     makePagination: function(data){
       var pagination = {
         current_page: data.current_page,
@@ -116,10 +163,12 @@ module.exports = {
 
       this.$set('pagination', pagination)
     },
-
     isActivePage(page){
       return page == this.pagination.current_page
-    }
+    },
+    slugify: function(str){
+      return  str.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '')
+    },
   },
   watch: {
   },
