@@ -36,60 +36,59 @@
   <div id="news-story-bar">
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
-        <!-- Story Page Title group -->
-        <div id="title-grouping" class="row">
-          <div class="large-5 medium-4 small-6 columns">{{-- <h3 class="news-caps">@if($story->story_type == 'advisory') Media Advisory @else {{ $story->story_type }} @endif</h3> --}}</div>
-          <div class="large-2 medium-4 small-6 columns">
-            <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
-          </div>
-          <div class="large-5 medium-4 hide-for-small columns">
-            <p class="small-return-news"><a href="/story/news">News Home</a></p>
-          </div>
-        </div>
-        <!-- Story Page Content -->
-        <div id="story-content" class="row">
-          <!-- Story Content Column -->
-          <div class="large-9 medium-8 small-12 columns">
-            <h3>{{ $story->title }}</h3>
-            <h5>{{ $story->subtitle }}</h5>
-            @include('public.vendor.addthis')
-          @if(isset($mainStoryImage))
-            <div id="big-feature-image">
-              <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
-
-              <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
+        <!-- DO NOT SHOW ARTICLES WHOSE START DATE/TIME HAS NOT ARRIVED -->
+        @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $story->start_date) < Carbon\Carbon::now())
+          <!-- Story Page Title group -->
+          <div id="title-grouping" class="row">
+            <div class="large-5 medium-4 small-6 columns"></div>
+            <div class="large-2 medium-4 small-6 columns">
+              <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
             </div>
-          @endif
-            <div id="story-content-edit">
-              {!! $story->content !!}
+            <div class="large-5 medium-4 hide-for-small columns">
+              <p class="small-return-news"><a href="/story/news">News Home</a></p>
             </div>
-            @if($story->author_id === 0)
-              @unless($story->author_info)
-                <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
+          </div>
+          <!-- Story Page Content -->
+          <div id="story-content" class="row">
+            <!-- Story Content Column -->
+            <div class="large-9 medium-8 small-12 columns">
+              <h3>{{ $story->title }}</h3>
+              <h5>{{ $story->subtitle }}</h5>
+              @include('public.vendor.addthis')
+            @if(isset($mainStoryImage))
+              <div id="big-feature-image">
+                <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
+                <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
+              </div>
+            @endif
+              <div id="story-content-edit">
+                {!! $story->content !!}
+              </div>
+              @if($story->author_id === 0)
+                @unless($story->author_info)
+                  <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
+                @else
+                  <div class="story-author">{{$story->author_info}}</div>
+                @endif
               @else
-                <div class="story-author">{{$story->author_info}}</div>
+                  <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
               @endif
-            @else
-                <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-            @endif
-            <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
-
+              <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
+            </div>
+            <!-- Page Side Bar Column -->
+            <div class="large-3 medium-4 small-12 columns featurepadding">
+              @include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
+              @if(isset($sideStudentBlurbs))
+                  @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
+              @endif
+            </div>
           </div>
-          <!-- Page Side Bar Column -->
-          <div class="large-3 medium-4 small-12 columns featurepadding">
-            @include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
-            @if(isset($sideStudentBlurbs))
-                @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
-            @endif
-        </div>
-
-
-        </div>
+        @else
+          <p>The resource you are looking for is not available.</p>
+        @endif
       </div>
-
     </div>
   </div>
-
 @endsection
     @section('footer-vendor')
         @parent
