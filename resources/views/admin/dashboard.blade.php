@@ -24,6 +24,7 @@
             </div>
         </div>
     @endif
+{{--
  <div class="row">
    @can('admin', $currentUser)
      <div class="col-md-6">
@@ -80,7 +81,7 @@
      </div>
    @endcan
   </div><!-- /.row -->
-
+--}}
 
 
 @endsection
