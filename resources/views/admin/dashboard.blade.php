@@ -24,6 +24,8 @@
             </div>
         </div>
     @endif
+
+{{-- GOOGLE ANALYTICS PLUGIN THROWING EXCESS USER ERROR 5/2
  <div class="row">
    @can('admin', $currentUser)
      <div class="col-md-6">
@@ -80,7 +82,12 @@
      </div>
    @endcan
   </div><!-- /.row -->
-
+--}}
+<div class="row">
+  <div class="col-xs-12">
+    <p>Something is wrong with the Google Analytics plugin on this page. Here's a filler paragraph in the meantime. Have a nice day!</p>
+  </div>
+</div>
 
 
 @endsection
