@@ -238,25 +238,11 @@
                             <p class="sub-title">A Weekly Digest from <a class="uppertitle" href="{{ url('/') }}"><span style="color: #046A38">EMU</span> Today </a></p>
                         </td>
                     </tr>
-                    {{--
-                    <tr valign="top" id="title-row" style="padding: 0; margin: 0;">
-                        <td style="text-align:center">
-                            <header>
-                                <h2>{{ $email->title }}</h2>
-                                <p>{{ $email->subheading }}</p>
-                            </header>
-                        </td>
-                    </tr>
-                    --}}
                     <tr>
                         <td valign="top" class="full-width-image">
                             <article>
                                 <img alt="{{ $mainStoryImages[0]->caption }}" src="{{ url('/') }}/imagecache/emailmain/{{$mainStoryImages[0]->filename}}" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                 <div style="padding-left: 1rem; padding-right: 1rem; padding-top: .6rem; padding-bottom: 16px; margin-bottom: 10px;">
-                                    {{--
-                                    <h2 class="indent" style="margin-bottom: .8rem;"><a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a></h2>
-                                    <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
-                                    --}}
                                     <h2 class="indent" style="margin-bottom: .8rem;">
                                     @if($mainStories[0]->story_type == 'external' || ($mainStories[0]->story_type == 'article' && $mainStories[0]->tags()->where('name', 'external')->first()))
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
@@ -270,10 +256,8 @@
                             </article>
                         </td>
                     </tr>
-                    {{-- some emails might not have sub stories! --}}
-                    @if($email->mainstories->count() == 3)
-
-                    @endif
+              {{-- some emails might not have sub stories! --}}
+              @if($email->mainstories->count() == 3)
                  <tr>
                      <td class="two-column">
                         <!--[if (gte mso 9)|(IE)]>
@@ -293,9 +277,6 @@
                                                     </tr>
                                                     <tr>
                                                             <td class="text">
-                                                                  {{-- <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[1]->story_type . '/' . $mainStories[1]->id }}">{{ $mainStoryImages[1]->title }} &#10137;</a></h3>
-                                                                                                            {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
-                                                                  --}}
                                                                 <h3 class="mid">
                                                                   @if($mainStories[1]->story_type == 'external' || ($mainStories[1]->story_type == 'article' && $mainStories[1]->tags()->where('name', 'external')->first()))
                                                                     {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
@@ -326,9 +307,6 @@
                                                             </td>
                                                     </tr>
                                                     <tr>
-                                                      {{-- <h3 class="mid"><a href="{{ url('/') . '/story/' . $mainStories[2]->story_type . '/' . $mainStories[2]->id }}">{{ $mainStoryImages[2]->title }} &#10137;</a></h3>
-                                                                                                {!! truncateLimitWords($mainStoryImages[2]->teaser, 110) !!}
-                                                      --}}
                                                             <td class="text">
                                                                <h3 class="mid">
                                                                  @if($mainStories[2]->story_type == 'external' || ($mainStories[2]->story_type == 'article' && $mainStories[2]->tags()->where('name', 'external')->first()))
@@ -352,13 +330,10 @@
                         </table>
                         <![endif]-->
                     </td>
-
-                     </tr>
-
-
+                  </tr>
+                @endif
                      <tr>
                         <td valign="top" >
-
                             <div class="indent">
                             <h3 class="moveover"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h3>
                             <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
