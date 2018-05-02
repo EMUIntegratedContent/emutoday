@@ -297,7 +297,7 @@
                                                                                                             {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
                                                                   --}}
                                                                 <h3 class="mid">
-                                                                  @if($mainStories[1]->story_type == 'external')
+                                                                  @if($mainStories[1]->story_type == 'external' || ($mainStories[1]->story_type == 'article' && $mainStories[1]->tags()->where('name', 'external')->first()))
                                                                     {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                                                     <a href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }} &#10137;</a>
                                                                   @else
@@ -331,7 +331,7 @@
                                                       --}}
                                                             <td class="text">
                                                                <h3 class="mid">
-                                                                 @if($mainStories[2]->story_type == 'external')
+                                                                 @if($mainStories[2]->story_type == 'external' || ($mainStories[2]->story_type == 'article' && $mainStories[2]->tags()->where('name', 'external')->first()))
                                                                    {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                                                    <a href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }} &#10137;</a>
                                                                  @else
