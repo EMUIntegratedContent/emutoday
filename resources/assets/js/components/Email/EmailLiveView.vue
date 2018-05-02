@@ -26,7 +26,7 @@
                                     <img :alt="email.mainStories[0].email_images[0].caption" :src="email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                     <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px;">
                                         <h2>
-                                          <a v-if="email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' && storyHasTag(email.mainStories[0], 'external'))" style="text-decoration: none;" :href="email.mainStories[0].email_images[0].link">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
+                                          <a v-if="email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' && storyHasTag(email.mainStories[0], 'external'))" style="text-decoration: none;" :href="email.mainStories[0].small_images[0].link">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                           <a v-else :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                         </h2>
                                         {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}
