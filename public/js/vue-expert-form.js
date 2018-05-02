@@ -21043,7 +21043,7 @@ exports.default = {
             return '/admin/experts';
         },
         createNewLink: function createNewLink() {
-            return '/admin/experts/show';
+            return '/admin/experts/form';
         }
 
     },

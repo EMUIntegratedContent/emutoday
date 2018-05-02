@@ -6,7 +6,6 @@
     </div><!-- /.tool-block -->
     <div class="toolbar-block pull-right">
         <div class="btn-toolbar btn-group-sm ">
-            <a id="btn-preview-{{id}}" :href="previewLink" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
             <a id="btn-new-{{id}}" :href="createNewLink" class="btn bg-orange btn-sm"><i class="fa fa-plus-square"></i></a>
             <a id="btn-list-{{id}}" :href="listLink" class="btn bg-orange btn-sm"><i class="fa fa-list-alt"></i></a>
         </div><!-- /.btn-toolbar -->
@@ -42,7 +41,6 @@ export default  {
         'role',
     ],
 
-
     ready() {
     },
     data: function() {
@@ -51,14 +49,11 @@ export default  {
         }
     },
     computed: {
-        previewLink:function() {
-            return '/preview/experts/' + this.recordId;
-        },
         listLink:function() {
-             return '/admin/experts';
+             return '/admin/storyideas';
         },
         createNewLink:function() {
-            return '/admin/experts/form';
+            return '/admin/storyideas/form';
         }
 
     },

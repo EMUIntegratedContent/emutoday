@@ -7,16 +7,18 @@ use League\Fractal\Manager;
 use League\Fractal;
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
+use Emutoday\StoryIdea;
+use JavaScript;
 
 class StoryIdeaController extends Controller
 {
     private $idea;
     private $bugService;
 
-    public function __construct(IBug $bugService)
+    public function __construct(IBug $bugService, StoryIdea $idea)
     {
-        //$this->idea = $idea;
-        
+        $this->idea = $idea;
+
         $this->bugService = $bugService;
         View::share('bugAnnouncements', $this->bugService->getUnapprovedAnnouncements());
         View::share('bugEvents', $this->bugService->getUnapprovedEvents());
@@ -33,6 +35,23 @@ class StoryIdeaController extends Controller
     public function index()
     {
         return view('admin.storyideas.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function form(){
+      $idea = $this->idea;
+
+      $user = \Auth::user();
+
+      JavaScript::put([
+          'cuser' => $user,
+      ]);
+
+      return view('admin.storyideas.form', compact('idea'));
     }
 
     /**
