@@ -208,7 +208,7 @@ class Story extends Model
 
         /* External stories have links to the story in the external_small image type */
         public function getExternalLink(){
-          if($this->story_type == 'external'){
+          if($this->story_type == 'external' || $this->story_type == 'article'){
             $imgType = $this->grabStoryImageByType('small');
 
             return $imgType->link;

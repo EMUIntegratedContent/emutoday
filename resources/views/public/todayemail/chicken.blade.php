@@ -1,1 +1,1 @@
-{{ $story->tags()->where('name', 'bob')->first() }}
+{{ $story->tags()->where('name', 'bob')->first()->name }}
