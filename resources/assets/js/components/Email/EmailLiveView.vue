@@ -127,7 +127,7 @@
                                 <template v-if="email.otherStories.length > 0">
                                   <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                     <li v-for="story in email.otherStories" style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
-                                      <a v-if="story.story_type == 'external'" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
+                                      <a v-if="story.story_type == 'external' || (story.story_type == 'article' && storyHasTag(story, 'external'))" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
                                       <a v-else style="text-decoration: none;" :href="story.full_url">{{ story.title }}</a>
                                     </li>
                                   <ul>

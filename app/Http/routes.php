@@ -20,11 +20,6 @@ use GuzzleHttp\Client;
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/chicken', function(){
-  $story = Story::findOrFail(10504);
-  return view('public.todayemail.chicken', compact('story'));
-});
-
 Route::group(['prefix' => 'mailgun'], function() {
     Route::post('open', 'Api\MailgunApiController@postOpen');
     Route::post('click', 'Api\MailgunApiController@postClick');
