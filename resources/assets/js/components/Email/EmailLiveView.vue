@@ -26,7 +26,7 @@
                                     <img :alt="email.mainStories[0].email_images[0].caption" :src="email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename" style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;" />
                                     <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px;">
                                         <h2>
-                                          <a v-if="email.mainStories[0].story_type == 'external'" style="text-decoration: none;" :href="email.mainStories[0].small_images[0].link">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
+                                          <a v-if="email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' && storyHasTag(email.mainStories[0], 'external'))" style="text-decoration: none;" :href="email.mainStories[0].small_images[0].link">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                           <a v-else :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                         </h2>
                                         {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}
@@ -63,7 +63,7 @@
                                                                   <tr>
                                                                           <td class="text" style="text-align:left;">
                                                                             <h3>
-                                                                              <a v-if="email.mainStories[1].story_type == 'external'" style="text-decoration: none;" :href="email.mainStories[1].small_images[0].link">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
+                                                                              <a v-if="email.mainStories[1].story_type == 'external' || (email.mainStories[1].story_type == 'article' && storyHasTag(email.mainStories[1], 'external'))" style="text-decoration: none;" :href="email.mainStories[1].small_images[0].link">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
                                                                               <a v-else style="text-decoration: none;" :href="email.mainStories[1].full_url">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
                                                                             </h3>
                                                                                   <p>{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>
@@ -95,7 +95,7 @@
                                                                     <tr>
                                                                             <td class="text">
                                                                               <h3>
-                                                                                <a v-if="email.mainStories[2].story_type == 'external'" style="text-decoration: none;" :href="email.mainStories[2].small_images[0].link">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
+                                                                                <a v-if="email.mainStories[2].story_type == 'external' || (email.mainStories[2].story_type == 'article' && storyHasTag(email.mainStories[2], 'external'))" style="text-decoration: none;" :href="email.mainStories[2].small_images[0].link">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
                                                                                 <a v-else style="text-decoration: none;" :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
                                                                               </h3>
                                                                                     <p>{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>
@@ -127,7 +127,7 @@
                                 <template v-if="email.otherStories.length > 0">
                                   <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
                                     <li v-for="story in email.otherStories" style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
-                                      <a v-if="story.story_type == 'external'" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
+                                      <a v-if="story.story_type == 'external' || (story.story_type == 'article' && storyHasTag(story, 'external'))" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
                                       <a v-else style="text-decoration: none;" :href="story.full_url">{{ story.title }}</a>
                                     </li>
                                   <ul>
@@ -516,6 +516,18 @@ export default {
 
   },
   methods: {
+    storyHasTag: function(story, tag){
+      console.log("STORY HAS TAGS FUNCTION")
+      var storyHasTag = false
+      console.log(story.tags)
+      story.tags.forEach(function(tg){
+        console.log(tg.name)
+        if(tg.name == tag){
+          storyHasTag = true
+        }
+      })
+      return storyHasTag
+    }
   },
   filters: {
     truncate: function(text, stop, clamp) {

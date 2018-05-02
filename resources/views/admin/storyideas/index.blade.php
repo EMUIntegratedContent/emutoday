@@ -1,5 +1,5 @@
 @extends('admin.layouts.adminlte')
-@section('title', 'Experts')
+@section('title', 'Story Ideas')
 @section('style-vendor')
     @parent
 @endsection

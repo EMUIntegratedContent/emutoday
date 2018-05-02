@@ -258,7 +258,7 @@
                                     <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
                                     --}}
                                     <h2 class="indent" style="margin-bottom: .8rem;">
-                                    @if($mainStories[0]->story_type == 'external')
+                                    @if($mainStories[0]->story_type == 'external' || ($mainStories[0]->story_type == 'article' && $mainStories[0]->tags()->where('name', 'external')->first()))
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                       <a href="{{$mainStories[0]->getExternalLink()}}">{{ $mainStoryImages[0]->title }} &#10137;</a>
                                     @else
@@ -297,7 +297,7 @@
                                                                                                             {!! truncateLimitWords($mainStoryImages[1]->teaser, 110) !!}
                                                                   --}}
                                                                 <h3 class="mid">
-                                                                  @if($mainStories[1]->story_type == 'external')
+                                                                  @if($mainStories[1]->story_type == 'external' || ($mainStories[1]->story_type == 'article' && $mainStories[1]->tags()->where('name', 'external')->first()))
                                                                     {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                                                     <a href="{{$mainStories[1]->getExternalLink()}}">{{ $mainStoryImages[1]->title }} &#10137;</a>
                                                                   @else
@@ -331,7 +331,7 @@
                                                       --}}
                                                             <td class="text">
                                                                <h3 class="mid">
-                                                                 @if($mainStories[2]->story_type == 'external')
+                                                                 @if($mainStories[2]->story_type == 'external' || ($mainStories[2]->story_type == 'article' && $mainStories[2]->tags()->where('name', 'external')->first()))
                                                                    {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                                                    <a href="{{$mainStories[2]->getExternalLink()}}">{{ $mainStoryImages[2]->title }} &#10137;</a>
                                                                  @else
@@ -364,7 +364,7 @@
                             <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
-                                    @if($story->story_type == 'external')
+                                    @if($story->story_type == 'external'  || ($story->story_type == 'article' && $story->tags()->where('name', 'external')->first()))
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                       <a style="text-decoration: none;" href="{{$story->getExternalLink()}}">{{ $story->title }}</a>
                                     @else

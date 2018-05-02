@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="panel-footer">
+    <!--<div class="panel-footer">
       <ul class="pagination">
         <li :class="{disabled: (currentPage <= 1)}" class="page-item">
           <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
@@ -66,7 +66,7 @@
           <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
         </li>
       </ul>
-    </div>
+    </div>-->
   </div>
 </template>
 <style scoped>
