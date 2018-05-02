@@ -258,7 +258,7 @@
                                     <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
                                     --}}
                                     <h2 class="indent" style="margin-bottom: .8rem;">
-                                    @if($mainStories[0]->story_type == 'external')
+                                    @if($mainStories[0]->story_type == 'external' || ($mainStories[0]->story_type == 'article' && $mainStories[0]->tags()->where('name', 'external')->first()))
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                       <a href="{{$mainStories[0]->getExternalLink()}}">{{ $mainStoryImages[0]->title }} &#10137;</a>
                                     @else
