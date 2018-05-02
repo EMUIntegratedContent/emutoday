@@ -364,7 +364,7 @@
                             <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
                                 @foreach($email->stories()->get() as $story)
                                 <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
-                                    @if($story->story_type == 'external')
+                                    @if($story->story_type == 'external'  || ($story->story_type == 'article' && $story->tags()->where('name', 'external')->first()))
                                       {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
                                       <a style="text-decoration: none;" href="{{$story->getExternalLink()}}">{{ $story->title }}</a>
                                     @else
