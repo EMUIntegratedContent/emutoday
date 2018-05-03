@@ -11,7 +11,7 @@
       </ul>
       <div class="tab-content">
         <div :id="'future-' + slugify(storyIdeaType)" class="tab-pane active in fade">
-          <div class="panel-group">
+          <div v-if="paginatedFutureStories.length > 0" class="panel-group">
             <storyideas-pod
               v-for="(index, idea) in paginatedFutureStories"
               :role="role"
@@ -23,9 +23,12 @@
               >
             </storyidea-pod>
           </div>
+          <div v-else>
+            <p>No future story ideas in this category.</p>
+          </div>
         </div>
         <div :id="'completed-' + slugify(storyIdeaType)" class="tab-pane fade">
-          <div class="panel-group">
+          <div v-if="paginatedCompletedStories.length > 0" class="panel-group">
             <storyideas-pod
               v-for="(index, idea) in paginatedCompletedStories"
               :role="role"
@@ -37,9 +40,12 @@
               >
             </storyidea-pod>
           </div>
+          <div v-else>
+            <p>No completed story ideas in this category.</p>
+          </div>
         </div>
         <div :id="'past-' + slugify(storyIdeaType)" class="tab-pane fade">
-          <div class="panel-group">
+          <div v-if="paginatedPastStories.length > 0" class="panel-group">
             <storyideas-pod
               v-for="(index, idea) in paginatedPastStories"
               :role="role"
@@ -50,6 +56,9 @@
               @archive-story-idea="archiveIdea"
               >
             </storyidea-pod>
+          </div>
+          <div v-else>
+            <p>No past-due story ideas in this category.</p>
           </div>
         </div>
       </div>
@@ -76,6 +85,9 @@
 .panel-body{
   height:420px;
   overflow-y:scroll;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+  color:#72afd2 !important;
 }
 </style>
 <script>
@@ -199,7 +211,7 @@ module.exports = {
     },
     updateIdeaStatus: function(idea){
         let self = this
-        this.$http.patch('/api/storyideas/update/' + idea.id , idea , {
+        this.$http.patch('/api/storyideas/' + idea.id , idea , {
             method: 'PATCH'
         } )
         .then((response) => {

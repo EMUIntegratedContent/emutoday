@@ -1,9 +1,10 @@
 <?php
-
+use Emutoday\User;
 use Emutoday\Building;
 use Emutoday\Event;
 use Emutoday\Category;
 use Emutoday\Story;
+use Emutoday\StoryIdeaMedium;
 use Emutoday\Tag;
 use Emutoday\Author;
 use Emutoday\MiniCalendar;
@@ -53,8 +54,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     /* STORY IDEAS */
-    Route::get('storyideas', 'Api\StoryIdeasController@getIdeas');
-    Route::patch('storyideas/update/{idea}', 'Api\StoryIdeasController@updateIdea');
+    Route::resource('storyideas', 'Api\StoryIdeasController');
 
     /* MEDIA HIGHLIGHTS */
     Route::get('mediahighlights/taglist', 'Api\MediaHighlightController@getTaglist');
@@ -167,6 +167,14 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
     Route::get('taglist', function() {
         return Tag::select('name', 'id as value')->get();
+    });
+
+    Route::get('storyideamedia', function() {
+        return StoryIdeaMedium::select('medium', 'id as value')->orderBy('medium', 'asc')->get();
+    });
+
+    Route::get('userlist', function() {
+        return User::select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->orderBy('last_name', 'asc')->get();
     });
 
     Route::patch('event/updateItem/{event}', 'Api\EventController@updateItem');
@@ -306,6 +314,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::group(['middleware' => ['storyideas']], function()
         {
             Route::get('storyideas/form', 'Admin\StoryIdeaController@form');
+            Route::get('storyideas/settings', 'Admin\StoryIdeaController@settings');
             Route::resource('storyideas', 'Admin\StoryIdeaController');
         });
 

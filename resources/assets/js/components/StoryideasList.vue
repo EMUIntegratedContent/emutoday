@@ -3,13 +3,17 @@
     <h1>Story Ideas</h1>
     <div class="row">
       <div class="col-md-8">
-        <div class="form-check form-check-inline" v-for="storytype in ideasByCategory">
-          <input class="form-check-input" type="checkbox" :id="'display-' + slugify(storytype.categoryName)" v-model="storytype.display">
-          <label class="form-check-label" :for="'display-' + slugify(storytype.categoryName)">{{ storytype.categoryName }}</label>
-        </div>
+        <ul class="ideacategory-checklist">
+          <li v-for="storytype in ideasByCategory">
+            <input class="form-check-input" type="checkbox" :id="'display-' + slugify(storytype.categoryName)" v-model="storytype.display">
+            <label class="form-check-label" :for="'display-' + slugify(storytype.categoryName)">{{ storytype.categoryName }}</label>
+          </li>
+        </ul>
       </div>
-      <div v-if="role == 'admin' || role == 'admin_super'" class="col-md-4 text-right">
-        <a class="btn btn-sm btn-default" href="/admin/archive/queue/storyideas"><i class="fa fa-archive"></i> Archived Ideas</a>
+      <div class="col-md-4 text-right clearfix">
+        <a class="btn btn-sm btn-info" href="/admin/storyideas/form"><i class="fa fa-lightbulb-o"></i> New Idea</a>
+        <a class="btn btn-sm btn-default" href="/admin/storyideas/settings"><i class="fa fa-envelope"></i> Email Settings</a>
+        <a v-if="role == 'admin' || role == 'admin_super'" class="btn btn-sm btn-default" href="/admin/archive/queue/storyideas"><i class="fa fa-archive"></i> Archived Ideas</a>
       </div>
     </div>
     <div class="row">
@@ -25,7 +29,17 @@
   </div>
 </template>
 <style scoped>
-
+ul.ideacategory-checklist{
+  padding: 0 0 30px 0;
+}
+ul.ideacategory-checklist li{
+  float: left;
+  list-style-type: none;
+  padding-right: 10px;
+}
+.clearfix{
+  clear:right;
+}
 </style>
 <script>
 import StoryideasPanel from './StoryideasPanel.vue'
@@ -44,6 +58,11 @@ module.exports = {
         },
         emuToday: {
           categoryName: 'EMU Today',
+          stories: [],
+          display: true
+        },
+        fundraising: {
+          categoryName: 'Fundraising',
           stories: [],
           display: true
         },
@@ -114,6 +133,9 @@ module.exports = {
             break
           case 'EMU Today':
             self.ideasByCategory.emuToday.stories.push(idea)
+            break
+          case 'Fundraising':
+            self.ideasByCategory.fundraising.stories.push(idea)
             break
           case 'Homepage':
             self.ideasByCategory.homepage.stories.push(idea)

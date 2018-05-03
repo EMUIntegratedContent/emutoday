@@ -7,8 +7,8 @@
     </div>
     <div :id="'collapse-' + slugify(storyidea.medium.medium) + '-' + panelType + '-' + index" class="panel-collapse collapse">
       <div class="panel-body">
-        {{ storyidea.idea }}
-        <hr />
+        <span v-html="storyidea.idea"></span>
+        <hr style="clear:both; padding-top:5px;" />
         <label class="pull-right">Complete <input v-model="storyidea.is_completed" @change="emitUpdateIdeaStatus()" type="checkbox"></label>
       </div>
     </div>

@@ -21069,7 +21069,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":109,"vue-hot-reload-api":106,"vueify/lib/insert-css":110}],113:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-59de6d42] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-59de6d42]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-59de6d42]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-59de6d42]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-59de6d42]{\n    margin-top: 26px !important;\n}\np[_v-59de6d42] {\n  margin: 0;\n}\n\nlabel[_v-59de6d42] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-59de6d42] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-59de6d42] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-59de6d42] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-59de6d42] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-59de6d42] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-59de6d42] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-59de6d42] {\n  margin: 0;\n}\n\n[type='submit'][_v-59de6d42],\n[type='button'][_v-59de6d42] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-59de6d42] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-59de6d42] {\n  margin: 0;\n}\n\nh5.form-control[_v-59de6d42] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-59de6d42] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-59de6d42]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-59de6d42]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-59de6d42]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-59de6d42]{\n    margin-top: 26px !important;\n}\np[_v-59de6d42] {\n  margin: 0;\n}\n\nlabel[_v-59de6d42] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-59de6d42] {\n  display: inline-block;\n  /*width: 8em*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-59de6d42] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-59de6d42] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-59de6d42] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-59de6d42] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-59de6d42] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-59de6d42] {\n  margin: 0;\n}\n\n[type='submit'][_v-59de6d42],\n[type='button'][_v-59de6d42] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-59de6d42] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-59de6d42] {\n  margin: 0;\n}\n\nh5.form-control[_v-59de6d42] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -21143,16 +21143,17 @@ module.exports = {
     }
   },
   data: function data() {
-    var _record, _ref;
+    var _ref;
 
     return _ref = {
-      biography: '',
-      categories: [],
-      categorieslist: [],
+      idea: '',
       ckfullyloaded: false,
       currentDate: {},
-      education: [],
-      expertise: [],
+      dateObject: {
+        deadlineDateMin: '',
+        deadlineDateDefault: ''
+      },
+      deadlineDatePicker: null,
       formErrors: {},
       formInputs: {},
       formMessage: {
@@ -21161,80 +21162,46 @@ module.exports = {
         msg: ''
       },
       hasContent: false,
+      ideaCategoryList: [],
       isFresh: true,
       languages: [],
       newform: false,
       previousTitles: [],
       recordState: '',
-      record: (_record = {
+      record: {
         id: '',
-        accept_policies: 1,
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        do_phone_interviews: 0
-      }, (0, _defineProperty3.default)(_record, 'do_broadcast_interviews', 0), (0, _defineProperty3.default)(_record, 'is_approved', 0), (0, _defineProperty3.default)(_record, 'last_name', ''), (0, _defineProperty3.default)(_record, 'office_phone', ''), (0, _defineProperty3.default)(_record, 'release_cell_phone', 0), (0, _defineProperty3.default)(_record, 'submitter_email', ''), (0, _defineProperty3.default)(_record, 'submitter_name', ''), (0, _defineProperty3.default)(_record, 'submitter_phone', ''), (0, _defineProperty3.default)(_record, 'teaser', ''), (0, _defineProperty3.default)(_record, 'title', ''), (0, _defineProperty3.default)(_record, 'categories', []), (0, _defineProperty3.default)(_record, 'education', []), (0, _defineProperty3.default)(_record, 'expertise', []), (0, _defineProperty3.default)(_record, 'languages', []), (0, _defineProperty3.default)(_record, 'previousTitles', []), (0, _defineProperty3.default)(_record, 'social', []), _record),
-      recordOld: {
-        id: '',
-        accept_policies: 1,
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        interviews: '',
-        is_approved: 0,
-        last_name: '',
-        office_phone: '',
-        release_cell_phone: 0,
-        submitter_email: '',
-        submitter_name: '',
-        submitter_phone: '',
-        teaser: '',
+        is_completed: 0,
+        idea: '',
+        deadline: {
+          date: null
+        },
+        medium: null,
+        is_archived: 0,
         title: '',
-        categories: [],
-        education: [],
-        expertise: [],
-        languages: [],
-        previousTitles: [],
-        social: []
+        assignee: null,
+        creator: null
       }
-    }, (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'response', {}), (0, _defineProperty3.default)(_ref, 'social', []), (0, _defineProperty3.default)(_ref, 'totalChars', {
-      title: 50
-    }), (0, _defineProperty3.default)(_ref, 'userRoles', []), _ref;
+    }, (0, _defineProperty3.default)(_ref, 'recordState', ''), (0, _defineProperty3.default)(_ref, 'response', {}), (0, _defineProperty3.default)(_ref, 'totalChars', {
+      title: 255
+    }), (0, _defineProperty3.default)(_ref, 'userList', []), (0, _defineProperty3.default)(_ref, 'userRoles', []), _ref;
   },
   created: function created() {
+    this.currentDate = (0, _moment2.default)();
     this.recordState = 'created';
   },
   ready: function ready() {
     if (this.recordexists) {
-      this.currentRecordId = this.recordid;
       this.newform = false;
-      this.fetchCategoryList();
-      this.fetchEducation();
-      this.fetchExpertise();
-      this.fetchLanguages();
-      this.fetchPreviousTitles();
-      this.fetchSocial();
-      this.fetchCurrentCategory(this.currentRecordId);
-      this.fetchCurrentRecord(this.currentRecordId);
+      this.fetchCurrentRecord(this.recordid);
     } else {
       this.newform = true;
       this.hasContent = true;
       this.recordState = 'new';
-      this.fetchCategoryList();
     }
+    this.setupDatePickers();
+    this.getUserList();
     this.getUserRoles();
+    this.getIdeaCategories();
   },
   computed: {
 
@@ -21288,7 +21255,7 @@ module.exports = {
     },
     // Switch verbage of submit button.
     submitBtnLabel: function submitBtnLabel() {
-      return this.recordexists ? 'Update Expert' : 'Create Expert';
+      return this.recordexists ? 'Update Idea' : 'Create Idea';
     },
 
     editorType: function editorType() {
@@ -21297,45 +21264,76 @@ module.exports = {
       } else {
         return 'simple';
       }
-    },
-
-    hasLocalRecordChanged: function hasLocalRecordChanged() {
-      var ckval = false;
-      if (this.recordOld.title !== this.record.title) {
-        ckval = true;
-      }
-
-      if (this.recordOld.content !== this.content) {
-        ckval = true;
-      }
-
-      if (ckval) {
-        this.updateRecordIsDirty(true);
-      }
-      return ckval;
     }
   },
 
   methods: {
-    onContentChange: function onContentChange() {
-      if (!this.ckfullyloaded) {
-        this.ckfullyloaded = true;
-      } else {
-        this.checkContentChange();
-      }
-    },
     checkContentChange: function checkContentChange() {
       if (!this.recordIsDirty) {
         this.recordIsDirty = true;
         this.updateRecordIsDirty(true);
       }
     },
-    jsonEquals: function jsonEquals(a, b) {
-      return (0, _stringify2.default)(a) === (0, _stringify2.default)(b);
+    checkOverData: function checkOverData() {
+      this.hasContent = true;
+      this.idea = this.record.idea;
+      this.recordexists = true;
+      this.recordState = "edit";
+      this.recordIsDirty = false;
+      this.updateRecordId(this.record.id);
+      this.updateRecordIsDirty(false);
+      this.setupDatePickers();
     },
+    delIdea: function delIdea(e) {
+      var _this = this;
 
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+
+      if (confirm('Would you like to delete this story idea?') == true) {
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+        this.$http.delete('/api/storyideas/' + this.record.id).then(function (response) {
+          window.location.href = "/admin/storyideas";
+          _this.setupDatePickers();
+        }, function (response) {
+          console.log('Error: ' + (0, _stringify2.default)(response));
+        }).bind(this);
+      }
+    },
+    fetchCurrentRecord: function fetchCurrentRecord(recid) {
+      var _this2 = this;
+
+      this.$http.get('/api/storyideas/' + recid + '/edit').then(function (response) {
+        _this2.$set('record', response.data.data);
+
+        _this2.hasContent = true;
+        _this2.idea = _this2.record.idea;
+        _this2.checkOverData();
+      }, function (response) {
+        _this2.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+    getIdeaCategories: function getIdeaCategories() {
+      var _this3 = this;
+
+      this.$http.get('/api/storyideamedia').then(function (response) {
+        _this3.$set('ideaCategoryList', response.data);
+      }, function (response) {
+        _this3.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+    getUserList: function getUserList() {
+      var _this4 = this;
+
+      this.$http.get('/api/userlist').then(function (response) {
+        _this4.$set('userList', response.data);
+      }, function (response) {
+        _this4.formErrors = response.data.error.message;
+      }).bind(this);
+    },
     getUserRoles: function getUserRoles() {
-
       var roles = this.cuserRoles;
       var self = this;
       this.userRoles = [];
@@ -21348,248 +21346,83 @@ module.exports = {
       }
     },
 
-
-    fetchCurrentRecord: function fetchCurrentRecord(recid) {
-      var _this = this;
-
-      this.$http.get('/api/experts/' + recid + '/edit').then(function (response) {
-        _this.$set('record', response.data.data);
-        _this.$set('recordOld', response.data.data);
-
-        _this.hasContent = true;
-        _this.currentRecordId = _this.record.id;
-        _this.biography = _this.record.biography;
-      }, function (response) {
-        _this.formErrors = response.data.error.message;
-      }).bind(this);
-    },
-
-    // Fetch the tags that match THIS record
-    fetchCategoryList: function fetchCategoryList() {
-      var _this2 = this;
-
-      this.$http.get('/api/experts/category').then(function (response) {
-        _this2.$set('categorieslist', response.data);
-      });
-    },
-
-    // Fetch the categories that matches THIS expert
-    fetchCurrentCategory: function fetchCurrentCategory() {
-      var _this3 = this;
-
-      this.$http.get('/api/experts/category/' + this.currentRecordId).then(function (response) {
-        _this3.$set('categories', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the education that matches THIS expert
-    fetchEducation: function fetchEducation() {
-      var _this4 = this;
-
-      this.$http.get('/api/experts/education/' + this.currentRecordId).then(function (response) {
-        _this4.$set('education', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the expertise that matches THIS expert
-    fetchExpertise: function fetchExpertise() {
-      var _this5 = this;
-
-      this.$http.get('/api/experts/expertise/' + this.currentRecordId).then(function (response) {
-        _this5.$set('expertise', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the languages that matches THIS expert
-    fetchLanguages: function fetchLanguages() {
-      var _this6 = this;
-
-      this.$http.get('/api/experts/languages/' + this.currentRecordId).then(function (response) {
-        _this6.$set('languages', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the job titles that matches THIS expert
-    fetchPreviousTitles: function fetchPreviousTitles() {
-      var _this7 = this;
-
-      this.$http.get('/api/experts/previoustitles/' + this.currentRecordId).then(function (response) {
-        _this7.$set('previousTitles', response.data);
-      }, function (response) {});
-    },
-
-
-    // Fetch the social media links that matches THIS expert
-    fetchSocial: function fetchSocial() {
-      var _this8 = this;
-
-      this.$http.get('/api/experts/social/' + this.currentRecordId).then(function (response) {
-        _this8.$set('social', response.data);
-      }, function (response) {});
-    },
-
-
     nowOnReload: function nowOnReload() {
-      var newurl = '/admin/experts/' + this.currentRecordId + '/edit';
+      var newurl = '/admin/storyideas/' + this.recordid + '/edit';
 
       document.location = newurl;
     },
-
+    onContentChange: function onContentChange() {
+      if (!this.ckfullyloaded) {
+        this.ckfullyloaded = true;
+      } else {
+        this.checkContentChange();
+      }
+    },
     onRefresh: function onRefresh() {
-      this.updateRecordId(this.currentRecordId);
+      this.updateRecordId(this.record.id);
       this.recordState = 'edit';
       this.recordIsDirty = false;
 
-      this.recordId = this.currentRecordId;
+      this.recordId = this.record.id;
       this.recordexists = true;
-      this.fetchCurrentRecord(this.currentRecordId);
+      this.fetchCurrentRecord(this.record.id);
     },
-
+    setupDatePickers: function setupDatePickers() {
+      var self = this;
+      if (this.record.deadline == null) {
+        this.dateObject.startDateDefault = null;
+      } else {
+        this.dateObject.deadlineDateDefault = this.record.deadline.date;
+      }
+      this.deadlineDatePicker = (0, _flatpickr2.default)(document.getElementById("deadline"), {
+        defaultDate: self.dateObject.deadlineDateDefault,
+        enableTime: false,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange: function onChange(dateObject, dateString) {
+          self.record.deadline.date = dateString;
+          self.deadlineDatePicker.value = dateString;
+        }
+      });
+    },
     submitForm: function submitForm(e) {
-      var _this9 = this;
+      var _this5 = this;
 
       e.preventDefault(); // Stop form defualt action
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
-      this.record.biography = this.biography;
-
-      if (this.categories.length > 0) {
-        this.record.categories = this.categories;
-      } else {
-        this.record.categories = [];
-      }
-
-      if (this.education.length > 0) {
-        this.record.education = this.education;
-      } else {
-        this.record.education = [];
-      }
-
-      if (this.expertise.length > 0) {
-        this.record.expertise = this.expertise;
-      } else {
-        this.record.expertise = [];
-      }
-
-      if (this.languages.length > 0) {
-        this.record.languages = this.languages;
-      } else {
-        this.record.languages = [];
-      }
-
-      if (this.previousTitles.length > 0) {
-        this.record.previousTitles = this.previousTitles;
-      } else {
-        this.record.previousTitles = [];
-      }
-
-      if (this.social.length > 0) {
-        this.record.social = this.social;
-      } else {
-        this.record.social = [];
-      }
+      this.record.idea = this.idea;
 
       // Decide route to submit form to
       var method = this.recordexists ? 'put' : 'post';
-      var route = this.recordexists ? '/api/experts/' + this.record.id : '/api/experts';
+      var route = this.recordexists ? '/api/storyideas/' + this.record.id : '/api/storyideas';
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then(function (response) {
-        _this9.formMessage.msg = response.data.message;
-        _this9.formMessage.isOk = response.ok; // Success message
-        _this9.currentRecordId = response.data.newdata.record_id;
-        _this9.recordid = response.data.newdata.record_id;
-        _this9.record_id = response.data.newdata.record_id;
-        _this9.record.id = response.data.newdata.record_id;
-        _this9.formMessage.isErr = false;
-        _this9.recordexists = true;
-        _this9.formErrors = {}; // Clear errors?
-        if (_this9.newform) {
-          _this9.nowOnReload();
+        _this5.formMessage.msg = response.data.message;
+        _this5.formMessage.isOk = response.ok; // Success message
+        _this5.recordid = response.data.newdata.record_id;
+        _this5.record_id = response.data.newdata.record_id;
+        _this5.formMessage.isErr = false;
+        _this5.recordexists = true;
+        _this5.formErrors = {}; // Clear errors?
+        if (_this5.newform) {
+          _this5.nowOnReload();
         } else {
-          _this9.onRefresh();
+          _this5.onRefresh();
         }
       }, function (response) {
         // If invalid. error callback
-        _this9.formMessage.isOk = false;
-        _this9.formMessage.isErr = true;
+        _this5.formMessage.isOk = false;
+        _this5.formMessage.isErr = true;
         // Set errors from validation to vue data
-        _this9.formErrors = response.data.error.message;
+        _this5.formErrors = response.data.error.message;
       }).bind(this);
-    },
-
-    delExpert: function delExpert(e) {
-      e.preventDefault();
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-
-      if (confirm('Would you like to delete this expert?') == true) {
-        $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-        this.$http.post('/api/experts/' + this.record.id + '/delete').then(function (response) {
-          window.location.href = "/admin/experts/list";
-        }, function (response) {
-          console.log('Error: ' + (0, _stringify2.default)(response));
-        }).bind(this);
-      }
-    },
-
-    delTitle: function delTitle(title) {
-      if (confirm('Would you like to delete this title?') == true) {
-        this.previousTitles.$remove(title);
-      }
-    },
-
-    addTitle: function addTitle() {
-      this.previousTitles.push({ value: '', title: '' });
-    },
-
-    delLanguage: function delLanguage(language) {
-      if (confirm('Would you like to delete this language?') == true) {
-        this.languages.$remove(language);
-      }
-    },
-
-    addLanguage: function addLanguage() {
-      this.languages.push({ value: '', language: '' });
-    },
-
-    delEducation: function delEducation(education) {
-      if (confirm('Would you like to delete this education?') == true) {
-        this.education.$remove(education);
-      }
-    },
-
-    addEducation: function addEducation() {
-      this.education.push({ value: '', education: '' });
-    },
-
-    delExpertise: function delExpertise(expertise) {
-      if (confirm('Would you like to delete this field of expertise?') == true) {
-        this.expertise.$remove(expertise);
-      }
-    },
-
-    addExpertise: function addExpertise() {
-      this.expertise.push({ value: '', expertise: '' });
-    },
-
-    delSocial: function delSocial(link) {
-      if (confirm('Would you like to delete this social media link?') == true) {
-        this.social.$remove(link);
-      }
-    },
-
-    addSocial: function addSocial() {
-      this.social.push({ value: '', title: '', url: '' });
     }
   },
   watch: {},
@@ -21598,13 +21431,13 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-59de6d42=\"\">\n    <slot name=\"csrf\" _v-59de6d42=\"\"></slot>\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-59de6d42=\"\">\n          <h5 _v-59de6d42=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-59de6d42=\"\">\n          <h5 _v-59de6d42=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n          <!-- Is completed? -->\n            <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n              <label _v-59de6d42=\"\">Completed? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_approved\" _v-59de6d42=\"\"></label>\n            </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <label _v-59de6d42=\"\">Display Name <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n          <input v-model=\"record.display_name\" class=\"form-control\" v-bind:class=\"[formErrors.display_name ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-59de6d42=\"\">\n          <p v-if=\"formErrors.display_name\" class=\"help-text invalid\" _v-59de6d42=\"\">{{formErrors.display_name}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-59de6d42=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delExpert\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-59de6d42=\"\">Delete Expert</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-59de6d42=\"\">\n    <slot name=\"csrf\" _v-59de6d42=\"\"></slot>\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-59de6d42=\"\">\n          <h5 _v-59de6d42=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-59de6d42=\"\">\n          <h5 _v-59de6d42=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" style=\"margin-bottom:10px\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md6col\" _v-59de6d42=\"\">\n        <p v-if=\"record.creator\" _v-59de6d42=\"\">Created by <strong _v-59de6d42=\"\">{{ record.creator.name }}</strong></p>\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md6col\" _v-59de6d42=\"\">\n        <div class=\"form-group\" _v-59de6d42=\"\">\n            <label for=\"tags\" _v-59de6d42=\"\">Medium: <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n            <v-select :class=\"[formErrors.medium ? 'invalid-input' : '']\" :value.sync=\"record.medium\" :options=\"ideaCategoryList\" :multiple=\"false\" placeholder=\"Choose Medium\" label=\"medium\" _v-59de6d42=\"\">\n          </v-select>\n          <p v-if=\"formErrors.medium\" class=\"help-text invalid\" _v-59de6d42=\"\">{{formErrors.medium}}</p>\n        </div><!-- /.form-group -->\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <label _v-59de6d42=\"\">Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-59de6d42=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-59de6d42=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <!-- Idea -->\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <label _v-59de6d42=\"\">What's your idea? <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.idea\" id=\"idea\" name=\"idea\" v-ckrte=\"idea\" :type=\"editorType\" :idea=\"idea\" :fresh=\"isFresh\" rows=\"200\" _v-59de6d42=\"\"></textarea>\n          <p v-if=\"formErrors.idea\" class=\"help-text invalid\" _v-59de6d42=\"\">Need idea text.</p>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md6col\" _v-59de6d42=\"\">\n        <div class=\"form-group\" _v-59de6d42=\"\">\n            <label for=\"tags\" _v-59de6d42=\"\">Assigned to:</label>\n            <v-select :class=\"[formErrors.assignee ? 'invalid-input' : '']\" :value.sync=\"record.assignee\" :options=\"userList\" :multiple=\"false\" placeholder=\"Assign idea\" label=\"name\" _v-59de6d42=\"\">\n          </v-select>\n        </div><!-- /.form-group -->\n      </div>\n      <div :class=\"md6col\" _v-59de6d42=\"\">\n        <div class=\"form-group\" _v-59de6d42=\"\">\n          <label for=\"deadline\" _v-59de6d42=\"\">Deadline:</label>\n          <input id=\"deadline\" :class=\"[formErrors.deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.deadline.date\" aria-describedby=\"errorDeadline\" _v-59de6d42=\"\">\n          <p v-if=\"formErrors.deadline\" class=\"help-text invalid\" _v-59de6d42=\"\">Need a deadline date</p>\n        </div><!--form-group -->\n      </div><!-- /.md6col -->\n    </div>\n   <!-- /.row -->\n   <div v-if=\"recordexists\" class=\"row\" _v-59de6d42=\"\">\n     <div v-bind:class=\"md4col\" _v-59de6d42=\"\">\n         <!-- Is completed? -->\n        <label _v-59de6d42=\"\">Completed? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_completed\" _v-59de6d42=\"\"></label>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-59de6d42=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delIdea\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-59de6d42=\"\">Delete Idea</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-59de6d42] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-59de6d42]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-59de6d42]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-59de6d42]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-59de6d42]{\n    margin-top: 26px !important;\n}\np[_v-59de6d42] {\n  margin: 0;\n}\n\nlabel[_v-59de6d42] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-59de6d42] {\n  display: inline-block;\n  /*width: 8em;*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-59de6d42] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-59de6d42] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-59de6d42] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-59de6d42] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-59de6d42] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-59de6d42] {\n  margin: 0;\n}\n\n[type='submit'][_v-59de6d42],\n[type='button'][_v-59de6d42] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-59de6d42] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-59de6d42] {\n  margin: 0;\n}\n\nh5.form-control[_v-59de6d42] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-59de6d42] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-59de6d42]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-59de6d42]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-59de6d42]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-59de6d42]{\n    margin-top: 26px !important;\n}\np[_v-59de6d42] {\n  margin: 0;\n}\n\nlabel[_v-59de6d42] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-59de6d42] {\n  display: inline-block;\n  /*width: 8em*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-59de6d42] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-59de6d42] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-59de6d42] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-59de6d42] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-59de6d42] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-59de6d42] {\n  margin: 0;\n}\n\n[type='submit'][_v-59de6d42],\n[type='button'][_v-59de6d42] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-59de6d42] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-59de6d42] {\n  margin: 0;\n}\n\nh5.form-control[_v-59de6d42] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

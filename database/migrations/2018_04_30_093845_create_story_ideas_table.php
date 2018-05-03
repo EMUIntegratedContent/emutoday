@@ -19,7 +19,7 @@ class CreateStoryIdeasTable extends Migration
             $table->integer('assignee')->unsigned()->nullable();
             $table->string('title', 255);
             $table->string('idea');
-            $table->dateTime('deadline');
+            $table->dateTime('deadline')->nullable();
             $table->tinyInteger('is_completed');
             $table->foreign('creator')->references('id')->on('users')->onDelete('SET NULL');
             $table->foreign('assignee')->references('id')->on('users')->onDelete('SET NULL');

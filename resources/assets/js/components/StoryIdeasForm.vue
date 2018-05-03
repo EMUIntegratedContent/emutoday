@@ -13,23 +13,36 @@
       <!-- /.small-12 columns -->
     </div>
     <!-- /.row -->
-    <div class="row">
-      <div v-bind:class="md12col">
-          <!-- Is completed? -->
-            <div v-bind:class="formGroup">
-              <label>Completed? <input type="checkbox" value="1" v-model="record.is_approved"></label>
-            </div>
+    <div class="row" style="margin-bottom:10px">
+      <div v-bind:class="md6col">
+        <p v-if="record.creator">Created by <strong>{{ record.creator.name }}</strong></p>
       </div>
-      <!-- /.small-12 columns -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div v-bind:class="md6col">
+        <div class="form-group">
+            <label for="tags">Medium: <span v-bind:class="iconStar" class="reqstar"></span></label>
+            <v-select
+            :class="[formErrors.medium ? 'invalid-input' : '']"
+            :value.sync="record.medium"
+            :options="ideaCategoryList"
+            :multiple="false"
+            placeholder="Choose Medium"
+            label="medium">
+          </v-select>
+          <p v-if="formErrors.medium" class="help-text invalid">{{formErrors.medium}}</p>
+        </div><!-- /.form-group -->
+      </div>
     </div>
     <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
         <!-- Display Name -->
         <div v-bind:class="formGroup">
-          <label>Display Name <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.display_name" class="form-control" v-bind:class="[formErrors.display_name ? 'invalid-input' : '']" name="display_name" type="text">
-          <p v-if="formErrors.display_name" class="help-text invalid">{{formErrors.display_name}}</p>
+          <label>Title <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="display_name" type="text">
+          <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -37,9 +50,51 @@
     <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
+        <!-- Idea -->
+        <div v-bind:class="formGroup">
+          <label>What's your idea? <span v-bind:class="iconStar" class="reqstar"></span></label>
+          <textarea v-if="hasContent" v-model="record.idea" id="idea" name="idea" v-ckrte="idea" :type="editorType" :idea="idea" :fresh="isFresh" rows="200"></textarea>
+          <p v-if="formErrors.idea" class="help-text invalid">Need idea text.</p>
+        </div>
+      </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+      <div v-bind:class="md6col">
+        <div class="form-group">
+            <label for="tags">Assigned to:</label>
+            <v-select
+            :class="[formErrors.assignee ? 'invalid-input' : '']"
+            :value.sync="record.assignee"
+            :options="userList"
+            :multiple="false"
+            placeholder="Assign idea"
+            label="name">
+          </v-select>
+        </div><!-- /.form-group -->
+      </div>
+      <div :class="md6col">
+        <div class="form-group">
+          <label for="deadline">Deadline:</label>
+          <input id="deadline" :class="[formErrors.deadline ? 'invalid-input' : '']" type="text" v-model="record.deadline.date" aria-describedby="errorDeadline" />
+          <p v-if="formErrors.deadline" class="help-text invalid">Need a deadline date</p>
+        </div><!--form-group -->
+      </div><!-- /.md6col -->
+    </div>
+   <!-- /.row -->
+   <div v-if="recordexists" class="row">
+     <div v-bind:class="md4col">
+         <!-- Is completed? -->
+        <label>Completed? <input type="checkbox" value="1" v-model="record.is_completed"></label>
+     </div>
+     <!-- /.small-12 columns -->
+   </div>
+   <!-- /.row -->
+    <div class="row">
+      <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-          <button v-if="recordexists" id="btn-delete" v-on:click="delExpert" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Expert</button>
+          <button v-if="recordexists" id="btn-delete" v-on:click="delIdea" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Idea</button>
         </div>
       </div>
     </div>
@@ -76,7 +131,7 @@ label {
 
 label > span {
   display: inline-block;
-  /*width: 8em;*/
+  /*width: 8em*/
   vertical-align: top;
 }
 
@@ -152,12 +207,12 @@ h5.form-control {
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
-import ckrte from "../directives/ckrte.js";
-import vSelect from "vue-select";
-import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
-import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
+import moment from 'moment'
+import flatpickr from 'flatpickr'
+import ckrte from "../directives/ckrte.js"
+import vSelect from "vue-select"
+import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions'
+import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
 module.exports = {
@@ -198,13 +253,14 @@ module.exports = {
   },
   data: function() {
     return {
-      biography: '',
-      categories: [],
-      categorieslist: [],
+      idea: '',
       ckfullyloaded: false,
       currentDate: {},
-      education: [],
-      expertise: [],
+      dateObject:{
+        deadlineDateMin: '',
+        deadlineDateDefault: '',
+      },
+      deadlineDatePicker:null,
       formErrors: {},
       formInputs: {},
       formMessage: {
@@ -213,6 +269,7 @@ module.exports = {
         msg: ''
       },
       hasContent: false,
+      ideaCategoryList: [],
       isFresh: true,
       languages: [],
       newform: false,
@@ -220,94 +277,43 @@ module.exports = {
       recordState: '',
       record: {
         id: '',
-        accept_policies: 1,
-        biography: '',
-        cell_phone: '',
-        display_name: '',
-        email: '',
-        is_community_speaker: 0,
-        is_media_expert: 0,
-        do_print_interviews: 0,
-        do_broadcast_interviews: 0,
-        first_name: '',
-        do_phone_interviews: 0,
-        do_broadcast_interviews: 0,
-        is_approved: 0,
-        last_name: '',
-        office_phone: '',
-        release_cell_phone: 0,
-        submitter_email: '',
-        submitter_name: '',
-        submitter_phone: '',
-        teaser: '',
+        is_completed: 0,
+        idea: '',
+        deadline: {
+          date: null
+        },
+        medium: null,
+        is_archived: 0,
         title: '',
-        categories: [],
-        education: [],
-        expertise: [],
-        languages: [],
-        previousTitles: [],
-        social: [],
-      },
-      recordOld: {
-          id: '',
-          accept_policies: 1,
-          biography: '',
-          cell_phone: '',
-          display_name: '',
-          email: '',
-          is_community_speaker: 0,
-          is_media_expert: 0,
-          do_print_interviews: 0,
-          do_broadcast_interviews: 0,
-          first_name: '',
-          interviews: '',
-          is_approved: 0,
-          last_name: '',
-          office_phone: '',
-          release_cell_phone: 0,
-          submitter_email: '',
-          submitter_name: '',
-          submitter_phone: '',
-          teaser: '',
-          title: '',
-          categories: [],
-          education: [],
-          expertise: [],
-          languages: [],
-          previousTitles: [],
-          social: [],
+        assignee: null,
+        creator: null,
       },
       recordState: '',
       response: {},
-      social: [],
       totalChars: {
-        title: 50,
+        title: 255,
       },
+      userList: [],
       userRoles: [],
     }
   },
   created: function () {
-    this.recordState = 'created';
+    this.currentDate = moment()
+    this.recordState = 'created'
   },
   ready: function() {
     if (this.recordexists){
-      this.currentRecordId = this.recordid;
-      this.newform = false;
-      this.fetchCategoryList();
-      this.fetchEducation();
-      this.fetchExpertise();
-      this.fetchLanguages();
-      this.fetchPreviousTitles();
-      this.fetchSocial();
-      this.fetchCurrentCategory(this.currentRecordId);
-      this.fetchCurrentRecord(this.currentRecordId);
+      this.newform = false
+      this.fetchCurrentRecord(this.recordid)
     } else {
-      this.newform = true;
-      this.hasContent = true;
-      this.recordState = 'new';
-      this.fetchCategoryList();
+      this.newform = true
+      this.hasContent = true
+      this.recordState = 'new'
     }
-    this.getUserRoles();
+    this.setupDatePickers()
+    this.getUserList()
+    this.getUserRoles()
+    this.getIdeaCategories()
   },
   computed: {
 
@@ -350,18 +356,18 @@ module.exports = {
     },
     isAdmin:function(){
       if(this.userRoles.indexOf('admin')!= -1) {
-        return true;
+        return true
       } else {
         if (this.userRoles.indexOf('admin_super') != -1) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },
     // Switch verbage of submit button.
     submitBtnLabel:function(){
-      return (this.recordexists)?'Update Expert': 'Create Expert'
+      return (this.recordexists)?'Update Idea': 'Create Idea'
     },
 
     editorType:function(){
@@ -371,290 +377,160 @@ module.exports = {
         return 'simple'
       }
     },
-
-    hasLocalRecordChanged: function() {
-      var ckval = false
-      if (this.recordOld.title !== this.record.title){
-        ckval = true
-      }
-
-      if (this.recordOld.content !== this.content ) {
-        ckval = true
-      }
-
-      if (ckval) {
-        this.updateRecordIsDirty(true)
-
-      }
-      return ckval
-    },
   },
 
   methods: {
-      onContentChange: function(){
-        if (!this.ckfullyloaded) {
-          this.ckfullyloaded = true
-        } else {
-          this.checkContentChange();
-        }
-      },
-      checkContentChange: function(){
-        if (!this.recordIsDirty) {
-          this.recordIsDirty = true
-          this.updateRecordIsDirty(true);
-        }
-      },
-      jsonEquals: function(a,b) {
-        return JSON.stringify(a) === JSON.stringify(b);
-      },
+    checkContentChange: function(){
+      if (!this.recordIsDirty) {
+        this.recordIsDirty = true
+        this.updateRecordIsDirty(true)
+      }
+    },
+    checkOverData: function() {
+      this.hasContent = true;
+      this.idea = this.record.idea
+      this.recordexists = true;
+      this.recordState = "edit"
+      this.recordIsDirty = false
+      this.updateRecordId(this.record.id)
+      this.updateRecordIsDirty(false)
+      this.setupDatePickers()
+    },
+    delIdea: function(e) {
+        e.preventDefault()
+        this.formMessage.isOk = false
+        this.formMessage.isErr = false
 
-      getUserRoles(){
+        if(confirm('Would you like to delete this story idea?')==true){
+          $('html, body').animate({ scrollTop: 0 }, 'fast')
 
-        let roles = this.cuserRoles;
-        let self = this;
-        this.userRoles = [];
-        if (roles.length > 0) {
-          roles.forEach(function(item,index){
-            self.userRoles.push(item.name);
-          })
-        } else {
-          self.userRoles.push('guest');
+          this.$http.delete('/api/storyideas/'+ this.record.id)
+
+          .then((response) =>{
+              window.location.href = "/admin/storyideas"
+              this.setupDatePickers();
+          }, (response) => {
+            console.log('Error: '+JSON.stringify(response))
+          }).bind(this)
         }
-      },
-
+    },
     fetchCurrentRecord: function(recid) {
-      this.$http.get('/api/experts/' + recid + '/edit')
+      this.$http.get('/api/storyideas/' + recid + '/edit')
 
       .then((response) => {
         this.$set('record', response.data.data)
-        this.$set('recordOld', response.data.data)
 
-        this.hasContent = true;
-        this.currentRecordId = this.record.id;
-        this.biography = this.record.biography;
+        this.hasContent = true
+        this.idea = this.record.idea
+        this.checkOverData()
       }, (response) => {
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+        this.formErrors = response.data.error.message
+      }).bind(this)
     },
+    getIdeaCategories(){
+      this.$http.get('/api/storyideamedia')
 
-    // Fetch the tags that match THIS record
-    fetchCategoryList: function() {
-        this.$http.get('/api/experts/category')
-          .then((response) =>{
-            this.$set('categorieslist', response.data);
-        });
+      .then((response) => {
+        this.$set('ideaCategoryList', response.data)
+      }, (response) => {
+        this.formErrors = response.data.error.message
+      }).bind(this)
     },
+    getUserList(){
+      this.$http.get('/api/userlist')
 
-    // Fetch the categories that matches THIS expert
-    fetchCurrentCategory(){
-        this.$http.get('/api/experts/category/'+ this.currentRecordId)
-            .then((response) => {
-                this.$set('categories', response.data);
-            }, (response) => {
-        });
+      .then((response) => {
+        this.$set('userList', response.data)
+      }, (response) => {
+        this.formErrors = response.data.error.message
+      }).bind(this)
     },
-
-    // Fetch the education that matches THIS expert
-    fetchEducation(){
-        this.$http.get('/api/experts/education/'+ this.currentRecordId)
-            .then((response) => {
-                this.$set('education', response.data);
-            }, (response) => {
-        });
+    getUserRoles(){
+      let roles = this.cuserRoles
+      let self = this
+      this.userRoles = []
+      if (roles.length > 0) {
+        roles.forEach(function(item,index){
+          self.userRoles.push(item.name)
+        })
+      } else {
+        self.userRoles.push('guest')
+      }
     },
-
-    // Fetch the expertise that matches THIS expert
-    fetchExpertise(){
-        this.$http.get('/api/experts/expertise/'+ this.currentRecordId)
-            .then((response) => {
-                this.$set('expertise', response.data);
-            }, (response) => {
-        });
-    },
-
-    // Fetch the languages that matches THIS expert
-    fetchLanguages(){
-        this.$http.get('/api/experts/languages/'+ this.currentRecordId)
-            .then((response) => {
-                this.$set('languages', response.data);
-            }, (response) => {
-        });
-    },
-
-    // Fetch the job titles that matches THIS expert
-    fetchPreviousTitles(){
-        this.$http.get('/api/experts/previoustitles/'+ this.currentRecordId)
-            .then((response) => {
-                this.$set('previousTitles', response.data);
-            }, (response) => {
-        });
-    },
-
-    // Fetch the social media links that matches THIS expert
-    fetchSocial(){
-        this.$http.get('/api/experts/social/'+ this.currentRecordId)
-            .then((response) => {
-                this.$set('social', response.data);
-            }, (response) => {
-        });
-    },
-
     nowOnReload:function() {
-      let newurl = '/admin/experts/'+ this.currentRecordId+'/edit';
+      let newurl = '/admin/storyideas/'+ this.recordid +'/edit'
 
-      document.location = newurl;
+      document.location = newurl
     },
-
+    onContentChange: function(){
+      if (!this.ckfullyloaded) {
+        this.ckfullyloaded = true
+      } else {
+        this.checkContentChange()
+      }
+    },
     onRefresh: function() {
-      this.updateRecordId(this.currentRecordId);
-      this.recordState = 'edit';
-      this.recordIsDirty = false;
+      this.updateRecordId(this.record.id)
+      this.recordState = 'edit'
+      this.recordIsDirty = false
 
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
-      this.fetchCurrentRecord(this.currentRecordId);
+      this.recordId = this.record.id
+      this.recordexists = true
+      this.fetchCurrentRecord(this.record.id)
     },
-
+    setupDatePickers:function(){
+      var self = this;
+      if (this.record.deadline == null) {
+        this.dateObject.startDateDefault = null;
+      } else {
+        this.dateObject.deadlineDateDefault = this.record.deadline.date;
+      }
+      this.deadlineDatePicker = flatpickr(document.getElementById("deadline"), {
+        defaultDate: self.dateObject.deadlineDateDefault,
+        enableTime: false,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange(dateObject, dateString) {
+          self.record.deadline.date = dateString;
+          self.deadlineDatePicker.value = dateString;
+        }
+      });
+    },
     submitForm: function(e) {
-      e.preventDefault(); // Stop form defualt action
+      e.preventDefault() // Stop form defualt action
 
-      $('html, body').animate({ scrollTop: 0 }, 'fast');
+      $('html, body').animate({ scrollTop: 0 }, 'fast')
 
-      this.record.biography = this.biography;
-
-      if (this.categories.length > 0) {
-         this.record.categories = this.categories;
-      } else {
-         this.record.categories = [];
-      }
-
-      if (this.education.length > 0) {
-         this.record.education = this.education;
-      } else {
-         this.record.education = [];
-      }
-
-      if (this.expertise.length > 0) {
-         this.record.expertise = this.expertise;
-      } else {
-         this.record.expertise = [];
-      }
-
-      if (this.languages.length > 0) {
-         this.record.languages = this.languages;
-      } else {
-         this.record.languages = [];
-      }
-
-      if (this.previousTitles.length > 0) {
-         this.record.previousTitles = this.previousTitles;
-      } else {
-         this.record.previousTitles = [];
-      }
-
-      if (this.social.length > 0) {
-         this.record.social = this.social;
-      } else {
-         this.record.social = [];
-      }
+      this.record.idea = this.idea
 
       // Decide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/experts/' + this.record.id : '/api/experts';
+      let route =  (this.recordexists) ? '/api/storyideas/' + this.record.id : '/api/storyideas'
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then((response) => {
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
-        this.currentRecordId = response.data.newdata.record_id;
-        this.recordid = response.data.newdata.record_id;
-        this.record_id = response.data.newdata.record_id;
-        this.record.id = response.data.newdata.record_id;
-        this.formMessage.isErr = false;
-        this.recordexists = true;
-        this.formErrors = {}; // Clear errors?
+        this.formMessage.msg = response.data.message
+        this.formMessage.isOk = response.ok // Success message
+        this.recordid = response.data.newdata.record_id
+        this.record_id = response.data.newdata.record_id
+        this.formMessage.isErr = false
+        this.recordexists = true
+        this.formErrors = {} // Clear errors?
         if (this.newform) {
-          this.nowOnReload();
+          this.nowOnReload()
         } else {
-          this.onRefresh();
+          this.onRefresh()
         }
       }, (response) => { // If invalid. error callback
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = true;
+        this.formMessage.isOk = false
+        this.formMessage.isErr = true
         // Set errors from validation to vue data
-        this.formErrors = response.data.error.message;
-      }).bind(this);
-    },
-
-    delExpert: function(e) {
-        e.preventDefault();
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = false;
-
-        if(confirm('Would you like to delete this expert?')==true){
-          $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-          this.$http.post('/api/experts/'+this.record.id+'/delete')
-
-          .then((response) =>{
-              window.location.href = "/admin/experts/list";
-          }, (response) => {
-            console.log('Error: '+JSON.stringify(response))
-          }).bind(this);
-        }
-    },
-
-    delTitle: function(title) {
-        if(confirm('Would you like to delete this title?')==true){
-            this.previousTitles.$remove(title);
-        }
-    },
-
-    addTitle: function(){
-        this.previousTitles.push({value: '', title:''});
-    },
-
-    delLanguage: function(language) {
-        if(confirm('Would you like to delete this language?')==true){
-            this.languages.$remove(language);
-        }
-    },
-
-    addLanguage: function(){
-        this.languages.push({value: '', language:''});
-    },
-
-    delEducation: function(education) {
-        if(confirm('Would you like to delete this education?')==true){
-            this.education.$remove(education);
-        }
-    },
-
-    addEducation: function(){
-        this.education.push({value: '', education:''});
-    },
-
-    delExpertise: function(expertise) {
-        if(confirm('Would you like to delete this field of expertise?')==true){
-            this.expertise.$remove(expertise);
-        }
-    },
-
-    addExpertise: function(){
-        this.expertise.push({value: '', expertise:''});
-    },
-
-    delSocial: function(link) {
-        if(confirm('Would you like to delete this social media link?')==true){
-            this.social.$remove(link);
-        }
-    },
-
-    addSocial: function(){
-        this.social.push({value: '', title:'', url:''});
+        this.formErrors = response.data.error.message
+      }).bind(this)
     },
   },
   watch: {
@@ -665,6 +541,6 @@ module.exports = {
   },
   events: {
   }
-};
+}
 
 </script>

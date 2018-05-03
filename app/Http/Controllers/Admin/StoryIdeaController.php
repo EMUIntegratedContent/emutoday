@@ -55,6 +55,28 @@ class StoryIdeaController extends Controller
     }
 
     /**
+    * Show the form for editing the specified resource.
+    *
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function edit($id)
+    {
+        $idea = $this->idea->findOrFail($id);
+        if(!$idea){
+          throw $this->createNotFoundException('The story idea with the id ' . $id . ' was not found.');
+        }
+        return view('admin.storyideas.form', compact('idea'));
+    }
+
+    /**
+     * Show the form for editing story idea email settings
+     */
+    public function settings(){
+      return view('admin.storyideas.settings', []);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -72,17 +94,6 @@ class StoryIdeaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }
