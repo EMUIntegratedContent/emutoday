@@ -47,9 +47,17 @@ class SendStoryIdeaEmail extends Command
         'cpuzzuol@gmail.com'
       );
 
-      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['deadline', '>=', Carbon::now()->addWeek()] ])->orderBy('deadline', 'desc')->get();
-      // Send one email to each recipient/mailing list
+      /**
+       * Gather any story ideas which are:
+       * 1) Not archived
+       * 2) Not completed
+       * 3) Not marked has having been previously sent out in a reminder email
+       * 4) Are due within the next week from now
+       */
+      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0], ['deadline', '>=', Carbon::now()->addWeek()] ])->orderBy('deadline', 'desc')->get();
+
       if(count($upcomingStories) > 0){
+        // Send one email to each recipient/mailing list
         foreach($recipients as $recipient){
           Mail::send('admin.storyideas.email', ['upcomingStories' => $upcomingStories], function ($message) use ($recipient){
               $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');
@@ -57,6 +65,11 @@ class SendStoryIdeaEmail extends Command
               $message->subject('Story Tracking Deadline Near');
               $message->to($recipient);
           });
+        }
+        // Set the is_notified field of each story idea to prevent it being sent again.
+        foreach($upcomingStories as $idea){
+          $idea->is_notified = 1;
+          $idea->save();
         }
       }
     }
