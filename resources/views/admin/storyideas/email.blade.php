@@ -15,8 +15,11 @@
 <p>Hi, {{ $recipient['first_name'] }}. The following story ideas are nearing their deadline.</p>
 <dl>
 @foreach($upcomingStories as $story)
-  <dt>{{ $story->title }}</dt>
-  <dd>{!! $story->idea !!}</dd>
+  <dt><strong>{{ $story->title }}<strong></dt>
+  <dd>
+    <div style="padding:20px 0px;">{!! $story->idea !!}</div>
+    <p><strong>Deadline: </strong>{{ \Carbon\Carbon::createFromFormat('d/m/y', $story->deadline)  }}</p>
+  </dd>
 @endforeach
 </dl>
 

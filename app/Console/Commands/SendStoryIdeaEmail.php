@@ -67,7 +67,6 @@ class SendStoryIdeaEmail extends Command
               $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');
               $message->subject('Story Tracking Deadline Near');
               $message->to($recipient['email']);
-              //$message->to('cpuzzuol@emich.edu');
           });
         }
         // Set the is_notified field of each story idea to prevent it being sent again.
