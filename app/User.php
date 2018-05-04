@@ -76,10 +76,6 @@ class User extends Authenticatable
         return $this->belongsToMany('Emutoday\Role');
     }
 
-    public function storyIdeas(){
-        return $this->hasMany('Emutoday\StoryIdea');
-    }
-
     /**
      * [events description]
      * @return [type] [description]
