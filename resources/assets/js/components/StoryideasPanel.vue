@@ -144,7 +144,7 @@ module.exports = {
       var startRecord = (this.currentPage -1) * this.itemsPerPage
 
       let itemArray = []
-      for(let i = 0; i < this.itemsPerPage; i++){
+      for(let i = this.itemsPerPage - 1; i > 0; i--){
         if(typeof this.stories[startRecord + i] != 'undefined' && this.stories[startRecord + i].is_completed == 1 && this.stories[startRecord + i].is_archived == 0) {
           itemArray.push(this.stories[startRecord + i])
         }
@@ -173,7 +173,7 @@ module.exports = {
       var startRecord = (this.currentPage -1) * this.itemsPerPage
 
       let itemArray = []
-      for(let i = 0; i < this.itemsPerPage; i++){
+      for(let i = this.itemsPerPage - 1; i > 0; i--){
         if(typeof this.stories[startRecord + i] != 'undefined'){
           var now = Date.parse(new Date())
           var deadline = Date.parse(this.stories[startRecord + i].deadline.date)

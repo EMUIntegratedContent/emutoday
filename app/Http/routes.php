@@ -314,7 +314,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::group(['middleware' => ['storyideas']], function()
         {
             Route::get('storyideas/form', 'Admin\StoryIdeaController@form');
-            Route::get('storyideas/settings', 'Admin\StoryIdeaController@settings');
             Route::resource('storyideas', 'Admin\StoryIdeaController');
         });
 

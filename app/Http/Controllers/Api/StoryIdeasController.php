@@ -24,7 +24,7 @@ class StoryIdeasController extends ApiController
   }
 
   public function index(Request $request){
-      $ideas = StoryIdea::where('is_archived', 0)->orderBy('created_at', 'desc')->get();
+      $ideas = StoryIdea::where('is_archived', 0)->orderBy('deadline', 'asc')->get();
 
       $fractal = new Manager();
       $resource = new Fractal\Resource\Collection($ideas->all(), new FractalStoryIdeaTransformerModel);

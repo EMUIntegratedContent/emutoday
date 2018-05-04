@@ -2,7 +2,7 @@
   <div class="panel panel-default">
     <div :class="panelType + '-panel-heading'" class="panel-heading">
       <h4 class="panel-title">
-        <a data-toggle="collapse" :href="'#collapse-' + slugify(storyidea.medium.medium) + '-' + panelType + '-' + index">{{{ icon }}} {{ storyidea.title }}</a>
+        <a class="blocklink" data-toggle="collapse" :href="'#collapse-' + slugify(storyidea.medium.medium) + '-' + panelType + '-' + index">{{{ icon }}} {{ storyidea.title }}</a>
       </h4>
     </div>
     <div :id="'collapse-' + slugify(storyidea.medium.medium) + '-' + panelType + '-' + index" class="panel-collapse collapse">
@@ -28,6 +28,9 @@
   </div>
 </template>
 <style scoped>
+.blocklink{
+  display: block;
+}
 .ideapod-panel-footer{
   border-top: 1px solid #cccccc !important;
   background-color: #eeeeee !important;

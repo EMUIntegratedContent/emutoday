@@ -12,7 +12,6 @@
       </div>
       <div class="col-md-4 text-right clearfix">
         <a class="btn btn-sm btn-info" href="/admin/storyideas/form"><i class="fa fa-lightbulb-o"></i> New Idea</a>
-        <a class="btn btn-sm btn-default" href="/admin/storyideas/settings"><i class="fa fa-envelope"></i> Email Settings</a>
         <a v-if="role == 'admin' || role == 'admin_super'" class="btn btn-sm btn-default" href="/admin/archive/queue/storyideas"><i class="fa fa-archive"></i> Archived Ideas</a>
       </div>
     </div>
