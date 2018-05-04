@@ -22,7 +22,7 @@
       <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($idea->deadline)->format('m/d/y') }}</li>
       <li>
         @if($idea->assignee)
-          Assigned to {{ $idea->assignee()->get() }}
+          Assigned to {{ $idea->assignee()->get()->first_name }}
         @else
           Not assigned
         @endif
