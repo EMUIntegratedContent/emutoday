@@ -57,7 +57,7 @@ class SendStoryIdeaEmail extends Command
        * 3) Not marked has having been previously sent out in a reminder email
        * 4) Are due within the next week from now
        */
-      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0] ])->whereBetween('deadline', [Carbon::now(), Carbon::now()->addWeek()])->orderBy('deadline', 'desc')->get();
+      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0] ])->whereBetween('deadline', [Carbon::now(), Carbon::today()->addWeek()])->orderBy('deadline', 'desc')->get();
 
       if(count($upcomingStories) > 0){
         // Send one email to each recipient/mailing list
