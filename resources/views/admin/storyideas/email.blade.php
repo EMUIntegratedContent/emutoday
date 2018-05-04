@@ -14,15 +14,15 @@
 
 <p>Hi, {{ $recipient['first_name'] }}. The following story ideas are nearing their deadline.</p>
 <dl>
-@foreach($upcomingStories as $story)
-  <dt><strong>{{ $story->title }}<strong></dt>
+@foreach($upcomingStories as $idea)
+  <dt><strong>{{ $idea->title }}<strong></dt>
   <dd>
-    <div style="padding:10px 0px;">{!! $story->idea !!}</div>
+    <div style="padding:10px 0px;">{!! $idea->idea !!}</div>
     <ul>
-      <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($story->deadline)->format('m/d/y') }}</li>
+      <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($idea->deadline)->format('m/d/y') }}</li>
       <li>
-        @if($story->assignee)
-          Assigned to {{ $story->assignee()->first_name }} {{ $story->assignee()->last_name }}
+        @if($idea->assignee)
+          Assigned to {{ $idea->assignee }} {{ $idea->assignee }}
         @else
           Not assigned
         @endif
