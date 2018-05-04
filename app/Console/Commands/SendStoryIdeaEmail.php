@@ -43,12 +43,13 @@ class SendStoryIdeaEmail extends Command
       \Log::info("Story idea email command executed.");
 
       $recipients = array(
-        'cpuzzuol@emich.edu'
+        'cpuzzuol@emich.edu',
+        'cpuzzuol@gmail.com'
       );
 
       $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['deadline', '>=', Carbon::now()->addWeek()] ])->orderBy('deadline', 'desc')->get();
       // Send one email to each recipient/mailing list
-      if($upcomingStories){
+      if(count($upcomingStories) > 0){
         foreach($recipients as $recipient){
           Mail::send('admin.storyideas.email', ['upcomingStories' => $upcomingStories], function ($message) use ($recipient){
               $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');

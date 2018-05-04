@@ -12,6 +12,7 @@
 }
 </style>
 
+Testing EMU Today story idea emails.
 @foreach($upcomingStories as $story)
   {{ $story->title }}
 @endforeach
