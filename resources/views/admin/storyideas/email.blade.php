@@ -12,7 +12,7 @@
 }
 </style>
 
-<p>Hi, {{ $recipient->first_name }}. The following story ideas are nearing their deadline.</p>
+<p>Hi, {{-- $recipient->first_name --}}{{ $recipient }}. The following story ideas are nearing their deadline.</p>
 <dl>
 @foreach($upcomingStories as $story)
   <dt>{{ $story->title }}</dt>

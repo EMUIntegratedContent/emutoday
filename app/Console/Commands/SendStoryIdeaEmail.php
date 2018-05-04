@@ -42,12 +42,15 @@ class SendStoryIdeaEmail extends Command
     {
       \Log::info("Story idea email command executed.");
 
+      // $recipients = array(
+      //   array(
+      //     'first_name' => 'Chris',
+      //     'last_name' => 'Puzzuoli',
+      //     'email' => 'cpuzzuol@emich.edu',
+      //   ),
+      // );
       $recipients = array(
-        array(
-          'first_name' => 'Chris',
-          'last_name' => 'Puzzuoli',
-          'email' => 'cpuzzuol@emich.edu',
-        ),
+        'cpuzzuol@emich.edu',
       );
 
       /**
@@ -66,7 +69,8 @@ class SendStoryIdeaEmail extends Command
               $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');
               $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');
               $message->subject('Story Tracking Deadline Near');
-              $message->to('cpuzzuol@emich.edu');
+              $message->to($recipient);
+              //$message->to('cpuzzuol@emich.edu');
           });
         }
         // Set the is_notified field of each story idea to prevent it being sent again.
