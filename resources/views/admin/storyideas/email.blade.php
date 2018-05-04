@@ -17,9 +17,19 @@
 @foreach($upcomingStories as $story)
   <dt><strong>{{ $story->title }}<strong></dt>
   <dd>
-    <div style="padding:20px 0px;">{!! $story->idea !!}</div>
-    <p><strong>Deadline: </strong>{{ Carbon\Carbon::parse($story->deadline)->format('d/m/y') }}</p>
+    <div style="padding:10px 0px;">{!! $story->idea !!}</div>
+    <ul>
+      <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($story->deadline)->format('m/d/y') }}</li>
+      <li>
+        @if($story->assignee)
+          Assigned to {{ $story->assignee->first_name }} {{ $story->assignee->last_name }}
+        @else
+          Not assigned
+        @endif
+      </li>
+    </ul>
   </dd>
+  <hr />
 @endforeach
 </dl>
 
