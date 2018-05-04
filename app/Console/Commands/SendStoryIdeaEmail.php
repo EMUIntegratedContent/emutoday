@@ -43,8 +43,11 @@ class SendStoryIdeaEmail extends Command
       \Log::info("Story idea email command executed.");
 
       $recipients = array(
-        'cpuzzuol@emich.edu',
-        'cpuzzuol@gmail.com'
+        array(
+          'first_name' => 'Chris',
+          'last_name' => 'Puzzuoli',
+          'email' => 'cpuzzuol@emich.edu',
+        ),
       );
 
       /**
@@ -59,11 +62,11 @@ class SendStoryIdeaEmail extends Command
       if(count($upcomingStories) > 0){
         // Send one email to each recipient/mailing list
         foreach($recipients as $recipient){
-          Mail::send('admin.storyideas.email', ['upcomingStories' => $upcomingStories], function ($message) use ($recipient){
+          Mail::send('admin.storyideas.email', ['upcomingStories' => $upcomingStories, 'recipient' => $recipient], function ($message) use ($recipient){
               $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');
               $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');
               $message->subject('Story Tracking Deadline Near');
-              $message->to($recipient);
+              $message->to($recipient['email']);
           });
         }
         // Set the is_notified field of each story idea to prevent it being sent again.
