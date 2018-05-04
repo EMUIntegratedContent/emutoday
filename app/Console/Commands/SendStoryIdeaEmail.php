@@ -3,6 +3,7 @@
 namespace Emutoday\Console\Commands;
 
 use Illuminate\Console\Command;
+use Mail;
 use Emutoday\StoryIdea;
 use Carbon\Carbon;
 
