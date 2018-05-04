@@ -33,7 +33,7 @@ class CreateStoryIdeaMediaTable extends Migration
     public function down()
     {
         Schema::table('story_ideas', function (Blueprint $table) {
-            $table->dropColumn('storyidea_mediums');
+            $table->dropForeign(['medium']);
         });
         Schema::dropIfExists('storyidea_mediums');
     }

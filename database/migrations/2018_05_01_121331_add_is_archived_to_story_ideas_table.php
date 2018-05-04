@@ -15,6 +15,7 @@ class AddIsArchivedToStoryIdeasTable extends Migration
     {
         Schema::table('story_ideas', function (Blueprint $table) {
             $table->tinyInteger('is_archived');
+            $table->tinyInteger('is_notified');
         });
     }
 
@@ -27,6 +28,7 @@ class AddIsArchivedToStoryIdeasTable extends Migration
     {
         Schema::table('story_ideas', function (Blueprint $table) {
             $table->dropColumn('is_archived');
+            $table->dropColumn('is_notified');
         });
     }
 }
