@@ -42,15 +42,12 @@ class SendStoryIdeaEmail extends Command
     {
       \Log::info("Story idea email command executed.");
 
-      // $recipients = array(
-      //   array(
-      //     'first_name' => 'Chris',
-      //     'last_name' => 'Puzzuoli',
-      //     'email' => 'cpuzzuol@emich.edu',
-      //   ),
-      // );
       $recipients = array(
-        'cpuzzuol@emich.edu',
+        array(
+          'first_name' => 'Chris',
+          'last_name' => 'Puzzuoli',
+          'email' => 'cpuzzuol@emich.edu',
+        ),
       );
 
       /**
@@ -60,7 +57,7 @@ class SendStoryIdeaEmail extends Command
        * 3) Not marked has having been previously sent out in a reminder email
        * 4) Are due within the next week from now
        */
-      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0], ['deadline', '<=', Carbon::now()->addWeek()] ])->orderBy('deadline', 'desc')->get();
+      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0] ])->whereBetween('deadline', [Carbon::now(), Carbon::now()->addWeek()])->orderBy('deadline', 'desc')->get();
 
       if(count($upcomingStories) > 0){
         // Send one email to each recipient/mailing list
@@ -69,7 +66,7 @@ class SendStoryIdeaEmail extends Command
               $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');
               $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');
               $message->subject('Story Tracking Deadline Near');
-              $message->to($recipient);
+              $message->to($recipient['email']);
               //$message->to('cpuzzuol@emich.edu');
           });
         }
