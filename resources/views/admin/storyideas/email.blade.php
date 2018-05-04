@@ -33,5 +33,5 @@
 @endforeach
 </dl>
 
-<p>Have a nice day!</p>
+<p>That's it. Have a nice day!</p>
 <p>This email was automatically generated from EMU Today.</p>
