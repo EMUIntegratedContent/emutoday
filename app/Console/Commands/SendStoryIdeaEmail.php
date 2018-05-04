@@ -42,18 +42,27 @@ class SendStoryIdeaEmail extends Command
     {
       \Log::info("Story idea email command executed.");
 
-      $recipients = array(
-        array(
-          'first_name' => 'Chris',
-          'last_name' => 'Puzzuoli',
-          'email' => 'cpuzzuol@emich.edu',
-        ),
-        array(
-          'first_name' => 'KOOOOOOOSCCCCCEEEELLLLNIIIIAAAAKKK!!!!!!!',
-          'last_name' => 'Brian',
-          'email' => 'bkosciel@emich.edy',
-        ),
-      );
+      // differentiate between development and production environments
+      if(env('APP_DEBUG') === true){
+        // dev
+        $recipients = array(
+          array(
+            'first_name' => 'Chris',
+            'last_name' => 'Puzzuoli',
+            'email' => 'cpuzzuol@emich.edu',
+          ),
+        );
+      } else {
+        // prod
+        $recipients = array(
+          array(
+            'first_name' => 'Chris',
+            'last_name' => 'Puzzuoli',
+            'email' => 'cpuzzuol@gmail.com',
+          ),
+        );
+      }
+
 
       /**
        * Gather any story ideas which are:
