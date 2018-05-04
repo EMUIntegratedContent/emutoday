@@ -22,7 +22,7 @@
       <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($story->deadline)->format('m/d/y') }}</li>
       <li>
         @if($story->assignee)
-          Assigned to {{ $story->assignee->first_name }} {{ $story->assignee->last_name }}
+          Assigned to {{ $story->assignee()->first_name }} {{ $story->assignee()->last_name }}
         @else
           Not assigned
         @endif
