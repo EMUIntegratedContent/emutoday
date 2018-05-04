@@ -18,7 +18,7 @@
   <dt><strong>{{ $story->title }}<strong></dt>
   <dd>
     <div style="padding:20px 0px;">{!! $story->idea !!}</div>
-    <p><strong>Deadline: </strong>{{ Carbon\Carbon::createFromFormat('d/m/y', $story->deadline)  }}</p>
+    <p><strong>Deadline: </strong>{{ Carbon\Carbon::parse($story->deadline)->format('d/m/y') }}</p>
   </dd>
 @endforeach
 </dl>
