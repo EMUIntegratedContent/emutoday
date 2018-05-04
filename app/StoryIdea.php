@@ -30,7 +30,7 @@ class StoryIdea extends Model
     * This user to whom this idea was assigned
     */
     public function assignee(){
-      return $this->hasOne(User::class, 'assignee','id');
+      return $this->hasOne(User::class, 'id','assignee');
     }
 
   /**
