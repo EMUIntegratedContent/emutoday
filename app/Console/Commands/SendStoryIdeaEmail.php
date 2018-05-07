@@ -51,11 +51,6 @@ class SendStoryIdeaEmail extends Command
             'last_name' => 'Puzzuoli',
             'email' => 'cpuzzuol@emich.edu',
           ),
-          array(
-            'first_name' => 'Chris',
-            'last_name' => 'Puzzuoli',
-            'email' => 'cpuzzuol@gmail.com',
-          ),
         );
       } else {
         // prod
