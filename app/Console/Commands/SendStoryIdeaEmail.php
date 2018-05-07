@@ -51,6 +51,11 @@ class SendStoryIdeaEmail extends Command
             'last_name' => 'Puzzuoli',
             'email' => 'cpuzzuol@emich.edu',
           ),
+          array(
+            'first_name' => 'Chris',
+            'last_name' => 'Puzzuoli',
+            'email' => 'cpuzzuol@gmail.com',
+          ),
         );
       } else {
         // prod
@@ -58,7 +63,32 @@ class SendStoryIdeaEmail extends Command
           array(
             'first_name' => 'Chris',
             'last_name' => 'Puzzuoli',
-            'email' => 'cpuzzuol@gmail.com',
+            'email' => 'cpuzzuol@emich.edu',
+          ),
+          array(
+            'first_name' => 'Brian',
+            'last_name' => 'Koscielniak',
+            'email' => 'bkosciel@emich.edu',
+          ),
+          array(
+            'first_name' => 'Darcy',
+            'last_name' => 'Gifford',
+            'email' => 'dgiffor2@emich.edu',
+          ),
+          array(
+            'first_name' => 'Geoff',
+            'last_name' => 'Larcom',
+            'email' => 'glarcom@emich.edu',
+          ),
+          array(
+            'first_name' => 'Deb',
+            'last_name' => 'Burke',
+            'email' => 'dburke15@emich.edu',
+          ),
+          array(
+            'first_name' => 'Sue',
+            'last_name' => 'Shine',
+            'email' => 'sshine@emich.edu',
           ),
         );
       }
