@@ -21327,7 +21327,7 @@ module.exports = {
     getUserList: function getUserList() {
       var _this4 = this;
 
-      this.$http.get('/api/userlist').then(function (response) {
+      this.$http.get('/api/storyideaassignees').then(function (response) {
         _this4.$set('userList', response.data);
       }, function (response) {
         _this4.formErrors = response.data.error.message;

@@ -125,10 +125,7 @@ export default {
             this.$http.get(url)
                 .then((response) => {
                     this.$set('allitems', response.data.data)
-                    console.log(response.data.data)
-                    //if (response.data.data.length > 0) {
-                        this.makePagination(response.data.meta.pagination)
-                    //}
+                    this.makePagination(response.data.meta.pagination)
                 }, (response) => {
                     //error callback
                     console.log("Error fetching archive records");

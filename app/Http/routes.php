@@ -173,6 +173,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         return StoryIdeaMedium::select('medium', 'id as value')->orderBy('medium', 'asc')->get();
     });
 
+    Route::get('storyideaassignees', function() {
+        return User::select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->where('is_idea_assignee', 1)->orderBy('last_name', 'asc')->get();
+    });
+
     Route::get('userlist', function() {
         return User::select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->orderBy('last_name', 'asc')->get();
     });

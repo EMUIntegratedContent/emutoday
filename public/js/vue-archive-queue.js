@@ -16939,10 +16939,7 @@ exports.default = {
 
             this.$http.get(url).then(function (response) {
                 _this.$set('allitems', response.data.data);
-                console.log(response.data.data);
-                //if (response.data.data.length > 0) {
                 _this.makePagination(response.data.meta.pagination);
-                //}
             }, function (response) {
                 //error callback
                 console.log("Error fetching archive records");

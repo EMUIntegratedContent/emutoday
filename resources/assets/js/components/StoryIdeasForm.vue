@@ -437,7 +437,7 @@ module.exports = {
       }).bind(this)
     },
     getUserList(){
-      this.$http.get('/api/userlist')
+      this.$http.get('/api/storyideaassignees')
 
       .then((response) => {
         this.$set('userList', response.data)
