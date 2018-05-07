@@ -12,25 +12,15 @@
 }
 </style>
 
-<p>Hi, {{ $recipient['first_name'] }}. The following story ideas are nearing their deadline.</p>
+<p>Hi, {{ $idea->assignee()->first()->first_name }}. The following story idea is due for submission.</p>
 <dl>
-@foreach($upcomingStories as $idea)
   <dt><strong>{{ $idea->title }}<strong></dt>
   <dd>
     <div style="padding:10px 0px;">{!! $idea->idea !!}</div>
     <ul>
       <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($idea->deadline)->format('m/d/y') }}</li>
-      <li>
-        @if($idea->assignee)
-          Assigned to {{ $idea->assignee()->first()->getFullNameAttribute() }}
-        @else
-          Not assigned
-        @endif
-      </li>
     </ul>
   </dd>
-  <hr />
-@endforeach
 </dl>
 
 <p>That's it. Have a nice day!</p>
