@@ -22,6 +22,6 @@
     </ul>
   </dd>
 </dl>
-
+<hr />
 <p>That's it. Have a nice day!</p>
 <p>This email was automatically generated from EMU Today.</p>

@@ -76,7 +76,7 @@ class SendIndividualStoryIdeaEmail extends Command
        * 3) Not marked has having been previously sent out in a reminder email
        * 4) Are due within the next week from now
        */
-      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0] ])->whereBetween('deadline', [Carbon::now(), Carbon::today()->addDay()])->orderBy('deadline', 'asc')->get();
+      $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0] ])->whereNotNull('assignee')->whereBetween('deadline', [Carbon::now(), Carbon::today()->addDay()])->orderBy('deadline', 'asc')->get();
 
       if(count($upcomingStories) > 0){
         // Send one email to each recipient/mailing list
@@ -86,7 +86,7 @@ class SendIndividualStoryIdeaEmail extends Command
             Mail::send('admin.storyideas.emailindividual', ['idea' => $idea], function ($message) use ($idea){
                 $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');
                 $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');
-                $message->subject('Story Tracking Deadline Near');
+                $message->subject('Story Idea "'. $idea->title . '" Deadline Near');
                 $message->to($idea->assignee()->first()->email);
             });
           }
