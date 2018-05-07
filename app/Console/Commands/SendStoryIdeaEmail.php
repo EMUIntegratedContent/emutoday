@@ -85,6 +85,16 @@ class SendStoryIdeaEmail extends Command
             'last_name' => 'Shine',
             'email' => 'sshine@emich.edu',
           ),
+          array(
+            'first_name' => 'Walter',
+            'last_name' => 'Kraft',
+            'email' => 'wkraft@emich.edu',
+          ),
+          array(
+            'first_name' => 'TaQuinda',
+            'last_name' => 'Johnson',
+            'email' => 'tjohnson9@emich.edu',
+          ),
         );
       }
 
