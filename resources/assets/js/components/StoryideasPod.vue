@@ -9,6 +9,7 @@
       <div class="panel-body">
         <span v-html="storyidea.idea"></span>
         <hr style="clear:both; padding-top:5px;" />
+        <label class="pull-left">{{ storyidea.assignee ? 'Assigned to ' + storyidea.assignee.name : 'Not assigned' }}</label>
         <label class="pull-right">Complete <input v-model="storyidea.is_completed" @change="emitUpdateIdeaStatus()" type="checkbox"></label>
       </div>
     </div>
