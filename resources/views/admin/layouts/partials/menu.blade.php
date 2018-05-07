@@ -82,10 +82,10 @@
       <li class="{{ set_active('admin/story*') }}"><a href="/admin/queueall/story/story/form"><i class="fa fa-plus-square"></i><span>New Story</span></a></li>
     </ul>
   </li>
-  <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
-  @endcan
   @can('edit_all', $currentUser)
   <li><a href="/admin/storyideas"><i class="fa fa-lightbulb-o"></i>Ideas <span class="pull-right-container"></a></li>
+  @endcan
+  <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
   @endcan
 </ul>
 </li>
