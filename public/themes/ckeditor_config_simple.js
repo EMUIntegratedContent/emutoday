@@ -17,13 +17,11 @@ CKEDITOR.editorConfig = function( config ) {
     config.extraPlugins = 'autogrow,horizontalrule';
     config.removeButtons = 'Image,Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source';
     config.extraAllowedContent = 'div(*){*};hr';
-    // config.removeButtons = 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview';
     config.pasteFilter = 'plain-text';
     config.height ='25em';
     config.filebrowserWindowFeatures = 'resizable=no';
     // config.filebrowserBrowseUrl = '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files';
     config.filebrowserImageBrowseUrl= '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images';
-  // config.filebrowserUploadUrl ='/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files';
+    // config.filebrowserUploadUrl ='/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files';
     config.filebrowserImageUploadUrl = '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images';
-   //  });
 };

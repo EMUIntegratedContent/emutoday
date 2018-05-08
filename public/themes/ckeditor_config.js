@@ -16,7 +16,6 @@ CKEDITOR.editorConfig = function( config ) {
     ];
     config.extraPlugins = 'autogrow,horizontalrule';
     config.extraAllowedContent = 'div(*){*};hr';
-    //config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
     config.pasteFilter = 'plain-text';
     config.height ='25em';
     config.filebrowserWindowFeatures = 'resizable=no';
@@ -24,5 +23,4 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserImageBrowseUrl= '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images';
     // config.filebrowserUploadUrl ='/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files';
     config.filebrowserImageUploadUrl = '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images';
-    //  });
 };
