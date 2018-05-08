@@ -14,9 +14,9 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'others', groups: [ 'others' ] },
         { name: 'about', groups: [ 'about' ] }
     ];
-    config.extraPlugins = 'autogrow';
+    config.extraPlugins = 'autogrow,horizontalrule';
     config.removeButtons = 'Image,Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source';
-    config.extraAllowedContent = 'div(*){*}';
+    config.extraAllowedContent = 'div(*){*};hr';
     // config.removeButtons = 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview';
     config.pasteFilter = 'plain-text';
     config.height ='25em';
