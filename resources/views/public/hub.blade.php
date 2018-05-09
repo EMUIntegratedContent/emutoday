@@ -74,7 +74,7 @@ EMU Today is Eastern Michigan University's digital hub for stories and news arou
             @elseif($barImgs[$i]->story->story_type == 'article')
               @if($barImgs[$i]->story->tags()->first())
                   @if($barImgs[$i]->story->tags()->first()->name == 'external')
-                    <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}</a>
+                    <a href="{{$barImgs[$i]->link}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}&nbsp;<i class="fa fa-external-link"></i></a>
                   @else
                     <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}" aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}" class="button readmore">{{$barImgs[$i]->moretext}}</a>
                   @endif
