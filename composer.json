@@ -16,7 +16,7 @@
         "intervention/imagecache": "^2.3",
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
-        "barryvdh/laravel-debugbar": "^2.2",
+        "barryvdh/laravel-debugbar": "^3.1",
         "subfission/cas": "~2.0.9",
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.11.0",
@@ -60,12 +60,10 @@
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "post-autoload-dump": [
           "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
