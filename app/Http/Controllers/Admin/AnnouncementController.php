@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\View;
 
 class AnnouncementController extends Controller
 {
-
     protected $announcement;
     protected $bugService;
 
