@@ -77,7 +77,7 @@ class SendIndividualStoryIdeaEmail extends Command
        * 4) Are due within the next week from now
        */
       $upcomingStories = StoryIdea::where([ ['is_archived', '=', 0], ['is_completed', '=', 0], ['is_notified', '=', 0] ])->whereNotNull('assignee')->whereBetween('deadline', [Carbon::now(), Carbon::today()->addDay()])->orderBy('deadline', 'asc')->get();
-        \Log::info("After upcoming story");
+        \Log::info(count($upcomingStories));
       if(count($upcomingStories) > 0){
         // Send one email to each recipient/mailing list
         foreach($upcomingStories as $idea){
