@@ -21,7 +21,7 @@
               @update-story-idea="updateIdeaStatus"
               @archive-story-idea="archiveIdea"
               >
-            </storyidea-pod>
+            </storyideas-pod>
           </div>
           <div v-else>
             <p>No future story ideas in this category.</p>
@@ -38,7 +38,7 @@
               @update-story-idea="updateIdeaStatus"
               @archive-story-idea="archiveIdea"
               >
-            </storyidea-pod>
+            </storyideas-pod>
           </div>
           <div v-else>
             <p>No completed story ideas in this category.</p>
@@ -55,7 +55,7 @@
               @update-story-idea="updateIdeaStatus"
               @archive-story-idea="archiveIdea"
               >
-            </storyidea-pod>
+            </storyideas-pod>
           </div>
           <div v-else>
             <p>No past-due story ideas in this category.</p>
@@ -144,7 +144,7 @@ module.exports = {
       var startRecord = (this.currentPage -1) * this.itemsPerPage
 
       let itemArray = []
-      for(let i = this.itemsPerPage - 1; i > 0; i--){
+      for(let i = this.itemsPerPage - 1; i >= 0; i--){
         if(typeof this.stories[startRecord + i] != 'undefined' && this.stories[startRecord + i].is_completed == 1 && this.stories[startRecord + i].is_archived == 0) {
           itemArray.push(this.stories[startRecord + i])
         }
@@ -156,7 +156,7 @@ module.exports = {
       var startRecord = (this.currentPage -1) * this.itemsPerPage
 
       let itemArray = []
-      for(let i = 0; i < this.itemsPerPage; i++){
+      for(let i = 0; i <= this.itemsPerPage; i++){
         if(typeof this.stories[startRecord + i] != 'undefined'){
           var now = Date.parse(new Date())
           var deadline = Date.parse(this.stories[startRecord + i].deadline.date)
@@ -173,7 +173,7 @@ module.exports = {
       var startRecord = (this.currentPage -1) * this.itemsPerPage
 
       let itemArray = []
-      for(let i = this.itemsPerPage - 1; i > 0; i--){
+      for(let i = this.itemsPerPage - 1; i >= 0; i--){
         if(typeof this.stories[startRecord + i] != 'undefined'){
           var now = Date.parse(new Date())
           var deadline = Date.parse(this.stories[startRecord + i].deadline.date)
