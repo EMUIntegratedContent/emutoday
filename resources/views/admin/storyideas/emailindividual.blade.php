@@ -18,7 +18,7 @@
   <dd>
     <div style="padding:10px 0px;">{!! $idea->idea !!}</div>
     <ul>
-      <!--<li><strong>Medium: </strong>{{-- $idea->medium()->first()->medium --}}</li>-->
+      <li><strong>Medium: </strong>{{ $idea->medium()->first()->medium }}</li>
       <li><strong>Deadline: </strong>{{ Carbon\Carbon::parse($idea->deadline)->format('m/d/y') }}</li>
     </ul>
   </dd>
