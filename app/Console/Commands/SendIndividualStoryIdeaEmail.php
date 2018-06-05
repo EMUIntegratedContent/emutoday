@@ -83,6 +83,7 @@ class SendIndividualStoryIdeaEmail extends Command
         foreach($upcomingStories as $idea){
           // only send this email if there is somebody assigned to it
           if($idea->assignee()->first()){
+              \Log::info($idea->assignee()->first()->firstName);
             Mail::send('admin.storyideas.emailindividual', ['idea' => $idea], function ($message) use ($idea){
                 $message->from(env('MAIL_USERNAME', 'emu_today@emich.edu'), 'EMU Today Admin');
                 $message->replyTo('emu_today@emich.edu', 'EMU Today Admin');
