@@ -27,12 +27,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command(Commands\SendTodayEmails::class, ['--force'])->cron('*/5 * * * *');
-        //$schedule->command(Commands\SendStoryIdeaEmail::class, ['--force'])->cron('0 8 * * 3');
-        //$schedule->command(Commands\SendIndividualStoryIdeaEmail::class, ['--force'])->cron('0 8 * * 0-6');
-        $schedule->command(Commands\SendTodayEmails::class)->cron('* * * * *');
-        $schedule->command(Commands\SendStoryIdeaEmail::class)->cron('* * * * *');
-        $schedule->command(Commands\SendIndividualStoryIdeaEmail::class)->cron('* * * * *');
+        $schedule->command(Commands\SendTodayEmails::class, ['--force'])->cron('*/5 * * * *');
+        $schedule->command(Commands\SendStoryIdeaEmail::class, ['--force'])->cron('0 8 * * 3');
+        $schedule->command(Commands\SendIndividualStoryIdeaEmail::class, ['--force'])->cron('0 8 * * 0-6');
     }
 
     /**
