@@ -53,6 +53,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
+    
     /* STORY IDEAS */
     Route::resource('storyideas', 'Api\StoryIdeasController');
 
