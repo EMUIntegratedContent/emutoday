@@ -16965,7 +16965,7 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"./StoryideasPanel.vue":9,"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],9:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.ideapanel-nav-tabs[_v-5c0d9b56]{\n  margin-bottom: 10px !important;\n}\n.panel-body[_v-5c0d9b56]{\n  height:420px;\n  overflow-y:scroll;\n}\n.nav-tabs > li.active > a[_v-5c0d9b56], .nav-tabs > li.active > a[_v-5c0d9b56]:hover, .nav-tabs > li.active > a[_v-5c0d9b56]:focus{\n  color:#72afd2 !important;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.ideapanel-nav-tabs[_v-5c0d9b56] {\n    margin-bottom: 10px !important;\n}\n\n.panel-body[_v-5c0d9b56] {\n    height: 420px;\n    overflow-y: scroll;\n}\n\n.nav-tabs > li.active > a[_v-5c0d9b56], .nav-tabs > li.active > a[_v-5c0d9b56]:hover, .nav-tabs > li.active > a[_v-5c0d9b56]:focus {\n    color: #72afd2 !important;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -16979,133 +16979,140 @@ var _StoryideasPod2 = _interopRequireDefault(_StoryideasPod);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
-  components: { StoryideasPod: _StoryideasPod2.default },
-  props: {
-    role: {
-      type: String,
-      required: true
-    },
-    storyIdeaType: {
-      type: String,
-      required: true
-    },
-    stories: {
-      type: Array,
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      currentSearch: '',
-      formErrors: '',
-      // Pagination
-      currentPage: 1,
-      itemsPerPage: 10,
-      itemsPerPageOptions: [{ text: 1, value: 1 }, { text: 5, value: 5 }, { text: 10, value: 10 }, { text: 25, value: 25 }, { text: 40, value: 40 }, { text: 50, value: 50 }, { text: 75, value: 75 }, { text: 100, value: 100 }, { text: 200, value: 200 }]
-    };
-  },
-  created: function created() {},
-  ready: function ready() {},
-  computed: {
-    totalPages: function totalPages() {
-      return Math.ceil(this.stories.length / this.itemsPerPage);
-    },
-    // Use the stories from the 'stories' prop and keep only story ideas marked as completed
-    paginatedCompletedStories: function paginatedCompletedStories() {
-      var startRecord = (this.currentPage - 1) * this.itemsPerPage;
-
-      var itemArray = [];
-      for (var i = this.itemsPerPage - 1; i >= 0; i--) {
-        if (typeof this.stories[startRecord + i] != 'undefined' && this.stories[startRecord + i].is_completed == 1 && this.stories[startRecord + i].is_archived == 0) {
-          itemArray.push(this.stories[startRecord + i]);
+    components: { StoryideasPod: _StoryideasPod2.default },
+    props: {
+        role: {
+            type: String,
+            required: true
+        },
+        storyIdeaType: {
+            type: String,
+            required: true
+        },
+        stories: {
+            type: Array,
+            required: true
         }
-      }
-      return itemArray;
     },
-    // Use the stories from the 'stories' prop and keep only story ideas whose deadline is in the future and not completed
-    paginatedFutureStories: function paginatedFutureStories() {
-      var startRecord = (this.currentPage - 1) * this.itemsPerPage;
+    data: function data() {
+        return {
+            currentSearch: '',
+            formErrors: '',
+            // Pagination
+            currentPage: 1,
+            itemsPerPage: 10, // currently not using pagination
+            itemsPerPageOptions: [{ text: 1, value: 1 }, { text: 5, value: 5 }, { text: 10, value: 10 }, { text: 25, value: 25 }, { text: 40, value: 40 }, { text: 50, value: 50 }, { text: 75, value: 75 }, { text: 100, value: 100 }, { text: 200, value: 200 }]
+        };
+    },
+    created: function created() {},
+    ready: function ready() {},
+    computed: {
+        totalPages: function totalPages() {
+            return Math.ceil(this.stories.length / this.itemsPerPage);
+        },
+        // Use the stories from the 'stories' prop and keep only story ideas marked as completed
+        paginatedCompletedStories: function paginatedCompletedStories() {
+            var startRecord = (this.currentPage - 1) * this.itemsPerPage;
 
-      var itemArray = [];
-      for (var i = 0; i <= this.itemsPerPage; i++) {
-        if (typeof this.stories[startRecord + i] != 'undefined') {
-          var now = Date.parse(new Date());
-          var deadline = Date.parse(this.stories[startRecord + i].deadline.date);
+            var itemArray = [];
+            //for (let i = this.itemsPerPage - 1; i >= 0; i--) {  << FOR LOOP IF USING PAGINATION (not currently using pagination)
+            for (var i = this.stories.length - 1; i >= 0; i--) {
+                if (typeof this.stories[startRecord + i] != 'undefined' && this.stories[startRecord + i].is_completed == 1 && this.stories[startRecord + i].is_archived == 0) {
+                    itemArray.push(this.stories[startRecord + i]);
+                }
+            }
+            return itemArray;
+        },
+        // Use the stories from the 'stories' prop and keep only story ideas whose deadline is in the future and not completed
+        paginatedFutureStories: function paginatedFutureStories() {
+            var startRecord = (this.currentPage - 1) * this.itemsPerPage;
 
-          if (now < deadline && this.stories[startRecord + i].is_completed == 0 && this.stories[startRecord + i].is_archived == 0) {
-            itemArray.push(this.stories[startRecord + i]);
-          }
+            var itemArray = [];
+            //for (let i = 0; i <= this.itemsPerPage; i++) {  << FOR LOOP IF USING PAGINATION (not currently using pagination)
+            for (var i = 0; i <= this.stories.length; i++) {
+                if (typeof this.stories[startRecord + i] != 'undefined') {
+                    var now = Date.parse(new Date());
+                    var deadline = Date.parse(this.stories[startRecord + i].deadline.date);
+
+                    if (now < deadline && this.stories[startRecord + i].is_completed == 0 && this.stories[startRecord + i].is_archived == 0) {
+                        itemArray.push(this.stories[startRecord + i]);
+                    }
+                }
+            }
+            return itemArray;
+        },
+        // Use the stories from the 'stories' prop and keep only story ideas whose deadline is in the past and not completed
+        paginatedPastStories: function paginatedPastStories() {
+            var startRecord = (this.currentPage - 1) * this.itemsPerPage;
+
+            var itemArray = [];
+            //for (let i = this.itemsPerPage - 1; i >= 0; i--) {  << FOR LOOP IF USING PAGINATION (not currently using pagination)
+            for (var i = this.stories.length - 1; i >= 0; i--) {
+                if (typeof this.stories[startRecord + i] != 'undefined') {
+                    var now = Date.parse(new Date());
+                    var deadline = Date.parse(this.stories[startRecord + i].deadline.date);
+
+                    if (now > deadline && this.stories[startRecord + i].is_completed == 0 && this.stories[startRecord + i].is_archived == 0) {
+                        itemArray.push(this.stories[startRecord + i]);
+                    }
+                }
+            }
+            return itemArray;
         }
-      }
-      return itemArray;
     },
-    // Use the stories from the 'stories' prop and keep only story ideas whose deadline is in the past and not completed
-    paginatedPastStories: function paginatedPastStories() {
-      var startRecord = (this.currentPage - 1) * this.itemsPerPage;
 
-      var itemArray = [];
-      for (var i = this.itemsPerPage - 1; i >= 0; i--) {
-        if (typeof this.stories[startRecord + i] != 'undefined') {
-          var now = Date.parse(new Date());
-          var deadline = Date.parse(this.stories[startRecord + i].deadline.date);
+    methods: {
+        archiveIdea: function archiveIdea(idea) {
+            if (confirm('Would you like to archive this story idea') === true) {
+                idea.is_archived = 1;
+                this.updateIdeaStatus(idea);
+            }
+        },
 
-          if (now > deadline && this.stories[startRecord + i].is_completed == 0 && this.stories[startRecord + i].is_archived == 0) {
-            itemArray.push(this.stories[startRecord + i]);
-          }
+        // emits the event to the parent with the list of paginated items
+        changeItemsPerPage: function changeItemsPerPage(itemsPerPage) {
+            this.itemsPerPage = itemsPerPage;
+        },
+        setPage: function setPage(pageNumber) {
+            if (pageNumber > 0 && pageNumber <= this.totalPages) {
+                this.currentPage = pageNumber;
+            }
+        },
+        slugify: function slugify(str) {
+            return str.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+        },
+        timefromNow: function timefromNow(item) {
+            return (0, _moment2.default)(item.deadline.date).fromNow();
+        },
+        toggleIdeaStatus: function toggleIdeaStatus(idea) {
+            idea.is_completed == 1 ? idea.is_completed = 0 : idea.is_completed = 1;
+            this.updateIdeaStatus(idea);
+        },
+        updateIdeaStatus: function updateIdeaStatus(idea) {
+            var self = this;
+            this.$http.patch('/api/storyideas/' + idea.id, idea, {
+                method: 'PATCH'
+            }).then(function (response) {
+                console.log(response);
+            }, function (response) {
+                console.log("ERROR!");
+                console.log(response);
+            });
         }
-      }
-      return itemArray;
-    }
-  },
-
-  methods: {
-    archiveIdea: function archiveIdea(idea) {
-      if (confirm('Would you like to archive this story idea') === true) {
-        idea.is_archived = 1;
-        this.updateIdeaStatus(idea);
-      }
     },
-
-    // emits the event to the parent with the list of paginated items
-    changeItemsPerPage: function changeItemsPerPage(itemsPerPage) {
-      this.itemsPerPage = itemsPerPage;
-    },
-    setPage: function setPage(pageNumber) {
-      if (pageNumber > 0 && pageNumber <= this.totalPages) {
-        this.currentPage = pageNumber;
-      }
-    },
-    slugify: function slugify(str) {
-      return str.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
-    },
-    timefromNow: function timefromNow(item) {
-      return (0, _moment2.default)(item.deadline.date).fromNow();
-    },
-    updateIdeaStatus: function updateIdeaStatus(idea) {
-      var self = this;
-      this.$http.patch('/api/storyideas/togglecomplete/' + idea.id, idea, {
-        method: 'PATCH'
-      }).then(function (response) {
-        console.log(response);
-      }, function (response) {
-        console.log("ERROR!");
-        console.log(response);
-      });
-    }
-  },
-  watch: {},
-  filters: {},
-  events: {},
-  directives: {}
+    watch: {},
+    filters: {},
+    events: {},
+    directives: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"panel panel-default\" _v-5c0d9b56=\"\">\n  <div class=\"panel-heading\" _v-5c0d9b56=\"\">\n    <h3 class=\"panel-title\" _v-5c0d9b56=\"\">{{ storyIdeaType }}</h3>\n  </div>\n  <div class=\"panel-body\" _v-5c0d9b56=\"\">\n    <ul class=\"ideapanel-nav-tabs nav nav-tabs\" _v-5c0d9b56=\"\">\n      <li role=\"presentation\" class=\"active\" _v-5c0d9b56=\"\"><a data-toggle=\"tab\" :href=\"'#future-' + slugify(storyIdeaType)\" _v-5c0d9b56=\"\">Future ({{ paginatedFutureStories ? paginatedFutureStories.length : '0' }})</a></li>\n      <li role=\"presentation\" _v-5c0d9b56=\"\"><a data-toggle=\"tab\" :href=\"'#completed-' + slugify(storyIdeaType)\" _v-5c0d9b56=\"\">Completed ({{ paginatedCompletedStories ? paginatedCompletedStories.length : '0' }})</a></li>\n      <li role=\"presentation\" _v-5c0d9b56=\"\"><a data-toggle=\"tab\" :href=\"'#past-' + slugify(storyIdeaType)\" _v-5c0d9b56=\"\">Past Due ({{ paginatedPastStories ? paginatedPastStories.length : '0' }})</a></li>\n    </ul>\n    <div class=\"tab-content\" _v-5c0d9b56=\"\">\n      <div :id=\"'future-' + slugify(storyIdeaType)\" class=\"tab-pane active in fade\" _v-5c0d9b56=\"\">\n        <div v-if=\"paginatedFutureStories.length > 0\" class=\"panel-group\" _v-5c0d9b56=\"\">\n          <storyideas-pod v-for=\"(index, idea) in paginatedFutureStories\" :role=\"role\" :storyidea=\"idea\" :index=\"index\" panel-type=\"future\" @update-story-idea=\"updateIdeaStatus\" @archive-story-idea=\"archiveIdea\" _v-5c0d9b56=\"\">\n          </storyideas-pod>\n        </div>\n        <div v-else=\"\" _v-5c0d9b56=\"\">\n          <p _v-5c0d9b56=\"\">No future story ideas in this category.</p>\n        </div>\n      </div>\n      <div :id=\"'completed-' + slugify(storyIdeaType)\" class=\"tab-pane fade\" _v-5c0d9b56=\"\">\n        <div v-if=\"paginatedCompletedStories.length > 0\" class=\"panel-group\" _v-5c0d9b56=\"\">\n          <storyideas-pod v-for=\"(index, idea) in paginatedCompletedStories\" :role=\"role\" :storyidea=\"idea\" :index=\"index\" panel-type=\"completed\" @update-story-idea=\"updateIdeaStatus\" @archive-story-idea=\"archiveIdea\" _v-5c0d9b56=\"\">\n          </storyideas-pod>\n        </div>\n        <div v-else=\"\" _v-5c0d9b56=\"\">\n          <p _v-5c0d9b56=\"\">No completed story ideas in this category.</p>\n        </div>\n      </div>\n      <div :id=\"'past-' + slugify(storyIdeaType)\" class=\"tab-pane fade\" _v-5c0d9b56=\"\">\n        <div v-if=\"paginatedPastStories.length > 0\" class=\"panel-group\" _v-5c0d9b56=\"\">\n          <storyideas-pod v-for=\"(index, idea) in paginatedPastStories\" :role=\"role\" :storyidea=\"idea\" :index=\"index\" panel-type=\"past\" @update-story-idea=\"updateIdeaStatus\" @archive-story-idea=\"archiveIdea\" _v-5c0d9b56=\"\">\n          </storyideas-pod>\n        </div>\n        <div v-else=\"\" _v-5c0d9b56=\"\">\n          <p _v-5c0d9b56=\"\">No past-due story ideas in this category.</p>\n        </div>\n      </div>\n    </div>\n  </div>\n  <!--<div class=\"panel-footer\">\n    <ul class=\"pagination\">\n      <li :class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\">\n        <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\">Previous</a>\n      </li>\n      <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber + 1) == currentPage}\" class=\"page-item\">\n        <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber + 1)\">{{ pageNumber + 1 }} <span v-if=\"(pageNumber + 1) == currentPage\" class=\"sr-only\">(current)</span></a>\n      </li>\n      <li :class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\">\n        <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\">Next</a>\n      </li>\n    </ul>\n  </div>-->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"panel panel-default\" _v-5c0d9b56=\"\">\n    <div class=\"panel-heading\" _v-5c0d9b56=\"\">\n        <h3 class=\"panel-title\" _v-5c0d9b56=\"\">{{ storyIdeaType }}</h3>\n    </div>\n    <div class=\"panel-body\" _v-5c0d9b56=\"\">\n        <ul class=\"ideapanel-nav-tabs nav nav-tabs\" _v-5c0d9b56=\"\">\n            <li role=\"presentation\" class=\"active\" _v-5c0d9b56=\"\"><a data-toggle=\"tab\" :href=\"'#future-' + slugify(storyIdeaType)\" _v-5c0d9b56=\"\">Future\n                ({{ paginatedFutureStories ? paginatedFutureStories.length : '0' }})</a></li>\n            <li role=\"presentation\" _v-5c0d9b56=\"\"><a data-toggle=\"tab\" :href=\"'#completed-' + slugify(storyIdeaType)\" _v-5c0d9b56=\"\">Completed\n                ({{ paginatedCompletedStories ? paginatedCompletedStories.length : '0' }})</a></li>\n            <li role=\"presentation\" _v-5c0d9b56=\"\"><a data-toggle=\"tab\" :href=\"'#past-' + slugify(storyIdeaType)\" _v-5c0d9b56=\"\">Past Due ({{\n                paginatedPastStories ? paginatedPastStories.length : '0' }})</a></li>\n        </ul>\n        <div class=\"tab-content\" _v-5c0d9b56=\"\">\n            <div :id=\"'future-' + slugify(storyIdeaType)\" class=\"tab-pane active in fade\" _v-5c0d9b56=\"\">\n                <div v-if=\"paginatedFutureStories.length > 0\" class=\"panel-group\" _v-5c0d9b56=\"\">\n                    <storyideas-pod v-for=\"(index, idea) in paginatedFutureStories\" :role=\"role\" :storyidea=\"idea\" :index=\"index\" panel-type=\"future\" @update-story-idea=\"toggleIdeaStatus\" @archive-story-idea=\"archiveIdea\" _v-5c0d9b56=\"\">\n                    </storyideas-pod>\n                </div>\n                <div v-else=\"\" _v-5c0d9b56=\"\">\n                    <p _v-5c0d9b56=\"\">No future story ideas in this category.</p>\n                </div>\n            </div>\n            <div :id=\"'completed-' + slugify(storyIdeaType)\" class=\"tab-pane fade\" _v-5c0d9b56=\"\">\n                <div v-if=\"paginatedCompletedStories.length > 0\" class=\"panel-group\" _v-5c0d9b56=\"\">\n                    <storyideas-pod v-for=\"(index, idea) in paginatedCompletedStories\" :role=\"role\" :storyidea=\"idea\" :index=\"index\" panel-type=\"completed\" @update-story-idea=\"toggleIdeaStatus\" @archive-story-idea=\"archiveIdea\" _v-5c0d9b56=\"\">\n                    </storyideas-pod>\n                </div>\n                <div v-else=\"\" _v-5c0d9b56=\"\">\n                    <p _v-5c0d9b56=\"\">No completed story ideas in this category.</p>\n                </div>\n            </div>\n            <div :id=\"'past-' + slugify(storyIdeaType)\" class=\"tab-pane fade\" _v-5c0d9b56=\"\">\n                <div v-if=\"paginatedPastStories.length > 0\" class=\"panel-group\" _v-5c0d9b56=\"\">\n                    <storyideas-pod v-for=\"(index, idea) in paginatedPastStories\" :role=\"role\" :storyidea=\"idea\" :index=\"index\" panel-type=\"past\" @update-story-idea=\"toggleIdeaStatus\" @archive-story-idea=\"archiveIdea\" _v-5c0d9b56=\"\">\n                    </storyideas-pod>\n                </div>\n                <div v-else=\"\" _v-5c0d9b56=\"\">\n                    <p _v-5c0d9b56=\"\">No past-due story ideas in this category.</p>\n                </div>\n            </div>\n        </div>\n    </div>\n    <!--<div class=\"panel-footer\">\n      <ul class=\"pagination\">\n        <li :class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\">\n          <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\">Previous</a>\n        </li>\n        <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber + 1) == currentPage}\" class=\"page-item\">\n          <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber + 1)\">{{ pageNumber + 1 }} <span v-if=\"(pageNumber + 1) == currentPage\" class=\"sr-only\">(current)</span></a>\n        </li>\n        <li :class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\">\n          <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\">Next</a>\n        </li>\n      </ul>\n    </div>-->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.ideapanel-nav-tabs[_v-5c0d9b56]{\n  margin-bottom: 10px !important;\n}\n.panel-body[_v-5c0d9b56]{\n  height:420px;\n  overflow-y:scroll;\n}\n.nav-tabs > li.active > a[_v-5c0d9b56], .nav-tabs > li.active > a[_v-5c0d9b56]:hover, .nav-tabs > li.active > a[_v-5c0d9b56]:focus{\n  color:#72afd2 !important;\n}\n"] = false
+    __vueify_insert__.cache["\n.ideapanel-nav-tabs[_v-5c0d9b56] {\n    margin-bottom: 10px !important;\n}\n\n.panel-body[_v-5c0d9b56] {\n    height: 420px;\n    overflow-y: scroll;\n}\n\n.nav-tabs > li.active > a[_v-5c0d9b56], .nav-tabs > li.active > a[_v-5c0d9b56]:hover, .nav-tabs > li.active > a[_v-5c0d9b56]:focus {\n    color: #72afd2 !important;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

@@ -124,25 +124,6 @@ class StoryIdeasController extends ApiController
             ->respondWithError('Bad Request.');
     }
 
-    public function toggleComplete(Request $request, $id)
-    {
-        $idea = StoryIdea::findOrFail($id);
-
-        $idea->is_completed == 0 ? $isComplete = 1 : $isComplete = 0;
-
-        // Patch record with updated completion status
-
-        $idea->is_completed = $isComplete;
-
-        $idea->save();
-
-        $fractal = new Manager();
-        $resource = new Fractal\Resource\Item($idea, new FractalStoryIdeaTransformerModel);
-
-        return $this->setStatusCode(200)
-            ->respondUpdatedWithData('Updated story idea.', $fractal->createData($resource)->toArray());
-    }
-
     public function destroy($id)
     {
         $idea = StoryIdea::findOrFail($id);
