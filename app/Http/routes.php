@@ -54,6 +54,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], functi
 
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     /* STORY IDEAS */
+    Route::patch('storyideas/togglecomplete/{id}', 'Api\StoryIdeasController@toggleComplete');
     Route::resource('storyideas', 'Api\StoryIdeasController');
 
     /* MEDIA HIGHLIGHTS */

@@ -211,7 +211,7 @@ module.exports = {
     },
     updateIdeaStatus: function(idea){
         let self = this
-        this.$http.patch('/api/storyideas/' + idea.id , idea , {
+        this.$http.patch('/api/storyideas/togglecomplete/' + idea.id , idea , {
             method: 'PATCH'
         } )
         .then((response) => {
