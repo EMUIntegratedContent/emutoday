@@ -22,6 +22,7 @@ use Emutoday\Category;
 use Emutoday\Building;
 use Emutoday\Mediafile;
 use Emutoday\Mediatype;
+use Emutoday\User;
 
 use Carbon\Carbon;
 use Mail;
@@ -231,7 +232,14 @@ class EventController extends ApiController
         if($validation->passes())
         {
           cas()->authenticate(); //run authentication before calling cas->user
+
           $event = new Event;
+
+          // If the user's email is present in the User table, save the user's id in the cea_events.user_id field
+          $userInUserTable = User::where('email', cas()->user() . '@emich.edu')->first();
+          if($userInUserTable){
+            $event->user_id = $userInUserTable->id;
+          }
 
           // General & Location info
           $event->submitter             	= cas()->user();
@@ -313,6 +321,7 @@ class EventController extends ApiController
             $event->save();
             return $this->setStatusCode(201)
             ->respondSavedWithData($createMessage,[ 'record_id' => $event->id ]);
+
           }
         }
       }
@@ -344,14 +353,10 @@ class EventController extends ApiController
 
       public function addMediaFile(Request $request)
       {
-        // dd($request->all(), $request->hasFile('eventimg'), $request->file('eventimg'));
 
         $group = 'event';
         $type = 'small';
-        // $imgFile = $request->file('attachment');
-        // dd($imgFile);
         $event_id = $request->input('event_id');
-        // $imgFile = $request->file('attachment');
         $event = Event::findOrFail($event_id);
 
         if (empty(Input::file('eventimg'))) { // Just add/change caption to existing mediafile

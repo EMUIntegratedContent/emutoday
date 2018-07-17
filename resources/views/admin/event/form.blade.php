@@ -34,7 +34,7 @@
           authorid="{{$currentUser->id}}"
           recordexists="{{$event->exists ? true: false}}"
           recordid="{{$event->exists ? $event->id : null }}"
-          :isadmin="true"
+          :isadmin="{{ Auth::user()->can('admin') }}"
           >
           <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
         </event-form>

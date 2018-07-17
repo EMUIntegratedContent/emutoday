@@ -1,4 +1,3 @@
-@can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/announcement*') }}">
   <a href="#"><i class="fa fa-bullhorn"></i> <span>Announcements</span> <!-- <i class="fa fa-angle-left pull-right"></i> --></a>
   <ul class="treeview-menu">
@@ -18,7 +17,9 @@
         <li class="{{ set_active('admin/announcement/*/hr') }}"><a href="/admin/announcement/form/hr"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
       </ul>
     </li>
+    @can('admin', $currentUser)
     <li><a href="/admin/archive/queue/announcements"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
+    @endcan
 </ul>
 </li>
 <li class="treeview {{ set_active('admin/event*') }}">
@@ -28,7 +29,6 @@
     <li class="{{ set_active('admin/event*') }}"><a href="/admin/event/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>
   </ul>
 </li>
-@endcan
 @can('lbc_approve', $currentUser)
 <li><a href="/admin/lbcqueue"><i class="fa fa-university"></i> <span>LBC Approve</span></a></li>
 @endcan
