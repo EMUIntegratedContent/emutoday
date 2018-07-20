@@ -41,6 +41,7 @@ elixir(function(mix) {
                 'magazine-styles.css',
                 'experts-styles.css',
                 'media-queries.css',
+                'basebar-styles.css',
                 'tweeks.css'
                 ], 'public/css/public-styles.css');
 
