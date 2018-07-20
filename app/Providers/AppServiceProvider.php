@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
 
         // $this->app['view']->composer(['*'], Composers\AddCurrentUser::class);
 
-        if(env('APP_ENV') == 'dev') {
+        if(env('APP_ENV') == 'local' || env('APP_ENV') == 'dev') {
             Schema::defaultStringLength(191);
             DB::listen(function ($query) {
                 Log::info(
