@@ -14,7 +14,7 @@
           <div class="row">
             <div class="large-12 medium-12 small-12 column">
 
-              <ul class="accordion" data-accordion data-allow-all-closed="true">
+              <ul class="accordion" id="announcement-list" data-accordion data-allow-all-closed="true">
                 @foreach($announcements as $announcement)
                   <li class="{{$announcement->id == $id ? 'accordion-item is-active':'accordion-item' }}" id="accitem-{{$announcement->id}}" data-accordion-item>
                     <a href="#" class="accordion-title">{{$announcement->title}}</a>

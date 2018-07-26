@@ -44,7 +44,7 @@
       color: #333;
   }
   .newshub-tab-front ul li{
-      border-bottom: 1px dotted #ccc;
+      border-bottom: 1px dotted #a9a9a9;
   }
   .newshub-tab-front ul li:last-of-type{
       border-bottom: none;

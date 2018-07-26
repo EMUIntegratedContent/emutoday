@@ -1,39 +1,4 @@
 /*Base bar (footer) */
-#base-message-bar {
-    background-color: #9d9c9c;
-    width: 100%;
-    color: #333;
-}
-#base-message-bar a{
-    color: #333;
-}
-#base-message-bar p{
-    font-size: .9rem;
-    padding-top:.6rem;
-    margin-bottom: .6rem;
-}
-#base-bar {
-    background-color: #a9a9a9;
-    width: 100%;
-    color: #333;
-}
-#base-bar a{
-    color: #333;
-}
-#base-bar p, #base-bar h6{
-    font-size: .9rem;
-    padding:0;
-    margin:0;
-    line-height: 1.2rem;
-    color: #333;
-}
-#base-bar h6 {
-    font-weight: 500;
-}
-img.bottom-logo{
-    width: 100%;
-    padding: 1rem 0 .8rem 0;
-}
 #linking-lists{
     padding-top: 1rem;
 }
@@ -47,19 +12,101 @@ img.bottom-logo{
     margin: 0;
 }
 #social-links{
-    padding-top: 1rem;
+    padding: 1rem 0rem;
 }
-#final-bar {
-    padding-bottom: 2rem;
+ul.social-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 -.5rem 0;
+    text-align: center;
 }
-#base-message-bar #feedback-email {
-    float: left;
+ul.social-icons li{
+    padding:0;
+    display: inline-block;
+    margin: 0 .2rem;
+    height: 40px;
+    width: 40px;
 }
-#base-message-bar #today-login {
-    /* the admin login element */
-    float: right;
-    color: #888;
+ul.social-icons li img{
+    padding:0;
+    margin: 0;
+    float: none;
 }
-#base-message-bar #today-login:hover {
-    color: skyblue;
+ul.social-icons li a{
+    display: block;
+    height:100%;
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+ul.social-icons li a.facebook{
+    background-image: url("/assets/imgs/icons/2018-social-icons/facebook-lg.png");
+    background-position: center, center;
+    background-size: cover;
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+ul.social-icons li a.twitter{
+    background-image: url("/assets/imgs/icons/2018-social-icons/twitter-lg.png");
+    background-position: center, center;
+    background-size: cover;
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+ul.social-icons li a{
+    background-position: center, center;
+    background-size: cover;
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+ul.social-icons li a.youtube{
+    background-image: url("/assets/imgs/icons/2018-social-icons/youtube-lg.png");
+}
+ul.social-icons li a.instagram{
+    background-image: url("/assets/imgs/icons/2018-social-icons/instagram-lg.png");
+}
+ul.social-icons li a.linkedin{
+    background-image: url("/assets/imgs/icons/2018-social-icons/linkedin-lg.png");
+}
+ul.social-icons li a.blogemu{
+    background-image: url("/assets/imgs/icons/2018-social-icons/blogemu-lg.png");
+}
+ul.social-icons li a.facebook:hover, ul.social-icons li a.twitter:hover, ul.social-icons li a.youtube:hover, ul.social-icons li a.instagram:hover, ul.social-icons li a.linkedin:hover, ul.social-icons li a.blogemu:hover{
+    -moz-filter: grayscale(0%);
+    filter: grayscale(0%);
+}
+.lightgrey-section{
+    background-color: #797979;
+    text-align: center;
+    color: #ffffff;
+}
+.lightgrey-section .subscribe-container{
+    margin: .5rem 0rem -.5rem 0rem;
+}
+.lightgrey-section ul{
+    list-style-type: none;
+}
+.lightgrey-section li{
+    display: inline-block;
+}
+.lightgrey-section li:not(:last-child):after{
+    content: " | ";
+    padding: .5rem;
+}
+.lightgrey-section a{
+    color:#ffffff;
+}
+.mediumgrey-section{
+    background-color: #525252;
+}
+.dkgrey-section{
+    background-color: #343434;
+    color: #ffffff;
+    text-align: center;
+}
+.dkgrey-section a{
+    color: #ffffff;
+}
+
+.base-data{
+    padding: 2rem;
 }

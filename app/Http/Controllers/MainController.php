@@ -194,6 +194,14 @@ class MainController extends Controller
 
         $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
 
+        $featuredevents =  Event::where([
+          ['is_approved', 1],
+          ['mediafile_id', '>', 0],
+          ['end_date', '>=', date('Y-m-d')]
+        ])
+          ->orderBy('start_date', 'asc')
+          ->take(5)->get();
+
         JavaScript::put([
           'jsis' => 'hi',
           'cdnow' => Carbon::now(),
@@ -202,7 +210,7 @@ class MainController extends Controller
           'currentPage' => $page
         ]);
 
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements', 'featuredevents'));
 
       }
 

@@ -65,18 +65,18 @@
                             </search-form-offcanvas>
                         </div><!-- /#vue-event-form-offcanvas -->
                     </li>
-                    <li><a href="/hub">Today</a></li>
-                    <li><a href="/calendar">Calendar</a></li>
-                    <li><a href="/announcement">Announcements</a></li>
-                    <li><a href="/story/news">News</a></li>
-                    <li><a href="http://www.wemu.org">WEMU</a></li>
-                    <li><a href="http://www.emueagles.com/">Athletics</a></li>
+                    <li><a title="EMU Today homepage." href="/hub">Today</a></li>
+                    <li><a title="EMU Today events calendar." href="/calendar">Calendar</a></li>
+                    <li><a title="EMU Today campus announcements." href="/announcement">Announcements</a></li>
+                    <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a></li>
+                    <li><a title="Eastern Magazine's homepage" href="/magazine">Eastern Magazine</a></li>
+                    <li><a title="Eastern Experts are availble for interviews and speaking engagements." href="{{ url('/experts') }}">Eastern Experts</a></li>
+                    <li><a title="External link to WEMU." href="http://www.wemu.org" target="_blank">WEMU</a></li>
+                    <li><a title="External link to the EMU athletics page." href="http://www.emueagles.com/" target="_blank">Athletics</a></li>
                 </ul>
                 <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
-                    <li><a href="/forthemedia">For the Media</a></li>
-                    <li><a href="/magazine">Eastern Magazine</a></li>
-                    <li><a href="/calendar/event/form">Submit an Event</a></li>
-                    <li><a href="/announcement/form">Submit an Announcement</a></li>
+                    <li><a title="Submit a campus event." href="/calendar/event/form">Submit an Event</a></li>
+                    <li><a title="Submit an announcement." href="/announcement/form">Submit an Announcement</a></li>
                 </ul>
             @show
         </div> <!-- off-canvas position-right -->
@@ -89,7 +89,7 @@
                         <div id="transparent-bar">
                             <div id="tier1-nav" class="row">
                                 <div class="large-9 medium-9 small-8 columns">
-                                    <a href="https://www.emich.edu"><img class="full-logo"
+                                    <a title="Eastern Michigan University homepage." href="https://www.emich.edu"><img class="full-logo"
                                                                          alt="Eastern Michigan University"
                                                                          src="/assets/imgs/home/block-e-box-inline-green-black.png"></a>
 
@@ -112,10 +112,10 @@
                         <div id="tier2-nav">
                             <div class="row">
                                 <div class="large-8 medium-6 small-12 columns">
-                                    <h1><a href="/hub"><span class="first-word">EMU</span> Today</a></h1>
+                                    <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
                                 </div><!-- large-9 -->
                                 <div class="large-4 medium-6 columns hide-for-small-only text text-right">
-                                    <a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="#">Submit an Announcement</a>
+                                    <span class="smaller"><a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="#">Submit an Announcement</a></span>
                                 </div><!-- large-3 -->
                             </div><!-- row -->
                         </div><!--tier1-nav -->
@@ -123,14 +123,14 @@
                             <nav id="tier3-nav" class="row">
                                 <div class="large-12 medium-12 columns hide-for-small-only">
                                     <ul id="tier3-nav-main">
-                                        <li><a class="{{ set_active('hub')}}" href="{{ url('/calendar') }}"><i class="fa fa-play"></i> Today</a></li>
-                                        <li><a class="{{ set_active('calendar')}}" href="{{ url('/calendar') }}"><i class="fa fa-play"></i> Calendar</a></li>
-                                        <li><a class="{{ set_active('announcement')}}" href="{{ url('/announcement') }}"><i class="fa fa-play"></i> Announcements</a></li>
-                                        <li><a class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}"><i class="fa fa-play"></i> News</a></li>
-                                        <li><a href="{{ url('/magazine') }}">Eastern Magazine</a></li>
-                                        <li><a class="{{ set_active('experts')}}" href="{{ url('/experts') }}"><i class="fa fa-play"></i> Eastern Experts</a></li>
-                                        <li><a href="http://wemu.org">WEMU</a></li>
-                                        <li><a href="http://emueagles.com">Athletics</a></li>
+                                        <li><a title="EMU Today homepage." class="{{ set_active('hub')}}" href="{{ url('/') }}"><i class="fa fa-play"></i> Today</a></li>
+                                        <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}" href="{{ url('/calendar') }}"><i class="fa fa-play"></i> Calendar</a></li>
+                                        <li><a title="EMU Today campus announcements." class="{{ set_active('announcement')}}" href="{{ url('/announcement') }}"><i class="fa fa-play"></i> Announcements</a></li>
+                                        <li><a title="EMU Today campus news, press releases, and official statements." class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}"><i class="fa fa-play"></i> News</a></li>
+                                        <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern Magazine</a></li>
+                                        <li><a title="Eastern Experts are availble for interviews and speaking engagements." class="{{ set_active('experts')}}" href="{{ url('/experts') }}"><i class="fa fa-play"></i> Eastern Experts</a></li>
+                                        <li><a title="External link to WEMU." href="http://wemu.org" target="_blank">WEMU</a></li>
+                                        <li><a title="External link to EMU athletics site." href="http://emueagles.com" target="_blank">Athletics</a></li>
                                     </ul>
                                 </div>
                             </nav>

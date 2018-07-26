@@ -13,7 +13,7 @@ Tags: Gulp, Laravel
 /****** General Styles *********/
 
 html, body {
-  background-color: #a9a9a9;
+  background-color: #343434;
 }
 .wordbreak {
   word-break: break-all;
@@ -51,6 +51,9 @@ color: #0f654a;
     color: #666;
     text-transform:uppercase;
 }
+.smaller{
+    font-size: 0.9rem;
+}
 .smaller-title {
     font-size: 60%;
     color: #666;
@@ -87,6 +90,11 @@ a:hover.emu-button{
 a.allcaps {
     text-transform: uppercase;
 }
+a.bold-green-link{
+    text-transform: uppercase;
+    color:#036937;
+    font-weight: bolder;
+}
 /*Headings*/
 h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
@@ -112,28 +120,23 @@ h6{
 h2.mediahighlight-date{
   font-size: 1.3rem;
 }
-ul.social-icons {
-    list-style: none;
-    float:right;
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
     padding: 0;
-    margin: 0;
+    position: absolute;
+    width: 1px;
 }
-ul.social-icons li{
-    padding:0;
-    margin: 0 0 0 .1rem;
-    display: inline-block;
-}
-ul.social-icons li img{
-    padding:0;
-    margin: 0;
-    float: none;
-}
+
 #content-area{
     position: relative;
     padding: 0;
     margin: 0;
     width: 100%;
-    background-color: #fff;
+    background-color: #f2f2f2;
 }
 #connection-bar {
     width: 100%;
@@ -186,7 +189,8 @@ ul.social-icons li img{
 }
 /****** #tier2-nav *********/
 #tier2-nav {
-    color: #fff;
+    padding-top:.5rem;
+    color: #000000;
     z-index: 1000;
     border-bottom: 1px solid #e5e5e5;
 }
@@ -307,6 +311,7 @@ ul.social-icons li img{
     width: 100%;
     z-index: 10;
     padding: 1.3rem 0 1rem 0;
+    background-color: #ffffff;
 }
 #news-bar img{
     width: 100%;
@@ -318,10 +323,13 @@ ul.social-icons li img{
 #featured-text a.button {
     margin: 0;
     padding: .5rem 1rem;
-    background-color: #1e9744;
+    background-color: transparent;
+    color: #0f654a;
     text-transform: uppercase;
     font-size:.9rem;
     text-decoration: none;
+    border: 1px solid #0f654a;
+    font-weight: bolder;
 }
 #featured-text a:hover.button {
     background-color: #0f654a;
@@ -355,27 +363,25 @@ ul.social-icons li img{
     z-index: 10;
     padding: .8rem 0;
 }
+#four-stories-container{
+    padding-bottom: 10px;
+    border-bottom: 4px groove #a9a9a9;
+}
 #four-stories-bar  img.topic-image{
     width: 100%;
 }
 #four-stories-bar h5{
     text-transform: uppercase;
 }
-#four-stories-bar  p.button-group{
-    text-align:center;
+#four-stories-bar  p.link-group{
     padding-top: .5rem;
 }
-#four-stories-bar a.button {
-    margin: 0;
-    padding: .5rem 1rem;
-    background-color: #1e9744;
-    text-transform: uppercase;
-    font-size:.9rem;
+#four-stories-bar p.link-group a{}
+#four-stories-bar p.link-group a i.fa{
+    color: #c9f320;
     text-decoration: none;
-}
-#four-stories-bar a:hover.button {
-    background-color: #0f654a;
-      text-decoration: none;
+    margin-left: .2rem;
+    font-size: 1.1rem;
 }
 img.news-icon{
     padding: 0;
@@ -409,6 +415,32 @@ img.news-icon{
     z-index: 10;
     padding: .8rem 0;
 }
+#news-headline-bar .card-section{
+    margin: 0;
+    padding: 1rem .8rem .8rem;
+    background-color: #fff;
+}
+
+#news-headline-bar .card-section h6{
+    padding-bottom: 3px;
+    border-bottom: 1px solid #a9a9a9;
+}
+
+#news-headline-bar .calendar-text-content h6{
+    border-bottom: none !important;
+}
+
+#news-headline-bar .card-section i.fa{
+    color: #c9f320;
+    text-decoration: none;
+    margin-left: .2rem;
+    font-size: 1.1rem;
+}
+
+#news-headline-bar-middle, #news-headline-bar-bottom{
+    margin-top:1.5rem;
+}
+
 #newshub-headlines-front{}
 
 /*feature boxes*/
@@ -458,13 +490,13 @@ ul.feature-list{
 }
 ul.feature-list li{
     border-bottom: 1px dotted #ccc;
-    line-height: 1.2rem;
+    line-height: 2.2rem;
 }
 ul.feature-list li:last-of-type{
     border-bottom: none;
 }
 ul.feature-list li a{
-    display: block;
+    display: inline !important;
     padding: .4rem 0;
     color: #333;
 }
@@ -479,6 +511,9 @@ ul.feature-list li a:hover{
     background-color: none;
     position: relative;
     margin: 0rem 0 0 0;
+}
+#calendar-bar{
+    background-color: #ffffff;
 }
 h6.calendar-block{
     color:#0f654a;
@@ -532,9 +567,13 @@ ul.twitter-content li{
     color: #333;
     line-height: 1.4rem;
 }
+ul.twitter-content li a{
+    display: inline !important;
+    color: #0d5740 !important;
+    font-weight: bolder;
+}
 ul.twitter-content li:hover{
     text-decoration: none;
-    background-color: #f8f8f8;
 }
 .twitterlink p{
     display: inline;
@@ -613,6 +652,10 @@ ul.calendar-event-group a{
 
 ul.accordion li{
     border-top: 1px dotted #ccc;
+}
+
+#announcement-list{
+    background-color: transparent !important;
 }
 .accordion li:first-of-type {
     border-top: 1px none #ccc;
