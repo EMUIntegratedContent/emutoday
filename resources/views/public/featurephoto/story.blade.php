@@ -36,49 +36,62 @@
   <div id="news-story-bar">
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
-        <!-- Story Page Title group -->
-        <div id="title-grouping" class="row">
-          <div class="large-5 medium-4 small-6 columns"></div>
-          <div class="large-2 medium-4 small-6 columns">
-            <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
+        @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $story->start_date) < Carbon\Carbon::now())
+          <!-- Story Page Title group -->
+          <div id="title-grouping" class="row">
+            <div class="small-12 columns">
+              <h3>Featured Photo: {{ $story->title }}</h3>
+              <h5>{{ $story->subtitle }}</h5>
+            </div>
           </div>
-          <div class="large-5 medium-4 hide-for-small columns">
-            <p class="small-return-news"><a href="/story/news">News Home</a></p>
-          </div>
-        </div>
-        <!-- Story Page Content -->
-        <div id="story-content" class="row">
-          <!-- Story Content Column -->
-          <div class="large-9 medium-8 small-12 columns">
-            <h3>Featured Photo: {{ $story->title }}</h3>
-            @include('public.vendor.addthis')
-          @if(isset($mainStoryImage))
-            <div id="big-feature-image">
-              <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
+          <!-- Story Page Content -->
+          <div id="story-content" class="row">
+            <!-- Story Content Column -->
+            <div class="large-10 large-push-2 medium-9 medium-push-3 small-12 columns">
+            @if(isset($mainStoryImage))
+              <div id="big-feature-image">
+                <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
 
-              <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
-            </div>
-          @endif
-            <div id="story-content-edit">
-              {!! $story->content !!}
-            </div>
-            <p class="news-contacts">Photo {{ $story->photo_credit }}</p>
-          </div>
-          <!-- Page Side Bar Column -->
-          <div class="large-3 medium-4 small-12 columns featurepadding">
-            @include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
-            @if(isset($sideStudentBlurbs))
-                @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
+                <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
+              </div>
             @endif
-        </div>
-
-
-        </div>
+              <div id="story-content-edit">
+                {!! $story->content !!}
+              </div>
+            </div>
+            <!-- Page Side Bar Column -->
+            <div class="large-2 large-pull-10 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
+              <div class="dots-bottom">
+                @include('public.vendor.addthis')
+                <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
+              </div>
+              <div class="dots-bottom">
+                <p>
+                  Photo {{ $story->photo_credit }}
+                </p>
+              </div>
+              {{--
+              @include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
+              @if(isset($sideStudentBlurbs))
+                  @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
+              @endif
+              --}}
+            </div>
+          </div>
+        @else
+          <p>The resource you are looking for is not available.</p>
+        @endif
       </div>
-
     </div>
   </div>
-
+  <div id="more-stories-bar">
+      @include('public.components.sideblock', ['storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
+      {{--
+      @if(isset($sideStudentBlurbs))
+          @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
+      @endif
+      --}}
+  </div>s
 @endsection
     @section('footer-vendor')
         @parent

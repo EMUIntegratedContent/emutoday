@@ -15,6 +15,8 @@
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
+              <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY "NEEDED" AGAIN -->
+              <!--
               <template v-if="pid == 'items-live' || pid == 'items-approved'">
                 <div class="form-check">
                   <label class="form-check-label">
@@ -26,7 +28,7 @@
               <template v-if="pid != 'item-elevated'">
                 <div id="applabel" class="form-group">
                   <label> approved:</label>
-                </div><!-- /.form-group -->
+                </div>
                 <div class="form-group">
                   <vui-flip-switch id="switch-{{item.id}}"
                   v-on:click.prevent="changeIsApproved"
@@ -34,6 +36,16 @@
                   </vui-flip-switch>
                 </div>
               </template>
+              -->
+              <div id="applabel" class="form-group">
+                <label> approved:</label>
+              </div>
+              <div class="form-group">
+                <vui-flip-switch id="switch-{{item.id}}"
+                v-on:click.prevent="changeIsApproved"
+                :value.sync="patchRecord.is_approved" >
+                </vui-flip-switch>
+              </div>
               <button v-show="pid == 'item-elevated'" type="button" class="btn btn-sm btn-danger pull-right remove-event-btn" @click="emitEventDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
           </form>
         </div><!-- /.col-sm-6 -->

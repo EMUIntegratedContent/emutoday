@@ -95,7 +95,7 @@ class StoryController extends Controller
               ['start_date', '<=', $currentDate],
               ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query){
                   $query->where('image_type', '=', 'small');
-              })->limit(3)->get();
+              })->limit(5)->get();
               $sideStoryBlurbs = collect();
               foreach ($sideFeaturedStorys as $sideFeaturedStory) {
                       if ($sideFeaturedStory->storyImages()->where('image_type', 'small')->first()){ // redundant if

@@ -29,6 +29,7 @@ ul.news-headlines a:hover{
     width: 100%;
     z-index: 10;
     padding: .8rem 0 0 0;
+    background-color: #ffffff;
 }
 p.story-publish-date a, p.small-return-news a{
     font-size: .9rem;
@@ -40,6 +41,9 @@ p.small-return-news {
 }
 #news-story-bar #title-grouping {
     border: none;
+    border-bottom:1px solid #e5e5e5;
+    padding-bottom:.5rem;
+    margin-bottom:.5rem;
 }
 #story-content p{
     font-size: 1rem;
@@ -84,6 +88,27 @@ p.small-return-news {
     padding: 0;
     float: none;
 }
+#more-stories-bar{
+  padding: 2rem 0;
+}
+#more-stories-bar h6{
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+#more-stories-bar .card-section{
+  margin: 0;
+  padding: 1rem .8rem .8rem;
+  background-color: #fff;
+  position: relative;
+}
+
+#more-stories-bar .card-section p.link-group{
+  position: absolute;
+  bottom: -.5rem;
+}
+.more-story-caption{
+}
+
 /*Calendar Page*/
 #calendar-bar{
     height: auto;
@@ -194,16 +219,14 @@ p.small-return-news {
 #profiles-list h5{
     text-transform: uppercase;
 }
-/*#profiles-list  p{
-    font-size: .9rem;
-    line-height: 1.2rem;
-    padding: 0;
-    margin: 0;
-}*/
-/*#profiles-list .profile-text-content p {
-    text-decoration: none;
-    color: #333;
-}*/
+#story-sidebar{
+
+}
+.dots-bottom{
+  border-bottom: 1px dotted #e5e5e5;
+  padding: .7rem 1rem 0 1.0rem;
+}
+
 #profiles-list h6{
     padding: 0;
     margin: .8rem 0 .2rem 0;

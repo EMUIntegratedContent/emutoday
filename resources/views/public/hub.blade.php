@@ -12,10 +12,10 @@
         @if($page)
             <div id="news-bar">
                 <div class="row">
-                    <div class="large-7 medium-12 small-12 columns">
+                    <div class="large-8 medium-12 small-12 columns">
                         <img src="/imagecache/original/{{$heroImg->filename}}" alt="featured image">
                     </div>
-                    <div id="featured-text" class="large-5 medium-12 small-12 columns">
+                    <div id="featured-text" class="large-4 medium-12 small-12 columns">
                         <h3>{{$heroImg->title}}</h3>
                         <p>{!! $heroImg->teaser !!}</p>
                         @if($heroImg->story->tags()->first() && $heroImg->link)
@@ -289,7 +289,7 @@
                         <h6><a title="EMU campus events calendar." href="{{ url('/calendar') }}" class="bold-green-link">Events Calendar</a> <i class="fa fa-arrow-right"></i></h6>
                         @unless(empty($featuredevents[0]))
                             <div id="five-events-bar">
-                                <div class="row large-up-5 medium-up-3 show-for-medium" data-equalizer>
+                                <div class="row large-up-4 medium-up-3 show-for-medium" data-equalizer>
                                     @each('public.featuredeventhub', $featuredevents, 'fevent')
                                 </div><!-- row event block grid end -->
                             </div> <!--end of five events bar-->

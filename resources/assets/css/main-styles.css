@@ -377,7 +377,7 @@ h2.mediahighlight-date{
     padding-top: .5rem;
 }
 #four-stories-bar p.link-group a{}
-#four-stories-bar p.link-group a i.fa{
+p.link-group a i.fa{
     color: #c9f320;
     text-decoration: none;
     margin-left: .2rem;

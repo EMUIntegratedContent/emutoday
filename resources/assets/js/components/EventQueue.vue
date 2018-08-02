@@ -53,6 +53,8 @@
 <div class="col-md-4">
   <div id="items-live">
     <!-- ELEVATED ANNOUNCEMENTS -->
+    <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY "NEEDED" AGAIN -->
+    <!--
     <template v-if="canElevate">
       <h3><span class="badge">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated</h3>
       <p>To rearrange the order of events, drag the pod to the desired location. To demote an event, click the red 'X' on the pod. Click "save order" button when done. Note: this list is NOT filtered by date.</p>
@@ -86,7 +88,7 @@
         <p>There are no elevated announcements.</p>
       </template>
     </template>
-    <hr /> <!-- End elevated announcements -->
+    <hr /> --><!-- End elevated announcements -->
     <h3><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live Events</h3>
     <event-queue-item
     pid="items-live"
