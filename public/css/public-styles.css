@@ -5597,6 +5597,7 @@ Tags: Gulp, Laravel
 @import url(http://fonts.googleapis.com/css?family=PT+Serif);*/
 
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
 /****** General Styles *********/
 
 html, body {
@@ -5682,9 +5683,13 @@ a.bold-green-link{
     color:#036937;
     font-weight: bolder;
 }
+a.readmore{
+  font-family: 'Poppins', sans-serif;
+}
 /*Headings*/
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
 }
 h1{
     font-size: 2.1rem;
