@@ -50,7 +50,7 @@
             <div class="large-10 large-push-2 medium-9 medium-push-3 small-12 columns">
             @if(isset($mainStoryImage))
               <div id="big-feature-image">
-                <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
+                <img src="{{ $mainStoryImage->present()->mainImageURL }}" alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $mainStoryImage->title) }}"></a>
 
                 <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
               </div>

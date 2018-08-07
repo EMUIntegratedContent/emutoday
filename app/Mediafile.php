@@ -24,7 +24,9 @@ class Mediafile extends Model
 
                             'note',
                             'is_active',
-                            'mediatype_id'
+                            'mediatype_id',
+
+                            'alt_text'
 
     ];
     public function delete()

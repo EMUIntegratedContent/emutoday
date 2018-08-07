@@ -13,7 +13,7 @@
             <div id="news-bar">
                 <div class="row">
                     <div class="large-8 medium-12 small-12 columns">
-                        <img src="/imagecache/original/{{$heroImg->filename}}" alt="featured image">
+                        <img src="/imagecache/original/{{$heroImg->filename}}" alt="{{ $heroImg->alt_text != '' ? $heroImg->alt_text : str_replace('"', "", $heroImg->title) }}">
                     </div>
                     <div id="featured-text" class="large-4 medium-12 small-12 columns">
                         <h3>{{$heroImg->title}}</h3>
@@ -59,7 +59,7 @@
                     @for ($i = 1; $i <= count($barImgs); $i++)
                         <div class="column four-stories-block">
                             <img class="topic-image" src="/imagecache/original/{{$barImgs[$i]->filename}}"
-                                 alt="story image">
+                                 alt="{{ $barImgs[$i]->alt_text != '' ? $barImgs[$i]->alt_text : str_replace('"', "", $barImgs[$i]->caption) }}">
                             <div class="stories-content">
                                 <div class="stories-text-content" data-equalizer-watch>
                                     <p>{{$barImgs[$i]->caption}}</p>
@@ -232,7 +232,7 @@
                 <div class="card small-12 medium-3 large-3 columns" data-equalizer-watch>
                     @if(isset($currentStoryImageWithVideoTag))
                         <a class="popup-youtube" href="{{$currentStoryImageWithVideoTag->link}}">
-                            <img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}" alt="featured video" style="display: block;" />
+                            <img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}" alt="{{ $currentStoryImageWithVideoTag->alt_text != '' ? $currentStoryImageWithVideoTag->alt_text : 'featured video' }}" style="display: block;" />
                         </a>
                     @else
                         <a class="popup-youtube" href="https://www.youtube.com/user/emichigan08" target="blank"><img src="/assets/imgs/placeholder/external_video.jpg" alt="featured video" ></a>

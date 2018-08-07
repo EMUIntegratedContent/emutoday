@@ -31,6 +31,15 @@
                 <h5>{{ $story->subtitle }}</h5>
             @endif
           @endif
+          <!-- Full banner image area (displays only if it exists for this story) -->
+          @if($fullBannerImage)
+          <div class="small-12 columns">
+              <div id="full-banner-image">
+                <img src="{{$fullBannerImage->present()->mainImageURL }}" alt="{{ $fullBannerImage->alt_text != '' ? $fullBannerImage->alt_text : str_replace('"', "", $story->title) }}"></a>
+                <div class="feature-image-caption">{{ $fullBannerImage->teaser }}</div>
+              </div>
+          </div>
+          @endif
         </div>
         <!-- Story Page Content -->
         <div id="story-content" class="row">
@@ -41,9 +50,9 @@
                     ]) !!}
           <!-- Story Content Column -->
           <div class="large-10 large-push-2 medium-9 medium-push-3 small-12 columns">
-            @if(isset($mainStoryImage))
+            @if(isset($mainStoryImage) && !isset($fullBannerImage))
             <div id="big-feature-image">
-              <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
+              <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}"></a>
 
               <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
             </div>

@@ -63,6 +63,7 @@ class PreviewController extends Controller
           {
           $mainStoryImage = null;
           $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
+          $fullBannerImage = $story->storyImages()->where('image_type','full')->first(); // Added to EMU Today August 2018
 
           foreach($mainStoryImages as $mainimg){
               if($mainimg->imgtype->type == 'story') {
@@ -86,7 +87,7 @@ class PreviewController extends Controller
           if($stype == 'story' || $stype == 'emutoday' || $stype == 'news' || $stype == 'advisory' || $stype == 'statement' || $stype == 'featurephoto'){
               $sideStoryBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
 
-              return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));
+              return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo', 'fullBannerImage'));
 
           } else if($stype == 'student'){
               $sideStudentBlurbs->push($story->storyImages()->where('image_type', 'small')->first());

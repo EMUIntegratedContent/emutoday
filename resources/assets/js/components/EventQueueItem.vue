@@ -76,6 +76,7 @@
             <form id="form-mediafile-upload{{item.id}}" @submit.prevent="addMediaFile" class="mediaform m-t" role="form" action="/api/event/addMediaFile/{{item.id}}"  enctype="multipart/form-data" files="true">
               <input name="eventid" class="hidden" type="input" value="{{item.id}}" v-model="formInputs.event_id" />
               <input type="text" class="hidden" name="caption" id="caption" v-model="formInputs.caption" />
+              <input type="text" class="hidden" name="alt_text" id="alt_text" v-model="formInputs.alt_text" />
               <div class="fa fa-photo btn btn-info btn-sm block m-b file-upload">
                 <input v-el:eventimg type="file" @change="getFileName" class="file-input" name="eventimg" id="eventimg">
               </div>
@@ -90,6 +91,10 @@
           <div class="input-group caption" v-if="hasEventImage">
             <span class="input-group-addon caption">Caption: </span>
             <input class="form-control" type="text" v-model="formInputs.caption" />
+          </div>
+          <div class="input-group caption" v-if="hasEventImage">
+            <span class="input-group-addon caption">Alt text: </span>
+            <input class="form-control" type="text" v-model="formInputs.alt_text" />
           </div>
         </div><!-- /.panel mediaform -->
 
@@ -346,7 +351,8 @@ module.exports  = {
       formInputs: {
         event_id: '',
         attachment: '',
-        caption: ''
+        caption: '',
+        alt_text: '',
       },
       showBody: false,
       showPanel: false,
@@ -383,6 +389,7 @@ module.exports  = {
     this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;
     this.initRecord.eventimage = this.eventimage = this.patchRecord.eventimage = this.item.eventimage;
     this.formInputs.caption = this.caption = this.patchRecord.caption = this.item.caption;
+    this.formInputs.alt_text = this.alt_text = this.patchRecord.alt_text = this.item.alt_text;
   },
   computed: {
     addSeperator: function(){
@@ -594,6 +601,7 @@ module.exports  = {
       var data = new FormData();
       data.append('event_id', this.formInputs.event_id);
       data.append('caption', this.formInputs.caption);
+      data.append('alt_text', this.formInputs.alt_text);
 
       if(files[0]){
         data.append('eventimg', files[0]);

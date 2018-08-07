@@ -100,6 +100,7 @@ class StoryImageController extends Controller
     $storyImage->moretext = $request->get('moretext');
     $storyImage->link = $request->get('link');
     $storyImage->link_text = $request->get('link_text');
+    $storyImage->alt_text = $request->get('alt_text');
 
     //define the image paths
     $destinationFolder = '/imgs/story/';
@@ -130,7 +131,7 @@ class StoryImageController extends Controller
 
       $storyImage->filename = $imgFileName;
     }
-    
+
     $storyImage->save();
     $story = $storyImage->story;
     $stype = $story->story_type;
