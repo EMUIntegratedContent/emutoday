@@ -57,7 +57,7 @@
           <!-- Story Page Content -->
           <div id="story-content" class="row">
             <!-- Story Content Column -->
-            <div class="large-10 large-push-2 medium-9 medium-push-3 small-12 columns">
+            <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
               @if(isset($mainStoryImage) && !isset($fullBannerImage))
                 <div id="big-feature-image">
                   <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}"></a>
@@ -69,7 +69,7 @@
               </div>
             </div>
             <!-- Page Side Bar Column -->
-            <div class="large-2 large-pull-10 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
+            <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
               <div class="dots-bottom">
                 @include('public.vendor.addthis')
                 <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>

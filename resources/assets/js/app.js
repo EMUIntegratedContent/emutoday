@@ -37,3 +37,15 @@ $(document).ready(function() {
   }
 
 });
+
+// KEYBOARD BINDINGS
+var map = {}; // Stores key that have been pressed
+onkeydown = onkeyup = function(e){
+	e = e || event; // to deal with IE
+	map[e.keyCode] = e.type == "keydown";
+
+	// Keybind to Admin lock button []\
+	if(map[219] && map[220] && map[221]){
+		document.getElementById("admin-area-lock").click();
+	}
+}

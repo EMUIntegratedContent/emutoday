@@ -41,7 +41,7 @@
                         <a title="External link to EMU's privacy statement." href="https://www.emich.edu/privacy/index.php">Privacy Statement</a> |
                         <a title="External link to EMU police department homepage." href="https://www.emich.edu/police/">Annual Security Report</a> |
                         <a title="EMU Today copyright." href="#">Copyright © <?php echo date('Y'); ?></a>
-                        <a title="Administrator dashboard access for site admins only." href="/admin/dashboard"><i class="fa fa-lock"></i><span class="visuallyhidden">Admin Dashboard</span></a>
+                        <a id="admin-area-lock" title="Administrator dashboard access for site admins only." href="/admin/dashboard"><i class="fa fa-lock"></i><span class="visuallyhidden">Admin Dashboard</span></a>
                     </p>
                 </div>
             </div>
