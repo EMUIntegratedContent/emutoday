@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use Emutoday\Http\Requests;
 use Emutoday\Page;
+use Emutoday\Story;
 
 use Emutoday\Today\Transformers\FractalPageTransformer;
 use Emutoday\Today\Transformers\FractalPageChartTransformer;
+use Emutoday\Today\Transformers\FractalStoryTransformerModel;
 use League\Fractal\Manager;
 use League\Fractal;
 use Carbon\Carbon;
@@ -37,13 +39,38 @@ class PageController extends ApiController
             $page = Page::all();
 
             $resource = new Fractal\Resource\Collection($page->all(), new FractalPageTransformer);
-                // Turn all of that into a JSON string
-                return $fractal->createData($resource)->toJson();
-            // return $this->respond([
-            //     'data' => $this->storyTransformer->transformCollection($storys->all())
-            // ]);
+
+            return $fractal->createData($resource)->toJson();
     }
 
+    /**
+     * Get stories that can be used in a hub page (stories with emutoday_front and/or emutoday_small image types)
+     */
+    public function getHubReadyStories(Request $request, $fromDate = null, $toDate = null){
+        $criteria = array(
+            ['story_type','!=' ,'news'],
+            ['is_approved',1],
+            ['is_approved', 1],
+            ['is_ready', 1]
+        );
+
+        $stories = Story::orderBy('start_date', 'desc');
+
+        if($fromDate && !$toDate){
+            $criteria[] = ['start_date', '>=', $fromDate];
+        } elseif($fromDate && $toDate){
+            $criteria[] = ['start_date', '>=', $fromDate];
+            $stories  = $stories->whereBetween('start_date', array($fromDate, $toDate));
+        }
+
+        $stories = $stories->where($criteria)->with('images')->get();
+
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Collection($stories->all(), new FractalStoryTransformerModel);
+
+        return $this->setStatusCode(200)
+        ->respondUpdatedWithData('Got stories for page queue', $fractal->createData($resource)->toArray() );
+    }
 
     public function saveAs(Request $request, $id)
     {
@@ -77,25 +104,15 @@ class PageController extends ApiController
         return redirect(route('admin.page.index'));//->with('status', 'Story has been deleted.');
     }
 
-    // this.$http.get('/api/story/queueload')
     public function chartLoad()
     {
-
-        // $pgs = \DB::table('pages')->select('id', 'uri','start_date', 'end_date')->get();
-        // $strys = \DB::table('storys')->select('id', 'title', 'start_date', 'end_date')->get();
-        //$page = Page::has('storys', '>=', 5)->get();
-        // $page = Page::all();
         $currentDate = Carbon::now();
         $page = Page::where('end_date','>=',$currentDate );
         $fractal = new Manager();
-        // $storys = Story::all();
         $resource = new Fractal\Resource\Collection($page->get(), new FractalPageChartTransformer);
         // Turn all of that into a Array string
         return $fractal->createData($resource)->toArray();
 
     }
-
-
-
 
 }

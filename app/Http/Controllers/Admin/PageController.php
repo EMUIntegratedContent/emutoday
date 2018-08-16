@@ -6,6 +6,7 @@ namespace Emutoday\Http\Controllers\Admin;
 use Emutoday\Page;
 use Emutoday\Story;
 use Emutoday\StoryImage;
+use Emutoday\StoryType;
 
 use Illuminate\Http\Request;
 use JavaScript;
@@ -72,8 +73,11 @@ class PageController extends Controller
 
     public function form(Page $page)
     {
+        //return view('admin.page.form', compact('page'));
 
-        return view('admin.page.form', compact('page'));
+        $stypes  = collect(StoryType::select('name','shortname')->get());
+
+        return view('admin.page.new', compact('page', 'stypes'));
     }
 
     public function store(Request $request)
