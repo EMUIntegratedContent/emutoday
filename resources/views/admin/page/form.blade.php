@@ -1,5 +1,5 @@
-@inject('pageTemplates', 'Emutoday\Http\Utilities\PageTemplates')
-<!-- inject('storytypes', 'emutoday\Http\Utilities\StoryTypes') -->
+    @inject('pageTemplates', 'Emutoday\Http\Utilities\PageTemplates')
+    <!-- inject('storytypes', 'emutoday\Http\Utilities\StoryTypes') -->
     @extends('admin.layouts.adminlte')
     @section('title', 'Create New Hub Page')
 
@@ -32,59 +32,57 @@
         @endsection
 
     @section('content')
-        <section class="content">
-            <div class="row">
+    <div class="row">
+        <div class="col-xs-12">
+            <section class="content">
                 <div class="box box-primary">
-        {!! Form::model($page, [
-            'method' =>  'post',
-            'route' => ['admin_page_store']
-        ]) !!}
-        {{ csrf_field() }}
-        <div class="box-header with-border">
-                <h3 class="box-title">Create New Hub Page </h3>
-                @include('admin.components.boxtools', ['rte' => 'page', 'path' => 'admin/page/' , 'cuser'=>$currentUser, 'id'=>$page->id ])
+                    {!! Form::model($page, [
+                        'method' =>  'post',
+                        'route' => ['admin_page_store']
+                    ]) !!}
+                    {{ csrf_field() }}
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Create New Hub Page </h3>
+                        @include('admin.components.boxtools', ['rte' => 'page', 'path' => 'admin/page/' , 'cuser'=>$currentUser, 'id'=>$page->id ])
+                    </div> 	<!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="form-group">
+                            {!! Form::label('template') !!}
+                            {!! Form::select('template', $pageTemplates::all(), 0) !!}
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('uri') !!}
+                            {!! Form::text('uri', null, ['class' => 'form-control']) !!}
+                        </div>
 
-        </div> 	<!-- /.box-header -->
-        <div class="box-body">
-            <div class="form-group">
-                {!! Form::label('template') !!}
-                {!! Form::select('template', $pageTemplates::all(), 0) !!}
-            </div>
-                <div class="form-group">
-                {!! Form::label('uri') !!}
-                {!! Form::text('uri', null, ['class' => 'form-control']) !!}
-            </div>
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  {!! Form::label('start_date') !!}
-                  {!! Form::text('start_date', null, ['class' => 'form-control', 'id'=> 'start-date']) !!}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {!! Form::label('start_date') !!}
+                                    {!! Form::text('start_date', null, ['class' => 'form-control', 'id'=> 'start-date']) !!}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {!! Form::label('end_date') !!}
+                                    {!! Form::text('end_date', null, ['class' => 'form-control', 'id'=> 'end-date']) !!}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('Active?') !!}
+                            {!! Form::label('is_active', 'yes') !!}{!! Form::radio('is_active', 1, null) !!}
+                            {!! Form::label('is_active', 'no') !!}{!! Form::radio('is_active', 0, null) !!}
+                        </div>
+                        {!! Form::submit('Create New Page', ['class' => 'btn btn-primary']) !!}
+                        {!! Form::close() !!}
+                    </div><!-- /box-body -->
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  {!! Form::label('end_date') !!}
-                  {!! Form::text('end_date', null, ['class' => 'form-control', 'id'=> 'end-date']) !!}
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              {!! Form::label('Active?') !!}
-              {!! Form::label('is_active', 'yes') !!}{!! Form::radio('is_active', 1, null) !!}
-              {!! Form::label('is_active', 'no') !!}{!! Form::radio('is_active', 0, null) !!}
-            </div>
-
-            </div><!-- /box-body -->
-
-        {!! Form::submit('Create New Page', ['class' => 'btn btn-primary']) !!}
-
-        {!! Form::close() !!}
-            </div>
-    </div> <!-- END Row top page input -->
-@endsection
-@section('footer-script')
+            </section>
+        </div>
+    </div>
+    @endsection
+    @section('footer-script')
     @parent
     <script>
     var check_in = document.getElementById("start-date").flatpickr({
@@ -109,4 +107,4 @@
       }
     });
     </script>
-@endsection
+    @endsection
