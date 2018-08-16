@@ -370,7 +370,7 @@ class EmailController extends ApiController
   }
 
   /**
-   * Events.
+   * Announcements.
    */
   public function getAllEmailReadyAnnouncements(Request $request, $fromDate = null, $toDate = null){
       if($fromDate && !$toDate){
@@ -394,7 +394,7 @@ class EmailController extends ApiController
    */
   public function getAllRecipients(Request $request){
 
-      $recipients  = MailingList::orderBy('email_address', 'asc')->get();
+      $recipients  = MailingList::where('show', 1)->orderBy('email_address', 'asc')->get();
 
       return $this->setStatusCode(200)
       ->respondUpdatedWithData('Got announcements.', $recipients );
@@ -418,7 +418,7 @@ class EmailController extends ApiController
         if($request->get('description')){
           $recipient->description = $request->get('description');
         }
-
+        $recipient->show = 1;
         if($recipient->save()) {
             return $this->setStatusCode(201)
             ->respondSavedWithData('Recipient has been created.', ['recipient' => $recipient] );
