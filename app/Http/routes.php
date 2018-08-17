@@ -214,6 +214,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('page/stories/{fromDate?}/{toDate?}', 'Api\PageController@getHubReadyStories')->name('api_hub_stories');
     Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
     Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
+    Route::post('page', 'Api\PageController@saveHubPage')->name('api_save_hub_page');
 
     // Archives API
     Route::get('archive/queueload/{archiveType}/{perPage?}', 'Api\ArchiveController@queueLoad')->name('api_archive_queue');

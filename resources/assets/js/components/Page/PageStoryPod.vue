@@ -4,24 +4,15 @@
         <div class="box-header with-border">
           <div class="row">
               <div class="col-sm-12">
-                  <!--<div v-show="podType == 'mainstoryqueue'" class="pull-right">
-                      <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
+                  <div class="pull-right">
+                      <button type="btn btn-sm btn-info" @click="emitSwapStory" /><i class="fa fa-exchange"></i></button>
                   </div>
-                  <div v-show="podType == 'otherstoryqueue'" class="pull-right">
-                      <label><input type="checkbox" @click="toggleEmitOtherStory(item)" v-model="checked" :checked="isOtherStory" /> Email Story</label>
-                  </div>-->
               </div>
           </div><!-- /.row -->
           <div class="row">
             <a v-on:click.prevent="toggleBody" href="#">
               <div class="col-sm-9">
                 <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
-              </div>
-              <div class="col-sm-3">
-                  <!--
-                <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
-                <button v-show="podType == 'otherstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitOtherStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
-                  -->
               </div>
             </a>
           </div><!-- /.row -->
@@ -306,6 +297,10 @@ module.exports  = {
 
     },
     methods: {
+        emitSwapStory: function(){
+          // Dispatch an event that propagates upward along the parent chain using $dispatch()
+          this.$dispatch('story-swap-requested', this.item)
+        },
         toggleBody: function(ev) {
             if(this.showBody == false) {
                 this.showBody = true;

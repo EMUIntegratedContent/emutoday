@@ -21924,7 +21924,7 @@ exports.insert = function (css) {
 
 },{}],111:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.progress-done[_v-1528b328]{\n  background-color: #3D9970 !important;\n}\n.valid[_v-1528b328]{\n  color:#3c763d;\n}\n\n.invalid[_v-1528b328] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1528b328] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -22003,7 +22003,13 @@ module.exports = {
       record: {
         id: '',
         end_date: null,
-        start_date: null
+        live: false,
+        start_date: null,
+        main_story: null,
+        sub_story_1: null,
+        sub_story_2: null,
+        sub_story_3: null,
+        sub_story_4: null
       },
       response: {},
       startDatepicker: null,
@@ -22016,7 +22022,7 @@ module.exports = {
     if (this.recordexists) {
       //this.fetchCurrentPage(this.recordid)
     } else {
-      this.newform = true;
+      this.newpage = true;
       this.setupDatePickers();
     }
   },
@@ -22036,6 +22042,15 @@ module.exports = {
     // Progress of page bulider (adds up to 100%)
     progress: function progress() {
       var progress = 0;
+
+      this.record.start_date ? progress += 12.5 : '';
+      this.record.end_date ? progress += 12.5 : '';
+      this.record.live == true ? progress += 12.5 : '';
+      this.record.main_story ? progress += 12.5 : '';
+      this.record.sub_story_1 ? progress += 12.5 : '';
+      this.record.sub_story_2 ? progress += 12.5 : '';
+      this.record.sub_story_3 ? progress += 12.5 : '';
+      this.record.sub_story_4 ? progress += 12.5 : '';
 
       return progress;
     }
@@ -22082,6 +22097,7 @@ module.exports = {
 
       // Do this when response gets back.
       .then(function (response) {
+        console.log(response.data);
         _this.formMessage.msg = response.data.message;
         _this.formMessage.isOk = response.ok; // Success message
         _this.formMessage.isErr = false;
@@ -22089,7 +22105,7 @@ module.exports = {
         _this.recordexists = true;
         _this.formErrors = {}; // Clear errors
 
-        if (_this.newform) {
+        if (_this.newpage) {
           _this.nowOnReload();
         } else {
           _this.onRefresh();
@@ -22161,22 +22177,43 @@ module.exports = {
     }
   },
   events: {
-    'story-swap-requested': function storySwapRequested(storyNumber) {
+    'story-swap-modal-requested': function storySwapModalRequested(storyNumber) {
       // pass the story number (relative to the order of the stories in this page builder)...
       this.currentSwapId = storyNumber;
       // ... to the modal
       $('#pageStorySwapModal').modal('show');
+    },
+    'story-swapped': function storySwapped(storyData) {
+      // storyData[0] contains the story object
+      // storyData[1] contains the story's position in the page builder
+      switch (storyData[1]) {
+        case "0":
+          this.$set('record.main_story', storyData[0]);
+          break;
+        case "1":
+          this.$set('record.sub_story_1', storyData[0]);
+          break;
+        case "2":
+          this.$set('record.sub_story_2', storyData[0]);
+          break;
+        case "3":
+          this.$set('record.sub_story_3', storyData[0]);
+          break;
+        case "4":
+          this.$set('record.sub_story_4', storyData[0]);
+          break;
+      }
     }
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-1528b328=\"\">\n    <section id=\"page-builder-container\" _v-1528b328=\"\">\n        <div class=\"row\" id=\"main-story\" _v-1528b328=\"\">\n            <div class=\"col-sm-12 col-md-12 col-lg-6 columns\" _v-1528b328=\"\">\n                <h4 class=\"subhead-title\" _v-1528b328=\"\">Main Story</h4>\n                <page-substory story-number=\"0\" _v-1528b328=\"\"></page-substory>\n            </div>\n            <div class=\"col-sm-12 col-md-12 col-lg-6 columns\" _v-1528b328=\"\">\n                <div class=\"row\" id=\"date-time-container\" _v-1528b328=\"\">\n                    <div class=\"col-sm-12\" _v-1528b328=\"\">\n                        <h4 class=\"subhead-title\" _v-1528b328=\"\">Hub Page Information</h4>\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">Start Date/Time *</label>\n                        <input id=\"start-date\" type=\"text\" v-model=\"record.start_date\" class=\"form-control\" _v-1528b328=\"\">\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">End Date/Time *</label>\n                        <input id=\"end-date\" type=\"text\" v-model=\"record.end_date\" class=\"form-control\" _v-1528b328=\"\">\n                    </div>\n                </div><!-- /end #date-time-container -->\n            </div>\n        </div>\n        <div id=\"four-stories-bar\" _v-1528b328=\"\">\n            <div class=\"row\" _v-1528b328=\"\">\n                <div class=\"col-xs-12\" _v-1528b328=\"\">\n                    <h4 class=\"subhead-title\" _v-1528b328=\"\">Sub Stories</h4>\n                </div>\n            </div>\n            <div class=\"row\" _v-1528b328=\"\">\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"1\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"2\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"3\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"4\" _v-1528b328=\"\"></page-substory>\n                </div>\n            </div>\n        </div>\n    </section><!-- end #page-builder-container -->\n</div><!-- /end root element -->\n<page-story-swap-modal :story-number=\"currentSwapId\" :stypes=\"stypes\" _v-1528b328=\"\"></page-story-swap-modal>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-1528b328=\"\">\n    <!-- PROGRESS BAR -->\n    <div class=\"progress\" _v-1528b328=\"\">\n      <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-1528b328=\"\">\n        <span v-if=\"progress < 100\" _v-1528b328=\"\">{{ progress }}% Complete</span>\n        <span v-else=\"\" _v-1528b328=\"\">I'm Ready!</span>\n      </div>\n    </div>\n    <section id=\"page-builder-container\" _v-1528b328=\"\">\n        <div class=\"row\" id=\"main-story\" _v-1528b328=\"\">\n            <div class=\"col-sm-12 col-md-12 col-lg-6 columns\" _v-1528b328=\"\">\n                <h4 class=\"subhead-title\" _v-1528b328=\"\">Main Story</h4>\n                <page-substory story-number=\"0\" :story=\"record.main_story\" _v-1528b328=\"\"></page-substory>\n            </div>\n            <div class=\"col-sm-12 col-md-12 col-lg-6 columns\" _v-1528b328=\"\">\n                <div class=\"row\" id=\"date-time-container\" _v-1528b328=\"\">\n                    <div class=\"col-sm-12\" _v-1528b328=\"\">\n                        <h4 class=\"subhead-title\" _v-1528b328=\"\">Hub Page Information</h4>\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">Start Date/Time *</label>\n                        <input id=\"start-date\" type=\"text\" v-model=\"record.start_date\" class=\"form-control\" v-bind:class=\"[formErrors.start_date ? 'invalid-input' : '']\" _v-1528b328=\"\">\n                        <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-1528b328=\"\">A start date is required.</p>\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">End Date/Time *</label>\n                        <input id=\"end-date\" type=\"text\" v-model=\"record.end_date\" class=\"form-control\" v-bind:class=\"[formErrors.end_date ? 'invalid-input' : '']\" _v-1528b328=\"\">\n                        <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-1528b328=\"\">An end date is required.</p>\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">Active?</label>\n                        <input type=\"checkbox\" v-model=\"record.live\" _v-1528b328=\"\">\n                    </div>\n                </div><!-- /end #date-time-container -->\n                <!-- SUCCESS/FAIL MESSAGES -->\n                <div class=\"row\" _v-1528b328=\"\">\n                  <div class=\"col-xs-12\" _v-1528b328=\"\">\n                    <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-1528b328=\"\">\n                      <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-1528b328=\"\"><i class=\"fa fa-times\" _v-1528b328=\"\"></i></button>\n                      <p _v-1528b328=\"\">{{formMessage.msg}}</p>\n                    </div>\n                    <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-1528b328=\"\">\n                      <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-1528b328=\"\"><i class=\"fa fa-times\" _v-1528b328=\"\"></i></button>\n                      <p _v-1528b328=\"\">The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following errors.</p>\n                      <ul v-if=\"formErrors\" _v-1528b328=\"\">\n                        <li v-for=\"error in formErrors\" _v-1528b328=\"\">{{error}}</li>\n                      </ul>\n                    </div>\n                  </div>\n                  <div class=\"col-xs-12 text-right\" _v-1528b328=\"\">\n                    <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-1528b328=\"\">{{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}</button>\n                    <button v-show=\"!newpage\" type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-1528b328=\"\">Delete Hub Page</button>\n                  </div>\n                </div>\n            </div>\n        </div>\n        <div id=\"four-stories-bar\" _v-1528b328=\"\">\n            <div class=\"row\" _v-1528b328=\"\">\n                <div class=\"col-xs-12\" _v-1528b328=\"\">\n                    <h4 class=\"subhead-title\" _v-1528b328=\"\">Sub Stories</h4>\n                </div>\n            </div>\n            <div class=\"row\" _v-1528b328=\"\">\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"1\" :story=\"record.sub_story_1\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"2\" :story=\"record.sub_story_2\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"3\" :story=\"record.sub_story_3\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"4\" :story=\"record.sub_story_4\" _v-1528b328=\"\"></page-substory>\n                </div>\n            </div>\n        </div>\n    </section><!-- end #page-builder-container -->\n</div><!-- /end root element -->\n<page-story-swap-modal :story-number=\"currentSwapId\" :stypes=\"stypes\" _v-1528b328=\"\"></page-story-swap-modal>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n"] = false
+    __vueify_insert__.cache["\n.progress-done[_v-1528b328]{\n  background-color: #3D9970 !important;\n}\n.valid[_v-1528b328]{\n  color:#3c763d;\n}\n\n.invalid[_v-1528b328] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1528b328] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -22261,6 +22298,10 @@ module.exports = {
 
     },
     methods: {
+        emitSwapStory: function emitSwapStory() {
+            // Dispatch an event that propagates upward along the parent chain using $dispatch()
+            this.$dispatch('story-swap-requested', this.item);
+        },
         toggleBody: function toggleBody(ev) {
             if (this.showBody == false) {
                 this.showBody = true;
@@ -22285,7 +22326,7 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-50a82cb8=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-50a82cb8=\"\">\n        <div class=\"box-header with-border\" _v-50a82cb8=\"\">\n          <div class=\"row\" _v-50a82cb8=\"\">\n              <div class=\"col-sm-12\" _v-50a82cb8=\"\">\n                  <!--<div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\">\n                      <label><input type=\"checkbox\" @click=\"toggleEmitMainStory(item)\" v-model=\"checked\" :checked=\"isMainStory\" :disabled=\"mainStoriesFull\" />  Main Story</label>\n                  </div>\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\">\n                      <label><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" /> Email Story</label>\n                  </div>-->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-50a82cb8=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-50a82cb8=\"\">\n              <div class=\"col-sm-9\" _v-50a82cb8=\"\">\n                <h6 class=\"box-title\" _v-50a82cb8=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-50a82cb8=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-50a82cb8=\"\"></span></label>{{item.title}}</h6>\n              </div>\n              <div class=\"col-sm-3\" _v-50a82cb8=\"\">\n                  <!--\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>\n                  -->\n              </div>\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-50a82cb8=\"\">\n            <p _v-50a82cb8=\"\">ID: {{item.id}}</p>\n            <p _v-50a82cb8=\"\">Type: {{item.story_type}}</p>\n            <p _v-50a82cb8=\"\">Title: {{item.title}}</p>\n            <p _v-50a82cb8=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-50a82cb8=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-50a82cb8=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-50a82cb8=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-50a82cb8=\"\">Live: {{item.is_live}}</p>\n            <p _v-50a82cb8=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-50a82cb8=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-50a82cb8=\"\">\n                <div class=\"row\" _v-50a82cb8=\"\">\n                    <div class=\"col-sm-6\" _v-50a82cb8=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-50a82cb8=\"\">\n                        <div class=\"btn-group pull-right\" _v-50a82cb8=\"\">\n                            <a :href=\"item.edit_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-50a82cb8=\"\"><i class=\"fa fa-pencil\" _v-50a82cb8=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-50a82cb8=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-50a82cb8=\"\">\n        <div class=\"box-header with-border\" _v-50a82cb8=\"\">\n          <div class=\"row\" _v-50a82cb8=\"\">\n              <div class=\"col-sm-12\" _v-50a82cb8=\"\">\n                  <div class=\"pull-right\" _v-50a82cb8=\"\">\n                      <button type=\"btn btn-sm btn-info\" @click=\"emitSwapStory\" _v-50a82cb8=\"\"><i class=\"fa fa-exchange\" _v-50a82cb8=\"\"></i></button>\n                  </div>\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-50a82cb8=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-50a82cb8=\"\">\n              <div class=\"col-sm-9\" _v-50a82cb8=\"\">\n                <h6 class=\"box-title\" _v-50a82cb8=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-50a82cb8=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-50a82cb8=\"\"></span></label>{{item.title}}</h6>\n              </div>\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-50a82cb8=\"\">\n            <p _v-50a82cb8=\"\">ID: {{item.id}}</p>\n            <p _v-50a82cb8=\"\">Type: {{item.story_type}}</p>\n            <p _v-50a82cb8=\"\">Title: {{item.title}}</p>\n            <p _v-50a82cb8=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-50a82cb8=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-50a82cb8=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-50a82cb8=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-50a82cb8=\"\">Live: {{item.is_live}}</p>\n            <p _v-50a82cb8=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-50a82cb8=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-50a82cb8=\"\">\n                <div class=\"row\" _v-50a82cb8=\"\">\n                    <div class=\"col-sm-6\" _v-50a82cb8=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-50a82cb8=\"\">\n                        <div class=\"btn-group pull-right\" _v-50a82cb8=\"\">\n                            <a :href=\"item.edit_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-50a82cb8=\"\"><i class=\"fa fa-pencil\" _v-50a82cb8=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -22332,7 +22373,8 @@ exports.default = {
     components: { PageStoryPod: _PageStoryPod2.default },
     props: {
         storyNumber: {
-            type: String
+            type: String,
+            default: 2
         },
         stypes: {
             default: []
@@ -22359,18 +22401,10 @@ exports.default = {
         var oneMonthEarlier = (0, _moment2.default)().subtract(1, 'M');
         this.startdate = oneMonthEarlier.format("YYYY-MM-DD");
         this.enddate = oneMonthEarlier.clone().add(1, 'M').format("YYYY-MM-DD");
-        this.fetchStories();
     },
     computed: {
         totalPages: function totalPages() {
-            return Math.ceil(this.queueStories.length / this.itemsPerPage);
-        },
-        filterByStoryType: function filterByStoryType(value) {
-            if (this.stories_filter_storytype === '') {
-                return value.story_type !== '';
-            } else {
-                return value.story_type === this.stories_filter_storytype;
-            }
+            return Math.ceil(this.resultCount / this.itemsPerPage);
         },
         s_types: function s_types() {
             try {
@@ -22419,7 +22453,15 @@ exports.default = {
             }
 
             this.$http.get(routeurl).then(function (response) {
-                _this.$set('queueStories', response.data.newdata.data);
+                // sub stories
+                if (_this.storyNumber > 0) {
+                    _this.$set('queueStories', response.data.newdata.data);
+                } else {
+                    // main story
+                    _this.$set('queueStories', response.data.newdata.data.filter(function (story) {
+                        return story.front_images.length >= 1;
+                    }));
+                }
                 _this.resultCount = _this.queueStories.length;
                 _this.setPage(1); // reset paginator
                 _this.loadingQueue = false;
@@ -22427,6 +22469,13 @@ exports.default = {
                 //error callback
                 console.log("ERRORS");
             }).bind(this);
+        },
+        filterByStoryType: function filterByStoryType(value) {
+            if (this.stories_filter_storytype === '') {
+                return value.story_type !== '';
+            } else {
+                return value.story_type === this.stories_filter_storytype;
+            }
         },
         // filter only stories that are emutoday_front
         isString: function isString(val) {
@@ -22499,11 +22548,22 @@ exports.default = {
             return list.slice(index, index + this.itemsPerPage);
         }
     },
-    events: {},
-    watch: {}
+    events: {
+        'story-swap-requested': function storySwapRequested(story) {
+            // Dispatch an event that propagates upward along the parent chain using $dispatch()
+            // Tell the parent which story and which position
+            this.$dispatch('story-swapped', [story, this.storyNumber]);
+        }
+    },
+    watch: {
+        // Whenever the storyNumber property is changed (i.e. when user clicks on a story image to swap the story out), fetch relevant stories
+        storyNumber: function storyNumber() {
+            this.fetchStories();
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div id=\"pageStorySwapModal\" class=\"modal fade\" role=\"dialog\" _v-5814b48d=\"\">\n  <div class=\"modal-dialog\" _v-5814b48d=\"\">\n    <div class=\"modal-content\" _v-5814b48d=\"\">\n      <div class=\"modal-header\" _v-5814b48d=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-5814b48d=\"\">×</button>\n        <h4 class=\"modal-title\" _v-5814b48d=\"\">Swap Story</h4>\n      </div>\n      <div class=\"modal-body\" _v-5814b48d=\"\">\n        <!--<ul>\n          <li><strong>Title:</strong> {{ email.title }}</li>\n          <li><strong>Sent At:</strong> {{ email.send_at | formatDate }}</li>\n          </ul>-->\n          editing story in slot {{ storyNumber }}\n\n          <!-- Date filter -->\n          <form class=\"form-inline\" _v-5814b48d=\"\">\n            <div class=\"form-group\" _v-5814b48d=\"\">\n                <label for=\"start-date\" _v-5814b48d=\"\">Starting <span v-if=\"isEndDate\" _v-5814b48d=\"\">between</span><span v-else=\"\" _v-5814b48d=\"\">on or after</span></label>\n                <p _v-5814b48d=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-5814b48d=\"\"></p>\n            </div>\n            <div v-if=\"isEndDate\" class=\"form-group\" _v-5814b48d=\"\">\n                <label for=\"start-date\" _v-5814b48d=\"\"> and </label>\n                <p _v-5814b48d=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-5814b48d=\"\"></p><p _v-5814b48d=\"\">\n            </p></div>\n            <p _v-5814b48d=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchStories\" _v-5814b48d=\"\">Filter</button></p>\n            <p _v-5814b48d=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-5814b48d=\"\"><span v-if=\"isEndDate\" _v-5814b48d=\"\"> - Remove </span><span v-else=\"\" _v-5814b48d=\"\"> + Add </span>Range</a></p>\n          </form>\n          <div class=\"btn-toolbar\" role=\"toolbar\" _v-5814b48d=\"\">\n              <div class=\"btn-group btn-group-xs\" role=\"group\" _v-5814b48d=\"\">\n                  <label _v-5814b48d=\"\">Filter: </label>\n              </div>\n              <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-5814b48d=\"\">\n                   <template v-for=\"item in storyTypeIcons\">\n                       <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-5814b48d=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-5814b48d=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-5814b48d=\"\"></span></label>\n                  </template>\n              </div>\n          </div>\n          <div id=\"swappable-stories\" _v-5814b48d=\"\">\n            <template v-if=\"!loadingQueue\">\n              <template v-if=\"queueStories.length > 0\">\n                <page-story-pod :item=\"story\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-5814b48d=\"\">\n                </page-story-pod>\n                <ul class=\"pagination\" _v-5814b48d=\"\">\n                  <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-5814b48d=\"\">Previous</a>\n                  </li>\n                  <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-5814b48d=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-5814b48d=\"\">(current)</span></a>\n                  </li>\n                  <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-5814b48d=\"\">Next</a>\n                  </li>\n                </ul>\n              </template>\n              <template v-else=\"\">\n                <p _v-5814b48d=\"\">There are no stories for the date range you've specified.</p>\n              </template>\n            </template>\n            <template v-else=\"\">\n              <p _v-5814b48d=\"\">Loading queue. Please Wait...</p>\n            </template>\n          </div>\n\n\n      </div>\n      <div class=\"modal-footer\" _v-5814b48d=\"\">\n        this is the footer\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div id=\"pageStorySwapModal\" class=\"modal fade\" role=\"dialog\" _v-5814b48d=\"\">\n  <div class=\"modal-dialog\" _v-5814b48d=\"\">\n    <div class=\"modal-content\" _v-5814b48d=\"\">\n      <div class=\"modal-header\" _v-5814b48d=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-5814b48d=\"\">×</button>\n        <h4 class=\"modal-title\" _v-5814b48d=\"\">Swap Story</h4>\n      </div>\n      <div class=\"modal-body\" _v-5814b48d=\"\">\n        <!--<ul>\n          <li><strong>Title:</strong> {{ email.title }}</li>\n          <li><strong>Sent At:</strong> {{ email.send_at | formatDate }}</li>\n          </ul>-->\n          <template v-if=\"storyNumber == 0\">\n              <p _v-5814b48d=\"\">Choose a <strong _v-5814b48d=\"\">main story</strong> for this hub page. The list below shows all stories in within the date range that have an emutoday_front story type.</p>\n          </template>\n          <template v-else=\"\">\n              <p _v-5814b48d=\"\">Choose a <strong _v-5814b48d=\"\">sub story</strong>. The list below shows all stories in within the date range that have an emutoday_small story type.</p>\n          </template>\n\n          <!-- Date filter -->\n          <form class=\"form-inline\" _v-5814b48d=\"\">\n            <div class=\"form-group\" _v-5814b48d=\"\">\n                <label for=\"start-date\" _v-5814b48d=\"\">Starting <span v-if=\"isEndDate\" _v-5814b48d=\"\">between</span><span v-else=\"\" _v-5814b48d=\"\">on or after</span></label>\n                <p _v-5814b48d=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-5814b48d=\"\"></p>\n            </div>\n            <div v-if=\"isEndDate\" class=\"form-group\" _v-5814b48d=\"\">\n                <label for=\"start-date\" _v-5814b48d=\"\"> and </label>\n                <p _v-5814b48d=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-5814b48d=\"\"></p><p _v-5814b48d=\"\">\n            </p></div>\n            <p _v-5814b48d=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchStories\" _v-5814b48d=\"\">Filter</button></p>\n            <p _v-5814b48d=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-5814b48d=\"\"><span v-if=\"isEndDate\" _v-5814b48d=\"\"> - Remove </span><span v-else=\"\" _v-5814b48d=\"\"> + Add </span>Range</a></p>\n          </form>\n          <div class=\"btn-toolbar\" role=\"toolbar\" _v-5814b48d=\"\">\n              <div class=\"btn-group btn-group-xs\" role=\"group\" _v-5814b48d=\"\">\n                  <label _v-5814b48d=\"\">Filter: </label>\n              </div>\n              <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-5814b48d=\"\">\n                   <template v-for=\"item in storyTypeIcons\">\n                       <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-5814b48d=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-5814b48d=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-5814b48d=\"\"></span></label>\n                  </template>\n              </div>\n          </div>\n          <div id=\"swappable-stories\" _v-5814b48d=\"\">\n            <template v-if=\"!loadingQueue\">\n              <template v-if=\"queueStories.length > 0\">\n                <page-story-pod :item=\"story\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-5814b48d=\"\">\n                </page-story-pod>\n                <ul class=\"pagination\" _v-5814b48d=\"\">\n                  <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-5814b48d=\"\">Previous</a>\n                  </li>\n                  <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-5814b48d=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-5814b48d=\"\">(current)</span></a>\n                  </li>\n                  <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-5814b48d=\"\">Next</a>\n                  </li>\n                </ul>\n              </template>\n              <template v-else=\"\">\n                <p _v-5814b48d=\"\">There are no stories for the date range you've specified.</p>\n              </template>\n            </template>\n            <template v-else=\"\">\n              <p _v-5814b48d=\"\">Loading queue. Please Wait...</p>\n            </template>\n          </div>\n\n\n      </div>\n      <div class=\"modal-footer\" _v-5814b48d=\"\">\n        this is the footer\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -22520,22 +22580,16 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"../../directives/flatpickr.js":116,"../../directives/iconradio.js":117,"./PageStoryPod.vue":112,"moment":102,"vue":109,"vue-hot-reload-api":105,"vueify/lib/insert-css":110}],114:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.topic-image[_v-78d853dd]{\n    width: 100%;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.topic-image[_v-78d853dd]{\n    width: 100%;\n    max-height: 411px;\n}\n")
 'use strict';
 
 module.exports = {
     directives: {},
     components: {},
     props: {
-        imageSrc: {
-            required: false,
-            type: String,
-            default: '/imgs/notselected.png'
-        },
-        title: {
-            required: false,
-            type: String,
-            default: 'No story selected'
+        story: {
+            type: Object,
+            default: null
         },
         storyNumber: {
             required: true,
@@ -22549,12 +22603,27 @@ module.exports = {
     },
     created: function created() {},
     ready: function ready() {},
-    computed: {},
+    computed: {
+        imageSrc: function imageSrc() {
+            // story has been passed to this component
+            if (this.story) {
+                // this is a main story
+                if (this.storyNumber == 0) {
+                    return this.story.front_images[0].image_path + this.story.front_images[0].filename;
+                }
+
+                // this is a sub story
+                return this.story.small_images[0].image_path + this.story.small_images[0].filename;
+            }
+            // no story set for this component
+            return '/imgs/notselected.png';
+        }
+    },
 
     methods: {
         emitSwapStory: function emitSwapStory() {
             // Dispatch an event that propagates upward along the parent chain using $dispatch()
-            this.$dispatch('story-swap-requested', this.storyNumber);
+            this.$dispatch('story-swap-modal-requested', this.storyNumber);
         }
     },
     watch: {},
@@ -22562,13 +22631,13 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div @mouseover=\"isMousedOver = true\" @mouseout=\"isMousedOver = false\" _v-78d853dd=\"\">\n    <img class=\"topic-image\" :src=\"isMousedOver ? '/imgs/swapstory.png' : imageSrc\" alt=\"story image\" @click=\"emitSwapStory\" _v-78d853dd=\"\">\n    <div class=\"stories-content\" _v-78d853dd=\"\">\n        {{ title }}\n    </div>\n</div><!-- /end root element -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div @mouseover=\"isMousedOver = true\" @mouseout=\"isMousedOver = false\" _v-78d853dd=\"\">\n    <img class=\"topic-image\" :src=\"isMousedOver ? '/imgs/swapstory.png' : imageSrc\" alt=\"story image\" @click=\"emitSwapStory\" _v-78d853dd=\"\">\n    <div class=\"stories-content\" _v-78d853dd=\"\">\n        {{ story ? story.title : 'No story selected' }}\n    </div>\n</div><!-- /end root element -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.topic-image[_v-78d853dd]{\n    width: 100%;\n}\n"] = false
+    __vueify_insert__.cache["\n.topic-image[_v-78d853dd]{\n    width: 100%;\n    max-height: 411px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {

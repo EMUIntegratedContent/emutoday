@@ -3,6 +3,7 @@
 namespace Emutoday\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input as Input;
 
 use Emutoday\Http\Requests;
 use Emutoday\Page;
@@ -70,6 +71,36 @@ class PageController extends ApiController
 
         return $this->setStatusCode(200)
         ->respondUpdatedWithData('Got stories for page queue', $fractal->createData($resource)->toArray() );
+    }
+
+    public function saveHubPage(Request $request){
+        $validation = \Validator::make( Input::all(), [
+            'start_date' => 'date_format:Y-m-d H:i:s',
+            'end_date' => 'date_format:Y-m-d H:i:s'
+           ]);
+
+        if( $validation->fails() ){
+            return $this->setStatusCode(422)
+                        ->respondWithError($validation->errors()->getMessages());
+        }
+
+        $page = new Page();
+        $page->is_live = $request->get('live');
+        $page->start_date = $request->get('start_date');
+        $page->end_date = $request->get('end_date');
+        $page->user_id = auth()->user()->id;
+        $page->template = 'home-emutoday';
+        $page->save();
+
+        $fractal = new Manager();
+        $resource = new Fractal\Resource\Item($page, new FractalPageTransformer);
+
+        return $this->setStatusCode(201)
+            ->respondSavedWithData('The new hub page was successfully created.', $fractal->createData($resource)->toArray());
+    }
+
+    public function updateHubPage(Request $request){
+
     }
 
     public function saveAs(Request $request, $id)

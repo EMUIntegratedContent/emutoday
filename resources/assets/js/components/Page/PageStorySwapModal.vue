@@ -12,7 +12,12 @@
             <li><strong>Title:</strong> {{ email.title }}</li>
             <li><strong>Sent At:</strong> {{ email.send_at | formatDate }}</li>
             </ul>-->
-            editing story in slot {{ storyNumber }}
+            <template v-if="storyNumber == 0">
+                <p>Choose a <strong>main story</strong> for this hub page. The list below shows all stories in within the date range that have an emutoday_front story type.</p>
+            </template>
+            <template v-else>
+                <p>Choose a <strong>sub story</strong>. The list below shows all stories in within the date range that have an emutoday_small story type.</p>
+            </template>
 
             <!-- Date filter -->
             <form class="form-inline">
@@ -112,6 +117,7 @@ export default {
   props:{
       storyNumber:{
           type: String,
+          default: 2
       },
       stypes: {
         default: []
@@ -138,18 +144,10 @@ export default {
       let oneMonthEarlier = moment().subtract(1, 'M')
       this.startdate = oneMonthEarlier.format("YYYY-MM-DD")
       this.enddate = oneMonthEarlier.clone().add(1, 'M').format("YYYY-MM-DD")
-      this.fetchStories()
   },
   computed: {
       totalPages: function() {
-        return Math.ceil(this.queueStories.length / this.itemsPerPage)
-      },
-      filterByStoryType: function (value) {
-          if (this.stories_filter_storytype === '') {
-              return value.story_type !== '';
-          } else {
-              return value.story_type === this.stories_filter_storytype;
-          }
+        return Math.ceil(this.resultCount / this.itemsPerPage)
       },
       s_types:function(){
           try {
@@ -201,7 +199,15 @@ export default {
           this.$http.get(routeurl)
 
           .then((response) =>{
-              this.$set('queueStories', response.data.newdata.data)
+              // sub stories
+              if(this.storyNumber > 0){
+                  this.$set('queueStories', response.data.newdata.data)
+              } else {
+                  // main story
+                  this.$set('queueStories', response.data.newdata.data.filter(function(story){
+                      return story.front_images.length >= 1
+                  }))
+              }
               this.resultCount = this.queueStories.length
               this.setPage(1) // reset paginator
               this.loadingQueue = false;
@@ -209,6 +215,13 @@ export default {
               //error callback
               console.log("ERRORS");
           }).bind(this);
+      },
+      filterByStoryType: function (value) {
+          if (this.stories_filter_storytype === '') {
+              return value.story_type !== '';
+          } else {
+              return value.story_type === this.stories_filter_storytype;
+          }
       },
       // filter only stories that are emutoday_front
       isString: function(val){
@@ -282,10 +295,17 @@ export default {
       },
   },
   events: {
-
+      'story-swap-requested': function (story) {
+          // Dispatch an event that propagates upward along the parent chain using $dispatch()
+          // Tell the parent which story and which position
+          this.$dispatch('story-swapped', [story, this.storyNumber])
+      },
   },
   watch: {
-
+      // Whenever the storyNumber property is changed (i.e. when user clicks on a story image to swap the story out), fetch relevant stories
+      storyNumber: function(){
+          this.fetchStories()
+      }
   },
 }
 </script>
