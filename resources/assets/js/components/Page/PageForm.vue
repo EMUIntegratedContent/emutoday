@@ -15,6 +15,7 @@
                     <page-substory
                         story-number="0"
                         :story="record.main_story"
+                        :stypes="stypes"
                     ></page-substory>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-6 columns">
@@ -70,34 +71,41 @@
                         <page-substory
                             story-number="1"
                             :story="record.sub_story_1"
+                            :stypes="stypes"
                         ></page-substory>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="2"
                             :story="record.sub_story_2"
+                            :stypes="stypes"
                         ></page-substory>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="3"
                             :story="record.sub_story_3"
+                            :stypes="stypes"
                         ></page-substory>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="4"
                             :story="record.sub_story_4"
+                            :stypes="stypes"
                         ></page-substory>
                     </div>
                 </div>
             </div>
         </section><!-- end #page-builder-container -->
     </div><!-- /end root element -->
+    <!--
     <page-story-swap-modal
         :story-number="currentSwapId"
+        :currentSelectedStory="currentSelectedStory"
         :stypes="stypes"
     ></page-story-swap-modal>
+    -->
 </template>
 
 <style scoped>
@@ -163,6 +171,7 @@ module.exports = {
   data: function() {
     return {
       currentRecordId: null,
+      currentSelectedStory: null,
       currentSwapId: null,
       dateObject:{
         endDateDefault: '',
@@ -252,10 +261,6 @@ module.exports = {
       // }).bind(this);
     },
 
-    mouseOver: function(boxId){
-        var box = document.getElementById(boxId)
-        box.className += " swap_overlay "
-    },
     nowOnReload:function() {
       let newurl = '/admin/page/'+ this.currentRecordId+'/edit';
       document.location = newurl;
@@ -359,12 +364,6 @@ module.exports = {
     },
   },
   events: {
-      'story-swap-modal-requested': function (storyNumber) {
-          // pass the story number (relative to the order of the stories in this page builder)...
-          this.currentSwapId = storyNumber;
-          // ... to the modal
-          $('#pageStorySwapModal').modal('show');
-      },
       'story-swapped': function (storyData) {
           // storyData[0] contains the story object
           // storyData[1] contains the story's position in the page builder

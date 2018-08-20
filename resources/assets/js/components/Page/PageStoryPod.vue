@@ -1,9 +1,12 @@
 <template>
-    <div :class="specialItem">
-    <div class="box box-solid {{item.group}}">
+<div :class="specialItem">
+    <div class="box box-solid {{item.group}} {{ currentStory == item ? 'set' : '' }}">
         <div class="box-header with-border">
           <div class="row">
-              <div class="col-sm-12">
+              <div class="col-sm-8">
+                  <span v-show="currentStory == item" class="success"><i class="fa fa-check"></i> Set</span>
+              </div>
+              <div class="col-sm-4">
                   <div class="pull-right">
                       <button type="btn btn-sm btn-info" @click="emitSwapStory" /><i class="fa fa-exchange"></i></button>
                   </div>
@@ -213,6 +216,11 @@
             margin-bottom: 0;
         }
 
+        .set {
+            background-color: #00a65a !important;
+            border: 2px solid #00a65a !important;
+        }
+
         .special-item {
             border-left: 6px solid #bfff00;
 
@@ -232,7 +240,7 @@ import moment from 'moment'
 module.exports  = {
     directives: {},
     components: {},
-    props: ['item'],
+    props: ['item', 'currentStory'],
     data: function() {
         return {
             options: [],
@@ -247,6 +255,7 @@ module.exports  = {
               priority: 0,
             },
             checked: false,
+            swapped: false,
         }
     },
     created: function () {
@@ -300,6 +309,7 @@ module.exports  = {
         emitSwapStory: function(){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
           this.$dispatch('story-swap-requested', this.item)
+          this.swapped = true;
         },
         toggleBody: function(ev) {
             if(this.showBody == false) {

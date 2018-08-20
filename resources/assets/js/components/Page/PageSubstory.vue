@@ -1,10 +1,16 @@
 <template>
     <div @mouseover="isMousedOver = true" @mouseout="isMousedOver = false">
-        <img class="topic-image" :src="isMousedOver ? '/imgs/swapstory.png' : imageSrc" alt="story image" @click="emitSwapStory">
+        <img class="topic-image" :src="isMousedOver ? '/imgs/swapstory.png' : imageSrc" alt="story image" @click="openModal">
         <div class="stories-content">
             {{ story ? story.title : 'No story selected' }}
         </div>
     </div><!-- /end root element -->
+
+    <page-story-swap-modal
+        :story-number="storyNumber"
+        :stypes="stypes"
+        :current-story="story"
+    ></page-story-swap-modal>
 </template>
 
 <style scoped>
@@ -16,10 +22,10 @@
 
 
 <script>
-
+import PageStorySwapModal from './PageStorySwapModal.vue'
 module.exports = {
   directives: {},
-  components: {},
+  components: {PageStorySwapModal},
   props: {
       story:{
           type: Object,
@@ -28,6 +34,12 @@ module.exports = {
       storyNumber:{
           required: true,
           type: String,
+      },
+      stypes: {
+          default: [],
+      },
+      currentStory:{
+          default: null,
       }
   },
   data: function() {
@@ -59,10 +71,10 @@ module.exports = {
   },
 
   methods: {
-      emitSwapStory: function(){
-        // Dispatch an event that propagates upward along the parent chain using $dispatch()
-        this.$dispatch('story-swap-modal-requested', this.storyNumber)
-      },
+      openModal: function(){
+          console.log(this.storyNumber)
+          $('#pageStorySwapModal-' + this.storyNumber).modal('show');
+      }
   },
   watch: {
 

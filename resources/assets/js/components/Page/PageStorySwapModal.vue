@@ -1,6 +1,6 @@
 <template>
   <!--STATS MODAL-->
-  <div id="pageStorySwapModal" class="modal fade" role="dialog">
+  <div :id="'pageStorySwapModal-' + storyNumber" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -8,10 +8,6 @@
           <h4 class="modal-title">Swap Story</h4>
         </div>
         <div class="modal-body">
-          <!--<ul>
-            <li><strong>Title:</strong> {{ email.title }}</li>
-            <li><strong>Sent At:</strong> {{ email.send_at | formatDate }}</li>
-            </ul>-->
             <template v-if="storyNumber == 0">
                 <p>Choose a <strong>main story</strong> for this hub page. The list below shows all stories in within the date range that have an emutoday_front story type.</p>
             </template>
@@ -48,6 +44,7 @@
                   <page-story-pod
                       :item="story"
                       v-for="story in queueStories | filterBy filterByStoryType | paginate"
+                      :current-story="currentStory"
                   >
                   </page-story-pod>
                   <ul class="pagination">
@@ -120,7 +117,10 @@ export default {
           default: 2
       },
       stypes: {
-        default: []
+          default: []
+      },
+      currentStory: {
+          default: null,
       }
   },
   data: function() {
@@ -144,6 +144,7 @@ export default {
       let oneMonthEarlier = moment().subtract(1, 'M')
       this.startdate = oneMonthEarlier.format("YYYY-MM-DD")
       this.enddate = oneMonthEarlier.clone().add(1, 'M').format("YYYY-MM-DD")
+      this.fetchStories()
   },
   computed: {
       totalPages: function() {
