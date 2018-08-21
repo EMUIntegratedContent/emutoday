@@ -2,10 +2,14 @@
     <div>
         <!-- PROGRESS BAR -->
         <div class="progress">
-          <div class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
+          <div v-if="numLoadedComponents >= 5" class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
           aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
             <span v-if="progress < 100">{{ progress }}% Complete</span>
             <span v-else>I'm Ready!</span>
+          </div>
+          <div v-else class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" :aria-valuenow="100"
+          aria-valuemin="0" aria-valuemax="100" style="width:100%">
+            <span>Loading page...please wait.</span>
           </div>
         </div>
         <section id="page-builder-container">
@@ -14,7 +18,7 @@
                     <h4 class="subhead-title">Main Story</h4>
                     <page-substory
                         story-number="0"
-                        :story="record.main_story"
+                        :story="slotStories.main_story"
                         :stypes="stypes"
                     ></page-substory>
                 </div>
@@ -33,10 +37,10 @@
                             <input id="end-date" type="text" v-model="record.end_date" class="form-control" v-bind:class="[formErrors.end_date ? 'invalid-input' : '']" />
                             <p v-if="formErrors.end_date" class="help-text invalid">An end date is required.</p>
                         </div>
-                        <div class="col-sm-12 col-md-6">
+                        <!--<div class="col-sm-12 col-md-6">
                             <label>Active?</label>
                             <input type="checkbox" v-model="record.live" />
-                        </div>
+                        </div>-->
                     </div><!-- /end #date-time-container -->
                     <!-- SUCCESS/FAIL MESSAGES -->
                     <div class="row">
@@ -70,28 +74,28 @@
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="1"
-                            :story="record.sub_story_1"
+                            :story="slotStories.sub_story_1"
                             :stypes="stypes"
                         ></page-substory>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="2"
-                            :story="record.sub_story_2"
+                            :story="slotStories.sub_story_2"
                             :stypes="stypes"
                         ></page-substory>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="3"
-                            :story="record.sub_story_3"
+                            :story="slotStories.sub_story_3"
                             :stypes="stypes"
                         ></page-substory>
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-3">
                         <page-substory
                             story-number="4"
-                            :story="record.sub_story_4"
+                            :story="slotStories.sub_story_4"
                             :stypes="stypes"
                         ></page-substory>
                     </div>
@@ -99,13 +103,9 @@
             </div>
         </section><!-- end #page-builder-container -->
     </div><!-- /end root element -->
-    <!--
-    <page-story-swap-modal
-        :story-number="currentSwapId"
-        :currentSelectedStory="currentSelectedStory"
-        :stypes="stypes"
-    ></page-story-swap-modal>
-    -->
+    <page-delete-modal
+    :page="record"
+    ></page-delete-modal>
 </template>
 
 <style scoped>
@@ -142,11 +142,11 @@ import flatpickr from 'flatpickr'
 import vSelect from "vue-select"
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 import PageSubstory from './PageSubstory.vue'
-import PageStorySwapModal from './PageStorySwapModal.vue'
+import PageDeleteModal from './PageDeleteModal.vue'
 
 module.exports = {
   directives: {},
-  components: {PageSubstory, PageStorySwapModal, vSelect},
+  components: {PageSubstory, PageDeleteModal, vSelect},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -181,31 +181,34 @@ module.exports = {
         startDateMax: '',
         startDateMin: '',
       },
+      endDatepicker: null,
       formErrors: {},
-      formSuccess: {},
-      minTitleChars: 10, // minimum title characters allowed
-      formInputs: {},
       formMessage: {
         isOk: false,
         isErr: false,
         msg: ''
       },
+      numLoadedComponents: 0,
       newpage: false,
       recordState: '',
       record: {
         id: '',
         end_date: null,
-        live: false,
+        live: 0,
+        ready: 0,
         start_date: null,
-        main_story: null,
-        sub_story_1: null,
-        sub_story_2: null,
-        sub_story_3: null,
-        sub_story_4: null,
+        template: 'home-emutoday',
+        stories: [],
       },
       response: {},
+      slotStories: {
+         main_story: null,
+          sub_story_1: null,
+          sub_story_2: null,
+          sub_story_3: null,
+          sub_story_4: null,
+      },
       startDatepicker: null,
-      endDatepicker: null,
       userRoles: [],
     }
   },
@@ -213,7 +216,7 @@ module.exports = {
   },
   ready: function() {
     if(this.recordexists){
-      //this.fetchCurrentPage(this.recordid)
+      this.fetchCurrentPage(this.recordid)
     } else {
       this.newpage = true;
       this.setupDatePickers()
@@ -236,14 +239,13 @@ module.exports = {
     progress: function(){
       let progress = 0
 
-      this.record.start_date ? progress += 12.5 : ''
-      this.record.end_date ? progress += 12.5 : ''
-      this.record.live == true ? progress += 12.5 : ''
-      this.record.main_story ? progress += 12.5 : ''
-      this.record.sub_story_1 ? progress += 12.5 : ''
-      this.record.sub_story_2 ? progress += 12.5 : ''
-      this.record.sub_story_3 ? progress += 12.5 : ''
-      this.record.sub_story_4 ? progress += 12.5 : ''
+      this.record.start_date ? progress += 14 : ''
+      this.record.end_date ? progress += 14 : ''
+      this.slotStories.main_story ? progress += 16 : ''
+      this.slotStories.sub_story_1 ? progress += 14 : ''
+      this.slotStories.sub_story_2 ? progress += 14 : ''
+      this.slotStories.sub_story_3 ? progress += 14 : ''
+      this.slotStories.sub_story_4 ? progress += 14 : ''
 
       return progress
     },
@@ -251,14 +253,15 @@ module.exports = {
 
   methods: {
     fetchCurrentPage: function(recid) {
-      // this.$http.get('/api/page/' + recid + '/edit')
-      //
-      // .then((response) => {
-      //   this.$set('record', response.data.newdata.data)
-      //   //this.setupDatePickers();
-      // }, (response) => {
-      //   this.formErrors = response.data.error.message;
-      // }).bind(this);
+      this.$http.get('/api/page/' + recid + '/edit')
+
+      .then((response) => {
+        this.$set('record', response.data.newdata.data)
+        this.setPageStorySlots(this.record.stories)
+        this.setupDatePickers();
+      }, (response) => {
+        this.formErrors = response.data.error.message;
+      }).bind(this);
     },
 
     nowOnReload:function() {
@@ -272,6 +275,32 @@ module.exports = {
       this.fetchCurrentPage(this.currentRecordId);
     },
 
+    // Loop through the stories that belong to this page and add them to the correct slots
+    setPageStorySlots: function(storiesArr){
+        var self = this
+        storiesArr.forEach(function(story){
+            // make sure the pivot table exists on the story object
+            if(story.pivot){
+                switch(story.pivot.page_position){
+                    case 0:
+                        self.slotStories.main_story = story
+                        break
+                    case 1:
+                        self.slotStories.sub_story_1 = story
+                        break
+                    case 2:
+                        self.slotStories.sub_story_2 = story
+                        break
+                    case 3:
+                        self.slotStories.sub_story_3 = story
+                        break
+                    case 4:
+                        self.slotStories.sub_story_4 = story
+                        break
+                }
+            }
+        })
+    },
     submitForm: function() {
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
@@ -280,11 +309,15 @@ module.exports = {
       let route =  (this.recordexists) ? '/api/page/' + this.record.id : '/api/page';
 
       // Submit form.
-      this.$http[method](route, this.record) //
+      this.$http[method](route,
+          {
+              page: this.record,
+              stories: this.slotStories
+          }
+      ) //
 
       // Do this when response gets back.
       .then((response) => {
-          console.log(response.data)
         this.formMessage.msg = response.data.message;
         this.formMessage.isOk = response.ok; // Success message
         this.formMessage.isErr = false;
@@ -309,7 +342,6 @@ module.exports = {
       let self = this
       let today = moment()
 
-      //this.dateObject.sendAtMin = today.format('YYYY-MM-DD')
       if (this.record.start_date === '') {
         this.dateObject.startDateDefault = today.format('YYYY-MM-DD')
       } else {
@@ -323,7 +355,6 @@ module.exports = {
       }
 
       this.startDatepicker = flatpickr(document.getElementById("start-date"), {
-        //minDate: self.dateObject.startDateMin,
         defaultDate: self.dateObject.startDateDefault,
         enableTime: true,
         altInput: true,
@@ -364,24 +395,27 @@ module.exports = {
     },
   },
   events: {
+      'modal-data-loaded': function(){
+            this.numLoadedComponents++
+      },
       'story-swapped': function (storyData) {
           // storyData[0] contains the story object
           // storyData[1] contains the story's position in the page builder
           switch(storyData[1]){
               case "0":
-                this.$set('record.main_story', storyData[0])
+                this.$set('slotStories.main_story', storyData[0])
                 break;
               case "1":
-                this.$set('record.sub_story_1', storyData[0])
+                this.$set('slotStories.sub_story_1', storyData[0])
                 break;
               case "2":
-                this.$set('record.sub_story_2', storyData[0])
+                this.$set('slotStories.sub_story_2', storyData[0])
                 break;
               case "3":
-                this.$set('record.sub_story_3', storyData[0])
+                this.$set('slotStories.sub_story_3', storyData[0])
                 break;
               case "4":
-                this.$set('record.sub_story_4', storyData[0])
+                this.$set('slotStories.sub_story_4', storyData[0])
                 break;
           }
       },

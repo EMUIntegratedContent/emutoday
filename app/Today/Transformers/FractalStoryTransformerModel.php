@@ -47,7 +47,6 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'photo_credit' => $story->photo_credit,
             'small_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text','alt_text')->whereIn('imagetype_id', $smallImageTypeIds)->get(), // need for email builder (sub-main stories)
             'email_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text','alt_text')->whereIn('imagetype_id', $emailImageTypeIds)->get(), // need for email builder (main stories)
-            'front_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text','alt_text')->whereIn('imagetype_id', $frontImageTypeIds)->get(), // need for hub builder (2018 version)
             'full_url' => url('/') . '/story/' . $story->story_type . '/' . $story->id,
             'edit_url' => url('/') . '/admin/queueall/story/' . $story->story_type . '/' . $story->id . '/edit'
         ];

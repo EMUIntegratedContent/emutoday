@@ -59,11 +59,18 @@ module.exports = {
           if(this.story){
               // this is a main story
               if(this.storyNumber == 0){
-                  return this.story.front_images[0].image_path + this.story.front_images[0].filename
+                  // Find the front image
+                  var frontImage = this.story.images.filter(function(image){
+                      return image.image_type == 'front'
+                  })
+                  return frontImage[0].image_path + frontImage[0].filename
               }
 
               // this is a sub story
-              return this.story.small_images[0].image_path + this.story.small_images[0].filename
+              var smallImage = this.story.images.filter(function(image){
+                  return image.image_type == 'small'
+              })
+              return smallImage[0].image_path + smallImage[0].filename
           }
           // no story set for this component
           return '/imgs/notselected.png'
@@ -83,7 +90,9 @@ module.exports = {
 
   },
   events: {
-
+      'component-data-loaded': function(){
+          this.$dispatch('modal-data-loaded')
+      },
   },
 };
 

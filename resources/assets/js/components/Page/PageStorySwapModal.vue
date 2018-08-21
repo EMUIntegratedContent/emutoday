@@ -5,39 +5,68 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Swap Story</h4>
+          <h3 class="modal-title">Swap Story</h3>
+          <template v-if="storyNumber == 0">
+              <p>Choose a <strong>main story</strong> for this hub page. The list below shows all stories in within the date range that have an emutoday_front story type.</p>
+          </template>
+          <template v-else>
+              <p>Choose a <strong>sub story</strong>. The list below shows all stories in within the date range that have an emutoday_small story type.</p>
+          </template>
         </div>
         <div class="modal-body">
-            <template v-if="storyNumber == 0">
-                <p>Choose a <strong>main story</strong> for this hub page. The list below shows all stories in within the date range that have an emutoday_front story type.</p>
+            <!-- Shows the current story pod (if one is selected) -->
+            <template v-if="currentStory">
+                <h4>Selected story for this slot</h4>
+                <page-story-pod
+                    :item="currentStory"
+                    :current-story="currentStory"
+                >
+                </page-story-pod>
             </template>
             <template v-else>
-                <p>Choose a <strong>sub story</strong>. The list below shows all stories in within the date range that have an emutoday_small story type.</p>
+                <h4>No story has been selected for this slot.</h4>
             </template>
-
-            <!-- Date filter -->
-            <form class="form-inline">
-              <div class="form-group">
-                  <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>
-              </div>
-              <div v-if="isEndDate" class="form-group">
-                  <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"><p>
-              </div>
-              <p><button type="button" class="btn btn-sm btn-info" @click="fetchStories">Filter</button></p>
-              <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
-            </form>
-            <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group btn-group-xs" role="group">
-                    <label>Filter: </label>
+            <hr>
+            <!-- FILTERS -->
+            <div class="row">
+                <!-- DATE filter -->
+                <div class="col-xs-12 col-sm-12 col-md-6">
+                    <form class="form">
+                      <div class="form-group">
+                          <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
+                          <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate" class="form-control">
+                      </div>
+                      <div v-if="isEndDate" class="form-group">
+                          <label for="start-date"> and </label>
+                          <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate" class="form-control">
+                      </div>
+                      <div class="form-group">
+                          <button type="button" class="btn btn-sm btn-info" @click="fetchStories">Filter</button>
+                          <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
+                      </div>
+                    </form>
+                    <div class="btn-toolbar" role="toolbar" style="margin-top:15px;">
+                        <div class="btn-group btn-group-xs" role="group">
+                            <label>Filter: </label>
+                        </div>
+                        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="stories_filter_storytype">
+                             <template v-for="item in storyTypeIcons">
+                                 <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+                            </template>
+                        </div>
+                    </div>
                 </div>
-                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="stories_filter_storytype">
-                     <template v-for="item in storyTypeIcons">
-                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
-                    </template>
+                <!-- TEXT filter -->
+                <div class="col-xs-6">
+                    <form class="form">
+                      <div class="form-group">
+                          <label for="search-filter">Search titles</label>
+                          <input v-model="textFilter" id="search-filter" type="text" class="form-control">
+                      </div>
+                    </form>
                 </div>
             </div>
+            <!-- Filter by text -->
             <div id="swappable-stories">
               <template v-if="!loadingQueue">
                 <template v-if="queueStories.length > 0">
@@ -45,6 +74,7 @@
                       :item="story"
                       v-for="story in queueStories | filterBy filterByStoryType | paginate"
                       :current-story="currentStory"
+                      pod-type="queue"
                   >
                   </page-story-pod>
                   <ul class="pagination">
@@ -67,8 +97,6 @@
                 <p>Loading queue. Please Wait...</p>
               </template>
             </div>
-
-
         </div>
         <div class="modal-footer">
           this is the footer
@@ -125,19 +153,20 @@ export default {
   },
   data: function() {
     return {
-        stories_filter_storytype: '',
         currentDate: moment(),
-        queueStories: [],
-        frontStories: [],
-        startdate: null,
+        currentPage: 1,
         enddate: null,
+        frontStories: [],
         isEndDate: false,
+        isLoadedSignalSent: false,
+        itemsPerPage: 10,
         loadingQueue: false,
         loadingUsed: true,
-        eventMsg: null,
-        currentPage: 1,
-        itemsPerPage: 10,
+        queueStories: [],
         resultCount: 0,
+        startdate: null,
+        stories_filter_storytype: '',
+        textFilter: '',
     }
   },
   ready: function() {
@@ -179,6 +208,11 @@ export default {
       },
   },
   methods: {
+      emitDataLoaded: function(){
+        // Dispatch an event that propagates upward along the parent chain using $dispatch()
+        this.$dispatch('component-data-loaded')
+        this.isLoadedSignalSent = true;
+      },
       // fetch all emutoday_front and emutoday_small stories from the last month
       fetchStories: function(){
           this.loadingQueue = true
@@ -202,26 +236,38 @@ export default {
           .then((response) =>{
               // sub stories
               if(this.storyNumber > 0){
-                  this.$set('queueStories', response.data.newdata.data)
+                  this.$set('queueStories', response.data.newdata)
               } else {
                   // main story
-                  this.$set('queueStories', response.data.newdata.data.filter(function(story){
-                      return story.front_images.length >= 1
+                  this.$set('queueStories', response.data.newdata.filter(function(story){
+                      // only pass stories with a front image
+                      var frontImage = story.images.filter(function(image){
+                          return image.image_type == 'front'
+                      })
+                      return frontImage.length >= 1
                   }))
               }
               this.resultCount = this.queueStories.length
               this.setPage(1) // reset paginator
               this.loadingQueue = false;
+
+              // send a signal to the parent form component that the data for this modal was full loaded (initial page load only)
+              if(!this.isLoadedSignalSent){
+                  this.emitDataLoaded()
+              }
           }, (response) => {
               //error callback
               console.log("ERRORS");
           }).bind(this);
       },
+      // Filters out stories that do not match the story type AND the text filter search box
       filterByStoryType: function (value) {
+          var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+
           if (this.stories_filter_storytype === '') {
-              return value.story_type !== '';
+              return value.story_type !== '' && regexp.test(value.title)
           } else {
-              return value.story_type === this.stories_filter_storytype;
+              return value.story_type === this.stories_filter_storytype && regexp.test(value.title)
           }
       },
       // filter only stories that are emutoday_front
@@ -293,7 +339,7 @@ export default {
         }
         var index = (this.currentPage-1) * this.itemsPerPage
         return list.slice(index, index + this.itemsPerPage)
-      },
+      }
   },
   events: {
       'story-swap-requested': function (story) {

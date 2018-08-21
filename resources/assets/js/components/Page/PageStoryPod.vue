@@ -1,14 +1,14 @@
 <template>
 <div :class="specialItem">
-    <div class="box box-solid {{item.group}} {{ currentStory == item ? 'set' : '' }}">
+    <div class="box box-solid {{item.story_group.group}} {{ currentStory && currentStory.id == item.id && podType == 'queue' ? 'set' : '' }}">
         <div class="box-header with-border">
           <div class="row">
               <div class="col-sm-8">
-                  <span v-show="currentStory == item" class="success"><i class="fa fa-check"></i> Set</span>
+                  <span v-show="currentStory && currentStory.id == item.id && podType == 'queue'" class="success"><i class="fa fa-check"></i> Set</span>
               </div>
               <div class="col-sm-4">
                   <div class="pull-right">
-                      <button type="btn btn-sm btn-info" @click="emitSwapStory" /><i class="fa fa-exchange"></i></button>
+                      <button type="btn btn-sm btn-info" @click="emitSwapStory" /><i :class="currentStory && currentStory.id == item.id ? 'fa fa-times' : 'fa fa-exchange'" aria-hidden="true"></i></button>
                   </div>
               </div>
           </div><!-- /.row -->
@@ -40,7 +40,7 @@
                     </div><!-- /.col-md-6 -->
                     <div class="col-sm-6">
                         <div class="btn-group pull-right">
-                            <a :href="item.edit_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-pencil"></i></a>
+                            <a :href="'/admin/queueall/story/' + item.story_type + '/' + item.id + '/edit'" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="edit"><i class="fa fa-pencil"></i></a>
                         </div>
                     </div><!-- /.col-md-6 -->
                 </div><!-- /.row -->
@@ -240,7 +240,18 @@ import moment from 'moment'
 module.exports  = {
     directives: {},
     components: {},
-    props: ['item', 'currentStory'],
+    props: {
+        item: {
+            type: Object,
+            required: true,
+        },
+        currentStory: {
+            default: null
+        },
+        podType: {
+            required: false,
+        }
+    },
     data: function() {
         return {
             options: [],
@@ -307,8 +318,13 @@ module.exports  = {
     },
     methods: {
         emitSwapStory: function(){
+          var storyToSwap = null // when the current story is selected to be removed
+          if(!this.currentStory || this.currentStory.id != this.item.id){
+              storyToSwap = this.item // when a new story is being selected
+          }
+
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('story-swap-requested', this.item)
+          this.$dispatch('story-swap-requested', storyToSwap)
           this.swapped = true;
         },
         toggleBody: function(ev) {
