@@ -248,7 +248,7 @@ class EventController extends ApiController
           $event->description           	= $request->get('description');
           $event->on_campus				      	= $request->get('on_campus');
           //($request->get('building') !== null) ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
-          ($request->get('building') !== null) ? $event->building = preg_replace(['/[\s\\/]/','/[^A-Za-z0-9-\\/]/'], ['-',''], strtolower($request->get('building'))) : $event->building = null;
+          ($request->get('building') !== null) ? $event->building = preg_replace(["/[\s\\/]/","/[^A-Za-z0-9-\\/]/"], ["-",""], strtolower($request->get('building'))) : $event->building = null;
           $event->room						      	= $request->get('room');
           $event->location              	= $request->get('location');
 
@@ -562,7 +562,7 @@ class EventController extends ApiController
             $event->description           	= $request->get('description');
             $event->on_campus				      	= $request->get('on_campus');
             //$request->get('building') !== null ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
-            $request->get('building') !== null ? $event->building = preg_replace(['/[\s\\/]/','/[^A-Za-z0-9-\\/]/'], ['-',''], strtolower($request->get('building'))) : $event->building = null;
+            $request->get('building') !== null ? $event->building = preg_replace(["/[\s\\/]/","/[^A-Za-z0-9-\\/]/"], ["-",""], strtolower($request->get('building'))) : $event->building = null;
             $event->room						      	= $request->get('room');
             $event->location              	= $request->get('location');
 

@@ -14,6 +14,7 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
     {
         $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get();
         $smallImageTypeIds = Imagetype::select('id')->where('type', 'small')->get();
+        $frontImageTypeIds = Imagetype::select('id')->where('type', 'front')->get();
 
         $author = Author::find($story->author_id);
 

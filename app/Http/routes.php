@@ -211,6 +211,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::post('announcement', 'Api\AnnouncementController@store')->name('api_announcement_storeitem'); // Route to save announcement submissions to db
     Route::resource('announcement', 'Api\AnnouncementController');
 
+    Route::get('page/stories/{fromDate?}/{toDate?}', 'Api\PageController@getHubReadyStories')->name('api_hub_stories');
+    Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
+    Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
+    //Route::post('page', 'Api\PageController@saveHubPage')->name('api_save_hub_page');
+    Route::resource('page', 'Api\PageController');
+
     // Archives API
     Route::get('archive/queueload/{archiveType}/{perPage?}', 'Api\ArchiveController@queueLoad')->name('api_archive_queue');
     Route::put('archive/{archiveType}/{id}/unarchive', 'Api\ArchiveController@unarchive')->name('api_archive_unarchive');
@@ -232,10 +238,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::patch('story/archiveitem/{id}', 'Api\StoryController@archiveItem')->name('api_story_archiveitem');
     Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
     Route::resource('story', 'Api\StoryController');
-
-    Route::get('page/chartload', 'Api\PageController@chartLoad')->name('api_page_chartload');
-    Route::get('page/queueload', 'Api\PageController@queueLoad')->name('api.page.queueload');
-
 });
 
     Route::get('/', 'MainController@index')->name('/');

@@ -13,7 +13,7 @@
       </p>
     </template>
     <template v-if="isOnCampus">
-      <a href="http://emich.edu/maps/?building={{item.building}}" target="_blank">{{item.location}}</a>
+      <a href="https://emich.edu/map/?location={{item.building}}" target="_blank">{{item.location}}</a>
     </template>
     <template v-else>
       <p>{{item.location}}</p>

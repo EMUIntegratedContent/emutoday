@@ -1,66 +1,180 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":5}],2:[function(require,module,exports){
+},{"core-js/library/fn/json/stringify":16}],2:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/create"), __esModule: true };
+},{"core-js/library/fn/object/create":17}],3:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/define-properties"), __esModule: true };
+},{"core-js/library/fn/object/define-properties":18}],4:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":6}],3:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":19}],5:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/get-own-property-descriptor"), __esModule: true };
+},{"core-js/library/fn/object/get-own-property-descriptor":20}],6:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/get-own-property-names"), __esModule: true };
+},{"core-js/library/fn/object/get-own-property-names":21}],7:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/get-own-property-symbols"), __esModule: true };
+},{"core-js/library/fn/object/get-own-property-symbols":22}],8:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/get-prototype-of"), __esModule: true };
+},{"core-js/library/fn/object/get-prototype-of":23}],9:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/is-extensible"), __esModule: true };
+},{"core-js/library/fn/object/is-extensible":24}],10:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
+},{"core-js/library/fn/object/keys":25}],11:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/prevent-extensions"), __esModule: true };
+},{"core-js/library/fn/object/prevent-extensions":26}],12:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
+},{"core-js/library/fn/symbol":27}],13:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/symbol/iterator"), __esModule: true };
+},{"core-js/library/fn/symbol/iterator":28}],14:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
 
-var _defineProperty = require("../core-js/object/define-property");
+var _iterator = require("../core-js/symbol/iterator");
 
-var _defineProperty2 = _interopRequireDefault(_defineProperty);
+var _iterator2 = _interopRequireDefault(_iterator);
+
+var _symbol = require("../core-js/symbol");
+
+var _symbol2 = _interopRequireDefault(_symbol);
+
+var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (obj, key, value) {
-  if (key in obj) {
-    (0, _defineProperty2.default)(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
+exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.default) === "symbol" ? function (obj) {
+  return typeof obj === "undefined" ? "undefined" : _typeof(obj);
+} : function (obj) {
+  return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
-},{"../core-js/object/define-property":2}],4:[function(require,module,exports){
+},{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],15:[function(require,module,exports){
 
-},{}],5:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var core = require('../../modules/_core');
 var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
 module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
 
-},{"../../modules/_core":9}],6:[function(require,module,exports){
+},{"../../modules/_core":34}],17:[function(require,module,exports){
+require('../../modules/es6.object.create');
+var $Object = require('../../modules/_core').Object;
+module.exports = function create(P, D) {
+  return $Object.create(P, D);
+};
+
+},{"../../modules/_core":34,"../../modules/es6.object.create":86}],18:[function(require,module,exports){
+require('../../modules/es6.object.define-properties');
+var $Object = require('../../modules/_core').Object;
+module.exports = function defineProperties(T, D) {
+  return $Object.defineProperties(T, D);
+};
+
+},{"../../modules/_core":34,"../../modules/es6.object.define-properties":87}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-},{"../../modules/_core":9,"../../modules/es6.object.define-property":22}],7:[function(require,module,exports){
+},{"../../modules/_core":34,"../../modules/es6.object.define-property":88}],20:[function(require,module,exports){
+require('../../modules/es6.object.get-own-property-descriptor');
+var $Object = require('../../modules/_core').Object;
+module.exports = function getOwnPropertyDescriptor(it, key) {
+  return $Object.getOwnPropertyDescriptor(it, key);
+};
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":89}],21:[function(require,module,exports){
+require('../../modules/es6.object.get-own-property-names');
+var $Object = require('../../modules/_core').Object;
+module.exports = function getOwnPropertyNames(it) {
+  return $Object.getOwnPropertyNames(it);
+};
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":90}],22:[function(require,module,exports){
+require('../../modules/es6.symbol');
+module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
+
+},{"../../modules/_core":34,"../../modules/es6.symbol":97}],23:[function(require,module,exports){
+require('../../modules/es6.object.get-prototype-of');
+module.exports = require('../../modules/_core').Object.getPrototypeOf;
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":91}],24:[function(require,module,exports){
+require('../../modules/es6.object.is-extensible');
+module.exports = require('../../modules/_core').Object.isExtensible;
+
+},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":92}],25:[function(require,module,exports){
+require('../../modules/es6.object.keys');
+module.exports = require('../../modules/_core').Object.keys;
+
+},{"../../modules/_core":34,"../../modules/es6.object.keys":93}],26:[function(require,module,exports){
+require('../../modules/es6.object.prevent-extensions');
+module.exports = require('../../modules/_core').Object.preventExtensions;
+
+},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":94}],27:[function(require,module,exports){
+require('../../modules/es6.symbol');
+require('../../modules/es6.object.to-string');
+require('../../modules/es7.symbol.async-iterator');
+require('../../modules/es7.symbol.observable');
+module.exports = require('../../modules/_core').Symbol;
+
+},{"../../modules/_core":34,"../../modules/es6.object.to-string":95,"../../modules/es6.symbol":97,"../../modules/es7.symbol.async-iterator":98,"../../modules/es7.symbol.observable":99}],28:[function(require,module,exports){
+require('../../modules/es6.string.iterator');
+require('../../modules/web.dom.iterable');
+module.exports = require('../../modules/_wks-ext').f('iterator');
+
+},{"../../modules/_wks-ext":83,"../../modules/es6.string.iterator":96,"../../modules/web.dom.iterable":100}],29:[function(require,module,exports){
 module.exports = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
+module.exports = function () { /* empty */ };
+
+},{}],31:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":18}],9:[function(require,module,exports){
+},{"./_is-object":50}],32:[function(require,module,exports){
+// false -> Array#indexOf
+// true  -> Array#includes
+var toIObject = require('./_to-iobject');
+var toLength = require('./_to-length');
+var toAbsoluteIndex = require('./_to-absolute-index');
+module.exports = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIObject($this);
+    var length = toLength(O.length);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
+    // Array#includes uses SameValueZero equality algorithm
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
+      value = O[index++];
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
+    } return !IS_INCLUDES && -1;
+  };
+};
+
+},{"./_to-absolute-index":75,"./_to-iobject":77,"./_to-length":78}],33:[function(require,module,exports){
+var toString = {}.toString;
+
+module.exports = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+},{}],34:[function(require,module,exports){
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
-},{}],10:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function (fn, that, length) {
@@ -82,13 +196,20 @@ module.exports = function (fn, that, length) {
   };
 };
 
-},{"./_a-function":7}],11:[function(require,module,exports){
+},{"./_a-function":29}],36:[function(require,module,exports){
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+},{}],37:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_fails":14}],12:[function(require,module,exports){
+},{"./_fails":42}],38:[function(require,module,exports){
 var isObject = require('./_is-object');
 var document = require('./_global').document;
 // typeof document.createElement is 'object' in old IE
@@ -97,7 +218,30 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_global":15,"./_is-object":18}],13:[function(require,module,exports){
+},{"./_global":43,"./_is-object":50}],39:[function(require,module,exports){
+// IE 8- don't enum bug keys
+module.exports = (
+  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+).split(',');
+
+},{}],40:[function(require,module,exports){
+// all enumerable object keys, includes symbols
+var getKeys = require('./_object-keys');
+var gOPS = require('./_object-gops');
+var pIE = require('./_object-pie');
+module.exports = function (it) {
+  var result = getKeys(it);
+  var getSymbols = gOPS.f;
+  if (getSymbols) {
+    var symbols = getSymbols(it);
+    var isEnum = pIE.f;
+    var i = 0;
+    var key;
+    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+  } return result;
+};
+
+},{"./_object-gops":63,"./_object-keys":66,"./_object-pie":67}],41:[function(require,module,exports){
 var global = require('./_global');
 var core = require('./_core');
 var ctx = require('./_ctx');
@@ -160,7 +304,7 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_core":9,"./_ctx":10,"./_global":15,"./_hide":16}],14:[function(require,module,exports){
+},{"./_core":34,"./_ctx":35,"./_global":43,"./_hide":45}],42:[function(require,module,exports){
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -169,7 +313,7 @@ module.exports = function (exec) {
   }
 };
 
-},{}],15:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -177,7 +321,13 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],16:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+},{}],45:[function(require,module,exports){
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -187,17 +337,232 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_descriptors":11,"./_object-dp":19,"./_property-desc":20}],17:[function(require,module,exports){
+},{"./_descriptors":37,"./_object-dp":58,"./_property-desc":69}],46:[function(require,module,exports){
+var document = require('./_global').document;
+module.exports = document && document.documentElement;
+
+},{"./_global":43}],47:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":11,"./_dom-create":12,"./_fails":14}],18:[function(require,module,exports){
+},{"./_descriptors":37,"./_dom-create":38,"./_fails":42}],48:[function(require,module,exports){
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+var cof = require('./_cof');
+// eslint-disable-next-line no-prototype-builtins
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+  return cof(it) == 'String' ? it.split('') : Object(it);
+};
+
+},{"./_cof":33}],49:[function(require,module,exports){
+// 7.2.2 IsArray(argument)
+var cof = require('./_cof');
+module.exports = Array.isArray || function isArray(arg) {
+  return cof(arg) == 'Array';
+};
+
+},{"./_cof":33}],50:[function(require,module,exports){
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],19:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
+'use strict';
+var create = require('./_object-create');
+var descriptor = require('./_property-desc');
+var setToStringTag = require('./_set-to-string-tag');
+var IteratorPrototype = {};
+
+// 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
+
+module.exports = function (Constructor, NAME, next) {
+  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+  setToStringTag(Constructor, NAME + ' Iterator');
+};
+
+},{"./_hide":45,"./_object-create":57,"./_property-desc":69,"./_set-to-string-tag":71,"./_wks":84}],52:[function(require,module,exports){
+'use strict';
+var LIBRARY = require('./_library');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var hide = require('./_hide');
+var has = require('./_has');
+var Iterators = require('./_iterators');
+var $iterCreate = require('./_iter-create');
+var setToStringTag = require('./_set-to-string-tag');
+var getPrototypeOf = require('./_object-gpo');
+var ITERATOR = require('./_wks')('iterator');
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
+
+var returnThis = function () { return this; };
+
+module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+  $iterCreate(Constructor, NAME, next);
+  var getMethod = function (kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS: return function keys() { return new Constructor(this, kind); };
+      case VALUES: return function values() { return new Constructor(this, kind); };
+    } return function entries() { return new Constructor(this, kind); };
+  };
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
+  // Fix native
+  if ($anyNative) {
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+      // Set @@toStringTag to native iterators
+      setToStringTag(IteratorPrototype, TAG, true);
+      // fix for some old engines
+      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+    }
+  }
+  // fix Array#{values, @@iterator}.name in V8 / FF
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
+    VALUES_BUG = true;
+    $default = function values() { return $native.call(this); };
+  }
+  // Define iterator
+  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+    hide(proto, ITERATOR, $default);
+  }
+  // Plug for library
+  Iterators[NAME] = $default;
+  Iterators[TAG] = returnThis;
+  if (DEFAULT) {
+    methods = {
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
+      entries: $entries
+    };
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) redefine(proto, key, methods[key]);
+    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+  }
+  return methods;
+};
+
+},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":55,"./_object-gpo":64,"./_redefine":70,"./_set-to-string-tag":71,"./_wks":84}],53:[function(require,module,exports){
+module.exports = function (done, value) {
+  return { value: value, done: !!done };
+};
+
+},{}],54:[function(require,module,exports){
+module.exports = {};
+
+},{}],55:[function(require,module,exports){
+module.exports = true;
+
+},{}],56:[function(require,module,exports){
+var META = require('./_uid')('meta');
+var isObject = require('./_is-object');
+var has = require('./_has');
+var setDesc = require('./_object-dp').f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
+  return true;
+};
+var FREEZE = !require('./_fails')(function () {
+  return isExtensible(Object.preventExtensions({}));
+});
+var setMeta = function (it) {
+  setDesc(it, META, { value: {
+    i: 'O' + ++id, // object ID
+    w: {}          // weak collections IDs
+  } });
+};
+var fastKey = function (it, create) {
+  // return primitive with prefix
+  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, META)) {
+    // can't set metadata to uncaught frozen object
+    if (!isExtensible(it)) return 'F';
+    // not necessary to add metadata
+    if (!create) return 'E';
+    // add missing metadata
+    setMeta(it);
+  // return object ID
+  } return it[META].i;
+};
+var getWeak = function (it, create) {
+  if (!has(it, META)) {
+    // can't set metadata to uncaught frozen object
+    if (!isExtensible(it)) return true;
+    // not necessary to add metadata
+    if (!create) return false;
+    // add missing metadata
+    setMeta(it);
+  // return hash weak collections IDs
+  } return it[META].w;
+};
+// add metadata on freeze-family methods calling
+var onFreeze = function (it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+  return it;
+};
+var meta = module.exports = {
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
+  onFreeze: onFreeze
+};
+
+},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":58,"./_uid":81}],57:[function(require,module,exports){
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+var anObject = require('./_an-object');
+var dPs = require('./_object-dps');
+var enumBugKeys = require('./_enum-bug-keys');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE = 'prototype';
+
+// Create object with fake `null` prototype: use iframe Object with cleared prototype
+var createDict = function () {
+  // Thrash, waste and sodomy: IE GC bug
+  var iframe = require('./_dom-create')('iframe');
+  var i = enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
+  iframe.style.display = 'none';
+  require('./_html').appendChild(iframe);
+  iframe.src = 'javascript:'; // eslint-disable-line no-script-url
+  // createDict = iframe.contentWindow.Object;
+  // html.removeChild(iframe);
+  iframeDocument = iframe.contentWindow.document;
+  iframeDocument.open();
+  iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
+  iframeDocument.close();
+  createDict = iframeDocument.F;
+  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  return createDict();
+};
+
+module.exports = Object.create || function create(O, Properties) {
+  var result;
+  if (O !== null) {
+    Empty[PROTOTYPE] = anObject(O);
+    result = new Empty();
+    Empty[PROTOTYPE] = null;
+    // add "__proto__" for Object.getPrototypeOf polyfill
+    result[IE_PROTO] = O;
+  } else result = createDict();
+  return Properties === undefined ? result : dPs(result, Properties);
+};
+
+},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":59,"./_shared-key":72}],58:[function(require,module,exports){
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -215,7 +580,131 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":8,"./_descriptors":11,"./_ie8-dom-define":17,"./_to-primitive":21}],20:[function(require,module,exports){
+},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":80}],59:[function(require,module,exports){
+var dP = require('./_object-dp');
+var anObject = require('./_an-object');
+var getKeys = require('./_object-keys');
+
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
+  anObject(O);
+  var keys = getKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
+  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+  return O;
+};
+
+},{"./_an-object":31,"./_descriptors":37,"./_object-dp":58,"./_object-keys":66}],60:[function(require,module,exports){
+var pIE = require('./_object-pie');
+var createDesc = require('./_property-desc');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var has = require('./_has');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var gOPD = Object.getOwnPropertyDescriptor;
+
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
+  O = toIObject(O);
+  P = toPrimitive(P, true);
+  if (IE8_DOM_DEFINE) try {
+    return gOPD(O, P);
+  } catch (e) { /* empty */ }
+  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+};
+
+},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":67,"./_property-desc":69,"./_to-iobject":77,"./_to-primitive":80}],61:[function(require,module,exports){
+// fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
+var toIObject = require('./_to-iobject');
+var gOPN = require('./_object-gopn').f;
+var toString = {}.toString;
+
+var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
+  ? Object.getOwnPropertyNames(window) : [];
+
+var getWindowNames = function (it) {
+  try {
+    return gOPN(it);
+  } catch (e) {
+    return windowNames.slice();
+  }
+};
+
+module.exports.f = function getOwnPropertyNames(it) {
+  return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
+};
+
+},{"./_object-gopn":62,"./_to-iobject":77}],62:[function(require,module,exports){
+// 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
+var $keys = require('./_object-keys-internal');
+var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
+
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+  return $keys(O, hiddenKeys);
+};
+
+},{"./_enum-bug-keys":39,"./_object-keys-internal":65}],63:[function(require,module,exports){
+exports.f = Object.getOwnPropertySymbols;
+
+},{}],64:[function(require,module,exports){
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+var has = require('./_has');
+var toObject = require('./_to-object');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+module.exports = Object.getPrototypeOf || function (O) {
+  O = toObject(O);
+  if (has(O, IE_PROTO)) return O[IE_PROTO];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
+},{"./_has":44,"./_shared-key":72,"./_to-object":79}],65:[function(require,module,exports){
+var has = require('./_has');
+var toIObject = require('./_to-iobject');
+var arrayIndexOf = require('./_array-includes')(false);
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+
+module.exports = function (object, names) {
+  var O = toIObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+  // Don't enum bug & hidden keys
+  while (names.length > i) if (has(O, key = names[i++])) {
+    ~arrayIndexOf(result, key) || result.push(key);
+  }
+  return result;
+};
+
+},{"./_array-includes":32,"./_has":44,"./_shared-key":72,"./_to-iobject":77}],66:[function(require,module,exports){
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys = require('./_object-keys-internal');
+var enumBugKeys = require('./_enum-bug-keys');
+
+module.exports = Object.keys || function keys(O) {
+  return $keys(O, enumBugKeys);
+};
+
+},{"./_enum-bug-keys":39,"./_object-keys-internal":65}],67:[function(require,module,exports){
+exports.f = {}.propertyIsEnumerable;
+
+},{}],68:[function(require,module,exports){
+// most Object methods by ES6 should accept primitives
+var $export = require('./_export');
+var core = require('./_core');
+var fails = require('./_fails');
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+};
+
+},{"./_core":34,"./_export":41,"./_fails":42}],69:[function(require,module,exports){
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -225,7 +714,93 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],21:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
+module.exports = require('./_hide');
+
+},{"./_hide":45}],71:[function(require,module,exports){
+var def = require('./_object-dp').f;
+var has = require('./_has');
+var TAG = require('./_wks')('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+};
+
+},{"./_has":44,"./_object-dp":58,"./_wks":84}],72:[function(require,module,exports){
+var shared = require('./_shared')('keys');
+var uid = require('./_uid');
+module.exports = function (key) {
+  return shared[key] || (shared[key] = uid(key));
+};
+
+},{"./_shared":73,"./_uid":81}],73:[function(require,module,exports){
+var global = require('./_global');
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || (global[SHARED] = {});
+module.exports = function (key) {
+  return store[key] || (store[key] = {});
+};
+
+},{"./_global":43}],74:[function(require,module,exports){
+var toInteger = require('./_to-integer');
+var defined = require('./_defined');
+// true  -> String#at
+// false -> String#codePointAt
+module.exports = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(defined(that));
+    var i = toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+    a = s.charCodeAt(i);
+    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
+      ? TO_STRING ? s.charAt(i) : a
+      : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
+  };
+};
+
+},{"./_defined":36,"./_to-integer":76}],75:[function(require,module,exports){
+var toInteger = require('./_to-integer');
+var max = Math.max;
+var min = Math.min;
+module.exports = function (index, length) {
+  index = toInteger(index);
+  return index < 0 ? max(index + length, 0) : min(index, length);
+};
+
+},{"./_to-integer":76}],76:[function(require,module,exports){
+// 7.1.4 ToInteger
+var ceil = Math.ceil;
+var floor = Math.floor;
+module.exports = function (it) {
+  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+};
+
+},{}],77:[function(require,module,exports){
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+var IObject = require('./_iobject');
+var defined = require('./_defined');
+module.exports = function (it) {
+  return IObject(defined(it));
+};
+
+},{"./_defined":36,"./_iobject":48}],78:[function(require,module,exports){
+// 7.1.15 ToLength
+var toInteger = require('./_to-integer');
+var min = Math.min;
+module.exports = function (it) {
+  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+};
+
+},{"./_to-integer":76}],79:[function(require,module,exports){
+// 7.1.13 ToObject(argument)
+var defined = require('./_defined');
+module.exports = function (it) {
+  return Object(defined(it));
+};
+
+},{"./_defined":36}],80:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -239,12 +814,1770 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":18}],22:[function(require,module,exports){
+},{"./_is-object":50}],81:[function(require,module,exports){
+var id = 0;
+var px = Math.random();
+module.exports = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+
+},{}],82:[function(require,module,exports){
+var global = require('./_global');
+var core = require('./_core');
+var LIBRARY = require('./_library');
+var wksExt = require('./_wks-ext');
+var defineProperty = require('./_object-dp').f;
+module.exports = function (name) {
+  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+};
+
+},{"./_core":34,"./_global":43,"./_library":55,"./_object-dp":58,"./_wks-ext":83}],83:[function(require,module,exports){
+exports.f = require('./_wks');
+
+},{"./_wks":84}],84:[function(require,module,exports){
+var store = require('./_shared')('wks');
+var uid = require('./_uid');
+var Symbol = require('./_global').Symbol;
+var USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function (name) {
+  return store[name] || (store[name] =
+    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
+};
+
+$exports.store = store;
+
+},{"./_global":43,"./_shared":73,"./_uid":81}],85:[function(require,module,exports){
+'use strict';
+var addToUnscopables = require('./_add-to-unscopables');
+var step = require('./_iter-step');
+var Iterators = require('./_iterators');
+var toIObject = require('./_to-iobject');
+
+// 22.1.3.4 Array.prototype.entries()
+// 22.1.3.13 Array.prototype.keys()
+// 22.1.3.29 Array.prototype.values()
+// 22.1.3.30 Array.prototype[@@iterator]()
+module.exports = require('./_iter-define')(Array, 'Array', function (iterated, kind) {
+  this._t = toIObject(iterated); // target
+  this._i = 0;                   // next index
+  this._k = kind;                // kind
+// 22.1.5.2.1 %ArrayIteratorPrototype%.next()
+}, function () {
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
+  if (!O || index >= O.length) {
+    this._t = undefined;
+    return step(1);
+  }
+  if (kind == 'keys') return step(0, index);
+  if (kind == 'values') return step(0, O[index]);
+  return step(0, [index, O[index]]);
+}, 'values');
+
+// argumentsList[@@iterator] is %ArrayProto_values% (9.4.4.6, 9.4.4.7)
+Iterators.Arguments = Iterators.Array;
+
+addToUnscopables('keys');
+addToUnscopables('values');
+addToUnscopables('entries');
+
+},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":77}],86:[function(require,module,exports){
+var $export = require('./_export');
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+$export($export.S, 'Object', { create: require('./_object-create') });
+
+},{"./_export":41,"./_object-create":57}],87:[function(require,module,exports){
+var $export = require('./_export');
+// 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperties: require('./_object-dps') });
+
+},{"./_descriptors":37,"./_export":41,"./_object-dps":59}],88:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
 
-},{"./_descriptors":11,"./_export":13,"./_object-dp":19}],23:[function(require,module,exports){
+},{"./_descriptors":37,"./_export":41,"./_object-dp":58}],89:[function(require,module,exports){
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+var toIObject = require('./_to-iobject');
+var $getOwnPropertyDescriptor = require('./_object-gopd').f;
+
+require('./_object-sap')('getOwnPropertyDescriptor', function () {
+  return function getOwnPropertyDescriptor(it, key) {
+    return $getOwnPropertyDescriptor(toIObject(it), key);
+  };
+});
+
+},{"./_object-gopd":60,"./_object-sap":68,"./_to-iobject":77}],90:[function(require,module,exports){
+// 19.1.2.7 Object.getOwnPropertyNames(O)
+require('./_object-sap')('getOwnPropertyNames', function () {
+  return require('./_object-gopn-ext').f;
+});
+
+},{"./_object-gopn-ext":61,"./_object-sap":68}],91:[function(require,module,exports){
+// 19.1.2.9 Object.getPrototypeOf(O)
+var toObject = require('./_to-object');
+var $getPrototypeOf = require('./_object-gpo');
+
+require('./_object-sap')('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
+    return $getPrototypeOf(toObject(it));
+  };
+});
+
+},{"./_object-gpo":64,"./_object-sap":68,"./_to-object":79}],92:[function(require,module,exports){
+// 19.1.2.11 Object.isExtensible(O)
+var isObject = require('./_is-object');
+
+require('./_object-sap')('isExtensible', function ($isExtensible) {
+  return function isExtensible(it) {
+    return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
+  };
+});
+
+},{"./_is-object":50,"./_object-sap":68}],93:[function(require,module,exports){
+// 19.1.2.14 Object.keys(O)
+var toObject = require('./_to-object');
+var $keys = require('./_object-keys');
+
+require('./_object-sap')('keys', function () {
+  return function keys(it) {
+    return $keys(toObject(it));
+  };
+});
+
+},{"./_object-keys":66,"./_object-sap":68,"./_to-object":79}],94:[function(require,module,exports){
+// 19.1.2.15 Object.preventExtensions(O)
+var isObject = require('./_is-object');
+var meta = require('./_meta').onFreeze;
+
+require('./_object-sap')('preventExtensions', function ($preventExtensions) {
+  return function preventExtensions(it) {
+    return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
+  };
+});
+
+},{"./_is-object":50,"./_meta":56,"./_object-sap":68}],95:[function(require,module,exports){
+arguments[4][15][0].apply(exports,arguments)
+},{"dup":15}],96:[function(require,module,exports){
+'use strict';
+var $at = require('./_string-at')(true);
+
+// 21.1.3.27 String.prototype[@@iterator]()
+require('./_iter-define')(String, 'String', function (iterated) {
+  this._t = String(iterated); // target
+  this._i = 0;                // next index
+// 21.1.5.2.1 %StringIteratorPrototype%.next()
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return { value: undefined, done: true };
+  point = $at(O, index);
+  this._i += point.length;
+  return { value: point, done: false };
+});
+
+},{"./_iter-define":52,"./_string-at":74}],97:[function(require,module,exports){
+'use strict';
+// ECMAScript 6 symbols shim
+var global = require('./_global');
+var has = require('./_has');
+var DESCRIPTORS = require('./_descriptors');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var META = require('./_meta').KEY;
+var $fails = require('./_fails');
+var shared = require('./_shared');
+var setToStringTag = require('./_set-to-string-tag');
+var uid = require('./_uid');
+var wks = require('./_wks');
+var wksExt = require('./_wks-ext');
+var wksDefine = require('./_wks-define');
+var enumKeys = require('./_enum-keys');
+var isArray = require('./_is-array');
+var anObject = require('./_an-object');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var createDesc = require('./_property-desc');
+var _create = require('./_object-create');
+var gOPNExt = require('./_object-gopn-ext');
+var $GOPD = require('./_object-gopd');
+var $DP = require('./_object-dp');
+var $keys = require('./_object-keys');
+var gOPD = $GOPD.f;
+var dP = $DP.f;
+var gOPN = gOPNExt.f;
+var $Symbol = global.Symbol;
+var $JSON = global.JSON;
+var _stringify = $JSON && $JSON.stringify;
+var PROTOTYPE = 'prototype';
+var HIDDEN = wks('_hidden');
+var TO_PRIMITIVE = wks('toPrimitive');
+var isEnum = {}.propertyIsEnumerable;
+var SymbolRegistry = shared('symbol-registry');
+var AllSymbols = shared('symbols');
+var OPSymbols = shared('op-symbols');
+var ObjectProto = Object[PROTOTYPE];
+var USE_NATIVE = typeof $Symbol == 'function';
+var QObject = global.QObject;
+// Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
+var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
+
+// fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
+var setSymbolDesc = DESCRIPTORS && $fails(function () {
+  return _create(dP({}, 'a', {
+    get: function () { return dP(this, 'a', { value: 7 }).a; }
+  })).a != 7;
+}) ? function (it, key, D) {
+  var protoDesc = gOPD(ObjectProto, key);
+  if (protoDesc) delete ObjectProto[key];
+  dP(it, key, D);
+  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+} : dP;
+
+var wrap = function (tag) {
+  var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
+  sym._k = tag;
+  return sym;
+};
+
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+  return typeof it == 'symbol';
+} : function (it) {
+  return it instanceof $Symbol;
+};
+
+var $defineProperty = function defineProperty(it, key, D) {
+  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+  anObject(it);
+  key = toPrimitive(key, true);
+  anObject(D);
+  if (has(AllSymbols, key)) {
+    if (!D.enumerable) {
+      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+      it[HIDDEN][key] = true;
+    } else {
+      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
+      D = _create(D, { enumerable: createDesc(0, false) });
+    } return setSymbolDesc(it, key, D);
+  } return dP(it, key, D);
+};
+var $defineProperties = function defineProperties(it, P) {
+  anObject(it);
+  var keys = enumKeys(P = toIObject(P));
+  var i = 0;
+  var l = keys.length;
+  var key;
+  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+  return it;
+};
+var $create = function create(it, P) {
+  return P === undefined ? _create(it) : $defineProperties(_create(it), P);
+};
+var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+  var E = isEnum.call(this, key = toPrimitive(key, true));
+  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+  return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
+};
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
+  it = toIObject(it);
+  key = toPrimitive(key, true);
+  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+  var D = gOPD(it, key);
+  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+  return D;
+};
+var $getOwnPropertyNames = function getOwnPropertyNames(it) {
+  var names = gOPN(toIObject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+  } return result;
+};
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
+  var IS_OP = it === ObjectProto;
+  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+  } return result;
+};
+
+// 19.4.1.1 Symbol([description])
+if (!USE_NATIVE) {
+  $Symbol = function Symbol() {
+    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+    var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
+    var $set = function (value) {
+      if (this === ObjectProto) $set.call(OPSymbols, value);
+      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+      setSymbolDesc(this, tag, createDesc(1, value));
+    };
+    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+    return wrap(tag);
+  };
+  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+    return this._k;
+  });
+
+  $GOPD.f = $getOwnPropertyDescriptor;
+  $DP.f = $defineProperty;
+  require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
+  require('./_object-pie').f = $propertyIsEnumerable;
+  require('./_object-gops').f = $getOwnPropertySymbols;
+
+  if (DESCRIPTORS && !require('./_library')) {
+    redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
+  }
+
+  wksExt.f = function (name) {
+    return wrap(wks(name));
+  };
+}
+
+$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+
+for (var es6Symbols = (
+  // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
+  'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
+).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
+
+for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+
+$export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
+  // 19.4.2.1 Symbol.for(key)
+  'for': function (key) {
+    return has(SymbolRegistry, key += '')
+      ? SymbolRegistry[key]
+      : SymbolRegistry[key] = $Symbol(key);
+  },
+  // 19.4.2.5 Symbol.keyFor(sym)
+  keyFor: function keyFor(sym) {
+    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
+    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
+  },
+  useSetter: function () { setter = true; },
+  useSimple: function () { setter = false; }
+});
+
+$export($export.S + $export.F * !USE_NATIVE, 'Object', {
+  // 19.1.2.2 Object.create(O [, Properties])
+  create: $create,
+  // 19.1.2.4 Object.defineProperty(O, P, Attributes)
+  defineProperty: $defineProperty,
+  // 19.1.2.3 Object.defineProperties(O, Properties)
+  defineProperties: $defineProperties,
+  // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+  getOwnPropertyDescriptor: $getOwnPropertyDescriptor,
+  // 19.1.2.7 Object.getOwnPropertyNames(O)
+  getOwnPropertyNames: $getOwnPropertyNames,
+  // 19.1.2.8 Object.getOwnPropertySymbols(O)
+  getOwnPropertySymbols: $getOwnPropertySymbols
+});
+
+// 24.3.2 JSON.stringify(value [, replacer [, space]])
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+  var S = $Symbol();
+  // MS Edge converts symbol values to JSON as {}
+  // WebKit converts symbol values to JSON as null
+  // V8 throws on boxed symbols
+  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+})), 'JSON', {
+  stringify: function stringify(it) {
+    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    var args = [it];
+    var i = 1;
+    var replacer, $replacer;
+    while (arguments.length > i) args.push(arguments[i++]);
+    replacer = args[1];
+    if (typeof replacer == 'function') $replacer = replacer;
+    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
+      if ($replacer) value = $replacer.call(this, key, value);
+      if (!isSymbol(value)) return value;
+    };
+    args[1] = replacer;
+    return _stringify.apply($JSON, args);
+  }
+});
+
+// 19.4.3.4 Symbol.prototype[@@toPrimitive](hint)
+$Symbol[PROTOTYPE][TO_PRIMITIVE] || require('./_hide')($Symbol[PROTOTYPE], TO_PRIMITIVE, $Symbol[PROTOTYPE].valueOf);
+// 19.4.3.5 Symbol.prototype[@@toStringTag]
+setToStringTag($Symbol, 'Symbol');
+// 20.2.1.9 Math[@@toStringTag]
+setToStringTag(Math, 'Math', true);
+// 24.3.3 JSON[@@toStringTag]
+setToStringTag(global.JSON, 'JSON', true);
+
+},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_library":55,"./_meta":56,"./_object-create":57,"./_object-dp":58,"./_object-gopd":60,"./_object-gopn":62,"./_object-gopn-ext":61,"./_object-gops":63,"./_object-keys":66,"./_object-pie":67,"./_property-desc":69,"./_redefine":70,"./_set-to-string-tag":71,"./_shared":73,"./_to-iobject":77,"./_to-primitive":80,"./_uid":81,"./_wks":84,"./_wks-define":82,"./_wks-ext":83}],98:[function(require,module,exports){
+require('./_wks-define')('asyncIterator');
+
+},{"./_wks-define":82}],99:[function(require,module,exports){
+require('./_wks-define')('observable');
+
+},{"./_wks-define":82}],100:[function(require,module,exports){
+require('./es6.array.iterator');
+var global = require('./_global');
+var hide = require('./_hide');
+var Iterators = require('./_iterators');
+var TO_STRING_TAG = require('./_wks')('toStringTag');
+
+var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
+  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
+  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
+  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
+  'TextTrackList,TouchList').split(',');
+
+for (var i = 0; i < DOMIterables.length; i++) {
+  var NAME = DOMIterables[i];
+  var Collection = global[NAME];
+  var proto = Collection && Collection.prototype;
+  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+  Iterators[NAME] = Iterators.Array;
+}
+
+},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":84,"./es6.array.iterator":85}],101:[function(require,module,exports){
+"use strict";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var flatpickr = function flatpickr(selector, config) {
+	var elements = void 0;
+
+	var createInstance = function createInstance(element) {
+		if (element._flatpickr) {
+			element._flatpickr.destroy();
+		}
+
+		element._flatpickr = new flatpickr.init(element, config);
+		return element._flatpickr;
+	};
+
+	if (selector.nodeName) {
+		return createInstance(selector);
+	}
+	/*
+ Utilize the performance of native getters if applicable
+ https://jsperf.com/getelementsbyclassname-vs-queryselectorall/18
+ https://jsperf.com/jquery-vs-javascript-performance-comparison/22
+ */
+	else if (/^#[a-zA-Z0-9\-_]*$/.test(selector)) {
+			return createInstance(document.getElementById(selector.slice(1)));
+		} else if (/^\.[a-zA-Z0-9\-_]*$/.test(selector)) {
+			elements = document.getElementsByClassName(selector.slice(1));
+		} else {
+			elements = document.querySelectorAll(selector);
+		}
+
+	var instances = [];
+
+	for (var i = 0; i < elements.length; i++) {
+		instances.push(createInstance(elements[i]));
+	}
+
+	if (instances.length === 1) {
+		return instances[0];
+	}
+
+	return {
+		calendars: instances,
+		byID: function byID(id) {
+			return document.getElementById(id)._flatpickr;
+		}
+	};
+};
+
+/**
+ * @constructor
+ */
+flatpickr.init = function (element, instanceConfig) {
+	function createElement(tag, className, content) {
+		var newElement = document.createElement(tag);
+
+		if (content) {
+			newElement.textContent = content;
+		}
+
+		if (className) {
+			newElement.className = className;
+		}
+
+		return newElement;
+	}
+
+	var debounce = function debounce(func, wait, immediate) {
+		var timeout = void 0;
+		return function () {
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+
+			var context = this;
+
+			var later = function later() {
+				timeout = null;
+				if (!immediate) {
+					func.apply(context, args);
+				}
+			};
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (immediate && !timeout) {
+				func.apply(context, args);
+			}
+		};
+	};
+
+	// functions
+	var self = this;
+	var parseConfig = void 0,
+	    init = void 0,
+	    wrap = void 0,
+	    uDate = void 0,
+	    equalDates = void 0,
+	    pad = void 0,
+	    monthToStr = void 0,
+	    isEnabled = void 0,
+	    buildMonthNavigation = void 0,
+	    buildWeekdays = void 0,
+	    buildCalendar = void 0,
+	    buildDays = void 0,
+	    buildWeeks = void 0,
+	    buildTime = void 0,
+	    timeWrapper = void 0,
+	    yearScroll = void 0,
+	    updateValue = void 0,
+	    amPMToggle = void 0,
+	    onKeyDown = void 0,
+	    onResize = void 0,
+	    updateNavigationCurrentMonth = void 0,
+	    handleYearChange = void 0,
+	    changeMonth = void 0,
+	    getDaysinMonth = void 0,
+	    documentClick = void 0,
+	    selectDate = void 0,
+	    getRandomCalendarIdStr = void 0,
+	    bind = void 0,
+	    triggerChange = void 0;
+
+	// elements & variables
+	var calendarContainer = void 0,
+	    weekdayContainer = void 0,
+	    timeContainer = void 0,
+	    navigationCurrentMonth = void 0,
+	    monthsNav = void 0,
+	    prevMonthNav = void 0,
+	    currentYearElement = void 0,
+	    currentMonthElement = void 0,
+	    nextMonthNav = void 0,
+	    calendar = void 0,
+	    weekNumbers = void 0,
+	    now = new Date(),
+	    wrapperElement = void 0,
+	    clickEvt = void 0;
+
+	self.formats = {
+		// weekday name, short, e.g. Thu
+		D: function D() {
+			return self.l10n.weekdays.shorthand[self.formats.w()];
+		},
+
+		// full month name e.g. January
+		F: function F() {
+			return monthToStr(self.formats.n() - 1, false);
+		},
+
+		// hours with leading zero e.g. 03
+		H: function H() {
+			return pad(self.selectedDateObj.getHours());
+		},
+
+		// day (1-30) with ordinal suffix e.g. 1st, 2nd
+		J: function J() {
+			return self.formats.j() + self.l10n.ordinal(self.formats.j());
+		},
+
+		// AM/PM
+		K: function K() {
+			return self.selectedDateObj.getHours() > 11 ? "PM" : "AM";
+		},
+
+		// shorthand month e.g. Jan, Sep, Oct, etc
+		M: function M() {
+			return monthToStr(self.formats.n() - 1, true);
+		},
+
+		// seconds 00-59
+		S: function S() {
+			return pad(self.selectedDateObj.getSeconds());
+		},
+
+		// unix timestamp
+		U: function U() {
+			return self.selectedDateObj.getTime() / 1000;
+		},
+
+		// full year e.g. 2016
+		Y: function Y() {
+			return self.selectedDateObj.getFullYear();
+		},
+
+		// day in month, padded (01-30)
+		d: function d() {
+			return pad(self.formats.j());
+		},
+
+		// hour from 1-12 (am/pm)
+		h: function h() {
+			return self.selectedDateObj.getHours() % 12 ? self.selectedDateObj.getHours() % 12 : 12;
+		},
+
+		// minutes, padded with leading zero e.g. 09
+		i: function i() {
+			return pad(self.selectedDateObj.getMinutes());
+		},
+
+		// day in month (1-30)
+		j: function j() {
+			return self.selectedDateObj.getDate();
+		},
+
+		// weekday name, full, e.g. Thursday
+		l: function l() {
+			return self.l10n.weekdays.longhand[self.formats.w()];
+		},
+
+		// padded month number (01-12)
+		m: function m() {
+			return pad(self.formats.n());
+		},
+
+		// the month number (1-12)
+		n: function n() {
+			return self.selectedDateObj.getMonth() + 1;
+		},
+
+		// seconds 0-59
+		s: function s() {
+			return self.selectedDateObj.getSeconds();
+		},
+
+		// number of the day of the week
+		w: function w() {
+			return self.selectedDateObj.getDay();
+		},
+
+		// last two digits of year e.g. 16 for 2016
+		y: function y() {
+			return String(self.formats.Y()).substring(2);
+		}
+	};
+
+	self.defaultConfig = {
+		/* if true, dates will be parsed, formatted, and displayed in UTC.
+  preloading date strings w/ timezones is recommended but not necessary */
+		utc: false,
+
+		// wrap: see https://chmln.github.io/flatpickr/#strap
+		wrap: false,
+
+		// enables week numbers
+		weekNumbers: false,
+
+		allowInput: false,
+
+		/*
+  	clicking on input opens the date(time)picker.
+  	disable if you wish to open the calendar manually with .open()
+  */
+		clickOpens: true,
+
+		// display time picker in 24 hour mode
+		time_24hr: false,
+
+		// enables the time picker functionality
+		enableTime: false,
+
+		// noCalendar: true will hide the calendar. use for a time picker along w/ enableTime
+		noCalendar: false,
+
+		// more date format chars at https://chmln.github.io/flatpickr/#dateformat
+		dateFormat: "Y-m-d",
+
+		// altInput - see https://chmln.github.io/flatpickr/#altinput
+		altInput: false,
+
+		// the created altInput element will have this class.
+		altInputClass: "",
+
+		// same as dateFormat, but for altInput
+		altFormat: "F j, Y", // defaults to e.g. June 10, 2016
+
+		// defaultDate - either a datestring or a date object. used for datetimepicker"s initial value
+		defaultDate: null,
+
+		// the minimum date that user can pick (inclusive)
+		minDate: null,
+
+		// the maximum date that user can pick (inclusive)
+		maxDate: null,
+
+		// dateparser that transforms a given string to a date object
+		parseDate: null,
+
+		// see https://chmln.github.io/flatpickr/#disable
+		enable: [],
+
+		// see https://chmln.github.io/flatpickr/#disable
+		disable: [],
+
+		// display the short version of month names - e.g. Sep instead of September
+		shorthandCurrentMonth: false,
+
+		// displays calendar inline. see https://chmln.github.io/flatpickr/#inline-calendar
+		inline: false,
+
+		// position calendar inside wrapper and next to the input element
+		// leave at false unless you know what you"re doing
+		static: false,
+
+		// code for previous/next icons. this is where you put your custom icon code e.g. fontawesome
+		prevArrow: "&lt;",
+		nextArrow: "&gt;",
+
+		// enables seconds in the time picker
+		enableSeconds: false,
+
+		// step size used when scrolling/incrementing the hour element
+		hourIncrement: 1,
+
+		// step size used when scrolling/incrementing the minute element
+		minuteIncrement: 5,
+
+		// onChange callback when user selects a date or time
+		onChange: null, // function (dateObj, dateStr) {}
+
+		// called every time calendar is opened
+		onOpen: null, // function (dateObj, dateStr) {}
+
+		// called every time calendar is closed
+		onClose: null, // function (dateObj, dateStr) {}
+
+		onValueUpdate: null
+	};
+
+	init = function init() {
+		instanceConfig = instanceConfig || {};
+
+		self.element = element;
+
+		parseConfig();
+
+		self.input = self.config.wrap ? element.querySelector("[data-input]") : element;
+		self.input.classList.add("flatpickr-input");
+
+		if (self.config.defaultDate) {
+			self.config.defaultDate = uDate(self.config.defaultDate);
+		}
+
+		if (self.input.value || self.config.defaultDate) {
+			self.selectedDateObj = uDate(self.config.defaultDate || self.input.value);
+		}
+
+		wrap();
+		buildCalendar();
+		bind();
+
+		self.uDate = uDate;
+		self.jumpToDate();
+		updateValue();
+	};
+
+	parseConfig = function parseConfig() {
+		self.config = {};
+
+		Object.keys(self.defaultConfig).forEach(function (key) {
+			if (instanceConfig.hasOwnProperty(key)) {
+				self.config[key] = instanceConfig[key];
+			} else if (self.element.dataset && self.element.dataset.hasOwnProperty(key.toLowerCase())) {
+				self.config[key] = self.element.dataset[key.toLowerCase()];
+			} else if (!self.element.dataset && self.element.hasAttribute("data-" + key)) {
+				self.config[key] = self.element.getAttribute("data-" + key);
+			} else {
+				self.config[key] = flatpickr.init.prototype.defaultConfig[key] || self.defaultConfig[key];
+			}
+
+			if (typeof self.defaultConfig[key] === "boolean") {
+				self.config[key] = self.config[key] === true || self.config[key] === "" || self.config[key] === "true";
+			}
+
+			if (key === "enableTime" && self.config[key]) {
+				self.defaultConfig.dateFormat = !self.config.time_24hr ? "Y-m-d h:i K" : "Y-m-d H:i";
+				self.defaultConfig.altFormat = !self.config.time_24hr ? "F j Y, h:i K" : "F j, Y H:i";
+			} else if (key === "noCalendar" && self.config[key]) {
+				self.defaultConfig.dateFormat = "h:i K";
+				self.defaultConfig.altFormat = "h:i K";
+			}
+		});
+	};
+
+	getRandomCalendarIdStr = function getRandomCalendarIdStr() {
+		var randNum = void 0,
+		    idStr = void 0;
+		do {
+			randNum = Math.round(Math.random() * Math.pow(10, 10));
+			idStr = "flatpickr-" + randNum;
+		} while (document.getElementById(idStr) !== null);
+
+		return idStr;
+	};
+
+	uDate = function uDate(date, timeless) {
+		timeless = timeless || false;
+
+		if (date === "today") {
+			date = new Date();
+			timeless = true;
+		} else if (typeof date === "string") {
+			date = date.trim();
+
+			if (self.config.parseDate) {
+				date = self.config.parseDate(date);
+			} else if (/^\d\d\d\d\-\d{1,2}\-\d\d$/.test(date)) {
+				// this utc datestring gets parsed, but incorrectly by Date.parse
+				date = new Date(date.replace(/(\d)-(\d)/g, "$1/$2"));
+			} else if (Date.parse(date)) {
+				date = new Date(date);
+			} else if (/^\d\d\d\d\-\d\d\-\d\d/.test(date)) {
+				// disable special utc datestring
+				date = new Date(date.replace(/(\d)-(\d)/g, "$1/$2"));
+			} else if (/^(\d?\d):(\d\d)/.test(date)) {
+				// time-only picker
+				var matches = date.match(/^(\d?\d):(\d\d)(:(\d\d))?/),
+				    seconds = matches[4] !== undefined ? matches[4] : 0;
+
+				date = new Date();
+				date.setHours(matches[1], matches[2], seconds, 0);
+			} else {
+				console.error("flatpickr: invalid date string " + date);
+				console.info(self.element);
+			}
+		}
+
+		if (!(date instanceof Date) || !date.getTime()) {
+			return null;
+		}
+
+		if (self.config.utc && !date.fp_isUTC) {
+			date = date.fp_toUTC();
+		}
+
+		if (timeless) {
+			date.setHours(0, 0, 0, 0);
+		}
+
+		return date;
+	};
+
+	equalDates = function equalDates(date1, date2) {
+		return date1.getDate() === date2.getDate() && date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear();
+	};
+
+	wrap = function wrap() {
+		wrapperElement = createElement("div", "flatpickr-wrapper");
+
+		if (self.config.inline || self.config.static) {
+			// Wrap input and place calendar underneath
+			self.element.parentNode.insertBefore(wrapperElement, self.element);
+			wrapperElement.appendChild(self.element);
+
+			wrapperElement.classList.add(self.config.inline ? "inline" : "static");
+		} else {
+			// Insert at bottom of BODY tag to display outside
+			// of relative positioned elements with css "overflow: hidden;"
+			// property set.
+			document.body.appendChild(wrapperElement);
+		}
+
+		if (self.config.altInput) {
+			// replicate self.element
+			self.altInput = createElement(self.input.nodeName, self.config.altInputClass + " flatpickr-input");
+			self.altInput.placeholder = self.input.placeholder;
+			self.altInput.type = "text";
+
+			self.input.type = "hidden";
+			self.input.parentNode.insertBefore(self.altInput, self.input.nextSibling);
+		}
+	};
+
+	getDaysinMonth = function getDaysinMonth() {
+		var month = arguments.length <= 0 || arguments[0] === undefined ? self.currentMonth : arguments[0];
+
+		var yr = self.currentYear;
+
+		if (month === 1 && (yr % 4 === 0 && yr % 100 !== 0 || yr % 400 === 0)) {
+			return 29;
+		}
+
+		return self.l10n.daysInMonth[month];
+	};
+
+	updateValue = function updateValue(e) {
+		if (self.config.noCalendar && !self.selectedDateObj) {
+			// picking time only and method triggered from picker
+			self.selectedDateObj = new Date();
+		} else if (!self.selectedDateObj) {
+			return;
+		}
+
+		if (e) {
+			e.target.blur();
+		}
+
+		var timeHasChanged = void 0;
+
+		if (self.config.enableTime) {
+			var previousTimestamp = self.selectedDateObj.getTime();
+
+			// update time
+			var hours = parseInt(self.hourElement.value, 10) || 0,
+			    seconds = void 0;
+
+			var minutes = (60 + (parseInt(self.minuteElement.value, 10) || 0)) % 60;
+
+			if (self.config.enableSeconds) {
+				seconds = (60 + parseInt(self.secondElement.value, 10) || 0) % 60;
+			}
+
+			if (!self.config.time_24hr) {
+				// the real number of hours for the date object
+				hours = hours % 12 + 12 * (self.amPM.innerHTML === "PM");
+			}
+
+			self.selectedDateObj.setHours(hours, minutes, seconds === undefined ? self.selectedDateObj.getSeconds() : seconds);
+
+			self.hourElement.value = pad(!self.config.time_24hr ? (12 + hours) % 12 + 12 * (hours % 12 === 0) : hours);
+			self.minuteElement.value = pad(minutes);
+
+			if (seconds !== undefined) {
+				self.secondElement.value = pad(seconds);
+			}
+
+			timeHasChanged = self.selectedDateObj.getTime() !== previousTimestamp;
+		}
+
+		self.input.value = self.formatDate(self.config.dateFormat);
+
+		if (self.altInput) {
+			self.altInput.value = self.formatDate(self.config.altFormat);
+		}
+
+		if (e && (timeHasChanged || e.target.classList.contains("flatpickr-day"))) {
+			triggerChange();
+		}
+
+		if (self.config.onValueUpdate) {
+			self.config.onValueUpdate(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	pad = function pad(num) {
+		return ("0" + num).slice(-2);
+	};
+
+	self.formatDate = function (dateFormat) {
+		var formattedDate = "";
+		var formatPieces = dateFormat.split("");
+
+		for (var i = 0; i < formatPieces.length; i++) {
+			var c = formatPieces[i];
+			if (self.formats.hasOwnProperty(c) && formatPieces[i - 1] !== "\\") {
+				formattedDate += self.formats[c]();
+			} else if (c !== "\\") {
+				formattedDate += c;
+			}
+		}
+
+		return formattedDate;
+	};
+
+	monthToStr = function monthToStr(date, shorthand) {
+		if (shorthand || self.config.shorthandCurrentMonth) {
+			return self.l10n.months.shorthand[date];
+		}
+
+		return self.l10n.months.longhand[date];
+	};
+
+	isEnabled = function isEnabled(dateToCheck) {
+		if (self.config.minDate && dateToCheck < self.config.minDate || self.config.maxDate && dateToCheck > self.config.maxDate) {
+			return false;
+		}
+
+		dateToCheck = uDate(dateToCheck, true); // timeless
+
+		var bool = self.config.enable.length > 0,
+		    array = bool ? self.config.enable : self.config.disable;
+
+		var d = void 0;
+
+		for (var i = 0; i < array.length; i++) {
+			d = array[i];
+
+			if (d instanceof Function && d(dateToCheck)) {
+				// disabled by function
+				return bool;
+			} else if ( // disabled weekday
+			typeof d === "string" && /^wkd/.test(d) && dateToCheck.getDay() === (parseInt(d.slice(-1), 10) + self.l10n.firstDayOfWeek - 1) % 7) {
+				return bool;
+			} else if ((d instanceof Date || typeof d === "string" && !/^wkd/.test(d)) && uDate(d, true).getTime() === dateToCheck.getTime()) {
+				// disabled by date string
+				return bool;
+			} else if ( // disabled by range
+			(typeof d === "undefined" ? "undefined" : _typeof(d)) === "object" && d.hasOwnProperty("from") && dateToCheck >= uDate(d.from) && dateToCheck <= uDate(d.to)) {
+				return bool;
+			}
+		}
+
+		return !bool;
+	};
+
+	yearScroll = function yearScroll(event) {
+		event.preventDefault();
+
+		var delta = Math.max(-1, Math.min(1, event.wheelDelta || -event.deltaY));
+		self.currentYear = event.target.value = parseInt(event.target.value, 10) + delta;
+		self.redraw();
+	};
+
+	timeWrapper = function timeWrapper(e) {
+		e.preventDefault();
+
+		var min = parseInt(e.target.min, 10),
+		    max = parseInt(e.target.max, 10),
+		    step = parseInt(e.target.step, 10),
+		    value = parseInt(e.target.value, 10);
+
+		var newValue = value;
+
+		if (e.type === "wheel") {
+			newValue = value + step * Math.max(-1, Math.min(1, e.wheelDelta || -e.deltaY));
+		}
+
+		if (newValue <= min) {
+			newValue = max - step;
+		} else if (newValue >= max) {
+			newValue = min + step;
+		}
+
+		e.target.value = pad(newValue);
+	};
+
+	updateNavigationCurrentMonth = function updateNavigationCurrentMonth() {
+		currentMonthElement.textContent = monthToStr(self.currentMonth) + " ";
+		currentYearElement.value = self.currentYear;
+	};
+
+	handleYearChange = function handleYearChange() {
+		if (self.currentMonth < 0 || self.currentMonth > 11) {
+			self.currentYear += self.currentMonth % 11;
+			self.currentMonth = (self.currentMonth + 12) % 12;
+		}
+	};
+
+	documentClick = function documentClick(e) {
+		var isCalendarElement = wrapperElement.contains(e.relatedTarget || e.target),
+		    isInput = self.element.contains(e.relatedTarget || e.target) || e.relatedTarget || e.target === self.altInput;
+
+		if (self.isOpen && !isCalendarElement && !isInput) {
+			self.close();
+		}
+	};
+
+	changeMonth = function changeMonth(offset) {
+		self.currentMonth += offset;
+
+		handleYearChange();
+		updateNavigationCurrentMonth();
+		buildDays();
+		(self.config.noCalendar ? timeContainer : calendar).focus();
+	};
+
+	selectDate = function selectDate(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		if (self.config.allowInput && e.target === (self.altInput || self.input) && e.which === 13) {
+			self.setDate((self.altInput || self.input).value);
+			self.redraw();
+		} else if (e.target.classList.contains("flatpickr-day")) {
+			var isPrevMonthDay = e.target.classList.contains("prevMonthDay"),
+			    isNextMonthDay = e.target.classList.contains("nextMonthDay"),
+			    monthNum = self.currentMonth - isPrevMonthDay + isNextMonthDay;
+
+			if (isPrevMonthDay || isNextMonthDay) {
+				changeMonth(+isNextMonthDay - isPrevMonthDay);
+			}
+
+			self.selectedDateObj = new Date(self.currentYear, monthNum, e.target.innerHTML);
+
+			updateValue(e);
+			buildDays();
+
+			if (!self.config.enableTime) {
+				self.close();
+			}
+		}
+	};
+
+	buildCalendar = function buildCalendar() {
+		calendarContainer = createElement("div", "flatpickr-calendar");
+		calendarContainer.id = getRandomCalendarIdStr();
+
+		calendar = createElement("div", "flatpickr-days");
+		calendar.tabIndex = -1;
+
+		if (!self.config.noCalendar) {
+			buildMonthNavigation();
+			buildWeekdays();
+
+			if (self.config.weekNumbers) {
+				buildWeeks();
+			}
+
+			buildDays();
+
+			calendarContainer.appendChild(calendar);
+		}
+
+		wrapperElement.appendChild(calendarContainer);
+
+		if (self.config.enableTime) {
+			buildTime();
+		}
+	};
+
+	buildMonthNavigation = function buildMonthNavigation() {
+		monthsNav = createElement("div", "flatpickr-month");
+
+		prevMonthNav = createElement("span", "flatpickr-prev-month");
+		prevMonthNav.innerHTML = self.config.prevArrow;
+
+		currentMonthElement = createElement("span", "cur_month");
+
+		currentYearElement = createElement("input", "cur_year");
+		currentYearElement.type = "number";
+		currentYearElement.title = self.l10n.scrollTitle;
+
+		nextMonthNav = createElement("span", "flatpickr-next-month");
+		nextMonthNav.innerHTML = self.config.nextArrow;
+
+		navigationCurrentMonth = createElement("span", "flatpickr-current-month");
+		navigationCurrentMonth.appendChild(currentMonthElement);
+		navigationCurrentMonth.appendChild(currentYearElement);
+
+		monthsNav.appendChild(prevMonthNav);
+		monthsNav.appendChild(navigationCurrentMonth);
+		monthsNav.appendChild(nextMonthNav);
+
+		calendarContainer.appendChild(monthsNav);
+		updateNavigationCurrentMonth();
+	};
+
+	buildWeekdays = function buildWeekdays() {
+		weekdayContainer = createElement("div", "flatpickr-weekdays");
+		var firstDayOfWeek = self.l10n.firstDayOfWeek;
+
+		var weekdays = self.l10n.weekdays.shorthand.slice();
+
+		if (firstDayOfWeek > 0 && firstDayOfWeek < weekdays.length) {
+			weekdays = [].concat(weekdays.splice(firstDayOfWeek, weekdays.length), weekdays.splice(0, firstDayOfWeek));
+		}
+
+		if (self.config.weekNumbers) {
+			weekdayContainer.innerHTML = "<span>" + self.l10n.weekAbbreviation + "</span>";
+		}
+
+		weekdayContainer.innerHTML += "<span>" + weekdays.join("</span><span>") + "</span>";
+
+		calendarContainer.appendChild(weekdayContainer);
+	};
+
+	buildWeeks = function buildWeeks() {
+		calendarContainer.classList.add("hasWeeks");
+
+		weekNumbers = createElement("div", "flatpickr-weeks");
+		calendarContainer.appendChild(weekNumbers);
+	};
+
+	buildDays = function buildDays() {
+		var firstOfMonth = (new Date(self.currentYear, self.currentMonth, 1).getDay() - self.l10n.firstDayOfWeek + 7) % 7,
+		    daysInMonth = getDaysinMonth(),
+		    prevMonthDays = getDaysinMonth((self.currentMonth - 1 + 12) % 12),
+		    days = document.createDocumentFragment();
+
+		var dayNumber = prevMonthDays + 1 - firstOfMonth,
+		    currentDate = void 0,
+		    dateIsDisabled = void 0;
+
+		if (self.config.weekNumbers) {
+			weekNumbers.innerHTML = "";
+		}
+
+		calendar.innerHTML = "";
+
+		self.config.minDate = uDate(self.config.minDate, true);
+		self.config.maxDate = uDate(self.config.maxDate, true);
+
+		// prepend days from the ending of previous month
+		for (; dayNumber <= prevMonthDays; dayNumber++) {
+			var curDate = new Date(self.currentYear, self.currentMonth - 1, dayNumber, 0, 0, 0, 0, 0),
+			    dateIsEnabled = isEnabled(curDate),
+			    dayElem = createElement("span", dateIsEnabled ? "flatpickr-day prevMonthDay" : "disabled", dayNumber);
+
+			if (dateIsEnabled) {
+				dayElem.tabIndex = 0;
+			}
+
+			days.appendChild(dayElem);
+		}
+
+		// Start at 1 since there is no 0th day
+		for (dayNumber = 1; dayNumber <= daysInMonth; dayNumber++) {
+			currentDate = new Date(self.currentYear, self.currentMonth, dayNumber, 0, 0, 0, 0, 0);
+
+			if (self.config.weekNumbers && dayNumber % 7 === 1) {
+				weekNumbers.appendChild(createElement("span", "disabled flatpickr-day", currentDate.fp_getWeek()));
+			}
+
+			dateIsDisabled = !isEnabled(currentDate);
+
+			var dayElement = createElement("span", dateIsDisabled ? "disabled" : "flatpickr-day", dayNumber);
+
+			if (!dateIsDisabled) {
+				dayElement.tabIndex = 0;
+
+				if (equalDates(currentDate, now)) {
+					dayElement.classList.add("today");
+				}
+
+				if (self.selectedDateObj && equalDates(currentDate, self.selectedDateObj)) {
+					dayElement.classList.add("selected");
+				}
+			}
+
+			days.appendChild(dayElement);
+		}
+
+		// append days from the next month
+		for (var dayNum = daysInMonth + 1; dayNum <= 42 - firstOfMonth; dayNum++) {
+			var _curDate = new Date(self.currentYear, self.currentMonth + 1, dayNum % daysInMonth, 0, 0, 0, 0, 0),
+			    _dateIsEnabled = isEnabled(_curDate),
+			    _dayElement = createElement("span", _dateIsEnabled ? "nextMonthDay flatpickr-day" : "disabled", dayNum % daysInMonth);
+
+			if (self.config.weekNumbers && dayNum % 7 === 1) {
+				weekNumbers.appendChild(createElement("span", "disabled", _curDate.fp_getWeek()));
+			}
+
+			if (_dateIsEnabled) {
+				_dayElement.tabIndex = 0;
+			}
+
+			days.appendChild(_dayElement);
+		}
+
+		calendar.appendChild(days);
+	};
+
+	buildTime = function buildTime() {
+		timeContainer = createElement("div", "flatpickr-time");
+		timeContainer.tabIndex = -1;
+		var separator = createElement("span", "flatpickr-time-separator", ":");
+
+		self.hourElement = createElement("input", "flatpickr-hour");
+		self.minuteElement = createElement("input", "flatpickr-minute");
+
+		self.hourElement.tabIndex = self.minuteElement.tabIndex = 0;
+		self.hourElement.type = self.minuteElement.type = "number";
+
+		self.hourElement.value = self.selectedDateObj ? pad(self.selectedDateObj.getHours()) : 12;
+
+		self.minuteElement.value = self.selectedDateObj ? pad(self.selectedDateObj.getMinutes()) : "00";
+
+		self.hourElement.step = self.config.hourIncrement;
+		self.minuteElement.step = self.config.minuteIncrement;
+
+		self.hourElement.min = -self.config.time_24hr;
+		self.hourElement.max = self.config.time_24hr ? 24 : 13;
+
+		self.minuteElement.min = -self.minuteElement.step;
+		self.minuteElement.max = 60;
+
+		self.hourElement.title = self.minuteElement.title = self.l10n.scrollTitle;
+
+		timeContainer.appendChild(self.hourElement);
+		timeContainer.appendChild(separator);
+		timeContainer.appendChild(self.minuteElement);
+
+		if (self.config.enableSeconds) {
+			timeContainer.classList.add("has-seconds");
+
+			self.secondElement = createElement("input", "flatpickr-second");
+			self.secondElement.type = "number";
+			self.secondElement.value = self.selectedDateObj ? pad(self.selectedDateObj.getSeconds()) : "00";
+
+			self.secondElement.step = self.minuteElement.step;
+			self.secondElement.min = self.minuteElement.min;
+			self.secondElement.max = self.minuteElement.max;
+
+			timeContainer.appendChild(createElement("span", "flatpickr-time-separator", ":"));
+			timeContainer.appendChild(self.secondElement);
+		}
+
+		if (!self.config.time_24hr) {
+			// add self.amPM if appropriate
+			self.amPM = createElement("span", "flatpickr-am-pm", ["AM", "PM"][self.hourElement.value > 11 | 0]);
+			self.amPM.title = self.l10n.toggleTitle;
+			self.amPM.tabIndex = 0;
+			timeContainer.appendChild(self.amPM);
+		}
+
+		calendarContainer.appendChild(timeContainer);
+	};
+
+	bind = function bind() {
+		document.addEventListener("keydown", onKeyDown);
+		window.addEventListener("resize", onResize);
+
+		if (self.config.clickOpens) {
+			(self.altInput || self.input).addEventListener("click", self.open);
+			(self.altInput || self.input).addEventListener("focus", self.open);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-open]")) {
+			self.element.querySelector("[data-open]").addEventListener("click", self.open);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-close]")) {
+			self.element.querySelector("[data-close]").addEventListener("click", self.close);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-toggle]")) {
+			self.element.querySelector("[data-toggle]").addEventListener("click", self.toggle);
+		}
+
+		if (self.config.wrap && self.element.querySelector("[data-clear]")) {
+			self.element.querySelector("[data-clear]").addEventListener("click", self.clear);
+		}
+
+		if (!self.config.noCalendar) {
+			prevMonthNav.addEventListener("click", function () {
+				changeMonth(-1);
+			});
+
+			nextMonthNav.addEventListener("click", function () {
+				changeMonth(1);
+			});
+
+			currentYearElement.addEventListener("wheel", yearScroll);
+			currentYearElement.addEventListener("focus", currentYearElement.select);
+
+			currentYearElement.addEventListener("input", function (event) {
+				self.currentYear = parseInt(event.target.value, 10);
+				self.redraw();
+			});
+
+			calendar.addEventListener("click", selectDate);
+		}
+
+		document.addEventListener("click", documentClick, true);
+		document.addEventListener("focus", documentClick, true);
+
+		if (self.config.enableTime) {
+			self.hourElement.addEventListener("wheel", timeWrapper);
+			self.minuteElement.addEventListener("wheel", timeWrapper);
+
+			self.hourElement.addEventListener("input", timeWrapper);
+			self.minuteElement.addEventListener("input", timeWrapper);
+
+			self.hourElement.addEventListener("mouseout", updateValue);
+			self.minuteElement.addEventListener("mouseout", updateValue);
+
+			self.hourElement.addEventListener("change", updateValue);
+			self.minuteElement.addEventListener("change", updateValue);
+
+			self.hourElement.addEventListener("focus", self.hourElement.select);
+			self.minuteElement.addEventListener("focus", self.minuteElement.select);
+
+			if (self.config.enableSeconds) {
+				self.secondElement.addEventListener("wheel", timeWrapper);
+				self.secondElement.addEventListener("input", timeWrapper);
+				self.secondElement.addEventListener("mouseout", updateValue);
+				self.secondElement.addEventListener("change", updateValue);
+				self.secondElement.addEventListener("focus", self.secondElement.select);
+			}
+
+			if (!self.config.time_24hr) {
+				self.amPM.addEventListener("click", amPMToggle);
+
+				self.amPM.addEventListener("wheel", amPMToggle);
+				self.amPM.addEventListener("mouseout", updateValue);
+
+				self.amPM.addEventListener("keydown", function (e) {
+					if (e.which === 38 || e.which === 40) {
+						amPMToggle(e);
+					}
+				});
+			}
+		}
+
+		if (document.createEvent) {
+			clickEvt = document.createEvent("MouseEvent");
+			// without all these args ms edge spergs out
+			clickEvt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		} else {
+			clickEvt = new MouseEvent("click", {
+				view: window,
+				bubbles: true,
+				cancelable: true
+			});
+		}
+	};
+
+	self.open = function () {
+		if (self.isOpen || (self.altInput || self.input).disabled || self.config.inline) {
+			return;
+		} else if (!self.config.static) {
+			self.positionCalendar();
+		}
+
+		self.isOpen = true;
+
+		wrapperElement.classList.add("open");
+
+		if (!self.config.allowInput) {
+			(self.altInput || self.input).blur();
+			(self.config.noCalendar ? timeContainer : calendar).focus();
+		}
+
+		(self.altInput || self.input).classList.add("active");
+
+		if (self.config.onOpen) {
+			self.config.onOpen(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	// For calendars inserted in BODY (as opposed to inline wrapper)
+	// it"s necessary to properly calculate top/left position.
+	self.positionCalendar = function () {
+		var calendarHeight = calendarContainer.offsetHeight,
+		    input = self.altInput || self.input,
+		    inputBounds = input.getBoundingClientRect(),
+		    distanceFromBottom = window.innerHeight - inputBounds.bottom + input.offsetHeight;
+
+		var top = void 0,
+		    left = window.pageXOffset + inputBounds.left;
+
+		if (distanceFromBottom < calendarHeight) {
+			top = window.pageYOffset - calendarHeight + inputBounds.top - 2;
+			calendarContainer.classList.remove("arrowTop");
+			calendarContainer.classList.add("arrowBottom");
+		} else {
+			top = window.pageYOffset + input.offsetHeight + inputBounds.top + 2;
+			calendarContainer.classList.remove("arrowBottom");
+			calendarContainer.classList.add("arrowTop");
+		}
+
+		wrapperElement.style.top = top + "px";
+		wrapperElement.style.left = left + "px";
+	};
+
+	self.toggle = function () {
+		if (self.isOpen) {
+			self.close();
+		} else {
+			self.open();
+		}
+	};
+
+	self.close = function () {
+		self.isOpen = false;
+		wrapperElement.classList.remove("open");
+		(self.altInput || self.input).classList.remove("active");
+
+		if (self.config.onClose) {
+			self.config.onClose(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	self.clear = function () {
+		self.input.value = "";
+
+		if (self.altInput) {
+			self.altInput.value = "";
+		}
+
+		self.selectedDateObj = null;
+
+		triggerChange();
+		self.jumpToDate();
+	};
+
+	triggerChange = function triggerChange() {
+		self.input.dispatchEvent(clickEvt);
+
+		if (self.config.onChange) {
+			self.config.onChange(self.selectedDateObj, self.input.value, self);
+		}
+	};
+
+	self.destroy = function () {
+		document.removeEventListener("click", documentClick, false);
+
+		if (self.altInput) {
+			self.altInput.parentNode.removeChild(self.altInput);
+		}
+
+		if (self.config.inline) {
+			var parent = self.element.parentNode,
+			    removedElement = parent.removeChild(self.element);
+
+			parent.removeChild(calendarContainer);
+			parent.parentNode.replaceChild(removedElement, parent);
+		} else {
+			document.getElementsByTagName("body")[0].removeChild(wrapperElement);
+		}
+	};
+
+	self.redraw = function () {
+		if (self.config.noCalendar) {
+			return;
+		}
+
+		updateNavigationCurrentMonth();
+		buildDays();
+	};
+
+	self.jumpToDate = function (jumpDate) {
+		jumpDate = uDate(jumpDate || self.selectedDateObj || self.config.defaultDate || self.config.minDate || now);
+
+		self.currentYear = jumpDate.getFullYear();
+		self.currentMonth = jumpDate.getMonth();
+		self.redraw();
+	};
+
+	self.setDate = function (date, triggerChangeEvent) {
+		date = uDate(date);
+
+		if (date instanceof Date && date.getTime()) {
+			self.selectedDateObj = uDate(date);
+			self.jumpToDate(self.selectedDateObj);
+			updateValue();
+
+			if (triggerChangeEvent) {
+				triggerChange();
+			}
+		}
+	};
+
+	self.setTime = function (hour, minute, triggerChangeEvent) {
+		if (!self.selectedDateObj) {
+			return;
+		}
+
+		self.hourElement.value = parseInt(hour, 10) % 24;
+		self.minuteElement.value = parseInt(minute || 0, 10) % 60;
+
+		if (!self.config.time_24hr) {
+			self.amPM.innerHTML = hour > 11 ? "PM" : "AM";
+		}
+
+		updateValue();
+
+		if (triggerChangeEvent) {
+			triggerChange();
+		}
+	};
+
+	self.set = function (key, value) {
+		if (key in self.config) {
+			self.config[key] = value;
+			self.jumpToDate();
+		}
+	};
+
+	amPMToggle = function amPMToggle(e) {
+		e.preventDefault();
+		self.amPM.textContent = ["AM", "PM"][self.amPM.innerHTML === "AM" | 0];
+	};
+
+	onKeyDown = function onKeyDown(e) {
+		if (!self.isOpen || self.config.enableTime && timeContainer.contains(e.target)) {
+			return;
+		}
+
+		switch (e.which) {
+			case 13:
+				selectDate(e);
+				break;
+
+			case 27:
+				self.close();
+				break;
+
+			case 37:
+				changeMonth(-1);
+				break;
+
+			case 38:
+				e.preventDefault();
+				self.currentYear++;
+				self.redraw();
+				break;
+
+			case 39:
+				changeMonth(1);
+				break;
+
+			case 40:
+				e.preventDefault();
+				self.currentYear--;
+				self.redraw();
+				break;
+
+			default:
+				break;
+		}
+	};
+
+	onResize = debounce(function () {
+		if (self.isOpen && !self.config.inline && !self.config.static) {
+			self.positionCalendar();
+		}
+	}, 300);
+
+	try {
+		init();
+	} catch (error) {
+		// skip and carry on
+		console.error(error);
+		console.info(self.element);
+	}
+
+	return self;
+};
+
+flatpickr.init.prototype = {
+
+	defaultConfig: {},
+
+	l10n: {
+		weekdays: {
+			shorthand: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+			longhand: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+		},
+		months: {
+			shorthand: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			longhand: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+		},
+		daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+		firstDayOfWeek: 0,
+		ordinal: function ordinal(nth) {
+			var s = nth % 100;
+			if (s > 3 && s < 21) return "th";
+			switch (s % 10) {
+				case 1:
+					return "st";
+				case 2:
+					return "nd";
+				case 3:
+					return "rd";
+				default:
+					return "th";
+			}
+		},
+		weekAbbreviation: "Wk",
+		scrollTitle: "Scroll to increment",
+		toggleTitle: "Click to toggle"
+	}
+
+};
+
+Date.prototype.fp_incr = function (days) {
+	return new Date(this.getFullYear(), this.getMonth(), this.getDate() + parseInt(days, 10));
+};
+
+Date.prototype.fp_isUTC = false;
+Date.prototype.fp_toUTC = function () {
+	var newDate = new Date(this.getTime() + this.getTimezoneOffset() * 60000);
+	newDate.fp_isUTC = true;
+
+	return newDate;
+};
+
+Date.prototype.fp_getWeek = function () {
+	var date = new Date(this.getTime());
+	date.setHours(0, 0, 0, 0);
+
+	// Thursday in current week decides the year.
+	date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+	// January 4 is always in week 1.
+	var week1 = new Date(date.getFullYear(), 0, 4);
+	// Adjust to Thursday in week 1 and count number of weeks from date to week1.
+	return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+};
+
+// classList polyfill
+if (!("classList" in document.documentElement) && Object.defineProperty && typeof HTMLElement !== "undefined") {
+	Object.defineProperty(HTMLElement.prototype, "classList", {
+		get: function get() {
+			var selfElements = this;
+			function update(fn) {
+				return function (value) {
+					var classes = selfElements.className.split(/\s+/);
+					var index = classes.indexOf(value);
+
+					fn(classes, index, value);
+					selfElements.className = classes.join(" ");
+				};
+			}
+
+			var ret = {
+				add: update(function (classes, index, value) {
+					return ~index || classes.push(value);
+				}),
+				remove: update(function (classes, index) {
+					return ~index && classes.splice(index, 1);
+				}),
+				toggle: update(function (classes, index, value) {
+					if (~index) {
+						classes.splice(index, 1);
+					} else {
+						classes.push(value);
+					}
+				}),
+				contains: function contains(value) {
+					return !! ~selfElements.className.split(/\s+/).indexOf(value);
+				}
+			};
+
+			return ret;
+		}
+	});
+}
+
+if (typeof module !== "undefined") {
+	module.exports = flatpickr;
+}
+},{}],102:[function(require,module,exports){
 //! moment.js
 
 ;(function (global, factory) {
@@ -4752,7 +7085,7 @@ $export($export.S + $export.F * !require('./_descriptors'), 'Object', { definePr
 
 })));
 
-},{}],24:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4938,7 +7271,1549 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],25:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
+/**!
+ * Sortable
+ * @author	RubaXa   <trash@rubaxa.org>
+ * @license MIT
+ */
+
+(function sortableModule(factory) {
+	"use strict";
+
+	if (typeof define === "function" && define.amd) {
+		define(factory);
+	}
+	else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+		module.exports = factory();
+	}
+	else {
+		/* jshint sub:true */
+		window["Sortable"] = factory();
+	}
+})(function sortableFactory() {
+	"use strict";
+
+	if (typeof window === "undefined" || !window.document) {
+		return function sortableError() {
+			throw new Error("Sortable.js requires a window with a document");
+		};
+	}
+
+	var dragEl,
+		parentEl,
+		ghostEl,
+		cloneEl,
+		rootEl,
+		nextEl,
+		lastDownEl,
+
+		scrollEl,
+		scrollParentEl,
+		scrollCustomFn,
+
+		lastEl,
+		lastCSS,
+		lastParentCSS,
+
+		oldIndex,
+		newIndex,
+
+		activeGroup,
+		putSortable,
+
+		autoScroll = {},
+
+		tapEvt,
+		touchEvt,
+
+		moved,
+
+		/** @const */
+		R_SPACE = /\s+/g,
+		R_FLOAT = /left|right|inline/,
+
+		expando = 'Sortable' + (new Date).getTime(),
+
+		win = window,
+		document = win.document,
+		parseInt = win.parseInt,
+		setTimeout = win.setTimeout,
+
+		$ = win.jQuery || win.Zepto,
+		Polymer = win.Polymer,
+
+		captureMode = false,
+		passiveMode = false,
+
+		supportDraggable = ('draggable' in document.createElement('div')),
+		supportCssPointerEvents = (function (el) {
+			// false when IE11
+			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
+				return false;
+			}
+			el = document.createElement('x');
+			el.style.cssText = 'pointer-events:auto';
+			return el.style.pointerEvents === 'auto';
+		})(),
+
+		_silent = false,
+
+		abs = Math.abs,
+		min = Math.min,
+
+		savedInputChecked = [],
+		touchDragOverListeners = [],
+
+		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
+			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
+			if (rootEl && options.scroll) {
+				var _this = rootEl[expando],
+					el,
+					rect,
+					sens = options.scrollSensitivity,
+					speed = options.scrollSpeed,
+
+					x = evt.clientX,
+					y = evt.clientY,
+
+					winWidth = window.innerWidth,
+					winHeight = window.innerHeight,
+
+					vx,
+					vy,
+
+					scrollOffsetX,
+					scrollOffsetY
+				;
+
+				// Delect scrollEl
+				if (scrollParentEl !== rootEl) {
+					scrollEl = options.scroll;
+					scrollParentEl = rootEl;
+					scrollCustomFn = options.scrollFn;
+
+					if (scrollEl === true) {
+						scrollEl = rootEl;
+
+						do {
+							if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
+								(scrollEl.offsetHeight < scrollEl.scrollHeight)
+							) {
+								break;
+							}
+							/* jshint boss:true */
+						} while (scrollEl = scrollEl.parentNode);
+					}
+				}
+
+				if (scrollEl) {
+					el = scrollEl;
+					rect = scrollEl.getBoundingClientRect();
+					vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
+					vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
+				}
+
+
+				if (!(vx || vy)) {
+					vx = (winWidth - x <= sens) - (x <= sens);
+					vy = (winHeight - y <= sens) - (y <= sens);
+
+					/* jshint expr:true */
+					(vx || vy) && (el = win);
+				}
+
+
+				if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
+					autoScroll.el = el;
+					autoScroll.vx = vx;
+					autoScroll.vy = vy;
+
+					clearInterval(autoScroll.pid);
+
+					if (el) {
+						autoScroll.pid = setInterval(function () {
+							scrollOffsetY = vy ? vy * speed : 0;
+							scrollOffsetX = vx ? vx * speed : 0;
+
+							if ('function' === typeof(scrollCustomFn)) {
+								return scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt);
+							}
+
+							if (el === win) {
+								win.scrollTo(win.pageXOffset + scrollOffsetX, win.pageYOffset + scrollOffsetY);
+							} else {
+								el.scrollTop += scrollOffsetY;
+								el.scrollLeft += scrollOffsetX;
+							}
+						}, 24);
+					}
+				}
+			}
+		}, 30),
+
+		_prepareGroup = function (options) {
+			function toFn(value, pull) {
+				if (value === void 0 || value === true) {
+					value = group.name;
+				}
+
+				if (typeof value === 'function') {
+					return value;
+				} else {
+					return function (to, from) {
+						var fromGroup = from.options.group.name;
+
+						return pull
+							? value
+							: value && (value.join
+								? value.indexOf(fromGroup) > -1
+								: (fromGroup == value)
+							);
+					};
+				}
+			}
+
+			var group = {};
+			var originalGroup = options.group;
+
+			if (!originalGroup || typeof originalGroup != 'object') {
+				originalGroup = {name: originalGroup};
+			}
+
+			group.name = originalGroup.name;
+			group.checkPull = toFn(originalGroup.pull, true);
+			group.checkPut = toFn(originalGroup.put);
+			group.revertClone = originalGroup.revertClone;
+
+			options.group = group;
+		}
+	;
+
+	// Detect support a passive mode
+	try {
+		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
+			get: function () {
+				// `false`, because everything starts to work incorrectly and instead of d'n'd,
+				// begins the page has scrolled.
+				passiveMode = false;
+				captureMode = {
+					capture: false,
+					passive: passiveMode
+				};
+			}
+		}));
+	} catch (err) {}
+
+	/**
+	 * @class  Sortable
+	 * @param  {HTMLElement}  el
+	 * @param  {Object}       [options]
+	 */
+	function Sortable(el, options) {
+		if (!(el && el.nodeType && el.nodeType === 1)) {
+			throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+		}
+
+		this.el = el; // root element
+		this.options = options = _extend({}, options);
+
+
+		// Export instance
+		el[expando] = this;
+
+		// Default options
+		var defaults = {
+			group: Math.random(),
+			sort: true,
+			disabled: false,
+			store: null,
+			handle: null,
+			scroll: true,
+			scrollSensitivity: 30,
+			scrollSpeed: 10,
+			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
+			ghostClass: 'sortable-ghost',
+			chosenClass: 'sortable-chosen',
+			dragClass: 'sortable-drag',
+			ignore: 'a, img',
+			filter: null,
+			preventOnFilter: true,
+			animation: 0,
+			setData: function (dataTransfer, dragEl) {
+				dataTransfer.setData('Text', dragEl.textContent);
+			},
+			dropBubble: false,
+			dragoverBubble: false,
+			dataIdAttr: 'data-id',
+			delay: 0,
+			forceFallback: false,
+			fallbackClass: 'sortable-fallback',
+			fallbackOnBody: false,
+			fallbackTolerance: 0,
+			fallbackOffset: {x: 0, y: 0},
+			supportPointer: Sortable.supportPointer !== false
+		};
+
+
+		// Set default options
+		for (var name in defaults) {
+			!(name in options) && (options[name] = defaults[name]);
+		}
+
+		_prepareGroup(options);
+
+		// Bind all private methods
+		for (var fn in this) {
+			if (fn.charAt(0) === '_' && typeof this[fn] === 'function') {
+				this[fn] = this[fn].bind(this);
+			}
+		}
+
+		// Setup drag mode
+		this.nativeDraggable = options.forceFallback ? false : supportDraggable;
+
+		// Bind events
+		_on(el, 'mousedown', this._onTapStart);
+		_on(el, 'touchstart', this._onTapStart);
+		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
+
+		if (this.nativeDraggable) {
+			_on(el, 'dragover', this);
+			_on(el, 'dragenter', this);
+		}
+
+		touchDragOverListeners.push(this._onDragOver);
+
+		// Restore sorting
+		options.store && this.sort(options.store.get(this));
+	}
+
+
+	Sortable.prototype = /** @lends Sortable.prototype */ {
+		constructor: Sortable,
+
+		_onTapStart: function (/** Event|TouchEvent */evt) {
+			var _this = this,
+				el = this.el,
+				options = this.options,
+				preventOnFilter = options.preventOnFilter,
+				type = evt.type,
+				touch = evt.touches && evt.touches[0],
+				target = (touch || evt).target,
+				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
+				filter = options.filter,
+				startIndex;
+
+			_saveInputCheckedState(el);
+
+
+			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
+			if (dragEl) {
+				return;
+			}
+
+			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
+				return; // only left button or enabled
+			}
+
+			// cancel dnd if original target is content editable
+			if (originalTarget.isContentEditable) {
+				return;
+			}
+
+			target = _closest(target, options.draggable, el);
+
+			if (!target) {
+				return;
+			}
+
+			if (lastDownEl === target) {
+				// Ignoring duplicate `down`
+				return;
+			}
+
+			// Get the index of the dragged element within its parent
+			startIndex = _index(target, options.draggable);
+
+			// Check filter
+			if (typeof filter === 'function') {
+				if (filter.call(this, evt, target, this)) {
+					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
+					preventOnFilter && evt.preventDefault();
+					return; // cancel dnd
+				}
+			}
+			else if (filter) {
+				filter = filter.split(',').some(function (criteria) {
+					criteria = _closest(originalTarget, criteria.trim(), el);
+
+					if (criteria) {
+						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
+						return true;
+					}
+				});
+
+				if (filter) {
+					preventOnFilter && evt.preventDefault();
+					return; // cancel dnd
+				}
+			}
+
+			if (options.handle && !_closest(originalTarget, options.handle, el)) {
+				return;
+			}
+
+			// Prepare `dragstart`
+			this._prepareDragStart(evt, touch, target, startIndex);
+		},
+
+		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex) {
+			var _this = this,
+				el = _this.el,
+				options = _this.options,
+				ownerDocument = el.ownerDocument,
+				dragStartFn;
+
+			if (target && !dragEl && (target.parentNode === el)) {
+				tapEvt = evt;
+
+				rootEl = el;
+				dragEl = target;
+				parentEl = dragEl.parentNode;
+				nextEl = dragEl.nextSibling;
+				lastDownEl = target;
+				activeGroup = options.group;
+				oldIndex = startIndex;
+
+				this._lastX = (touch || evt).clientX;
+				this._lastY = (touch || evt).clientY;
+
+				dragEl.style['will-change'] = 'all';
+
+				dragStartFn = function () {
+					// Delayed drag has been triggered
+					// we can re-enable the events: touchmove/mousemove
+					_this._disableDelayedDrag();
+
+					// Make the element draggable
+					dragEl.draggable = _this.nativeDraggable;
+
+					// Chosen item
+					_toggleClass(dragEl, options.chosenClass, true);
+
+					// Bind the events: dragstart/dragend
+					_this._triggerDragStart(evt, touch);
+
+					// Drag start event
+					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
+				};
+
+				// Disable "draggable"
+				options.ignore.split(',').forEach(function (criteria) {
+					_find(dragEl, criteria.trim(), _disableDraggable);
+				});
+
+				_on(ownerDocument, 'mouseup', _this._onDrop);
+				_on(ownerDocument, 'touchend', _this._onDrop);
+				_on(ownerDocument, 'touchcancel', _this._onDrop);
+				_on(ownerDocument, 'selectstart', _this);
+				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
+
+				if (options.delay) {
+					// If the user moves the pointer or let go the click or touch
+					// before the delay has been reached:
+					// disable the delayed drag
+					_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
+					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
+					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
+					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
+
+					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
+				} else {
+					dragStartFn();
+				}
+
+
+			}
+		},
+
+		_disableDelayedDrag: function () {
+			var ownerDocument = this.el.ownerDocument;
+
+			clearTimeout(this._dragStartTimer);
+			_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchend', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
+			_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
+			_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
+			_off(ownerDocument, 'pointermove', this._disableDelayedDrag);
+		},
+
+		_triggerDragStart: function (/** Event */evt, /** Touch */touch) {
+			touch = touch || (evt.pointerType == 'touch' ? evt : null);
+
+			if (touch) {
+				// Touch device support
+				tapEvt = {
+					target: dragEl,
+					clientX: touch.clientX,
+					clientY: touch.clientY
+				};
+
+				this._onDragStart(tapEvt, 'touch');
+			}
+			else if (!this.nativeDraggable) {
+				this._onDragStart(tapEvt, true);
+			}
+			else {
+				_on(dragEl, 'dragend', this);
+				_on(rootEl, 'dragstart', this._onDragStart);
+			}
+
+			try {
+				if (document.selection) {
+					// Timeout neccessary for IE9
+					_nextTick(function () {
+						document.selection.empty();
+					});
+				} else {
+					window.getSelection().removeAllRanges();
+				}
+			} catch (err) {
+			}
+		},
+
+		_dragStarted: function () {
+			if (rootEl && dragEl) {
+				var options = this.options;
+
+				// Apply effect
+				_toggleClass(dragEl, options.ghostClass, true);
+				_toggleClass(dragEl, options.dragClass, false);
+
+				Sortable.active = this;
+
+				// Drag start event
+				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
+			} else {
+				this._nulling();
+			}
+		},
+
+		_emulateDragOver: function () {
+			if (touchEvt) {
+				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
+					return;
+				}
+
+				this._lastX = touchEvt.clientX;
+				this._lastY = touchEvt.clientY;
+
+				if (!supportCssPointerEvents) {
+					_css(ghostEl, 'display', 'none');
+				}
+
+				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+				var parent = target;
+				var i = touchDragOverListeners.length;
+
+				if (target && target.shadowRoot) {
+					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+					parent = target;
+				}
+
+				if (parent) {
+					do {
+						if (parent[expando]) {
+							while (i--) {
+								touchDragOverListeners[i]({
+									clientX: touchEvt.clientX,
+									clientY: touchEvt.clientY,
+									target: target,
+									rootEl: parent
+								});
+							}
+
+							break;
+						}
+
+						target = parent; // store last element
+					}
+					/* jshint boss:true */
+					while (parent = parent.parentNode);
+				}
+
+				if (!supportCssPointerEvents) {
+					_css(ghostEl, 'display', '');
+				}
+			}
+		},
+
+
+		_onTouchMove: function (/**TouchEvent*/evt) {
+			if (tapEvt) {
+				var	options = this.options,
+					fallbackTolerance = options.fallbackTolerance,
+					fallbackOffset = options.fallbackOffset,
+					touch = evt.touches ? evt.touches[0] : evt,
+					dx = (touch.clientX - tapEvt.clientX) + fallbackOffset.x,
+					dy = (touch.clientY - tapEvt.clientY) + fallbackOffset.y,
+					translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
+
+				// only set the status to dragging, when we are actually dragging
+				if (!Sortable.active) {
+					if (fallbackTolerance &&
+						min(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY)) < fallbackTolerance
+					) {
+						return;
+					}
+
+					this._dragStarted();
+				}
+
+				// as well as creating the ghost element on the document body
+				this._appendGhost();
+
+				moved = true;
+				touchEvt = touch;
+
+				_css(ghostEl, 'webkitTransform', translate3d);
+				_css(ghostEl, 'mozTransform', translate3d);
+				_css(ghostEl, 'msTransform', translate3d);
+				_css(ghostEl, 'transform', translate3d);
+
+				evt.preventDefault();
+			}
+		},
+
+		_appendGhost: function () {
+			if (!ghostEl) {
+				var rect = dragEl.getBoundingClientRect(),
+					css = _css(dragEl),
+					options = this.options,
+					ghostRect;
+
+				ghostEl = dragEl.cloneNode(true);
+
+				_toggleClass(ghostEl, options.ghostClass, false);
+				_toggleClass(ghostEl, options.fallbackClass, true);
+				_toggleClass(ghostEl, options.dragClass, true);
+
+				_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
+				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
+				_css(ghostEl, 'width', rect.width);
+				_css(ghostEl, 'height', rect.height);
+				_css(ghostEl, 'opacity', '0.8');
+				_css(ghostEl, 'position', 'fixed');
+				_css(ghostEl, 'zIndex', '100000');
+				_css(ghostEl, 'pointerEvents', 'none');
+
+				options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
+
+				// Fixing dimensions.
+				ghostRect = ghostEl.getBoundingClientRect();
+				_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
+				_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
+			}
+		},
+
+		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
+			var _this = this;
+			var dataTransfer = evt.dataTransfer;
+			var options = _this.options;
+
+			_this._offUpEvents();
+
+			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
+				cloneEl = _clone(dragEl);
+
+				cloneEl.draggable = false;
+				cloneEl.style['will-change'] = '';
+
+				_css(cloneEl, 'display', 'none');
+				_toggleClass(cloneEl, _this.options.chosenClass, false);
+
+				// #1143: IFrame support workaround
+				_this._cloneId = _nextTick(function () {
+					rootEl.insertBefore(cloneEl, dragEl);
+					_dispatchEvent(_this, rootEl, 'clone', dragEl);
+				});
+			}
+
+			_toggleClass(dragEl, options.dragClass, true);
+
+			if (useFallback) {
+				if (useFallback === 'touch') {
+					// Bind touch events
+					_on(document, 'touchmove', _this._onTouchMove);
+					_on(document, 'touchend', _this._onDrop);
+					_on(document, 'touchcancel', _this._onDrop);
+
+					if (options.supportPointer) {
+						_on(document, 'pointermove', _this._onTouchMove);
+						_on(document, 'pointerup', _this._onDrop);
+					}
+				} else {
+					// Old brwoser
+					_on(document, 'mousemove', _this._onTouchMove);
+					_on(document, 'mouseup', _this._onDrop);
+				}
+
+				_this._loopId = setInterval(_this._emulateDragOver, 50);
+			}
+			else {
+				if (dataTransfer) {
+					dataTransfer.effectAllowed = 'move';
+					options.setData && options.setData.call(_this, dataTransfer, dragEl);
+				}
+
+				_on(document, 'drop', _this);
+
+				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
+				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
+				// Breaking Chrome 62+
+				// _on(document, 'mouseover', _this);
+
+				_this._dragStartId = _nextTick(_this._dragStarted);
+			}
+		},
+
+		_onDragOver: function (/**Event*/evt) {
+			var el = this.el,
+				target,
+				dragRect,
+				targetRect,
+				revert,
+				options = this.options,
+				group = options.group,
+				activeSortable = Sortable.active,
+				isOwner = (activeGroup === group),
+				isMovingBetweenSortable = false,
+				canSort = options.sort;
+
+			if (evt.preventDefault !== void 0) {
+				evt.preventDefault();
+				!options.dragoverBubble && evt.stopPropagation();
+			}
+
+			if (dragEl.animated) {
+				return;
+			}
+
+			moved = true;
+
+			if (activeSortable && !options.disabled &&
+				(isOwner
+					? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
+					: (
+						putSortable === this ||
+						(
+							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
+							group.checkPut(this, activeSortable, dragEl, evt)
+						)
+					)
+				) &&
+				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
+			) {
+				// Smart auto-scrolling
+				_autoScroll(evt, options, this.el);
+
+				if (_silent) {
+					return;
+				}
+
+				target = _closest(evt.target, options.draggable, el);
+				dragRect = dragEl.getBoundingClientRect();
+
+				if (putSortable !== this) {
+					putSortable = this;
+					isMovingBetweenSortable = true;
+				}
+
+				if (revert) {
+					_cloneHide(activeSortable, true);
+					parentEl = rootEl; // actualization
+
+					if (cloneEl || nextEl) {
+						rootEl.insertBefore(dragEl, cloneEl || nextEl);
+					}
+					else if (!canSort) {
+						rootEl.appendChild(dragEl);
+					}
+
+					return;
+				}
+
+
+				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
+					(el === evt.target) && (_ghostIsLast(el, evt))
+				) {
+					//assign target only if condition is true
+					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
+						target = el.lastElementChild;
+					}
+
+					if (target) {
+						if (target.animated) {
+							return;
+						}
+
+						targetRect = target.getBoundingClientRect();
+					}
+
+					_cloneHide(activeSortable, isOwner);
+
+					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt) !== false) {
+						if (!dragEl.contains(el)) {
+							el.appendChild(dragEl);
+							parentEl = el; // actualization
+						}
+
+						this._animate(dragRect, dragEl);
+						target && this._animate(targetRect, target);
+					}
+				}
+				else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
+					if (lastEl !== target) {
+						lastEl = target;
+						lastCSS = _css(target);
+						lastParentCSS = _css(target.parentNode);
+					}
+
+					targetRect = target.getBoundingClientRect();
+
+					var width = targetRect.right - targetRect.left,
+						height = targetRect.bottom - targetRect.top,
+						floating = R_FLOAT.test(lastCSS.cssFloat + lastCSS.display)
+							|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
+						isWide = (target.offsetWidth > dragEl.offsetWidth),
+						isLong = (target.offsetHeight > dragEl.offsetHeight),
+						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
+						nextSibling = target.nextElementSibling,
+						after = false
+					;
+
+					if (floating) {
+						var elTop = dragEl.offsetTop,
+							tgTop = target.offsetTop;
+
+						if (elTop === tgTop) {
+							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+						}
+						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
+							after = (evt.clientY - targetRect.top) / height > 0.5;
+						} else {
+							after = tgTop > elTop;
+						}
+						} else if (!isMovingBetweenSortable) {
+						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+					}
+
+					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
+
+					if (moveVector !== false) {
+						if (moveVector === 1 || moveVector === -1) {
+							after = (moveVector === 1);
+						}
+
+						_silent = true;
+						setTimeout(_unsilent, 30);
+
+						_cloneHide(activeSortable, isOwner);
+
+						if (!dragEl.contains(el)) {
+							if (after && !nextSibling) {
+								el.appendChild(dragEl);
+							} else {
+								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+							}
+						}
+
+						parentEl = dragEl.parentNode; // actualization
+
+						this._animate(dragRect, dragEl);
+						this._animate(targetRect, target);
+					}
+				}
+			}
+		},
+
+		_animate: function (prevRect, target) {
+			var ms = this.options.animation;
+
+			if (ms) {
+				var currentRect = target.getBoundingClientRect();
+
+				if (prevRect.nodeType === 1) {
+					prevRect = prevRect.getBoundingClientRect();
+				}
+
+				_css(target, 'transition', 'none');
+				_css(target, 'transform', 'translate3d('
+					+ (prevRect.left - currentRect.left) + 'px,'
+					+ (prevRect.top - currentRect.top) + 'px,0)'
+				);
+
+				target.offsetWidth; // repaint
+
+				_css(target, 'transition', 'all ' + ms + 'ms');
+				_css(target, 'transform', 'translate3d(0,0,0)');
+
+				clearTimeout(target.animated);
+				target.animated = setTimeout(function () {
+					_css(target, 'transition', '');
+					_css(target, 'transform', '');
+					target.animated = false;
+				}, ms);
+			}
+		},
+
+		_offUpEvents: function () {
+			var ownerDocument = this.el.ownerDocument;
+
+			_off(document, 'touchmove', this._onTouchMove);
+			_off(document, 'pointermove', this._onTouchMove);
+			_off(ownerDocument, 'mouseup', this._onDrop);
+			_off(ownerDocument, 'touchend', this._onDrop);
+			_off(ownerDocument, 'pointerup', this._onDrop);
+			_off(ownerDocument, 'touchcancel', this._onDrop);
+			_off(ownerDocument, 'pointercancel', this._onDrop);
+			_off(ownerDocument, 'selectstart', this);
+		},
+
+		_onDrop: function (/**Event*/evt) {
+			var el = this.el,
+				options = this.options;
+
+			clearInterval(this._loopId);
+			clearInterval(autoScroll.pid);
+			clearTimeout(this._dragStartTimer);
+
+			_cancelNextTick(this._cloneId);
+			_cancelNextTick(this._dragStartId);
+
+			// Unbind events
+			_off(document, 'mouseover', this);
+			_off(document, 'mousemove', this._onTouchMove);
+
+			if (this.nativeDraggable) {
+				_off(document, 'drop', this);
+				_off(el, 'dragstart', this._onDragStart);
+			}
+
+			this._offUpEvents();
+
+			if (evt) {
+				if (moved) {
+					evt.preventDefault();
+					!options.dropBubble && evt.stopPropagation();
+				}
+
+				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
+
+				if (rootEl === parentEl || Sortable.active.lastPullMode !== 'clone') {
+					// Remove clone
+					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
+				}
+
+				if (dragEl) {
+					if (this.nativeDraggable) {
+						_off(dragEl, 'dragend', this);
+					}
+
+					_disableDraggable(dragEl);
+					dragEl.style['will-change'] = '';
+
+					// Remove class's
+					_toggleClass(dragEl, this.options.ghostClass, false);
+					_toggleClass(dragEl, this.options.chosenClass, false);
+
+					// Drag stop event
+					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
+
+					if (rootEl !== parentEl) {
+						newIndex = _index(dragEl, options.draggable);
+
+						if (newIndex >= 0) {
+							// Add event
+							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+							// Remove event
+							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+							// drag from one list and drop into another
+							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+						}
+					}
+					else {
+						if (dragEl.nextSibling !== nextEl) {
+							// Get the index of the dragged element within its parent
+							newIndex = _index(dragEl, options.draggable);
+
+							if (newIndex >= 0) {
+								// drag & drop within the same list
+								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							}
+						}
+					}
+
+					if (Sortable.active) {
+						/* jshint eqnull:true */
+						if (newIndex == null || newIndex === -1) {
+							newIndex = oldIndex;
+						}
+
+						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
+
+						// Save sorting
+						this.save();
+					}
+				}
+
+			}
+
+			this._nulling();
+		},
+
+		_nulling: function() {
+			rootEl =
+			dragEl =
+			parentEl =
+			ghostEl =
+			nextEl =
+			cloneEl =
+			lastDownEl =
+
+			scrollEl =
+			scrollParentEl =
+
+			tapEvt =
+			touchEvt =
+
+			moved =
+			newIndex =
+
+			lastEl =
+			lastCSS =
+
+			putSortable =
+			activeGroup =
+			Sortable.active = null;
+
+			savedInputChecked.forEach(function (el) {
+				el.checked = true;
+			});
+			savedInputChecked.length = 0;
+		},
+
+		handleEvent: function (/**Event*/evt) {
+			switch (evt.type) {
+				case 'drop':
+				case 'dragend':
+					this._onDrop(evt);
+					break;
+
+				case 'dragover':
+				case 'dragenter':
+					if (dragEl) {
+						this._onDragOver(evt);
+						_globalDragOver(evt);
+					}
+					break;
+
+				case 'mouseover':
+					this._onDrop(evt);
+					break;
+
+				case 'selectstart':
+					evt.preventDefault();
+					break;
+			}
+		},
+
+
+		/**
+		 * Serializes the item into an array of string.
+		 * @returns {String[]}
+		 */
+		toArray: function () {
+			var order = [],
+				el,
+				children = this.el.children,
+				i = 0,
+				n = children.length,
+				options = this.options;
+
+			for (; i < n; i++) {
+				el = children[i];
+				if (_closest(el, options.draggable, this.el)) {
+					order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
+				}
+			}
+
+			return order;
+		},
+
+
+		/**
+		 * Sorts the elements according to the array.
+		 * @param  {String[]}  order  order of the items
+		 */
+		sort: function (order) {
+			var items = {}, rootEl = this.el;
+
+			this.toArray().forEach(function (id, i) {
+				var el = rootEl.children[i];
+
+				if (_closest(el, this.options.draggable, rootEl)) {
+					items[id] = el;
+				}
+			}, this);
+
+			order.forEach(function (id) {
+				if (items[id]) {
+					rootEl.removeChild(items[id]);
+					rootEl.appendChild(items[id]);
+				}
+			});
+		},
+
+
+		/**
+		 * Save the current sorting
+		 */
+		save: function () {
+			var store = this.options.store;
+			store && store.set(this);
+		},
+
+
+		/**
+		 * For each element in the set, get the first element that matches the selector by testing the element itself and traversing up through its ancestors in the DOM tree.
+		 * @param   {HTMLElement}  el
+		 * @param   {String}       [selector]  default: `options.draggable`
+		 * @returns {HTMLElement|null}
+		 */
+		closest: function (el, selector) {
+			return _closest(el, selector || this.options.draggable, this.el);
+		},
+
+
+		/**
+		 * Set/get option
+		 * @param   {string} name
+		 * @param   {*}      [value]
+		 * @returns {*}
+		 */
+		option: function (name, value) {
+			var options = this.options;
+
+			if (value === void 0) {
+				return options[name];
+			} else {
+				options[name] = value;
+
+				if (name === 'group') {
+					_prepareGroup(options);
+				}
+			}
+		},
+
+
+		/**
+		 * Destroy
+		 */
+		destroy: function () {
+			var el = this.el;
+
+			el[expando] = null;
+
+			_off(el, 'mousedown', this._onTapStart);
+			_off(el, 'touchstart', this._onTapStart);
+			_off(el, 'pointerdown', this._onTapStart);
+
+			if (this.nativeDraggable) {
+				_off(el, 'dragover', this);
+				_off(el, 'dragenter', this);
+			}
+
+			// Remove draggable attributes
+			Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
+				el.removeAttribute('draggable');
+			});
+
+			touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
+
+			this._onDrop();
+
+			this.el = el = null;
+		}
+	};
+
+
+	function _cloneHide(sortable, state) {
+		if (sortable.lastPullMode !== 'clone') {
+			state = true;
+		}
+
+		if (cloneEl && (cloneEl.state !== state)) {
+			_css(cloneEl, 'display', state ? 'none' : '');
+
+			if (!state) {
+				if (cloneEl.state) {
+					if (sortable.options.group.revertClone) {
+						rootEl.insertBefore(cloneEl, nextEl);
+						sortable._animate(dragEl, cloneEl);
+					} else {
+						rootEl.insertBefore(cloneEl, dragEl);
+					}
+				}
+			}
+
+			cloneEl.state = state;
+		}
+	}
+
+
+	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
+		if (el) {
+			ctx = ctx || document;
+
+			do {
+				if ((selector === '>*' && el.parentNode === ctx) || _matches(el, selector)) {
+					return el;
+				}
+				/* jshint boss:true */
+			} while (el = _getParentOrHost(el));
+		}
+
+		return null;
+	}
+
+
+	function _getParentOrHost(el) {
+		var parent = el.host;
+
+		return (parent && parent.nodeType) ? parent : el.parentNode;
+	}
+
+
+	function _globalDragOver(/**Event*/evt) {
+		if (evt.dataTransfer) {
+			evt.dataTransfer.dropEffect = 'move';
+		}
+		evt.preventDefault();
+	}
+
+
+	function _on(el, event, fn) {
+		el.addEventListener(event, fn, captureMode);
+	}
+
+
+	function _off(el, event, fn) {
+		el.removeEventListener(event, fn, captureMode);
+	}
+
+
+	function _toggleClass(el, name, state) {
+		if (el) {
+			if (el.classList) {
+				el.classList[state ? 'add' : 'remove'](name);
+			}
+			else {
+				var className = (' ' + el.className + ' ').replace(R_SPACE, ' ').replace(' ' + name + ' ', ' ');
+				el.className = (className + (state ? ' ' + name : '')).replace(R_SPACE, ' ');
+			}
+		}
+	}
+
+
+	function _css(el, prop, val) {
+		var style = el && el.style;
+
+		if (style) {
+			if (val === void 0) {
+				if (document.defaultView && document.defaultView.getComputedStyle) {
+					val = document.defaultView.getComputedStyle(el, '');
+				}
+				else if (el.currentStyle) {
+					val = el.currentStyle;
+				}
+
+				return prop === void 0 ? val : val[prop];
+			}
+			else {
+				if (!(prop in style)) {
+					prop = '-webkit-' + prop;
+				}
+
+				style[prop] = val + (typeof val === 'string' ? '' : 'px');
+			}
+		}
+	}
+
+
+	function _find(ctx, tagName, iterator) {
+		if (ctx) {
+			var list = ctx.getElementsByTagName(tagName), i = 0, n = list.length;
+
+			if (iterator) {
+				for (; i < n; i++) {
+					iterator(list[i], i);
+				}
+			}
+
+			return list;
+		}
+
+		return [];
+	}
+
+
+
+	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
+		sortable = (sortable || rootEl[expando]);
+
+		var evt = document.createEvent('Event'),
+			options = sortable.options,
+			onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
+
+		evt.initEvent(name, true, true);
+
+		evt.to = toEl || rootEl;
+		evt.from = fromEl || rootEl;
+		evt.item = targetEl || rootEl;
+		evt.clone = cloneEl;
+
+		evt.oldIndex = startIndex;
+		evt.newIndex = newIndex;
+
+		rootEl.dispatchEvent(evt);
+
+		if (options[onName]) {
+			options[onName].call(sortable, evt);
+		}
+	}
+
+
+	function _onMove(fromEl, toEl, dragEl, dragRect, targetEl, targetRect, originalEvt, willInsertAfter) {
+		var evt,
+			sortable = fromEl[expando],
+			onMoveFn = sortable.options.onMove,
+			retVal;
+
+		evt = document.createEvent('Event');
+		evt.initEvent('move', true, true);
+
+		evt.to = toEl;
+		evt.from = fromEl;
+		evt.dragged = dragEl;
+		evt.draggedRect = dragRect;
+		evt.related = targetEl || toEl;
+		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
+		evt.willInsertAfter = willInsertAfter;
+
+		fromEl.dispatchEvent(evt);
+
+		if (onMoveFn) {
+			retVal = onMoveFn.call(sortable, evt, originalEvt);
+		}
+
+		return retVal;
+	}
+
+
+	function _disableDraggable(el) {
+		el.draggable = false;
+	}
+
+
+	function _unsilent() {
+		_silent = false;
+	}
+
+
+	/** @returns {HTMLElement|false} */
+	function _ghostIsLast(el, evt) {
+		var lastEl = el.lastElementChild,
+			rect = lastEl.getBoundingClientRect();
+
+		// 5 — min delta
+		// abs — нельзя добавлять, а то глюки при наведении сверху
+		return (evt.clientY - (rect.top + rect.height) > 5) ||
+			(evt.clientX - (rect.left + rect.width) > 5);
+	}
+
+
+	/**
+	 * Generate id
+	 * @param   {HTMLElement} el
+	 * @returns {String}
+	 * @private
+	 */
+	function _generateId(el) {
+		var str = el.tagName + el.className + el.src + el.href + el.textContent,
+			i = str.length,
+			sum = 0;
+
+		while (i--) {
+			sum += str.charCodeAt(i);
+		}
+
+		return sum.toString(36);
+	}
+
+	/**
+	 * Returns the index of an element within its parent for a selected set of
+	 * elements
+	 * @param  {HTMLElement} el
+	 * @param  {selector} selector
+	 * @return {number}
+	 */
+	function _index(el, selector) {
+		var index = 0;
+
+		if (!el || !el.parentNode) {
+			return -1;
+		}
+
+		while (el && (el = el.previousElementSibling)) {
+			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && (selector === '>*' || _matches(el, selector))) {
+				index++;
+			}
+		}
+
+		return index;
+	}
+
+	function _matches(/**HTMLElement*/el, /**String*/selector) {
+		if (el) {
+			selector = selector.split('.');
+
+			var tag = selector.shift().toUpperCase(),
+				re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
+
+			return (
+				(tag === '' || el.nodeName.toUpperCase() == tag) &&
+				(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
+			);
+		}
+
+		return false;
+	}
+
+	function _throttle(callback, ms) {
+		var args, _this;
+
+		return function () {
+			if (args === void 0) {
+				args = arguments;
+				_this = this;
+
+				setTimeout(function () {
+					if (args.length === 1) {
+						callback.call(_this, args[0]);
+					} else {
+						callback.apply(_this, args);
+					}
+
+					args = void 0;
+				}, ms);
+			}
+		};
+	}
+
+	function _extend(dst, src) {
+		if (dst && src) {
+			for (var key in src) {
+				if (src.hasOwnProperty(key)) {
+					dst[key] = src[key];
+				}
+			}
+		}
+
+		return dst;
+	}
+
+	function _clone(el) {
+		if (Polymer && Polymer.dom) {
+			return Polymer.dom(el).cloneNode(true);
+		}
+		else if ($) {
+			return $(el).clone(true)[0];
+		}
+		else {
+			return el.cloneNode(true);
+		}
+	}
+
+	function _saveInputCheckedState(root) {
+		var inputs = root.getElementsByTagName('input');
+		var idx = inputs.length;
+
+		while (idx--) {
+			var el = inputs[idx];
+			el.checked && savedInputChecked.push(el);
+		}
+	}
+
+	function _nextTick(fn) {
+		return setTimeout(fn, 0);
+	}
+
+	function _cancelNextTick(id) {
+		return clearTimeout(id);
+	}
+
+	// Fixed #973:
+	_on(document, 'touchmove', function (evt) {
+		if (Sortable.active) {
+			evt.preventDefault();
+		}
+	});
+
+	// Export utils
+	Sortable.utils = {
+		on: _on,
+		off: _off,
+		css: _css,
+		find: _find,
+		is: function (el, selector) {
+			return !!_closest(el, selector, el);
+		},
+		extend: _extend,
+		throttle: _throttle,
+		closest: _closest,
+		toggleClass: _toggleClass,
+		clone: _clone,
+		index: _index,
+		nextTick: _nextTick,
+		cancelNextTick: _cancelNextTick
+	};
+
+
+	/**
+	 * Create sortable instance
+	 * @param {HTMLElement}  el
+	 * @param {Object}      [options]
+	 */
+	Sortable.create = function (el, options) {
+		return new Sortable(el, options);
+	};
+
+
+	// Export
+	Sortable.version = '1.7.0';
+	return Sortable;
+});
+
+},{}],105:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -5239,7 +9114,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],26:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 /*!
  * vue-resource v1.5.1
  * https://github.com/pagekit/vue-resource
@@ -6798,2636 +10673,995 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":4}],27:[function(require,module,exports){
-(function (process){
-/**
-  * vue-router v2.8.1
-  * (c) 2017 Evan You
-  * @license MIT
-  */
-'use strict';
+},{"got":15}],107:[function(require,module,exports){
+"use strict";
 
-/*  */
+var _stringify = require("babel-runtime/core-js/json/stringify");
 
-function assert (condition, message) {
-  if (!condition) {
-    throw new Error(("[vue-router] " + message))
-  }
-}
+var _stringify2 = _interopRequireDefault(_stringify);
 
-function warn (condition, message) {
-  if (process.env.NODE_ENV !== 'production' && !condition) {
-    typeof console !== 'undefined' && console.warn(("[vue-router] " + message));
-  }
-}
+var _getPrototypeOf = require("babel-runtime/core-js/object/get-prototype-of");
 
-function isError (err) {
-  return Object.prototype.toString.call(err).indexOf('Error') > -1
-}
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-var View = {
-  name: 'router-view',
-  functional: true,
-  props: {
-    name: {
-      type: String,
-      default: 'default'
-    }
-  },
-  render: function render (_, ref) {
-    var props = ref.props;
-    var children = ref.children;
-    var parent = ref.parent;
-    var data = ref.data;
+var _getOwnPropertyDescriptor = require("babel-runtime/core-js/object/get-own-property-descriptor");
 
-    data.routerView = true;
+var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
 
-    // directly use parent context's createElement() function
-    // so that components rendered by router-view can resolve named slots
-    var h = parent.$createElement;
-    var name = props.name;
-    var route = parent.$route;
-    var cache = parent._routerViewCache || (parent._routerViewCache = {});
+var _defineProperties = require("babel-runtime/core-js/object/define-properties");
 
-    // determine current view depth, also check to see if the tree
-    // has been toggled inactive but kept-alive.
-    var depth = 0;
-    var inactive = false;
-    while (parent && parent._routerRoot !== parent) {
-      if (parent.$vnode && parent.$vnode.data.routerView) {
-        depth++;
-      }
-      if (parent._inactive) {
-        inactive = true;
-      }
-      parent = parent.$parent;
-    }
-    data.routerViewDepth = depth;
+var _defineProperties2 = _interopRequireDefault(_defineProperties);
 
-    // render previous view if the tree is inactive and kept-alive
-    if (inactive) {
-      return h(cache[name], data, children)
-    }
+var _preventExtensions = require("babel-runtime/core-js/object/prevent-extensions");
 
-    var matched = route.matched[depth];
-    // render empty node if no matched route
-    if (!matched) {
-      cache[name] = null;
-      return h()
-    }
+var _preventExtensions2 = _interopRequireDefault(_preventExtensions);
 
-    var component = cache[name] = matched.components[name];
+var _isExtensible = require("babel-runtime/core-js/object/is-extensible");
 
-    // attach instance registration hook
-    // this will be called in the instance's injected lifecycle hooks
-    data.registerRouteInstance = function (vm, val) {
-      // val could be undefined for unregistration
-      var current = matched.instances[name];
-      if (
-        (val && current !== vm) ||
-        (!val && current === vm)
-      ) {
-        matched.instances[name] = val;
-      }
-    }
+var _isExtensible2 = _interopRequireDefault(_isExtensible);
 
-    // also register instance in prepatch hook
-    // in case the same component instance is reused across different routes
-    ;(data.hook || (data.hook = {})).prepatch = function (_, vnode) {
-      matched.instances[name] = vnode.componentInstance;
+var _getOwnPropertySymbols = require("babel-runtime/core-js/object/get-own-property-symbols");
+
+var _getOwnPropertySymbols2 = _interopRequireDefault(_getOwnPropertySymbols);
+
+var _getOwnPropertyNames = require("babel-runtime/core-js/object/get-own-property-names");
+
+var _getOwnPropertyNames2 = _interopRequireDefault(_getOwnPropertyNames);
+
+var _create = require("babel-runtime/core-js/object/create");
+
+var _create2 = _interopRequireDefault(_create);
+
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _defineProperty = require("babel-runtime/core-js/object/define-property");
+
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+var _typeof2 = require("babel-runtime/helpers/typeof");
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+!function (t, e) {
+  "object" == (typeof exports === "undefined" ? "undefined" : (0, _typeof3.default)(exports)) && "object" == (typeof module === "undefined" ? "undefined" : (0, _typeof3.default)(module)) ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == (typeof exports === "undefined" ? "undefined" : (0, _typeof3.default)(exports)) ? exports.VueSelect = e() : t.VueSelect = e();
+}(undefined, function () {
+  return function (t) {
+    function e(r) {
+      if (n[r]) return n[r].exports;var o = n[r] = { exports: {}, id: r, loaded: !1 };return t[r].call(o.exports, o, o.exports, e), o.loaded = !0, o.exports;
+    }var n = {};return e.m = t, e.c = n, e.p = "/", e(0);
+  }([function (t, e, n) {
+    "use strict";
+    function r(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }Object.defineProperty(e, "__esModule", { value: !0 }), e.mixins = e.VueSelect = void 0;var o = n(85),
+        i = r(o),
+        s = n(41),
+        u = r(s);e["default"] = i["default"], e.VueSelect = i["default"], e.mixins = u["default"];
+  }, function (t, e) {
+    var n = t.exports = "undefined" != typeof window && window.Math == Math ? window : "undefined" != typeof self && self.Math == Math ? self : Function("return this")();"number" == typeof __g && (__g = n);
+  }, function (t, e, n) {
+    t.exports = !n(9)(function () {
+      return 7 != Object.defineProperty({}, "a", { get: function get() {
+          return 7;
+        } }).a;
+    });
+  }, function (t, e) {
+    var n = {}.hasOwnProperty;t.exports = function (t, e) {
+      return n.call(t, e);
     };
-
-    // resolve props
-    var propsToPass = data.props = resolveProps(route, matched.props && matched.props[name]);
-    if (propsToPass) {
-      // clone to prevent mutation
-      propsToPass = data.props = extend({}, propsToPass);
-      // pass non-declared props as attrs
-      var attrs = data.attrs = data.attrs || {};
-      for (var key in propsToPass) {
-        if (!component.props || !(key in component.props)) {
-          attrs[key] = propsToPass[key];
-          delete propsToPass[key];
-        }
+  }, function (t, e, n) {
+    var r = n(11),
+        o = n(33),
+        i = n(25),
+        s = _defineProperty2.default;e.f = n(2) ? _defineProperty2.default : function (t, e, n) {
+      if (r(t), e = i(e, !0), r(n), o) try {
+        return s(t, e, n);
+      } catch (u) {}if ("get" in n || "set" in n) throw TypeError("Accessors not supported!");return "value" in n && (t[e] = n.value), t;
+    };
+  }, function (t, e, n) {
+    var r = n(59),
+        o = n(16);t.exports = function (t) {
+      return r(o(t));
+    };
+  }, function (t, e) {
+    var n = t.exports = { version: "2.4.0" };"number" == typeof __e && (__e = n);
+  }, function (t, e, n) {
+    var r = n(4),
+        o = n(14);t.exports = n(2) ? function (t, e, n) {
+      return r.f(t, e, o(1, n));
+    } : function (t, e, n) {
+      return t[e] = n, t;
+    };
+  }, function (t, e, n) {
+    var r = n(23)("wks"),
+        o = n(15),
+        i = n(1).Symbol,
+        s = "function" == typeof i,
+        u = t.exports = function (t) {
+      return r[t] || (r[t] = s && i[t] || (s ? i : o)("Symbol." + t));
+    };u.store = r;
+  }, function (t, e) {
+    t.exports = function (t) {
+      try {
+        return !!t();
+      } catch (e) {
+        return !0;
       }
-    }
-
-    return h(component, data, children)
-  }
-};
-
-function resolveProps (route, config) {
-  switch (typeof config) {
-    case 'undefined':
-      return
-    case 'object':
-      return config
-    case 'function':
-      return config(route)
-    case 'boolean':
-      return config ? route.params : undefined
-    default:
-      if (process.env.NODE_ENV !== 'production') {
-        warn(
-          false,
-          "props in \"" + (route.path) + "\" is a " + (typeof config) + ", " +
-          "expecting an object, function or boolean."
-        );
+    };
+  }, function (t, e, n) {
+    var r = n(38),
+        o = n(17);t.exports = _keys2.default || function (t) {
+      return r(t, o);
+    };
+  }, function (t, e, n) {
+    var r = n(13);t.exports = function (t) {
+      if (!r(t)) throw TypeError(t + " is not an object!");return t;
+    };
+  }, function (t, e, n) {
+    var r = n(1),
+        o = n(6),
+        i = n(56),
+        s = n(7),
+        u = "prototype",
+        a = function a(t, e, n) {
+      var c,
+          l,
+          f,
+          p = t & a.F,
+          d = t & a.G,
+          h = t & a.S,
+          v = t & a.P,
+          y = t & a.B,
+          b = t & a.W,
+          g = d ? o : o[e] || (o[e] = {}),
+          m = g[u],
+          x = d ? r : h ? r[e] : (r[e] || {})[u];d && (n = e);for (c in n) {
+        l = !p && x && void 0 !== x[c], l && c in g || (f = l ? x[c] : n[c], g[c] = d && "function" != typeof x[c] ? n[c] : y && l ? i(f, r) : b && x[c] == f ? function (t) {
+          var e = function e(_e, n, r) {
+            if (this instanceof t) {
+              switch (arguments.length) {case 0:
+                  return new t();case 1:
+                  return new t(_e);case 2:
+                  return new t(_e, n);}return new t(_e, n, r);
+            }return t.apply(this, arguments);
+          };return e[u] = t[u], e;
+        }(f) : v && "function" == typeof f ? i(Function.call, f) : f, v && ((g.virtual || (g.virtual = {}))[c] = f, t & a.R && m && !m[c] && s(m, c, f)));
       }
-  }
-}
-
-function extend (to, from) {
-  for (var key in from) {
-    to[key] = from[key];
-  }
-  return to
-}
-
-/*  */
-
-var encodeReserveRE = /[!'()*]/g;
-var encodeReserveReplacer = function (c) { return '%' + c.charCodeAt(0).toString(16); };
-var commaRE = /%2C/g;
-
-// fixed encodeURIComponent which is more conformant to RFC3986:
-// - escapes [!'()*]
-// - preserve commas
-var encode = function (str) { return encodeURIComponent(str)
-  .replace(encodeReserveRE, encodeReserveReplacer)
-  .replace(commaRE, ','); };
-
-var decode = decodeURIComponent;
-
-function resolveQuery (
-  query,
-  extraQuery,
-  _parseQuery
-) {
-  if ( extraQuery === void 0 ) extraQuery = {};
-
-  var parse = _parseQuery || parseQuery;
-  var parsedQuery;
-  try {
-    parsedQuery = parse(query || '');
-  } catch (e) {
-    process.env.NODE_ENV !== 'production' && warn(false, e.message);
-    parsedQuery = {};
-  }
-  for (var key in extraQuery) {
-    parsedQuery[key] = extraQuery[key];
-  }
-  return parsedQuery
-}
-
-function parseQuery (query) {
-  var res = {};
-
-  query = query.trim().replace(/^(\?|#|&)/, '');
-
-  if (!query) {
-    return res
-  }
-
-  query.split('&').forEach(function (param) {
-    var parts = param.replace(/\+/g, ' ').split('=');
-    var key = decode(parts.shift());
-    var val = parts.length > 0
-      ? decode(parts.join('='))
-      : null;
-
-    if (res[key] === undefined) {
-      res[key] = val;
-    } else if (Array.isArray(res[key])) {
-      res[key].push(val);
-    } else {
-      res[key] = [res[key], val];
-    }
-  });
-
-  return res
-}
-
-function stringifyQuery (obj) {
-  var res = obj ? Object.keys(obj).map(function (key) {
-    var val = obj[key];
-
-    if (val === undefined) {
-      return ''
-    }
-
-    if (val === null) {
-      return encode(key)
-    }
-
-    if (Array.isArray(val)) {
-      var result = [];
-      val.forEach(function (val2) {
-        if (val2 === undefined) {
-          return
+    };a.F = 1, a.G = 2, a.S = 4, a.P = 8, a.B = 16, a.W = 32, a.U = 64, a.R = 128, t.exports = a;
+  }, function (t, e) {
+    t.exports = function (t) {
+      return "object" == (typeof t === "undefined" ? "undefined" : (0, _typeof3.default)(t)) ? null !== t : "function" == typeof t;
+    };
+  }, function (t, e) {
+    t.exports = function (t, e) {
+      return { enumerable: !(1 & t), configurable: !(2 & t), writable: !(4 & t), value: e };
+    };
+  }, function (t, e) {
+    var n = 0,
+        r = Math.random();t.exports = function (t) {
+      return "Symbol(".concat(void 0 === t ? "" : t, ")_", (++n + r).toString(36));
+    };
+  }, function (t, e) {
+    t.exports = function (t) {
+      if (void 0 == t) throw TypeError("Can't call method on  " + t);return t;
+    };
+  }, function (t, e) {
+    t.exports = "constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",");
+  }, function (t, e) {
+    t.exports = {};
+  }, function (t, e) {
+    t.exports = !0;
+  }, function (t, e) {
+    e.f = {}.propertyIsEnumerable;
+  }, function (t, e, n) {
+    var r = n(4).f,
+        o = n(3),
+        i = n(8)("toStringTag");t.exports = function (t, e, n) {
+      t && !o(t = n ? t : t.prototype, i) && r(t, i, { configurable: !0, value: e });
+    };
+  }, function (t, e, n) {
+    var r = n(23)("keys"),
+        o = n(15);t.exports = function (t) {
+      return r[t] || (r[t] = o(t));
+    };
+  }, function (t, e, n) {
+    var r = n(1),
+        o = "__core-js_shared__",
+        i = r[o] || (r[o] = {});t.exports = function (t) {
+      return i[t] || (i[t] = {});
+    };
+  }, function (t, e) {
+    var n = Math.ceil,
+        r = Math.floor;t.exports = function (t) {
+      return isNaN(t = +t) ? 0 : (t > 0 ? r : n)(t);
+    };
+  }, function (t, e, n) {
+    var r = n(13);t.exports = function (t, e) {
+      if (!r(t)) return t;var n, o;if (e && "function" == typeof (n = t.toString) && !r(o = n.call(t))) return o;if ("function" == typeof (n = t.valueOf) && !r(o = n.call(t))) return o;if (!e && "function" == typeof (n = t.toString) && !r(o = n.call(t))) return o;throw TypeError("Can't convert object to primitive value");
+    };
+  }, function (t, e, n) {
+    var r = n(1),
+        o = n(6),
+        i = n(19),
+        s = n(27),
+        u = n(4).f;t.exports = function (t) {
+      var e = o.Symbol || (o.Symbol = i ? {} : r.Symbol || {});"_" == t.charAt(0) || t in e || u(e, t, { value: s.f(t) });
+    };
+  }, function (t, e, n) {
+    e.f = n(8);
+  }, function (t, e) {
+    "use strict";
+    t.exports = { props: { loading: { type: Boolean, "default": !1 }, onSearch: { type: Function, "default": !1 }, debounce: { type: Number, "default": 0 } }, watch: { search: function search() {
+          this.search.length > 0 && this.onSearch && this.onSearch(this.search, this.toggleLoading);
+        } }, methods: { toggleLoading: function toggleLoading() {
+          var t = arguments.length <= 0 || void 0 === arguments[0] ? null : arguments[0];return null == t ? this.loading = !this.loading : this.loading = t;
+        } } };
+  }, function (t, e) {
+    "use strict";
+    t.exports = { watch: { typeAheadPointer: function typeAheadPointer() {
+          this.maybeAdjustScroll();
+        } }, methods: { maybeAdjustScroll: function maybeAdjustScroll() {
+          var t = this.pixelsToPointerTop(),
+              e = this.pixelsToPointerBottom();return t <= this.viewport().top ? this.scrollTo(t) : e >= this.viewport().bottom ? this.scrollTo(this.viewport().top + this.pointerHeight()) : void 0;
+        }, pixelsToPointerTop: function n() {
+          for (var n = 0, t = 0; t < this.typeAheadPointer; t++) {
+            n += this.$els.dropdownMenu.children[t].offsetHeight;
+          }return n;
+        }, pixelsToPointerBottom: function pixelsToPointerBottom() {
+          return this.pixelsToPointerTop() + this.pointerHeight();
+        }, pointerHeight: function pointerHeight() {
+          var t = this.$els.dropdownMenu.children[this.typeAheadPointer];return t ? t.offsetHeight : 0;
+        }, viewport: function viewport() {
+          return { top: this.$els.dropdownMenu.scrollTop, bottom: this.$els.dropdownMenu.offsetHeight + this.$els.dropdownMenu.scrollTop };
+        }, scrollTo: function scrollTo(t) {
+          return this.$els.dropdownMenu.scrollTop = t;
+        } } };
+  }, function (t, e) {
+    "use strict";
+    t.exports = { data: function data() {
+        return { typeAheadPointer: -1 };
+      }, watch: { filteredOptions: function filteredOptions() {
+          this.typeAheadPointer = 0;
+        } }, methods: { typeAheadUp: function typeAheadUp() {
+          this.typeAheadPointer > 0 && (this.typeAheadPointer--, this.maybeAdjustScroll && this.maybeAdjustScroll());
+        }, typeAheadDown: function typeAheadDown() {
+          this.typeAheadPointer < this.filteredOptions.length - 1 && (this.typeAheadPointer++, this.maybeAdjustScroll && this.maybeAdjustScroll());
+        }, typeAheadSelect: function typeAheadSelect() {
+          this.filteredOptions[this.typeAheadPointer] ? this.select(this.filteredOptions[this.typeAheadPointer]) : this.taggable && this.search.length && this.select(this.search), this.clearSearchOnSelect && (this.search = "");
+        } } };
+  }, function (t, e) {
+    var n = {}.toString;t.exports = function (t) {
+      return n.call(t).slice(8, -1);
+    };
+  }, function (t, e, n) {
+    var r = n(13),
+        o = n(1).document,
+        i = r(o) && r(o.createElement);t.exports = function (t) {
+      return i ? o.createElement(t) : {};
+    };
+  }, function (t, e, n) {
+    t.exports = !n(2) && !n(9)(function () {
+      return 7 != Object.defineProperty(n(32)("div"), "a", { get: function get() {
+          return 7;
+        } }).a;
+    });
+  }, function (t, e, n) {
+    "use strict";
+    var r = n(19),
+        o = n(12),
+        i = n(39),
+        s = n(7),
+        u = n(3),
+        a = n(18),
+        c = n(61),
+        l = n(21),
+        f = n(68),
+        p = n(8)("iterator"),
+        d = !([].keys && "next" in [].keys()),
+        h = "@@iterator",
+        v = "keys",
+        y = "values",
+        b = function b() {
+      return this;
+    };t.exports = function (t, e, n, g, m, x, w) {
+      c(n, e, g);var S,
+          O,
+          _,
+          j = function j(t) {
+        if (!d && t in E) return E[t];switch (t) {case v:
+            return function () {
+              return new n(this, t);
+            };case y:
+            return function () {
+              return new n(this, t);
+            };}return function () {
+          return new n(this, t);
+        };
+      },
+          A = e + " Iterator",
+          P = m == y,
+          k = !1,
+          E = t.prototype,
+          M = E[p] || E[h] || m && E[m],
+          T = M || j(m),
+          C = m ? P ? j("entries") : T : void 0,
+          $ = "Array" == e ? E.entries || M : M;if ($ && (_ = f($.call(new t())), _ !== Object.prototype && (l(_, A, !0), r || u(_, p) || s(_, p, b))), P && M && M.name !== y && (k = !0, T = function T() {
+        return M.call(this);
+      }), r && !w || !d && !k && E[p] || s(E, p, T), a[e] = T, a[A] = b, m) if (S = { values: P ? T : j(y), keys: x ? T : j(v), entries: C }, w) for (O in S) {
+        O in E || i(E, O, S[O]);
+      } else o(o.P + o.F * (d || k), e, S);return S;
+    };
+  }, function (t, e, n) {
+    var r = n(11),
+        o = n(65),
+        i = n(17),
+        s = n(22)("IE_PROTO"),
+        u = function u() {},
+        a = "prototype",
+        _c = function c() {
+      var t,
+          e = n(32)("iframe"),
+          r = i.length,
+          o = ">";for (e.style.display = "none", n(58).appendChild(e), e.src = "javascript:", t = e.contentWindow.document, t.open(), t.write("<script>document.F=Object</script" + o), t.close(), _c = t.F; r--;) {
+        delete _c[a][i[r]];
+      }return _c();
+    };t.exports = _create2.default || function (t, e) {
+      var n;return null !== t ? (u[a] = r(t), n = new u(), u[a] = null, n[s] = t) : n = _c(), void 0 === e ? n : o(n, e);
+    };
+  }, function (t, e, n) {
+    var r = n(38),
+        o = n(17).concat("length", "prototype");e.f = _getOwnPropertyNames2.default || function (t) {
+      return r(t, o);
+    };
+  }, function (t, e) {
+    e.f = _getOwnPropertySymbols2.default;
+  }, function (t, e, n) {
+    var r = n(3),
+        o = n(5),
+        i = n(55)(!1),
+        s = n(22)("IE_PROTO");t.exports = function (t, e) {
+      var n,
+          u = o(t),
+          a = 0,
+          c = [];for (n in u) {
+        n != s && r(u, n) && c.push(n);
+      }for (; e.length > a;) {
+        r(u, n = e[a++]) && (~i(c, n) || c.push(n));
+      }return c;
+    };
+  }, function (t, e, n) {
+    t.exports = n(7);
+  }, function (t, e, n) {
+    var r = n(16);t.exports = function (t) {
+      return Object(r(t));
+    };
+  }, function (t, e, n) {
+    "use strict";
+    function r(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }Object.defineProperty(e, "__esModule", { value: !0 });var o = n(28),
+        i = r(o),
+        s = n(30),
+        u = r(s),
+        a = n(29),
+        c = r(a);e["default"] = { ajax: i["default"], pointer: u["default"], pointerScroll: c["default"] };
+  }, function (t, e, n) {
+    "use strict";
+    function r(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }Object.defineProperty(e, "__esModule", { value: !0 });var o = n(44),
+        i = r(o),
+        s = n(47),
+        u = r(s),
+        a = n(48),
+        c = r(a),
+        l = n(29),
+        f = r(l),
+        p = n(30),
+        d = r(p),
+        h = n(28),
+        v = r(h);e["default"] = { mixins: [f["default"], d["default"], v["default"]], props: { value: { "default": null }, options: { type: Array, "default": function _default() {
+            return [];
+          } }, maxHeight: { type: String, "default": "400px" }, searchable: { type: Boolean, "default": !0 }, multiple: { type: Boolean, "default": !1 }, placeholder: { type: String, "default": "" }, transition: { type: String, "default": "expand" }, clearSearchOnSelect: { type: Boolean, "default": !0 }, label: { type: String, "default": "label" }, getOptionLabel: { type: Function, "default": function _default(t) {
+            return "object" === ("undefined" == typeof t ? "undefined" : (0, c["default"])(t)) && this.label && t[this.label] ? t[this.label] : t;
+          } }, onChange: Function, taggable: { type: Boolean, "default": !1 }, pushTags: { type: Boolean, "default": !1 }, createOption: { type: Function, "default": function _default(t) {
+            return "object" === (0, c["default"])(this.options[0]) ? (0, u["default"])({}, this.label, t) : t;
+          } }, resetOnOptionsChange: { type: Boolean, "default": !1 } }, data: function data() {
+        return { search: "", open: !1 };
+      }, watch: { value: function value(t, e) {
+          this.multiple ? this.onChange ? this.onChange(t) : null : this.onChange && t !== e ? this.onChange(t) : null;
+        }, options: function options() {
+          !this.taggable && this.resetOnOptionsChange && this.$set("value", this.multiple ? [] : null);
+        }, multiple: function multiple(t) {
+          this.$set("value", t ? [] : null);
+        } }, methods: { select: function select(t) {
+          this.isOptionSelected(t) ? this.deselect(t) : (this.taggable && !this.optionExists(t) && (t = this.createOption(t), this.pushTags && this.options.push(t)), this.multiple ? this.value ? this.value.push(t) : this.$set("value", [t]) : this.value = t), this.onAfterSelect(t);
+        }, deselect: function deselect(t) {
+          var e = this;if (this.multiple) {
+            var n = -1;this.value.forEach(function (r) {
+              (r === t || "object" === ("undefined" == typeof r ? "undefined" : (0, c["default"])(r)) && r[e.label] === t[e.label]) && (n = r);
+            }), this.value.$remove(n);
+          } else this.value = null;
+        }, onAfterSelect: function onAfterSelect(t) {
+          this.multiple || (this.open = !this.open, this.$els.search.blur()), this.clearSearchOnSelect && (this.search = "");
+        }, toggleDropdown: function toggleDropdown(t) {
+          t.target !== this.$els.openIndicator && t.target !== this.$els.search && t.target !== this.$els.toggle && t.target !== this.$el || (this.open ? this.$els.search.blur() : (this.open = !0, this.$els.search.focus()));
+        }, isOptionSelected: function isOptionSelected(t) {
+          var e = this;if (this.multiple && this.value) {
+            var n = !1;return this.value.forEach(function (r) {
+              "object" === ("undefined" == typeof r ? "undefined" : (0, c["default"])(r)) && r[e.label] === t[e.label] ? n = !0 : r === t && (n = !0);
+            }), n;
+          }return this.value === t;
+        }, onEscape: function onEscape() {
+          this.search.length ? this.search = "" : this.$els.search.blur();
+        }, maybeDeleteValue: function maybeDeleteValue() {
+          if (!this.$els.search.value.length && this.value) return this.multiple ? this.value.pop() : this.$set("value", null);
+        }, optionExists: function optionExists(t) {
+          var e = this,
+              n = !1;return this.options.forEach(function (r) {
+            "object" === ("undefined" == typeof r ? "undefined" : (0, c["default"])(r)) && r[e.label] === t ? n = !0 : r === t && (n = !0);
+          }), n;
+        } }, computed: { dropdownClasses: function dropdownClasses() {
+          return { open: this.open, searchable: this.searchable, loading: this.loading };
+        }, searchPlaceholder: function searchPlaceholder() {
+          if (this.isValueEmpty && this.placeholder) return this.placeholder;
+        }, filteredOptions: function filteredOptions() {
+          var t = this.$options.filters.filterBy(this.options, this.search);return this.taggable && this.search.length && !this.optionExists(this.search) && t.unshift(this.search), t;
+        }, isValueEmpty: function isValueEmpty() {
+          return !this.value || ("object" === (0, c["default"])(this.value) ? !(0, i["default"])(this.value).length : !this.value.length);
+        }, valueAsArray: function valueAsArray() {
+          return this.multiple ? this.value : this.value ? [this.value] : [];
+        } } };
+  }, function (t, e, n) {
+    t.exports = { "default": n(49), __esModule: !0 };
+  }, function (t, e, n) {
+    t.exports = { "default": n(50), __esModule: !0 };
+  }, function (t, e, n) {
+    t.exports = { "default": n(51), __esModule: !0 };
+  }, function (t, e, n) {
+    t.exports = { "default": n(52), __esModule: !0 };
+  }, function (t, e, n) {
+    "use strict";
+    function r(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }e.__esModule = !0;var o = n(43),
+        i = r(o);e["default"] = function (t, e, n) {
+      return e in t ? (0, i["default"])(t, e, { value: n, enumerable: !0, configurable: !0, writable: !0 }) : t[e] = n, t;
+    };
+  }, function (t, e, n) {
+    "use strict";
+    function r(t) {
+      return t && t.__esModule ? t : { "default": t };
+    }e.__esModule = !0;var o = n(46),
+        i = r(o),
+        s = n(45),
+        u = r(s),
+        a = "function" == typeof u["default"] && "symbol" == (0, _typeof3.default)(i["default"]) ? function (t) {
+      return typeof t === "undefined" ? "undefined" : (0, _typeof3.default)(t);
+    } : function (t) {
+      return t && "function" == typeof u["default"] && t.constructor === u["default"] ? "symbol" : typeof t === "undefined" ? "undefined" : (0, _typeof3.default)(t);
+    };e["default"] = "function" == typeof u["default"] && "symbol" === a(i["default"]) ? function (t) {
+      return "undefined" == typeof t ? "undefined" : a(t);
+    } : function (t) {
+      return t && "function" == typeof u["default"] && t.constructor === u["default"] ? "symbol" : "undefined" == typeof t ? "undefined" : a(t);
+    };
+  }, function (t, e, n) {
+    n(74);var r = n(6).Object;t.exports = function (t, e, n) {
+      return r.defineProperty(t, e, n);
+    };
+  }, function (t, e, n) {
+    n(75), t.exports = n(6).Object.keys;
+  }, function (t, e, n) {
+    n(78), n(76), n(79), n(80), t.exports = n(6).Symbol;
+  }, function (t, e, n) {
+    n(77), n(81), t.exports = n(27).f("iterator");
+  }, function (t, e) {
+    t.exports = function (t) {
+      if ("function" != typeof t) throw TypeError(t + " is not a function!");return t;
+    };
+  }, function (t, e) {
+    t.exports = function () {};
+  }, function (t, e, n) {
+    var r = n(5),
+        o = n(72),
+        i = n(71);t.exports = function (t) {
+      return function (e, n, s) {
+        var u,
+            a = r(e),
+            c = o(a.length),
+            l = i(s, c);if (t && n != n) {
+          for (; c > l;) {
+            if (u = a[l++], u != u) return !0;
+          }
+        } else for (; c > l; l++) {
+          if ((t || l in a) && a[l] === n) return t || l || 0;
+        }return !t && -1;
+      };
+    };
+  }, function (t, e, n) {
+    var r = n(53);t.exports = function (t, e, n) {
+      if (r(t), void 0 === e) return t;switch (n) {case 1:
+          return function (n) {
+            return t.call(e, n);
+          };case 2:
+          return function (n, r) {
+            return t.call(e, n, r);
+          };case 3:
+          return function (n, r, o) {
+            return t.call(e, n, r, o);
+          };}return function () {
+        return t.apply(e, arguments);
+      };
+    };
+  }, function (t, e, n) {
+    var r = n(10),
+        o = n(37),
+        i = n(20);t.exports = function (t) {
+      var e = r(t),
+          n = o.f;if (n) for (var s, u = n(t), a = i.f, c = 0; u.length > c;) {
+        a.call(t, s = u[c++]) && e.push(s);
+      }return e;
+    };
+  }, function (t, e, n) {
+    t.exports = n(1).document && document.documentElement;
+  }, function (t, e, n) {
+    var r = n(31);t.exports = Object("z").propertyIsEnumerable(0) ? Object : function (t) {
+      return "String" == r(t) ? t.split("") : Object(t);
+    };
+  }, function (t, e, n) {
+    var r = n(31);t.exports = Array.isArray || function (t) {
+      return "Array" == r(t);
+    };
+  }, function (t, e, n) {
+    "use strict";
+    var r = n(35),
+        o = n(14),
+        i = n(21),
+        s = {};n(7)(s, n(8)("iterator"), function () {
+      return this;
+    }), t.exports = function (t, e, n) {
+      t.prototype = r(s, { next: o(1, n) }), i(t, e + " Iterator");
+    };
+  }, function (t, e) {
+    t.exports = function (t, e) {
+      return { value: e, done: !!t };
+    };
+  }, function (t, e, n) {
+    var r = n(10),
+        o = n(5);t.exports = function (t, e) {
+      for (var n, i = o(t), s = r(i), u = s.length, a = 0; u > a;) {
+        if (i[n = s[a++]] === e) return n;
+      }
+    };
+  }, function (t, e, n) {
+    var r = n(15)("meta"),
+        o = n(13),
+        i = n(3),
+        s = n(4).f,
+        u = 0,
+        a = _isExtensible2.default || function () {
+      return !0;
+    },
+        c = !n(9)(function () {
+      return a((0, _preventExtensions2.default)({}));
+    }),
+        l = function l(t) {
+      s(t, r, { value: { i: "O" + ++u, w: {} } });
+    },
+        f = function f(t, e) {
+      if (!o(t)) return "symbol" == (typeof t === "undefined" ? "undefined" : (0, _typeof3.default)(t)) ? t : ("string" == typeof t ? "S" : "P") + t;if (!i(t, r)) {
+        if (!a(t)) return "F";if (!e) return "E";l(t);
+      }return t[r].i;
+    },
+        p = function p(t, e) {
+      if (!i(t, r)) {
+        if (!a(t)) return !0;if (!e) return !1;l(t);
+      }return t[r].w;
+    },
+        d = function d(t) {
+      return c && h.NEED && a(t) && !i(t, r) && l(t), t;
+    },
+        h = t.exports = { KEY: r, NEED: !1, fastKey: f, getWeak: p, onFreeze: d };
+  }, function (t, e, n) {
+    var r = n(4),
+        o = n(11),
+        i = n(10);t.exports = n(2) ? _defineProperties2.default : function (t, e) {
+      o(t);for (var n, s = i(e), u = s.length, a = 0; u > a;) {
+        r.f(t, n = s[a++], e[n]);
+      }return t;
+    };
+  }, function (t, e, n) {
+    var r = n(20),
+        o = n(14),
+        i = n(5),
+        s = n(25),
+        u = n(3),
+        a = n(33),
+        c = _getOwnPropertyDescriptor2.default;e.f = n(2) ? c : function (t, e) {
+      if (t = i(t), e = s(e, !0), a) try {
+        return c(t, e);
+      } catch (n) {}if (u(t, e)) return o(!r.f.call(t, e), t[e]);
+    };
+  }, function (t, e, n) {
+    var r = n(5),
+        o = n(36).f,
+        i = {}.toString,
+        s = "object" == (typeof window === "undefined" ? "undefined" : (0, _typeof3.default)(window)) && window && _getOwnPropertyNames2.default ? (0, _getOwnPropertyNames2.default)(window) : [],
+        u = function u(t) {
+      try {
+        return o(t);
+      } catch (e) {
+        return s.slice();
+      }
+    };t.exports.f = function (t) {
+      return s && "[object Window]" == i.call(t) ? u(t) : o(r(t));
+    };
+  }, function (t, e, n) {
+    var r = n(3),
+        o = n(40),
+        i = n(22)("IE_PROTO"),
+        s = Object.prototype;t.exports = _getPrototypeOf2.default || function (t) {
+      return t = o(t), r(t, i) ? t[i] : "function" == typeof t.constructor && t instanceof t.constructor ? t.constructor.prototype : t instanceof Object ? s : null;
+    };
+  }, function (t, e, n) {
+    var r = n(12),
+        o = n(6),
+        i = n(9);t.exports = function (t, e) {
+      var n = (o.Object || {})[t] || Object[t],
+          s = {};s[t] = e(n), r(r.S + r.F * i(function () {
+        n(1);
+      }), "Object", s);
+    };
+  }, function (t, e, n) {
+    var r = n(24),
+        o = n(16);t.exports = function (t) {
+      return function (e, n) {
+        var i,
+            s,
+            u = String(o(e)),
+            a = r(n),
+            c = u.length;return a < 0 || a >= c ? t ? "" : void 0 : (i = u.charCodeAt(a), i < 55296 || i > 56319 || a + 1 === c || (s = u.charCodeAt(a + 1)) < 56320 || s > 57343 ? t ? u.charAt(a) : i : t ? u.slice(a, a + 2) : (i - 55296 << 10) + (s - 56320) + 65536);
+      };
+    };
+  }, function (t, e, n) {
+    var r = n(24),
+        o = Math.max,
+        i = Math.min;t.exports = function (t, e) {
+      return t = r(t), t < 0 ? o(t + e, 0) : i(t, e);
+    };
+  }, function (t, e, n) {
+    var r = n(24),
+        o = Math.min;t.exports = function (t) {
+      return t > 0 ? o(r(t), 9007199254740991) : 0;
+    };
+  }, function (t, e, n) {
+    "use strict";
+    var r = n(54),
+        o = n(62),
+        i = n(18),
+        s = n(5);t.exports = n(34)(Array, "Array", function (t, e) {
+      this._t = s(t), this._i = 0, this._k = e;
+    }, function () {
+      var t = this._t,
+          e = this._k,
+          n = this._i++;return !t || n >= t.length ? (this._t = void 0, o(1)) : "keys" == e ? o(0, n) : "values" == e ? o(0, t[n]) : o(0, [n, t[n]]);
+    }, "values"), i.Arguments = i.Array, r("keys"), r("values"), r("entries");
+  }, function (t, e, n) {
+    var r = n(12);r(r.S + r.F * !n(2), "Object", { defineProperty: n(4).f });
+  }, function (t, e, n) {
+    var r = n(40),
+        o = n(10);n(69)("keys", function () {
+      return function (t) {
+        return o(r(t));
+      };
+    });
+  }, function (t, e) {}, function (t, e, n) {
+    "use strict";
+    var r = n(70)(!0);n(34)(String, "String", function (t) {
+      this._t = String(t), this._i = 0;
+    }, function () {
+      var t,
+          e = this._t,
+          n = this._i;return n >= e.length ? { value: void 0, done: !0 } : (t = r(e, n), this._i += t.length, { value: t, done: !1 });
+    });
+  }, function (t, e, n) {
+    "use strict";
+    var r = n(1),
+        o = n(3),
+        i = n(2),
+        s = n(12),
+        u = n(39),
+        a = n(64).KEY,
+        c = n(9),
+        l = n(23),
+        f = n(21),
+        p = n(15),
+        d = n(8),
+        h = n(27),
+        v = n(26),
+        y = n(63),
+        b = n(57),
+        g = n(60),
+        m = n(11),
+        x = n(5),
+        w = n(25),
+        S = n(14),
+        O = n(35),
+        _ = n(67),
+        j = n(66),
+        A = n(4),
+        P = n(10),
+        k = j.f,
+        E = A.f,
+        M = _.f,
+        _T = r.Symbol,
+        C = r.JSON,
+        $ = C && C.stringify,
+        F = "prototype",
+        N = d("_hidden"),
+        B = d("toPrimitive"),
+        I = {}.propertyIsEnumerable,
+        L = l("symbol-registry"),
+        z = l("symbols"),
+        D = l("op-symbols"),
+        V = Object[F],
+        R = "function" == typeof _T,
+        H = r.QObject,
+        U = !H || !H[F] || !H[F].findChild,
+        W = i && c(function () {
+      return 7 != O(E({}, "a", { get: function get() {
+          return E(this, "a", { value: 7 }).a;
+        } })).a;
+    }) ? function (t, e, n) {
+      var r = k(V, e);r && delete V[e], E(t, e, n), r && t !== V && E(V, e, r);
+    } : E,
+        J = function J(t) {
+      var e = z[t] = O(_T[F]);return e._k = t, e;
+    },
+        G = R && "symbol" == (0, _typeof3.default)(_T.iterator) ? function (t) {
+      return "symbol" == (typeof t === "undefined" ? "undefined" : (0, _typeof3.default)(t));
+    } : function (t) {
+      return t instanceof _T;
+    },
+        K = function K(t, e, n) {
+      return t === V && K(D, e, n), m(t), e = w(e, !0), m(n), o(z, e) ? (n.enumerable ? (o(t, N) && t[N][e] && (t[N][e] = !1), n = O(n, { enumerable: S(0, !1) })) : (o(t, N) || E(t, N, S(1, {})), t[N][e] = !0), W(t, e, n)) : E(t, e, n);
+    },
+        Y = function Y(t, e) {
+      m(t);for (var n, r = b(e = x(e)), o = 0, i = r.length; i > o;) {
+        K(t, n = r[o++], e[n]);
+      }return t;
+    },
+        Z = function Z(t, e) {
+      return void 0 === e ? O(t) : Y(O(t), e);
+    },
+        Q = function Q(t) {
+      var e = I.call(this, t = w(t, !0));return !(this === V && o(z, t) && !o(D, t)) && (!(e || !o(this, t) || !o(z, t) || o(this, N) && this[N][t]) || e);
+    },
+        q = function q(t, e) {
+      if (t = x(t), e = w(e, !0), t !== V || !o(z, e) || o(D, e)) {
+        var n = k(t, e);return !n || !o(z, e) || o(t, N) && t[N][e] || (n.enumerable = !0), n;
+      }
+    },
+        X = function X(t) {
+      for (var e, n = M(x(t)), r = [], i = 0; n.length > i;) {
+        o(z, e = n[i++]) || e == N || e == a || r.push(e);
+      }return r;
+    },
+        tt = function tt(t) {
+      for (var e, n = t === V, r = M(n ? D : x(t)), i = [], s = 0; r.length > s;) {
+        !o(z, e = r[s++]) || n && !o(V, e) || i.push(z[e]);
+      }return i;
+    };R || (_T = function T() {
+      if (this instanceof _T) throw TypeError("Symbol is not a constructor!");var t = p(arguments.length > 0 ? arguments[0] : void 0),
+          e = function e(n) {
+        this === V && e.call(D, n), o(this, N) && o(this[N], t) && (this[N][t] = !1), W(this, t, S(1, n));
+      };return i && U && W(V, t, { configurable: !0, set: e }), J(t);
+    }, u(_T[F], "toString", function () {
+      return this._k;
+    }), j.f = q, A.f = K, n(36).f = _.f = X, n(20).f = Q, n(37).f = tt, i && !n(19) && u(V, "propertyIsEnumerable", Q, !0), h.f = function (t) {
+      return J(d(t));
+    }), s(s.G + s.W + s.F * !R, { Symbol: _T });for (var et = "hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","), nt = 0; et.length > nt;) {
+      d(et[nt++]);
+    }for (var et = P(d.store), nt = 0; et.length > nt;) {
+      v(et[nt++]);
+    }s(s.S + s.F * !R, "Symbol", { "for": function _for(t) {
+        return o(L, t += "") ? L[t] : L[t] = _T(t);
+      }, keyFor: function keyFor(t) {
+        if (G(t)) return y(L, t);throw TypeError(t + " is not a symbol!");
+      }, useSetter: function useSetter() {
+        U = !0;
+      }, useSimple: function useSimple() {
+        U = !1;
+      } }), s(s.S + s.F * !R, "Object", { create: Z, defineProperty: K, defineProperties: Y, getOwnPropertyDescriptor: q, getOwnPropertyNames: X, getOwnPropertySymbols: tt }), C && s(s.S + s.F * (!R || c(function () {
+      var t = _T();return "[null]" != $([t]) || "{}" != $({ a: t }) || "{}" != $(Object(t));
+    })), "JSON", { stringify: function stringify(t) {
+        if (void 0 !== t && !G(t)) {
+          for (var e, n, r = [t], o = 1; arguments.length > o;) {
+            r.push(arguments[o++]);
+          }return e = r[1], "function" == typeof e && (n = e), !n && g(e) || (e = function e(t, _e2) {
+            if (n && (_e2 = n.call(this, t, _e2)), !G(_e2)) return _e2;
+          }), r[1] = e, $.apply(C, r);
         }
-        if (val2 === null) {
-          result.push(encode(key));
+      } }), _T[F][B] || n(7)(_T[F], B, _T[F].valueOf), f(_T, "Symbol"), f(Math, "Math", !0), f(r.JSON, "JSON", !0);
+  }, function (t, e, n) {
+    n(26)("asyncIterator");
+  }, function (t, e, n) {
+    n(26)("observable");
+  }, function (t, e, n) {
+    n(73);for (var r = n(1), o = n(7), i = n(18), s = n(8)("toStringTag"), u = ["NodeList", "DOMTokenList", "MediaList", "StyleSheetList", "CSSRuleList"], a = 0; a < 5; a++) {
+      var c = u[a],
+          l = r[c],
+          f = l && l.prototype;f && !f[s] && o(f, s, c), i[c] = i.Array;
+    }
+  }, function (t, e, n) {
+    e = t.exports = n(83)(), e.push([t.id, ".v-select{position:relative}.v-select .open-indicator{position:absolute;bottom:6px;right:10px;display:inline-block;cursor:pointer;pointer-events:all;-webkit-transition:all .15s cubic-bezier(1,-.115,.975,.855);transition:all .15s cubic-bezier(1,-.115,.975,.855);-webkit-transition-timing-function:cubic-bezier(1,-.115,.975,.855);transition-timing-function:cubic-bezier(1,-.115,.975,.855);opacity:1;-webkit-transition:opacity .1s;transition:opacity .1s}.v-select.loading .open-indicator{opacity:0}.v-select .open-indicator:before{border-color:rgba(60,60,60,.5);border-style:solid;border-width:.25em .25em 0 0;content:'';display:inline-block;height:10px;width:10px;vertical-align:top;-webkit-transform:rotate(133deg);transform:rotate(133deg);-webkit-transition:all .15s cubic-bezier(1,-.115,.975,.855);transition:all .15s cubic-bezier(1,-.115,.975,.855);-webkit-transition-timing-function:cubic-bezier(1,-.115,.975,.855);transition-timing-function:cubic-bezier(1,-.115,.975,.855)}.v-select.open .open-indicator{bottom:1px}.v-select.open .open-indicator:before{-webkit-transform:rotate(315deg);transform:rotate(315deg)}.v-select .dropdown-toggle{display:block;padding:0;background:none;border:1px solid rgba(60,60,60,.26);border-radius:4px;white-space:normal}.v-select.searchable .dropdown-toggle{cursor:text}.v-select.open .dropdown-toggle{border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0}.v-select>.dropdown-menu{margin:0;width:100%;overflow-y:scroll;border-top:none;border-top-left-radius:0;border-top-right-radius:0}.v-select .selected-tag{color:#333;background-color:#f0f0f0;border:1px solid #ccc;border-radius:4px;height:26px;margin:4px 1px 0 3px;padding:0 .25em;float:left;line-height:1.7em}.v-select .selected-tag .close{float:none;margin-right:0;font-size:20px}.v-select input[type=search],.v-select input[type=search]:focus{display:inline-block;border:none;outline:none;margin:0;padding:0 .5em;width:10em;max-width:100%;background:none;position:relative;box-shadow:none;float:left;clear:none}.v-select input[type=search]:disabled,.v-select li a{cursor:pointer}.v-select .active a{background:rgba(50,50,50,.1);color:#333}.v-select .highlight a,.v-select li:hover>a{background:#f0f0f0;color:#333}.v-select .spinner{opacity:0;position:absolute;top:5px;right:10px;font-size:5px;text-indent:-9999em;overflow:hidden;border-top:.9em solid hsla(0,0%,39%,.1);border-right:.9em solid hsla(0,0%,39%,.1);border-bottom:.9em solid hsla(0,0%,39%,.1);border-left:.9em solid rgba(60,60,60,.45);-webkit-transform:translateZ(0);transform:translateZ(0);-webkit-animation:vSelectSpinner 1.1s infinite linear;animation:vSelectSpinner 1.1s infinite linear;-webkit-transition:opacity .1s;transition:opacity .1s}.v-select.loading .spinner{opacity:1}.v-select .spinner,.v-select .spinner:after{border-radius:50%;width:5em;height:5em}@-webkit-keyframes vSelectSpinner{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes vSelectSpinner{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}", ""]);
+  }, function (t, e) {
+    t.exports = function () {
+      var t = [];return t.toString = function () {
+        for (var t = [], e = 0; e < this.length; e++) {
+          var n = this[e];n[2] ? t.push("@media " + n[2] + "{" + n[1] + "}") : t.push(n[1]);
+        }return t.join("");
+      }, t.i = function (e, n) {
+        "string" == typeof e && (e = [[null, e, ""]]);for (var r = {}, o = 0; o < this.length; o++) {
+          var i = this[o][0];"number" == typeof i && (r[i] = !0);
+        }for (o = 0; o < e.length; o++) {
+          var s = e[o];"number" == typeof s[0] && r[s[0]] || (n && !s[2] ? s[2] = n : n && (s[2] = "(" + s[2] + ") and (" + n + ")"), t.push(s));
+        }
+      }, t;
+    };
+  }, function (t, e) {
+    t.exports = ' <div class="dropdown v-select" :class=dropdownClasses> <div v-el:toggle @mousedown.prevent=toggleDropdown class="dropdown-toggle clearfix" type=button> <span class=form-control v-if="!searchable && isValueEmpty"> {{ placeholder }} </span> <span class=selected-tag v-for="option in valueAsArray" track-by=$index> {{ getOptionLabel(option) }} <button v-if=multiple @click=select(option) type=button class=close> <span aria-hidden=true>&times;</span> </button> </span> <input v-el:search :debounce=debounce v-model=search v-show=searchable @keydown.delete=maybeDeleteValue @keyup.esc=onEscape @keydown.up.prevent=typeAheadUp @keydown.down.prevent=typeAheadDown @keyup.enter.prevent=typeAheadSelect @blur="open = false" @focus="open = true" type=search class=form-control :placeholder=searchPlaceholder :style="{ width: isValueEmpty ? \'100%\' : \'auto\' }"> <i v-el:open-indicator role=presentation class=open-indicator></i> <slot name=spinner> <div class=spinner v-show="onSearch && loading">Loading...</div> </slot> </div> <ul v-el:dropdown-menu v-show=open :transition=transition class=dropdown-menu :style="{ \'max-height\': maxHeight }"> <li v-for="option in filteredOptions" track-by=$index :class="{ active: isOptionSelected(option), highlight: $index === typeAheadPointer }" @mouseover="typeAheadPointer = $index"> <a @mousedown.prevent=select(option)> {{ getOptionLabel(option) }} </a> </li> <li transition=fade v-if=!filteredOptions.length class=divider></li> <li transition=fade v-if=!filteredOptions.length class=text-center> <slot name=no-options>Sorry, no matching options.</slot> </li> </ul> </div> ';
+  }, function (t, e, n) {
+    var r, o;n(87), r = n(42), o = n(84), t.exports = r || {}, t.exports.__esModule && (t.exports = t.exports["default"]), o && (("function" == typeof t.exports ? t.exports.options || (t.exports.options = {}) : t.exports).template = o);
+  }, function (t, e, n) {
+    function r(t, e) {
+      for (var n = 0; n < t.length; n++) {
+        var r = t[n],
+            o = f[r.id];if (o) {
+          o.refs++;for (var i = 0; i < o.parts.length; i++) {
+            o.parts[i](r.parts[i]);
+          }for (; i < r.parts.length; i++) {
+            o.parts.push(a(r.parts[i], e));
+          }
         } else {
-          result.push(encode(key) + '=' + encode(val2));
+          for (var s = [], i = 0; i < r.parts.length; i++) {
+            s.push(a(r.parts[i], e));
+          }f[r.id] = { id: r.id, refs: 1, parts: s };
         }
-      });
-      return result.join('&')
-    }
-
-    return encode(key) + '=' + encode(val)
-  }).filter(function (x) { return x.length > 0; }).join('&') : null;
-  return res ? ("?" + res) : ''
-}
-
-/*  */
-
-
-var trailingSlashRE = /\/?$/;
-
-function createRoute (
-  record,
-  location,
-  redirectedFrom,
-  router
-) {
-  var stringifyQuery$$1 = router && router.options.stringifyQuery;
-
-  var query = location.query || {};
-  try {
-    query = clone(query);
-  } catch (e) {}
-
-  var route = {
-    name: location.name || (record && record.name),
-    meta: (record && record.meta) || {},
-    path: location.path || '/',
-    hash: location.hash || '',
-    query: query,
-    params: location.params || {},
-    fullPath: getFullPath(location, stringifyQuery$$1),
-    matched: record ? formatMatch(record) : []
-  };
-  if (redirectedFrom) {
-    route.redirectedFrom = getFullPath(redirectedFrom, stringifyQuery$$1);
-  }
-  return Object.freeze(route)
-}
-
-function clone (value) {
-  if (Array.isArray(value)) {
-    return value.map(clone)
-  } else if (value && typeof value === 'object') {
-    var res = {};
-    for (var key in value) {
-      res[key] = clone(value[key]);
-    }
-    return res
-  } else {
-    return value
-  }
-}
-
-// the starting route that represents the initial state
-var START = createRoute(null, {
-  path: '/'
+      }
+    }function o(t) {
+      for (var e = [], n = {}, r = 0; r < t.length; r++) {
+        var o = t[r],
+            i = o[0],
+            s = o[1],
+            u = o[2],
+            a = o[3],
+            c = { css: s, media: u, sourceMap: a };n[i] ? n[i].parts.push(c) : e.push(n[i] = { id: i, parts: [c] });
+      }return e;
+    }function i(t, e) {
+      var n = h(),
+          r = b[b.length - 1];if ("top" === t.insertAt) r ? r.nextSibling ? n.insertBefore(e, r.nextSibling) : n.appendChild(e) : n.insertBefore(e, n.firstChild), b.push(e);else {
+        if ("bottom" !== t.insertAt) throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e);
+      }
+    }function s(t) {
+      t.parentNode.removeChild(t);var e = b.indexOf(t);e >= 0 && b.splice(e, 1);
+    }function u(t) {
+      var e = document.createElement("style");return e.type = "text/css", i(t, e), e;
+    }function a(t, e) {
+      var n, r, o;if (e.singleton) {
+        var i = y++;n = v || (v = u(e)), r = c.bind(null, n, i, !1), o = c.bind(null, n, i, !0);
+      } else n = u(e), r = l.bind(null, n), o = function o() {
+        s(n);
+      };return r(t), function (e) {
+        if (e) {
+          if (e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap) return;r(t = e);
+        } else o();
+      };
+    }function c(t, e, n, r) {
+      var o = n ? "" : r.css;if (t.styleSheet) t.styleSheet.cssText = g(e, o);else {
+        var i = document.createTextNode(o),
+            s = t.childNodes;s[e] && t.removeChild(s[e]), s.length ? t.insertBefore(i, s[e]) : t.appendChild(i);
+      }
+    }function l(t, e) {
+      var n = e.css,
+          r = e.media,
+          o = e.sourceMap;if (r && t.setAttribute("media", r), o && (n += "\n/*# sourceURL=" + o.sources[0] + " */", n += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent((0, _stringify2.default)(o)))) + " */"), t.styleSheet) t.styleSheet.cssText = n;else {
+        for (; t.firstChild;) {
+          t.removeChild(t.firstChild);
+        }t.appendChild(document.createTextNode(n));
+      }
+    }var f = {},
+        p = function p(t) {
+      var e;return function () {
+        return "undefined" == typeof e && (e = t.apply(this, arguments)), e;
+      };
+    },
+        d = p(function () {
+      return (/msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase())
+      );
+    }),
+        h = p(function () {
+      return document.head || document.getElementsByTagName("head")[0];
+    }),
+        v = null,
+        y = 0,
+        b = [];t.exports = function (t, e) {
+      e = e || {}, "undefined" == typeof e.singleton && (e.singleton = d()), "undefined" == typeof e.insertAt && (e.insertAt = "bottom");var n = o(t);return r(n, e), function (t) {
+        for (var i = [], s = 0; s < n.length; s++) {
+          var u = n[s],
+              a = f[u.id];a.refs--, i.push(a);
+        }if (t) {
+          var c = o(t);r(c, e);
+        }for (var s = 0; s < i.length; s++) {
+          var a = i[s];if (0 === a.refs) {
+            for (var l = 0; l < a.parts.length; l++) {
+              a.parts[l]();
+            }delete f[a.id];
+          }
+        }
+      };
+    };var g = function () {
+      var t = [];return function (e, n) {
+        return t[e] = n, t.filter(Boolean).join("\n");
+      };
+    }();
+  }, function (t, e, n) {
+    var r = n(82);"string" == typeof r && (r = [[t.id, r, ""]]);n(86)(r, {});r.locals && (t.exports = r.locals);
+  }]);
 });
 
-function formatMatch (record) {
-  var res = [];
-  while (record) {
-    res.unshift(record);
-    record = record.parent;
-  }
-  return res
-}
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],108:[function(require,module,exports){
+;(function () {
 
-function getFullPath (
-  ref,
-  _stringifyQuery
-) {
-  var path = ref.path;
-  var query = ref.query; if ( query === void 0 ) query = {};
-  var hash = ref.hash; if ( hash === void 0 ) hash = '';
+  var vSortable = {}
+  var Sortable = typeof require === 'function'
+      ? require('sortablejs')
+      : window.Sortable
 
-  var stringify = _stringifyQuery || stringifyQuery;
-  return (path || '/') + stringify(query) + hash
-}
-
-function isSameRoute (a, b) {
-  if (b === START) {
-    return a === b
-  } else if (!b) {
-    return false
-  } else if (a.path && b.path) {
-    return (
-      a.path.replace(trailingSlashRE, '') === b.path.replace(trailingSlashRE, '') &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query)
-    )
-  } else if (a.name && b.name) {
-    return (
-      a.name === b.name &&
-      a.hash === b.hash &&
-      isObjectEqual(a.query, b.query) &&
-      isObjectEqual(a.params, b.params)
-    )
-  } else {
-    return false
-  }
-}
-
-function isObjectEqual (a, b) {
-  if ( a === void 0 ) a = {};
-  if ( b === void 0 ) b = {};
-
-  // handle null value #1566
-  if (!a || !b) { return a === b }
-  var aKeys = Object.keys(a);
-  var bKeys = Object.keys(b);
-  if (aKeys.length !== bKeys.length) {
-    return false
-  }
-  return aKeys.every(function (key) {
-    var aVal = a[key];
-    var bVal = b[key];
-    // check nested equality
-    if (typeof aVal === 'object' && typeof bVal === 'object') {
-      return isObjectEqual(aVal, bVal)
-    }
-    return String(aVal) === String(bVal)
-  })
-}
-
-function isIncludedRoute (current, target) {
-  return (
-    current.path.replace(trailingSlashRE, '/').indexOf(
-      target.path.replace(trailingSlashRE, '/')
-    ) === 0 &&
-    (!target.hash || current.hash === target.hash) &&
-    queryIncludes(current.query, target.query)
-  )
-}
-
-function queryIncludes (current, target) {
-  for (var key in target) {
-    if (!(key in current)) {
-      return false
-    }
-  }
-  return true
-}
-
-/*  */
-
-// work around weird flow bug
-var toTypes = [String, Object];
-var eventTypes = [String, Array];
-
-var Link = {
-  name: 'router-link',
-  props: {
-    to: {
-      type: toTypes,
-      required: true
-    },
-    tag: {
-      type: String,
-      default: 'a'
-    },
-    exact: Boolean,
-    append: Boolean,
-    replace: Boolean,
-    activeClass: String,
-    exactActiveClass: String,
-    event: {
-      type: eventTypes,
-      default: 'click'
-    }
-  },
-  render: function render (h) {
-    var this$1 = this;
-
-    var router = this.$router;
-    var current = this.$route;
-    var ref = router.resolve(this.to, current, this.append);
-    var location = ref.location;
-    var route = ref.route;
-    var href = ref.href;
-
-    var classes = {};
-    var globalActiveClass = router.options.linkActiveClass;
-    var globalExactActiveClass = router.options.linkExactActiveClass;
-    // Support global empty active class
-    var activeClassFallback = globalActiveClass == null
-            ? 'router-link-active'
-            : globalActiveClass;
-    var exactActiveClassFallback = globalExactActiveClass == null
-            ? 'router-link-exact-active'
-            : globalExactActiveClass;
-    var activeClass = this.activeClass == null
-            ? activeClassFallback
-            : this.activeClass;
-    var exactActiveClass = this.exactActiveClass == null
-            ? exactActiveClassFallback
-            : this.exactActiveClass;
-    var compareTarget = location.path
-      ? createRoute(null, location, null, router)
-      : route;
-
-    classes[exactActiveClass] = isSameRoute(current, compareTarget);
-    classes[activeClass] = this.exact
-      ? classes[exactActiveClass]
-      : isIncludedRoute(current, compareTarget);
-
-    var handler = function (e) {
-      if (guardEvent(e)) {
-        if (this$1.replace) {
-          router.replace(location);
-        } else {
-          router.push(location);
-        }
-      }
-    };
-
-    var on = { click: guardEvent };
-    if (Array.isArray(this.event)) {
-      this.event.forEach(function (e) { on[e] = handler; });
-    } else {
-      on[this.event] = handler;
-    }
-
-    var data = {
-      class: classes
-    };
-
-    if (this.tag === 'a') {
-      data.on = on;
-      data.attrs = { href: href };
-    } else {
-      // find the first <a> child and apply listener and href
-      var a = findAnchor(this.$slots.default);
-      if (a) {
-        // in case the <a> is a static node
-        a.isStatic = false;
-        var extend = _Vue.util.extend;
-        var aData = a.data = extend({}, a.data);
-        aData.on = on;
-        var aAttrs = a.data.attrs = extend({}, a.data.attrs);
-        aAttrs.href = href;
-      } else {
-        // doesn't have <a> child, apply listener to self
-        data.on = on;
-      }
-    }
-
-    return h(this.tag, data, this.$slots.default)
-  }
-};
-
-function guardEvent (e) {
-  // don't redirect with control keys
-  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) { return }
-  // don't redirect when preventDefault called
-  if (e.defaultPrevented) { return }
-  // don't redirect on right click
-  if (e.button !== undefined && e.button !== 0) { return }
-  // don't redirect if `target="_blank"`
-  if (e.currentTarget && e.currentTarget.getAttribute) {
-    var target = e.currentTarget.getAttribute('target');
-    if (/\b_blank\b/i.test(target)) { return }
-  }
-  // this may be a Weex event which doesn't have this method
-  if (e.preventDefault) {
-    e.preventDefault();
-  }
-  return true
-}
-
-function findAnchor (children) {
-  if (children) {
-    var child;
-    for (var i = 0; i < children.length; i++) {
-      child = children[i];
-      if (child.tag === 'a') {
-        return child
-      }
-      if (child.children && (child = findAnchor(child.children))) {
-        return child
-      }
-    }
-  }
-}
-
-var _Vue;
-
-function install (Vue) {
-  if (install.installed && _Vue === Vue) { return }
-  install.installed = true;
-
-  _Vue = Vue;
-
-  var isDef = function (v) { return v !== undefined; };
-
-  var registerInstance = function (vm, callVal) {
-    var i = vm.$options._parentVnode;
-    if (isDef(i) && isDef(i = i.data) && isDef(i = i.registerRouteInstance)) {
-      i(vm, callVal);
-    }
-  };
-
-  Vue.mixin({
-    beforeCreate: function beforeCreate () {
-      if (isDef(this.$options.router)) {
-        this._routerRoot = this;
-        this._router = this.$options.router;
-        this._router.init(this);
-        Vue.util.defineReactive(this, '_route', this._router.history.current);
-      } else {
-        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
-      }
-      registerInstance(this, this);
-    },
-    destroyed: function destroyed () {
-      registerInstance(this);
-    }
-  });
-
-  Object.defineProperty(Vue.prototype, '$router', {
-    get: function get () { return this._routerRoot._router }
-  });
-
-  Object.defineProperty(Vue.prototype, '$route', {
-    get: function get () { return this._routerRoot._route }
-  });
-
-  Vue.component('router-view', View);
-  Vue.component('router-link', Link);
-
-  var strats = Vue.config.optionMergeStrategies;
-  // use the same hook merging strategy for route hooks
-  strats.beforeRouteEnter = strats.beforeRouteLeave = strats.beforeRouteUpdate = strats.created;
-}
-
-/*  */
-
-var inBrowser = typeof window !== 'undefined';
-
-/*  */
-
-function resolvePath (
-  relative,
-  base,
-  append
-) {
-  var firstChar = relative.charAt(0);
-  if (firstChar === '/') {
-    return relative
+  if (!Sortable) {
+    throw new Error('[vue-sortable] cannot locate Sortable.js.')
   }
 
-  if (firstChar === '?' || firstChar === '#') {
-    return base + relative
-  }
+  // exposed global options
+  vSortable.config = {}
 
-  var stack = base.split('/');
+  vSortable.install = function (Vue) {
+    Vue.directive('sortable', function (options) {
+      options = options || {}
 
-  // remove trailing segment if:
-  // - not appending
-  // - appending to trailing slash (last segment is empty)
-  if (!append || !stack[stack.length - 1]) {
-    stack.pop();
-  }
+      var sortable = new Sortable(this.el, options)
 
-  // resolve relative path
-  var segments = relative.replace(/^\//, '').split('/');
-  for (var i = 0; i < segments.length; i++) {
-    var segment = segments[i];
-    if (segment === '..') {
-      stack.pop();
-    } else if (segment !== '.') {
-      stack.push(segment);
-    }
-  }
-
-  // ensure leading slash
-  if (stack[0] !== '') {
-    stack.unshift('');
-  }
-
-  return stack.join('/')
-}
-
-function parsePath (path) {
-  var hash = '';
-  var query = '';
-
-  var hashIndex = path.indexOf('#');
-  if (hashIndex >= 0) {
-    hash = path.slice(hashIndex);
-    path = path.slice(0, hashIndex);
-  }
-
-  var queryIndex = path.indexOf('?');
-  if (queryIndex >= 0) {
-    query = path.slice(queryIndex + 1);
-    path = path.slice(0, queryIndex);
-  }
-
-  return {
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function cleanPath (path) {
-  return path.replace(/\/\//g, '/')
-}
-
-var isarray = Array.isArray || function (arr) {
-  return Object.prototype.toString.call(arr) == '[object Array]';
-};
-
-/**
- * Expose `pathToRegexp`.
- */
-var pathToRegexp_1 = pathToRegexp;
-var parse_1 = parse;
-var compile_1 = compile;
-var tokensToFunction_1 = tokensToFunction;
-var tokensToRegExp_1 = tokensToRegExp;
-
-/**
- * The main path matching regexp utility.
- *
- * @type {RegExp}
- */
-var PATH_REGEXP = new RegExp([
-  // Match escaped characters that would otherwise appear in future matches.
-  // This allows the user to escape special characters that won't transform.
-  '(\\\\.)',
-  // Match Express-style parameters and un-named parameters with a prefix
-  // and optional suffixes. Matches appear as:
-  //
-  // "/:test(\\d+)?" => ["/", "test", "\d+", undefined, "?", undefined]
-  // "/route(\\d+)"  => [undefined, undefined, undefined, "\d+", undefined, undefined]
-  // "/*"            => ["/", undefined, undefined, undefined, undefined, "*"]
-  '([\\/.])?(?:(?:\\:(\\w+)(?:\\(((?:\\\\.|[^\\\\()])+)\\))?|\\(((?:\\\\.|[^\\\\()])+)\\))([+*?])?|(\\*))'
-].join('|'), 'g');
-
-/**
- * Parse a string for the raw tokens.
- *
- * @param  {string}  str
- * @param  {Object=} options
- * @return {!Array}
- */
-function parse (str, options) {
-  var tokens = [];
-  var key = 0;
-  var index = 0;
-  var path = '';
-  var defaultDelimiter = options && options.delimiter || '/';
-  var res;
-
-  while ((res = PATH_REGEXP.exec(str)) != null) {
-    var m = res[0];
-    var escaped = res[1];
-    var offset = res.index;
-    path += str.slice(index, offset);
-    index = offset + m.length;
-
-    // Ignore already escaped sequences.
-    if (escaped) {
-      path += escaped[1];
-      continue
-    }
-
-    var next = str[index];
-    var prefix = res[2];
-    var name = res[3];
-    var capture = res[4];
-    var group = res[5];
-    var modifier = res[6];
-    var asterisk = res[7];
-
-    // Push the current path onto the tokens.
-    if (path) {
-      tokens.push(path);
-      path = '';
-    }
-
-    var partial = prefix != null && next != null && next !== prefix;
-    var repeat = modifier === '+' || modifier === '*';
-    var optional = modifier === '?' || modifier === '*';
-    var delimiter = res[2] || defaultDelimiter;
-    var pattern = capture || group;
-
-    tokens.push({
-      name: name || key++,
-      prefix: prefix || '',
-      delimiter: delimiter,
-      optional: optional,
-      repeat: repeat,
-      partial: partial,
-      asterisk: !!asterisk,
-      pattern: pattern ? escapeGroup(pattern) : (asterisk ? '.*' : '[^' + escapeString(delimiter) + ']+?')
-    });
-  }
-
-  // Match any characters still remaining.
-  if (index < str.length) {
-    path += str.substr(index);
-  }
-
-  // If the path exists, push it onto the end.
-  if (path) {
-    tokens.push(path);
-  }
-
-  return tokens
-}
-
-/**
- * Compile a string to a template function for the path.
- *
- * @param  {string}             str
- * @param  {Object=}            options
- * @return {!function(Object=, Object=)}
- */
-function compile (str, options) {
-  return tokensToFunction(parse(str, options))
-}
-
-/**
- * Prettier encoding of URI path segments.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeURIComponentPretty (str) {
-  return encodeURI(str).replace(/[\/?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Encode the asterisk parameter. Similar to `pretty`, but allows slashes.
- *
- * @param  {string}
- * @return {string}
- */
-function encodeAsterisk (str) {
-  return encodeURI(str).replace(/[?#]/g, function (c) {
-    return '%' + c.charCodeAt(0).toString(16).toUpperCase()
-  })
-}
-
-/**
- * Expose a method for transforming tokens into the path function.
- */
-function tokensToFunction (tokens) {
-  // Compile all the tokens into regexps.
-  var matches = new Array(tokens.length);
-
-  // Compile all the patterns before compilation.
-  for (var i = 0; i < tokens.length; i++) {
-    if (typeof tokens[i] === 'object') {
-      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$');
-    }
-  }
-
-  return function (obj, opts) {
-    var path = '';
-    var data = obj || {};
-    var options = opts || {};
-    var encode = options.pretty ? encodeURIComponentPretty : encodeURIComponent;
-
-    for (var i = 0; i < tokens.length; i++) {
-      var token = tokens[i];
-
-      if (typeof token === 'string') {
-        path += token;
-
-        continue
+      if (this.arg && !this.vm.sortable) {
+        this.vm.sortable = {}
       }
 
-      var value = data[token.name];
-      var segment;
-
-      if (value == null) {
-        if (token.optional) {
-          // Prepend partial segment prefixes.
-          if (token.partial) {
-            path += token.prefix;
-          }
-
-          continue
-        } else {
-          throw new TypeError('Expected "' + token.name + '" to be defined')
-        }
-      }
-
-      if (isarray(value)) {
-        if (!token.repeat) {
-          throw new TypeError('Expected "' + token.name + '" to not repeat, but received `' + JSON.stringify(value) + '`')
-        }
-
-        if (value.length === 0) {
-          if (token.optional) {
-            continue
-          } else {
-            throw new TypeError('Expected "' + token.name + '" to not be empty')
-          }
-        }
-
-        for (var j = 0; j < value.length; j++) {
-          segment = encode(value[j]);
-
-          if (!matches[i].test(segment)) {
-            throw new TypeError('Expected all "' + token.name + '" to match "' + token.pattern + '", but received `' + JSON.stringify(segment) + '`')
-          }
-
-          path += (j === 0 ? token.prefix : token.delimiter) + segment;
-        }
-
-        continue
-      }
-
-      segment = token.asterisk ? encodeAsterisk(value) : encode(value);
-
-      if (!matches[i].test(segment)) {
-        throw new TypeError('Expected "' + token.name + '" to match "' + token.pattern + '", but received "' + segment + '"')
-      }
-
-      path += token.prefix + segment;
-    }
-
-    return path
-  }
-}
-
-/**
- * Escape a regular expression string.
- *
- * @param  {string} str
- * @return {string}
- */
-function escapeString (str) {
-  return str.replace(/([.+*?=^!:${}()[\]|\/\\])/g, '\\$1')
-}
-
-/**
- * Escape the capturing group by escaping special characters and meaning.
- *
- * @param  {string} group
- * @return {string}
- */
-function escapeGroup (group) {
-  return group.replace(/([=!:$\/()])/g, '\\$1')
-}
-
-/**
- * Attach the keys as a property of the regexp.
- *
- * @param  {!RegExp} re
- * @param  {Array}   keys
- * @return {!RegExp}
- */
-function attachKeys (re, keys) {
-  re.keys = keys;
-  return re
-}
-
-/**
- * Get the flags for a regexp from the options.
- *
- * @param  {Object} options
- * @return {string}
- */
-function flags (options) {
-  return options.sensitive ? '' : 'i'
-}
-
-/**
- * Pull out keys from a regexp.
- *
- * @param  {!RegExp} path
- * @param  {!Array}  keys
- * @return {!RegExp}
- */
-function regexpToRegexp (path, keys) {
-  // Use a negative lookahead to match only capturing groups.
-  var groups = path.source.match(/\((?!\?)/g);
-
-  if (groups) {
-    for (var i = 0; i < groups.length; i++) {
-      keys.push({
-        name: i,
-        prefix: null,
-        delimiter: null,
-        optional: false,
-        repeat: false,
-        partial: false,
-        asterisk: false,
-        pattern: null
-      });
-    }
-  }
-
-  return attachKeys(path, keys)
-}
-
-/**
- * Transform an array into a regexp.
- *
- * @param  {!Array}  path
- * @param  {Array}   keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function arrayToRegexp (path, keys, options) {
-  var parts = [];
-
-  for (var i = 0; i < path.length; i++) {
-    parts.push(pathToRegexp(path[i], keys, options).source);
-  }
-
-  var regexp = new RegExp('(?:' + parts.join('|') + ')', flags(options));
-
-  return attachKeys(regexp, keys)
-}
-
-/**
- * Create a path regexp from string input.
- *
- * @param  {string}  path
- * @param  {!Array}  keys
- * @param  {!Object} options
- * @return {!RegExp}
- */
-function stringToRegexp (path, keys, options) {
-  return tokensToRegExp(parse(path, options), keys, options)
-}
-
-/**
- * Expose a function for taking tokens and returning a RegExp.
- *
- * @param  {!Array}          tokens
- * @param  {(Array|Object)=} keys
- * @param  {Object=}         options
- * @return {!RegExp}
- */
-function tokensToRegExp (tokens, keys, options) {
-  if (!isarray(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  var strict = options.strict;
-  var end = options.end !== false;
-  var route = '';
-
-  // Iterate over the tokens and create our regexp string.
-  for (var i = 0; i < tokens.length; i++) {
-    var token = tokens[i];
-
-    if (typeof token === 'string') {
-      route += escapeString(token);
-    } else {
-      var prefix = escapeString(token.prefix);
-      var capture = '(?:' + token.pattern + ')';
-
-      keys.push(token);
-
-      if (token.repeat) {
-        capture += '(?:' + prefix + capture + ')*';
-      }
-
-      if (token.optional) {
-        if (!token.partial) {
-          capture = '(?:' + prefix + '(' + capture + '))?';
-        } else {
-          capture = prefix + '(' + capture + ')?';
-        }
-      } else {
-        capture = prefix + '(' + capture + ')';
-      }
-
-      route += capture;
-    }
-  }
-
-  var delimiter = escapeString(options.delimiter || '/');
-  var endsWithDelimiter = route.slice(-delimiter.length) === delimiter;
-
-  // In non-strict mode we allow a slash at the end of match. If the path to
-  // match already ends with a slash, we remove it for consistency. The slash
-  // is valid at the end of a path match, not in the middle. This is important
-  // in non-ending mode, where "/test/" shouldn't match "/test//route".
-  if (!strict) {
-    route = (endsWithDelimiter ? route.slice(0, -delimiter.length) : route) + '(?:' + delimiter + '(?=$))?';
-  }
-
-  if (end) {
-    route += '$';
-  } else {
-    // In non-ending mode, we need the capturing groups to match as much as
-    // possible by using a positive lookahead to the end or next path segment.
-    route += strict && endsWithDelimiter ? '' : '(?=' + delimiter + '|$)';
-  }
-
-  return attachKeys(new RegExp('^' + route, flags(options)), keys)
-}
-
-/**
- * Normalize the given path string, returning a regular expression.
- *
- * An empty array can be passed in for the keys, which will hold the
- * placeholder key descriptions. For example, using `/user/:id`, `keys` will
- * contain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.
- *
- * @param  {(string|RegExp|Array)} path
- * @param  {(Array|Object)=}       keys
- * @param  {Object=}               options
- * @return {!RegExp}
- */
-function pathToRegexp (path, keys, options) {
-  if (!isarray(keys)) {
-    options = /** @type {!Object} */ (keys || options);
-    keys = [];
-  }
-
-  options = options || {};
-
-  if (path instanceof RegExp) {
-    return regexpToRegexp(path, /** @type {!Array} */ (keys))
-  }
-
-  if (isarray(path)) {
-    return arrayToRegexp(/** @type {!Array} */ (path), /** @type {!Array} */ (keys), options)
-  }
-
-  return stringToRegexp(/** @type {string} */ (path), /** @type {!Array} */ (keys), options)
-}
-
-pathToRegexp_1.parse = parse_1;
-pathToRegexp_1.compile = compile_1;
-pathToRegexp_1.tokensToFunction = tokensToFunction_1;
-pathToRegexp_1.tokensToRegExp = tokensToRegExp_1;
-
-/*  */
-
-// $flow-disable-line
-var regexpCompileCache = Object.create(null);
-
-function fillParams (
-  path,
-  params,
-  routeMsg
-) {
-  try {
-    var filler =
-      regexpCompileCache[path] ||
-      (regexpCompileCache[path] = pathToRegexp_1.compile(path));
-    return filler(params || {}, { pretty: true })
-  } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
-      warn(false, ("missing param for " + routeMsg + ": " + (e.message)));
-    }
-    return ''
-  }
-}
-
-/*  */
-
-function createRouteMap (
-  routes,
-  oldPathList,
-  oldPathMap,
-  oldNameMap
-) {
-  // the path list is used to control path matching priority
-  var pathList = oldPathList || [];
-  // $flow-disable-line
-  var pathMap = oldPathMap || Object.create(null);
-  // $flow-disable-line
-  var nameMap = oldNameMap || Object.create(null);
-
-  routes.forEach(function (route) {
-    addRouteRecord(pathList, pathMap, nameMap, route);
-  });
-
-  // ensure wildcard routes are always at the end
-  for (var i = 0, l = pathList.length; i < l; i++) {
-    if (pathList[i] === '*') {
-      pathList.push(pathList.splice(i, 1)[0]);
-      l--;
-      i--;
-    }
-  }
-
-  return {
-    pathList: pathList,
-    pathMap: pathMap,
-    nameMap: nameMap
-  }
-}
-
-function addRouteRecord (
-  pathList,
-  pathMap,
-  nameMap,
-  route,
-  parent,
-  matchAs
-) {
-  var path = route.path;
-  var name = route.name;
-  if (process.env.NODE_ENV !== 'production') {
-    assert(path != null, "\"path\" is required in a route configuration.");
-    assert(
-      typeof route.component !== 'string',
-      "route config \"component\" for path: " + (String(path || name)) + " cannot be a " +
-      "string id. Use an actual component instead."
-    );
-  }
-
-  var pathToRegexpOptions = route.pathToRegexpOptions || {};
-  var normalizedPath = normalizePath(
-    path,
-    parent,
-    pathToRegexpOptions.strict
-  );
-
-  if (typeof route.caseSensitive === 'boolean') {
-    pathToRegexpOptions.sensitive = route.caseSensitive;
-  }
-
-  var record = {
-    path: normalizedPath,
-    regex: compileRouteRegex(normalizedPath, pathToRegexpOptions),
-    components: route.components || { default: route.component },
-    instances: {},
-    name: name,
-    parent: parent,
-    matchAs: matchAs,
-    redirect: route.redirect,
-    beforeEnter: route.beforeEnter,
-    meta: route.meta || {},
-    props: route.props == null
-      ? {}
-      : route.components
-        ? route.props
-        : { default: route.props }
-  };
-
-  if (route.children) {
-    // Warn if route is named, does not redirect and has a default child route.
-    // If users navigate to this route by name, the default child will
-    // not be rendered (GH Issue #629)
-    if (process.env.NODE_ENV !== 'production') {
-      if (route.name && !route.redirect && route.children.some(function (child) { return /^\/?$/.test(child.path); })) {
-        warn(
-          false,
-          "Named Route '" + (route.name) + "' has a default child route. " +
-          "When navigating to this named route (:to=\"{name: '" + (route.name) + "'\"), " +
-          "the default child route will not be rendered. Remove the name from " +
-          "this route and use the name of the default child route for named " +
-          "links instead."
-        );
-      }
-    }
-    route.children.forEach(function (child) {
-      var childMatchAs = matchAs
-        ? cleanPath((matchAs + "/" + (child.path)))
-        : undefined;
-      addRouteRecord(pathList, pathMap, nameMap, child, record, childMatchAs);
-    });
-  }
-
-  if (route.alias !== undefined) {
-    var aliases = Array.isArray(route.alias)
-      ? route.alias
-      : [route.alias];
-
-    aliases.forEach(function (alias) {
-      var aliasRoute = {
-        path: alias,
-        children: route.children
-      };
-      addRouteRecord(
-        pathList,
-        pathMap,
-        nameMap,
-        aliasRoute,
-        parent,
-        record.path || '/' // matchAs
-      );
-    });
-  }
-
-  if (!pathMap[record.path]) {
-    pathList.push(record.path);
-    pathMap[record.path] = record;
-  }
-
-  if (name) {
-    if (!nameMap[name]) {
-      nameMap[name] = record;
-    } else if (process.env.NODE_ENV !== 'production' && !matchAs) {
-      warn(
-        false,
-        "Duplicate named routes definition: " +
-        "{ name: \"" + name + "\", path: \"" + (record.path) + "\" }"
-      );
-    }
-  }
-}
-
-function compileRouteRegex (path, pathToRegexpOptions) {
-  var regex = pathToRegexp_1(path, [], pathToRegexpOptions);
-  if (process.env.NODE_ENV !== 'production') {
-    var keys = Object.create(null);
-    regex.keys.forEach(function (key) {
-      warn(!keys[key.name], ("Duplicate param keys in route with path: \"" + path + "\""));
-      keys[key.name] = true;
-    });
-  }
-  return regex
-}
-
-function normalizePath (path, parent, strict) {
-  if (!strict) { path = path.replace(/\/$/, ''); }
-  if (path[0] === '/') { return path }
-  if (parent == null) { return path }
-  return cleanPath(((parent.path) + "/" + path))
-}
-
-/*  */
-
-
-function normalizeLocation (
-  raw,
-  current,
-  append,
-  router
-) {
-  var next = typeof raw === 'string' ? { path: raw } : raw;
-  // named target
-  if (next.name || next._normalized) {
-    return next
-  }
-
-  // relative params
-  if (!next.path && next.params && current) {
-    next = assign({}, next);
-    next._normalized = true;
-    var params = assign(assign({}, current.params), next.params);
-    if (current.name) {
-      next.name = current.name;
-      next.params = params;
-    } else if (current.matched.length) {
-      var rawPath = current.matched[current.matched.length - 1].path;
-      next.path = fillParams(rawPath, params, ("path " + (current.path)));
-    } else if (process.env.NODE_ENV !== 'production') {
-      warn(false, "relative params navigation requires a current route.");
-    }
-    return next
-  }
-
-  var parsedPath = parsePath(next.path || '');
-  var basePath = (current && current.path) || '/';
-  var path = parsedPath.path
-    ? resolvePath(parsedPath.path, basePath, append || next.append)
-    : basePath;
-
-  var query = resolveQuery(
-    parsedPath.query,
-    next.query,
-    router && router.options.parseQuery
-  );
-
-  var hash = next.hash || parsedPath.hash;
-  if (hash && hash.charAt(0) !== '#') {
-    hash = "#" + hash;
-  }
-
-  return {
-    _normalized: true,
-    path: path,
-    query: query,
-    hash: hash
-  }
-}
-
-function assign (a, b) {
-  for (var key in b) {
-    a[key] = b[key];
-  }
-  return a
-}
-
-/*  */
-
-
-function createMatcher (
-  routes,
-  router
-) {
-  var ref = createRouteMap(routes);
-  var pathList = ref.pathList;
-  var pathMap = ref.pathMap;
-  var nameMap = ref.nameMap;
-
-  function addRoutes (routes) {
-    createRouteMap(routes, pathList, pathMap, nameMap);
-  }
-
-  function match (
-    raw,
-    currentRoute,
-    redirectedFrom
-  ) {
-    var location = normalizeLocation(raw, currentRoute, false, router);
-    var name = location.name;
-
-    if (name) {
-      var record = nameMap[name];
-      if (process.env.NODE_ENV !== 'production') {
-        warn(record, ("Route with name '" + name + "' does not exist"));
-      }
-      if (!record) { return _createRoute(null, location) }
-      var paramNames = record.regex.keys
-        .filter(function (key) { return !key.optional; })
-        .map(function (key) { return key.name; });
-
-      if (typeof location.params !== 'object') {
-        location.params = {};
-      }
-
-      if (currentRoute && typeof currentRoute.params === 'object') {
-        for (var key in currentRoute.params) {
-          if (!(key in location.params) && paramNames.indexOf(key) > -1) {
-            location.params[key] = currentRoute.params[key];
-          }
-        }
-      }
-
-      if (record) {
-        location.path = fillParams(record.path, location.params, ("named route \"" + name + "\""));
-        return _createRoute(record, location, redirectedFrom)
-      }
-    } else if (location.path) {
-      location.params = {};
-      for (var i = 0; i < pathList.length; i++) {
-        var path = pathList[i];
-        var record$1 = pathMap[path];
-        if (matchRoute(record$1.regex, location.path, location.params)) {
-          return _createRoute(record$1, location, redirectedFrom)
-        }
-      }
-    }
-    // no match
-    return _createRoute(null, location)
-  }
-
-  function redirect (
-    record,
-    location
-  ) {
-    var originalRedirect = record.redirect;
-    var redirect = typeof originalRedirect === 'function'
-        ? originalRedirect(createRoute(record, location, null, router))
-        : originalRedirect;
-
-    if (typeof redirect === 'string') {
-      redirect = { path: redirect };
-    }
-
-    if (!redirect || typeof redirect !== 'object') {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(
-          false, ("invalid redirect option: " + (JSON.stringify(redirect)))
-        );
-      }
-      return _createRoute(null, location)
-    }
-
-    var re = redirect;
-    var name = re.name;
-    var path = re.path;
-    var query = location.query;
-    var hash = location.hash;
-    var params = location.params;
-    query = re.hasOwnProperty('query') ? re.query : query;
-    hash = re.hasOwnProperty('hash') ? re.hash : hash;
-    params = re.hasOwnProperty('params') ? re.params : params;
-
-    if (name) {
-      // resolved named direct
-      var targetRecord = nameMap[name];
-      if (process.env.NODE_ENV !== 'production') {
-        assert(targetRecord, ("redirect failed: named route \"" + name + "\" not found."));
-      }
-      return match({
-        _normalized: true,
-        name: name,
-        query: query,
-        hash: hash,
-        params: params
-      }, undefined, location)
-    } else if (path) {
-      // 1. resolve relative redirect
-      var rawPath = resolveRecordPath(path, record);
-      // 2. resolve params
-      var resolvedPath = fillParams(rawPath, params, ("redirect route with path \"" + rawPath + "\""));
-      // 3. rematch with existing query and hash
-      return match({
-        _normalized: true,
-        path: resolvedPath,
-        query: query,
-        hash: hash
-      }, undefined, location)
-    } else {
-      if (process.env.NODE_ENV !== 'production') {
-        warn(false, ("invalid redirect option: " + (JSON.stringify(redirect))));
-      }
-      return _createRoute(null, location)
-    }
-  }
-
-  function alias (
-    record,
-    location,
-    matchAs
-  ) {
-    var aliasedPath = fillParams(matchAs, location.params, ("aliased route with path \"" + matchAs + "\""));
-    var aliasedMatch = match({
-      _normalized: true,
-      path: aliasedPath
-    });
-    if (aliasedMatch) {
-      var matched = aliasedMatch.matched;
-      var aliasedRecord = matched[matched.length - 1];
-      location.params = aliasedMatch.params;
-      return _createRoute(aliasedRecord, location)
-    }
-    return _createRoute(null, location)
-  }
-
-  function _createRoute (
-    record,
-    location,
-    redirectedFrom
-  ) {
-    if (record && record.redirect) {
-      return redirect(record, redirectedFrom || location)
-    }
-    if (record && record.matchAs) {
-      return alias(record, location, record.matchAs)
-    }
-    return createRoute(record, location, redirectedFrom, router)
-  }
-
-  return {
-    match: match,
-    addRoutes: addRoutes
-  }
-}
-
-function matchRoute (
-  regex,
-  path,
-  params
-) {
-  var m = path.match(regex);
-
-  if (!m) {
-    return false
-  } else if (!params) {
-    return true
-  }
-
-  for (var i = 1, len = m.length; i < len; ++i) {
-    var key = regex.keys[i - 1];
-    var val = typeof m[i] === 'string' ? decodeURIComponent(m[i]) : m[i];
-    if (key) {
-      params[key.name] = val;
-    }
-  }
-
-  return true
-}
-
-function resolveRecordPath (path, record) {
-  return resolvePath(path, record.parent ? record.parent.path : '/', true)
-}
-
-/*  */
-
-
-var positionStore = Object.create(null);
-
-function setupScroll () {
-  // Fix for #1585 for Firefox
-  window.history.replaceState({ key: getStateKey() }, '');
-  window.addEventListener('popstate', function (e) {
-    saveScrollPosition();
-    if (e.state && e.state.key) {
-      setStateKey(e.state.key);
-    }
-  });
-}
-
-function handleScroll (
-  router,
-  to,
-  from,
-  isPop
-) {
-  if (!router.app) {
-    return
-  }
-
-  var behavior = router.options.scrollBehavior;
-  if (!behavior) {
-    return
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    assert(typeof behavior === 'function', "scrollBehavior must be a function");
-  }
-
-  // wait until re-render finishes before scrolling
-  router.app.$nextTick(function () {
-    var position = getScrollPosition();
-    var shouldScroll = behavior(to, from, isPop ? position : null);
-
-    if (!shouldScroll) {
-      return
-    }
-
-    if (typeof shouldScroll.then === 'function') {
-      shouldScroll.then(function (shouldScroll) {
-        scrollToPosition((shouldScroll), position);
-      }).catch(function (err) {
-        if (process.env.NODE_ENV !== 'production') {
-          assert(false, err.toString());
-        }
-      });
-    } else {
-      scrollToPosition(shouldScroll, position);
-    }
-  });
-}
-
-function saveScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    positionStore[key] = {
-      x: window.pageXOffset,
-      y: window.pageYOffset
-    };
-  }
-}
-
-function getScrollPosition () {
-  var key = getStateKey();
-  if (key) {
-    return positionStore[key]
-  }
-}
-
-function getElementPosition (el, offset) {
-  var docEl = document.documentElement;
-  var docRect = docEl.getBoundingClientRect();
-  var elRect = el.getBoundingClientRect();
-  return {
-    x: elRect.left - docRect.left - offset.x,
-    y: elRect.top - docRect.top - offset.y
-  }
-}
-
-function isValidPosition (obj) {
-  return isNumber(obj.x) || isNumber(obj.y)
-}
-
-function normalizePosition (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : window.pageXOffset,
-    y: isNumber(obj.y) ? obj.y : window.pageYOffset
-  }
-}
-
-function normalizeOffset (obj) {
-  return {
-    x: isNumber(obj.x) ? obj.x : 0,
-    y: isNumber(obj.y) ? obj.y : 0
-  }
-}
-
-function isNumber (v) {
-  return typeof v === 'number'
-}
-
-function scrollToPosition (shouldScroll, position) {
-  var isObject = typeof shouldScroll === 'object';
-  if (isObject && typeof shouldScroll.selector === 'string') {
-    var el = document.querySelector(shouldScroll.selector);
-    if (el) {
-      var offset = shouldScroll.offset && typeof shouldScroll.offset === 'object' ? shouldScroll.offset : {};
-      offset = normalizeOffset(offset);
-      position = getElementPosition(el, offset);
-    } else if (isValidPosition(shouldScroll)) {
-      position = normalizePosition(shouldScroll);
-    }
-  } else if (isObject && isValidPosition(shouldScroll)) {
-    position = normalizePosition(shouldScroll);
-  }
-
-  if (position) {
-    window.scrollTo(position.x, position.y);
-  }
-}
-
-/*  */
-
-var supportsPushState = inBrowser && (function () {
-  var ua = window.navigator.userAgent;
-
-  if (
-    (ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) &&
-    ua.indexOf('Mobile Safari') !== -1 &&
-    ua.indexOf('Chrome') === -1 &&
-    ua.indexOf('Windows Phone') === -1
-  ) {
-    return false
-  }
-
-  return window.history && 'pushState' in window.history
-})();
-
-// use User Timing api (if present) for more accurate key precision
-var Time = inBrowser && window.performance && window.performance.now
-  ? window.performance
-  : Date;
-
-var _key = genKey();
-
-function genKey () {
-  return Time.now().toFixed(3)
-}
-
-function getStateKey () {
-  return _key
-}
-
-function setStateKey (key) {
-  _key = key;
-}
-
-function pushState (url, replace) {
-  saveScrollPosition();
-  // try...catch the pushState call to get around Safari
-  // DOM Exception 18 where it limits to 100 pushState calls
-  var history = window.history;
-  try {
-    if (replace) {
-      history.replaceState({ key: _key }, '', url);
-    } else {
-      _key = genKey();
-      history.pushState({ key: _key }, '', url);
-    }
-  } catch (e) {
-    window.location[replace ? 'replace' : 'assign'](url);
-  }
-}
-
-function replaceState (url) {
-  pushState(url, true);
-}
-
-/*  */
-
-function runQueue (queue, fn, cb) {
-  var step = function (index) {
-    if (index >= queue.length) {
-      cb();
-    } else {
-      if (queue[index]) {
-        fn(queue[index], function () {
-          step(index + 1);
-        });
-      } else {
-        step(index + 1);
-      }
-    }
-  };
-  step(0);
-}
-
-/*  */
-
-function resolveAsyncComponents (matched) {
-  return function (to, from, next) {
-    var hasAsync = false;
-    var pending = 0;
-    var error = null;
-
-    flatMapComponents(matched, function (def, _, match, key) {
-      // if it's a function and doesn't have cid attached,
-      // assume it's an async component resolve function.
-      // we are not using Vue's default async resolving mechanism because
-      // we want to halt the navigation until the incoming component has been
-      // resolved.
-      if (typeof def === 'function' && def.cid === undefined) {
-        hasAsync = true;
-        pending++;
-
-        var resolve = once(function (resolvedDef) {
-          if (isESModule(resolvedDef)) {
-            resolvedDef = resolvedDef.default;
-          }
-          // save resolved on async factory in case it's used elsewhere
-          def.resolved = typeof resolvedDef === 'function'
-            ? resolvedDef
-            : _Vue.extend(resolvedDef);
-          match.components[key] = resolvedDef;
-          pending--;
-          if (pending <= 0) {
-            next();
-          }
-        });
-
-        var reject = once(function (reason) {
-          var msg = "Failed to resolve async component " + key + ": " + reason;
-          process.env.NODE_ENV !== 'production' && warn(false, msg);
-          if (!error) {
-            error = isError(reason)
-              ? reason
-              : new Error(msg);
-            next(error);
-          }
-        });
-
-        var res;
-        try {
-          res = def(resolve, reject);
-        } catch (e) {
-          reject(e);
-        }
-        if (res) {
-          if (typeof res.then === 'function') {
-            res.then(resolve, reject);
-          } else {
-            // new syntax in Vue 2.3
-            var comp = res.component;
-            if (comp && typeof comp.then === 'function') {
-              comp.then(resolve, reject);
-            }
-          }
-        }
-      }
-    });
-
-    if (!hasAsync) { next(); }
-  }
-}
-
-function flatMapComponents (
-  matched,
-  fn
-) {
-  return flatten(matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) { return fn(
-      m.components[key],
-      m.instances[key],
-      m, key
-    ); })
-  }))
-}
-
-function flatten (arr) {
-  return Array.prototype.concat.apply([], arr)
-}
-
-var hasSymbol =
-  typeof Symbol === 'function' &&
-  typeof Symbol.toStringTag === 'symbol';
-
-function isESModule (obj) {
-  return obj.__esModule || (hasSymbol && obj[Symbol.toStringTag] === 'Module')
-}
-
-// in Webpack 2, require.ensure now also returns a Promise
-// so the resolve/reject functions may get called an extra time
-// if the user uses an arrow function shorthand that happens to
-// return that Promise.
-function once (fn) {
-  var called = false;
-  return function () {
-    var args = [], len = arguments.length;
-    while ( len-- ) args[ len ] = arguments[ len ];
-
-    if (called) { return }
-    called = true;
-    return fn.apply(this, args)
-  }
-}
-
-/*  */
-
-var History = function History (router, base) {
-  this.router = router;
-  this.base = normalizeBase(base);
-  // start with a route object that stands for "nowhere"
-  this.current = START;
-  this.pending = null;
-  this.ready = false;
-  this.readyCbs = [];
-  this.readyErrorCbs = [];
-  this.errorCbs = [];
-};
-
-History.prototype.listen = function listen (cb) {
-  this.cb = cb;
-};
-
-History.prototype.onReady = function onReady (cb, errorCb) {
-  if (this.ready) {
-    cb();
-  } else {
-    this.readyCbs.push(cb);
-    if (errorCb) {
-      this.readyErrorCbs.push(errorCb);
-    }
-  }
-};
-
-History.prototype.onError = function onError (errorCb) {
-  this.errorCbs.push(errorCb);
-};
-
-History.prototype.transitionTo = function transitionTo (location, onComplete, onAbort) {
-    var this$1 = this;
-
-  var route = this.router.match(location, this.current);
-  this.confirmTransition(route, function () {
-    this$1.updateRoute(route);
-    onComplete && onComplete(route);
-    this$1.ensureURL();
-
-    // fire ready cbs once
-    if (!this$1.ready) {
-      this$1.ready = true;
-      this$1.readyCbs.forEach(function (cb) { cb(route); });
-    }
-  }, function (err) {
-    if (onAbort) {
-      onAbort(err);
-    }
-    if (err && !this$1.ready) {
-      this$1.ready = true;
-      this$1.readyErrorCbs.forEach(function (cb) { cb(err); });
-    }
-  });
-};
-
-History.prototype.confirmTransition = function confirmTransition (route, onComplete, onAbort) {
-    var this$1 = this;
-
-  var current = this.current;
-  var abort = function (err) {
-    if (isError(err)) {
-      if (this$1.errorCbs.length) {
-        this$1.errorCbs.forEach(function (cb) { cb(err); });
-      } else {
-        warn(false, 'uncaught error during route navigation:');
-        console.error(err);
-      }
-    }
-    onAbort && onAbort(err);
-  };
-  if (
-    isSameRoute(route, current) &&
-    // in the case the route map has been dynamically appended to
-    route.matched.length === current.matched.length
-  ) {
-    this.ensureURL();
-    return abort()
-  }
-
-  var ref = resolveQueue(this.current.matched, route.matched);
-    var updated = ref.updated;
-    var deactivated = ref.deactivated;
-    var activated = ref.activated;
-
-  var queue = [].concat(
-    // in-component leave guards
-    extractLeaveGuards(deactivated),
-    // global before hooks
-    this.router.beforeHooks,
-    // in-component update hooks
-    extractUpdateHooks(updated),
-    // in-config enter guards
-    activated.map(function (m) { return m.beforeEnter; }),
-    // async components
-    resolveAsyncComponents(activated)
-  );
-
-  this.pending = route;
-  var iterator = function (hook, next) {
-    if (this$1.pending !== route) {
-      return abort()
-    }
-    try {
-      hook(route, current, function (to) {
-        if (to === false || isError(to)) {
-          // next(false) -> abort navigation, ensure current URL
-          this$1.ensureURL(true);
-          abort(to);
-        } else if (
-          typeof to === 'string' ||
-          (typeof to === 'object' && (
-            typeof to.path === 'string' ||
-            typeof to.name === 'string'
-          ))
-        ) {
-          // next('/') or next({ path: '/' }) -> redirect
-          abort();
-          if (typeof to === 'object' && to.replace) {
-            this$1.replace(to);
-          } else {
-            this$1.push(to);
-          }
-        } else {
-          // confirm transition and pass on the value
-          next(to);
-        }
-      });
-    } catch (e) {
-      abort(e);
-    }
-  };
-
-  runQueue(queue, iterator, function () {
-    var postEnterCbs = [];
-    var isValid = function () { return this$1.current === route; };
-    // wait until async components are resolved before
-    // extracting in-component enter guards
-    var enterGuards = extractEnterGuards(activated, postEnterCbs, isValid);
-    var queue = enterGuards.concat(this$1.router.resolveHooks);
-    runQueue(queue, iterator, function () {
-      if (this$1.pending !== route) {
-        return abort()
-      }
-      this$1.pending = null;
-      onComplete(route);
-      if (this$1.router.app) {
-        this$1.router.app.$nextTick(function () {
-          postEnterCbs.forEach(function (cb) { cb(); });
-        });
-      }
-    });
-  });
-};
-
-History.prototype.updateRoute = function updateRoute (route) {
-  var prev = this.current;
-  this.current = route;
-  this.cb && this.cb(route);
-  this.router.afterHooks.forEach(function (hook) {
-    hook && hook(route, prev);
-  });
-};
-
-function normalizeBase (base) {
-  if (!base) {
-    if (inBrowser) {
-      // respect <base> tag
-      var baseEl = document.querySelector('base');
-      base = (baseEl && baseEl.getAttribute('href')) || '/';
-      // strip full URL origin
-      base = base.replace(/^https?:\/\/[^\/]+/, '');
-    } else {
-      base = '/';
-    }
-  }
-  // make sure there's the starting slash
-  if (base.charAt(0) !== '/') {
-    base = '/' + base;
-  }
-  // remove trailing slash
-  return base.replace(/\/$/, '')
-}
-
-function resolveQueue (
-  current,
-  next
-) {
-  var i;
-  var max = Math.max(current.length, next.length);
-  for (i = 0; i < max; i++) {
-    if (current[i] !== next[i]) {
-      break
-    }
-  }
-  return {
-    updated: next.slice(0, i),
-    activated: next.slice(i),
-    deactivated: current.slice(i)
-  }
-}
-
-function extractGuards (
-  records,
-  name,
-  bind,
-  reverse
-) {
-  var guards = flatMapComponents(records, function (def, instance, match, key) {
-    var guard = extractGuard(def, name);
-    if (guard) {
-      return Array.isArray(guard)
-        ? guard.map(function (guard) { return bind(guard, instance, match, key); })
-        : bind(guard, instance, match, key)
-    }
-  });
-  return flatten(reverse ? guards.reverse() : guards)
-}
-
-function extractGuard (
-  def,
-  key
-) {
-  if (typeof def !== 'function') {
-    // extend now so that global mixins are applied.
-    def = _Vue.extend(def);
-  }
-  return def.options[key]
-}
-
-function extractLeaveGuards (deactivated) {
-  return extractGuards(deactivated, 'beforeRouteLeave', bindGuard, true)
-}
-
-function extractUpdateHooks (updated) {
-  return extractGuards(updated, 'beforeRouteUpdate', bindGuard)
-}
-
-function bindGuard (guard, instance) {
-  if (instance) {
-    return function boundRouteGuard () {
-      return guard.apply(instance, arguments)
-    }
-  }
-}
-
-function extractEnterGuards (
-  activated,
-  cbs,
-  isValid
-) {
-  return extractGuards(activated, 'beforeRouteEnter', function (guard, _, match, key) {
-    return bindEnterGuard(guard, match, key, cbs, isValid)
-  })
-}
-
-function bindEnterGuard (
-  guard,
-  match,
-  key,
-  cbs,
-  isValid
-) {
-  return function routeEnterGuard (to, from, next) {
-    return guard(to, from, function (cb) {
-      next(cb);
-      if (typeof cb === 'function') {
-        cbs.push(function () {
-          // #750
-          // if a router-view is wrapped with an out-in transition,
-          // the instance may not have been registered at this time.
-          // we will need to poll for registration until current route
-          // is no longer valid.
-          poll(cb, match.instances, key, isValid);
-        });
+      //  Throw an error if the given ID is not unique
+      if (this.arg && this.vm.sortable[this.arg]) {
+        console.warn('[vue-sortable] cannot set already defined sortable id: \'' + this.arg + '\'')
+      } else if( this.arg ) {
+        this.vm.sortable[this.arg] = sortable
       }
     })
   }
-}
 
-function poll (
-  cb, // somehow flow cannot infer this is a function
-  instances,
-  key,
-  isValid
-) {
-  if (instances[key]) {
-    cb(instances[key]);
-  } else if (isValid()) {
-    setTimeout(function () {
-      poll(cb, instances, key, isValid);
-    }, 16);
-  }
-}
-
-/*  */
-
-
-var HTML5History = (function (History$$1) {
-  function HTML5History (router, base) {
-    var this$1 = this;
-
-    History$$1.call(this, router, base);
-
-    var expectScroll = router.options.scrollBehavior;
-
-    if (expectScroll) {
-      setupScroll();
-    }
-
-    var initLocation = getLocation(this.base);
-    window.addEventListener('popstate', function (e) {
-      var current = this$1.current;
-
-      // Avoiding first `popstate` event dispatched in some browsers but first
-      // history route not updated since async guard at the same time.
-      var location = getLocation(this$1.base);
-      if (this$1.current === START && location === initLocation) {
-        return
-      }
-
-      this$1.transitionTo(location, function (route) {
-        if (expectScroll) {
-          handleScroll(router, route, current, true);
-        }
-      });
-    });
-  }
-
-  if ( History$$1 ) HTML5History.__proto__ = History$$1;
-  HTML5History.prototype = Object.create( History$$1 && History$$1.prototype );
-  HTML5History.prototype.constructor = HTML5History;
-
-  HTML5History.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HTML5History.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      pushState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      replaceState(cleanPath(this$1.base + route.fullPath));
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HTML5History.prototype.ensureURL = function ensureURL (push) {
-    if (getLocation(this.base) !== this.current.fullPath) {
-      var current = cleanPath(this.base + this.current.fullPath);
-      push ? pushState(current) : replaceState(current);
-    }
-  };
-
-  HTML5History.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getLocation(this.base)
-  };
-
-  return HTML5History;
-}(History));
-
-function getLocation (base) {
-  var path = window.location.pathname;
-  if (base && path.indexOf(base) === 0) {
-    path = path.slice(base.length);
-  }
-  return (path || '/') + window.location.search + window.location.hash
-}
-
-/*  */
-
-
-var HashHistory = (function (History$$1) {
-  function HashHistory (router, base, fallback) {
-    History$$1.call(this, router, base);
-    // check history fallback deeplinking
-    if (fallback && checkFallback(this.base)) {
-      return
-    }
-    ensureSlash();
-  }
-
-  if ( History$$1 ) HashHistory.__proto__ = History$$1;
-  HashHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  HashHistory.prototype.constructor = HashHistory;
-
-  // this is delayed until the app mounts
-  // to avoid the hashchange listener being fired too early
-  HashHistory.prototype.setupListeners = function setupListeners () {
-    var this$1 = this;
-
-    var router = this.router;
-    var expectScroll = router.options.scrollBehavior;
-    var supportsScroll = supportsPushState && expectScroll;
-
-    if (supportsScroll) {
-      setupScroll();
-    }
-
-    window.addEventListener(supportsPushState ? 'popstate' : 'hashchange', function () {
-      var current = this$1.current;
-      if (!ensureSlash()) {
-        return
-      }
-      this$1.transitionTo(getHash(), function (route) {
-        if (supportsScroll) {
-          handleScroll(this$1.router, route, current, true);
-        }
-        if (!supportsPushState) {
-          replaceHash(route.fullPath);
-        }
-      });
-    });
-  };
-
-  HashHistory.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      pushHash(route.fullPath);
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    var ref = this;
-    var fromRoute = ref.current;
-    this.transitionTo(location, function (route) {
-      replaceHash(route.fullPath);
-      handleScroll(this$1.router, route, fromRoute, false);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  HashHistory.prototype.go = function go (n) {
-    window.history.go(n);
-  };
-
-  HashHistory.prototype.ensureURL = function ensureURL (push) {
-    var current = this.current.fullPath;
-    if (getHash() !== current) {
-      push ? pushHash(current) : replaceHash(current);
-    }
-  };
-
-  HashHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    return getHash()
-  };
-
-  return HashHistory;
-}(History));
-
-function checkFallback (base) {
-  var location = getLocation(base);
-  if (!/^\/#/.test(location)) {
-    window.location.replace(
-      cleanPath(base + '/#' + location)
-    );
-    return true
-  }
-}
-
-function ensureSlash () {
-  var path = getHash();
-  if (path.charAt(0) === '/') {
-    return true
-  }
-  replaceHash('/' + path);
-  return false
-}
-
-function getHash () {
-  // We can't use window.location.hash here because it's not
-  // consistent across browsers - Firefox will pre-decode it!
-  var href = window.location.href;
-  var index = href.indexOf('#');
-  return index === -1 ? '' : href.slice(index + 1)
-}
-
-function getUrl (path) {
-  var href = window.location.href;
-  var i = href.indexOf('#');
-  var base = i >= 0 ? href.slice(0, i) : href;
-  return (base + "#" + path)
-}
-
-function pushHash (path) {
-  if (supportsPushState) {
-    pushState(getUrl(path));
-  } else {
-    window.location.hash = path;
-  }
-}
-
-function replaceHash (path) {
-  if (supportsPushState) {
-    replaceState(getUrl(path));
-  } else {
-    window.location.replace(getUrl(path));
-  }
-}
-
-/*  */
-
-
-var AbstractHistory = (function (History$$1) {
-  function AbstractHistory (router, base) {
-    History$$1.call(this, router, base);
-    this.stack = [];
-    this.index = -1;
-  }
-
-  if ( History$$1 ) AbstractHistory.__proto__ = History$$1;
-  AbstractHistory.prototype = Object.create( History$$1 && History$$1.prototype );
-  AbstractHistory.prototype.constructor = AbstractHistory;
-
-  AbstractHistory.prototype.push = function push (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index + 1).concat(route);
-      this$1.index++;
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.replace = function replace (location, onComplete, onAbort) {
-    var this$1 = this;
-
-    this.transitionTo(location, function (route) {
-      this$1.stack = this$1.stack.slice(0, this$1.index).concat(route);
-      onComplete && onComplete(route);
-    }, onAbort);
-  };
-
-  AbstractHistory.prototype.go = function go (n) {
-    var this$1 = this;
-
-    var targetIndex = this.index + n;
-    if (targetIndex < 0 || targetIndex >= this.stack.length) {
-      return
-    }
-    var route = this.stack[targetIndex];
-    this.confirmTransition(route, function () {
-      this$1.index = targetIndex;
-      this$1.updateRoute(route);
-    });
-  };
-
-  AbstractHistory.prototype.getCurrentLocation = function getCurrentLocation () {
-    var current = this.stack[this.stack.length - 1];
-    return current ? current.fullPath : '/'
-  };
-
-  AbstractHistory.prototype.ensureURL = function ensureURL () {
-    // noop
-  };
-
-  return AbstractHistory;
-}(History));
-
-/*  */
-
-var VueRouter = function VueRouter (options) {
-  if ( options === void 0 ) options = {};
-
-  this.app = null;
-  this.apps = [];
-  this.options = options;
-  this.beforeHooks = [];
-  this.resolveHooks = [];
-  this.afterHooks = [];
-  this.matcher = createMatcher(options.routes || [], this);
-
-  var mode = options.mode || 'hash';
-  this.fallback = mode === 'history' && !supportsPushState && options.fallback !== false;
-  if (this.fallback) {
-    mode = 'hash';
-  }
-  if (!inBrowser) {
-    mode = 'abstract';
-  }
-  this.mode = mode;
-
-  switch (mode) {
-    case 'history':
-      this.history = new HTML5History(this, options.base);
-      break
-    case 'hash':
-      this.history = new HashHistory(this, options.base, this.fallback);
-      break
-    case 'abstract':
-      this.history = new AbstractHistory(this, options.base);
-      break
-    default:
-      if (process.env.NODE_ENV !== 'production') {
-        assert(false, ("invalid mode: " + mode));
-      }
-  }
-};
-
-var prototypeAccessors = { currentRoute: { configurable: true } };
-
-VueRouter.prototype.match = function match (
-  raw,
-  current,
-  redirectedFrom
-) {
-  return this.matcher.match(raw, current, redirectedFrom)
-};
-
-prototypeAccessors.currentRoute.get = function () {
-  return this.history && this.history.current
-};
-
-VueRouter.prototype.init = function init (app /* Vue component instance */) {
-    var this$1 = this;
-
-  process.env.NODE_ENV !== 'production' && assert(
-    install.installed,
-    "not installed. Make sure to call `Vue.use(VueRouter)` " +
-    "before creating root instance."
-  );
-
-  this.apps.push(app);
-
-  // main app already initialized.
-  if (this.app) {
-    return
-  }
-
-  this.app = app;
-
-  var history = this.history;
-
-  if (history instanceof HTML5History) {
-    history.transitionTo(history.getCurrentLocation());
-  } else if (history instanceof HashHistory) {
-    var setupHashListener = function () {
-      history.setupListeners();
-    };
-    history.transitionTo(
-      history.getCurrentLocation(),
-      setupHashListener,
-      setupHashListener
-    );
-  }
-
-  history.listen(function (route) {
-    this$1.apps.forEach(function (app) {
-      app._route = route;
-    });
-  });
-};
-
-VueRouter.prototype.beforeEach = function beforeEach (fn) {
-  return registerHook(this.beforeHooks, fn)
-};
-
-VueRouter.prototype.beforeResolve = function beforeResolve (fn) {
-  return registerHook(this.resolveHooks, fn)
-};
-
-VueRouter.prototype.afterEach = function afterEach (fn) {
-  return registerHook(this.afterHooks, fn)
-};
-
-VueRouter.prototype.onReady = function onReady (cb, errorCb) {
-  this.history.onReady(cb, errorCb);
-};
-
-VueRouter.prototype.onError = function onError (errorCb) {
-  this.history.onError(errorCb);
-};
-
-VueRouter.prototype.push = function push (location, onComplete, onAbort) {
-  this.history.push(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.replace = function replace (location, onComplete, onAbort) {
-  this.history.replace(location, onComplete, onAbort);
-};
-
-VueRouter.prototype.go = function go (n) {
-  this.history.go(n);
-};
-
-VueRouter.prototype.back = function back () {
-  this.go(-1);
-};
-
-VueRouter.prototype.forward = function forward () {
-  this.go(1);
-};
-
-VueRouter.prototype.getMatchedComponents = function getMatchedComponents (to) {
-  var route = to
-    ? to.matched
-      ? to
-      : this.resolve(to).route
-    : this.currentRoute;
-  if (!route) {
-    return []
-  }
-  return [].concat.apply([], route.matched.map(function (m) {
-    return Object.keys(m.components).map(function (key) {
-      return m.components[key]
+  if (typeof exports == "object") {
+    module.exports = vSortable
+  } else if (typeof define == "function" && define.amd) {
+    define([], function () {
+      return vSortable
     })
-  }))
-};
-
-VueRouter.prototype.resolve = function resolve (
-  to,
-  current,
-  append
-) {
-  var location = normalizeLocation(
-    to,
-    current || this.history.current,
-    append,
-    this
-  );
-  var route = this.match(location, current);
-  var fullPath = route.redirectedFrom || route.fullPath;
-  var base = this.history.base;
-  var href = createHref(base, fullPath, this.mode);
-  return {
-    location: location,
-    route: route,
-    href: href,
-    // for backwards compat
-    normalizedTo: location,
-    resolved: route
+  } else if (window.Vue) {
+    window.vSortable = vSortable
+    Vue.use(vSortable)
   }
-};
 
-VueRouter.prototype.addRoutes = function addRoutes (routes) {
-  this.matcher.addRoutes(routes);
-  if (this.history.current !== START) {
-    this.history.transitionTo(this.history.getCurrentLocation());
-  }
-};
+})()
 
-Object.defineProperties( VueRouter.prototype, prototypeAccessors );
-
-function registerHook (list, fn) {
-  list.push(fn);
-  return function () {
-    var i = list.indexOf(fn);
-    if (i > -1) { list.splice(i, 1); }
-  }
-}
-
-function createHref (base, fullPath, mode) {
-  var path = mode === 'hash' ? '#' + fullPath : fullPath;
-  return base ? cleanPath(base + '/' + path) : path
-}
-
-VueRouter.install = install;
-VueRouter.version = '2.8.1';
-
-if (inBrowser && window.Vue) {
-  window.Vue.use(VueRouter);
-}
-
-module.exports = VueRouter;
-
-}).call(this,require('_process'))
-},{"_process":24}],28:[function(require,module,exports){
+},{"sortablejs":104}],109:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -19668,7 +21902,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":24}],29:[function(require,module,exports){
+},{"_process":103}],110:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -19688,9 +21922,9 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],30:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19701,573 +21935,1019 @@ var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
-var _EventViewSideBar = require('./EventViewSideBar.vue');
-
-var _EventViewSideBar2 = _interopRequireDefault(_EventViewSideBar);
-
-var _EventViewContent = require('./EventViewContent.vue');
-
-var _EventViewContent2 = _interopRequireDefault(_EventViewContent);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
-  components: { EventViewSideBar: _EventViewSideBar2.default, EventViewContent: _EventViewContent2.default },
-  props: ['varYearUnit', 'varMonthUnit', 'varDayUnit', 'eventid'],
+  directives: {},
+  components: {},
+  props: ['page'],
   data: function data() {
     return {
-      startEventObject: {},
-      eventlist: [],
-      aobject: {
-        year: '',
-        monthUnit: '',
-        month: '',
-        day: ''
-      }
+      deleteConfirm: null
     };
   },
-  ready: function ready() {
-    console.log('EventView Ready');
-    this.freshPageLand();
-  },
-
+  ready: function ready() {},
+  computed: {},
   methods: {
-    handleEventFetch: function handleEventFetch(eobject) {
-      eobject.cateid ? route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar + '/' + eobject.cateid : route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar;
-
-      this.$http.get(route).then(function (response) {
-        this.$broadcast('responseCalEvent', response.data);
-        console.log('handleEventFetch========' + (0, _stringify2.default)(response.data));
-      });
-    },
-    freshPageLand: function freshPageLand() {
-
-      this.startEventObject.yearVar = this.varYearUnit;
-      this.startEventObject.monthVar = this.varMonthUnit;
-      this.startEventObject.dayVar = this.varDayUnit;
-
-      this.$broadcast('startFromThisDate', this.startEventObject);
+    delPage: function delPage() {
+      // word 'delete' must be typed in modal
+      if (this.deleteConfirm == 'delete') {
+        this.deleteConfirm = null; // reset delete text
+        this.$http.delete('/api/page/' + this.page.id).then(function (response) {
+          window.location.href = "/admin/page";
+        }, function (response) {
+          console.log('Error: ' + (0, _stringify2.default)(response));
+        }).bind(this);
+      }
     }
   },
-  // the `events` option simply calls `$on` for you
-  // when the instance is created
-  events: {}
+  filters: {},
+  events: {},
+  watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-6520d5b8=\"\">\n    <div class=\"calendar-bar row\" _v-6520d5b8=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-6520d5b8=\"\">\n      <h4 _v-6520d5b8=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-6520d5b8=\"\">\n          <h4 _v-6520d5b8=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-6520d5b8=\"\">\n  <div id=\"calendar-content-bar\" _v-6520d5b8=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-6520d5b8=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-6520d5b8=\"\"></event-view-content>\n      <br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">*All calendar items are subject to change.</p><br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">The EMU calendar is maintained by the <a href=\"http://emich.edu/communications\" _v-6520d5b8=\"\">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p><br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p><br _v-6520d5b8=\"\">\n     </div>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-6520d5b8=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-6520d5b8=\"\"></event-view-side-bar>\n    </div>\n  </div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"deleteModal\" class=\"modal fade\" role=\"dialog\" _v-5e8d1e4a=\"\">\n  <div class=\"modal-dialog\" _v-5e8d1e4a=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-5e8d1e4a=\"\">\n      <div class=\"modal-header\" _v-5e8d1e4a=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-5e8d1e4a=\"\">×</button>\n        <h4 class=\"modal-title\" _v-5e8d1e4a=\"\">Delete hub page</h4>\n      </div>\n      <div class=\"modal-body\" _v-5e8d1e4a=\"\">\n        <p _v-5e8d1e4a=\"\">Are you sure you want to delete this hub page? Type the word <strong _v-5e8d1e4a=\"\">\"delete\"</strong> to confirm.</p>\n        <div class=\"form-group\" _v-5e8d1e4a=\"\">\n          <label for=\"deleteConfirm\" class=\"sr-only\" aria-hidden=\"true\" _v-5e8d1e4a=\"\">Type \"confirm\" to delete</label>\n          <input type=\"text\" v-model=\"deleteConfirm\" class=\"form-control\" id=\"deleteConfirm\" _v-5e8d1e4a=\"\">\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-5e8d1e4a=\"\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-5e8d1e4a=\"\">Cancel</button>\n        <button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\" @click=\"delPage\" :disabled=\"deleteConfirm != 'delete'\" _v-5e8d1e4a=\"\">Delete Page</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n"] = false
+    __vueify_insert__.cache["\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6520d5b8", module.exports)
+    hotAPI.createRecord("_v-5e8d1e4a", module.exports)
   } else {
-    hotAPI.update("_v-6520d5b8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-5e8d1e4a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./EventViewContent.vue":31,"./EventViewSideBar.vue":32,"babel-runtime/core-js/json/stringify":1,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],31:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"vue":109,"vue-hot-reload-api":105,"vueify/lib/insert-css":110}],112:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.calendar-bar {\n  background: #bebdbd;\n}\n.calendar-bar h4 {\n  text-transform: uppercase;\n  color: #fff;\n  font-size: 1.2rem;\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.calendar-content-title {\n  padding-top: 0.8rem;\n  background: #fff;\n}\n\n.calendar-content-title h4{\n  text-transform: uppercase;\n  color: #fff;\n  margin-top: 0.5rem;\n}\n.calendar-content-content{\n  background: #fff;\n}\n.calendar-content-content h4 {\n  line-height: 1.4rem;\n  font-size: 1.3rem;\n  font-weight: 600;\n}\n.calendar-content{\n  background: #fff;\n}\n.event-day {\n  margin: 0.8rem 0 0 0;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.progress-done[_v-1528b328]{\n  background-color: #3D9970 !important;\n}\n.valid[_v-1528b328]{\n  color:#3c763d;\n}\n\n.invalid[_v-1528b328] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1528b328] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n")
 'use strict';
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _EventViewSingle = require('./EventViewSingle.vue');
+var _flatpickr = require('flatpickr');
 
-var _EventViewSingle2 = _interopRequireDefault(_EventViewSingle);
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+var _vueSelect = require('vue-select');
+
+var _vueSelect2 = _interopRequireDefault(_vueSelect);
+
+var _VuiFlipSwitch = require('../VuiFlipSwitch.vue');
+
+var _VuiFlipSwitch2 = _interopRequireDefault(_VuiFlipSwitch);
+
+var _PageSubstory = require('./PageSubstory.vue');
+
+var _PageSubstory2 = _interopRequireDefault(_PageSubstory);
+
+var _PageDeleteModal = require('./PageDeleteModal.vue');
+
+var _PageDeleteModal2 = _interopRequireDefault(_PageDeleteModal);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Vue = require('vue');
-var VueRouter = require('vue-router');
-
-Vue.use(VueRouter);
-
 module.exports = {
-  components: (0, _defineProperty3.default)({ EventViewSingle: _EventViewSingle2.default }, 'EventViewSingle', _EventViewSingle2.default),
+  directives: {},
+  components: { PageSubstory: _PageSubstory2.default, PageDeleteModal: _PageDeleteModal2.default, vSelect: _vueSelect2.default },
   props: {
-    elist: {},
-    eventlist: [],
-    eventid: null
+    cuserRoles: { default: {} },
+    errors: {
+      default: ''
+    },
+    recordexists: {
+      default: false
+    },
+    recordid: {
+      default: ''
+    },
+    framework: {
+      default: 'bootstrap'
+    },
+    user: {
+      default: ''
+    },
+    stypes: {
+      default: []
+    }
   },
   data: function data() {
     return {
-      monthVar: '',
-      yearVar: '',
-      dayVar: '',
-      firstDate: '',
-      lastDate: '',
-      monthVarUnit: '',
-      eventRange: {},
-      hasevents: 0
+      currentRecordId: null,
+      currentSelectedStory: null,
+      currentSwapId: null,
+      dateObject: {
+        endDateDefault: '',
+        endDateMax: '',
+        endDateMin: '',
+        startDateDefault: '',
+        startDateMax: '',
+        startDateMin: ''
+      },
+      endDatepicker: null,
+      formErrors: {},
+      formMessage: {
+        isOk: false,
+        isErr: false,
+        msg: ''
+      },
+      numLoadedComponents: 0,
+      newpage: false,
+      recordState: '',
+      record: {
+        id: '',
+        end_date: null,
+        live: 0,
+        ready: 0,
+        start_date: null,
+        template: 'home-emutoday',
+        stories: []
+      },
+      response: {},
+      slotStories: {
+        main_story: null,
+        sub_story_1: null,
+        sub_story_2: null,
+        sub_story_3: null,
+        sub_story_4: null
+      },
+      startDatepicker: null,
+      userRoles: []
     };
   },
-  created: function created() {
-    console.log('EventViewContent Created');
-  },
+  created: function created() {},
   ready: function ready() {
-    console.log('EventViewContent Ready');
-  },
-  computed: {
-    currentDate: function currentDate() {
-      return this.monthVar + ' ' + this.dayVar + ', ' + this.yearVar;
-    },
-    dateRange: function dateRange() {
-      return 'From ' + this.firstDate + ' thru ' + this.lastDate;
-    }
-  },
-  methods: {
-    sortKeyInt: function sortKeyInt($key) {
-      return parseInt($key);
-    },
-    updateCalEvent: function updateCalEvent(edata) {
-      this.monthVar = edata.monthVar;
-      this.yearVar = edata.yearVar;
-      this.dayVar = edata.dayVar;
-      this.elist = edata.groupedByDay;
-      this.firstDate = edata.firstDate;
-      this.lastDate = edata.lastDate;
-      console.log('fd=' + this.firstDate);
-      this.hasevents = this.elist ? 1 : 0;
-    },
-    fetchEventsByDay: function fetchEventsByDay(value) {
-      alert(value);
-    }
-  },
-  events: { 'responseCalEvent': 'updateCalEvent' },
-  watch: {},
-  filters: {
-    titleDay: function titleDay(value) {
-      return (0, _moment2.default)(value).format("ddd");
-    },
-    titleDate: function titleDate(value) {
-      return (0, _moment2.default)(value).format("MM/DD");
-    },
-    titleDateLongWithYear: function titleDateLongWithYear(value) {
-      console.log('titleDateLongWithYear=' + value);
-      var m = (0, _moment2.default)(value, "YYYY-MM-DD");
-      if (m.isValid()) {
-        return (0, _moment2.default)(m).format("ddd MMM D, YYYY");
-      } else {
-        console.log(m.invalidAt());
-      }
-    },
-    reformatDate: function reformatDate(value) {
-      var arr = value.split('-');
-      return arr[1] + '/' + arr[2] + '/' + arr[0];
-    },
-    yesNo: function yesNo(value) {
-      return value == 1 ? 'Yes' : 'No';
-    }
-  }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"calendar-content\">\n    <div class=\"calendar-content-title row\">\n      <div class=\"small-12 column\">\n        <h6>From {{firstDate}} thru {{lastDate}}</h6>\n      </div>\n    </div>\n    <div class=\"calendar-content-content row\">\n      <div class=\"small-12 columns\">\n        <div v-for=\"eitem in elist\">\n          <div class=\"event-day\">\n            <h4>{{$key | titleDateLongWithYear }}</h4>\n            <event-view-single v-for=\"item in eitem\" :item=\"item\" :index=\"$index\" :targeteventid=\"eventid\">\n          </event-view-single>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.calendar-bar {\n  background: #bebdbd;\n}\n.calendar-bar h4 {\n  text-transform: uppercase;\n  color: #fff;\n  font-size: 1.2rem;\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.calendar-content-title {\n  padding-top: 0.8rem;\n  background: #fff;\n}\n\n.calendar-content-title h4{\n  text-transform: uppercase;\n  color: #fff;\n  margin-top: 0.5rem;\n}\n.calendar-content-content{\n  background: #fff;\n}\n.calendar-content-content h4 {\n  line-height: 1.4rem;\n  font-size: 1.3rem;\n  font-weight: 600;\n}\n.calendar-content{\n  background: #fff;\n}\n.event-day {\n  margin: 0.8rem 0 0 0;\n}\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-65b6795e", module.exports)
-  } else {
-    hotAPI.update("_v-65b6795e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"./EventViewSingle.vue":33,"babel-runtime/helpers/defineProperty":3,"moment":23,"vue":28,"vue-hot-reload-api":25,"vue-router":27,"vueify/lib/insert-css":29}],32:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\n  .submit-calendar {\n    padding: 0;\n  }\n  .ypsi-graphic {\n    padding-bottom: 3rem;\n    max-width: 140px;\n  }\n  .calendar-bar {\n    background: ##bebdbd;\n  }\n  .calendar-bar h4 {\n    text-transform: uppercase;\n    color: #fff;\n    font-size: 1.2rem;\n    margin-top: 0.5rem;\n    margin-bottom: 0.5rem;\n  }\n  .calendar-box {\n    background: #f2f2f3;\n    padding-top: 0.8rem;\n  }\n  .calendar-other-categories {\n    padding-top: 0.8rem;\n  }\n  /*.calendar-sidebar-content{\n  background: #ffffff;\n  }*/\n  .calendar-sidebar-title h4{\n    text-transform: uppercase;\n    color: #fff;\n    margin-top: 0.5rem;\n  }\n  .calendar-text-content p {\n    text-align: left;\n  }\n\n  .events-by-category .event-category a {\n    font-size: .9rem;\n  }\n  .events-by-category .event-category span.badge {\n    margin-right: 0.3rem;\n  }\n\n  /*.calendar ul {\n  padding: 15px;\n  background: #f3f3f3;\n  margin: 0;\n  }*/\n  .calendar .weekdays,\n  .calendar .days {\n    font-size: 12px;\n    color: #888;\n    text-align: center;\n    padding-top: 4px;\n    padding-bottom: 4px;\n  }\n  /*.calendar ul.days\n  {\n  border: 1px solid  #000;\n  padding: 10px 15px 3px;\n  background: #f9f9f9;\n}\n.calendar ul li {\nlist-style-type: none;\ndisplay: inline-block;\nwidth: 12.8%;\nheight: 25px;\nfont-size: 12px;\ncolor: #888;\ntext-align: center;\nmargin-bottom: 4px;\n\n}*/\n.calendar .event-category span {\n  font-size: 10px;\n  text-transform: uppercase;\n  font-weight: bold;\n}\n\n.calendar  a {\n  color: #0f654a;\n  display: block;\n  padding: 4px 0;\n  border: 1px solid  #f2f2f3;\n}\n.calendar a:hover {\n  border-radius: 5px;\n  /*background: #0f654a;*/\n  /*color: #fff;*/\n  text-decoration: none;\n  border: 1px solid  #0f654a;\n}\n.calendar  a.istoday {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n  /*padding: 2px 0;*/\n}\n.calendar  a.active {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n\n  background: #fff;\n  /*padding: 2px 0;*/\n}\n.calendar  a.noevents {\n  pointer-events: none;\n  color: #888;\n}\n.calendar  a.yes-events {\n  /*pointer-events: none;*/\n  color: #0f654a;\n}\n.calendar  a.no-events {\n  pointer-events: none;\n  color: #888;\n}\n\n.calendar-box caption{\n  font-weight:400;\n  margin-bottom: .3rem;\n}\n.calendar-caption p{\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n}\n\n.calendar-caption a {\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n  border: 1px none  #000;\n}\n.calendar-nav a {\n  border: none;\n}\n.calendar-nav a:hover {\n  border: none;\n}\n\n.calendar-title p {\n  font-weight: 400;\n  padding: 4px 0;\n}\n/*a#month-prev, a#month-next {\nborder: none;\n}\na#month-prev :hover, a#month-next :hover{\nborder: none;\n}*/\n")
-'use strict';
-
-module.exports = {
-  components: {},
-  props: {
-    elist: {}
-  },
-  data: function data() {
-    return {
-      categories: {},
-      calevents: {},
-      yearVar: '',
-      monthVar: '',
-      monthVarWord: '',
-      dayVar: '',
-      monthArray: [],
-      currentDay: '',
-      currentDate: {
-        yearVar: '',
-        monthVar: '',
-        monthVarWord: '',
-        dayVar: ''
-      },
-      selectedDate: {
-        yearVar: '',
-        monthVar: '',
-        monthVarWord: '',
-        dayVar: ''
-      },
-      newDate: {
-        yearVar: '',
-        monthVar: '',
-        monthVarWord: '',
-        dayVar: ''
-      },
-      yesEventClass: 'yes-events',
-      noEventClass: 'no-events',
-      haseventClass: 'no',
-      selectedDay: '',
-      calDaysArray: [],
-      eventObject: {
-        eoYear: '',
-        eoMonth: '',
-        eoDay: ''
-      }
-    };
-  },
-  created: function created() {
-    //  this.fetchCurrentEventsForCalendar();
-    // this.fetchCategoryList();
-  },
-  ready: function ready() {
-    console.log('EventSideBar Ready');
-  },
-  computed: {
-    currentDayInMonth: function currentDayInMonth() {
-      if (this.yearVar == this.currentDate.yearVar) {
-        if (this.monthVar == this.currentDate.monthVar) return this.currentDate.dayVar;
-      } else {
-        return '';
-      }
-    },
-    selectedDayInMonth: function selectedDayInMonth() {
-      if (this.yearVar == this.selectedDate.yearVar) {
-        if (this.monthVar == this.selectedDate.monthVar) return this.selectedDate.dayVar;
-      } else {
-        return '';
-      }
-    }
-  },
-  methods: {
-    fetchEvents: function fetchEvents() {
-      this.$http.get('/api/events', function (data) {
-        this.monthArray = response.data.monthArray;
-        this.currentDay = response.data.dayInMonth;
-      });
-    },
-    dispatchNewEvent: function dispatchNewEvent(value, cateid) {
-      console.log('event fetch: ' + value);
-      this.selectedDate.yearVar = this.yearVar;
-      // this.eventObject.eoYear = this.yearVar;
-      this.selectedDate.monthVar = this.monthVar;
-      // this.eventObject.eoMonth = this.monthVarUnit;
-      this.selectedDate.dayVar = value;
-      //this.eventObject.eoDay = value;
-      this.selectedDay = value;
-
-      // set category
-      cateid ? this.selectedDate.cateid = cateid : null;
-      // unset category
-      cateid === false ? this.selectedDate.cateid = null : null;
-
-      this.$dispatch('change-eobject', this.selectedDate);
-    },
-    // fetchEventsByDay: function(value) {
-    //
-    //   this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/'+ this.selectedDate.monthVar + '/' + value).then(function(response) {
-    //     this.selectedDate.yearVar = response.data.yearVar;
-    //     this.selectedDate.monthVar = response.data.monthVar;
-    //     this.selectedDate.monthVarWord = response.data.monthVa;
-    //   this.elist = response.data.groupedByDay;
-    //
-    //     console.log(response.data);
-    //   });
-    // },
-    newMonth: function newMonth(monthkey) {
-      console.log('this.yearVar=' + this.yearVar + ' this.monthVar= ' + this.monthVar);
-      var newMonthVarUnit;
-      var newYear;
-      if (monthkey == 'prev') {
-        if (this.monthVar == 1) {
-          newMonthVarUnit = 12;
-          newYearVar = this.yearVar - 1;
-        } else {
-          newMonthVarUnit = this.monthVar - 1;
-          newYearVar = this.yearVar;
-        }
-      } else {
-        if (this.monthVar == 12) {
-          newMonthVarUnit = 1;
-          newYearVar = this.yearVar + 1;
-        } else {
-          newMonthVarUnit = this.monthVar + 1;
-          newYearVar = this.yearVar;
-        }
-      }
-      this.fetchEventsForCalendarMonth(newYearVar, newMonthVarUnit);
-    },
-    fetchEventsForCalendarMonth: function fetchEventsForCalendarMonth(pyear, pmonth) {
-      this.yearVar = pyear;
-      this.monthVar = pmonth;
-      // this.monthVarWord = response.data.monthVarWord;
-      //this.dayVar = response.data.dayInMonth;
-      console.log('pyear=' + pyear + 'pmonth=' + pmonth);
-      apiurl = '/api/calendar/month/' + pyear + '/' + pmonth;
-      this.$http.get(apiurl).then(function (response) {
-
-        this.$set('calDaysArray', response.data.calDaysArray);
-        this.$set('monthArray', response.data.monthArray);
-
-        //    this.monthArray = response.data.monthArray;
-
-
-        //this.calDaysArray = response.data.calDaysArray;
-        this.selectedDate.yearVar = response.data.selectedYear;
-        this.selectedDate.monthVar = response.data.selectedMonth;
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord;
-        this.selectedDate.dayVar = response.data.selectedDay;
-
-        // this.yearVar = response.data.yearVar;
-        // this.monthVar = response.data.monthVar;
-        // this.monthVarWord = response.data.monthVarWord;
-        //this.dayVar = response.data.dayInMonth;
-        console.log(response.data);
-        //  this.pushFirstDateRange();
-        this.$emit('responseCategoriesEvent');
-      });
-    },
-    fetchCurrentEventsForCalendar: function fetchCurrentEventsForCalendar(startObject) {
-      this.yearVar = startObject.yearVar;
-      this.monthVar = startObject.monthVar;
-      this.dayVar = startObject.dayVar;
-      startapiurl = '/api/calendar/month/' + this.yearVar + '/' + this.monthVar + '/' + this.dayVar;
-      // this.$http.get('/api/calendar/month').then(function(response) {
-      this.$http.get(startapiurl).then(function (response) {
-        this.selectedDate.yearVar = response.data.selectedYear;
-        this.selectedDate.monthVar = response.data.selectedMonth;
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord;
-        this.selectedDate.dayVar = response.data.selectedDay;
-        this.currentDate.yearVar = response.data.currentYear;
-        this.currentDate.monthVar = response.data.currentMonth;
-        this.currentDate.monthVarWord = response.data.currentMonthWord;
-        this.currentDate.dayVar = response.data.currentDay;
-        this.calDaysArray = response.data.calDaysArray;
-        console.log(response.data);
-        this.pushFirstDateRange();
-        this.$emit('responseCategoriesEvent');
-      });
-    },
-    pushFirstDateRange: function pushFirstDateRange() {
-      this.$dispatch('change-eobject', this.selectedDate);
-      console.log('change-eobject');
-    },
-    fetchCategoryList: function fetchCategoryList() {
-      this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar).then(function (response) {
-        // console.log('response->categories=' + JSON.stringify(response.data));
-        this.categories = response.data;
-      }, function (response) {
-        //  this.$set(this.formErrors, response.data);
-        console.log(response);
-      });
-    }
-  },
-  watch: {},
-  events: {
-    'responseCategoriesEvent': 'fetchCategoryList',
-    'startFromThisDate': 'fetchCurrentEventsForCalendar'
-  },
-  filters: {
-    removex: function removex(value) {
-      return value[0] == 'x' ? '_' : value;
-    }
-  }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n<div class=\"calendar-box row\">\n  <div class=\"small-12 columns\">\n    <div class=\"calendar small-12 columns\" data-equalizer=\"\">\n      <div class=\"calendar-nav row small-collapse\">\n        <div class=\"small-2 columns\">\n          <a id=\"month-prev\" v-on:click.prevent=\"newMonth('prev')\" class=\"text-left\" href=\"\"><img src=\"/assets/imgs/calendar/green-calendar-arrow-before.png\" alt=\"arrow\"></a>\n        </div>\n        <div class=\"text-center calendar-title small-8 columns\">\n          <p>{{selectedDate.monthVarWord}} {{selectedDate.yearVar}}</p>\n        </div>\n        <div class=\"small-2 columns\">\n          <a id=\"month-next\" v-on:click.prevent=\"newMonth('next')\" class=\"text-right\" href=\"\"><img src=\"/assets/imgs/calendar/green-calendar-arrow-after.png\" alt=\"arrow\"></a>\n        </div>\n      </div>\n      <div class=\"weekdays row small-up-7 small-collapse\">\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Sun</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Mon</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Tue</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Wed</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Thu</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Fri</span></div>\n        <div class=\"column\" data-equalizer-watch=\"\"><span href=\"#\">Sat</span></div>\n      </div>\n      <div class=\"days row small-up-7 small-collapse\">\n        <div class=\"column\" v-for=\"item in calDaysArray\" data-equalizer-watch=\"\">\n\n          <a v-on:click.prevent=\"dispatchNewEvent( item.day )\" v-bind:class=\"[{'istoday': item.day == currentDayInMonth },{'no-events': item.hasevents == noEventClass },{'yes-events': item.hasevents == yesEventClass },{'active': item.day == selectedDayInMonth}]\" href=\"#\"> {{item.day | removex }}</a>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"row calendar-categories\">\n      <div class=\"small-12 column\">\n        <div class=\"calendar-other-categories\">\n          <a class=\"button hollow\" href=\"http://www.emich.edu/registrar/calendars/\">Academic Calendar <i class=\"fa fa-external-link\" aria-hidden=\"true\"></i></a>\n          <h4>Event Categories</h4>\n          <ul>\n            <li class=\"event-category\">\n              <a v-on:click.prevent=\"dispatchNewEvent(selectedDayInMonth, false)\" href=\"#\">All Events</a>\n            </li>\n            <template v-for=\"category in categories\">\n              <li class=\"event-category\" v-if=\"category.events.length == 0 ?false:true\">\n                <a v-on:click.prevent=\"dispatchNewEvent(selectedDayInMonth, category.id)\" href=\"#\">{{category.category}}</a>\n              </li>\n            </template>\n          </ul>\n        </div>\n        <div class=\"calendar-other-categories\">\n          <h4>Other Calendars</h4>\n          <ul class=\"other\">\n            <li><a href=\"http://art.emich.edu/events/upcoming\">Art Galleries</a></li>\n            <li><a href=\"http://www.emueagles.com/calendar.aspx\">Athletics</a></li>\n            <li><a href=\"http://www.emich.edu/campuslife/calendars/index.php\">Campus Life</a></li>\n            <li><a href=\"http://www.emich.edu/hr/working/employment/holidays.php\">Holiday</a></li>\n            <li><a href=\"http://www.emich.edu/emutheatre/\">Theatre</a></li>\n          </ul>\n          <div class=\"submit-calendar\">\n            <a href=\"/calendar/event/form\" class=\"button emu-button\">Submit an Event</a>\n          </div>\n          <div class=\"ypsi-graphic\">\n            <a href=\"http://visitypsinow.com/local-events/\"><img src=\"/assets/imgs/calendar/visit-ypsi-real.png\" alt=\"Visit Ypsi Calendar\"></a>\n          </div>\n        </div>\n      </div>\n</div></div></div>"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\n  .submit-calendar {\n    padding: 0;\n  }\n  .ypsi-graphic {\n    padding-bottom: 3rem;\n    max-width: 140px;\n  }\n  .calendar-bar {\n    background: ##bebdbd;\n  }\n  .calendar-bar h4 {\n    text-transform: uppercase;\n    color: #fff;\n    font-size: 1.2rem;\n    margin-top: 0.5rem;\n    margin-bottom: 0.5rem;\n  }\n  .calendar-box {\n    background: #f2f2f3;\n    padding-top: 0.8rem;\n  }\n  .calendar-other-categories {\n    padding-top: 0.8rem;\n  }\n  /*.calendar-sidebar-content{\n  background: #ffffff;\n  }*/\n  .calendar-sidebar-title h4{\n    text-transform: uppercase;\n    color: #fff;\n    margin-top: 0.5rem;\n  }\n  .calendar-text-content p {\n    text-align: left;\n  }\n\n  .events-by-category .event-category a {\n    font-size: .9rem;\n  }\n  .events-by-category .event-category span.badge {\n    margin-right: 0.3rem;\n  }\n\n  /*.calendar ul {\n  padding: 15px;\n  background: #f3f3f3;\n  margin: 0;\n  }*/\n  .calendar .weekdays,\n  .calendar .days {\n    font-size: 12px;\n    color: #888;\n    text-align: center;\n    padding-top: 4px;\n    padding-bottom: 4px;\n  }\n  /*.calendar ul.days\n  {\n  border: 1px solid  #000;\n  padding: 10px 15px 3px;\n  background: #f9f9f9;\n}\n.calendar ul li {\nlist-style-type: none;\ndisplay: inline-block;\nwidth: 12.8%;\nheight: 25px;\nfont-size: 12px;\ncolor: #888;\ntext-align: center;\nmargin-bottom: 4px;\n\n}*/\n.calendar .event-category span {\n  font-size: 10px;\n  text-transform: uppercase;\n  font-weight: bold;\n}\n\n.calendar  a {\n  color: #0f654a;\n  display: block;\n  padding: 4px 0;\n  border: 1px solid  #f2f2f3;\n}\n.calendar a:hover {\n  border-radius: 5px;\n  /*background: #0f654a;*/\n  /*color: #fff;*/\n  text-decoration: none;\n  border: 1px solid  #0f654a;\n}\n.calendar  a.istoday {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n  /*padding: 2px 0;*/\n}\n.calendar  a.active {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n\n  background: #fff;\n  /*padding: 2px 0;*/\n}\n.calendar  a.noevents {\n  pointer-events: none;\n  color: #888;\n}\n.calendar  a.yes-events {\n  /*pointer-events: none;*/\n  color: #0f654a;\n}\n.calendar  a.no-events {\n  pointer-events: none;\n  color: #888;\n}\n\n.calendar-box caption{\n  font-weight:400;\n  margin-bottom: .3rem;\n}\n.calendar-caption p{\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n}\n\n.calendar-caption a {\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n  border: 1px none  #000;\n}\n.calendar-nav a {\n  border: none;\n}\n.calendar-nav a:hover {\n  border: none;\n}\n\n.calendar-title p {\n  font-weight: 400;\n  padding: 4px 0;\n}\n/*a#month-prev, a#month-next {\nborder: none;\n}\na#month-prev :hover, a#month-next :hover{\nborder: none;\n}*/\n"] = false
-    document.head.removeChild(__vueify_style__)
-  })
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-2f140894", module.exports)
-  } else {
-    hotAPI.update("_v-2f140894", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],33:[function(require,module,exports){
-var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n")
-'use strict';
-
-module.exports = {
-  components: {},
-  props: ['item', '$index', 'targeteventid'],
-  data: function data() {
-    return {
-      showBody: false,
-      eventRange: {}
-    };
-  },
-  ready: function ready() {
-    if (this.item.id == this.targeteventid) {
-      this.showBody = true;
+    if (this.recordexists) {
+      this.fetchCurrentPage(this.recordid);
     } else {
-      this.showBody = false;
+      this.newpage = true;
+      this.setupDatePickers();
     }
-    console.log(this.item);
-    setTimeout(function () {
-      addeventatc.refresh();
-    }, 300);
   },
-
   computed: {
-
-    isOnCampus: function isOnCampus() {
-      if (this.item.building === null || this.item.building === "undefined") {
-        return false;
-      } else {
+    isAdmin: function isAdmin() {
+      if (this.userRoles.indexOf('admin') != -1) {
         return true;
-      }
-    },
-    eventParticipation: function eventParticipation() {
-      switch (this.item.participants) {
-        case 'campus':
-          return 'Campus Only';
-          break;
-        case 'public':
-          return 'Open to Public';
-          break;
-        case 'students':
-          return 'Students Only';
-          break;
-        case 'invite':
-          return 'Invitation Only';
-          break;
-        case 'tickets':
-          return 'Tickets Required';
-          break;
-        default:
-          return '';
-      }
-    }
-  },
-  methods: {
-    toggleBody: function toggleBody(ev) {
-
-      if (this.showBody == false) {
-        this.showBody = true;
       } else {
-        this.showBody = false;
+        if (this.userRoles.indexOf('admin_super') != -1) {
+          return true;
+        } else {
+          return false;
+        }
       }
-      console.log('toggleBody' + this.showBody);
-      setTimeout(function () {
-        addeventatc.refresh();
-      }, 300);
     },
-    sortKeyInt: function sortKeyInt($key) {
-      return parseInt($key);
+
+    // Progress of page bulider (adds up to 100%)
+    progress: function progress() {
+      var progress = 0;
+
+      this.record.start_date ? progress += 14 : '';
+      this.record.end_date ? progress += 14 : '';
+      this.slotStories.main_story ? progress += 16 : '';
+      this.slotStories.sub_story_1 ? progress += 14 : '';
+      this.slotStories.sub_story_2 ? progress += 14 : '';
+      this.slotStories.sub_story_3 ? progress += 14 : '';
+      this.slotStories.sub_story_4 ? progress += 14 : '';
+
+      return progress;
     }
   },
-  filters: {
-    reformatDate: function reformatDate(value) {
-      var arr = value.split('-');
-      return arr[1] + '/' + arr[2] + '/' + arr[0];
-    },
-    calendarDate: function calendarDate(value) {
-      var arr = value.split(' ');
-      return arr[0];
-    },
-    amPm: function amPm(value) {
-      if (value) {
-        var arr = value.split(' ');
 
-        if (arr[1] == 'a.m.') {
-          return arr[0] + ' AM';
+  methods: {
+    fetchCurrentPage: function fetchCurrentPage(recid) {
+      var _this = this;
+
+      this.$http.get('/api/page/' + recid + '/edit').then(function (response) {
+        _this.$set('record', response.data.newdata.data);
+        _this.setPageStorySlots(_this.record.stories);
+        _this.setupDatePickers();
+      }, function (response) {
+        _this.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+
+    nowOnReload: function nowOnReload() {
+      var newurl = '/admin/page/' + this.currentRecordId + '/edit';
+      document.location = newurl;
+    },
+
+    onRefresh: function onRefresh() {
+      this.recordId = this.currentRecordId;
+      this.recordexists = true;
+      this.fetchCurrentPage(this.currentRecordId);
+    },
+
+    // Loop through the stories that belong to this page and add them to the correct slots
+    setPageStorySlots: function setPageStorySlots(storiesArr) {
+      var self = this;
+      storiesArr.forEach(function (story) {
+        // make sure the pivot table exists on the story object
+        if (story.pivot) {
+          switch (story.pivot.page_position) {
+            case 0:
+              self.slotStories.main_story = story;
+              break;
+            case 1:
+              self.slotStories.sub_story_1 = story;
+              break;
+            case 2:
+              self.slotStories.sub_story_2 = story;
+              break;
+            case 3:
+              self.slotStories.sub_story_3 = story;
+              break;
+            case 4:
+              self.slotStories.sub_story_4 = story;
+              break;
+          }
         }
-        if (arr[1] == 'p.m.') {
-          return arr[0] + ' PM';
+      });
+    },
+    submitForm: function submitForm() {
+      var _this2 = this;
+
+      $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+      // Decide route to submit form to
+      var method = this.recordexists ? 'put' : 'post';
+      var route = this.recordexists ? '/api/page/' + this.record.id : '/api/page';
+
+      // Submit form.
+      this.$http[method](route, {
+        page: this.record,
+        stories: this.slotStories
+      }) //
+
+      // Do this when response gets back.
+      .then(function (response) {
+        _this2.formMessage.msg = response.data.message;
+        _this2.formMessage.isOk = response.ok; // Success message
+        _this2.formMessage.isErr = false;
+        _this2.currentRecordId = response.data.newdata.data.id;
+        _this2.recordexists = true;
+        _this2.formErrors = {}; // Clear errors
+
+        if (_this2.newpage) {
+          _this2.nowOnReload();
+        } else {
+          _this2.onRefresh();
         }
-        return value;
+      }, function (response) {
+        // If invalid. error callback
+        _this2.formMessage.isOk = false;
+        _this2.formMessage.isErr = true;
+        // Set errors from validation to vue data
+        _this2.formErrors = response.data.error.message;
+      }).bind(this);
+    },
+
+    setupDatePickers: function setupDatePickers() {
+      var self = this;
+      var today = (0, _moment2.default)();
+
+      if (this.record.start_date === '') {
+        this.dateObject.startDateDefault = today.format('YYYY-MM-DD');
+      } else {
+        this.dateObject.startDateDefault = this.record.start_date;
       }
-      return;
+
+      if (this.record.end_date === '') {
+        this.dateObject.endDateDefault = today.format('YYYY-MM-DD');
+      } else {
+        this.dateObject.endDateDefault = this.record.end_date;
+      }
+
+      this.startDatepicker = (0, _flatpickr2.default)(document.getElementById("start-date"), {
+        defaultDate: self.dateObject.startDateDefault,
+        enableTime: true,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d H:i:S",
+        onChange: function onChange(dateObj, dateStr, instance) {
+          self.record.start_date = dateStr;
+          self.endDatepicker.set("minDate", dateObj.fp_incr(1));
+        }
+      });
+
+      this.endDatepicker = (0, _flatpickr2.default)(document.getElementById("end-date"), {
+        //minDate: self.dateObject.endDateMin,
+        defaultDate: self.dateObject.endDateDefault,
+        enableTime: true,
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d H:i:S",
+        onChange: function onChange(dateObj, dateStr, instance) {
+          self.record.end_date = dateStr;
+          self.startDatepicker.set("maxDate", dateObj.fp_incr(-1));
+        }
+      });
     },
-    yesNo: function yesNo(value) {
-      return value == true ? 'Yes' : 'No';
-    },
-    hasHttp: function hasHttp(value) {
-      // Checks if links given 'http'
-      return value.substr(0, 4) == 'http' ? value : 'https://' + value;
-    },
-    isNumeric: function isNumeric(n) {
-      return !isNaN(parseFloat(n)) && isFinite(n);
+
+    toggleCallout: function toggleCallout(evt) {
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
     }
   },
   watch: {},
-  events: {}
+  filters: {
+    formatDate: function formatDate(value) {
+      if (value) {
+        return (0, _moment2.default)(String(value)).format('LLLL');
+      }
+    }
+  },
+  events: {
+    'modal-data-loaded': function modalDataLoaded() {
+      this.numLoadedComponents++;
+    },
+    'story-swapped': function storySwapped(storyData) {
+      // storyData[0] contains the story object
+      // storyData[1] contains the story's position in the page builder
+      switch (storyData[1]) {
+        case "0":
+          this.$set('slotStories.main_story', storyData[0]);
+          break;
+        case "1":
+          this.$set('slotStories.sub_story_1', storyData[0]);
+          break;
+        case "2":
+          this.$set('slotStories.sub_story_2', storyData[0]);
+          break;
+        case "3":
+          this.$set('slotStories.sub_story_3', storyData[0]);
+          break;
+        case "4":
+          this.$set('slotStories.sub_story_4', storyData[0]);
+          break;
+      }
+    }
+  }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"https://emich.edu/map/?location={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <!-- AddEvent plugin script -->\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br><br>\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">\n      <template v-if=\"item.cost | isNumeric\">\n        Cost: {{item.cost | currency }}\n      </template>\n      <template v-else=\"\">\n        Cost: {{item.cost}}\n      </template>\n    </p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <p v-if=\"item.hsc_rewards\">Eagle Rewards: {{item.hsc_rewards}}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\"><a href=\"{{item.ticket_details_online | hasHttp}}\">Get Tickets Online</a></p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-1528b328=\"\">\n    <!-- PROGRESS BAR -->\n    <div class=\"progress\" _v-1528b328=\"\">\n      <div v-if=\"numLoadedComponents >= 5\" class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-1528b328=\"\">\n        <span v-if=\"progress < 100\" _v-1528b328=\"\">{{ progress }}% Complete</span>\n        <span v-else=\"\" _v-1528b328=\"\">I'm Ready!</span>\n      </div>\n      <div v-else=\"\" class=\"progress-bar progress-bar-striped progress-bar-danger active\" role=\"progressbar\" :aria-valuenow=\"100\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:100%\" _v-1528b328=\"\">\n        <span _v-1528b328=\"\">Loading page...please wait.</span>\n      </div>\n    </div>\n    <section id=\"page-builder-container\" _v-1528b328=\"\">\n        <div class=\"row\" id=\"main-story\" _v-1528b328=\"\">\n            <div class=\"col-sm-12 col-md-12 col-lg-6 columns\" _v-1528b328=\"\">\n                <h4 class=\"subhead-title\" _v-1528b328=\"\">Main Story</h4>\n                <page-substory story-number=\"0\" :story=\"slotStories.main_story\" :stypes=\"stypes\" _v-1528b328=\"\"></page-substory>\n            </div>\n            <div class=\"col-sm-12 col-md-12 col-lg-6 columns\" _v-1528b328=\"\">\n                <div class=\"row\" id=\"date-time-container\" _v-1528b328=\"\">\n                    <div class=\"col-sm-12\" _v-1528b328=\"\">\n                        <h4 class=\"subhead-title\" _v-1528b328=\"\">Hub Page Information</h4>\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">Start Date/Time *</label>\n                        <input id=\"start-date\" type=\"text\" v-model=\"record.start_date\" class=\"form-control\" v-bind:class=\"[formErrors.start_date ? 'invalid-input' : '']\" _v-1528b328=\"\">\n                        <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-1528b328=\"\">A start date is required.</p>\n                    </div>\n                    <div class=\"col-sm-12 col-md-6\" _v-1528b328=\"\">\n                        <label _v-1528b328=\"\">End Date/Time *</label>\n                        <input id=\"end-date\" type=\"text\" v-model=\"record.end_date\" class=\"form-control\" v-bind:class=\"[formErrors.end_date ? 'invalid-input' : '']\" _v-1528b328=\"\">\n                        <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-1528b328=\"\">An end date is required.</p>\n                    </div>\n                    <!--<div class=\"col-sm-12 col-md-6\">\n                        <label>Active?</label>\n                        <input type=\"checkbox\" v-model=\"record.live\" />\n                    </div>-->\n                </div><!-- /end #date-time-container -->\n                <!-- SUCCESS/FAIL MESSAGES -->\n                <div class=\"row\" _v-1528b328=\"\">\n                  <div class=\"col-xs-12\" _v-1528b328=\"\">\n                    <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-1528b328=\"\">\n                      <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-1528b328=\"\"><i class=\"fa fa-times\" _v-1528b328=\"\"></i></button>\n                      <p _v-1528b328=\"\">{{formMessage.msg}}</p>\n                    </div>\n                    <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-1528b328=\"\">\n                      <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-1528b328=\"\"><i class=\"fa fa-times\" _v-1528b328=\"\"></i></button>\n                      <p _v-1528b328=\"\">The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following errors.</p>\n                      <ul v-if=\"formErrors\" _v-1528b328=\"\">\n                        <li v-for=\"error in formErrors\" _v-1528b328=\"\">{{error}}</li>\n                      </ul>\n                    </div>\n                  </div>\n                  <div class=\"col-xs-12 text-right\" _v-1528b328=\"\">\n                    <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-1528b328=\"\">{{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}</button>\n                    <button v-show=\"!newpage\" type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-1528b328=\"\">Delete Hub Page</button>\n                  </div>\n                </div>\n            </div>\n        </div>\n        <div id=\"four-stories-bar\" _v-1528b328=\"\">\n            <div class=\"row\" _v-1528b328=\"\">\n                <div class=\"col-xs-12\" _v-1528b328=\"\">\n                    <h4 class=\"subhead-title\" _v-1528b328=\"\">Sub Stories</h4>\n                </div>\n            </div>\n            <div class=\"row\" _v-1528b328=\"\">\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"1\" :story=\"slotStories.sub_story_1\" :stypes=\"stypes\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"2\" :story=\"slotStories.sub_story_2\" :stypes=\"stypes\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"3\" :story=\"slotStories.sub_story_3\" :stypes=\"stypes\" _v-1528b328=\"\"></page-substory>\n                </div>\n                <div class=\"col-sm-12 col-md-6 col-lg-3\" _v-1528b328=\"\">\n                    <page-substory story-number=\"4\" :story=\"slotStories.sub_story_4\" :stypes=\"stypes\" _v-1528b328=\"\"></page-substory>\n                </div>\n            </div>\n        </div>\n    </section><!-- end #page-builder-container -->\n</div><!-- /end root element -->\n<page-delete-modal :page=\"record\" _v-1528b328=\"\"></page-delete-modal>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n"] = false
+    __vueify_insert__.cache["\n.progress-done[_v-1528b328]{\n  background-color: #3D9970 !important;\n}\n.valid[_v-1528b328]{\n  color:#3c763d;\n}\n\n.invalid[_v-1528b328] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-1528b328] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-1528b328] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-8cbe0bc0", module.exports)
+    hotAPI.createRecord("_v-1528b328", module.exports)
   } else {
-    hotAPI.update("_v-8cbe0bc0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1528b328", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){
+},{"../VuiFlipSwitch.vue":116,"./PageDeleteModal.vue":111,"./PageSubstory.vue":115,"flatpickr":101,"moment":102,"vue":109,"vue-hot-reload-api":105,"vue-select":107,"vueify/lib/insert-css":110}],113:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-50a82cb8] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-50a82cb8] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-50a82cb8] {\n    padding: 3px;\n}\n.box-footer[_v-50a82cb8] {\n    padding: 3px;\n}\n\n#storyform[_v-50a82cb8] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-50a82cb8] {\n    margin-bottom: 2px;\n}\n#applabel[_v-50a82cb8]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-50a82cb8],\n.btn-group-vertical[_v-50a82cb8] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-50a82cb8] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-50a82cb8] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-50a82cb8] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-50a82cb8] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-50a82cb8] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-50a82cb8] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-50a82cb8] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-50a82cb8] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-50a82cb8] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-50a82cb8] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n.zcallout[_v-50a82cb8] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-50a82cb8] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-50a82cb8] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-50a82cb8] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-50a82cb8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-50a82cb8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-50a82cb8] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-50a82cb8]{\n    margin-bottom: 0;\n}\n\n.set[_v-50a82cb8] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n\n.special-item[_v-50a82cb8] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-50a82cb8] {\n}\n")
 'use strict';
 
-var _EventView = require('./components/EventView.vue');
+var _moment = require('moment');
 
-var _EventView2 = _interopRequireDefault(_EventView);
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+    directives: {},
+    components: {},
+    props: {
+        item: {
+            type: Object,
+            required: true
+        },
+        currentStory: {
+            default: null
+        },
+        podType: {
+            required: false
+        }
+    },
+    data: function data() {
+        return {
+            options: [],
+            showBody: false,
+            currentDate: {},
+            record: {
+                title: '',
+                story_type: '',
+                start_date: ''
+            },
+            patchRecord: {
+                priority: 0
+            },
+            checked: false,
+            swapped: false
+        };
+    },
+    created: function created() {},
+    ready: function ready() {},
+    computed: {
+        timefromNow: function timefromNow() {
+            return (0, _moment2.default)(this.item.start_date).fromNow();
+        },
+        typeIcon: function typeIcon() {
+            switch (this.item.story_type) {
+                case 'emutoday':
+                case 'story':
+                    faicon = 'fa-file-image-o';
+                    break;
+                case 'news':
+                    faicon = 'fa-file-text-o';
+                    break;
+                case 'student':
+                    faicon = 'fa-graduation-cap';
+                    break;
+                case 'external':
+                    faicon = 'fa-external-link';
+                    break;
+                case 'article':
+                    faicon = 'fa-newspaper-o';
+                    break;
+                case '':
+                    faicon = 'fa-asterisk';
+                    break;
+                case 'advisory':
+                    faicon = 'fa-warning';
+                    break;
+                case 'statement':
+                    faicon = 'fa-commenting';
+                    break;
+                case 'featurephoto':
+                    faicon = 'fa-camera-retro';
+                    break;
+                default:
+                    faicon = 'fa-file-o';
+                    break;
+            }
+            return 'fa ' + faicon + ' fa-fw';
+        }
+
+    },
+    methods: {
+        emitSwapStory: function emitSwapStory() {
+            var storyToSwap = null; // when the current story is selected to be removed
+            if (!this.currentStory || this.currentStory.id != this.item.id) {
+                storyToSwap = this.item; // when a new story is being selected
+            }
+
+            // Dispatch an event that propagates upward along the parent chain using $dispatch()
+            this.$dispatch('story-swap-requested', storyToSwap);
+            this.swapped = true;
+        },
+        toggleBody: function toggleBody(ev) {
+            if (this.showBody == false) {
+                this.showBody = true;
+            } else {
+                this.showBody = false;
+            }
+        }
+
+    },
+    watch: {},
+
+    filters: {
+        momentPretty: {
+            read: function read(val) {
+                return val ? (0, _moment2.default)(val).format('MM-DD-YYYY') : '';
+            },
+            write: function write(val, oldVal) {
+                return (0, _moment2.default)(val).format('YYYY-MM-DD');
+            }
+        }
+    },
+    events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"specialItem\" _v-50a82cb8=\"\">\n    <div class=\"box box-solid {{item.story_group.group}} {{ currentStory &amp;&amp; currentStory.id == item.id &amp;&amp; podType == 'queue' ? 'set' : '' }}\" _v-50a82cb8=\"\">\n        <div class=\"box-header with-border\" _v-50a82cb8=\"\">\n          <div class=\"row\" _v-50a82cb8=\"\">\n              <div class=\"col-sm-8\" _v-50a82cb8=\"\">\n                  <span v-show=\"currentStory &amp;&amp; currentStory.id == item.id &amp;&amp; podType == 'queue'\" class=\"success\" _v-50a82cb8=\"\"><i class=\"fa fa-check\" _v-50a82cb8=\"\"></i> Set</span>\n              </div>\n              <div class=\"col-sm-4\" _v-50a82cb8=\"\">\n                  <div class=\"pull-right\" _v-50a82cb8=\"\">\n                      <button type=\"btn btn-sm btn-info\" @click=\"emitSwapStory\" _v-50a82cb8=\"\"><i :class=\"currentStory &amp;&amp; currentStory.id == item.id ? 'fa fa-times' : 'fa fa-exchange'\" aria-hidden=\"true\" _v-50a82cb8=\"\"></i></button>\n                  </div>\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-50a82cb8=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-50a82cb8=\"\">\n              <div class=\"col-sm-9\" _v-50a82cb8=\"\">\n                <h6 class=\"box-title\" _v-50a82cb8=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-50a82cb8=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-50a82cb8=\"\"></span></label>{{item.title}}</h6>\n              </div>\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-50a82cb8=\"\">\n            <p _v-50a82cb8=\"\">ID: {{item.id}}</p>\n            <p _v-50a82cb8=\"\">Type: {{item.story_type}}</p>\n            <p _v-50a82cb8=\"\">Title: {{item.title}}</p>\n            <p _v-50a82cb8=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-50a82cb8=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-50a82cb8=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-50a82cb8=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-50a82cb8=\"\">Live: {{item.is_live}}</p>\n            <p _v-50a82cb8=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-50a82cb8=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-50a82cb8=\"\">\n                <div class=\"row\" _v-50a82cb8=\"\">\n                    <div class=\"col-sm-6\" _v-50a82cb8=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-50a82cb8=\"\">\n                        <div class=\"btn-group pull-right\" _v-50a82cb8=\"\">\n                            <a :href=\"'/admin/queueall/story/' + item.story_type + '/' + item.id + '/edit'\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-50a82cb8=\"\"><i class=\"fa fa-pencil\" _v-50a82cb8=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.box[_v-50a82cb8] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-50a82cb8] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-50a82cb8] {\n    padding: 3px;\n}\n.box-footer[_v-50a82cb8] {\n    padding: 3px;\n}\n\n#storyform[_v-50a82cb8] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-50a82cb8] {\n    margin-bottom: 2px;\n}\n#applabel[_v-50a82cb8]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-50a82cb8],\n.btn-group-vertical[_v-50a82cb8] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-50a82cb8] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-50a82cb8] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-50a82cb8] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-50a82cb8] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-50a82cb8] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-50a82cb8] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-50a82cb8] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-50a82cb8] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-50a82cb8] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-50a82cb8] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-50a82cb8]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n.zcallout[_v-50a82cb8] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-50a82cb8] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-50a82cb8] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-50a82cb8] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-50a82cb8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-50a82cb8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-50a82cb8] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-50a82cb8]{\n    margin-bottom: 0;\n}\n\n.set[_v-50a82cb8] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n\n.special-item[_v-50a82cb8] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-50a82cb8] {\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-50a82cb8", module.exports)
+  } else {
+    hotAPI.update("_v-50a82cb8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"moment":102,"vue":109,"vue-hot-reload-api":105,"vueify/lib/insert-css":110}],114:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\nh4[_v-5814b48d] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-5814b48d]:active, .btn-default.active[_v-5814b48d], .open > .dropdown-toggle.btn-default[_v-5814b48d] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-5814b48d]:active, .btn-default.active[_v-5814b48d], .open > .dropdown-toggle.btn-default[_v-5814b48d] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-5814b48d]:active, span.item-type-icon.active[_v-5814b48d]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-5814b48d]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _PageStoryPod = require('./PageStoryPod.vue');
+
+var _PageStoryPod2 = _interopRequireDefault(_PageStoryPod);
+
+var _iconradio = require('../../directives/iconradio.js');
+
+var _iconradio2 = _interopRequireDefault(_iconradio);
+
+var _flatpickr = require('../../directives/flatpickr.js');
+
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    directives: { iconradio: _iconradio2.default, flatpickr: _flatpickr2.default },
+    components: { PageStoryPod: _PageStoryPod2.default },
+    props: {
+        storyNumber: {
+            type: String,
+            default: 2
+        },
+        stypes: {
+            default: []
+        },
+        currentStory: {
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            currentDate: (0, _moment2.default)(),
+            currentPage: 1,
+            enddate: null,
+            frontStories: [],
+            isEndDate: false,
+            isLoadedSignalSent: false,
+            itemsPerPage: 10,
+            loadingQueue: false,
+            loadingUsed: true,
+            queueStories: [],
+            resultCount: 0,
+            startdate: null,
+            stories_filter_storytype: '',
+            textFilter: ''
+        };
+    },
+    ready: function ready() {
+        var oneMonthEarlier = (0, _moment2.default)().subtract(1, 'M');
+        this.startdate = oneMonthEarlier.format("YYYY-MM-DD");
+        this.enddate = oneMonthEarlier.clone().add(1, 'M').format("YYYY-MM-DD");
+        this.fetchStories();
+    },
+    computed: {
+        totalPages: function totalPages() {
+            return Math.ceil(this.resultCount / this.itemsPerPage);
+        },
+        s_types: function s_types() {
+            try {
+                return JSON.parse(this.stypes);
+            } catch (e) {
+                return this.stypes;
+            }
+        },
+        storyTypeIcons: function storyTypeIcons() {
+            if (this.isString(this.s_types)) {
+                return [{
+                    name: 'all',
+                    shortname: ''
+                }, {
+                    name: 'none',
+                    shortname: 'x'
+                }];
+            } else {
+                this.s_types.push({
+                    name: 'all',
+                    shortname: ''
+                });
+                return this.s_types;
+            }
+        }
+    },
+    methods: {
+        emitDataLoaded: function emitDataLoaded() {
+            // Dispatch an event that propagates upward along the parent chain using $dispatch()
+            this.$dispatch('component-data-loaded');
+            this.isLoadedSignalSent = true;
+        },
+        // fetch all emutoday_front and emutoday_small stories from the last month
+        fetchStories: function fetchStories() {
+            var _this = this;
+
+            this.loadingQueue = true;
+
+            var routeurl = '/api/page/stories';
+
+            // if a start date is set, get stories whose start_date is on or after this date
+            if (this.startdate) {
+                routeurl = routeurl + '/' + this.startdate;
+            } else {
+                routeurl = routeurl + '/' + (0, _moment2.default)().subtract(1, 'M').format("YYYY-MM-DD");
+            }
+
+            // if a date range is set, get stories between the start date and end date
+            if (this.isEndDate) {
+                routeurl = routeurl + '/' + this.enddate;
+            }
+
+            this.$http.get(routeurl).then(function (response) {
+                // sub stories
+                if (_this.storyNumber > 0) {
+                    _this.$set('queueStories', response.data.newdata);
+                } else {
+                    // main story
+                    _this.$set('queueStories', response.data.newdata.filter(function (story) {
+                        // only pass stories with a front image
+                        var frontImage = story.images.filter(function (image) {
+                            return image.image_type == 'front';
+                        });
+                        return frontImage.length >= 1;
+                    }));
+                }
+                _this.resultCount = _this.queueStories.length;
+                _this.setPage(1); // reset paginator
+                _this.loadingQueue = false;
+
+                // send a signal to the parent form component that the data for this modal was full loaded (initial page load only)
+                if (!_this.isLoadedSignalSent) {
+                    _this.emitDataLoaded();
+                }
+            }, function (response) {
+                //error callback
+                console.log("ERRORS");
+            }).bind(this);
+        },
+        // Filters out stories that do not match the story type AND the text filter search box
+        filterByStoryType: function filterByStoryType(value) {
+            var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+
+            if (this.stories_filter_storytype === '') {
+                return value.story_type !== '' && regexp.test(value.title);
+            } else {
+                return value.story_type === this.stories_filter_storytype && regexp.test(value.title);
+            }
+        },
+        // filter only stories that are emutoday_front
+        isString: function isString(val) {
+            return toString.call(val) === "[object String]";
+        },
+        onCalendarChange: function onCalendarChange() {
+            // flatpickr directive method
+        },
+        setPage: function setPage(pageNumber) {
+            if (pageNumber > 0 && pageNumber <= this.totalPages) {
+                this.currentPage = pageNumber;
+            }
+        },
+        toggleRange: function toggleRange() {
+            if (this.isEndDate) {
+                this.isEndDate = false;
+            } else {
+                this.isEndDate = true;
+            }
+        },
+        typeIcon: function typeIcon(sname) {
+            switch (sname) {
+                case 'emutoday':
+                case 'story':
+                    faicon = 'fa-file-image-o';
+                    break;
+                case 'news':
+                    faicon = 'fa-file-text-o';
+                    break;
+                case 'student':
+                    faicon = 'fa-graduation-cap';
+                    break;
+                case 'external':
+                    faicon = 'fa-external-link';
+                    break;
+                case 'article':
+                    faicon = 'fa-newspaper-o';
+                    break;
+                case '':
+                    faicon = 'fa-asterisk';
+                    break;
+                case 'advisory':
+                    faicon = 'fa-warning';
+                    break;
+                case 'statement':
+                    faicon = 'fa-commenting';
+                    break;
+                case 'featurephoto':
+                    faicon = 'fa-camera-retro';
+                    break;
+                default:
+                    faicon = 'fa-file-o';
+                    break;
+            }
+            return 'fa ' + faicon + ' fa-fw';
+        }
+
+    },
+    filters: {
+        paginate: function paginate(list) {
+            // only run if there are items in the list
+            if (list.length == 0) {
+                return;
+            }
+            this.resultCount = list.length;
+            if (this.currentPage > this.totalPages) {
+                this.currentPage = 1;
+            }
+            var index = (this.currentPage - 1) * this.itemsPerPage;
+            return list.slice(index, index + this.itemsPerPage);
+        }
+    },
+    events: {
+        'story-swap-requested': function storySwapRequested(story) {
+            // Dispatch an event that propagates upward along the parent chain using $dispatch()
+            // Tell the parent which story and which position
+            this.$dispatch('story-swapped', [story, this.storyNumber]);
+        }
+    },
+    watch: {
+        // Whenever the storyNumber property is changed (i.e. when user clicks on a story image to swap the story out), fetch relevant stories
+        storyNumber: function storyNumber() {
+            this.fetchStories();
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div :id=\"'pageStorySwapModal-' + storyNumber\" class=\"modal fade\" role=\"dialog\" _v-5814b48d=\"\">\n  <div class=\"modal-dialog\" _v-5814b48d=\"\">\n    <div class=\"modal-content\" _v-5814b48d=\"\">\n      <div class=\"modal-header\" _v-5814b48d=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-5814b48d=\"\">×</button>\n        <h3 class=\"modal-title\" _v-5814b48d=\"\">Swap Story</h3>\n        <template v-if=\"storyNumber == 0\">\n            <p _v-5814b48d=\"\">Choose a <strong _v-5814b48d=\"\">main story</strong> for this hub page. The list below shows all stories in within the date range that have an emutoday_front story type.</p>\n        </template>\n        <template v-else=\"\">\n            <p _v-5814b48d=\"\">Choose a <strong _v-5814b48d=\"\">sub story</strong>. The list below shows all stories in within the date range that have an emutoday_small story type.</p>\n        </template>\n      </div>\n      <div class=\"modal-body\" _v-5814b48d=\"\">\n          <!-- Shows the current story pod (if one is selected) -->\n          <template v-if=\"currentStory\">\n              <h4 _v-5814b48d=\"\">Selected story for this slot</h4>\n              <page-story-pod :item=\"currentStory\" :current-story=\"currentStory\" _v-5814b48d=\"\">\n              </page-story-pod>\n          </template>\n          <template v-else=\"\">\n              <h4 _v-5814b48d=\"\">No story has been selected for this slot.</h4>\n          </template>\n          <hr _v-5814b48d=\"\">\n          <!-- FILTERS -->\n          <div class=\"row\" _v-5814b48d=\"\">\n              <!-- DATE filter -->\n              <div class=\"col-xs-12 col-sm-12 col-md-6\" _v-5814b48d=\"\">\n                  <form class=\"form\" _v-5814b48d=\"\">\n                    <div class=\"form-group\" _v-5814b48d=\"\">\n                        <label for=\"start-date\" _v-5814b48d=\"\">Starting <span v-if=\"isEndDate\" _v-5814b48d=\"\">between</span><span v-else=\"\" _v-5814b48d=\"\">on or after</span></label>\n                        <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" class=\"form-control\" _v-5814b48d=\"\">\n                    </div>\n                    <div v-if=\"isEndDate\" class=\"form-group\" _v-5814b48d=\"\">\n                        <label for=\"start-date\" _v-5814b48d=\"\"> and </label>\n                        <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" class=\"form-control\" _v-5814b48d=\"\">\n                    </div>\n                    <div class=\"form-group\" _v-5814b48d=\"\">\n                        <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchStories\" _v-5814b48d=\"\">Filter</button>\n                        <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-5814b48d=\"\"><span v-if=\"isEndDate\" _v-5814b48d=\"\"> - Remove </span><span v-else=\"\" _v-5814b48d=\"\"> + Add </span>Range</a>\n                    </div>\n                  </form>\n                  <div class=\"btn-toolbar\" role=\"toolbar\" style=\"margin-top:15px;\" _v-5814b48d=\"\">\n                      <div class=\"btn-group btn-group-xs\" role=\"group\" _v-5814b48d=\"\">\n                          <label _v-5814b48d=\"\">Filter: </label>\n                      </div>\n                      <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-5814b48d=\"\">\n                           <template v-for=\"item in storyTypeIcons\">\n                               <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-5814b48d=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-5814b48d=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-5814b48d=\"\"></span></label>\n                          </template>\n                      </div>\n                  </div>\n              </div>\n              <!-- TEXT filter -->\n              <div class=\"col-xs-6\" _v-5814b48d=\"\">\n                  <form class=\"form\" _v-5814b48d=\"\">\n                    <div class=\"form-group\" _v-5814b48d=\"\">\n                        <label for=\"search-filter\" _v-5814b48d=\"\">Search titles</label>\n                        <input v-model=\"textFilter\" id=\"search-filter\" type=\"text\" class=\"form-control\" _v-5814b48d=\"\">\n                    </div>\n                  </form>\n              </div>\n          </div>\n          <!-- Filter by text -->\n          <div id=\"swappable-stories\" _v-5814b48d=\"\">\n            <template v-if=\"!loadingQueue\">\n              <template v-if=\"queueStories.length > 0\">\n                <page-story-pod :item=\"story\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" :current-story=\"currentStory\" pod-type=\"queue\" _v-5814b48d=\"\">\n                </page-story-pod>\n                <ul class=\"pagination\" _v-5814b48d=\"\">\n                  <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-5814b48d=\"\">Previous</a>\n                  </li>\n                  <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-5814b48d=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-5814b48d=\"\">(current)</span></a>\n                  </li>\n                  <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-5814b48d=\"\">\n                    <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-5814b48d=\"\">Next</a>\n                  </li>\n                </ul>\n              </template>\n              <template v-else=\"\">\n                <p _v-5814b48d=\"\">There are no stories for the date range you've specified.</p>\n              </template>\n            </template>\n            <template v-else=\"\">\n              <p _v-5814b48d=\"\">Loading queue. Please Wait...</p>\n            </template>\n          </div>\n      </div>\n      <div class=\"modal-footer\" _v-5814b48d=\"\">\n        this is the footer\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\nh4[_v-5814b48d] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-5814b48d]:active, .btn-default.active[_v-5814b48d], .open > .dropdown-toggle.btn-default[_v-5814b48d] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-5814b48d]:active, .btn-default.active[_v-5814b48d], .open > .dropdown-toggle.btn-default[_v-5814b48d] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-5814b48d]:active, span.item-type-icon.active[_v-5814b48d]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-5814b48d]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-5814b48d", module.exports)
+  } else {
+    hotAPI.update("_v-5814b48d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../../directives/flatpickr.js":117,"../../directives/iconradio.js":118,"./PageStoryPod.vue":113,"moment":102,"vue":109,"vue-hot-reload-api":105,"vueify/lib/insert-css":110}],115:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.topic-image[_v-78d853dd]{\n    width: 100%;\n    max-height: 411px;\n}\n")
+'use strict';
+
+var _PageStorySwapModal = require('./PageStorySwapModal.vue');
+
+var _PageStorySwapModal2 = _interopRequireDefault(_PageStorySwapModal);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+    directives: {},
+    components: { PageStorySwapModal: _PageStorySwapModal2.default },
+    props: {
+        story: {
+            type: Object,
+            default: null
+        },
+        storyNumber: {
+            required: true,
+            type: String
+        },
+        stypes: {
+            default: []
+        },
+        currentStory: {
+            default: null
+        }
+    },
+    data: function data() {
+        return {
+            isMousedOver: false
+        };
+    },
+    created: function created() {},
+    ready: function ready() {},
+    computed: {
+        imageSrc: function imageSrc() {
+            // story has been passed to this component
+            if (this.story) {
+                // this is a main story
+                if (this.storyNumber == 0) {
+                    // Find the front image
+                    var frontImage = this.story.images.filter(function (image) {
+                        return image.image_type == 'front';
+                    });
+                    return frontImage[0].image_path + frontImage[0].filename;
+                }
+
+                // this is a sub story
+                var smallImage = this.story.images.filter(function (image) {
+                    return image.image_type == 'small';
+                });
+                return smallImage[0].image_path + smallImage[0].filename;
+            }
+            // no story set for this component
+            return '/imgs/notselected.png';
+        }
+    },
+
+    methods: {
+        openModal: function openModal() {
+            console.log(this.storyNumber);
+            $('#pageStorySwapModal-' + this.storyNumber).modal('show');
+        }
+    },
+    watch: {},
+    filters: {},
+    events: {
+        'component-data-loaded': function componentDataLoaded() {
+            this.$dispatch('modal-data-loaded');
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div @mouseover=\"isMousedOver = true\" @mouseout=\"isMousedOver = false\" _v-78d853dd=\"\">\n    <img class=\"topic-image\" :src=\"isMousedOver ? '/imgs/swapstory.png' : imageSrc\" alt=\"story image\" @click=\"openModal\" _v-78d853dd=\"\">\n    <div class=\"stories-content\" _v-78d853dd=\"\">\n        {{ story ? story.title : 'No story selected' }}\n    </div>\n</div><!-- /end root element -->\n\n<page-story-swap-modal :story-number=\"storyNumber\" :stypes=\"stypes\" :current-story=\"story\" _v-78d853dd=\"\"></page-story-swap-modal>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.topic-image[_v-78d853dd]{\n    width: 100%;\n    max-height: 411px;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-78d853dd", module.exports)
+  } else {
+    hotAPI.update("_v-78d853dd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"./PageStorySwapModal.vue":114,"vue":109,"vue-hot-reload-api":105,"vueify/lib/insert-css":110}],116:[function(require,module,exports){
+var __vueify_insert__ = require("vueify/lib/insert-css")
+var __vueify_style__ = __vueify_insert__.insert("\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n")
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    props: {
+        disabled: Boolean,
+        checked: [Boolean, Number],
+        value: Number,
+        readonly: Boolean
+    },
+    ready: function ready() {
+        this.value == !!this.checked;
+    },
+
+    data: function data() {
+        return {
+            // compval: $('#slct').val()
+        };
+    },
+    methods: {
+        vuiValueChange: function vuiValueChange(event) {
+            console.log('this.value' + this.value);
+        }
+    },
+    events: {}
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"vuiflipswitch\">\n    <input v-model=\"value\" type=\"checkbox\" @change=\"vuiValueChange\" name=\"vuiflipswitch\" class=\"vuiflipswitch-checkbox\" :readonly=\"readonly\" :disabled=\"disabled\" lazy=\"\">\n    <label class=\"vuiflipswitch-label\" :class=\"{checked:value}\">\n            <span class=\"vuiflipswitch-inner\"></span>\n            <span class=\"vuiflipswitch-switch\"></span>\n    </label>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.dispose(function () {
+    __vueify_insert__.cache["\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\n\n\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n"] = false
+    document.head.removeChild(__vueify_style__)
+  })
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-c9c83bf8", module.exports)
+  } else {
+    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":109,"vue-hot-reload-api":105,"vueify/lib/insert-css":110}],117:[function(require,module,exports){
+'use strict';
+
+var _flatpickr = require('flatpickr');
+
+var _flatpickr2 = _interopRequireDefault(_flatpickr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+    twoWay: true,
+    priority: 1000,
+    params: ['initval'],
+    bind: function bind() {
+        var self = this;
+        var options = { defaultDate: self.params.initval,
+            enableTime: true,
+            altFormat: "m-d-Y h:i K",
+            altInput: true,
+            altInputClass: "form-control",
+            dateFormat: "Y-m-d H:i:S" };
+        options.onChange = this.onChange.bind(this);
+        this.pickr = (0, _flatpickr2.default)(this.el, options);
+    },
+    onChange: function onChange(dateObj, dateStr) {
+        this.vm.onCalendarChange();
+
+        this.set(dateStr);
+    }
+};
+
+},{"flatpickr":101}],118:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+    twoWay: true,
+    bind: function bind() {
+        var self = this;
+        var btns = $(self.el).find('.btn');
+
+        btns.each(function () {
+            var initValue = $(this).find('input').get(0).value;
+            if (initValue === '') {
+                $(this).addClass('active');
+            }
+            $(this).on('click', function () {
+                self.set(initValue);
+            });
+        });
+    },
+    update: function update() {
+        var value = this._watcher.value;
+        if (value) {
+            this.set(value);
+
+            var btns = $(this.el).find('.btn');
+            btns.each(function () {
+                $(this).removeClass('active');
+                $(this).removeClass('bg-purple');
+                var v = $(this).find('input').get(0).value;
+                if (v === value) {
+                    $(this).addClass('active');
+                    $(this).addClass('bg-purple');
+                }
+            });
+        } else {
+            var input = $(this.el).find('.active input').get(0);
+            if (input) {
+                this.set(input.value);
+            }
+        }
+    }
+};
+
+},{}],119:[function(require,module,exports){
+'use strict';
+
+var _vueResource = require('vue-resource');
+
+var _vueResource2 = _interopRequireDefault(_vueResource);
+
+var _vueSortable = require('vue-sortable');
+
+var _vueSortable2 = _interopRequireDefault(_vueSortable);
+
+var _PageForm = require('./components/Page/PageForm.vue');
+
+var _PageForm2 = _interopRequireDefault(_PageForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Vue = require('vue');
 
-var VueResource = require('vue-resource');
-Vue.use(VueResource);
-
-var VueRouter = require('vue-router');
-Vue.use(VueRouter);
+Vue.use(_vueResource2.default);
+Vue.use(_vueSortable2.default);
 
 // Remember the token we created in the <head> tags? Get it here.
 var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
 Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
-new Vue({
-    el: '#vue-caleventview',
-
-    components: { EventView: _EventView2.default },
-
+var vm = new Vue({
+    el: '#vue-page',
+    components: {
+        PageForm: _PageForm2.default
+    },
     ready: function ready() {
-        // alert('vue ready');
+        console.log('Page Form ready');
     }
 });
 
-},{"./components/EventView.vue":30,"vue":28,"vue-resource":26,"vue-router":27}]},{},[34]);
+},{"./components/Page/PageForm.vue":112,"vue":109,"vue-resource":106,"vue-sortable":108}]},{},[119]);
 
-//# sourceMappingURL=vue-caleventview.js.map
+//# sourceMappingURL=vue-page-form.js.map

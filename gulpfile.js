@@ -173,6 +173,7 @@ elixir(function(mix) {
         mix.browserify('vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js');
         mix.browserify('vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js');
         mix.browserify('vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
+        mix.browserify('vue-page-form.js', 'public/js/vue-page-form.js');
         mix.browserify('vue-story-queue.js', 'public/js/vue-story-queue.js');
         mix.browserify('vue-chart-app.js', 'public/js/vue-chart-app.js');
         mix.browserify('vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
