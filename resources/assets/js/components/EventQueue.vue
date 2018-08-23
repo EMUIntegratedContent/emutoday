@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
             <form class="form-inline">
               <div class="form-group">
                   <label for="start-date">Showing events starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
@@ -12,6 +12,15 @@
               </div>
               <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
               <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
+            </form>
+        </div>
+        <!-- TEXT filter -->
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-6">
+            <form class="form-inline" v-on:submit.prevent="">
+              <div class="form-group">
+                  <label for="search-filter">Search titles</label>
+                  <input v-model="textFilter" id="search-filter" type="text" class="form-control">
+              </div>
             </form>
         </div>
     </div>
@@ -156,7 +165,8 @@ export default  {
         isOk: false,
         isErr: false,
         msg: '',
-      }
+      },
+      textFilter: '',
     }
   },
   ready() {
@@ -242,24 +252,31 @@ export default  {
 
     },
     filterItemsApproved: function(items) {
+      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0;  // true
+        return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0 && regexp.test(item.title);  // true
       });
     },
     filterItemsUnapproved: function(items) {
+        var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return item.is_approved === 0
+        return item.is_approved === 0  && regexp.test(item.title);
       });
     },
     filterItemsPromoted: function(items) {
+        var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return item.is_promoted === 1
+        return item.is_promoted === 1 && regexp.test(item.title);
       });
     },
     filterItemsLive: function(items) {
+        var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return (moment(item.start_date_time).isSameOrBefore(moment()) && item.is_approved === 1) || // Past NOW and approved
-        (item.is_approved === 1 && (item.priority > 0 || item.is_promoted === 1)); // Approved with promotion / priority
+        return (
+                (moment(item.start_date_time).isSameOrBefore(moment()) && item.is_approved === 1)
+                || (item.is_approved === 1 && (item.priority > 0 || item.is_promoted === 1))
+               )
+               && regexp.test(item.title);
       });
     },
 

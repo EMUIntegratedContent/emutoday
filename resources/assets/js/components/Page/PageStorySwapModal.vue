@@ -58,7 +58,7 @@
                 </div>
                 <!-- TEXT filter -->
                 <div class="col-xs-6">
-                    <form class="form">
+                    <form class="form" v-on:submit.prevent="">
                       <div class="form-group">
                           <label for="search-filter">Search titles</label>
                           <input v-model="textFilter" id="search-filter" type="text" class="form-control">

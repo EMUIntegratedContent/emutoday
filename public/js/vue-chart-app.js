@@ -34262,7 +34262,6 @@ exports.default = {
     components: {},
     props: ['gcols'],
     ready: function ready() {
-        console.log('gcols= ' + this.gcols);
         this.fetchAllRecords();
     },
     data: function data() {
@@ -34326,7 +34325,6 @@ exports.default = {
 
                 return item;
             });
-            console.log('newdata' + newdata);
         }
     },
 
@@ -34335,10 +34333,6 @@ exports.default = {
             var _this = this;
 
             this.$http.get('/api/page/chartload').then(function (response) {
-                console.log('response.status=' + response.status);
-                console.log('response.ok=' + response.ok);
-                console.log('response.statusText=' + response.statusText);
-                console.log('response.data=' + response.data);
                 _this.$set('alldata', response.data.data);
                 _this.checkOverDataFilter();
             }, function (response) {
@@ -34346,16 +34340,13 @@ exports.default = {
                 console.log("ERRORS");
             }).bind(this);
         },
-        checkOverDataFilter: function checkOverDataFilter() {
-            console.log('newRows= ' + this.alldata);
-        },
+        checkOverDataFilter: function checkOverDataFilter() {},
         formatReturn: function formatReturn(items) {
             var itemsArray = [];
             for (item in items) {
                 var itemArray = [item.id, (0, _moment2.default)(item['start_date']).format('YYYY-MM-DD'), (0, _moment2.default)(item['end_date']).format('YYYY-MM-DD')];
                 itemsArray.push(itemArray);
             }
-            console.log('itemsArray=' + itemsArray);
             return itemsArray;
         },
 

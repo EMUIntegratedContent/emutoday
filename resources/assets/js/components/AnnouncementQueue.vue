@@ -18,7 +18,7 @@
 
 <template>
     <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5">
             <form class="form-inline">
               <div class="form-group">
                   <label for="start-date">Showing announcements starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
@@ -32,7 +32,16 @@
               <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
             </form>
         </div>
-        <div v-if="role == 'admin' || role == 'admin_super'" class="col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right">
+        <!-- TEXT filter -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <form class="form-inline" v-on:submit.prevent="">
+              <div class="form-group">
+                  <label for="search-filter">Search titles</label>
+                  <input v-model="textFilter" id="search-filter" type="text" class="form-control">
+              </div>
+            </form>
+        </div>
+        <div v-if="role == 'admin' || role == 'admin_super'" class="col-xs-12 col-sm-12 col-md-4 col-lg-3 text-right">
             <a class="btn btn-sm btn-default" href="/admin/archive/queue/announcements"><i class="fa fa-archive"></i> Archived Announcements</a>
         </div>
     </div>
@@ -159,7 +168,8 @@ export default {
         isOk: false,
         isErr: false,
         msg: '',
-      }
+      },
+      textFilter: '',
     }
   },
 
@@ -245,18 +255,24 @@ export default {
     },
 
     filterItemsApproved: function(items) {
+        var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return moment(item.start_date).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0;
+        return moment(item.start_date).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0 && regexp.test(item.title);
       });
     },
     filterItemsUnapproved: function(items) {
+        var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return item.is_approved === 0 && item.is_archived === 0;
+        return item.is_approved === 0 && item.is_archived === 0 && regexp.test(item.title);
       });
     },
     filterItemsLive: function(items) {
+        var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function(item) {
-        return moment(item.start_date).isSameOrBefore(moment()) && item.is_approved === 1 && item.is_archived === 0 || item.is_approved === 1 && item.priority > 0 && item.is_archived === 0;  // true
+        return (moment(item.start_date).isSameOrBefore(moment())
+                && item.is_approved === 1 && item.is_archived === 0
+                || item.is_approved === 1 && item.priority > 0 && item.is_archived === 0)
+                && regexp.test(item.title);  // true
 
       });
     },
