@@ -62,12 +62,12 @@
                   @php
                     if(isset($_GET['truepreview']) && $_GET['truepreview'] == "true"):
                   @endphp
-                        <a href="?truepreview=false" class="button secondary">Editable preview</a>
+                        <a href="?truepreview=false" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i> Editable preview</a>
                         {!! $story->content !!}
                   @php
                     else:
                   @endphp
-                    <a href="?truepreview=true" class="button secondary">True preview</a>
+                    <a href="?truepreview=true" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i> True preview</a>
                     {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
                   @php
                     endif

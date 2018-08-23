@@ -8,7 +8,7 @@
               </div>
               <div class="col-sm-4">
                   <div class="pull-right">
-                      <button type="btn btn-sm btn-info" @click="emitSwapStory" /><i :class="currentStory && currentStory.id == item.id ? 'fa fa-times' : 'fa fa-exchange'" aria-hidden="true"></i></button>
+                      <button type="btn btn-sm btn-info" @click="emitSwapStory"><i :class="currentStory && currentStory.id == item.id ? 'fa fa-times' : 'fa fa-exchange'" aria-hidden="true"></i></button>
                   </div>
               </div>
           </div><!-- /.row -->
