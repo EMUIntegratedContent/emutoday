@@ -49,7 +49,7 @@
                         'files' => true
                     ]) !!}
           <!-- Story Content Column -->
-          <div class="large-10 large-push-2 medium-9 medium-push-3 small-12 columns">
+          <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
             @if(isset($mainStoryImage) && !isset($fullBannerImage))
             <div id="big-feature-image">
               <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}"></a>
@@ -59,12 +59,24 @@
           @endif
             @if($story->story_type != 'external')
               <div id="story-content-edit">
-              {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+                  @php
+                    if(isset($_GET['truepreview']) && $_GET['truepreview'] == "true"):
+                  @endphp
+                        <a href="?truepreview=false" class="button secondary">Editable preview</a>
+                        {!! $story->content !!}
+                  @php
+                    else:
+                  @endphp
+                    <a href="?truepreview=true" class="button secondary">True preview</a>
+                    {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+                  @php
+                    endif
+                  @endphp
               </div>
             @endif
           </div>
           <!-- Page Side Bar Column -->
-          <div class="large-2 large-pull-10 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
+          <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
             <div class="dots-bottom">
               <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>
               <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
@@ -131,6 +143,10 @@
             filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
         });
     });
+
+    // $(document).ready(function(){
+    //     $('.cke_widget_wrapper').css({'float':'none', 'background-color':'black'});
+    // });
     </script>
 
   @endsection
