@@ -3066,7 +3066,7 @@ function format (id) {
 
 },{}],104:[function(require,module,exports){
 /*!
- * vue-resource v1.5.1
+ * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
  * Released under the MIT License.
  */
@@ -3079,7 +3079,7 @@ function format (id) {
 
 var RESOLVED = 0;
 var REJECTED = 1;
-var PENDING = 2;
+var PENDING  = 2;
 
 function Promise$1(executor) {
 
@@ -3145,9 +3145,9 @@ Promise$1.race = function race(iterable) {
     });
 };
 
-var p = Promise$1.prototype;
+var p$1 = Promise$1.prototype;
 
-p.resolve = function resolve(x) {
+p$1.resolve = function resolve(x) {
     var promise = this;
 
     if (promise.state === PENDING) {
@@ -3188,7 +3188,7 @@ p.resolve = function resolve(x) {
     }
 };
 
-p.reject = function reject(reason) {
+p$1.reject = function reject(reason) {
     var promise = this;
 
     if (promise.state === PENDING) {
@@ -3202,7 +3202,7 @@ p.reject = function reject(reason) {
     }
 };
 
-p.notify = function notify() {
+p$1.notify = function notify() {
     var promise = this;
 
     nextTick(function () {
@@ -3236,7 +3236,7 @@ p.notify = function notify() {
     });
 };
 
-p.then = function then(onResolved, onRejected) {
+p$1.then = function then(onResolved, onRejected) {
     var promise = this;
 
     return new Promise$1(function (resolve, reject) {
@@ -3245,7 +3245,7 @@ p.then = function then(onResolved, onRejected) {
     });
 };
 
-p.catch = function (onRejected) {
+p$1.catch = function (onRejected) {
     return this.then(undefined, onRejected);
 };
 
@@ -3284,14 +3284,14 @@ PromiseObj.race = function (iterable, context) {
     return new PromiseObj(Promise.race(iterable), context);
 };
 
-var p$1 = PromiseObj.prototype;
+var p = PromiseObj.prototype;
 
-p$1.bind = function (context) {
+p.bind = function (context) {
     this.context = context;
     return this;
 };
 
-p$1.then = function (fulfilled, rejected) {
+p.then = function (fulfilled, rejected) {
 
     if (fulfilled && fulfilled.bind && this.context) {
         fulfilled = fulfilled.bind(this.context);
@@ -3304,7 +3304,7 @@ p$1.then = function (fulfilled, rejected) {
     return new PromiseObj(this.promise.then(fulfilled, rejected), this.context);
 };
 
-p$1.catch = function (rejected) {
+p.catch = function (rejected) {
 
     if (rejected && rejected.bind && this.context) {
         rejected = rejected.bind(this.context);
@@ -3313,15 +3313,15 @@ p$1.catch = function (rejected) {
     return new PromiseObj(this.promise.catch(rejected), this.context);
 };
 
-p$1.finally = function (callback) {
+p.finally = function (callback) {
 
     return this.then(function (value) {
-        callback.call(this);
-        return value;
-    }, function (reason) {
-        callback.call(this);
-        return Promise.reject(reason);
-    }
+            callback.call(this);
+            return value;
+        }, function (reason) {
+            callback.call(this);
+            return Promise.reject(reason);
+        }
     );
 };
 
@@ -3331,19 +3331,21 @@ p$1.finally = function (callback) {
 
 var ref = {};
 var hasOwnProperty = ref.hasOwnProperty;
+
 var ref$1 = [];
 var slice = ref$1.slice;
-var debug = false, ntick;
+var debug = false;
+var ntick;
 
 var inBrowser = typeof window !== 'undefined';
 
-function Util (ref) {
+var Util = function (ref) {
     var config = ref.config;
     var nextTick = ref.nextTick;
 
     ntick = nextTick;
     debug = config.debug || !config.silent;
-}
+};
 
 function warn(msg) {
     if (typeof console !== 'undefined' && debug) {
@@ -3391,6 +3393,8 @@ var isArray = Array.isArray;
 function isString(val) {
     return typeof val === 'string';
 }
+
+
 
 function isFunction(val) {
     return typeof val === 'function';
@@ -3514,7 +3518,7 @@ function _merge(target, source, deep) {
  * Root Prefix Transform.
  */
 
-function root (options$$1, next) {
+var root = function (options$$1, next) {
 
     var url = next(options$$1);
 
@@ -3523,13 +3527,13 @@ function root (options$$1, next) {
     }
 
     return url;
-}
+};
 
 /**
  * Query Parameter Transform.
  */
 
-function query (options$$1, next) {
+var query = function (options$$1, next) {
 
     var urlParams = Object.keys(Url.options.params), query = {}, url = next(options$$1);
 
@@ -3546,7 +3550,7 @@ function query (options$$1, next) {
     }
 
     return url;
-}
+};
 
 /**
  * URL Template v2.0.6 (https://github.com/bramstein/url-template)
@@ -3570,7 +3574,7 @@ function parse(template) {
     return {
         vars: variables,
         expand: function expand(context) {
-            return template.replace(/\{([^{}]+)\}|([^{}]+)/g, function (_, expression, literal) {
+            return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
                 if (expression) {
 
                     var operator = null, values = [];
@@ -3581,7 +3585,7 @@ function parse(template) {
                     }
 
                     expression.split(/,/g).forEach(function (variable) {
-                        var tmp = /([^:*]*)(?::(\d+)|(\*))?/.exec(variable);
+                        var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
                         values.push.apply(values, getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
                         variables.push(tmp[1]);
                     });
@@ -3703,7 +3707,7 @@ function encodeReserved(str) {
  * URL Template (RFC 6570) Transform.
  */
 
-function template (options) {
+var template = function (options) {
 
     var variables = [], url = expand(options.url, options.params, variables);
 
@@ -3712,7 +3716,7 @@ function template (options) {
     });
 
     return url;
-}
+};
 
 /**
  * Service for URL templating.
@@ -3849,23 +3853,23 @@ function serialize(params, obj, scope) {
  * XDomain client (Internet Explorer).
  */
 
-function xdrClient (request) {
+var xdrClient = function (request) {
     return new PromiseObj(function (resolve) {
 
         var xdr = new XDomainRequest(), handler = function (ref) {
-                var type = ref.type;
+            var type = ref.type;
 
 
-                var status = 0;
+            var status = 0;
 
-                if (type === 'load') {
-                    status = 200;
-                } else if (type === 'error') {
-                    status = 500;
-                }
+            if (type === 'load') {
+                status = 200;
+            } else if (type === 'error') {
+                status = 500;
+            }
 
-                resolve(request.respondWith(xdr.responseText, {status: status}));
-            };
+            resolve(request.respondWith(xdr.responseText, {status: status}));
+        };
 
         request.abort = function () { return xdr.abort(); };
 
@@ -3882,7 +3886,7 @@ function xdrClient (request) {
         xdr.onprogress = function () {};
         xdr.send(request.getBody());
     });
-}
+};
 
 /**
  * CORS Interceptor.
@@ -3890,7 +3894,7 @@ function xdrClient (request) {
 
 var SUPPORTS_CORS = inBrowser && 'withCredentials' in new XMLHttpRequest();
 
-function cors (request) {
+var cors = function (request, next) {
 
     if (inBrowser) {
 
@@ -3908,28 +3912,33 @@ function cors (request) {
         }
     }
 
-}
+    next();
+};
 
 /**
  * Form data Interceptor.
  */
 
-function form (request) {
+var form = function (request, next) {
 
     if (isFormData(request.body)) {
+
         request.headers.delete('Content-Type');
+
     } else if (isObject(request.body) && request.emulateJSON) {
+
         request.body = Url.params(request.body);
         request.headers.set('Content-Type', 'application/x-www-form-urlencoded');
     }
 
-}
+    next();
+};
 
 /**
  * JSON Interceptor.
  */
 
-function json (request) {
+var json = function (request, next) {
 
     var type = request.headers.get('Content-Type') || '';
 
@@ -3937,11 +3946,11 @@ function json (request) {
         request.body = JSON.stringify(request.body);
     }
 
-    return function (response) {
+    next(function (response) {
 
         return response.bodyText ? when(response.text(), function (text) {
 
-            var type = response.headers.get('Content-Type') || '';
+            type = response.headers.get('Content-Type') || '';
 
             if (type.indexOf('application/json') === 0 || isJson(text)) {
 
@@ -3959,22 +3968,21 @@ function json (request) {
 
         }) : response;
 
-    };
-}
+    });
+};
 
 function isJson(str) {
 
-    var start = str.match(/^\s*(\[|\{)/);
-    var end = {'[': /]\s*$/, '{': /}\s*$/};
+    var start = str.match(/^\[|^\{(?!\{)/), end = {'[': /]$/, '{': /}$/};
 
-    return start && end[start[1]].test(str);
+    return start && end[start[0]].test(str);
 }
 
 /**
  * JSONP client (Browser).
  */
 
-function jsonpClient (request) {
+var jsonpClient = function (request) {
     return new PromiseObj(function (resolve) {
 
         var name = request.jsonp || 'callback', callback = request.jsonpCallback || '_jsonp' + Math.random().toString(36).substr(2), body = null, handler, script;
@@ -4022,50 +4030,53 @@ function jsonpClient (request) {
 
         document.body.appendChild(script);
     });
-}
+};
 
 /**
  * JSONP Interceptor.
  */
 
-function jsonp (request) {
+var jsonp = function (request, next) {
 
     if (request.method == 'JSONP') {
         request.client = jsonpClient;
     }
 
-}
+    next();
+};
 
 /**
  * Before Interceptor.
  */
 
-function before (request) {
+var before = function (request, next) {
 
     if (isFunction(request.before)) {
         request.before.call(this, request);
     }
 
-}
+    next();
+};
 
 /**
  * HTTP method override Interceptor.
  */
 
-function method (request) {
+var method = function (request, next) {
 
     if (request.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(request.method)) {
         request.headers.set('X-HTTP-Method-Override', request.method);
         request.method = 'POST';
     }
 
-}
+    next();
+};
 
 /**
  * Header Interceptor.
  */
 
-function header (request) {
+var header = function (request, next) {
 
     var headers = assign({}, Http.headers.common,
         !request.crossOrigin ? Http.headers.custom : {},
@@ -4078,31 +4089,41 @@ function header (request) {
         }
     });
 
-}
+    next();
+};
 
 /**
  * XMLHttp client (Browser).
  */
 
-function xhrClient (request) {
+var xhrClient = function (request) {
     return new PromiseObj(function (resolve) {
 
         var xhr = new XMLHttpRequest(), handler = function (event) {
 
-                var response = request.respondWith(
+            var response = request.respondWith(
                 'response' in xhr ? xhr.response : xhr.responseText, {
                     status: xhr.status === 1223 ? 204 : xhr.status, // IE9 status bug
                     statusText: xhr.status === 1223 ? 'No Content' : trim(xhr.statusText)
-                });
+                }
+            );
 
-                each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
-                    response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
-                });
+            each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
+                response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
+            });
 
-                resolve(response);
-            };
+            resolve(response);
+        };
 
         request.abort = function () { return xhr.abort(); };
+
+        if (request.progress) {
+            if (request.method === 'GET') {
+                xhr.addEventListener('progress', request.progress);
+            } else if (/^(POST|PUT)$/i.test(request.method)) {
+                xhr.upload.addEventListener('progress', request.progress);
+            }
+        }
 
         xhr.open(request.method, request.getUrl(), true);
 
@@ -4122,24 +4143,6 @@ function xhrClient (request) {
             request.headers.set('X-Requested-With', 'XMLHttpRequest');
         }
 
-        // deprecated use downloadProgress
-        if (isFunction(request.progress) && request.method === 'GET') {
-            xhr.addEventListener('progress', request.progress);
-        }
-
-        if (isFunction(request.downloadProgress)) {
-            xhr.addEventListener('progress', request.downloadProgress);
-        }
-
-        // deprecated use uploadProgress
-        if (isFunction(request.progress) && /^(POST|PUT)$/i.test(request.method)) {
-            xhr.upload.addEventListener('progress', request.progress);
-        }
-
-        if (isFunction(request.uploadProgress) && xhr.upload) {
-            xhr.upload.addEventListener('progress', request.uploadProgress);
-        }
-
         request.headers.forEach(function (value, name) {
             xhr.setRequestHeader(name, value);
         });
@@ -4150,13 +4153,13 @@ function xhrClient (request) {
         xhr.ontimeout = handler;
         xhr.send(request.getBody());
     });
-}
+};
 
 /**
  * Http client (Node).
  */
 
-function nodeClient (request) {
+var nodeClient = function (request) {
 
     var client = require('got');
 
@@ -4174,9 +4177,10 @@ function nodeClient (request) {
         client(url, {body: body, method: method, headers: headers}).then(handler = function (resp) {
 
             var response = request.respondWith(resp.body, {
-                status: resp.statusCode,
-                statusText: trim(resp.statusMessage)
-            });
+                    status: resp.statusCode,
+                    statusText: trim(resp.statusMessage)
+                }
+            );
 
             each(resp.headers, function (value, name) {
                 response.headers.set(name, value);
@@ -4186,53 +4190,60 @@ function nodeClient (request) {
 
         }, function (error$$1) { return handler(error$$1.response); });
     });
-}
+};
 
 /**
  * Base client.
  */
 
-function Client (context) {
+var Client = function (context) {
 
-    var reqHandlers = [sendRequest], resHandlers = [];
+    var reqHandlers = [sendRequest], resHandlers = [], handler;
 
     if (!isObject(context)) {
         context = null;
     }
 
     function Client(request) {
-        while (reqHandlers.length) {
+        return new PromiseObj(function (resolve, reject) {
 
-            var handler = reqHandlers.pop();
+            function exec() {
 
-            if (isFunction(handler)) {
+                handler = reqHandlers.pop();
 
-                var response = (void 0), next = (void 0);
-
-                response = handler.call(context, request, function (val) { return next = val; }) || next;
-
-                if (isObject(response)) {
-                    return new PromiseObj(function (resolve, reject) {
-
-                        resHandlers.forEach(function (handler) {
-                            response = when(response, function (response) {
-                                return handler.call(context, response) || response;
-                            }, reject);
-                        });
-
-                        when(response, resolve, reject);
-
-                    }, context);
+                if (isFunction(handler)) {
+                    handler.call(context, request, next);
+                } else {
+                    warn(("Invalid interceptor of type " + (typeof handler) + ", must be a function"));
+                    next();
                 }
+            }
+
+            function next(response) {
 
                 if (isFunction(response)) {
+
                     resHandlers.unshift(response);
+
+                } else if (isObject(response)) {
+
+                    resHandlers.forEach(function (handler) {
+                        response = when(response, function (response) {
+                            return handler.call(context, response) || response;
+                        }, reject);
+                    });
+
+                    when(response, resolve, reject);
+
+                    return;
                 }
 
-            } else {
-                warn(("Invalid interceptor of type " + (typeof handler) + ", must be a function"));
+                exec();
             }
-        }
+
+            exec();
+
+        }, context);
     }
 
     Client.use = function (handler) {
@@ -4240,13 +4251,13 @@ function Client (context) {
     };
 
     return Client;
-}
+};
 
-function sendRequest(request) {
+function sendRequest(request, resolve) {
 
     var client = request.client || (inBrowser ? xhrClient : nodeClient);
 
-    return client(request);
+    resolve(client(request));
 }
 
 /**
@@ -4281,7 +4292,7 @@ Headers.prototype.set = function set (name, value) {
     this.map[normalizeName(getName(this.map, name) || name)] = [trim(value)];
 };
 
-Headers.prototype.append = function append (name, value) {
+Headers.prototype.append = function append (name, value){
 
     var list = this.map[getName(this.map, name)];
 
@@ -4292,11 +4303,11 @@ Headers.prototype.append = function append (name, value) {
     }
 };
 
-Headers.prototype.delete = function delete$1 (name) {
+Headers.prototype.delete = function delete$1 (name){
     delete this.map[getName(this.map, name)];
 };
 
-Headers.prototype.deleteAll = function deleteAll () {
+Headers.prototype.deleteAll = function deleteAll (){
     this.map = {};
 };
 
@@ -4316,7 +4327,7 @@ function getName(map, name) {
 
 function normalizeName(name) {
 
-    if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
         throw new TypeError('Invalid character in header field name');
     }
 
@@ -4414,11 +4425,11 @@ var Request = function Request(options$$1) {
     }
 };
 
-Request.prototype.getUrl = function getUrl () {
+Request.prototype.getUrl = function getUrl (){
     return Url(this);
 };
 
-Request.prototype.getBody = function getBody () {
+Request.prototype.getBody = function getBody (){
     return this.body;
 };
 
@@ -15827,7 +15838,7 @@ exports.insert = function (css) {
 
 },{}],108:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#submit-area[_v-3a158057]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-3a158057] {\n  margin:0;\n}\nlabel[_v-3a158057] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-3a158057] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-3a158057] {\n  marging-bottom: 0;\n}\nlabel input[_v-3a158057] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-3a158057] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-3a158057] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-3a158057] {\n  color: #ff0000;\n}\n.reqstar[_v-3a158057] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-3a158057] {\n  margin: 0;\n}\n\n[type='submit'][_v-3a158057], [type='button'][_v-3a158057] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-3a158057]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-3a158057]{\n  margin: 0;\n}\nform[_v-3a158057] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-3a158057] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-3a158057] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-3a158057], .mockh5[_v-3a158057] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-3a158057] {\n  resize: vertical !important;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#submit-area[_v-ee392e9c]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-ee392e9c] {\n  margin:0;\n}\nlabel[_v-ee392e9c] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-ee392e9c] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\nlabel input[_v-ee392e9c] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-ee392e9c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-ee392e9c] {\n  color: #ff0000;\n}\n.reqstar[_v-ee392e9c] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-ee392e9c] {\n  margin: 0;\n}\n\n[type='submit'][_v-ee392e9c], [type='button'][_v-ee392e9c] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-ee392e9c]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-ee392e9c]{\n  margin: 0;\n}\nform[_v-ee392e9c] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-ee392e9c] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-ee392e9c] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-ee392e9c], .mockh5[_v-ee392e9c] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-ee392e9c] {\n  resize: vertical !important;\n}\n")
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -16378,19 +16389,19 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-3a158057=\"\">\n    <slot name=\"csrf\" _v-3a158057=\"\"></slot>\n    {{ $route }}\n    <div class=\"row\" _v-3a158057=\"\">\n      <div v-bind:class=\"md12col\" _v-3a158057=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">There are errors.</h5>\n        </div>\n        <div v-show=\"this.record.is_canceled == 1\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">This event has been canceled.</h5>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" maxlength=\"80\" autofocus=\"\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-3a158057=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Short Title - for departmental use only</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" maxlength=\"80\" _v-3a158057=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-3a158057=\"\">({{descriptionChars}} characters left)</p></label>\n          <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" maxlength=\"255\" _v-3a158057=\"\"></textarea>\n          <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Description!</p>\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md6col\" _v-3a158057=\"\">\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-3a158057=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-3a158057=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-3a158057=\"\">\n            <div :class=\"md8col\" _v-3a158057=\"\">\n              <label _v-3a158057=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-3a158057=\"\">\n            </v-select>\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" class=\"mockh5\" maxlength=\"80\" _v-3a158057=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-3a158057=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"start-date\" _v-3a158057=\"\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"end-date\" _v-3a158057=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-3a158057=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"all-day\" _v-3a158057=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"no-end-time\" _v-3a158057=\"\">No End Time:</label>\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-3a158057=\"\">\n    </div>\n  </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"start-time\" _v-3a158057=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly=\"\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.start_time\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Time</p>\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"end-time\" _v-3a158057=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly=\"\" _v-3a158057=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div class=\"form-group\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-3a158057=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Phone: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Fax: <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<!-- RELATED LINKS -->\n<div class=\"input-group\" style=\"width: 100%\" _v-3a158057=\"\">\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Related Link</label>\n        <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n        <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n          <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n          <input v-model=\"record.related_link_1\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n        </div>\n        <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n  </div><!-- /.row -->\n  <div class=\"row\" v-show=\"record.related_link_1\" _v-3a158057=\"\">\n    <div :class=\"md4col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n        <input v-model=\"record.related_link_1_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n    <div :class=\"md8col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Example of Related Link</label>\n        <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n        <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_1_txt}}</a>.</h5>\n      </div>\n    </div><!-- /.md6col -->\n  </div>\n  <!-- Two -->\n  <template v-if=\"record.related_link_1 &amp;&amp; record.related_link_1_txt\">\n    <br _v-3a158057=\"\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_2\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_2\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_2_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_2_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n    <br _v-3a158057=\"\">\n  </template>\n  <!-- three -->\n  <template v-if=\"record.related_link_2 &amp;&amp; record.related_link_2_txt\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_3\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_3\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_3_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_3_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n  </template>\n</div>\n<!-- RELATED LINKS -->\n<br v-if=\"framework == 'bootstrap'\" _v-3a158057=\"\">\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"reg-deadline\" _v-3a158057=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\" _v-3a158057=\"\">Error</p>\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md2col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Free</label>\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-3a158057=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Tickets Available</label>\n      <select v-model=\"record.tickets\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-3a158057=\"\">\n          {{ ticketoption.label }}\n        </option>\n      </select>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Link: <em _v-3a158057=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Tickets by Phone <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-3a158057=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-3a158057=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label for=\"lbc-approved\" _v-3a158057=\"\">Request for LBC\n        <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-3a158057=\"\">\n  <label for=\"minical\" _v-3a158057=\"\">Select your department's mini calendar(s)\n    <v-select id=\"minical\" :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-3a158057=\"\">\n    </v-select>\n  </label>\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" id=\"submit-area\" _v-3a158057=\"\">\n  <div v-if=\"isadmin\" :class=\"md4col\" _v-3a158057=\"\">\n    <div class=\"checkbox\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\"><input type=\"checkbox\" v-model=\"record.admin_pre_approved\" _v-3a158057=\"\">Auto Approve</label>\n    </div>\n  </div>\n  <div :class=\"md8col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{submitBtnLabel}}</button>\n      <button v-if=\"recordexists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Clone Event</button>\n      <button v-if=\"recordexists &amp;&amp; isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{ cancelStatus }}</button>\n      <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Delete Event</button>\n    </div><!-- /.md12col -->\n  </div><!-- /.md12col -->\n  </div></form>\n\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-ee392e9c=\"\">\n    <slot name=\"csrf\" _v-ee392e9c=\"\"></slot>\n    {{ $route }}\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"md12col\" _v-ee392e9c=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-ee392e9c=\"\">\n          <h5 _v-ee392e9c=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-ee392e9c=\"\">\n          <h5 _v-ee392e9c=\"\">There are errors.</h5>\n        </div>\n        <div v-show=\"this.record.is_canceled == 1\" :class=\"calloutFail\" _v-ee392e9c=\"\">\n          <h5 _v-ee392e9c=\"\">This event has been canceled.</h5>\n        </div>\n        <div class=\"form-group\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" maxlength=\"80\" autofocus=\"\" _v-ee392e9c=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-ee392e9c=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Short Title - for departmental use only</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" maxlength=\"80\" _v-ee392e9c=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <div :class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-ee392e9c=\"\">({{descriptionChars}} characters left)</p></label>\n          <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" maxlength=\"255\" _v-ee392e9c=\"\"></textarea>\n          <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Description!</p>\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md6col\" _v-ee392e9c=\"\">\n        <div class=\"form-group\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-ee392e9c=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-ee392e9c=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-ee392e9c=\"\">\n            <div :class=\"md8col\" _v-ee392e9c=\"\">\n              <label _v-ee392e9c=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-ee392e9c=\"\">\n            </v-select>\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" class=\"mockh5\" maxlength=\"80\" _v-ee392e9c=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-ee392e9c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-ee392e9c=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-ee392e9c=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"start-date\" _v-ee392e9c=\"\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"end-date\" _v-ee392e9c=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-ee392e9c=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"all-day\" _v-ee392e9c=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-ee392e9c=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"no-end-time\" _v-ee392e9c=\"\">No End Time:</label>\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-ee392e9c=\"\">\n    </div>\n  </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-ee392e9c=\"\">\n    <div :class=\"md6col\" _v-ee392e9c=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-ee392e9c=\"\">\n        <label for=\"start-time\" _v-ee392e9c=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly=\"\" _v-ee392e9c=\"\">\n        <p v-if=\"formErrors.start_time\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Start Time</p>\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-ee392e9c=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-ee392e9c=\"\">\n        <label for=\"end-time\" _v-ee392e9c=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly=\"\" _v-ee392e9c=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-ee392e9c=\"\">\n    <div :class=\"md12col\" _v-ee392e9c=\"\">\n      <div class=\"form-group\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-ee392e9c=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span><em _v-ee392e9c=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span><em _v-ee392e9c=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Phone: <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span> <em _v-ee392e9c=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-ee392e9c=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Contact Fax: <em _v-ee392e9c=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<!-- RELATED LINKS -->\n<div class=\"input-group\" style=\"width: 100%\" _v-ee392e9c=\"\">\n  <div class=\"row\" _v-ee392e9c=\"\">\n    <div :class=\"md12col\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Related Link</label>\n        <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n        <div class=\"input-group input-group-flat\" _v-ee392e9c=\"\">\n          <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">http://</span>\n          <input v-model=\"record.related_link_1\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\" maxlength=\"255\" _v-ee392e9c=\"\">\n        </div>\n        <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\" _v-ee392e9c=\"\">Please make sure url is properly formed.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n  </div><!-- /.row -->\n  <div class=\"row\" v-show=\"record.related_link_1\" _v-ee392e9c=\"\">\n    <div :class=\"md4col\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <p class=\"help-text\" id=\"link_txt-helptext\" _v-ee392e9c=\"\">(ex. The event webpage)</p>\n        <input v-model=\"record.related_link_1_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n        <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\" _v-ee392e9c=\"\"> Please include a descriptive text for your related link.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n    <div :class=\"md8col\" _v-ee392e9c=\"\">\n      <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Example of Related Link</label>\n        <p class=\"help-text\" _v-ee392e9c=\"\">Below is how it may look. </p>\n        <h5 class=\"form-control\" _v-ee392e9c=\"\">For more information, visit <a href=\"#\" _v-ee392e9c=\"\"> {{record.related_link_1_txt}}</a>.</h5>\n      </div>\n    </div><!-- /.md6col -->\n  </div>\n  <!-- Two -->\n  <template v-if=\"record.related_link_1 &amp;&amp; record.related_link_1_txt\">\n    <br _v-ee392e9c=\"\">\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">http://</span>\n            <input v-model=\"record.related_link_2\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\" maxlength=\"255\" _v-ee392e9c=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\" _v-ee392e9c=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_2\" _v-ee392e9c=\"\">\n      <div :class=\"md4col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-ee392e9c=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_2_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n          <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\" _v-ee392e9c=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-ee392e9c=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-ee392e9c=\"\">For more information, visit: <a href=\"#\" _v-ee392e9c=\"\"> {{record.related_link_2_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n    <br _v-ee392e9c=\"\">\n  </template>\n  <!-- three -->\n  <template v-if=\"record.related_link_2 &amp;&amp; record.related_link_2_txt\">\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md12col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-ee392e9c=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">http://</span>\n            <input v-model=\"record.related_link_3\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\" maxlength=\"255\" _v-ee392e9c=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\" _v-ee392e9c=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_3\" _v-ee392e9c=\"\">\n      <div :class=\"md4col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-ee392e9c=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_3_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\" type=\"text\" maxlength=\"80\" _v-ee392e9c=\"\">\n          <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\" _v-ee392e9c=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-ee392e9c=\"\">\n        <div v-bind:class=\"formGroup\" _v-ee392e9c=\"\">\n          <label _v-ee392e9c=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-ee392e9c=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-ee392e9c=\"\">For more information, visit: <a href=\"#\" _v-ee392e9c=\"\"> {{record.related_link_3_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n  </template>\n</div>\n<!-- RELATED LINKS -->\n<br v-if=\"framework == 'bootstrap'\" _v-ee392e9c=\"\">\n\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div class=\"form-group\" _v-ee392e9c=\"\">\n      <label for=\"reg-deadline\" _v-ee392e9c=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-ee392e9c=\"\">\n      <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\" _v-ee392e9c=\"\">Error</p>\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n\n    <div class=\"row\" _v-ee392e9c=\"\">\n      <div :class=\"md2col\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Free</label>\n        <div :class=\"formGroup\" _v-ee392e9c=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-ee392e9c=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-ee392e9c=\"\">\n        <label _v-ee392e9c=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-ee392e9c=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-ee392e9c=\"\">\n          <div class=\"input-group\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-ee392e9c=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-ee392e9c=\"\">\n          <div class=\"input-group\" _v-ee392e9c=\"\">\n            <span :class=\"inputGroupLabel\" _v-ee392e9c=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-ee392e9c=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Tickets Available</label>\n      <select v-model=\"record.tickets\" class=\"form-control\" _v-ee392e9c=\"\">\n        <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-ee392e9c=\"\">\n          {{ ticketoption.label }}\n        </option>\n      </select>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-ee392e9c=\"\">Link: <em _v-ee392e9c=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-ee392e9c=\"\">Tickets by Phone <em _v-ee392e9c=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-ee392e9c=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-ee392e9c=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-ee392e9c=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-ee392e9c=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-ee392e9c=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <label for=\"lbc-approved\" _v-ee392e9c=\"\">Request for LBC\n        <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\" _v-ee392e9c=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-ee392e9c=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-ee392e9c=\"\">\n  <div :class=\"md12col\" _v-ee392e9c=\"\">\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-ee392e9c=\"\">\n  <label for=\"minical\" _v-ee392e9c=\"\">Select your department's mini calendar(s)\n    <v-select id=\"minical\" :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-ee392e9c=\"\">\n    </v-select>\n  </label>\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" id=\"submit-area\" _v-ee392e9c=\"\">\n  <div v-if=\"isadmin\" :class=\"md4col\" _v-ee392e9c=\"\">\n    <div class=\"checkbox\" _v-ee392e9c=\"\">\n      <label _v-ee392e9c=\"\"><input type=\"checkbox\" v-model=\"record.admin_pre_approved\" _v-ee392e9c=\"\">Auto Approve</label>\n    </div>\n  </div>\n  <div :class=\"md8col\" _v-ee392e9c=\"\">\n    <div :class=\"formGroup\" _v-ee392e9c=\"\">\n      <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">{{submitBtnLabel}}</button>\n      <button v-if=\"recordexists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">Clone Event</button>\n      <button v-if=\"recordexists &amp;&amp; isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">{{ cancelStatus }}</button>\n      <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-ee392e9c=\"\">Delete Event</button>\n    </div><!-- /.md12col -->\n  </div><!-- /.md12col -->\n  </div></form>\n\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#submit-area[_v-3a158057]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-3a158057] {\n  margin:0;\n}\nlabel[_v-3a158057] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-3a158057] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-3a158057] {\n  marging-bottom: 0;\n}\nlabel input[_v-3a158057] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-3a158057] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-3a158057] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-3a158057] {\n  color: #ff0000;\n}\n.reqstar[_v-3a158057] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-3a158057] {\n  margin: 0;\n}\n\n[type='submit'][_v-3a158057], [type='button'][_v-3a158057] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-3a158057]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-3a158057]{\n  margin: 0;\n}\nform[_v-3a158057] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-3a158057] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-3a158057] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-3a158057], .mockh5[_v-3a158057] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-3a158057] {\n  resize: vertical !important;\n}\n"] = false
+    __vueify_insert__.cache["\n#submit-area[_v-ee392e9c]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-ee392e9c] {\n  margin:0;\n}\nlabel[_v-ee392e9c] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-ee392e9c] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\nlabel input[_v-ee392e9c] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-ee392e9c] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-ee392e9c] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-ee392e9c] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-ee392e9c] {\n  color: #ff0000;\n}\n.reqstar[_v-ee392e9c] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-ee392e9c] {\n  margin: 0;\n}\n\n[type='submit'][_v-ee392e9c], [type='button'][_v-ee392e9c] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-ee392e9c]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-ee392e9c]{\n  margin: 0;\n}\nform[_v-ee392e9c] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-ee392e9c] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-ee392e9c] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-ee392e9c], .mockh5[_v-ee392e9c] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-ee392e9c] {\n  resize: vertical !important;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3a158057", module.exports)
+    hotAPI.createRecord("_v-ee392e9c", module.exports)
   } else {
-    hotAPI.update("_v-3a158057", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ee392e9c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"babel-runtime/core-js/json/stringify":1,"flatpickr":101,"vue":106,"vue-hot-reload-api":103,"vue-select":105,"vueify/lib/insert-css":107}],109:[function(require,module,exports){

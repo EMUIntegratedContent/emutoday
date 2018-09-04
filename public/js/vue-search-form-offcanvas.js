@@ -489,7 +489,7 @@ function format (id) {
 
 },{}],4:[function(require,module,exports){
 /*!
- * vue-resource v1.5.1
+ * vue-resource v1.3.4
  * https://github.com/pagekit/vue-resource
  * Released under the MIT License.
  */
@@ -502,7 +502,7 @@ function format (id) {
 
 var RESOLVED = 0;
 var REJECTED = 1;
-var PENDING = 2;
+var PENDING  = 2;
 
 function Promise$1(executor) {
 
@@ -568,9 +568,9 @@ Promise$1.race = function race(iterable) {
     });
 };
 
-var p = Promise$1.prototype;
+var p$1 = Promise$1.prototype;
 
-p.resolve = function resolve(x) {
+p$1.resolve = function resolve(x) {
     var promise = this;
 
     if (promise.state === PENDING) {
@@ -611,7 +611,7 @@ p.resolve = function resolve(x) {
     }
 };
 
-p.reject = function reject(reason) {
+p$1.reject = function reject(reason) {
     var promise = this;
 
     if (promise.state === PENDING) {
@@ -625,7 +625,7 @@ p.reject = function reject(reason) {
     }
 };
 
-p.notify = function notify() {
+p$1.notify = function notify() {
     var promise = this;
 
     nextTick(function () {
@@ -659,7 +659,7 @@ p.notify = function notify() {
     });
 };
 
-p.then = function then(onResolved, onRejected) {
+p$1.then = function then(onResolved, onRejected) {
     var promise = this;
 
     return new Promise$1(function (resolve, reject) {
@@ -668,7 +668,7 @@ p.then = function then(onResolved, onRejected) {
     });
 };
 
-p.catch = function (onRejected) {
+p$1.catch = function (onRejected) {
     return this.then(undefined, onRejected);
 };
 
@@ -707,14 +707,14 @@ PromiseObj.race = function (iterable, context) {
     return new PromiseObj(Promise.race(iterable), context);
 };
 
-var p$1 = PromiseObj.prototype;
+var p = PromiseObj.prototype;
 
-p$1.bind = function (context) {
+p.bind = function (context) {
     this.context = context;
     return this;
 };
 
-p$1.then = function (fulfilled, rejected) {
+p.then = function (fulfilled, rejected) {
 
     if (fulfilled && fulfilled.bind && this.context) {
         fulfilled = fulfilled.bind(this.context);
@@ -727,7 +727,7 @@ p$1.then = function (fulfilled, rejected) {
     return new PromiseObj(this.promise.then(fulfilled, rejected), this.context);
 };
 
-p$1.catch = function (rejected) {
+p.catch = function (rejected) {
 
     if (rejected && rejected.bind && this.context) {
         rejected = rejected.bind(this.context);
@@ -736,15 +736,15 @@ p$1.catch = function (rejected) {
     return new PromiseObj(this.promise.catch(rejected), this.context);
 };
 
-p$1.finally = function (callback) {
+p.finally = function (callback) {
 
     return this.then(function (value) {
-        callback.call(this);
-        return value;
-    }, function (reason) {
-        callback.call(this);
-        return Promise.reject(reason);
-    }
+            callback.call(this);
+            return value;
+        }, function (reason) {
+            callback.call(this);
+            return Promise.reject(reason);
+        }
     );
 };
 
@@ -754,19 +754,21 @@ p$1.finally = function (callback) {
 
 var ref = {};
 var hasOwnProperty = ref.hasOwnProperty;
+
 var ref$1 = [];
 var slice = ref$1.slice;
-var debug = false, ntick;
+var debug = false;
+var ntick;
 
 var inBrowser = typeof window !== 'undefined';
 
-function Util (ref) {
+var Util = function (ref) {
     var config = ref.config;
     var nextTick = ref.nextTick;
 
     ntick = nextTick;
     debug = config.debug || !config.silent;
-}
+};
 
 function warn(msg) {
     if (typeof console !== 'undefined' && debug) {
@@ -814,6 +816,8 @@ var isArray = Array.isArray;
 function isString(val) {
     return typeof val === 'string';
 }
+
+
 
 function isFunction(val) {
     return typeof val === 'function';
@@ -937,7 +941,7 @@ function _merge(target, source, deep) {
  * Root Prefix Transform.
  */
 
-function root (options$$1, next) {
+var root = function (options$$1, next) {
 
     var url = next(options$$1);
 
@@ -946,13 +950,13 @@ function root (options$$1, next) {
     }
 
     return url;
-}
+};
 
 /**
  * Query Parameter Transform.
  */
 
-function query (options$$1, next) {
+var query = function (options$$1, next) {
 
     var urlParams = Object.keys(Url.options.params), query = {}, url = next(options$$1);
 
@@ -969,7 +973,7 @@ function query (options$$1, next) {
     }
 
     return url;
-}
+};
 
 /**
  * URL Template v2.0.6 (https://github.com/bramstein/url-template)
@@ -993,7 +997,7 @@ function parse(template) {
     return {
         vars: variables,
         expand: function expand(context) {
-            return template.replace(/\{([^{}]+)\}|([^{}]+)/g, function (_, expression, literal) {
+            return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
                 if (expression) {
 
                     var operator = null, values = [];
@@ -1004,7 +1008,7 @@ function parse(template) {
                     }
 
                     expression.split(/,/g).forEach(function (variable) {
-                        var tmp = /([^:*]*)(?::(\d+)|(\*))?/.exec(variable);
+                        var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
                         values.push.apply(values, getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
                         variables.push(tmp[1]);
                     });
@@ -1126,7 +1130,7 @@ function encodeReserved(str) {
  * URL Template (RFC 6570) Transform.
  */
 
-function template (options) {
+var template = function (options) {
 
     var variables = [], url = expand(options.url, options.params, variables);
 
@@ -1135,7 +1139,7 @@ function template (options) {
     });
 
     return url;
-}
+};
 
 /**
  * Service for URL templating.
@@ -1272,23 +1276,23 @@ function serialize(params, obj, scope) {
  * XDomain client (Internet Explorer).
  */
 
-function xdrClient (request) {
+var xdrClient = function (request) {
     return new PromiseObj(function (resolve) {
 
         var xdr = new XDomainRequest(), handler = function (ref) {
-                var type = ref.type;
+            var type = ref.type;
 
 
-                var status = 0;
+            var status = 0;
 
-                if (type === 'load') {
-                    status = 200;
-                } else if (type === 'error') {
-                    status = 500;
-                }
+            if (type === 'load') {
+                status = 200;
+            } else if (type === 'error') {
+                status = 500;
+            }
 
-                resolve(request.respondWith(xdr.responseText, {status: status}));
-            };
+            resolve(request.respondWith(xdr.responseText, {status: status}));
+        };
 
         request.abort = function () { return xdr.abort(); };
 
@@ -1305,7 +1309,7 @@ function xdrClient (request) {
         xdr.onprogress = function () {};
         xdr.send(request.getBody());
     });
-}
+};
 
 /**
  * CORS Interceptor.
@@ -1313,7 +1317,7 @@ function xdrClient (request) {
 
 var SUPPORTS_CORS = inBrowser && 'withCredentials' in new XMLHttpRequest();
 
-function cors (request) {
+var cors = function (request, next) {
 
     if (inBrowser) {
 
@@ -1331,28 +1335,33 @@ function cors (request) {
         }
     }
 
-}
+    next();
+};
 
 /**
  * Form data Interceptor.
  */
 
-function form (request) {
+var form = function (request, next) {
 
     if (isFormData(request.body)) {
+
         request.headers.delete('Content-Type');
+
     } else if (isObject(request.body) && request.emulateJSON) {
+
         request.body = Url.params(request.body);
         request.headers.set('Content-Type', 'application/x-www-form-urlencoded');
     }
 
-}
+    next();
+};
 
 /**
  * JSON Interceptor.
  */
 
-function json (request) {
+var json = function (request, next) {
 
     var type = request.headers.get('Content-Type') || '';
 
@@ -1360,11 +1369,11 @@ function json (request) {
         request.body = JSON.stringify(request.body);
     }
 
-    return function (response) {
+    next(function (response) {
 
         return response.bodyText ? when(response.text(), function (text) {
 
-            var type = response.headers.get('Content-Type') || '';
+            type = response.headers.get('Content-Type') || '';
 
             if (type.indexOf('application/json') === 0 || isJson(text)) {
 
@@ -1382,22 +1391,21 @@ function json (request) {
 
         }) : response;
 
-    };
-}
+    });
+};
 
 function isJson(str) {
 
-    var start = str.match(/^\s*(\[|\{)/);
-    var end = {'[': /]\s*$/, '{': /}\s*$/};
+    var start = str.match(/^\[|^\{(?!\{)/), end = {'[': /]$/, '{': /}$/};
 
-    return start && end[start[1]].test(str);
+    return start && end[start[0]].test(str);
 }
 
 /**
  * JSONP client (Browser).
  */
 
-function jsonpClient (request) {
+var jsonpClient = function (request) {
     return new PromiseObj(function (resolve) {
 
         var name = request.jsonp || 'callback', callback = request.jsonpCallback || '_jsonp' + Math.random().toString(36).substr(2), body = null, handler, script;
@@ -1445,50 +1453,53 @@ function jsonpClient (request) {
 
         document.body.appendChild(script);
     });
-}
+};
 
 /**
  * JSONP Interceptor.
  */
 
-function jsonp (request) {
+var jsonp = function (request, next) {
 
     if (request.method == 'JSONP') {
         request.client = jsonpClient;
     }
 
-}
+    next();
+};
 
 /**
  * Before Interceptor.
  */
 
-function before (request) {
+var before = function (request, next) {
 
     if (isFunction(request.before)) {
         request.before.call(this, request);
     }
 
-}
+    next();
+};
 
 /**
  * HTTP method override Interceptor.
  */
 
-function method (request) {
+var method = function (request, next) {
 
     if (request.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(request.method)) {
         request.headers.set('X-HTTP-Method-Override', request.method);
         request.method = 'POST';
     }
 
-}
+    next();
+};
 
 /**
  * Header Interceptor.
  */
 
-function header (request) {
+var header = function (request, next) {
 
     var headers = assign({}, Http.headers.common,
         !request.crossOrigin ? Http.headers.custom : {},
@@ -1501,31 +1512,41 @@ function header (request) {
         }
     });
 
-}
+    next();
+};
 
 /**
  * XMLHttp client (Browser).
  */
 
-function xhrClient (request) {
+var xhrClient = function (request) {
     return new PromiseObj(function (resolve) {
 
         var xhr = new XMLHttpRequest(), handler = function (event) {
 
-                var response = request.respondWith(
+            var response = request.respondWith(
                 'response' in xhr ? xhr.response : xhr.responseText, {
                     status: xhr.status === 1223 ? 204 : xhr.status, // IE9 status bug
                     statusText: xhr.status === 1223 ? 'No Content' : trim(xhr.statusText)
-                });
+                }
+            );
 
-                each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
-                    response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
-                });
+            each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
+                response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
+            });
 
-                resolve(response);
-            };
+            resolve(response);
+        };
 
         request.abort = function () { return xhr.abort(); };
+
+        if (request.progress) {
+            if (request.method === 'GET') {
+                xhr.addEventListener('progress', request.progress);
+            } else if (/^(POST|PUT)$/i.test(request.method)) {
+                xhr.upload.addEventListener('progress', request.progress);
+            }
+        }
 
         xhr.open(request.method, request.getUrl(), true);
 
@@ -1545,24 +1566,6 @@ function xhrClient (request) {
             request.headers.set('X-Requested-With', 'XMLHttpRequest');
         }
 
-        // deprecated use downloadProgress
-        if (isFunction(request.progress) && request.method === 'GET') {
-            xhr.addEventListener('progress', request.progress);
-        }
-
-        if (isFunction(request.downloadProgress)) {
-            xhr.addEventListener('progress', request.downloadProgress);
-        }
-
-        // deprecated use uploadProgress
-        if (isFunction(request.progress) && /^(POST|PUT)$/i.test(request.method)) {
-            xhr.upload.addEventListener('progress', request.progress);
-        }
-
-        if (isFunction(request.uploadProgress) && xhr.upload) {
-            xhr.upload.addEventListener('progress', request.uploadProgress);
-        }
-
         request.headers.forEach(function (value, name) {
             xhr.setRequestHeader(name, value);
         });
@@ -1573,13 +1576,13 @@ function xhrClient (request) {
         xhr.ontimeout = handler;
         xhr.send(request.getBody());
     });
-}
+};
 
 /**
  * Http client (Node).
  */
 
-function nodeClient (request) {
+var nodeClient = function (request) {
 
     var client = require('got');
 
@@ -1597,9 +1600,10 @@ function nodeClient (request) {
         client(url, {body: body, method: method, headers: headers}).then(handler = function (resp) {
 
             var response = request.respondWith(resp.body, {
-                status: resp.statusCode,
-                statusText: trim(resp.statusMessage)
-            });
+                    status: resp.statusCode,
+                    statusText: trim(resp.statusMessage)
+                }
+            );
 
             each(resp.headers, function (value, name) {
                 response.headers.set(name, value);
@@ -1609,53 +1613,60 @@ function nodeClient (request) {
 
         }, function (error$$1) { return handler(error$$1.response); });
     });
-}
+};
 
 /**
  * Base client.
  */
 
-function Client (context) {
+var Client = function (context) {
 
-    var reqHandlers = [sendRequest], resHandlers = [];
+    var reqHandlers = [sendRequest], resHandlers = [], handler;
 
     if (!isObject(context)) {
         context = null;
     }
 
     function Client(request) {
-        while (reqHandlers.length) {
+        return new PromiseObj(function (resolve, reject) {
 
-            var handler = reqHandlers.pop();
+            function exec() {
 
-            if (isFunction(handler)) {
+                handler = reqHandlers.pop();
 
-                var response = (void 0), next = (void 0);
-
-                response = handler.call(context, request, function (val) { return next = val; }) || next;
-
-                if (isObject(response)) {
-                    return new PromiseObj(function (resolve, reject) {
-
-                        resHandlers.forEach(function (handler) {
-                            response = when(response, function (response) {
-                                return handler.call(context, response) || response;
-                            }, reject);
-                        });
-
-                        when(response, resolve, reject);
-
-                    }, context);
+                if (isFunction(handler)) {
+                    handler.call(context, request, next);
+                } else {
+                    warn(("Invalid interceptor of type " + (typeof handler) + ", must be a function"));
+                    next();
                 }
+            }
+
+            function next(response) {
 
                 if (isFunction(response)) {
+
                     resHandlers.unshift(response);
+
+                } else if (isObject(response)) {
+
+                    resHandlers.forEach(function (handler) {
+                        response = when(response, function (response) {
+                            return handler.call(context, response) || response;
+                        }, reject);
+                    });
+
+                    when(response, resolve, reject);
+
+                    return;
                 }
 
-            } else {
-                warn(("Invalid interceptor of type " + (typeof handler) + ", must be a function"));
+                exec();
             }
-        }
+
+            exec();
+
+        }, context);
     }
 
     Client.use = function (handler) {
@@ -1663,13 +1674,13 @@ function Client (context) {
     };
 
     return Client;
-}
+};
 
-function sendRequest(request) {
+function sendRequest(request, resolve) {
 
     var client = request.client || (inBrowser ? xhrClient : nodeClient);
 
-    return client(request);
+    resolve(client(request));
 }
 
 /**
@@ -1704,7 +1715,7 @@ Headers.prototype.set = function set (name, value) {
     this.map[normalizeName(getName(this.map, name) || name)] = [trim(value)];
 };
 
-Headers.prototype.append = function append (name, value) {
+Headers.prototype.append = function append (name, value){
 
     var list = this.map[getName(this.map, name)];
 
@@ -1715,11 +1726,11 @@ Headers.prototype.append = function append (name, value) {
     }
 };
 
-Headers.prototype.delete = function delete$1 (name) {
+Headers.prototype.delete = function delete$1 (name){
     delete this.map[getName(this.map, name)];
 };
 
-Headers.prototype.deleteAll = function deleteAll () {
+Headers.prototype.deleteAll = function deleteAll (){
     this.map = {};
 };
 
@@ -1739,7 +1750,7 @@ function getName(map, name) {
 
 function normalizeName(name) {
 
-    if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
         throw new TypeError('Invalid character in header field name');
     }
 
@@ -1837,11 +1848,11 @@ var Request = function Request(options$$1) {
     }
 };
 
-Request.prototype.getUrl = function getUrl () {
+Request.prototype.getUrl = function getUrl (){
     return Url(this);
 };
 
-Request.prototype.getBody = function getBody () {
+Request.prototype.getBody = function getBody (){
     return this.body;
 };
 
@@ -12309,7 +12320,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\ninput[_v-3f969474] {\n  padding: 0;\n  padding-left: 1em;\n  height: 34.4px;\n  vertical-align: bottom;\n}\n\n")
+var __vueify_style__ = __vueify_insert__.insert("\ninput[_v-616e070f] {\n  padding: 0;\n  padding-left: 1em;\n  height: 34.4px;\n  vertical-align: bottom;\n}\n\n")
 'use strict';
 
 module.exports = {
@@ -12337,19 +12348,19 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form-offcanvas\" class=\"search-form-offcanvas\" v-on:submit.prevent=\"submitSearch\" _v-3f969474=\"\">\n    <slot name=\"csrf\" _v-3f969474=\"\"></slot>\n    <div class=\"input-group\" _v-3f969474=\"\">\n        <span class=\"show-for-sr\" _v-3f969474=\"\">Search</span>\n        <label class=\"show-for-sr\" for=\"offcanvassearch\" _v-3f969474=\"\">Search EMU Today</label>\n        <input class=\"input-group-field\" id=\"offcanvassearch\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-3f969474=\"\">\n        <div class=\"input-group-button\" _v-3f969474=\"\">\n        <button type=\"submit\" class=\"button secondary small\" _v-3f969474=\"\"><i class=\"fa fa-search\" _v-3f969474=\"\"></i><span class=\"show-for-sr\" _v-3f969474=\"\">submit search</span></button>\n        </div>\n    </div>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form-offcanvas\" class=\"search-form-offcanvas\" v-on:submit.prevent=\"submitSearch\" _v-616e070f=\"\">\n    <slot name=\"csrf\" _v-616e070f=\"\"></slot>\n    <div class=\"input-group\" _v-616e070f=\"\">\n        <span class=\"show-for-sr\" _v-616e070f=\"\">Search</span>\n        <label class=\"show-for-sr\" for=\"offcanvassearch\" _v-616e070f=\"\">Search EMU Today</label>\n        <input class=\"input-group-field\" id=\"offcanvassearch\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-616e070f=\"\">\n        <div class=\"input-group-button\" _v-616e070f=\"\">\n        <button type=\"submit\" class=\"button secondary small\" _v-616e070f=\"\"><i class=\"fa fa-search\" _v-616e070f=\"\"></i><span class=\"show-for-sr\" _v-616e070f=\"\">submit search</span></button>\n        </div>\n    </div>\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\ninput[_v-3f969474] {\n  padding: 0;\n  padding-left: 1em;\n  height: 34.4px;\n  vertical-align: bottom;\n}\n\n"] = false
+    __vueify_insert__.cache["\ninput[_v-616e070f] {\n  padding: 0;\n  padding-left: 1em;\n  height: 34.4px;\n  vertical-align: bottom;\n}\n\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3f969474", module.exports)
+    hotAPI.createRecord("_v-616e070f", module.exports)
   } else {
-    hotAPI.update("_v-3f969474", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-616e070f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
