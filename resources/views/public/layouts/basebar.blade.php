@@ -14,7 +14,7 @@
     </section>
     <section class="mediumgrey-section" aria-label="social-icons">
         <div class="row">
-            <div id="social-links" class="small-8 small-centered columns">
+            <div id="social-links" class="small-8 medium-centered small-centered columns">
                 <ul class="social-icons">
                     <li><a class="facebook" title="External link to EMU's Facebook page." href="https://www.facebook.com/EasternMichU/"><span class="visuallyhidden">Facebook</span></a></li>
                     <li><a class="twitter" title="External link to EMU's Twitter page." href="http://www.emich.edu/twitter/"><span class="visuallyhidden">Twitter</span></a></li>

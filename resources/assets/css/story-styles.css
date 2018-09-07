@@ -43,15 +43,16 @@ p.small-return-news {
     border: none;
     border-bottom:1px solid #e5e5e5;
     padding-bottom:.5rem;
-    margin-bottom:.5rem;
+    margin-bottom:1rem;
 }
 #story-content p{
     font-size: 1rem;
     line-height: 1.4rem;
 }
 #big-feature-image {
-    border-bottom: 1px solid #ccc;
-    margin: .8rem 0;
+    border-bottom: none;
+    /*margin: .8rem 0;*/
+    margin: 0 0 .5rem 0;
     padding: 0;
 }
 #big-feature-image img{
@@ -61,7 +62,7 @@ p.small-return-news {
     float: none;
 }
 .feature-image-caption{
-    padding: .5rem 0;
+    padding: .8rem 0 .5rem 0;
     font-style: italic;
 }
 #story-content .feature-image-caption p{
@@ -88,24 +89,7 @@ p.small-return-news {
     padding: 0;
     float: none;
 }
-#more-stories-bar{
-  padding: 2rem 0;
-}
-#more-stories-bar h6{
-  font-size: 1.3rem;
-  text-transform: uppercase;
-}
-#more-stories-bar .card-section{
-  margin: 0;
-  padding: 1rem .8rem .8rem;
-  background-color: #fff;
-  position: relative;
-}
 
-#more-stories-bar .card-section p.link-group{
-  position: absolute;
-  bottom: -.5rem;
-}
 .more-story-caption{
 }
 
@@ -220,11 +204,16 @@ p.small-return-news {
     text-transform: uppercase;
 }
 #story-sidebar{
+    padding-right:2rem;
 
 }
 .dots-bottom{
-  border-bottom: 1px dotted #e5e5e5;
-  padding: .7rem 1rem 0 1.0rem;
+  border-bottom: 1px dashed #d0d0d0;
+  padding: .7rem 1rem 0 0rem;
+}
+.no-dots-bottom{
+  border-bottom: none;
+  padding: .7rem 1rem 0 0rem;
 }
 
 #profiles-list h6{

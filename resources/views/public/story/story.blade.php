@@ -41,8 +41,8 @@
           <!-- Story Page Title group -->
           <div id="title-grouping" class="row">
             <div class="small-12 columns">
-              <h3>{{ $story->title }}</h3>
-              <h5>{{ $story->subtitle }}</h5>
+              <h2>{{ $story->title }}</h2>
+              <h3>{{ $story->subtitle }}</h3>
             </div>
             <!-- Full banner image area (displays only if it exists for this story) -->
             @if($fullBannerImage)
@@ -88,7 +88,7 @@
                   @endif
                 </p>
               </div>
-              <div class="dots-bottom">
+              <div class="no-dots-bottom">
                 <p>
                   Contact:<br>
                   {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>

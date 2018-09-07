@@ -52,7 +52,7 @@
             <div id="four-stories-bar">
                 <div class="row">
                     <div class="large-12 medium-12 small-12 columns">
-                        <h5 class="subhead-title">Featured Stories</h5>
+                        <h3 class="subhead-title">Featured Stories</h3>
                     </div>
                 </div>
                 <div id="four-stories-container" class="row small-up-2 medium-up-2 large-up-4" data-equalizer>
@@ -69,39 +69,34 @@
                                         @if($barImgs[$i]->story->tags()->first())
                                             @if($barImgs[$i]->story->tags()->first()->name == 'video')
                                                 <a href="{{$barImgs[$i]->link}}"
-                                                   aria-label="{{$barImgs[$i]->caption}} - Watch" class="readmore bold-green-link">Watch&nbsp;<i
-                                                            class="fa fa-arrow-right"></i></a>
+                                                   aria-label="{{$barImgs[$i]->caption}} - Watch" class="readmore bold-green-link">Watch</a>
                                             @elseif($barImgs[$i]->story->tags()->first()->name == 'audio')
                                                 <a href="{{$barImgs[$i]->link}}"
-                                                   aria-label="{{$barImgs[$i]->caption}} - Listen" class="readmore bold-green-link">Listen&nbsp;<i
-                                                            class="fa fa-arrow-right"></i></a>
+                                                   aria-label="{{$barImgs[$i]->caption}} - Listen" class="readmore bold-green-link">Listen</a>
                                             @elseif($barImgs[$i]->story->tags()->first()->name == 'gallery')
                                                 <a href="{{$barImgs[$i]->link}}"
                                                    aria-label="{{$barImgs[$i]->caption}} - Gallery" class="readmore bold-green-link">View
-                                                    Gallery&nbsp;<i class="fa fa-arrow-right"></i></a>
+                                                    Gallery&nbsp;</a>
                                             @else
                                                 @if($barImgs[$i]->moretext != "")
                                                     <a href="{{$barImgs[$i]->link}}"
                                                        aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                       class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;<i
-                                                                class="fa fa-arrow-right"></i></a>
+                                                       class="readmore bold-green-link">{{$barImgs[$i]->moretext}}</a>
                                                 @else
                                                     <a href="{{$barImgs[$i]->link}}"
                                                        aria-label="{{$barImgs[$i]->caption}} - Read Story"
-                                                       class="readmore bold-green-link">Read Story&nbsp;<i
-                                                                class="fa fa-arrow-right"></i></a>
+                                                       class="readmore bold-green-link">Read Story</a>
                                                 @endif
                                             @endif
                                         @else
                                             @if($barImgs[$i]->moretext != "")
                                                 <a href="{{$barImgs[$i]->link}}"
                                                    aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                   class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;<i
-                                                            class="fa fa-arrow-right"></i></a>
+                                                   class="readmore bold-green-link">{{$barImgs[$i]->moretext}}</a>
                                             @else
                                                 <a href="{{$barImgs[$i]->link}}"
                                                    aria-label="{{$barImgs[$i]->caption}} - Read Story" class="readmore bold-green-link">Read
-                                                    Story&nbsp;<i class="fa fa-arrow-right"></i></a>
+                                                    Story</a>
                                             @endif
                                         @endif
                                     @elseif($barImgs[$i]->story->story_type == 'article')
@@ -109,28 +104,24 @@
                                             @if($barImgs[$i]->story->tags()->first()->name == 'external')
                                                 <a href="{{$barImgs[$i]->link}}"
                                                    aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                   class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;<i
-                                                            class="fa fa-arrow-right"></i></a>
+                                                   class="readmore bold-green-link">{{$barImgs[$i]->moretext}}</a>
                                             @else
                                                 <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                                    aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                   class="readmore bold-green-link">{{$barImgs[$i]->moretext}} <i
-                                                            class="fa fa-arrow-right"></i></a>
+                                                   class="readmore bold-green-link">{{$barImgs[$i]->moretext}}</a>
                                             @endif
                                         @else
                                             <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                                aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                               class="readmore bold-green-link">{{$barImgs[$i]->moretext}} <i
-                                                        class="fa fa-arrow-right"></i></a>
+                                               class="readmore bold-green-link">{{$barImgs[$i]->moretext}}</a>
                                         @endif
                                     @elseif($barImgs[$i]->story->story_type == 'featurephoto')
                                         <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
-                                           aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">View Image&nbsp;
-                                            <i class="fa fa-arrow-right"></i></a>
+                                           aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">View Image</a>
                                     @else
                                         <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                            aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                           class="readmore bold-green-link">{{$barImgs[$i]->moretext}} <i class="fa fa-arrow-right"></i></a>
+                                           class="readmore bold-green-link">{{$barImgs[$i]->moretext}}</a>
                                     @endif
                                 </p>
                             </div>
@@ -142,18 +133,17 @@
         <div id="news-headline-bar">
             <div class="row">
                 <div class="large-12 medium-12 small-12 columns">
-                    <h5 class="subhead-title">What's Happening at EMU</h5>
+                    <h3 class="subhead-title">What's Happening at EMU</h3>
                 </div>
             </div>
-            <div id="news-headline-bar-top"class="row" data-equalizer>
+            <div id="news-headline-bar-top"class="row" data-equalizer data-equalize-on="medium">
                 @if($topAnnouncement)
                 <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
                 @else
                 <div class="card small-12 medium-5 large-5 columns" data-equalizer-watch>
                 @endif
                                 <div class="card-section" data-equalizer-watch>
-                                    <h6><a class="bold-green-link" title="EMU Today campus announcements." href="{{ url('/announcement') }}">Announcements
-                                            <i class="fa fa-arrow-right"></i></a></h6>
+                                    <h4><a class="bold-green-link" title="EMU Today campus announcements." href="{{ url('/announcement') }}">Announcements</a></h4>
                                     <div class="row newshub-tab-front">
                                         @if($topAnnouncement)
                                             <div class="large-6 medium-12 small-12 large-push-6 columns">
@@ -202,10 +192,9 @@
                 <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
                 @endif
                                 <div class="card-section" data-equalizer-watch>
-                                    <h6><a class="bold-green-link" title="EMU news, press releases, and official statements."
-                                           href="{{ url('/story/news') }}">News Headlines <i
-                                                    class="fa fa-arrow-right"></i></a>
-                                    </h6>
+                                    <h4><a class="bold-green-link" title="EMU news, press releases, and official statements."
+                                           href="{{ url('/story/news') }}">News Headlines</a>
+                                    </h4>
                                     <div class="row newshub-tab-front">
                                         <div class="large-12 medium-12 small-12 columns">
                                             <ul>
@@ -228,8 +217,8 @@
                                 </div>
                 </div><!-- end .card -->
             </div><!-- end .row -->
-            <div id="news-headline-bar-middle" class="row" data-equalizer>
-                <div class="card small-12 medium-3 large-3 columns" data-equalizer-watch>
+            <div id="news-headline-bar-middle" class="row" data-equalizer data-equalize-on="medium">
+                <div class="card small-12 medium-6 large-3 columns" data-equalizer-watch >
                     @if(isset($currentStoryImageWithVideoTag))
                         <a class="popup-youtube" href="{{$currentStoryImageWithVideoTag->link}}">
                             <img src="/imagecache/original/{{$currentStoryImageWithVideoTag->filename}}" alt="{{ $currentStoryImageWithVideoTag->alt_text != '' ? $currentStoryImageWithVideoTag->alt_text : 'featured video' }}" style="display: block;" />
@@ -240,17 +229,32 @@
                     <div class="card-section">
                         @if(isset($currentStoryImageWithVideoTag))
                             <p>{{$currentStoryImageWithVideoTag->caption}}</p>
-                            <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="{{$currentStoryImageWithVideoTag->link}}" target="_blank">Watch Video <i class="fa fa-arrow-right"></i></a>
+                            <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="{{$currentStoryImageWithVideoTag->link}}" target="_blank">Watch Video</a>
                         @else
                             <p>Welcome to Education First, the official Eastern Michigan University YouTube Channel.</p>
-                            <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="https://www.youtube.com/user/emichigan08" target="blank">Watch Video <i class="fa fa-arrow-right"></i></a>
+                            <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="https://www.youtube.com/user/emichigan08" target="blank">Watch Video</a>
                         @endif
                     </div>
                 </div>
-                <div class="card small-12 medium-6 large-6 columns" data-equalizer-watch>
+                 <div class="card small-12 medium-6 large-3 large-push-6 columns" data-equalizer-watch >
                     <div class="card-section" data-equalizer-watch>
-                        <h6><a class="bold-green-link" title="External link to EMU's Twitter page." href="https://www.emich.edu/twitter/">Twitter
-                                            <i class="fa fa-arrow-right"></i></a></h6>
+                        <h4><a class="bold-green-link" href="#">Working @ EMU</a></h4>
+                        <div class="row newshub-tab-front">
+                            <div class="large-12 medium-12 small-12 columns">
+                                <ul class="feature-list hr-list">
+                                    @foreach($currentHRAnnouncements as $currentHRAnnouncement)
+                                        <li>
+                                            <a href="{{ (substr($currentHRAnnouncement->link, 0, 4) == 'http') ? $currentHRAnnouncement->link : 'https://'.$currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card small-12 medium-12 large-6 large-pull-3 columns" data-equalizer-watch>
+                    <div class="card-section" data-equalizer-watch>
+                        <h4><a class="bold-green-link" title="External link to EMU's Twitter page." href="https://www.emich.edu/twitter/">Twitter</a></h4>
                         <div class="row newshub-tab-front">
                             <div class="large-12 medium-12 small-12 columns">
                                 <ul class="twitter-content">
@@ -266,30 +270,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="card small-12 medium-3 large-3 columns" data-equalizer-watch>
-                    <div class="card-section" data-equalizer-watch>
-                        <h6><a class="bold-green-link" href="#">Working @ EMU</a></h6>
-                        <div class="row newshub-tab-front">
-                            <div class="large-12 medium-12 small-12 columns">
-                                <ul class="feature-list">
-                                    @foreach($currentHRAnnouncements as $currentHRAnnouncement)
-                                        <li>
-                                            <i class="fa fa-users"></i>&nbsp;<a href="{{ (substr($currentHRAnnouncement->link, 0, 4) == 'http') ? $currentHRAnnouncement->link : 'https://'.$currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- /end .card -->
+               <!-- /end .card -->
             </div><!-- /end .row -->
-            <div id="news-headline-bar-bottom" class="row" data-equalizer>
-                <div class="card small-12 medium-12 large-12 columns" data-equalizer-watch>
-                    <div class="card-section" data-equalizer-watch>
-                        <h6><a title="EMU campus events calendar." href="{{ url('/calendar') }}" class="bold-green-link">Events Calendar</a> <i class="fa fa-arrow-right"></i></h6>
+            <div id="news-headline-bar-bottom" class="row" >
+                <div class="card small-12 medium-12 large-12 columns">
+                    <div class="card-section">
+                        <h4><a title="EMU campus events calendar." href="{{ url('/calendar') }}" class="bold-green-link">Events Calendar</a></h4>
                         @unless(empty($featuredevents[0]))
                             <div id="five-events-bar">
-                                <div class="row large-up-4 medium-up-3 show-for-medium" data-equalizer>
+                                <div class="row large-up-4 medium-up-3 show-for-medium">
                                     @each('public.featuredeventhub', $featuredevents, 'fevent')
                                 </div><!-- row event block grid end -->
                             </div> <!--end of five events bar-->

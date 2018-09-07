@@ -88,13 +88,13 @@
                     <div id="all-connections" data-equalizer-watch>
                         <div id="transparent-bar">
                             <div id="tier1-nav" class="row">
-                                <div class="large-9 medium-9 small-8 columns">
+                                <div class="large-9 medium-9 small-12 columns">
                                     <a title="Eastern Michigan University homepage." href="https://www.emich.edu"><img class="full-logo"
                                                                          alt="Eastern Michigan University"
                                                                          src="/assets/imgs/home/block-e-box-inline-green-black.png"></a>
 
                                 </div>
-                                <div class="large-3 medium-3 small-4 columns">
+                                <div class="large-3 medium-3 small-12 columns">
                                     <div class="float-right text-right">
                                         <div id="vue-search-form" class="hide-for-small-only">
                                             <search-form>
@@ -102,24 +102,49 @@
                                                        value="{{ csrf_token() }}">
                                             </search-form>
                                         </div><!-- /#vue-event-form -->
-                                        <span class="menu-area show-for-small-only text-right"><a
+                                        <!--<span class="menu-area show-for-small-only text-right"><a
                                                     data-toggle="offCanvasRight">Menu &amp; Search <i
-                                                        class="fa fa-list"></i></a></span>
+                                                        class="fa fa-list"></i></a></span>-->
                                     </div> <!-- .icon-menu -->
                                 </div>
                             </div> <!-- tier2-nav -->
                         </div><!-- transparent-bar -->
                         <div id="tier2-nav">
+                            
                             <div class="row">
-                                <div class="large-8 medium-6 small-12 columns">
+                                
+                                <div class="large-7 medium-6 small-12 columns">
                                     <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
                                 </div><!-- large-9 -->
-                                <div class="large-4 medium-6 columns hide-for-small-only text text-right">
+                                
+                                <div class="large-5 medium-5 columns hide-for-large hide-for-medium show-for-small text search-small-left">
+                                    <span class="menu-area show-for-small-only"><a
+                                                    data-toggle="offCanvasRight">Search &amp; Navigation <i
+                                                        class="fa fa-list"></i></a></span>
+                                </div>
+                                
+                                
+                                 <div class="large-5 medium-5 columns hide-for-large show-for-medium hide-for-small text text-right">
+                                   <span class="menu-area hide-for-large text-right"><a
+                                                    data-toggle="offCanvasRight">Navigation <i
+                                                        class="fa fa-list"></i></a></span> 
+                                </div>
+                                
+                                
+                                
+                                
+                                <div class="large-5 medium-6 columns show-for-large text text-right">
                                     <span class="smaller"><a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="#">Submit an Announcement</a></span>
                                 </div><!-- large-3 -->
+                                
                             </div><!-- row -->
                         </div><!--tier1-nav -->
-                        <div id="secondary-bar">
+                        
+                        
+                        
+                        
+                        
+                        <div id="secondary-bar" class="show-for-large">
                             <nav id="tier3-nav" class="row">
                                 <div class="large-12 medium-12 columns hide-for-small-only">
                                     <ul id="tier3-nav-main">

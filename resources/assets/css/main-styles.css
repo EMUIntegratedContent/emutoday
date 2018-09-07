@@ -8,9 +8,8 @@ Tags: Gulp, Laravel
 
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,400italic);
 @import url(http://fonts.googleapis.com/css?family=PT+Serif);*/
-
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700");
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700');
 /****** General Styles *********/
 
 html, body {
@@ -68,6 +67,27 @@ color: #0f654a;
     font-style:italic;
     font-size: 0.9rem;
 }
+
+#tier2-nav h1.magazine-title{
+    font-weight:500;
+    font-size: 4.2rem;
+    line-height: 4.2rem;
+    margin-bottom: .3rem;
+    text-transform:uppercase;
+    display:inline-block;
+    margin-right: .2rem;
+    position:relative; 
+}
+#tier2-nav .magazine-for-title {
+	display: inline-block;
+	transform: rotate(-90deg);
+	transform-origin: left bottom 0;
+	margin-left: .7rem;
+    font-size: .6rem;
+    text-transform:uppercase;
+    color: #999;
+    font-weight: 600;
+}
 /*TRUEMU*/
 span.truemu{
     color: #036937;
@@ -94,7 +114,16 @@ a.allcaps {
 a.bold-green-link{
     text-transform: uppercase;
     color:#036937;
-    font-weight: bolder;
+    font-weight: 500;
+}
+a.bold-green-link:after{
+    font-family: FontAwesome;
+	color: #97D700;
+	content: "\f061";
+	vertical-align: top;
+	padding-left: 6px;
+	display: inline-block;
+	text-decoration: none; 
 }
 a.readmore{
   font-family: 'Poppins', sans-serif;
@@ -102,7 +131,7 @@ a.readmore{
 /*Headings*/
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
-  font-weight: 700;
+  font-weight: 500;
 }
 h1{
     font-size: 2.1rem;
@@ -180,6 +209,15 @@ h2.mediahighlight-date{
     color: #333;
     border-bottom: 1px solid #e5e5e5;
 }
+.mediumgrey-section {
+	text-align: center;
+	color: #ffffff;
+    padding-bottom: .5rem;
+}
+ul.social-icons {
+	float: none;
+}
+
 /****** #tier1-nav *********/
 
 #tier1-nav{
@@ -192,21 +230,28 @@ h2.mediahighlight-date{
     margin: 0;
     padding: 0 0 0 0;
 }
+#tier1-nav .menu-area a{
+    color: #fff;
+}
 /****** #tier2-nav *********/
 #tier2-nav {
     padding-top:.5rem;
-    color: #000000;
+    color: #000000; 
     z-index: 1000;
     border-bottom: 1px solid #e5e5e5;
+    font-family: "Poppins", "Roboto", "Open Sans", Helvetica, Arial, sans-serif;
+    position: relative;
 }
-
-
-
+#tier2-nav h1 {
+	font-size: 3.1rem;
+    margin-bottom: .5rem;
+}
 #tier2-nav ul{
     float: right;
     padding: .4rem 0;
     margin: 0;
     font-size: .8rem;
+    font-family: "Poppins", "Roboto", "Open Sans", Helvetica, Arial, sans-serif;
 }
 #tier2-nav ul li a{
     color: #fff;
@@ -236,9 +281,6 @@ h2.mediahighlight-date{
     background-repeat: no-repeat;
     background-position: 0 center;
 }
-
-
-
 .tier2-menu {
     text-transform: uppercase;
       font-size: .8rem;
@@ -257,21 +299,35 @@ h2.mediahighlight-date{
     float: left;
     padding: 0;
     margin: 0;
-    font-size: .8rem;
+    /*font-size: .8rem;*/
 }
 #tier3-nav ul li{
     border-left: 1px solid #e5e5e5;
     display: inline-block;
-    height: 30px;
+    /*height: 30px;*/
+    font-family: "Poppins";
+    font-size: .9rem;
+}
+ul#tier3-nav-main li a.active i.fa-play {
+	display: none;
+}
+.fa-play::before {
+    content: "";
 }
 #tier3-nav ul li:last-child{
     border-right: 1px solid #e5e5e5;
 }
 #tier3-nav ul li a{
     color: #333;
-    padding: .3rem .4rem;
+    /*padding: .3rem .4rem;*/
+    padding: .3rem 1.1rem;
     display: block;
-    height: 30px;
+    /*height: 30px;*/
+}
+#tier3-nav ul li a.active{
+    color: #0f654a;
+    font-weight: 500;
+
 }
 #tier3-nav ul li a:hover{
     color: #0f654a;
@@ -315,7 +371,7 @@ h2.mediahighlight-date{
     position: relative;
     width: 100%;
     z-index: 10;
-    padding: 1.3rem 0 1rem 0;
+    padding: 1.3rem 0 1.5rem 0;
     background-color: #ffffff;
 }
 #news-bar img{
@@ -324,6 +380,7 @@ h2.mediahighlight-date{
 #featured-text p.button-group{
     text-align:left;
     padding-top: .5rem;
+   
 }
 #featured-text a.button {
     margin: 0;
@@ -331,14 +388,15 @@ h2.mediahighlight-date{
     background-color: transparent;
     color: #0f654a;
     text-transform: uppercase;
-    font-size:.9rem;
+    font-size:1rem;
     text-decoration: none;
     border: 1px solid #0f654a;
-    font-weight: bolder;
+    font-weight: 500;
 }
 #featured-text a:hover.button {
     background-color: #0f654a;
     text-decoration: none;
+    color: #fff;
 }
 #featured-text{
     padding-top: 2.4rem;
@@ -358,6 +416,8 @@ h2.mediahighlight-date{
     width: 100%;
     z-index: 20;
 }
+
+
 /*Four story bar*/
 #four-stories-bar{
     background-color: #f2f2f3;
@@ -366,11 +426,14 @@ h2.mediahighlight-date{
     position: relative;
     width: 100%;
     z-index: 10;
-    padding: .8rem 0;
+    /*padding: .8rem 0;*/
+    padding: 1.5rem 0;
 }
+
 #four-stories-container{
-    padding-bottom: 10px;
-    border-bottom: 4px groove #a9a9a9;
+    /*padding-bottom: 10px;*/
+    padding-bottom: 1.5rem;
+    border-bottom: 4px double #a9a9a9;
 }
 #four-stories-bar  img.topic-image{
     width: 100%;
@@ -380,10 +443,11 @@ h2.mediahighlight-date{
 }
 #four-stories-bar  p.link-group{
     padding-top: .5rem;
+    font-size: 1rem;
 }
 #four-stories-bar p.link-group a{}
 p.link-group a i.fa{
-    color: #c9f320;
+    color: #97D700;
     text-decoration: none;
     margin-left: .2rem;
     font-size: 1.1rem;
@@ -401,7 +465,7 @@ img.news-icon{
 }
 #four-stories-bar .stories-content {
     margin: 0;
-    padding: .5rem .8rem .8rem;
+    padding: 1rem 1.5rem 1.2rem 1.5rem;
     background-color: #fff;
 }
 #four-stories-bar i.fa-play{
@@ -409,7 +473,9 @@ img.news-icon{
 }
 .stories-text-content p {
     text-align: left;
+    
 }
+
 
 /*News Headline bar*/
 #news-headline-bar{
@@ -418,12 +484,31 @@ img.news-icon{
     position: relative;
     width: 100%;
     z-index: 10;
-    padding: .8rem 0;
+    padding: .2rem 0;
+}
+#news-headline-bar img{
+    width: 100%;
 }
 #news-headline-bar .card-section{
     margin: 0;
-    padding: 1rem .8rem .8rem;
+    padding: 1.5rem;
     background-color: #fff;
+    line-height: 1.4rem;
+    font-size: 1rem;
+    position: relative;
+    box-sizing: border-box;
+  
+}
+.newshub-tab-front ul li a {
+	display: block;
+	padding: .4rem 0;
+	color: #333;
+	line-height: 1.4rem;
+    font-size: 1rem;
+}
+#news-headline-bar .card-section p {
+    font-size: 1rem;
+    line-height: 1.4rem;
 }
 
 #news-headline-bar .card-section h6{
@@ -436,16 +521,41 @@ img.news-icon{
 }
 
 #news-headline-bar .card-section i.fa{
-    color: #c9f320;
+    /*color: #c9f320;*/
+    color: #97D700;
     text-decoration: none;
     margin-left: .2rem;
-    font-size: 1.1rem;
+    /*font-size: .9rem;*/
+    position: absolute;
+}
+
+#news-headline-bar-middle .card-section a.popup-youtube:after{
+	text-decoration: none;
+	font-family: FontAwesome;
+	color: #97D700;
+	content: "\f061";
+	vertical-align: top;
+	padding-left: 6px;
+	display: inline-block;
+	text-decoration: none;
 }
 
 #news-headline-bar-middle, #news-headline-bar-bottom{
-    margin-top:1.5rem;
+    margin-top:1.2rem;
 }
-
+#five-events-bar{
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#news-headline-bar-top .card{
+	margin-bottom: 1rem;
+} 
+#news-headline-bar-middle .card{
+	margin-bottom: 1rem;
+} 
+#news-headline-bar-bottom{
+    margin-bottom: 1rem;
+}
 #newshub-headlines-front{}
 
 /*feature boxes*/
@@ -490,24 +600,70 @@ ul.feature-list{
     list-style: none;
     margin: 0;
     color: #333;
-    font-size: .9rem;
     padding: 0;
+    font-size: 1rem;
+    line-height: 1.4rem;
 }
-ul.feature-list li{
+
+ul.feature-list.hr-list{
+    list-style: none;
+    margin: 0;
+    color: #333;
+    padding: 0;
+    /*font-size: 1rem;
+    line-height: 1.4rem;*/
+}
+ul.feature-list.hr-list li{
     border-bottom: 1px dotted #ccc;
-    line-height: 2.2rem;
+    display: block;
+    padding-bottom: .5rem;
+    margin-bottom: .5rem;
+   
+}
+ul.feature-list.hr-list li{
+    border-bottom: 1px dotted #ccc;
+    /*line-height: 2.2rem;*/
+    line-height: 1.2rem;
+    margin-left: 1.8rem;
+   /* display: block;*/
+    padding-bottom: .5rem;
+    margin-bottom: .5rem;
+   
+   
+}
+ul.feature-list.hr-list li:before{
+    content: "\f0c0"; /* FontAwesome Unicode */
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-left: -1.6rem; /* same as padding-left set on li */
+    width: 1.3rem; /* same as padding-left set on li */
+    color: #97D700;
+    vertical-align: bottom;
+}
+ul.feature-list.hr-list li:hover{
+    text-decoration: none;
+    background-color: #f8f8f8;
+}
+ul.feature-list.hr-list li a:hover{
+    text-decoration: none;
+    background-color: transparent;
 }
 ul.feature-list li:last-of-type{
     border-bottom: none;
+    background-color: transparent;
 }
 ul.feature-list li a{
     display: inline !important;
-    padding: .4rem 0;
-    color: #333;
+    padding: 1rem 0;
+    color: #333;  
+    background-color: transparent;
 }
 ul.feature-list li a:hover{
     text-decoration: none;
-    background-color: #f8f8f8;
+     background-color: transparent;
+}
+ul.feature-list .fa-group::before, .fa-users::before {
+	content: "";
 }
 /*Calendar-feature*/
 
@@ -575,7 +731,7 @@ ul.twitter-content li{
 ul.twitter-content li a{
     display: inline !important;
     color: #0d5740 !important;
-    font-weight: bolder;
+    font-weight: 500;
 }
 ul.twitter-content li:hover{
     text-decoration: none;
@@ -710,7 +866,15 @@ ul.accordion li{
 #title-grouping h6, #base-grouping h6{
     line-height: 1.6rem;
 }
-#title-grouping h3, #base-grouping h3{
+#title-grouping h2{
+    line-height: 2.3rem;
+    font-size: 1.8rem;
+}
+#title-grouping h3{
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+}
+#base-grouping h3{
     line-height: 1.5rem;
 }
 #title-grouping ul.pagination {
@@ -863,7 +1027,6 @@ ul.accordion li{
 #special-notice-teaser > a{
     color:#333;
 }
-
 .button.secondary{
   background-color: #ffffff;
   border: 1px solid #0f654a;
@@ -893,4 +1056,33 @@ ul.news-headlines a.statement-link::before, ul.news-headlines a.advisory-link::b
 }
 .newshub-tab-front ul li a.advisory-link::before, ul.news-headlines a.advisory-link::before{
     content: url('../../assets/imgs/icons/advisory.png');
+}
+/*More Stories base bar*/
+#more-stories-bar{
+  padding: 2rem 0;
+}
+#more-stories-bar .card{
+  margin-bottom: 1.1rem;
+    box-sizing: border-box;
+}
+#more-stories-bar h6{
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+#more-stories-bar .card-section{
+  margin: 0;
+  padding: .8rem 1.1rem 2.1rem 1.2rem;
+  background-color: #fff;
+  position: relative; 
+}
+#more-stories-bar .card-section p{
+    font-size: .9rem;
+    line-height: 1.1rem;
+    box-sizing: border-box;
+}
+#more-stories-bar .card-section p.link-group{
+  position: absolute;
+  bottom: 0rem;
+}
+.more-story-caption{
 }
