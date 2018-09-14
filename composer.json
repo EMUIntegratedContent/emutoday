@@ -20,7 +20,7 @@
         "subfission/cas": "~2.0.9",
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.11.0",
-        "doctrine/dbal": "~2.3",
+        "doctrine/dbal": "~2.8",
         "snowfire/beautymail": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
         "roumen/feed": "~2.10",

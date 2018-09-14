@@ -6,7 +6,7 @@
                     <ul>
                         <li><a title="Subscribe to EMU Today emails." href="/subscribe">Subscribe</a></li>
                         <li>Send feedback to: <a href="mailto:emu_today@emich.edu">emu_today@emich.edu</a></li>
-                        <li>EMU Today Tips</li>
+                        <li><a href="/story/story/144">EMU Today Tips</a></li>
                     </ul>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                         <a title="External link to report an accessibility issue." href="https://www.emich.edu/accessibility/index.php">Accessibility</a> |
                         <a title="External link to EMU's privacy statement." href="https://www.emich.edu/privacy/index.php">Privacy Statement</a> |
                         <a title="External link to EMU police department homepage." href="https://www.emich.edu/police/">Annual Security Report</a> |
-                        <a title="EMU Today copyright." href="#">Copyright © <?php echo date('Y'); ?></a>
+                        <a title="EMU Today copyright." href="https://www.emich.edu/copyright/index.php">Copyright © <?php echo date('Y'); ?></a>
                         <a id="admin-area-lock" title="Administrator dashboard access for site admins only." href="/admin/dashboard"><i class="fa fa-lock"></i><span class="visuallyhidden">Admin Dashboard</span></a>
                     </p>
                 </div>
