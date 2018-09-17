@@ -133,7 +133,7 @@
         <div id="news-headline-bar">
             <div class="row">
                 <div class="large-12 medium-12 small-12 columns">
-                    <h3 class="subhead-title">What's Happening at EMU</h3>
+                    <h3 class="subhead-title">What's Happening at EMU Today</h3>
                 </div>
             </div>
             <div id="news-headline-bar-top"class="row" data-equalizer data-equalize-on="medium">
