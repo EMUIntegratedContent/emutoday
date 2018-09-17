@@ -121,7 +121,7 @@
                                     <span class="menu-area show-for-small-only"><a
                                                     data-toggle="offCanvasRight">Search &amp; Navigation <i
                                                         class="fa fa-list"></i></a></span>
-                                </div>
+                                 </div>
 
 
                                  <div class="large-5 medium-5 columns hide-for-large show-for-medium hide-for-small text text-right">
