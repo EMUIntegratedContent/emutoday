@@ -49,7 +49,7 @@
                                     <span class="help-block">Won't show for this image type, but good to put for discovery purposes. </span>
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('teaser', 'Teaser/Byline') !!}
+                                    {!! Form::label('teaser', 'Caption') !!}
                                     {!! Form::textarea('teaser', null, ['class' => 'form-control input-sm', 'rows'=>'5']) !!}
                                     <span class="help-block">Small to Medium size text from a couple lines to a couple paragraphs</span>
                                 </div>
