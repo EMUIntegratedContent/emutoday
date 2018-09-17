@@ -134,7 +134,7 @@
 
 
                                 <div class="large-5 medium-6 columns show-for-large text text-right">
-                                    <span class="smaller"><a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="{{ url('/announcement/form') }}">Submit an Anouncement</a></span>
+                                    <span class="smaller"><a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="{{ url('/announcement/form') }}">Submit an Announcement</a></span>
                                 </div><!-- large-3 -->
 
                             </div><!-- row -->
