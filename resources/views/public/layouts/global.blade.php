@@ -110,40 +110,40 @@
                             </div> <!-- tier2-nav -->
                         </div><!-- transparent-bar -->
                         <div id="tier2-nav">
-                            
+
                             <div class="row">
-                                
+
                                 <div class="large-7 medium-6 small-12 columns">
                                     <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
                                 </div><!-- large-9 -->
-                                
+
                                 <div class="large-5 medium-5 columns hide-for-large hide-for-medium show-for-small text search-small-left">
                                     <span class="menu-area show-for-small-only"><a
                                                     data-toggle="offCanvasRight">Search &amp; Navigation <i
                                                         class="fa fa-list"></i></a></span>
                                 </div>
-                                
-                                
+
+
                                  <div class="large-5 medium-5 columns hide-for-large show-for-medium hide-for-small text text-right">
                                    <span class="menu-area hide-for-large text-right"><a
                                                     data-toggle="offCanvasRight">Navigation <i
-                                                        class="fa fa-list"></i></a></span> 
+                                                        class="fa fa-list"></i></a></span>
                                 </div>
-                                
-                                
-                                
-                                
+
+
+
+
                                 <div class="large-5 medium-6 columns show-for-large text text-right">
-                                    <span class="smaller"><a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="#">Submit an Announcement</a></span>
+                                    <span class="smaller"><a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="{{ url('/announcement/form') }}">Submit an Announcement</a></span>
                                 </div><!-- large-3 -->
-                                
+
                             </div><!-- row -->
                         </div><!--tier1-nav -->
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
                         <div id="secondary-bar" class="show-for-large">
                             <nav id="tier3-nav" class="row">
                                 <div class="large-12 medium-12 columns hide-for-small-only">
