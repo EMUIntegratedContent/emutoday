@@ -148,12 +148,12 @@
                             <nav id="tier3-nav" class="row">
                                 <div class="large-12 medium-12 columns hide-for-small-only">
                                     <ul id="tier3-nav-main">
-                                        <li><a title="EMU Today homepage." class="{{ set_active('hub')}}" href="{{ url('/') }}"><i class="fa fa-play"></i> Today</a></li>
-                                        <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}" href="{{ url('/calendar') }}"><i class="fa fa-play"></i> Calendar</a></li>
-                                        <li><a title="EMU Today campus announcements." class="{{ set_active('announcement')}}" href="{{ url('/announcement') }}"><i class="fa fa-play"></i> Announcements</a></li>
-                                        <li><a title="EMU Today campus news, press releases, and official statements." class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}"><i class="fa fa-play"></i> News</a></li>
+                                        <li><a title="EMU Today homepage." class="{{ set_active('hub')}}" href="{{ url('/') }}">Today</a></li>
+                                        <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}" href="{{ url('/calendar') }}">Calendar</a></li>
+                                        <li><a title="EMU Today campus announcements." class="{{ set_active('announcement')}}" href="{{ url('/announcement') }}">Announcements</a></li>
+                                        <li><a title="EMU Today campus news, press releases, and official statements." class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a></li>
                                         <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern Magazine</a></li>
-                                        <li><a title="Eastern Experts are availble for interviews and speaking engagements." class="{{ set_active('experts')}}" href="{{ url('/experts') }}"><i class="fa fa-play"></i> Eastern Experts</a></li>
+                                        <li><a title="Eastern Experts are availble for interviews and speaking engagements." class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern Experts</a></li>
                                         <li><a title="External link to WEMU." href="http://wemu.org" target="_blank">WEMU</a></li>
                                         <li><a title="External link to EMU athletics site." href="http://emueagles.com" target="_blank">Athletics</a></li>
                                     </ul>
