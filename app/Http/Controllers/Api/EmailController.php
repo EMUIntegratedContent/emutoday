@@ -50,10 +50,17 @@ class EmailController extends ApiController
     * Store a new email
     */
     public function store(Request $request){
-      $validation = \Validator::make( Input::all(), [
-          'title'   => 'required|min:10',
-          'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-         ]);
+         $validationRules = [
+             'title'   => 'required|min:10',
+             'send_at' => 'nullable|date_format:Y-m-d H:i:s'
+         ];
+         // The validator if there is a presidential message being included in the email, a valid URL must be passed
+         if($request->get('is_president_included')){
+             $validationRules['president_teaser'] = 'required';
+             $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+         }
+
+         $validation = \Validator::make( Input::all(), $validationRules);
 
       if( $validation->fails() ){
           return $this->setStatusCode(422)
@@ -68,10 +75,13 @@ class EmailController extends ApiController
             $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
           }
 
-          $email->title            = $request->get('title');
-          $email->subheading       = $request->get('subheading', null);
-          $email->is_approved      = $request->get('is_approved', 0);
-          $email->send_at          = $sendAt;
+          $email->title                 = $request->get('title');
+          $email->subheading            = $request->get('subheading', null);
+          $email->is_approved           = $request->get('is_approved', 0);
+          $email->send_at               = $sendAt;
+          $email->is_president_included = $request->get('is_president_included', 0);
+          $email->president_teaser      = $request->get('president_teaser', null);
+          $email->president_url         = $request->get('president_url', null);
 
           if($email->save()) {
             // Sync announcements
@@ -136,10 +146,17 @@ class EmailController extends ApiController
    public function update(Request $request, $id){
      $email = $this->email->findOrFail($id);
 
-     $validation = \Validator::make( Input::all(), [
+     $validationRules = [
          'title'   => 'required|min:10',
          'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-        ]);
+     ];
+     // The validator if there is a presidential message being included in the email, a valid URL must be passed
+     if($request->get('is_president_included')){
+         $validationRules['president_teaser'] = 'required';
+         $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+     }
+
+     $validation = \Validator::make( Input::all(), $validationRules);
 
      if( $validation->fails() ){
          return $this->setStatusCode(422)
@@ -152,10 +169,13 @@ class EmailController extends ApiController
            $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
          }
 
-         $email->title           	= $request->get('title');
-         $email->subheading       = $request->get('subheading', null);
-         $email->is_approved      = $request->get('is_approved', 0);
-         $email->send_at          = $sendAt;
+         $email->title           	    = $request->get('title');
+         $email->subheading             = $request->get('subheading', null);
+         $email->is_approved            = $request->get('is_approved', 0);
+         $email->send_at                = $sendAt;
+         $email->is_president_included  = $request->get('is_president_included', 0);
+         $email->president_teaser       = $request->get('president_teaser', null);
+         $email->president_url          = $request->get('president_url', null);
 
          // Sync announcements
          // tutuorial: https://laravel.com/docs/5.5/eloquent-relationships#updating-many-to-many-relationships
@@ -219,10 +239,17 @@ class EmailController extends ApiController
     * Clone an existing email (same as store() except exclude recipients, send_at, approve, live. Include id of original email as clone_id)
     */
     public function cloneEmail(Request $request){
-      $validation = \Validator::make( Input::all(), [
-          'title'   => 'required|min:10',
-          'send_at' => 'nullable|date_format:Y-m-d H:i:s'
-         ]);
+         $validationRules = [
+             'title'   => 'required|min:10',
+             'send_at' => 'nullable|date_format:Y-m-d H:i:s'
+         ];
+         // The validator if there is a presidential message being included in the email, a valid URL must be passed
+         if($request->get('is_president_included')){
+             $validationRules['president_teaser'] = 'required';
+             $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+         }
+
+         $validation = \Validator::make( Input::all(), $validationRules);
 
       if( $validation->fails() ){
           return $this->setStatusCode(422)
@@ -237,9 +264,12 @@ class EmailController extends ApiController
             $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
           }
 
-          $email->title            = $request->get('title');
-          $email->subheading       = $request->get('subheading', null);
-          $email->clone_email_id   = $request->get('id'); // mark from which email this one was cloned
+          $email->title                     = $request->get('title');
+          $email->subheading                = $request->get('subheading', null);
+          $email->is_president_included     = $request->get('is_president_included', 0);
+          $email->president_teaser          = $request->get('president_teaser', null);
+          $email->president_url             = $request->get('president_url', null);
+          $email->clone_email_id            = $request->get('id'); // mark from which email this one was cloned
 
           if($email->save()) {
             // Sync announcements
@@ -439,7 +469,8 @@ class EmailController extends ApiController
        $email->events()->first() &&
        $email->stories()->first() &&
        $email->recipients()->first() &&
-       \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s')
+       \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&
+       ($email->is_president_included ? ($email->president_url && $email->president_teaser) : true) // <- If the president's message is included, the URL and teaser must also be present. If not, both are irrelevant, just return true.
      ){
       $email->is_ready = 1;
     }
