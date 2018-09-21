@@ -34363,7 +34363,7 @@ exports.default = {
     filters: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"panel-body\" _v-aaf4066e=\"\">\n    <vue-chart :packages=\"gpackages\" :chart-type=\"chartType\" :columns=\"columns\" :rows=\"rowsLoad\" :options=\"options\" _v-aaf4066e=\"\"></vue-chart>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n    <div class=\"panel-body\" _v-7b2f7b63=\"\">\n    <vue-chart :packages=\"gpackages\" :chart-type=\"chartType\" :columns=\"columns\" :rows=\"rowsLoad\" :options=\"options\" _v-7b2f7b63=\"\"></vue-chart>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -34373,9 +34373,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-aaf4066e", module.exports)
+    hotAPI.createRecord("_v-7b2f7b63", module.exports)
   } else {
-    hotAPI.update("_v-aaf4066e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7b2f7b63", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"moment":2,"vue":8,"vue-hot-reload-api":6,"vueify/lib/insert-css":9}],11:[function(require,module,exports){

@@ -19690,7 +19690,7 @@ exports.insert = function (css) {
 
 },{}],30:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-03a76d5e] {\n    float:right;\n}\n#graybar[_v-03a76d5e]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-03a76d5e] {\n    background-color: #bebdbd;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -19754,19 +19754,19 @@ exports.default = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-6520d5b8=\"\">\n    <div class=\"calendar-bar row\" _v-6520d5b8=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-6520d5b8=\"\">\n      <h4 _v-6520d5b8=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-6520d5b8=\"\">\n          <h4 _v-6520d5b8=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-6520d5b8=\"\">\n  <div id=\"calendar-content-bar\" _v-6520d5b8=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-6520d5b8=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-6520d5b8=\"\"></event-view-content>\n      <br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">*All calendar items are subject to change.</p><br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">The EMU calendar is maintained by the <a href=\"http://emich.edu/communications\" _v-6520d5b8=\"\">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p><br _v-6520d5b8=\"\">\n            <p _v-6520d5b8=\"\">Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p><br _v-6520d5b8=\"\">\n     </div>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-6520d5b8=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-6520d5b8=\"\"></event-view-side-bar>\n    </div>\n  </div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"graybar\" _v-03a76d5e=\"\">\n    <div class=\"calendar-bar row\" _v-03a76d5e=\"\">\n  <div class=\"medium-3 show-for-medium columns\" _v-03a76d5e=\"\">\n      <h4 _v-03a76d5e=\"\">Calendar</h4>\n  </div>\n  <div class=\"medium-9 small-12 columns\" _v-03a76d5e=\"\">\n          <h4 _v-03a76d5e=\"\">Upcoming Events</h4>\n    </div>\n</div>\n</div>\n<div class=\"row\" _v-03a76d5e=\"\">\n  <div id=\"calendar-content-bar\" _v-03a76d5e=\"\">\n    <div class=\"medium-9 small-12 columns pull-right\" _v-03a76d5e=\"\">\n      <!-- <event-view-content :elist.sync=\"eventlist\"></event-view-content> -->\n      <event-view-content :eventid.once=\"eventid\" :elist.sync=\"eventlist\" _v-03a76d5e=\"\"></event-view-content>\n      <br _v-03a76d5e=\"\">\n            <p _v-03a76d5e=\"\">*All calendar items are subject to change.</p><br _v-03a76d5e=\"\">\n            <p _v-03a76d5e=\"\">The EMU calendar is maintained by the <a href=\"http://emich.edu/communications\" _v-03a76d5e=\"\">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p><br _v-03a76d5e=\"\">\n            <p _v-03a76d5e=\"\">Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p><br _v-03a76d5e=\"\">\n     </div>\n    </div>\n    <div class=\"small-12 medium-3 show-for-small columns pull-left\" _v-03a76d5e=\"\">\n      <event-view-side-bar v-on:change-eobject=\"handleEventFetch\" _v-03a76d5e=\"\"></event-view-side-bar>\n    </div>\n  </div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n"] = false
+    __vueify_insert__.cache["\n.pull-right[_v-03a76d5e] {\n    float:right;\n}\n#graybar[_v-03a76d5e]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-03a76d5e] {\n    background-color: #bebdbd;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6520d5b8", module.exports)
+    hotAPI.createRecord("_v-03a76d5e", module.exports)
   } else {
-    hotAPI.update("_v-6520d5b8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-03a76d5e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventViewContent.vue":31,"./EventViewSideBar.vue":32,"babel-runtime/core-js/json/stringify":1,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],31:[function(require,module,exports){
@@ -19882,9 +19882,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-65b6795e", module.exports)
+    hotAPI.createRecord("_v-195964eb", module.exports)
   } else {
-    hotAPI.update("_v-65b6795e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-195964eb", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./EventViewSingle.vue":33,"babel-runtime/helpers/defineProperty":3,"moment":23,"vue":28,"vue-hot-reload-api":25,"vue-router":27,"vueify/lib/insert-css":29}],32:[function(require,module,exports){
@@ -20105,9 +20105,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2f140894", module.exports)
+    hotAPI.createRecord("_v-7b48aa2e", module.exports)
   } else {
-    hotAPI.update("_v-2f140894", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-7b48aa2e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],33:[function(require,module,exports){
@@ -20232,9 +20232,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-8cbe0bc0", module.exports)
+    hotAPI.createRecord("_v-14368574", module.exports)
   } else {
-    hotAPI.update("_v-8cbe0bc0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-14368574", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){
