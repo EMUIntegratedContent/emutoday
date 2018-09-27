@@ -2,6 +2,16 @@
 @section('description','Attend sporting events, theatre performances, musical events, academic seminars and much more at Eastern Michigan University.')
 @section('keywords','emu, eastern michigan university, calendar, events, calendar of events, what to do on campus, calendar events entertainment, calendar events things to do, calendar events, campus events, calendar events whats going on Ypsilanti, calendar events what to do at emu, what to do at eastern michigan university')
 @section('title','Calendar – Eastern Michigan University')
+@section('addthisMeta')
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{trim(Request::fullUrl())}}" />
+<meta property="og:title" content="Eastern Michigan University Events Calendar" />
+<meta property="og:description" content="The main events calendar for Eastern Michigan University" />
+<meta property="og:image" content="http://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
+<meta property="og:image:secure_url" content="https://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
+<meta property="og:image:width" content="150" />
+<meta property="og:image:height" content="150" />
+@endsection
 @section('content')
 <div id="content-area">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
