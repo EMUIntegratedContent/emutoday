@@ -20,8 +20,10 @@
     </template>
 
     <div class="event-item" v-if="showBody" transition="expand">
-        <!-- AddEvent plugin script -->
-        <div title="Add to Calendar" class="addeventatc">
+        <div class="new-cal">{{{ addToCalendar.innerHTML }}}</div>
+
+        <!-- AddEvent plugin script (REMOVED IN FAVOR OF free add to calendar button: https://github.com/carlsednaoui/add-to-calendar-buttons on 9/28/18)-->
+        <!--<div title="Add to Calendar" class="addeventatc">
             Add to Calendar
             <span class="start">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>
             <span class="end">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>
@@ -34,7 +36,7 @@
             <span class="all_day_event">{{ item.all_day ? true : false }}</span>
             <span class="date_format">YYYY-MM-DD</span>
             <span class="client">atdkyfGQrzEzDlSNTmQU26933</span>
-        </div><br /><br />
+        </div><br /><br />-->
 
       <p>{{item.description}}</p>
       <template v-if="item.contact_person || item.contact_person || item.contact_person">
@@ -125,18 +127,49 @@ p.description {
   padding: 0 10px;
   opacity: 0;
 }
+/* BUTTON STYLES */
+.add-to-calendar-checkbox{
+    padding:10px;
+    box-shadow: 0 0 0 0.5px rgba(50,50,93,.17), 0 2px 5px 0 rgba(50,50,93,.1), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent !important;
+    color: #000;
+    font-size: 15px;
+    text-decoration: none;
+    max-width: 155px;
+    margin: 5px 0px 20px 0px;
+}
+.add-to-calendar-checkbox:hover{
+    background-color: #fafafa;
+}
 </style>
 <script>
+
+import moment from 'moment';
+
 module.exports  = {
   components: {},
   props:['item','$index','targeteventid'],
   data: function() {
     return {
       showBody: false,
-      eventRange: {}
+      eventRange: {},
+      addToCalendar: null,
     }
   },
   ready() {
+      this.addToCalendar = createCalendar({
+        options: {
+          class: 'my-class',
+          id: 'event-' + this.item.id                                // You need to pass an ID. If you don't, one will be generated for you.
+        },
+        data: {
+          title: this.item.title,     // Event title
+          start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+          end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
+          address: this.item.location,
+          description: this.item.description,
+          timezone: 'America/Detroit'
+        }
+      });
     if(this.item.id == this.targeteventid){
       this.showBody = true;
     } else {
@@ -192,12 +225,18 @@ module.exports  = {
     sortKeyInt: function ($key) {
       return parseInt($key);
     },
+    calendarDate: function (value) {
+      var arr = value.split(' ');
+      return arr[0]
+    },
   },
   filters: {
     reformatDate: function (value) {
       var arr = value.split('-');
       return arr[1] + '/' + arr[2] + '/' + arr[0];
     },
+    /* Filters for AddEvent button (replaced with another solution 9/28/18) */
+    /*
     calendarDate: function (value) {
       var arr = value.split(' ');
       return arr[0]
@@ -216,6 +255,7 @@ module.exports  = {
         }
         return
     },
+    */
     yesNo: function(value) {
       return (value == true) ? 'Yes' : 'No';
     },

@@ -20112,8 +20112,14 @@ if (module.hot) {(function () {  module.hot.accept()
 })()}
 },{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],33:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n/* BUTTON STYLES */\n.add-to-calendar-checkbox{\n    padding:10px;\n    box-shadow: 0 0 0 0.5px rgba(50,50,93,.17), 0 2px 5px 0 rgba(50,50,93,.1), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent !important;\n    color: #000;\n    font-size: 15px;\n    text-decoration: none;\n    max-width: 155px;\n    margin: 5px 0px 20px 0px;\n}\n.add-to-calendar-checkbox:hover{\n    background-color: #fafafa;\n}\n")
 'use strict';
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
   components: {},
@@ -20121,10 +20127,25 @@ module.exports = {
   data: function data() {
     return {
       showBody: false,
-      eventRange: {}
+      eventRange: {},
+      addToCalendar: null
     };
   },
   ready: function ready() {
+    this.addToCalendar = createCalendar({
+      options: {
+        class: 'my-class',
+        id: 'event-' + this.item.id // You need to pass an ID. If you don't, one will be generated for you.
+      },
+      data: {
+        title: this.item.title, // Event title
+        start: new Date(this.calendarDate(this.item.start_date) + ' ' + (0, _moment2.default)(this.item.start_time, ["h:mm A"]).format("HH:mm")), // Event start date
+        end: new Date(this.calendarDate(this.item.end_date) + ' ' + (0, _moment2.default)(this.item.end_time, ["h:mm A"]).format("HH:mm")), // You can also choose to set an end time.
+        address: this.item.location,
+        description: this.item.description,
+        timezone: 'America/Detroit'
+      }
+    });
     if (this.item.id == this.targeteventid) {
       this.showBody = true;
     } else {
@@ -20182,6 +20203,10 @@ module.exports = {
     },
     sortKeyInt: function sortKeyInt($key) {
       return parseInt($key);
+    },
+    calendarDate: function calendarDate(value) {
+      var arr = value.split(' ');
+      return arr[0];
     }
   },
   filters: {
@@ -20189,24 +20214,26 @@ module.exports = {
       var arr = value.split('-');
       return arr[1] + '/' + arr[2] + '/' + arr[0];
     },
-    calendarDate: function calendarDate(value) {
+    /* Filters for AddEvent button (replaced with another solution 9/28/18) */
+    /*
+    calendarDate: function (value) {
       var arr = value.split(' ');
-      return arr[0];
+      return arr[0]
     },
-    amPm: function amPm(value) {
-      if (value) {
-        var arr = value.split(' ');
-
-        if (arr[1] == 'a.m.') {
-          return arr[0] + ' AM';
+    amPm: function (value) {
+        if(value){
+            var arr = value.split(' ');
+             if(arr[1] == 'a.m.'){
+                return arr[0] + ' AM'
+            }
+            if(arr[1] == 'p.m.'){
+                return arr[0] + ' PM'
+            }
+            return value
         }
-        if (arr[1] == 'p.m.') {
-          return arr[0] + ' PM';
-        }
-        return value;
-      }
-      return;
+        return
     },
+    */
     yesNo: function yesNo(value) {
       return value == true ? 'Yes' : 'No';
     },
@@ -20222,13 +20249,13 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"https://emich.edu/map/?location={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <!-- AddEvent plugin script -->\n      <div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br><br>\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">\n      <template v-if=\"item.cost | isNumeric\">\n        Cost: {{item.cost | currency }}\n      </template>\n      <template v-else=\"\">\n        Cost: {{item.cost}}\n      </template>\n    </p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <p v-if=\"item.hsc_rewards\">Eagle Rewards: {{item.hsc_rewards}}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\"><a href=\"{{item.ticket_details_online | hasHttp}}\">Get Tickets Online</a></p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n  </div>\n</div>\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"eventview\">\n  <a v-on:click.prevent=\"toggleBody\" href=\"#\">\n    <h6>{{item.title}}<span class=\"event-cancel\" v-if=\"item.is_canceled\"> - canceled</span></h6>\n  </a>\n  <template v-if=\"item.all_day\">\n    <p>All Day</p>\n  </template>\n  <template v-else=\"\">\n    <p v-if=\"item.no_end_time\">{{item.start_time}}</p>\n    <p v-else=\"\">\n      From: {{item.start_time}} to {{item.end_time}}\n    </p>\n  </template>\n  <template v-if=\"isOnCampus\">\n    <a href=\"https://emich.edu/map/?location={{item.building}}\" target=\"_blank\">{{item.location}}</a>\n  </template>\n  <template v-else=\"\">\n    <p>{{item.location}}</p>\n  </template>\n\n  <div class=\"event-item\" v-if=\"showBody\" transition=\"expand\">\n      <div class=\"new-cal\">{{{ addToCalendar.innerHTML }}}</div>\n\n      <!-- AddEvent plugin script (REMOVED IN FAVOR OF free add to calendar button: https://github.com/carlsednaoui/add-to-calendar-buttons on 9/28/18)-->\n      <!--<div title=\"Add to Calendar\" class=\"addeventatc\">\n          Add to Calendar\n          <span class=\"start\">{{ item.start_date | calendarDate }} {{ item.start_time | amPm }}</span>\n          <span class=\"end\">{{item.end_date | calendarDate }} {{ item.end_time | amPm }}</span>\n          <span class=\"timezone\">America/Detroit</span>\n          <span class=\"title\">{{item.title}}</span>\n          <span class=\"description\">{{item.description}}</span>\n          <span class=\"location\">{{item.location}}</span>\n          <span class=\"organizer\">{{item.contact_person}}</span>\n          <span class=\"organizer_email\">{{item.contact_email}}</span>\n          <span class=\"all_day_event\">{{ item.all_day ? true : false }}</span>\n          <span class=\"date_format\">YYYY-MM-DD</span>\n          <span class=\"client\">atdkyfGQrzEzDlSNTmQU26933</span>\n      </div><br /><br />-->\n\n    <p>{{item.description}}</p>\n    <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n      <p>Contact:</p>\n      <ul>\n        <li v-if=\"item.contact_person\">{{item.contact_person}}</li>\n        <li v-if=\"item.contact_email\">Email: {{item.contact_email}}</li>\n        <li v-if=\"item.contact_phone\">Phone: {{item.contact_phone}}</li>\n      </ul>\n    </template>\n    <template v-if=\"item.related_link_1\">\n      <p>For more information, visit:</p>\n      <ul>\n        <li><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n          <template v-else=\"\">{{item.related_link_1}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_2\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n          <template v-else=\"\">{{item.related_link_2}}</template>\n        </a></li>\n        <li v-if=\"item.related_link_3\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\">\n          <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n          <template v-else=\"\">{{item.related_link_3}}</template>\n        </a></li>\n      </ul>\n    </template>\n    <p v-if=\"item.free\">Cost: Free</p>\n    <p v-else=\"\">\n      <template v-if=\"item.cost | isNumeric\">\n        Cost: {{item.cost | currency }}\n      </template>\n      <template v-else=\"\">\n        Cost: {{item.cost}}\n      </template>\n    </p>\n    <p>{{eventParticipation}}</p>\n    <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>\n    <p v-if=\"item.hsc_rewards\">Eagle Rewards: {{item.hsc_rewards}}</p>\n    <template v-if=\"item.tickets\">\n      <p v-if=\"item.ticket_details_online\"><a href=\"{{item.ticket_details_online | hasHttp}}\">Get Tickets Online</a></p>\n      <p v-if=\"item.ticket_details_phone\">For tickets, call {{item.ticket_details_phone}}.</p>\n      <p v-if=\"item.ticket_details_office\">For tickets, visit {{item.ticket_details_office}}.</p>\n      <p v-if=\"item.ticket_details_other\">Or {{item.ticket_details_other}}</p>\n    </template>\n  </div>\n</div>\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n"] = false
+    __vueify_insert__.cache["\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n/* BUTTON STYLES */\n.add-to-calendar-checkbox{\n    padding:10px;\n    box-shadow: 0 0 0 0.5px rgba(50,50,93,.17), 0 2px 5px 0 rgba(50,50,93,.1), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent !important;\n    color: #000;\n    font-size: 15px;\n    text-decoration: none;\n    max-width: 155px;\n    margin: 5px 0px 20px 0px;\n}\n.add-to-calendar-checkbox:hover{\n    background-color: #fafafa;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
@@ -20237,7 +20264,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-8cbe0bc0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){
+},{"moment":23,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){
 'use strict';
 
 var _EventView = require('./components/EventView.vue');
