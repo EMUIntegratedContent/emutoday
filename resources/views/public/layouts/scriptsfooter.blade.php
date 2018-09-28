@@ -7,10 +7,15 @@
 <script type="text/javascript" src="/js/vue-search-form-offcanvas.js"></script>
 <script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
 <script type="text/javascript" src="/js/app.js"></script>
-<!-- AddEvent -->
+<!-- Add-to-calendar free js plugin -->
+<script type="text/javascript" src="/add-to-calendar/ouical.min.js"></script>
+<!-- Add Event (replaced with a free solution (add-to-calendar/ouical.js) on 9/28/18) -->
+<!--
 <script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
-<!-- AddEvent Settings -->
+-->
 <script type="text/javascript">
+/* Add Event settings (replaced with a free solution (add-to-calendar/ouical.js) on 9/28/18) */
+/*
 window.addeventasync = function(){
     addeventatc.settings({
         license    : "atdkyfGQrzEzDlSNTmQU26933",
@@ -25,8 +30,8 @@ window.addeventasync = function(){
         dropdown   : {order:"outlook,google,appleical"}
     });
 };
-
-// Detects the presence of an alert issued from CMA 1 on EMU's main website.
+*/
+// Detects the presence of an alert issued from the emergency application on EMU's main website.
 $(document).ready(function(){
     $.getJSON( "https://www.emich.edu/admin/api/emergency_api.php", function( data ) {
         if(data.display == "yes"){
