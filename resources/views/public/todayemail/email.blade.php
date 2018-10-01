@@ -358,8 +358,8 @@
                            <div class="indent">
                                <table border="0" style="max-width: 100%;">
                                    <tr height="136px">
-                                       <td class="full-width-image">
-                                           <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" /></a>
+                                       <td>
+                                           <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" /></a>
                                        </td>
                                    </tr>
                                    <tr valign="top">
