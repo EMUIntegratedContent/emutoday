@@ -357,7 +357,7 @@
                        <td valign="top" >
                            <div class="indent">
                                <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h2>
-                               <p style="padding-left:10px">{{ $email->president_teaser }}</p>
+                               <p style="padding:5px 0 13px 8px">{{ $email->president_teaser }}</p>
                           </div>
                        </td>
                    </tr>
