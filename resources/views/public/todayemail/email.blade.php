@@ -351,6 +351,36 @@
                            </div>
                         </td>
                     </tr>
+                    <!-- OPTIONAL: President Message -->
+                    @if($email->is_president_included)
+                    <tr>
+                       <td valign="top" >
+                           <div class="indent">
+                               <h3 class="moveover"><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h3>
+                               <p>{{ $email->president_teaser }}</p>
+                          </div>
+                       </td>
+                   </tr>
+                    @endif
+                    <tr>
+                       <td valign="top" >
+                           <div class="indent">
+                           <h3 class="moveover"><a href="{{ url('/') }}/story/news">More News &#10137;</a></h3>
+                           <ul style="padding-bottom: 8px; padding-top: 0px;  margin-left: 0px; padding-left: 24px; margin-bottom: 5px; margin-top: 5px;" >
+                               @foreach($email->stories()->get() as $story)
+                               <li style="padding-bottom: 9px; margin-left: 0; color:#046A38;">
+                                   @if($story->story_type == 'external'  || ($story->story_type == 'article' && $story->tags()->where('name', 'external')->first()))
+                                     {{-- External stories should go directly to the external link, which is located in the "link" field of the story's external_small image --}}
+                                     <a style="text-decoration: none;" href="{{$story->getExternalLink()}}">{{ $story->title }}</a>
+                                   @else
+                                     <a style="text-decoration: none;" href="{{ url('/') . '/story/' . $story->story_type . '/' . $story->id }}">{{ $story->title }}</a>
+                                   @endif
+                               </li>
+                               @endforeach
+                           </ul>
+                          </div>
+                       </td>
+                    </tr>
                     <tr>
                         <td valign="top">
                             <div class="indent" >
