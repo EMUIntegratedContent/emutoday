@@ -354,19 +354,17 @@
                     <!-- OPTIONAL: President Message -->
                     @if($email->is_president_included)
                     <tr>
-                       <td valign="top" >
+                       <td valign="top">
                            <div class="indent">
-                               <table border="0" style="max-width: 100%;">
-                                   <tr height="136px" class="moveover" style="border-top: 3px double #97D700;">
-                                       <td style="padding:8px 0 0 8px;">
-                                           <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" /></a>
-                                       </td>
-                                       <td valign="top" style="padding:8px 0 0 8px;">
-                                           <h2><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h2>
-                                           <p style="padding:8px 0 10px 0">{{ $email->president_teaser }}</p>
-                                       </td>
-                                   </tr>
-                               </table>
+                               <tr class="moveover" style="border-top: 3px double #97D700; height:136px; width:100%">
+                                   <td style="padding:8px 0 0 8px;">
+                                       <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left;"/>
+                                   </td>
+                                   <td valign="top" style="padding:0 0 0 15px;">
+                                       <h2><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h2>
+                                       <p style="padding:8px 0 10px 0">{{ $email->president_teaser }}</p>
+                                   </td>
+                               </tr>
                           </div>
                        </td>
                     </tr>
