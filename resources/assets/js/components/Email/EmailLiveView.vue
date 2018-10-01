@@ -143,10 +143,10 @@
                                 <img src="/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left; padding:0 15px 8px 0;"/>
                                 <h2 style="padding-top:0px;">
                                     <template v-if="email.president_url">
-                                      <a v-if="email.president_url" :href="email.president_url">President Smith Statement &#10137;</a>
+                                      <a v-if="email.president_url" :href="email.president_url">From the President &#10137;</a>
                                     </template>
                                     <template v-else>
-                                      <span class="insufficient">President Smith Statement [NO URL]</span>
+                                      <span class="insufficient">From the President [NO URL]</span>
                                     </template>
                                 </h2>
                                 <template v-if="email.president_teaser">
