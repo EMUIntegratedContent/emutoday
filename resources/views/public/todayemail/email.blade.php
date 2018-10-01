@@ -356,7 +356,7 @@
                     <tr>
                        <td valign="top">
                            <div class="indent" style="border-top: 3px double #97D700; height:136px;">
-                               <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left;"/>
+                               <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left; padding:10px;"/>
                                <h2><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h2>
                                <p style="padding:8px 0 10px 0">{{ $email->president_teaser }}</p>
                           </div>
