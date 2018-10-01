@@ -357,12 +357,12 @@
                        <td valign="top" >
                            <div class="indent">
                                <table border="0" style="max-width: 100%;">
-                                   <tr height="136px" class="moveover" style="border-top: 3px double #97D700;">
+                                   <tr height="136px" class="moveover" style="border-top: 3px double #97D700; padding-top:8px;">
                                        <td>
                                            <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" /></a>
                                        </td>
-                                       <td valign="top">
-                                           <h2><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h2>
+                                       <td valign="top" style="padding-left:8px;">
+                                           <h2 style="padding: "><a href="{{ $email->president_url }}">President Smith Statement &#10137;</a></h2>
                                            <p style="padding:5px 0 13px 8px">{{ $email->president_teaser }}</p>
                                        </td>
                                    </tr>
