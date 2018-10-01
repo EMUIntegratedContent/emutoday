@@ -139,23 +139,22 @@
                             </td>
                         </tr>
                         <tr v-if="email.is_president_included">
-                            <td valign="top">
-                                <div>
-                                  <h2 class="moveover" style="border-top: 3px double #97D700;">
-                                      <template v-if="email.president_url">
-                                        <a v-if="email.president_url" :href="email.president_url">President Smith Statement &#10137;</a>
-                                      </template>
-                                      <template v-else>
-                                        <span class="insufficient">President Smith Statement [NO URL]</span>
-                                      </template>
-                                  </h2>
-                                  <template v-if="email.president_teaser">
-                                    <p style="padding:0 8px">{{ email.president_teaser }}</p>
-                                  </template>
-                                  <template v-else>
-                                    <p style="padding:0 5px" class="insufficient">There is no teaser text provided. You must include this text when including a presidential message.</p>
-                                  </template>
-                                </div>
+                            <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
+                                <img src="/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left; padding:0 15px 8px 0;"/>
+                                <h2 style="padding-top:0px;">
+                                    <template v-if="email.president_url">
+                                      <a v-if="email.president_url" :href="email.president_url">President Smith Statement &#10137;</a>
+                                    </template>
+                                    <template v-else>
+                                      <span class="insufficient">President Smith Statement [NO URL]</span>
+                                    </template>
+                                </h2>
+                                <template v-if="email.president_teaser">
+                                  <p style="font-size:1.1rem;">{{ email.president_teaser }}</p>
+                                </template>
+                                <template v-else>
+                                  <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include this text when including a presidential message.</p>
+                                </template>
                             </td>
                         </tr>
                         <tr>
