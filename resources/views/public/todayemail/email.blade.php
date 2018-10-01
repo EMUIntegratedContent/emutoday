@@ -356,7 +356,7 @@
                     <tr>
                        <td valign="top">
                            <div class="indent">
-                               <tr class="moveover" style="border-top: 3px double #97D700; height:136px; width:100%">
+                               <tr class="moveover" style="border-top: 3px double #97D700; height:136px;">
                                    <td style="padding:8px 0 0 8px;">
                                        <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left;"/>
                                    </td>
