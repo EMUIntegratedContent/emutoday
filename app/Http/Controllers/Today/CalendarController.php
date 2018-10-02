@@ -64,7 +64,8 @@ class CalendarController extends Controller
         $events = $this->events->where([
             ['start_date', '>', $cd],
             ['is_approved', 1],
-            ['is_canceled', 0]
+            ['is_canceled', 0],
+            ['is_hidden', 0]
             ])
             ->orderBy('start_date', 'asc')->get();
 

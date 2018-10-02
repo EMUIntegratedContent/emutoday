@@ -287,6 +287,7 @@ class EventController extends ApiController
           $event->mini_calendar						= $request->get('mini_calendar');
           $event->lbc_approved						= $request->get('lbc_approved');
           $event->submission_date 				= \Carbon\Carbon::now();
+          $event->is_hidden                 = $request->get('is_hidden');
 
           // Reset Approvals
           if($request->input('admin_pre_approved')){
@@ -601,6 +602,7 @@ class EventController extends ApiController
             $event->mini_calendar						= $request->get('mini_calendar');
             $event->lbc_approved						= $request->get('lbc_approved');
             $event->submission_date 				= \Carbon\Carbon::now();
+            $event->is_hidden                 = $request->get('is_hidden');
 
             // Reset Approvals
             if($request->input('admin_pre_approved')){
