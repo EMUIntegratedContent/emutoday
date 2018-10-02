@@ -25,8 +25,8 @@
   <meta property="og:image:width" content="400" />
   <meta property="og:image:height" content="300" />
   @else
-  <meta property="og:image" content="https://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
-  <meta property="og:image:secure_url" content="https://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
+  <meta property="og:image" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>
+  <meta property="og:image:secure_url" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>
   <meta property="og:image:width" content="150" />
   <meta property="og:image:height" content="150" />
   @endif
