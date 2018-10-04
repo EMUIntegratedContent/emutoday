@@ -23,6 +23,7 @@
     "macaddress": "0.2.9",
     "moment": "^2.19.3",
     "sortablejs": "^1.6.1",
+    "uniqid": "^5.0.3",
     "vue-charts": "^0.1.14",
     "vue-resource": "^1.5.1",
     "vue-router": "^2.8.1",
