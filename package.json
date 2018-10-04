@@ -22,6 +22,7 @@
     "laravel-elixir-vueify": "^1.0.6",
     "macaddress": "0.2.9",
     "moment": "^2.19.3",
+    "postcss-filter-plugins": "^3.0.1",
     "sortablejs": "^1.6.1",
     "uniqid": "^5.0.3",
     "vue-charts": "^0.1.14",
