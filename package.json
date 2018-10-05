@@ -20,6 +20,7 @@
     "foundation-sites": "^6.2.3",
     "hoek": "github:hapijs/hoek",
     "laravel-elixir-vueify": "^1.0.6",
+    "lodash": "^4.17.11",
     "macaddress": "0.2.9",
     "moment": "^2.19.3",
     "postcss-filter-plugins": "^3.0.1",
