@@ -23,9 +23,9 @@
         "doctrine/dbal": "~2.8",
         "snowfire/beautymail": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
-        "roumen/feed": "~2.10",
         "laravel/tinker": "^1.0",
-        "spatie/laravel-analytics": "^3.3"
+        "spatie/laravel-analytics": "^3.3",
+        "laravelium/feed": "2.12.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

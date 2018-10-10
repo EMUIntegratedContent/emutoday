@@ -404,6 +404,9 @@
     <div class="checkbox">
       <label><input type="checkbox" v-model="record.admin_pre_approved">Auto Approve</label>
     </div>
+    <div class="checkbox">
+      <label><input type="checkbox" v-model="record.is_hidden">Hide from EMU Today Calendar (will still show on mini calendars, if applicable)</label>
+    </div>
   </div>
   <div :class="md8col">
     <div :class="formGroup">
@@ -581,6 +584,7 @@ module.exports  = {
         building: '',
         categories:[],
         is_canceled: 0,
+        is_hidden: 0,
         start_time: '12:00 PM',
         end_time: '12:00 PM',
         admin_pre_approved: false,

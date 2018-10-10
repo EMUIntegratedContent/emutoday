@@ -47,6 +47,9 @@ class FractalEmailTransformerModel extends Fractal\TransformerAbstract
             'mailgun_spam' => $email->mailgun_spam,
             'clone' => $email->clonedEmail()->select('id', 'title')->get(),
             'created_at' => $email->created_at->format('n/j/y @ g:i A'),
+            'is_president_included' => $email->is_president_included,
+            'president_teaser' => $email->president_teaser,
+            'president_url' => $email->president_url
         ];
     }
 }

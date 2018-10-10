@@ -59,7 +59,7 @@
           <div class="row">
             <!-- EMAIL LIVE BUILDER VIEW AREA -->
             <!-- BUILDER TOOLS AREA -->
-            <div v-bind:class="[md12col, lg4col]">
+            <div v-bind:class="[md12col, lg5col]">
               <h2>Build Your Email</h2>
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
@@ -67,6 +67,7 @@
                 <li><a href="#stories" role="tab" data-toggle="tab" :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{ record.otherStories.length }})</a></li>
                 <li><a href="#announcements" role="tab" data-toggle="tab" :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{ record.announcements.length }})</a></li>
                 <li><a href="#events" role="tab" data-toggle="tab" :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a></li>
+                <li><a href="#president" role="tab" data-toggle="tab" :class="record.is_president_included && (!record.president_url || !record.president_teaser) ? 'insufficient' : ''">President</a></li>
               </ul>
               <!-- Tab panes -->
               <div class="tab-content">
@@ -92,11 +93,36 @@
                   :events="record.events"
                   ></email-event-queue>
                 </div>
+                <div class="tab-pane" id="president">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label>
+                                    Include the presidential section in this email? <input type="checkbox" v-model="record.is_president_included">
+                                </label>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-md-12 -->
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <label for="presidentTeaser">Teaser text</label>
+                              <textarea class="form-control" id="presidentTeaser" v-bind:class="[formErrors.president_teaser ? 'invalid-input' : '']" v-model="record.president_teaser">{{ record.president_teaser }}</textarea>
+                              <p v-if="formErrors.president_teaser" class="help-text invalid">The teaser is required when including a presidential message.</p>
+                            </div>
+                        </div><!-- /.col-md-12 -->
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                              <label for="presidentUrl">URL to president's statement</label>
+                              <input type="text" class="form-control" id="presidentUrl" v-bind:class="[formErrors.president_url ? 'invalid-input' : '']" v-model="record.president_url" placeholder="https://emich.edu/president-statement"/>
+                              <p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
+                            </div>
+                        </div><!-- /.col-md-12 -->
+                    </div><!-- ./row -->
+                </div>
               </div>
             </div>
             <!-- /.medium-4 columns -->
             <!-- "LIVE VIEW" OF EMAIL -->
-            <div v-bind:class="[md12col, lg8col]">
+            <div v-bind:class="[md12col, lg7col]">
               <email-live-view
               :email="record"
               :announcements="record.announcements"
@@ -162,11 +188,14 @@
               <li class="list-group-item"><i :class="record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at least one side story.</li>
               <li class="list-group-item"><i :class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one event.</li>
               <li class="list-group-item"><i :class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.announcements.length > 0 ? 'has' : 'does not have' }} at least one announcement.</li>
+              <li class="list-group-item" v-if="record.is_president_included"><i :class="record.president_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.president_teaser ? 'has' : 'does not have' }} teaser text for the message from the president.</li>
+              <li class="list-group-item" v-if="record.is_president_included"><i :class="record.president_url ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.president_url ? 'has' : 'does not have' }} a URL to the message from the president.</li>
               <li class="list-group-item"><i :class="record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email {{ record.recipients.length > 0 ? 'has' : 'does not have' }} at least one recipient.</li>
               <li class="list-group-item"><i :class="record.is_approved && record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'" aria-hidden="true"></i> Email send date and time {{ record.is_approved && record.send_at ? 'have' : 'have not' }} been confirmed.</li>
             </ul>
             <h3>Optional Criteria Checklist</h3>
             <ul class="list-group">
+              <li class="list-group-item"><i :class="record.is_president_included ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.is_president_included ? 'has' : 'does not have' }} a message from the president.</li>
               <li class="list-group-item"><i :class="record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'" aria-hidden="true"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>
             </ul>
           </div>
@@ -349,10 +378,13 @@ module.exports = {
         clone: [],
         created_at: null,
         is_approved: false,
+        is_president_included: false,
         is_ready: false,
         mailgun_clicks:0,
         mailgun_opens:0,
         mailgun_spam:0,
+        president_teaser:null,
+        president_url:null,
         send_at: null,
         subheading: null,
         title: null,
@@ -408,8 +440,14 @@ module.exports = {
   },
   computed: {
     // switch classes based on css framework. foundation or bootstrap
+    md5col: function() {
+      return (this.framework == 'foundation' ? 'medium-5 columns' : 'col-md-5')
+    },
     md6col: function() {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
+    },
+    md7col: function() {
+      return (this.framework == 'foundation' ? 'medium-7 columns' : 'col-md-7')
     },
     md12col: function() {
       return (this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12')
@@ -420,8 +458,14 @@ module.exports = {
     md4col: function() {
       return (this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4')
     },
+    lg5col: function() {
+      return (this.framework == 'foundation' ? 'large-5 columns' : 'col-lg-5')
+    },
     lg6col: function() {
       return (this.framework == 'foundation' ? 'large-6 columns' : 'col-lg-6')
+    },
+    lg7col: function() {
+      return (this.framework == 'foundation' ? 'large-7 columns' : 'col-lg-7')
     },
     lg12col: function() {
       return (this.framework == 'foundation' ? 'large-12 columns' : 'col-lg-12')
@@ -481,13 +525,26 @@ module.exports = {
     progress: function(){
       let progress = 0
 
-      this.record.title ? progress += 13 : ''
-      this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
-      this.record.events.length > 0 ? progress += 15 : ''
-      this.record.announcements.length > 0 ? progress += 15 : ''
-      this.record.otherStories.length > 0 ? progress += 15 : ''
-      this.record.recipients.length > 0 ? progress += 14 : ''
-      this.record.send_at && this.record.is_approved ? progress += 13 : ''
+      // Progress is measured differently for emails with president message versus ones without
+      if(!this.record.is_president_included){
+          this.record.title ? progress += 13 : ''
+          this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
+          this.record.events.length > 0 ? progress += 15 : ''
+          this.record.announcements.length > 0 ? progress += 15 : ''
+          this.record.otherStories.length > 0 ? progress += 15 : ''
+          this.record.recipients.length > 0 ? progress += 14 : ''
+          this.record.send_at && this.record.is_approved ? progress += 13 : ''
+      } else {
+          this.record.title ? progress += 12 : ''
+          this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
+          this.record.events.length > 0 ? progress += 11 : ''
+          this.record.announcements.length > 0 ? progress += 11 : ''
+          this.record.otherStories.length > 0 ? progress += 11 : ''
+          this.record.recipients.length > 0 ? progress += 11 : ''
+          this.record.send_at && this.record.is_approved ? progress += 13 : ''
+          this.record.president_teaser ? progress += 8 : ''
+          this.record.president_url ? progress += 8 : ''
+      }
 
       return progress
     },

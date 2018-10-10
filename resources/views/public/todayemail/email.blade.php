@@ -251,7 +251,7 @@
                                       <a href="{{ url('/') . '/story/' . $mainStories[0]->story_type . '/' . $mainStories[0]->id }}">{{ $mainStoryImages[0]->title }} &#10137;</a>
                                     @endif
                                     </h2>
-                                    <p class="indent">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
+                                    <p class="indent" style="font-size:0.9rem;">{!! truncateLimitWords($mainStoryImages[0]->teaser, 130) !!}</p>
                                 </div>
                             </article>
                         </td>
@@ -351,6 +351,18 @@
                            </div>
                         </td>
                     </tr>
+                    <!-- OPTIONAL: President Message -->
+                    @if($email->is_president_included)
+                    <tr>
+                       <td valign="top">
+                           <div class="indent" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
+                               <img src="{{ url('/') }}/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith" width="109px" style="float:left; padding:0 15px 8px 0;"/>
+                               <h2 style="padding-top:5px;"><a href="{{ $email->president_url }}">From the President &#10137;</a></h2>
+                               <p style="padding-top:8px; font-size:0.9rem;">{{ $email->president_teaser }}</p>
+                          </div>
+                       </td>
+                    </tr>
+                    @endif
                     <tr>
                         <td valign="top">
                             <div class="indent" >

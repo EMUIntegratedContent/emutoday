@@ -61,6 +61,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'is_featured'           => $event->is_featured,
       'is_approved'           => $event->is_approved,
       'is_canceled'           => $event->is_canceled,
+      'is_hidden'           => $event->is_hidden,
       'homepage'           => $event->homepage,
       'submitter'           => $event->submitter,
       'tickets'           => $event->tickets,
