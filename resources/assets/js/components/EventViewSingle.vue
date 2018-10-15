@@ -156,15 +156,8 @@ module.exports  = {
     }
   },
   ready() {
-      //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
-      //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
-      //start: new Date('Oct 15, 2018' + ' ' + '11:00'),
-      //end: new Date('Oct 15, 2018' + ' ' +  '12:00'),
-      //var start_datetime = this.calendarDate(this.item.start_date) + ' 10:00';
       var start_datetime = moment(this.calendarDate(this.item.start_date) + ' ' + this.convertTimeformat(this.item.start_time));
       var end_datetime = moment(this.calendarDate(this.item.end_date) + ' ' + this.convertTimeformat(this.item.end_time));
-      console.log(start_datetime)
-      console.log(end_datetime)
 
       this.addToCalendar = createCalendar({
         options: {
