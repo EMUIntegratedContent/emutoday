@@ -20139,8 +20139,10 @@ module.exports = {
       },
       data: {
         title: this.item.title, // Event title
-        start: new Date(this.calendarDate(this.item.start_date) + ' ' + (0, _moment2.default)(this.item.start_time, ["h:mm A"]).format("HH:mm")), // Event start date
-        end: new Date(this.calendarDate(this.item.end_date) + ' ' + (0, _moment2.default)(this.item.end_time, ["h:mm A"]).format("HH:mm")), // You can also choose to set an end time.
+        //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+        //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
+        start: '2018-10-15 12:00:00',
+        end: '2018-10-15 13:00:00',
         address: this.item.location,
         description: this.item.description,
         timezone: 'America/Detroit'
