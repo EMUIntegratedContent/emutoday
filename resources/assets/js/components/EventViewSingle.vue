@@ -161,8 +161,8 @@ module.exports  = {
       //start: new Date('Oct 15, 2018' + ' ' + '11:00'),
       //end: new Date('Oct 15, 2018' + ' ' +  '12:00'),
       //var start_datetime = this.calendarDate(this.item.start_date) + ' 10:00';
-      var end_datetime = moment(this.calendarDate(this.item.end_date) + 'T13:00:00-04:00').format("YYYY-MM-DD HH:mm:ss");;
-      var start_datetime = moment(this.calendarDate(this.item.start_date) + 'T11:00:00-04:00').format("YYYY-MM-DD HH:mm:ss");
+      var end_datetime = moment('2018-10-15 13:00').format("YYYY-MM-DD HH:mm");
+      var start_datetime = moment('2018-10-15 15:00').format("YYYY-MM-DD HH:mm");
       console.log(start_datetime)
       console.log(end_datetime)
 
