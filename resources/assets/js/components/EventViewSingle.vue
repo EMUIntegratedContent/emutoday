@@ -20,7 +20,7 @@
     </template>
 
     <div class="event-item" v-if="showBody" transition="expand">
-        <!--<div class="new-cal">{{{ addToCalendar.innerHTML }}}</div>-->
+        <div class="new-cal">{{{ addToCalendar.innerHTML }}}</div>
 
         <!-- AddEvent plugin script (REMOVED IN FAVOR OF free add to calendar button: https://github.com/carlsednaoui/add-to-calendar-buttons on 9/28/18)-->
         <!--<div title="Add to Calendar" class="addeventatc">
@@ -156,7 +156,6 @@ module.exports  = {
     }
   },
   ready() {
-      /*
       this.addToCalendar = createCalendar({
         options: {
           class: 'my-class',
@@ -164,21 +163,20 @@ module.exports  = {
         },
         data: {
           title: this.item.title,     // Event title
-          start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
-          end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
+          //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+          //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
           address: this.item.location,
           description: this.item.description,
-          timezone: 'America/Detroit'
+          //timezone: 'America/Detroit'
         }
       });
-      */
     if(this.item.id == this.targeteventid){
       this.showBody = true;
     } else {
       this.showBody = false;
     }
-    console.log(this.item)
-    setTimeout(function(){addeventatc.refresh();}, 300);
+    /** UNCOMMENT THIS FOR AddEvent plugin **/
+    //setTimeout(function(){addeventatc.refresh();}, 300);
   },
   computed: {
 
