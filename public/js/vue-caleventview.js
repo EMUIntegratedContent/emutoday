@@ -20202,8 +20202,8 @@ module.exports = {
       var hours = Number(time.match(/^(\d+)/)[1]);
       var minutes = Number(time.match(/:(\d+)/)[1]);
       var AMPM = time.match(/\s(.*)$/)[1];
-      if (AMPM == "PM" && hours < 12) hours = hours + 12;
-      if (AMPM == "AM" && hours == 12) hours = hours - 12;
+      if (AMPM == "p.m." && hours < 12) hours = hours + 12;
+      if (AMPM == "a.m." && hours == 12) hours = hours - 12;
       var sHours = hours.toString();
       var sMinutes = minutes.toString();
       if (hours < 10) sHours = "0" + sHours;
