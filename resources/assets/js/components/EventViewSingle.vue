@@ -156,8 +156,8 @@ module.exports  = {
     }
   },
   ready() {
-      //var startTime = moment(this.item.start_time, ["h:mm A"]).format("HH:mm");
-      //var endTime = moment(this.item.end_time, ["h:mm A"]).format("HH:mm");
+      var startTime = this.convertTimeformat(this.item.start_time);
+      var endTime = this.convertTimeformat(this.item.end_time);
 
       this.addToCalendar = createCalendar({
         options: {
@@ -166,10 +166,8 @@ module.exports  = {
         },
         data: {
           title: this.item.title,     // Event title
-          //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
-          //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
-          start: new Date('Oct 15, 2018' + ' ' + '11:00'),
-          end: new Date('Oct 15, 2018' + ' ' +  '12:00'),
+          start: new Date(this.calendarDate(this.item.start_date) + ' ' + startTime), // Event start date
+          end: new Date(this.calendarDate(this.item.end_date) + ' ' + endTime), // You can also choose to set an end time.
           address: this.item.location,
           description: this.item.description,
           timezone: 'America/Detroit'
@@ -224,8 +222,8 @@ module.exports  = {
       } else {
         this.showBody = false;
       }
-      console.log('toggleBody' + this.showBody)
-      setTimeout(function(){addeventatc.refresh();}, 300);
+      /** UNCOMMENT THIS FOR AddEvent plugin **/
+      //setTimeout(function(){addeventatc.refresh();}, 300);
     },
     sortKeyInt: function ($key) {
       return parseInt($key);
@@ -234,6 +232,20 @@ module.exports  = {
       var arr = value.split(' ');
       return arr[0]
     },
+    convertTimeformat: function(time) {
+        var hours = Number(time.match(/^(\d+)/)[1]);
+        var minutes = Number(time.match(/:(\d+)/)[1]);
+        var AMPM = time.match(/\s(.*)$/)[1];
+        if (AMPM == "PM" && hours < 12) hours = hours + 12;
+        if (AMPM == "AM" && hours == 12) hours = hours - 12;
+        var sHours = hours.toString();
+        var sMinutes = minutes.toString();
+        if (hours < 10) sHours = "0" + sHours;
+        if (minutes < 10) sMinutes = "0" + sMinutes;
+
+        return sHours + ':' + sMinutes;
+    }
+
   },
   filters: {
     reformatDate: function (value) {
