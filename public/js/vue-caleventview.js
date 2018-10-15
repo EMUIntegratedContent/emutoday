@@ -20128,8 +20128,8 @@ module.exports = {
       },
       data: {
         title: this.item.title, // Event title
-        start: new Date(this.calendarDate(this.item.start_date) + ' ' + '10:00'), // Event start date
-        end: new Date(this.calendarDate(this.item.end_date) + ' ' + '11:00'), // You can also choose to set an end time.
+        start: new Date(this.calendarDate(this.item.start_date)), // Event start date
+        end: new Date(this.calendarDate(this.item.end_date)), // You can also choose to set an end time.
         address: this.item.location,
         description: this.item.description,
         timezone: 'America/Detroit'
