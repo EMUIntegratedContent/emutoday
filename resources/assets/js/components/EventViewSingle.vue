@@ -156,8 +156,8 @@ module.exports  = {
     }
   },
   ready() {
-      var startTime = moment(this.item.start_time, ["h:mm A"]).format("HH:mm");
-      var endTime = moment(this.item.end_time, ["h:mm A"]).format("HH:mm");
+      //var startTime = moment(this.item.start_time, ["h:mm A"]).format("HH:mm");
+      //var endTime = moment(this.item.end_time, ["h:mm A"]).format("HH:mm");
 
       this.addToCalendar = createCalendar({
         options: {
@@ -166,10 +166,10 @@ module.exports  = {
         },
         data: {
           title: this.item.title,     // Event title
-          start: new Date(this.calendarDate(this.item.start_date) + ' ' + startTime),   // Event start date
-          end: new Date(this.calendarDate(this.item.end_date) + ' ' + endTime),     // You can also choose to set an end time.
-          //start: new Date('Oct 15, 2018 11:00'),
-          //end: new Date('Oct 15, 2018 12:00'),
+          //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+          //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
+          start: new Date('Oct 15, 2018' + ' ' + '11:00'),
+          end: new Date('Oct 15, 2018' + ' ' +  '12:00'),
           address: this.item.location,
           description: this.item.description,
           timezone: 'America/Detroit'
