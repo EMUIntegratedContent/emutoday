@@ -20121,8 +20121,8 @@ module.exports = {
     //start: new Date('Oct 15, 2018' + ' ' + '11:00'),
     //end: new Date('Oct 15, 2018' + ' ' +  '12:00'),
     //var start_datetime = this.calendarDate(this.item.start_date) + ' 10:00';
-    var end_datetime = (0, _moment2.default)(this.calendarDate(this.item.end_date) + ' ' + '13:00').format("YYYY-MM-DD HH:mm:ss");;
-    var start_datetime = (0, _moment2.default)(this.calendarDate(this.item.start_date) + ' ' + '11:00').format("YYYY-MM-DD HH:mm:ss");
+    var end_datetime = (0, _moment2.default)(this.calendarDate(this.item.end_date) + ' 13:00').format("YYYY-MM-DD HH:mm:ss");;
+    var start_datetime = (0, _moment2.default)(this.calendarDate(this.item.start_date) + ' 11:00').format("YYYY-MM-DD HH:mm:ss");
 
     this.addToCalendar = createCalendar({
       options: {
