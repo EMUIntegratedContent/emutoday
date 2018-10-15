@@ -84,8 +84,8 @@ class CalendarController extends ApiController
       }
 
       $groupedByDay = $eventlist->groupBy(function ($date){
-    return Carbon::parse($date->start_date)->format('Y-n-j');
-              });
+          return Carbon::parse($date->start_date)->format('Y-n-j');
+      });
         $yearVar = $cdate_start->year;
         $monthVarWord = $cdate_start->format('F');
         $monthVar =  $cdate_start->month;

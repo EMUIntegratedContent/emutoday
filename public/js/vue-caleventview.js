@@ -1,8 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = { "default": require("core-js/library/fn/json/stringify"), __esModule: true };
-},{"core-js/library/fn/json/stringify":5}],2:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":6}],3:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":4}],2:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -27,40 +25,33 @@ exports.default = function (obj, key, value) {
 
   return obj;
 };
-},{"../core-js/object/define-property":2}],4:[function(require,module,exports){
+},{"../core-js/object/define-property":1}],3:[function(require,module,exports){
 
-},{}],5:[function(require,module,exports){
-var core = require('../../modules/_core');
-var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
-module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
-  return $JSON.stringify.apply($JSON, arguments);
-};
-
-},{"../../modules/_core":9}],6:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
 
-},{"../../modules/_core":9,"../../modules/es6.object.define-property":22}],7:[function(require,module,exports){
+},{"../../modules/_core":7,"../../modules/es6.object.define-property":20}],5:[function(require,module,exports){
 module.exports = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":18}],9:[function(require,module,exports){
+},{"./_is-object":16}],7:[function(require,module,exports){
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
-},{}],10:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function (fn, that, length) {
@@ -82,13 +73,13 @@ module.exports = function (fn, that, length) {
   };
 };
 
-},{"./_a-function":7}],11:[function(require,module,exports){
+},{"./_a-function":5}],9:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_fails":14}],12:[function(require,module,exports){
+},{"./_fails":12}],10:[function(require,module,exports){
 var isObject = require('./_is-object');
 var document = require('./_global').document;
 // typeof document.createElement is 'object' in old IE
@@ -97,7 +88,7 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_global":15,"./_is-object":18}],13:[function(require,module,exports){
+},{"./_global":13,"./_is-object":16}],11:[function(require,module,exports){
 var global = require('./_global');
 var core = require('./_core');
 var ctx = require('./_ctx');
@@ -160,7 +151,7 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_core":9,"./_ctx":10,"./_global":15,"./_hide":16}],14:[function(require,module,exports){
+},{"./_core":7,"./_ctx":8,"./_global":13,"./_hide":14}],12:[function(require,module,exports){
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -169,7 +160,7 @@ module.exports = function (exec) {
   }
 };
 
-},{}],15:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -177,7 +168,7 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],16:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -187,17 +178,17 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_descriptors":11,"./_object-dp":19,"./_property-desc":20}],17:[function(require,module,exports){
+},{"./_descriptors":9,"./_object-dp":17,"./_property-desc":18}],15:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":11,"./_dom-create":12,"./_fails":14}],18:[function(require,module,exports){
+},{"./_descriptors":9,"./_dom-create":10,"./_fails":12}],16:[function(require,module,exports){
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],19:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -215,7 +206,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":8,"./_descriptors":11,"./_ie8-dom-define":17,"./_to-primitive":21}],20:[function(require,module,exports){
+},{"./_an-object":6,"./_descriptors":9,"./_ie8-dom-define":15,"./_to-primitive":19}],18:[function(require,module,exports){
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -225,7 +216,7 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],21:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -239,12 +230,12 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":18}],22:[function(require,module,exports){
+},{"./_is-object":16}],20:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
 
-},{"./_descriptors":11,"./_export":13,"./_object-dp":19}],23:[function(require,module,exports){
+},{"./_descriptors":9,"./_export":11,"./_object-dp":17}],21:[function(require,module,exports){
 //! moment.js
 
 ;(function (global, factory) {
@@ -4752,7 +4743,7 @@ $export($export.S + $export.F * !require('./_descriptors'), 'Object', { definePr
 
 })));
 
-},{}],24:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -4938,7 +4929,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],25:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -5239,7 +5230,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],26:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*!
  * vue-resource v1.5.1
  * https://github.com/pagekit/vue-resource
@@ -6798,7 +6789,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":4}],27:[function(require,module,exports){
+},{"got":3}],25:[function(require,module,exports){
 (function (process){
 /**
   * vue-router v2.8.1
@@ -9427,7 +9418,7 @@ if (inBrowser && window.Vue) {
 module.exports = VueRouter;
 
 }).call(this,require('_process'))
-},{"_process":24}],28:[function(require,module,exports){
+},{"_process":22}],26:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -19668,7 +19659,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":24}],29:[function(require,module,exports){
+},{"_process":22}],27:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -19688,7 +19679,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],30:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-6520d5b8] {\n    float:right;\n}\n#graybar[_v-6520d5b8]{\n    width: 100%;\n    padding: .3rem 0;\n    background-color: #bebdbd;\n}\n#calendar-content-bar[_v-6520d5b8] {\n    background-color: #bebdbd;\n}\n")
 'use strict';
@@ -19696,10 +19687,6 @@ var __vueify_style__ = __vueify_insert__.insert("\n.pull-right[_v-6520d5b8] {\n 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
 
 var _EventViewSideBar = require('./EventViewSideBar.vue');
 
@@ -19737,7 +19724,6 @@ exports.default = {
 
       this.$http.get(route).then(function (response) {
         this.$broadcast('responseCalEvent', response.data);
-        console.log('handleEventFetch========' + (0, _stringify2.default)(response.data));
       });
     },
     freshPageLand: function freshPageLand() {
@@ -19769,7 +19755,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-6520d5b8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./EventViewContent.vue":31,"./EventViewSideBar.vue":32,"babel-runtime/core-js/json/stringify":1,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],31:[function(require,module,exports){
+},{"./EventViewContent.vue":29,"./EventViewSideBar.vue":30,"vue":26,"vue-hot-reload-api":23,"vueify/lib/insert-css":27}],29:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.calendar-bar {\n  background: #bebdbd;\n}\n.calendar-bar h4 {\n  text-transform: uppercase;\n  color: #fff;\n  font-size: 1.2rem;\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n\n.calendar-content-title {\n  padding-top: 0.8rem;\n  background: #fff;\n}\n\n.calendar-content-title h4{\n  text-transform: uppercase;\n  color: #fff;\n  margin-top: 0.5rem;\n}\n.calendar-content-content{\n  background: #fff;\n}\n.calendar-content-content h4 {\n  line-height: 1.4rem;\n  font-size: 1.3rem;\n  font-weight: 600;\n}\n.calendar-content{\n  background: #fff;\n}\n.event-day {\n  margin: 0.8rem 0 0 0;\n}\n")
 'use strict';
@@ -19837,7 +19823,6 @@ module.exports = {
       this.elist = edata.groupedByDay;
       this.firstDate = edata.firstDate;
       this.lastDate = edata.lastDate;
-      console.log('fd=' + this.firstDate);
       this.hasevents = this.elist ? 1 : 0;
     },
     fetchEventsByDay: function fetchEventsByDay(value) {
@@ -19854,7 +19839,6 @@ module.exports = {
       return (0, _moment2.default)(value).format("MM/DD");
     },
     titleDateLongWithYear: function titleDateLongWithYear(value) {
-      console.log('titleDateLongWithYear=' + value);
       var m = (0, _moment2.default)(value, "YYYY-MM-DD");
       if (m.isValid()) {
         return (0, _moment2.default)(m).format("ddd MMM D, YYYY");
@@ -19887,7 +19871,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-65b6795e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./EventViewSingle.vue":33,"babel-runtime/helpers/defineProperty":3,"moment":23,"vue":28,"vue-hot-reload-api":25,"vue-router":27,"vueify/lib/insert-css":29}],32:[function(require,module,exports){
+},{"./EventViewSingle.vue":31,"babel-runtime/helpers/defineProperty":2,"moment":21,"vue":26,"vue-hot-reload-api":23,"vue-router":25,"vueify/lib/insert-css":27}],30:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n\n  .submit-calendar {\n    padding: 0;\n  }\n  .ypsi-graphic {\n    padding-bottom: 3rem;\n    max-width: 140px;\n  }\n  .calendar-bar {\n    background: ##bebdbd;\n  }\n  .calendar-bar h4 {\n    text-transform: uppercase;\n    color: #fff;\n    font-size: 1.2rem;\n    margin-top: 0.5rem;\n    margin-bottom: 0.5rem;\n  }\n  .calendar-box {\n    background: #f2f2f3;\n    padding-top: 0.8rem;\n  }\n  .calendar-other-categories {\n    padding-top: 0.8rem;\n  }\n  /*.calendar-sidebar-content{\n  background: #ffffff;\n  }*/\n  .calendar-sidebar-title h4{\n    text-transform: uppercase;\n    color: #fff;\n    margin-top: 0.5rem;\n  }\n  .calendar-text-content p {\n    text-align: left;\n  }\n\n  .events-by-category .event-category a {\n    font-size: .9rem;\n  }\n  .events-by-category .event-category span.badge {\n    margin-right: 0.3rem;\n  }\n\n  /*.calendar ul {\n  padding: 15px;\n  background: #f3f3f3;\n  margin: 0;\n  }*/\n  .calendar .weekdays,\n  .calendar .days {\n    font-size: 12px;\n    color: #888;\n    text-align: center;\n    padding-top: 4px;\n    padding-bottom: 4px;\n  }\n  /*.calendar ul.days\n  {\n  border: 1px solid  #000;\n  padding: 10px 15px 3px;\n  background: #f9f9f9;\n}\n.calendar ul li {\nlist-style-type: none;\ndisplay: inline-block;\nwidth: 12.8%;\nheight: 25px;\nfont-size: 12px;\ncolor: #888;\ntext-align: center;\nmargin-bottom: 4px;\n\n}*/\n.calendar .event-category span {\n  font-size: 10px;\n  text-transform: uppercase;\n  font-weight: bold;\n}\n\n.calendar  a {\n  color: #0f654a;\n  display: block;\n  padding: 4px 0;\n  border: 1px solid  #f2f2f3;\n}\n.calendar a:hover {\n  border-radius: 5px;\n  /*background: #0f654a;*/\n  /*color: #fff;*/\n  text-decoration: none;\n  border: 1px solid  #0f654a;\n}\n.calendar  a.istoday {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n  /*padding: 2px 0;*/\n}\n.calendar  a.active {\n  border-radius: 5px;\n  border: 1px solid  #0f654a;\n\n  background: #fff;\n  /*padding: 2px 0;*/\n}\n.calendar  a.noevents {\n  pointer-events: none;\n  color: #888;\n}\n.calendar  a.yes-events {\n  /*pointer-events: none;*/\n  color: #0f654a;\n}\n.calendar  a.no-events {\n  pointer-events: none;\n  color: #888;\n}\n\n.calendar-box caption{\n  font-weight:400;\n  margin-bottom: .3rem;\n}\n.calendar-caption p{\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n}\n\n.calendar-caption a {\n  font-weight: 400;\n  margin-bottom: 0.3rem;\n  border: 1px none  #000;\n}\n.calendar-nav a {\n  border: none;\n}\n.calendar-nav a:hover {\n  border: none;\n}\n\n.calendar-title p {\n  font-weight: 400;\n  padding: 4px 0;\n}\n/*a#month-prev, a#month-next {\nborder: none;\n}\na#month-prev :hover, a#month-next :hover{\nborder: none;\n}*/\n")
 'use strict';
@@ -20110,7 +20094,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-2f140894", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],33:[function(require,module,exports){
+},{"vue":26,"vue-hot-reload-api":23,"vueify/lib/insert-css":27}],31:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n.eventview {\n  padding-top: 0.8rem;\n  padding-bottom: 0.3rem;\n  border-bottom: 1px dotted  #bebdbd;\n}\n.event-cancel {\n  font-size: 90%;\n  font-weight: normal;\n  color: #b20c0c;\n}\nh6 {\n  color: #0f654a;\n}\np {\n  padding: 0;\n  margin:0;\n  line-height: 1.4rem;\n  font-size: 1rem;\n}\ndiv.event-item {\n  padding-left: 1rem;\n}\np.description {\n  padding-left: 1rem;\n}\n/* always present */\n.expand-transition {\n  transition: all .6s ease;\n  height: 100%;\n  padding: 10px;\n  background-color: #fff;\n  overflow: hidden;\n}\n/* .expand-enter defines the starting state for entering */\n/* .expand-leave defines the ending state for leaving */\n.expand-enter, .expand-leave {\n  height: 0;\n  padding: 0 10px;\n  opacity: 0;\n}\n/* BUTTON STYLES */\n.add-to-calendar-checkbox{\n    padding:10px;\n    box-shadow: 0 0 0 0.5px rgba(50,50,93,.17), 0 2px 5px 0 rgba(50,50,93,.1), 0 1px 1.5px 0 rgba(0,0,0,.07), 0 1px 2px 0 rgba(0,0,0,.08), 0 0 0 0 transparent !important;\n    color: #000;\n    font-size: 15px;\n    text-decoration: none;\n    max-width: 155px;\n    margin: 5px 0px 20px 0px;\n}\n.add-to-calendar-checkbox:hover{\n    background-color: #fafafa;\n}\n")
 'use strict';
@@ -20132,8 +20116,10 @@ module.exports = {
     };
   },
   ready: function ready() {
-    var startTime = this.convertTimeformat(this.item.start_time);
-    var endTime = this.convertTimeformat(this.item.end_time);
+    //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+    //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
+    //start: new Date('Oct 15, 2018' + ' ' + '11:00'),
+    //end: new Date('Oct 15, 2018' + ' ' +  '12:00'),
 
     this.addToCalendar = createCalendar({
       options: {
@@ -20142,8 +20128,10 @@ module.exports = {
       },
       data: {
         title: this.item.title, // Event title
-        start: new Date(this.calendarDate(this.item.start_date) + ' ' + startTime), // Event start date
-        end: new Date(this.calendarDate(this.item.end_date) + ' ' + endTime), // You can also choose to set an end time.
+        start: new Date(this.calendarDate(this.item.start_date) + ' ' + this.convertTimeformat(this.item.start_time)), // Event start date
+        end: new Date(this.calendarDate(this.item.end_date) + ' ' + this.convertTimeformat(this.item.end_time)), // You can also choose to set an end time.
+        // start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+        // end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
         address: this.item.location,
         description: this.item.description,
         timezone: 'America/Detroit'
@@ -20277,7 +20265,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-8cbe0bc0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"moment":23,"vue":28,"vue-hot-reload-api":25,"vueify/lib/insert-css":29}],34:[function(require,module,exports){
+},{"moment":21,"vue":26,"vue-hot-reload-api":23,"vueify/lib/insert-css":27}],32:[function(require,module,exports){
 'use strict';
 
 var _EventView = require('./components/EventView.vue');
@@ -20308,6 +20296,6 @@ new Vue({
     }
 });
 
-},{"./components/EventView.vue":30,"vue":28,"vue-resource":26,"vue-router":27}]},{},[34]);
+},{"./components/EventView.vue":28,"vue":26,"vue-resource":24,"vue-router":25}]},{},[32]);
 
 //# sourceMappingURL=vue-caleventview.js.map

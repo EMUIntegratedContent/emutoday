@@ -113,7 +113,6 @@ module.exports  = {
       this.elist = edata.groupedByDay;
       this.firstDate = edata.firstDate;
       this.lastDate = edata.lastDate;
-      console.log('fd='+this.firstDate );
       this.hasevents = this.elist ? 1: 0;
     },
     fetchEventsByDay: function(value) {
@@ -130,7 +129,6 @@ module.exports  = {
       return  moment(value).format("MM/DD")
     },
     titleDateLongWithYear: function (value) {
-      console.log('titleDateLongWithYear=' + value)
       let m = moment(value, "YYYY-MM-DD");
       if (m.isValid()) {
         return  moment(m).format("ddd MMM D, YYYY")
