@@ -20152,7 +20152,9 @@ module.exports = {
       this.showBody = false;
     }
     /** UNCOMMENT THIS FOR AddEvent plugin **/
-    //setTimeout(function(){addeventatc.refresh();}, 300);
+    setTimeout(function () {
+      addeventatc.refresh();
+    }, 300);
   },
 
   computed: {
