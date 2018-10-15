@@ -20,7 +20,7 @@
     </template>
 
     <div class="event-item" v-if="showBody" transition="expand">
-        <div class="new-cal">{{{ addToCalendar.innerHTML }}}</div>
+        <!--<div class="new-cal">{{{ addToCalendar.innerHTML }}}</div>-->
 
         <!-- AddEvent plugin script (REMOVED IN FAVOR OF free add to calendar button: https://github.com/carlsednaoui/add-to-calendar-buttons on 9/28/18)-->
         <!--<div title="Add to Calendar" class="addeventatc">
@@ -156,6 +156,7 @@ module.exports  = {
     }
   },
   ready() {
+      /*
       this.addToCalendar = createCalendar({
         options: {
           class: 'my-class',
@@ -170,6 +171,7 @@ module.exports  = {
           timezone: 'America/Detroit'
         }
       });
+      */
     if(this.item.id == this.targeteventid){
       this.showBody = true;
     } else {
