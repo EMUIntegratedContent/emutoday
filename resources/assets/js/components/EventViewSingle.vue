@@ -163,11 +163,11 @@ module.exports  = {
         },
         data: {
           title: this.item.title,     // Event title
-          //start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
-          //end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
+          start: new Date(this.calendarDate(this.item.start_date) + ' ' + moment(this.item.start_time, ["h:mm A"]).format("HH:mm")),   // Event start date
+          end: new Date(this.calendarDate(this.item.end_date) + ' ' + moment(this.item.end_time, ["h:mm A"]).format("HH:mm")),     // You can also choose to set an end time.
           address: this.item.location,
           description: this.item.description,
-          //timezone: 'America/Detroit'
+          timezone: 'America/Detroit'
         }
       });
     if(this.item.id == this.targeteventid){
