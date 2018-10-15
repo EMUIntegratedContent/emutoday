@@ -20208,7 +20208,6 @@ module.exports = {
       var sMinutes = minutes.toString();
       if (hours < 10) sHours = "0" + sHours;
       if (minutes < 10) sMinutes = "0" + sMinutes;
-
       return sHours + ':' + sMinutes;
     }
 
