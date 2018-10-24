@@ -63,6 +63,7 @@
                     if(isset($_GET['truepreview']) && $_GET['truepreview'] == "true"):
                   @endphp
                         <a href="?truepreview=false" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i> Editable preview</a>
+                        {!! Form::hidden('content') !!}
                         {!! $story->content !!}
                   @php
                     else:
