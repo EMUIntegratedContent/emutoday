@@ -22,6 +22,7 @@ use Emutoday\Category;
 use Emutoday\Building;
 use Emutoday\Mediafile;
 use Emutoday\Mediatype;
+use Emutoday\User;
 
 use Carbon\Carbon;
 use Mail;
@@ -231,7 +232,14 @@ class EventController extends ApiController
         if($validation->passes())
         {
           cas()->authenticate(); //run authentication before calling cas->user
+
           $event = new Event;
+
+          // If the user's email is present in the User table, save the user's id in the cea_events.user_id field
+          $userInUserTable = User::where('email', cas()->user() . '@emich.edu')->first();
+          if($userInUserTable){
+            $event->user_id = $userInUserTable->id;
+          }
 
           // General & Location info
           $event->submitter             	= cas()->user();
@@ -239,7 +247,8 @@ class EventController extends ApiController
           $event->short_title           	= $request->get('short_title');
           $event->description           	= $request->get('description');
           $event->on_campus				      	= $request->get('on_campus');
-          ($request->get('building') !== null) ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
+          //($request->get('building') !== null) ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
+          ($request->get('building') !== null) ? $event->building = preg_replace(["/[\s\\/]/","/[^A-Za-z0-9-\\/]/"], ["-",""], strtolower($request->get('building'))) : $event->building = null;
           $event->room						      	= $request->get('room');
           $event->location              	= $request->get('location');
 
@@ -278,6 +287,7 @@ class EventController extends ApiController
           $event->mini_calendar						= $request->get('mini_calendar');
           $event->lbc_approved						= $request->get('lbc_approved');
           $event->submission_date 				= \Carbon\Carbon::now();
+          $event->is_hidden                 = $request->get('is_hidden');
 
           // Reset Approvals
           if($request->input('admin_pre_approved')){
@@ -313,6 +323,7 @@ class EventController extends ApiController
             $event->save();
             return $this->setStatusCode(201)
             ->respondSavedWithData($createMessage,[ 'record_id' => $event->id ]);
+
           }
         }
       }
@@ -344,24 +355,21 @@ class EventController extends ApiController
 
       public function addMediaFile(Request $request)
       {
-        // dd($request->all(), $request->hasFile('eventimg'), $request->file('eventimg'));
 
         $group = 'event';
         $type = 'small';
-        // $imgFile = $request->file('attachment');
-        // dd($imgFile);
         $event_id = $request->input('event_id');
-        // $imgFile = $request->file('attachment');
         $event = Event::findOrFail($event_id);
 
-        if (empty(Input::file('eventimg'))) { // Just add/change caption to existing mediafile
+        if (empty(Input::file('eventimg'))) { // Just add/change caption and alt text to existing mediafile
           $mediafile_record = Mediafile::findOrFail($event->mediafile_id);
           $mediafile_record->caption = $request->input('caption');
+          $mediafile_record->alt_text = $request->input('alt_text');
           $mediafile_record->save();
           if($event->save()) {
             $returnData = ['eventimage' => $mediafile_record->filename, 'is_promoted' => $event->is_promoted,'is_approved' => $event->is_approved,'priority'=> $event->priority, 'home_priority'=> $event->home_priority, 'is_canceled'=> $event->is_canceled];
             return $this->setStatusCode(201)
-            ->respondUpdatedWithData('Image Caption Updated',$returnData );
+            ->respondUpdatedWithData('Image Caption and Alt Text Updated',$returnData );
           }
         } else {
           //define the image paths
@@ -395,6 +403,7 @@ class EventController extends ApiController
             ->save(public_path() . $destinationFolder . $imgFileName);
             $mediafile->filename = $imgFileName;
             $mediafile->caption = $request->input('caption');
+            $mediafile->alt_text = $request->input('alt_text');
             $mediafile->save();
             $event->mediaFile()->associate($mediafile);
             $event->is_promoted = 1;
@@ -553,7 +562,8 @@ class EventController extends ApiController
             $event->short_title           	= $request->get('short_title');
             $event->description           	= $request->get('description');
             $event->on_campus				      	= $request->get('on_campus');
-            $request->get('building') !== null ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
+            //$request->get('building') !== null ? $event->building = str_replace(' ', '-', strtolower($request->get('building'))) : $event->building = null;
+            $request->get('building') !== null ? $event->building = preg_replace(["/[\s\\/]/","/[^A-Za-z0-9-\\/]/"], ["-",""], strtolower($request->get('building'))) : $event->building = null;
             $event->room						      	= $request->get('room');
             $event->location              	= $request->get('location');
 
@@ -592,6 +602,7 @@ class EventController extends ApiController
             $event->mini_calendar						= $request->get('mini_calendar');
             $event->lbc_approved						= $request->get('lbc_approved');
             $event->submission_date 				= \Carbon\Carbon::now();
+            $event->is_hidden                 = $request->get('is_hidden');
 
             // Reset Approvals
             if($request->input('admin_pre_approved')){

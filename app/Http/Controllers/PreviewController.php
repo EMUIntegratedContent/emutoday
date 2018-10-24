@@ -63,6 +63,7 @@ class PreviewController extends Controller
           {
           $mainStoryImage = null;
           $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
+          $fullBannerImage = $story->storyImages()->where('image_type','full')->first(); // Added to EMU Today August 2018
 
           foreach($mainStoryImages as $mainimg){
               if($mainimg->imgtype->type == 'story') {
@@ -86,7 +87,7 @@ class PreviewController extends Controller
           if($stype == 'story' || $stype == 'emutoday' || $stype == 'news' || $stype == 'advisory' || $stype == 'statement' || $stype == 'featurephoto'){
               $sideStoryBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
 
-              return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo'));
+              return view('preview.story.story', compact('story','gtype', 'qtype', 'stype', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs', 'authorInfo', 'fullBannerImage'));
 
           } else if($stype == 'student'){
               $sideStudentBlurbs->push($story->storyImages()->where('image_type', 'small')->first());
@@ -174,6 +175,15 @@ class PreviewController extends Controller
       $storyImages = $page->storyImages;
       $tweets = Tweet::where('approved',1)->orderBy('created_at','desc')->take(4)->get();
 
+      // Show up to 4 featured events on the front page
+      $featuredevents =  Event::where([
+        ['is_approved', 1],
+        ['mediafile_id', '>', 0],
+        ['end_date', '>=', date('Y-m-d')]
+      ])
+        ->orderBy('start_date', 'asc')
+        ->take(4)->get();
+
       JavaScript::put([
           'jsis' => 'hi',
           'cdnow' => Carbon::now(),
@@ -181,7 +191,7 @@ class PreviewController extends Controller
           'cdend' => Carbon::now()->addDays(7),
           'currentPage' => $page
       ]);
-      return view('preview.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag'));
+      return view('preview.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'currentStorysBasic', 'currentAnnouncements', 'events','tweets','currentStoryImageWithVideoTag', 'featuredevents'));
 
   }
 

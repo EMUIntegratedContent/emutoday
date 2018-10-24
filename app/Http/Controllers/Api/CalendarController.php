@@ -56,7 +56,8 @@ class CalendarController extends ApiController
       $eventlist = Event::where([
           ['start_date', '>=' , $cdate_start],
           ['start_date', '<=', $cdate_end],
-          ['is_approved', '1']
+          ['is_approved', '1'],
+          ['is_hidden', '0']
       ])->orderBy('start_date')->orderBy('start_time')->get();
 
       // it would be better just to not query the event in the first place...
@@ -83,8 +84,8 @@ class CalendarController extends ApiController
       }
 
       $groupedByDay = $eventlist->groupBy(function ($date){
-    return Carbon::parse($date->start_date)->format('Y-n-j');
-              });
+          return Carbon::parse($date->start_date)->format('Y-n-j');
+      });
         $yearVar = $cdate_start->year;
         $monthVarWord = $cdate_start->format('F');
         $monthVar =  $cdate_start->month;
@@ -139,7 +140,8 @@ class CalendarController extends ApiController
 
       $eventlist = Event::select('id','title', 'start_date', 'end_date')->where([
         ['start_date', '>', $cdate_monthstart],
-        ['start_date', '<', $cdate_monthend]
+        ['start_date', '<', $cdate_monthend],
+        ['is_hidden', '0']
         ])->get();
 
 
@@ -148,7 +150,8 @@ class CalendarController extends ApiController
         $grouped = Event::select('id','title', 'start_date', 'end_date')
                   ->where([
                       ['start_date', '>', $cdate_monthstart],
-                      ['start_date', '<', $cdate_monthend]
+                      ['start_date', '<', $cdate_monthend],
+                      ['is_hidden', 0]
                       ])->orderBy('start_date', 'asc')->get();
 
         $groupedByDay =  $grouped->groupBy(function ($date){
@@ -253,7 +256,8 @@ class CalendarController extends ApiController
       $eventsInMonth = Event::select('id', 'start_date', 'end_date')->where([
         ['is_approved', 1],
         ['start_date', '>', $cdate_start],
-        ['start_date', '<', $cdate_end]
+        ['start_date', '<', $cdate_end],
+        ['is_hidden', 0]
         ])->get();
 
         $keyed = $eventsInMonth->keyBy(function ($item) {

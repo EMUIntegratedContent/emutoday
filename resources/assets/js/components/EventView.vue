@@ -67,7 +67,6 @@
 
             this.$http.get(route).then(function(response) {
             this.$broadcast('responseCalEvent', response.data)
-            console.log('handleEventFetch========' + JSON.stringify(response.data) );
 
             });
           },

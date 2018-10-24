@@ -11,6 +11,7 @@ class MailingList extends Model
   protected $fillable = [
       'email_address',
       'description',
+      'show',
     ];
 
   public function emails()

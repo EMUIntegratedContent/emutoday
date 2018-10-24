@@ -61,6 +61,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'is_featured'           => $event->is_featured,
       'is_approved'           => $event->is_approved,
       'is_canceled'           => $event->is_canceled,
+      'is_hidden'           => $event->is_hidden,
       'homepage'           => $event->homepage,
       'submitter'           => $event->submitter,
       'tickets'           => $event->tickets,
@@ -82,6 +83,7 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'mini_calendar_alt'           => $event->mini_calendar_alt,
       'eventimage' => ($event->mediafile_id > 0)?$event->mediaFile->filename: null,
       'caption' => ($event->mediafile_id > 0)?$event->mediaFile->caption: null,
+      'alt_text' => ($event->mediafile_id > 0)? str_replace('"', "", $event->mediaFile->alt_text) : null,
 
       'feature_image'           => $event->feature_image,
       'on_campus'           => $event->on_campus,

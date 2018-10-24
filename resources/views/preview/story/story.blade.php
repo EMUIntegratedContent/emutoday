@@ -25,13 +25,21 @@
       <div class="large-12 medium-12 small-12 columns">
         <!-- Story Page Title group -->
         <div id="title-grouping" class="row">
-          <div class="large-5 medium-4 small-6 columns">{{-- <h3 class="news-caps">{{$story->story_type}}</h3> --}}</div>
-          <div class="large-2 medium-4 small-6 columns">
-            <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
+          <h3>@if($story->story_type == 'featurephoto')Featured Photo: @endif {{ $story->title }}</h3>
+          @if($story->story_type != 'featurephoto')
+            @if(isset($story->subtitle))
+                <h5>{{ $story->subtitle }}</h5>
+            @endif
+          @endif
+          <!-- Full banner image area (displays only if it exists for this story) -->
+          @if($fullBannerImage)
+          <div class="small-12 columns">
+              <div id="full-banner-image">
+                <img src="{{$fullBannerImage->present()->mainImageURL }}" alt="{{ $fullBannerImage->alt_text != '' ? $fullBannerImage->alt_text : str_replace('"', "", $story->title) }}"></a>
+                <div class="feature-image-caption">{{ $fullBannerImage->teaser }}</div>
+              </div>
           </div>
-          <div class="large-5 medium-4 hide-for-small columns">
-            <p class="small-return-news"><a href="/news">News Home</a></p>
-          </div>
+          @endif
         </div>
         <!-- Story Page Content -->
         <div id="story-content" class="row">
@@ -41,71 +49,81 @@
                         'files' => true
                     ]) !!}
           <!-- Story Content Column -->
-          <div class="large-9 medium-8 small-12 columns">
-            <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>
-            <h3>@if($story->story_type == 'featurephoto')Featured Photo: @endif {{ $story->title }}</h3>
-            @if($story->story_type != 'featurephoto')
-              @if(isset($story->subtitle))
-                  <h5>{{ $story->subtitle }}</h5>
-              @endif
-            @endif
-            @if(isset($mainStoryImage))
+          <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
+            @if(isset($mainStoryImage) && !isset($fullBannerImage))
             <div id="big-feature-image">
-              <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
+              <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}"></a>
 
               <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
             </div>
           @endif
             @if($story->story_type != 'external')
               <div id="story-content-edit">
-              {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+                  @php
+                    if(isset($_GET['truepreview']) && $_GET['truepreview'] == "true"):
+                  @endphp
+                        <a href="?truepreview=false" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i> Editable preview</a>
+                        {!! Form::hidden('content') !!}
+                        {!! $story->content !!}
+                  @php
+                    else:
+                  @endphp
+                    <a href="?truepreview=true" class="button secondary"><i class="fa fa-exchange" aria-hidden="true"></i> True preview</a>
+                    {!! Form::textarea('content', null, ['class' => 'form-control', 'id' => 'cktextarea']) !!}
+                  @php
+                    endif
+                  @endphp
               </div>
             @endif
-
-        @if($story->story_type != 'featurephoto')
-          @if($story->author_id === 0)
-          <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-          <p class="news-contacts">Contact {{ $story->user->first_name }} {{ $story->user->last_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
-          @else
-          <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-          <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
-          @endif
-        @else
-          <p class="news-contacts">Photo {{$story->photo_credit}}</p>
-        @endif
           </div>
           <!-- Page Side Bar Column -->
-          <div class="large-3 medium-4 small-12 columns featurepadding">
-              @if(isset($sideStoryBlurb))
-                  @if(count($sideStoryBlurbs)>0)
-                      @include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
+          <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
+            <div class="dots-bottom">
+              <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>
+              <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
+            </div>
+            <div class="dots-bottom">
+              <p>
+                @if($story->story_type != 'featurephoto')
+                  Written by:<br>
+                  @if($story->author_id === 0)
+                    @unless($story->author_info)
+                      {{$story->user->first_name}} {{$story->user->last_name}}
+                    @else
+                      {{$story->author_info}}
                     @endif
-                    @if(count($sideStudentBlurbs)>0)
-                        @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
-
-                    @endif
-  @endif
-                    </div>
-                </div>
+                  @else
+                      {{ $story->author->first_name }} {{ $story->author->last_name }}
+                  @endif
+                @else
+                  Photo:<br>
+                  {{$story->photo_credit}}
+                @endif
+              </p>
+            </div>
+            @if($story->story_type != 'featurephoto')
+            <div class="dots-bottom">
+              <p>
+                Contact:<br>
+                {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>
+                <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a><br>
+                {{ empty($story->contact->phone) ? '': $story->contact->phone }}
+              </p>
+            </div>
+            @endif
+          </div>
+        </div><!-- /#story-content -->
                 <div class="row">
                     <div class="medium-8 columns">
+                      <div class="button-group">
+                              {!! Form::submit('Update Story', ['class' => 'button']) !!}
+                              {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
+                      </div><!-- /.button-group -->
+                      {!! Form::close() !!}
                     </div><!-- /.medium-8 columns -->
                     <div class="medium-4 columns">
                         <h6 class="subheader text-right">Start Date: {{$story->start_date}}</h6>
                     </div><!-- /.medium-4 columns -->
-                </div><!-- /.row -->
-                <div class="row">
-                    <div class="medium-6 columns">
-                        <div class="button-group">
-                                {!! Form::submit('Update Story', ['class' => 'button']) !!}
-                                {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
-                        </div><!-- /.button-group -->
-                        {!! Form::close() !!}
-                    </div><!-- /.medium-6 columns -->
-                    <div class="medium-6 columns">
-
-
-                    </div><!-- /.medium-6 columns -->
                 </div><!-- /.row -->
       </div>
 
@@ -126,6 +144,10 @@
             filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
         });
     });
+
+    // $(document).ready(function(){
+    //     $('.cke_widget_wrapper').css({'float':'none', 'background-color':'black'});
+    // });
     </script>
 
   @endsection

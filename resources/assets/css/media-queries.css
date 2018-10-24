@@ -1,5 +1,20 @@
 /* Small only */
 @media screen and (max-width: 39.9375em) {
+
+    .subhead-title{
+        margin: 0 0 .6rem 0;
+    }
+
+    #five-events-bar{
+        display: none;
+        height: 0;
+    }
+    #news-headline-bar-bottom h4{
+        margin-bottom: 0;
+    }
+    #news-headline-bar {
+        padding: .0;
+    }
 	#tier1-nav	.icon-menu {
 		margin-top: 0;
 			padding-left: 0;
@@ -18,7 +33,7 @@
 		display: none;
 	}
 	ul.social-icons {
-		float:left;
+		float:none;
 	}
 
 	#news-story-bar.magazine-story {
@@ -41,11 +56,32 @@
 		top: 45%;
 		padding: 0.4rem 0.8rem 0;
 	}
+   #tier2-nav h1.magazine-title {
+        font-size: 3.2rem;
+        line-height: 3.2rem;
+    }
+    #tier2-nav .magazine-for-title {
+        display: inline-block;
+        transform: rotate(-90deg);
+        transform-origin: left bottom 0;
+        margin-left: .7rem;
+        font-size: .45rem;
+        text-transform: uppercase;
+        color: #999;
+        font-weight: 600;
 
+    }
+span.menu-area{
+    margin-bottom: .5rem;
+    display: block;
+}
 }
 
 /* Medium and up */
 @media screen and (min-width: 40em) {
+    #vue-search-form-offcanvas{
+        visibility: hidden;
+    }
 
 	.icon-menu {
 		float:right;
@@ -78,7 +114,9 @@
 		color: #fff;
 	}
 
-
+	ul.social-icons {
+		float:none;
+	}
 
 	/*
 	#profile-text-over-image-box p{
@@ -91,8 +129,14 @@
 /* Medium only */
 @media screen and (min-width: 40em) and (max-width: 63.9375em) {
 
+#more-stories-bar .card-section{
+  margin: 0;
+  padding: .8rem 1.1rem 2rem 1.2rem;
+}
 
-
+#five-events-bar .column:last-child{
+        display: none;
+    }
 
 	.featurepadding{
 		padding-left: 0;
@@ -157,7 +201,7 @@
 	line-height: 1.3rem;
 }
 ul.social-icons {
-	float:left;
+	float:none;
 }
 /*.featured-content-block span.truemu{
 display: none;
@@ -264,7 +308,9 @@ display: none;
 	padding: .8rem 1rem 1rem;
 }*/
 
-
+    .text-right{
+        float: right;
+    }
 }
 
 /* Large and up */

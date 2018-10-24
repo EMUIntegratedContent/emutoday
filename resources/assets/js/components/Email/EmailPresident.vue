@@ -1,0 +1,56 @@
+<template>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label>
+                    Include the presidential section in this email? <input type="checkbox" v-model="isPresidentIncluded" aria-label="">
+                </label>
+            </div><!-- /input-group -->
+        </div><!-- /.col-md-12 -->
+        <div class="col-xs-12">
+            <div class="form-group">
+              <label for="presidentTeaser">Subheading (optional)</label>
+              <textarea class="form-control" id="presidentTeaser" v-model="teaser">{{ teaser }}</textarea>
+            </div>
+        </div><!-- /.col-md-12 -->
+        <div class="col-xs-12">
+            <div class="form-group">
+              <label for="presidentUrl">URL to president's statement</label>
+              <input type="text" class="form-control" id="presidentUrl" v-model="presidentUrl" />
+            </div>
+        </div><!-- /.col-md-12 -->
+    </div><!-- ./row -->
+</template>
+<style scoped>
+</style>
+<script>
+
+export default  {
+  directives: {},
+  components: {},
+  props: ['teaser', 'isPresidentIncluded', 'presidentUrl'],
+  data: function() {
+    return {
+    }
+  },
+  ready() {
+
+  },
+  computed: {
+
+  },
+  methods : {
+  },
+  filters: {
+
+  },
+
+  // the `events` option simply calls `$on` for you
+  // when the instance is created
+  events: {
+  },
+
+  watch: {
+  },
+}
+</script>

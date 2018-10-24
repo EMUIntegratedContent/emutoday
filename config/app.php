@@ -108,7 +108,7 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+    //'log' => env('APP_LOG', 'single'),
 
     /*
     |--------------------------------------------------------------------------
@@ -161,7 +161,7 @@ return [
         Barryvdh\Cors\ServiceProvider::class,
         Snowfire\Beautymail\BeautymailServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        Roumen\Feed\FeedServiceProvider::class,
+        Laravelium\Feed\FeedServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
         Spatie\Analytics\AnalyticsServiceProvider::class,
 
@@ -226,7 +226,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Cas' => Subfission\Cas\Facades\Cas::class,
-        'Feed' => Roumen\Feed\Feed::class,
+        'Feed' => Laravelium\Feed\Feed::class,
         'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
 
     ],

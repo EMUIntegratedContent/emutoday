@@ -25,9 +25,8 @@
   <meta property="og:image:width" content="400" />
   <meta property="og:image:height" content="300" />
   @else
-  <meta property="og:image" content="http://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
-  <meta property="og:image:secure_url" content="https://www.emich.edu/communications/images/logos/blockegreenwithtm.jpg"/>
-  <meta property="og:image:width" content="150" />
+  <meta property="og:image" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>
+  <meta property="og:image:secure_url" content="{{ url('/assets/imgs/home/block-e-green.png') }}"/>  <meta property="og:image:width" content="150" />
   <meta property="og:image:height" content="150" />
   @endif
 @endsection
@@ -40,47 +39,62 @@
         @if(Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $story->start_date) < Carbon\Carbon::now())
           <!-- Story Page Title group -->
           <div id="title-grouping" class="row">
-            <div class="large-5 medium-4 small-6 columns"></div>
-            <div class="large-2 medium-4 small-6 columns">
-              <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
+            <div class="small-12 columns">
+              <h2>{{ $story->title }}</h2>
+              <h3>{{ $story->subtitle }}</h3>
             </div>
-            <div class="large-5 medium-4 hide-for-small columns">
-              <p class="small-return-news"><a href="/story/news">News Home</a></p>
-            </div>
+            <!-- Full banner image area (displays only if it exists for this story) -->
+            @if($fullBannerImage)
+                <div class="small-12 columns">
+                    <div id="full-banner-image">
+                      <img src="{{$fullBannerImage->present()->mainImageURL }}" alt="{{ $fullBannerImage->alt_text != '' ? $fullBannerImage->alt_text : str_replace('"', "", $story->title) }}"></a>
+                      <div class="feature-image-caption">{{ $fullBannerImage->teaser }}</div>
+                    </div>
+                </div>
+            @endif
           </div>
           <!-- Story Page Content -->
           <div id="story-content" class="row">
             <!-- Story Content Column -->
-            <div class="large-9 medium-8 small-12 columns">
-              <h3>{{ $story->title }}</h3>
-              <h5>{{ $story->subtitle }}</h5>
-              @include('public.vendor.addthis')
-            @if(isset($mainStoryImage))
-              <div id="big-feature-image">
-                <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="feature-image"></a>
-                <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
-              </div>
-            @endif
+            <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
+              @if(isset($mainStoryImage) && !isset($fullBannerImage))
+                <div id="big-feature-image">
+                  <img src="{{$mainStoryImage->present()->mainImageURL }}" alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}"></a>
+                  <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
+                </div>
+              @endif
               <div id="story-content-edit">
                 {!! $story->content !!}
               </div>
-              @if($story->author_id === 0)
-                @unless($story->author_info)
-                  <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-                @else
-                  <div class="story-author">{{$story->author_info}}</div>
-                @endif
-              @else
-                  <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-              @endif
-              <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
             </div>
             <!-- Page Side Bar Column -->
-            <div class="large-3 medium-4 small-12 columns featurepadding">
-              @include('public.components.sideblock', ['sidetitle' => 'Featured Stories','storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
-              @if(isset($sideStudentBlurbs))
-                  @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
-              @endif
+            <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
+              <div class="dots-bottom">
+                @include('public.vendor.addthis')
+                <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
+              </div>
+              <div class="dots-bottom">
+                <p>
+                  Written by:<br>
+                  @if($story->author_id === 0)
+                    @unless($story->author_info)
+                      {{$story->user->first_name}} {{$story->user->last_name}}
+                    @else
+                      {{$story->author_info}}
+                    @endif
+                  @else
+                      {{ $story->author->first_name }} {{ $story->author->last_name }}
+                  @endif
+                </p>
+              </div>
+              <div class="no-dots-bottom">
+                <p>
+                  Contact:<br>
+                  {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>
+                  <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a><br>
+                  {{ empty($story->contact->phone) ? '': $story->contact->phone }}
+                </p>
+              </div>
             </div>
           </div>
         @else
@@ -88,6 +102,14 @@
         @endif
       </div>
     </div>
+  </div>
+  <div id="more-stories-bar">
+      @include('public.components.sideblock', ['storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
+      {{--
+      @if(isset($sideStudentBlurbs))
+          @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
+      @endif
+      --}}
   </div>
 @endsection
     @section('footer-vendor')

@@ -20,7 +20,6 @@ export default  {
        components: { },
        props: ['gcols'],
        ready: function() {
-           console.log('gcols= '+ this.gcols )
            this.fetchAllRecords()
        },
        data: function () {
@@ -85,7 +84,6 @@ export default  {
 
                     return item
                 });
-                console.log('newdata'+ newdata)
            },
        },
 
@@ -94,10 +92,6 @@ export default  {
            this.$http.get('/api/page/chartload')
 
            .then((response) =>{
-               console.log('response.status=' + response.status);
-               console.log('response.ok=' + response.ok);
-               console.log('response.statusText=' + response.statusText);
-               console.log('response.data=' + response.data);
                this.$set('alldata', response.data.data)
                this.checkOverDataFilter();
            }, (response) => {
@@ -106,8 +100,6 @@ export default  {
            }).bind(this);
        },
        checkOverDataFilter:function() {
-           console.log('newRows= ' + this.alldata);
-
        },
        formatReturn: function (items) {
          var itemsArray = [];
@@ -119,7 +111,6 @@ export default  {
              ];
              itemsArray.push(itemArray);
          }
-         console.log('itemsArray='+ itemsArray);
          return itemsArray
         },
 

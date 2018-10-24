@@ -231,18 +231,21 @@ h2.issue-date {
     display: block;
     left: 0;
     padding: 0.5rem 1rem;
-    margin: 0 0 .8rem 0;
+    margin: 0 0 0rem 0;
     position: relative;
     text-transform: uppercase;
     top: 0;
 }
 .featured-content-block.magazine-block ul.feature-list{
-    margin-left: 1rem;
+    margin-left: 0rem;
 }
 .featured-content-block.magazine-block ul.feature-list li {
     border-bottom: 1px dotted #ccc;
     line-height: 1.2rem;
-    padding: 0rem 0 .2rem;
+    padding: .8rem 1rem .8rem 1rem;
+}
+.featured-content-block.magazine-block ul.feature-list li:hover {
+	background-color: #f8f8f8;
 }
 .featured-content-block.magazine-block ul.feature-list li:last-child {
     border-bottom: none;

@@ -6,8 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.5.*",
-        "laravel/passport": "~3.0",
+        "laravel/framework": "5.6.*",
+        "laravel/passport": "~5.0",
         "laravelcollective/html": "5.5.*",
         "laracasts/presenter": "^0.2.1",
         "laracasts/utilities": "~2.0",
@@ -16,24 +16,24 @@
         "intervention/imagecache": "^2.3",
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
-        "barryvdh/laravel-debugbar": "^2.2",
- 	      "subfission/cas": "~2.0.9",
+        "barryvdh/laravel-debugbar": "^3.1",
+        "subfission/cas": "~2.0.9",
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.11.0",
-        "doctrine/dbal": "~2.3",
+        "doctrine/dbal": "~2.8",
         "snowfire/beautymail": "dev-master",
         "guzzlehttp/guzzle": "^6.3",
-        "roumen/feed": "~2.10",
         "laravel/tinker": "^1.0",
-        "spatie/laravel-analytics": "^3.3"
+        "spatie/laravel-analytics": "^3.3",
+        "laravelium/feed": "2.12.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~6.0",
+        "phpunit/phpunit": "^7.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
-        "laravel/homestead": "^5.0",
+        "laravel/homestead": "^7.0",
         "filp/whoops": "~2.0"
     },
     "autoload": {
@@ -60,12 +60,10 @@
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "post-autoload-dump": [
           "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

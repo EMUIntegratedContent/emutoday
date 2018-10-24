@@ -23,7 +23,8 @@ class StoryImage extends Model
         'image_extension',
         'image_type',
         'imagetype_id',
-        'group'
+        'group',
+        'alt_text'
 ];
 
 

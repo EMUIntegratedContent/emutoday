@@ -49,194 +49,221 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 },{"../core-js/symbol":12,"../core-js/symbol/iterator":13}],15:[function(require,module,exports){
 
 },{}],16:[function(require,module,exports){
-var core  = require('../../modules/_core')
-  , $JSON = core.JSON || (core.JSON = {stringify: JSON.stringify});
-module.exports = function stringify(it){ // eslint-disable-line no-unused-vars
+var core = require('../../modules/_core');
+var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
+module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
   return $JSON.stringify.apply($JSON, arguments);
 };
+
 },{"../../modules/_core":34}],17:[function(require,module,exports){
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
-module.exports = function create(P, D){
+module.exports = function create(P, D) {
   return $Object.create(P, D);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.create":87}],18:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.create":86}],18:[function(require,module,exports){
 require('../../modules/es6.object.define-properties');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperties(T, D){
+module.exports = function defineProperties(T, D) {
   return $Object.defineProperties(T, D);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.define-properties":88}],19:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.define-properties":87}],19:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
-module.exports = function defineProperty(it, key, desc){
+module.exports = function defineProperty(it, key, desc) {
   return $Object.defineProperty(it, key, desc);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.define-property":89}],20:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.define-property":88}],20:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-descriptor');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyDescriptor(it, key){
+module.exports = function getOwnPropertyDescriptor(it, key) {
   return $Object.getOwnPropertyDescriptor(it, key);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":90}],21:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-descriptor":89}],21:[function(require,module,exports){
 require('../../modules/es6.object.get-own-property-names');
 var $Object = require('../../modules/_core').Object;
-module.exports = function getOwnPropertyNames(it){
+module.exports = function getOwnPropertyNames(it) {
   return $Object.getOwnPropertyNames(it);
 };
-},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":91}],22:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-own-property-names":90}],22:[function(require,module,exports){
 require('../../modules/es6.symbol');
 module.exports = require('../../modules/_core').Object.getOwnPropertySymbols;
-},{"../../modules/_core":34,"../../modules/es6.symbol":98}],23:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.symbol":97}],23:[function(require,module,exports){
 require('../../modules/es6.object.get-prototype-of');
 module.exports = require('../../modules/_core').Object.getPrototypeOf;
-},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":92}],24:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.get-prototype-of":91}],24:[function(require,module,exports){
 require('../../modules/es6.object.is-extensible');
 module.exports = require('../../modules/_core').Object.isExtensible;
-},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":93}],25:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.is-extensible":92}],25:[function(require,module,exports){
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
-},{"../../modules/_core":34,"../../modules/es6.object.keys":94}],26:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.keys":93}],26:[function(require,module,exports){
 require('../../modules/es6.object.prevent-extensions');
 module.exports = require('../../modules/_core').Object.preventExtensions;
-},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":95}],27:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.prevent-extensions":94}],27:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
-},{"../../modules/_core":34,"../../modules/es6.object.to-string":96,"../../modules/es6.symbol":98,"../../modules/es7.symbol.async-iterator":99,"../../modules/es7.symbol.observable":100}],28:[function(require,module,exports){
+
+},{"../../modules/_core":34,"../../modules/es6.object.to-string":95,"../../modules/es6.symbol":97,"../../modules/es7.symbol.async-iterator":98,"../../modules/es7.symbol.observable":99}],28:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":97,"../../modules/web.dom.iterable":101}],29:[function(require,module,exports){
-module.exports = function(it){
-  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+
+},{"../../modules/_wks-ext":83,"../../modules/es6.string.iterator":96,"../../modules/web.dom.iterable":100}],29:[function(require,module,exports){
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
+
 },{}],30:[function(require,module,exports){
-module.exports = function(){ /* empty */ };
+module.exports = function () { /* empty */ };
+
 },{}],31:[function(require,module,exports){
 var isObject = require('./_is-object');
-module.exports = function(it){
-  if(!isObject(it))throw TypeError(it + ' is not an object!');
+module.exports = function (it) {
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
+
 },{"./_is-object":50}],32:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = require('./_to-iobject')
-  , toLength  = require('./_to-length')
-  , toIndex   = require('./_to-index');
-module.exports = function(IS_INCLUDES){
-  return function($this, el, fromIndex){
-    var O      = toIObject($this)
-      , length = toLength(O.length)
-      , index  = toIndex(fromIndex, length)
-      , value;
+var toIObject = require('./_to-iobject');
+var toLength = require('./_to-length');
+var toAbsoluteIndex = require('./_to-absolute-index');
+module.exports = function (IS_INCLUDES) {
+  return function ($this, el, fromIndex) {
+    var O = toIObject($this);
+    var length = toLength(O.length);
+    var index = toAbsoluteIndex(fromIndex, length);
+    var value;
     // Array#includes uses SameValueZero equality algorithm
-    if(IS_INCLUDES && el != el)while(length > index){
+    // eslint-disable-next-line no-self-compare
+    if (IS_INCLUDES && el != el) while (length > index) {
       value = O[index++];
-      if(value != value)return true;
-    // Array#toIndex ignores holes, Array#includes - not
-    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
-      if(O[index] === el)return IS_INCLUDES || index || 0;
+      // eslint-disable-next-line no-self-compare
+      if (value != value) return true;
+    // Array#indexOf ignores holes, Array#includes - not
+    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
+      if (O[index] === el) return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-},{"./_to-index":76,"./_to-iobject":78,"./_to-length":79}],33:[function(require,module,exports){
+
+},{"./_to-absolute-index":75,"./_to-iobject":77,"./_to-length":78}],33:[function(require,module,exports){
 var toString = {}.toString;
 
-module.exports = function(it){
+module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
+
 },{}],34:[function(require,module,exports){
-var core = module.exports = {version: '2.4.0'};
-if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+var core = module.exports = { version: '2.5.1' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
 },{}],35:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
-module.exports = function(fn, that, length){
+module.exports = function (fn, that, length) {
   aFunction(fn);
-  if(that === undefined)return fn;
-  switch(length){
-    case 1: return function(a){
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
       return fn.call(that, a);
     };
-    case 2: return function(a, b){
+    case 2: return function (a, b) {
       return fn.call(that, a, b);
     };
-    case 3: return function(a, b, c){
+    case 3: return function (a, b, c) {
       return fn.call(that, a, b, c);
     };
   }
-  return function(/* ...args */){
+  return function (/* ...args */) {
     return fn.apply(that, arguments);
   };
 };
+
 },{"./_a-function":29}],36:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function(it){
-  if(it == undefined)throw TypeError("Can't call method on  " + it);
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
+
 },{}],37:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
-module.exports = !require('./_fails')(function(){
-  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !require('./_fails')(function () {
+  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
+
 },{"./_fails":42}],38:[function(require,module,exports){
-var isObject = require('./_is-object')
-  , document = require('./_global').document
-  // in old IE typeof document.createElement is 'object'
-  , is = isObject(document) && isObject(document.createElement);
-module.exports = function(it){
+var isObject = require('./_is-object');
+var document = require('./_global').document;
+// typeof document.createElement is 'object' in old IE
+var is = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
+
 },{"./_global":43,"./_is-object":50}],39:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
+
 },{}],40:[function(require,module,exports){
 // all enumerable object keys, includes symbols
-var getKeys = require('./_object-keys')
-  , gOPS    = require('./_object-gops')
-  , pIE     = require('./_object-pie');
-module.exports = function(it){
-  var result     = getKeys(it)
-    , getSymbols = gOPS.f;
-  if(getSymbols){
-    var symbols = getSymbols(it)
-      , isEnum  = pIE.f
-      , i       = 0
-      , key;
-    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
+var getKeys = require('./_object-keys');
+var gOPS = require('./_object-gops');
+var pIE = require('./_object-pie');
+module.exports = function (it) {
+  var result = getKeys(it);
+  var getSymbols = gOPS.f;
+  if (getSymbols) {
+    var symbols = getSymbols(it);
+    var isEnum = pIE.f;
+    var i = 0;
+    var key;
+    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
   } return result;
 };
-},{"./_object-gops":64,"./_object-keys":67,"./_object-pie":68}],41:[function(require,module,exports){
-var global    = require('./_global')
-  , core      = require('./_core')
-  , ctx       = require('./_ctx')
-  , hide      = require('./_hide')
-  , PROTOTYPE = 'prototype';
 
-var $export = function(type, name, source){
-  var IS_FORCED = type & $export.F
-    , IS_GLOBAL = type & $export.G
-    , IS_STATIC = type & $export.S
-    , IS_PROTO  = type & $export.P
-    , IS_BIND   = type & $export.B
-    , IS_WRAP   = type & $export.W
-    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
-    , expProto  = exports[PROTOTYPE]
-    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
-    , key, own, out;
-  if(IS_GLOBAL)source = name;
-  for(key in source){
+},{"./_object-gops":63,"./_object-keys":66,"./_object-pie":67}],41:[function(require,module,exports){
+var global = require('./_global');
+var core = require('./_core');
+var ctx = require('./_ctx');
+var hide = require('./_hide');
+var PROTOTYPE = 'prototype';
+
+var $export = function (type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var IS_WRAP = type & $export.W;
+  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
+  var expProto = exports[PROTOTYPE];
+  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
+  var key, own, out;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if(own && key in exports)continue;
+    if (own && key in exports) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -244,11 +271,11 @@ var $export = function(type, name, source){
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function(C){
-      var F = function(a, b, c){
-        if(this instanceof C){
-          switch(arguments.length){
-            case 0: return new C;
+    : IS_WRAP && target[key] == out ? (function (C) {
+      var F = function (a, b, c) {
+        if (this instanceof C) {
+          switch (arguments.length) {
+            case 0: return new C();
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -259,10 +286,10 @@ var $export = function(type, name, source){
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if(IS_PROTO){
+    if (IS_PROTO) {
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
     }
   }
 };
@@ -274,232 +301,241 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library` 
+$export.R = 128; // real proto method for `library`
 module.exports = $export;
+
 },{"./_core":34,"./_ctx":35,"./_global":43,"./_hide":45}],42:[function(require,module,exports){
-module.exports = function(exec){
+module.exports = function (exec) {
   try {
     return !!exec();
-  } catch(e){
+  } catch (e) {
     return true;
   }
 };
+
 },{}],43:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
+
 },{}],44:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function(it, key){
+module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
+
 },{}],45:[function(require,module,exports){
-var dP         = require('./_object-dp')
-  , createDesc = require('./_property-desc');
-module.exports = require('./_descriptors') ? function(object, key, value){
+var dP = require('./_object-dp');
+var createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function (object, key, value) {
   return dP.f(object, key, createDesc(1, value));
-} : function(object, key, value){
+} : function (object, key, value) {
   object[key] = value;
   return object;
 };
-},{"./_descriptors":37,"./_object-dp":59,"./_property-desc":70}],46:[function(require,module,exports){
-module.exports = require('./_global').document && document.documentElement;
+
+},{"./_descriptors":37,"./_object-dp":58,"./_property-desc":69}],46:[function(require,module,exports){
+var document = require('./_global').document;
+module.exports = document && document.documentElement;
+
 },{"./_global":43}],47:[function(require,module,exports){
-module.exports = !require('./_descriptors') && !require('./_fails')(function(){
-  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !require('./_descriptors') && !require('./_fails')(function () {
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
+
 },{"./_descriptors":37,"./_dom-create":38,"./_fails":42}],48:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+// eslint-disable-next-line no-prototype-builtins
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
+
 },{"./_cof":33}],49:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
-module.exports = Array.isArray || function isArray(arg){
+module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
+
 },{"./_cof":33}],50:[function(require,module,exports){
-module.exports = function(it){
+module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
+
 },{}],51:[function(require,module,exports){
 'use strict';
-var create         = require('./_object-create')
-  , descriptor     = require('./_property-desc')
-  , setToStringTag = require('./_set-to-string-tag')
-  , IteratorPrototype = {};
+var create = require('./_object-create');
+var descriptor = require('./_property-desc');
+var setToStringTag = require('./_set-to-string-tag');
+var IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function(){ return this; });
+require('./_hide')(IteratorPrototype, require('./_wks')('iterator'), function () { return this; });
 
-module.exports = function(Constructor, NAME, next){
-  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
+module.exports = function (Constructor, NAME, next) {
+  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-},{"./_hide":45,"./_object-create":58,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],52:[function(require,module,exports){
+
+},{"./_hide":45,"./_object-create":57,"./_property-desc":69,"./_set-to-string-tag":71,"./_wks":84}],52:[function(require,module,exports){
 'use strict';
-var LIBRARY        = require('./_library')
-  , $export        = require('./_export')
-  , redefine       = require('./_redefine')
-  , hide           = require('./_hide')
-  , has            = require('./_has')
-  , Iterators      = require('./_iterators')
-  , $iterCreate    = require('./_iter-create')
-  , setToStringTag = require('./_set-to-string-tag')
-  , getPrototypeOf = require('./_object-gpo')
-  , ITERATOR       = require('./_wks')('iterator')
-  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
-  , FF_ITERATOR    = '@@iterator'
-  , KEYS           = 'keys'
-  , VALUES         = 'values';
+var LIBRARY = require('./_library');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var hide = require('./_hide');
+var has = require('./_has');
+var Iterators = require('./_iterators');
+var $iterCreate = require('./_iter-create');
+var setToStringTag = require('./_set-to-string-tag');
+var getPrototypeOf = require('./_object-gpo');
+var ITERATOR = require('./_wks')('iterator');
+var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
 
-var returnThis = function(){ return this; };
+var returnThis = function () { return this; };
 
-module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
+module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function(kind){
-    if(!BUGGY && kind in proto)return proto[kind];
-    switch(kind){
-      case KEYS: return function keys(){ return new Constructor(this, kind); };
-      case VALUES: return function values(){ return new Constructor(this, kind); };
-    } return function entries(){ return new Constructor(this, kind); };
+  var getMethod = function (kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS: return function keys() { return new Constructor(this, kind); };
+      case VALUES: return function values() { return new Constructor(this, kind); };
+    } return function entries() { return new Constructor(this, kind); };
   };
-  var TAG        = NAME + ' Iterator'
-    , DEF_VALUES = DEFAULT == VALUES
-    , VALUES_BUG = false
-    , proto      = Base.prototype
-    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
-    , $default   = $native || getMethod(DEFAULT)
-    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
-    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
-    , methods, key, IteratorPrototype;
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
   // Fix native
-  if($anyNative){
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
-    if(IteratorPrototype !== Object.prototype){
+  if ($anyNative) {
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if(DEF_VALUES && $native && $native.name !== VALUES){
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
     VALUES_BUG = true;
-    $default = function values(){ return $native.call(this); };
+    $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
+  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG]  = returnThis;
-  if(DEFAULT){
+  Iterators[TAG] = returnThis;
+  if (DEFAULT) {
     methods = {
-      values:  DEF_VALUES ? $default : getMethod(VALUES),
-      keys:    IS_SET     ? $default : getMethod(KEYS),
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if(FORCED)for(key in methods){
-      if(!(key in proto))redefine(proto, key, methods[key]);
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":56,"./_object-gpo":65,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],53:[function(require,module,exports){
-module.exports = function(done, value){
-  return {value: value, done: !!done};
+
+},{"./_export":41,"./_has":44,"./_hide":45,"./_iter-create":51,"./_iterators":54,"./_library":55,"./_object-gpo":64,"./_redefine":70,"./_set-to-string-tag":71,"./_wks":84}],53:[function(require,module,exports){
+module.exports = function (done, value) {
+  return { value: value, done: !!done };
 };
+
 },{}],54:[function(require,module,exports){
 module.exports = {};
+
 },{}],55:[function(require,module,exports){
-var getKeys   = require('./_object-keys')
-  , toIObject = require('./_to-iobject');
-module.exports = function(object, el){
-  var O      = toIObject(object)
-    , keys   = getKeys(O)
-    , length = keys.length
-    , index  = 0
-    , key;
-  while(length > index)if(O[key = keys[index++]] === el)return key;
-};
-},{"./_object-keys":67,"./_to-iobject":78}],56:[function(require,module,exports){
 module.exports = true;
-},{}],57:[function(require,module,exports){
-var META     = require('./_uid')('meta')
-  , isObject = require('./_is-object')
-  , has      = require('./_has')
-  , setDesc  = require('./_object-dp').f
-  , id       = 0;
-var isExtensible = Object.isExtensible || function(){
+
+},{}],56:[function(require,module,exports){
+var META = require('./_uid')('meta');
+var isObject = require('./_is-object');
+var has = require('./_has');
+var setDesc = require('./_object-dp').f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !require('./_fails')(function(){
+var FREEZE = !require('./_fails')(function () {
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function(it){
-  setDesc(it, META, {value: {
+var setMeta = function (it) {
+  setDesc(it, META, { value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  }});
+  } });
 };
-var fastKey = function(it, create){
+var fastKey = function (it, create) {
   // return primitive with prefix
-  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if(!has(it, META)){
+  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return 'F';
+    if (!isExtensible(it)) return 'F';
     // not necessary to add metadata
-    if(!create)return 'E';
+    if (!create) return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function(it, create){
-  if(!has(it, META)){
+var getWeak = function (it, create) {
+  if (!has(it, META)) {
     // can't set metadata to uncaught frozen object
-    if(!isExtensible(it))return true;
+    if (!isExtensible(it)) return true;
     // not necessary to add metadata
-    if(!create)return false;
+    if (!create) return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function(it){
-  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
+var onFreeze = function (it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY:      META,
-  NEED:     false,
-  fastKey:  fastKey,
-  getWeak:  getWeak,
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
   onFreeze: onFreeze
 };
-},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":59,"./_uid":82}],58:[function(require,module,exports){
+
+},{"./_fails":42,"./_has":44,"./_is-object":50,"./_object-dp":58,"./_uid":81}],57:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject    = require('./_an-object')
-  , dPs         = require('./_object-dps')
-  , enumBugKeys = require('./_enum-bug-keys')
-  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
-  , Empty       = function(){ /* empty */ }
-  , PROTOTYPE   = 'prototype';
+var anObject = require('./_an-object');
+var dPs = require('./_object-dps');
+var enumBugKeys = require('./_enum-bug-keys');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var Empty = function () { /* empty */ };
+var PROTOTYPE = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function(){
+var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = require('./_dom-create')('iframe')
-    , i      = enumBugKeys.length
-    , lt     = '<'
-    , gt     = '>'
-    , iframeDocument;
+  var iframe = require('./_dom-create')('iframe');
+  var i = enumBugKeys.length;
+  var lt = '<';
+  var gt = '>';
+  var iframeDocument;
   iframe.style.display = 'none';
   require('./_html').appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -510,15 +546,15 @@ var createDict = function(){
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties){
+module.exports = Object.create || function create(O, Properties) {
   var result;
-  if(O !== null){
+  if (O !== null) {
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty;
+    result = new Empty();
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -526,292 +562,318 @@ module.exports = Object.create || function create(O, Properties){
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":60,"./_shared-key":73}],59:[function(require,module,exports){
-var anObject       = require('./_an-object')
-  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
-  , toPrimitive    = require('./_to-primitive')
-  , dP             = Object.defineProperty;
+},{"./_an-object":31,"./_dom-create":38,"./_enum-bug-keys":39,"./_html":46,"./_object-dps":59,"./_shared-key":72}],58:[function(require,module,exports){
+var anObject = require('./_an-object');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var toPrimitive = require('./_to-primitive');
+var dP = Object.defineProperty;
 
-exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes) {
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if(IE8_DOM_DEFINE)try {
+  if (IE8_DOM_DEFINE) try {
     return dP(O, P, Attributes);
-  } catch(e){ /* empty */ }
-  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
-  if('value' in Attributes)O[P] = Attributes.value;
+  } catch (e) { /* empty */ }
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
   return O;
 };
-},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":81}],60:[function(require,module,exports){
-var dP       = require('./_object-dp')
-  , anObject = require('./_an-object')
-  , getKeys  = require('./_object-keys');
 
-module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties){
+},{"./_an-object":31,"./_descriptors":37,"./_ie8-dom-define":47,"./_to-primitive":80}],59:[function(require,module,exports){
+var dP = require('./_object-dp');
+var anObject = require('./_an-object');
+var getKeys = require('./_object-keys');
+
+module.exports = require('./_descriptors') ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
-  var keys   = getKeys(Properties)
-    , length = keys.length
-    , i = 0
-    , P;
-  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
+  var keys = getKeys(Properties);
+  var length = keys.length;
+  var i = 0;
+  var P;
+  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
-},{"./_an-object":31,"./_descriptors":37,"./_object-dp":59,"./_object-keys":67}],61:[function(require,module,exports){
-var pIE            = require('./_object-pie')
-  , createDesc     = require('./_property-desc')
-  , toIObject      = require('./_to-iobject')
-  , toPrimitive    = require('./_to-primitive')
-  , has            = require('./_has')
-  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
-  , gOPD           = Object.getOwnPropertyDescriptor;
 
-exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P){
+},{"./_an-object":31,"./_descriptors":37,"./_object-dp":58,"./_object-keys":66}],60:[function(require,module,exports){
+var pIE = require('./_object-pie');
+var createDesc = require('./_property-desc');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var has = require('./_has');
+var IE8_DOM_DEFINE = require('./_ie8-dom-define');
+var gOPD = Object.getOwnPropertyDescriptor;
+
+exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor(O, P) {
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if(IE8_DOM_DEFINE)try {
+  if (IE8_DOM_DEFINE) try {
     return gOPD(O, P);
-  } catch(e){ /* empty */ }
-  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch (e) { /* empty */ }
+  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
 };
-},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":68,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],62:[function(require,module,exports){
+
+},{"./_descriptors":37,"./_has":44,"./_ie8-dom-define":47,"./_object-pie":67,"./_property-desc":69,"./_to-iobject":77,"./_to-primitive":80}],61:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = require('./_to-iobject')
-  , gOPN      = require('./_object-gopn').f
-  , toString  = {}.toString;
+var toIObject = require('./_to-iobject');
+var gOPN = require('./_object-gopn').f;
+var toString = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function(it){
+var getWindowNames = function (it) {
   try {
     return gOPN(it);
-  } catch(e){
+  } catch (e) {
     return windowNames.slice();
   }
 };
 
-module.exports.f = function getOwnPropertyNames(it){
+module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":63,"./_to-iobject":78}],63:[function(require,module,exports){
+},{"./_object-gopn":62,"./_to-iobject":77}],62:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys      = require('./_object-keys-internal')
-  , hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
+var $keys = require('./_object-keys-internal');
+var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
-},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],64:[function(require,module,exports){
-exports.f = Object.getOwnPropertySymbols;
-},{}],65:[function(require,module,exports){
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has         = require('./_has')
-  , toObject    = require('./_to-object')
-  , IE_PROTO    = require('./_shared-key')('IE_PROTO')
-  , ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function(O){
+},{"./_enum-bug-keys":39,"./_object-keys-internal":65}],63:[function(require,module,exports){
+exports.f = Object.getOwnPropertySymbols;
+
+},{}],64:[function(require,module,exports){
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+var has = require('./_has');
+var toObject = require('./_to-object');
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+module.exports = Object.getPrototypeOf || function (O) {
   O = toObject(O);
-  if(has(O, IE_PROTO))return O[IE_PROTO];
-  if(typeof O.constructor == 'function' && O instanceof O.constructor){
+  if (has(O, IE_PROTO)) return O[IE_PROTO];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
-},{"./_has":44,"./_shared-key":73,"./_to-object":80}],66:[function(require,module,exports){
-var has          = require('./_has')
-  , toIObject    = require('./_to-iobject')
-  , arrayIndexOf = require('./_array-includes')(false)
-  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
 
-module.exports = function(object, names){
-  var O      = toIObject(object)
-    , i      = 0
-    , result = []
-    , key;
-  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+},{"./_has":44,"./_shared-key":72,"./_to-object":79}],65:[function(require,module,exports){
+var has = require('./_has');
+var toIObject = require('./_to-iobject');
+var arrayIndexOf = require('./_array-includes')(false);
+var IE_PROTO = require('./_shared-key')('IE_PROTO');
+
+module.exports = function (object, names) {
+  var O = toIObject(object);
+  var i = 0;
+  var result = [];
+  var key;
+  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while(names.length > i)if(has(O, key = names[i++])){
+  while (names.length > i) if (has(O, key = names[i++])) {
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
-},{"./_array-includes":32,"./_has":44,"./_shared-key":73,"./_to-iobject":78}],67:[function(require,module,exports){
-// 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys       = require('./_object-keys-internal')
-  , enumBugKeys = require('./_enum-bug-keys');
 
-module.exports = Object.keys || function keys(O){
+},{"./_array-includes":32,"./_has":44,"./_shared-key":72,"./_to-iobject":77}],66:[function(require,module,exports){
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys = require('./_object-keys-internal');
+var enumBugKeys = require('./_enum-bug-keys');
+
+module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
-},{"./_enum-bug-keys":39,"./_object-keys-internal":66}],68:[function(require,module,exports){
+
+},{"./_enum-bug-keys":39,"./_object-keys-internal":65}],67:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
-},{}],69:[function(require,module,exports){
+
+},{}],68:[function(require,module,exports){
 // most Object methods by ES6 should accept primitives
-var $export = require('./_export')
-  , core    = require('./_core')
-  , fails   = require('./_fails');
-module.exports = function(KEY, exec){
-  var fn  = (core.Object || {})[KEY] || Object[KEY]
-    , exp = {};
+var $export = require('./_export');
+var core = require('./_core');
+var fails = require('./_fails');
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
   exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
 };
-},{"./_core":34,"./_export":41,"./_fails":42}],70:[function(require,module,exports){
-module.exports = function(bitmap, value){
+
+},{"./_core":34,"./_export":41,"./_fails":42}],69:[function(require,module,exports){
+module.exports = function (bitmap, value) {
   return {
-    enumerable  : !(bitmap & 1),
+    enumerable: !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable    : !(bitmap & 4),
-    value       : value
+    writable: !(bitmap & 4),
+    value: value
   };
 };
-},{}],71:[function(require,module,exports){
-module.exports = require('./_hide');
-},{"./_hide":45}],72:[function(require,module,exports){
-var def = require('./_object-dp').f
-  , has = require('./_has')
-  , TAG = require('./_wks')('toStringTag');
 
-module.exports = function(it, tag, stat){
-  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
+},{}],70:[function(require,module,exports){
+module.exports = require('./_hide');
+
+},{"./_hide":45}],71:[function(require,module,exports){
+var def = require('./_object-dp').f;
+var has = require('./_has');
+var TAG = require('./_wks')('toStringTag');
+
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
-},{"./_has":44,"./_object-dp":59,"./_wks":85}],73:[function(require,module,exports){
-var shared = require('./_shared')('keys')
-  , uid    = require('./_uid');
-module.exports = function(key){
+
+},{"./_has":44,"./_object-dp":58,"./_wks":84}],72:[function(require,module,exports){
+var shared = require('./_shared')('keys');
+var uid = require('./_uid');
+module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
-var global = require('./_global')
-  , SHARED = '__core-js_shared__'
-  , store  = global[SHARED] || (global[SHARED] = {});
-module.exports = function(key){
+
+},{"./_shared":73,"./_uid":81}],73:[function(require,module,exports){
+var global = require('./_global');
+var SHARED = '__core-js_shared__';
+var store = global[SHARED] || (global[SHARED] = {});
+module.exports = function (key) {
   return store[key] || (store[key] = {});
 };
-},{"./_global":43}],75:[function(require,module,exports){
-var toInteger = require('./_to-integer')
-  , defined   = require('./_defined');
+
+},{"./_global":43}],74:[function(require,module,exports){
+var toInteger = require('./_to-integer');
+var defined = require('./_defined');
 // true  -> String#at
 // false -> String#codePointAt
-module.exports = function(TO_STRING){
-  return function(that, pos){
-    var s = String(defined(that))
-      , i = toInteger(pos)
-      , l = s.length
-      , a, b;
-    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
+module.exports = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(defined(that));
+    var i = toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
       : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
   };
 };
-},{"./_defined":36,"./_to-integer":77}],76:[function(require,module,exports){
-var toInteger = require('./_to-integer')
-  , max       = Math.max
-  , min       = Math.min;
-module.exports = function(index, length){
+
+},{"./_defined":36,"./_to-integer":76}],75:[function(require,module,exports){
+var toInteger = require('./_to-integer');
+var max = Math.max;
+var min = Math.min;
+module.exports = function (index, length) {
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-},{"./_to-integer":77}],77:[function(require,module,exports){
+
+},{"./_to-integer":76}],76:[function(require,module,exports){
 // 7.1.4 ToInteger
-var ceil  = Math.ceil
-  , floor = Math.floor;
-module.exports = function(it){
+var ceil = Math.ceil;
+var floor = Math.floor;
+module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-},{}],78:[function(require,module,exports){
+
+},{}],77:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = require('./_iobject')
-  , defined = require('./_defined');
-module.exports = function(it){
+var IObject = require('./_iobject');
+var defined = require('./_defined');
+module.exports = function (it) {
   return IObject(defined(it));
 };
-},{"./_defined":36,"./_iobject":48}],79:[function(require,module,exports){
+
+},{"./_defined":36,"./_iobject":48}],78:[function(require,module,exports){
 // 7.1.15 ToLength
-var toInteger = require('./_to-integer')
-  , min       = Math.min;
-module.exports = function(it){
+var toInteger = require('./_to-integer');
+var min = Math.min;
+module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-},{"./_to-integer":77}],80:[function(require,module,exports){
+
+},{"./_to-integer":76}],79:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
-module.exports = function(it){
+module.exports = function (it) {
   return Object(defined(it));
 };
-},{"./_defined":36}],81:[function(require,module,exports){
+
+},{"./_defined":36}],80:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function(it, S){
-  if(!isObject(it))return it;
+module.exports = function (it, S) {
+  if (!isObject(it)) return it;
   var fn, val;
-  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
-  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
   throw TypeError("Can't convert object to primitive value");
 };
-},{"./_is-object":50}],82:[function(require,module,exports){
-var id = 0
-  , px = Math.random();
-module.exports = function(key){
+
+},{"./_is-object":50}],81:[function(require,module,exports){
+var id = 0;
+var px = Math.random();
+module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-},{}],83:[function(require,module,exports){
-var global         = require('./_global')
-  , core           = require('./_core')
-  , LIBRARY        = require('./_library')
-  , wksExt         = require('./_wks-ext')
-  , defineProperty = require('./_object-dp').f;
-module.exports = function(name){
-  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
-};
-},{"./_core":34,"./_global":43,"./_library":56,"./_object-dp":59,"./_wks-ext":84}],84:[function(require,module,exports){
-exports.f = require('./_wks');
-},{"./_wks":85}],85:[function(require,module,exports){
-var store      = require('./_shared')('wks')
-  , uid        = require('./_uid')
-  , Symbol     = require('./_global').Symbol
-  , USE_SYMBOL = typeof Symbol == 'function';
 
-var $exports = module.exports = function(name){
+},{}],82:[function(require,module,exports){
+var global = require('./_global');
+var core = require('./_core');
+var LIBRARY = require('./_library');
+var wksExt = require('./_wks-ext');
+var defineProperty = require('./_object-dp').f;
+module.exports = function (name) {
+  var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+};
+
+},{"./_core":34,"./_global":43,"./_library":55,"./_object-dp":58,"./_wks-ext":83}],83:[function(require,module,exports){
+exports.f = require('./_wks');
+
+},{"./_wks":84}],84:[function(require,module,exports){
+var store = require('./_shared')('wks');
+var uid = require('./_uid');
+var Symbol = require('./_global').Symbol;
+var USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function (name) {
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-},{"./_global":43,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+
+},{"./_global":43,"./_shared":73,"./_uid":81}],85:[function(require,module,exports){
 'use strict';
-var addToUnscopables = require('./_add-to-unscopables')
-  , step             = require('./_iter-step')
-  , Iterators        = require('./_iterators')
-  , toIObject        = require('./_to-iobject');
+var addToUnscopables = require('./_add-to-unscopables');
+var step = require('./_iter-step');
+var Iterators = require('./_iterators');
+var toIObject = require('./_to-iobject');
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = require('./_iter-define')(Array, 'Array', function(iterated, kind){
+module.exports = require('./_iter-define')(Array, 'Array', function (iterated, kind) {
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , kind  = this._k
-    , index = this._i++;
-  if(!O || index >= O.length){
+}, function () {
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
+  if (!O || index >= O.length) {
     this._t = undefined;
     return step(1);
   }
-  if(kind == 'keys'  )return step(0, index);
-  if(kind == 'values')return step(0, O[index]);
+  if (kind == 'keys') return step(0, index);
+  if (kind == 'values') return step(0, O[index]);
   return step(0, [index, O[index]]);
 }, 'values');
 
@@ -821,278 +883,288 @@ Iterators.Arguments = Iterators.Array;
 addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
-},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":78}],87:[function(require,module,exports){
-var $export = require('./_export')
+
+},{"./_add-to-unscopables":30,"./_iter-define":52,"./_iter-step":53,"./_iterators":54,"./_to-iobject":77}],86:[function(require,module,exports){
+var $export = require('./_export');
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', {create: require('./_object-create')});
-},{"./_export":41,"./_object-create":58}],88:[function(require,module,exports){
+$export($export.S, 'Object', { create: require('./_object-create') });
+
+},{"./_export":41,"./_object-create":57}],87:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperties: require('./_object-dps')});
-},{"./_descriptors":37,"./_export":41,"./_object-dps":60}],89:[function(require,module,exports){
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperties: require('./_object-dps') });
+
+},{"./_descriptors":37,"./_export":41,"./_object-dps":59}],88:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
-},{"./_descriptors":37,"./_export":41,"./_object-dp":59}],90:[function(require,module,exports){
-// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject                 = require('./_to-iobject')
-  , $getOwnPropertyDescriptor = require('./_object-gopd').f;
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', { defineProperty: require('./_object-dp').f });
 
-require('./_object-sap')('getOwnPropertyDescriptor', function(){
-  return function getOwnPropertyDescriptor(it, key){
+},{"./_descriptors":37,"./_export":41,"./_object-dp":58}],89:[function(require,module,exports){
+// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
+var toIObject = require('./_to-iobject');
+var $getOwnPropertyDescriptor = require('./_object-gopd').f;
+
+require('./_object-sap')('getOwnPropertyDescriptor', function () {
+  return function getOwnPropertyDescriptor(it, key) {
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
 });
-},{"./_object-gopd":61,"./_object-sap":69,"./_to-iobject":78}],91:[function(require,module,exports){
+
+},{"./_object-gopd":60,"./_object-sap":68,"./_to-iobject":77}],90:[function(require,module,exports){
 // 19.1.2.7 Object.getOwnPropertyNames(O)
-require('./_object-sap')('getOwnPropertyNames', function(){
+require('./_object-sap')('getOwnPropertyNames', function () {
   return require('./_object-gopn-ext').f;
 });
-},{"./_object-gopn-ext":62,"./_object-sap":69}],92:[function(require,module,exports){
-// 19.1.2.9 Object.getPrototypeOf(O)
-var toObject        = require('./_to-object')
-  , $getPrototypeOf = require('./_object-gpo');
 
-require('./_object-sap')('getPrototypeOf', function(){
-  return function getPrototypeOf(it){
+},{"./_object-gopn-ext":61,"./_object-sap":68}],91:[function(require,module,exports){
+// 19.1.2.9 Object.getPrototypeOf(O)
+var toObject = require('./_to-object');
+var $getPrototypeOf = require('./_object-gpo');
+
+require('./_object-sap')('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
     return $getPrototypeOf(toObject(it));
   };
 });
-},{"./_object-gpo":65,"./_object-sap":69,"./_to-object":80}],93:[function(require,module,exports){
+
+},{"./_object-gpo":64,"./_object-sap":68,"./_to-object":79}],92:[function(require,module,exports){
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = require('./_is-object');
 
-require('./_object-sap')('isExtensible', function($isExtensible){
-  return function isExtensible(it){
+require('./_object-sap')('isExtensible', function ($isExtensible) {
+  return function isExtensible(it) {
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
 });
-},{"./_is-object":50,"./_object-sap":69}],94:[function(require,module,exports){
-// 19.1.2.14 Object.keys(O)
-var toObject = require('./_to-object')
-  , $keys    = require('./_object-keys');
 
-require('./_object-sap')('keys', function(){
-  return function keys(it){
+},{"./_is-object":50,"./_object-sap":68}],93:[function(require,module,exports){
+// 19.1.2.14 Object.keys(O)
+var toObject = require('./_to-object');
+var $keys = require('./_object-keys');
+
+require('./_object-sap')('keys', function () {
+  return function keys(it) {
     return $keys(toObject(it));
   };
 });
-},{"./_object-keys":67,"./_object-sap":69,"./_to-object":80}],95:[function(require,module,exports){
-// 19.1.2.15 Object.preventExtensions(O)
-var isObject = require('./_is-object')
-  , meta     = require('./_meta').onFreeze;
 
-require('./_object-sap')('preventExtensions', function($preventExtensions){
-  return function preventExtensions(it){
+},{"./_object-keys":66,"./_object-sap":68,"./_to-object":79}],94:[function(require,module,exports){
+// 19.1.2.15 Object.preventExtensions(O)
+var isObject = require('./_is-object');
+var meta = require('./_meta').onFreeze;
+
+require('./_object-sap')('preventExtensions', function ($preventExtensions) {
+  return function preventExtensions(it) {
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
 });
-},{"./_is-object":50,"./_meta":57,"./_object-sap":69}],96:[function(require,module,exports){
+
+},{"./_is-object":50,"./_meta":56,"./_object-sap":68}],95:[function(require,module,exports){
 arguments[4][15][0].apply(exports,arguments)
-},{"dup":15}],97:[function(require,module,exports){
+},{"dup":15}],96:[function(require,module,exports){
 'use strict';
-var $at  = require('./_string-at')(true);
+var $at = require('./_string-at')(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-require('./_iter-define')(String, 'String', function(iterated){
+require('./_iter-define')(String, 'String', function (iterated) {
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function(){
-  var O     = this._t
-    , index = this._i
-    , point;
-  if(index >= O.length)return {value: undefined, done: true};
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return { value: undefined, done: true };
   point = $at(O, index);
   this._i += point.length;
-  return {value: point, done: false};
+  return { value: point, done: false };
 });
-},{"./_iter-define":52,"./_string-at":75}],98:[function(require,module,exports){
+
+},{"./_iter-define":52,"./_string-at":74}],97:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
-var global         = require('./_global')
-  , has            = require('./_has')
-  , DESCRIPTORS    = require('./_descriptors')
-  , $export        = require('./_export')
-  , redefine       = require('./_redefine')
-  , META           = require('./_meta').KEY
-  , $fails         = require('./_fails')
-  , shared         = require('./_shared')
-  , setToStringTag = require('./_set-to-string-tag')
-  , uid            = require('./_uid')
-  , wks            = require('./_wks')
-  , wksExt         = require('./_wks-ext')
-  , wksDefine      = require('./_wks-define')
-  , keyOf          = require('./_keyof')
-  , enumKeys       = require('./_enum-keys')
-  , isArray        = require('./_is-array')
-  , anObject       = require('./_an-object')
-  , toIObject      = require('./_to-iobject')
-  , toPrimitive    = require('./_to-primitive')
-  , createDesc     = require('./_property-desc')
-  , _create        = require('./_object-create')
-  , gOPNExt        = require('./_object-gopn-ext')
-  , $GOPD          = require('./_object-gopd')
-  , $DP            = require('./_object-dp')
-  , $keys          = require('./_object-keys')
-  , gOPD           = $GOPD.f
-  , dP             = $DP.f
-  , gOPN           = gOPNExt.f
-  , $Symbol        = global.Symbol
-  , $JSON          = global.JSON
-  , _stringify     = $JSON && $JSON.stringify
-  , PROTOTYPE      = 'prototype'
-  , HIDDEN         = wks('_hidden')
-  , TO_PRIMITIVE   = wks('toPrimitive')
-  , isEnum         = {}.propertyIsEnumerable
-  , SymbolRegistry = shared('symbol-registry')
-  , AllSymbols     = shared('symbols')
-  , OPSymbols      = shared('op-symbols')
-  , ObjectProto    = Object[PROTOTYPE]
-  , USE_NATIVE     = typeof $Symbol == 'function'
-  , QObject        = global.QObject;
+var global = require('./_global');
+var has = require('./_has');
+var DESCRIPTORS = require('./_descriptors');
+var $export = require('./_export');
+var redefine = require('./_redefine');
+var META = require('./_meta').KEY;
+var $fails = require('./_fails');
+var shared = require('./_shared');
+var setToStringTag = require('./_set-to-string-tag');
+var uid = require('./_uid');
+var wks = require('./_wks');
+var wksExt = require('./_wks-ext');
+var wksDefine = require('./_wks-define');
+var enumKeys = require('./_enum-keys');
+var isArray = require('./_is-array');
+var anObject = require('./_an-object');
+var toIObject = require('./_to-iobject');
+var toPrimitive = require('./_to-primitive');
+var createDesc = require('./_property-desc');
+var _create = require('./_object-create');
+var gOPNExt = require('./_object-gopn-ext');
+var $GOPD = require('./_object-gopd');
+var $DP = require('./_object-dp');
+var $keys = require('./_object-keys');
+var gOPD = $GOPD.f;
+var dP = $DP.f;
+var gOPN = gOPNExt.f;
+var $Symbol = global.Symbol;
+var $JSON = global.JSON;
+var _stringify = $JSON && $JSON.stringify;
+var PROTOTYPE = 'prototype';
+var HIDDEN = wks('_hidden');
+var TO_PRIMITIVE = wks('toPrimitive');
+var isEnum = {}.propertyIsEnumerable;
+var SymbolRegistry = shared('symbol-registry');
+var AllSymbols = shared('symbols');
+var OPSymbols = shared('op-symbols');
+var ObjectProto = Object[PROTOTYPE];
+var USE_NATIVE = typeof $Symbol == 'function';
+var QObject = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function(){
+var setSymbolDesc = DESCRIPTORS && $fails(function () {
   return _create(dP({}, 'a', {
-    get: function(){ return dP(this, 'a', {value: 7}).a; }
+    get: function () { return dP(this, 'a', { value: 7 }).a; }
   })).a != 7;
-}) ? function(it, key, D){
+}) ? function (it, key, D) {
   var protoDesc = gOPD(ObjectProto, key);
-  if(protoDesc)delete ObjectProto[key];
+  if (protoDesc) delete ObjectProto[key];
   dP(it, key, D);
-  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
+  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
 } : dP;
 
-var wrap = function(tag){
+var wrap = function (tag) {
   var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
   return typeof it == 'symbol';
-} : function(it){
+} : function (it) {
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D){
-  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D) {
+  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
   anObject(it);
   key = toPrimitive(key, true);
   anObject(D);
-  if(has(AllSymbols, key)){
-    if(!D.enumerable){
-      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
+  if (has(AllSymbols, key)) {
+    if (!D.enumerable) {
+      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
-      D = _create(D, {enumerable: createDesc(0, false)});
+      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
+      D = _create(D, { enumerable: createDesc(0, false) });
     } return setSymbolDesc(it, key, D);
   } return dP(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P){
+var $defineProperties = function defineProperties(it, P) {
   anObject(it);
-  var keys = enumKeys(P = toIObject(P))
-    , i    = 0
-    , l = keys.length
-    , key;
-  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
+  var keys = enumKeys(P = toIObject(P));
+  var i = 0;
+  var l = keys.length;
+  var key;
+  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P){
+var $create = function create(it, P) {
   return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key){
+var $propertyIsEnumerable = function propertyIsEnumerable(key) {
   var E = isEnum.call(this, key = toPrimitive(key, true));
-  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
+  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
   return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
-  it  = toIObject(it);
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
+  it = toIObject(it);
   key = toPrimitive(key, true);
-  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
+  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
   var D = gOPD(it, key);
-  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
+  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it){
-  var names  = gOPN(toIObject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it) {
+  var names = gOPN(toIObject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
-  var IS_OP  = it === ObjectProto
-    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
-    , result = []
-    , i      = 0
-    , key;
-  while(names.length > i){
-    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
+  var IS_OP = it === ObjectProto;
+  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
+  var result = [];
+  var i = 0;
+  var key;
+  while (names.length > i) {
+    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if(!USE_NATIVE){
-  $Symbol = function Symbol(){
-    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
+if (!USE_NATIVE) {
+  $Symbol = function Symbol() {
+    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
     var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function(value){
-      if(this === ObjectProto)$set.call(OPSymbols, value);
-      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
+    var $set = function (value) {
+      if (this === ObjectProto) $set.call(OPSymbols, value);
+      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, createDesc(1, value));
     };
-    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
+    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
     return wrap(tag);
   };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
+  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
     return this._k;
   });
 
   $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f   = $defineProperty;
+  $DP.f = $defineProperty;
   require('./_object-gopn').f = gOPNExt.f = $getOwnPropertyNames;
-  require('./_object-pie').f  = $propertyIsEnumerable;
+  require('./_object-pie').f = $propertyIsEnumerable;
   require('./_object-gops').f = $getOwnPropertySymbols;
 
-  if(DESCRIPTORS && !require('./_library')){
+  if (DESCRIPTORS && !require('./_library')) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  wksExt.f = function(name){
+  wksExt.f = function (name) {
     return wrap(wks(name));
-  }
+  };
 }
 
-$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
+$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
 
-for(var symbols = (
+for (var es6Symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
+).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
 
-for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
+for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
 
 $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function(key){
+  'for': function (key) {
     return has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(key){
-    if(isSymbol(key))return keyOf(SymbolRegistry, key);
-    throw TypeError(key + ' is not a symbol!');
+  keyFor: function keyFor(sym) {
+    if (!isSymbol(sym)) throw TypeError(sym + ' is not a symbol!');
+    for (var key in SymbolRegistry) if (SymbolRegistry[key] === sym) return key;
   },
-  useSetter: function(){ setter = true; },
-  useSimple: function(){ setter = false; }
+  useSetter: function () { setter = true; },
+  useSimple: function () { setter = false; }
 });
 
 $export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -1111,24 +1183,24 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it){
-    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
-    var args = [it]
-      , i    = 1
-      , replacer, $replacer;
-    while(arguments.length > i)args.push(arguments[i++]);
+  stringify: function stringify(it) {
+    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
+    var args = [it];
+    var i = 1;
+    var replacer, $replacer;
+    while (arguments.length > i) args.push(arguments[i++]);
     replacer = args[1];
-    if(typeof replacer == 'function')$replacer = replacer;
-    if($replacer || !isArray(replacer))replacer = function(key, value){
-      if($replacer)value = $replacer.call(this, key, value);
-      if(!isSymbol(value))return value;
+    if (typeof replacer == 'function') $replacer = replacer;
+    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
+      if ($replacer) value = $replacer.call(this, key, value);
+      if (!isSymbol(value)) return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -1143,25 +1215,35 @@ setToStringTag($Symbol, 'Symbol');
 setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
-},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_keyof":55,"./_library":56,"./_meta":57,"./_object-create":58,"./_object-dp":59,"./_object-gopd":61,"./_object-gopn":63,"./_object-gopn-ext":62,"./_object-gops":64,"./_object-keys":67,"./_object-pie":68,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],99:[function(require,module,exports){
-require('./_wks-define')('asyncIterator');
-},{"./_wks-define":83}],100:[function(require,module,exports){
-require('./_wks-define')('observable');
-},{"./_wks-define":83}],101:[function(require,module,exports){
-require('./es6.array.iterator');
-var global        = require('./_global')
-  , hide          = require('./_hide')
-  , Iterators     = require('./_iterators')
-  , TO_STRING_TAG = require('./_wks')('toStringTag');
 
-for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
-  var NAME       = collections[i]
-    , Collection = global[NAME]
-    , proto      = Collection && Collection.prototype;
-  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
+},{"./_an-object":31,"./_descriptors":37,"./_enum-keys":40,"./_export":41,"./_fails":42,"./_global":43,"./_has":44,"./_hide":45,"./_is-array":49,"./_library":55,"./_meta":56,"./_object-create":57,"./_object-dp":58,"./_object-gopd":60,"./_object-gopn":62,"./_object-gopn-ext":61,"./_object-gops":63,"./_object-keys":66,"./_object-pie":67,"./_property-desc":69,"./_redefine":70,"./_set-to-string-tag":71,"./_shared":73,"./_to-iobject":77,"./_to-primitive":80,"./_uid":81,"./_wks":84,"./_wks-define":82,"./_wks-ext":83}],98:[function(require,module,exports){
+require('./_wks-define')('asyncIterator');
+
+},{"./_wks-define":82}],99:[function(require,module,exports){
+require('./_wks-define')('observable');
+
+},{"./_wks-define":82}],100:[function(require,module,exports){
+require('./es6.array.iterator');
+var global = require('./_global');
+var hide = require('./_hide');
+var Iterators = require('./_iterators');
+var TO_STRING_TAG = require('./_wks')('toStringTag');
+
+var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
+  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
+  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
+  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
+  'TextTrackList,TouchList').split(',');
+
+for (var i = 0; i < DOMIterables.length; i++) {
+  var NAME = DOMIterables[i];
+  var Collection = global[NAME];
+  var proto = Collection && Collection.prototype;
+  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":85,"./es6.array.iterator":86}],102:[function(require,module,exports){
+
+},{"./_global":43,"./_hide":45,"./_iterators":54,"./_wks":84,"./es6.array.iterator":85}],101:[function(require,module,exports){
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -2495,7 +2577,7 @@ if (!("classList" in document.documentElement) && Object.defineProperty && typeo
 if (typeof module !== "undefined") {
 	module.exports = flatpickr;
 }
-},{}],103:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2681,7 +2763,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -2982,9 +3064,9 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],105:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 /*!
- * vue-resource v1.3.4
+ * vue-resource v1.5.1
  * https://github.com/pagekit/vue-resource
  * Released under the MIT License.
  */
@@ -2997,7 +3079,7 @@ function format (id) {
 
 var RESOLVED = 0;
 var REJECTED = 1;
-var PENDING  = 2;
+var PENDING = 2;
 
 function Promise$1(executor) {
 
@@ -3063,9 +3145,9 @@ Promise$1.race = function race(iterable) {
     });
 };
 
-var p$1 = Promise$1.prototype;
+var p = Promise$1.prototype;
 
-p$1.resolve = function resolve(x) {
+p.resolve = function resolve(x) {
     var promise = this;
 
     if (promise.state === PENDING) {
@@ -3106,7 +3188,7 @@ p$1.resolve = function resolve(x) {
     }
 };
 
-p$1.reject = function reject(reason) {
+p.reject = function reject(reason) {
     var promise = this;
 
     if (promise.state === PENDING) {
@@ -3120,7 +3202,7 @@ p$1.reject = function reject(reason) {
     }
 };
 
-p$1.notify = function notify() {
+p.notify = function notify() {
     var promise = this;
 
     nextTick(function () {
@@ -3154,7 +3236,7 @@ p$1.notify = function notify() {
     });
 };
 
-p$1.then = function then(onResolved, onRejected) {
+p.then = function then(onResolved, onRejected) {
     var promise = this;
 
     return new Promise$1(function (resolve, reject) {
@@ -3163,7 +3245,7 @@ p$1.then = function then(onResolved, onRejected) {
     });
 };
 
-p$1.catch = function (onRejected) {
+p.catch = function (onRejected) {
     return this.then(undefined, onRejected);
 };
 
@@ -3202,14 +3284,14 @@ PromiseObj.race = function (iterable, context) {
     return new PromiseObj(Promise.race(iterable), context);
 };
 
-var p = PromiseObj.prototype;
+var p$1 = PromiseObj.prototype;
 
-p.bind = function (context) {
+p$1.bind = function (context) {
     this.context = context;
     return this;
 };
 
-p.then = function (fulfilled, rejected) {
+p$1.then = function (fulfilled, rejected) {
 
     if (fulfilled && fulfilled.bind && this.context) {
         fulfilled = fulfilled.bind(this.context);
@@ -3222,7 +3304,7 @@ p.then = function (fulfilled, rejected) {
     return new PromiseObj(this.promise.then(fulfilled, rejected), this.context);
 };
 
-p.catch = function (rejected) {
+p$1.catch = function (rejected) {
 
     if (rejected && rejected.bind && this.context) {
         rejected = rejected.bind(this.context);
@@ -3231,15 +3313,15 @@ p.catch = function (rejected) {
     return new PromiseObj(this.promise.catch(rejected), this.context);
 };
 
-p.finally = function (callback) {
+p$1.finally = function (callback) {
 
     return this.then(function (value) {
-            callback.call(this);
-            return value;
-        }, function (reason) {
-            callback.call(this);
-            return Promise.reject(reason);
-        }
+        callback.call(this);
+        return value;
+    }, function (reason) {
+        callback.call(this);
+        return Promise.reject(reason);
+    }
     );
 };
 
@@ -3249,21 +3331,19 @@ p.finally = function (callback) {
 
 var ref = {};
 var hasOwnProperty = ref.hasOwnProperty;
-
 var ref$1 = [];
 var slice = ref$1.slice;
-var debug = false;
-var ntick;
+var debug = false, ntick;
 
 var inBrowser = typeof window !== 'undefined';
 
-var Util = function (ref) {
+function Util (ref) {
     var config = ref.config;
     var nextTick = ref.nextTick;
 
     ntick = nextTick;
     debug = config.debug || !config.silent;
-};
+}
 
 function warn(msg) {
     if (typeof console !== 'undefined' && debug) {
@@ -3311,8 +3391,6 @@ var isArray = Array.isArray;
 function isString(val) {
     return typeof val === 'string';
 }
-
-
 
 function isFunction(val) {
     return typeof val === 'function';
@@ -3436,7 +3514,7 @@ function _merge(target, source, deep) {
  * Root Prefix Transform.
  */
 
-var root = function (options$$1, next) {
+function root (options$$1, next) {
 
     var url = next(options$$1);
 
@@ -3445,13 +3523,13 @@ var root = function (options$$1, next) {
     }
 
     return url;
-};
+}
 
 /**
  * Query Parameter Transform.
  */
 
-var query = function (options$$1, next) {
+function query (options$$1, next) {
 
     var urlParams = Object.keys(Url.options.params), query = {}, url = next(options$$1);
 
@@ -3468,7 +3546,7 @@ var query = function (options$$1, next) {
     }
 
     return url;
-};
+}
 
 /**
  * URL Template v2.0.6 (https://github.com/bramstein/url-template)
@@ -3492,7 +3570,7 @@ function parse(template) {
     return {
         vars: variables,
         expand: function expand(context) {
-            return template.replace(/\{([^\{\}]+)\}|([^\{\}]+)/g, function (_, expression, literal) {
+            return template.replace(/\{([^{}]+)\}|([^{}]+)/g, function (_, expression, literal) {
                 if (expression) {
 
                     var operator = null, values = [];
@@ -3503,7 +3581,7 @@ function parse(template) {
                     }
 
                     expression.split(/,/g).forEach(function (variable) {
-                        var tmp = /([^:\*]*)(?::(\d+)|(\*))?/.exec(variable);
+                        var tmp = /([^:*]*)(?::(\d+)|(\*))?/.exec(variable);
                         values.push.apply(values, getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
                         variables.push(tmp[1]);
                     });
@@ -3625,7 +3703,7 @@ function encodeReserved(str) {
  * URL Template (RFC 6570) Transform.
  */
 
-var template = function (options) {
+function template (options) {
 
     var variables = [], url = expand(options.url, options.params, variables);
 
@@ -3634,7 +3712,7 @@ var template = function (options) {
     });
 
     return url;
-};
+}
 
 /**
  * Service for URL templating.
@@ -3771,23 +3849,23 @@ function serialize(params, obj, scope) {
  * XDomain client (Internet Explorer).
  */
 
-var xdrClient = function (request) {
+function xdrClient (request) {
     return new PromiseObj(function (resolve) {
 
         var xdr = new XDomainRequest(), handler = function (ref) {
-            var type = ref.type;
+                var type = ref.type;
 
 
-            var status = 0;
+                var status = 0;
 
-            if (type === 'load') {
-                status = 200;
-            } else if (type === 'error') {
-                status = 500;
-            }
+                if (type === 'load') {
+                    status = 200;
+                } else if (type === 'error') {
+                    status = 500;
+                }
 
-            resolve(request.respondWith(xdr.responseText, {status: status}));
-        };
+                resolve(request.respondWith(xdr.responseText, {status: status}));
+            };
 
         request.abort = function () { return xdr.abort(); };
 
@@ -3804,7 +3882,7 @@ var xdrClient = function (request) {
         xdr.onprogress = function () {};
         xdr.send(request.getBody());
     });
-};
+}
 
 /**
  * CORS Interceptor.
@@ -3812,7 +3890,7 @@ var xdrClient = function (request) {
 
 var SUPPORTS_CORS = inBrowser && 'withCredentials' in new XMLHttpRequest();
 
-var cors = function (request, next) {
+function cors (request) {
 
     if (inBrowser) {
 
@@ -3830,33 +3908,28 @@ var cors = function (request, next) {
         }
     }
 
-    next();
-};
+}
 
 /**
  * Form data Interceptor.
  */
 
-var form = function (request, next) {
+function form (request) {
 
     if (isFormData(request.body)) {
-
         request.headers.delete('Content-Type');
-
     } else if (isObject(request.body) && request.emulateJSON) {
-
         request.body = Url.params(request.body);
         request.headers.set('Content-Type', 'application/x-www-form-urlencoded');
     }
 
-    next();
-};
+}
 
 /**
  * JSON Interceptor.
  */
 
-var json = function (request, next) {
+function json (request) {
 
     var type = request.headers.get('Content-Type') || '';
 
@@ -3864,11 +3937,11 @@ var json = function (request, next) {
         request.body = JSON.stringify(request.body);
     }
 
-    next(function (response) {
+    return function (response) {
 
         return response.bodyText ? when(response.text(), function (text) {
 
-            type = response.headers.get('Content-Type') || '';
+            var type = response.headers.get('Content-Type') || '';
 
             if (type.indexOf('application/json') === 0 || isJson(text)) {
 
@@ -3886,21 +3959,22 @@ var json = function (request, next) {
 
         }) : response;
 
-    });
-};
+    };
+}
 
 function isJson(str) {
 
-    var start = str.match(/^\[|^\{(?!\{)/), end = {'[': /]$/, '{': /}$/};
+    var start = str.match(/^\s*(\[|\{)/);
+    var end = {'[': /]\s*$/, '{': /}\s*$/};
 
-    return start && end[start[0]].test(str);
+    return start && end[start[1]].test(str);
 }
 
 /**
  * JSONP client (Browser).
  */
 
-var jsonpClient = function (request) {
+function jsonpClient (request) {
     return new PromiseObj(function (resolve) {
 
         var name = request.jsonp || 'callback', callback = request.jsonpCallback || '_jsonp' + Math.random().toString(36).substr(2), body = null, handler, script;
@@ -3948,53 +4022,50 @@ var jsonpClient = function (request) {
 
         document.body.appendChild(script);
     });
-};
+}
 
 /**
  * JSONP Interceptor.
  */
 
-var jsonp = function (request, next) {
+function jsonp (request) {
 
     if (request.method == 'JSONP') {
         request.client = jsonpClient;
     }
 
-    next();
-};
+}
 
 /**
  * Before Interceptor.
  */
 
-var before = function (request, next) {
+function before (request) {
 
     if (isFunction(request.before)) {
         request.before.call(this, request);
     }
 
-    next();
-};
+}
 
 /**
  * HTTP method override Interceptor.
  */
 
-var method = function (request, next) {
+function method (request) {
 
     if (request.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(request.method)) {
         request.headers.set('X-HTTP-Method-Override', request.method);
         request.method = 'POST';
     }
 
-    next();
-};
+}
 
 /**
  * Header Interceptor.
  */
 
-var header = function (request, next) {
+function header (request) {
 
     var headers = assign({}, Http.headers.common,
         !request.crossOrigin ? Http.headers.custom : {},
@@ -4007,41 +4078,31 @@ var header = function (request, next) {
         }
     });
 
-    next();
-};
+}
 
 /**
  * XMLHttp client (Browser).
  */
 
-var xhrClient = function (request) {
+function xhrClient (request) {
     return new PromiseObj(function (resolve) {
 
         var xhr = new XMLHttpRequest(), handler = function (event) {
 
-            var response = request.respondWith(
+                var response = request.respondWith(
                 'response' in xhr ? xhr.response : xhr.responseText, {
                     status: xhr.status === 1223 ? 204 : xhr.status, // IE9 status bug
                     statusText: xhr.status === 1223 ? 'No Content' : trim(xhr.statusText)
-                }
-            );
+                });
 
-            each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
-                response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
-            });
+                each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
+                    response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
+                });
 
-            resolve(response);
-        };
+                resolve(response);
+            };
 
         request.abort = function () { return xhr.abort(); };
-
-        if (request.progress) {
-            if (request.method === 'GET') {
-                xhr.addEventListener('progress', request.progress);
-            } else if (/^(POST|PUT)$/i.test(request.method)) {
-                xhr.upload.addEventListener('progress', request.progress);
-            }
-        }
 
         xhr.open(request.method, request.getUrl(), true);
 
@@ -4061,6 +4122,24 @@ var xhrClient = function (request) {
             request.headers.set('X-Requested-With', 'XMLHttpRequest');
         }
 
+        // deprecated use downloadProgress
+        if (isFunction(request.progress) && request.method === 'GET') {
+            xhr.addEventListener('progress', request.progress);
+        }
+
+        if (isFunction(request.downloadProgress)) {
+            xhr.addEventListener('progress', request.downloadProgress);
+        }
+
+        // deprecated use uploadProgress
+        if (isFunction(request.progress) && /^(POST|PUT)$/i.test(request.method)) {
+            xhr.upload.addEventListener('progress', request.progress);
+        }
+
+        if (isFunction(request.uploadProgress) && xhr.upload) {
+            xhr.upload.addEventListener('progress', request.uploadProgress);
+        }
+
         request.headers.forEach(function (value, name) {
             xhr.setRequestHeader(name, value);
         });
@@ -4071,13 +4150,13 @@ var xhrClient = function (request) {
         xhr.ontimeout = handler;
         xhr.send(request.getBody());
     });
-};
+}
 
 /**
  * Http client (Node).
  */
 
-var nodeClient = function (request) {
+function nodeClient (request) {
 
     var client = require('got');
 
@@ -4095,10 +4174,9 @@ var nodeClient = function (request) {
         client(url, {body: body, method: method, headers: headers}).then(handler = function (resp) {
 
             var response = request.respondWith(resp.body, {
-                    status: resp.statusCode,
-                    statusText: trim(resp.statusMessage)
-                }
-            );
+                status: resp.statusCode,
+                statusText: trim(resp.statusMessage)
+            });
 
             each(resp.headers, function (value, name) {
                 response.headers.set(name, value);
@@ -4108,60 +4186,53 @@ var nodeClient = function (request) {
 
         }, function (error$$1) { return handler(error$$1.response); });
     });
-};
+}
 
 /**
  * Base client.
  */
 
-var Client = function (context) {
+function Client (context) {
 
-    var reqHandlers = [sendRequest], resHandlers = [], handler;
+    var reqHandlers = [sendRequest], resHandlers = [];
 
     if (!isObject(context)) {
         context = null;
     }
 
     function Client(request) {
-        return new PromiseObj(function (resolve, reject) {
+        while (reqHandlers.length) {
 
-            function exec() {
+            var handler = reqHandlers.pop();
 
-                handler = reqHandlers.pop();
+            if (isFunction(handler)) {
 
-                if (isFunction(handler)) {
-                    handler.call(context, request, next);
-                } else {
-                    warn(("Invalid interceptor of type " + (typeof handler) + ", must be a function"));
-                    next();
+                var response = (void 0), next = (void 0);
+
+                response = handler.call(context, request, function (val) { return next = val; }) || next;
+
+                if (isObject(response)) {
+                    return new PromiseObj(function (resolve, reject) {
+
+                        resHandlers.forEach(function (handler) {
+                            response = when(response, function (response) {
+                                return handler.call(context, response) || response;
+                            }, reject);
+                        });
+
+                        when(response, resolve, reject);
+
+                    }, context);
                 }
-            }
-
-            function next(response) {
 
                 if (isFunction(response)) {
-
                     resHandlers.unshift(response);
-
-                } else if (isObject(response)) {
-
-                    resHandlers.forEach(function (handler) {
-                        response = when(response, function (response) {
-                            return handler.call(context, response) || response;
-                        }, reject);
-                    });
-
-                    when(response, resolve, reject);
-
-                    return;
                 }
 
-                exec();
+            } else {
+                warn(("Invalid interceptor of type " + (typeof handler) + ", must be a function"));
             }
-
-            exec();
-
-        }, context);
+        }
     }
 
     Client.use = function (handler) {
@@ -4169,13 +4240,13 @@ var Client = function (context) {
     };
 
     return Client;
-};
+}
 
-function sendRequest(request, resolve) {
+function sendRequest(request) {
 
     var client = request.client || (inBrowser ? xhrClient : nodeClient);
 
-    resolve(client(request));
+    return client(request);
 }
 
 /**
@@ -4210,7 +4281,7 @@ Headers.prototype.set = function set (name, value) {
     this.map[normalizeName(getName(this.map, name) || name)] = [trim(value)];
 };
 
-Headers.prototype.append = function append (name, value){
+Headers.prototype.append = function append (name, value) {
 
     var list = this.map[getName(this.map, name)];
 
@@ -4221,11 +4292,11 @@ Headers.prototype.append = function append (name, value){
     }
 };
 
-Headers.prototype.delete = function delete$1 (name){
+Headers.prototype.delete = function delete$1 (name) {
     delete this.map[getName(this.map, name)];
 };
 
-Headers.prototype.deleteAll = function deleteAll (){
+Headers.prototype.deleteAll = function deleteAll () {
     this.map = {};
 };
 
@@ -4245,7 +4316,7 @@ function getName(map, name) {
 
 function normalizeName(name) {
 
-    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+    if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
         throw new TypeError('Invalid character in header field name');
     }
 
@@ -4343,11 +4414,11 @@ var Request = function Request(options$$1) {
     }
 };
 
-Request.prototype.getUrl = function getUrl (){
+Request.prototype.getUrl = function getUrl () {
     return Url(this);
 };
 
-Request.prototype.getBody = function getBody (){
+Request.prototype.getBody = function getBody () {
     return this.body;
 };
 
@@ -4552,7 +4623,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 module.exports = plugin;
 
-},{"got":15}],106:[function(require,module,exports){
+},{"got":15}],105:[function(require,module,exports){
 "use strict";
 
 var _stringify = require("babel-runtime/core-js/json/stringify");
@@ -5493,7 +5564,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   }]);
 });
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],107:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/core-js/object/create":2,"babel-runtime/core-js/object/define-properties":3,"babel-runtime/core-js/object/define-property":4,"babel-runtime/core-js/object/get-own-property-descriptor":5,"babel-runtime/core-js/object/get-own-property-names":6,"babel-runtime/core-js/object/get-own-property-symbols":7,"babel-runtime/core-js/object/get-prototype-of":8,"babel-runtime/core-js/object/is-extensible":9,"babel-runtime/core-js/object/keys":10,"babel-runtime/core-js/object/prevent-extensions":11,"babel-runtime/helpers/typeof":14}],106:[function(require,module,exports){
 (function (process){
 /*!
  * Vue.js v1.0.28
@@ -15734,7 +15805,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'))
-},{"_process":103}],108:[function(require,module,exports){
+},{"_process":102}],107:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 exports.insert = function (css) {
@@ -15754,7 +15825,7 @@ exports.insert = function (css) {
   return elem
 }
 
-},{}],109:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
 var __vueify_style__ = __vueify_insert__.insert("\n#submit-area[_v-3a158057]{\n  background: #e1e1e1;\n  margin:20px 0 0 0;\n}\np[_v-3a158057] {\n  margin:0;\n}\nlabel[_v-3a158057] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n}\n\nlabel > span[_v-3a158057] {\n  display: inline-block;\n  vertical-align: top;\n}\n\n.input-group input[type='text'][_v-3a158057] {\n  marging-bottom: 0;\n}\nlabel input[_v-3a158057] {\n  font-weight: 400;\n}\n\ninput[type='number'][_v-3a158057] {\n  marging-bottom: 0;\n}\n.valid-titleField[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[_v-3a158057] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[_v-3a158057] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[_v-3a158057] {\n  color: #ff0000;\n}\n.reqstar[_v-3a158057] {\n  font-size: .7rem;\n  color: #E33100;\n  vertical-align:text-top;\n}\n\nselect[_v-3a158057] {\n  margin: 0;\n}\n\n[type='submit'][_v-3a158057], [type='button'][_v-3a158057] {\n  margin-top: 0.8rem;\n}\ninput[type=\"number\"][_v-3a158057]{\n  margin: 0;\n}\ninput[type=\"text\"][_v-3a158057]{\n  margin: 0;\n}\nform[_v-3a158057] {\n  padding-bottom: 20px;\n}\n.yellowBtn[_v-3a158057] {\n  background: hsl(60, 70%, 50%);\n}\n.redBtn[_v-3a158057] {\n  background: hsl(0, 90%, 70%);\n}\nh5.form-control[_v-3a158057], .mockh5[_v-3a158057] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\ntextarea[_v-3a158057] {\n  resize: vertical !important;\n}\n")
 "use strict";
@@ -15830,6 +15901,7 @@ module.exports = {
         building: '',
         categories: [],
         is_canceled: 0,
+        is_hidden: 0,
         start_time: '12:00 PM',
         end_time: '12:00 PM',
         admin_pre_approved: false
@@ -16307,7 +16379,7 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-3a158057=\"\">\n    <slot name=\"csrf\" _v-3a158057=\"\"></slot>\n    {{ $route }}\n    <div class=\"row\" _v-3a158057=\"\">\n      <div v-bind:class=\"md12col\" _v-3a158057=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">There are errors.</h5>\n        </div>\n        <div v-show=\"this.record.is_canceled == 1\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">This event has been canceled.</h5>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" maxlength=\"80\" autofocus=\"\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-3a158057=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Short Title - for departmental use only</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" maxlength=\"80\" _v-3a158057=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-3a158057=\"\">({{descriptionChars}} characters left)</p></label>\n          <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" maxlength=\"255\" _v-3a158057=\"\"></textarea>\n          <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Description!</p>\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md6col\" _v-3a158057=\"\">\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-3a158057=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-3a158057=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-3a158057=\"\">\n            <div :class=\"md8col\" _v-3a158057=\"\">\n              <label _v-3a158057=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-3a158057=\"\">\n            </v-select>\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" class=\"mockh5\" maxlength=\"80\" _v-3a158057=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-3a158057=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"start-date\" _v-3a158057=\"\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"end-date\" _v-3a158057=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-3a158057=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"all-day\" _v-3a158057=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"no-end-time\" _v-3a158057=\"\">No End Time:</label>\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-3a158057=\"\">\n    </div>\n  </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"start-time\" _v-3a158057=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly=\"\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.start_time\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Time</p>\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"end-time\" _v-3a158057=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly=\"\" _v-3a158057=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div class=\"form-group\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-3a158057=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Phone: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Fax: <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<!-- RELATED LINKS -->\n<div class=\"input-group\" style=\"width: 100%\" _v-3a158057=\"\">\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Related Link</label>\n        <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n        <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n          <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n          <input v-model=\"record.related_link_1\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n        </div>\n        <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n  </div><!-- /.row -->\n  <div class=\"row\" v-show=\"record.related_link_1\" _v-3a158057=\"\">\n    <div :class=\"md4col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n        <input v-model=\"record.related_link_1_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n    <div :class=\"md8col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Example of Related Link</label>\n        <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n        <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_1_txt}}</a>.</h5>\n      </div>\n    </div><!-- /.md6col -->\n  </div>\n  <!-- Two -->\n  <template v-if=\"record.related_link_1 &amp;&amp; record.related_link_1_txt\">\n    <br _v-3a158057=\"\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_2\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_2\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_2_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_2_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n    <br _v-3a158057=\"\">\n  </template>\n  <!-- three -->\n  <template v-if=\"record.related_link_2 &amp;&amp; record.related_link_2_txt\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_3\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_3\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_3_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_3_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n  </template>\n</div>\n<!-- RELATED LINKS -->\n<br v-if=\"framework == 'bootstrap'\" _v-3a158057=\"\">\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"reg-deadline\" _v-3a158057=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\" _v-3a158057=\"\">Error</p>\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md2col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Free</label>\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-3a158057=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Tickets Available</label>\n      <select v-model=\"record.tickets\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-3a158057=\"\">\n          {{ ticketoption.label }}\n        </option>\n      </select>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Link: <em _v-3a158057=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Tickets by Phone <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-3a158057=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-3a158057=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label for=\"lbc-approved\" _v-3a158057=\"\">Request for LBC\n        <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-3a158057=\"\">\n  <label for=\"minical\" _v-3a158057=\"\">Select your department's mini calendar(s)\n    <v-select id=\"minical\" :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-3a158057=\"\">\n    </v-select>\n  </label>\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" id=\"submit-area\" _v-3a158057=\"\">\n  <div v-if=\"isadmin\" :class=\"md4col\" _v-3a158057=\"\">\n    <div class=\"checkbox\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\"><input type=\"checkbox\" v-model=\"record.admin_pre_approved\" _v-3a158057=\"\">Auto Approve</label>\n    </div>\n  </div>\n  <div :class=\"md8col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{submitBtnLabel}}</button>\n      <button v-if=\"recordexists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Clone Event</button>\n      <button v-if=\"recordexists &amp;&amp; isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{ cancelStatus }}</button>\n      <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Delete Event</button>\n    </div><!-- /.md12col -->\n  </div><!-- /.md12col -->\n  </div></form>\n\n\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-3a158057=\"\">\n    <slot name=\"csrf\" _v-3a158057=\"\"></slot>\n    {{ $route }}\n    <div class=\"row\" _v-3a158057=\"\">\n      <div v-bind:class=\"md12col\" _v-3a158057=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">There are errors.</h5>\n        </div>\n        <div v-show=\"this.record.is_canceled == 1\" :class=\"calloutFail\" _v-3a158057=\"\">\n          <h5 _v-3a158057=\"\">This event has been canceled.</h5>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Title <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter a title ({{titleChars}} characters left)</p>\n          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"title\" type=\"text\" maxlength=\"80\" autofocus=\"\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-3a158057=\"\">\tPlease Include a Title!</p>\n        </div>\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Short Title - for departmental use only</label>\n          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\" name=\"short-title\" maxlength=\"80\" _v-3a158057=\"\">\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Description <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <p class=\"help-text\" id=\"description-helptext\" _v-3a158057=\"\">({{descriptionChars}} characters left)</p></label>\n          <textarea v-model=\"record.description\" class=\"form-control\" :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\" maxlength=\"255\" _v-3a158057=\"\"></textarea>\n          <p v-if=\"formErrors.description\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Description!</p>\n        </div>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md6col\" _v-3a158057=\"\">\n        <div class=\"form-group\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Is Event on Campus?\n            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\" _v-3a158057=\"\">\n          </label>\n        </div>\n      </div><!-- /.md6col -->\n      <div :class=\"md6col\" _v-3a158057=\"\">\n\n      </div><!-- /.md6col -->\n    </div><!-- /.row -->\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <div class=\"row\" _v-3a158057=\"\">\n            <div :class=\"md8col\" _v-3a158057=\"\">\n              <label _v-3a158057=\"\">Building</label>\n              <v-select :class=\"dropDownSelect\" is=\"bldg\" :debounce=\"250\" :value.sync=\"building\" :on-search=\"fetchForSelectBuildingList\" :options=\"buildings\" placeholder=\"Select a Building ...\" label=\"name\" _v-3a158057=\"\">\n            </v-select>\n        </div><!-- /.md8col -->\n        <div :class=\"md4col\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Room</label>\n          <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\" class=\"mockh5\" maxlength=\"80\" _v-3a158057=\"\">\n        </div><!-- /.md4col -->\n      </div><!-- /.row -->\n    </template>\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <template v-if=\"isOnCampus\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"computedLocation\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" readonly=\"readonly\" _v-3a158057=\"\">\n        </template>\n        <template v-else=\"\">\n          <label _v-3a158057=\"\">Location <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <input v-model=\"record.locationoffcampus\" class=\"form-control\" :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        </template>\n      </div><!-- /.md12col -->\n    </div><!-- /.row -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"start-date\" _v-3a158057=\"\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.start_date\" aria-describedby=\"errorStartDate\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.start_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"end-date\" _v-3a158057=\"\">End Date: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n      <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.end_date\" aria-describedby=\"errorEndDate\" _v-3a158057=\"\">\n      <!-- <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> -->\n      <p v-if=\"formErrors.end_date\" class=\"help-text invalid\" _v-3a158057=\"\">Need an End Date</p>\n    </div><!--form-group -->\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"all-day\" _v-3a158057=\"\">All Day Event:\n        <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.small-6 column -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"no-end-time\" _v-3a158057=\"\">No End Time:</label>\n        <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\" _v-3a158057=\"\">\n    </div>\n  </div><!-- /.small-6 column -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasStartTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"start-time\" _v-3a158057=\"\">Start Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly=\"\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.start_time\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Start Time</p>\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n    <div :class=\"md6col\" _v-3a158057=\"\">\n      <div v-show=\"hasEndTime\" class=\"form-group\" _v-3a158057=\"\">\n        <label for=\"end-time\" _v-3a158057=\"\">End Time: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly=\"\" _v-3a158057=\"\">\n      </div><!-- /.form-group -->\n    </div><!-- /.md6col -->\n  </div><!-- /.row -->\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div class=\"form-group\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Categories: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <v-select :class=\"[formErrors.categories ? 'invalid-input' : '']\" :debounce=\"250\" :value.sync=\"record.eventcategories\" :on-search=\"fetchForSelectCategoriesList\" :options=\"zcats\" :multiple=\"true\" placeholder=\"Select related categories ...\" label=\"category\" _v-3a158057=\"\">\n      </v-select>\n\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Person: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(Jane Doe)</em></label>\n      <input v-model=\"record.contact_person\" class=\"form-control\" :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Person!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Email: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span><em _v-3a158057=\"\">(ex.janedoe@emich.edu)</em></label>\n      <input v-model=\"record.contact_email\" class=\"form-control\" :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Email!</p>\n\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Phone: <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span> <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_phone\" class=\"form-control\" :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\" _v-3a158057=\"\">Need a Contact Phone!</p>\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Contact Fax: <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n        <input v-model=\"record.contact_fax\" class=\"form-control\" :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<!-- RELATED LINKS -->\n<div class=\"input-group\" style=\"width: 100%\" _v-3a158057=\"\">\n  <div class=\"row\" _v-3a158057=\"\">\n    <div :class=\"md12col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Related Link</label>\n        <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n        <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n          <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n          <input v-model=\"record.related_link_1\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n        </div>\n        <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n  </div><!-- /.row -->\n  <div class=\"row\" v-show=\"record.related_link_1\" _v-3a158057=\"\">\n    <div :class=\"md4col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n        <input v-model=\"record.related_link_1_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n        <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n      </div>\n    </div><!-- /.col-md-4 -->\n    <div :class=\"md8col\" _v-3a158057=\"\">\n      <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Example of Related Link</label>\n        <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n        <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_1_txt}}</a>.</h5>\n      </div>\n    </div><!-- /.md6col -->\n  </div>\n  <!-- Two -->\n  <template v-if=\"record.related_link_1 &amp;&amp; record.related_link_1_txt\">\n    <br _v-3a158057=\"\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_2\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_2\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_2_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_2_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n    <br _v-3a158057=\"\">\n  </template>\n  <!-- three -->\n  <template v-if=\"record.related_link_2 &amp;&amp; record.related_link_2_txt\">\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md12col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Related Link</label>\n          <p class=\"help-text\" id=\"title-helptext\" _v-3a158057=\"\">Please enter the url for your related web page. (ex. www.yourlink.com)</p>\n          <div class=\"input-group input-group-flat\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">http://</span>\n            <input v-model=\"record.related_link_3\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\" maxlength=\"255\" _v-3a158057=\"\">\n          </div>\n          <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\" _v-3a158057=\"\">Please make sure url is properly formed.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n    </div><!-- /.row -->\n    <div class=\"row\" v-show=\"record.related_link_3\" _v-3a158057=\"\">\n      <div :class=\"md4col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Please add descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n          <p class=\"help-text\" id=\"link_txt-helptext\" _v-3a158057=\"\">(ex. The event webpage)</p>\n          <input v-model=\"record.related_link_3_txt\" class=\"form-control\" v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\" type=\"text\" maxlength=\"80\" _v-3a158057=\"\">\n          <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\" _v-3a158057=\"\"> Please include a descriptive text for your related link.</p>\n        </div>\n      </div><!-- /.col-md-4 -->\n      <div :class=\"md8col\" _v-3a158057=\"\">\n        <div v-bind:class=\"formGroup\" _v-3a158057=\"\">\n          <label _v-3a158057=\"\">Example of Related Link</label>\n          <p class=\"help-text\" _v-3a158057=\"\">Below is how it may look. </p>\n          <h5 class=\"form-control\" _v-3a158057=\"\">For more information, visit: <a href=\"#\" _v-3a158057=\"\"> {{record.related_link_3_txt}}</a>.</h5>\n        </div>\n      </div><!-- /.md6col -->\n    </div>\n  </template>\n</div>\n<!-- RELATED LINKS -->\n<br v-if=\"framework == 'bootstrap'\" _v-3a158057=\"\">\n\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div class=\"form-group\" _v-3a158057=\"\">\n      <label for=\"reg-deadline\" _v-3a158057=\"\">Registration Deadline</label>\n      <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\" _v-3a158057=\"\">\n      <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\" _v-3a158057=\"\">Error</p>\n    </div>\n  </div><!-- /.md6col-->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n\n    <div class=\"row\" _v-3a158057=\"\">\n      <div :class=\"md2col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Free</label>\n        <div :class=\"formGroup\" _v-3a158057=\"\">\n          <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\" _v-3a158057=\"\">\n        </div><!-- /.form-group -->\n      </div><!-- /.md4col -->\n      <div :class=\"md10col\" _v-3a158057=\"\">\n        <label _v-3a158057=\"\">Event Cost <span :class=\"iconStar\" class=\"reqstar\" _v-3a158057=\"\"></span></label>\n        <div v-show=\"hasCost\" class=\"form-group\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n        <div v-else=\"\" :class=\"formGroup\" _v-3a158057=\"\">\n          <div class=\"input-group\" _v-3a158057=\"\">\n            <span :class=\"inputGroupLabel\" _v-3a158057=\"\">$</span>\n            <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\" name=\"event-cost\" type=\"number\" readonly=\"readonly\" _v-3a158057=\"\">\n          </div><!-- /. input-group -->\n        </div>\n      </div><!-- /.md8col -->\n    </div><!-- /.row -->\n\n\n  </div><!-- /.medium-6 -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Tickets Available</label>\n      <select v-model=\"record.tickets\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\" _v-3a158057=\"\">\n          {{ ticketoption.label }}\n        </option>\n      </select>\n      <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Link: <em _v-3a158057=\"\">(ex. http://www.emich.edu/calendar)</em>\n          <input v-model=\"record.ticket_details_online\" class=\"form-control\" :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Tickets by Phone <em _v-3a158057=\"\">(ex. 734.487.1849)</em>\n          <input v-model=\"record.ticket_details_phone\" class=\"form-control\" :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">\n        <label _v-3a158057=\"\">Address\n          <input v-model=\"record.ticket_details_office\" class=\"form-control\" :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n      <template v-if=\"record.tickets == 'other'\">\n        <label _v-3a158057=\"\">Other\n          <input v-model=\"record.ticket_details_other\" class=\"form-control\" :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\" type=\"text\" _v-3a158057=\"\">\n        </label>\n      </template>\n    </div><!-- /.form-group -->\n  </div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\">Participants</label>\n      <select v-model=\"record.participants\" class=\"form-control\" _v-3a158057=\"\">\n        <option v-for=\"participant in participants\" :value=\"participant.value\" _v-3a158057=\"\">\n          {{ participant.label }}\n        </option>\n      </select>\n  </div>\n</div><!--/.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md6col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <label for=\"lbc-approved\" _v-3a158057=\"\">Request for LBC\n        <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\" _v-3a158057=\"\">\n      </label>\n    </div>\n  </div><!-- /.md6col -->\n  <div :class=\"md6col\" _v-3a158057=\"\">\n\n  </div><!-- /.md6col -->\n</div><!-- /.row -->\n<div class=\"row\" _v-3a158057=\"\">\n  <div :class=\"md12col\" _v-3a158057=\"\">\n</div><!-- /.md12col -->\n\n<div :class=\"md12col\" _v-3a158057=\"\">\n  <label for=\"minical\" _v-3a158057=\"\">Select your department's mini calendar(s)\n    <v-select id=\"minical\" :value.sync=\"record.minicalendars\" :options=\"minicalslist\" :multiple=\"true\" placeholder=\"Select Mini Calendar\" label=\"calendar\" _v-3a158057=\"\">\n    </v-select>\n  </label>\n</div><!-- /.md12col -->\n</div><!-- /.row -->\n<div class=\"row\" id=\"submit-area\" _v-3a158057=\"\">\n  <div v-if=\"isadmin\" :class=\"md4col\" _v-3a158057=\"\">\n    <div class=\"checkbox\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\"><input type=\"checkbox\" v-model=\"record.admin_pre_approved\" _v-3a158057=\"\">Auto Approve</label>\n    </div>\n    <div class=\"checkbox\" _v-3a158057=\"\">\n      <label _v-3a158057=\"\"><input type=\"checkbox\" v-model=\"record.is_hidden\" _v-3a158057=\"\">Hide from EMU Today Calendar (will still show on mini calendars, if applicable)</label>\n    </div>\n  </div>\n  <div :class=\"md8col\" _v-3a158057=\"\">\n    <div :class=\"formGroup\" _v-3a158057=\"\">\n      <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{submitBtnLabel}}</button>\n      <button v-if=\"recordexists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Clone Event</button>\n      <button v-if=\"recordexists &amp;&amp; isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">{{ cancelStatus }}</button>\n      <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-3a158057=\"\">Delete Event</button>\n    </div><!-- /.md12col -->\n  </div><!-- /.md12col -->\n  </div></form>\n\n\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -16322,7 +16394,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-3a158057", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"babel-runtime/core-js/json/stringify":1,"flatpickr":102,"vue":107,"vue-hot-reload-api":104,"vue-select":106,"vueify/lib/insert-css":108}],110:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"flatpickr":101,"vue":106,"vue-hot-reload-api":103,"vue-select":105,"vueify/lib/insert-css":107}],109:[function(require,module,exports){
 'use strict';
 
 var _vueResource = require('vue-resource');
@@ -16360,6 +16432,6 @@ function assignEventListeners() {
 }
 assignEventListeners();
 
-},{"./components/EventForm.vue":109,"vue":107,"vue-resource":105}]},{},[110]);
+},{"./components/EventForm.vue":108,"vue":106,"vue-resource":104}]},{},[109]);
 
 //# sourceMappingURL=vue-event-form.js.map

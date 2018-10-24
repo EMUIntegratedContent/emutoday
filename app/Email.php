@@ -18,7 +18,10 @@ class Email extends Model
       'is_approved',
       'is_ready',
       'is_sent',
-      'send_at'
+      'send_at',
+      'is_president_included',
+      'president_teaser',
+      'president_url'
     ];
 
   protected $dates = ['send_at', 'deleted_at'];

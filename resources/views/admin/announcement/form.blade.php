@@ -14,7 +14,6 @@
         @parent
     @endsection
 @section('content')
-
     <div class="row">
         <div class="col-md-6">
             <div class="box box-primary">
@@ -24,7 +23,7 @@
                 </div>	<!-- /.box-header -->
                 <div class="box-body">
                     <div id="vue-announcements">
-                            <announcement-form errors="{{ json_encode($errors) }}" framework="bootstrap" type="{{$atype}}" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}" :isadmin="true">
+                            <announcement-form errors="{{ json_encode($errors) }}" framework="bootstrap" type="{{$atype}}" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}" :isadmin="{{ Auth::user()->can('admin') }}">
                                 <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                             </announcement-form>
                     </div><!-- /#vue-event-form -->

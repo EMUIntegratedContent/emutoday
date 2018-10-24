@@ -13,6 +13,8 @@ use Emutoday\Event;
 use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
+use DB;
+use Emutoday\User;
 
 class MainController extends Controller
 {
@@ -192,6 +194,15 @@ class MainController extends Controller
 
         $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
 
+        // Show up to 4 featured events on the front page
+        $featuredevents =  Event::where([
+          ['is_approved', 1],
+          ['mediafile_id', '>', 0],
+          ['end_date', '>=', date('Y-m-d')]
+        ])
+          ->orderBy('start_date', 'asc')
+          ->take(4)->get();
+
         JavaScript::put([
           'jsis' => 'hi',
           'cdnow' => Carbon::now(),
@@ -199,8 +210,22 @@ class MainController extends Controller
           'cdend' => Carbon::now()->addDays(7),
           'currentPage' => $page
         ]);
-        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements'));
 
+        return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements', 'featuredevents'));
+
+      }
+
+      // Testing mysql procedures 7/18/18
+      protected function getSqlProcedureTestByChris(){
+          DB::select("CALL get_stories_by_id(1, @emutoday_stories, @news_stories)");
+          return DB::select("SELECT @emutoday_stories, @news_stories");
+
+          // SAMPLE OUTPUT
+          // array (size=1)
+          // 0 =>
+             // object(stdClass)[3125]
+             //   public '@emutoday_stories' => int 4
+             //   public '@news_stories' => int 988
       }
 
       public function main($story_type, $id)

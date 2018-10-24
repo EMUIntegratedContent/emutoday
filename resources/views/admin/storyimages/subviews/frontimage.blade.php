@@ -31,6 +31,11 @@
             <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
 
         </div>
+        <div class="form-group">
+          {!! Form::label('alt_text', 'Image alt text') !!}
+          {!! Form::text('alt_text', null, ['class' => 'form-control input-sm']) !!}
+          <span class="help-block">Describe this image so visually-impaired users can understand it. </span>
+        </div>
         @if($storyImage->group == 'emutoday')
             <div class="form-group">
               {!! Form::label('title', 'Title/Header') !!}
@@ -70,7 +75,7 @@
                 <div class="form-group">
                     {!! Form::label('title', 'Title/Header') !!}
                     {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
-                    <span class="help-block">Large Bold text limited to a couple of words visible when article is main feature on the  emu-today hub or the main article on magazine page </span>
+                    <span class="help-block">FRANK!! </span>
                 </div>
                 <div class="form-group">
                     {!! Form::label('caption', 'Caption/Subtitle') !!}

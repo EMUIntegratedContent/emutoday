@@ -30,45 +30,60 @@
                                 {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
                                 <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
                             </div>
+                            <div class="form-group">
+                              {!! Form::label('alt_text', 'Image alt text') !!}
+                              {!! Form::text('alt_text', null, ['class' => 'form-control input-sm']) !!}
+                              <span class="help-block">Describe this image so visually-impaired users can understand it. </span>
+                            </div>
 
-
-                            @if($storyImage->image_type !== 'social')
-                            <div class="form-group">
-                                {!! Form::label('title', 'Title/Header') !!}
-                                {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
-                                <span class="help-block">Large Bold text limited to a couple of words </span>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('caption', 'Caption/Subtitle') !!}
-                                {!! Form::text('caption', null, ['class' => 'form-control input-sm']) !!}
-                                <span class="help-block">Small to Medium size text limited to a couple of lines</span>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('teaser', 'Teaser/Byline') !!}
-                                {!! Form::textarea('teaser', null, ['class' => 'form-control input-sm', 'rows'=>'5']) !!}
-                                <span class="help-block">Small to Medium size text from a coupel lines to a couple paragraphs</span>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('moretext', 'More Text Link') !!}
-                                {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
-                                <span class="help-block">Text used to link to full story</span>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('link', 'External Link') !!}
-                                {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
-                                <span class="help-block">Fully qualified URL for linking to an external webpage</span>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('link_text', 'Link Text') !!}
-                                {!! Form::text('link_text', null, ['class' => 'form-control input-sm']) !!}
-                                <span class="help-block">Text for the external link</span>
-                            </div>
+                            @if($storyImage->image_type == 'social')
+                                <div class="form-group">
+                                    {!! Form::label('title', 'Title') !!}
+                                    {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Optional Title for Social Links (otherwise chooses story title)</span>
+                                </div>
+                            @elseif($storyImage->image_type == 'full')
+                                <div class="form-group">
+                                    {!! Form::label('title', 'Title/Header') !!}
+                                    {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Won't show for this image type, but good to put for discovery purposes. </span>
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('teaser', 'Caption') !!}
+                                    {!! Form::textarea('teaser', null, ['class' => 'form-control input-sm', 'rows'=>'5']) !!}
+                                    <span class="help-block">Small to Medium size text from a couple lines to a couple paragraphs</span>
+                                </div>
                             @else
-                            <div class="form-group">
-                                {!! Form::label('title', 'Title') !!}
-                                {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
-                                <span class="help-block">Optional Title for Social Links (otherwise chooses story title)</span>
-                            </div>
+                                <div class="form-group">
+                                    {!! Form::label('title', 'Title/Header') !!}
+                                    {!! Form::text('title', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Large Bold text limited to a couple of words </span>
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('caption', 'Caption/Subtitle') !!}
+                                    {!! Form::text('caption', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Small to Medium size text limited to a couple of lines</span>
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('teaser', 'Teaser/Byline') !!}
+                                    {!! Form::textarea('teaser', null, ['class' => 'form-control input-sm', 'rows'=>'5']) !!}
+                                    <span class="help-block">Small to Medium size text from a couple lines to a couple paragraphs</span>
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('moretext', 'More Text Link') !!}
+                                    {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Text used to link to full story</span>
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('link', 'External Link') !!}
+                                    {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Fully qualified URL for linking to an external webpage</span>
+                                </div>
+                                <div class="form-group">
+                                    {!! Form::label('link_text', 'Link Text') !!}
+                                    {!! Form::text('link_text', null, ['class' => 'form-control input-sm']) !!}
+                                    <span class="help-block">Text for the external link</span>
+                                </div>
                             @endif
 
 

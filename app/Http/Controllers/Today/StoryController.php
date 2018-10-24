@@ -70,16 +70,19 @@ class StoryController extends Controller
           return view('public.story.index', compact('storys', 'newsAdvisoryStatementFilter'));
 
         } else {
-        // dd($stype . 'story==== '.$id );
+        // Magazine articles
         if ($stype == 'article'){
 
             $rurl = '/magazine/article/'.$id;
             return redirect($rurl);
-        } else {
+        }
+        // All other story types
+        else {
             $story = $this->storys->findOrFail($id);
 
             $mainStoryImage = null;
             $mainStoryImages = $story->storyImages()->where('image_type','story')->get();
+            $fullBannerImage = $story->storyImages()->where('image_type','full')->first(); // Added to EMU Today August 2018
             $addThisImage = $story->storyImages()->where('image_type','social')->first();
 
             foreach($mainStoryImages as $mainimg){
@@ -95,7 +98,7 @@ class StoryController extends Controller
               ['start_date', '<=', $currentDate],
               ])->orderBy('created_at', 'desc')->whereHas('storyImages', function($query){
                   $query->where('image_type', '=', 'small');
-              })->limit(3)->get();
+              })->limit(5)->get();
               $sideStoryBlurbs = collect();
               foreach ($sideFeaturedStorys as $sideFeaturedStory) {
                       if ($sideFeaturedStory->storyImages()->where('image_type', 'small')->first()){ // redundant if
@@ -117,7 +120,7 @@ class StoryController extends Controller
                 $storyview = 'public.'.$viewfolder.'.story';
 
           // This news story view
-          return view($storyview, compact('story', 'addThisImage', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs'));
+          return view($storyview, compact('story', 'addThisImage', 'mainStoryImage', 'sideStoryBlurbs','sideStudentBlurbs','fullBannerImage'));
         }
     }
 

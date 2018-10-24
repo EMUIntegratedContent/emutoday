@@ -32,6 +32,11 @@
                             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
                             <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
                         </div>
+                        <div class="form-group">
+                          {!! Form::label('alt_text', 'Image alt text') !!}
+                          {!! Form::text('alt_text', null, ['class' => 'form-control input-sm']) !!}
+                          <span class="help-block">Describe this image so visually-impaired users can understand it. </span>
+                        </div>
 
                         @if($storyImage->group == 'emutoday')
 

@@ -1,6 +1,7 @@
 <template>
     <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
+        <!-- Date Filter -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
             <form class="form-inline">
               <div class="form-group">
                   <label for="start-date">Showing <template v-if="this.stype == 'featurephoto'">photos</template><template v-else>stories</template> starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
@@ -14,7 +15,16 @@
               <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a>
             </form>
         </div>
-        <div v-if="canApprove" class="col-xs-12 col-sm-4 col-md-6 col-lg-3 text-right">
+        <!-- TEXT filter -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+            <form class="form-inline" v-on:submit.prevent="">
+              <div class="form-group">
+                  <label for="search-filter">Search titles</label>
+                  <input v-model="textFilter" id="search-filter" type="text" class="form-control">
+              </div>
+            </form>
+        </div>
+        <div v-if="canApprove" class="col-xs-12 col-sm-12 col-md-4 col-lg-3 text-right">
             <a class="btn btn-sm btn-default" href="/admin/archive/queue/stories"><i class="fa fa-archive"></i> Archived Stories</a>
         </div>
     </div>
@@ -241,7 +251,8 @@ export default  {
               isOk: false,
               isErr: false,
               msg: '',
-            }
+            },
+            textFilter:'',
         }
     },
     computed: {
@@ -322,10 +333,12 @@ export default  {
             return toString.call(val) === "[object String]";
         },
         filerStoryTypeCustom: function (value) {
+            var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+
             if (this.storytype === '') {
-                return value.story_type !== '';
+                return value.story_type !== '' && regexp.test(value.title)
             } else {
-                return value.story_type === this.storytype;
+                return value.story_type === this.storytype && regexp.test(value.title)
             }
         },
         changeFilterByReadyStatus: function(evnt){
@@ -336,25 +349,31 @@ export default  {
             }
         },
         filterUnapprovedByStoryType: function (value) {
+            var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+
             if (this.items_unapproved_filter_storytype === '') {
-                return value.story_type !== '';
+                return value.story_type !== '' && regexp.test(value.title);
             } else {
-                return value.story_type === this.items_unapproved_filter_storytype;
+                return value.story_type === this.items_unapproved_filter_storytype && regexp.test(value.title);
             }
         },
         filterApprovedByStoryType: function (value) {
+            var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+
             if (this.items_approved_filter_storytype === '') {
-                return value.story_type !== '';
+                return value.story_type !== '' && regexp.test(value.title);
             } else {
-                return value.story_type === this.items_approved_filter_storytype;
+                return value.story_type === this.items_approved_filter_storytype && regexp.test(value.title);
             }
         },
 
         filterLiveByStoryType: function (value) {
+            var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+
             if (this.items_live_filter_storytype === '') {
-                return value.story_type !== '';
+                return value.story_type !== '' && regexp.test(value.title);
             } else {
-                return value.story_type === this.items_live_filter_storytype;
+                return value.story_type === this.items_live_filter_storytype && regexp.test(value.title);
             }
         },
 
