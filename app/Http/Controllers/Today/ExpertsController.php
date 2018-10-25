@@ -27,7 +27,7 @@ class ExpertsController extends Controller
    */
   public function index()
   {
-      $expertCategories = ExpertCategory::all();
+      $expertCategories = ExpertCategory::orderBy('category', 'asc')->get();
       return view('public.experts.index', compact('expertCategories'));
   }
 
