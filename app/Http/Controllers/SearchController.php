@@ -22,7 +22,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class SearchController extends Controller
 {
     public function __construct(Story $story, Announcement $announcement, Event $event, ISearch $searchProvider)
-
     {
         $this->story = $story;
         $this->announcement = $announcement;
@@ -179,7 +178,7 @@ class SearchController extends Controller
           }
         }
 
-        $expertCategories = ExpertCategory::all();
+        $expertCategories = ExpertCategory::orderBy('category', 'asc')->get();
 
         return view('public.experts.find', ['experts' => $experts, 'expertCategories' => $expertCategories, 'currentCategory' => $searchCategory]);
     }

@@ -44,7 +44,7 @@ class Expert extends Model
       'email' => 40,
       'education.education' => 20,
       'expertCategories.category' => 80,
-      'expertise.expertise' => 110,
+      'expertise.expertise' => 250,
       'languages.language' => 20,
       'previousTitles.title' => 20,
       'socialMediaLinks.title' => 10,
