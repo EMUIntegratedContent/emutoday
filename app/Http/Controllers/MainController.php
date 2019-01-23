@@ -312,7 +312,7 @@ class MainController extends Controller
         ]);
 
         // Send
-        $to      = "webcomm@emich.edu,emu_today@emich.edu";
+        $to      = "webcomm@emich.edu";
         $subject = $request->email." would like to subscribe to EMU Today\n\n";
         $message = $request->email." would like to subscribe to EMU Today\n\n";
         $headers = 'From: '.$request->email. "\r\n" .
