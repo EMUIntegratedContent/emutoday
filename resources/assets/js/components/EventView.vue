@@ -4,9 +4,12 @@
       <div class="medium-3 show-for-medium columns">
           <h4>Calendar</h4>
       </div>
-      <div class="medium-9 small-12 columns">
-              <h4>Upcoming Events</h4>
-        </div>
+      <div class="medium-6 small-7 columns">
+        <h4>Upcoming Events</h4>
+      </div>
+      <div class="medium-3 small-5 columns">
+        <a class="button hollow secondary expanded academic-calednar-button" href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link" aria-hidden="true"></i></a>
+      </div>
     </div>
     </div>
     <div class="row">

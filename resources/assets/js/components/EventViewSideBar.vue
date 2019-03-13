@@ -34,7 +34,7 @@
       <div class="row calendar-categories">
         <div class="small-12 column">
           <div class="calendar-other-categories">
-            <a class="button hollow" href="http://www.emich.edu/registrar/calendars/">Academic Calendar <i class="fa fa-external-link" aria-hidden="true"></i></a>
+            <a class="button hollow expanded academic-calednar-button prime" href="http://www.emich.edu/registrar/calendars/">ACADEMIC CALENDAR <i class="fa fa-external-link" aria-hidden="true"></i></a>
             <h4>Event Categories</h4>
             <ul>
               <li class="event-category">

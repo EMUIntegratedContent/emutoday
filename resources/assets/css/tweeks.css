@@ -242,3 +242,24 @@ a.firefox:before {
   font-family: FontAwesome;
   padding-right: 0.1em;
 }
+.academic-calednar-button {
+  font-size: 105%;
+  font-weight: 700;
+  padding-top: .6rem !important;
+  padding-bottom: .6rem !important;
+}
+.academic-calednar-button i {
+  color: #1e9744;
+}
+.academic-calednar-button.prime {
+  background: #fff !important;
+}
+.academic-calednar-button.secondary {
+  margin: 0;
+  background: #ddd;
+  border: none !important;
+  color: #0F6547 !important;
+}
+.academic-calednar-button:hover {
+  background: #ccc !important;
+}
