@@ -3747,22 +3747,36 @@ if (typeof module !== "undefined") {
     function createDate (y, m, d, h, M, s, ms) {
         // can't just apply() to create a date:
         // https://stackoverflow.com/q/181348
-        var date = new Date(y, m, d, h, M, s, ms);
-
+        var date;
         // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
-            date.setFullYear(y);
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
         }
+
         return date;
     }
 
     function createUTCDate (y) {
-        var date = new Date(Date.UTC.apply(null, arguments));
-
+        var date;
         // the Date.UTC function remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
-            date.setUTCFullYear(y);
+        if (y < 100 && y >= 0) {
+            var args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
         }
+
         return date;
     }
 
@@ -3864,7 +3878,7 @@ if (typeof module !== "undefined") {
 
     var defaultLocaleWeek = {
         dow : 0, // Sunday is the first day of the week.
-        doy : 6  // The week that contains Jan 1st is the first week of the year.
+        doy : 6  // The week that contains Jan 6th is the first week of the year.
     };
 
     function localeFirstDayOfWeek () {
@@ -3973,25 +3987,28 @@ if (typeof module !== "undefined") {
     }
 
     // LOCALES
+    function shiftWeekdays (ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
-        if (!m) {
-            return isArray(this._weekdays) ? this._weekdays :
-                this._weekdays['standalone'];
-        }
-        return isArray(this._weekdays) ? this._weekdays[m.day()] :
-            this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
+        var weekdays = isArray(this._weekdays) ? this._weekdays :
+            this._weekdays[(m && m !== true && this._weekdays.isFormat.test(format)) ? 'format' : 'standalone'];
+        return (m === true) ? shiftWeekdays(weekdays, this._week.dow)
+            : (m) ? weekdays[m.day()] : weekdays;
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+        return (m === true) ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+            : (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+        return (m === true) ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+            : (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -4740,13 +4757,13 @@ if (typeof module !== "undefined") {
                     weekdayOverflow = true;
                 }
             } else if (w.e != null) {
-                // local weekday -- counting starts from begining of week
+                // local weekday -- counting starts from beginning of week
                 weekday = w.e + dow;
                 if (w.e < 0 || w.e > 6) {
                     weekdayOverflow = true;
                 }
             } else {
-                // default to begining of week
+                // default to beginning of week
                 weekday = dow;
             }
         }
@@ -5340,7 +5357,7 @@ if (typeof module !== "undefined") {
             years = normalizedInput.year || 0,
             quarters = normalizedInput.quarter || 0,
             months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
             days = normalizedInput.day || 0,
             hours = normalizedInput.hour || 0,
             minutes = normalizedInput.minute || 0,
@@ -5644,7 +5661,7 @@ if (typeof module !== "undefined") {
                 ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y : parseIso(match[2], sign),
                 M : parseIso(match[3], sign),
@@ -5686,7 +5703,7 @@ if (typeof module !== "undefined") {
     }
 
     function positiveMomentsDifference(base, other) {
-        var res = {milliseconds: 0, months: 0};
+        var res = {};
 
         res.months = other.month() - base.month() +
             (other.year() - base.year()) * 12;
@@ -5795,7 +5812,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() > localInput.valueOf();
         } else {
@@ -5808,7 +5825,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() < localInput.valueOf();
         } else {
@@ -5817,9 +5834,14 @@ if (typeof module !== "undefined") {
     }
 
     function isBetween (from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
         inclusivity = inclusivity || '()';
-        return (inclusivity[0] === '(' ? this.isAfter(from, units) : !this.isBefore(from, units)) &&
-            (inclusivity[1] === ')' ? this.isBefore(to, units) : !this.isAfter(to, units));
+        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) &&
+            (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
     }
 
     function isSame (input, units) {
@@ -5828,7 +5850,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(units || 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() === localInput.valueOf();
         } else {
@@ -5838,11 +5860,11 @@ if (typeof module !== "undefined") {
     }
 
     function isSameOrAfter (input, units) {
-        return this.isSame(input, units) || this.isAfter(input,units);
+        return this.isSame(input, units) || this.isAfter(input, units);
     }
 
     function isSameOrBefore (input, units) {
-        return this.isSame(input, units) || this.isBefore(input,units);
+        return this.isSame(input, units) || this.isBefore(input, units);
     }
 
     function diff (input, units, asFloat) {
@@ -6019,62 +6041,130 @@ if (typeof module !== "undefined") {
         return this._locale;
     }
 
+    var MS_PER_SECOND = 1000;
+    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return (dividend % divisor + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
     function startOf (units) {
+        var time;
         units = normalizeUnits(units);
-        // the following switch intentionally omits break keywords
-        // to utilize falling through the cases.
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
         switch (units) {
             case 'year':
-                this.month(0);
-                /* falls through */
+                time = startOfDate(this.year(), 0, 1);
+                break;
             case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+                break;
             case 'month':
-                this.date(1);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
             case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+                break;
             case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+                break;
             case 'day':
             case 'date':
-                this.hours(0);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
             case 'hour':
-                this.minutes(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+                break;
             case 'minute':
-                this.seconds(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
             case 'second':
-                this.milliseconds(0);
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
         }
 
-        // weeks are a special case
-        if (units === 'week') {
-            this.weekday(0);
-        }
-        if (units === 'isoWeek') {
-            this.isoWeekday(1);
-        }
-
-        // quarters are also special
-        if (units === 'quarter') {
-            this.month(Math.floor(this.month() / 3) * 3);
-        }
-
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
         return this;
     }
 
     function endOf (units) {
+        var time;
         units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond') {
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
             return this;
         }
 
-        // 'date' is an alias for 'day', so it should be considered as such.
-        if (units === 'date') {
-            units = 'day';
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
         }
 
-        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
     }
 
     function valueOf () {
@@ -6780,10 +6870,14 @@ if (typeof module !== "undefined") {
 
         units = normalizeUnits(units);
 
-        if (units === 'month' || units === 'year') {
-            days   = this._days   + milliseconds / 864e5;
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
             months = this._months + daysToMonths(days);
-            return units === 'month' ? months : months / 12;
+            switch (units) {
+                case 'month':   return months;
+                case 'quarter': return months / 3;
+                case 'year':    return months / 12;
+            }
         } else {
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(monthsToDays(this._months));
@@ -6826,6 +6920,7 @@ if (typeof module !== "undefined") {
     var asDays         = makeAs('d');
     var asWeeks        = makeAs('w');
     var asMonths       = makeAs('M');
+    var asQuarters     = makeAs('Q');
     var asYears        = makeAs('y');
 
     function clone$1 () {
@@ -7017,6 +7112,7 @@ if (typeof module !== "undefined") {
     proto$2.asDays         = asDays;
     proto$2.asWeeks        = asWeeks;
     proto$2.asMonths       = asMonths;
+    proto$2.asQuarters     = asQuarters;
     proto$2.asYears        = asYears;
     proto$2.valueOf        = valueOf$1;
     proto$2._bubble        = bubble;
@@ -7061,7 +7157,7 @@ if (typeof module !== "undefined") {
     // Side effect imports
 
 
-    hooks.version = '2.22.2';
+    hooks.version = '2.24.0';
 
     setHookCallback(createLocal);
 
@@ -7102,7 +7198,7 @@ if (typeof module !== "undefined") {
         TIME: 'HH:mm',                                  // <input type="time" />
         TIME_SECONDS: 'HH:mm:ss',                       // <input type="time" step="1" />
         TIME_MS: 'HH:mm:ss.SSS',                        // <input type="time" step="0.001" />
-        WEEK: 'YYYY-[W]WW',                             // <input type="week" />
+        WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
 
@@ -7300,6 +7396,7 @@ process.umask = function() { return 0; };
 /**!
  * Sortable
  * @author	RubaXa   <trash@rubaxa.org>
+ * @author	owenm    <owen23355@gmail.com>
  * @license MIT
  */
 
@@ -7337,26 +7434,47 @@ process.umask = function() { return 0; };
 		scrollParentEl,
 		scrollCustomFn,
 
-		lastEl,
-		lastCSS,
-		lastParentCSS,
-
 		oldIndex,
 		newIndex,
 
 		activeGroup,
 		putSortable,
 
-		autoScroll = {},
+		autoScrolls = [],
+		scrolling = false,
+
+		awaitingDragStarted = false,
+		ignoreNextClick = false,
+		sortables = [],
+
+		pointerElemChangedInterval,
+		lastPointerElemX,
+		lastPointerElemY,
 
 		tapEvt,
 		touchEvt,
 
 		moved,
 
+
+		lastTarget,
+		lastDirection,
+		pastFirstInvertThresh = false,
+		isCircumstantialInvert = false,
+		lastMode, // 'swap' or 'insert'
+
+		targetMoveDistance,
+
+		// For positioning ghost absolutely
+		ghostRelativeParent,
+		ghostRelativeParentInitialScroll = [], // (left, top)
+
+
+		forRepaintDummy,
+		realDragElRect, // dragEl rect after current animation
+
 		/** @const */
 		R_SPACE = /\s+/g,
-		R_FLOAT = /left|right|inline/,
 
 		expando = 'Sortable' + (new Date).getTime(),
 
@@ -7368,135 +7486,328 @@ process.umask = function() { return 0; };
 		$ = win.jQuery || win.Zepto,
 		Polymer = win.Polymer,
 
-		captureMode = false,
-		passiveMode = false,
+		captureMode = {
+			capture: false,
+			passive: false
+		},
 
+		IE11OrLess = !!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie|iemobile)/i),
+		Edge = !!navigator.userAgent.match(/Edge/i),
+		FireFox = !!navigator.userAgent.match(/firefox/i),
+		Safari = !!(navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && !navigator.userAgent.match(/android/i)),
+		IOS = !!(navigator.userAgent.match(/iP(ad|od|hone)/i)),
+
+		PositionGhostAbsolutely = IOS,
+
+		CSSFloatProperty = Edge || IE11OrLess ? 'cssFloat' : 'float',
+
+		// This will not pass for IE9, because IE9 DnD only works on anchors
 		supportDraggable = ('draggable' in document.createElement('div')),
-		supportCssPointerEvents = (function (el) {
-			// false when IE11
-			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
+
+		supportCssPointerEvents = (function() {
+			// false when <= IE11
+			if (IE11OrLess) {
 				return false;
 			}
-			el = document.createElement('x');
+			var el = document.createElement('x');
 			el.style.cssText = 'pointer-events:auto';
 			return el.style.pointerEvents === 'auto';
 		})(),
 
 		_silent = false,
+		_alignedSilent = false,
 
 		abs = Math.abs,
 		min = Math.min,
+		max = Math.max,
 
 		savedInputChecked = [],
-		touchDragOverListeners = [],
 
-		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
+		_detectDirection = function(el, options) {
+			var elCSS = _css(el),
+				elWidth = parseInt(elCSS.width)
+					- parseInt(elCSS.paddingLeft)
+					- parseInt(elCSS.paddingRight)
+					- parseInt(elCSS.borderLeftWidth)
+					- parseInt(elCSS.borderRightWidth),
+				child1 = _getChild(el, 0, options),
+				child2 = _getChild(el, 1, options),
+				firstChildCSS = child1 && _css(child1),
+				secondChildCSS = child2 && _css(child2),
+				firstChildWidth = firstChildCSS && parseInt(firstChildCSS.marginLeft) + parseInt(firstChildCSS.marginRight) + _getRect(child1).width,
+				secondChildWidth = secondChildCSS && parseInt(secondChildCSS.marginLeft) + parseInt(secondChildCSS.marginRight) + _getRect(child2).width;
+
+			if (elCSS.display === 'flex') {
+				return elCSS.flexDirection === 'column' || elCSS.flexDirection === 'column-reverse'
+				? 'vertical' : 'horizontal';
+			}
+
+			if (elCSS.display === 'grid') {
+				return elCSS.gridTemplateColumns.split(' ').length <= 1 ? 'vertical' : 'horizontal';
+			}
+
+			if (child1 && firstChildCSS.float !== 'none') {
+				var touchingSideChild2 = firstChildCSS.float === 'left' ? 'left' : 'right';
+
+				return child2 && (secondChildCSS.clear === 'both' || secondChildCSS.clear === touchingSideChild2) ?
+					'vertical' : 'horizontal';
+			}
+
+			return (child1 &&
+				(
+					firstChildCSS.display === 'block' ||
+					firstChildCSS.display === 'flex' ||
+					firstChildCSS.display === 'table' ||
+					firstChildCSS.display === 'grid' ||
+					firstChildWidth >= elWidth &&
+					elCSS[CSSFloatProperty] === 'none' ||
+					child2 &&
+					elCSS[CSSFloatProperty] === 'none' &&
+					firstChildWidth + secondChildWidth > elWidth
+				) ?
+				'vertical' : 'horizontal'
+			);
+		},
+
+		/**
+		 * Detects first nearest empty sortable to X and Y position using emptyInsertThreshold.
+		 * @param  {Number} x      X position
+		 * @param  {Number} y      Y position
+		 * @return {HTMLElement}   Element of the first found nearest Sortable
+		 */
+		_detectNearestEmptySortable = function(x, y) {
+			for (var i = 0; i < sortables.length; i++) {
+				if (_lastChild(sortables[i])) continue;
+
+				var rect = _getRect(sortables[i]),
+					threshold = sortables[i][expando].options.emptyInsertThreshold,
+					insideHorizontally = x >= (rect.left - threshold) && x <= (rect.right + threshold),
+					insideVertically = y >= (rect.top - threshold) && y <= (rect.bottom + threshold);
+
+				if (insideHorizontally && insideVertically) {
+					return sortables[i];
+				}
+			}
+		},
+
+		_isClientInRowColumn = function(x, y, el, axis, options) {
+			var targetRect = _getRect(el),
+				targetS1Opp = axis === 'vertical' ? targetRect.left : targetRect.top,
+				targetS2Opp = axis === 'vertical' ? targetRect.right : targetRect.bottom,
+				mouseOnOppAxis = axis === 'vertical' ? x : y;
+
+			return targetS1Opp < mouseOnOppAxis && mouseOnOppAxis < targetS2Opp;
+		},
+
+		_isElInRowColumn = function(el1, el2, axis) {
+			var el1Rect = el1 === dragEl && realDragElRect || _getRect(el1),
+				el2Rect = el2 === dragEl && realDragElRect || _getRect(el2),
+				el1S1Opp = axis === 'vertical' ? el1Rect.left : el1Rect.top,
+				el1S2Opp = axis === 'vertical' ? el1Rect.right : el1Rect.bottom,
+				el1OppLength = axis === 'vertical' ? el1Rect.width : el1Rect.height,
+				el2S1Opp = axis === 'vertical' ? el2Rect.left : el2Rect.top,
+				el2S2Opp = axis === 'vertical' ? el2Rect.right : el2Rect.bottom,
+				el2OppLength = axis === 'vertical' ? el2Rect.width : el2Rect.height;
+
+			return (
+				el1S1Opp === el2S1Opp ||
+				el1S2Opp === el2S2Opp ||
+				(el1S1Opp + el1OppLength / 2) === (el2S1Opp + el2OppLength / 2)
+			);
+		},
+
+		_getParentAutoScrollElement = function(el, includeSelf) {
+			// skip to window
+			if (!el || !el.getBoundingClientRect) return _getWindowScrollingElement();
+
+			var elem = el;
+			var gotSelf = false;
+			do {
+				// we don't need to get elem css if it isn't even overflowing in the first place (performance)
+				if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
+					var elemCSS = _css(elem);
+					if (
+						elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == 'auto' || elemCSS.overflowX == 'scroll') ||
+						elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == 'auto' || elemCSS.overflowY == 'scroll')
+					) {
+						if (!elem || !elem.getBoundingClientRect || elem === document.body) return _getWindowScrollingElement();
+
+						if (gotSelf || includeSelf) return elem;
+						gotSelf = true;
+					}
+				}
+			/* jshint boss:true */
+			} while (elem = elem.parentNode);
+
+			return _getWindowScrollingElement();
+		},
+
+		_getWindowScrollingElement = function() {
+			if (IE11OrLess) {
+				return document.documentElement;
+			} else {
+				return document.scrollingElement;
+			}
+		},
+
+		_scrollBy = function(el, x, y) {
+			el.scrollLeft += x;
+			el.scrollTop += y;
+		},
+
+		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl, /**Boolean*/isFallback) {
 			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
-			if (rootEl && options.scroll) {
-				var _this = rootEl[expando],
-					el,
-					rect,
+			if (options.scroll) {
+				var _this = rootEl ? rootEl[expando] : window,
 					sens = options.scrollSensitivity,
 					speed = options.scrollSpeed,
 
 					x = evt.clientX,
 					y = evt.clientY,
 
-					winWidth = window.innerWidth,
-					winHeight = window.innerHeight,
+					winScroller = _getWindowScrollingElement(),
 
-					vx,
-					vy,
+					scrollThisInstance = false;
 
-					scrollOffsetX,
-					scrollOffsetY
-				;
-
-				// Delect scrollEl
+				// Detect scrollEl
 				if (scrollParentEl !== rootEl) {
+					_clearAutoScrolls();
+
 					scrollEl = options.scroll;
-					scrollParentEl = rootEl;
 					scrollCustomFn = options.scrollFn;
 
 					if (scrollEl === true) {
-						scrollEl = rootEl;
-
-						do {
-							if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
-								(scrollEl.offsetHeight < scrollEl.scrollHeight)
-							) {
-								break;
-							}
-							/* jshint boss:true */
-						} while (scrollEl = scrollEl.parentNode);
+						scrollEl = _getParentAutoScrollElement(rootEl, true);
+						scrollParentEl = scrollEl;
 					}
 				}
 
-				if (scrollEl) {
-					el = scrollEl;
-					rect = scrollEl.getBoundingClientRect();
-					vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
-					vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
-				}
+
+				var layersOut = 0;
+				var currentParent = scrollEl;
+				do {
+					var	el = currentParent,
+						rect = _getRect(el),
+
+						top = rect.top,
+						bottom = rect.bottom,
+						left = rect.left,
+						right = rect.right,
+
+						width = rect.width,
+						height = rect.height,
+
+						scrollWidth,
+						scrollHeight,
+
+						css,
+
+						vx,
+						vy,
+
+						canScrollX,
+						canScrollY,
+
+						scrollPosX,
+						scrollPosY;
 
 
-				if (!(vx || vy)) {
-					vx = (winWidth - x <= sens) - (x <= sens);
-					vy = (winHeight - y <= sens) - (y <= sens);
+					scrollWidth = el.scrollWidth;
+					scrollHeight = el.scrollHeight;
 
-					/* jshint expr:true */
-					(vx || vy) && (el = win);
-				}
+					css = _css(el);
 
+					scrollPosX = el.scrollLeft;
+					scrollPosY = el.scrollTop;
 
-				if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
-					autoScroll.el = el;
-					autoScroll.vx = vx;
-					autoScroll.vy = vy;
-
-					clearInterval(autoScroll.pid);
-
-					if (el) {
-						autoScroll.pid = setInterval(function () {
-							scrollOffsetY = vy ? vy * speed : 0;
-							scrollOffsetX = vx ? vx * speed : 0;
-
-							if ('function' === typeof(scrollCustomFn)) {
-								return scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt);
-							}
-
-							if (el === win) {
-								win.scrollTo(win.pageXOffset + scrollOffsetX, win.pageYOffset + scrollOffsetY);
-							} else {
-								el.scrollTop += scrollOffsetY;
-								el.scrollLeft += scrollOffsetX;
-							}
-						}, 24);
+					if (el === winScroller) {
+						canScrollX = width < scrollWidth && (css.overflowX === 'auto' || css.overflowX === 'scroll' || css.overflowX === 'visible');
+						canScrollY = height < scrollHeight && (css.overflowY === 'auto' || css.overflowY === 'scroll' || css.overflowY === 'visible');
+					} else {
+						canScrollX = width < scrollWidth && (css.overflowX === 'auto' || css.overflowX === 'scroll');
+						canScrollY = height < scrollHeight && (css.overflowY === 'auto' || css.overflowY === 'scroll');
 					}
-				}
+
+					vx = canScrollX && (abs(right - x) <= sens && (scrollPosX + width) < scrollWidth) - (abs(left - x) <= sens && !!scrollPosX);
+
+					vy = canScrollY && (abs(bottom - y) <= sens && (scrollPosY + height) < scrollHeight) - (abs(top - y) <= sens && !!scrollPosY);
+
+
+					if (!autoScrolls[layersOut]) {
+						for (var i = 0; i <= layersOut; i++) {
+							if (!autoScrolls[i]) {
+								autoScrolls[i] = {};
+							}
+						}
+					}
+
+					if (autoScrolls[layersOut].vx != vx || autoScrolls[layersOut].vy != vy || autoScrolls[layersOut].el !== el) {
+						autoScrolls[layersOut].el = el;
+						autoScrolls[layersOut].vx = vx;
+						autoScrolls[layersOut].vy = vy;
+
+						clearInterval(autoScrolls[layersOut].pid);
+
+						if (el && (vx != 0 || vy != 0)) {
+							scrollThisInstance = true;
+							/* jshint loopfunc:true */
+							autoScrolls[layersOut].pid = setInterval((function () {
+								// emulate drag over during autoscroll (fallback), emulating native DnD behaviour
+								if (isFallback && this.layer === 0) {
+									Sortable.active._emulateDragOver(true);
+									Sortable.active._onTouchMove(touchEvt, true);
+								}
+								var scrollOffsetY = autoScrolls[this.layer].vy ? autoScrolls[this.layer].vy * speed : 0;
+								var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
+
+								if ('function' === typeof(scrollCustomFn)) {
+									if (scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt, touchEvt, autoScrolls[this.layer].el) !== 'continue') {
+										return;
+									}
+								}
+
+								_scrollBy(autoScrolls[this.layer].el, scrollOffsetX, scrollOffsetY);
+							}).bind({layer: layersOut}), 24);
+						}
+					}
+					layersOut++;
+				} while (options.bubbleScroll && currentParent !== winScroller && (currentParent = _getParentAutoScrollElement(currentParent, false)));
+				scrolling = scrollThisInstance; // in case another function catches scrolling as false in between when it is not
 			}
 		}, 30),
 
+		_clearAutoScrolls = function () {
+			autoScrolls.forEach(function(autoScroll) {
+				clearInterval(autoScroll.pid);
+			});
+			autoScrolls = [];
+		},
+
 		_prepareGroup = function (options) {
 			function toFn(value, pull) {
-				if (value === void 0 || value === true) {
-					value = group.name;
-				}
+				return function(to, from, dragEl, evt) {
+					var sameGroup = to.options.group.name &&
+									from.options.group.name &&
+									to.options.group.name === from.options.group.name;
 
-				if (typeof value === 'function') {
-					return value;
-				} else {
-					return function (to, from) {
-						var fromGroup = from.options.group.name;
+					if (value == null && (pull || sameGroup)) {
+						// Default pull value
+						// Default pull and put value if same group
+						return true;
+					} else if (value == null || value === false) {
+						return false;
+					} else if (pull && value === 'clone') {
+						return value;
+					} else if (typeof value === 'function') {
+						return toFn(value(to, from, dragEl, evt), pull)(to, from, dragEl, evt);
+					} else {
+						var otherGroup = (pull ? to : from).options.group.name;
 
-						return pull
-							? value
-							: value && (value.join
-								? value.indexOf(fromGroup) > -1
-								: (fromGroup == value)
-							);
-					};
-				}
+						return (value === true ||
+						(typeof value === 'string' && value === otherGroup) ||
+						(value.join && value.indexOf(otherGroup) > -1));
+					}
+				};
 			}
 
 			var group = {};
@@ -7512,23 +7823,79 @@ process.umask = function() { return 0; };
 			group.revertClone = originalGroup.revertClone;
 
 			options.group = group;
-		}
-	;
+		},
 
-	// Detect support a passive mode
-	try {
-		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
-			get: function () {
-				// `false`, because everything starts to work incorrectly and instead of d'n'd,
-				// begins the page has scrolled.
-				passiveMode = false;
-				captureMode = {
-					capture: false,
-					passive: passiveMode
-				};
+		_checkAlignment = function(evt) {
+			if (!dragEl || !dragEl.parentNode) return;
+			dragEl.parentNode[expando] && dragEl.parentNode[expando]._computeIsAligned(evt);
+		},
+
+		_isTrueParentSortable = function(el, target) {
+			var trueParent = target;
+			while (!trueParent[expando]) {
+				trueParent = trueParent.parentNode;
 			}
-		}));
-	} catch (err) {}
+
+			return el === trueParent;
+		},
+
+		_artificalBubble = function(sortable, originalEvt, method) {
+			// Artificial IE bubbling
+			var nextParent = sortable.parentNode;
+			while (nextParent && !nextParent[expando]) {
+				nextParent = nextParent.parentNode;
+			}
+
+			if (nextParent) {
+				nextParent[expando][method](_extend(originalEvt, {
+					artificialBubble: true
+				}));
+			}
+		},
+
+		_hideGhostForTarget = function() {
+			if (!supportCssPointerEvents && ghostEl) {
+				_css(ghostEl, 'display', 'none');
+			}
+		},
+
+		_unhideGhostForTarget = function() {
+			if (!supportCssPointerEvents && ghostEl) {
+				_css(ghostEl, 'display', '');
+			}
+		};
+
+
+	// #1184 fix - Prevent click event on fallback if dragged but item not changed position
+	document.addEventListener('click', function(evt) {
+		if (ignoreNextClick) {
+			evt.preventDefault();
+			evt.stopPropagation && evt.stopPropagation();
+			evt.stopImmediatePropagation && evt.stopImmediatePropagation();
+			ignoreNextClick = false;
+			return false;
+		}
+	}, true);
+
+	var nearestEmptyInsertDetectEvent = function(evt) {
+		evt = evt.touches ? evt.touches[0] : evt;
+		if (dragEl) {
+			var nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
+
+			if (nearest) {
+				nearest[expando]._onDragOver({
+					clientX: evt.clientX,
+					clientY: evt.clientY,
+					target: nearest,
+					rootEl: nearest
+				});
+			}
+		}
+	};
+	// We do not want this to be triggered if completed (bubbling canceled), so only define it here
+	_on(document, 'dragover', nearestEmptyInsertDetectEvent);
+	_on(document, 'mousemove', nearestEmptyInsertDetectEvent);
+	_on(document, 'touchmove', nearestEmptyInsertDetectEvent);
 
 	/**
 	 * @class  Sortable
@@ -7537,7 +7904,7 @@ process.umask = function() { return 0; };
 	 */
 	function Sortable(el, options) {
 		if (!(el && el.nodeType && el.nodeType === 1)) {
-			throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+			throw 'Sortable: `el` must be HTMLElement, not ' + {}.toString.call(el);
 		}
 
 		this.el = el; // root element
@@ -7549,7 +7916,7 @@ process.umask = function() { return 0; };
 
 		// Default options
 		var defaults = {
-			group: Math.random(),
+			group: null,
 			sort: true,
 			disabled: false,
 			store: null,
@@ -7557,7 +7924,15 @@ process.umask = function() { return 0; };
 			scroll: true,
 			scrollSensitivity: 30,
 			scrollSpeed: 10,
-			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
+			bubbleScroll: true,
+			draggable: /[uo]l/i.test(el.nodeName) ? '>li' : '>*',
+			swapThreshold: 1, // percentage; 0 <= x <= 1
+			invertSwap: false, // invert always
+			invertedSwapThreshold: null, // will be set to same as swapThreshold if default
+			removeCloneOnHide: true,
+			direction: function() {
+				return _detectDirection(el, this.options);
+			},
 			ghostClass: 'sortable-ghost',
 			chosenClass: 'sortable-chosen',
 			dragClass: 'sortable-drag',
@@ -7565,6 +7940,7 @@ process.umask = function() { return 0; };
 			filter: null,
 			preventOnFilter: true,
 			animation: 0,
+			easing: null,
 			setData: function (dataTransfer, dragEl) {
 				dataTransfer.setData('Text', dragEl.textContent);
 			},
@@ -7572,12 +7948,17 @@ process.umask = function() { return 0; };
 			dragoverBubble: false,
 			dataIdAttr: 'data-id',
 			delay: 0,
+			touchStartThreshold: parseInt(window.devicePixelRatio, 10) || 1,
 			forceFallback: false,
 			fallbackClass: 'sortable-fallback',
 			fallbackOnBody: false,
 			fallbackTolerance: 0,
 			fallbackOffset: {x: 0, y: 0},
-			supportPointer: Sortable.supportPointer !== false
+			supportPointer: Sortable.supportPointer !== false && (
+				('PointerEvent' in window) ||
+				window.navigator && ('msPointerEnabled' in window.navigator) // microsoft
+			),
+			emptyInsertThreshold: 5
 		};
 
 
@@ -7598,27 +7979,73 @@ process.umask = function() { return 0; };
 		// Setup drag mode
 		this.nativeDraggable = options.forceFallback ? false : supportDraggable;
 
+		if (this.nativeDraggable) {
+			// Touch start threshold cannot be greater than the native dragstart threshold
+			this.options.touchStartThreshold = 1;
+		}
+
 		// Bind events
-		_on(el, 'mousedown', this._onTapStart);
-		_on(el, 'touchstart', this._onTapStart);
-		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
+		if (options.supportPointer) {
+			_on(el, 'pointerdown', this._onTapStart);
+		} else {
+			_on(el, 'mousedown', this._onTapStart);
+			_on(el, 'touchstart', this._onTapStart);
+		}
 
 		if (this.nativeDraggable) {
 			_on(el, 'dragover', this);
 			_on(el, 'dragenter', this);
 		}
 
-		touchDragOverListeners.push(this._onDragOver);
+		sortables.push(this.el);
 
 		// Restore sorting
-		options.store && this.sort(options.store.get(this));
+		options.store && options.store.get && this.sort(options.store.get(this) || []);
 	}
-
 
 	Sortable.prototype = /** @lends Sortable.prototype */ {
 		constructor: Sortable,
 
+		_computeIsAligned: function(evt) {
+			var target;
+
+			if (ghostEl && !supportCssPointerEvents) {
+				_hideGhostForTarget();
+				target = document.elementFromPoint(evt.clientX, evt.clientY);
+				_unhideGhostForTarget();
+			} else {
+				target = evt.target;
+			}
+
+			target = _closest(target, this.options.draggable, this.el, false);
+			if (_alignedSilent) return;
+			if (!dragEl || dragEl.parentNode !== this.el) return;
+
+			var children = this.el.children;
+			for (var i = 0; i < children.length; i++) {
+				// Don't change for target in case it is changed to aligned before onDragOver is fired
+				if (_closest(children[i], this.options.draggable, this.el, false) && children[i] !== target) {
+					children[i].sortableMouseAligned = _isClientInRowColumn(evt.clientX, evt.clientY, children[i], this._getDirection(evt, null), this.options);
+				}
+			}
+			// Used for nulling last target when not in element, nothing to do with checking if aligned
+			if (!_closest(target, this.options.draggable, this.el, true)) {
+				lastTarget = null;
+			}
+
+			_alignedSilent = true;
+			setTimeout(function() {
+				_alignedSilent = false;
+			}, 30);
+
+		},
+
+		_getDirection: function(evt, target) {
+			return (typeof this.options.direction === 'function') ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
+		},
+
 		_onTapStart: function (/** Event|TouchEvent */evt) {
+			if (!evt.cancelable) return;
 			var _this = this,
 				el = this.el,
 				options = this.options,
@@ -7626,12 +8053,18 @@ process.umask = function() { return 0; };
 				type = evt.type,
 				touch = evt.touches && evt.touches[0],
 				target = (touch || evt).target,
-				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
+				originalTarget = evt.target.shadowRoot && ((evt.path && evt.path[0]) || (evt.composedPath && evt.composedPath()[0])) || target,
 				filter = options.filter,
 				startIndex;
 
 			_saveInputCheckedState(el);
 
+
+			// IE: Calls events in capture mode if event element is nested. This ensures only correct element's _onTapStart goes through.
+			// This process is also done in _onDragOver
+			if (IE11OrLess && !evt.artificialBubble && !_isTrueParentSortable(el, target)) {
+				return;
+			}
 
 			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
 			if (dragEl) {
@@ -7639,7 +8072,7 @@ process.umask = function() { return 0; };
 			}
 
 			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
-				return; // only left button or enabled
+				return; // only left button and enabled
 			}
 
 			// cancel dnd if original target is content editable
@@ -7647,9 +8080,12 @@ process.umask = function() { return 0; };
 				return;
 			}
 
-			target = _closest(target, options.draggable, el);
+			target = _closest(target, options.draggable, el, false);
 
 			if (!target) {
+				if (IE11OrLess) {
+					_artificalBubble(el, evt, '_onTapStart');
+				}
 				return;
 			}
 
@@ -7665,13 +8101,13 @@ process.umask = function() { return 0; };
 			if (typeof filter === 'function') {
 				if (filter.call(this, evt, target, this)) {
 					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
-					preventOnFilter && evt.preventDefault();
+					preventOnFilter && evt.cancelable && evt.preventDefault();
 					return; // cancel dnd
 				}
 			}
 			else if (filter) {
 				filter = filter.split(',').some(function (criteria) {
-					criteria = _closest(originalTarget, criteria.trim(), el);
+					criteria = _closest(originalTarget, criteria.trim(), el, false);
 
 					if (criteria) {
 						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
@@ -7680,17 +8116,70 @@ process.umask = function() { return 0; };
 				});
 
 				if (filter) {
-					preventOnFilter && evt.preventDefault();
+					preventOnFilter && evt.cancelable && evt.preventDefault();
 					return; // cancel dnd
 				}
 			}
 
-			if (options.handle && !_closest(originalTarget, options.handle, el)) {
+			if (options.handle && !_closest(originalTarget, options.handle, el, false)) {
 				return;
 			}
 
 			// Prepare `dragstart`
 			this._prepareDragStart(evt, touch, target, startIndex);
+		},
+
+
+		_handleAutoScroll: function(evt, fallback) {
+			if (!dragEl || !this.options.scroll) return;
+			var x = evt.clientX,
+				y = evt.clientY,
+
+				elem = document.elementFromPoint(x, y),
+				_this = this;
+
+			// IE does not seem to have native autoscroll,
+			// Edge's autoscroll seems too conditional,
+			// MACOS Safari does not have autoscroll,
+			// Firefox and Chrome are good
+			if (fallback || Edge || IE11OrLess || Safari) {
+				_autoScroll(evt, _this.options, elem, fallback);
+
+				// Listener for pointer element change
+				var ogElemScroller = _getParentAutoScrollElement(elem, true);
+				if (
+					scrolling &&
+					(
+						!pointerElemChangedInterval ||
+						x !== lastPointerElemX ||
+						y !== lastPointerElemY
+					)
+				) {
+
+					pointerElemChangedInterval && clearInterval(pointerElemChangedInterval);
+					// Detect for pointer elem change, emulating native DnD behaviour
+					pointerElemChangedInterval = setInterval(function() {
+						if (!dragEl) return;
+						// could also check if scroll direction on newElem changes due to parent autoscrolling
+						var newElem = _getParentAutoScrollElement(document.elementFromPoint(x, y), true);
+						if (newElem !== ogElemScroller) {
+							ogElemScroller = newElem;
+							_clearAutoScrolls();
+							_autoScroll(evt, _this.options, ogElemScroller, fallback);
+						}
+					}, 10);
+					lastPointerElemX = x;
+					lastPointerElemY = y;
+				}
+
+			} else {
+				// if DnD is enabled (and browser has good autoscrolling), first autoscroll will already scroll, so get parent autoscroll of first autoscroll
+				if (!_this.options.bubbleScroll || _getParentAutoScrollElement(elem, true) === _getWindowScrollingElement()) {
+					_clearAutoScrolls();
+					return;
+				}
+				_autoScroll(evt, _this.options, _getParentAutoScrollElement(elem, false), false);
+			}
 		},
 
 		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex) {
@@ -7701,8 +8190,6 @@ process.umask = function() { return 0; };
 				dragStartFn;
 
 			if (target && !dragEl && (target.parentNode === el)) {
-				tapEvt = evt;
-
 				rootEl = el;
 				dragEl = target;
 				parentEl = dragEl.parentNode;
@@ -7711,27 +8198,37 @@ process.umask = function() { return 0; };
 				activeGroup = options.group;
 				oldIndex = startIndex;
 
+				tapEvt = {
+					target: dragEl,
+					clientX: (touch || evt).clientX,
+					clientY: (touch || evt).clientY
+				};
+
 				this._lastX = (touch || evt).clientX;
 				this._lastY = (touch || evt).clientY;
 
 				dragEl.style['will-change'] = 'all';
+				// undo animation if needed
+				dragEl.style.transition = '';
+				dragEl.style.transform = '';
 
 				dragStartFn = function () {
 					// Delayed drag has been triggered
 					// we can re-enable the events: touchmove/mousemove
-					_this._disableDelayedDrag();
+					_this._disableDelayedDragEvents();
 
-					// Make the element draggable
-					dragEl.draggable = _this.nativeDraggable;
-
-					// Chosen item
-					_toggleClass(dragEl, options.chosenClass, true);
+					if (!FireFox && _this.nativeDraggable) {
+						dragEl.draggable = true;
+					}
 
 					// Bind the events: dragstart/dragend
 					_this._triggerDragStart(evt, touch);
 
 					// Drag start event
 					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
+
+					// Chosen item
+					_toggleClass(dragEl, options.chosenClass, true);
 				};
 
 				// Disable "draggable"
@@ -7739,61 +8236,77 @@ process.umask = function() { return 0; };
 					_find(dragEl, criteria.trim(), _disableDraggable);
 				});
 
-				_on(ownerDocument, 'mouseup', _this._onDrop);
-				_on(ownerDocument, 'touchend', _this._onDrop);
-				_on(ownerDocument, 'touchcancel', _this._onDrop);
-				_on(ownerDocument, 'selectstart', _this);
-				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
+				if (options.supportPointer) {
+					_on(ownerDocument, 'pointerup', _this._onDrop);
+				} else {
+					_on(ownerDocument, 'mouseup', _this._onDrop);
+					_on(ownerDocument, 'touchend', _this._onDrop);
+					_on(ownerDocument, 'touchcancel', _this._onDrop);
+				}
 
-				if (options.delay) {
+				// Make dragEl draggable (must be before delay for FireFox)
+				if (FireFox && this.nativeDraggable) {
+					this.options.touchStartThreshold = 4;
+					dragEl.draggable = true;
+				}
+
+				// Delay is impossible for native DnD in Edge or IE
+				if (options.delay && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
 					// If the user moves the pointer or let go the click or touch
 					// before the delay has been reached:
 					// disable the delayed drag
 					_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
 					_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
 					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
-					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
-					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
-					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
+					_on(ownerDocument, 'mousemove', _this._delayedDragTouchMoveHandler);
+					_on(ownerDocument, 'touchmove', _this._delayedDragTouchMoveHandler);
+					options.supportPointer && _on(ownerDocument, 'pointermove', _this._delayedDragTouchMoveHandler);
 
 					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
 				} else {
 					dragStartFn();
 				}
+			}
+		},
 
-
+		_delayedDragTouchMoveHandler: function (/** TouchEvent|PointerEvent **/e) {
+			var touch = e.touches ? e.touches[0] : e;
+			if (max(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY))
+					>= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))
+			) {
+				this._disableDelayedDrag();
 			}
 		},
 
 		_disableDelayedDrag: function () {
-			var ownerDocument = this.el.ownerDocument;
-
+			dragEl && _disableDraggable(dragEl);
 			clearTimeout(this._dragStartTimer);
+
+			this._disableDelayedDragEvents();
+		},
+
+		_disableDelayedDragEvents: function () {
+			var ownerDocument = this.el.ownerDocument;
 			_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
 			_off(ownerDocument, 'touchend', this._disableDelayedDrag);
 			_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
-			_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
-			_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
-			_off(ownerDocument, 'pointermove', this._disableDelayedDrag);
+			_off(ownerDocument, 'mousemove', this._delayedDragTouchMoveHandler);
+			_off(ownerDocument, 'touchmove', this._delayedDragTouchMoveHandler);
+			_off(ownerDocument, 'pointermove', this._delayedDragTouchMoveHandler);
 		},
 
 		_triggerDragStart: function (/** Event */evt, /** Touch */touch) {
 			touch = touch || (evt.pointerType == 'touch' ? evt : null);
 
-			if (touch) {
-				// Touch device support
-				tapEvt = {
-					target: dragEl,
-					clientX: touch.clientX,
-					clientY: touch.clientY
-				};
-
-				this._onDragStart(tapEvt, 'touch');
-			}
-			else if (!this.nativeDraggable) {
-				this._onDragStart(tapEvt, true);
-			}
-			else {
+			if (!this.nativeDraggable || touch) {
+				if (this.options.supportPointer) {
+					_on(document, 'pointermove', this._onTouchMove);
+				} else if (touch) {
+					_on(document, 'touchmove', this._onTouchMove);
+				} else {
+					_on(document, 'mousemove', this._onTouchMove);
+				}
+			} else {
 				_on(dragEl, 'dragend', this);
 				_on(rootEl, 'dragstart', this._onDragStart);
 			}
@@ -7811,41 +8324,47 @@ process.umask = function() { return 0; };
 			}
 		},
 
-		_dragStarted: function () {
+		_dragStarted: function (fallback, evt) {
+			awaitingDragStarted = false;
 			if (rootEl && dragEl) {
+				if (this.nativeDraggable) {
+					_on(document, 'dragover', this._handleAutoScroll);
+					_on(document, 'dragover', _checkAlignment);
+				}
 				var options = this.options;
 
 				// Apply effect
+				!fallback && _toggleClass(dragEl, options.dragClass, false);
 				_toggleClass(dragEl, options.ghostClass, true);
-				_toggleClass(dragEl, options.dragClass, false);
+
+				// In case dragging an animated element
+				_css(dragEl, 'transform', '');
 
 				Sortable.active = this;
 
+				fallback && this._appendGhost();
+
 				// Drag start event
-				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
+				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex, undefined, evt);
 			} else {
 				this._nulling();
 			}
 		},
 
-		_emulateDragOver: function () {
+		_emulateDragOver: function (forAutoScroll) {
 			if (touchEvt) {
-				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
+				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY && !forAutoScroll) {
 					return;
 				}
-
 				this._lastX = touchEvt.clientX;
 				this._lastY = touchEvt.clientY;
 
-				if (!supportCssPointerEvents) {
-					_css(ghostEl, 'display', 'none');
-				}
+				_hideGhostForTarget();
 
 				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
 				var parent = target;
-				var i = touchDragOverListeners.length;
 
-				if (target && target.shadowRoot) {
+				while (target && target.shadowRoot) {
 					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
 					parent = target;
 				}
@@ -7853,16 +8372,18 @@ process.umask = function() { return 0; };
 				if (parent) {
 					do {
 						if (parent[expando]) {
-							while (i--) {
-								touchDragOverListeners[i]({
-									clientX: touchEvt.clientX,
-									clientY: touchEvt.clientY,
-									target: target,
-									rootEl: parent
-								});
-							}
+							var inserted;
 
-							break;
+							inserted = parent[expando]._onDragOver({
+								clientX: touchEvt.clientX,
+								clientY: touchEvt.clientY,
+								target: target,
+								rootEl: parent
+							});
+
+							if (inserted && !this.options.dragoverBubble) {
+								break;
+							}
 						}
 
 						target = parent; // store last element
@@ -7870,37 +8391,42 @@ process.umask = function() { return 0; };
 					/* jshint boss:true */
 					while (parent = parent.parentNode);
 				}
+				dragEl.parentNode[expando]._computeIsAligned(touchEvt);
 
-				if (!supportCssPointerEvents) {
-					_css(ghostEl, 'display', '');
-				}
+				_unhideGhostForTarget();
 			}
 		},
 
 
-		_onTouchMove: function (/**TouchEvent*/evt) {
+		_onTouchMove: function (/**TouchEvent*/evt, forAutoScroll) {
 			if (tapEvt) {
 				var	options = this.options,
 					fallbackTolerance = options.fallbackTolerance,
 					fallbackOffset = options.fallbackOffset,
 					touch = evt.touches ? evt.touches[0] : evt,
-					dx = (touch.clientX - tapEvt.clientX) + fallbackOffset.x,
-					dy = (touch.clientY - tapEvt.clientY) + fallbackOffset.y,
+					matrix = ghostEl && _matrix(ghostEl),
+					scaleX = ghostEl && matrix && matrix.a,
+					scaleY = ghostEl && matrix && matrix.d,
+					relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && _getRelativeScrollOffset(ghostRelativeParent),
+					dx = ((touch.clientX - tapEvt.clientX)
+							+ fallbackOffset.x) / (scaleX || 1)
+							+ (relativeScrollOffset ? (relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0]) : 0) / (scaleX || 1),
+					dy = ((touch.clientY - tapEvt.clientY)
+							+ fallbackOffset.y) / (scaleY || 1)
+							+ (relativeScrollOffset ? (relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1]) : 0) / (scaleY || 1),
 					translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
 
 				// only set the status to dragging, when we are actually dragging
-				if (!Sortable.active) {
+				if (!Sortable.active && !awaitingDragStarted) {
 					if (fallbackTolerance &&
 						min(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY)) < fallbackTolerance
 					) {
 						return;
 					}
-
-					this._dragStarted();
+					this._onDragStart(evt, true);
 				}
 
-				// as well as creating the ghost element on the document body
-				this._appendGhost();
+				!forAutoScroll && this._handleAutoScroll(touch, true);
 
 				moved = true;
 				touchEvt = touch;
@@ -7910,16 +8436,50 @@ process.umask = function() { return 0; };
 				_css(ghostEl, 'msTransform', translate3d);
 				_css(ghostEl, 'transform', translate3d);
 
-				evt.preventDefault();
+				evt.cancelable && evt.preventDefault();
 			}
 		},
 
 		_appendGhost: function () {
+			// Bug if using scale(): https://stackoverflow.com/questions/2637058
+			// Not being adjusted for
 			if (!ghostEl) {
-				var rect = dragEl.getBoundingClientRect(),
+				var container = this.options.fallbackOnBody ? document.body : rootEl,
+					rect = _getRect(dragEl, true, container, !PositionGhostAbsolutely),
 					css = _css(dragEl),
-					options = this.options,
-					ghostRect;
+					options = this.options;
+
+				// Position absolutely
+				if (PositionGhostAbsolutely) {
+					// Get relatively positioned parent
+					ghostRelativeParent = container;
+
+					while (
+						_css(ghostRelativeParent, 'position') === 'static' &&
+						_css(ghostRelativeParent, 'transform') === 'none' &&
+						ghostRelativeParent !== document
+					) {
+						ghostRelativeParent = ghostRelativeParent.parentNode;
+					}
+
+					if (ghostRelativeParent !== document) {
+						var ghostRelativeParentRect = _getRect(ghostRelativeParent, true);
+
+						rect.top -= ghostRelativeParentRect.top;
+						rect.left -= ghostRelativeParentRect.left;
+					}
+
+					if (ghostRelativeParent !== document.body && ghostRelativeParent !== document.documentElement) {
+						if (ghostRelativeParent === document) ghostRelativeParent = _getWindowScrollingElement();
+
+						rect.top += ghostRelativeParent.scrollTop;
+						rect.left += ghostRelativeParent.scrollLeft;
+					} else {
+						ghostRelativeParent = _getWindowScrollingElement();
+					}
+					ghostRelativeParentInitialScroll = _getRelativeScrollOffset(ghostRelativeParent);
+				}
+
 
 				ghostEl = dragEl.cloneNode(true);
 
@@ -7927,69 +8487,58 @@ process.umask = function() { return 0; };
 				_toggleClass(ghostEl, options.fallbackClass, true);
 				_toggleClass(ghostEl, options.dragClass, true);
 
-				_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
-				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
+				_css(ghostEl, 'box-sizing', 'border-box');
+				_css(ghostEl, 'margin', 0);
+				_css(ghostEl, 'top', rect.top);
+				_css(ghostEl, 'left', rect.left);
 				_css(ghostEl, 'width', rect.width);
 				_css(ghostEl, 'height', rect.height);
 				_css(ghostEl, 'opacity', '0.8');
-				_css(ghostEl, 'position', 'fixed');
+				_css(ghostEl, 'position', (PositionGhostAbsolutely ? 'absolute' : 'fixed'));
 				_css(ghostEl, 'zIndex', '100000');
 				_css(ghostEl, 'pointerEvents', 'none');
 
-				options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
-
-				// Fixing dimensions.
-				ghostRect = ghostEl.getBoundingClientRect();
-				_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
-				_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
+				container.appendChild(ghostEl);
 			}
 		},
 
-		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
+		_onDragStart: function (/**Event*/evt, /**boolean*/fallback) {
 			var _this = this;
 			var dataTransfer = evt.dataTransfer;
 			var options = _this.options;
 
-			_this._offUpEvents();
+			// Setup clone
+			cloneEl = _clone(dragEl);
 
-			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
-				cloneEl = _clone(dragEl);
+			cloneEl.draggable = false;
+			cloneEl.style['will-change'] = '';
 
-				cloneEl.draggable = false;
-				cloneEl.style['will-change'] = '';
+			this._hideClone();
 
-				_css(cloneEl, 'display', 'none');
-				_toggleClass(cloneEl, _this.options.chosenClass, false);
+			_toggleClass(cloneEl, _this.options.chosenClass, false);
 
-				// #1143: IFrame support workaround
-				_this._cloneId = _nextTick(function () {
+
+			// #1143: IFrame support workaround
+			_this._cloneId = _nextTick(function () {
+				if (!_this.options.removeCloneOnHide) {
 					rootEl.insertBefore(cloneEl, dragEl);
-					_dispatchEvent(_this, rootEl, 'clone', dragEl);
-				});
-			}
-
-			_toggleClass(dragEl, options.dragClass, true);
-
-			if (useFallback) {
-				if (useFallback === 'touch') {
-					// Bind touch events
-					_on(document, 'touchmove', _this._onTouchMove);
-					_on(document, 'touchend', _this._onDrop);
-					_on(document, 'touchcancel', _this._onDrop);
-
-					if (options.supportPointer) {
-						_on(document, 'pointermove', _this._onTouchMove);
-						_on(document, 'pointerup', _this._onDrop);
-					}
-				} else {
-					// Old brwoser
-					_on(document, 'mousemove', _this._onTouchMove);
-					_on(document, 'mouseup', _this._onDrop);
 				}
+				_dispatchEvent(_this, rootEl, 'clone', dragEl);
+			});
 
+
+			!fallback && _toggleClass(dragEl, options.dragClass, true);
+
+			// Set proper drop events
+			if (fallback) {
+				ignoreNextClick = true;
 				_this._loopId = setInterval(_this._emulateDragOver, 50);
-			}
-			else {
+			} else {
+				// Undo what was set in _prepareDragStart before drag started
+				_off(document, 'mouseup', _this._onDrop);
+				_off(document, 'touchend', _this._onDrop);
+				_off(document, 'touchcancel', _this._onDrop);
+
 				if (dataTransfer) {
 					dataTransfer.effectAllowed = 'move';
 					options.setData && options.setData.call(_this, dataTransfer, dragEl);
@@ -7997,18 +8546,24 @@ process.umask = function() { return 0; };
 
 				_on(document, 'drop', _this);
 
-				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
-				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
-				// Breaking Chrome 62+
-				// _on(document, 'mouseover', _this);
+				// #1276 fix:
+				_css(dragEl, 'transform', 'translateZ(0)');
+			}
 
-				_this._dragStartId = _nextTick(_this._dragStarted);
+			awaitingDragStarted = true;
+
+			_this._dragStartId = _nextTick(_this._dragStarted.bind(_this, fallback, evt));
+			_on(document, 'selectstart', _this);
+			if (Safari) {
+				_css(document.body, 'user-select', 'none');
 			}
 		},
 
+
+		// Returns true - if no further action is needed (either inserted or another condition)
 		_onDragOver: function (/**Event*/evt) {
 			var el = this.el,
-				target,
+				target = evt.target,
 				dragRect,
 				targetRect,
 				revert,
@@ -8016,19 +8571,81 @@ process.umask = function() { return 0; };
 				group = options.group,
 				activeSortable = Sortable.active,
 				isOwner = (activeGroup === group),
-				isMovingBetweenSortable = false,
-				canSort = options.sort;
+				canSort = options.sort,
+				_this = this;
 
-			if (evt.preventDefault !== void 0) {
-				evt.preventDefault();
-				!options.dragoverBubble && evt.stopPropagation();
-			}
+			if (_silent) return;
 
-			if (dragEl.animated) {
+			// IE event order fix
+			if (IE11OrLess && !evt.rootEl && !evt.artificialBubble && !_isTrueParentSortable(el, target)) {
 				return;
 			}
 
+			// Return invocation when dragEl is inserted (or completed)
+			function completed(insertion) {
+				if (insertion) {
+					if (isOwner) {
+						activeSortable._hideClone();
+					} else {
+						activeSortable._showClone(_this);
+					}
+
+					if (activeSortable) {
+						// Set ghost class to new sortable's ghost class
+						_toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : activeSortable.options.ghostClass, false);
+						_toggleClass(dragEl, options.ghostClass, true);
+					}
+
+					if (putSortable !== _this && _this !== Sortable.active) {
+						putSortable = _this;
+					} else if (_this === Sortable.active) {
+						putSortable = null;
+					}
+
+					// Animation
+					dragRect && _this._animate(dragRect, dragEl);
+					target && targetRect && _this._animate(targetRect, target);
+				}
+
+
+				// Null lastTarget if it is not inside a previously swapped element
+				if ((target === dragEl && !dragEl.animated) || (target === el && !target.animated)) {
+					lastTarget = null;
+				}
+				// no bubbling and not fallback
+				if (!options.dragoverBubble && !evt.rootEl && target !== document) {
+					_this._handleAutoScroll(evt);
+					dragEl.parentNode[expando]._computeIsAligned(evt);
+				}
+
+				!options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
+
+				return true;
+			}
+
+			// Call when dragEl has been inserted
+			function changed() {
+				_dispatchEvent(_this, rootEl, 'change', target, el, rootEl, oldIndex, _index(dragEl, options.draggable), evt);
+			}
+
+
+			if (evt.preventDefault !== void 0) {
+				evt.cancelable && evt.preventDefault();
+			}
+
+
 			moved = true;
+
+			target = _closest(target, options.draggable, el, true);
+
+			// target is dragEl or target is animated
+			if (!!_closest(evt.target, null, dragEl, true) || target.animated) {
+				return completed(false);
+			}
+
+			if (target !== dragEl) {
+				ignoreNextClick = false;
+			}
 
 			if (activeSortable && !options.disabled &&
 				(isOwner
@@ -8036,106 +8653,111 @@ process.umask = function() { return 0; };
 					: (
 						putSortable === this ||
 						(
-							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
+							(this.lastPutMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
 							group.checkPut(this, activeSortable, dragEl, evt)
 						)
 					)
-				) &&
-				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
+				)
 			) {
-				// Smart auto-scrolling
-				_autoScroll(evt, options, this.el);
+				var axis = this._getDirection(evt, target);
 
-				if (_silent) {
-					return;
-				}
-
-				target = _closest(evt.target, options.draggable, el);
-				dragRect = dragEl.getBoundingClientRect();
-
-				if (putSortable !== this) {
-					putSortable = this;
-					isMovingBetweenSortable = true;
-				}
+				dragRect = _getRect(dragEl);
 
 				if (revert) {
-					_cloneHide(activeSortable, true);
+					this._hideClone();
 					parentEl = rootEl; // actualization
 
-					if (cloneEl || nextEl) {
-						rootEl.insertBefore(dragEl, cloneEl || nextEl);
-					}
-					else if (!canSort) {
+					if (nextEl) {
+						rootEl.insertBefore(dragEl, nextEl);
+					} else {
 						rootEl.appendChild(dragEl);
 					}
 
-					return;
+					return completed(true);
 				}
 
+				var elLastChild = _lastChild(el);
 
-				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
-					(el === evt.target) && (_ghostIsLast(el, evt))
-				) {
-					//assign target only if condition is true
-					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
-						target = el.lastElementChild;
+				if (!elLastChild || _ghostIsLast(evt, axis, el) && !elLastChild.animated) {
+					// assign target only if condition is true
+					if (elLastChild && el === evt.target) {
+						target = elLastChild;
 					}
 
 					if (target) {
-						if (target.animated) {
-							return;
-						}
-
-						targetRect = target.getBoundingClientRect();
+						targetRect = _getRect(target);
 					}
 
-					_cloneHide(activeSortable, isOwner);
+					if (isOwner) {
+						activeSortable._hideClone();
+					} else {
+						activeSortable._showClone(this);
+					}
 
-					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt) !== false) {
-						if (!dragEl.contains(el)) {
-							el.appendChild(dragEl);
-							parentEl = el; // actualization
-						}
+					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
+						el.appendChild(dragEl);
+						parentEl = el; // actualization
+						realDragElRect = null;
 
-						this._animate(dragRect, dragEl);
-						target && this._animate(targetRect, target);
+						changed();
+						return completed(true);
 					}
 				}
-				else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
-					if (lastEl !== target) {
-						lastEl = target;
-						lastCSS = _css(target);
-						lastParentCSS = _css(target.parentNode);
+				else if (target && target !== dragEl && target.parentNode === el) {
+					var direction = 0,
+						targetBeforeFirstSwap,
+						aligned = target.sortableMouseAligned,
+						differentLevel = dragEl.parentNode !== el,
+						side1 = axis === 'vertical' ? 'top' : 'left',
+						scrolledPastTop = _isScrolledPast(target, 'top') || _isScrolledPast(dragEl, 'top'),
+						scrollBefore = scrolledPastTop ? scrolledPastTop.scrollTop : void 0;
+
+
+					if (lastTarget !== target) {
+						lastMode = null;
+						targetBeforeFirstSwap = _getRect(target)[side1];
+						pastFirstInvertThresh = false;
 					}
 
-					targetRect = target.getBoundingClientRect();
-
-					var width = targetRect.right - targetRect.left,
-						height = targetRect.bottom - targetRect.top,
-						floating = R_FLOAT.test(lastCSS.cssFloat + lastCSS.display)
-							|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
-						isWide = (target.offsetWidth > dragEl.offsetWidth),
-						isLong = (target.offsetHeight > dragEl.offsetHeight),
-						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
-						nextSibling = target.nextElementSibling,
-						after = false
-					;
-
-					if (floating) {
-						var elTop = dragEl.offsetTop,
-							tgTop = target.offsetTop;
-
-						if (elTop === tgTop) {
-							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+					// Reference: https://www.lucidchart.com/documents/view/10fa0e93-e362-4126-aca2-b709ee56bd8b/0
+					if (
+						_isElInRowColumn(dragEl, target, axis) && aligned ||
+						differentLevel ||
+						scrolledPastTop ||
+						options.invertSwap ||
+						lastMode === 'insert' ||
+						// Needed, in the case that we are inside target and inserted because not aligned... aligned will stay false while inside
+						// and lastMode will change to 'insert', but we must swap
+						lastMode === 'swap'
+					) {
+						// New target that we will be inside
+						if (lastMode !== 'swap') {
+							isCircumstantialInvert = options.invertSwap || differentLevel;
 						}
-						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
-							after = (evt.clientY - targetRect.top) / height > 0.5;
-						} else {
-							after = tgTop > elTop;
-						}
-						} else if (!isMovingBetweenSortable) {
-						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+
+						direction = _getSwapDirection(evt, target, axis,
+							options.swapThreshold, options.invertedSwapThreshold == null ? options.swapThreshold : options.invertedSwapThreshold,
+							isCircumstantialInvert,
+							lastTarget === target);
+						lastMode = 'swap';
+					} else {
+						// Insert at position
+						direction = _getInsertDirection(target);
+						lastMode = 'insert';
 					}
+					if (direction === 0) return completed(false);
+
+					realDragElRect = null;
+					lastTarget = target;
+
+					lastDirection = direction;
+
+					targetRect = _getRect(target);
+
+					var nextSibling = target.nextElementSibling,
+						after = false;
+
+					after = direction === 1;
 
 					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
 
@@ -8147,47 +8769,81 @@ process.umask = function() { return 0; };
 						_silent = true;
 						setTimeout(_unsilent, 30);
 
-						_cloneHide(activeSortable, isOwner);
+						if (isOwner) {
+							activeSortable._hideClone();
+						} else {
+							activeSortable._showClone(this);
+						}
 
-						if (!dragEl.contains(el)) {
-							if (after && !nextSibling) {
-								el.appendChild(dragEl);
-							} else {
-								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
-							}
+						if (after && !nextSibling) {
+							el.appendChild(dragEl);
+						} else {
+							target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+						}
+
+						// Undo chrome's scroll adjustment
+						if (scrolledPastTop) {
+							_scrollBy(scrolledPastTop, 0, scrollBefore - scrolledPastTop.scrollTop);
 						}
 
 						parentEl = dragEl.parentNode; // actualization
 
-						this._animate(dragRect, dragEl);
-						this._animate(targetRect, target);
+						// must be done before animation
+						if (targetBeforeFirstSwap !== undefined && !isCircumstantialInvert) {
+							targetMoveDistance = abs(targetBeforeFirstSwap - _getRect(target)[side1]);
+						}
+						changed();
+
+						return completed(true);
 					}
 				}
+
+				if (el.contains(dragEl)) {
+					return completed(false);
+				}
 			}
+
+			if (IE11OrLess && !evt.rootEl) {
+				_artificalBubble(el, evt, '_onDragOver');
+			}
+
+			return false;
 		},
 
 		_animate: function (prevRect, target) {
 			var ms = this.options.animation;
 
 			if (ms) {
-				var currentRect = target.getBoundingClientRect();
+				var currentRect = _getRect(target);
 
-				if (prevRect.nodeType === 1) {
-					prevRect = prevRect.getBoundingClientRect();
+				if (target === dragEl) {
+					realDragElRect = currentRect;
 				}
 
-				_css(target, 'transition', 'none');
-				_css(target, 'transform', 'translate3d('
-					+ (prevRect.left - currentRect.left) + 'px,'
-					+ (prevRect.top - currentRect.top) + 'px,0)'
-				);
+				if (prevRect.nodeType === 1) {
+					prevRect = _getRect(prevRect);
+				}
 
-				target.offsetWidth; // repaint
+				// Check if actually moving position
+				if ((prevRect.left + prevRect.width / 2) !== (currentRect.left + currentRect.width / 2)
+					|| (prevRect.top + prevRect.height / 2) !== (currentRect.top + currentRect.height / 2)
+				) {
+					var matrix = _matrix(this.el),
+						scaleX = matrix && matrix.a,
+						scaleY = matrix && matrix.d;
 
-				_css(target, 'transition', 'all ' + ms + 'ms');
-				_css(target, 'transform', 'translate3d(0,0,0)');
+					_css(target, 'transition', 'none');
+					_css(target, 'transform', 'translate3d('
+						+ (prevRect.left - currentRect.left) / (scaleX ? scaleX : 1) + 'px,'
+						+ (prevRect.top - currentRect.top) / (scaleY ? scaleY : 1) + 'px,0)'
+					);
 
-				clearTimeout(target.animated);
+					forRepaintDummy = target.offsetWidth; // repaint
+					_css(target, 'transition', 'transform ' + ms + 'ms' + (this.options.easing ? ' ' + this.options.easing : ''));
+					_css(target, 'transform', 'translate3d(0,0,0)');
+				}
+
+				(typeof target.animated === 'number') && clearTimeout(target.animated);
 				target.animated = setTimeout(function () {
 					_css(target, 'transition', '');
 					_css(target, 'transform', '');
@@ -8205,41 +8861,54 @@ process.umask = function() { return 0; };
 			_off(ownerDocument, 'touchend', this._onDrop);
 			_off(ownerDocument, 'pointerup', this._onDrop);
 			_off(ownerDocument, 'touchcancel', this._onDrop);
-			_off(ownerDocument, 'pointercancel', this._onDrop);
-			_off(ownerDocument, 'selectstart', this);
+			_off(document, 'selectstart', this);
 		},
 
 		_onDrop: function (/**Event*/evt) {
 			var el = this.el,
 				options = this.options;
+			awaitingDragStarted = false;
+			scrolling = false;
+			isCircumstantialInvert = false;
+			pastFirstInvertThresh = false;
 
 			clearInterval(this._loopId);
-			clearInterval(autoScroll.pid);
+
+			clearInterval(pointerElemChangedInterval);
+			_clearAutoScrolls();
+			_cancelThrottle();
+
 			clearTimeout(this._dragStartTimer);
 
 			_cancelNextTick(this._cloneId);
 			_cancelNextTick(this._dragStartId);
 
 			// Unbind events
-			_off(document, 'mouseover', this);
 			_off(document, 'mousemove', this._onTouchMove);
+
 
 			if (this.nativeDraggable) {
 				_off(document, 'drop', this);
 				_off(el, 'dragstart', this._onDragStart);
+				_off(document, 'dragover', this._handleAutoScroll);
+				_off(document, 'dragover', _checkAlignment);
+			}
+
+			if (Safari) {
+				_css(document.body, 'user-select', '');
 			}
 
 			this._offUpEvents();
 
 			if (evt) {
 				if (moved) {
-					evt.preventDefault();
+					evt.cancelable && evt.preventDefault();
 					!options.dropBubble && evt.stopPropagation();
 				}
 
 				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
 
-				if (rootEl === parentEl || Sortable.active.lastPullMode !== 'clone') {
+				if (rootEl === parentEl || (putSortable && putSortable.lastPutMode !== 'clone')) {
 					// Remove clone
 					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
 				}
@@ -8253,26 +8922,28 @@ process.umask = function() { return 0; };
 					dragEl.style['will-change'] = '';
 
 					// Remove class's
-					_toggleClass(dragEl, this.options.ghostClass, false);
+					_toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : this.options.ghostClass, false);
 					_toggleClass(dragEl, this.options.chosenClass, false);
 
 					// Drag stop event
-					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
+					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex, null, evt);
 
 					if (rootEl !== parentEl) {
 						newIndex = _index(dragEl, options.draggable);
 
 						if (newIndex >= 0) {
 							// Add event
-							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
 
 							// Remove event
-							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
 
 							// drag from one list and drop into another
-							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
-							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
+							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
 						}
+
+						putSortable && putSortable.save();
 					}
 					else {
 						if (dragEl.nextSibling !== nextEl) {
@@ -8281,8 +8952,8 @@ process.umask = function() { return 0; };
 
 							if (newIndex >= 0) {
 								// drag & drop within the same list
-								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
-								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
 							}
 						}
 					}
@@ -8292,8 +8963,7 @@ process.umask = function() { return 0; };
 						if (newIndex == null || newIndex === -1) {
 							newIndex = oldIndex;
 						}
-
-						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
+						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex, evt);
 
 						// Save sorting
 						this.save();
@@ -8301,7 +8971,6 @@ process.umask = function() { return 0; };
 				}
 
 			}
-
 			this._nulling();
 		},
 
@@ -8316,15 +8985,24 @@ process.umask = function() { return 0; };
 
 			scrollEl =
 			scrollParentEl =
+			autoScrolls.length =
+
+			pointerElemChangedInterval =
+			lastPointerElemX =
+			lastPointerElemY =
 
 			tapEvt =
 			touchEvt =
 
 			moved =
 			newIndex =
+			oldIndex =
 
-			lastEl =
-			lastCSS =
+			lastTarget =
+			lastDirection =
+
+			forRepaintDummy =
+			realDragElRect =
 
 			putSortable =
 			activeGroup =
@@ -8333,6 +9011,7 @@ process.umask = function() { return 0; };
 			savedInputChecked.forEach(function (el) {
 				el.checked = true;
 			});
+
 			savedInputChecked.length = 0;
 		},
 
@@ -8343,16 +9022,12 @@ process.umask = function() { return 0; };
 					this._onDrop(evt);
 					break;
 
-				case 'dragover':
 				case 'dragenter':
+				case 'dragover':
 					if (dragEl) {
 						this._onDragOver(evt);
 						_globalDragOver(evt);
 					}
-					break;
-
-				case 'mouseover':
-					this._onDrop(evt);
 					break;
 
 				case 'selectstart':
@@ -8376,7 +9051,7 @@ process.umask = function() { return 0; };
 
 			for (; i < n; i++) {
 				el = children[i];
-				if (_closest(el, options.draggable, this.el)) {
+				if (_closest(el, options.draggable, this.el, false)) {
 					order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
 				}
 			}
@@ -8395,7 +9070,7 @@ process.umask = function() { return 0; };
 			this.toArray().forEach(function (id, i) {
 				var el = rootEl.children[i];
 
-				if (_closest(el, this.options.draggable, rootEl)) {
+				if (_closest(el, this.options.draggable, rootEl, false)) {
 					items[id] = el;
 				}
 			}, this);
@@ -8414,7 +9089,7 @@ process.umask = function() { return 0; };
 		 */
 		save: function () {
 			var store = this.options.store;
-			store && store.set(this);
+			store && store.set && store.set(this);
 		},
 
 
@@ -8425,7 +9100,7 @@ process.umask = function() { return 0; };
 		 * @returns {HTMLElement|null}
 		 */
 		closest: function (el, selector) {
-			return _closest(el, selector || this.options.draggable, this.el);
+			return _closest(el, selector || this.options.draggable, this.el, false);
 		},
 
 
@@ -8466,53 +9141,70 @@ process.umask = function() { return 0; };
 				_off(el, 'dragover', this);
 				_off(el, 'dragenter', this);
 			}
-
 			// Remove draggable attributes
 			Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
 				el.removeAttribute('draggable');
 			});
 
-			touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
-
 			this._onDrop();
 
+			sortables.splice(sortables.indexOf(this.el), 1);
+
 			this.el = el = null;
+		},
+
+		_hideClone: function() {
+			if (!cloneEl.cloneHidden) {
+				_css(cloneEl, 'display', 'none');
+				cloneEl.cloneHidden = true;
+				if (cloneEl.parentNode && this.options.removeCloneOnHide) {
+					cloneEl.parentNode.removeChild(cloneEl);
+				}
+			}
+		},
+
+		_showClone: function(putSortable) {
+			if (putSortable.lastPutMode !== 'clone') {
+				this._hideClone();
+				return;
+			}
+
+			if (cloneEl.cloneHidden) {
+				// show clone at dragEl or original position
+				if (rootEl.contains(dragEl) && !this.options.group.revertClone) {
+					rootEl.insertBefore(cloneEl, dragEl);
+				} else if (nextEl) {
+					rootEl.insertBefore(cloneEl, nextEl);
+				} else {
+					rootEl.appendChild(cloneEl);
+				}
+
+				if (this.options.group.revertClone) {
+					this._animate(dragEl, cloneEl);
+				}
+				_css(cloneEl, 'display', '');
+				cloneEl.cloneHidden = false;
+			}
 		}
 	};
 
-
-	function _cloneHide(sortable, state) {
-		if (sortable.lastPullMode !== 'clone') {
-			state = true;
-		}
-
-		if (cloneEl && (cloneEl.state !== state)) {
-			_css(cloneEl, 'display', state ? 'none' : '');
-
-			if (!state) {
-				if (cloneEl.state) {
-					if (sortable.options.group.revertClone) {
-						rootEl.insertBefore(cloneEl, nextEl);
-						sortable._animate(dragEl, cloneEl);
-					} else {
-						rootEl.insertBefore(cloneEl, dragEl);
-					}
-				}
-			}
-
-			cloneEl.state = state;
-		}
-	}
-
-
-	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
+	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx, includeCTX) {
 		if (el) {
 			ctx = ctx || document;
 
 			do {
-				if ((selector === '>*' && el.parentNode === ctx) || _matches(el, selector)) {
+				if (
+					selector != null &&
+					(
+						selector[0] === '>' && el.parentNode === ctx && _matches(el, selector.substring(1)) ||
+						_matches(el, selector)
+					) ||
+					includeCTX && el === ctx
+				) {
 					return el;
 				}
+
+				if (el === ctx) break;
 				/* jshint boss:true */
 			} while (el = _getParentOrHost(el));
 		}
@@ -8522,9 +9214,9 @@ process.umask = function() { return 0; };
 
 
 	function _getParentOrHost(el) {
-		var parent = el.host;
-
-		return (parent && parent.nodeType) ? parent : el.parentNode;
+		return (el.host && el !== document && el.host.nodeType)
+			? el.host
+			: el.parentNode;
 	}
 
 
@@ -8532,7 +9224,7 @@ process.umask = function() { return 0; };
 		if (evt.dataTransfer) {
 			evt.dataTransfer.dropEffect = 'move';
 		}
-		evt.preventDefault();
+		evt.cancelable && evt.preventDefault();
 	}
 
 
@@ -8547,7 +9239,7 @@ process.umask = function() { return 0; };
 
 
 	function _toggleClass(el, name, state) {
-		if (el) {
+		if (el && name) {
 			if (el.classList) {
 				el.classList[state ? 'add' : 'remove'](name);
 			}
@@ -8574,12 +9266,32 @@ process.umask = function() { return 0; };
 				return prop === void 0 ? val : val[prop];
 			}
 			else {
-				if (!(prop in style)) {
+				if (!(prop in style) && prop.indexOf('webkit') === -1) {
 					prop = '-webkit-' + prop;
 				}
 
 				style[prop] = val + (typeof val === 'string' ? '' : 'px');
 			}
+		}
+	}
+
+	function _matrix(el) {
+		var appliedTransforms = '';
+		do {
+			var transform = _css(el, 'transform');
+
+			if (transform && transform !== 'none') {
+				appliedTransforms = transform + ' ' + appliedTransforms;
+			}
+			/* jshint boss:true */
+		} while (el = el.parentNode);
+
+		if (window.DOMMatrix) {
+			return new DOMMatrix(appliedTransforms);
+		} else if (window.WebKitCSSMatrix) {
+			return new WebKitCSSMatrix(appliedTransforms);
+		} else if (window.CSSMatrix) {
+			return new CSSMatrix(appliedTransforms);
 		}
 	}
 
@@ -8602,14 +9314,21 @@ process.umask = function() { return 0; };
 
 
 
-	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
+	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex, originalEvt) {
 		sortable = (sortable || rootEl[expando]);
-
-		var evt = document.createEvent('Event'),
+		var evt,
 			options = sortable.options,
 			onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
-
-		evt.initEvent(name, true, true);
+		// Support for new CustomEvent feature
+		if (window.CustomEvent && !IE11OrLess && !Edge) {
+			evt = new CustomEvent(name, {
+				bubbles: true,
+				cancelable: true
+			});
+		} else {
+			evt = document.createEvent('Event');
+			evt.initEvent(name, true, true);
+		}
 
 		evt.to = toEl || rootEl;
 		evt.from = fromEl || rootEl;
@@ -8619,7 +9338,12 @@ process.umask = function() { return 0; };
 		evt.oldIndex = startIndex;
 		evt.newIndex = newIndex;
 
-		rootEl.dispatchEvent(evt);
+		evt.originalEvent = originalEvt;
+		evt.pullMode = putSortable ? putSortable.lastPutMode : undefined;
+
+		if (rootEl) {
+			rootEl.dispatchEvent(evt);
+		}
 
 		if (options[onName]) {
 			options[onName].call(sortable, evt);
@@ -8632,17 +9356,26 @@ process.umask = function() { return 0; };
 			sortable = fromEl[expando],
 			onMoveFn = sortable.options.onMove,
 			retVal;
-
-		evt = document.createEvent('Event');
-		evt.initEvent('move', true, true);
+		// Support for new CustomEvent feature
+		if (window.CustomEvent && !IE11OrLess && !Edge) {
+			evt = new CustomEvent('move', {
+				bubbles: true,
+				cancelable: true
+			});
+		} else {
+			evt = document.createEvent('Event');
+			evt.initEvent('move', true, true);
+		}
 
 		evt.to = toEl;
 		evt.from = fromEl;
 		evt.dragged = dragEl;
 		evt.draggedRect = dragRect;
 		evt.related = targetEl || toEl;
-		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
+		evt.relatedRect = targetRect || _getRect(toEl);
 		evt.willInsertAfter = willInsertAfter;
+
+		evt.originalEvent = originalEvt;
 
 		fromEl.dispatchEvent(evt);
 
@@ -8653,26 +9386,166 @@ process.umask = function() { return 0; };
 		return retVal;
 	}
 
-
 	function _disableDraggable(el) {
 		el.draggable = false;
 	}
-
 
 	function _unsilent() {
 		_silent = false;
 	}
 
+	/**
+	 * Gets nth child of el, ignoring hidden children, sortable's elements (does not ignore clone if it's visible)
+	 * and non-draggable elements
+	 * @param  {HTMLElement} el       The parent element
+	 * @param  {Number} childNum      The index of the child
+	 * @param  {Object} options       Parent Sortable's options
+	 * @return {HTMLElement}          The child at index childNum, or null if not found
+	 */
+	function _getChild(el, childNum, options) {
+		var currentChild = 0,
+			i = 0,
+			children = el.children;
 
-	/** @returns {HTMLElement|false} */
-	function _ghostIsLast(el, evt) {
-		var lastEl = el.lastElementChild,
-			rect = lastEl.getBoundingClientRect();
+		while (i < children.length) {
+			if (
+				children[i].style.display !== 'none' &&
+				children[i] !== ghostEl &&
+				children[i] !== dragEl &&
+				_closest(children[i], options.draggable, el, false)
+			) {
+				if (currentChild === childNum) {
+					return children[i];
+				}
+				currentChild++;
+			}
 
-		// 5 — min delta
-		// abs — нельзя добавлять, а то глюки при наведении сверху
-		return (evt.clientY - (rect.top + rect.height) > 5) ||
-			(evt.clientX - (rect.left + rect.width) > 5);
+			i++;
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the last child in the el, ignoring ghostEl or invisible elements (clones)
+	 * @param  {HTMLElement} el       Parent element
+	 * @return {HTMLElement}          The last child, ignoring ghostEl
+	 */
+	function _lastChild(el) {
+		var last = el.lastElementChild;
+
+		while (last && (last === ghostEl || last.style.display === 'none')) {
+			last = last.previousElementSibling;
+		}
+
+		return last || null;
+	}
+
+	function _ghostIsLast(evt, axis, el) {
+		var elRect = _getRect(_lastChild(el)),
+			mouseOnAxis = axis === 'vertical' ? evt.clientY : evt.clientX,
+			mouseOnOppAxis = axis === 'vertical' ? evt.clientX : evt.clientY,
+			targetS2 = axis === 'vertical' ? elRect.bottom : elRect.right,
+			targetS1Opp = axis === 'vertical' ? elRect.left : elRect.top,
+			targetS2Opp = axis === 'vertical' ? elRect.right : elRect.bottom,
+			spacer = 10;
+
+		return (
+			axis === 'vertical' ?
+				(mouseOnOppAxis > targetS2Opp + spacer || mouseOnOppAxis <= targetS2Opp && mouseOnAxis > targetS2 && mouseOnOppAxis >= targetS1Opp) :
+				(mouseOnAxis > targetS2 && mouseOnOppAxis > targetS1Opp || mouseOnAxis <= targetS2 && mouseOnOppAxis > targetS2Opp + spacer)
+		);
+	}
+
+	function _getSwapDirection(evt, target, axis, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
+		var targetRect = _getRect(target),
+			mouseOnAxis = axis === 'vertical' ? evt.clientY : evt.clientX,
+			targetLength = axis === 'vertical' ? targetRect.height : targetRect.width,
+			targetS1 = axis === 'vertical' ? targetRect.top : targetRect.left,
+			targetS2 = axis === 'vertical' ? targetRect.bottom : targetRect.right,
+			dragRect = _getRect(dragEl),
+			invert = false;
+
+
+		if (!invertSwap) {
+			// Never invert or create dragEl shadow when target movemenet causes mouse to move past the end of regular swapThreshold
+			if (isLastTarget && targetMoveDistance < targetLength * swapThreshold) { // multiplied only by swapThreshold because mouse will already be inside target by (1 - threshold) * targetLength / 2
+				// check if past first invert threshold on side opposite of lastDirection
+				if (!pastFirstInvertThresh &&
+					(lastDirection === 1 ?
+						(
+							mouseOnAxis > targetS1 + targetLength * invertedSwapThreshold / 2
+						) :
+						(
+							mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2
+						)
+					)
+				)
+				{
+					// past first invert threshold, do not restrict inverted threshold to dragEl shadow
+					pastFirstInvertThresh = true;
+				}
+
+				if (!pastFirstInvertThresh) {
+					var dragS1 = axis === 'vertical' ? dragRect.top : dragRect.left,
+						dragS2 = axis === 'vertical' ? dragRect.bottom : dragRect.right;
+					// dragEl shadow (target move distance shadow)
+					if (
+						lastDirection === 1 ?
+						(
+							mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
+						) :
+						(
+							mouseOnAxis > targetS2 - targetMoveDistance
+						)
+					)
+					{
+						return lastDirection * -1;
+					}
+				} else {
+					invert = true;
+				}
+			} else {
+				// Regular
+				if (
+					mouseOnAxis > targetS1 + (targetLength * (1 - swapThreshold) / 2) &&
+					mouseOnAxis < targetS2 - (targetLength * (1 - swapThreshold) / 2)
+				) {
+					return _getInsertDirection(target);
+				}
+			}
+		}
+
+		invert = invert || invertSwap;
+
+		if (invert) {
+			// Invert of regular
+			if (
+				mouseOnAxis < targetS1 + (targetLength * invertedSwapThreshold / 2) ||
+				mouseOnAxis > targetS2 - (targetLength * invertedSwapThreshold / 2)
+			)
+			{
+				return ((mouseOnAxis > targetS1 + targetLength / 2) ? 1 : -1);
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Gets the direction dragEl must be swapped relative to target in order to make it
+	 * seem that dragEl has been "inserted" into that element's position
+	 * @param  {HTMLElement} target       The target whose position dragEl is being inserted at
+	 * @return {Number}                   Direction dragEl must be swapped
+	 */
+	function _getInsertDirection(target) {
+		var dragElIndex = _index(dragEl),
+			targetIndex = _index(target);
+
+		if (dragElIndex < targetIndex) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 
@@ -8709,7 +9582,7 @@ process.umask = function() { return 0; };
 		}
 
 		while (el && (el = el.previousElementSibling)) {
-			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && (selector === '>*' || _matches(el, selector))) {
+			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && el !== cloneEl) {
 				index++;
 			}
 		}
@@ -8719,39 +9592,45 @@ process.umask = function() { return 0; };
 
 	function _matches(/**HTMLElement*/el, /**String*/selector) {
 		if (el) {
-			selector = selector.split('.');
-
-			var tag = selector.shift().toUpperCase(),
-				re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
-
-			return (
-				(tag === '' || el.nodeName.toUpperCase() == tag) &&
-				(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
-			);
+			try {
+				if (el.matches) {
+					return el.matches(selector);
+				} else if (el.msMatchesSelector) {
+					return el.msMatchesSelector(selector);
+				} else if (el.webkitMatchesSelector) {
+					return el.webkitMatchesSelector(selector);
+				}
+			} catch(_) {
+				return false;
+			}
 		}
 
 		return false;
 	}
 
+	var _throttleTimeout;
 	function _throttle(callback, ms) {
-		var args, _this;
-
 		return function () {
-			if (args === void 0) {
-				args = arguments;
-				_this = this;
+			if (!_throttleTimeout) {
+				var args = arguments,
+					_this = this;
 
-				setTimeout(function () {
+				_throttleTimeout = setTimeout(function () {
 					if (args.length === 1) {
 						callback.call(_this, args[0]);
 					} else {
 						callback.apply(_this, args);
 					}
 
-					args = void 0;
+					_throttleTimeout = void 0;
 				}, ms);
 			}
 		};
+	}
+
+	function _cancelThrottle() {
+		clearTimeout(_throttleTimeout);
+		_throttleTimeout = void 0;
 	}
 
 	function _extend(dst, src) {
@@ -8779,6 +9658,8 @@ process.umask = function() { return 0; };
 	}
 
 	function _saveInputCheckedState(root) {
+		savedInputChecked.length = 0;
+
 		var inputs = root.getElementsByTagName('input');
 		var idx = inputs.length;
 
@@ -8796,12 +9677,158 @@ process.umask = function() { return 0; };
 		return clearTimeout(id);
 	}
 
+
+	/**
+	 * Returns the "bounding client rect" of given element
+	 * @param  {HTMLElement} el                The element whose boundingClientRect is wanted
+	 * @param  {[HTMLElement]} container       the parent the element will be placed in
+	 * @param  {[Boolean]} adjustForTransform  Whether the rect should compensate for parent's transform
+	 * @return {Object}                        The boundingClientRect of el
+	 */
+	function _getRect(el, adjustForTransform, container, adjustForFixed) {
+		if (!el.getBoundingClientRect && el !== win) return;
+
+		var elRect,
+			top,
+			left,
+			bottom,
+			right,
+			height,
+			width;
+
+		if (el !== win && el !== _getWindowScrollingElement()) {
+			elRect = el.getBoundingClientRect();
+			top = elRect.top;
+			left = elRect.left;
+			bottom = elRect.bottom;
+			right = elRect.right;
+			height = elRect.height;
+			width = elRect.width;
+		} else {
+			top = 0;
+			left = 0;
+			bottom = window.innerHeight;
+			right = window.innerWidth;
+			height = window.innerHeight;
+			width = window.innerWidth;
+		}
+
+		if (adjustForFixed && el !== win) {
+			// Adjust for translate()
+			container = container || el.parentNode;
+
+			// solves #1123 (see: https://stackoverflow.com/a/37953806/6088312)
+			// Not needed on <= IE11
+			if (!IE11OrLess) {
+				do {
+					if (container && container.getBoundingClientRect && _css(container, 'transform') !== 'none') {
+						var containerRect = container.getBoundingClientRect();
+
+						// Set relative to edges of padding box of container
+						top -= containerRect.top + parseInt(_css(container, 'border-top-width'));
+						left -= containerRect.left + parseInt(_css(container, 'border-left-width'));
+						bottom = top + elRect.height;
+						right = left + elRect.width;
+
+						break;
+					}
+					/* jshint boss:true */
+				} while (container = container.parentNode);
+			}
+		}
+
+		if (adjustForTransform && el !== win) {
+			// Adjust for scale()
+			var matrix = _matrix(container || el),
+				scaleX = matrix && matrix.a,
+				scaleY = matrix && matrix.d;
+
+			if (matrix) {
+				top /= scaleY;
+				left /= scaleX;
+
+				width /= scaleX;
+				height /= scaleY;
+
+				bottom = top + height;
+				right = left + width;
+			}
+		}
+
+		return {
+			top: top,
+			left: left,
+			bottom: bottom,
+			right: right,
+			width: width,
+			height: height
+		};
+	}
+
+
+	/**
+	 * Checks if a side of an element is scrolled past a side of it's parents
+	 * @param  {HTMLElement}  el       The element who's side being scrolled out of view is in question
+	 * @param  {String}       side     Side of the element in question ('top', 'left', 'right', 'bottom')
+	 * @return {HTMLElement}           The parent scroll element that the el's side is scrolled past, or null if there is no such element
+	 */
+	function _isScrolledPast(el, side) {
+		var parent = _getParentAutoScrollElement(el, true),
+			elSide = _getRect(el)[side];
+
+		/* jshint boss:true */
+		while (parent) {
+			var parentSide = _getRect(parent)[side],
+				visible;
+
+			if (side === 'top' || side === 'left') {
+				visible = elSide >= parentSide;
+			} else {
+				visible = elSide <= parentSide;
+			}
+
+			if (!visible) return parent;
+
+			if (parent === _getWindowScrollingElement()) break;
+
+			parent = _getParentAutoScrollElement(parent, false);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the scroll offset of the given element, added with all the scroll offsets of parent elements.
+	 * The value is returned in real pixels.
+	 * @param  {HTMLElement} el
+	 * @return {Array}             Offsets in the format of [left, top]
+	 */
+	function _getRelativeScrollOffset(el) {
+		var offsetLeft = 0,
+			offsetTop = 0,
+			winScroller = _getWindowScrollingElement();
+
+		if (el) {
+			do {
+				var matrix = _matrix(el),
+					scaleX = matrix.a,
+					scaleY = matrix.d;
+
+				offsetLeft += el.scrollLeft * scaleX;
+				offsetTop += el.scrollTop * scaleY;
+			} while (el !== winScroller && (el = el.parentNode));
+		}
+
+		return [offsetLeft, offsetTop];
+	}
+
 	// Fixed #973:
-	_on(document, 'touchmove', function (evt) {
-		if (Sortable.active) {
+	_on(document, 'touchmove', function(evt) {
+		if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
 			evt.preventDefault();
 		}
 	});
+
 
 	// Export utils
 	Sortable.utils = {
@@ -8810,7 +9837,7 @@ process.umask = function() { return 0; };
 		css: _css,
 		find: _find,
 		is: function (el, selector) {
-			return !!_closest(el, selector, el);
+			return !!_closest(el, selector, el, false);
 		},
 		extend: _extend,
 		throttle: _throttle,
@@ -8819,7 +9846,9 @@ process.umask = function() { return 0; };
 		clone: _clone,
 		index: _index,
 		nextTick: _nextTick,
-		cancelNextTick: _cancelNextTick
+		cancelNextTick: _cancelNextTick,
+		detectDirection: _detectDirection,
+		getChild: _getChild
 	};
 
 
@@ -8834,7 +9863,7 @@ process.umask = function() { return 0; };
 
 
 	// Export
-	Sortable.version = '1.7.0';
+	Sortable.version = '1.8.4';
 	return Sortable;
 });
 
@@ -22673,7 +23702,7 @@ return index;
 
 },{}],113:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-b6abc628] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-b6abc628] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-b6abc628] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-b6abc628] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-b6abc628] {\n  color: #1B1B1B;\n}\n.zcallout[_v-b6abc628] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-b6abc628] {\n  margin-bottom: 2px;\n}\n#applabel[_v-b6abc628]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-b6abc628],\n.btn-group-vertical[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-b6abc628] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-b6abc628] {\n}\n.form-group label[_v-b6abc628]{\n  margin-bottom: 0;\n}\n.box-footer[_v-b6abc628] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-b6abc628] {\n  border: 1px solid #999999;\n}\n.topitems[_v-b6abc628] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-b6abc628] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-b6abc628] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-b6abc628] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-b6abc628] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-b6abc628] {\n  color: #F39C12;\n}\n.time-is-long[_v-b6abc628] {\n  color: #999999;\n}\n.time-is-over[_v-b6abc628] {\n  color: #9B59B6;\n}\n.special-item[_v-b6abc628] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-b6abc628] {\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-6f38b932] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-6f38b932] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-6f38b932] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-6f38b932] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-6f38b932] {\n  color: #1B1B1B;\n}\n.zcallout[_v-6f38b932] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-6f38b932] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-6f38b932] {\n  margin-bottom: 2px;\n}\n#applabel[_v-6f38b932]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-6f38b932],\n.btn-group-vertical[_v-6f38b932] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-6f38b932] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-6f38b932] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-6f38b932] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-6f38b932] {\n}\n.form-group label[_v-6f38b932]{\n  margin-bottom: 0;\n}\n.box-footer[_v-6f38b932] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-6f38b932] {\n  border: 1px solid #999999;\n}\n.topitems[_v-6f38b932] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-6f38b932] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-6f38b932] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-6f38b932] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-6f38b932] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-6f38b932] {\n  color: #F39C12;\n}\n.time-is-long[_v-6f38b932] {\n  color: #999999;\n}\n.time-is-over[_v-6f38b932] {\n  color: #9B59B6;\n}\n.special-item[_v-6f38b932] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-6f38b932] {\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
@@ -22858,24 +23887,24 @@ module.exports = {
 
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-b6abc628=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-b6abc628=\"\">\n      <div class=\"box-header with-border\" _v-b6abc628=\"\">\n        <div class=\"row\" _v-b6abc628=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-b6abc628=\"\">\n            <div class=\"box-date-top pull-left\" _v-b6abc628=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-b6abc628=\"\">\n            <label v-show=\"podType == 'announcementqueue'\" class=\"pull-right\" _v-b6abc628=\"\"><input type=\"checkbox\" @click=\"toggleEmitAnnouncement(item)\" v-model=\"checked\" :checked=\"isAnnouncement\" _v-b6abc628=\"\"> Email Announcement</label>\n            <button v-show=\"podType == 'announcement'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitAnnouncementRemove(item)\" _v-b6abc628=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-b6abc628=\"\"></i></button>\n          </div><!-- /.col-md-12 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-b6abc628=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-b6abc628=\"\">\n            <div class=\"col-sm-12\" _v-b6abc628=\"\">\n              <h6 class=\"box-title\" _v-b6abc628=\"\">{{item.title}}</h6>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-b6abc628=\"\">\n      <p _v-b6abc628=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-b6abc628=\"\">\n        Submitted On: {{item.submission_date}}<br _v-b6abc628=\"\">\n        By: {{item.submitter}}<br _v-b6abc628=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-b6abc628=\"\">\n      <div class=\"row\" _v-b6abc628=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-b6abc628=\"\">\n          <span :class=\"timeFromNowStatus\" _v-b6abc628=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-b6abc628=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-b6abc628=\"\">\n          <div class=\"btn-group pull-right\" _v-b6abc628=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-b6abc628=\"\"><i class=\"fa fa-pencil\" _v-b6abc628=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div :class=\"specialItem\" _v-6f38b932=\"\">\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-6f38b932=\"\">\n      <div class=\"box-header with-border\" _v-6f38b932=\"\">\n        <div class=\"row\" _v-6f38b932=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-6f38b932=\"\">\n            <div class=\"box-date-top pull-left\" _v-6f38b932=\"\">{{item.start_date | titleDateLong}}</div>\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-6f38b932=\"\">\n            <label v-show=\"podType == 'announcementqueue'\" class=\"pull-right\" _v-6f38b932=\"\"><input type=\"checkbox\" @click=\"toggleEmitAnnouncement(item)\" v-model=\"checked\" :checked=\"isAnnouncement\" _v-6f38b932=\"\"> Email Announcement</label>\n            <button v-show=\"podType == 'announcement'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitAnnouncementRemove(item)\" _v-6f38b932=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-6f38b932=\"\"></i></button>\n          </div><!-- /.col-md-12 -->\n        </div><!-- /.row -->\n        <div class=\"row\" _v-6f38b932=\"\">\n          <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-6f38b932=\"\">\n            <div class=\"col-sm-12\" _v-6f38b932=\"\">\n              <h6 class=\"box-title\" _v-6f38b932=\"\">{{item.title}}</h6>\n            </div><!-- /.col-md-12 -->\n          </a>\n        </div><!-- /.row -->\n      </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-6f38b932=\"\">\n      <p _v-6f38b932=\"\">{{item.announcement}}</p>\n      <div class=\"announcement-info\" _v-6f38b932=\"\">\n        Submitted On: {{item.submission_date}}<br _v-6f38b932=\"\">\n        By: {{item.submitter}}<br _v-6f38b932=\"\">\n        Dates: {{item.start_date}} - {{item.end_date}}\n      </div>\n    </div><!-- /.box-body -->\n    <div class=\"box-footer list-footer\" _v-6f38b932=\"\">\n      <div class=\"row\" _v-6f38b932=\"\">\n        <div class=\"col-sm-12 col-md-9 \" _v-6f38b932=\"\">\n          <span :class=\"timeFromNowStatus\" _v-6f38b932=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-6f38b932=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-6f38b932=\"\">\n          <div class=\"btn-group pull-right\" _v-6f38b932=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-6f38b932=\"\"><i class=\"fa fa-pencil\" _v-6f38b932=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-b6abc628] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-b6abc628] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-b6abc628] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-b6abc628] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-b6abc628] {\n  color: #1B1B1B;\n}\n.zcallout[_v-b6abc628] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-b6abc628] {\n  margin-bottom: 2px;\n}\n#applabel[_v-b6abc628]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-b6abc628],\n.btn-group-vertical[_v-b6abc628] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-b6abc628] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-b6abc628] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-b6abc628] {\n}\n.form-group label[_v-b6abc628]{\n  margin-bottom: 0;\n}\n.box-footer[_v-b6abc628] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-b6abc628] {\n  border: 1px solid #999999;\n}\n.topitems[_v-b6abc628] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-b6abc628] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-b6abc628] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-b6abc628] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-b6abc628] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-b6abc628] {\n  color: #F39C12;\n}\n.time-is-long[_v-b6abc628] {\n  color: #999999;\n}\n.time-is-over[_v-b6abc628] {\n  color: #9B59B6;\n}\n.special-item[_v-b6abc628] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-b6abc628] {\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-6f38b932] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-6f38b932] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n.box-header[_v-6f38b932] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-6f38b932] {\n  border-color: #1B1B1B;\n}\nh6.box-title[_v-6f38b932] {\n  color: #1B1B1B;\n}\n.zcallout[_v-6f38b932] {\n  border-radius: 5px;\n  border-left: 50px solid #ff0000;\n}\nform[_v-6f38b932] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\n.form-group[_v-6f38b932] {\n  margin-bottom: 2px;\n}\n#applabel[_v-6f38b932]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n.btn-group[_v-6f38b932],\n.btn-group-vertical[_v-6f38b932] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-6f38b932] {\n  height:22px;\n  border: 1px solid #999999;\n}\nh6[_v-6f38b932] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-6f38b932] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-6f38b932] {\n}\n.form-group label[_v-6f38b932]{\n  margin-bottom: 0;\n}\n.box-footer[_v-6f38b932] {\n  padding: 3px;\n}\n.box.box-solid.box-default[_v-6f38b932] {\n  border: 1px solid #999999;\n}\n.topitems[_v-6f38b932] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-6f38b932] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-6f38b932] {\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-6f38b932] {\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-6f38b932] {\n  background-color: #76D7EA;\n}\n.time-is-short[_v-6f38b932] {\n  color: #F39C12;\n}\n.time-is-long[_v-6f38b932] {\n  color: #999999;\n}\n.time-is-over[_v-6f38b932] {\n  color: #9B59B6;\n}\n.special-item[_v-6f38b932] {\n  border-left: 6px solid #bfff00;\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n}\n.special-item-last[_v-6f38b932] {\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-b6abc628", module.exports)
+    hotAPI.createRecord("_v-6f38b932", module.exports)
   } else {
-    hotAPI.update("_v-b6abc628", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6f38b932", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../VuiFlipSwitch.vue":127,"babel-runtime/helpers/defineProperty":14,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],114:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#rangetoggle[_v-59be5410]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#rangetoggle[_v-22daac9a]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23022,19 +24051,19 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-59be5410=\"\">\n      <p _v-59be5410=\"\">You will only be presented announcements that are:</p>\n      <ol _v-59be5410=\"\">\n        <li _v-59be5410=\"\">Approved</li>\n        <li _v-59be5410=\"\">Not archived</li>\n        <li _v-59be5410=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-59be5410=\"\">\n<div class=\"row\" _v-59be5410=\"\">\n    <div class=\"col-md-12\" _v-59be5410=\"\">\n        <h3 _v-59be5410=\"\">Announcements</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedAnnouncements.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-59be5410=\"\">\n                <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-59be5410=\"\">\n                  <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-59be5410=\"\">\n                  </email-announcement-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-59be5410=\"\">There are no announcements set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-59be5410=\"\">Loading this email's announcements. Please wait...</p>\n        </template>\n        <hr _v-59be5410=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-59be5410=\"\">\n          <div class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\">Starting <span v-if=\"isEndDate\" _v-59be5410=\"\">between</span><span v-else=\"\" _v-59be5410=\"\">on or after</span></label>\n              <p _v-59be5410=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-59be5410=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-59be5410=\"\">\n              <label for=\"start-date\" _v-59be5410=\"\"> and </label>\n              <p _v-59be5410=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-59be5410=\"\"></p><p _v-59be5410=\"\">\n          </p></div>\n          <p _v-59be5410=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-59be5410=\"\">Filter</button></p>\n          <p _v-59be5410=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-59be5410=\"\"><span v-if=\"isEndDate\" _v-59be5410=\"\"> - Remove </span><span v-else=\"\" _v-59be5410=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-59be5410=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueAnnouncements.length > 0\">\n              <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-59be5410=\"\">\n              </email-announcement-pod>\n              <ul class=\"pagination\" _v-59be5410=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-59be5410=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-59be5410=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-59be5410=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-59be5410=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-59be5410=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-59be5410=\"\">There are no announcements for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-59be5410=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-22daac9a=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-22daac9a=\"\">\n      <p _v-22daac9a=\"\">You will only be presented announcements that are:</p>\n      <ol _v-22daac9a=\"\">\n        <li _v-22daac9a=\"\">Approved</li>\n        <li _v-22daac9a=\"\">Not archived</li>\n        <li _v-22daac9a=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-22daac9a=\"\">\n<div class=\"row\" _v-22daac9a=\"\">\n    <div class=\"col-md-12\" _v-22daac9a=\"\">\n        <h3 _v-22daac9a=\"\">Announcements</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedAnnouncements.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-22daac9a=\"\">\n                <li v-for=\"announcement in usedAnnouncements\" class=\"list-group-item\" _v-22daac9a=\"\">\n                  <email-announcement-pod pid=\"otherstory-list-stories\" pod-type=\"announcement\" :item=\"announcement\" _v-22daac9a=\"\">\n                  </email-announcement-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-22daac9a=\"\">There are no announcements set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-22daac9a=\"\">Loading this email's announcements. Please wait...</p>\n        </template>\n        <hr _v-22daac9a=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-22daac9a=\"\">\n          <div class=\"form-group\" _v-22daac9a=\"\">\n              <label for=\"start-date\" _v-22daac9a=\"\">Starting <span v-if=\"isEndDate\" _v-22daac9a=\"\">between</span><span v-else=\"\" _v-22daac9a=\"\">on or after</span></label>\n              <p _v-22daac9a=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-22daac9a=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-22daac9a=\"\">\n              <label for=\"start-date\" _v-22daac9a=\"\"> and </label>\n              <p _v-22daac9a=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-22daac9a=\"\"></p><p _v-22daac9a=\"\">\n          </p></div>\n          <p _v-22daac9a=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-22daac9a=\"\">Filter</button></p>\n          <p _v-22daac9a=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-22daac9a=\"\"><span v-if=\"isEndDate\" _v-22daac9a=\"\"> - Remove </span><span v-else=\"\" _v-22daac9a=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-announcements\" _v-22daac9a=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueAnnouncements.length > 0\">\n              <email-announcement-pod pid=\"announcement-queue-announcements\" pod-type=\"announcementqueue\" :item=\"announcement\" :announcements=\"usedAnnouncements\" v-for=\"announcement in queueAnnouncements | paginate\" _v-22daac9a=\"\">\n              </email-announcement-pod>\n              <ul class=\"pagination\" _v-22daac9a=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-22daac9a=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-22daac9a=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-22daac9a=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-22daac9a=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-22daac9a=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-22daac9a=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-22daac9a=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-22daac9a=\"\">There are no announcements for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-22daac9a=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#rangetoggle[_v-59be5410]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n#rangetoggle[_v-22daac9a]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-59be5410", module.exports)
+    hotAPI.createRecord("_v-22daac9a", module.exports)
   } else {
-    hotAPI.update("_v-59be5410", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-22daac9a", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../../directives/flatpickr.js":128,"../Pagination.vue":126,"./EmailAnnouncementPod.vue":113,"babel-runtime/helpers/defineProperty":14,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],115:[function(require,module,exports){
@@ -23088,7 +24117,7 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"cloneModal\" class=\"modal fade\" role=\"dialog\" _v-abbf135c=\"\">\n  <div class=\"modal-dialog\" _v-abbf135c=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-abbf135c=\"\">\n      <div class=\"modal-header\" _v-abbf135c=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-abbf135c=\"\">×</button>\n        <h4 class=\"modal-title\" _v-abbf135c=\"\">Clone email</h4>\n      </div>\n      <div class=\"modal-body\" _v-abbf135c=\"\">\n        <p v-if=\"!disableClone\" _v-abbf135c=\"\">Are you sure you want to clone \"{{ email.title }}\"?</p>\n        <div v-show=\"cloneStatus.is_set &amp;&amp; cloneStatus.is_success\" class=\"alert\" :class=\"'alert-' + [cloneStatus.is_success ? 'success' : 'danger']\" _v-abbf135c=\"\">\n          <p _v-abbf135c=\"\">{{{ cloneStatus.message }}}</p>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-abbf135c=\"\">\n        <template v-if=\"!disableClone\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-abbf135c=\"\">Cancel</button>\n          <button type=\"button\" class=\"btn btn-success\" @click=\"cloneEmail\" _v-abbf135c=\"\">Clone</button>\n        </template>\n        <template v-else=\"\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-abbf135c=\"\">Close</button>\n        </template>\n      </div>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"cloneModal\" class=\"modal fade\" role=\"dialog\" _v-17658ef7=\"\">\n  <div class=\"modal-dialog\" _v-17658ef7=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-17658ef7=\"\">\n      <div class=\"modal-header\" _v-17658ef7=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-17658ef7=\"\">×</button>\n        <h4 class=\"modal-title\" _v-17658ef7=\"\">Clone email</h4>\n      </div>\n      <div class=\"modal-body\" _v-17658ef7=\"\">\n        <p v-if=\"!disableClone\" _v-17658ef7=\"\">Are you sure you want to clone \"{{ email.title }}\"?</p>\n        <div v-show=\"cloneStatus.is_set &amp;&amp; cloneStatus.is_success\" class=\"alert\" :class=\"'alert-' + [cloneStatus.is_success ? 'success' : 'danger']\" _v-17658ef7=\"\">\n          <p _v-17658ef7=\"\">{{{ cloneStatus.message }}}</p>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-17658ef7=\"\">\n        <template v-if=\"!disableClone\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-17658ef7=\"\">Cancel</button>\n          <button type=\"button\" class=\"btn btn-success\" @click=\"cloneEmail\" _v-17658ef7=\"\">Clone</button>\n        </template>\n        <template v-else=\"\">\n          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-17658ef7=\"\">Close</button>\n        </template>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23098,9 +24127,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-abbf135c", module.exports)
+    hotAPI.createRecord("_v-17658ef7", module.exports)
   } else {
-    hotAPI.update("_v-abbf135c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-17658ef7", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],116:[function(require,module,exports){
@@ -23147,7 +24176,7 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"deleteModal\" class=\"modal fade\" role=\"dialog\" _v-a9f20ba0=\"\">\n  <div class=\"modal-dialog\" _v-a9f20ba0=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-a9f20ba0=\"\">\n      <div class=\"modal-header\" _v-a9f20ba0=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-a9f20ba0=\"\">×</button>\n        <h4 class=\"modal-title\" _v-a9f20ba0=\"\">Delete email</h4>\n      </div>\n      <div class=\"modal-body\" _v-a9f20ba0=\"\">\n        <p _v-a9f20ba0=\"\">Are you sure you want to delete \"{{ email.title }}\"? Type the word <strong _v-a9f20ba0=\"\">\"delete\"</strong> to confirm.</p>\n        <div class=\"form-group\" _v-a9f20ba0=\"\">\n          <label for=\"deleteConfirm\" class=\"sr-only\" aria-hidden=\"true\" _v-a9f20ba0=\"\">Type \"confirm\" to delete</label>\n          <input type=\"text\" v-model=\"deleteConfirm\" class=\"form-control\" id=\"deleteConfirm\" _v-a9f20ba0=\"\">\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-a9f20ba0=\"\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-a9f20ba0=\"\">Cancel</button>\n        <button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\" @click=\"delEmail\" :disabled=\"deleteConfirm != 'delete'\" _v-a9f20ba0=\"\">Delete Email</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!-- Modal -->\n<div id=\"deleteModal\" class=\"modal fade\" role=\"dialog\" _v-333613aa=\"\">\n  <div class=\"modal-dialog\" _v-333613aa=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-333613aa=\"\">\n      <div class=\"modal-header\" _v-333613aa=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-333613aa=\"\">×</button>\n        <h4 class=\"modal-title\" _v-333613aa=\"\">Delete email</h4>\n      </div>\n      <div class=\"modal-body\" _v-333613aa=\"\">\n        <p _v-333613aa=\"\">Are you sure you want to delete \"{{ email.title }}\"? Type the word <strong _v-333613aa=\"\">\"delete\"</strong> to confirm.</p>\n        <div class=\"form-group\" _v-333613aa=\"\">\n          <label for=\"deleteConfirm\" class=\"sr-only\" aria-hidden=\"true\" _v-333613aa=\"\">Type \"confirm\" to delete</label>\n          <input type=\"text\" v-model=\"deleteConfirm\" class=\"form-control\" id=\"deleteConfirm\" _v-333613aa=\"\">\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-333613aa=\"\">\n        <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-333613aa=\"\">Cancel</button>\n        <button type=\"button\" class=\"btn btn-danger\" data-dismiss=\"modal\" @click=\"delEmail\" :disabled=\"deleteConfirm != 'delete'\" _v-333613aa=\"\">Delete Email</button>\n      </div>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -23157,14 +24186,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-a9f20ba0", module.exports)
+    hotAPI.createRecord("_v-333613aa", module.exports)
   } else {
-    hotAPI.update("_v-a9f20ba0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-333613aa", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"babel-runtime/core-js/json/stringify":1,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],117:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-d506c566] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-d506c566] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-d506c566] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-d506c566] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-d506c566] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-d506c566] {\n  background-color: #ddd;\n}\n.box[_v-d506c566] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-d506c566] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-d506c566] {\n  padding: 3px;\n}\n.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nh5.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-d506c566] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-d506c566] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-d506c566] {\n  display:inline-block;\n}\nform.mediaform[_v-d506c566] {\n  margin-top: 1rem;\n}\n.form-group[_v-d506c566] {\n  margin-bottom: 2px;\n}\n#applabel[_v-d506c566]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-d506c566],\n.btn-group-vertical[_v-d506c566] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-d506c566] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-d506c566] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-d506c566]{\n  margin-bottom: 0;\n}\n.topitems[_v-d506c566] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-d506c566] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-d506c566] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-d506c566] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-d506c566] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-d506c566] {\n  color: #F39C12;\n}\n.time-is-long[_v-d506c566] {\n  color: #999999;\n}\n.time-is-over[_v-d506c566] {\n  color: #9B59B6;\n}\n\n.special-item[_v-d506c566] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-d506c566] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-d506c566] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-d506c566] {\n  margin-bottom: 30px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-1becc99c] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-1becc99c] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-1becc99c] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-1becc99c] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-1becc99c] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-1becc99c] {\n  background-color: #ddd;\n}\n.box[_v-1becc99c] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-1becc99c] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-1becc99c] {\n  padding: 3px;\n}\n.box-footer[_v-1becc99c] {\n  padding: 3px;\n}\nh5.box-footer[_v-1becc99c] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-1becc99c] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-1becc99c] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-1becc99c] {\n  display:inline-block;\n}\nform.mediaform[_v-1becc99c] {\n  margin-top: 1rem;\n}\n.form-group[_v-1becc99c] {\n  margin-bottom: 2px;\n}\n#applabel[_v-1becc99c]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-1becc99c],\n.btn-group-vertical[_v-1becc99c] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-1becc99c] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-1becc99c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-1becc99c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-1becc99c] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-1becc99c]{\n  margin-bottom: 0;\n}\n.topitems[_v-1becc99c] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-1becc99c] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-1becc99c] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-1becc99c] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-1becc99c] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-1becc99c] {\n  color: #F39C12;\n}\n.time-is-long[_v-1becc99c] {\n  color: #999999;\n}\n.time-is-over[_v-1becc99c] {\n  color: #9B59B6;\n}\n\n.special-item[_v-1becc99c] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-1becc99c] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-1becc99c] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-1becc99c] {\n  margin-bottom: 30px;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -23419,24 +24448,24 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"specialItem\" _v-d506c566=\"\">\n  <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-d506c566=\"\">\n    <div class=\"box-header with-border\" _v-d506c566=\"\">\n      <div class=\"row\" _v-d506c566=\"\">\n        <div class=\"col-sm 12 col-md-4\" _v-d506c566=\"\">\n          <div class=\"box-date-top pull-left\" _v-d506c566=\"\">{{item.start_date | titleDateLong}}</div>\n          <div class=\"pull-right\" _v-d506c566=\"\">\n            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-d506c566=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-d506c566=\"\"></span></label>\n          </div><!-- /.pull-right -->\n        </div><!-- /.col-sm-6 -->\n        <div class=\"col-sm 12 col-md-8\" _v-d506c566=\"\">\n          <label v-show=\"podType == 'eventqueue'\" class=\"pull-right\" _v-d506c566=\"\"><input type=\"checkbox\" @click=\"toggleEmitEvent(item)\" v-model=\"checked\" :checked=\"isEvent\" _v-d506c566=\"\"> Email Event</label>\n          <button v-show=\"podType == 'event'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitEventRemove(item)\" _v-d506c566=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-d506c566=\"\"></i></button>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-d506c566=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-d506c566=\"\">\n          <div class=\"col-sm-12\" _v-d506c566=\"\">\n            <h6 class=\"box-title\" _v-d506c566=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-d506c566=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n    <div v-if=\"showBody\" class=\"box-body\" _v-d506c566=\"\">\n      <p _v-d506c566=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-d506c566=\"\">All Day Event</p>\n      </template>\n      <hr _v-d506c566=\"\">\n      <div class=\"item-info\" _v-d506c566=\"\">\n        <p _v-d506c566=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-d506c566=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-d506c566=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-d506c566=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-d506c566=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-d506c566=\"\">\n        <template v-else=\"\">\n          <p _v-d506c566=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-d506c566=\"\">Contact:</p>\n          <ul _v-d506c566=\"\">\n            <li v-if=\"item.contact_person\" _v-d506c566=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-d506c566=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-d506c566=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-d506c566=\"\">For more information, visit:</p>\n          <ul _v-d506c566=\"\">\n            <li _v-d506c566=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-d506c566=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-d506c566=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-d506c566=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-d506c566=\"\">\n        <p v-if=\"item.free\" _v-d506c566=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-d506c566=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-d506c566=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-d506c566=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-d506c566=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-d506c566=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-d506c566=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-d506c566=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-d506c566=\"\">\n        <p _v-d506c566=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-d506c566=\"\">\n        <p _v-d506c566=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-d506c566=\"\">\n      <div class=\"row\" _v-d506c566=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-d506c566=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-d506c566=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-d506c566=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-d506c566=\"\">\n          <div class=\"btn-group pull-right\" _v-d506c566=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-d506c566=\"\"><i class=\"fa fa-pencil\" _v-d506c566=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"specialItem\" _v-1becc99c=\"\">\n  <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-1becc99c=\"\">\n    <div class=\"box-header with-border\" _v-1becc99c=\"\">\n      <div class=\"row\" _v-1becc99c=\"\">\n        <div class=\"col-sm 12 col-md-4\" _v-1becc99c=\"\">\n          <div class=\"box-date-top pull-left\" _v-1becc99c=\"\">{{item.start_date | titleDateLong}}</div>\n          <div class=\"pull-right\" _v-1becc99c=\"\">\n            <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-1becc99c=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-1becc99c=\"\"></span></label>\n          </div><!-- /.pull-right -->\n        </div><!-- /.col-sm-6 -->\n        <div class=\"col-sm 12 col-md-8\" _v-1becc99c=\"\">\n          <label v-show=\"podType == 'eventqueue'\" class=\"pull-right\" _v-1becc99c=\"\"><input type=\"checkbox\" @click=\"toggleEmitEvent(item)\" v-model=\"checked\" :checked=\"isEvent\" _v-1becc99c=\"\"> Email Event</label>\n          <button v-show=\"podType == 'event'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitEventRemove(item)\" _v-1becc99c=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-1becc99c=\"\"></i></button>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-1becc99c=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-1becc99c=\"\">\n          <div class=\"col-sm-12\" _v-1becc99c=\"\">\n            <h6 class=\"box-title\" _v-1becc99c=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-1becc99c=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n    <div v-if=\"showBody\" class=\"box-body\" _v-1becc99c=\"\">\n      <p _v-1becc99c=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-1becc99c=\"\">All Day Event</p>\n      </template>\n      <hr _v-1becc99c=\"\">\n      <div class=\"item-info\" _v-1becc99c=\"\">\n        <p _v-1becc99c=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-1becc99c=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-1becc99c=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-1becc99c=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-1becc99c=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-1becc99c=\"\">\n        <template v-else=\"\">\n          <p _v-1becc99c=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-1becc99c=\"\">Contact:</p>\n          <ul _v-1becc99c=\"\">\n            <li v-if=\"item.contact_person\" _v-1becc99c=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-1becc99c=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-1becc99c=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-1becc99c=\"\">For more information, visit:</p>\n          <ul _v-1becc99c=\"\">\n            <li _v-1becc99c=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-1becc99c=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-1becc99c=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-1becc99c=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-1becc99c=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-1becc99c=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-1becc99c=\"\">\n        <p v-if=\"item.free\" _v-1becc99c=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-1becc99c=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-1becc99c=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-1becc99c=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-1becc99c=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-1becc99c=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-1becc99c=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-1becc99c=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-1becc99c=\"\">\n        <p _v-1becc99c=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-1becc99c=\"\">\n        <p _v-1becc99c=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-1becc99c=\"\">\n      <div class=\"row\" _v-1becc99c=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-1becc99c=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-1becc99c=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-1becc99c=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-1becc99c=\"\">\n          <div class=\"btn-group pull-right\" _v-1becc99c=\"\">\n            <a :href=\"itemEditPath\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"edit\" _v-1becc99c=\"\"><i class=\"fa fa-pencil\" _v-1becc99c=\"\"></i></a>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.file-upload[_v-d506c566] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-d506c566] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-d506c566] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-d506c566] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-d506c566] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-d506c566] {\n  background-color: #ddd;\n}\n.box[_v-d506c566] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-d506c566] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-d506c566] {\n  padding: 3px;\n}\n.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nh5.box-footer[_v-d506c566] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-d506c566] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-d506c566] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-d506c566] {\n  display:inline-block;\n}\nform.mediaform[_v-d506c566] {\n  margin-top: 1rem;\n}\n.form-group[_v-d506c566] {\n  margin-bottom: 2px;\n}\n#applabel[_v-d506c566]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-d506c566],\n.btn-group-vertical[_v-d506c566] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-d506c566] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-d506c566] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-d506c566] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-d506c566]{\n  margin-bottom: 0;\n}\n.topitems[_v-d506c566] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-d506c566] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-d506c566] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-d506c566] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-d506c566] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-d506c566] {\n  color: #F39C12;\n}\n.time-is-long[_v-d506c566] {\n  color: #999999;\n}\n.time-is-over[_v-d506c566] {\n  color: #9B59B6;\n}\n\n.special-item[_v-d506c566] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-d506c566] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-d506c566] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-d506c566] {\n  margin-bottom: 30px;\n}\n"] = false
+    __vueify_insert__.cache["\n.file-upload[_v-1becc99c] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-1becc99c] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-1becc99c] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-1becc99c] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-1becc99c] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-1becc99c] {\n  background-color: #ddd;\n}\n.box[_v-1becc99c] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-1becc99c] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-1becc99c] {\n  padding: 3px;\n}\n.box-footer[_v-1becc99c] {\n  padding: 3px;\n}\nh5.box-footer[_v-1becc99c] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-1becc99c] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-1becc99c] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-1becc99c] {\n  display:inline-block;\n}\nform.mediaform[_v-1becc99c] {\n  margin-top: 1rem;\n}\n.form-group[_v-1becc99c] {\n  margin-bottom: 2px;\n}\n#applabel[_v-1becc99c]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-1becc99c],\n.btn-group-vertical[_v-1becc99c] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-1becc99c] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-1becc99c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-1becc99c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-1becc99c] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-1becc99c]{\n  margin-bottom: 0;\n}\n.topitems[_v-1becc99c] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-1becc99c] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-1becc99c] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-1becc99c] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-1becc99c] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-1becc99c] {\n  color: #F39C12;\n}\n.time-is-long[_v-1becc99c] {\n  color: #999999;\n}\n.time-is-over[_v-1becc99c] {\n  color: #9B59B6;\n}\n\n.special-item[_v-1becc99c] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-1becc99c] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-1becc99c] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-1becc99c] {\n  margin-bottom: 30px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-d506c566", module.exports)
+    hotAPI.createRecord("_v-1becc99c", module.exports)
   } else {
-    hotAPI.update("_v-d506c566", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1becc99c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../VuiFlipSwitch.vue":127,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],118:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#automail-label[_v-4d567bce] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4d567bce]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#automail-label[_v-4699dabe] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4699dabe]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23574,24 +24603,24 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-4d567bce=\"\">\n      <p _v-4d567bce=\"\">You will only be presented events that are:</p>\n      <ol _v-4d567bce=\"\">\n        <li _v-4d567bce=\"\">Approved</li>\n        <li _v-4d567bce=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-4d567bce=\"\">\n<div class=\"row\" _v-4d567bce=\"\">\n    <div class=\"col-md-12\" _v-4d567bce=\"\">\n        <h3 _v-4d567bce=\"\">Events</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedEvents.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-4d567bce=\"\">\n              <li v-for=\"usedEvent in usedEvents\" class=\"list-group-item\" _v-4d567bce=\"\">\n                <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"usedEvent\" _v-4d567bce=\"\">\n                </email-event-pod>\n              </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-4d567bce=\"\">There are no events set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-4d567bce=\"\">Loading this email's events. Please wait...</p>\n        </template>\n        <hr _v-4d567bce=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-4d567bce=\"\">\n          <div class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\">Starting <span v-if=\"isEndDate\" _v-4d567bce=\"\">between</span><span v-else=\"\" _v-4d567bce=\"\">on or after</span></label>\n              <p _v-4d567bce=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-4d567bce=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-4d567bce=\"\">\n              <label for=\"start-date\" _v-4d567bce=\"\"> and </label>\n              <p _v-4d567bce=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-4d567bce=\"\"></p><p _v-4d567bce=\"\">\n          </p></div>\n          <p _v-4d567bce=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-4d567bce=\"\">Filter</button></p>\n          <p _v-4d567bce=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-4d567bce=\"\"><span v-if=\"isEndDate\" _v-4d567bce=\"\"> - Remove </span><span v-else=\"\" _v-4d567bce=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-4d567bce=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueEvents.length > 0\">\n              <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-4d567bce=\"\">\n              </email-event-pod>\n              <ul class=\"pagination\" _v-4d567bce=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-4d567bce=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-4d567bce=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-4d567bce=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-4d567bce=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-4d567bce=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-4d567bce=\"\">There are no events for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-4d567bce=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-4699dabe=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-4699dabe=\"\">\n      <p _v-4699dabe=\"\">You will only be presented events that are:</p>\n      <ol _v-4699dabe=\"\">\n        <li _v-4699dabe=\"\">Approved</li>\n        <li _v-4699dabe=\"\">In the future (unless otherwise specified)</li>\n      </ol>\n    </div>\n</div>\n<hr _v-4699dabe=\"\">\n<div class=\"row\" _v-4699dabe=\"\">\n    <div class=\"col-md-12\" _v-4699dabe=\"\">\n        <h3 _v-4699dabe=\"\">Events</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedEvents.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-4699dabe=\"\">\n              <li v-for=\"usedEvent in usedEvents\" class=\"list-group-item\" _v-4699dabe=\"\">\n                <email-event-pod pid=\"event-list-events\" pod-type=\"event\" :item=\"usedEvent\" _v-4699dabe=\"\">\n                </email-event-pod>\n              </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-4699dabe=\"\">There are no events set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-4699dabe=\"\">Loading this email's events. Please wait...</p>\n        </template>\n        <hr _v-4699dabe=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-4699dabe=\"\">\n          <div class=\"form-group\" _v-4699dabe=\"\">\n              <label for=\"start-date\" _v-4699dabe=\"\">Starting <span v-if=\"isEndDate\" _v-4699dabe=\"\">between</span><span v-else=\"\" _v-4699dabe=\"\">on or after</span></label>\n              <p _v-4699dabe=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-4699dabe=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-4699dabe=\"\">\n              <label for=\"start-date\" _v-4699dabe=\"\"> and </label>\n              <p _v-4699dabe=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-4699dabe=\"\"></p><p _v-4699dabe=\"\">\n          </p></div>\n          <p _v-4699dabe=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-4699dabe=\"\">Filter</button></p>\n          <p _v-4699dabe=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-4699dabe=\"\"><span v-if=\"isEndDate\" _v-4699dabe=\"\"> - Remove </span><span v-else=\"\" _v-4699dabe=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div id=\"email-events\" _v-4699dabe=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueEvents.length > 0\">\n              <email-event-pod pid=\"event-queue-events\" pod-type=\"eventqueue\" :item=\"event\" :events=\"usedEvents\" v-for=\"event in queueEvents | paginate\" _v-4699dabe=\"\">\n              </email-event-pod>\n              <ul class=\"pagination\" _v-4699dabe=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-4699dabe=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-4699dabe=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-4699dabe=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-4699dabe=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-4699dabe=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-4699dabe=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-4699dabe=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-4699dabe=\"\">There are no events for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-4699dabe=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#automail-label[_v-4d567bce] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4d567bce]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n#automail-label[_v-4699dabe] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-4699dabe]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-4d567bce", module.exports)
+    hotAPI.createRecord("_v-4699dabe", module.exports)
   } else {
-    hotAPI.update("_v-4d567bce", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4699dabe", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../../directives/flatpickr.js":128,"./EmailEventPod.vue":117,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],119:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-07a0c146], .nav-tabs > li.active > a[_v-07a0c146]:hover, .nav-tabs > li.active > a[_v-07a0c146]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-07a0c146]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-07a0c146]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-07a0c146]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-07a0c146]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-07a0c146], .fa-calendar[_v-07a0c146]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-07a0c146]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-07a0c146]{\n  color: #FFCC00;\n}\n\n.valid[_v-07a0c146]{\n  color:#3c763d;\n}\n\n.invalid[_v-07a0c146] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-07a0c146] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-323a79ab] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-323a79ab], .nav-tabs > li.active > a[_v-323a79ab]:hover, .nav-tabs > li.active > a[_v-323a79ab]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-323a79ab]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-323a79ab]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-323a79ab]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-323a79ab]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-323a79ab], .fa-calendar[_v-323a79ab]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-323a79ab]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-323a79ab]{\n  color: #FFCC00;\n}\n\n.valid[_v-323a79ab]{\n  color:#3c763d;\n}\n\n.invalid[_v-323a79ab] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-323a79ab] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-323a79ab] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-323a79ab] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n")
 'use strict';
 
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
@@ -24075,24 +25104,24 @@ module.exports = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<template v-if=\"!record.is_sent\">\n  <!-- PROGRESS BAR -->\n  <div class=\"progress\" _v-07a0c146=\"\">\n    <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-07a0c146=\"\">\n      <span v-if=\"progress < 100\" _v-07a0c146=\"\">{{ progress }}% Complete</span>\n      <span v-else=\"\" _v-07a0c146=\"\">I'm Ready!</span>\n    </div>\n  </div>\n  <!-- SUCCESS/FAIL MESSAGES -->\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div class=\"col-xs-12 col-sm-8\" _v-07a0c146=\"\">\n      <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">{{formMessage.msg}}</p>\n      </div>\n      <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-07a0c146=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-07a0c146=\"\"><i class=\"fa fa-times\" _v-07a0c146=\"\"></i></button>\n        <p _v-07a0c146=\"\">The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>\n        <ul v-if=\"formErrors\" _v-07a0c146=\"\">\n          <li v-for=\"error in formErrors\" _v-07a0c146=\"\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 text-right\" _v-07a0c146=\"\">\n      <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-07a0c146=\"\">{{ newform ? 'Create Email' : 'Update Email' }}</button>\n      <button v-if=\"!newform\" class=\"btn btn-warning\" type=\"button\" data-toggle=\"modal\" data-target=\"#cloneModal\" _v-07a0c146=\"\">Clone Email</button>\n    </div>\n  </div>\n  <!-- TABS: BUILD STEPS -->\n  <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n    <li class=\"active\" _v-07a0c146=\"\"><a href=\"#step-1\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 1: Basic Information</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-2\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 2: Build Email</a></li>\n    <li _v-07a0c146=\"\"><a href=\"#step-3\" role=\"tab\" data-toggle=\"tab\" _v-07a0c146=\"\">Step 3: Schedule &amp; Review</a></li>\n  </ul>\n  <!-- EMAIL FORM -->\n  <form _v-07a0c146=\"\">\n    <slot name=\"csrf\" _v-07a0c146=\"\"></slot>\n  <div class=\"tab-content\" _v-07a0c146=\"\">\n    <!-- MAIN TAB 1 CONTENT -->\n    <div class=\"tab-pane active\" id=\"step-1\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Basic Email Information</h2>\n      <div v-if=\"record.clone.length > 0\" class=\"alert alert-info alert-dismissible\" _v-07a0c146=\"\">\n        <p _v-07a0c146=\"\">This email was cloned from <a :href=\"'/admin/email/'+ record.clone[0].id +'/edit'\" _v-07a0c146=\"\">this email</a> on {{ record.created_at }}.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"email-title\" _v-07a0c146=\"\">Email Headline <span class=\"character-counter help-text invalid\" v-if=\"insufficientTitle\" _v-07a0c146=\"\">({{ minTitleChars - record.title.length }} characters left)</span></label>\n        <input type=\"text\" class=\"form-control\" id=\"email-title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" v-model=\"record.title\" placeholder=\"Email headline goes here.\" _v-07a0c146=\"\">\n        <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-07a0c146=\"\">Title must be at least 10 characters in length.</p>\n      </div>\n      <div class=\"form-group\" _v-07a0c146=\"\">\n        <label for=\"subheading\" _v-07a0c146=\"\">Subheading (optional)</label>\n        <textarea class=\"form-control\" id=\"subheading\" v-model=\"record.subheading\" _v-07a0c146=\"\"></textarea>\n      </div>\n    </div>\n    <!-- MAIN TAB 2 CONTENT -->\n    <div class=\"tab-pane\" id=\"step-2\" _v-07a0c146=\"\">\n        <div class=\"row\" _v-07a0c146=\"\">\n          <!-- EMAIL LIVE BUILDER VIEW AREA -->\n          <!-- BUILDER TOOLS AREA -->\n          <div v-bind:class=\"[md12col, lg5col]\" _v-07a0c146=\"\">\n            <h2 _v-07a0c146=\"\">Build Your Email</h2>\n            <!-- Nav tabs -->\n            <ul class=\"nav nav-tabs\" role=\"tablist\" _v-07a0c146=\"\">\n              <li class=\"active\" _v-07a0c146=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" :class=\"(record.mainStories.length != 1 &amp;&amp; record.mainStories.length != 3) ? 'insufficient' : ''\" _v-07a0c146=\"\">Main Stories ({{ record.mainStories.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" :class=\"record.otherStories.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Side Stories ({{ record.otherStories.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" :class=\"record.announcements.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Announcements ({{ record.announcements.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" :class=\"record.events.length < 1 ? 'insufficient' : ''\" _v-07a0c146=\"\">Events ({{ record.events.length }})</a></li>\n              <li _v-07a0c146=\"\"><a href=\"#president\" role=\"tab\" data-toggle=\"tab\" :class=\"record.is_president_included &amp;&amp; (!record.president_url || !record.president_teaser) ? 'insufficient' : ''\" _v-07a0c146=\"\">President</a></li>\n            </ul>\n            <!-- Tab panes -->\n            <div class=\"tab-content\" _v-07a0c146=\"\">\n              <div class=\"tab-pane active\" id=\"main-story\" _v-07a0c146=\"\">\n                <email-main-stories-queue :stypes=\"stypes\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-main-stories-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"stories\" _v-07a0c146=\"\">\n                <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-07a0c146=\"\"></email-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"announcements\" _v-07a0c146=\"\">\n                <email-announcement-queue :announcements=\"record.announcements\" _v-07a0c146=\"\"></email-announcement-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"events\" _v-07a0c146=\"\">\n                <email-event-queue :events=\"record.events\" _v-07a0c146=\"\"></email-event-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"president\" _v-07a0c146=\"\">\n                  <div class=\"row\" _v-07a0c146=\"\">\n                      <div class=\"col-xs-12\" _v-07a0c146=\"\">\n                          <div class=\"form-group\" _v-07a0c146=\"\">\n                              <label _v-07a0c146=\"\">\n                                  Include the presidential section in this email? <input type=\"checkbox\" v-model=\"record.is_president_included\" _v-07a0c146=\"\">\n                              </label>\n                          </div><!-- /input-group -->\n                      </div><!-- /.col-md-12 -->\n                      <div class=\"col-xs-12\" _v-07a0c146=\"\">\n                          <div class=\"form-group\" _v-07a0c146=\"\">\n                            <label for=\"presidentTeaser\" _v-07a0c146=\"\">Teaser text</label>\n                            <textarea class=\"form-control\" id=\"presidentTeaser\" v-bind:class=\"[formErrors.president_teaser ? 'invalid-input' : '']\" v-model=\"record.president_teaser\" _v-07a0c146=\"\">{{ record.president_teaser }}</textarea>\n                            <p v-if=\"formErrors.president_teaser\" class=\"help-text invalid\" _v-07a0c146=\"\">The teaser is required when including a presidential message.</p>\n                          </div>\n                      </div><!-- /.col-md-12 -->\n                      <div class=\"col-xs-12\" _v-07a0c146=\"\">\n                          <div class=\"form-group\" _v-07a0c146=\"\">\n                            <label for=\"presidentUrl\" _v-07a0c146=\"\">URL to president's statement</label>\n                            <input type=\"text\" class=\"form-control\" id=\"presidentUrl\" v-bind:class=\"[formErrors.president_url ? 'invalid-input' : '']\" v-model=\"record.president_url\" placeholder=\"https://emich.edu/president-statement\" _v-07a0c146=\"\">\n                            <p v-if=\"formErrors.president_url\" class=\"help-text invalid\" _v-07a0c146=\"\">The URL field is not valid.</p>\n                          </div>\n                      </div><!-- /.col-md-12 -->\n                  </div><!-- ./row -->\n              </div>\n            </div>\n          </div>\n          <!-- /.medium-4 columns -->\n          <!-- \"LIVE VIEW\" OF EMAIL -->\n          <div v-bind:class=\"[md12col, lg7col]\" _v-07a0c146=\"\">\n            <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-live-view>\n          </div>\n          <!-- /.medium-8 columns -->\n        </div>\n        <!-- /.row -->\n    </div>\n    <!-- MAIN TAB 3 CONTENT -->\n    <div class=\"tab-pane\" id=\"step-3\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">Schedule and Review</h2>\n      <div class=\"row\" _v-07a0c146=\"\">\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">When should this email be sent?</h3>\n          <p _v-07a0c146=\"\">Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>\n          <div class=\"input-group\" _v-07a0c146=\"\">\n            <span class=\"input-group-addon\" _v-07a0c146=\"\">\n              <input type=\"checkbox\" v-model=\"record.is_approved\" aria-label=\"Set as time\" _v-07a0c146=\"\">\n            </span>\n            <input id=\"send-at\" type=\"text\" class=\"form-control\" v-model=\"record.send_at\" aria-describedby=\"errorSendAt\" _v-07a0c146=\"\">\n          </div><!-- /input-group -->\n          <h3 _v-07a0c146=\"\">To which mailing list(s) should this email be sent?</h3>\n          <ul _v-07a0c146=\"\">\n            <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n          </ul>\n          <label for=\"recipients\" _v-07a0c146=\"\">Select recipient(s)\n            <v-select id=\"minical\" :value.sync=\"record.recipients\" :options=\"recipientsList\" :multiple=\"true\" placeholder=\"Select recipient(s)\" label=\"email_address\" _v-07a0c146=\"\">\n            </v-select>\n          </label>\n          <div class=\"row\" _v-07a0c146=\"\">\n            <div class=\"col-sm-12\" _v-07a0c146=\"\">\n                <div class=\"input-group\" :class=\"successFailure\" _v-07a0c146=\"\">\n                  <span class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-primary\" type=\"button\" @click.prevent=\"toggleAddRecipient\" _v-07a0c146=\"\">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>\n                  </span>\n                  <input v-show=\"showAddRecipient\" type=\"text\" v-model=\"newRecipient\" class=\"form-control\" placeholder=\"mailing_list@emich.edu\" _v-07a0c146=\"\">\n                  <span v-show=\"showAddRecipient\" class=\"input-group-btn\" _v-07a0c146=\"\">\n                    <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"saveUnlistedRecipient\" _v-07a0c146=\"\"><i class=\"fa fa-plus-square\" aria-hidden=\"true\" _v-07a0c146=\"\"></i></button>\n                  </span>\n                </div><!-- /input-group -->\n                <p v-show=\"showAddRecipient &amp;&amp; formErrors.email_address\" class=\"help-text invalid\" _v-07a0c146=\"\">{{ formErrors.email_address }}</p>\n                <p v-show=\"showAddRecipient &amp;&amp; formSuccess.email_address\" class=\"help-text valid\" _v-07a0c146=\"\">{{ formSuccess.email_address }}</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n          <h3 _v-07a0c146=\"\">Mandatory Criteria Checklist</h3>\n          <p _v-07a0c146=\"\">This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.mainStories.length &gt; 0 ? 'has' : 'does not have' }} a main story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.mainStories.length == 2 ? 'fa fa-times-circle fa-3x' : 'fa fa-check-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.mainStories.length == 2 ? 'only has 1 sub-main story (0 or 2 required)' : 'has 0 or 2 sub-main stories' }}.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.otherStories.length &gt; 0 ? 'has' : 'does not have' }} at least one side story.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.events.length &gt; 0 ? 'has' : 'does not have' }} at least one event.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.announcements.length &gt; 0 ? 'has' : 'does not have' }} at least one announcement.</li>\n            <li class=\"list-group-item\" v-if=\"record.is_president_included\" _v-07a0c146=\"\"><i :class=\"record.president_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.president_teaser ? 'has' : 'does not have' }} teaser text for the message from the president.</li>\n            <li class=\"list-group-item\" v-if=\"record.is_president_included\" _v-07a0c146=\"\"><i :class=\"record.president_url ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.president_url ? 'has' : 'does not have' }} a URL to the message from the president.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.recipients.length &gt; 0 ? 'has' : 'does not have' }} at least one recipient.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.is_approved &amp;&amp; record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email send date and time {{ record.is_approved &amp;&amp; record.send_at ? 'have' : 'have not' }} been confirmed.</li>\n          </ul>\n          <h3 _v-07a0c146=\"\">Optional Criteria Checklist</h3>\n          <ul class=\"list-group\" _v-07a0c146=\"\">\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.is_president_included ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.is_president_included ? 'has' : 'does not have' }} a message from the president.</li>\n            <li class=\"list-group-item\" _v-07a0c146=\"\"><i :class=\"record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-07a0c146=\"\"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>\n          </ul>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" v-show=\"recordexists\" _v-07a0c146=\"\">\n      <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-07a0c146=\"\">\n        <!-- Trigger the delete modal -->\n        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button>\n      </div>\n    </div>\n    <!-- /.row -->\n  </div>\n  </div></form><!-- /end form -->\n</template><!-- end if !record.is_sent -->\n<template v-else=\"\">\n  <div class=\"row\" _v-07a0c146=\"\">\n    <div v-bind:class=\"[md12col, lg4col]\" _v-07a0c146=\"\">\n      <h2 _v-07a0c146=\"\">This email has already been sent!</h2>\n      <h3 _v-07a0c146=\"\">Sent</h3>\n      <p _v-07a0c146=\"\">{{ record.send_at | formatDate }}</p>\n      <h3 _v-07a0c146=\"\">Recipients</h3>\n      <template v-if=\"record.recipients.length > 0\">\n        <ul _v-07a0c146=\"\">\n          <li v-for=\"recipient in record.recipients\" _v-07a0c146=\"\">{{ recipient.email_address }}</li>\n        </ul>\n      </template>\n      <template v-else=\"\">\n        <p _v-07a0c146=\"\">Nobody</p>\n      </template>\n      <h3 _v-07a0c146=\"\">Statistics</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#statsModal\" _v-07a0c146=\"\"><span class=\"fa fa-bar-chart\" aria-hidden=\"true\" _v-07a0c146=\"\"></span> View Statistics</button></p>\n      <h3 _v-07a0c146=\"\">Actions</h3>\n        <p _v-07a0c146=\"\"><button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-07a0c146=\"\">Delete Email</button></p>\n    </div>\n    <!-- /.medium-4 columns -->\n    <div v-bind:class=\"[md12col, lg8col]\" _v-07a0c146=\"\">\n      <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-07a0c146=\"\"></email-live-view>\n    </div>\n    <!-- /.medium-8 columns -->\n  </div>\n  <!-- /.row -->\n</template>\n<email-delete-modal :email=\"record\" _v-07a0c146=\"\"></email-delete-modal>\n<email-stats-modal :email=\"record\" _v-07a0c146=\"\"></email-stats-modal>\n<email-clone-modal :email=\"record\" _v-07a0c146=\"\"></email-clone-modal>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<template v-if=\"!record.is_sent\">\n  <!-- PROGRESS BAR -->\n  <div class=\"progress\" _v-323a79ab=\"\">\n    <div class=\"progress-bar\" :class=\"progress == 100 ? 'progress-done' : ''\" role=\"progressbar\" :aria-valuenow=\"progress\" aria-valuemin=\"0\" aria-valuemax=\"100\" :style=\"'width:' + progress + '%'\" _v-323a79ab=\"\">\n      <span v-if=\"progress < 100\" _v-323a79ab=\"\">{{ progress }}% Complete</span>\n      <span v-else=\"\" _v-323a79ab=\"\">I'm Ready!</span>\n    </div>\n  </div>\n  <!-- SUCCESS/FAIL MESSAGES -->\n  <div class=\"row\" _v-323a79ab=\"\">\n    <div class=\"col-xs-12 col-sm-8\" _v-323a79ab=\"\">\n      <div v-show=\"formMessage.isOk\" class=\"alert alert-success alert-dismissible\" _v-323a79ab=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-323a79ab=\"\"><i class=\"fa fa-times\" _v-323a79ab=\"\"></i></button>\n        <p _v-323a79ab=\"\">{{formMessage.msg}}</p>\n      </div>\n      <div v-show=\"formMessage.isErr\" class=\"alert alert-danger alert-dismissible\" _v-323a79ab=\"\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\" _v-323a79ab=\"\"><i class=\"fa fa-times\" _v-323a79ab=\"\"></i></button>\n        <p _v-323a79ab=\"\">The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>\n        <ul v-if=\"formErrors\" _v-323a79ab=\"\">\n          <li v-for=\"error in formErrors\" _v-323a79ab=\"\">{{error}}</li>\n        </ul>\n      </div>\n    </div>\n    <div class=\"col-xs-12 col-sm-4 text-right\" _v-323a79ab=\"\">\n      <button class=\"btn btn-success\" type=\"button\" @click=\"submitForm\" _v-323a79ab=\"\">{{ newform ? 'Create Email' : 'Update Email' }}</button>\n      <button v-if=\"!newform\" class=\"btn btn-warning\" type=\"button\" data-toggle=\"modal\" data-target=\"#cloneModal\" _v-323a79ab=\"\">Clone Email</button>\n    </div>\n  </div>\n  <!-- TABS: BUILD STEPS -->\n  <ul class=\"nav nav-tabs\" role=\"tablist\" _v-323a79ab=\"\">\n    <li class=\"active\" _v-323a79ab=\"\"><a href=\"#step-1\" role=\"tab\" data-toggle=\"tab\" _v-323a79ab=\"\">Step 1: Basic Information</a></li>\n    <li _v-323a79ab=\"\"><a href=\"#step-2\" role=\"tab\" data-toggle=\"tab\" _v-323a79ab=\"\">Step 2: Build Email</a></li>\n    <li _v-323a79ab=\"\"><a href=\"#step-3\" role=\"tab\" data-toggle=\"tab\" _v-323a79ab=\"\">Step 3: Schedule &amp; Review</a></li>\n  </ul>\n  <!-- EMAIL FORM -->\n  <form _v-323a79ab=\"\">\n    <slot name=\"csrf\" _v-323a79ab=\"\"></slot>\n  <div class=\"tab-content\" _v-323a79ab=\"\">\n    <!-- MAIN TAB 1 CONTENT -->\n    <div class=\"tab-pane active\" id=\"step-1\" _v-323a79ab=\"\">\n      <h2 _v-323a79ab=\"\">Basic Email Information</h2>\n      <div v-if=\"record.clone.length > 0\" class=\"alert alert-info alert-dismissible\" _v-323a79ab=\"\">\n        <p _v-323a79ab=\"\">This email was cloned from <a :href=\"'/admin/email/'+ record.clone[0].id +'/edit'\" _v-323a79ab=\"\">this email</a> on {{ record.created_at }}.</p>\n      </div>\n      <div class=\"form-group\" _v-323a79ab=\"\">\n        <label for=\"email-title\" _v-323a79ab=\"\">Email Headline <span class=\"character-counter help-text invalid\" v-if=\"insufficientTitle\" _v-323a79ab=\"\">({{ minTitleChars - record.title.length }} characters left)</span></label>\n        <input type=\"text\" class=\"form-control\" id=\"email-title\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" v-model=\"record.title\" placeholder=\"Email headline goes here.\" _v-323a79ab=\"\">\n        <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-323a79ab=\"\">Title must be at least 10 characters in length.</p>\n      </div>\n      <div class=\"form-group\" _v-323a79ab=\"\">\n        <label for=\"subheading\" _v-323a79ab=\"\">Subheading (optional)</label>\n        <textarea class=\"form-control\" id=\"subheading\" v-model=\"record.subheading\" _v-323a79ab=\"\"></textarea>\n      </div>\n    </div>\n    <!-- MAIN TAB 2 CONTENT -->\n    <div class=\"tab-pane\" id=\"step-2\" _v-323a79ab=\"\">\n        <div class=\"row\" _v-323a79ab=\"\">\n          <!-- EMAIL LIVE BUILDER VIEW AREA -->\n          <!-- BUILDER TOOLS AREA -->\n          <div v-bind:class=\"[md12col, lg5col]\" _v-323a79ab=\"\">\n            <h2 _v-323a79ab=\"\">Build Your Email</h2>\n            <!-- Nav tabs -->\n            <ul class=\"nav nav-tabs\" role=\"tablist\" _v-323a79ab=\"\">\n              <li class=\"active\" _v-323a79ab=\"\"><a href=\"#main-story\" role=\"tab\" data-toggle=\"tab\" :class=\"(record.mainStories.length != 1 &amp;&amp; record.mainStories.length != 3) ? 'insufficient' : ''\" _v-323a79ab=\"\">Main Stories ({{ record.mainStories.length }})</a></li>\n              <li _v-323a79ab=\"\"><a href=\"#stories\" role=\"tab\" data-toggle=\"tab\" :class=\"record.otherStories.length < 1 ? 'insufficient' : ''\" _v-323a79ab=\"\">Side Stories ({{ record.otherStories.length }})</a></li>\n              <li _v-323a79ab=\"\"><a href=\"#announcements\" role=\"tab\" data-toggle=\"tab\" :class=\"record.announcements.length < 1 ? 'insufficient' : ''\" _v-323a79ab=\"\">Announcements ({{ record.announcements.length }})</a></li>\n              <li _v-323a79ab=\"\"><a href=\"#events\" role=\"tab\" data-toggle=\"tab\" :class=\"record.events.length < 1 ? 'insufficient' : ''\" _v-323a79ab=\"\">Events ({{ record.events.length }})</a></li>\n              <li _v-323a79ab=\"\"><a href=\"#president\" role=\"tab\" data-toggle=\"tab\" :class=\"record.is_president_included &amp;&amp; (!record.president_url || !record.president_teaser) ? 'insufficient' : ''\" _v-323a79ab=\"\">President</a></li>\n            </ul>\n            <!-- Tab panes -->\n            <div class=\"tab-content\" _v-323a79ab=\"\">\n              <div class=\"tab-pane active\" id=\"main-story\" _v-323a79ab=\"\">\n                <email-main-stories-queue :stypes=\"stypes\" :main-stories=\"record.mainStories\" _v-323a79ab=\"\"></email-main-stories-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"stories\" _v-323a79ab=\"\">\n                <email-story-queue :stypes=\"stypes\" :other-stories=\"record.otherStories\" _v-323a79ab=\"\"></email-story-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"announcements\" _v-323a79ab=\"\">\n                <email-announcement-queue :announcements=\"record.announcements\" _v-323a79ab=\"\"></email-announcement-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"events\" _v-323a79ab=\"\">\n                <email-event-queue :events=\"record.events\" _v-323a79ab=\"\"></email-event-queue>\n              </div>\n              <div class=\"tab-pane\" id=\"president\" _v-323a79ab=\"\">\n                  <div class=\"row\" _v-323a79ab=\"\">\n                      <div class=\"col-xs-12\" _v-323a79ab=\"\">\n                          <div class=\"form-group\" _v-323a79ab=\"\">\n                              <label _v-323a79ab=\"\">\n                                  Include the presidential section in this email? <input type=\"checkbox\" v-model=\"record.is_president_included\" _v-323a79ab=\"\">\n                              </label>\n                          </div><!-- /input-group -->\n                      </div><!-- /.col-md-12 -->\n                      <div class=\"col-xs-12\" _v-323a79ab=\"\">\n                          <div class=\"form-group\" _v-323a79ab=\"\">\n                            <label for=\"presidentTeaser\" _v-323a79ab=\"\">Teaser text</label>\n                            <textarea class=\"form-control\" id=\"presidentTeaser\" v-bind:class=\"[formErrors.president_teaser ? 'invalid-input' : '']\" v-model=\"record.president_teaser\" _v-323a79ab=\"\">{{ record.president_teaser }}</textarea>\n                            <p v-if=\"formErrors.president_teaser\" class=\"help-text invalid\" _v-323a79ab=\"\">The teaser is required when including a presidential message.</p>\n                          </div>\n                      </div><!-- /.col-md-12 -->\n                      <div class=\"col-xs-12\" _v-323a79ab=\"\">\n                          <div class=\"form-group\" _v-323a79ab=\"\">\n                            <label for=\"presidentUrl\" _v-323a79ab=\"\">URL to president's statement</label>\n                            <input type=\"text\" class=\"form-control\" id=\"presidentUrl\" v-bind:class=\"[formErrors.president_url ? 'invalid-input' : '']\" v-model=\"record.president_url\" placeholder=\"https://emich.edu/president-statement\" _v-323a79ab=\"\">\n                            <p v-if=\"formErrors.president_url\" class=\"help-text invalid\" _v-323a79ab=\"\">The URL field is not valid.</p>\n                          </div>\n                      </div><!-- /.col-md-12 -->\n                  </div><!-- ./row -->\n              </div>\n            </div>\n          </div>\n          <!-- /.medium-4 columns -->\n          <!-- \"LIVE VIEW\" OF EMAIL -->\n          <div v-bind:class=\"[md12col, lg7col]\" _v-323a79ab=\"\">\n            <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-323a79ab=\"\"></email-live-view>\n          </div>\n          <!-- /.medium-8 columns -->\n        </div>\n        <!-- /.row -->\n    </div>\n    <!-- MAIN TAB 3 CONTENT -->\n    <div class=\"tab-pane\" id=\"step-3\" _v-323a79ab=\"\">\n      <h2 _v-323a79ab=\"\">Schedule and Review</h2>\n      <div class=\"row\" _v-323a79ab=\"\">\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-323a79ab=\"\">\n          <h3 _v-323a79ab=\"\">When should this email be sent?</h3>\n          <p _v-323a79ab=\"\">Checking the box next to the date picker will schedule the email for delivery at the date and time chosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must be approved.</p>\n          <div class=\"input-group\" _v-323a79ab=\"\">\n            <span class=\"input-group-addon\" _v-323a79ab=\"\">\n              <input type=\"checkbox\" v-model=\"record.is_approved\" aria-label=\"Set as time\" _v-323a79ab=\"\">\n            </span>\n            <input id=\"send-at\" type=\"text\" class=\"form-control\" v-model=\"record.send_at\" aria-describedby=\"errorSendAt\" _v-323a79ab=\"\">\n          </div><!-- /input-group -->\n          <h3 _v-323a79ab=\"\">To which mailing list(s) should this email be sent?</h3>\n          <ul _v-323a79ab=\"\">\n            <li v-for=\"recipient in record.recipients\" _v-323a79ab=\"\">{{ recipient.email_address }}</li>\n          </ul>\n          <label for=\"recipients\" _v-323a79ab=\"\">Select recipient(s)\n            <v-select id=\"minical\" :value.sync=\"record.recipients\" :options=\"recipientsList\" :multiple=\"true\" placeholder=\"Select recipient(s)\" label=\"email_address\" _v-323a79ab=\"\">\n            </v-select>\n          </label>\n          <div class=\"row\" _v-323a79ab=\"\">\n            <div class=\"col-sm-12\" _v-323a79ab=\"\">\n                <div class=\"input-group\" :class=\"successFailure\" _v-323a79ab=\"\">\n                  <span class=\"input-group-btn\" _v-323a79ab=\"\">\n                    <button class=\"btn btn-primary\" type=\"button\" @click.prevent=\"toggleAddRecipient\" _v-323a79ab=\"\">{{ showAddRecipient ? 'Hide me' : 'Add unlisted recipient' }}</button>\n                  </span>\n                  <input v-show=\"showAddRecipient\" type=\"text\" v-model=\"newRecipient\" class=\"form-control\" placeholder=\"mailing_list@emich.edu\" _v-323a79ab=\"\">\n                  <span v-show=\"showAddRecipient\" class=\"input-group-btn\" _v-323a79ab=\"\">\n                    <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"saveUnlistedRecipient\" _v-323a79ab=\"\"><i class=\"fa fa-plus-square\" aria-hidden=\"true\" _v-323a79ab=\"\"></i></button>\n                  </span>\n                </div><!-- /input-group -->\n                <p v-show=\"showAddRecipient &amp;&amp; formErrors.email_address\" class=\"help-text invalid\" _v-323a79ab=\"\">{{ formErrors.email_address }}</p>\n                <p v-show=\"showAddRecipient &amp;&amp; formSuccess.email_address\" class=\"help-text valid\" _v-323a79ab=\"\">{{ formSuccess.email_address }}</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-323a79ab=\"\">\n          <h3 _v-323a79ab=\"\">Mandatory Criteria Checklist</h3>\n          <p _v-323a79ab=\"\">This email will not send unless all of the mandatory criteria are met. You may still save emails that are not ready to be sent.</p>\n          <ul class=\"list-group\" _v-323a79ab=\"\">\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.title ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.title ? 'has' : 'does not have' }} a title.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.mainStories.length &gt; 0 ? 'has' : 'does not have' }} a main story.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.mainStories.length == 2 ? 'fa fa-times-circle fa-3x' : 'fa fa-check-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.mainStories.length == 2 ? 'only has 1 sub-main story (0 or 2 required)' : 'has 0 or 2 sub-main stories' }}.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.otherStories.length &gt; 0 ? 'has' : 'does not have' }} at least one side story.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.events.length &gt; 0 ? 'has' : 'does not have' }} at least one event.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.announcements.length &gt; 0 ? 'has' : 'does not have' }} at least one announcement.</li>\n            <li class=\"list-group-item\" v-if=\"record.is_president_included\" _v-323a79ab=\"\"><i :class=\"record.president_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.president_teaser ? 'has' : 'does not have' }} teaser text for the message from the president.</li>\n            <li class=\"list-group-item\" v-if=\"record.is_president_included\" _v-323a79ab=\"\"><i :class=\"record.president_url ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.president_url ? 'has' : 'does not have' }} a URL to the message from the president.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.recipients.length &gt; 0 ? 'has' : 'does not have' }} at least one recipient.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.is_approved &amp;&amp; record.send_at ? 'fa fa-calendar fa-3x' : 'fa fa-times-circle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email send date and time {{ record.is_approved &amp;&amp; record.send_at ? 'have' : 'have not' }} been confirmed.</li>\n          </ul>\n          <h3 _v-323a79ab=\"\">Optional Criteria Checklist</h3>\n          <ul class=\"list-group\" _v-323a79ab=\"\">\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.is_president_included ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.is_president_included ? 'has' : 'does not have' }} a message from the president.</li>\n            <li class=\"list-group-item\" _v-323a79ab=\"\"><i :class=\"record.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'\" aria-hidden=\"true\" _v-323a79ab=\"\"></i> Email {{ record.subheading ? 'has' : 'does not have' }} a subheading.</li>\n          </ul>\n        </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" v-show=\"recordexists\" _v-323a79ab=\"\">\n      <div class=\"col-xs-12 col-sm-12 col-md-6 col-lg-6\" _v-323a79ab=\"\">\n        <!-- Trigger the delete modal -->\n        <button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-323a79ab=\"\">Delete Email</button>\n      </div>\n    </div>\n    <!-- /.row -->\n  </div>\n  </div></form><!-- /end form -->\n</template><!-- end if !record.is_sent -->\n<template v-else=\"\">\n  <div class=\"row\" _v-323a79ab=\"\">\n    <div v-bind:class=\"[md12col, lg4col]\" _v-323a79ab=\"\">\n      <h2 _v-323a79ab=\"\">This email has already been sent!</h2>\n      <h3 _v-323a79ab=\"\">Sent</h3>\n      <p _v-323a79ab=\"\">{{ record.send_at | formatDate }}</p>\n      <h3 _v-323a79ab=\"\">Recipients</h3>\n      <template v-if=\"record.recipients.length > 0\">\n        <ul _v-323a79ab=\"\">\n          <li v-for=\"recipient in record.recipients\" _v-323a79ab=\"\">{{ recipient.email_address }}</li>\n        </ul>\n      </template>\n      <template v-else=\"\">\n        <p _v-323a79ab=\"\">Nobody</p>\n      </template>\n      <h3 _v-323a79ab=\"\">Statistics</h3>\n        <p _v-323a79ab=\"\"><button type=\"button\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#statsModal\" _v-323a79ab=\"\"><span class=\"fa fa-bar-chart\" aria-hidden=\"true\" _v-323a79ab=\"\"></span> View Statistics</button></p>\n      <h3 _v-323a79ab=\"\">Actions</h3>\n        <p _v-323a79ab=\"\"><button type=\"button\" class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#deleteModal\" _v-323a79ab=\"\">Delete Email</button></p>\n    </div>\n    <!-- /.medium-4 columns -->\n    <div v-bind:class=\"[md12col, lg8col]\" _v-323a79ab=\"\">\n      <email-live-view :email=\"record\" :announcements=\"record.announcements\" :events=\"record.events\" :other-stories=\"record.otherStories\" :main-stories=\"record.mainStories\" _v-323a79ab=\"\"></email-live-view>\n    </div>\n    <!-- /.medium-8 columns -->\n  </div>\n  <!-- /.row -->\n</template>\n<email-delete-modal :email=\"record\" _v-323a79ab=\"\"></email-delete-modal>\n<email-stats-modal :email=\"record\" _v-323a79ab=\"\"></email-stats-modal>\n<email-clone-modal :email=\"record\" _v-323a79ab=\"\"></email-clone-modal>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-07a0c146] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-07a0c146], .nav-tabs > li.active > a[_v-07a0c146]:hover, .nav-tabs > li.active > a[_v-07a0c146]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-07a0c146]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-07a0c146]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-07a0c146]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-07a0c146]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-07a0c146], .fa-calendar[_v-07a0c146]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-07a0c146]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-07a0c146]{\n  color: #FFCC00;\n}\n\n.valid[_v-07a0c146]{\n  color:#3c763d;\n}\n\n.invalid[_v-07a0c146] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-07a0c146] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-07a0c146] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-323a79ab] {\n  background: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[_v-323a79ab], .nav-tabs > li.active > a[_v-323a79ab]:hover, .nav-tabs > li.active > a[_v-323a79ab]:focus{\n  color:#3c8dbc;\n}\n\n.nav-tabs a.disabled[_v-323a79ab]{\n  color: #d2d6de;\n}\n\n.tab-pane[_v-323a79ab]{\n  padding-top: 20px;\n}\n\n.insufficient[_v-323a79ab]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\n.progress-done[_v-323a79ab]{\n  background-color: #3D9970 !important;\n}\n\n.fa-check-circle[_v-323a79ab], .fa-calendar[_v-323a79ab]{\n  color: #3D9970;\n}\n\n.fa-times-circle[_v-323a79ab]{\n  color:hsl(0, 90%, 70%);\n}\n\n.fa-exclamation-triangle[_v-323a79ab]{\n  color: #FFCC00;\n}\n\n.valid[_v-323a79ab]{\n  color:#3c763d;\n}\n\n.invalid[_v-323a79ab] {\n  color: #ff0000;\n}\n\n.valid-titleField[_v-323a79ab] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-323a79ab] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-323a79ab] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-07a0c146", module.exports)
+    hotAPI.createRecord("_v-323a79ab", module.exports)
   } else {
-    hotAPI.update("_v-07a0c146", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-323a79ab", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../VuiFlipSwitch.vue":127,"./EmailAnnouncementQueue.vue":114,"./EmailCloneModal.vue":115,"./EmailDeleteModal.vue":116,"./EmailEventQueue.vue":118,"./EmailLiveView.vue":120,"./EmailMainStoriesQueue.vue":121,"./EmailStatsModal.vue":122,"./EmailStoryQueue.vue":124,"babel-runtime/helpers/defineProperty":14,"flatpickr":102,"moment":103,"vue":110,"vue-hot-reload-api":106,"vue-select":108,"vueify/lib/insert-css":111}],120:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.insufficient[_v-2c477ab3]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-2c477ab3]{\n    font-size: .9rem;\n    line-height: 1.3rem;\n    margin: 0 !important;\n    padding: 0;\n    /*background-color: #f3f2ee;*/\n    /*background-color: #d6d2c4;*/\n    /*background-color: #e6e6e6;*/\n    background-color: #e1e1e1;\n    color: #636363;\n}\ntable[_v-2c477ab3] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-2c477ab3] {\n    padding: 0;\n}\nimg[_v-2c477ab3] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-2c477ab3] {\n    margin:0 !important;\n}\n.wrapper[_v-2c477ab3] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-2c477ab3] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-2c477ab3] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-2c477ab3]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\na.uppertitle[_v-2c477ab3]{\n    text-decoration: none;\n    color: #333333;\n}\n\nh1[_v-2c477ab3],\nh2[_v-2c477ab3],\nh3[_v-2c477ab3],\nh4[_v-2c477ab3],\nh5[_v-2c477ab3],\nh6[_v-2c477ab3] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-2c477ab3] {\n    font-size: 24px;\n\n}\nh2[_v-2c477ab3]{\n    font-size: 22px;\n\n}\nh3[_v-2c477ab3]{\n    font-size: 20px;\n}\nh3.mid[_v-2c477ab3]{\n    font-size: 18px;\n    padding: 12px 0 8px;\n    line-height: 22px;\n    text-decoration: none;\n}\nh3.mid a[_v-2c477ab3]{\n    text-decoration: none;\n}\n\nh4[_v-2c477ab3]{\n    font-size: 18px;\n}\nh5[_v-2c477ab3], h6[_v-2c477ab3]{\n    font-size: 16px;\n}\nh2.moveover[_v-2c477ab3]{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}\n\nh3.moveover[_v-2c477ab3]{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}\n\nh2 a[_v-2c477ab3]{text-decoration: none; color: #636363 !important; font-weight: bold;}\nh3 a[_v-2c477ab3]{text-decoration: none; color: #636363 !important; font-weight: bold;}\np[_v-2c477ab3] {\n    padding: 0;\n    margin: 0;\n}\np.direct-today-link[_v-2c477ab3] {\n    text-align: center;\n    font-size: 12px;\n    margin-bottom: 8px;\n    padding-top: 5px;\n}\np.sub-title[_v-2c477ab3] {\n    margin-bottom: 10px;\n}\n\n.indent[_v-2c477ab3] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-less[_v-2c477ab3] {\n    /*margin-left: .5rem;\n    margin-right: .5rem;*/\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-more[_v-2c477ab3] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-2c477ab3] {\n    border-radius: 50%;\n}\n\n.outer[_v-2c477ab3] {\n    margin: 0 auto;\n    width: 98%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-2c477ab3] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-2c477ab3] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-2c477ab3] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-2c477ab3] {\n    /*font-size: 14px;*/\n    font-size: .9rem;\n    line-height: 1.3rem;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-2c477ab3] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.two-column .column[_v-2c477ab3] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-2c477ab3] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-2c477ab3] {\n    font-size: 14px;\n    text-align: left;\n    margin-bottom: .3rem;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.2% !important;\n        width: 49.2%;\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-2c477ab3] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-2c477ab3]{\n        display: none!important;\n    }\n  .two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-2c477ab3]{\n      padding-top: 0;\n    }\n .inner[_v-2c477ab3] {\n    padding-top: 0px;\n}\n\n.inner h3[_v-2c477ab3]{\n    padding-top: 0px;\n    padding-bottom: 0px;\n}\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.insufficient[_v-ee570ed0]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-ee570ed0]{\n    font-size: .9rem;\n    line-height: 1.3rem;\n    margin: 0 !important;\n    padding: 0;\n    /*background-color: #f3f2ee;*/\n    /*background-color: #d6d2c4;*/\n    /*background-color: #e6e6e6;*/\n    background-color: #e1e1e1;\n    color: #636363;\n}\ntable[_v-ee570ed0] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-ee570ed0] {\n    padding: 0;\n}\nimg[_v-ee570ed0] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-ee570ed0] {\n    margin:0 !important;\n}\n.wrapper[_v-ee570ed0] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-ee570ed0] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-ee570ed0] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-ee570ed0]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-ee570ed0]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-ee570ed0]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\na.uppertitle[_v-ee570ed0]{\n    text-decoration: none;\n    color: #333333;\n}\n\nh1[_v-ee570ed0],\nh2[_v-ee570ed0],\nh3[_v-ee570ed0],\nh4[_v-ee570ed0],\nh5[_v-ee570ed0],\nh6[_v-ee570ed0] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-ee570ed0] {\n    font-size: 24px;\n\n}\nh2[_v-ee570ed0]{\n    font-size: 22px;\n\n}\nh3[_v-ee570ed0]{\n    font-size: 20px;\n}\nh3.mid[_v-ee570ed0]{\n    font-size: 18px;\n    padding: 12px 0 8px;\n    line-height: 22px;\n    text-decoration: none;\n}\nh3.mid a[_v-ee570ed0]{\n    text-decoration: none;\n}\n\nh4[_v-ee570ed0]{\n    font-size: 18px;\n}\nh5[_v-ee570ed0], h6[_v-ee570ed0]{\n    font-size: 16px;\n}\nh2.moveover[_v-ee570ed0]{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}\n\nh3.moveover[_v-ee570ed0]{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}\n\nh2 a[_v-ee570ed0]{text-decoration: none; color: #636363 !important; font-weight: bold;}\nh3 a[_v-ee570ed0]{text-decoration: none; color: #636363 !important; font-weight: bold;}\np[_v-ee570ed0] {\n    padding: 0;\n    margin: 0;\n}\np.direct-today-link[_v-ee570ed0] {\n    text-align: center;\n    font-size: 12px;\n    margin-bottom: 8px;\n    padding-top: 5px;\n}\np.sub-title[_v-ee570ed0] {\n    margin-bottom: 10px;\n}\n\n.indent[_v-ee570ed0] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-less[_v-ee570ed0] {\n    /*margin-left: .5rem;\n    margin-right: .5rem;*/\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-more[_v-ee570ed0] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-ee570ed0] {\n    border-radius: 50%;\n}\n\n.outer[_v-ee570ed0] {\n    margin: 0 auto;\n    width: 98%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-ee570ed0] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-ee570ed0] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-ee570ed0] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-ee570ed0] {\n    /*font-size: 14px;*/\n    font-size: .9rem;\n    line-height: 1.3rem;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-ee570ed0] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.two-column .column[_v-ee570ed0] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-ee570ed0] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-ee570ed0] {\n    font-size: 14px;\n    text-align: left;\n    margin-bottom: .3rem;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-ee570ed0] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-ee570ed0] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-ee570ed0]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-ee570ed0] {\n        max-width: 49.2% !important;\n        width: 49.2%;\n    }\n     img.col-img[_v-ee570ed0]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-ee570ed0] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-ee570ed0]{\n        display: none!important;\n    }\n  .two-column .text[_v-ee570ed0] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-ee570ed0]{\n      padding-top: 0;\n    }\n .inner[_v-ee570ed0] {\n    padding-top: 0px;\n}\n\n.inner h3[_v-ee570ed0]{\n    padding-top: 0px;\n    padding-bottom: 0px;\n}\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24146,24 +25175,24 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section id=\"email-live-container\" style=\"margin:0 auto; width:620px; border:1px solid #d1d1d1; margin-bottom:20px\" _v-2c477ab3=\"\">\n  <div style=\"border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;\" _v-2c477ab3=\"\">\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" align=\"center\" class=\"outer\" _v-2c477ab3=\"\">\n\n          <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n              <td align=\"center\" valign=\"top\" _v-2c477ab3=\"\">\n                  <table border=\"0\" style=\"max-width: 100%;\" id=\"emailContainer\" _v-2c477ab3=\"\">\n                      <tbody _v-2c477ab3=\"\"><tr height=\"54px\" _v-2c477ab3=\"\">\n                          <td class=\"full-width-image\" _v-2c477ab3=\"\">\n                              <a href=\"http://www.emich.edu/\" style=\"margin: 0; padding: 0;\" _v-2c477ab3=\"\"><img src=\"/assets/imgs/email/topsection.png\" alt=\"EMU Today email blast logo\" _v-2c477ab3=\"\"></a>\n                          </td>\n                      </tr>\n\n                      <tr valign=\"top\" id=\"header-row\" style=\"text-align:center\" _v-2c477ab3=\"\">\n                          <td _v-2c477ab3=\"\">\n                              <h2 style=\"padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;\" _v-2c477ab3=\"\">The Week at EMU</h2>\n                              <p class=\"sub-title\" _v-2c477ab3=\"\">A Weekly Digest from <a class=\"uppertitle\" href=\"/\" _v-2c477ab3=\"\"><span style=\"color: #046A38\" _v-2c477ab3=\"\">EMU</span> Today </a></p>\n                          </td>\n                      </tr>\n\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"top\" class=\"full-width-image\" _v-2c477ab3=\"\">\n                            <template v-if=\"email.mainStories[0]\">\n                              <article _v-2c477ab3=\"\">\n                                  <img :alt=\"email.mainStories[0].email_images[0].caption\" :src=\"email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename\" style=\"border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;\" _v-2c477ab3=\"\">\n                                  <div class=\"indent\" style=\"padding-bottom: 16px; margin-bottom: 10px;\" _v-2c477ab3=\"\">\n                                      <h2 _v-2c477ab3=\"\">\n                                        <a v-if=\"email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' &amp;&amp; storyHasTag(email.mainStories[0], 'external'))\" style=\"text-decoration: none;\" :href=\"email.mainStories[0].small_images[0].link\" _v-2c477ab3=\"\">{{ email.mainStories[0].email_images[0].title }}  ➙</a>\n                                        <a v-else=\"\" :href=\"email.mainStories[0].full_url\" _v-2c477ab3=\"\">{{ email.mainStories[0].email_images[0].title }}  ➙</a>\n                                      </h2>\n                                      {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}\n                                  </div>\n                              </article>\n                            </template>\n                            <template v-else=\"\">\n                              <div style=\"background-color:#e5e5e5; position:relative; width:600px; height:282px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-2c477ab3=\"\">\n                                <p style=\"position:absolute; left:143px; top:121px; font-size:3rem;\" _v-2c477ab3=\"\">Main story image here.</p>\n                              </div>\n                              <h2 style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No main story set yet.</h2>\n                              <p style=\"padding:0 5px\" _v-2c477ab3=\"\">Select a main story from the \"Main Story\" tab.</p>\n                            </template>\n                          </td>\n                      </tr>\n                      <!-- some emails might not have sub stories! -->\n                      <template v-if=\"email.mainStories.length == 3\">\n                      <tr _v-2c477ab3=\"\">\n                          <td _v-2c477ab3=\"\">\n                              <table _v-2c477ab3=\"\">\n                                  <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                      <td class=\"two-column\" _v-2c477ab3=\"\">\n                                          <div class=\"column\" _v-2c477ab3=\"\">\n                                            <table _v-2c477ab3=\"\">\n                                                    <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                        <td class=\"inner\" _v-2c477ab3=\"\">\n                                                          <template v-if=\"email.mainStories[1]\">\n                                                            <table class=\"contents\" _v-2c477ab3=\"\">\n                                                                <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                                  <!-- -->\n                                                                    <td style=\"text-align:left;\" _v-2c477ab3=\"\"><img class=\"col-img\" :alt=\"email.mainStories[1].small_images[0].caption\" :src=\"'/imagecache/emailsub/' + email.mainStories[1].small_images[0].filename\" _v-2c477ab3=\"\">\n                                                                    </td>\n                                                                </tr>\n                                                                <tr _v-2c477ab3=\"\">\n                                                                        <td class=\"text\" style=\"text-align:left;\" _v-2c477ab3=\"\">\n                                                                          <h3 _v-2c477ab3=\"\">\n                                                                            <a v-if=\"email.mainStories[1].story_type == 'external' || (email.mainStories[1].story_type == 'article' &amp;&amp; storyHasTag(email.mainStories[1], 'external'))\" style=\"text-decoration: none;\" :href=\"email.mainStories[1].small_images[0].link\" _v-2c477ab3=\"\">{{ email.mainStories[1].email_images[0].title }}  ➙</a>\n                                                                            <a v-else=\"\" style=\"text-decoration: none;\" :href=\"email.mainStories[1].full_url\" _v-2c477ab3=\"\">{{ email.mainStories[1].email_images[0].title }}  ➙</a>\n                                                                          </h3>\n                                                                                <p _v-2c477ab3=\"\">{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>\n                                                                        </td>\n                                                                </tr>\n                                                            </tbody></table>\n                                                          </template>\n                                                          <template v-else=\"\">\n                                                            <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-2c477ab3=\"\">\n                                                              <p style=\"font-size:3rem;\" _v-2c477ab3=\"\">First sub story image here.</p>\n                                                            </div>\n                                                            <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No first sub story set yet.</h3>\n                                                            <p style=\"padding:0 5px\" _v-2c477ab3=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                          </template>\n                                                        </td>\n                                                    </tr>\n                                                </tbody></table>\n                                            </div>\n                                            <div class=\"column\" _v-2c477ab3=\"\">\n                                              <table _v-2c477ab3=\"\">\n                                                      <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                          <td class=\"inner\" _v-2c477ab3=\"\">\n                                                            <template v-if=\"email.mainStories[2]\">\n                                                              <table class=\"contents\" _v-2c477ab3=\"\">\n                                                                  <tbody _v-2c477ab3=\"\"><tr _v-2c477ab3=\"\">\n                                                                      <td _v-2c477ab3=\"\"><img class=\"col-img\" :alt=\"email.mainStories[2].small_images[0].caption\" :src=\"'/imagecache/emailsub/' + email.mainStories[2].small_images[0].filename\" _v-2c477ab3=\"\">\n                                                                      </td>\n                                                                  </tr>\n                                                                  <tr _v-2c477ab3=\"\">\n                                                                          <td class=\"text\" _v-2c477ab3=\"\">\n                                                                            <h3 _v-2c477ab3=\"\">\n                                                                              <a v-if=\"email.mainStories[2].story_type == 'external' || (email.mainStories[2].story_type == 'article' &amp;&amp; storyHasTag(email.mainStories[2], 'external'))\" style=\"text-decoration: none;\" :href=\"email.mainStories[2].small_images[0].link\" _v-2c477ab3=\"\">{{ email.mainStories[2].email_images[0].title }}  ➙</a>\n                                                                              <a v-else=\"\" style=\"text-decoration: none;\" :href=\"email.mainStories[2].full_url\" _v-2c477ab3=\"\">{{ email.mainStories[2].email_images[0].title }}  ➙</a>\n                                                                            </h3>\n                                                                                  <p _v-2c477ab3=\"\">{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>\n                                                                          </td>\n                                                                  </tr>\n                                                              </tbody></table>\n                                                            </template>\n                                                            <template v-else=\"\">\n                                                              <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-2c477ab3=\"\">\n                                                                <p style=\"font-size:3rem;\" _v-2c477ab3=\"\">First sub story image here.</p>\n                                                              </div>\n                                                              <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No first sub story set yet.</h3>\n                                                              <p style=\"padding:0 5px\" _v-2c477ab3=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                            </template>\n                                                          </td>\n                                                      </tr>\n                                                  </tbody></table>\n                                              </div>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                    </template>\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"top\" _v-2c477ab3=\"\">\n                            <div _v-2c477ab3=\"\">\n                              <h2 class=\"moveover\" _v-2c477ab3=\"\"><a href=\"/story/news\" _v-2c477ab3=\"\">More News ➙</a></h2>\n                              <template v-if=\"email.otherStories.length > 0\">\n                                <ul style=\"padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;\" _v-2c477ab3=\"\">\n                                  <li v-for=\"story in email.otherStories\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-2c477ab3=\"\">\n                                    <a v-if=\"story.story_type == 'external' || (story.story_type == 'article' &amp;&amp; storyHasTag(story, 'external'))\" style=\"text-decoration: none;\" :href=\"story.small_images[0].link\" _v-2c477ab3=\"\">{{ story.title }}</a>\n                                    <a v-else=\"\" style=\"text-decoration: none;\" :href=\"story.full_url\" _v-2c477ab3=\"\">{{ story.title }}</a>\n                                  </li>\n                                <ul _v-2c477ab3=\"\">\n                              </ul></ul></template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                            </div>\n                          </td>\n                      </tr>\n                      <tr v-if=\"email.is_president_included\" _v-2c477ab3=\"\">\n                          <td valign=\"top\" style=\"border-top: 3px double #97D700; min-height:136px; padding:15px\" _v-2c477ab3=\"\">\n                              <img src=\"/assets/imgs/email/president-jim-smith-136px.png\" alt=\"EMU President Jim Smith\" width=\"109px\" style=\"float:left; padding:0 15px 8px 0;\" _v-2c477ab3=\"\">\n                              <h2 style=\"padding-top:0px;\" _v-2c477ab3=\"\">\n                                  <template v-if=\"email.president_url\">\n                                    <a v-if=\"email.president_url\" :href=\"email.president_url\" _v-2c477ab3=\"\">From the President ➙</a>\n                                  </template>\n                                  <template v-else=\"\">\n                                    <span class=\"insufficient\" _v-2c477ab3=\"\">From the President [NO URL]</span>\n                                  </template>\n                              </h2>\n                              <template v-if=\"email.president_teaser\">\n                                <p style=\"font-size:1.1rem;\" _v-2c477ab3=\"\">{{ email.president_teaser }}</p>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"font-size:1.1rem;\" class=\"insufficient\" _v-2c477ab3=\"\">There is no teaser text provided. You must include this text when including a presidential message.</p>\n                              </template>\n                          </td>\n                      </tr>\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"top\" _v-2c477ab3=\"\">\n                              <div _v-2c477ab3=\"\">\n                                <h2 class=\"moveover\" style=\"border-top: 3px double #97D700;\" _v-2c477ab3=\"\"><a href=\"/announcement\" _v-2c477ab3=\"\">Announcements  ➙</a></h2>\n                                <template v-if=\"email.announcements.length > 0\">\n                                  <ul style=\"padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-top: 5px;\" _v-2c477ab3=\"\">\n                                    <li v-for=\"announcement in email.announcements\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-2c477ab3=\"\">\n                                      <a v-if=\"announcement.link != ''\" style=\"text-decoration: none;\" :href=\"announcement.link\" _v-2c477ab3=\"\">{{ announcement.title }}</a>\n                                      <a v-else=\"\" style=\"text-decoration: none; \" :href=\"'/announcement/' + announcement.id\" _v-2c477ab3=\"\">{{ announcement.title }}</a>\n                                    </li>\n                                  <ul _v-2c477ab3=\"\">\n                                </ul></ul></template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                                </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr _v-2c477ab3=\"\">\n                          <td valign=\"middle\" _v-2c477ab3=\"\">\n                              <div style=\"padding-top: 5px;\" _v-2c477ab3=\"\">\n                                  <h2 class=\"moveover\" style=\"border-top: 3px double #97D700;\" _v-2c477ab3=\"\"><a href=\"/calendar\" _v-2c477ab3=\"\">What's Happening at EMU  ➙</a></h2>\n                                  <template v-if=\"email.events.length > 0\">\n                                    <ul style=\"margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;\" _v-2c477ab3=\"\">\n                                      <li v-for=\"evt in email.events\" style=\"list-style: none; margin-left: 0; clear: both;\" _v-2c477ab3=\"\">\n                                        <div style=\"font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;\" _v-2c477ab3=\"\">{{ evt.start_date | dateParse }} </div>\n                                        <div style=\"width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;\" _v-2c477ab3=\"\"><a style=\"text-decoration: none;\" :href=\"evt.full_url\" _v-2c477ab3=\"\">{{ evt.title }}</a></div>\n                                      </li>\n                                    <ul _v-2c477ab3=\"\">\n                                  </ul></ul></template>\n                                  <template v-else=\"\">\n                                    <p style=\"padding:0 5px\" class=\"insufficient\" _v-2c477ab3=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                  </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr style=\"background:#515151; color:#ffffff; border:0;\" _v-2c477ab3=\"\">\n                          <td style=\"border:0; \" _v-2c477ab3=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;\" _v-2c477ab3=\"\">\n                                  <tbody _v-2c477ab3=\"\"><tr style=\"text-align:center; font-size: 12px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;\" _v-2c477ab3=\"\">\n                                    <td _v-2c477ab3=\"\">\n                                      <ul style=\"list-style: none; padding-left: 0; background:#515151; color:#ffffff;\" _v-2c477ab3=\"\">\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 0px; padding-right: 5px;  text-decoration: none;\" href=\"/\" _v-2c477ab3=\"\">EMU Today</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;\" href=\"/calendar\" _v-2c477ab3=\"\">Calendar</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;\" href=\"/announcement\" _v-2c477ab3=\"\">Announcements</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;\" href=\"/story/news\" _v-2c477ab3=\"\">News</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-2c477ab3=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;\" href=\"/magazine\" _v-2c477ab3=\"\">Eastern Magazine</a></li>\n                                      </ul>\n                                    </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                      <tr id=\"footer-row\" style=\"background-color: #333333; margin-top: 5px; color: #ffffff; border:0;\" _v-2c477ab3=\"\">\n                          <td style=\"border:0; background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-bottom: 20px;  background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                                  <tbody _v-2c477ab3=\"\"><tr style=\"border:none; background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                                      <td valign=\"top\" style=\"padding:5px; border:0; background-color: #333333; color: #ffffff;\" _v-2c477ab3=\"\">\n                                          <ul style=\"padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;\" _v-2c477ab3=\"\">\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.facebook.com/EasternMichU/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Facebook\" src=\"/assets/imgs/icons/facebook-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"http://www.emich.edu/twitter/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Twitter\" src=\"/assets/imgs/icons/twitter-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.youtube.com/user/emichigan08\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"YouTube\" src=\"/assets/imgs/icons/you-tube-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://instagram.com/easternmichigan/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Instagram\" src=\"/assets/imgs/icons/instagram-base-icons-new.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.linkedin.com/edu/school?id=18604\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Linked-In\" src=\"/assets/imgs/icons/linked-in-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"https://www.snapchat.com/add/EasternMichigan\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Snap Chat\" src=\"/assets/imgs/icons/snapchat.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-2c477ab3=\"\">\n                                                  <a href=\"http://blogemu.com/\" _v-2c477ab3=\"\"><img class=\"img-circle\" alt=\"Blog EMU\" src=\"/assets/imgs/icons/e-base-icons.png\" _v-2c477ab3=\"\"></a>\n                                              </li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                                  <tr style=\"text-align:center;\" _v-2c477ab3=\"\">\n                                      <td _v-2c477ab3=\"\">\n                                           <ul style=\"list-style: none; padding-left: 0;\" _v-2c477ab3=\"\">\n                                               <li style=\"display: inline-block;\" _v-2c477ab3=\"\"><a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-right: 3px; text-decoration: none;\" href=\"https://www.emich.edu/communications/\" _v-2c477ab3=\"\">Division of Communications</a></li>\n                                               <li style=\"font-size: 13px; display: inline-block; color: #ffffff;\" _v-2c477ab3=\"\"> | </li>\n                                             <li style=\"display: inline-block;\" _v-2c477ab3=\"\"> <a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-left: 3px; text-decoration: none;\" href=\"https://www.emich.edu\" _v-2c477ab3=\"\">Eastern Michigan University</a></li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                  </tbody></table>\n              </td>\n          </tr>\n      </tbody></table>\n  </div>\n</section>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<section id=\"email-live-container\" style=\"margin:0 auto; width:620px; border:1px solid #d1d1d1; margin-bottom:20px\" _v-ee570ed0=\"\">\n  <div style=\"border:0px solid #ffffff; height:auto; padding:5px; margin: 0 auto; width:100%; font-family: 'Poppins', arial, sans-serif;\" _v-ee570ed0=\"\">\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" height=\"100%\" align=\"center\" class=\"outer\" _v-ee570ed0=\"\">\n\n          <tbody _v-ee570ed0=\"\"><tr _v-ee570ed0=\"\">\n              <td align=\"center\" valign=\"top\" _v-ee570ed0=\"\">\n                  <table border=\"0\" style=\"max-width: 100%;\" id=\"emailContainer\" _v-ee570ed0=\"\">\n                      <tbody _v-ee570ed0=\"\"><tr height=\"54px\" _v-ee570ed0=\"\">\n                          <td class=\"full-width-image\" _v-ee570ed0=\"\">\n                              <a href=\"http://www.emich.edu/\" style=\"margin: 0; padding: 0;\" _v-ee570ed0=\"\"><img src=\"/assets/imgs/email/topsection.png\" alt=\"EMU Today email blast logo\" _v-ee570ed0=\"\"></a>\n                          </td>\n                      </tr>\n\n                      <tr valign=\"top\" id=\"header-row\" style=\"text-align:center\" _v-ee570ed0=\"\">\n                          <td _v-ee570ed0=\"\">\n                              <h2 style=\"padding: 0 0 7px 0; margin-top: 0; margin-left: auto; margin-right: auto; font-size: 38px; line-height: 38px; font-weight: 500;\" _v-ee570ed0=\"\">The Week at EMU</h2>\n                              <p class=\"sub-title\" _v-ee570ed0=\"\">A Weekly Digest from <a class=\"uppertitle\" href=\"/\" _v-ee570ed0=\"\"><span style=\"color: #046A38\" _v-ee570ed0=\"\">EMU</span> Today </a></p>\n                          </td>\n                      </tr>\n\n                      <tr _v-ee570ed0=\"\">\n                          <td valign=\"top\" class=\"full-width-image\" _v-ee570ed0=\"\">\n                            <template v-if=\"email.mainStories[0]\">\n                              <article _v-ee570ed0=\"\">\n                                  <img :alt=\"email.mainStories[0].email_images[0].caption\" :src=\"email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename\" style=\"border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;\" _v-ee570ed0=\"\">\n                                  <div class=\"indent\" style=\"padding-bottom: 16px; margin-bottom: 10px;\" _v-ee570ed0=\"\">\n                                      <h2 _v-ee570ed0=\"\">\n                                        <a v-if=\"email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' &amp;&amp; storyHasTag(email.mainStories[0], 'external'))\" style=\"text-decoration: none;\" :href=\"email.mainStories[0].small_images[0].link\" _v-ee570ed0=\"\">{{ email.mainStories[0].email_images[0].title }}  ➙</a>\n                                        <a v-else=\"\" :href=\"email.mainStories[0].full_url\" _v-ee570ed0=\"\">{{ email.mainStories[0].email_images[0].title }}  ➙</a>\n                                      </h2>\n                                      {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}\n                                  </div>\n                              </article>\n                            </template>\n                            <template v-else=\"\">\n                              <div style=\"background-color:#e5e5e5; position:relative; width:600px; height:282px; text-align:center; margin:0 auto; border-right:5px solid #ffffff;\" _v-ee570ed0=\"\">\n                                <p style=\"position:absolute; left:143px; top:121px; font-size:3rem;\" _v-ee570ed0=\"\">Main story image here.</p>\n                              </div>\n                              <h2 style=\"padding:0 5px\" class=\"insufficient\" _v-ee570ed0=\"\">No main story set yet.</h2>\n                              <p style=\"padding:0 5px\" _v-ee570ed0=\"\">Select a main story from the \"Main Story\" tab.</p>\n                            </template>\n                          </td>\n                      </tr>\n                      <!-- some emails might not have sub stories! -->\n                      <template v-if=\"email.mainStories.length == 3\">\n                      <tr _v-ee570ed0=\"\">\n                          <td _v-ee570ed0=\"\">\n                              <table _v-ee570ed0=\"\">\n                                  <tbody _v-ee570ed0=\"\"><tr _v-ee570ed0=\"\">\n                                      <td class=\"two-column\" _v-ee570ed0=\"\">\n                                          <div class=\"column\" _v-ee570ed0=\"\">\n                                            <table _v-ee570ed0=\"\">\n                                                    <tbody _v-ee570ed0=\"\"><tr _v-ee570ed0=\"\">\n                                                        <td class=\"inner\" _v-ee570ed0=\"\">\n                                                          <template v-if=\"email.mainStories[1]\">\n                                                            <table class=\"contents\" _v-ee570ed0=\"\">\n                                                                <tbody _v-ee570ed0=\"\"><tr _v-ee570ed0=\"\">\n                                                                  <!-- -->\n                                                                    <td style=\"text-align:left;\" _v-ee570ed0=\"\"><img class=\"col-img\" :alt=\"email.mainStories[1].small_images[0].caption\" :src=\"'/imagecache/emailsub/' + email.mainStories[1].small_images[0].filename\" _v-ee570ed0=\"\">\n                                                                    </td>\n                                                                </tr>\n                                                                <tr _v-ee570ed0=\"\">\n                                                                        <td class=\"text\" style=\"text-align:left;\" _v-ee570ed0=\"\">\n                                                                          <h3 _v-ee570ed0=\"\">\n                                                                            <a v-if=\"email.mainStories[1].story_type == 'external' || (email.mainStories[1].story_type == 'article' &amp;&amp; storyHasTag(email.mainStories[1], 'external'))\" style=\"text-decoration: none;\" :href=\"email.mainStories[1].small_images[0].link\" _v-ee570ed0=\"\">{{ email.mainStories[1].email_images[0].title }}  ➙</a>\n                                                                            <a v-else=\"\" style=\"text-decoration: none;\" :href=\"email.mainStories[1].full_url\" _v-ee570ed0=\"\">{{ email.mainStories[1].email_images[0].title }}  ➙</a>\n                                                                          </h3>\n                                                                                <p _v-ee570ed0=\"\">{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>\n                                                                        </td>\n                                                                </tr>\n                                                            </tbody></table>\n                                                          </template>\n                                                          <template v-else=\"\">\n                                                            <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-ee570ed0=\"\">\n                                                              <p style=\"font-size:3rem;\" _v-ee570ed0=\"\">First sub story image here.</p>\n                                                            </div>\n                                                            <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-ee570ed0=\"\">No first sub story set yet.</h3>\n                                                            <p style=\"padding:0 5px\" _v-ee570ed0=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                          </template>\n                                                        </td>\n                                                    </tr>\n                                                </tbody></table>\n                                            </div>\n                                            <div class=\"column\" _v-ee570ed0=\"\">\n                                              <table _v-ee570ed0=\"\">\n                                                      <tbody _v-ee570ed0=\"\"><tr _v-ee570ed0=\"\">\n                                                          <td class=\"inner\" _v-ee570ed0=\"\">\n                                                            <template v-if=\"email.mainStories[2]\">\n                                                              <table class=\"contents\" _v-ee570ed0=\"\">\n                                                                  <tbody _v-ee570ed0=\"\"><tr _v-ee570ed0=\"\">\n                                                                      <td _v-ee570ed0=\"\"><img class=\"col-img\" :alt=\"email.mainStories[2].small_images[0].caption\" :src=\"'/imagecache/emailsub/' + email.mainStories[2].small_images[0].filename\" _v-ee570ed0=\"\">\n                                                                      </td>\n                                                                  </tr>\n                                                                  <tr _v-ee570ed0=\"\">\n                                                                          <td class=\"text\" _v-ee570ed0=\"\">\n                                                                            <h3 _v-ee570ed0=\"\">\n                                                                              <a v-if=\"email.mainStories[2].story_type == 'external' || (email.mainStories[2].story_type == 'article' &amp;&amp; storyHasTag(email.mainStories[2], 'external'))\" style=\"text-decoration: none;\" :href=\"email.mainStories[2].small_images[0].link\" _v-ee570ed0=\"\">{{ email.mainStories[2].email_images[0].title }}  ➙</a>\n                                                                              <a v-else=\"\" style=\"text-decoration: none;\" :href=\"email.mainStories[2].full_url\" _v-ee570ed0=\"\">{{ email.mainStories[2].email_images[0].title }}  ➙</a>\n                                                                            </h3>\n                                                                                  <p _v-ee570ed0=\"\">{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>\n                                                                          </td>\n                                                                  </tr>\n                                                              </tbody></table>\n                                                            </template>\n                                                            <template v-else=\"\">\n                                                              <div style=\"background-color:#e5e5e5; text-align:center; margin:0 auto; border-right:5px solid #ffffff; width:231px; height:210px;\" _v-ee570ed0=\"\">\n                                                                <p style=\"font-size:3rem;\" _v-ee570ed0=\"\">First sub story image here.</p>\n                                                              </div>\n                                                              <h3 style=\"padding:0 5px\" class=\"insufficient\" _v-ee570ed0=\"\">No first sub story set yet.</h3>\n                                                              <p style=\"padding:0 5px\" _v-ee570ed0=\"\">Select a first sub story from the \"Main Story\" tab.</p>\n                                                            </template>\n                                                          </td>\n                                                      </tr>\n                                                  </tbody></table>\n                                              </div>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                    </template>\n                      <tr _v-ee570ed0=\"\">\n                          <td valign=\"top\" _v-ee570ed0=\"\">\n                            <div _v-ee570ed0=\"\">\n                              <h2 class=\"moveover\" _v-ee570ed0=\"\"><a href=\"/story/news\" _v-ee570ed0=\"\">More News ➙</a></h2>\n                              <template v-if=\"email.otherStories.length > 0\">\n                                <ul style=\"padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;\" _v-ee570ed0=\"\">\n                                  <li v-for=\"story in email.otherStories\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-ee570ed0=\"\">\n                                    <a v-if=\"story.story_type == 'external' || (story.story_type == 'article' &amp;&amp; storyHasTag(story, 'external'))\" style=\"text-decoration: none;\" :href=\"story.small_images[0].link\" _v-ee570ed0=\"\">{{ story.title }}</a>\n                                    <a v-else=\"\" style=\"text-decoration: none;\" :href=\"story.full_url\" _v-ee570ed0=\"\">{{ story.title }}</a>\n                                  </li>\n                                <ul _v-ee570ed0=\"\">\n                              </ul></ul></template>\n                              <template v-else=\"\">\n                                <p style=\"padding:0 5px\" class=\"insufficient\" _v-ee570ed0=\"\">No side stories set yet. Select at least one from the \"Side Stories\" tab.</p>\n                              </template>\n                            </div>\n                          </td>\n                      </tr>\n                      <tr v-if=\"email.is_president_included\" _v-ee570ed0=\"\">\n                          <td valign=\"top\" style=\"border-top: 3px double #97D700; min-height:136px; padding:15px\" _v-ee570ed0=\"\">\n                              <img src=\"/assets/imgs/email/president-jim-smith-136px.png\" alt=\"EMU President Jim Smith\" width=\"109px\" style=\"float:left; padding:0 15px 8px 0;\" _v-ee570ed0=\"\">\n                              <h2 style=\"padding-top:0px;\" _v-ee570ed0=\"\">\n                                  <template v-if=\"email.president_url\">\n                                    <a v-if=\"email.president_url\" :href=\"email.president_url\" _v-ee570ed0=\"\">From the President ➙</a>\n                                  </template>\n                                  <template v-else=\"\">\n                                    <span class=\"insufficient\" _v-ee570ed0=\"\">From the President [NO URL]</span>\n                                  </template>\n                              </h2>\n                              <template v-if=\"email.president_teaser\">\n                                <p style=\"font-size:1.1rem;\" _v-ee570ed0=\"\">{{ email.president_teaser }}</p>\n                              </template>\n                              <template v-else=\"\">\n                                <p style=\"font-size:1.1rem;\" class=\"insufficient\" _v-ee570ed0=\"\">There is no teaser text provided. You must include this text when including a presidential message.</p>\n                              </template>\n                          </td>\n                      </tr>\n                      <tr _v-ee570ed0=\"\">\n                          <td valign=\"top\" _v-ee570ed0=\"\">\n                              <div _v-ee570ed0=\"\">\n                                <h2 class=\"moveover\" style=\"border-top: 3px double #97D700;\" _v-ee570ed0=\"\"><a href=\"/announcement\" _v-ee570ed0=\"\">Announcements  ➙</a></h2>\n                                <template v-if=\"email.announcements.length > 0\">\n                                  <ul style=\"padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-top: 5px;\" _v-ee570ed0=\"\">\n                                    <li v-for=\"announcement in email.announcements\" style=\"padding-bottom: 5px; margin-left: 0; color:#046A38;\" _v-ee570ed0=\"\">\n                                      <a v-if=\"announcement.link != ''\" style=\"text-decoration: none;\" :href=\"announcement.link\" _v-ee570ed0=\"\">{{ announcement.title }}</a>\n                                      <a v-else=\"\" style=\"text-decoration: none; \" :href=\"'/announcement/' + announcement.id\" _v-ee570ed0=\"\">{{ announcement.title }}</a>\n                                    </li>\n                                  <ul _v-ee570ed0=\"\">\n                                </ul></ul></template>\n                                <template v-else=\"\">\n                                  <p style=\"padding:0 5px\" class=\"insufficient\" _v-ee570ed0=\"\">No announcements set yet. Select at least one from the \"Announcements\" tab.</p>\n                                </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr _v-ee570ed0=\"\">\n                          <td valign=\"middle\" _v-ee570ed0=\"\">\n                              <div style=\"padding-top: 5px;\" _v-ee570ed0=\"\">\n                                  <h2 class=\"moveover\" style=\"border-top: 3px double #97D700;\" _v-ee570ed0=\"\"><a href=\"/calendar\" _v-ee570ed0=\"\">What's Happening at EMU  ➙</a></h2>\n                                  <template v-if=\"email.events.length > 0\">\n                                    <ul style=\"margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;\" _v-ee570ed0=\"\">\n                                      <li v-for=\"evt in email.events\" style=\"list-style: none; margin-left: 0; clear: both;\" _v-ee570ed0=\"\">\n                                        <div style=\"font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;\" _v-ee570ed0=\"\">{{ evt.start_date | dateParse }} </div>\n                                        <div style=\"width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;\" _v-ee570ed0=\"\"><a style=\"text-decoration: none;\" :href=\"evt.full_url\" _v-ee570ed0=\"\">{{ evt.title }}</a></div>\n                                      </li>\n                                    <ul _v-ee570ed0=\"\">\n                                  </ul></ul></template>\n                                  <template v-else=\"\">\n                                    <p style=\"padding:0 5px\" class=\"insufficient\" _v-ee570ed0=\"\">No events set yet. Select at least one from the \"Events\" tab.</p>\n                                  </template>\n                              </div>\n                          </td>\n                      </tr>\n                      <tr style=\"background:#515151; color:#ffffff; border:0;\" _v-ee570ed0=\"\">\n                          <td style=\"border:0; \" _v-ee570ed0=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;\" _v-ee570ed0=\"\">\n                                  <tbody _v-ee570ed0=\"\"><tr style=\"text-align:center; font-size: 12px; text-transform: uppercase; border:0; background-color:#515151; color:#ffffff;\" _v-ee570ed0=\"\">\n                                    <td _v-ee570ed0=\"\">\n                                      <ul style=\"list-style: none; padding-left: 0; background:#515151; color:#ffffff;\" _v-ee570ed0=\"\">\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-ee570ed0=\"\"><a style=\"color: #ffffff; padding-left: 0px; padding-right: 5px;  text-decoration: none;\" href=\"/\" _v-ee570ed0=\"\">EMU Today</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-ee570ed0=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;\" href=\"/calendar\" _v-ee570ed0=\"\">Calendar</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-ee570ed0=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;\" href=\"/announcement\" _v-ee570ed0=\"\">Announcements</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-ee570ed0=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;\" href=\"/story/news\" _v-ee570ed0=\"\">News</a></li>\n                                        <li style=\"display: inline-block; padding: 0; margin: 0;\" _v-ee570ed0=\"\"><a style=\"color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;\" href=\"/magazine\" _v-ee570ed0=\"\">Eastern Magazine</a></li>\n                                      </ul>\n                                    </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                      <tr id=\"footer-row\" style=\"background-color: #333333; margin-top: 5px; color: #ffffff; border:0;\" _v-ee570ed0=\"\">\n                          <td style=\"border:0; background-color: #333333; color: #ffffff;\" _v-ee570ed0=\"\">\n                              <table style=\"margin-left: auto; margin-right: auto; margin-bottom: 20px;  background-color: #333333; color: #ffffff;\" _v-ee570ed0=\"\">\n                                  <tbody _v-ee570ed0=\"\"><tr style=\"border:none; background-color: #333333; color: #ffffff;\" _v-ee570ed0=\"\">\n                                      <td valign=\"top\" style=\"padding:5px; border:0; background-color: #333333; color: #ffffff;\" _v-ee570ed0=\"\">\n                                          <ul style=\"padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;\" _v-ee570ed0=\"\">\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"https://www.facebook.com/EasternMichU/\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"Facebook\" src=\"/assets/imgs/icons/facebook-base-icons.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px; margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"http://www.emich.edu/twitter/\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"Twitter\" src=\"/assets/imgs/icons/twitter-base-icons.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"https://www.youtube.com/user/emichigan08\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"YouTube\" src=\"/assets/imgs/icons/you-tube-base-icons.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"https://instagram.com/easternmichigan/\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"Instagram\" src=\"/assets/imgs/icons/instagram-base-icons-new.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"https://www.linkedin.com/edu/school?id=18604\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"Linked-In\" src=\"/assets/imgs/icons/linked-in-base-icons.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"https://www.snapchat.com/add/EasternMichigan\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"Snap Chat\" src=\"/assets/imgs/icons/snapchat.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                              <li style=\"display: inline-block; list-style-type:none; padding-right:7px;margin: 0;\" _v-ee570ed0=\"\">\n                                                  <a href=\"http://blogemu.com/\" _v-ee570ed0=\"\"><img class=\"img-circle\" alt=\"Blog EMU\" src=\"/assets/imgs/icons/e-base-icons.png\" _v-ee570ed0=\"\"></a>\n                                              </li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                                  <tr style=\"text-align:center;\" _v-ee570ed0=\"\">\n                                      <td _v-ee570ed0=\"\">\n                                           <ul style=\"list-style: none; padding-left: 0;\" _v-ee570ed0=\"\">\n                                               <li style=\"display: inline-block;\" _v-ee570ed0=\"\"><a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-right: 3px; text-decoration: none;\" href=\"https://www.emich.edu/communications/\" _v-ee570ed0=\"\">Division of Communications</a></li>\n                                               <li style=\"font-size: 13px; display: inline-block; color: #ffffff;\" _v-ee570ed0=\"\"> | </li>\n                                             <li style=\"display: inline-block;\" _v-ee570ed0=\"\"> <a style=\"font-size: 13px; color: #ffffff; padding-left: 0; padding-left: 3px; text-decoration: none;\" href=\"https://www.emich.edu\" _v-ee570ed0=\"\">Eastern Michigan University</a></li>\n                                          </ul>\n                                      </td>\n                                  </tr>\n                              </tbody></table>\n                          </td>\n                      </tr>\n                  </tbody></table>\n              </td>\n          </tr>\n      </tbody></table>\n  </div>\n</section>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.insufficient[_v-2c477ab3]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-2c477ab3]{\n    font-size: .9rem;\n    line-height: 1.3rem;\n    margin: 0 !important;\n    padding: 0;\n    /*background-color: #f3f2ee;*/\n    /*background-color: #d6d2c4;*/\n    /*background-color: #e6e6e6;*/\n    background-color: #e1e1e1;\n    color: #636363;\n}\ntable[_v-2c477ab3] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-2c477ab3] {\n    padding: 0;\n}\nimg[_v-2c477ab3] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-2c477ab3] {\n    margin:0 !important;\n}\n.wrapper[_v-2c477ab3] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-2c477ab3] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-2c477ab3] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-2c477ab3]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-2c477ab3]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\na.uppertitle[_v-2c477ab3]{\n    text-decoration: none;\n    color: #333333;\n}\n\nh1[_v-2c477ab3],\nh2[_v-2c477ab3],\nh3[_v-2c477ab3],\nh4[_v-2c477ab3],\nh5[_v-2c477ab3],\nh6[_v-2c477ab3] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-2c477ab3] {\n    font-size: 24px;\n\n}\nh2[_v-2c477ab3]{\n    font-size: 22px;\n\n}\nh3[_v-2c477ab3]{\n    font-size: 20px;\n}\nh3.mid[_v-2c477ab3]{\n    font-size: 18px;\n    padding: 12px 0 8px;\n    line-height: 22px;\n    text-decoration: none;\n}\nh3.mid a[_v-2c477ab3]{\n    text-decoration: none;\n}\n\nh4[_v-2c477ab3]{\n    font-size: 18px;\n}\nh5[_v-2c477ab3], h6[_v-2c477ab3]{\n    font-size: 16px;\n}\nh2.moveover[_v-2c477ab3]{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}\n\nh3.moveover[_v-2c477ab3]{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}\n\nh2 a[_v-2c477ab3]{text-decoration: none; color: #636363 !important; font-weight: bold;}\nh3 a[_v-2c477ab3]{text-decoration: none; color: #636363 !important; font-weight: bold;}\np[_v-2c477ab3] {\n    padding: 0;\n    margin: 0;\n}\np.direct-today-link[_v-2c477ab3] {\n    text-align: center;\n    font-size: 12px;\n    margin-bottom: 8px;\n    padding-top: 5px;\n}\np.sub-title[_v-2c477ab3] {\n    margin-bottom: 10px;\n}\n\n.indent[_v-2c477ab3] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-less[_v-2c477ab3] {\n    /*margin-left: .5rem;\n    margin-right: .5rem;*/\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-more[_v-2c477ab3] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-2c477ab3] {\n    border-radius: 50%;\n}\n\n.outer[_v-2c477ab3] {\n    margin: 0 auto;\n    width: 98%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-2c477ab3] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-2c477ab3] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-2c477ab3] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-2c477ab3] {\n    /*font-size: 14px;*/\n    font-size: .9rem;\n    line-height: 1.3rem;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-2c477ab3] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.two-column .column[_v-2c477ab3] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-2c477ab3] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-2c477ab3] {\n    font-size: 14px;\n    text-align: left;\n    margin-bottom: .3rem;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-2c477ab3] {\n        max-width: 49.2% !important;\n        width: 49.2%;\n    }\n     img.col-img[_v-2c477ab3]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-2c477ab3] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-2c477ab3]{\n        display: none!important;\n    }\n  .two-column .text[_v-2c477ab3] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-2c477ab3]{\n      padding-top: 0;\n    }\n .inner[_v-2c477ab3] {\n    padding-top: 0px;\n}\n\n.inner h3[_v-2c477ab3]{\n    padding-top: 0px;\n    padding-bottom: 0px;\n}\n}\n"] = false
+    __vueify_insert__.cache["\n.insufficient[_v-ee570ed0]{\n  color:hsl(0, 90%, 70%) !important;\n}\n\nbody[_v-ee570ed0]{\n    font-size: .9rem;\n    line-height: 1.3rem;\n    margin: 0 !important;\n    padding: 0;\n    /*background-color: #f3f2ee;*/\n    /*background-color: #d6d2c4;*/\n    /*background-color: #e6e6e6;*/\n    background-color: #e1e1e1;\n    color: #636363;\n}\ntable[_v-ee570ed0] {\n    border-collapse: collapse;\n    border-spacing: 0;\n    font-family: 'Poppins', arial, sans-serif;;\n    color: #333333;\n    background-color: #ffffff;\n}\ntd[_v-ee570ed0] {\n    padding: 0;\n}\nimg[_v-ee570ed0] {\n    /*border: 0;*/\n}\ndiv[style*=\"margin: 16px 0\"][_v-ee570ed0] {\n    margin:0 !important;\n}\n.wrapper[_v-ee570ed0] {\n    width: 100%;\n    table-layout: fixed;\n    -webkit-text-size-adjust: 100%;\n    -ms-text-size-adjust: 100%;\n}\n.webkit[_v-ee570ed0] {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\na[_v-ee570ed0] {\n    color: #046A38;\n    text-decoration: underline;\n}\n\na[_v-ee570ed0]:visited {\n    color: #046A38;\n    text-decoration: none;\n}\n\na[_v-ee570ed0]:hover {\n    color: #2b873b;\n    text-decoration: underline;\n}\n\na[_v-ee570ed0]:active {\n    color: #046A38;\n    text-decoration: underline;\n}\na.uppertitle[_v-ee570ed0]{\n    text-decoration: none;\n    color: #333333;\n}\n\nh1[_v-ee570ed0],\nh2[_v-ee570ed0],\nh3[_v-ee570ed0],\nh4[_v-ee570ed0],\nh5[_v-ee570ed0],\nh6[_v-ee570ed0] {\n    font-weight: 500;\n    padding: 12px 0 3px;\n    margin: 0;\n}\n.h1[_v-ee570ed0] {\n    font-size: 24px;\n\n}\nh2[_v-ee570ed0]{\n    font-size: 22px;\n\n}\nh3[_v-ee570ed0]{\n    font-size: 20px;\n}\nh3.mid[_v-ee570ed0]{\n    font-size: 18px;\n    padding: 12px 0 8px;\n    line-height: 22px;\n    text-decoration: none;\n}\nh3.mid a[_v-ee570ed0]{\n    text-decoration: none;\n}\n\nh4[_v-ee570ed0]{\n    font-size: 18px;\n}\nh5[_v-ee570ed0], h6[_v-ee570ed0]{\n    font-size: 16px;\n}\nh2.moveover[_v-ee570ed0]{padding: 14px 0 6px 8px; margin-top: 0rem; text-decoration: none;}\n\nh3.moveover[_v-ee570ed0]{padding: 10px 0 6px 8px; margin-top: 0rem; text-decoration: none; font-size: 18px;}\n\nh2 a[_v-ee570ed0]{text-decoration: none; color: #636363 !important; font-weight: bold;}\nh3 a[_v-ee570ed0]{text-decoration: none; color: #636363 !important; font-weight: bold;}\np[_v-ee570ed0] {\n    padding: 0;\n    margin: 0;\n}\np.direct-today-link[_v-ee570ed0] {\n    text-align: center;\n    font-size: 12px;\n    margin-bottom: 8px;\n    padding-top: 5px;\n}\np.sub-title[_v-ee570ed0] {\n    margin-bottom: 10px;\n}\n\n.indent[_v-ee570ed0] {\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-less[_v-ee570ed0] {\n    /*margin-left: .5rem;\n    margin-right: .5rem;*/\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.indent-more[_v-ee570ed0] {\n    padding-left: 35px;\n    padding-right: 35px;\n}\n.img-circle[_v-ee570ed0] {\n    border-radius: 50%;\n}\n\n.outer[_v-ee570ed0] {\n    margin: 0 auto;\n    width: 98%;\n    max-width: 600px;\n    }\n.full-width-image img[_v-ee570ed0] {\n    width: 100%;\n    max-width: 600px;\n    height: auto;\n}\n.inner[_v-ee570ed0] {\n    padding-top: 0px;\n     padding-bottom: 10px;\n     padding-left: 10px;\n     padding-right: 10px;\n}\n/*a {\n    color: #ee6a56;\n    text-decoration: underline;\n}*/\n/* One column layout */\n.one-column .contents[_v-ee570ed0] {\n    text-align: left;\n    /*width: 100%;*/\n}\n.one-column p[_v-ee570ed0] {\n    /*font-size: 14px;*/\n    font-size: .9rem;\n    line-height: 1.3rem;\n    Margin-bottom: 10px;\n}\n/*Two column layout*/\n.two-column[_v-ee570ed0] {\n    text-align: center;\n    font-size: 0;\n    /*width: auto;*/\n    position: relative;\n    box-sizing: border-box;\n    margin-left: 1rem;\n    margin-right: 1rem;\n}\n.two-column .column[_v-ee570ed0] {\n    /*width: 100%;*/\n    /*max-width: 300px;*/\n    /*max-width: 50%;*/\n    /*max-width: 280px;*/\n    display: inline-block;\n    vertical-align: top;\n    position: relative;\n    box-sizing: border-box;\n}\n.contents[_v-ee570ed0] {\n    /*width: 100%;*/\n    }\n.two-column .contents[_v-ee570ed0] {\n    font-size: 14px;\n    text-align: left;\n    margin-bottom: .3rem;\n    }\n/*.two-column img {\n        width: 100%;\n        height: auto;\n    }*/\n.two-column .text[_v-ee570ed0] {\n        padding-top: 0px;\n    }\n\n/*Media Queries*/\n@media only screen and (min-width: 610px) {\n    .two-column .column[_v-ee570ed0] {\n        max-width: 49.9% !important;\n        width: 49.9%;\n\n    }\n     img.col-img[_v-ee570ed0]{\n        max-width: 100% !important;\n         width: 100%;\n    }\n\n}\n\n@media only screen and (min-width: 480px) and (max-width: 609px) {\n    .two-column .column[_v-ee570ed0] {\n        max-width: 49.2% !important;\n        width: 49.2%;\n    }\n     img.col-img[_v-ee570ed0]{\n        max-width: 100% !important;\n        width: 100%;\n    }\n\n}\n@media only screen and (min-width: 10px) and (max-width: 479px){\n  .two-column .column[_v-ee570ed0] {\n        max-width: 100% !important;\n        width: 100%;\n    }\n  img.col-img[_v-ee570ed0]{\n        display: none!important;\n    }\n  .two-column .text[_v-ee570ed0] {\n        padding-top: 0px;\n    }\n  .two-column .column h3[_v-ee570ed0]{\n      padding-top: 0;\n    }\n .inner[_v-ee570ed0] {\n    padding-top: 0px;\n}\n\n.inner h3[_v-ee570ed0]{\n    padding-top: 0px;\n    padding-bottom: 0px;\n}\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-2c477ab3", module.exports)
+    hotAPI.createRecord("_v-ee570ed0", module.exports)
   } else {
-    hotAPI.update("_v-2c477ab3", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-ee570ed0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],121:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-7f9a74d9] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-7f9a74d9]:active, span.item-type-icon.active[_v-7f9a74d9]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-7f9a74d9]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n\nh4[_v-59dc8484] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-59dc8484]:active, .btn-default.active[_v-59dc8484], .open > .dropdown-toggle.btn-default[_v-59dc8484] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-59dc8484]:active, .btn-default.active[_v-59dc8484], .open > .dropdown-toggle.btn-default[_v-59dc8484] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-59dc8484]:active, span.item-type-icon.active[_v-59dc8484]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-59dc8484] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-59dc8484] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-59dc8484] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-59dc8484]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24422,24 +25451,24 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-7f9a74d9=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-7f9a74d9=\"\">\n      <p _v-7f9a74d9=\"\">You will only be presented stories that are:</p>\n      <ol _v-7f9a74d9=\"\">\n        <li _v-7f9a74d9=\"\">Approved</li>\n        <li _v-7f9a74d9=\"\">Not archived</li>\n        <li _v-7f9a74d9=\"\">Flagged as \"Ready\"</li>\n        <li _v-7f9a74d9=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n      <ul _v-7f9a74d9=\"\">\n        <li _v-7f9a74d9=\"\">The <strong _v-7f9a74d9=\"\">top story</strong> image comes from the <mark _v-7f9a74d9=\"\">emutoday_email</mark> image type as defined in the story's admin area.</li>\n        <li _v-7f9a74d9=\"\">The <strong _v-7f9a74d9=\"\">sub-main</strong> images come from the <mark _v-7f9a74d9=\"\">emutoday_small</mark> image type as defined in the story's admin area.</li>\n        <li _v-7f9a74d9=\"\">For the main and both sub-main stories, the <strong _v-7f9a74d9=\"\">story title</strong> comes from the <mark _v-7f9a74d9=\"\">\"Title/Header\"</mark> field in the story's <mark _v-7f9a74d9=\"\">emutoday_email</mark> image editor area, while the <strong _v-7f9a74d9=\"\">subtext</strong> comes from the <mark _v-7f9a74d9=\"\">\"Teaser/Byline\"</mark> field of that same area.<p _v-7f9a74d9=\"\"></p>\n    </li></ul></div>\n</div>\n<hr _v-7f9a74d9=\"\">\n<div class=\"row\" _v-7f9a74d9=\"\">\n    <div class=\"col-md-12\" _v-7f9a74d9=\"\">\n        <h3 _v-7f9a74d9=\"\">Main Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-7f9a74d9=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-7f9a74d9=\"\">\n                  <email-story-pod pid=\"main-story-item\" pod-type=\"mainstory\" :item=\"story\" _v-7f9a74d9=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-7f9a74d9=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-7f9a74d9=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-7f9a74d9=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-7f9a74d9=\"\">\n          <div class=\"form-group\" _v-7f9a74d9=\"\">\n              <label for=\"start-date\" _v-7f9a74d9=\"\">Starting <span v-if=\"isEndDate\" _v-7f9a74d9=\"\">between</span><span v-else=\"\" _v-7f9a74d9=\"\">on or after</span></label>\n              <p _v-7f9a74d9=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-7f9a74d9=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-7f9a74d9=\"\">\n              <label for=\"start-date\" _v-7f9a74d9=\"\"> and </label>\n              <p _v-7f9a74d9=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-7f9a74d9=\"\"></p><p _v-7f9a74d9=\"\">\n          </p></div>\n          <p _v-7f9a74d9=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-7f9a74d9=\"\">Filter</button></p>\n          <p _v-7f9a74d9=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-7f9a74d9=\"\"><span v-if=\"isEndDate\" _v-7f9a74d9=\"\"> - Remove </span><span v-else=\"\" _v-7f9a74d9=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-7f9a74d9=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-7f9a74d9=\"\">\n                <label _v-7f9a74d9=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-7f9a74d9=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-7f9a74d9=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-7f9a74d9=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-7f9a74d9=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-7f9a74d9=\"\">\n            <email-story-pod pid=\"email-items\" :main-stories=\"usedStories\" pod-type=\"mainstoryqueue\" v-for=\"item in items | filterBy filterByStoryType | paginate\" :item=\"item\" _v-7f9a74d9=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-7f9a74d9=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-7f9a74d9=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-7f9a74d9=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-7f9a74d9=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-7f9a74d9=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-7f9a74d9=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-59dc8484=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-59dc8484=\"\">\n      <p _v-59dc8484=\"\">You will only be presented stories that are:</p>\n      <ol _v-59dc8484=\"\">\n        <li _v-59dc8484=\"\">Approved</li>\n        <li _v-59dc8484=\"\">Not archived</li>\n        <li _v-59dc8484=\"\">Flagged as \"Ready\"</li>\n        <li _v-59dc8484=\"\">Have a photo of type emutoday_email</li>\n      </ol>\n      <ul _v-59dc8484=\"\">\n        <li _v-59dc8484=\"\">The <strong _v-59dc8484=\"\">top story</strong> image comes from the <mark _v-59dc8484=\"\">emutoday_email</mark> image type as defined in the story's admin area.</li>\n        <li _v-59dc8484=\"\">The <strong _v-59dc8484=\"\">sub-main</strong> images come from the <mark _v-59dc8484=\"\">emutoday_small</mark> image type as defined in the story's admin area.</li>\n        <li _v-59dc8484=\"\">For the main and both sub-main stories, the <strong _v-59dc8484=\"\">story title</strong> comes from the <mark _v-59dc8484=\"\">\"Title/Header\"</mark> field in the story's <mark _v-59dc8484=\"\">emutoday_email</mark> image editor area, while the <strong _v-59dc8484=\"\">subtext</strong> comes from the <mark _v-59dc8484=\"\">\"Teaser/Byline\"</mark> field of that same area.<p _v-59dc8484=\"\"></p>\n    </li></ul></div>\n</div>\n<hr _v-59dc8484=\"\">\n<div class=\"row\" _v-59dc8484=\"\">\n    <div class=\"col-md-12\" _v-59dc8484=\"\">\n        <h3 _v-59dc8484=\"\">Main Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-59dc8484=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-59dc8484=\"\">\n                  <email-story-pod pid=\"main-story-item\" pod-type=\"mainstory\" :item=\"story\" _v-59dc8484=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-59dc8484=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-59dc8484=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-59dc8484=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-59dc8484=\"\">\n          <div class=\"form-group\" _v-59dc8484=\"\">\n              <label for=\"start-date\" _v-59dc8484=\"\">Starting <span v-if=\"isEndDate\" _v-59dc8484=\"\">between</span><span v-else=\"\" _v-59dc8484=\"\">on or after</span></label>\n              <p _v-59dc8484=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-59dc8484=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-59dc8484=\"\">\n              <label for=\"start-date\" _v-59dc8484=\"\"> and </label>\n              <p _v-59dc8484=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-59dc8484=\"\"></p><p _v-59dc8484=\"\">\n          </p></div>\n          <p _v-59dc8484=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-59dc8484=\"\">Filter</button></p>\n          <p _v-59dc8484=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-59dc8484=\"\"><span v-if=\"isEndDate\" _v-59dc8484=\"\"> - Remove </span><span v-else=\"\" _v-59dc8484=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-59dc8484=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-59dc8484=\"\">\n                <label _v-59dc8484=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"items_filter_storytype\" _v-59dc8484=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-59dc8484=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-59dc8484=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-59dc8484=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-items\" _v-59dc8484=\"\">\n            <email-story-pod pid=\"email-items\" :main-stories=\"usedStories\" pod-type=\"mainstoryqueue\" v-for=\"item in items | filterBy filterByStoryType | paginate\" :item=\"item\" _v-59dc8484=\"\">\n            </email-story-pod>\n\n            <ul class=\"pagination\" _v-59dc8484=\"\">\n              <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-59dc8484=\"\">\n                <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-59dc8484=\"\">Previous</a>\n              </li>\n              <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-59dc8484=\"\">\n                <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-59dc8484=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-59dc8484=\"\">(current)</span></a>\n              </li>\n              <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-59dc8484=\"\">\n                <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-59dc8484=\"\">Next</a>\n              </li>\n            </ul>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n\nh4[_v-7f9a74d9] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-7f9a74d9]:active, .btn-default.active[_v-7f9a74d9], .open > .dropdown-toggle.btn-default[_v-7f9a74d9] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-7f9a74d9]:active, span.item-type-icon.active[_v-7f9a74d9]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-7f9a74d9] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-7f9a74d9]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\n\nh4[_v-59dc8484] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-59dc8484]:active, .btn-default.active[_v-59dc8484], .open > .dropdown-toggle.btn-default[_v-59dc8484] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-59dc8484]:active, .btn-default.active[_v-59dc8484], .open > .dropdown-toggle.btn-default[_v-59dc8484] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-59dc8484]:active, span.item-type-icon.active[_v-59dc8484]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[_v-59dc8484] {\n    margin-bottom: 4px;\n}\n#items-approved .box[_v-59dc8484] {\n    margin-bottom: 4px;\n\n}\n#items-live .box[_v-59dc8484] {\n    margin-bottom: 4px;\n\n}\n#rangetoggle[_v-59dc8484]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-7f9a74d9", module.exports)
+    hotAPI.createRecord("_v-59dc8484", module.exports)
   } else {
-    hotAPI.update("_v-7f9a74d9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-59dc8484", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../../directives/flatpickr.js":128,"../../directives/iconradio.js":129,"../IconToggleBtn.vue":125,"../Pagination.vue":126,"./EmailStoryPod.vue":123,"babel-runtime/core-js/object/keys":10,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],122:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.statistic[_v-ac82cd60]{\n  font-size: 2rem;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.statistic[_v-1703b1f5]{\n  font-size: 2rem;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24475,24 +25504,24 @@ exports.default = {
   watch: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div id=\"statsModal\" class=\"modal fade\" role=\"dialog\" _v-ac82cd60=\"\">\n  <div class=\"modal-dialog\" _v-ac82cd60=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-ac82cd60=\"\">\n      <div class=\"modal-header\" _v-ac82cd60=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-ac82cd60=\"\">×</button>\n        <h4 class=\"modal-title\" _v-ac82cd60=\"\">Email basic statistics</h4>\n      </div>\n      <div class=\"modal-body\" _v-ac82cd60=\"\">\n        <ul _v-ac82cd60=\"\">\n          <li _v-ac82cd60=\"\"><strong _v-ac82cd60=\"\">Title:</strong> {{ email.title }}</li>\n          <li _v-ac82cd60=\"\"><strong _v-ac82cd60=\"\">Sent At:</strong> {{ email.send_at | formatDate }}</li>\n        </ul>\n        <div class=\"row text-center\" _v-ac82cd60=\"\">\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-ac82cd60=\"\">\n            <h5 class=\"email-statistic\" _v-ac82cd60=\"\">Opens</h5>\n            <span class=\"email-statistic\" _v-ac82cd60=\"\">{{ email.mailgun_opens }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-ac82cd60=\"\">\n            <h5 class=\"email-statistic\" _v-ac82cd60=\"\">Clicks</h5>\n            <span class=\"email-statistic\" _v-ac82cd60=\"\">{{ email.mailgun_clicks }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-ac82cd60=\"\">\n            <h5 class=\"email-statistic\" _v-ac82cd60=\"\">Marked as Spam</h5>\n            <span class=\"email-statistic\" _v-ac82cd60=\"\">{{ email.mailgun_spam }}</span>\n          </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-ac82cd60=\"\">\n        <div class=\"row\" _v-ac82cd60=\"\">\n          <div class=\"col-xs-12 col-sm-8\" _v-ac82cd60=\"\">\n            <p _v-ac82cd60=\"\">For more complete statistcs, log in to <a href=\"https://app.mailgun.com\" target=\"_blank\" _v-ac82cd60=\"\">Mailgun</a></p>\n          </div>\n          <div class=\"col-xs-12 col-sm-4 text-right\" _v-ac82cd60=\"\">\n            <button type=\"button\" id=\"closeBtn\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-ac82cd60=\"\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<!--STATS MODAL-->\n<div id=\"statsModal\" class=\"modal fade\" role=\"dialog\" _v-1703b1f5=\"\">\n  <div class=\"modal-dialog\" _v-1703b1f5=\"\">\n    <!-- Modal content-->\n    <div class=\"modal-content\" _v-1703b1f5=\"\">\n      <div class=\"modal-header\" _v-1703b1f5=\"\">\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" _v-1703b1f5=\"\">×</button>\n        <h4 class=\"modal-title\" _v-1703b1f5=\"\">Email basic statistics</h4>\n      </div>\n      <div class=\"modal-body\" _v-1703b1f5=\"\">\n        <ul _v-1703b1f5=\"\">\n          <li _v-1703b1f5=\"\"><strong _v-1703b1f5=\"\">Title:</strong> {{ email.title }}</li>\n          <li _v-1703b1f5=\"\"><strong _v-1703b1f5=\"\">Sent At:</strong> {{ email.send_at | formatDate }}</li>\n        </ul>\n        <div class=\"row text-center\" _v-1703b1f5=\"\">\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-1703b1f5=\"\">\n            <h5 class=\"email-statistic\" _v-1703b1f5=\"\">Opens</h5>\n            <span class=\"email-statistic\" _v-1703b1f5=\"\">{{ email.mailgun_opens }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-1703b1f5=\"\">\n            <h5 class=\"email-statistic\" _v-1703b1f5=\"\">Clicks</h5>\n            <span class=\"email-statistic\" _v-1703b1f5=\"\">{{ email.mailgun_clicks }}</span>\n          </div>\n          <div class=\"col-xs-12 col-sm-12 col-md-4 col-lg-4\" _v-1703b1f5=\"\">\n            <h5 class=\"email-statistic\" _v-1703b1f5=\"\">Marked as Spam</h5>\n            <span class=\"email-statistic\" _v-1703b1f5=\"\">{{ email.mailgun_spam }}</span>\n          </div>\n        </div>\n      </div>\n      <div class=\"modal-footer\" _v-1703b1f5=\"\">\n        <div class=\"row\" _v-1703b1f5=\"\">\n          <div class=\"col-xs-12 col-sm-8\" _v-1703b1f5=\"\">\n            <p _v-1703b1f5=\"\">For more complete statistcs, log in to <a href=\"https://app.mailgun.com\" target=\"_blank\" _v-1703b1f5=\"\">Mailgun</a></p>\n          </div>\n          <div class=\"col-xs-12 col-sm-4 text-right\" _v-1703b1f5=\"\">\n            <button type=\"button\" id=\"closeBtn\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-1703b1f5=\"\">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div><!--/end modal-->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.statistic[_v-ac82cd60]{\n  font-size: 2rem;\n}\n"] = false
+    __vueify_insert__.cache["\n.statistic[_v-1703b1f5]{\n  font-size: 2rem;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-ac82cd60", module.exports)
+    hotAPI.createRecord("_v-1703b1f5", module.exports)
   } else {
-    hotAPI.update("_v-ac82cd60", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1703b1f5", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],123:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-8a7f6adc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-8a7f6adc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-8a7f6adc] {\n    padding: 3px;\n}\n.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\n\n#storyform[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-8a7f6adc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-8a7f6adc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-8a7f6adc],\n.btn-group-vertical[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-8a7f6adc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-8a7f6adc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-8a7f6adc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-8a7f6adc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-8a7f6adc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-8a7f6adc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-8a7f6adc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-8a7f6adc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-8a7f6adc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n.zcallout[_v-8a7f6adc] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-8a7f6adc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-8a7f6adc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-8a7f6adc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-8a7f6adc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-8a7f6adc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-8a7f6adc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-8a7f6adc] {\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.box[_v-174d4877] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-174d4877] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-174d4877] {\n    padding: 3px;\n}\n.box-footer[_v-174d4877] {\n    padding: 3px;\n}\n\n#storyform[_v-174d4877] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-174d4877] {\n    margin-bottom: 2px;\n}\n#applabel[_v-174d4877]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-174d4877],\n.btn-group-vertical[_v-174d4877] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-174d4877] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-174d4877] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-174d4877] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-174d4877] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-174d4877] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-174d4877] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-174d4877] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-174d4877] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-174d4877] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-174d4877] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n.zcallout[_v-174d4877] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-174d4877] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-174d4877] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-174d4877] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-174d4877] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-174d4877] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-174d4877] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-174d4877]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-174d4877] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-174d4877] {\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -24661,24 +25690,24 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-8a7f6adc=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-8a7f6adc=\"\">\n        <div class=\"box-header with-border\" _v-8a7f6adc=\"\">\n          <div class=\"row\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-12\" _v-8a7f6adc=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitMainStory(item)\" v-model=\"checked\" :checked=\"isMainStory\" :disabled=\"mainStoriesFull\" _v-8a7f6adc=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-8a7f6adc=\"\">\n                      <label _v-8a7f6adc=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-8a7f6adc=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-8a7f6adc=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-8a7f6adc=\"\">\n              <div class=\"col-sm-9\" _v-8a7f6adc=\"\">\n                <h6 class=\"box-title\" _v-8a7f6adc=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-8a7f6adc=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-8a7f6adc=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-8a7f6adc=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-8a7f6adc=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-8a7f6adc=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-8a7f6adc=\"\">\n            <p _v-8a7f6adc=\"\">ID: {{item.id}}</p>\n            <p _v-8a7f6adc=\"\">Type: {{item.story_type}}</p>\n            <p _v-8a7f6adc=\"\">Title: {{item.title}}</p>\n            <p _v-8a7f6adc=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-8a7f6adc=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-8a7f6adc=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-8a7f6adc=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-8a7f6adc=\"\">Live: {{item.is_live}}</p>\n            <p _v-8a7f6adc=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-8a7f6adc=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-8a7f6adc=\"\">\n                <div class=\"row\" _v-8a7f6adc=\"\">\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-8a7f6adc=\"\">\n                        <div class=\"btn-group pull-right\" _v-8a7f6adc=\"\">\n                            <a :href=\"item.edit_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-8a7f6adc=\"\"><i class=\"fa fa-pencil\" _v-8a7f6adc=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div :class=\"specialItem\" _v-174d4877=\"\">\n    <div class=\"box box-solid {{item.group}}\" _v-174d4877=\"\">\n        <div class=\"box-header with-border\" _v-174d4877=\"\">\n          <div class=\"row\" _v-174d4877=\"\">\n              <div class=\"col-sm-12\" _v-174d4877=\"\">\n                  <div v-show=\"podType == 'mainstoryqueue'\" class=\"pull-right\" _v-174d4877=\"\">\n                      <label _v-174d4877=\"\"><input type=\"checkbox\" @click=\"toggleEmitMainStory(item)\" v-model=\"checked\" :checked=\"isMainStory\" :disabled=\"mainStoriesFull\" _v-174d4877=\"\">  Main Story</label>\n                  </div><!-- /.pull-left -->\n                  <div v-show=\"podType == 'otherstoryqueue'\" class=\"pull-right\" _v-174d4877=\"\">\n                      <label _v-174d4877=\"\"><input type=\"checkbox\" @click=\"toggleEmitOtherStory(item)\" v-model=\"checked\" :checked=\"isOtherStory\" _v-174d4877=\"\"> Email Story</label>\n                  </div><!-- /.pull-left -->\n              </div>\n          </div><!-- /.row -->\n          <div class=\"row\" _v-174d4877=\"\">\n            <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-174d4877=\"\">\n              <div class=\"col-sm-9\" _v-174d4877=\"\">\n                <h6 class=\"box-title\" _v-174d4877=\"\"><label data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.story_type}}\" _v-174d4877=\"\"><span class=\"item-type-icon\" :class=\"typeIcon\" _v-174d4877=\"\"></span></label>{{item.title}}</h6>\n              </div><!-- /.col-md-12 -->\n              <div class=\"col-sm-3\" _v-174d4877=\"\">\n                <button v-show=\"podType == 'mainstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitMainStoryRemove(item)\" _v-174d4877=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-174d4877=\"\"></i></button>\n                <button v-show=\"podType == 'otherstory'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right\" @click=\"emitOtherStoryRemove(item)\" _v-174d4877=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-174d4877=\"\"></i></button>\n              </div><!-- /.col-md-12 -->\n            </a>\n          </div><!-- /.row -->\n        </div>  <!-- /.box-header -->\n\n      <div v-if=\"showBody\" class=\"box-body\" _v-174d4877=\"\">\n            <p _v-174d4877=\"\">ID: {{item.id}}</p>\n            <p _v-174d4877=\"\">Type: {{item.story_type}}</p>\n            <p _v-174d4877=\"\">Title: {{item.title}}</p>\n            <p _v-174d4877=\"\">Ready: {{item.is_ready}}</p>\n            <p _v-174d4877=\"\">Approved: {{item.is_approved}}</p>\n            <p _v-174d4877=\"\">Promoted: {{item.is_promoted}}</p>\n            <p _v-174d4877=\"\">Featured: {{item.is_featured}}</p>\n            <p _v-174d4877=\"\">Live: {{item.is_live}}</p>\n            <p _v-174d4877=\"\">Archived: {{item.is_archived}}</p>\n            <p _v-174d4877=\"\">Start Date: {{item.start_date}}</p>\n      </div><!-- /.box-body -->\n            <div class=\"box-footer list-footer\" _v-174d4877=\"\">\n                <div class=\"row\" _v-174d4877=\"\">\n                    <div class=\"col-sm-6\" _v-174d4877=\"\">\n                        Live {{ timefromNow }}\n                    </div><!-- /.col-md-6 -->\n                    <div class=\"col-sm-6\" _v-174d4877=\"\">\n                        <div class=\"btn-group pull-right\" _v-174d4877=\"\">\n                            <a :href=\"item.edit_url\" target=\"_blank\" class=\"btn bg-orange btn-xs footer-btn\" data-toggle=\"tooltip\" title=\"preview\" _v-174d4877=\"\"><i class=\"fa fa-pencil\" _v-174d4877=\"\"></i></a>\n                        </div>\n                    </div><!-- /.col-md-6 -->\n                </div><!-- /.row -->\n            </div><!-- /.box-footer -->\n    </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.box[_v-8a7f6adc] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-8a7f6adc] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-8a7f6adc] {\n    padding: 3px;\n}\n.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\n\n#storyform[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-8a7f6adc] {\n    margin-bottom: 2px;\n}\n#applabel[_v-8a7f6adc]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-8a7f6adc],\n.btn-group-vertical[_v-8a7f6adc] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-8a7f6adc] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-8a7f6adc] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-8a7f6adc] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-8a7f6adc] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-8a7f6adc] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-8a7f6adc] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-8a7f6adc] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-8a7f6adc] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-8a7f6adc] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-8a7f6adc] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-8a7f6adc]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n.zcallout[_v-8a7f6adc] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-8a7f6adc] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-8a7f6adc] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-8a7f6adc] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-8a7f6adc] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-8a7f6adc] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-8a7f6adc]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-8a7f6adc] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-8a7f6adc] {\n}\n"] = false
+    __vueify_insert__.cache["\n.box[_v-174d4877] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n}\n.box-body[_v-174d4877] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin:0;\n}\n\n.box-header[_v-174d4877] {\n    padding: 3px;\n}\n.box-footer[_v-174d4877] {\n    padding: 3px;\n}\n\n#storyform[_v-174d4877] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\n.form-group[_v-174d4877] {\n    margin-bottom: 2px;\n}\n#applabel[_v-174d4877]{\n    margin-left: 2px;\n    margin-right: 2px;\n    padding-left: 2px;\n    padding-right: 2px;\n}\n\n.btn-group[_v-174d4877],\n.btn-group-vertical[_v-174d4877] {\n    display:-webkit-inline-box;\n    display:-ms-inline-flexbox;\n    display:inline-flex;\n}\nh5.box-footer[_v-174d4877] {\n    padding: 3px;\n}\nbutton.footer-btn[_v-174d4877] {\n    border-color: #1B1B1B;\n\n}\nh6.box-title[_v-174d4877] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n.callout[_v-174d4877] {\n    position: relative;\n    background: #ddd;\n    padding: 1em;\n    margin: 0;\n}\n.callout .callout-danger[_v-174d4877] {\n    background: #ff0000;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.callout .callout-success[_v-174d4877] {\n    background: #00ff00;\n    color:#000000;\n    /*border: 1px solid #000000;*/\n}\n\n.Alert__close[_v-174d4877] {\n    position: absolute;\n    top: 1em;\n    right: 1em;\n    font-weight: bold;\n    cursor: pointer;\n}\n.bg-hub[_v-174d4877] {\n    background-color: #76D7EA;\n}\n.emutoday[_v-174d4877] {\n\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA\n}\n.student[_v-174d4877] {\n    color: #1B1B1B;\n    background-color: #FED85D;\n    border: 1px solid #FED85D\n}\n.news[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.external[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n.article[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n.advisory[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-174d4877]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n.zcallout[_v-174d4877] {\n    border-radius: 5px;\n    border-left: 50px solid #ff0000;\n}\n.zinfo-box-icon[_v-174d4877] {\n    border-top-left-radius: 5px;\n    border-top-right-radius: 0;\n    border-bottom-right-radius: 0;\n    border-bottom-left-radius: 5px;\n    display: block;\n    float: left;\n    height: auto;\n    width: 60px;\n    text-align: center;\n    font-size: 45px;\n    line-height: 90px;\n    background: rgba(0,0,0,0.2);\n}\n.type-badge[_v-174d4877] {\n    width: 30px;\n    height: 30px;\n    font-size: 15px;\n    line-height: 30px;\n    position: absolute;\n    color: #666;\n    background: #d2d6de;\n    border-radius: 50%;\n    text-align: center;\n    left: 18px;\n    top: 0;\n}\n\nselect.form-control[_v-174d4877] {\n    height:22px;\n    border: 1px solid #999999;\n}\n\n\nh6[_v-174d4877] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\nh5[_v-174d4877] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group[_v-174d4877] {\n    /*border: 1px solid red;*/\n}\n.form-group label[_v-174d4877]{\n    margin-bottom: 0;\n}\n\n.special-item[_v-174d4877] {\n    border-left: 6px solid #bfff00;\n\n    padding-left: 3px;\n    border-top-left-radius:3px;\n    border-bottom-left-radius: 3px;\n    margin-left: -10px;\n\n}\n.special-item-last[_v-174d4877] {\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-8a7f6adc", module.exports)
+    hotAPI.createRecord("_v-174d4877", module.exports)
   } else {
-    hotAPI.update("_v-8a7f6adc", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-174d4877", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],124:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\nh4[_v-873b9bc4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-873b9bc4]:active, span.item-type-icon.active[_v-873b9bc4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-873b9bc4]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\nh4[_v-29a74ac3] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-29a74ac3]:active, .btn-default.active[_v-29a74ac3], .open > .dropdown-toggle.btn-default[_v-29a74ac3] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-29a74ac3]:active, .btn-default.active[_v-29a74ac3], .open > .dropdown-toggle.btn-default[_v-29a74ac3] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-29a74ac3]:active, span.item-type-icon.active[_v-29a74ac3]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-29a74ac3]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24935,19 +25964,19 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-873b9bc4=\"\">\n      <p _v-873b9bc4=\"\">You will only be presented stories that are:</p>\n      <ol _v-873b9bc4=\"\">\n        <li _v-873b9bc4=\"\">Approved</li>\n        <li _v-873b9bc4=\"\">Not archived</li>\n        <li _v-873b9bc4=\"\">Flagged as \"Ready\"</li>\n      </ol>\n    </div>\n</div>\n<hr _v-873b9bc4=\"\">\n<div class=\"row\" _v-873b9bc4=\"\">\n    <div class=\"col-md-12\" _v-873b9bc4=\"\">\n        <h3 _v-873b9bc4=\"\">Side Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-873b9bc4=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-873b9bc4=\"\">\n                  <email-story-pod pid=\"otherstory-list-stories\" pod-type=\"otherstory\" :item=\"story\" _v-873b9bc4=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-873b9bc4=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-873b9bc4=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-873b9bc4=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-873b9bc4=\"\">\n          <div class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\">Starting <span v-if=\"isEndDate\" _v-873b9bc4=\"\">between</span><span v-else=\"\" _v-873b9bc4=\"\">on or after</span></label>\n              <p _v-873b9bc4=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-873b9bc4=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-873b9bc4=\"\">\n              <label for=\"start-date\" _v-873b9bc4=\"\"> and </label>\n              <p _v-873b9bc4=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-873b9bc4=\"\"></p><p _v-873b9bc4=\"\">\n          </p></div>\n          <p _v-873b9bc4=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-873b9bc4=\"\">Filter</button></p>\n          <p _v-873b9bc4=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-873b9bc4=\"\"><span v-if=\"isEndDate\" _v-873b9bc4=\"\"> - Remove </span><span v-else=\"\" _v-873b9bc4=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-873b9bc4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-873b9bc4=\"\">\n                <label _v-873b9bc4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-873b9bc4=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-873b9bc4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-873b9bc4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-873b9bc4=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-stories\" _v-873b9bc4=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueStories.length > 0\">\n              <email-story-pod pid=\"otherstory-queue-stories\" pod-type=\"otherstoryqueue\" :item=\"story\" :other-stories=\"usedStories\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-873b9bc4=\"\">\n              </email-story-pod>\n              <ul class=\"pagination\" _v-873b9bc4=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-873b9bc4=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-873b9bc4=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-873b9bc4=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-873b9bc4=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-873b9bc4=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-873b9bc4=\"\">There are no stories for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-873b9bc4=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-29a74ac3=\"\">\n    <div class=\"col-xs-12 col-sm-8 col-md-6 col-lg-9\" _v-29a74ac3=\"\">\n      <p _v-29a74ac3=\"\">You will only be presented stories that are:</p>\n      <ol _v-29a74ac3=\"\">\n        <li _v-29a74ac3=\"\">Approved</li>\n        <li _v-29a74ac3=\"\">Not archived</li>\n        <li _v-29a74ac3=\"\">Flagged as \"Ready\"</li>\n      </ol>\n    </div>\n</div>\n<hr _v-29a74ac3=\"\">\n<div class=\"row\" _v-29a74ac3=\"\">\n    <div class=\"col-md-12\" _v-29a74ac3=\"\">\n        <h3 _v-29a74ac3=\"\">Side Stories</h3>\n        <template v-if=\"!loadingUsed\">\n          <template v-if=\"usedStories.length > 0\">\n            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\" _v-29a74ac3=\"\">\n                <li v-for=\"story in usedStories\" class=\"list-group-item\" _v-29a74ac3=\"\">\n                  <email-story-pod pid=\"otherstory-list-stories\" pod-type=\"otherstory\" :item=\"story\" _v-29a74ac3=\"\">\n                  </email-story-pod>\n                </li>\n            </ul>\n          </template>\n          <template v-else=\"\">\n            <p _v-29a74ac3=\"\">There are no side stories set for this email.</p>\n          </template>\n        </template>\n        <template v-else=\"\">\n          <p _v-29a74ac3=\"\">Loading this email's stories. Please wait...</p>\n        </template>\n        <hr _v-29a74ac3=\"\">\n        <!-- Date filter -->\n        <form class=\"form-inline\" _v-29a74ac3=\"\">\n          <div class=\"form-group\" _v-29a74ac3=\"\">\n              <label for=\"start-date\" _v-29a74ac3=\"\">Starting <span v-if=\"isEndDate\" _v-29a74ac3=\"\">between</span><span v-else=\"\" _v-29a74ac3=\"\">on or after</span></label>\n              <p _v-29a74ac3=\"\"><input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-29a74ac3=\"\"></p>\n          </div>\n          <div v-if=\"isEndDate\" class=\"form-group\" _v-29a74ac3=\"\">\n              <label for=\"start-date\" _v-29a74ac3=\"\"> and </label>\n              <p _v-29a74ac3=\"\"><input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-29a74ac3=\"\"></p><p _v-29a74ac3=\"\">\n          </p></div>\n          <p _v-29a74ac3=\"\"><button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-29a74ac3=\"\">Filter</button></p>\n          <p _v-29a74ac3=\"\"><a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-29a74ac3=\"\"><span v-if=\"isEndDate\" _v-29a74ac3=\"\"> - Remove </span><span v-else=\"\" _v-29a74ac3=\"\"> + Add </span>Range</a></p>\n        </form>\n        <div class=\"btn-toolbar\" role=\"toolbar\" _v-29a74ac3=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-29a74ac3=\"\">\n                <label _v-29a74ac3=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"stories_filter_storytype\" _v-29a74ac3=\"\">\n                 <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-29a74ac3=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-29a74ac3=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-29a74ac3=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n        <div id=\"email-stories\" _v-29a74ac3=\"\">\n          <template v-if=\"!loadingQueue\">\n            <template v-if=\"queueStories.length > 0\">\n              <email-story-pod pid=\"otherstory-queue-stories\" pod-type=\"otherstoryqueue\" :item=\"story\" :other-stories=\"usedStories\" v-for=\"story in queueStories | filterBy filterByStoryType | paginate\" _v-29a74ac3=\"\">\n              </email-story-pod>\n              <ul class=\"pagination\" _v-29a74ac3=\"\">\n                <li v-bind:class=\"{disabled: (currentPage <= 1)}\" class=\"page-item\" _v-29a74ac3=\"\">\n                  <a href=\"#\" @click.prevent=\"setPage(currentPage-1)\" class=\"page-link\" tabindex=\"-1\" _v-29a74ac3=\"\">Previous</a>\n                </li>\n                <li v-for=\"pageNumber in totalPages\" :class=\"{active: (pageNumber+1) == currentPage}\" class=\"page-item\" _v-29a74ac3=\"\">\n                  <a class=\"page-link\" href=\"#\" @click.prevent=\"setPage(pageNumber+1)\" _v-29a74ac3=\"\">{{ pageNumber+1 }} <span v-if=\"(pageNumber+1) == currentPage\" class=\"sr-only\" _v-29a74ac3=\"\">(current)</span></a>\n                </li>\n                <li v-bind:class=\"{disabled: (currentPage == totalPages)}\" class=\"page-item\" _v-29a74ac3=\"\">\n                  <a class=\"page-link\" @click.prevent=\"setPage(currentPage+1)\" href=\"#\" _v-29a74ac3=\"\">Next</a>\n                </li>\n              </ul>\n            </template>\n            <template v-else=\"\">\n              <p _v-29a74ac3=\"\">There are no stories for the date range you've specified.</p>\n            </template>\n          </template>\n          <template v-else=\"\">\n            <p _v-29a74ac3=\"\">Loading queue. Please Wait...</p>\n          </template>\n        </div>\n    </div><!-- /.col-md-12 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\nh4[_v-873b9bc4] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-873b9bc4]:active, .btn-default.active[_v-873b9bc4], .open > .dropdown-toggle.btn-default[_v-873b9bc4] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-873b9bc4]:active, span.item-type-icon.active[_v-873b9bc4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-873b9bc4]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
+    __vueify_insert__.cache["\nh4[_v-29a74ac3] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[_v-29a74ac3]:active, .btn-default.active[_v-29a74ac3], .open > .dropdown-toggle.btn-default[_v-29a74ac3] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-29a74ac3]:active, .btn-default.active[_v-29a74ac3], .open > .dropdown-toggle.btn-default[_v-29a74ac3] {\n    color: #ffffff;\n}\n\nspan.item-type-icon[_v-29a74ac3]:active, span.item-type-icon.active[_v-29a74ac3]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n\n#rangetoggle[_v-29a74ac3]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-873b9bc4", module.exports)
+    hotAPI.createRecord("_v-29a74ac3", module.exports)
   } else {
-    hotAPI.update("_v-873b9bc4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-29a74ac3", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../../directives/flatpickr.js":128,"../../directives/iconradio.js":129,"../IconToggleBtn.vue":125,"../Pagination.vue":126,"./EmailStoryPod.vue":123,"babel-runtime/core-js/object/keys":10,"moment":103,"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],125:[function(require,module,exports){
@@ -25016,14 +26045,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-fcf89270", module.exports)
+    hotAPI.createRecord("_v-138a446d", module.exports)
   } else {
-    hotAPI.update("_v-fcf89270", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-138a446d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],126:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-4783e8e8]{\n    cursor: pointer;\n}\n")
 'use strict';
 
 module.exports = {
@@ -25122,19 +26151,19 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-6eea2f11=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-4783e8e8=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-4783e8e8=\"\">\n        <ul class=\"pagination\" _v-4783e8e8=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-4783e8e8=\"\"><span _v-4783e8e8=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-4783e8e8=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-4783e8e8=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-4783e8e8=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-4783e8e8=\"\"><span _v-4783e8e8=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-4783e8e8=\"\">\n        <div class=\"form-group\" _v-4783e8e8=\"\">\n            <label for=\"resultsPerPage\" _v-4783e8e8=\"\">Per Page</label>\n            <div class=\"input-group\" _v-4783e8e8=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-4783e8e8=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-4783e8e8=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-4783e8e8=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
+    __vueify_insert__.cache["\n.cursor[_v-4783e8e8]{\n    cursor: pointer;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6eea2f11", module.exports)
+    hotAPI.createRecord("_v-4783e8e8", module.exports)
   } else {
-    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4783e8e8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],127:[function(require,module,exports){
@@ -25179,9 +26208,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-c9c83bf8", module.exports)
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
   } else {
-    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":110,"vue-hot-reload-api":106,"vueify/lib/insert-css":111}],128:[function(require,module,exports){

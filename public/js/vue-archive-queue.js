@@ -1145,22 +1145,36 @@
     function createDate (y, m, d, h, M, s, ms) {
         // can't just apply() to create a date:
         // https://stackoverflow.com/q/181348
-        var date = new Date(y, m, d, h, M, s, ms);
-
+        var date;
         // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
-            date.setFullYear(y);
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
         }
+
         return date;
     }
 
     function createUTCDate (y) {
-        var date = new Date(Date.UTC.apply(null, arguments));
-
+        var date;
         // the Date.UTC function remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
-            date.setUTCFullYear(y);
+        if (y < 100 && y >= 0) {
+            var args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
         }
+
         return date;
     }
 
@@ -1262,7 +1276,7 @@
 
     var defaultLocaleWeek = {
         dow : 0, // Sunday is the first day of the week.
-        doy : 6  // The week that contains Jan 1st is the first week of the year.
+        doy : 6  // The week that contains Jan 6th is the first week of the year.
     };
 
     function localeFirstDayOfWeek () {
@@ -1371,25 +1385,28 @@
     }
 
     // LOCALES
+    function shiftWeekdays (ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
-        if (!m) {
-            return isArray(this._weekdays) ? this._weekdays :
-                this._weekdays['standalone'];
-        }
-        return isArray(this._weekdays) ? this._weekdays[m.day()] :
-            this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
+        var weekdays = isArray(this._weekdays) ? this._weekdays :
+            this._weekdays[(m && m !== true && this._weekdays.isFormat.test(format)) ? 'format' : 'standalone'];
+        return (m === true) ? shiftWeekdays(weekdays, this._week.dow)
+            : (m) ? weekdays[m.day()] : weekdays;
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+        return (m === true) ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+            : (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+        return (m === true) ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+            : (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -2138,13 +2155,13 @@
                     weekdayOverflow = true;
                 }
             } else if (w.e != null) {
-                // local weekday -- counting starts from begining of week
+                // local weekday -- counting starts from beginning of week
                 weekday = w.e + dow;
                 if (w.e < 0 || w.e > 6) {
                     weekdayOverflow = true;
                 }
             } else {
-                // default to begining of week
+                // default to beginning of week
                 weekday = dow;
             }
         }
@@ -2738,7 +2755,7 @@
             years = normalizedInput.year || 0,
             quarters = normalizedInput.quarter || 0,
             months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
             days = normalizedInput.day || 0,
             hours = normalizedInput.hour || 0,
             minutes = normalizedInput.minute || 0,
@@ -3042,7 +3059,7 @@
                 ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y : parseIso(match[2], sign),
                 M : parseIso(match[3], sign),
@@ -3084,7 +3101,7 @@
     }
 
     function positiveMomentsDifference(base, other) {
-        var res = {milliseconds: 0, months: 0};
+        var res = {};
 
         res.months = other.month() - base.month() +
             (other.year() - base.year()) * 12;
@@ -3193,7 +3210,7 @@
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() > localInput.valueOf();
         } else {
@@ -3206,7 +3223,7 @@
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() < localInput.valueOf();
         } else {
@@ -3215,9 +3232,14 @@
     }
 
     function isBetween (from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
         inclusivity = inclusivity || '()';
-        return (inclusivity[0] === '(' ? this.isAfter(from, units) : !this.isBefore(from, units)) &&
-            (inclusivity[1] === ')' ? this.isBefore(to, units) : !this.isAfter(to, units));
+        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) &&
+            (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
     }
 
     function isSame (input, units) {
@@ -3226,7 +3248,7 @@
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(units || 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() === localInput.valueOf();
         } else {
@@ -3236,11 +3258,11 @@
     }
 
     function isSameOrAfter (input, units) {
-        return this.isSame(input, units) || this.isAfter(input,units);
+        return this.isSame(input, units) || this.isAfter(input, units);
     }
 
     function isSameOrBefore (input, units) {
-        return this.isSame(input, units) || this.isBefore(input,units);
+        return this.isSame(input, units) || this.isBefore(input, units);
     }
 
     function diff (input, units, asFloat) {
@@ -3417,62 +3439,130 @@
         return this._locale;
     }
 
+    var MS_PER_SECOND = 1000;
+    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return (dividend % divisor + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
     function startOf (units) {
+        var time;
         units = normalizeUnits(units);
-        // the following switch intentionally omits break keywords
-        // to utilize falling through the cases.
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
         switch (units) {
             case 'year':
-                this.month(0);
-                /* falls through */
+                time = startOfDate(this.year(), 0, 1);
+                break;
             case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+                break;
             case 'month':
-                this.date(1);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
             case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+                break;
             case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+                break;
             case 'day':
             case 'date':
-                this.hours(0);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
             case 'hour':
-                this.minutes(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+                break;
             case 'minute':
-                this.seconds(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
             case 'second':
-                this.milliseconds(0);
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
         }
 
-        // weeks are a special case
-        if (units === 'week') {
-            this.weekday(0);
-        }
-        if (units === 'isoWeek') {
-            this.isoWeekday(1);
-        }
-
-        // quarters are also special
-        if (units === 'quarter') {
-            this.month(Math.floor(this.month() / 3) * 3);
-        }
-
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
         return this;
     }
 
     function endOf (units) {
+        var time;
         units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond') {
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
             return this;
         }
 
-        // 'date' is an alias for 'day', so it should be considered as such.
-        if (units === 'date') {
-            units = 'day';
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
         }
 
-        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
     }
 
     function valueOf () {
@@ -4178,10 +4268,14 @@
 
         units = normalizeUnits(units);
 
-        if (units === 'month' || units === 'year') {
-            days   = this._days   + milliseconds / 864e5;
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
             months = this._months + daysToMonths(days);
-            return units === 'month' ? months : months / 12;
+            switch (units) {
+                case 'month':   return months;
+                case 'quarter': return months / 3;
+                case 'year':    return months / 12;
+            }
         } else {
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(monthsToDays(this._months));
@@ -4224,6 +4318,7 @@
     var asDays         = makeAs('d');
     var asWeeks        = makeAs('w');
     var asMonths       = makeAs('M');
+    var asQuarters     = makeAs('Q');
     var asYears        = makeAs('y');
 
     function clone$1 () {
@@ -4415,6 +4510,7 @@
     proto$2.asDays         = asDays;
     proto$2.asWeeks        = asWeeks;
     proto$2.asMonths       = asMonths;
+    proto$2.asQuarters     = asQuarters;
     proto$2.asYears        = asYears;
     proto$2.valueOf        = valueOf$1;
     proto$2._bubble        = bubble;
@@ -4459,7 +4555,7 @@
     // Side effect imports
 
 
-    hooks.version = '2.22.2';
+    hooks.version = '2.24.0';
 
     setHookCallback(createLocal);
 
@@ -4500,7 +4596,7 @@
         TIME: 'HH:mm',                                  // <input type="time" />
         TIME_SECONDS: 'HH:mm:ss',                       // <input type="time" step="1" />
         TIME_MS: 'HH:mm:ss.SSS',                        // <input type="time" step="0.001" />
-        WEEK: 'YYYY-[W]WW',                             // <input type="week" />
+        WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
 
@@ -16817,7 +16913,7 @@ exports.insert = function (css) {
 
 },{}],8:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-e7ff0ab4]:active, span.item-type-icon.active[_v-e7ff0ab4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.btn-default[_v-1861b73e]:active, .btn-default.active[_v-1861b73e], .open > .dropdown-toggle.btn-default[_v-1861b73e] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-1861b73e]:active, .btn-default.active[_v-1861b73e], .open > .dropdown-toggle.btn-default[_v-1861b73e] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-1861b73e]:active, span.item-type-icon.active[_v-1861b73e]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -17005,24 +17101,24 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-e7ff0ab4=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-9 col-md-6\" _v-e7ff0ab4=\"\">\n        <h3 _v-e7ff0ab4=\"\"><span class=\"badge\" _v-e7ff0ab4=\"\">{{ pagination.total_records }}</span> Archived {{ compEntityType }}</h3>\n        <p _v-e7ff0ab4=\"\">Click the item's title to expand and view associated content. When you unarchive an item, it will be shown in green. If you reload the page or move to the next page, that item will no longer be shown in this queue.</p>\n\n        <div v-show=\"entityType == 'stories'\" class=\"btn-toolbar\" role=\"toolbar\" _v-e7ff0ab4=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-e7ff0ab4=\"\">\n                <label _v-e7ff0ab4=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"filter_storytype\" @click=\"fetchAllRecords(1, this.resultsPerPage)\" _v-e7ff0ab4=\"\">\n                <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-e7ff0ab4=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-e7ff0ab4=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-e7ff0ab4=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n\n        <div id=\"archived-items-container\" _v-e7ff0ab4=\"\">\n            <archive-queue-item v-for=\"item in allitems\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-e7ff0ab4=\"\">\n            </archive-queue-item>\n        </div>\n\n        <!-- Pagination: custom @numpageschanged and @pagechanged events \"emitted\" in Pagination.vue (arguments passed with the events automatically) -->\n        <pagination :paginateditems=\"pagination\" :resultsperpage=\"resultsPerPage\" @numpageschanged=\"numPagesChange\" @pagechanged=\"fetchAllRecords\" _v-e7ff0ab4=\"\">\n        </pagination>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"row\" _v-1861b73e=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-9 col-md-6\" _v-1861b73e=\"\">\n        <h3 _v-1861b73e=\"\"><span class=\"badge\" _v-1861b73e=\"\">{{ pagination.total_records }}</span> Archived {{ compEntityType }}</h3>\n        <p _v-1861b73e=\"\">Click the item's title to expand and view associated content. When you unarchive an item, it will be shown in green. If you reload the page or move to the next page, that item will no longer be shown in this queue.</p>\n\n        <div v-show=\"entityType == 'stories'\" class=\"btn-toolbar\" role=\"toolbar\" _v-1861b73e=\"\">\n            <div class=\"btn-group btn-group-xs\" role=\"group\" _v-1861b73e=\"\">\n                <label _v-1861b73e=\"\">Filter: </label>\n            </div>\n            <div class=\"btn-group btn-group-xs\" role=\"group\" aria-label=\"typeFiltersLabel\" data-toggle=\"buttons\" v-iconradio=\"filter_storytype\" @click=\"fetchAllRecords(1, this.resultsPerPage)\" _v-1861b73e=\"\">\n                <template v-for=\"item in storyTypeIcons\">\n                     <label class=\"btn btn-default\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"{{item.name}}\" _v-1861b73e=\"\"><input type=\"radio\" autocomplete=\"off\" value=\"{{item.shortname}}\" _v-1861b73e=\"\"><span class=\"item-type-icon-shrt\" :class=\"typeIcon(item.shortname)\" _v-1861b73e=\"\"></span></label>\n                </template>\n            </div>\n        </div>\n\n        <div id=\"archived-items-container\" _v-1861b73e=\"\">\n            <archive-queue-item v-for=\"item in allitems\" :item=\"item\" :index=\"$index\" :entity-type=\"entityType\" _v-1861b73e=\"\">\n            </archive-queue-item>\n        </div>\n\n        <!-- Pagination: custom @numpageschanged and @pagechanged events \"emitted\" in Pagination.vue (arguments passed with the events automatically) -->\n        <pagination :paginateditems=\"pagination\" :resultsperpage=\"resultsPerPage\" @numpageschanged=\"numPagesChange\" @pagechanged=\"fetchAllRecords\" _v-1861b73e=\"\">\n        </pagination>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-e7ff0ab4]:active, .btn-default.active[_v-e7ff0ab4], .open > .dropdown-toggle.btn-default[_v-e7ff0ab4] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-e7ff0ab4]:active, span.item-type-icon.active[_v-e7ff0ab4]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n"] = false
+    __vueify_insert__.cache["\n.btn-default[_v-1861b73e]:active, .btn-default.active[_v-1861b73e], .open > .dropdown-toggle.btn-default[_v-1861b73e] {\n    background-color: #605ca8;\n    color: #ffffff;\n\n}\n.btn-default[_v-1861b73e]:active, .btn-default.active[_v-1861b73e], .open > .dropdown-toggle.btn-default[_v-1861b73e] {\n    color: #ffffff;\n\n}\n\nspan.item-type-icon[_v-1861b73e]:active, span.item-type-icon.active[_v-1861b73e]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-e7ff0ab4", module.exports)
+    hotAPI.createRecord("_v-1861b73e", module.exports)
   } else {
-    hotAPI.update("_v-e7ff0ab4", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-1861b73e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/iconradio.js":12,"./ArchiveQueueItem.vue":9,"./Pagination.vue":10,"moment":2,"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],9:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.announcement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-86f83d4e]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.news[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.advisory[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-86f83d4e]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.announcement[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-35bd94d8] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-35bd94d8]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-35bd94d8] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-35bd94d8] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-35bd94d8] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-35bd94d8] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-35bd94d8] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-35bd94d8] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-35bd94d8]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-35bd94d8]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-35bd94d8] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-35bd94d8] {\n    display: inline-block;\n}\n\nform.mediaform[_v-35bd94d8] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-35bd94d8] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-35bd94d8],\n.btn-group-vertical[_v-35bd94d8] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-35bd94d8]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-35bd94d8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-35bd94d8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-35bd94d8]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-35bd94d8] {\n    margin-bottom: 0;\n}\n\n.news[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.advisory[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n\n.success[_v-35bd94d8]{\n    color: #00a65a;\n}\n\n.unarchived[_v-35bd94d8] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-35bd94d8]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-35bd94d8] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n")
 'use strict';
 
 var _moment = require('moment');
@@ -17151,24 +17247,24 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-86f83d4e=\"\">\n    <div :class=\"unarchivedStatus\" class=\"box box-solid\" _v-86f83d4e=\"\">\n        <div class=\"box-header with-border\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-86f83d4e=\"\">\n                    <div class=\"col-sm-12\" _v-86f83d4e=\"\">\n                        <h6 class=\"box-title\" _v-86f83d4e=\"\"><span class=\"arrowBuffer\" _v-86f83d4e=\"\"><i :class=\"expandArrow\" _v-86f83d4e=\"\"></i></span><span class=\"badge\" _v-86f83d4e=\"\">{{ item.story_type }}</span> {{item.title}}</h6>\n                    </div>\n                    <!-- /.col-md-12 -->\n                </a>\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-86f83d4e=\"\">\n            <!--Announcements Body-->\n            <div v-if=\"entityType == 'announcements'\" _v-86f83d4e=\"\">\n                {{ item.announcement }}\n            </div>\n\n            <!--Events Body-->\n            <div v-if=\"entityType == 'events'\" _v-86f83d4e=\"\">\n                {{ item.title }}\n            </div>\n\n            <!--Story Ideas Body-->\n            <div v-if=\"entityType == 'storyideas'\" _v-86f83d4e=\"\">\n                <i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\" _v-86f83d4e=\"\"></i> {{ item.idea }}\n            </div>\n\n            <!--Story Body-->\n            <div v-if=\"entityType == 'stories'\" _v-86f83d4e=\"\">\n                <div class=\"table-responsive\" _v-86f83d4e=\"\">\n                    <table class=\"table table-responsive\" _v-86f83d4e=\"\">\n                        <tbody _v-86f83d4e=\"\"><tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                Author\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ item.author_object.first_name }} {{ item.author_object.last_name }}\n                            </td>\n                        </tr>\n                        <tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                Start Date\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ this.formatDate(item.start_date) }}\n                            </td>\n                        </tr>\n                        <tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                End Date\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ this.formatDate(item.end_date) }}\n                            </td>\n                        </tr>\n                        <tr _v-86f83d4e=\"\">\n                            <th _v-86f83d4e=\"\">\n                                Content\n                            </th>\n                            <td _v-86f83d4e=\"\">\n                                {{ item.content }}\n                            </td>\n                        </tr>\n                    </tbody></table>\n                </div>\n            </div>\n        </div>\n        <!-- /.box-body -->\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-86f83d4e=\"\">\n            <div class=\"row\" _v-86f83d4e=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-86f83d4e=\"\">\n                    <p v-show=\"entityType == 'announcements'\" _v-86f83d4e=\"\">Submitted on {{ formatDate(item.start_date) }} by {{ item.submitter }}</p>\n                    <p v-show=\"entityType == 'stories'\" _v-86f83d4e=\"\">Story started on {{ formatDate(item.start_date) }}</p>\n                    <p v-show=\"entityType == 'storyideas'\" _v-86f83d4e=\"\"><strong _v-86f83d4e=\"\">Medium:</strong> {{ item.medium.medium }} | <strong _v-86f83d4e=\"\">Due date:</strong> {{ formatDate(item.deadline.date) }}</p>\n                </div>\n                <div class=\"col-sm-12 col-md-3\" _v-86f83d4e=\"\">\n                    <div v-show=\"showArchivedButtons\" _v-86f83d4e=\"\">\n                        <span v-show=\"isFailedDeleted\" class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-exclamation-triangle\" _v-86f83d4e=\"\"></i> Error deleting item</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-inbox\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showUnarchivedButtons\" _v-86f83d4e=\"\">\n                        <span class=\"success\" _v-86f83d4e=\"\"><i class=\"fa fa-check\" _v-86f83d4e=\"\"></i> Unarchived</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <a :href=\"editItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"edit item\" _v-86f83d4e=\"\"><i class=\"fa fa-pencil\" _v-86f83d4e=\"\"></i></a>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showRetryButtons\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-exclamation-triangle\" _v-86f83d4e=\"\"></i> Error</span>\n                        <div class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"unarchive item\" _v-86f83d4e=\"\"><i class=\"fa fa-refresh\" _v-86f83d4e=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-86f83d4e=\"\">\n                                <span class=\"confirmDelete\" _v-86f83d4e=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-86f83d4e=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-86f83d4e=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"isDeleted\" class=\"pull-right\" _v-86f83d4e=\"\">\n                        <span class=\"fail\" _v-86f83d4e=\"\"><i class=\"fa fa-trash\" _v-86f83d4e=\"\"></i> Item Deleted</span>\n                    </div>\n                </div>\n                <!-- /.col-md-7 -->\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-footer -->\n    </div>\n    <!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-35bd94d8=\"\">\n    <div :class=\"unarchivedStatus\" class=\"box box-solid\" _v-35bd94d8=\"\">\n        <div class=\"box-header with-border\" _v-35bd94d8=\"\">\n            <div class=\"row\" _v-35bd94d8=\"\">\n                <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-35bd94d8=\"\">\n                    <div class=\"col-sm-12\" _v-35bd94d8=\"\">\n                        <h6 class=\"box-title\" _v-35bd94d8=\"\"><span class=\"arrowBuffer\" _v-35bd94d8=\"\"><i :class=\"expandArrow\" _v-35bd94d8=\"\"></i></span><span class=\"badge\" _v-35bd94d8=\"\">{{ item.story_type }}</span> {{item.title}}</h6>\n                    </div>\n                    <!-- /.col-md-12 -->\n                </a>\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-header -->\n\n        <div v-if=\"showBody\" class=\"box-body\" _v-35bd94d8=\"\">\n            <!--Announcements Body-->\n            <div v-if=\"entityType == 'announcements'\" _v-35bd94d8=\"\">\n                {{ item.announcement }}\n            </div>\n\n            <!--Events Body-->\n            <div v-if=\"entityType == 'events'\" _v-35bd94d8=\"\">\n                {{ item.title }}\n            </div>\n\n            <!--Story Ideas Body-->\n            <div v-if=\"entityType == 'storyideas'\" _v-35bd94d8=\"\">\n                <i class=\"fa fa-lightbulb-o\" aria-hidden=\"true\" _v-35bd94d8=\"\"></i> {{ item.idea }}\n            </div>\n\n            <!--Story Body-->\n            <div v-if=\"entityType == 'stories'\" _v-35bd94d8=\"\">\n                <div class=\"table-responsive\" _v-35bd94d8=\"\">\n                    <table class=\"table table-responsive\" _v-35bd94d8=\"\">\n                        <tbody _v-35bd94d8=\"\"><tr _v-35bd94d8=\"\">\n                            <th _v-35bd94d8=\"\">\n                                Author\n                            </th>\n                            <td _v-35bd94d8=\"\">\n                                {{ item.author_object.first_name }} {{ item.author_object.last_name }}\n                            </td>\n                        </tr>\n                        <tr _v-35bd94d8=\"\">\n                            <th _v-35bd94d8=\"\">\n                                Start Date\n                            </th>\n                            <td _v-35bd94d8=\"\">\n                                {{ this.formatDate(item.start_date) }}\n                            </td>\n                        </tr>\n                        <tr _v-35bd94d8=\"\">\n                            <th _v-35bd94d8=\"\">\n                                End Date\n                            </th>\n                            <td _v-35bd94d8=\"\">\n                                {{ this.formatDate(item.end_date) }}\n                            </td>\n                        </tr>\n                        <tr _v-35bd94d8=\"\">\n                            <th _v-35bd94d8=\"\">\n                                Content\n                            </th>\n                            <td _v-35bd94d8=\"\">\n                                {{ item.content }}\n                            </td>\n                        </tr>\n                    </tbody></table>\n                </div>\n            </div>\n        </div>\n        <!-- /.box-body -->\n        <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-35bd94d8=\"\">\n            <div class=\"row\" _v-35bd94d8=\"\">\n                <div class=\"col-sm-12 col-md-9\" _v-35bd94d8=\"\">\n                    <p v-show=\"entityType == 'announcements'\" _v-35bd94d8=\"\">Submitted on {{ formatDate(item.start_date) }} by {{ item.submitter }}</p>\n                    <p v-show=\"entityType == 'stories'\" _v-35bd94d8=\"\">Story started on {{ formatDate(item.start_date) }}</p>\n                    <p v-show=\"entityType == 'storyideas'\" _v-35bd94d8=\"\"><strong _v-35bd94d8=\"\">Medium:</strong> {{ item.medium.medium }} | <strong _v-35bd94d8=\"\">Due date:</strong> {{ formatDate(item.deadline.date) }}</p>\n                </div>\n                <div class=\"col-sm-12 col-md-3\" _v-35bd94d8=\"\">\n                    <div v-show=\"showArchivedButtons\" _v-35bd94d8=\"\">\n                        <span v-show=\"isFailedDeleted\" class=\"fail\" _v-35bd94d8=\"\"><i class=\"fa fa-exclamation-triangle\" _v-35bd94d8=\"\"></i> Error deleting item</span>\n                        <div class=\"btn-group pull-right\" _v-35bd94d8=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-green btn-xs footer-btn\" aria-label=\"unarchive item\" _v-35bd94d8=\"\"><i class=\"fa fa-inbox\" _v-35bd94d8=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-35bd94d8=\"\"><i class=\"fa fa-trash\" _v-35bd94d8=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-35bd94d8=\"\">\n                                <span class=\"confirmDelete\" _v-35bd94d8=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-35bd94d8=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-35bd94d8=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showUnarchivedButtons\" _v-35bd94d8=\"\">\n                        <span class=\"success\" _v-35bd94d8=\"\"><i class=\"fa fa-check\" _v-35bd94d8=\"\"></i> Unarchived</span>\n                        <div class=\"btn-group pull-right\" _v-35bd94d8=\"\">\n                            <a :href=\"editItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"edit item\" _v-35bd94d8=\"\"><i class=\"fa fa-pencil\" _v-35bd94d8=\"\"></i></a>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"showRetryButtons\" _v-35bd94d8=\"\">\n                        <span class=\"fail\" _v-35bd94d8=\"\"><i class=\"fa fa-exclamation-triangle\" _v-35bd94d8=\"\"></i> Error</span>\n                        <div class=\"btn-group pull-right\" _v-35bd94d8=\"\">\n                            <button @click=\"unarchiveItem(item)\" type=\"button\" class=\"btn bg-orange btn-xs footer-btn\" aria-label=\"unarchive item\" _v-35bd94d8=\"\"><i class=\"fa fa-refresh\" _v-35bd94d8=\"\"></i></button>\n                            <button @click=\"deleteItemConfirm\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item initial step\" _v-35bd94d8=\"\"><i class=\"fa fa-trash\" _v-35bd94d8=\"\"></i></button>\n                            <div v-show=\"confirmDelete\" class=\"btn-group pull-right\" _v-35bd94d8=\"\">\n                                <span class=\"confirmDelete\" _v-35bd94d8=\"\">Sure?</span>\n                                <button @click=\"confirmDelete = false\" type=\"button\" class=\"btn bg-gray btn-xs footer-btn\" aria-label=\"delete item no\" _v-35bd94d8=\"\">No</button>\n                                <button @click=\"deleteItem(item)\" type=\"button\" class=\"btn bg-red btn-xs footer-btn\" aria-label=\"delete item yes\" _v-35bd94d8=\"\">YES</button>\n                            </div>\n                        </div>\n                    </div>\n                    <!-- /.btn-toolbar -->\n                    <div v-show=\"isDeleted\" class=\"pull-right\" _v-35bd94d8=\"\">\n                        <span class=\"fail\" _v-35bd94d8=\"\"><i class=\"fa fa-trash\" _v-35bd94d8=\"\"></i> Item Deleted</span>\n                    </div>\n                </div>\n                <!-- /.col-md-7 -->\n            </div>\n            <!-- /.row -->\n        </div>\n        <!-- /.box-footer -->\n    </div>\n    <!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.announcement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-86f83d4e] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-86f83d4e] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-86f83d4e] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-86f83d4e] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-86f83d4e] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-86f83d4e] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-86f83d4e] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-86f83d4e]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-86f83d4e]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-86f83d4e] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-86f83d4e] {\n    display: inline-block;\n}\n\nform.mediaform[_v-86f83d4e] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-86f83d4e] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-86f83d4e],\n.btn-group-vertical[_v-86f83d4e] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-86f83d4e]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-86f83d4e] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-86f83d4e]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-86f83d4e] {\n    margin-bottom: 0;\n}\n\n.news[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.advisory[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-86f83d4e]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n\n.success[_v-86f83d4e]{\n    color: #00a65a;\n}\n\n.unarchived[_v-86f83d4e] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-86f83d4e]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-86f83d4e] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n"] = false
+    __vueify_insert__.cache["\n.announcement[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #ffcc33;\n    border: 1px solid #999999;\n}\n\n.arrowBuffer[_v-35bd94d8] {\n    width: 25px;\n    display: inline-block;\n    padding-left: 5px;\n}\n\n.article[_v-35bd94d8]{\n    color: #1B1B1B;\n    background-color: #29AB87;\n    border: 1px solid #29AB87;\n}\n\n.box[_v-35bd94d8] {\n    color: #1B1B1B;\n    margin-bottom: 10px;\n    border: 1px solid #999999;\n}\n\n.box-body[_v-35bd94d8] {\n    background-color: #fff;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    margin: 0;\n}\n\n.box-header[_v-35bd94d8] {\n    padding: 10px;\n    /*background-color: #D8D8D8;*/\n}\n\n.box-footer[_v-35bd94d8] {\n    padding: 3px 10px 3px 10px;\n}\n\nh5.box-footer[_v-35bd94d8] {\n    padding: 3px;\n}\n\nbutton.footer-btn[_v-35bd94d8] {\n    border-color: #999999;\n}\n\n.confirmDelete[_v-35bd94d8]{\n    padding: 0px 5px 0px 5px;\n    font-weight: bold;\n}\n\n.external[_v-35bd94d8]{\n    color: #1B1B1B;\n    background-color: #C9A0DC;\n    border: 1px solid #C9A0DC;\n}\n\nh6.box-title[_v-35bd94d8] {\n    font-size: 16px;\n    color: #1B1B1B;\n}\n\nform[_v-35bd94d8] {\n    display: inline-block;\n}\n\nform.mediaform[_v-35bd94d8] {\n    margin-top: 1rem;\n}\n\n.form-group[_v-35bd94d8] {\n    margin-bottom: 2px;\n}\n\n.btn-group[_v-35bd94d8],\n.btn-group-vertical[_v-35bd94d8] {\n    display: -webkit-inline-box;\n    display: -ms-inline-flexbox;\n    display: inline-flex;\n}\n\n.story[_v-35bd94d8]{\n    background-color: #76D7EA;\n    border: 1px solid #76D7EA;\n}\n\nh6[_v-35bd94d8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n\nh5[_v-35bd94d8] {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.fail[_v-35bd94d8]{\n    color: #dd4b39;\n}\n\n.form-group label[_v-35bd94d8] {\n    margin-bottom: 0;\n}\n\n.news[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #cccccc;\n    border: 1px solid #cccccc;\n}\n.advisory[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #CD5C5C;\n    border: 1px solid #CD5C5C;\n}\n.statement[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #FFA500;\n    border: 1px solid #FFA500;\n}\n.featurephoto[_v-35bd94d8]  {\n    color: #1B1B1B;\n    background-color: #488dd8;\n    border: 1px solid #488dd8;\n}\n\n.success[_v-35bd94d8]{\n    color: #00a65a;\n}\n\n.unarchived[_v-35bd94d8] {\n    background-color: #00a65a !important;\n    border: 2px solid #00a65a !important;\n}\n.deleted[_v-35bd94d8]{\n    background-color: #ff6666 !important;\n    border: 2px solid #ff6666 !important;\n}\n.unarchive-fail[_v-35bd94d8] {\n    background-color: #dd4b39 !important;\n    border: 2px solid #dd4b39 !important;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-86f83d4e", module.exports)
+    hotAPI.createRecord("_v-35bd94d8", module.exports)
   } else {
-    hotAPI.update("_v-86f83d4e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-35bd94d8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./VuiFlipSwitch.vue":11,"moment":2,"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],10:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.cursor[_v-4783e8e8]{\n    cursor: pointer;\n}\n")
 'use strict';
 
 module.exports = {
@@ -17267,19 +17363,19 @@ module.exports = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-6eea2f11=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-6eea2f11=\"\">\n        <ul class=\"pagination\" _v-6eea2f11=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-6eea2f11=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-6eea2f11=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-6eea2f11=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-6eea2f11=\"\"><span _v-6eea2f11=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-6eea2f11=\"\">\n        <div class=\"form-group\" _v-6eea2f11=\"\">\n            <label for=\"resultsPerPage\" _v-6eea2f11=\"\">Per Page</label>\n            <div class=\"input-group\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-6eea2f11=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-6eea2f11=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-6eea2f11=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div v-show=\"paginateditems.total_pages > 0\" class=\"row\" _v-4783e8e8=\"\">\n    <div class=\"col-xs-12 col-sm-12 col-md-8\" _v-4783e8e8=\"\">\n        <ul class=\"pagination\" _v-4783e8e8=\"\">\n            <li :class=\"!isLessPages ? 'disabled' : ''\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('beginning')\" _v-4783e8e8=\"\"><span _v-4783e8e8=\"\">«</span></a>\n            </li>\n            <li v-if=\"isLessPages\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('minus')\" _v-4783e8e8=\"\">...</a>\n            </li>\n            <li v-for=\"n in currentVisiblePages\" :class=\"n == paginateditems.current_page ? 'active': ''\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginateChange(n, resultsperpage)\" _v-4783e8e8=\"\">{{ n }}</a>\n            </li>\n            <li v-if=\"isMorePages\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('plus')\" _v-4783e8e8=\"\">...</a>\n            </li>\n            <li :class=\"!isMorePages ? 'disabled' : ''\" _v-4783e8e8=\"\">\n                <a href=\"#\" @click.prevent=\"paginatorViewChange('end')\" _v-4783e8e8=\"\"><span _v-4783e8e8=\"\">»</span></a>\n            </li>\n        </ul>\n    </div>\n    <div class=\"col-xs-12 col-sm-12 col-md-4\" _v-4783e8e8=\"\">\n        <div class=\"form-group\" _v-4783e8e8=\"\">\n            <label for=\"resultsPerPage\" _v-4783e8e8=\"\">Per Page</label>\n            <div class=\"input-group\" _v-4783e8e8=\"\">\n                <div @click=\"perPageChange('minus')\" class=\"input-group-addon cursor btn btn-sm\" _v-4783e8e8=\"\">-</div>\n                <input type=\"number\" class=\"form-control\" id=\"resultsPerPage\" min=\"1\" step=\"1\" :max=\"paginateditems.total_records\" :value=\"resultsperpage\" disabled=\"\" _v-4783e8e8=\"\">\n                <div @click=\"perPageChange('plus')\" class=\"input-group-addon cursor btn-sm\" _v-4783e8e8=\"\">+</div>\n            </div>\n        </div>\n    </div>\n</div>\n<!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.cursor[_v-6eea2f11]{\n    cursor: pointer;\n}\n"] = false
+    __vueify_insert__.cache["\n.cursor[_v-4783e8e8]{\n    cursor: pointer;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-6eea2f11", module.exports)
+    hotAPI.createRecord("_v-4783e8e8", module.exports)
   } else {
-    hotAPI.update("_v-6eea2f11", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-4783e8e8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],11:[function(require,module,exports){
@@ -17324,9 +17420,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-c9c83bf8", module.exports)
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
   } else {
-    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":6,"vue-hot-reload-api":4,"vueify/lib/insert-css":7}],12:[function(require,module,exports){

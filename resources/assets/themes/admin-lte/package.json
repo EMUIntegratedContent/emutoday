@@ -1,84 +1,63 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "admin-lte@2.4.2",
-        "scope": null,
-        "escapedName": "admin-lte",
-        "name": "admin-lte",
-        "rawSpec": "2.4.2",
-        "spec": "2.4.2",
-        "type": "version"
-      },
-      "/Users/cpuzzuol/emutoday"
-    ]
-  ],
-  "_from": "admin-lte@2.4.2",
-  "_id": "admin-lte@2.4.2",
-  "_inCache": true,
+  "_from": "admin-lte@2.4.10",
+  "_id": "admin-lte@2.4.10",
+  "_inBundle": false,
+  "_integrity": "sha512-X7ueyp+zG7lkYU47VKgZj6JW+Q3Kphd/qEzwNReta5ZhweeDap4IlS4EADYNfCqZCIwDZPqRstJ2Dww0Irowow==",
   "_location": "/admin-lte",
-  "_nodeVersion": "6.10.0",
-  "_npmOperationalInternal": {
-    "host": "s3://npm-registry-packages",
-    "tmp": "tmp/admin-lte-2.4.2.tgz_1507566805157_0.39532053912989795"
-  },
-  "_npmUser": {
-    "name": "almasaeed2010",
-    "email": "abdullah@almsaeedstudio.com"
-  },
-  "_npmVersion": "5.4.2",
   "_phantomChildren": {},
   "_requested": {
-    "raw": "admin-lte@2.4.2",
-    "scope": null,
-    "escapedName": "admin-lte",
+    "type": "version",
+    "registry": true,
+    "raw": "admin-lte@2.4.10",
     "name": "admin-lte",
-    "rawSpec": "2.4.2",
-    "spec": "2.4.2",
-    "type": "version"
+    "escapedName": "admin-lte",
+    "rawSpec": "2.4.10",
+    "saveSpec": null,
+    "fetchSpec": "2.4.10"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/admin-lte/-/admin-lte-2.4.2.tgz",
-  "_shasum": "6a2928fa34715881eb69a09b64dbccc8d5fae539",
-  "_shrinkwrap": null,
-  "_spec": "admin-lte@2.4.2",
-  "_where": "/Users/cpuzzuol/emutoday",
+  "_resolved": "https://registry.npmjs.org/admin-lte/-/admin-lte-2.4.10.tgz",
+  "_shasum": "5d664e007cc2bce729fbc8cdc1adf138f3fcbbec",
+  "_spec": "admin-lte@2.4.10",
+  "_where": "/Users/bkosciel/Projects/emutoday",
   "bugs": {
     "url": "https://github.com/almasaeed2010/AdminLTE/issues"
   },
+  "bundleDependencies": false,
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "bootstrap-colorpicker": "^2.5.1",
-    "bootstrap-datepicker": "^1.7.0",
+    "bootstrap": "^3.4.0",
+    "bootstrap-colorpicker": "^2.5.3",
+    "bootstrap-datepicker": "^1.8.0",
     "bootstrap-daterangepicker": "^2.1.25",
     "bootstrap-slider": "^9.8.0",
     "bootstrap-timepicker": "^0.5.2",
     "chart.js": "1.0.*",
-    "ckeditor": "^4.7.0",
-    "datatables.net": "^1.10.15",
-    "datatables.net-bs": "^1.10.15",
+    "ckeditor": "^4.11.2",
+    "datatables.net": "^1.10.19",
+    "datatables.net-bs": "^1.10.19",
     "fastclick": "^1.0.6",
-    "flot": "^0.8.0-alpha",
+    "flot": "^0.8.3",
     "font-awesome": "^4.7.0",
-    "fullcalendar": "^3.4.0",
+    "fullcalendar": "^3.10.0",
     "inputmask": "^3.3.7",
-    "ion-rangeslider": "^2.2.0",
+    "ion-rangeslider": "^2.3.0",
     "ionicons": "^3.0.0",
     "jquery": "^3.2.1",
     "jquery-knob": "^1.2.11",
     "jquery-sparkline": "^2.4.0",
     "jquery-ui": "^1.12.1",
     "jvectormap": "^1.2.2",
-    "moment": "^2.18.1",
+    "moment": "^2.24.0",
     "morris.js": "^0.5.0",
     "pace": "0.0.4",
     "raphael": "^2.2.7",
     "select2": "^4.0.3",
     "slimscroll": "^0.9.1"
   },
+  "deprecated": false,
   "description": "Introduction ============",
   "devDependencies": {
     "R2": "^1.4.3",
@@ -99,30 +78,15 @@
     "grunt-less": "^0.1.7",
     "grunt-notify": "^0.4.5",
     "grunt-text-replace": "^0.4.0",
-    "less": "^2.7.2"
+    "less": "^2.7.3"
   },
-  "directories": {},
-  "dist": {
-    "integrity": "sha512-BNKSU3jski491OjnnOTEsKOJxyhJU39DzLcnX7plHODN1q0PxxiKyxMsic+R8FEOovv++7zyMGlSATfF1fleUg==",
-    "shasum": "6a2928fa34715881eb69a09b64dbccc8d5fae539",
-    "tarball": "https://registry.npmjs.org/admin-lte/-/admin-lte-2.4.2.tgz"
-  },
-  "gitHead": "156f56c3c183a3b8486c47b122c7fa8819510a90",
   "homepage": "https://github.com/almasaeed2010/AdminLTE#readme",
   "license": "MIT",
   "main": "dist/js/adminlte.min.js",
-  "maintainers": [
-    {
-      "name": "almasaeed2010",
-      "email": "abdullah@almsaeedstudio.com"
-    }
-  ],
   "name": "admin-lte",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git://github.com/almasaeed2010/AdminLTE.git"
   },
-  "version": "2.4.2"
+  "version": "2.4.10"
 }

@@ -3747,22 +3747,36 @@ if (typeof module !== "undefined") {
     function createDate (y, m, d, h, M, s, ms) {
         // can't just apply() to create a date:
         // https://stackoverflow.com/q/181348
-        var date = new Date(y, m, d, h, M, s, ms);
-
+        var date;
         // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
-            date.setFullYear(y);
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
         }
+
         return date;
     }
 
     function createUTCDate (y) {
-        var date = new Date(Date.UTC.apply(null, arguments));
-
+        var date;
         // the Date.UTC function remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
-            date.setUTCFullYear(y);
+        if (y < 100 && y >= 0) {
+            var args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
         }
+
         return date;
     }
 
@@ -3864,7 +3878,7 @@ if (typeof module !== "undefined") {
 
     var defaultLocaleWeek = {
         dow : 0, // Sunday is the first day of the week.
-        doy : 6  // The week that contains Jan 1st is the first week of the year.
+        doy : 6  // The week that contains Jan 6th is the first week of the year.
     };
 
     function localeFirstDayOfWeek () {
@@ -3973,25 +3987,28 @@ if (typeof module !== "undefined") {
     }
 
     // LOCALES
+    function shiftWeekdays (ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
-        if (!m) {
-            return isArray(this._weekdays) ? this._weekdays :
-                this._weekdays['standalone'];
-        }
-        return isArray(this._weekdays) ? this._weekdays[m.day()] :
-            this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
+        var weekdays = isArray(this._weekdays) ? this._weekdays :
+            this._weekdays[(m && m !== true && this._weekdays.isFormat.test(format)) ? 'format' : 'standalone'];
+        return (m === true) ? shiftWeekdays(weekdays, this._week.dow)
+            : (m) ? weekdays[m.day()] : weekdays;
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+        return (m === true) ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+            : (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+        return (m === true) ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+            : (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -4740,13 +4757,13 @@ if (typeof module !== "undefined") {
                     weekdayOverflow = true;
                 }
             } else if (w.e != null) {
-                // local weekday -- counting starts from begining of week
+                // local weekday -- counting starts from beginning of week
                 weekday = w.e + dow;
                 if (w.e < 0 || w.e > 6) {
                     weekdayOverflow = true;
                 }
             } else {
-                // default to begining of week
+                // default to beginning of week
                 weekday = dow;
             }
         }
@@ -5340,7 +5357,7 @@ if (typeof module !== "undefined") {
             years = normalizedInput.year || 0,
             quarters = normalizedInput.quarter || 0,
             months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
             days = normalizedInput.day || 0,
             hours = normalizedInput.hour || 0,
             minutes = normalizedInput.minute || 0,
@@ -5644,7 +5661,7 @@ if (typeof module !== "undefined") {
                 ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y : parseIso(match[2], sign),
                 M : parseIso(match[3], sign),
@@ -5686,7 +5703,7 @@ if (typeof module !== "undefined") {
     }
 
     function positiveMomentsDifference(base, other) {
-        var res = {milliseconds: 0, months: 0};
+        var res = {};
 
         res.months = other.month() - base.month() +
             (other.year() - base.year()) * 12;
@@ -5795,7 +5812,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() > localInput.valueOf();
         } else {
@@ -5808,7 +5825,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() < localInput.valueOf();
         } else {
@@ -5817,9 +5834,14 @@ if (typeof module !== "undefined") {
     }
 
     function isBetween (from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
         inclusivity = inclusivity || '()';
-        return (inclusivity[0] === '(' ? this.isAfter(from, units) : !this.isBefore(from, units)) &&
-            (inclusivity[1] === ')' ? this.isBefore(to, units) : !this.isAfter(to, units));
+        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) &&
+            (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
     }
 
     function isSame (input, units) {
@@ -5828,7 +5850,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(units || 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() === localInput.valueOf();
         } else {
@@ -5838,11 +5860,11 @@ if (typeof module !== "undefined") {
     }
 
     function isSameOrAfter (input, units) {
-        return this.isSame(input, units) || this.isAfter(input,units);
+        return this.isSame(input, units) || this.isAfter(input, units);
     }
 
     function isSameOrBefore (input, units) {
-        return this.isSame(input, units) || this.isBefore(input,units);
+        return this.isSame(input, units) || this.isBefore(input, units);
     }
 
     function diff (input, units, asFloat) {
@@ -6019,62 +6041,130 @@ if (typeof module !== "undefined") {
         return this._locale;
     }
 
+    var MS_PER_SECOND = 1000;
+    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return (dividend % divisor + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
     function startOf (units) {
+        var time;
         units = normalizeUnits(units);
-        // the following switch intentionally omits break keywords
-        // to utilize falling through the cases.
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
         switch (units) {
             case 'year':
-                this.month(0);
-                /* falls through */
+                time = startOfDate(this.year(), 0, 1);
+                break;
             case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+                break;
             case 'month':
-                this.date(1);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
             case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+                break;
             case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+                break;
             case 'day':
             case 'date':
-                this.hours(0);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
             case 'hour':
-                this.minutes(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+                break;
             case 'minute':
-                this.seconds(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
             case 'second':
-                this.milliseconds(0);
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
         }
 
-        // weeks are a special case
-        if (units === 'week') {
-            this.weekday(0);
-        }
-        if (units === 'isoWeek') {
-            this.isoWeekday(1);
-        }
-
-        // quarters are also special
-        if (units === 'quarter') {
-            this.month(Math.floor(this.month() / 3) * 3);
-        }
-
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
         return this;
     }
 
     function endOf (units) {
+        var time;
         units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond') {
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
             return this;
         }
 
-        // 'date' is an alias for 'day', so it should be considered as such.
-        if (units === 'date') {
-            units = 'day';
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
         }
 
-        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
     }
 
     function valueOf () {
@@ -6780,10 +6870,14 @@ if (typeof module !== "undefined") {
 
         units = normalizeUnits(units);
 
-        if (units === 'month' || units === 'year') {
-            days   = this._days   + milliseconds / 864e5;
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
             months = this._months + daysToMonths(days);
-            return units === 'month' ? months : months / 12;
+            switch (units) {
+                case 'month':   return months;
+                case 'quarter': return months / 3;
+                case 'year':    return months / 12;
+            }
         } else {
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(monthsToDays(this._months));
@@ -6826,6 +6920,7 @@ if (typeof module !== "undefined") {
     var asDays         = makeAs('d');
     var asWeeks        = makeAs('w');
     var asMonths       = makeAs('M');
+    var asQuarters     = makeAs('Q');
     var asYears        = makeAs('y');
 
     function clone$1 () {
@@ -7017,6 +7112,7 @@ if (typeof module !== "undefined") {
     proto$2.asDays         = asDays;
     proto$2.asWeeks        = asWeeks;
     proto$2.asMonths       = asMonths;
+    proto$2.asQuarters     = asQuarters;
     proto$2.asYears        = asYears;
     proto$2.valueOf        = valueOf$1;
     proto$2._bubble        = bubble;
@@ -7061,7 +7157,7 @@ if (typeof module !== "undefined") {
     // Side effect imports
 
 
-    hooks.version = '2.22.2';
+    hooks.version = '2.24.0';
 
     setHookCallback(createLocal);
 
@@ -7102,7 +7198,7 @@ if (typeof module !== "undefined") {
         TIME: 'HH:mm',                                  // <input type="time" />
         TIME_SECONDS: 'HH:mm:ss',                       // <input type="time" step="1" />
         TIME_MS: 'HH:mm:ss.SSS',                        // <input type="time" step="0.001" />
-        WEEK: 'YYYY-[W]WW',                             // <input type="week" />
+        WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
 
@@ -21125,14 +21221,14 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-3e265a4e", module.exports)
+    hotAPI.createRecord("_v-9680e86e", module.exports)
   } else {
-    hotAPI.update("_v-3e265a4e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-9680e86e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":108,"vue-hot-reload-api":105,"vueify/lib/insert-css":109}],112:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-59de6d42] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-59de6d42]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-59de6d42]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-59de6d42]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-59de6d42]{\n    margin-top: 26px !important;\n}\np[_v-59de6d42] {\n  margin: 0;\n}\n\nlabel[_v-59de6d42] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-59de6d42] {\n  display: inline-block;\n  /*width: 8em*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-59de6d42] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-59de6d42] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-59de6d42] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-59de6d42] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-59de6d42] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-59de6d42] {\n  margin: 0;\n}\n\n[type='submit'][_v-59de6d42],\n[type='button'][_v-59de6d42] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-59de6d42] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-59de6d42] {\n  margin: 0;\n}\n\nh5.form-control[_v-59de6d42] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.redBtn[_v-08a9943d] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-08a9943d]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-08a9943d]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-08a9943d]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-08a9943d]{\n    margin-top: 26px !important;\n}\np[_v-08a9943d] {\n  margin: 0;\n}\n\nlabel[_v-08a9943d] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-08a9943d] {\n  display: inline-block;\n  /*width: 8em*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-08a9943d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-08a9943d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-08a9943d] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-08a9943d] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-08a9943d] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-08a9943d] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-08a9943d] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-08a9943d] {\n  margin: 0;\n}\n\n[type='submit'][_v-08a9943d],\n[type='button'][_v-08a9943d] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-08a9943d] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-08a9943d] {\n  margin: 0;\n}\n\nh5.form-control[_v-08a9943d] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -21494,19 +21590,19 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-59de6d42=\"\">\n    <slot name=\"csrf\" _v-59de6d42=\"\"></slot>\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-59de6d42=\"\">\n          <h5 _v-59de6d42=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-59de6d42=\"\">\n          <h5 _v-59de6d42=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" style=\"margin-bottom:10px\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md6col\" _v-59de6d42=\"\">\n        <p v-if=\"record.creator\" _v-59de6d42=\"\">Created by <strong _v-59de6d42=\"\">{{ record.creator.name }}</strong></p>\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md6col\" _v-59de6d42=\"\">\n        <div class=\"form-group\" _v-59de6d42=\"\">\n            <label for=\"tags\" _v-59de6d42=\"\">Medium: <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n            <v-select :class=\"[formErrors.medium ? 'invalid-input' : '']\" :value.sync=\"record.medium\" :options=\"ideaCategoryList\" :multiple=\"false\" placeholder=\"Choose Medium\" label=\"medium\" _v-59de6d42=\"\">\n          </v-select>\n          <p v-if=\"formErrors.medium\" class=\"help-text invalid\" _v-59de6d42=\"\">{{formErrors.medium}}</p>\n        </div><!-- /.form-group -->\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <label _v-59de6d42=\"\">Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-59de6d42=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-59de6d42=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <!-- Idea -->\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <label _v-59de6d42=\"\">What's your idea? <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-59de6d42=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.idea\" id=\"idea\" name=\"idea\" v-ckrte=\"idea\" :type=\"editorType\" :idea=\"idea\" :fresh=\"isFresh\" rows=\"200\" _v-59de6d42=\"\"></textarea>\n          <p v-if=\"formErrors.idea\" class=\"help-text invalid\" _v-59de6d42=\"\">Need idea text.</p>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md6col\" _v-59de6d42=\"\">\n        <div class=\"form-group\" _v-59de6d42=\"\">\n            <label for=\"tags\" _v-59de6d42=\"\">Assigned to:</label>\n            <v-select :class=\"[formErrors.assignee ? 'invalid-input' : '']\" :value.sync=\"record.assignee\" :options=\"userList\" :multiple=\"false\" placeholder=\"Assign idea\" label=\"name\" _v-59de6d42=\"\">\n          </v-select>\n        </div><!-- /.form-group -->\n      </div>\n      <div :class=\"md6col\" _v-59de6d42=\"\">\n        <div class=\"form-group\" _v-59de6d42=\"\">\n          <label for=\"deadline\" _v-59de6d42=\"\">Deadline:</label>\n          <input id=\"deadline\" :class=\"[formErrors.deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.deadline.date\" aria-describedby=\"errorDeadline\" _v-59de6d42=\"\">\n          <p v-if=\"formErrors.deadline\" class=\"help-text invalid\" _v-59de6d42=\"\">Need a deadline date</p>\n        </div><!--form-group -->\n      </div><!-- /.md6col -->\n    </div>\n   <!-- /.row -->\n   <div v-if=\"recordexists\" class=\"row\" _v-59de6d42=\"\">\n     <div v-bind:class=\"md4col\" _v-59de6d42=\"\">\n         <!-- Is completed? -->\n        <label _v-59de6d42=\"\">Completed? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_completed\" _v-59de6d42=\"\"></label>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-59de6d42=\"\">\n      <div v-bind:class=\"md12col\" _v-59de6d42=\"\">\n        <div v-bind:class=\"formGroup\" _v-59de6d42=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-59de6d42=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delIdea\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-59de6d42=\"\">Delete Idea</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <form _v-08a9943d=\"\">\n    <slot name=\"csrf\" _v-08a9943d=\"\"></slot>\n    <div class=\"row\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md12col\" _v-08a9943d=\"\">\n        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\" _v-08a9943d=\"\">\n          <h5 _v-08a9943d=\"\">{{formMessage.msg}}</h5>\n        </div>\n        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\" _v-08a9943d=\"\">\n          <h5 _v-08a9943d=\"\">There are errors.</h5>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" style=\"margin-bottom:10px\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md6col\" _v-08a9943d=\"\">\n        <p v-if=\"record.creator\" _v-08a9943d=\"\">Created by <strong _v-08a9943d=\"\">{{ record.creator.name }}</strong></p>\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md6col\" _v-08a9943d=\"\">\n        <div class=\"form-group\" _v-08a9943d=\"\">\n            <label for=\"tags\" _v-08a9943d=\"\">Medium: <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-08a9943d=\"\"></span></label>\n            <v-select :class=\"[formErrors.medium ? 'invalid-input' : '']\" :value.sync=\"record.medium\" :options=\"ideaCategoryList\" :multiple=\"false\" placeholder=\"Choose Medium\" label=\"medium\" _v-08a9943d=\"\">\n          </v-select>\n          <p v-if=\"formErrors.medium\" class=\"help-text invalid\" _v-08a9943d=\"\">{{formErrors.medium}}</p>\n        </div><!-- /.form-group -->\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md12col\" _v-08a9943d=\"\">\n        <!-- Display Name -->\n        <div v-bind:class=\"formGroup\" _v-08a9943d=\"\">\n          <label _v-08a9943d=\"\">Title <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-08a9943d=\"\"></span></label>\n          <input v-model=\"record.title\" class=\"form-control\" v-bind:class=\"[formErrors.title ? 'invalid-input' : '']\" name=\"display_name\" type=\"text\" _v-08a9943d=\"\">\n          <p v-if=\"formErrors.title\" class=\"help-text invalid\" _v-08a9943d=\"\">{{formErrors.title}}</p>\n        </div>\n      </div>\n      <!-- /.small-12 columns -->\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md12col\" _v-08a9943d=\"\">\n        <!-- Idea -->\n        <div v-bind:class=\"formGroup\" _v-08a9943d=\"\">\n          <label _v-08a9943d=\"\">What's your idea? <span v-bind:class=\"iconStar\" class=\"reqstar\" _v-08a9943d=\"\"></span></label>\n          <textarea v-if=\"hasContent\" v-model=\"record.idea\" id=\"idea\" name=\"idea\" v-ckrte=\"idea\" :type=\"editorType\" :idea=\"idea\" :fresh=\"isFresh\" rows=\"200\" _v-08a9943d=\"\"></textarea>\n          <p v-if=\"formErrors.idea\" class=\"help-text invalid\" _v-08a9943d=\"\">Need idea text.</p>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n    <div class=\"row\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md6col\" _v-08a9943d=\"\">\n        <div class=\"form-group\" _v-08a9943d=\"\">\n            <label for=\"tags\" _v-08a9943d=\"\">Assigned to:</label>\n            <v-select :class=\"[formErrors.assignee ? 'invalid-input' : '']\" :value.sync=\"record.assignee\" :options=\"userList\" :multiple=\"false\" placeholder=\"Assign idea\" label=\"name\" _v-08a9943d=\"\">\n          </v-select>\n        </div><!-- /.form-group -->\n      </div>\n      <div :class=\"md6col\" _v-08a9943d=\"\">\n        <div class=\"form-group\" _v-08a9943d=\"\">\n          <label for=\"deadline\" _v-08a9943d=\"\">Deadline:</label>\n          <input id=\"deadline\" :class=\"[formErrors.deadline ? 'invalid-input' : '']\" type=\"text\" v-model=\"record.deadline.date\" aria-describedby=\"errorDeadline\" _v-08a9943d=\"\">\n          <p v-if=\"formErrors.deadline\" class=\"help-text invalid\" _v-08a9943d=\"\">Need a deadline date</p>\n        </div><!--form-group -->\n      </div><!-- /.md6col -->\n    </div>\n   <!-- /.row -->\n   <div v-if=\"recordexists\" class=\"row\" _v-08a9943d=\"\">\n     <div v-bind:class=\"md4col\" _v-08a9943d=\"\">\n         <!-- Is completed? -->\n        <label _v-08a9943d=\"\">Completed? <input type=\"checkbox\" value=\"1\" v-model=\"record.is_completed\" _v-08a9943d=\"\"></label>\n     </div>\n     <!-- /.small-12 columns -->\n   </div>\n   <!-- /.row -->\n    <div class=\"row\" _v-08a9943d=\"\">\n      <div v-bind:class=\"md12col\" _v-08a9943d=\"\">\n        <div v-bind:class=\"formGroup\" _v-08a9943d=\"\">\n          <button v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\" _v-08a9943d=\"\">{{submitBtnLabel}}</button>\n          <button v-if=\"recordexists\" id=\"btn-delete\" v-on:click=\"delIdea\" type=\"submit\" class=\"redBtn\" v-bind:class=\"btnPrimary\" _v-08a9943d=\"\">Delete Idea</button>\n        </div>\n      </div>\n    </div>\n    <!-- /.row -->\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.redBtn[_v-59de6d42] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-59de6d42]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-59de6d42]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-59de6d42]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-59de6d42]{\n    margin-top: 26px !important;\n}\np[_v-59de6d42] {\n  margin: 0;\n}\n\nlabel[_v-59de6d42] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-59de6d42] {\n  display: inline-block;\n  /*width: 8em*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-59de6d42] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-59de6d42] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-59de6d42] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-59de6d42] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-59de6d42] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-59de6d42] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-59de6d42] {\n  margin: 0;\n}\n\n[type='submit'][_v-59de6d42],\n[type='button'][_v-59de6d42] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-59de6d42] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-59de6d42] {\n  margin: 0;\n}\n\nh5.form-control[_v-59de6d42] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
+    __vueify_insert__.cache["\n.redBtn[_v-08a9943d] {\n  background: hsl(0, 90%, 70%);\n}\n.dynamic-list-item[_v-08a9943d]{\n    margin: 5px 0px 10px 0px !important;\n}\n.dynamic-list-btn[_v-08a9943d]{\n    margin-top: -4px !important;\n}\n.social-list-item[_v-08a9943d]{\n    margin: 2px 0px 2px 0px !important;\n}\n.social-list-btn[_v-08a9943d]{\n    margin-top: 26px !important;\n}\np[_v-08a9943d] {\n  margin: 0;\n}\n\nlabel[_v-08a9943d] {\n  margin-top: 3px;\n  margin-bottom: 3px;\n  display: block;\n  /*margin-bottom: 1.5em;*/\n}\n\nlabel > span[_v-08a9943d] {\n  display: inline-block;\n  /*width: 8em*/\n  vertical-align: top;\n}\n\n.valid-titleField[_v-08a9943d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.no-input[_v-08a9943d] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n\n.invalid-input[_v-08a9943d] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n\n.invalid[_v-08a9943d] {\n  color: #ff0000;\n}\n\nfieldset label.radiobtns[_v-08a9943d] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n\n.reqstar[_v-08a9943d] {\n  font-size: .6rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\n\nbutton.button-primary[_v-08a9943d] {\n  margin-top: 0.8rem;\n}\n\nselect[_v-08a9943d] {\n  margin: 0;\n}\n\n[type='submit'][_v-08a9943d],\n[type='button'][_v-08a9943d] {\n  margin-top: 0;\n}\n\ninput[type=\"number\"][_v-08a9943d] {\n  margin: 0;\n}\n\ninput[type=\"text\"][_v-08a9943d] {\n  margin: 0;\n}\n\nh5.form-control[_v-08a9943d] {\n  margin: 0;\n  display: block;\n  width: 100%;\n  height: 2.4375rem;\n  padding: .5rem;\n  font-size: 14px;\n  line-height: 1.42857143;\n  color: #222222;\n  background-color: #fff;\n  background-image: none;\n  border: 1px solid #ccc;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);\n  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-59de6d42", module.exports)
+    hotAPI.createRecord("_v-08a9943d", module.exports)
   } else {
-    hotAPI.update("_v-59de6d42", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-08a9943d", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/ckrte.js":114,"../vuex/actions":116,"../vuex/getters":117,"./VuiFlipSwitch.vue":113,"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/defineProperty":14,"flatpickr":102,"moment":103,"vue":108,"vue-hot-reload-api":105,"vue-select":107,"vueify/lib/insert-css":109}],113:[function(require,module,exports){
@@ -21551,9 +21647,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-c9c83bf8", module.exports)
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
   } else {
-    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":108,"vue-hot-reload-api":105,"vueify/lib/insert-css":109}],114:[function(require,module,exports){

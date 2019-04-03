@@ -12309,7 +12309,7 @@ exports.insert = function (css) {
 
 },{}],7:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\ninput[_v-03270103] {\n    padding: 0;\n    padding-left: 1em;\n    height: 33px;\n    vertical-align: bottom;\n    background-color: #535353;\n    border: none;\n}\n\n.input-group[_v-03270103] {\n    margin: 0;\n    padding: 0;\n}\n\n.submit-search-btn[_v-03270103] {\n    border: none;\n    color: #ffffff;\n    background-color: #535353;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\ninput[_v-707add7e] {\n    padding: 0;\n    padding-left: 1em;\n    height: 33px;\n    vertical-align: bottom;\n    background-color: #535353;\n    border: none;\n}\n\n.input-group[_v-707add7e] {\n    margin: 0;\n    padding: 0;\n}\n\n.submit-search-btn[_v-707add7e] {\n    border: none;\n    color: #ffffff;\n    background-color: #535353;\n}\n")
 'use strict';
 
 module.exports = {
@@ -12337,19 +12337,19 @@ module.exports = {
     events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-03270103=\"\">\n    <div class=\"input-group\" _v-03270103=\"\">\n        <label for=\"top-site-search\" class=\"show-for-sr\" _v-03270103=\"\">Search</label>\n        <input class=\"input-group-field\" id=\"top-site-search\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-03270103=\"\">\n        <div class=\"input-group-button\" _v-03270103=\"\">\n            <button type=\"submit\" class=\"button small submit-search-btn\" alt=\"submit search\" aria-label=\"submit site search\" _v-03270103=\"\"><i class=\"fa fa-search\" _v-03270103=\"\"></i></button>\n        </div>\n    </div>\n</form>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<form action=\"/search\" method=\"get\" id=\"search-form\" class=\"search-form\" v-on:submit.prevent=\"submitSearch\" _v-707add7e=\"\">\n    <div class=\"input-group\" _v-707add7e=\"\">\n        <label for=\"top-site-search\" class=\"show-for-sr\" _v-707add7e=\"\">Search</label>\n        <input class=\"input-group-field\" id=\"top-site-search\" type=\"text\" name=\"searchterm\" placeholder=\"Search\" v-model=\"searchterm\" _v-707add7e=\"\">\n        <div class=\"input-group-button\" _v-707add7e=\"\">\n            <button type=\"submit\" class=\"button small submit-search-btn\" alt=\"submit search\" aria-label=\"submit site search\" _v-707add7e=\"\"><i class=\"fa fa-search\" _v-707add7e=\"\"></i></button>\n        </div>\n    </div>\n</form>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\ninput[_v-03270103] {\n    padding: 0;\n    padding-left: 1em;\n    height: 33px;\n    vertical-align: bottom;\n    background-color: #535353;\n    border: none;\n}\n\n.input-group[_v-03270103] {\n    margin: 0;\n    padding: 0;\n}\n\n.submit-search-btn[_v-03270103] {\n    border: none;\n    color: #ffffff;\n    background-color: #535353;\n}\n"] = false
+    __vueify_insert__.cache["\ninput[_v-707add7e] {\n    padding: 0;\n    padding-left: 1em;\n    height: 33px;\n    vertical-align: bottom;\n    background-color: #535353;\n    border: none;\n}\n\n.input-group[_v-707add7e] {\n    margin: 0;\n    padding: 0;\n}\n\n.submit-search-btn[_v-707add7e] {\n    border: none;\n    color: #ffffff;\n    background-color: #535353;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-03270103", module.exports)
+    hotAPI.createRecord("_v-707add7e", module.exports)
   } else {
-    hotAPI.update("_v-03270103", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-707add7e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":5,"vue-hot-reload-api":3,"vueify/lib/insert-css":6}],8:[function(require,module,exports){
