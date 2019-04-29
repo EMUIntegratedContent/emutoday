@@ -421,6 +421,12 @@ img.better-thumb {
   border-color: #ddd;
   cursor: not-allowed;
 }
+
+.space-me-up {
+  /* This is a fix for flatpickr not displaying when it extends below page end */
+  margin-bottom: 11rem !important;
+}
+
 .form-control {
   padding: 0 12px;
 }

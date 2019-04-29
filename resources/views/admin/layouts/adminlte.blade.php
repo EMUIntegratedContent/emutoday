@@ -115,10 +115,10 @@ Sidebar Menu
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        2016
+        2019
     </div>
     <!-- Default to the left -->
-    <strong><a href="#">EMU-Today</a></strong>
+    <strong><a href="today.emich.edu">EMU-Today</a></strong>
 </footer>
 
 <!-- Control Sidebar -->
