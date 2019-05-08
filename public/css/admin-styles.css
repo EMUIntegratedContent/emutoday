@@ -14966,5 +14966,9 @@ img.better-thumb {
 .email-statistic{
   font-size: 2rem;
 }
+.modal.fade {
+	opacity: 1;
+	transition: opacity 0.15s linear;
+}
 
 /*# sourceMappingURL=admin-styles.css.map */

@@ -210,7 +210,7 @@ immediately after the control sidebar -->
 @section('footer-vendor')
     {{-- Combined scripts for js libraries used throughout admin site --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="/js/vendor-scripts.js"></script>
+    <script src="/js/vendor-scripts.js?v=2019-05-08"></script>
 @show
 @section('footer-plugin')
 
