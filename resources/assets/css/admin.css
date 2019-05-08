@@ -438,7 +438,12 @@ img.better-thumb {
 .email-statistic{
   font-size: 2rem;
 }
-.modal.fade {
-	opacity: 1;
-	transition: opacity 0.15s linear;
+
+.modal.fade.show {
+	opacity: 1 !important;
+	transition: opacity 0.15s linear !important;
+}
+.modal.fade.show .modal-dialog {
+	transform: translate(0, 0) !important;
+	transition: transform 0.3s ease-out !important;
 }

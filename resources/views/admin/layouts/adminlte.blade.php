@@ -13,7 +13,7 @@
 
     @show
     @section('style-app')
-        <link rel="stylesheet" href="/css/admin-styles.css" />
+        <link rel="stylesheet" href="/css/admin-styles.css?v=2019-05-08" />
     @show
     @section('scripts-vendor')
         <!-- Vendor Scripts that need to be loaded in the header before other plugin or app scripts -->
