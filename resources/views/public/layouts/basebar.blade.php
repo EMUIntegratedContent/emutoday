@@ -36,7 +36,7 @@
                     <p class="divider">
                         <a title="External link to the notice of non-discrimination." href="https://www.emich.edu/nondiscrimination/index.php">Non-Discrimination Statement</a> |
                         <a title="External link to the EMU board of regent's policy page." href="https://www.emich.edu/policies/">Policies</a> |
-                        <a title="External link to the seuxal misconduct reporting form." href="https://www.emich.edu/title-nine/reporting/index.php">Report a Title IX Incident</a> | 
+                        <a title="External link to the seuxal misconduct reporting form." href="https://www.emich.edu/title-nine/reporting/index.php">Report a Title IX Incident</a> |
                         <a title="External link to report an accessibility issue." href="https://www.emich.edu/accessibility/index.php">Accessibility</a> |
                         <a title="External link to EMU's privacy statement." href="https://www.emich.edu/privacy/index.php">Privacy Statement</a> |
                         <a title="External link to EMU police department homepage." href="https://www.emich.edu/police/">Annual Security Report</a> |
