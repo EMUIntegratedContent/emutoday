@@ -150,8 +150,7 @@ return [
 
         /*
         * Vendor Specific Providers
-         */
-
+        */
         Collective\Html\HtmlServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
@@ -163,7 +162,6 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Laravelium\Feed\FeedServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
-        Spatie\Analytics\AnalyticsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -227,7 +225,6 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Cas' => Subfission\Cas\Facades\Cas::class,
         'Feed' => Laravelium\Feed\Feed::class,
-        'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
 
     ],
 
