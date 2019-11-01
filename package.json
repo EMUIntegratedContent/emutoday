@@ -1,41 +1,67 @@
 {
-  "private": true,
-  "scripts": {
-    "prod": "gulp --production",
-    "dev": "gulp watch"
-  },
-  "devDependencies": {
-    "babel-preset-stage-2": "^6.13.0",
-    "bootstrap-sass": "^3.4.1",
-    "gulp": "^3.9.1",
-    "laravel-elixir": "^5.0.0",
-    "natives": "^1.1.6"
-  },
-  "dependencies": {
-    "@hapi/hoek": "github:hapijs/hoek",
-    "admin-lte": "^2.4.10",
-    "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
-    "flatpickr": "^1.9.1",
-    "font-awesome": "^4.6.3",
-    "foundation-sites": "^6.5.3",
-    "hoek": "github:hapijs/hoek",
-    "laravel-elixir-vueify": "^1.0.6",
-    "lodash": "^4.17.15",
-    "macaddress": "0.2.9",
-    "moment": "^2.24.0",
-    "node-sass": "^4.11.0",
-    "popper.js": "^1.14.7",
-    "postcss-filter-plugins": "^3.0.1",
-    "sortablejs": "^1.8.4",
-    "uniqid": "^5.0.3",
-    "vue-charts": "^0.1.14",
-    "vue-resource": "^1.5.1",
-    "vue-router": "^2.8.1",
-    "vue-select": "^1.3.3",
-    "vue-sortable": "^0.1.3",
-    "vuedraggable": "^1.0.9",
-    "vuejs-datepicker": "^0.6.2",
-    "vuex": "^1.0.0-rc.2"
-  }
+    "private": true,
+    "name": "emutoday",
+    "description": "/*[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)*/",
+    "version": "1.1.0",
+    "main": "gulpfile.js",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "axios": "^0.19",
+        "browser-sync": "^2.26.7",
+        "browser-sync-webpack-plugin": "^2.0.1",
+        "cross-env": "^5.1",
+        "foundation-sites": "^6.2.3",
+        "laravel-mix": "^4.0.7",
+        "lodash": "^4.17.13",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.15.2",
+        "sass-loader": "^7.1.0",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "@hapi/hoek": "^8.3.2",
+        "admin-lte": "^2.4.18",
+        "axios": "^0.19.0",
+        "bootstrap": "^4.3.1",
+        "flatpickr": "^4.6.3",
+        "font-awesome": "^4.7.0",
+        "lodash": "^4.17.15",
+        "macaddress": "^0.2.9",
+        "moment": "^2.24.0",
+        "node-sass": "^4.12.0",
+        "popper.js": "^1.16.0",
+        "postcss-filter-plugins": "^3.0.1",
+        "sortablejs": "^1.10.1",
+        "uniqid": "^5.0.3",
+        "vue-charts": "^0.2.1",
+        "vue-resource": "^1.5.1",
+        "vue-router": "^3.1.3",
+        "vue-select": "^3.2.0",
+        "vue-sortable": "^0.1.3",
+        "vuedraggable": "^2.23.2",
+        "vuejs-datepicker": "^1.6.2",
+        "vuex": "^3.1.1",
+        "what-input": "^5.2.6"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EMUIntegratedContent/emutoday.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/EMUIntegratedContent/emutoday/issues"
+    },
+    "homepage": "https://github.com/EMUIntegratedContent/emutoday#readme"
 }
