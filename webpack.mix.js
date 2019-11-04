@@ -36,10 +36,10 @@ mix.combine([
 
 /*
 |--------------------------------------------------------------------------
-| Front End Styles
+| Front End Scripts
 |--------------------------------------------------------------------------
 |
-| The styles that will appear on the public facing pages
+| The scripts that will run on the public facing pages
 |
 */
 mix.combine([
@@ -73,6 +73,24 @@ mix.combine([
     'node_modules/foundation-sites/js/foundation.util.touch.js',
     'node_modules/foundation-sites/js/foundation.util.triggers.js',
 ], 'public/js/public-scripts.js');
+
+/*
+|--------------------------------------------------------------------------
+| Back End Styles
+|--------------------------------------------------------------------------
+|
+| The styles that will appear on the restricted admin pages
+|
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Back End Scripts
+|--------------------------------------------------------------------------
+|
+| The scripts that will run on the restricted admin pages
+|
+*/
 
 /*
 |--------------------------------------------------------------------------
