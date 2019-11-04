@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic);@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,400italic);@import url(https://fonts.googleapis.com/css?family=Poppins:400,500,600,700);@import url(http://fonts.googleapis.com/css?family=PT+Serif);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic);@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,400italic);@import url(https://fonts.googleapis.com/css?family=Poppins:400,500,600,700);@import url(https://fonts.googleapis.com/css?family=PT+Serif);@charset "UTF-8";
 
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
@@ -3897,7 +3897,7 @@ span.flatpickr-weekday {
 
 /**
  * Foundation for Sites by ZURB
- * Version 6.2.3
+ * Version 6.2.1
  * foundation.zurb.com
  * Licensed under MIT Open Source
  */
@@ -7246,11 +7246,6 @@ select[multiple] {
   right: 100%;
 }
 
-.is-dropdown-submenu-parent.opens-right > .is-dropdown-submenu {
-  right: auto;
-  left: 100%;
-}
-
 .is-dropdown-submenu {
   display: none;
   position: absolute;
@@ -8916,11 +8911,8 @@ Styles For: EMU-Today v.3 Main Styles Content
 Description: Styles for the base elements, navigation, and hub page
 Author: Suzanne Szopo
 URL: http://today.emich.edu
-Tags: Gulp, Laravel
 */
 
-/*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,400italic);
-@import url(http://fonts.googleapis.com/css?family=PT+Serif);*/
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700");
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
 /****** General Styles *********/
