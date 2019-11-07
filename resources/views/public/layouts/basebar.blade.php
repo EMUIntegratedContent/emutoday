@@ -14,7 +14,7 @@
     </section>
     <section class="mediumgrey-section" aria-label="social-icons">
         <div class="row">
-            <div id="social-links" class="small-8 medium-centered small-centered columns">
+            <div id="social-links" class="small-12 medium-centered small-centered columns">
                 <ul class="social-icons">
                     <li><a class="facebook" title="External link to EMU's Facebook page." href="https://www.facebook.com/EasternMichU/"><span class="visuallyhidden">Facebook</span></a></li>
                     <li><a class="twitter" title="External link to EMU's Twitter page." href="http://www.emich.edu/twitter/"><span class="visuallyhidden">Twitter</span></a></li>
@@ -28,7 +28,8 @@
     </section>
     <section class="dkgrey-section" aria-label="university-info">
         <div class="row">
-            <div class="small-8 small-centered columns">
+            <div class="small-12 medium-2 small-centered columns hide-for-small-only">&nbsp;</div>
+            <div class="small-12 medium-8 small-centered columns">
                 <div class="base-data">
                     <p><a title="External link to the Eastern Michigan University homepage." href="https://www.emich.edu">Eastern Michigan University</a><br />
                     Ypsilanti, MI, USA 48197 | 734.487.1849 | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
@@ -45,6 +46,7 @@
                     </p>
                 </div>
             </div>
+            <div class="small-12 medium-2 small-centered columns hide-for-small-only">&nbsp;</div>
         </div>
     </section>
 </footer>
