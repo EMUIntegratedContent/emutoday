@@ -1,10 +1,8 @@
 var Vue = require('vue');
+window.Vue = Vue
 
-var VueResource = require('vue-resource');
-Vue.use(VueResource);
-
-var VueRouter = require('vue-router');
-Vue.use(VueRouter);
+Vue.use(require('vue-resource'))
+Vue.use(require('vue-router'))
 
 // Remember the token we created in the <head> tags? Get it here.
 var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
@@ -17,7 +15,7 @@ new Vue({
 
     components: {EventView},
 
-    ready() {
-      // alert('vue ready');
+    mounted() {
+        console.log('1 : top ready');
     }
 });

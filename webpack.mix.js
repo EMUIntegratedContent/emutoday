@@ -74,6 +74,10 @@ mix.combine([
     'node_modules/foundation-sites/js/foundation.util.triggers.js',
 ], 'public/js/public-scripts.js');
 
+// Compile vue files
+mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js');
+   // .extract(['vue'])
+
 /*
 |--------------------------------------------------------------------------
 | Back End Styles
