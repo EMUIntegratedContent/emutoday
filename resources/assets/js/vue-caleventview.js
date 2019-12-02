@@ -12,10 +12,5 @@ import EventView from './components/EventView.vue';
 
 new Vue({
     el: '#vue-caleventview',
-
     components: {EventView},
-
-    mounted() {
-        console.log('1 : top ready');
-    }
 });

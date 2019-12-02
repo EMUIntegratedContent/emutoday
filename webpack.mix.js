@@ -76,7 +76,7 @@ mix.combine([
 
 // Compile vue files
 mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js');
-   // .extract(['vue'])
+mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js');
 
 /*
 |--------------------------------------------------------------------------
@@ -102,4 +102,4 @@ mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js
 |--------------------------------------------------------------------------
 */
 // Refresh page in local environment
-mix.browserSync('emutoday.test');
+// mix.browserSync('emutoday.test');
