@@ -14,11 +14,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="small-12 medium-3 columns">
-                <event-view-side-bar :starthere.sync="starthere" v-on:change-eobject="handleEventFetch"></event-view-side-bar>
-            </div>
-
-            <div class="small-12 medium-9 columns">
+            <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
                 <event-view-content :eventid.once="eventid" :edata.sync="eventlist"></event-view-content>
 
                 <div id="annotations">
@@ -26,6 +22,10 @@
                     <p>The EMU calendar is maintained by the <a href="https://www.emich.edu/communications">Division of Communications</a> and includes events sponsored by University departments and student organizations.</p>
                     <p>Eastern Michigan University reserves the right to edit information as necessary for accuracy and completeness and to refuse submissions for any reason. Please allow one or two working days for approval.</p>
                 </div>
+            </div>
+
+            <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns">
+                <event-view-side-bar :starthere.sync="starthere" v-on:change-eobject="handleEventFetch"></event-view-side-bar>
             </div>
         </div>
     </div>
