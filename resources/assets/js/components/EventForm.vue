@@ -778,7 +778,6 @@ export default  {
                     self.record.start_date = dateString;
                     self.startdatePicker.value = dateString;
                 }
-
             });
 
             this.enddatePicker = flatpickr(document.getElementById("end-date"), {

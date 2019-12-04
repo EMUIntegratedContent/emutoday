@@ -77,6 +77,7 @@ mix.combine([
 // Compile vue files
 mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js');
 mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js');
+mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js');
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +86,6 @@ mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js');
 |
 | The styles that will appear on the restricted admin pages
 |
-*/
 
 /*
 |--------------------------------------------------------------------------
