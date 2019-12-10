@@ -27,8 +27,8 @@
                     <p>Contact:</p>
                     <ul>
                         <li v-if="item.contact_person">{{item.contact_person}}</li>
-                        <li v-if="item.contact_email">Email: {{item.contact_email}}</li>
-                        <li v-if="item.contact_phone">Phone: {{item.contact_phone}}</li>
+                        <li v-if="item.contact_email">Email: <a :href="'mailto:'+item.contact_email">{{item.contact_email}}</a></li>
+                        <li v-if="item.contact_phone">Phone: <a :href="'tel:'+item.contact_phone">{{item.contact_phone}}</a></li>
                     </ul>
                 </template>
                 <template v-if="item.related_link_1">

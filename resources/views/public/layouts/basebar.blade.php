@@ -32,7 +32,7 @@
             <div class="small-12 medium-8 small-centered columns">
                 <div class="base-data">
                     <p><a title="External link to the Eastern Michigan University homepage." href="https://www.emich.edu">Eastern Michigan University</a><br />
-                    Ypsilanti, MI, USA 48197 | 734.487.1849 | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
+                    Ypsilanti, MI, USA 48197 | <a href="tel:+1-734-487-1849">734.487.1849</a> | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
                     <hr>
                     <p class="divider">
                         <a title="External link to the notice of non-discrimination." href="https://www.emich.edu/nondiscrimination/index.php">Non-Discrimination Statement</a> |

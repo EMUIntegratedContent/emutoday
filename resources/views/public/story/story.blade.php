@@ -92,7 +92,7 @@
                   Contact:<br>
                   {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>
                   <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a><br>
-                  {{ empty($story->contact->phone) ? '': $story->contact->phone }}
+                  <a href="tel:{{ $story->contact->phone }}">{{ $story->contact->phone }}</a>
                 </p>
               </div>
             </div>
