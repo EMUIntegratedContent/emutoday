@@ -50,13 +50,16 @@
                             @endif
                             <h5>{{$searchResult->title}}</h5></a>
 
-
                             <div class="search-result-content">
                                 @if($searchResult->subtitle)
-                                <p>{{ $searchResult->subtitle }}</p>
+                                    <p>{{ $searchResult->subtitle }}</p>
                                 @endif
-                                <p>{!! $searchResult->teaser !!}</p>
-                                <p>{{ date_format($searchResult->start_date,"M d, Y") }}</p>
+                                @if($searchResult->teaser)
+                                    <p>{!! $searchResult->teaser !!}</p>
+                                @endif
+                                @if($searchResult->start_date)
+                                    <p>{{ date_format($searchResult->start_date,"M d, Y") }}</p>
+                                @endif
                             </div>
                         @elseif($searchResult->getTable() == 'cea_events')
                             <a href="/calendar/{{$searchResult->present()->eventStartDateYear}}/{{$searchResult->present()->eventStartDateMonthUnit}}/{{$searchResult->present()->eventStartDateDay}}/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>

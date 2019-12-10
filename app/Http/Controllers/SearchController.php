@@ -73,7 +73,7 @@ class SearchController extends Controller
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->get();
+            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->orderBy('start_date', 'DESC')->get();
 
             foreach($searchStoryResultsMagazine as $m_story){
                 $searchStoryResults[] = $m_story;
@@ -109,7 +109,8 @@ class SearchController extends Controller
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->select('title','subtitle','story_type','teaser','id')->get();
+            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->orderBy('start_date', 'DESC')->get();
+
 
         } else {
             $searchMagazineResults = array();
