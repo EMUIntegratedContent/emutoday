@@ -76,6 +76,7 @@
                     <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a></li>
                     <li><a title="Eastern Magazine's homepage" href="/magazine">Eastern Magazine</a></li>
                     <li><a title="Eastern Experts are availble for interviews and speaking engagements." href="{{ url('/experts') }}">Eastern Experts</a></li>
+                    <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
                     <li><a title="External link to WEMU." href="http://www.wemu.org" target="_blank">WEMU</a></li>
                     <li><a title="External link to the EMU athletics page." href="http://www.emueagles.com/" target="_blank">Athletics</a></li>
                 </ul>
@@ -159,6 +160,7 @@
                                         <li><a title="EMU Today campus news, press releases, and official statements." class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a></li>
                                         <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern Magazine</a></li>
                                         <li><a title="Eastern Experts are availble for interviews and speaking engagements." class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern Experts</a></li>
+                                        <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
                                         <li><a title="External link to WEMU." href="http://wemu.org" target="_blank">WEMU</a></li>
                                         <li><a title="External link to EMU athletics site." href="http://emueagles.com" target="_blank">Athletics</a></li>
                                     </ul>
