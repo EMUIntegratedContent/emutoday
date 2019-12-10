@@ -67,10 +67,10 @@ class MainController extends Controller
         ['start_date', '<=', $currentTime],
         ['priority', '>', 0]
       ])
-      ->whereIn('story_type', ['story', 'news', 'statement', 'advisory'])
+      ->whereIn('story_type', ['story', 'news', 'statement', 'advisory', 'external'])
       ->orderBy('priority','desc')
       ->orderBy('start_date','asc')
-      ->take($this->recordLimitNews)->get();
+      ->take($this->recordLimitNews)->with('storyImages')->get();
 
         $currentAnnouncements = $this->announcement->where([
           ['is_approved', 1],
