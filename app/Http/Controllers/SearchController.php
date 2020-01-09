@@ -61,7 +61,7 @@ class SearchController extends Controller
                 'content' => 35,
                 'teaser' => 20,
                 'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->whereNotIn('story_type', ['article', 'external'])->orderBy('start_date', 'DESC')->get();
+            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereNotIn('story_type', ['article', 'external'])->orderBy('start_date', 'DESC')->get();
 
             foreach($searchStoryResultsNonMagazine as $nm_story){
                 $searchStoryResults[] = $nm_story;
