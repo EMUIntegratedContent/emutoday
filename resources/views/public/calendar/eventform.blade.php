@@ -3,6 +3,12 @@
 @section('styles')
 @parent
 <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
+<style media="screen">
+.flatpickr-calendar {
+    visibility: hidden;
+    width: auto !important;
+}
+</style>
 @endsection
 
 @section('title','Submit an Event')
