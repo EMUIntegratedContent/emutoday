@@ -5,7 +5,9 @@
 @endsection
 @section('style-plugin')
     @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+    <!-- flatpickr fix... compile into admin-styles.css at a later date. -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.3/flatpickr.min.css" />
+
     @endsection
     @section('style-app')
         @parent
@@ -21,7 +23,7 @@
                     <h3 class="box-title">{{$announcement->exists ? 'Edit Announcement' : 'New Announcement'}}</h3>
                     @include('admin.components.boxtools', ['rte' => 'announcement', 'path' => 'admin/announcement/{{$atype}}', 'atype'=> $atype])
                 </div>	<!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body space-me-up">
                     <div id="vue-announcements">
                             <announcement-form errors="{{ json_encode($errors) }}" framework="bootstrap" type="{{$atype}}" authorid="{{$currentUser->id}}" recordexists="{{$announcement->exists ? true: false}}" recordid="{{$announcement->exists ? $announcement->id : null }}" :isadmin="{{ Auth::user()->can('admin') }}">
                                 <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -52,6 +54,4 @@
 @section('footer-script')
         @parent
 
-        <script>
-        </script>
     @endsection

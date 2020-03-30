@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
           <p>You will only be presented stories that are:</p>
@@ -42,7 +43,7 @@
               </div>
               <div v-if="isEndDate" class="form-group">
                   <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"><p>
+                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
               <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
@@ -53,19 +54,21 @@
                 </div>
                 <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="stories_filter_storytype">
                      <template v-for="item in storyTypeIcons">
-                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" :title="item.name"><input type="radio" autocomplete="off" :value="item.shortname" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
                     </template>
                 </div>
             </div>
             <div id="email-stories">
               <template v-if="!loadingQueue">
                 <template v-if="queueStories.length > 0">
+<!--                  v-for="story in queueStories | filterBy filterByStoryType | paginate"-->
                   <email-story-pod
                       pid="otherstory-queue-stories"
                       pod-type="otherstoryqueue"
                       :item="story"
                       :other-stories="usedStories"
-                      v-for="story in queueStories | filterBy filterByStoryType | paginate"
+                      :key="'otherstory-story-' + index"
+                      v-for="(story, index) in queueStories"
                   >
                   </email-story-pod>
                   <ul class="pagination">
@@ -90,6 +93,7 @@
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
+  </div>
 </template>
 <style scoped>
     h4 {
@@ -120,14 +124,13 @@
 
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
-import IconToggleBtn from '../IconToggleBtn.vue'
 import iconradio from '../../directives/iconradio.js'
 import Pagination from '../Pagination.vue'
 import flatpickr from "../../directives/flatpickr.js"
 
 export default  {
     directives: {iconradio, flatpickr},
-    components: {EmailStoryPod,IconToggleBtn,Pagination},
+    components: {EmailStoryPod,Pagination},
     props: ['stypes','mainStory','otherStories'],
     created(){
     },
@@ -207,6 +210,7 @@ export default  {
       },
 
       typeIcon: function(sname) {
+          let faicon = ''
           switch (sname) {
               case 'emutoday':
               case 'story':

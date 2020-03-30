@@ -3,6 +3,12 @@
 @section('styles')
 @parent
 <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
+<style media="screen">
+.flatpickr-calendar {
+    visibility: hidden;
+    width: auto !important;
+}
+</style>
 @endsection
 
 @section('title','Submit an Event')
@@ -15,7 +21,7 @@
         <div class="medium-6 columns">
           <h3 class="cal-caps toptitle">Events Calendar</h3>
           <div id="vue-event-form">
-            <event-form v-ref:foo eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
+            <event-form ref="eform" eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
               <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
             </event-form>
           </div><!-- /#vue-event-form -->

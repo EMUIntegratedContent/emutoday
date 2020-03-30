@@ -3,9 +3,8 @@
 @section('title', $story->exists ? 'Editing '.$story->title : 'Create New Story')
     @section('style-plugin')
         @parent
-<!-- Bootstrap Color Picker -->
-<link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
-
+        <!-- flatpickr fix... compile into admin-styles.css at a later date. -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/1.9.1/flatpickr.min.css" />
     @endsection
         @section('scripts-vendor')
             <!-- Vendor Scripts that need to be loaded in the header before other plugin or app scripts -->

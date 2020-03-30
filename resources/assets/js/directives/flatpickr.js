@@ -1,5 +1,5 @@
 import flatpickr from 'flatpickr';
-module.exports = {
+export default {
     twoWay: true,
   priority: 1000,
     params: ['initval'],

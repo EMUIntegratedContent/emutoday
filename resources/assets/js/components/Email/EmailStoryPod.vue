@@ -1,10 +1,11 @@
 <template>
-    <div :class="specialItem">
-    <div class="box box-solid {{item.group}}">
+  <div>
+    <div class="box box-solid" :class="item.group">
         <div class="box-header with-border">
           <div class="row">
               <div class="col-sm-12">
                   <div v-show="podType == 'mainstoryqueue'" class="pull-right">
+                      <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
                       <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
                   </div><!-- /.pull-left -->
                   <div v-show="podType == 'otherstoryqueue'" class="pull-right">
@@ -15,7 +16,7 @@
           <div class="row">
             <a v-on:click.prevent="toggleBody" href="#">
               <div class="col-sm-9">
-                <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
+                <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" :title="item.story_type"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
               </div><!-- /.col-md-12 -->
               <div class="col-sm-3">
                 <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -50,7 +51,7 @@
                 </div><!-- /.row -->
             </div><!-- /.box-footer -->
     </div><!-- /.box- -->
-</div>
+  </div>
 </template>
 <style scoped>
         .box {
@@ -237,7 +238,7 @@
 import moment from 'moment'
 
 /** Show all stories with a emutoday_email picture type set **/
-module.exports  = {
+export default {
     directives: {},
     components: {},
     props: ['item','pid','mainStories','podType','draggable','otherStories'],
@@ -270,6 +271,7 @@ module.exports  = {
           return moment(this.item.start_date).fromNow()
       },
       typeIcon: function() {
+          let faicon = ''
           switch (this.item.story_type) {
               case 'emutoday':
               case 'story':

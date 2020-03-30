@@ -24,10 +24,10 @@
                             <p>For more information visit: <a href="{{ (substr($announcement->link, 0, 4) == 'http') ? $announcement->link : 'https://'.$announcement->link }}" class="accordion-link" target="_blank">{{$announcement->link_txt or 'More Info'}}</a></p>
                         @endif
                         @if($announcement->email_link)
-                            <p>Contact Email: <a href="mailto://{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt or $announcement->email_link}}</a></p>
+                            <p>Contact Email: <a href="mailto:{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt or $announcement->email_link}}</a></p>
                         @endif
                         @if($announcement->phone)
-                            <p>Contact Phone: {{$announcement->phone}}</a></p>
+                            <p>Contact Phone: <a href="tel:{{$announcement->phone}}">{{$announcement->phone}}</a></p>
                         @endif
                         <p>Posted {{$announcement->present()->prettyDate}}</p>
                     </div>

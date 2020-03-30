@@ -13,7 +13,7 @@
 
     @show
     @section('style-app')
-        <link rel="stylesheet" href="/css/admin-styles.css" />
+        <link rel="stylesheet" href="/css/admin-styles.css?v=2019-05-08" />
     @show
     @section('scripts-vendor')
         <!-- Vendor Scripts that need to be loaded in the header before other plugin or app scripts -->
@@ -23,7 +23,6 @@
     @show
     @section('scripts-app')
         <!-- App related Scripts  that need to be loaded in the header -->
-
     @show
     @include('include.js')
     <meta name="_token" content="{{ csrf_token() }}">
@@ -115,10 +114,10 @@ Sidebar Menu
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        2016
+        2019
     </div>
     <!-- Default to the left -->
-    <strong><a href="#">EMU-Today</a></strong>
+    <strong><a href="today.emich.edu">EMU-Today</a></strong>
 </footer>
 
 <!-- Control Sidebar -->
@@ -209,7 +208,8 @@ immediately after the control sidebar -->
 </div> <!-- wrapper -->
 @section('footer-vendor')
     {{-- Combined scripts for js libraries used throughout admin site --}}
-    <script src="/js/vendor-scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="/js/vendor-scripts.js?v=2019-05-08"></script>
 @show
 @section('footer-plugin')
 

@@ -206,6 +206,9 @@
                                                         @elseif($basicstory->story_type == 'statement')
                                                             <a href="/story/statement/{{$basicstory->id}}"
                                                                class="statement-link">{{$basicstory->title}}</a>
+                                                        @elseif($basicstory->story_type == 'external')
+                                                            <a href="{{$basicstory->storyImages[0]->link}}"
+                                                               class="external-link">{{$basicstory->title}}</a>
                                                         @else
                                                             <a href="/story/news/{{$basicstory->id}}">{{$basicstory->title}}</a>
                                                         @endif

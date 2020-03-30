@@ -67,10 +67,10 @@ class MainController extends Controller
         ['start_date', '<=', $currentTime],
         ['priority', '>', 0]
       ])
-      ->whereIn('story_type', ['story', 'news', 'statement', 'advisory'])
+      ->whereIn('story_type', ['story', 'news', 'statement', 'advisory', 'external'])
       ->orderBy('priority','desc')
       ->orderBy('start_date','asc')
-      ->take($this->recordLimitNews)->get();
+      ->take($this->recordLimitNews)->with('storyImages')->get();
 
         $currentAnnouncements = $this->announcement->where([
           ['is_approved', 1],
@@ -312,7 +312,7 @@ class MainController extends Controller
         ]);
 
         // Send
-        $to      = "emu_today@emich.edu";
+        $to      = "webcomm@emich.edu";
         $subject = $request->email." would like to subscribe to EMU Today\n\n";
         $message = $request->email." would like to subscribe to EMU Today\n\n";
         $headers = 'From: '.$request->email. "\r\n" .

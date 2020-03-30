@@ -21,7 +21,6 @@
 #calendar-content-bar{
     padding: 0;
     margin: 0;
-  background-color: #bebdbd;
 }
 
 
@@ -241,4 +240,318 @@ a.firefox:before {
 	content:"\f269";
   font-family: FontAwesome;
   padding-right: 0.1em;
+}
+.academic-calednar-button {
+  font-size: 105%;
+  font-weight: 700;
+  padding-top: .6rem !important;
+  padding-bottom: .6rem !important;
+}
+.academic-calednar-button i {
+  color: #1e9744;
+}
+.academic-calednar-button.prime {
+  background: #fff !important;
+}
+.academic-calednar-button.secondary {
+  margin: 0;
+  background: #ddd;
+  border: none !important;
+  color: #0F6547 !important;
+}
+.academic-calednar-button:hover {
+  background: #ccc !important;
+}
+
+/* Push Pull */
+@media screen and (min-width: 40em) {
+    .small-push-1 {
+        position: relative;
+        left: 8.33333%;
+    }
+    .small-pull-1 {
+        position: relative;
+        left: -8.33333%;
+    }
+    .small-push-2 {
+        position: relative;
+        left: 16.66667%;
+    }
+    .small-pull-2 {
+        position: relative;
+        left: -16.66667%;
+    }
+    .small-push-3 {
+        position: relative;
+        left: 25%;
+    }
+    .small-pull-3 {
+        position: relative;
+        left: -25%;
+    }
+    .small-push-4 {
+        position: relative;
+        left: 33.33333%;
+    }
+    .small-pull-4 {
+        position: relative;
+        left: -33.33333%;
+    }
+    .small-push-5 {
+        position: relative;
+        left: 41.66667%;
+    }
+    .small-pull-5 {
+        position: relative;
+        left: -41.66667%;
+    }
+    .small-push-6 {
+        position: relative;
+        left: 50%;
+    }
+    .small-pull-6 {
+        position: relative;
+        left: -50%;
+    }
+    .small-push-7 {
+        position: relative;
+        left: 58.33333%;
+    }
+    .small-pull-7 {
+        position: relative;
+        left: -58.33333%;
+    }
+    .small-push-8 {
+        position: relative;
+        left: 66.66667%;
+    }
+    .small-pull-8 {
+        position: relative;
+        left: -66.66667%;
+    }
+    .small-push-9 {
+        position: relative;
+        left: 75%;
+    }
+    .small-pull-9 {
+        position: relative;
+        left: -75%;
+    }
+    .small-push-10 {
+        position: relative;
+        left: 83.33333%;
+    }
+    .small-pull-10 {
+        position: relative;
+        left: -83.33333%;
+    }
+    .small-push-11 {
+        position: relative;
+        left: 91.66667%;
+    }
+    .small-pull-11 {
+        position: relative;
+        left: -91.66667%;
+    }
+    .small-push-0,
+    .small-pull-0 {
+        position: static;
+        margin-left: 0;
+        margin-right: 0;
+        float: left;
+    }
+}
+@media screen and (min-width: 40em) {
+    .medium-push-1 {
+        position: relative;
+        left: 8.33333%;
+    }
+    .medium-pull-1 {
+        position: relative;
+        left: -8.33333%;
+    }
+    .medium-push-2 {
+        position: relative;
+        left: 16.66667%;
+    }
+    .medium-pull-2 {
+        position: relative;
+        left: -16.66667%;
+    }
+    .medium-push-3 {
+        position: relative;
+        left: 25%;
+    }
+    .medium-pull-3 {
+        position: relative;
+        left: -25%;
+    }
+    .medium-push-4 {
+        position: relative;
+        left: 33.33333%;
+    }
+    .medium-pull-4 {
+        position: relative;
+        left: -33.33333%;
+    }
+    .medium-push-5 {
+        position: relative;
+        left: 41.66667%;
+    }
+    .medium-pull-5 {
+        position: relative;
+        left: -41.66667%;
+    }
+    .medium-push-6 {
+        position: relative;
+        left: 50%;
+    }
+    .medium-pull-6 {
+        position: relative;
+        left: -50%;
+    }
+    .medium-push-7 {
+        position: relative;
+        left: 58.33333%;
+    }
+    .medium-pull-7 {
+        position: relative;
+        left: -58.33333%;
+    }
+    .medium-push-8 {
+        position: relative;
+        left: 66.66667%;
+    }
+    .medium-pull-8 {
+        position: relative;
+        left: -66.66667%;
+    }
+    .medium-push-9 {
+        position: relative;
+        left: 75%;
+    }
+    .medium-pull-9 {
+        position: relative;
+        left: -75%;
+    }
+    .medium-push-10 {
+        position: relative;
+        left: 83.33333%;
+    }
+    .medium-pull-10 {
+        position: relative;
+        left: -83.33333%;
+    }
+    .medium-push-11 {
+        position: relative;
+        left: 91.66667%;
+    }
+    .medium-pull-11 {
+        position: relative;
+        left: -91.66667%;
+    }
+    .medium-push-0,
+    .medium-pull-0 {
+        position: static;
+        margin-left: 0;
+        margin-right: 0;
+        float: left;
+    }
+}
+@media screen and (min-width: 64em) {
+    .large-push-1 {
+        position: relative;
+        left: 8.33333%;
+    }
+    .large-pull-1 {
+        position: relative;
+        left: -8.33333%;
+    }
+    .large-push-2 {
+        position: relative;
+        left: 16.66667%;
+    }
+    .large-pull-2 {
+        position: relative;
+        left: -16.66667%;
+    }
+    .large-push-3 {
+        position: relative;
+        left: 25%;
+    }
+    .large-pull-3 {
+        position: relative;
+        left: -25%;
+    }
+    .large-push-4 {
+        position: relative;
+        left: 33.33333%;
+    }
+    .large-pull-4 {
+        position: relative;
+        left: -33.33333%;
+    }
+    .large-push-5 {
+        position: relative;
+        left: 41.66667%;
+    }
+    .large-pull-5 {
+        position: relative;
+        left: -41.66667%;
+    }
+    .large-push-6 {
+        position: relative;
+        left: 50%;
+    }
+    .large-pull-6 {
+        position: relative;
+        left: -50%;
+    }
+    .large-push-7 {
+        position: relative;
+        left: 58.33333%;
+    }
+    .large-pull-7 {
+        position: relative;
+        left: -58.33333%;
+    }
+    .large-push-8 {
+        position: relative;
+        left: 66.66667%;
+    }
+    .large-pull-8 {
+        position: relative;
+        left: -66.66667%;
+    }
+    .large-push-9 {
+        position: relative;
+        left: 75%;
+    }
+    .large-pull-9 {
+        position: relative;
+        left: -75%;
+    }
+    .large-push-10 {
+        position: relative;
+        left: 83.33333%;
+    }
+    .large-pull-10 {
+        position: relative;
+        left: -83.33333%;
+    }
+    .large-push-11 {
+        position: relative;
+        left: 91.66667%;
+    }
+    .large-pull-11 {
+        position: relative;
+        left: -91.66667%;
+    }
+    .large-push-0,
+    .large-pull-0 {
+        position: static;
+        margin-left: 0;
+        margin-right: 0;
+        float: left;
+    }
 }

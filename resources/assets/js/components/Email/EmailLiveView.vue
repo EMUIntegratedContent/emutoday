@@ -130,7 +130,7 @@
                                       <a v-if="story.story_type == 'external' || (story.story_type == 'article' && storyHasTag(story, 'external'))" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
                                       <a v-else style="text-decoration: none;" :href="story.full_url">{{ story.title }}</a>
                                     </li>
-                                  <ul>
+                                  </ul>
                                 </template>
                                 <template v-else>
                                   <p style="padding:0 5px" class="insufficient">No side stories set yet. Select at least one from the "Side Stories" tab.</p>
@@ -167,7 +167,7 @@
                                         <a v-if="announcement.link != ''" style="text-decoration: none;" :href="announcement.link">{{ announcement.title }}</a>
                                         <a v-else style="text-decoration: none; " :href="'/announcement/' + announcement.id">{{ announcement.title }}</a>
                                       </li>
-                                    <ul>
+                                    </ul>
                                   </template>
                                   <template v-else>
                                     <p style="padding:0 5px" class="insufficient">No announcements set yet. Select at least one from the "Announcements" tab.</p>
@@ -185,7 +185,7 @@
                                           <div style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;">{{ evt.start_date | dateParse }} </div>
                                           <div style="width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" :href="evt.full_url">{{ evt.title }}</a></div>
                                         </li>
-                                      <ul>
+                                      </ul>
                                     </template>
                                     <template v-else>
                                       <p style="padding:0 5px" class="insufficient">No events set yet. Select at least one from the "Events" tab.</p>

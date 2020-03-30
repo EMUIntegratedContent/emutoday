@@ -12,7 +12,6 @@ use Emutoday\Tweet;
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
 use Analytics;
-use Spatie\Analytics\Period; // spatie\laravel-analytics package (Google analytics)
 
 // For search
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -50,9 +49,6 @@ class DashboardController extends Controller
             }
         }
 
-        //SPATIE LARAVEL ANALYTICS ONLY COMPATIBLE WITH PHP 7!
-        //$mostVisitedLast3Months = Analytics::fetchMostVisitedPages(Period::months(3), 20);
-        //$topReferrersLast3Months = Analytics::fetchTopReferrers(Period::months(3), 20);
         $mostVisitedLast3Months = null;
         $topReferrersLast3Months = null;
 

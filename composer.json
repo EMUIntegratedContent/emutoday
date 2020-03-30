@@ -1,12 +1,13 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "name": "emich/emutoday",
+    "description": "Eastern Michigan University news, magazine articles, events and announcements.",
     "type": "project",
+    "license": "proprietary",
+    "version": "1.1.0",
+    "homepage": "https://today.emich.edu",
     "require": {
-        "php": ">=5.5.9",
-        "laravel/framework": "5.6.*",
+        "php": ">=7.2",
+        "laravel/framework": "^5.6.0",
         "laravel/passport": "~5.0",
         "laravelcollective/html": "5.5.*",
         "laracasts/presenter": "^0.2.1",
@@ -17,21 +18,19 @@
         "league/fractal": "^0.14.0",
         "sofa/eloquence": "~5.2",
         "barryvdh/laravel-debugbar": "^3.1",
-        "subfission/cas": "~2.0.9",
+        "subfission/cas": "^2.1",
         "google/apiclient": "dev-master",
         "barryvdh/laravel-cors": "^0.11.0",
         "doctrine/dbal": "~2.8",
-        "snowfire/beautymail": "dev-master",
+        "snowfire/beautymail": "^1.0.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/tinker": "^1.0",
-        "spatie/laravel-analytics": "^3.3",
         "laravelium/feed": "2.12.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "^7.0",
-        "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
         "laravel/homestead": "^7.0",
         "filp/whoops": "~2.0"
@@ -44,7 +43,7 @@
             "Emutoday\\": "app/"
         },
         "files": [
-          "app/helpers.php"
+            "app/helpers.php"
         ]
     },
     "autoload-dev": {
@@ -66,11 +65,11 @@
             "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "post-autoload-dump": [
-          "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-          "@php artisan package:discover"
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover"
         ]
     },
     "config": {
-         "preferred-install": "dist"
+        "preferred-install": "dist"
     }
 }

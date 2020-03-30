@@ -1,7 +1,6 @@
 <template>
   <form>
     <slot name="csrf"></slot>
-    {{ $route }}
     <div class="row">
       <div v-bind:class="md12col">
         <div v-show="formMessage.isOk"  :class="calloutSuccess">
@@ -53,15 +52,10 @@
             <div :class="md8col">
               <label>Building</label>
               <v-select
-              :class="dropDownSelect"
-              is="bldg"
-              :debounce="250"
-              :value.sync="building"
-              :on-search="fetchForSelectBuildingList"
+              v-model="building"
               :options="buildings"
-              placeholder="Select a Building ..."
-              label="name">
-            </v-select>
+              placeholder="Select a Building..."
+              ></v-select>
         </div><!-- /.md8col -->
         <div :class="md4col">
           <label>Room</label>
@@ -136,16 +130,12 @@
       <div class="form-group">
         <label>Categories: <span :class="iconStar" class="reqstar"></span></label>
         <v-select
+        v-model="record.categories"
         :class="[formErrors.categories ? 'invalid-input' : '']"
-        :debounce="250"
-        :value.sync="record.eventcategories"
-        :on-search="fetchForSelectCategoriesList"
         :options="zcats"
         :multiple="true"
-        placeholder="Select related categories ..."
-        label="category">
-      </v-select>
-
+        placeholder="Select related categories..."
+        ></v-select>
     </div><!-- /.form-group -->
   </div><!-- /.md12col -->
 </div><!-- /.row -->
@@ -184,8 +174,8 @@
     </div>
   </div><!-- /.md6col -->
 </div><!-- /.row -->
+
 <!-- RELATED LINKS -->
-<div class="input-group" style="width: 100%">
   <div class="row">
     <div :class="md12col">
       <div v-bind:class="formGroup">
@@ -202,10 +192,10 @@
   <div class="row" v-show="record.related_link_1">
     <div :class="md4col">
       <div v-bind:class="formGroup">
-        <label>Please add descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
+        <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
         <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
         <input v-model="record.related_link_1_txt" class="form-control" v-bind:class="[formErrors.related_link_1_txt ? 'invalid-input' : '']" name="related_link_1_txt" type="text" maxlength="80">
-        <p v-if="formErrors.related_link_1_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+        <p v-if="formErrors.related_link_1_txt" class="help-text invalid">Please include a descriptive text for your related link.</p>
       </div>
     </div><!-- /.col-md-4 -->
     <div :class="md8col">
@@ -218,7 +208,6 @@
   </div>
   <!-- Two -->
   <template v-if="record.related_link_1 && record.related_link_1_txt">
-    <br/>
     <div class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
@@ -235,10 +224,10 @@
     <div class="row" v-show="record.related_link_2">
       <div :class="md4col">
         <div v-bind:class="formGroup">
-          <label>Please add descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
+          <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
           <input v-model="record.related_link_2_txt" class="form-control" v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt" type="text" maxlength="80">
-          <p v-if="formErrors.related_link_2_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+          <p v-if="formErrors.related_link_2_txt" class="help-text invalid">Please include a descriptive text for your related link.</p>
         </div>
       </div><!-- /.col-md-4 -->
       <div :class="md8col">
@@ -249,7 +238,6 @@
         </div>
       </div><!-- /.md6col -->
     </div>
-    <br/>
   </template>
   <!-- three -->
   <template v-if="record.related_link_2 && record.related_link_2_txt">
@@ -269,10 +257,10 @@
     <div class="row" v-show="record.related_link_3">
       <div :class="md4col">
         <div v-bind:class="formGroup">
-          <label>Please add descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
+          <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
           <input v-model="record.related_link_3_txt" class="form-control" v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt" type="text" maxlength="80">
-          <p v-if="formErrors.related_link_3_txt" class="help-text invalid"> Please include a descriptive text for your related link.</p>
+          <p v-if="formErrors.related_link_3_txt" class="help-text invalid">Please include a descriptive text for your related link.</p>
         </div>
       </div><!-- /.col-md-4 -->
       <div :class="md8col">
@@ -284,10 +272,7 @@
       </div><!-- /.md6col -->
     </div>
   </template>
-</div>
 <!-- RELATED LINKS -->
-<br v-if="framework == 'bootstrap'"/>
-
 <div class="row">
   <div :class="md6col">
     <div class="form-group">
@@ -309,7 +294,7 @@
       </div><!-- /.md4col -->
       <div :class="md10col">
         <label>Event Cost <span :class="iconStar" class="reqstar"></span></label>
-        <div v-show="hasCost" class="form-group">
+        <div v-if="hasCost" class="form-group">
           <div class="input-group">
             <span :class="inputGroupLabel">$</span>
             <input v-model="record.cost" class="form-control" :class="[formErrors.cost ? 'invalid-input' : '']" name="event-cost"  type="number">
@@ -389,13 +374,12 @@
 
 <div :class="md12col">
   <label for="minical">Select your department's mini calendar(s)
-    <v-select id="minical"
-    :value.sync="record.minicalendars"
-    :options="minicalslist"
-    :multiple="true"
-    placeholder="Select Mini Calendar"
-    label="calendar">
-    </v-select>
+      <v-select id="minical"
+      v-model="record.minicalendars"
+      :options="minicalslist"
+      :multiple="true"
+      placeholder="Select Mini Calendar"
+      ></v-select>
   </label>
 </div><!-- /.md12col -->
 </div><!-- /.row -->
@@ -411,11 +395,12 @@
   <div :class="md8col">
     <div :class="formGroup">
       <button id="btn-event" v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-      <button v-if="recordexists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Clone Event</button>
-      <button v-if="recordexists && isAdmin" id="btn-cancel" v-on:click="cancelEvent" type="submit" v-bind:class="btnPrimary">{{ cancelStatus }}</button>
-      <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Event</button>
+      <button v-if="thisRecordExists" id="btn-clone" v-on:click="cloneEvent" type="submit" v-bind:class="btnPrimary">Clone Event</button>
+      <button v-if="thisRecordExists && isAdmin" id="btn-cancel" v-on:click="cancelEvent" type="submit" v-bind:class="btnPrimary">{{ cancelStatus }}</button>
+      <button v-if="thisRecordExists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Event</button>
     </div><!-- /.md12col -->
   </div><!-- /.md12col -->
+</div>
   </form>
 </div>
 
@@ -512,551 +497,611 @@ textarea {
 }
 </style>
 
+<style>
+.v-select{position:relative;font-family:inherit}.v-select,.v-select *{box-sizing:border-box}@-webkit-keyframes vSelectSpinner{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}@keyframes vSelectSpinner{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}.vs__fade-enter-active,.vs__fade-leave-active{transition:opacity .15s cubic-bezier(1,.5,.8,1)}.vs__fade-enter,.vs__fade-leave-to{opacity:0}.vs--disabled .vs__clear,.vs--disabled .vs__dropdown-toggle,.vs--disabled .vs__open-indicator,.vs--disabled .vs__search,.vs--disabled .vs__selected{cursor:not-allowed;background-color:#f8f8f8}.v-select[dir=rtl] .vs__actions{padding:0 3px 0 6px}.v-select[dir=rtl] .vs__clear{margin-left:6px;margin-right:0}.v-select[dir=rtl] .vs__deselect{margin-left:0;margin-right:2px}.v-select[dir=rtl] .vs__dropdown-menu{text-align:right}.vs__dropdown-toggle{-webkit-appearance:none;-moz-appearance:none;appearance:none;display:flex;padding:0 0 4px;background:none;border:1px solid rgba(60,60,60,.26);border-radius:4px;white-space:normal}.vs__selected-options{display:flex;flex-basis:100%;flex-grow:1;flex-wrap:wrap;padding:0 2px;position:relative}.vs__actions{display:flex;align-items:center;padding:4px 6px 0 3px}.vs--searchable .vs__dropdown-toggle{cursor:text}.vs--unsearchable .vs__dropdown-toggle{cursor:pointer}.vs--open .vs__dropdown-toggle{border-bottom-color:transparent;border-bottom-left-radius:0;border-bottom-right-radius:0}.vs__open-indicator{fill:rgba(60,60,60,.5);-webkit-transform:scale(1);transform:scale(1);transition:-webkit-transform .15s cubic-bezier(1,-.115,.975,.855);transition:transform .15s cubic-bezier(1,-.115,.975,.855);transition:transform .15s cubic-bezier(1,-.115,.975,.855),-webkit-transform .15s cubic-bezier(1,-.115,.975,.855);transition-timing-function:cubic-bezier(1,-.115,.975,.855)}.vs--open .vs__open-indicator{-webkit-transform:rotate(180deg) scale(1);transform:rotate(180deg) scale(1)}.vs--loading .vs__open-indicator{opacity:0}.vs__clear{fill:rgba(60,60,60,.5);padding:0;border:0;background-color:transparent;cursor:pointer;margin-right:8px}.vs__dropdown-menu{display:block;position:absolute;top:calc(100% - 1px);left:0;z-index:1000;padding:5px 0;margin:0;width:100%;max-height:350px;min-width:160px;overflow-y:auto;box-shadow:0 3px 6px 0 rgba(0,0,0,.15);border:1px solid rgba(60,60,60,.26);border-top-style:none;border-radius:0 0 4px 4px;text-align:left;list-style:none;background:#fff}.vs__no-options{text-align:center}.vs__dropdown-option{line-height:1.42857143;display:block;padding:3px 20px;clear:both;color:#333;white-space:nowrap}.vs__dropdown-option:hover{cursor:pointer}.vs__dropdown-option--highlight{background:#5897fb;color:#fff}.vs__selected{display:flex;align-items:center;background-color:#f0f0f0;border:1px solid rgba(60,60,60,.26);border-radius:4px;color:#333;line-height:1.4;margin:4px 2px 0;padding:0 .25em}.vs__deselect{display:inline-flex;-webkit-appearance:none;-moz-appearance:none;appearance:none;margin-left:4px;padding:0;border:0;cursor:pointer;background:none;fill:rgba(60,60,60,.5);text-shadow:0 1px 0 #fff}.vs--single .vs__selected{background-color:transparent;border-color:transparent}.vs--single.vs--open .vs__selected{position:absolute;opacity:.4}.vs--single.vs--searching .vs__selected{display:none}.vs__search::-ms-clear,.vs__search::-webkit-search-cancel-button,.vs__search::-webkit-search-decoration,.vs__search::-webkit-search-results-button,.vs__search::-webkit-search-results-decoration{display:none}.vs__search,.vs__search:focus{-webkit-appearance:none;-moz-appearance:none;appearance:none;line-height:1.4;font-size:1em;border:1px solid transparent;border-left:none;outline:none;margin:4px 0 0;padding:0 7px;background:none;box-shadow:none;width:0;max-width:100%;flex-grow:1}.vs__search::-webkit-input-placeholder{color:inherit}.vs__search:-ms-input-placeholder{color:inherit}.vs__search::-ms-input-placeholder{color:inherit}.vs__search::placeholder{color:inherit}.vs--unsearchable .vs__search{opacity:1}.vs--unsearchable .vs__search:hover{cursor:pointer}.vs--single.vs--searching:not(.vs--open):not(.vs--loading) .vs__search{opacity:.2}.vs__spinner{align-self:center;opacity:0;font-size:5px;text-indent:-9999em;overflow:hidden;border:.9em solid hsla(0,0%,39.2%,.1);border-left-color:rgba(60,60,60,.45);-webkit-transform:translateZ(0);transform:translateZ(0);-webkit-animation:vSelectSpinner 1.1s linear infinite;animation:vSelectSpinner 1.1s linear infinite;transition:opacity .1s}.vs__spinner,.vs__spinner:after{border-radius:50%;width:5em;height:5em}.vs--loading .vs__spinner{opacity:1}
+</style>
+
 <script>
 import flatpickr from "flatpickr"
 import vSelect from "vue-select"
-module.exports  = {
-  directives: {},
-  components: {vSelect},
-  props:{
-    recordexists: {default: false},
-    recordid: {default: ''},
-    framework: {default: 'foundation'},
-    isadmin: {default: false},
-  },
-  data: function() {
-    return {
-      minicalslist:[],
-      dateObject:{
-        startDateMin: '',
-        startDateDefault: '',
-        endDateMin: '',
-        endDateDefault: '',
-        startTimeDefault: '',
-        endTimeDefault: '',
-        regDateMin: '',
-        regDateDefault: ''
-      },
-      startdatePicker:null,
-      enddatePicker:null,
-      starttimePicker:null,
-      endtimePicker:null,
-      regdeadlinePicker:null,
-      sdate: '',
-      edate: '',
-      stime: '',
-      rdate: '',
-      ticketoptions: [
-        { label: 'Online', value: 'online'},
-        { label: 'Phone', value: 'phone'},
-        { label: 'Ticket Office', value: 'office'},
-        { label: 'Online, Phone and Ticket Office', value: 'all'},
-        { label: 'Other', value: 'other'},
-      ],
-      participants: [
-        { label: 'Campus Only', value: 'campus'},
-        { label: 'Open to Public', value: 'public'},
-        { label: 'Students Only', value: 'students'},
-        { label: 'Invitation Only', value: 'invite'},
-        { label: 'Tickets Required', value: 'tickets'},
-      ],
-      totalChars: {
-        start: 0,
-        title: 80,
-        description: 255
-      },
-      building_in: [],
-      building: null,
-      buildings: [],
-      zcategories: [],
-      zcats: [],
-      categories: {},
-      minicals: null,
-      minicalendars: {},
-      record: {
-        on_campus: 1,
-        all_day: 0,
-        no_end_time: 0,
-        free: 0,
-        title: '',
-        description: '',
-        mini_calendar: '',
-        building: '',
-        categories:[],
-        is_canceled: 0,
-        is_hidden: 0,
-        start_time: '12:00 PM',
-        end_time: '12:00 PM',
-        admin_pre_approved: false,
-      },
-      response: {
 
-      },
-      formStatus: {},
-      vModelLike: "",
-      formMessage: {
-        isOk: false,
-        isErr: false,
-        msg: ''
-      },
-      formInputs : {},
-      formErrors : {}
-    }
-  },
-  ready() {
-    if(this.recordexists){
-      this.fetchCurrentRecord(this.recordid)
-    }
-    this.setupDatePickers();
-    this.fetchMiniCalsList();
-    this.fetchForSelectBuildingList("");
-    this.fetchForSelectCategoriesList("");
+export default  {
+    directives: {},
+    components: {vSelect},
+    props:{
+        recordexists: {default: false},
+        recordid: {default: ''},
+        framework: {default: 'foundation'},
+        isadmin: {default: false},
+    },
+    data: function() {
+        return {
+            minicalslist:[],
+            dateObject:{
+                startDateMin: '',
+                startDateDefault: '',
+                endDateMin: '',
+                endDateDefault: '',
+                startTimeDefault: '',
+                endTimeDefault: '',
+                regDateMin: '',
+                regDateDefault: ''
+            },
+            startdatePicker:null,
+            enddatePicker:null,
+            starttimePicker:null,
+            endtimePicker:null,
+            regdeadlinePicker:null,
+            sdate: '',
+            edate: '',
+            stime: '',
+            rdate: '',
+            ticketoptions: [
+                { label: 'Online', value: 'online'},
+                { label: 'Phone', value: 'phone'},
+                { label: 'Ticket Office', value: 'office'},
+                { label: 'Online, Phone and Ticket Office', value: 'all'},
+                { label: 'Other', value: 'other'},
+            ],
+            participants: [
+                { label: 'Campus Only', value: 'campus'},
+                { label: 'Open to Public', value: 'public'},
+                { label: 'Students Only', value: 'students'},
+                { label: 'Invitation Only', value: 'invite'},
+                { label: 'Tickets Required', value: 'tickets'},
+            ],
+            totalChars: {
+                start: 0,
+                title: 80,
+                description: 255
+            },
+            building_in: [],
+            building: null,
+            room: '',
+            buildings: [],
+            zcategories: [],
+            zcats: [],
+            categories: [],
+            minicals: null,
+            minicalendars: {},
+            record: {
+                id: null,
+                on_campus: 1,
+                all_day: 0,
+                no_end_time: 0,
+                free: 0,
+                title: '',
+                description: '',
+                mini_calendar: '',
+                building: '',
+                categories:[],
+                is_canceled: 0,
+                is_hidden: 0,
+                start_time: '12:00 PM',
+                end_time: '12:00 PM',
+                admin_pre_approved: false,
+            },
+            record_exists: false,
+            response: {
 
-    // Don't submit form on 'enter'
-    $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
-      if(e.which == 13) {
-        e.preventDefault();
-        return false;
-      }
-    });
-  },
-
-  computed: {
-    dropDownSelect: function(){
-      return (this.framework == 'foundation')? 'fdropdown':''
-    },
-    md6col: function () {
-      return (this.framework == 'foundation')? 'medium-6 columns':'col-md-6'
-    },
-    md12col: function () {
-      return (this.framework == 'foundation')? 'medium-12 columns':'col-md-12'
-    },
-    md8col: function () {
-      return (this.framework == 'foundation')? 'medium-8 columns':'col-md-8'
-    },
-    md4col: function () {
-      return (this.framework == 'foundation')? 'medium-4 columns':'col-md-4'
-    },
-    md2col: function () {
-      return (this.framework == 'foundation')? 'medium-2 columns':'col-md-2'
-    },
-    md10col: function () {
-      return (this.framework == 'foundation')? 'medium-10 columns':'col-md-10'
-    },
-    btnPrimary: function() {
-      return (this.framework == 'foundation')? 'button button-primary':'btn btn-primary'
-    },
-    formGroup: function() {
-      return (this.framework == 'foundation')? 'form-group':'form-group'
-    },
-    inputGroupLabel:function(){
-      return (this.framework=='foundation')?'input-group-label':'input-group-addon'
-    },
-    iconStar: function() {
-      return (this.framework == 'foundation')? 'fi-star':'fa fa-star'
-    },
-    calloutSuccess:function(){
-      return (this.framework == 'foundation')? 'callout success':'alert alert-success'
-    },
-    calloutFail:function(){
-      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
-    },
-    submitBtnLabel:function(){
-      return (this.recordexists)?'Update Event': 'Submit For Approval'
-    },
-    computedLocation: function() {
-      let bldg,room;
-
-      if (this.building) {
-        this.record.building = this.building.name;
-        bldg = this.record.building
-        room = (this.record.room)?' - ' + this.record.room:'';
-
-      } else {
-        bldg = ''
-        room = ''
-      }
-      return bldg + room;
-    },
-    cancelStatus: function(){
-      return (this.record.is_canceled == 1)? 'Uncancel Event':'Cancel Event'
-    },
-    isOnCampus: function() {
-      return this.record.on_campus == 1 ? true:false;
-    },
-    realCost: function() {
-      if(this.record.free == 1 ) {
-        return '0.00';
-      } else {
-        return '';
-      }
-    },
-    hasCost: function() {
-      if(this.record.free == 1 ) {
-        this.record.cost = '0.00';
-        return false;
-      } else {
-        return true;
-      }
-    },
-    titleChars: function() {
-      var str = this.record.title;
-      var cclength = str.length;
-      return this.totalChars.title - cclength;
-    },
-    descriptionChars: function() {
-      var str = this.record.description;
-      var cclength = str.length;
-      return this.totalChars.description - cclength;
-    },
-    hasStartTime: function() {
-      return this.record.all_day == 1? false : true;
-    },
-    hasEndTime: function() {
-      return (this.record.all_day == 1 || this.record.no_end_time == 1)?false : true;
-    },
-    isAdmin: function(){
-        return window.location.href.indexOf("admin") > -1;
-    }
-  },
-  methods: {
-    refreshUserEventTable: function(){
-      $.get('/calendar/user/events', function(data){
-        data = $.parseJSON(data);
-        $('#user-events-tables').html(data);
-      });
-    },
-
-    fetchMiniCalsList: function() {
-      this.$http.get('/api/minicalslist')
-      .then((response) =>{
-        this.$set('minicalslist', response.data)
-      }, (response) => {
-        //error callback
-        console.log("ERRORS");
-        this.formErrors =  response.data.error.message;
-
-      }).bind(this);
-    },
-    setupDatePickers:function(){
-      var self = this;
-      if (this.record.start_date === '') {
-        this.dateObject.startDateMin = this.currentDate;
-        this.dateObject.startDateDefault = null;
-
-        this.dateObject.endDateMin = null;
-        this.dateObject.endDateDefault = null;
-      } else {
-        this.dateObject.startDateMin = this.record.start_date;
-        this.dateObject.startDateDefault = this.record.start_date;
-        this.dateObject.endDateMin = this.record.start_date;
-        this.dateObject.endDateDefault = this.record.end_date;
-        this.dateObject.startTimeDefault = this.record.start_time;
-        this.dateObject.endTimeDefault = this.record.end_time;
-        this.dateObject.regDateMin = this.record.start_date;
-        this.dateObject.regDateDefault = this.record.reg_deadline;
-      }
-      this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-        // minDate: self.dateObject.startDateMin,
-        defaultDate: self.dateObject.startDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d",
-        // minDate: new Date(),
-        onChange(dateObject, dateString) {
-          self.enddatePicker.set("minDate", dateObject);
-          self.record.start_date = dateString;
-          self.startdatePicker.value = dateString;
+            },
+            formStatus: {},
+            vModelLike: "",
+            formMessage: {
+                isOk: false,
+                isErr: false,
+                msg: ''
+            },
+            formInputs : {},
+            formErrors : {}
         }
-
-      });
-
-      this.enddatePicker = flatpickr(document.getElementById("end-date"), {
-        minDate: self.dateObject.endDateMin,
-        defaultDate: self.dateObject.endDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d",
-        // minDate: new Date(),
-        onChange(dateObject, dateString) {
-          self.startdatePicker.set("maxDate", dateObject);
-          self.record.end_date = dateString;
-          self.enddatePicker.value = dateString;
+    },
+    mounted() {
+        this.record_exists = this.recordexists;
+        if(this.thisRecordExists){
+            var fetchme = this.recordid ? this.recordid : this.record.id;
+            console.log(fetchme);
+            this.fetchCurrentRecord(fetchme)
         }
-      });
+        this.setupDatePickers();
+        this.fetchMiniCalsList();
+        this.fetchForSelectBuildingList("");
+        this.fetchForSelectCategoriesList("");
 
-      this.starttimePicker = flatpickr(document.getElementById("start-time"),{
-        noCalendar: true,
-        enableTime: true,
-        defaultDate: self.dateObject.startTimeDefault,
-        dateFormat: "h:i K",
-        onChange(timeObject, timeString) {
-          self.record.start_time = timeString;
-          self.starttimePicker.value = timeString;
+        // Don't submit form on 'enter'
+        $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
+            if(e.which == 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    },
+
+    computed: {
+        dropDownSelect: function(){
+            return (this.framework == 'foundation')? 'fdropdown':''
+        },
+        md6col: function () {
+            return (this.framework == 'foundation')? 'medium-6 columns':'col-md-6'
+        },
+        md12col: function () {
+            return (this.framework == 'foundation')? 'medium-12 columns':'col-md-12'
+        },
+        md8col: function () {
+            return (this.framework == 'foundation')? 'medium-8 columns':'col-md-8'
+        },
+        md4col: function () {
+            return (this.framework == 'foundation')? 'medium-4 columns':'col-md-4'
+        },
+        md2col: function () {
+            return (this.framework == 'foundation')? 'medium-2 columns':'col-md-2'
+        },
+        md10col: function () {
+            return (this.framework == 'foundation')? 'medium-10 columns':'col-md-10'
+        },
+        btnPrimary: function() {
+            return (this.framework == 'foundation')? 'button button-primary':'btn btn-primary'
+        },
+        formGroup: function() {
+            return (this.framework == 'foundation')? 'form-group':'form-group'
+        },
+        inputGroupLabel:function(){
+            return (this.framework=='foundation')?'input-group-label':'input-group-addon'
+        },
+        iconStar: function() {
+            return (this.framework == 'foundation')? 'fi-star':'fa fa-star'
+        },
+        calloutSuccess:function(){
+            return (this.framework == 'foundation')? 'callout success':'alert alert-success'
+        },
+        calloutFail:function(){
+            return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
+        },
+        submitBtnLabel:function(){
+            return (this.thisRecordExists)?'Update Event': 'Submit For Approval'
+        },
+        computedLocation: function() {
+            let bldg,room;
+
+            if (this.building) {
+                this.record.building = this.building.name;
+                bldg = this.record.building
+                room = (this.record.room)?' - ' + this.record.room:'';
+            } else {
+                bldg = ''
+                room = ''
+            }
+            return bldg + room;
+        },
+        cancelStatus: function(){
+            return (this.record.is_canceled == 1)? 'Uncancel Event':'Cancel Event'
+        },
+        isOnCampus: function() {
+            return this.record.on_campus == 1 ? true:false;
+        },
+        realCost: function() {
+            if(this.record.free == 1 ) {
+                return '0.00';
+            } else {
+                return '';
+            }
+        },
+        hasCost: function() {
+            if(this.record.free == 1 ) {
+                this.record.cost = '0.00';
+                return false;
+            } else {
+                return true;
+            }
+        },
+        titleChars: function() {
+            var str = this.record.title;
+            var cclength = str.length;
+            return this.totalChars.title - cclength;
+        },
+        descriptionChars: function() {
+            var str = this.record.description;
+            var cclength = str.length;
+            return this.totalChars.description - cclength;
+        },
+        hasStartTime: function() {
+            return this.record.all_day == 1? false : true;
+        },
+        hasEndTime: function() {
+            return (this.record.all_day == 1 || this.record.no_end_time == 1)?false : true;
+        },
+        isAdmin: function(){
+            return window.location.href.indexOf("admin") > -1;
+        },
+        thisRecordExists: function(){
+            if (this.recordexists || this.record_exists){
+                return true;
+            }
+            return false;
         }
-      });
-      this.endtimePicker = flatpickr(document.getElementById("end-time"),{
-        noCalendar: true,
-        enableTime: true,
-        defaultDate: self.dateObject.endTimeDefault,
-        dateFormat: "h:i K",
-        onChange(timeObject, timeString) {
-          self.record.end_time = timeString;
-          self.endtimePicker.value = timeString;
-        }
-      });
-
-      this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"),{
-        minDate: self.dateObject.regDateMin,
-        defaultDate: self.dateObject.regDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass:"form-control",
-        dateFormat: "Y-m-d",
-        onChange(dateObject, dateString) {
-          self.record.reg_deadline = dateString;
-          self.regdeadlinePicker.value = dateString;
-        }
-      });
     },
+    methods: {
+        refreshUserEventTable: function(){
+            $.get('/calendar/user/events', function(data){
+                data = $.parseJSON(data);
+                $('#user-events-tables').html(data);
+            });
+        },
 
-    fetchSubmittedRecord: function(recid){
-      // Sets params for update record, Passes an id to fetchCurrentRecord
-      this.recordexists = true;
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-      this.recordid = recid;
-      this.formErrors = {};
-      this.fetchCurrentRecord();
-    },
+        fetchMiniCalsList: function() {
+            this.$http.get('/api/minicalslist')
+            .then((response) =>{
+                this.minicalslist = response.data;
 
-    cancelRecord: function(recid){
-      // toggles cancel
-      this.formMessage.isOk = false;
-      this.formMessage.msg = false;
+                let self = this;
 
-      this.$http.patch('/api/event/'+ recid + '/cancel')
-      .then((response) => {
-        this.formMessage.isOk = response.ok;
-        this.formMessage.msg = response.body.message;
-      }, (response) => {
-        console.log(JSON.stringify(response))
-      }).bind(this);
-      this.refreshUserEventTable();
-    },
+                $.each(response.data, function(index, value) {
+                    self.minicalslist[index].label = value.calendar;
+                    self.minicalslist[index].code = value.value;
+                });
+            }, (response) => {
+                //error callback
+                console.log("ERRORS");
+                this.formErrors =  response.data.error.message;
 
-    fetchCurrentRecord: function() {
-      this.$http.get('/api/event/'+ this.recordid + '/edit')
+            }).bind(this);
+        },
+        setupDatePickers:function(){
+            var self = this;
+            if (this.record.start_date === '') {
+                this.dateObject.startDateMin = this.currentDate;
+                this.dateObject.startDateDefault = null;
 
-      .then((response) =>{
-        this.$set('record', response.data.data)
-        this.checkOverData();
-        this.record.start_time = response.data.data.start_time;
-      }, (response) => {
-        //error callback
-        console.log("FETCH ERRORS");
-      }).bind(this);
-    },
-    checkOverData: function() { // Used after fetching an event
-      // Check event location
-      // not null and has more than white space
-      if(this.record.building != null && /\S/.test(this.record.building)){
-        // Is on campus
-        this.record.on_campus = 1; // bool
-        this.building = {id:0, name:this.convertFromSlug(this.record.building)};
-      } else {
-        // Not on campus
-        this.record.on_campus = 0; // bool
-        this.record.locationoffcampus = this.record.location;
-      }
+                this.dateObject.endDateMin = null;
+                this.dateObject.endDateDefault = null;
+            } else {
+                this.dateObject.startDateMin = this.record.start_date;
+                this.dateObject.startDateDefault = this.record.start_date;
+                this.dateObject.endDateMin = this.record.start_date;
+                this.dateObject.endDateDefault = this.record.end_date;
+                this.dateObject.startTimeDefault = this.record.start_time;
+                this.dateObject.endTimeDefault = this.record.end_time;
+                this.dateObject.regDateMin = this.record.start_date;
+                this.dateObject.regDateDefault = this.record.reg_deadline;
+            }
+            this.startdatePicker = flatpickr(document.getElementById("start-date"), {
+                // minDate: self.dateObject.startDateMin,
+                defaultDate: self.dateObject.startDateDefault,
+                enableTime: false,
+                // altFormat: "m-d-Y",
+                altInput: true,
+                altInputClass: "form-control",
+                dateFormat: "Y-m-d",
+                // minDate: new Date(),
+                onChange(dateObject, dateString) {
+                    self.enddatePicker.set("minDate", dateObject);
+                    self.record.start_date = dateString;
+                    self.startdatePicker.value = dateString;
+                }
+            });
 
-      this.setupDatePickers();
-    },
-    fetchForSelectCategoriesList(search,loading){
-      loading ? loading(true): undefined;
-      this.$http.get('/api/categorylist',{
-        q: search
-      }).then(resp => {
-        this.zcats = resp.data;
-        loading ? loading(true): undefined;
-      })
-    },
-    fetchForSelectBuildingList(search,loading) {
-      loading ? loading(true): undefined;
-      this.$http.get('/api/buildinglist',{
-        q: search
-      }).then(resp => {
-        this.buildings = resp.data;
-        loading ? loading(true): undefined;
-      })
-    },
-    delEvent: function(e) {
-      e.preventDefault();
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
+            this.enddatePicker = flatpickr(document.getElementById("end-date"), {
+                minDate: self.dateObject.endDateMin,
+                defaultDate: self.dateObject.endDateDefault,
+                enableTime: false,
+                // altFormat: "m-d-Y",
+                altInput: true,
+                altInputClass: "form-control",
+                dateFormat: "Y-m-d",
+                // minDate: new Date(),
+                onChange(dateObject, dateString) {
+                    self.startdatePicker.set("maxDate", dateObject);
+                    self.record.end_date = dateString;
+                    self.enddatePicker.value = dateString;
+                }
+            });
 
-      if(confirm('Would you like to delete this Event')==true){
-        $('html, body').animate({ scrollTop: 0 }, 'fast');
+            this.starttimePicker = flatpickr(document.getElementById("start-time"),{
+                noCalendar: true,
+                enableTime: true,
+                defaultDate: self.dateObject.startTimeDefault,
+                dateFormat: "h:i K",
+                onChange(timeObject, timeString) {
+                    self.record.start_time = timeString;
+                    self.starttimePicker.value = timeString;
+                }
+            });
+            this.endtimePicker = flatpickr(document.getElementById("end-time"),{
+                noCalendar: true,
+                enableTime: true,
+                defaultDate: self.dateObject.endTimeDefault,
+                dateFormat: "h:i K",
+                onChange(timeObject, timeString) {
+                    self.record.end_time = timeString;
+                    self.endtimePicker.value = timeString;
+                }
+            });
 
-        this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
-        this.$http.post('/api/event/'+tempid+'/delete')
+            this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"),{
+                minDate: self.dateObject.regDateMin,
+                defaultDate: self.dateObject.regDateDefault,
+                enableTime: false,
+                // altFormat: "m-d-Y",
+                altInput: true,
+                altInputClass:"form-control",
+                dateFormat: "Y-m-d",
+                onChange(dateObject, dateString) {
+                    self.record.reg_deadline = dateString;
+                    self.regdeadlinePicker.value = dateString;
+                }
+            });
+        },
 
-        .then((response) =>{
-          // If user admin
-          if(window.location.href.indexOf("admin") > -1) {
-            window.location.href = "/admin/event/queue";
-          } else { // Not user admin
-            // Clear out values;
-            this.record= {
-              on_campus: 1,
-              all_day: 0,
-              no_end_time: 0,
-              free: 0,
-              title: '',
-              description: '',
-              mini_calendar: '',
-              building: '',
-              categories:[]
-            };
-            this.record.location = '';
-            this.building = null;
-            this.buildings = null;
-            this.record.room = null;
-            this.record.building = null;
-            this.record.building_id = null;
-            this.record.lbc_approved= false;
-            this.record.sdate= '';
-            this.record.edate= '';
-            this.record.stime= '';
-            this.record.rdate= '';
-            this.formMessage.isOk = response.ok;
-            this.formMessage.msg = response.body;
-            this.recordexists = false;
-            var d = new Date();
-            var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-            this.record.start_date = tempdate;
-            this.record.end_date = tempdate;
-            this.record.reg_deadline = tempdate;
+        fetchSubmittedRecord: function(recid){
+            // Sets params for update record, Passes an id to fetchCurrentRecord
+            this.record.exists = this.record_exists = true;
+            this.formMessage.isOk = false;
+            this.formMessage.isErr = false;
+            this.record.id = recid;
+            this.formErrors = {};
+            this.fetchCurrentRecord();
+        },
+
+        cancelRecord: function(recid){
+            // toggles cancel
+            this.formMessage.isOk = false;
+            this.formMessage.msg = false;
+
+            this.$http.patch('/api/event/'+ recid + '/cancel')
+            .then((response) => {
+                this.formMessage.isOk = response.ok;
+                this.formMessage.msg = response.body.message;
+            }, (response) => {
+                console.log(JSON.stringify(response))
+            }).bind(this);
+            this.refreshUserEventTable();
+        },
+
+        fetchCurrentRecord: function() {
+            var fetchme = this.recordid ? this.recordid : this.record.id;
+            this.$http.get('/api/event/' + fetchme + '/edit')
+
+            .then((response) =>{
+                this.record = response.data.data;
+                this.record.exists = this.record_exists = true;
+                this.currentRecordId = this.record.id;
+                this.checkOverData();
+                this.record.start_time = response.data.data.start_time;
+            }, (response) => {
+                //error callback
+                console.log(response);
+                console.log("FETCH ERRORS");
+            }).bind(this);
+        },
+        checkOverData: function() { // Used after fetching an event
+            // Check event location
+            // not null and has more than white space
+            if(this.record.building != null && /\S/.test(this.record.building)){
+                // Is on campus
+                this.record.on_campus = 1; // bool
+                this.building = {id:0, name:this.convertFromSlug(this.record.building)};
+                this.building.label = this.building.name;
+            } else {
+                // Not on campus
+                this.record.on_campus = 0; // bool
+                this.record.locationoffcampus = this.record.location;
+            }
+
+            if (!this.record.categories){
+                this.record.categories = [];
+            }
+            let self = this;
+
+            $.each(this.record.eventcategories, function(index, value) {
+                self.record.eventcategories[index].label = value.category;
+                self.record.eventcategories[index].code = value.value;
+            });
+
+            $.each(this.record.minicalendars, function(index, value) {
+                self.record.minicalendars[index].label = value.calendar;
+                self.record.minicalendars[index].code = value.value;
+            });
+
+            this.record.categories = self.record.eventcategories;
+
             this.setupDatePickers();
-          }
-        }, (response) => {
-          console.log('Error: '+JSON.stringify(response))
-        }).bind(this);
-        this.refreshUserEventTable();
-      }
-    },
+        },
+        fetchForSelectCategoriesList(search,loading){
+            loading ? loading(true): undefined;
+            this.$http.get('/api/categorylist',{
+                q: search
+            }).then(resp => {
+                this.zcats = resp.data;
+                let self = this;
 
-    cloneEvent: function(e) {
-      e.preventDefault();
-      this.recordexists = false;
-      this.submitForm(e);
-    },
+                $.each(resp.data, function(index, value) {
+                    self.zcats[index].label = value.category;
+                    self.zcats[index].code = value.value;
+                });
 
-    cancelEvent: function(e){
-        e.preventDefault();
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = false;
+                loading ? loading(true): undefined;
+            })
+        },
+        fetchForSelectBuildingList(search,loading) {
+            loading ? loading(true): undefined;
 
-        if(confirm('Would you like to cancel this Event')==true){
-          $('html, body').animate({ scrollTop: 0 }, 'fast');
+            this.$http.get('/api/buildinglist',{
+                q: search
+            }).then(resp => {
+                this.buildings = resp.data;
+                let self = this;
 
-          this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
-          this.$http.patch('/api/event/'+tempid+'/cancel')
+                $.each(resp.data, function(index, value) {
+                    self.buildings[index].label = value.name;
+                });
 
-          .then((response) =>{
-              if(this.record.is_canceled == 0){
-                  this.record.is_canceled = 1
-              } else {
-                  this.record.is_canceled = 0
-              }
+                loading ? loading(true): undefined;
+            })
+        },
+        delEvent: function(e) {
+            e.preventDefault();
+            this.formMessage.isOk = false;
+            this.formMessage.isErr = false;
 
-              this.formMessage.msg = "Event's status has been changed.";
-              this.formMessage.isOk = response.ok;
-          }, (response) => {
-            console.log('Error: '+JSON.stringify(response))
-          }).bind(this);
-          this.refreshUserEventTable();
+            if(confirm('Would you like to delete this Event')==true){
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+                var tempid = 0;
+
+
+                this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+                this.$http.post('/api/event/'+tempid+'/delete')
+
+                .then((response) =>{
+                    // If user admin
+                    if(window.location.href.indexOf("admin") > -1) {
+                        window.location.href = "/admin/event/queue";
+                    } else { // Not user admin
+                        // Clear out values;
+                        this.record= {
+                            on_campus: 1,
+                            all_day: 0,
+                            no_end_time: 0,
+                            free: 0,
+                            title: '',
+                            description: '',
+                            mini_calendar: '',
+                            building: '',
+                            categories:[]
+                        };
+                        this.record.location = '';
+                        this.building = null;
+                        this.buildings = null;
+                        this.record.room = null;
+                        this.record.building = null;
+                        this.record.building_id = null;
+                        this.record.lbc_approved= false;
+                        this.record.sdate= '';
+                        this.record.edate= '';
+                        this.record.stime= '';
+                        this.record.rdate= '';
+                        this.formMessage.isOk = response.ok;
+                        this.formMessage.msg = response.body;
+                        this.record.exists = this.record_exists = false;
+                        var d = new Date();
+                        var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+                        this.record.start_date = tempdate;
+                        this.record.end_date = tempdate;
+                        this.record.reg_deadline = tempdate;
+                        this.setupDatePickers();
+                    }
+                }, (response) => {
+                    console.log('Error: '+JSON.stringify(response))
+                }).bind(this);
+                this.refreshUserEventTable();
+            }
+        },
+
+        cloneEvent: function(e) {
+            this.record.exists = this.record_exists = false;
+
+            e.preventDefault();
+            this.submitForm(e);
+        },
+
+        cancelEvent: function(e){
+            e.preventDefault();
+            this.formMessage.isOk = false;
+            this.formMessage.isErr = false;
+
+            if(confirm('Would you like to cancel this Event')==true){
+                $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+                this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+                this.$http.patch('/api/event/'+tempid+'/cancel')
+
+                .then((response) =>{
+                    if(this.record.is_canceled == 0){
+                        this.record.is_canceled = 1
+                    } else {
+                        this.record.is_canceled = 0
+                    }
+
+                    this.formMessage.msg = "Event's status has been changed.";
+                    this.formMessage.isOk = response.ok;
+                }, (response) => {
+                    console.log('Error: '+JSON.stringify(response))
+                }).bind(this);
+                this.refreshUserEventTable();
+            }
+        },
+
+        submitForm: function(e) {
+            e.preventDefault();
+            this.formMessage.isOk = false;
+            this.formMessage.isErr = false;
+
+            $('html, body').animate({ scrollTop: 0 }, 'fast');
+
+            if(this.record.on_campus == true) {
+                this.record.location = this.computedLocation;
+            } else {
+                this.record.location = this.record.locationoffcampus;
+                // clearout these values
+                this.record.building = null;
+                this.record.building_id = null;
+                this.record.room = null;
+            }
+            this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
+
+            let method = (this.thisRecordExists) ? 'put' : 'post'
+            let route =  (this.thisRecordExists) ? '/api/event/' + this.record.id : '/api/event';
+
+            this.$http[method](route, this.record)
+
+            .then((response) =>{
+                response.status;
+                this.formMessage.msg = response.data.message;
+                this.formMessage.isOk = response.ok;
+                this.formMessage.isErr = false;
+                this.currentRecordId = response.data.newdata.record_id;
+                this.record_id = response.data.newdata.record_id;
+                this.record.id = response.data.newdata.record_id;
+                this.record.exists = true;
+                this.formErrors = {};
+                this.refreshUserEventTable();
+                this.fetchCurrentRecord(this.currentRecordId)
+            }, (response) => {
+                this.formMessage.isOk = false;
+                this.formMessage.isErr = true;
+                //error callback
+                console.log("FORM ERRORS" + JSON.stringify(response));
+                this.formErrors = response.data.error.message;
+            }).bind(this);
+        },
+        convertToSlug:function(value){
+            return value.toLowerCase()
+            .replace(/[^a-z0-9-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        },
+        convertFromSlug:function(value){
+
+            /* READ: for some reason, buildings do not have foreign key relations to events;
+            * they are merely being stored as slugs in the events table.
+            * This causes problems when trying to reproduce names that have capital letters other than the first letter
+            * (e.g. "McKenny Hall" or "Rec/IM Building")
+            * In lieu of breaking the entire events table, whenever a slug has special formatting, just put it in a conditional statement
+            *
+            * CP 1/22/18
+            */
+            if(value == 'mckenny-hall'){
+                return 'McKenny Hall'
+            } else if(value == 'recim-building' || value == 'rec/im-building') {
+                return 'Rec/IM Building'
+            } else if (value == 'rec/im-softball-complex'){
+                return 'Rec/IM Softball Complex'
+            } else {
+                return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
+                    return arguments[0].toUpperCase()
+                })
+            }
+
         }
-    },
-
-    submitForm: function(e) {
-      e.preventDefault();
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-
-      $('html, body').animate({ scrollTop: 0 }, 'fast');
-
-      if(this.record.on_campus == true) {
-        this.record.location = this.computedLocation;
-      } else {
-        this.record.location = this.record.locationoffcampus;
-        // clearout these values
-        this.record.building = null;
-        this.record.building_id = null;
-        this.record.room = null;
-      }
-      this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
-      this.record.categories = this.record.eventcategories;
-
-      let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/event/' + this.recordid : '/api/event';
-
-      this.$http[method](route, this.record)
-
-      .then((response) =>{
-        response.status;
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok;
-        this.formMessage.isErr = false;
-        this.currentRecordId = response.data.newdata.record_id;
-        this.record_id = response.data.newdata.record_id;
-        this.recordid = response.data.newdata.record_id;
-        this.recordexists = true;
-        this.formErrors = {};
-        this.refreshUserEventTable();
-        this.fetchCurrentRecord(this.currentRecordId)
-
-      }, (response) => {
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = true;
-        //error callback
-        console.log("FORM ERRORS" + JSON.stringify(response));
-        this.formErrors = response.data.error.message;
-      }).bind(this);
-    },
-    convertToSlug:function(value){
-      return value.toLowerCase()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-    },
-    convertFromSlug:function(value){
-
-      /* READ: for some reason, buildings do not have foreign key relations to events;
-       * they are merely being stored as slugs in the events table.
-       * This causes problems when trying to reproduce names that have capital letters other than the first letter
-       * (e.g. "McKenny Hall" or "Rec/IM Building")
-       * In lieu of breaking the entire events table, whenever a slug has special formatting, just put it in a conditional statement
-       *
-       * CP 1/22/18
-       */
-      if(value == 'mckenny-hall'){
-        return 'McKenny Hall'
-      } else if(value == 'recim-building' || value == 'rec/im-building') {
-        return 'Rec/IM Building'
-      } else if (value == 'rec/im-softball-complex'){
-        return 'Rec/IM Softball Complex'
-      } else {
-        return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
-          return arguments[0].toUpperCase()
-        })
-      }
-
     }
-  }
 };
 </script>

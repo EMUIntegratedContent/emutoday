@@ -85,7 +85,7 @@
 --}}
 <div class="row">
   <div class="col-xs-12">
-    <p>Something is wrong with the Google Analytics plugin on this page. Here's a filler paragraph in the meantime. Have a nice day!</p>
+    <!-- <p>Something is wrong with the Google Analytics plugin on this page. Here's a filler paragraph in the meantime. Have a nice day!</p> -->
   </div>
 </div>
 

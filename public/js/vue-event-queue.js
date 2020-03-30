@@ -2492,22 +2492,36 @@ if (typeof module !== "undefined") {
     function createDate (y, m, d, h, M, s, ms) {
         // can't just apply() to create a date:
         // https://stackoverflow.com/q/181348
-        var date = new Date(y, m, d, h, M, s, ms);
-
+        var date;
         // the date constructor remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
-            date.setFullYear(y);
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            date = new Date(y + 400, m, d, h, M, s, ms);
+            if (isFinite(date.getFullYear())) {
+                date.setFullYear(y);
+            }
+        } else {
+            date = new Date(y, m, d, h, M, s, ms);
         }
+
         return date;
     }
 
     function createUTCDate (y) {
-        var date = new Date(Date.UTC.apply(null, arguments));
-
+        var date;
         // the Date.UTC function remaps years 0-99 to 1900-1999
-        if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
-            date.setUTCFullYear(y);
+        if (y < 100 && y >= 0) {
+            var args = Array.prototype.slice.call(arguments);
+            // preserve leap years using a full 400 year cycle, then reset
+            args[0] = y + 400;
+            date = new Date(Date.UTC.apply(null, args));
+            if (isFinite(date.getUTCFullYear())) {
+                date.setUTCFullYear(y);
+            }
+        } else {
+            date = new Date(Date.UTC.apply(null, arguments));
         }
+
         return date;
     }
 
@@ -2609,7 +2623,7 @@ if (typeof module !== "undefined") {
 
     var defaultLocaleWeek = {
         dow : 0, // Sunday is the first day of the week.
-        doy : 6  // The week that contains Jan 1st is the first week of the year.
+        doy : 6  // The week that contains Jan 6th is the first week of the year.
     };
 
     function localeFirstDayOfWeek () {
@@ -2718,25 +2732,28 @@ if (typeof module !== "undefined") {
     }
 
     // LOCALES
+    function shiftWeekdays (ws, n) {
+        return ws.slice(n, 7).concat(ws.slice(0, n));
+    }
 
     var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
     function localeWeekdays (m, format) {
-        if (!m) {
-            return isArray(this._weekdays) ? this._weekdays :
-                this._weekdays['standalone'];
-        }
-        return isArray(this._weekdays) ? this._weekdays[m.day()] :
-            this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
+        var weekdays = isArray(this._weekdays) ? this._weekdays :
+            this._weekdays[(m && m !== true && this._weekdays.isFormat.test(format)) ? 'format' : 'standalone'];
+        return (m === true) ? shiftWeekdays(weekdays, this._week.dow)
+            : (m) ? weekdays[m.day()] : weekdays;
     }
 
     var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
     function localeWeekdaysShort (m) {
-        return (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
+        return (m === true) ? shiftWeekdays(this._weekdaysShort, this._week.dow)
+            : (m) ? this._weekdaysShort[m.day()] : this._weekdaysShort;
     }
 
     var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
     function localeWeekdaysMin (m) {
-        return (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
+        return (m === true) ? shiftWeekdays(this._weekdaysMin, this._week.dow)
+            : (m) ? this._weekdaysMin[m.day()] : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -3485,13 +3502,13 @@ if (typeof module !== "undefined") {
                     weekdayOverflow = true;
                 }
             } else if (w.e != null) {
-                // local weekday -- counting starts from begining of week
+                // local weekday -- counting starts from beginning of week
                 weekday = w.e + dow;
                 if (w.e < 0 || w.e > 6) {
                     weekdayOverflow = true;
                 }
             } else {
-                // default to begining of week
+                // default to beginning of week
                 weekday = dow;
             }
         }
@@ -4085,7 +4102,7 @@ if (typeof module !== "undefined") {
             years = normalizedInput.year || 0,
             quarters = normalizedInput.quarter || 0,
             months = normalizedInput.month || 0,
-            weeks = normalizedInput.week || 0,
+            weeks = normalizedInput.week || normalizedInput.isoWeek || 0,
             days = normalizedInput.day || 0,
             hours = normalizedInput.hour || 0,
             minutes = normalizedInput.minute || 0,
@@ -4389,7 +4406,7 @@ if (typeof module !== "undefined") {
                 ms : toInt(absRound(match[MILLISECOND] * 1000)) * sign // the millisecond decimal point is included in the match
             };
         } else if (!!(match = isoRegex.exec(input))) {
-            sign = (match[1] === '-') ? -1 : (match[1] === '+') ? 1 : 1;
+            sign = (match[1] === '-') ? -1 : 1;
             duration = {
                 y : parseIso(match[2], sign),
                 M : parseIso(match[3], sign),
@@ -4431,7 +4448,7 @@ if (typeof module !== "undefined") {
     }
 
     function positiveMomentsDifference(base, other) {
-        var res = {milliseconds: 0, months: 0};
+        var res = {};
 
         res.months = other.month() - base.month() +
             (other.year() - base.year()) * 12;
@@ -4540,7 +4557,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() > localInput.valueOf();
         } else {
@@ -4553,7 +4570,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() < localInput.valueOf();
         } else {
@@ -4562,9 +4579,14 @@ if (typeof module !== "undefined") {
     }
 
     function isBetween (from, to, units, inclusivity) {
+        var localFrom = isMoment(from) ? from : createLocal(from),
+            localTo = isMoment(to) ? to : createLocal(to);
+        if (!(this.isValid() && localFrom.isValid() && localTo.isValid())) {
+            return false;
+        }
         inclusivity = inclusivity || '()';
-        return (inclusivity[0] === '(' ? this.isAfter(from, units) : !this.isBefore(from, units)) &&
-            (inclusivity[1] === ')' ? this.isBefore(to, units) : !this.isAfter(to, units));
+        return (inclusivity[0] === '(' ? this.isAfter(localFrom, units) : !this.isBefore(localFrom, units)) &&
+            (inclusivity[1] === ')' ? this.isBefore(localTo, units) : !this.isAfter(localTo, units));
     }
 
     function isSame (input, units) {
@@ -4573,7 +4595,7 @@ if (typeof module !== "undefined") {
         if (!(this.isValid() && localInput.isValid())) {
             return false;
         }
-        units = normalizeUnits(units || 'millisecond');
+        units = normalizeUnits(units) || 'millisecond';
         if (units === 'millisecond') {
             return this.valueOf() === localInput.valueOf();
         } else {
@@ -4583,11 +4605,11 @@ if (typeof module !== "undefined") {
     }
 
     function isSameOrAfter (input, units) {
-        return this.isSame(input, units) || this.isAfter(input,units);
+        return this.isSame(input, units) || this.isAfter(input, units);
     }
 
     function isSameOrBefore (input, units) {
-        return this.isSame(input, units) || this.isBefore(input,units);
+        return this.isSame(input, units) || this.isBefore(input, units);
     }
 
     function diff (input, units, asFloat) {
@@ -4764,62 +4786,130 @@ if (typeof module !== "undefined") {
         return this._locale;
     }
 
+    var MS_PER_SECOND = 1000;
+    var MS_PER_MINUTE = 60 * MS_PER_SECOND;
+    var MS_PER_HOUR = 60 * MS_PER_MINUTE;
+    var MS_PER_400_YEARS = (365 * 400 + 97) * 24 * MS_PER_HOUR;
+
+    // actual modulo - handles negative numbers (for dates before 1970):
+    function mod$1(dividend, divisor) {
+        return (dividend % divisor + divisor) % divisor;
+    }
+
+    function localStartOfDate(y, m, d) {
+        // the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return new Date(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return new Date(y, m, d).valueOf();
+        }
+    }
+
+    function utcStartOfDate(y, m, d) {
+        // Date.UTC remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0) {
+            // preserve leap years using a full 400 year cycle, then reset
+            return Date.UTC(y + 400, m, d) - MS_PER_400_YEARS;
+        } else {
+            return Date.UTC(y, m, d);
+        }
+    }
+
     function startOf (units) {
+        var time;
         units = normalizeUnits(units);
-        // the following switch intentionally omits break keywords
-        // to utilize falling through the cases.
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
+            return this;
+        }
+
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
         switch (units) {
             case 'year':
-                this.month(0);
-                /* falls through */
+                time = startOfDate(this.year(), 0, 1);
+                break;
             case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3, 1);
+                break;
             case 'month':
-                this.date(1);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), 1);
+                break;
             case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday());
+                break;
             case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1));
+                break;
             case 'day':
             case 'date':
-                this.hours(0);
-                /* falls through */
+                time = startOfDate(this.year(), this.month(), this.date());
+                break;
             case 'hour':
-                this.minutes(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR);
+                break;
             case 'minute':
-                this.seconds(0);
-                /* falls through */
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_MINUTE);
+                break;
             case 'second':
-                this.milliseconds(0);
+                time = this._d.valueOf();
+                time -= mod$1(time, MS_PER_SECOND);
+                break;
         }
 
-        // weeks are a special case
-        if (units === 'week') {
-            this.weekday(0);
-        }
-        if (units === 'isoWeek') {
-            this.isoWeekday(1);
-        }
-
-        // quarters are also special
-        if (units === 'quarter') {
-            this.month(Math.floor(this.month() / 3) * 3);
-        }
-
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
         return this;
     }
 
     function endOf (units) {
+        var time;
         units = normalizeUnits(units);
-        if (units === undefined || units === 'millisecond') {
+        if (units === undefined || units === 'millisecond' || !this.isValid()) {
             return this;
         }
 
-        // 'date' is an alias for 'day', so it should be considered as such.
-        if (units === 'date') {
-            units = 'day';
+        var startOfDate = this._isUTC ? utcStartOfDate : localStartOfDate;
+
+        switch (units) {
+            case 'year':
+                time = startOfDate(this.year() + 1, 0, 1) - 1;
+                break;
+            case 'quarter':
+                time = startOfDate(this.year(), this.month() - this.month() % 3 + 3, 1) - 1;
+                break;
+            case 'month':
+                time = startOfDate(this.year(), this.month() + 1, 1) - 1;
+                break;
+            case 'week':
+                time = startOfDate(this.year(), this.month(), this.date() - this.weekday() + 7) - 1;
+                break;
+            case 'isoWeek':
+                time = startOfDate(this.year(), this.month(), this.date() - (this.isoWeekday() - 1) + 7) - 1;
+                break;
+            case 'day':
+            case 'date':
+                time = startOfDate(this.year(), this.month(), this.date() + 1) - 1;
+                break;
+            case 'hour':
+                time = this._d.valueOf();
+                time += MS_PER_HOUR - mod$1(time + (this._isUTC ? 0 : this.utcOffset() * MS_PER_MINUTE), MS_PER_HOUR) - 1;
+                break;
+            case 'minute':
+                time = this._d.valueOf();
+                time += MS_PER_MINUTE - mod$1(time, MS_PER_MINUTE) - 1;
+                break;
+            case 'second':
+                time = this._d.valueOf();
+                time += MS_PER_SECOND - mod$1(time, MS_PER_SECOND) - 1;
+                break;
         }
 
-        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+        this._d.setTime(time);
+        hooks.updateOffset(this, true);
+        return this;
     }
 
     function valueOf () {
@@ -5525,10 +5615,14 @@ if (typeof module !== "undefined") {
 
         units = normalizeUnits(units);
 
-        if (units === 'month' || units === 'year') {
-            days   = this._days   + milliseconds / 864e5;
+        if (units === 'month' || units === 'quarter' || units === 'year') {
+            days = this._days + milliseconds / 864e5;
             months = this._months + daysToMonths(days);
-            return units === 'month' ? months : months / 12;
+            switch (units) {
+                case 'month':   return months;
+                case 'quarter': return months / 3;
+                case 'year':    return months / 12;
+            }
         } else {
             // handle milliseconds separately because of floating point math errors (issue #1867)
             days = this._days + Math.round(monthsToDays(this._months));
@@ -5571,6 +5665,7 @@ if (typeof module !== "undefined") {
     var asDays         = makeAs('d');
     var asWeeks        = makeAs('w');
     var asMonths       = makeAs('M');
+    var asQuarters     = makeAs('Q');
     var asYears        = makeAs('y');
 
     function clone$1 () {
@@ -5762,6 +5857,7 @@ if (typeof module !== "undefined") {
     proto$2.asDays         = asDays;
     proto$2.asWeeks        = asWeeks;
     proto$2.asMonths       = asMonths;
+    proto$2.asQuarters     = asQuarters;
     proto$2.asYears        = asYears;
     proto$2.valueOf        = valueOf$1;
     proto$2._bubble        = bubble;
@@ -5806,7 +5902,7 @@ if (typeof module !== "undefined") {
     // Side effect imports
 
 
-    hooks.version = '2.22.2';
+    hooks.version = '2.24.0';
 
     setHookCallback(createLocal);
 
@@ -5847,7 +5943,7 @@ if (typeof module !== "undefined") {
         TIME: 'HH:mm',                                  // <input type="time" />
         TIME_SECONDS: 'HH:mm:ss',                       // <input type="time" step="1" />
         TIME_MS: 'HH:mm:ss.SSS',                        // <input type="time" step="0.001" />
-        WEEK: 'YYYY-[W]WW',                             // <input type="week" />
+        WEEK: 'GGGG-[W]WW',                             // <input type="week" />
         MONTH: 'YYYY-MM'                                // <input type="month" />
     };
 
@@ -6045,6 +6141,7 @@ process.umask = function() { return 0; };
 /**!
  * Sortable
  * @author	RubaXa   <trash@rubaxa.org>
+ * @author	owenm    <owen23355@gmail.com>
  * @license MIT
  */
 
@@ -6082,26 +6179,47 @@ process.umask = function() { return 0; };
 		scrollParentEl,
 		scrollCustomFn,
 
-		lastEl,
-		lastCSS,
-		lastParentCSS,
-
 		oldIndex,
 		newIndex,
+		oldDraggableIndex,
+		newDraggableIndex,
 
 		activeGroup,
 		putSortable,
 
-		autoScroll = {},
+		autoScrolls = [],
+		scrolling = false,
+
+		awaitingDragStarted = false,
+		ignoreNextClick = false,
+		sortables = [],
+
+		pointerElemChangedInterval,
+		lastPointerElemX,
+		lastPointerElemY,
 
 		tapEvt,
 		touchEvt,
 
 		moved,
 
+
+		lastTarget,
+		lastDirection,
+		pastFirstInvertThresh = false,
+		isCircumstantialInvert = false,
+		lastMode, // 'swap' or 'insert'
+
+		targetMoveDistance,
+
+		// For positioning ghost absolutely
+		ghostRelativeParent,
+		ghostRelativeParentInitialScroll = [], // (left, top)
+
+		realDragElRect, // dragEl rect after current animation
+
 		/** @const */
 		R_SPACE = /\s+/g,
-		R_FLOAT = /left|right|inline/,
 
 		expando = 'Sortable' + (new Date).getTime(),
 
@@ -6113,135 +6231,328 @@ process.umask = function() { return 0; };
 		$ = win.jQuery || win.Zepto,
 		Polymer = win.Polymer,
 
-		captureMode = false,
-		passiveMode = false,
+		captureMode = {
+			capture: false,
+			passive: false
+		},
 
+		IE11OrLess = !!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie|iemobile)/i),
+		Edge = !!navigator.userAgent.match(/Edge/i),
+		FireFox = !!navigator.userAgent.match(/firefox/i),
+		Safari = !!(navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && !navigator.userAgent.match(/android/i)),
+		IOS = !!(navigator.userAgent.match(/iP(ad|od|hone)/i)),
+
+		PositionGhostAbsolutely = IOS,
+
+		CSSFloatProperty = Edge || IE11OrLess ? 'cssFloat' : 'float',
+
+		// This will not pass for IE9, because IE9 DnD only works on anchors
 		supportDraggable = ('draggable' in document.createElement('div')),
-		supportCssPointerEvents = (function (el) {
-			// false when IE11
-			if (!!navigator.userAgent.match(/(?:Trident.*rv[ :]?11\.|msie)/i)) {
+
+		supportCssPointerEvents = (function() {
+			// false when <= IE11
+			if (IE11OrLess) {
 				return false;
 			}
-			el = document.createElement('x');
+			var el = document.createElement('x');
 			el.style.cssText = 'pointer-events:auto';
 			return el.style.pointerEvents === 'auto';
 		})(),
 
 		_silent = false,
+		_alignedSilent = false,
 
 		abs = Math.abs,
 		min = Math.min,
+		max = Math.max,
 
 		savedInputChecked = [],
-		touchDragOverListeners = [],
 
-		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl) {
+		_detectDirection = function(el, options) {
+			var elCSS = _css(el),
+				elWidth = parseInt(elCSS.width)
+					- parseInt(elCSS.paddingLeft)
+					- parseInt(elCSS.paddingRight)
+					- parseInt(elCSS.borderLeftWidth)
+					- parseInt(elCSS.borderRightWidth),
+				child1 = _getChild(el, 0, options),
+				child2 = _getChild(el, 1, options),
+				firstChildCSS = child1 && _css(child1),
+				secondChildCSS = child2 && _css(child2),
+				firstChildWidth = firstChildCSS && parseInt(firstChildCSS.marginLeft) + parseInt(firstChildCSS.marginRight) + _getRect(child1).width,
+				secondChildWidth = secondChildCSS && parseInt(secondChildCSS.marginLeft) + parseInt(secondChildCSS.marginRight) + _getRect(child2).width;
+
+			if (elCSS.display === 'flex') {
+				return elCSS.flexDirection === 'column' || elCSS.flexDirection === 'column-reverse'
+				? 'vertical' : 'horizontal';
+			}
+
+			if (elCSS.display === 'grid') {
+				return elCSS.gridTemplateColumns.split(' ').length <= 1 ? 'vertical' : 'horizontal';
+			}
+
+			if (child1 && firstChildCSS.float !== 'none') {
+				var touchingSideChild2 = firstChildCSS.float === 'left' ? 'left' : 'right';
+
+				return child2 && (secondChildCSS.clear === 'both' || secondChildCSS.clear === touchingSideChild2) ?
+					'vertical' : 'horizontal';
+			}
+
+			return (child1 &&
+				(
+					firstChildCSS.display === 'block' ||
+					firstChildCSS.display === 'flex' ||
+					firstChildCSS.display === 'table' ||
+					firstChildCSS.display === 'grid' ||
+					firstChildWidth >= elWidth &&
+					elCSS[CSSFloatProperty] === 'none' ||
+					child2 &&
+					elCSS[CSSFloatProperty] === 'none' &&
+					firstChildWidth + secondChildWidth > elWidth
+				) ?
+				'vertical' : 'horizontal'
+			);
+		},
+
+		/**
+		 * Detects first nearest empty sortable to X and Y position using emptyInsertThreshold.
+		 * @param  {Number} x      X position
+		 * @param  {Number} y      Y position
+		 * @return {HTMLElement}   Element of the first found nearest Sortable
+		 */
+		_detectNearestEmptySortable = function(x, y) {
+			for (var i = 0; i < sortables.length; i++) {
+				if (_lastChild(sortables[i])) continue;
+
+				var rect = _getRect(sortables[i]),
+					threshold = sortables[i][expando].options.emptyInsertThreshold,
+					insideHorizontally = x >= (rect.left - threshold) && x <= (rect.right + threshold),
+					insideVertically = y >= (rect.top - threshold) && y <= (rect.bottom + threshold);
+
+				if (threshold && insideHorizontally && insideVertically) {
+					return sortables[i];
+				}
+			}
+		},
+
+		_isClientInRowColumn = function(x, y, el, axis, options) {
+			var targetRect = _getRect(el),
+				targetS1Opp = axis === 'vertical' ? targetRect.left : targetRect.top,
+				targetS2Opp = axis === 'vertical' ? targetRect.right : targetRect.bottom,
+				mouseOnOppAxis = axis === 'vertical' ? x : y;
+
+			return targetS1Opp < mouseOnOppAxis && mouseOnOppAxis < targetS2Opp;
+		},
+
+		_isElInRowColumn = function(el1, el2, axis) {
+			var el1Rect = el1 === dragEl && realDragElRect || _getRect(el1),
+				el2Rect = el2 === dragEl && realDragElRect || _getRect(el2),
+				el1S1Opp = axis === 'vertical' ? el1Rect.left : el1Rect.top,
+				el1S2Opp = axis === 'vertical' ? el1Rect.right : el1Rect.bottom,
+				el1OppLength = axis === 'vertical' ? el1Rect.width : el1Rect.height,
+				el2S1Opp = axis === 'vertical' ? el2Rect.left : el2Rect.top,
+				el2S2Opp = axis === 'vertical' ? el2Rect.right : el2Rect.bottom,
+				el2OppLength = axis === 'vertical' ? el2Rect.width : el2Rect.height;
+
+			return (
+				el1S1Opp === el2S1Opp ||
+				el1S2Opp === el2S2Opp ||
+				(el1S1Opp + el1OppLength / 2) === (el2S1Opp + el2OppLength / 2)
+			);
+		},
+
+		_getParentAutoScrollElement = function(el, includeSelf) {
+			// skip to window
+			if (!el || !el.getBoundingClientRect) return _getWindowScrollingElement();
+
+			var elem = el;
+			var gotSelf = false;
+			do {
+				// we don't need to get elem css if it isn't even overflowing in the first place (performance)
+				if (elem.clientWidth < elem.scrollWidth || elem.clientHeight < elem.scrollHeight) {
+					var elemCSS = _css(elem);
+					if (
+						elem.clientWidth < elem.scrollWidth && (elemCSS.overflowX == 'auto' || elemCSS.overflowX == 'scroll') ||
+						elem.clientHeight < elem.scrollHeight && (elemCSS.overflowY == 'auto' || elemCSS.overflowY == 'scroll')
+					) {
+						if (!elem || !elem.getBoundingClientRect || elem === document.body) return _getWindowScrollingElement();
+
+						if (gotSelf || includeSelf) return elem;
+						gotSelf = true;
+					}
+				}
+			/* jshint boss:true */
+			} while (elem = elem.parentNode);
+
+			return _getWindowScrollingElement();
+		},
+
+		_getWindowScrollingElement = function() {
+			if (IE11OrLess) {
+				return document.documentElement;
+			} else {
+				return document.scrollingElement;
+			}
+		},
+
+		_scrollBy = function(el, x, y) {
+			el.scrollLeft += x;
+			el.scrollTop += y;
+		},
+
+		_autoScroll = _throttle(function (/**Event*/evt, /**Object*/options, /**HTMLElement*/rootEl, /**Boolean*/isFallback) {
 			// Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=505521
-			if (rootEl && options.scroll) {
-				var _this = rootEl[expando],
-					el,
-					rect,
+			if (options.scroll) {
+				var _this = rootEl ? rootEl[expando] : window,
 					sens = options.scrollSensitivity,
 					speed = options.scrollSpeed,
 
 					x = evt.clientX,
 					y = evt.clientY,
 
-					winWidth = window.innerWidth,
-					winHeight = window.innerHeight,
+					winScroller = _getWindowScrollingElement(),
 
-					vx,
-					vy,
+					scrollThisInstance = false;
 
-					scrollOffsetX,
-					scrollOffsetY
-				;
-
-				// Delect scrollEl
+				// Detect scrollEl
 				if (scrollParentEl !== rootEl) {
+					_clearAutoScrolls();
+
 					scrollEl = options.scroll;
-					scrollParentEl = rootEl;
 					scrollCustomFn = options.scrollFn;
 
 					if (scrollEl === true) {
-						scrollEl = rootEl;
-
-						do {
-							if ((scrollEl.offsetWidth < scrollEl.scrollWidth) ||
-								(scrollEl.offsetHeight < scrollEl.scrollHeight)
-							) {
-								break;
-							}
-							/* jshint boss:true */
-						} while (scrollEl = scrollEl.parentNode);
+						scrollEl = _getParentAutoScrollElement(rootEl, true);
+						scrollParentEl = scrollEl;
 					}
 				}
 
-				if (scrollEl) {
-					el = scrollEl;
-					rect = scrollEl.getBoundingClientRect();
-					vx = (abs(rect.right - x) <= sens) - (abs(rect.left - x) <= sens);
-					vy = (abs(rect.bottom - y) <= sens) - (abs(rect.top - y) <= sens);
-				}
+
+				var layersOut = 0;
+				var currentParent = scrollEl;
+				do {
+					var	el = currentParent,
+						rect = _getRect(el),
+
+						top = rect.top,
+						bottom = rect.bottom,
+						left = rect.left,
+						right = rect.right,
+
+						width = rect.width,
+						height = rect.height,
+
+						scrollWidth,
+						scrollHeight,
+
+						css,
+
+						vx,
+						vy,
+
+						canScrollX,
+						canScrollY,
+
+						scrollPosX,
+						scrollPosY;
 
 
-				if (!(vx || vy)) {
-					vx = (winWidth - x <= sens) - (x <= sens);
-					vy = (winHeight - y <= sens) - (y <= sens);
+					scrollWidth = el.scrollWidth;
+					scrollHeight = el.scrollHeight;
 
-					/* jshint expr:true */
-					(vx || vy) && (el = win);
-				}
+					css = _css(el);
 
+					scrollPosX = el.scrollLeft;
+					scrollPosY = el.scrollTop;
 
-				if (autoScroll.vx !== vx || autoScroll.vy !== vy || autoScroll.el !== el) {
-					autoScroll.el = el;
-					autoScroll.vx = vx;
-					autoScroll.vy = vy;
-
-					clearInterval(autoScroll.pid);
-
-					if (el) {
-						autoScroll.pid = setInterval(function () {
-							scrollOffsetY = vy ? vy * speed : 0;
-							scrollOffsetX = vx ? vx * speed : 0;
-
-							if ('function' === typeof(scrollCustomFn)) {
-								return scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt);
-							}
-
-							if (el === win) {
-								win.scrollTo(win.pageXOffset + scrollOffsetX, win.pageYOffset + scrollOffsetY);
-							} else {
-								el.scrollTop += scrollOffsetY;
-								el.scrollLeft += scrollOffsetX;
-							}
-						}, 24);
+					if (el === winScroller) {
+						canScrollX = width < scrollWidth && (css.overflowX === 'auto' || css.overflowX === 'scroll' || css.overflowX === 'visible');
+						canScrollY = height < scrollHeight && (css.overflowY === 'auto' || css.overflowY === 'scroll' || css.overflowY === 'visible');
+					} else {
+						canScrollX = width < scrollWidth && (css.overflowX === 'auto' || css.overflowX === 'scroll');
+						canScrollY = height < scrollHeight && (css.overflowY === 'auto' || css.overflowY === 'scroll');
 					}
-				}
+
+					vx = canScrollX && (abs(right - x) <= sens && (scrollPosX + width) < scrollWidth) - (abs(left - x) <= sens && !!scrollPosX);
+
+					vy = canScrollY && (abs(bottom - y) <= sens && (scrollPosY + height) < scrollHeight) - (abs(top - y) <= sens && !!scrollPosY);
+
+
+					if (!autoScrolls[layersOut]) {
+						for (var i = 0; i <= layersOut; i++) {
+							if (!autoScrolls[i]) {
+								autoScrolls[i] = {};
+							}
+						}
+					}
+
+					if (autoScrolls[layersOut].vx != vx || autoScrolls[layersOut].vy != vy || autoScrolls[layersOut].el !== el) {
+						autoScrolls[layersOut].el = el;
+						autoScrolls[layersOut].vx = vx;
+						autoScrolls[layersOut].vy = vy;
+
+						clearInterval(autoScrolls[layersOut].pid);
+
+						if (el && (vx != 0 || vy != 0)) {
+							scrollThisInstance = true;
+							/* jshint loopfunc:true */
+							autoScrolls[layersOut].pid = setInterval((function () {
+								// emulate drag over during autoscroll (fallback), emulating native DnD behaviour
+								if (isFallback && this.layer === 0) {
+									Sortable.active._emulateDragOver(true);
+									Sortable.active._onTouchMove(touchEvt, true);
+								}
+								var scrollOffsetY = autoScrolls[this.layer].vy ? autoScrolls[this.layer].vy * speed : 0;
+								var scrollOffsetX = autoScrolls[this.layer].vx ? autoScrolls[this.layer].vx * speed : 0;
+
+								if ('function' === typeof(scrollCustomFn)) {
+									if (scrollCustomFn.call(_this, scrollOffsetX, scrollOffsetY, evt, touchEvt, autoScrolls[this.layer].el) !== 'continue') {
+										return;
+									}
+								}
+
+								_scrollBy(autoScrolls[this.layer].el, scrollOffsetX, scrollOffsetY);
+							}).bind({layer: layersOut}), 24);
+						}
+					}
+					layersOut++;
+				} while (options.bubbleScroll && currentParent !== winScroller && (currentParent = _getParentAutoScrollElement(currentParent, false)));
+				scrolling = scrollThisInstance; // in case another function catches scrolling as false in between when it is not
 			}
 		}, 30),
 
+		_clearAutoScrolls = function () {
+			autoScrolls.forEach(function(autoScroll) {
+				clearInterval(autoScroll.pid);
+			});
+			autoScrolls = [];
+		},
+
 		_prepareGroup = function (options) {
 			function toFn(value, pull) {
-				if (value === void 0 || value === true) {
-					value = group.name;
-				}
+				return function(to, from, dragEl, evt) {
+					var sameGroup = to.options.group.name &&
+									from.options.group.name &&
+									to.options.group.name === from.options.group.name;
 
-				if (typeof value === 'function') {
-					return value;
-				} else {
-					return function (to, from) {
-						var fromGroup = from.options.group.name;
+					if (value == null && (pull || sameGroup)) {
+						// Default pull value
+						// Default pull and put value if same group
+						return true;
+					} else if (value == null || value === false) {
+						return false;
+					} else if (pull && value === 'clone') {
+						return value;
+					} else if (typeof value === 'function') {
+						return toFn(value(to, from, dragEl, evt), pull)(to, from, dragEl, evt);
+					} else {
+						var otherGroup = (pull ? to : from).options.group.name;
 
-						return pull
-							? value
-							: value && (value.join
-								? value.indexOf(fromGroup) > -1
-								: (fromGroup == value)
-							);
-					};
-				}
+						return (value === true ||
+						(typeof value === 'string' && value === otherGroup) ||
+						(value.join && value.indexOf(otherGroup) > -1));
+					}
+				};
 			}
 
 			var group = {};
@@ -6257,23 +6568,55 @@ process.umask = function() { return 0; };
 			group.revertClone = originalGroup.revertClone;
 
 			options.group = group;
-		}
-	;
+		},
 
-	// Detect support a passive mode
-	try {
-		window.addEventListener('test', null, Object.defineProperty({}, 'passive', {
-			get: function () {
-				// `false`, because everything starts to work incorrectly and instead of d'n'd,
-				// begins the page has scrolled.
-				passiveMode = false;
-				captureMode = {
-					capture: false,
-					passive: passiveMode
-				};
+		_checkAlignment = function(evt) {
+			if (!dragEl || !dragEl.parentNode) return;
+			dragEl.parentNode[expando] && dragEl.parentNode[expando]._computeIsAligned(evt);
+		},
+
+		_hideGhostForTarget = function() {
+			if (!supportCssPointerEvents && ghostEl) {
+				_css(ghostEl, 'display', 'none');
 			}
-		}));
-	} catch (err) {}
+		},
+
+		_unhideGhostForTarget = function() {
+			if (!supportCssPointerEvents && ghostEl) {
+				_css(ghostEl, 'display', '');
+			}
+		};
+
+
+	// #1184 fix - Prevent click event on fallback if dragged but item not changed position
+	document.addEventListener('click', function(evt) {
+		if (ignoreNextClick) {
+			evt.preventDefault();
+			evt.stopPropagation && evt.stopPropagation();
+			evt.stopImmediatePropagation && evt.stopImmediatePropagation();
+			ignoreNextClick = false;
+			return false;
+		}
+	}, true);
+
+	var nearestEmptyInsertDetectEvent = function(evt) {
+		if (dragEl) {
+			evt = evt.touches ? evt.touches[0] : evt;
+			var nearest = _detectNearestEmptySortable(evt.clientX, evt.clientY);
+
+			if (nearest) {
+				// Create imitation event
+				var event = {};
+				for (var i in evt) {
+					event[i] = evt[i];
+				}
+				event.target = event.rootEl = nearest;
+				event.preventDefault = void 0;
+				event.stopPropagation = void 0;
+				nearest[expando]._onDragOver(event);
+			}
+		}
+	};
 
 	/**
 	 * @class  Sortable
@@ -6282,7 +6625,7 @@ process.umask = function() { return 0; };
 	 */
 	function Sortable(el, options) {
 		if (!(el && el.nodeType && el.nodeType === 1)) {
-			throw 'Sortable: `el` must be HTMLElement, and not ' + {}.toString.call(el);
+			throw 'Sortable: `el` must be HTMLElement, not ' + {}.toString.call(el);
 		}
 
 		this.el = el; // root element
@@ -6294,7 +6637,7 @@ process.umask = function() { return 0; };
 
 		// Default options
 		var defaults = {
-			group: Math.random(),
+			group: null,
 			sort: true,
 			disabled: false,
 			store: null,
@@ -6302,7 +6645,15 @@ process.umask = function() { return 0; };
 			scroll: true,
 			scrollSensitivity: 30,
 			scrollSpeed: 10,
-			draggable: /[uo]l/i.test(el.nodeName) ? 'li' : '>*',
+			bubbleScroll: true,
+			draggable: /[uo]l/i.test(el.nodeName) ? '>li' : '>*',
+			swapThreshold: 1, // percentage; 0 <= x <= 1
+			invertSwap: false, // invert always
+			invertedSwapThreshold: null, // will be set to same as swapThreshold if default
+			removeCloneOnHide: true,
+			direction: function() {
+				return _detectDirection(el, this.options);
+			},
 			ghostClass: 'sortable-ghost',
 			chosenClass: 'sortable-chosen',
 			dragClass: 'sortable-drag',
@@ -6310,6 +6661,7 @@ process.umask = function() { return 0; };
 			filter: null,
 			preventOnFilter: true,
 			animation: 0,
+			easing: null,
 			setData: function (dataTransfer, dragEl) {
 				dataTransfer.setData('Text', dragEl.textContent);
 			},
@@ -6317,12 +6669,15 @@ process.umask = function() { return 0; };
 			dragoverBubble: false,
 			dataIdAttr: 'data-id',
 			delay: 0,
+			delayOnTouchOnly: false,
+			touchStartThreshold: parseInt(window.devicePixelRatio, 10) || 1,
 			forceFallback: false,
 			fallbackClass: 'sortable-fallback',
 			fallbackOnBody: false,
 			fallbackTolerance: 0,
 			fallbackOffset: {x: 0, y: 0},
-			supportPointer: Sortable.supportPointer !== false
+			supportPointer: Sortable.supportPointer !== false && ('PointerEvent' in window),
+			emptyInsertThreshold: 5
 		};
 
 
@@ -6343,27 +6698,73 @@ process.umask = function() { return 0; };
 		// Setup drag mode
 		this.nativeDraggable = options.forceFallback ? false : supportDraggable;
 
+		if (this.nativeDraggable) {
+			// Touch start threshold cannot be greater than the native dragstart threshold
+			this.options.touchStartThreshold = 1;
+		}
+
 		// Bind events
-		_on(el, 'mousedown', this._onTapStart);
-		_on(el, 'touchstart', this._onTapStart);
-		options.supportPointer && _on(el, 'pointerdown', this._onTapStart);
+		if (options.supportPointer) {
+			_on(el, 'pointerdown', this._onTapStart);
+		} else {
+			_on(el, 'mousedown', this._onTapStart);
+			_on(el, 'touchstart', this._onTapStart);
+		}
 
 		if (this.nativeDraggable) {
 			_on(el, 'dragover', this);
 			_on(el, 'dragenter', this);
 		}
 
-		touchDragOverListeners.push(this._onDragOver);
+		sortables.push(this.el);
 
 		// Restore sorting
-		options.store && this.sort(options.store.get(this));
+		options.store && options.store.get && this.sort(options.store.get(this) || []);
 	}
-
 
 	Sortable.prototype = /** @lends Sortable.prototype */ {
 		constructor: Sortable,
 
+		_computeIsAligned: function(evt) {
+			var target;
+
+			if (ghostEl && !supportCssPointerEvents) {
+				_hideGhostForTarget();
+				target = document.elementFromPoint(evt.clientX, evt.clientY);
+				_unhideGhostForTarget();
+			} else {
+				target = evt.target;
+			}
+
+			target = _closest(target, this.options.draggable, this.el, false);
+			if (_alignedSilent) return;
+			if (!dragEl || dragEl.parentNode !== this.el) return;
+
+			var children = this.el.children;
+			for (var i = 0; i < children.length; i++) {
+				// Don't change for target in case it is changed to aligned before onDragOver is fired
+				if (_closest(children[i], this.options.draggable, this.el, false) && children[i] !== target) {
+					children[i].sortableMouseAligned = _isClientInRowColumn(evt.clientX, evt.clientY, children[i], this._getDirection(evt, null), this.options);
+				}
+			}
+			// Used for nulling last target when not in element, nothing to do with checking if aligned
+			if (!_closest(target, this.options.draggable, this.el, true)) {
+				lastTarget = null;
+			}
+
+			_alignedSilent = true;
+			setTimeout(function() {
+				_alignedSilent = false;
+			}, 30);
+
+		},
+
+		_getDirection: function(evt, target) {
+			return (typeof this.options.direction === 'function') ? this.options.direction.call(this, evt, target, dragEl) : this.options.direction;
+		},
+
 		_onTapStart: function (/** Event|TouchEvent */evt) {
+			if (!evt.cancelable) return;
 			var _this = this,
 				el = this.el,
 				options = this.options,
@@ -6371,12 +6772,12 @@ process.umask = function() { return 0; };
 				type = evt.type,
 				touch = evt.touches && evt.touches[0],
 				target = (touch || evt).target,
-				originalTarget = evt.target.shadowRoot && (evt.path && evt.path[0]) || target,
+				originalTarget = evt.target.shadowRoot && ((evt.path && evt.path[0]) || (evt.composedPath && evt.composedPath()[0])) || target,
 				filter = options.filter,
-				startIndex;
+				startIndex,
+				startDraggableIndex;
 
 			_saveInputCheckedState(el);
-
 
 			// Don't trigger start event when an element is been dragged, otherwise the evt.oldindex always wrong when set option.group.
 			if (dragEl) {
@@ -6384,7 +6785,7 @@ process.umask = function() { return 0; };
 			}
 
 			if (/mousedown|pointerdown/.test(type) && evt.button !== 0 || options.disabled) {
-				return; // only left button or enabled
+				return; // only left button and enabled
 			}
 
 			// cancel dnd if original target is content editable
@@ -6392,11 +6793,8 @@ process.umask = function() { return 0; };
 				return;
 			}
 
-			target = _closest(target, options.draggable, el);
+			target = _closest(target, options.draggable, el, false);
 
-			if (!target) {
-				return;
-			}
 
 			if (lastDownEl === target) {
 				// Ignoring duplicate `down`
@@ -6404,41 +6802,95 @@ process.umask = function() { return 0; };
 			}
 
 			// Get the index of the dragged element within its parent
-			startIndex = _index(target, options.draggable);
+			startIndex = _index(target);
+			startDraggableIndex = _index(target, options.draggable);
 
 			// Check filter
 			if (typeof filter === 'function') {
 				if (filter.call(this, evt, target, this)) {
-					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex);
-					preventOnFilter && evt.preventDefault();
+					_dispatchEvent(_this, originalTarget, 'filter', target, el, el, startIndex, undefined, startDraggableIndex);
+					preventOnFilter && evt.cancelable && evt.preventDefault();
 					return; // cancel dnd
 				}
 			}
 			else if (filter) {
 				filter = filter.split(',').some(function (criteria) {
-					criteria = _closest(originalTarget, criteria.trim(), el);
+					criteria = _closest(originalTarget, criteria.trim(), el, false);
 
 					if (criteria) {
-						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex);
+						_dispatchEvent(_this, criteria, 'filter', target, el, el, startIndex, undefined, startDraggableIndex);
 						return true;
 					}
 				});
 
 				if (filter) {
-					preventOnFilter && evt.preventDefault();
+					preventOnFilter && evt.cancelable && evt.preventDefault();
 					return; // cancel dnd
 				}
 			}
 
-			if (options.handle && !_closest(originalTarget, options.handle, el)) {
+			if (options.handle && !_closest(originalTarget, options.handle, el, false)) {
 				return;
 			}
 
 			// Prepare `dragstart`
-			this._prepareDragStart(evt, touch, target, startIndex);
+			this._prepareDragStart(evt, touch, target, startIndex, startDraggableIndex);
 		},
 
-		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex) {
+
+		_handleAutoScroll: function(evt, fallback) {
+			if (!dragEl || !this.options.scroll) return;
+			var x = evt.clientX,
+				y = evt.clientY,
+
+				elem = document.elementFromPoint(x, y),
+				_this = this;
+
+			// IE does not seem to have native autoscroll,
+			// Edge's autoscroll seems too conditional,
+			// MACOS Safari does not have autoscroll,
+			// Firefox and Chrome are good
+			if (fallback || Edge || IE11OrLess || Safari) {
+				_autoScroll(evt, _this.options, elem, fallback);
+
+				// Listener for pointer element change
+				var ogElemScroller = _getParentAutoScrollElement(elem, true);
+				if (
+					scrolling &&
+					(
+						!pointerElemChangedInterval ||
+						x !== lastPointerElemX ||
+						y !== lastPointerElemY
+					)
+				) {
+
+					pointerElemChangedInterval && clearInterval(pointerElemChangedInterval);
+					// Detect for pointer elem change, emulating native DnD behaviour
+					pointerElemChangedInterval = setInterval(function() {
+						if (!dragEl) return;
+						// could also check if scroll direction on newElem changes due to parent autoscrolling
+						var newElem = _getParentAutoScrollElement(document.elementFromPoint(x, y), true);
+						if (newElem !== ogElemScroller) {
+							ogElemScroller = newElem;
+							_clearAutoScrolls();
+							_autoScroll(evt, _this.options, ogElemScroller, fallback);
+						}
+					}, 10);
+					lastPointerElemX = x;
+					lastPointerElemY = y;
+				}
+
+			} else {
+				// if DnD is enabled (and browser has good autoscrolling), first autoscroll will already scroll, so get parent autoscroll of first autoscroll
+				if (!_this.options.bubbleScroll || _getParentAutoScrollElement(elem, true) === _getWindowScrollingElement()) {
+					_clearAutoScrolls();
+					return;
+				}
+				_autoScroll(evt, _this.options, _getParentAutoScrollElement(elem, false), false);
+			}
+		},
+
+		_prepareDragStart: function (/** Event */evt, /** Touch */touch, /** HTMLElement */target, /** Number */startIndex, /** Number */startDraggableIndex) {
 			var _this = this,
 				el = _this.el,
 				options = _this.options,
@@ -6446,8 +6898,6 @@ process.umask = function() { return 0; };
 				dragStartFn;
 
 			if (target && !dragEl && (target.parentNode === el)) {
-				tapEvt = evt;
-
 				rootEl = el;
 				dragEl = target;
 				parentEl = dragEl.parentNode;
@@ -6455,28 +6905,39 @@ process.umask = function() { return 0; };
 				lastDownEl = target;
 				activeGroup = options.group;
 				oldIndex = startIndex;
+				oldDraggableIndex = startDraggableIndex;
+
+				tapEvt = {
+					target: dragEl,
+					clientX: (touch || evt).clientX,
+					clientY: (touch || evt).clientY
+				};
 
 				this._lastX = (touch || evt).clientX;
 				this._lastY = (touch || evt).clientY;
 
 				dragEl.style['will-change'] = 'all';
+				// undo animation if needed
+				dragEl.style.transition = '';
+				dragEl.style.transform = '';
 
 				dragStartFn = function () {
 					// Delayed drag has been triggered
 					// we can re-enable the events: touchmove/mousemove
-					_this._disableDelayedDrag();
+					_this._disableDelayedDragEvents();
 
-					// Make the element draggable
-					dragEl.draggable = _this.nativeDraggable;
-
-					// Chosen item
-					_toggleClass(dragEl, options.chosenClass, true);
+					if (!FireFox && _this.nativeDraggable) {
+						dragEl.draggable = true;
+					}
 
 					// Bind the events: dragstart/dragend
 					_this._triggerDragStart(evt, touch);
 
 					// Drag start event
-					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex);
+					_dispatchEvent(_this, rootEl, 'choose', dragEl, rootEl, rootEl, oldIndex, undefined, oldDraggableIndex);
+
+					// Chosen item
+					_toggleClass(dragEl, options.chosenClass, true);
 				};
 
 				// Disable "draggable"
@@ -6484,61 +6945,77 @@ process.umask = function() { return 0; };
 					_find(dragEl, criteria.trim(), _disableDraggable);
 				});
 
+				_on(ownerDocument, 'dragover', nearestEmptyInsertDetectEvent);
+				_on(ownerDocument, 'mousemove', nearestEmptyInsertDetectEvent);
+				_on(ownerDocument, 'touchmove', nearestEmptyInsertDetectEvent);
+
 				_on(ownerDocument, 'mouseup', _this._onDrop);
 				_on(ownerDocument, 'touchend', _this._onDrop);
 				_on(ownerDocument, 'touchcancel', _this._onDrop);
-				_on(ownerDocument, 'selectstart', _this);
-				options.supportPointer && _on(ownerDocument, 'pointercancel', _this._onDrop);
 
-				if (options.delay) {
+				// Make dragEl draggable (must be before delay for FireFox)
+				if (FireFox && this.nativeDraggable) {
+					this.options.touchStartThreshold = 4;
+					dragEl.draggable = true;
+				}
+
+				// Delay is impossible for native DnD in Edge or IE
+				if (options.delay && (options.delayOnTouchOnly ? touch : true) && (!this.nativeDraggable || !(Edge || IE11OrLess))) {
 					// If the user moves the pointer or let go the click or touch
 					// before the delay has been reached:
 					// disable the delayed drag
 					_on(ownerDocument, 'mouseup', _this._disableDelayedDrag);
 					_on(ownerDocument, 'touchend', _this._disableDelayedDrag);
 					_on(ownerDocument, 'touchcancel', _this._disableDelayedDrag);
-					_on(ownerDocument, 'mousemove', _this._disableDelayedDrag);
-					_on(ownerDocument, 'touchmove', _this._disableDelayedDrag);
-					options.supportPointer && _on(ownerDocument, 'pointermove', _this._disableDelayedDrag);
+					_on(ownerDocument, 'mousemove', _this._delayedDragTouchMoveHandler);
+					_on(ownerDocument, 'touchmove', _this._delayedDragTouchMoveHandler);
+					options.supportPointer && _on(ownerDocument, 'pointermove', _this._delayedDragTouchMoveHandler);
 
 					_this._dragStartTimer = setTimeout(dragStartFn, options.delay);
 				} else {
 					dragStartFn();
 				}
+			}
+		},
 
-
+		_delayedDragTouchMoveHandler: function (/** TouchEvent|PointerEvent **/e) {
+			var touch = e.touches ? e.touches[0] : e;
+			if (max(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY))
+					>= Math.floor(this.options.touchStartThreshold / (this.nativeDraggable && window.devicePixelRatio || 1))
+			) {
+				this._disableDelayedDrag();
 			}
 		},
 
 		_disableDelayedDrag: function () {
-			var ownerDocument = this.el.ownerDocument;
-
+			dragEl && _disableDraggable(dragEl);
 			clearTimeout(this._dragStartTimer);
+
+			this._disableDelayedDragEvents();
+		},
+
+		_disableDelayedDragEvents: function () {
+			var ownerDocument = this.el.ownerDocument;
 			_off(ownerDocument, 'mouseup', this._disableDelayedDrag);
 			_off(ownerDocument, 'touchend', this._disableDelayedDrag);
 			_off(ownerDocument, 'touchcancel', this._disableDelayedDrag);
-			_off(ownerDocument, 'mousemove', this._disableDelayedDrag);
-			_off(ownerDocument, 'touchmove', this._disableDelayedDrag);
-			_off(ownerDocument, 'pointermove', this._disableDelayedDrag);
+			_off(ownerDocument, 'mousemove', this._delayedDragTouchMoveHandler);
+			_off(ownerDocument, 'touchmove', this._delayedDragTouchMoveHandler);
+			_off(ownerDocument, 'pointermove', this._delayedDragTouchMoveHandler);
 		},
 
 		_triggerDragStart: function (/** Event */evt, /** Touch */touch) {
 			touch = touch || (evt.pointerType == 'touch' ? evt : null);
 
-			if (touch) {
-				// Touch device support
-				tapEvt = {
-					target: dragEl,
-					clientX: touch.clientX,
-					clientY: touch.clientY
-				};
-
-				this._onDragStart(tapEvt, 'touch');
-			}
-			else if (!this.nativeDraggable) {
-				this._onDragStart(tapEvt, true);
-			}
-			else {
+			if (!this.nativeDraggable || touch) {
+				if (this.options.supportPointer) {
+					_on(document, 'pointermove', this._onTouchMove);
+				} else if (touch) {
+					_on(document, 'touchmove', this._onTouchMove);
+				} else {
+					_on(document, 'mousemove', this._onTouchMove);
+				}
+			} else {
 				_on(dragEl, 'dragend', this);
 				_on(rootEl, 'dragstart', this._onDragStart);
 			}
@@ -6556,58 +7033,67 @@ process.umask = function() { return 0; };
 			}
 		},
 
-		_dragStarted: function () {
+		_dragStarted: function (fallback, evt) {
+			awaitingDragStarted = false;
 			if (rootEl && dragEl) {
+				if (this.nativeDraggable) {
+					_on(document, 'dragover', this._handleAutoScroll);
+					_on(document, 'dragover', _checkAlignment);
+				}
 				var options = this.options;
 
 				// Apply effect
+				!fallback && _toggleClass(dragEl, options.dragClass, false);
 				_toggleClass(dragEl, options.ghostClass, true);
-				_toggleClass(dragEl, options.dragClass, false);
+
+				// In case dragging an animated element
+				_css(dragEl, 'transform', '');
 
 				Sortable.active = this;
 
+				fallback && this._appendGhost();
+
 				// Drag start event
-				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex);
+				_dispatchEvent(this, rootEl, 'start', dragEl, rootEl, rootEl, oldIndex, undefined, oldDraggableIndex, undefined, evt);
 			} else {
 				this._nulling();
 			}
 		},
 
-		_emulateDragOver: function () {
+		_emulateDragOver: function (forAutoScroll) {
 			if (touchEvt) {
-				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY) {
+				if (this._lastX === touchEvt.clientX && this._lastY === touchEvt.clientY && !forAutoScroll) {
 					return;
 				}
-
 				this._lastX = touchEvt.clientX;
 				this._lastY = touchEvt.clientY;
 
-				if (!supportCssPointerEvents) {
-					_css(ghostEl, 'display', 'none');
-				}
+				_hideGhostForTarget();
 
 				var target = document.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
 				var parent = target;
-				var i = touchDragOverListeners.length;
 
-				if (target && target.shadowRoot) {
+				while (target && target.shadowRoot) {
 					target = target.shadowRoot.elementFromPoint(touchEvt.clientX, touchEvt.clientY);
+					if (target === parent) break;
 					parent = target;
 				}
 
 				if (parent) {
 					do {
 						if (parent[expando]) {
-							while (i--) {
-								touchDragOverListeners[i]({
-									clientX: touchEvt.clientX,
-									clientY: touchEvt.clientY,
-									target: target,
-									rootEl: parent
-								});
-							}
+							var inserted;
 
-							break;
+							inserted = parent[expando]._onDragOver({
+								clientX: touchEvt.clientX,
+								clientY: touchEvt.clientY,
+								target: target,
+								rootEl: parent
+							});
+
+							if (inserted && !this.options.dragoverBubble) {
+								break;
+							}
 						}
 
 						target = parent; // store last element
@@ -6615,37 +7101,42 @@ process.umask = function() { return 0; };
 					/* jshint boss:true */
 					while (parent = parent.parentNode);
 				}
+				dragEl.parentNode[expando]._computeIsAligned(touchEvt);
 
-				if (!supportCssPointerEvents) {
-					_css(ghostEl, 'display', '');
-				}
+				_unhideGhostForTarget();
 			}
 		},
 
 
-		_onTouchMove: function (/**TouchEvent*/evt) {
+		_onTouchMove: function (/**TouchEvent*/evt, forAutoScroll) {
 			if (tapEvt) {
 				var	options = this.options,
 					fallbackTolerance = options.fallbackTolerance,
 					fallbackOffset = options.fallbackOffset,
 					touch = evt.touches ? evt.touches[0] : evt,
-					dx = (touch.clientX - tapEvt.clientX) + fallbackOffset.x,
-					dy = (touch.clientY - tapEvt.clientY) + fallbackOffset.y,
+					matrix = ghostEl && _matrix(ghostEl),
+					scaleX = ghostEl && matrix && matrix.a,
+					scaleY = ghostEl && matrix && matrix.d,
+					relativeScrollOffset = PositionGhostAbsolutely && ghostRelativeParent && _getRelativeScrollOffset(ghostRelativeParent),
+					dx = ((touch.clientX - tapEvt.clientX)
+							+ fallbackOffset.x) / (scaleX || 1)
+							+ (relativeScrollOffset ? (relativeScrollOffset[0] - ghostRelativeParentInitialScroll[0]) : 0) / (scaleX || 1),
+					dy = ((touch.clientY - tapEvt.clientY)
+							+ fallbackOffset.y) / (scaleY || 1)
+							+ (relativeScrollOffset ? (relativeScrollOffset[1] - ghostRelativeParentInitialScroll[1]) : 0) / (scaleY || 1),
 					translate3d = evt.touches ? 'translate3d(' + dx + 'px,' + dy + 'px,0)' : 'translate(' + dx + 'px,' + dy + 'px)';
 
 				// only set the status to dragging, when we are actually dragging
-				if (!Sortable.active) {
+				if (!Sortable.active && !awaitingDragStarted) {
 					if (fallbackTolerance &&
 						min(abs(touch.clientX - this._lastX), abs(touch.clientY - this._lastY)) < fallbackTolerance
 					) {
 						return;
 					}
-
-					this._dragStarted();
+					this._onDragStart(evt, true);
 				}
 
-				// as well as creating the ghost element on the document body
-				this._appendGhost();
+				!forAutoScroll && this._handleAutoScroll(touch, true);
 
 				moved = true;
 				touchEvt = touch;
@@ -6655,16 +7146,50 @@ process.umask = function() { return 0; };
 				_css(ghostEl, 'msTransform', translate3d);
 				_css(ghostEl, 'transform', translate3d);
 
-				evt.preventDefault();
+				evt.cancelable && evt.preventDefault();
 			}
 		},
 
 		_appendGhost: function () {
+			// Bug if using scale(): https://stackoverflow.com/questions/2637058
+			// Not being adjusted for
 			if (!ghostEl) {
-				var rect = dragEl.getBoundingClientRect(),
+				var container = this.options.fallbackOnBody ? document.body : rootEl,
+					rect = _getRect(dragEl, true, container, !PositionGhostAbsolutely),
 					css = _css(dragEl),
-					options = this.options,
-					ghostRect;
+					options = this.options;
+
+				// Position absolutely
+				if (PositionGhostAbsolutely) {
+					// Get relatively positioned parent
+					ghostRelativeParent = container;
+
+					while (
+						_css(ghostRelativeParent, 'position') === 'static' &&
+						_css(ghostRelativeParent, 'transform') === 'none' &&
+						ghostRelativeParent !== document
+					) {
+						ghostRelativeParent = ghostRelativeParent.parentNode;
+					}
+
+					if (ghostRelativeParent !== document) {
+						var ghostRelativeParentRect = _getRect(ghostRelativeParent, true);
+
+						rect.top -= ghostRelativeParentRect.top;
+						rect.left -= ghostRelativeParentRect.left;
+					}
+
+					if (ghostRelativeParent !== document.body && ghostRelativeParent !== document.documentElement) {
+						if (ghostRelativeParent === document) ghostRelativeParent = _getWindowScrollingElement();
+
+						rect.top += ghostRelativeParent.scrollTop;
+						rect.left += ghostRelativeParent.scrollLeft;
+					} else {
+						ghostRelativeParent = _getWindowScrollingElement();
+					}
+					ghostRelativeParentInitialScroll = _getRelativeScrollOffset(ghostRelativeParent);
+				}
+
 
 				ghostEl = dragEl.cloneNode(true);
 
@@ -6672,69 +7197,58 @@ process.umask = function() { return 0; };
 				_toggleClass(ghostEl, options.fallbackClass, true);
 				_toggleClass(ghostEl, options.dragClass, true);
 
-				_css(ghostEl, 'top', rect.top - parseInt(css.marginTop, 10));
-				_css(ghostEl, 'left', rect.left - parseInt(css.marginLeft, 10));
+				_css(ghostEl, 'box-sizing', 'border-box');
+				_css(ghostEl, 'margin', 0);
+				_css(ghostEl, 'top', rect.top);
+				_css(ghostEl, 'left', rect.left);
 				_css(ghostEl, 'width', rect.width);
 				_css(ghostEl, 'height', rect.height);
 				_css(ghostEl, 'opacity', '0.8');
-				_css(ghostEl, 'position', 'fixed');
+				_css(ghostEl, 'position', (PositionGhostAbsolutely ? 'absolute' : 'fixed'));
 				_css(ghostEl, 'zIndex', '100000');
 				_css(ghostEl, 'pointerEvents', 'none');
 
-				options.fallbackOnBody && document.body.appendChild(ghostEl) || rootEl.appendChild(ghostEl);
-
-				// Fixing dimensions.
-				ghostRect = ghostEl.getBoundingClientRect();
-				_css(ghostEl, 'width', rect.width * 2 - ghostRect.width);
-				_css(ghostEl, 'height', rect.height * 2 - ghostRect.height);
+				container.appendChild(ghostEl);
 			}
 		},
 
-		_onDragStart: function (/**Event*/evt, /**boolean*/useFallback) {
+		_onDragStart: function (/**Event*/evt, /**boolean*/fallback) {
 			var _this = this;
 			var dataTransfer = evt.dataTransfer;
 			var options = _this.options;
 
-			_this._offUpEvents();
+			// Setup clone
+			cloneEl = _clone(dragEl);
 
-			if (activeGroup.checkPull(_this, _this, dragEl, evt)) {
-				cloneEl = _clone(dragEl);
+			cloneEl.draggable = false;
+			cloneEl.style['will-change'] = '';
 
-				cloneEl.draggable = false;
-				cloneEl.style['will-change'] = '';
+			this._hideClone();
 
-				_css(cloneEl, 'display', 'none');
-				_toggleClass(cloneEl, _this.options.chosenClass, false);
+			_toggleClass(cloneEl, _this.options.chosenClass, false);
 
-				// #1143: IFrame support workaround
-				_this._cloneId = _nextTick(function () {
+
+			// #1143: IFrame support workaround
+			_this._cloneId = _nextTick(function () {
+				if (!_this.options.removeCloneOnHide) {
 					rootEl.insertBefore(cloneEl, dragEl);
-					_dispatchEvent(_this, rootEl, 'clone', dragEl);
-				});
-			}
-
-			_toggleClass(dragEl, options.dragClass, true);
-
-			if (useFallback) {
-				if (useFallback === 'touch') {
-					// Bind touch events
-					_on(document, 'touchmove', _this._onTouchMove);
-					_on(document, 'touchend', _this._onDrop);
-					_on(document, 'touchcancel', _this._onDrop);
-
-					if (options.supportPointer) {
-						_on(document, 'pointermove', _this._onTouchMove);
-						_on(document, 'pointerup', _this._onDrop);
-					}
-				} else {
-					// Old brwoser
-					_on(document, 'mousemove', _this._onTouchMove);
-					_on(document, 'mouseup', _this._onDrop);
 				}
+				_dispatchEvent(_this, rootEl, 'clone', dragEl);
+			});
 
+
+			!fallback && _toggleClass(dragEl, options.dragClass, true);
+
+			// Set proper drop events
+			if (fallback) {
+				ignoreNextClick = true;
 				_this._loopId = setInterval(_this._emulateDragOver, 50);
-			}
-			else {
+			} else {
+				// Undo what was set in _prepareDragStart before drag started
+				_off(document, 'mouseup', _this._onDrop);
+				_off(document, 'touchend', _this._onDrop);
+				_off(document, 'touchcancel', _this._onDrop);
+
 				if (dataTransfer) {
 					dataTransfer.effectAllowed = 'move';
 					options.setData && options.setData.call(_this, dataTransfer, dragEl);
@@ -6742,18 +7256,24 @@ process.umask = function() { return 0; };
 
 				_on(document, 'drop', _this);
 
-				// #1143: Бывает элемент с IFrame внутри блокирует `drop`,
-				// поэтому если вызвался `mouseover`, значит надо отменять весь d'n'd.
-				// Breaking Chrome 62+
-				// _on(document, 'mouseover', _this);
+				// #1276 fix:
+				_css(dragEl, 'transform', 'translateZ(0)');
+			}
 
-				_this._dragStartId = _nextTick(_this._dragStarted);
+			awaitingDragStarted = true;
+
+			_this._dragStartId = _nextTick(_this._dragStarted.bind(_this, fallback, evt));
+			_on(document, 'selectstart', _this);
+			if (Safari) {
+				_css(document.body, 'user-select', 'none');
 			}
 		},
 
+
+		// Returns true - if no further action is needed (either inserted or another condition)
 		_onDragOver: function (/**Event*/evt) {
 			var el = this.el,
-				target,
+				target = evt.target,
 				dragRect,
 				targetRect,
 				revert,
@@ -6761,19 +7281,80 @@ process.umask = function() { return 0; };
 				group = options.group,
 				activeSortable = Sortable.active,
 				isOwner = (activeGroup === group),
-				isMovingBetweenSortable = false,
-				canSort = options.sort;
+				canSort = options.sort,
+				_this = this;
+
+			if (_silent) return;
+
+			// Return invocation when dragEl is inserted (or completed)
+			function completed(insertion) {
+				if (insertion) {
+					if (isOwner) {
+						activeSortable._hideClone();
+					} else {
+						activeSortable._showClone(_this);
+					}
+
+					if (activeSortable) {
+						// Set ghost class to new sortable's ghost class
+						_toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : activeSortable.options.ghostClass, false);
+						_toggleClass(dragEl, options.ghostClass, true);
+					}
+
+					if (putSortable !== _this && _this !== Sortable.active) {
+						putSortable = _this;
+					} else if (_this === Sortable.active) {
+						putSortable = null;
+					}
+
+					// Animation
+					dragRect && _this._animate(dragRect, dragEl);
+					target && targetRect && _this._animate(targetRect, target);
+				}
+
+
+				// Null lastTarget if it is not inside a previously swapped element
+				if ((target === dragEl && !dragEl.animated) || (target === el && !target.animated)) {
+					lastTarget = null;
+				}
+
+				// no bubbling and not fallback
+				if (!options.dragoverBubble && !evt.rootEl && target !== document) {
+					_this._handleAutoScroll(evt);
+					dragEl.parentNode[expando]._computeIsAligned(evt);
+
+					// Do not detect for empty insert if already inserted
+					!insertion && nearestEmptyInsertDetectEvent(evt);
+				}
+
+				!options.dragoverBubble && evt.stopPropagation && evt.stopPropagation();
+
+				return true;
+			}
+
+			// Call when dragEl has been inserted
+			function changed() {
+				_dispatchEvent(_this, rootEl, 'change', target, el, rootEl, oldIndex, _index(dragEl), oldDraggableIndex, _index(dragEl, options.draggable), evt);
+			}
+
 
 			if (evt.preventDefault !== void 0) {
-				evt.preventDefault();
-				!options.dragoverBubble && evt.stopPropagation();
+				evt.cancelable && evt.preventDefault();
 			}
 
-			if (dragEl.animated) {
-				return;
-			}
 
 			moved = true;
+
+			target = _closest(target, options.draggable, el, true);
+
+			// target is dragEl or target is animated
+			if (dragEl.contains(evt.target) || target.animated) {
+				return completed(false);
+			}
+
+			if (target !== dragEl) {
+				ignoreNextClick = false;
+			}
 
 			if (activeSortable && !options.disabled &&
 				(isOwner
@@ -6781,106 +7362,111 @@ process.umask = function() { return 0; };
 					: (
 						putSortable === this ||
 						(
-							(activeSortable.lastPullMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
+							(this.lastPutMode = activeGroup.checkPull(this, activeSortable, dragEl, evt)) &&
 							group.checkPut(this, activeSortable, dragEl, evt)
 						)
 					)
-				) &&
-				(evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
+				)
 			) {
-				// Smart auto-scrolling
-				_autoScroll(evt, options, this.el);
+				var axis = this._getDirection(evt, target);
 
-				if (_silent) {
-					return;
-				}
-
-				target = _closest(evt.target, options.draggable, el);
-				dragRect = dragEl.getBoundingClientRect();
-
-				if (putSortable !== this) {
-					putSortable = this;
-					isMovingBetweenSortable = true;
-				}
+				dragRect = _getRect(dragEl);
 
 				if (revert) {
-					_cloneHide(activeSortable, true);
+					this._hideClone();
 					parentEl = rootEl; // actualization
 
-					if (cloneEl || nextEl) {
-						rootEl.insertBefore(dragEl, cloneEl || nextEl);
-					}
-					else if (!canSort) {
+					if (nextEl) {
+						rootEl.insertBefore(dragEl, nextEl);
+					} else {
 						rootEl.appendChild(dragEl);
 					}
 
-					return;
+					return completed(true);
 				}
 
+				var elLastChild = _lastChild(el);
 
-				if ((el.children.length === 0) || (el.children[0] === ghostEl) ||
-					(el === evt.target) && (_ghostIsLast(el, evt))
-				) {
-					//assign target only if condition is true
-					if (el.children.length !== 0 && el.children[0] !== ghostEl && el === evt.target) {
-						target = el.lastElementChild;
+				if (!elLastChild || _ghostIsLast(evt, axis, el) && !elLastChild.animated) {
+					// assign target only if condition is true
+					if (elLastChild && el === evt.target) {
+						target = elLastChild;
 					}
 
 					if (target) {
-						if (target.animated) {
-							return;
-						}
-
-						targetRect = target.getBoundingClientRect();
+						targetRect = _getRect(target);
 					}
 
-					_cloneHide(activeSortable, isOwner);
+					if (isOwner) {
+						activeSortable._hideClone();
+					} else {
+						activeSortable._showClone(this);
+					}
 
-					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt) !== false) {
-						if (!dragEl.contains(el)) {
-							el.appendChild(dragEl);
-							parentEl = el; // actualization
-						}
+					if (_onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, !!target) !== false) {
+						el.appendChild(dragEl);
+						parentEl = el; // actualization
+						realDragElRect = null;
 
-						this._animate(dragRect, dragEl);
-						target && this._animate(targetRect, target);
+						changed();
+						return completed(true);
 					}
 				}
-				else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
-					if (lastEl !== target) {
-						lastEl = target;
-						lastCSS = _css(target);
-						lastParentCSS = _css(target.parentNode);
+				else if (target && target !== dragEl && target.parentNode === el) {
+					var direction = 0,
+						targetBeforeFirstSwap,
+						aligned = target.sortableMouseAligned,
+						differentLevel = dragEl.parentNode !== el,
+						side1 = axis === 'vertical' ? 'top' : 'left',
+						scrolledPastTop = _isScrolledPast(target, 'top') || _isScrolledPast(dragEl, 'top'),
+						scrollBefore = scrolledPastTop ? scrolledPastTop.scrollTop : void 0;
+
+
+					if (lastTarget !== target) {
+						lastMode = null;
+						targetBeforeFirstSwap = _getRect(target)[side1];
+						pastFirstInvertThresh = false;
 					}
 
-					targetRect = target.getBoundingClientRect();
-
-					var width = targetRect.right - targetRect.left,
-						height = targetRect.bottom - targetRect.top,
-						floating = R_FLOAT.test(lastCSS.cssFloat + lastCSS.display)
-							|| (lastParentCSS.display == 'flex' && lastParentCSS['flex-direction'].indexOf('row') === 0),
-						isWide = (target.offsetWidth > dragEl.offsetWidth),
-						isLong = (target.offsetHeight > dragEl.offsetHeight),
-						halfway = (floating ? (evt.clientX - targetRect.left) / width : (evt.clientY - targetRect.top) / height) > 0.5,
-						nextSibling = target.nextElementSibling,
-						after = false
-					;
-
-					if (floating) {
-						var elTop = dragEl.offsetTop,
-							tgTop = target.offsetTop;
-
-						if (elTop === tgTop) {
-							after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
+					// Reference: https://www.lucidchart.com/documents/view/10fa0e93-e362-4126-aca2-b709ee56bd8b/0
+					if (
+						_isElInRowColumn(dragEl, target, axis) && aligned ||
+						differentLevel ||
+						scrolledPastTop ||
+						options.invertSwap ||
+						lastMode === 'insert' ||
+						// Needed, in the case that we are inside target and inserted because not aligned... aligned will stay false while inside
+						// and lastMode will change to 'insert', but we must swap
+						lastMode === 'swap'
+					) {
+						// New target that we will be inside
+						if (lastMode !== 'swap') {
+							isCircumstantialInvert = options.invertSwap || differentLevel;
 						}
-						else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
-							after = (evt.clientY - targetRect.top) / height > 0.5;
-						} else {
-							after = tgTop > elTop;
-						}
-						} else if (!isMovingBetweenSortable) {
-						after = (nextSibling !== dragEl) && !isLong || halfway && isLong;
+
+						direction = _getSwapDirection(evt, target, axis,
+							options.swapThreshold, options.invertedSwapThreshold == null ? options.swapThreshold : options.invertedSwapThreshold,
+							isCircumstantialInvert,
+							lastTarget === target);
+						lastMode = 'swap';
+					} else {
+						// Insert at position
+						direction = _getInsertDirection(target);
+						lastMode = 'insert';
 					}
+					if (direction === 0) return completed(false);
+
+					realDragElRect = null;
+					lastTarget = target;
+
+					lastDirection = direction;
+
+					targetRect = _getRect(target);
+
+					var nextSibling = target.nextElementSibling,
+						after = false;
+
+					after = direction === 1;
 
 					var moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt, after);
 
@@ -6892,47 +7478,77 @@ process.umask = function() { return 0; };
 						_silent = true;
 						setTimeout(_unsilent, 30);
 
-						_cloneHide(activeSortable, isOwner);
+						if (isOwner) {
+							activeSortable._hideClone();
+						} else {
+							activeSortable._showClone(this);
+						}
 
-						if (!dragEl.contains(el)) {
-							if (after && !nextSibling) {
-								el.appendChild(dragEl);
-							} else {
-								target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
-							}
+						if (after && !nextSibling) {
+							el.appendChild(dragEl);
+						} else {
+							target.parentNode.insertBefore(dragEl, after ? nextSibling : target);
+						}
+
+						// Undo chrome's scroll adjustment
+						if (scrolledPastTop) {
+							_scrollBy(scrolledPastTop, 0, scrollBefore - scrolledPastTop.scrollTop);
 						}
 
 						parentEl = dragEl.parentNode; // actualization
 
-						this._animate(dragRect, dragEl);
-						this._animate(targetRect, target);
+						// must be done before animation
+						if (targetBeforeFirstSwap !== undefined && !isCircumstantialInvert) {
+							targetMoveDistance = abs(targetBeforeFirstSwap - _getRect(target)[side1]);
+						}
+						changed();
+
+						return completed(true);
 					}
 				}
+
+				if (el.contains(dragEl)) {
+					return completed(false);
+				}
 			}
+
+			return false;
 		},
 
 		_animate: function (prevRect, target) {
 			var ms = this.options.animation;
 
 			if (ms) {
-				var currentRect = target.getBoundingClientRect();
+				var currentRect = _getRect(target);
 
-				if (prevRect.nodeType === 1) {
-					prevRect = prevRect.getBoundingClientRect();
+				if (target === dragEl) {
+					realDragElRect = currentRect;
 				}
 
-				_css(target, 'transition', 'none');
-				_css(target, 'transform', 'translate3d('
-					+ (prevRect.left - currentRect.left) + 'px,'
-					+ (prevRect.top - currentRect.top) + 'px,0)'
-				);
+				if (prevRect.nodeType === 1) {
+					prevRect = _getRect(prevRect);
+				}
 
-				target.offsetWidth; // repaint
+				// Check if actually moving position
+				if ((prevRect.left + prevRect.width / 2) !== (currentRect.left + currentRect.width / 2)
+					|| (prevRect.top + prevRect.height / 2) !== (currentRect.top + currentRect.height / 2)
+				) {
+					var matrix = _matrix(this.el),
+						scaleX = matrix && matrix.a,
+						scaleY = matrix && matrix.d;
 
-				_css(target, 'transition', 'all ' + ms + 'ms');
-				_css(target, 'transform', 'translate3d(0,0,0)');
+					_css(target, 'transition', 'none');
+					_css(target, 'transform', 'translate3d('
+						+ (prevRect.left - currentRect.left) / (scaleX ? scaleX : 1) + 'px,'
+						+ (prevRect.top - currentRect.top) / (scaleY ? scaleY : 1) + 'px,0)'
+					);
 
-				clearTimeout(target.animated);
+					this._repaint(target);
+					_css(target, 'transition', 'transform ' + ms + 'ms' + (this.options.easing ? ' ' + this.options.easing : ''));
+					_css(target, 'transform', 'translate3d(0,0,0)');
+				}
+
+				(typeof target.animated === 'number') && clearTimeout(target.animated);
 				target.animated = setTimeout(function () {
 					_css(target, 'transition', '');
 					_css(target, 'transform', '');
@@ -6941,50 +7557,74 @@ process.umask = function() { return 0; };
 			}
 		},
 
+		_repaint: function(target) {
+			return target.offsetWidth;
+		},
+
+		_offMoveEvents: function() {
+			_off(document, 'touchmove', this._onTouchMove);
+			_off(document, 'pointermove', this._onTouchMove);
+			_off(document, 'dragover', nearestEmptyInsertDetectEvent);
+			_off(document, 'mousemove', nearestEmptyInsertDetectEvent);
+			_off(document, 'touchmove', nearestEmptyInsertDetectEvent);
+		},
+
 		_offUpEvents: function () {
 			var ownerDocument = this.el.ownerDocument;
 
-			_off(document, 'touchmove', this._onTouchMove);
-			_off(document, 'pointermove', this._onTouchMove);
 			_off(ownerDocument, 'mouseup', this._onDrop);
 			_off(ownerDocument, 'touchend', this._onDrop);
 			_off(ownerDocument, 'pointerup', this._onDrop);
 			_off(ownerDocument, 'touchcancel', this._onDrop);
-			_off(ownerDocument, 'pointercancel', this._onDrop);
-			_off(ownerDocument, 'selectstart', this);
+			_off(document, 'selectstart', this);
 		},
 
 		_onDrop: function (/**Event*/evt) {
 			var el = this.el,
 				options = this.options;
+			awaitingDragStarted = false;
+			scrolling = false;
+			isCircumstantialInvert = false;
+			pastFirstInvertThresh = false;
 
 			clearInterval(this._loopId);
-			clearInterval(autoScroll.pid);
+
+			clearInterval(pointerElemChangedInterval);
+			_clearAutoScrolls();
+			_cancelThrottle();
+
 			clearTimeout(this._dragStartTimer);
 
 			_cancelNextTick(this._cloneId);
 			_cancelNextTick(this._dragStartId);
 
 			// Unbind events
-			_off(document, 'mouseover', this);
 			_off(document, 'mousemove', this._onTouchMove);
+
 
 			if (this.nativeDraggable) {
 				_off(document, 'drop', this);
 				_off(el, 'dragstart', this._onDragStart);
+				_off(document, 'dragover', this._handleAutoScroll);
+				_off(document, 'dragover', _checkAlignment);
 			}
 
+			if (Safari) {
+				_css(document.body, 'user-select', '');
+			}
+
+			this._offMoveEvents();
 			this._offUpEvents();
 
 			if (evt) {
 				if (moved) {
-					evt.preventDefault();
+					evt.cancelable && evt.preventDefault();
 					!options.dropBubble && evt.stopPropagation();
 				}
 
 				ghostEl && ghostEl.parentNode && ghostEl.parentNode.removeChild(ghostEl);
 
-				if (rootEl === parentEl || Sortable.active.lastPullMode !== 'clone') {
+				if (rootEl === parentEl || (putSortable && putSortable.lastPutMode !== 'clone')) {
 					// Remove clone
 					cloneEl && cloneEl.parentNode && cloneEl.parentNode.removeChild(cloneEl);
 				}
@@ -6998,36 +7638,40 @@ process.umask = function() { return 0; };
 					dragEl.style['will-change'] = '';
 
 					// Remove class's
-					_toggleClass(dragEl, this.options.ghostClass, false);
+					_toggleClass(dragEl, putSortable ? putSortable.options.ghostClass : this.options.ghostClass, false);
 					_toggleClass(dragEl, this.options.chosenClass, false);
 
 					// Drag stop event
-					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex);
+					_dispatchEvent(this, rootEl, 'unchoose', dragEl, parentEl, rootEl, oldIndex, null, oldDraggableIndex, null, evt);
 
 					if (rootEl !== parentEl) {
-						newIndex = _index(dragEl, options.draggable);
+						newIndex = _index(dragEl);
+						newDraggableIndex = _index(dragEl, options.draggable);
 
 						if (newIndex >= 0) {
 							// Add event
-							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(null, parentEl, 'add', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
 
 							// Remove event
-							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(this, rootEl, 'remove', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
 
 							// drag from one list and drop into another
-							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
-							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+							_dispatchEvent(null, parentEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
+							_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
 						}
+
+						putSortable && putSortable.save();
 					}
 					else {
 						if (dragEl.nextSibling !== nextEl) {
 							// Get the index of the dragged element within its parent
-							newIndex = _index(dragEl, options.draggable);
+							newIndex = _index(dragEl);
+							newDraggableIndex = _index(dragEl, options.draggable);
 
 							if (newIndex >= 0) {
 								// drag & drop within the same list
-								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex);
-								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex);
+								_dispatchEvent(this, rootEl, 'update', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
+								_dispatchEvent(this, rootEl, 'sort', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
 							}
 						}
 					}
@@ -7036,9 +7680,9 @@ process.umask = function() { return 0; };
 						/* jshint eqnull:true */
 						if (newIndex == null || newIndex === -1) {
 							newIndex = oldIndex;
+							newDraggableIndex = oldDraggableIndex;
 						}
-
-						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex);
+						_dispatchEvent(this, rootEl, 'end', dragEl, parentEl, rootEl, oldIndex, newIndex, oldDraggableIndex, newDraggableIndex, evt);
 
 						// Save sorting
 						this.save();
@@ -7046,7 +7690,6 @@ process.umask = function() { return 0; };
 				}
 
 			}
-
 			this._nulling();
 		},
 
@@ -7061,15 +7704,23 @@ process.umask = function() { return 0; };
 
 			scrollEl =
 			scrollParentEl =
+			autoScrolls.length =
+
+			pointerElemChangedInterval =
+			lastPointerElemX =
+			lastPointerElemY =
 
 			tapEvt =
 			touchEvt =
 
 			moved =
 			newIndex =
+			oldIndex =
 
-			lastEl =
-			lastCSS =
+			lastTarget =
+			lastDirection =
+
+			realDragElRect =
 
 			putSortable =
 			activeGroup =
@@ -7078,6 +7729,7 @@ process.umask = function() { return 0; };
 			savedInputChecked.forEach(function (el) {
 				el.checked = true;
 			});
+
 			savedInputChecked.length = 0;
 		},
 
@@ -7088,16 +7740,12 @@ process.umask = function() { return 0; };
 					this._onDrop(evt);
 					break;
 
-				case 'dragover':
 				case 'dragenter':
+				case 'dragover':
 					if (dragEl) {
 						this._onDragOver(evt);
 						_globalDragOver(evt);
 					}
-					break;
-
-				case 'mouseover':
-					this._onDrop(evt);
 					break;
 
 				case 'selectstart':
@@ -7121,7 +7769,7 @@ process.umask = function() { return 0; };
 
 			for (; i < n; i++) {
 				el = children[i];
-				if (_closest(el, options.draggable, this.el)) {
+				if (_closest(el, options.draggable, this.el, false)) {
 					order.push(el.getAttribute(options.dataIdAttr) || _generateId(el));
 				}
 			}
@@ -7140,7 +7788,7 @@ process.umask = function() { return 0; };
 			this.toArray().forEach(function (id, i) {
 				var el = rootEl.children[i];
 
-				if (_closest(el, this.options.draggable, rootEl)) {
+				if (_closest(el, this.options.draggable, rootEl, false)) {
 					items[id] = el;
 				}
 			}, this);
@@ -7159,7 +7807,7 @@ process.umask = function() { return 0; };
 		 */
 		save: function () {
 			var store = this.options.store;
-			store && store.set(this);
+			store && store.set && store.set(this);
 		},
 
 
@@ -7170,7 +7818,7 @@ process.umask = function() { return 0; };
 		 * @returns {HTMLElement|null}
 		 */
 		closest: function (el, selector) {
-			return _closest(el, selector || this.options.draggable, this.el);
+			return _closest(el, selector || this.options.draggable, this.el, false);
 		},
 
 
@@ -7211,53 +7859,71 @@ process.umask = function() { return 0; };
 				_off(el, 'dragover', this);
 				_off(el, 'dragenter', this);
 			}
-
 			// Remove draggable attributes
 			Array.prototype.forEach.call(el.querySelectorAll('[draggable]'), function (el) {
 				el.removeAttribute('draggable');
 			});
 
-			touchDragOverListeners.splice(touchDragOverListeners.indexOf(this._onDragOver), 1);
-
 			this._onDrop();
 
+			sortables.splice(sortables.indexOf(this.el), 1);
+
 			this.el = el = null;
+		},
+
+		_hideClone: function() {
+			if (!cloneEl.cloneHidden) {
+				_css(cloneEl, 'display', 'none');
+				cloneEl.cloneHidden = true;
+				if (cloneEl.parentNode && this.options.removeCloneOnHide) {
+					cloneEl.parentNode.removeChild(cloneEl);
+				}
+			}
+		},
+
+		_showClone: function(putSortable) {
+			if (putSortable.lastPutMode !== 'clone') {
+				this._hideClone();
+				return;
+			}
+
+			if (cloneEl.cloneHidden) {
+				// show clone at dragEl or original position
+				if (rootEl.contains(dragEl) && !this.options.group.revertClone) {
+					rootEl.insertBefore(cloneEl, dragEl);
+				} else if (nextEl) {
+					rootEl.insertBefore(cloneEl, nextEl);
+				} else {
+					rootEl.appendChild(cloneEl);
+				}
+
+				if (this.options.group.revertClone) {
+					this._animate(dragEl, cloneEl);
+				}
+				_css(cloneEl, 'display', '');
+				cloneEl.cloneHidden = false;
+			}
 		}
 	};
 
-
-	function _cloneHide(sortable, state) {
-		if (sortable.lastPullMode !== 'clone') {
-			state = true;
-		}
-
-		if (cloneEl && (cloneEl.state !== state)) {
-			_css(cloneEl, 'display', state ? 'none' : '');
-
-			if (!state) {
-				if (cloneEl.state) {
-					if (sortable.options.group.revertClone) {
-						rootEl.insertBefore(cloneEl, nextEl);
-						sortable._animate(dragEl, cloneEl);
-					} else {
-						rootEl.insertBefore(cloneEl, dragEl);
-					}
-				}
-			}
-
-			cloneEl.state = state;
-		}
-	}
-
-
-	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx) {
+	function _closest(/**HTMLElement*/el, /**String*/selector, /**HTMLElement*/ctx, includeCTX) {
 		if (el) {
 			ctx = ctx || document;
 
 			do {
-				if ((selector === '>*' && el.parentNode === ctx) || _matches(el, selector)) {
+				if (
+					selector != null &&
+					(
+						selector[0] === '>' ?
+						el.parentNode === ctx && _matches(el, selector) :
+						_matches(el, selector)
+					) ||
+					includeCTX && el === ctx
+				) {
 					return el;
 				}
+
+				if (el === ctx) break;
 				/* jshint boss:true */
 			} while (el = _getParentOrHost(el));
 		}
@@ -7267,9 +7933,9 @@ process.umask = function() { return 0; };
 
 
 	function _getParentOrHost(el) {
-		var parent = el.host;
-
-		return (parent && parent.nodeType) ? parent : el.parentNode;
+		return (el.host && el !== document && el.host.nodeType)
+			? el.host
+			: el.parentNode;
 	}
 
 
@@ -7277,22 +7943,22 @@ process.umask = function() { return 0; };
 		if (evt.dataTransfer) {
 			evt.dataTransfer.dropEffect = 'move';
 		}
-		evt.preventDefault();
+		evt.cancelable && evt.preventDefault();
 	}
 
 
 	function _on(el, event, fn) {
-		el.addEventListener(event, fn, captureMode);
+		el.addEventListener(event, fn, IE11OrLess ? false : captureMode);
 	}
 
 
 	function _off(el, event, fn) {
-		el.removeEventListener(event, fn, captureMode);
+		el.removeEventListener(event, fn, IE11OrLess ? false : captureMode);
 	}
 
 
 	function _toggleClass(el, name, state) {
-		if (el) {
+		if (el && name) {
 			if (el.classList) {
 				el.classList[state ? 'add' : 'remove'](name);
 			}
@@ -7319,12 +7985,32 @@ process.umask = function() { return 0; };
 				return prop === void 0 ? val : val[prop];
 			}
 			else {
-				if (!(prop in style)) {
+				if (!(prop in style) && prop.indexOf('webkit') === -1) {
 					prop = '-webkit-' + prop;
 				}
 
 				style[prop] = val + (typeof val === 'string' ? '' : 'px');
 			}
+		}
+	}
+
+	function _matrix(el) {
+		var appliedTransforms = '';
+		do {
+			var transform = _css(el, 'transform');
+
+			if (transform && transform !== 'none') {
+				appliedTransforms = transform + ' ' + appliedTransforms;
+			}
+			/* jshint boss:true */
+		} while (el = el.parentNode);
+
+		if (window.DOMMatrix) {
+			return new DOMMatrix(appliedTransforms);
+		} else if (window.WebKitCSSMatrix) {
+			return new WebKitCSSMatrix(appliedTransforms);
+		} else if (window.CSSMatrix) {
+			return new CSSMatrix(appliedTransforms);
 		}
 	}
 
@@ -7347,14 +8033,27 @@ process.umask = function() { return 0; };
 
 
 
-	function _dispatchEvent(sortable, rootEl, name, targetEl, toEl, fromEl, startIndex, newIndex) {
+	function _dispatchEvent(
+		sortable, rootEl, name,
+		targetEl, toEl, fromEl,
+		startIndex, newIndex,
+		startDraggableIndex, newDraggableIndex,
+		originalEvt
+	) {
 		sortable = (sortable || rootEl[expando]);
-
-		var evt = document.createEvent('Event'),
+		var evt,
 			options = sortable.options,
 			onName = 'on' + name.charAt(0).toUpperCase() + name.substr(1);
-
-		evt.initEvent(name, true, true);
+		// Support for new CustomEvent feature
+		if (window.CustomEvent && !IE11OrLess && !Edge) {
+			evt = new CustomEvent(name, {
+				bubbles: true,
+				cancelable: true
+			});
+		} else {
+			evt = document.createEvent('Event');
+			evt.initEvent(name, true, true);
+		}
 
 		evt.to = toEl || rootEl;
 		evt.from = fromEl || rootEl;
@@ -7364,7 +8063,15 @@ process.umask = function() { return 0; };
 		evt.oldIndex = startIndex;
 		evt.newIndex = newIndex;
 
-		rootEl.dispatchEvent(evt);
+		evt.oldDraggableIndex = startDraggableIndex;
+		evt.newDraggableIndex = newDraggableIndex;
+
+		evt.originalEvent = originalEvt;
+		evt.pullMode = putSortable ? putSortable.lastPutMode : undefined;
+
+		if (rootEl) {
+			rootEl.dispatchEvent(evt);
+		}
 
 		if (options[onName]) {
 			options[onName].call(sortable, evt);
@@ -7377,17 +8084,26 @@ process.umask = function() { return 0; };
 			sortable = fromEl[expando],
 			onMoveFn = sortable.options.onMove,
 			retVal;
-
-		evt = document.createEvent('Event');
-		evt.initEvent('move', true, true);
+		// Support for new CustomEvent feature
+		if (window.CustomEvent && !IE11OrLess && !Edge) {
+			evt = new CustomEvent('move', {
+				bubbles: true,
+				cancelable: true
+			});
+		} else {
+			evt = document.createEvent('Event');
+			evt.initEvent('move', true, true);
+		}
 
 		evt.to = toEl;
 		evt.from = fromEl;
 		evt.dragged = dragEl;
 		evt.draggedRect = dragRect;
 		evt.related = targetEl || toEl;
-		evt.relatedRect = targetRect || toEl.getBoundingClientRect();
+		evt.relatedRect = targetRect || _getRect(toEl);
 		evt.willInsertAfter = willInsertAfter;
+
+		evt.originalEvent = originalEvt;
 
 		fromEl.dispatchEvent(evt);
 
@@ -7398,26 +8114,166 @@ process.umask = function() { return 0; };
 		return retVal;
 	}
 
-
 	function _disableDraggable(el) {
 		el.draggable = false;
 	}
-
 
 	function _unsilent() {
 		_silent = false;
 	}
 
+	/**
+	 * Gets nth child of el, ignoring hidden children, sortable's elements (does not ignore clone if it's visible)
+	 * and non-draggable elements
+	 * @param  {HTMLElement} el       The parent element
+	 * @param  {Number} childNum      The index of the child
+	 * @param  {Object} options       Parent Sortable's options
+	 * @return {HTMLElement}          The child at index childNum, or null if not found
+	 */
+	function _getChild(el, childNum, options) {
+		var currentChild = 0,
+			i = 0,
+			children = el.children;
 
-	/** @returns {HTMLElement|false} */
-	function _ghostIsLast(el, evt) {
-		var lastEl = el.lastElementChild,
-			rect = lastEl.getBoundingClientRect();
+		while (i < children.length) {
+			if (
+				children[i].style.display !== 'none' &&
+				children[i] !== ghostEl &&
+				children[i] !== dragEl &&
+				_closest(children[i], options.draggable, el, false)
+			) {
+				if (currentChild === childNum) {
+					return children[i];
+				}
+				currentChild++;
+			}
 
-		// 5 — min delta
-		// abs — нельзя добавлять, а то глюки при наведении сверху
-		return (evt.clientY - (rect.top + rect.height) > 5) ||
-			(evt.clientX - (rect.left + rect.width) > 5);
+			i++;
+		}
+		return null;
+	}
+
+	/**
+	 * Gets the last child in the el, ignoring ghostEl or invisible elements (clones)
+	 * @param  {HTMLElement} el       Parent element
+	 * @return {HTMLElement}          The last child, ignoring ghostEl
+	 */
+	function _lastChild(el) {
+		var last = el.lastElementChild;
+
+		while (last && (last === ghostEl || _css(last, 'display') === 'none')) {
+			last = last.previousElementSibling;
+		}
+
+		return last || null;
+	}
+
+	function _ghostIsLast(evt, axis, el) {
+		var elRect = _getRect(_lastChild(el)),
+			mouseOnAxis = axis === 'vertical' ? evt.clientY : evt.clientX,
+			mouseOnOppAxis = axis === 'vertical' ? evt.clientX : evt.clientY,
+			targetS2 = axis === 'vertical' ? elRect.bottom : elRect.right,
+			targetS1Opp = axis === 'vertical' ? elRect.left : elRect.top,
+			targetS2Opp = axis === 'vertical' ? elRect.right : elRect.bottom,
+			spacer = 10;
+
+		return (
+			axis === 'vertical' ?
+				(mouseOnOppAxis > targetS2Opp + spacer || mouseOnOppAxis <= targetS2Opp && mouseOnAxis > targetS2 && mouseOnOppAxis >= targetS1Opp) :
+				(mouseOnAxis > targetS2 && mouseOnOppAxis > targetS1Opp || mouseOnAxis <= targetS2 && mouseOnOppAxis > targetS2Opp + spacer)
+		);
+	}
+
+	function _getSwapDirection(evt, target, axis, swapThreshold, invertedSwapThreshold, invertSwap, isLastTarget) {
+		var targetRect = _getRect(target),
+			mouseOnAxis = axis === 'vertical' ? evt.clientY : evt.clientX,
+			targetLength = axis === 'vertical' ? targetRect.height : targetRect.width,
+			targetS1 = axis === 'vertical' ? targetRect.top : targetRect.left,
+			targetS2 = axis === 'vertical' ? targetRect.bottom : targetRect.right,
+			dragRect = _getRect(dragEl),
+			invert = false;
+
+
+		if (!invertSwap) {
+			// Never invert or create dragEl shadow when target movemenet causes mouse to move past the end of regular swapThreshold
+			if (isLastTarget && targetMoveDistance < targetLength * swapThreshold) { // multiplied only by swapThreshold because mouse will already be inside target by (1 - threshold) * targetLength / 2
+				// check if past first invert threshold on side opposite of lastDirection
+				if (!pastFirstInvertThresh &&
+					(lastDirection === 1 ?
+						(
+							mouseOnAxis > targetS1 + targetLength * invertedSwapThreshold / 2
+						) :
+						(
+							mouseOnAxis < targetS2 - targetLength * invertedSwapThreshold / 2
+						)
+					)
+				)
+				{
+					// past first invert threshold, do not restrict inverted threshold to dragEl shadow
+					pastFirstInvertThresh = true;
+				}
+
+				if (!pastFirstInvertThresh) {
+					var dragS1 = axis === 'vertical' ? dragRect.top : dragRect.left,
+						dragS2 = axis === 'vertical' ? dragRect.bottom : dragRect.right;
+					// dragEl shadow (target move distance shadow)
+					if (
+						lastDirection === 1 ?
+						(
+							mouseOnAxis < targetS1 + targetMoveDistance // over dragEl shadow
+						) :
+						(
+							mouseOnAxis > targetS2 - targetMoveDistance
+						)
+					)
+					{
+						return lastDirection * -1;
+					}
+				} else {
+					invert = true;
+				}
+			} else {
+				// Regular
+				if (
+					mouseOnAxis > targetS1 + (targetLength * (1 - swapThreshold) / 2) &&
+					mouseOnAxis < targetS2 - (targetLength * (1 - swapThreshold) / 2)
+				) {
+					return _getInsertDirection(target);
+				}
+			}
+		}
+
+		invert = invert || invertSwap;
+
+		if (invert) {
+			// Invert of regular
+			if (
+				mouseOnAxis < targetS1 + (targetLength * invertedSwapThreshold / 2) ||
+				mouseOnAxis > targetS2 - (targetLength * invertedSwapThreshold / 2)
+			)
+			{
+				return ((mouseOnAxis > targetS1 + targetLength / 2) ? 1 : -1);
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Gets the direction dragEl must be swapped relative to target in order to make it
+	 * seem that dragEl has been "inserted" into that element's position
+	 * @param  {HTMLElement} target       The target whose position dragEl is being inserted at
+	 * @return {Number}                   Direction dragEl must be swapped
+	 */
+	function _getInsertDirection(target) {
+		var dragElIndex = _index(dragEl),
+			targetIndex = _index(target);
+
+		if (dragElIndex < targetIndex) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 
@@ -7454,7 +8310,7 @@ process.umask = function() { return 0; };
 		}
 
 		while (el && (el = el.previousElementSibling)) {
-			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && (selector === '>*' || _matches(el, selector))) {
+			if ((el.nodeName.toUpperCase() !== 'TEMPLATE') && el !== cloneEl && (!selector || _matches(el, selector))) {
 				index++;
 			}
 		}
@@ -7463,40 +8319,50 @@ process.umask = function() { return 0; };
 	}
 
 	function _matches(/**HTMLElement*/el, /**String*/selector) {
+		if (!selector) return;
+
+		selector[0] === '>' && (selector = selector.substring(1));
+
 		if (el) {
-			selector = selector.split('.');
-
-			var tag = selector.shift().toUpperCase(),
-				re = new RegExp('\\s(' + selector.join('|') + ')(?=\\s)', 'g');
-
-			return (
-				(tag === '' || el.nodeName.toUpperCase() == tag) &&
-				(!selector.length || ((' ' + el.className + ' ').match(re) || []).length == selector.length)
-			);
+			try {
+				if (el.matches) {
+					return el.matches(selector);
+				} else if (el.msMatchesSelector) {
+					return el.msMatchesSelector(selector);
+				} else if (el.webkitMatchesSelector) {
+					return el.webkitMatchesSelector(selector);
+				}
+			} catch(_) {
+				return false;
+			}
 		}
 
 		return false;
 	}
 
+	var _throttleTimeout;
 	function _throttle(callback, ms) {
-		var args, _this;
-
 		return function () {
-			if (args === void 0) {
-				args = arguments;
-				_this = this;
+			if (!_throttleTimeout) {
+				var args = arguments,
+					_this = this;
 
-				setTimeout(function () {
+				_throttleTimeout = setTimeout(function () {
 					if (args.length === 1) {
 						callback.call(_this, args[0]);
 					} else {
 						callback.apply(_this, args);
 					}
 
-					args = void 0;
+					_throttleTimeout = void 0;
 				}, ms);
 			}
 		};
+	}
+
+	function _cancelThrottle() {
+		clearTimeout(_throttleTimeout);
+		_throttleTimeout = void 0;
 	}
 
 	function _extend(dst, src) {
@@ -7524,6 +8390,8 @@ process.umask = function() { return 0; };
 	}
 
 	function _saveInputCheckedState(root) {
+		savedInputChecked.length = 0;
+
 		var inputs = root.getElementsByTagName('input');
 		var idx = inputs.length;
 
@@ -7541,12 +8409,158 @@ process.umask = function() { return 0; };
 		return clearTimeout(id);
 	}
 
+
+	/**
+	 * Returns the "bounding client rect" of given element
+	 * @param  {HTMLElement} el                The element whose boundingClientRect is wanted
+	 * @param  {[HTMLElement]} container       the parent the element will be placed in
+	 * @param  {[Boolean]} adjustForTransform  Whether the rect should compensate for parent's transform
+	 * @return {Object}                        The boundingClientRect of el
+	 */
+	function _getRect(el, adjustForTransform, container, adjustForFixed) {
+		if (!el.getBoundingClientRect && el !== win) return;
+
+		var elRect,
+			top,
+			left,
+			bottom,
+			right,
+			height,
+			width;
+
+		if (el !== win && el !== _getWindowScrollingElement()) {
+			elRect = el.getBoundingClientRect();
+			top = elRect.top;
+			left = elRect.left;
+			bottom = elRect.bottom;
+			right = elRect.right;
+			height = elRect.height;
+			width = elRect.width;
+		} else {
+			top = 0;
+			left = 0;
+			bottom = window.innerHeight;
+			right = window.innerWidth;
+			height = window.innerHeight;
+			width = window.innerWidth;
+		}
+
+		if (adjustForFixed && el !== win) {
+			// Adjust for translate()
+			container = container || el.parentNode;
+
+			// solves #1123 (see: https://stackoverflow.com/a/37953806/6088312)
+			// Not needed on <= IE11
+			if (!IE11OrLess) {
+				do {
+					if (container && container.getBoundingClientRect && _css(container, 'transform') !== 'none') {
+						var containerRect = container.getBoundingClientRect();
+
+						// Set relative to edges of padding box of container
+						top -= containerRect.top + parseInt(_css(container, 'border-top-width'));
+						left -= containerRect.left + parseInt(_css(container, 'border-left-width'));
+						bottom = top + elRect.height;
+						right = left + elRect.width;
+
+						break;
+					}
+					/* jshint boss:true */
+				} while (container = container.parentNode);
+			}
+		}
+
+		if (adjustForTransform && el !== win) {
+			// Adjust for scale()
+			var matrix = _matrix(container || el),
+				scaleX = matrix && matrix.a,
+				scaleY = matrix && matrix.d;
+
+			if (matrix) {
+				top /= scaleY;
+				left /= scaleX;
+
+				width /= scaleX;
+				height /= scaleY;
+
+				bottom = top + height;
+				right = left + width;
+			}
+		}
+
+		return {
+			top: top,
+			left: left,
+			bottom: bottom,
+			right: right,
+			width: width,
+			height: height
+		};
+	}
+
+
+	/**
+	 * Checks if a side of an element is scrolled past a side of it's parents
+	 * @param  {HTMLElement}  el       The element who's side being scrolled out of view is in question
+	 * @param  {String}       side     Side of the element in question ('top', 'left', 'right', 'bottom')
+	 * @return {HTMLElement}           The parent scroll element that the el's side is scrolled past, or null if there is no such element
+	 */
+	function _isScrolledPast(el, side) {
+		var parent = _getParentAutoScrollElement(el, true),
+			elSide = _getRect(el)[side];
+
+		/* jshint boss:true */
+		while (parent) {
+			var parentSide = _getRect(parent)[side],
+				visible;
+
+			if (side === 'top' || side === 'left') {
+				visible = elSide >= parentSide;
+			} else {
+				visible = elSide <= parentSide;
+			}
+
+			if (!visible) return parent;
+
+			if (parent === _getWindowScrollingElement()) break;
+
+			parent = _getParentAutoScrollElement(parent, false);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Returns the scroll offset of the given element, added with all the scroll offsets of parent elements.
+	 * The value is returned in real pixels.
+	 * @param  {HTMLElement} el
+	 * @return {Array}             Offsets in the format of [left, top]
+	 */
+	function _getRelativeScrollOffset(el) {
+		var offsetLeft = 0,
+			offsetTop = 0,
+			winScroller = _getWindowScrollingElement();
+
+		if (el) {
+			do {
+				var matrix = _matrix(el),
+					scaleX = matrix.a,
+					scaleY = matrix.d;
+
+				offsetLeft += el.scrollLeft * scaleX;
+				offsetTop += el.scrollTop * scaleY;
+			} while (el !== winScroller && (el = el.parentNode));
+		}
+
+		return [offsetLeft, offsetTop];
+	}
+
 	// Fixed #973:
-	_on(document, 'touchmove', function (evt) {
-		if (Sortable.active) {
+	_on(document, 'touchmove', function(evt) {
+		if ((Sortable.active || awaitingDragStarted) && evt.cancelable) {
 			evt.preventDefault();
 		}
 	});
+
 
 	// Export utils
 	Sortable.utils = {
@@ -7555,7 +8569,7 @@ process.umask = function() { return 0; };
 		css: _css,
 		find: _find,
 		is: function (el, selector) {
-			return !!_closest(el, selector, el);
+			return !!_closest(el, selector, el, false);
 		},
 		extend: _extend,
 		throttle: _throttle,
@@ -7564,7 +8578,9 @@ process.umask = function() { return 0; };
 		clone: _clone,
 		index: _index,
 		nextTick: _nextTick,
-		cancelNextTick: _cancelNextTick
+		cancelNextTick: _cancelNextTick,
+		detectDirection: _detectDirection,
+		getChild: _getChild
 	};
 
 
@@ -7579,7 +8595,7 @@ process.umask = function() { return 0; };
 
 
 	// Export
-	Sortable.version = '1.7.0';
+	Sortable.version = '1.9.0';
 	return Sortable;
 });
 
@@ -19753,7 +20769,7 @@ exports.insert = function (css) {
 
 },{}],14:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-37ae778e] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-37ae778e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n.ordersave-container[_v-37ae778e]{\n  margin-bottom:10px;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n#items-unapproved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-b5fb57ee] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-b5fb57ee]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n.ordersave-container[_v-b5fb57ee]{\n  margin-bottom:10px;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20031,24 +21047,24 @@ exports.default = {
   }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-37ae778e=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-8 col-lg-6\" _v-37ae778e=\"\">\n            <form class=\"form-inline\" _v-37ae778e=\"\">\n              <div class=\"form-group\" _v-37ae778e=\"\">\n                  <label for=\"start-date\" _v-37ae778e=\"\">Showing events starting <span v-if=\"isEndDate\" _v-37ae778e=\"\">between</span><span v-else=\"\" _v-37ae778e=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-37ae778e=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-37ae778e=\"\">\n                  <label for=\"start-date\" _v-37ae778e=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-37ae778e=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-37ae778e=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-37ae778e=\"\"><span v-if=\"isEndDate\" _v-37ae778e=\"\"> - Remove </span><span v-else=\"\" _v-37ae778e=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n        <!-- TEXT filter -->\n        <div class=\"col-xs-12 col-sm-4 col-md-4 col-lg-6\" _v-37ae778e=\"\">\n            <form class=\"form-inline\" v-on:submit.prevent=\"\" _v-37ae778e=\"\">\n              <div class=\"form-group\" _v-37ae778e=\"\">\n                  <label for=\"search-filter\" _v-37ae778e=\"\">Search titles</label>\n                  <input v-model=\"textFilter\" id=\"search-filter\" type=\"text\" class=\"form-control\" _v-37ae778e=\"\">\n              </div>\n            </form>\n        </div>\n    </div>\n    <hr _v-37ae778e=\"\">\n    <div class=\"row\" _v-37ae778e=\"\">\n        <div class=\"col-xs-12\" _v-37ae778e=\"\">\n            <label id=\"automail-label\" for=\"automail\" _v-37ae778e=\"\">Send notification email? <input type=\"checkbox\" name=\"automail\" id=\"automail\" _v-37ae778e=\"\"></label>\n        </div>\n    </div>\n  <div class=\"row\" _v-37ae778e=\"\">\n      <h2 v-if=\"loading\" class=\"col-md-12\" _v-37ae778e=\"\">Loading. Please Wait...</h2>\n    <div class=\"col-md-4\" _v-37ae778e=\"\">\n      <h3 _v-37ae778e=\"\"><span class=\"badge\" _v-37ae778e=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>\n      <div id=\"items-unapproved\" _v-37ae778e=\"\">\n        <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-37ae778e=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-37ae778e=\"\">\n    <h3 _v-37ae778e=\"\"><span class=\"badge\" _v-37ae778e=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>\n    <div id=\"items-approved\" _v-37ae778e=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-37ae778e=\"\">\n    </event-queue-item>\n  </div>\n</div><!-- /.col-md-6 -->\n<div class=\"col-md-4\" _v-37ae778e=\"\">\n  <div id=\"items-live\" _v-37ae778e=\"\">\n    <!-- ELEVATED ANNOUNCEMENTS -->\n    <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY \"NEEDED\" AGAIN -->\n    <!--\n    <template v-if=\"canElevate\">\n      <h3><span class=\"badge\">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated</h3>\n      <p>To rearrange the order of events, drag the pod to the desired location. To demote an event, click the red 'X' on the pod. Click \"save order\" button when done. Note: this list is NOT filtered by date.</p>\n      <div v-show=\"ordersave.isOk\"  class=\"alert alert-success alert-dismissible\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\"><i class=\"fa fa-times\"></i></button>\n        <h5>{{ordersave.msg}}</h5>\n      </div>\n      <div v-show=\"ordersave.isErr\"  class=\"alert alert-danger alert-dismissible\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\"><i class=\"fa fa-times\"></i></button>\n        <h5>{{ordersave.msg}}</h5>\n      </div>\n      <template v-if=\"elevateditemschanged\">\n        <div class=\"ordersave-container\">\n          <button @click=\"updateElevatedOrder\" class=\"btn btn-info\">Save Order</button>\n          <button @click=\"resetElevatedOrder\" class=\"btn btn-default\">Reset</button>\n        </div>\n      </template>\n      <template v-if=\"elevateditems.length > 0\">\n        <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\">\n          <li v-for=\"item in elevateditems\" class=\"list-group-item\">\n            <event-queue-item\n              pid=\"item-elevated\"\n              :item=\"item\"\n              :is=\"item-elevated\"\n            >\n            </event-queue-item>\n          </li>\n        </ul>\n      </template>\n      <template v-else>\n        <p>There are no elevated announcements.</p>\n      </template>\n    </template>\n    <hr /> --><!-- End elevated announcements -->\n    <h3 _v-37ae778e=\"\"><span class=\"badge\" _v-37ae778e=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live Events</h3>\n    <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'start_date' -1\" @item-change=\"moveToUnApproved\" :elevated-events=\"elevateditems\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-37ae778e=\"\">\n  </event-queue-item>\n</div>\n</div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n    <div class=\"row\" _v-b5fb57ee=\"\">\n        <div class=\"col-xs-12 col-sm-8 col-md-8 col-lg-6\" _v-b5fb57ee=\"\">\n            <form class=\"form-inline\" _v-b5fb57ee=\"\">\n              <div class=\"form-group\" _v-b5fb57ee=\"\">\n                  <label for=\"start-date\" _v-b5fb57ee=\"\">Showing events starting <span v-if=\"isEndDate\" _v-b5fb57ee=\"\">between</span><span v-else=\"\" _v-b5fb57ee=\"\">on or after</span></label>\n                  <input v-if=\"startdate\" v-model=\"startdate\" type=\"text\" :initval=\"startdate\" v-flatpickr=\"startdate\" _v-b5fb57ee=\"\">\n              </div>\n              <div v-if=\"isEndDate\" class=\"form-group\" _v-b5fb57ee=\"\">\n                  <label for=\"start-date\" _v-b5fb57ee=\"\"> and </label>\n                  <input v-if=\"enddate\" type=\"text\" :initval=\"enddate\" v-flatpickr=\"enddate\" _v-b5fb57ee=\"\">\n              </div>\n              <button type=\"button\" class=\"btn btn-sm btn-info\" @click=\"fetchAllRecords\" _v-b5fb57ee=\"\">Filter</button>\n              <a href=\"#\" id=\"rangetoggle\" @click=\"toggleRange\" _v-b5fb57ee=\"\"><span v-if=\"isEndDate\" _v-b5fb57ee=\"\"> - Remove </span><span v-else=\"\" _v-b5fb57ee=\"\"> + Add </span>Range</a>\n            </form>\n        </div>\n        <!-- TEXT filter -->\n        <div class=\"col-xs-12 col-sm-4 col-md-4 col-lg-6\" _v-b5fb57ee=\"\">\n            <form class=\"form-inline\" v-on:submit.prevent=\"\" _v-b5fb57ee=\"\">\n              <div class=\"form-group\" _v-b5fb57ee=\"\">\n                  <label for=\"search-filter\" _v-b5fb57ee=\"\">Search titles</label>\n                  <input v-model=\"textFilter\" id=\"search-filter\" type=\"text\" class=\"form-control\" _v-b5fb57ee=\"\">\n              </div>\n            </form>\n        </div>\n    </div>\n    <hr _v-b5fb57ee=\"\">\n    <div class=\"row\" _v-b5fb57ee=\"\">\n        <div class=\"col-xs-12\" _v-b5fb57ee=\"\">\n            <label id=\"automail-label\" for=\"automail\" _v-b5fb57ee=\"\">Send notification email? <input type=\"checkbox\" name=\"automail\" id=\"automail\" _v-b5fb57ee=\"\"></label>\n        </div>\n    </div>\n  <div class=\"row\" _v-b5fb57ee=\"\">\n      <h2 v-if=\"loading\" class=\"col-md-12\" _v-b5fb57ee=\"\">Loading. Please Wait...</h2>\n    <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n      <h3 _v-b5fb57ee=\"\"><span class=\"badge\" _v-b5fb57ee=\"\">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>\n      <div id=\"items-unapproved\" _v-b5fb57ee=\"\">\n        <event-queue-item pid=\"items-unapproved\" v-for=\"item in itemsUnapproved | orderBy 'start_date' 1\" @item-change=\"moveToApproved\" :item=\"item\" :index=\"$index\" :is=\"unapproved-list\" _v-b5fb57ee=\"\">\n      </event-queue-item>\n    </div>\n  </div><!-- /.col-md-6 -->\n  <div class=\"col-md-4\" _v-b5fb57ee=\"\">\n    <h3 _v-b5fb57ee=\"\"><span class=\"badge\" _v-b5fb57ee=\"\">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>\n    <div id=\"items-approved\" _v-b5fb57ee=\"\">\n      <event-queue-item pid=\"items-approved\" v-for=\"item in itemsApproved | orderBy 'start_date' 1\" @item-change=\"moveToUnApproved\" :item=\"item\" :index=\"$index\" :is=\"approved-list\" _v-b5fb57ee=\"\">\n    </event-queue-item>\n  </div>\n</div><!-- /.col-md-6 -->\n<div class=\"col-md-4\" _v-b5fb57ee=\"\">\n  <div id=\"items-live\" _v-b5fb57ee=\"\">\n    <!-- ELEVATED ANNOUNCEMENTS -->\n    <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY \"NEEDED\" AGAIN -->\n    <!--\n    <template v-if=\"canElevate\">\n      <h3><span class=\"badge\">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated</h3>\n      <p>To rearrange the order of events, drag the pod to the desired location. To demote an event, click the red 'X' on the pod. Click \"save order\" button when done. Note: this list is NOT filtered by date.</p>\n      <div v-show=\"ordersave.isOk\"  class=\"alert alert-success alert-dismissible\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\"><i class=\"fa fa-times\"></i></button>\n        <h5>{{ordersave.msg}}</h5>\n      </div>\n      <div v-show=\"ordersave.isErr\"  class=\"alert alert-danger alert-dismissible\">\n        <button @click.prevent=\"toggleCallout\" class=\"btn btn-sm close\"><i class=\"fa fa-times\"></i></button>\n        <h5>{{ordersave.msg}}</h5>\n      </div>\n      <template v-if=\"elevateditemschanged\">\n        <div class=\"ordersave-container\">\n          <button @click=\"updateElevatedOrder\" class=\"btn btn-info\">Save Order</button>\n          <button @click=\"resetElevatedOrder\" class=\"btn btn-default\">Reset</button>\n        </div>\n      </template>\n      <template v-if=\"elevateditems.length > 0\">\n        <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\">\n          <li v-for=\"item in elevateditems\" class=\"list-group-item\">\n            <event-queue-item\n              pid=\"item-elevated\"\n              :item=\"item\"\n              :is=\"item-elevated\"\n            >\n            </event-queue-item>\n          </li>\n        </ul>\n      </template>\n      <template v-else>\n        <p>There are no elevated announcements.</p>\n      </template>\n    </template>\n    <hr /> --><!-- End elevated announcements -->\n    <h3 _v-b5fb57ee=\"\"><span class=\"badge\" _v-b5fb57ee=\"\">{{ itemsLive ? itemsLive.length : 0 }}</span> Live Events</h3>\n    <event-queue-item pid=\"items-live\" v-for=\"item in itemsLive | orderBy 'start_date' -1\" @item-change=\"moveToUnApproved\" :elevated-events=\"elevateditems\" :item=\"item\" :index=\"$index\" :is=\"other-list\" _v-b5fb57ee=\"\">\n  </event-queue-item>\n</div>\n</div><!-- /.col-md-6 -->\n</div><!-- ./row -->\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n#items-unapproved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-37ae778e] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-37ae778e] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-37ae778e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n.ordersave-container[_v-37ae778e]{\n  margin-bottom:10px;\n}\n"] = false
+    __vueify_insert__.cache["\n#items-unapproved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n#items-approved .box[_v-b5fb57ee] {\n  margin-bottom: 4px;\n}\n#automail-label[_v-b5fb57ee] {\n  font-size: 110%;\n  margin: 0;\n  padding: 0;\n  position: relative;\n  top: 10px;\n}\n#rangetoggle[_v-b5fb57ee]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n.ordersave-container[_v-b5fb57ee]{\n  margin-bottom:10px;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-37ae778e", module.exports)
+    hotAPI.createRecord("_v-b5fb57ee", module.exports)
   } else {
-    hotAPI.update("_v-37ae778e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-b5fb57ee", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"../directives/flatpickr.js":17,"./EventQueueItem.vue":15,"babel-runtime/core-js/json/stringify":1,"moment":6,"vue":12,"vue-hot-reload-api":9,"vueify/lib/insert-css":13}],15:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-94cdab7e] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-94cdab7e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-94cdab7e] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-94cdab7e] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-94cdab7e] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-94cdab7e] {\n  background-color: #ddd;\n}\n.box[_v-94cdab7e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-94cdab7e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-94cdab7e] {\n  padding: 3px;\n}\n.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nh5.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-94cdab7e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-94cdab7e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-94cdab7e] {\n  display:inline-block;\n}\nform.mediaform[_v-94cdab7e] {\n  margin-top: 1rem;\n}\n.form-group[_v-94cdab7e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-94cdab7e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-94cdab7e],\n.btn-group-vertical[_v-94cdab7e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-94cdab7e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-94cdab7e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-94cdab7e]{\n  margin-bottom: 0;\n}\n.topitems[_v-94cdab7e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-94cdab7e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-94cdab7e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-94cdab7e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-94cdab7e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-94cdab7e] {\n  color: #F39C12;\n}\n.time-is-long[_v-94cdab7e] {\n  color: #999999;\n}\n.time-is-over[_v-94cdab7e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-94cdab7e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-94cdab7e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-94cdab7e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-94cdab7e] {\n  margin-bottom: 30px;\n}\n.remove-event-btn[_v-94cdab7e]{\n  margin-left: 10px;\n}\n.form-check[_v-94cdab7e]{\n  display:inline;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.file-upload[_v-6464513c] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-6464513c] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-6464513c] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-6464513c] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-6464513c] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-6464513c] {\n  background-color: #ddd;\n}\n.box[_v-6464513c] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-6464513c] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-6464513c] {\n  padding: 3px;\n}\n.box-footer[_v-6464513c] {\n  padding: 3px;\n}\nh5.box-footer[_v-6464513c] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-6464513c] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-6464513c] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-6464513c] {\n  display:inline-block;\n}\nform.mediaform[_v-6464513c] {\n  margin-top: 1rem;\n}\n.form-group[_v-6464513c] {\n  margin-bottom: 2px;\n}\n#applabel[_v-6464513c]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-6464513c],\n.btn-group-vertical[_v-6464513c] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-6464513c] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-6464513c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-6464513c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-6464513c] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-6464513c]{\n  margin-bottom: 0;\n}\n.topitems[_v-6464513c] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-6464513c] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-6464513c] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-6464513c] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-6464513c] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-6464513c] {\n  color: #F39C12;\n}\n.time-is-long[_v-6464513c] {\n  color: #999999;\n}\n.time-is-over[_v-6464513c] {\n  color: #9B59B6;\n}\n\n.special-item[_v-6464513c] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-6464513c] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-6464513c] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-6464513c] {\n  margin-bottom: 30px;\n}\n.remove-event-btn[_v-6464513c]{\n  margin-left: 10px;\n}\n.form-check[_v-6464513c]{\n  display:inline;\n}\n")
 'use strict';
 
 var _stringify = require('babel-runtime/core-js/json/stringify');
@@ -20490,19 +21506,19 @@ module.exports = {
   events: {}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"specialItem\" _v-94cdab7e=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-94cdab7e=\"\">\n\n      <div class=\"box-header with-border\" _v-94cdab7e=\"\">\n        <div class=\"row\" _v-94cdab7e=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-94cdab7e=\"\">\n            <div class=\"box-date-top pull-left\" _v-94cdab7e=\"\">{{item.start_date | titleDateLong}}</div>\n            <div class=\"pull-right\" _v-94cdab7e=\"\">\n              <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-94cdab7e=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-94cdab7e=\"\"></span></label>\n            </div><!-- /.pull-right -->\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-94cdab7e=\"\">\n            <form class=\"form-inline pull-right\" _v-94cdab7e=\"\">\n              <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY \"NEEDED\" AGAIN -->\n              <!--\n              <template v-if=\"pid == 'items-live' || pid == 'items-approved'\">\n                <div class=\"form-check\">\n                  <label class=\"form-check-label\">\n                    Elevate\n                    <input type=\"checkbox\" class=\"form-check-input\" @click=\"toggleEmitEventElevate(item)\" v-model=\"checked\" :checked=\"isElevatedEvent\" /> |\n                  </label>\n                </div>\n              </template>\n              <template v-if=\"pid != 'item-elevated'\">\n                <div id=\"applabel\" class=\"form-group\">\n                  <label> approved:</label>\n                </div>\n                <div class=\"form-group\">\n                  <vui-flip-switch id=\"switch-{{item.id}}\"\n                  v-on:click.prevent=\"changeIsApproved\"\n                  :value.sync=\"patchRecord.is_approved\" >\n                  </vui-flip-switch>\n                </div>\n              </template>\n              -->\n              <div id=\"applabel\" class=\"form-group\" _v-94cdab7e=\"\">\n                <label _v-94cdab7e=\"\"> approved:</label>\n              </div>\n              <div class=\"form-group\" _v-94cdab7e=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-94cdab7e=\"\">\n                </vui-flip-switch>\n              </div>\n              <button v-show=\"pid == 'item-elevated'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right remove-event-btn\" @click=\"emitEventDemote(item)\" _v-94cdab7e=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-94cdab7e=\"\"></i></button>\n          </form>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-94cdab7e=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-94cdab7e=\"\">\n          <div class=\"col-sm-12\" _v-94cdab7e=\"\">\n            <h6 class=\"box-title\" _v-94cdab7e=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-94cdab7e=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-94cdab7e=\"\">\n      <!-- <div class=\"box-body\"> -->\n      <div v-show=\"formMessage.msg\" class=\"callout bg-success\" _v-94cdab7e=\"\">\n        <h5 _v-94cdab7e=\"\">{{formMessage.msg}}</h5>\n      </div>\n      <div v-show=\"formMessage.err\" class=\"callout bg-danger\" _v-94cdab7e=\"\">\n        <h5 _v-94cdab7e=\"\">{{formMessage.err}}</h5>\n      </div>\n      <template v-if=\"canHaveImage\">\n        <img v-if=\"hasEventImage\" :src=\"imageUrl\" _v-94cdab7e=\"\"><br _v-94cdab7e=\"\">\n        <a v-on:click.prevent=\"togglePanel\" style=\"width: 100px\" class=\"btn btn-info btn-sm\" href=\"#\" _v-94cdab7e=\"\">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>\n        <div v-show=\"showPanel\" _v-94cdab7e=\"\">\n          <!-- <div class=\"panel\"> -->\n          <div _v-94cdab7e=\"\">\n            <form id=\"form-mediafile-upload{{item.id}}\" @submit.prevent=\"addMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/addMediaFile/{{item.id}}\" enctype=\"multipart/form-data\" files=\"true\" _v-94cdab7e=\"\">\n              <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-94cdab7e=\"\">\n              <input type=\"text\" class=\"hidden\" name=\"caption\" id=\"caption\" v-model=\"formInputs.caption\" _v-94cdab7e=\"\">\n              <input type=\"text\" class=\"hidden\" name=\"alt_text\" id=\"alt_text\" v-model=\"formInputs.alt_text\" _v-94cdab7e=\"\">\n              <div class=\"fa fa-photo btn btn-info btn-sm block m-b file-upload\" _v-94cdab7e=\"\">\n                <input v-el:eventimg=\"\" type=\"file\" @change=\"getFileName\" class=\"file-input\" name=\"eventimg\" id=\"eventimg\" _v-94cdab7e=\"\">\n              </div>\n              <button v-if=\"eventimage\" id=\"btn-mediafile-upload\" type=\"submit\" class=\"fa fa-floppy-o btn btn-sm bg-orange block m-b\" _v-94cdab7e=\"\"></button>\n              <span class=\"file-input-helpertext\" id=\"file-name\" _v-94cdab7e=\"\">{{eventimage}}</span><br _v-94cdab7e=\"\">\n            </form>\n            <form v-if=\"hasEventImage\" id=\"form-mediafile-remove{{item.id}}\" @submit.prevent=\"removeMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/removeMediaFile/{{item.id}}\" _v-94cdab7e=\"\">\n              <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-94cdab7e=\"\">\n              <button id=\"btn-mediafile-remove\" type=\"submit\" class=\"fa fa-eraser btn btn-sm btn-danger block m-b\" _v-94cdab7e=\"\"></button>\n            </form>\n          </div>\n          <div class=\"input-group caption\" v-if=\"hasEventImage\" _v-94cdab7e=\"\">\n            <span class=\"input-group-addon caption\" _v-94cdab7e=\"\">Caption: </span>\n            <input class=\"form-control\" type=\"text\" v-model=\"formInputs.caption\" _v-94cdab7e=\"\">\n          </div>\n          <div class=\"input-group caption\" v-if=\"hasEventImage\" _v-94cdab7e=\"\">\n            <span class=\"input-group-addon caption\" _v-94cdab7e=\"\">Alt text: </span>\n            <input class=\"form-control\" type=\"text\" v-model=\"formInputs.alt_text\" _v-94cdab7e=\"\">\n          </div>\n        </div><!-- /.panel mediaform -->\n\n        <hr _v-94cdab7e=\"\">\n      </template>\n      <p _v-94cdab7e=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-94cdab7e=\"\">All Day Event</p>\n      </template>\n      <hr _v-94cdab7e=\"\">\n      <div class=\"item-info\" _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-94cdab7e=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-94cdab7e=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-94cdab7e=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-94cdab7e=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <template v-else=\"\">\n          <p _v-94cdab7e=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-94cdab7e=\"\">Contact:</p>\n          <ul _v-94cdab7e=\"\">\n            <li v-if=\"item.contact_person\" _v-94cdab7e=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-94cdab7e=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-94cdab7e=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-94cdab7e=\"\">For more information, visit:</p>\n          <ul _v-94cdab7e=\"\">\n            <li _v-94cdab7e=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-94cdab7e=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-94cdab7e=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-94cdab7e=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <p v-if=\"item.free\" _v-94cdab7e=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-94cdab7e=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-94cdab7e=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-94cdab7e=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-94cdab7e=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-94cdab7e=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-94cdab7e=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-94cdab7e=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-94cdab7e=\"\">\n        <p _v-94cdab7e=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-94cdab7e=\"\">\n      <div class=\"row\" _v-94cdab7e=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-94cdab7e=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-94cdab7e=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-94cdab7e=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-94cdab7e=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-94cdab7e=\"\">\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" _v-94cdab7e=\"\"><i class=\"fa fa-pencil\" _v-94cdab7e=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\n  <!-- <div class=\"box box-default box-solid\"> -->\n  <div :class=\"specialItem\" _v-6464513c=\"\">\n\n    <div :class=\"liveTimeStatusClass\" class=\"box box-solid\" _v-6464513c=\"\">\n\n      <div class=\"box-header with-border\" _v-6464513c=\"\">\n        <div class=\"row\" _v-6464513c=\"\">\n          <div class=\"col-sm 12 col-md-4\" _v-6464513c=\"\">\n            <div class=\"box-date-top pull-left\" _v-6464513c=\"\">{{item.start_date | titleDateLong}}</div>\n            <div class=\"pull-right\" _v-6464513c=\"\">\n              <label data-toggle=\"tooltip\" data-placement=\"top\" title=\"Promoted\" _v-6464513c=\"\"><span class=\"item-promoted-icon\" :class=\"promotedIcon\" _v-6464513c=\"\"></span></label>\n            </div><!-- /.pull-right -->\n          </div><!-- /.col-sm-6 -->\n          <div class=\"col-sm 12 col-md-8\" _v-6464513c=\"\">\n            <form class=\"form-inline pull-right\" _v-6464513c=\"\">\n              <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY \"NEEDED\" AGAIN -->\n              <!--\n              <template v-if=\"pid == 'items-live' || pid == 'items-approved'\">\n                <div class=\"form-check\">\n                  <label class=\"form-check-label\">\n                    Elevate\n                    <input type=\"checkbox\" class=\"form-check-input\" @click=\"toggleEmitEventElevate(item)\" v-model=\"checked\" :checked=\"isElevatedEvent\" /> |\n                  </label>\n                </div>\n              </template>\n              <template v-if=\"pid != 'item-elevated'\">\n                <div id=\"applabel\" class=\"form-group\">\n                  <label> approved:</label>\n                </div>\n                <div class=\"form-group\">\n                  <vui-flip-switch id=\"switch-{{item.id}}\"\n                  v-on:click.prevent=\"changeIsApproved\"\n                  :value.sync=\"patchRecord.is_approved\" >\n                  </vui-flip-switch>\n                </div>\n              </template>\n              -->\n              <div id=\"applabel\" class=\"form-group\" _v-6464513c=\"\">\n                <label _v-6464513c=\"\"> approved:</label>\n              </div>\n              <div class=\"form-group\" _v-6464513c=\"\">\n                <vui-flip-switch id=\"switch-{{item.id}}\" v-on:click.prevent=\"changeIsApproved\" :value.sync=\"patchRecord.is_approved\" _v-6464513c=\"\">\n                </vui-flip-switch>\n              </div>\n              <button v-show=\"pid == 'item-elevated'\" type=\"button\" class=\"btn btn-sm btn-danger pull-right remove-event-btn\" @click=\"emitEventDemote(item)\" _v-6464513c=\"\"><i class=\"fa fa-times\" aria-hidden=\"true\" _v-6464513c=\"\"></i></button>\n          </form>\n        </div><!-- /.col-sm-6 -->\n      </div><!-- /.row -->\n      <div class=\"row\" _v-6464513c=\"\">\n        <a v-on:click.prevent=\"toggleBody\" href=\"#\" _v-6464513c=\"\">\n          <div class=\"col-sm-12\" _v-6464513c=\"\">\n            <h6 class=\"box-title\" _v-6464513c=\"\">{{item.title}}</h6><span class=\"event-cancel\" v-if=\"item.is_canceled\" _v-6464513c=\"\"> - canceled</span>\n          </div><!-- /.col-md-12 -->\n        </a>\n      </div><!-- /.row -->\n    </div>  <!-- /.box-header -->\n\n    <div v-if=\"showBody\" class=\"box-body\" _v-6464513c=\"\">\n      <!-- <div class=\"box-body\"> -->\n      <div v-show=\"formMessage.msg\" class=\"callout bg-success\" _v-6464513c=\"\">\n        <h5 _v-6464513c=\"\">{{formMessage.msg}}</h5>\n      </div>\n      <div v-show=\"formMessage.err\" class=\"callout bg-danger\" _v-6464513c=\"\">\n        <h5 _v-6464513c=\"\">{{formMessage.err}}</h5>\n      </div>\n      <template v-if=\"canHaveImage\">\n        <img v-if=\"hasEventImage\" :src=\"imageUrl\" _v-6464513c=\"\"><br _v-6464513c=\"\">\n        <a v-on:click.prevent=\"togglePanel\" style=\"width: 100px\" class=\"btn btn-info btn-sm\" href=\"#\" _v-6464513c=\"\">{{hasEventImage ? 'Change Image' : 'Promote Event'}}</a>\n        <div v-show=\"showPanel\" _v-6464513c=\"\">\n          <!-- <div class=\"panel\"> -->\n          <div _v-6464513c=\"\">\n            <form id=\"form-mediafile-upload{{item.id}}\" @submit.prevent=\"addMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/addMediaFile/{{item.id}}\" enctype=\"multipart/form-data\" files=\"true\" _v-6464513c=\"\">\n              <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-6464513c=\"\">\n              <input type=\"text\" class=\"hidden\" name=\"caption\" id=\"caption\" v-model=\"formInputs.caption\" _v-6464513c=\"\">\n              <input type=\"text\" class=\"hidden\" name=\"alt_text\" id=\"alt_text\" v-model=\"formInputs.alt_text\" _v-6464513c=\"\">\n              <div class=\"fa fa-photo btn btn-info btn-sm block m-b file-upload\" _v-6464513c=\"\">\n                <input v-el:eventimg=\"\" type=\"file\" @change=\"getFileName\" class=\"file-input\" name=\"eventimg\" id=\"eventimg\" _v-6464513c=\"\">\n              </div>\n              <button v-if=\"eventimage\" id=\"btn-mediafile-upload\" type=\"submit\" class=\"fa fa-floppy-o btn btn-sm bg-orange block m-b\" _v-6464513c=\"\"></button>\n              <span class=\"file-input-helpertext\" id=\"file-name\" _v-6464513c=\"\">{{eventimage}}</span><br _v-6464513c=\"\">\n            </form>\n            <form v-if=\"hasEventImage\" id=\"form-mediafile-remove{{item.id}}\" @submit.prevent=\"removeMediaFile\" class=\"mediaform m-t\" role=\"form\" action=\"/api/event/removeMediaFile/{{item.id}}\" _v-6464513c=\"\">\n              <input name=\"eventid\" class=\"hidden\" type=\"input\" value=\"{{item.id}}\" v-model=\"formInputs.event_id\" _v-6464513c=\"\">\n              <button id=\"btn-mediafile-remove\" type=\"submit\" class=\"fa fa-eraser btn btn-sm btn-danger block m-b\" _v-6464513c=\"\"></button>\n            </form>\n          </div>\n          <div class=\"input-group caption\" v-if=\"hasEventImage\" _v-6464513c=\"\">\n            <span class=\"input-group-addon caption\" _v-6464513c=\"\">Caption: </span>\n            <input class=\"form-control\" type=\"text\" v-model=\"formInputs.caption\" _v-6464513c=\"\">\n          </div>\n          <div class=\"input-group caption\" v-if=\"hasEventImage\" _v-6464513c=\"\">\n            <span class=\"input-group-addon caption\" _v-6464513c=\"\">Alt text: </span>\n            <input class=\"form-control\" type=\"text\" v-model=\"formInputs.alt_text\" _v-6464513c=\"\">\n          </div>\n        </div><!-- /.panel mediaform -->\n\n        <hr _v-6464513c=\"\">\n      </template>\n      <p _v-6464513c=\"\">From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>\n      <template v-if=\"item.all_day\">\n        <p _v-6464513c=\"\">All Day Event</p>\n      </template>\n      <hr _v-6464513c=\"\">\n      <div class=\"item-info\" _v-6464513c=\"\">\n        <p _v-6464513c=\"\">Title: {{item.title}}</p>\n        <p v-if=\"item.short_title\" _v-6464513c=\"\">Short-title: {{item.shor_title}}</p>\n        <p _v-6464513c=\"\">Description: {{item.description}}</p>\n        <template v-if=\"isOnCampus\">\n          <p _v-6464513c=\"\">Location: <a href=\"http://emich.edu/maps/?building={{item.building}}\" target=\"_blank\" _v-6464513c=\"\">{{item.location}}</a></p>\n        </template>\n        <hr _v-6464513c=\"\">\n        <template v-else=\"\">\n          <p _v-6464513c=\"\">Location: {{item.location}}</p>\n        </template>\n        <template v-if=\"item.contact_person || item.contact_person || item.contact_person\">\n          <p _v-6464513c=\"\">Contact:</p>\n          <ul _v-6464513c=\"\">\n            <li v-if=\"item.contact_person\" _v-6464513c=\"\">Person: {{item.contact_person}}</li>\n            <li v-if=\"item.contact_email\" _v-6464513c=\"\">Email: {{item.contact_email}}</li>\n            <li v-if=\"item.contact_phone\" _v-6464513c=\"\">Phone: {{item.contact_phone}}</li>\n          </ul>\n        </template>\n        <template v-if=\"item.related_link_1\">\n          <p _v-6464513c=\"\">For more information, visit:</p>\n          <ul _v-6464513c=\"\">\n            <li _v-6464513c=\"\"><a href=\"{{item.related_link_1 | hasHttp}}\" target=\"_blank\" _v-6464513c=\"\">\n              <template v-if=\"item.related_link_1_txt\">{{item.related_link_1_txt}}</template>\n              <template v-else=\"\">{{item.related_link_1}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_2\" _v-6464513c=\"\"><a href=\"{{item.related_link_2 | hasHttp}}\" target=\"_blank\" _v-6464513c=\"\">\n              <template v-if=\"item.related_link_2_txt\">{{item.related_link_2_txt}}</template>\n              <template v-else=\"\">{{item.related_link_2}}</template>\n            </a></li>\n            <li v-if=\"item.related_link_3\" _v-6464513c=\"\"><a href=\"{{item.related_link_3 | hasHttp}}\" target=\"_blank\" _v-6464513c=\"\">\n              <template v-if=\"item.related_link_3_txt\">{{item.related_link_3_txt}}</template>\n              <template v-else=\"\">{{item.related_link_3}}</template>\n            </a></li>\n          </ul>\n        </template>\n        <hr _v-6464513c=\"\">\n        <p v-if=\"item.free\" _v-6464513c=\"\">Cost: Free</p>\n        <p v-else=\"\" _v-6464513c=\"\">Cost: {{item.cost | currency }}</p>\n        <p _v-6464513c=\"\">Participation: {{eventParticipation}}</p>\n        <template v-if=\"item.tickets\">\n          <p v-if=\"item.ticket_details_online\" _v-6464513c=\"\">For Tickets Visit: <a href=\"{{item.ticket_details_online | hasHttp}}\" _v-6464513c=\"\">{{item.ticket_details_online}}</a></p>\n          <p v-if=\"item.ticket_details_phone\" _v-6464513c=\"\">For Tickets Call: {{item.ticket_details_phone}}</p>\n          <p v-if=\"item.ticket_details_office\" _v-6464513c=\"\">For Tickets Office: {{item.ticket_details_office}}</p>\n          <p v-if=\"item.ticket_details_other\" _v-6464513c=\"\">Or: {{item.ticket_details_other}}</p>\n        </template>\n        <hr _v-6464513c=\"\">\n        <p _v-6464513c=\"\">LBC Approved: {{item.lbc_approved | yesNo }}</p>\n        <hr _v-6464513c=\"\">\n        <p _v-6464513c=\"\">Submitted by: {{item.submitter}}</p>\n      </div>\n    </div><!-- /.box-body -->\n\n\n    <div :class=\"addSeperator\" class=\"box-footer list-footer\" _v-6464513c=\"\">\n      <div class=\"row\" _v-6464513c=\"\">\n        <div class=\"col-sm-12 col-md-9\" _v-6464513c=\"\">\n          <span v-if=\"itemCurrent\" :class=\"timeFromNowStatus\" _v-6464513c=\"\">Live {{timefromNow}}</span> <span :class=\"timeLeftStatus\" _v-6464513c=\"\">{{timeLeft}}</span>\n        </div><!-- /.col-md-7 -->\n        <div class=\"col-sm-12 col-md-3\" _v-6464513c=\"\">\n          {{item.id}}\n          <div class=\"btn-group pull-right\" _v-6464513c=\"\">\n            <button v-on:click.prevent=\"editItem\" class=\"btn bg-orange btn-xs footer-btn\" _v-6464513c=\"\"><i class=\"fa fa-pencil\" _v-6464513c=\"\"></i></button>\n          </div><!-- /.btn-toolbar -->\n        </div><!-- /.col-md-7 -->\n      </div><!-- /.row -->\n    </div><!-- /.box-footer -->\n  </div><!-- /.box- -->\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.file-upload[_v-94cdab7e] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-94cdab7e] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-94cdab7e] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-94cdab7e] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-94cdab7e] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-94cdab7e] {\n  background-color: #ddd;\n}\n.box[_v-94cdab7e] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-94cdab7e] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-94cdab7e] {\n  padding: 3px;\n}\n.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nh5.box-footer[_v-94cdab7e] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-94cdab7e] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-94cdab7e] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-94cdab7e] {\n  display:inline-block;\n}\nform.mediaform[_v-94cdab7e] {\n  margin-top: 1rem;\n}\n.form-group[_v-94cdab7e] {\n  margin-bottom: 2px;\n}\n#applabel[_v-94cdab7e]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-94cdab7e],\n.btn-group-vertical[_v-94cdab7e] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-94cdab7e] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-94cdab7e] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-94cdab7e] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-94cdab7e]{\n  margin-bottom: 0;\n}\n.topitems[_v-94cdab7e] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-94cdab7e] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-94cdab7e] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-94cdab7e] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-94cdab7e] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-94cdab7e] {\n  color: #F39C12;\n}\n.time-is-long[_v-94cdab7e] {\n  color: #999999;\n}\n.time-is-over[_v-94cdab7e] {\n  color: #9B59B6;\n}\n\n.special-item[_v-94cdab7e] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-94cdab7e] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-94cdab7e] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-94cdab7e] {\n  margin-bottom: 30px;\n}\n.remove-event-btn[_v-94cdab7e]{\n  margin-left: 10px;\n}\n.form-check[_v-94cdab7e]{\n  display:inline;\n}\n"] = false
+    __vueify_insert__.cache["\n.file-upload[_v-6464513c] {\n  position: relative;\n  overflow: hidden;\n}\n.file-upload input.file-input[_v-6464513c] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  margin: 0;\n  padding: 0;\n  cursor: pointer;\n  opacity: 0;\n  filter: alpha(opacity=0);\n}\nspan.file-input-helpertext[_v-6464513c] {\n  display: inline-block;\n  line-height: 18px;\n  margin: 0 .5rem;\n  padding: 0;\n  vertical-align: middle;\n  padding: .2rem 0;\n  overflow: hidden;\n  border-bottom: 1px solid #bbb;\n}\n/*//////////////////*/\n.event-cancel[_v-6464513c] {\n  font-size: 90%;\n  font-weight: normal;\n  color: #333;\n}\n.input-group.caption[_v-6464513c] {\n  margin: .5rem 0;\n}\n.input-group-addon.caption[_v-6464513c] {\n  background-color: #ddd;\n}\n.box[_v-6464513c] {\n  color: #1B1B1B;\n  margin-bottom: 10px;\n}\n.box-body[_v-6464513c] {\n  background-color: #fff;\n  border-bottom-left-radius: 0;\n  border-bottom-right-radius: 0;\n  margin:0;\n}\n\n.box-header[_v-6464513c] {\n  padding: 3px;\n}\n.box-footer[_v-6464513c] {\n  padding: 3px;\n}\nh5.box-footer[_v-6464513c] {\n  padding: 3px;\n}\nbutton.footer-btn[_v-6464513c] {\n  border-color: #999999;\n\n}\nh6.box-title[_v-6464513c] {\n  font-size: 16px;\n  color: #1B1B1B;\n}\nform[_v-6464513c] {\n  display:inline-block;\n}\nform.mediaform[_v-6464513c] {\n  margin-top: 1rem;\n}\n.form-group[_v-6464513c] {\n  margin-bottom: 2px;\n}\n#applabel[_v-6464513c]{\n  margin-left: 2px;\n  margin-right: 2px;\n  padding-left: 2px;\n  padding-right: 2px;\n}\n\n.btn-group[_v-6464513c],\n.btn-group-vertical[_v-6464513c] {\n  display:-webkit-inline-box;\n  display:-ms-inline-flexbox;\n  display:inline-flex;\n}\nselect.form-control[_v-6464513c] {\n  height:22px;\n  border: 1px solid #999999;\n}\n\nh6[_v-6464513c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\nh5[_v-6464513c] {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group[_v-6464513c] {\n  /*border: 1px solid red;*/\n}\n.form-group label[_v-6464513c]{\n  margin-bottom: 0;\n}\n.topitems[_v-6464513c] {\n  /*background-color: #9B59B6;*/\n  background-color: #76D7EA;\n  border: 2px solid #9B59B6;\n}\n.ongoing[_v-6464513c] {\n  background-color: #ffcc33;\n  border: 1px solid #999999\n}\n.event-positive[_v-6464513c] {\n\n  background-color: #D8D8D8;\n  border: 1px solid #999999;\n}\n.event-negative[_v-6464513c] {\n\n  background-color: #999999;\n  border: 1px solid #999999;\n}\n.is-promoted[_v-6464513c] {\n\n  background-color: #76D7EA;\n  /*border: 1px solid #999999*/\n}\n.time-is-short[_v-6464513c] {\n  color: #F39C12;\n}\n.time-is-long[_v-6464513c] {\n  color: #999999;\n}\n.time-is-over[_v-6464513c] {\n  color: #9B59B6;\n}\n\n.special-item[_v-6464513c] {\n  border-left: 6px solid #ff00bf;\n\n  padding-left: 3px;\n  border-top-left-radius:3px;\n  border-bottom-left-radius: 3px;\n  margin-left: -10px;\n\n}\n.special-item-both[_v-6464513c] {\n  border-left: 6px solid #bfff00;\n}\n.special-item-home[_v-6464513c] {\n  border-left: 6px solid #00bfff;\n}\n.special-item-last[_v-6464513c] {\n  margin-bottom: 30px;\n}\n.remove-event-btn[_v-6464513c]{\n  margin-left: 10px;\n}\n.form-check[_v-6464513c]{\n  display:inline;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-94cdab7e", module.exports)
+    hotAPI.createRecord("_v-6464513c", module.exports)
   } else {
-    hotAPI.update("_v-94cdab7e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-6464513c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"./VuiFlipSwitch.vue":16,"babel-runtime/core-js/json/stringify":1,"moment":6,"vue":12,"vue-hot-reload-api":9,"vueify/lib/insert-css":13}],16:[function(require,module,exports){
@@ -20547,9 +21563,9 @@ if (module.hot) {(function () {  module.hot.accept()
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-c9c83bf8", module.exports)
+    hotAPI.createRecord("_v-2d226fa9", module.exports)
   } else {
-    hotAPI.update("_v-c9c83bf8", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-2d226fa9", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":12,"vue-hot-reload-api":9,"vueify/lib/insert-css":13}],17:[function(require,module,exports){

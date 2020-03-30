@@ -19,6 +19,7 @@
         },
         computed: {
             typeIcon: function() {
+                let faicon = ''
                 switch (this.item.shortname) {
                   case 'emutoday':
                   case 'story':

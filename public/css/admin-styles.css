@@ -14949,6 +14949,12 @@ img.better-thumb {
   border-color: #ddd;
   cursor: not-allowed;
 }
+
+.space-me-up {
+  /* This is a fix for flatpickr not displaying when it extends below page end */
+  margin-bottom: 11rem !important;
+}
+
 .form-control {
   padding: 0 12px;
 }
@@ -14959,6 +14965,15 @@ img.better-thumb {
 
 .email-statistic{
   font-size: 2rem;
+}
+
+.modal.fade.show {
+	opacity: 1 !important;
+	transition: opacity 0.15s linear !important;
+}
+.modal.fade.show .modal-dialog {
+	transform: translate(0, 0) !important;
+	transition: transform 0.3s ease-out !important;
 }
 
 /*# sourceMappingURL=admin-styles.css.map */

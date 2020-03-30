@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
           <p>You will only be presented stories that are:</p>
@@ -11,7 +12,8 @@
           <ul>
             <li>The <strong>top story</strong> image comes from the <mark>emutoday_email</mark> image type as defined in the story's admin area.</li>
             <li>The <strong>sub-main</strong> images come from the <mark>emutoday_small</mark> image type as defined in the story's admin area.</li>
-            <li>For the main and both sub-main stories, the <strong>story title</strong> comes from the <mark>"Title/Header"</mark> field in the story's <mark>emutoday_email</mark> image editor area, while the <strong>subtext</strong> comes from the <mark>"Teaser/Byline"</mark> field of that same area.</p>
+            <li>For the main and both sub-main stories, the <strong>story title</strong> comes from the <mark>"Title/Header"</mark> field in the story's <mark>emutoday_email</mark> image editor area, while the <strong>subtext</strong> comes from the <mark>"Teaser/Byline"</mark> field of that same area.</li>
+          </ul>
         </div>
     </div>
     <hr />
@@ -37,37 +39,43 @@
             </template>
             <template v-else>
               <p>Loading this email's stories. Please wait...</p>
+              {{ startdate}}
             </template>
             <hr/>
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
                   <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>
+                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate"></p>
+<!--                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>-->
               </div>
               <div v-if="isEndDate" class="form-group">
                   <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"><p>
+                  <p><input v-if="enddate" type="text" :initval="enddate"></p>
+<!--                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>-->
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
-              <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
+              <p><button type="button" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</button></p>
             </form>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-xs" role="group">
                     <label>Filter: </label>
                 </div>
-                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_filter_storytype">
-                     <template v-for="item in storyTypeIcons">
-                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+<!--                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_filter_storytype">-->
+                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
+                    <template v-for="item in storyTypeIcons">
+                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" :title="item.name"><input type="radio" autocomplete="off" :value="item.shortname" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
                     </template>
                 </div>
             </div>
             <div id="email-items">
+<!--              v-for="item in items | filterBy filterByStoryType | paginate"-->
                 <email-story-pod
                     pid="email-items"
                     :main-stories="usedStories"
                     pod-type="mainstoryqueue"
-                    v-for="item in items | filterBy filterByStoryType | paginate"
+                    v-for="(item, index) in items"
+                    :key="'email-story-item-' + index"
                     :item="item">
                 </email-story-pod>
 
@@ -85,6 +93,7 @@
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
+  </div>
 </template>
 <style scoped>
 
@@ -126,22 +135,19 @@
 
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
-import IconToggleBtn from '../IconToggleBtn.vue'
 import iconradio from '../../directives/iconradio.js'
 import Pagination from '../Pagination.vue'
 import flatpickr from "../../directives/flatpickr.js"
 
 export default  {
     directives: {iconradio, flatpickr},
-    components: {EmailStoryPod,IconToggleBtn,Pagination},
+    components: { EmailStoryPod, Pagination },
     props: ['stypes','mainStories'],
     created(){
-    },
-    ready() {
-        let twoWeeksEarlier = moment().subtract(12, 'w')
-        this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
-        this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
-        this.fetchAllRecords()
+      let twoWeeksEarlier = moment().subtract(300, 'w')
+      this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
+      this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+      this.fetchAllRecords()
     },
     data: function() {
         return {
@@ -216,6 +222,7 @@ export default  {
       },
 
       typeIcon: function(sname) {
+          let faicon = ''
           switch (sname) {
               case 'emutoday':
               case 'story':
@@ -272,7 +279,7 @@ export default  {
           this.$http.get(routeurl)
 
           .then((response) =>{
-              this.$set('items', response.data.newdata.data)
+              this.items = response.data.newdata.data
               this.resultCount = this.items.length
               this.setPage(1) // reset paginator
               this.loadingQueue = false;

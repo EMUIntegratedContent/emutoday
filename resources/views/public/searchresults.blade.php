@@ -52,9 +52,14 @@
 
                             <div class="search-result-content">
                                 @if($searchResult->subtitle)
-                                <p>{{ $searchResult->subtitle }}</p>
+                                    <p>{{ $searchResult->subtitle }}</p>
                                 @endif
-                                <p>{!! $searchResult->teaser !!}</p>
+                                @if($searchResult->teaser)
+                                    <p>{!! $searchResult->teaser !!}</p>
+                                @endif
+                                @if($searchResult->start_date)
+                                    <p>{{ date_format($searchResult->start_date,"M d, Y") }}</p>
+                                @endif
                             </div>
                         @elseif($searchResult->getTable() == 'cea_events')
                             <a href="/calendar/{{$searchResult->present()->eventStartDateYear}}/{{$searchResult->present()->eventStartDateMonthUnit}}/{{$searchResult->present()->eventStartDateDay}}/{{$searchResult->id}}"><h5>{{$searchResult->title}}</h5></a>
@@ -76,7 +81,7 @@
                                 @if($searchResult->title)
                                 <p>{{ $searchResult->title }}</p>
                                 @else
-                                <p>{{$searchResult->first_name}} is an Eastern Expert.</p> 
+                                <p>{{$searchResult->first_name}} is an Eastern Expert.</p>
                                 @endif
                             </div>
                         @endif

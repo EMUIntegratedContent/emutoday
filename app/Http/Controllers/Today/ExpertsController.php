@@ -72,7 +72,11 @@ class ExpertsController extends Controller
       }
       asort($expertCategories); //sort categories alphabetically
 
-      return view('public.experts.show', compact('expert', 'expertiseString', 'languageString', 'expertCategories'));
+      if ($expert['is_approved']) {
+          return view('public.experts.show', compact('expert', 'expertiseString', 'languageString', 'expertCategories'));
+      } else {
+          abort(404); // return 404 page
+      }
   }
 
   public function expertForm(Expert $expert)

@@ -170,6 +170,7 @@ export default {
         },
 
         typeIcon: function(storyname) {
+            let faicon = ''
             switch (storyname) {
               case 'emutoday':
               case 'story':

@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
           <p>You will only be presented announcements that are:</p>
@@ -42,7 +43,7 @@
               </div>
               <div v-if="isEndDate" class="form-group">
                   <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"><p>
+                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
               <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
@@ -50,12 +51,14 @@
             <div id="email-announcements">
               <template v-if="!loadingQueue">
                 <template v-if="queueAnnouncements.length > 0">
+<!--                  announcement in queueAnnouncements | paginate-->
                   <email-announcement-pod
                       pid="announcement-queue-announcements"
                       pod-type="announcementqueue"
                       :item="announcement"
                       :announcements="usedAnnouncements"
-                      v-for="announcement in queueAnnouncements | paginate"
+                      :key="'announcement-item-' + index"
+                      v-for="(announcement, index) in queueAnnouncements"
                   >
                   </email-announcement-pod>
                   <ul class="pagination">
@@ -80,6 +83,7 @@
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
+  </div>
 </template>
 <style scoped>
 #rangetoggle{
@@ -96,7 +100,7 @@ import flatpickr from "../../directives/flatpickr.js"
 
 export default {
   directives: {flatpickr},
-  components: {EmailAnnouncementPod},
+  //components: {EmailAnnouncementPod, Pagination},
   props: ['announcements'],
   data: function() {
     return {

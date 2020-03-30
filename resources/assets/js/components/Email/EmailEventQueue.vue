@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
           <p>You will only be presented events that are:</p>
@@ -41,7 +42,7 @@
               </div>
               <div v-if="isEndDate" class="form-group">
                   <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"><p>
+                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
               <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
@@ -49,12 +50,14 @@
             <div id="email-events">
               <template v-if="!loadingQueue">
                 <template v-if="queueEvents.length > 0">
+<!--                  v-for="event in queueEvents | paginate"-->
                   <email-event-pod
                       pid="event-queue-events"
                       pod-type="eventqueue"
                       :item="event"
                       :events="usedEvents"
-                      v-for="event in queueEvents | paginate"
+                      :key="'event-item-' + index"
+                      v-for="(event, index) in queueEvents"
                   >
                   </email-event-pod>
                   <ul class="pagination">
@@ -79,6 +82,7 @@
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
+  </div>
 </template>
 <style scoped>
 #automail-label {

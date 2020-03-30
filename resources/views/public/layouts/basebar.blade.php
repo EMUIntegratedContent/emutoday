@@ -14,7 +14,7 @@
     </section>
     <section class="mediumgrey-section" aria-label="social-icons">
         <div class="row">
-            <div id="social-links" class="small-8 medium-centered small-centered columns">
+            <div id="social-links" class="small-12 medium-centered small-centered columns">
                 <ul class="social-icons">
                     <li><a class="facebook" title="External link to EMU's Facebook page." href="https://www.facebook.com/EasternMichU/"><span class="visuallyhidden">Facebook</span></a></li>
                     <li><a class="twitter" title="External link to EMU's Twitter page." href="http://www.emich.edu/twitter/"><span class="visuallyhidden">Twitter</span></a></li>
@@ -28,15 +28,16 @@
     </section>
     <section class="dkgrey-section" aria-label="university-info">
         <div class="row">
-            <div class="small-8 small-centered columns">
+            <div class="small-12 medium-2 small-centered columns hide-for-small-only">&nbsp;</div>
+            <div class="small-12 medium-8 small-centered columns">
                 <div class="base-data">
                     <p><a title="External link to the Eastern Michigan University homepage." href="https://www.emich.edu">Eastern Michigan University</a><br />
-                    Ypsilanti, MI, USA 48197 | 734.487.1849 | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
+                    Ypsilanti, MI, USA 48197 | <a href="tel:+1-734-487-1849">734.487.1849</a> | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
                     <hr>
                     <p class="divider">
                         <a title="External link to the notice of non-discrimination." href="https://www.emich.edu/nondiscrimination/index.php">Non-Discrimination Statement</a> |
                         <a title="External link to the EMU board of regent's policy page." href="https://www.emich.edu/policies/">Policies</a> |
-                        <a title="External link to the seuxal misconduct reporting form." href="https://www.emich.edu/title-nine/reporting/index.php">Report a Title IX Incident</a>
+                        <a title="External link to the seuxal misconduct reporting form." href="https://www.emich.edu/title-nine/reporting/index.php">Report a Title IX Incident</a> |
                         <a title="External link to report an accessibility issue." href="https://www.emich.edu/accessibility/index.php">Accessibility</a> |
                         <a title="External link to EMU's privacy statement." href="https://www.emich.edu/privacy/index.php">Privacy Statement</a> |
                         <a title="External link to EMU police department homepage." href="https://www.emich.edu/police/">Annual Security Report</a> |
@@ -45,6 +46,7 @@
                     </p>
                 </div>
             </div>
+            <div class="small-12 medium-2 small-centered columns hide-for-small-only">&nbsp;</div>
         </div>
     </section>
 </footer>

@@ -6,8 +6,9 @@
 
     @section('style-plugin')
         @parent
-        <!-- DataTables -->
-        <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+        <!-- flatpickr fix... compile into admin-styles.css at a later date. -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.3/flatpickr.min.css" />
+
     @endsection
 
     @section('style-app')

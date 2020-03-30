@@ -151,7 +151,7 @@ h5 {
 import moment from 'moment'
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 
-module.exports  = {
+export default {
   directives: {},
   components: {VuiFlipSwitch},
   props: ['item','pid','podType','announcements'],

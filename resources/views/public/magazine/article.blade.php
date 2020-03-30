@@ -57,10 +57,18 @@
         {!! $story->content !!}
         @if($story->author_id === 0)
         <div class="story-author">{{$story->user->first_name}} {{$story->user->last_name}}</div>
-        <p class="news-contacts">Contact {{ $story->user->first_name }} {{ $story->user->last_name }}, {{ $story->user->email }}{{ empty($story->user->phone) ?'': ', ' . $story->user->phone  }}</p>
+        <p class="news-contacts">Contact
+            {{ $story->user->first_name }} {{ $story->user->last_name }},
+            <a href="mailto:{{ $story->user->email }}">{{ $story->user->email }}</a>
+            @if(!empty($story->user->phone)), <a href="tel:{{$story->user->phone}}">{{$story->user->phone}}</a>@endif
+        </p>
         @else
         <div class="story-author">{{ $story->author->first_name }} {{ $story->author->last_name }}</div>
-        <p class="news-contacts">Contact {{ $story->contact->first_name }} {{ $story->contact->last_name }}, {{ $story->contact->email }}{{ empty($story->contact->phone) ? '': ', ' . $story->contact->phone }}</p>
+        <p class="news-contacts">Contact
+            {{ $story->contact->first_name }} {{ $story->contact->last_name }},
+            <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a>
+            @if(!empty($story->contact->phone)), <a href="tel:{{$story->contact->phone}}">{{$story->contact->phone}}</a>@endif
+        </p>
         @endif
 
       </div>

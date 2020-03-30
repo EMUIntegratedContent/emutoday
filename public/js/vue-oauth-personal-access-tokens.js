@@ -1,7 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":3}],2:[function(require,module,exports){
-(function (process){
 'use strict';
 
 var utils = require('./../utils');
@@ -10,7 +9,6 @@ var buildURL = require('./../helpers/buildURL');
 var parseHeaders = require('./../helpers/parseHeaders');
 var isURLSameOrigin = require('./../helpers/isURLSameOrigin');
 var createError = require('../core/createError');
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || require('./../helpers/btoa');
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -22,22 +20,6 @@ module.exports = function xhrAdapter(config) {
     }
 
     var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if (process.env.NODE_ENV !== 'test' &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
 
     // HTTP basic authentication
     if (config.auth) {
@@ -52,8 +34,8 @@ module.exports = function xhrAdapter(config) {
     request.timeout = config.timeout;
 
     // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
+    request.onreadystatechange = function handleLoad() {
+      if (!request || request.readyState !== 4) {
         return;
       }
 
@@ -70,15 +52,26 @@ module.exports = function xhrAdapter(config) {
       var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
       var response = {
         data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        status: request.status,
+        statusText: request.statusText,
         headers: responseHeaders,
         config: config,
         request: request
       };
 
       settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle browser request cancellation (as opposed to a manual cancellation)
+    request.onabort = function handleAbort() {
+      if (!request) {
+        return;
+      }
+
+      reject(createError('Request aborted', config, 'ECONNABORTED', request));
 
       // Clean up request
       request = null;
@@ -111,8 +104,8 @@ module.exports = function xhrAdapter(config) {
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies.read(config.xsrfCookieName) :
-          undefined;
+        cookies.read(config.xsrfCookieName) :
+        undefined;
 
       if (xsrfValue) {
         requestHeaders[config.xsrfHeaderName] = xsrfValue;
@@ -183,13 +176,13 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-}).call(this,require('_process'))
-},{"../core/createError":9,"./../core/settle":12,"./../helpers/btoa":16,"./../helpers/buildURL":17,"./../helpers/cookies":19,"./../helpers/isURLSameOrigin":21,"./../helpers/parseHeaders":23,"./../utils":25,"_process":94}],3:[function(require,module,exports){
+},{"../core/createError":9,"./../core/settle":13,"./../helpers/buildURL":17,"./../helpers/cookies":19,"./../helpers/isURLSameOrigin":21,"./../helpers/parseHeaders":23,"./../utils":25}],3:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
 var bind = require('./helpers/bind');
 var Axios = require('./core/Axios');
+var mergeConfig = require('./core/mergeConfig');
 var defaults = require('./defaults');
 
 /**
@@ -219,7 +212,7 @@ axios.Axios = Axios;
 
 // Factory for creating new instances
 axios.create = function create(instanceConfig) {
-  return createInstance(utils.merge(defaults, instanceConfig));
+  return createInstance(mergeConfig(axios.defaults, instanceConfig));
 };
 
 // Expose Cancel & CancelToken
@@ -238,7 +231,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":4,"./cancel/CancelToken":5,"./cancel/isCancel":6,"./core/Axios":7,"./defaults":14,"./helpers/bind":15,"./helpers/spread":24,"./utils":25}],4:[function(require,module,exports){
+},{"./cancel/Cancel":4,"./cancel/CancelToken":5,"./cancel/isCancel":6,"./core/Axios":7,"./core/mergeConfig":12,"./defaults":15,"./helpers/bind":16,"./helpers/spread":24,"./utils":25}],4:[function(require,module,exports){
 'use strict';
 
 /**
@@ -328,12 +321,11 @@ module.exports = function isCancel(value) {
 },{}],7:[function(require,module,exports){
 'use strict';
 
-var defaults = require('./../defaults');
 var utils = require('./../utils');
+var buildURL = require('../helpers/buildURL');
 var InterceptorManager = require('./InterceptorManager');
 var dispatchRequest = require('./dispatchRequest');
-var isAbsoluteURL = require('./../helpers/isAbsoluteURL');
-var combineURLs = require('./../helpers/combineURLs');
+var mergeConfig = require('./mergeConfig');
 
 /**
  * Create a new instance of Axios
@@ -357,18 +349,14 @@ Axios.prototype.request = function request(config) {
   /*eslint no-param-reassign:0*/
   // Allow for axios('example/url'[, config]) a la fetch API
   if (typeof config === 'string') {
-    config = utils.merge({
-      url: arguments[0]
-    }, arguments[1]);
+    config = arguments[1] || {};
+    config.url = arguments[0];
+  } else {
+    config = config || {};
   }
 
-  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
-  config.method = config.method.toLowerCase();
-
-  // Support baseURL config
-  if (config.baseURL && !isAbsoluteURL(config.url)) {
-    config.url = combineURLs(config.baseURL, config.url);
-  }
+  config = mergeConfig(this.defaults, config);
+  config.method = config.method ? config.method.toLowerCase() : 'get';
 
   // Hook up interceptors middleware
   var chain = [dispatchRequest, undefined];
@@ -387,6 +375,11 @@ Axios.prototype.request = function request(config) {
   }
 
   return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
 };
 
 // Provide aliases for supported request methods
@@ -413,7 +406,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"./../defaults":14,"./../helpers/combineURLs":18,"./../helpers/isAbsoluteURL":20,"./../utils":25,"./InterceptorManager":8,"./dispatchRequest":10}],8:[function(require,module,exports){
+},{"../helpers/buildURL":17,"./../utils":25,"./InterceptorManager":8,"./dispatchRequest":10,"./mergeConfig":12}],8:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -494,6 +487,8 @@ var utils = require('./../utils');
 var transformData = require('./transformData');
 var isCancel = require('../cancel/isCancel');
 var defaults = require('../defaults');
+var isAbsoluteURL = require('./../helpers/isAbsoluteURL');
+var combineURLs = require('./../helpers/combineURLs');
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -512,6 +507,11 @@ function throwIfCancellationRequested(config) {
  */
 module.exports = function dispatchRequest(config) {
   throwIfCancellationRequested(config);
+
+  // Support baseURL config
+  if (config.baseURL && !isAbsoluteURL(config.url)) {
+    config.url = combineURLs(config.baseURL, config.url);
+  }
 
   // Ensure headers exist
   config.headers = config.headers || {};
@@ -568,7 +568,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":6,"../defaults":14,"./../utils":25,"./transformData":13}],11:[function(require,module,exports){
+},{"../cancel/isCancel":6,"../defaults":15,"./../helpers/combineURLs":18,"./../helpers/isAbsoluteURL":20,"./../utils":25,"./transformData":14}],11:[function(require,module,exports){
 'use strict';
 
 /**
@@ -586,12 +586,86 @@ module.exports = function enhanceError(error, config, code, request, response) {
   if (code) {
     error.code = code;
   }
+
   error.request = request;
   error.response = response;
+  error.isAxiosError = true;
+
+  error.toJSON = function() {
+    return {
+      // Standard
+      message: this.message,
+      name: this.name,
+      // Microsoft
+      description: this.description,
+      number: this.number,
+      // Mozilla
+      fileName: this.fileName,
+      lineNumber: this.lineNumber,
+      columnNumber: this.columnNumber,
+      stack: this.stack,
+      // Axios
+      config: this.config,
+      code: this.code
+    };
+  };
   return error;
 };
 
 },{}],12:[function(require,module,exports){
+'use strict';
+
+var utils = require('../utils');
+
+/**
+ * Config-specific merge-function which creates a new config-object
+ * by merging two configuration objects together.
+ *
+ * @param {Object} config1
+ * @param {Object} config2
+ * @returns {Object} New object resulting from merging config2 to config1
+ */
+module.exports = function mergeConfig(config1, config2) {
+  // eslint-disable-next-line no-param-reassign
+  config2 = config2 || {};
+  var config = {};
+
+  utils.forEach(['url', 'method', 'params', 'data'], function valueFromConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    }
+  });
+
+  utils.forEach(['headers', 'auth', 'proxy'], function mergeDeepProperties(prop) {
+    if (utils.isObject(config2[prop])) {
+      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
+    } else if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (utils.isObject(config1[prop])) {
+      config[prop] = utils.deepMerge(config1[prop]);
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  utils.forEach([
+    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'maxContentLength',
+    'validateStatus', 'maxRedirects', 'httpAgent', 'httpsAgent', 'cancelToken',
+    'socketPath'
+  ], function defaultToConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  return config;
+};
+
+},{"../utils":25}],13:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -605,8 +679,7 @@ var createError = require('./createError');
  */
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
-  // Note: status is not exposed by XDomainRequest
-  if (!response.status || !validateStatus || validateStatus(response.status)) {
+  if (!validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     reject(createError(
@@ -619,7 +692,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":9}],13:[function(require,module,exports){
+},{"./createError":9}],14:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -641,7 +714,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":25}],14:[function(require,module,exports){
+},{"./../utils":25}],15:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -660,12 +733,13 @@ function setContentTypeIfUnset(headers, value) {
 
 function getDefaultAdapter() {
   var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = require('./adapters/xhr');
-  } else if (typeof process !== 'undefined') {
+  // Only Node.JS has a process variable that is of [[Class]] process
+  if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
     adapter = require('./adapters/http');
+  } else if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = require('./adapters/xhr');
   }
   return adapter;
 }
@@ -674,6 +748,7 @@ var defaults = {
   adapter: getDefaultAdapter(),
 
   transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Accept');
     normalizeHeaderName(headers, 'Content-Type');
     if (utils.isFormData(data) ||
       utils.isArrayBuffer(data) ||
@@ -708,6 +783,10 @@ var defaults = {
     return data;
   }],
 
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
   timeout: 0,
 
   xsrfCookieName: 'XSRF-TOKEN',
@@ -737,7 +816,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this,require('_process'))
-},{"./adapters/http":2,"./adapters/xhr":2,"./helpers/normalizeHeaderName":22,"./utils":25,"_process":94}],15:[function(require,module,exports){
+},{"./adapters/http":2,"./adapters/xhr":2,"./helpers/normalizeHeaderName":22,"./utils":25,"_process":94}],16:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -749,44 +828,6 @@ module.exports = function bind(fn, thisArg) {
     return fn.apply(thisArg, args);
   };
 };
-
-},{}],16:[function(require,module,exports){
-'use strict';
-
-// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function E() {
-  this.message = 'String contains an invalid character';
-}
-E.prototype = new Error;
-E.prototype.code = 5;
-E.prototype.name = 'InvalidCharacterError';
-
-function btoa(input) {
-  var str = String(input);
-  var output = '';
-  for (
-    // initialize result and counter
-    var block, charCode, idx = 0, map = chars;
-    // if the next str index does not exist:
-    //   change the mapping table to "="
-    //   check if d has no fractional digits
-    str.charAt(idx | 0) || (map = '=', idx % 1);
-    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-  ) {
-    charCode = str.charCodeAt(idx += 3 / 4);
-    if (charCode > 0xFF) {
-      throw new E();
-    }
-    block = block << 8 | charCode;
-  }
-  return output;
-}
-
-module.exports = btoa;
 
 },{}],17:[function(require,module,exports){
 'use strict';
@@ -832,9 +873,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
       if (utils.isArray(val)) {
         key = key + '[]';
-      }
-
-      if (!utils.isArray(val)) {
+      } else {
         val = [val];
       }
 
@@ -852,6 +891,11 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   }
 
   if (serializedParams) {
+    var hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
   }
 
@@ -883,50 +927,50 @@ module.exports = (
   utils.isStandardBrowserEnv() ?
 
   // Standard browser envs support document.cookie
-  (function standardBrowserEnv() {
-    return {
-      write: function write(name, value, expires, path, domain, secure) {
-        var cookie = [];
-        cookie.push(name + '=' + encodeURIComponent(value));
+    (function standardBrowserEnv() {
+      return {
+        write: function write(name, value, expires, path, domain, secure) {
+          var cookie = [];
+          cookie.push(name + '=' + encodeURIComponent(value));
 
-        if (utils.isNumber(expires)) {
-          cookie.push('expires=' + new Date(expires).toGMTString());
+          if (utils.isNumber(expires)) {
+            cookie.push('expires=' + new Date(expires).toGMTString());
+          }
+
+          if (utils.isString(path)) {
+            cookie.push('path=' + path);
+          }
+
+          if (utils.isString(domain)) {
+            cookie.push('domain=' + domain);
+          }
+
+          if (secure === true) {
+            cookie.push('secure');
+          }
+
+          document.cookie = cookie.join('; ');
+        },
+
+        read: function read(name) {
+          var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+          return (match ? decodeURIComponent(match[3]) : null);
+        },
+
+        remove: function remove(name) {
+          this.write(name, '', Date.now() - 86400000);
         }
-
-        if (utils.isString(path)) {
-          cookie.push('path=' + path);
-        }
-
-        if (utils.isString(domain)) {
-          cookie.push('domain=' + domain);
-        }
-
-        if (secure === true) {
-          cookie.push('secure');
-        }
-
-        document.cookie = cookie.join('; ');
-      },
-
-      read: function read(name) {
-        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-        return (match ? decodeURIComponent(match[3]) : null);
-      },
-
-      remove: function remove(name) {
-        this.write(name, '', Date.now() - 86400000);
-      }
-    };
-  })() :
+      };
+    })() :
 
   // Non standard browser env (web workers, react-native) lack needed support.
-  (function nonStandardBrowserEnv() {
-    return {
-      write: function write() {},
-      read: function read() { return null; },
-      remove: function remove() {}
-    };
-  })()
+    (function nonStandardBrowserEnv() {
+      return {
+        write: function write() {},
+        read: function read() { return null; },
+        remove: function remove() {}
+      };
+    })()
 );
 
 },{"./../utils":25}],20:[function(require,module,exports){
@@ -955,64 +999,64 @@ module.exports = (
 
   // Standard browser envs have full support of the APIs needed to test
   // whether the request URL is of the same origin as current location.
-  (function standardBrowserEnv() {
-    var msie = /(msie|trident)/i.test(navigator.userAgent);
-    var urlParsingNode = document.createElement('a');
-    var originURL;
+    (function standardBrowserEnv() {
+      var msie = /(msie|trident)/i.test(navigator.userAgent);
+      var urlParsingNode = document.createElement('a');
+      var originURL;
 
-    /**
+      /**
     * Parse a URL to discover it's components
     *
     * @param {String} url The URL to be parsed
     * @returns {Object}
     */
-    function resolveURL(url) {
-      var href = url;
+      function resolveURL(url) {
+        var href = url;
 
-      if (msie) {
+        if (msie) {
         // IE needs attribute set twice to normalize properties
+          urlParsingNode.setAttribute('href', href);
+          href = urlParsingNode.href;
+        }
+
         urlParsingNode.setAttribute('href', href);
-        href = urlParsingNode.href;
+
+        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+          host: urlParsingNode.host,
+          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+            urlParsingNode.pathname :
+            '/' + urlParsingNode.pathname
+        };
       }
 
-      urlParsingNode.setAttribute('href', href);
+      originURL = resolveURL(window.location.href);
 
-      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
-      return {
-        href: urlParsingNode.href,
-        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
-        host: urlParsingNode.host,
-        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
-        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
-        hostname: urlParsingNode.hostname,
-        port: urlParsingNode.port,
-        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
-                  urlParsingNode.pathname :
-                  '/' + urlParsingNode.pathname
-      };
-    }
-
-    originURL = resolveURL(window.location.href);
-
-    /**
+      /**
     * Determine if a URL shares the same origin as the current location
     *
     * @param {String} requestURL The URL to test
     * @returns {boolean} True if URL shares the same origin, otherwise false
     */
-    return function isURLSameOrigin(requestURL) {
-      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
-      return (parsed.protocol === originURL.protocol &&
+      return function isURLSameOrigin(requestURL) {
+        var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+        return (parsed.protocol === originURL.protocol &&
             parsed.host === originURL.host);
-    };
-  })() :
+      };
+    })() :
 
   // Non standard browser envs (web workers, react-native) lack needed support.
-  (function nonStandardBrowserEnv() {
-    return function isURLSameOrigin() {
-      return true;
-    };
-  })()
+    (function nonStandardBrowserEnv() {
+      return function isURLSameOrigin() {
+        return true;
+      };
+    })()
 );
 
 },{"./../utils":25}],22:[function(require,module,exports){
@@ -1033,6 +1077,15 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 'use strict';
 
 var utils = require('./../utils');
+
+// Headers whose duplicates are ignored by node
+// c.f. https://nodejs.org/api/http.html#http_message_headers
+var ignoreDuplicateOf = [
+  'age', 'authorization', 'content-length', 'content-type', 'etag',
+  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+  'referer', 'retry-after', 'user-agent'
+];
 
 /**
  * Parse headers into an object
@@ -1061,7 +1114,14 @@ module.exports = function parseHeaders(headers) {
     val = utils.trim(line.substr(i + 1));
 
     if (key) {
-      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        return;
+      }
+      if (key === 'set-cookie') {
+        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+      } else {
+        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+      }
     }
   });
 
@@ -1277,9 +1337,13 @@ function trim(str) {
  *
  * react-native:
  *  navigator.product -> 'ReactNative'
+ * nativescript
+ *  navigator.product -> 'NativeScript' or 'NS'
  */
 function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+                                           navigator.product === 'NativeScript' ||
+                                           navigator.product === 'NS')) {
     return false;
   }
   return (
@@ -1307,7 +1371,7 @@ function forEach(obj, fn) {
   }
 
   // Force an array if not already something iterable
-  if (typeof obj !== 'object' && !isArray(obj)) {
+  if (typeof obj !== 'object') {
     /*eslint no-param-reassign:0*/
     obj = [obj];
   }
@@ -1361,6 +1425,32 @@ function merge(/* obj1, obj2, obj3, ... */) {
 }
 
 /**
+ * Function equal to merge with the difference being that no reference
+ * to original objects is kept.
+ *
+ * @see merge
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function deepMerge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = deepMerge(result[key], val);
+    } else if (typeof val === 'object') {
+      result[key] = deepMerge({}, val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
  * Extends object a by mutably adding to it the properties of object b.
  *
  * @param {Object} a The object to be extended
@@ -1398,15 +1488,29 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
+  deepMerge: deepMerge,
   extend: extend,
   trim: trim
 };
 
-},{"./helpers/bind":15,"is-buffer":93}],26:[function(require,module,exports){
+},{"./helpers/bind":16,"is-buffer":26}],26:[function(require,module,exports){
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+},{}],27:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol"), __esModule: true };
-},{"core-js/library/fn/symbol":29}],27:[function(require,module,exports){
+},{"core-js/library/fn/symbol":30}],28:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/symbol/iterator"), __esModule: true };
-},{"core-js/library/fn/symbol/iterator":30}],28:[function(require,module,exports){
+},{"core-js/library/fn/symbol/iterator":31}],29:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1428,35 +1532,35 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 } : function (obj) {
   return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof(obj);
 };
-},{"../core-js/symbol":26,"../core-js/symbol/iterator":27}],29:[function(require,module,exports){
+},{"../core-js/symbol":27,"../core-js/symbol/iterator":28}],30:[function(require,module,exports){
 require('../../modules/es6.symbol');
 require('../../modules/es6.object.to-string');
 require('../../modules/es7.symbol.async-iterator');
 require('../../modules/es7.symbol.observable');
 module.exports = require('../../modules/_core').Symbol;
 
-},{"../../modules/_core":36,"../../modules/es6.object.to-string":87,"../../modules/es6.symbol":89,"../../modules/es7.symbol.async-iterator":90,"../../modules/es7.symbol.observable":91}],30:[function(require,module,exports){
+},{"../../modules/_core":37,"../../modules/es6.object.to-string":88,"../../modules/es6.symbol":90,"../../modules/es7.symbol.async-iterator":91,"../../modules/es7.symbol.observable":92}],31:[function(require,module,exports){
 require('../../modules/es6.string.iterator');
 require('../../modules/web.dom.iterable');
 module.exports = require('../../modules/_wks-ext').f('iterator');
 
-},{"../../modules/_wks-ext":84,"../../modules/es6.string.iterator":88,"../../modules/web.dom.iterable":92}],31:[function(require,module,exports){
+},{"../../modules/_wks-ext":85,"../../modules/es6.string.iterator":89,"../../modules/web.dom.iterable":93}],32:[function(require,module,exports){
 module.exports = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = function () { /* empty */ };
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":52}],34:[function(require,module,exports){
+},{"./_is-object":53}],35:[function(require,module,exports){
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject');
@@ -1481,18 +1585,18 @@ module.exports = function (IS_INCLUDES) {
   };
 };
 
-},{"./_to-absolute-index":76,"./_to-iobject":78,"./_to-length":79}],35:[function(require,module,exports){
+},{"./_to-absolute-index":77,"./_to-iobject":79,"./_to-length":80}],36:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function (fn, that, length) {
@@ -1514,20 +1618,20 @@ module.exports = function (fn, that, length) {
   };
 };
 
-},{"./_a-function":31}],38:[function(require,module,exports){
+},{"./_a-function":32}],39:[function(require,module,exports){
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_fails":44}],40:[function(require,module,exports){
+},{"./_fails":45}],41:[function(require,module,exports){
 var isObject = require('./_is-object');
 var document = require('./_global').document;
 // typeof document.createElement is 'object' in old IE
@@ -1536,13 +1640,13 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_global":45,"./_is-object":52}],41:[function(require,module,exports){
+},{"./_global":46,"./_is-object":53}],42:[function(require,module,exports){
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 // all enumerable object keys, includes symbols
 var getKeys = require('./_object-keys');
 var gOPS = require('./_object-gops');
@@ -1559,7 +1663,7 @@ module.exports = function (it) {
   } return result;
 };
 
-},{"./_object-gops":65,"./_object-keys":68,"./_object-pie":69}],43:[function(require,module,exports){
+},{"./_object-gops":66,"./_object-keys":69,"./_object-pie":70}],44:[function(require,module,exports){
 var global = require('./_global');
 var core = require('./_core');
 var ctx = require('./_ctx');
@@ -1622,7 +1726,7 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_core":36,"./_ctx":37,"./_global":45,"./_hide":47}],44:[function(require,module,exports){
+},{"./_core":37,"./_ctx":38,"./_global":46,"./_hide":48}],45:[function(require,module,exports){
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -1631,7 +1735,7 @@ module.exports = function (exec) {
   }
 };
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self
@@ -1639,13 +1743,13 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -1655,16 +1759,16 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_descriptors":39,"./_object-dp":60,"./_property-desc":70}],48:[function(require,module,exports){
+},{"./_descriptors":40,"./_object-dp":61,"./_property-desc":71}],49:[function(require,module,exports){
 var document = require('./_global').document;
 module.exports = document && document.documentElement;
 
-},{"./_global":45}],49:[function(require,module,exports){
+},{"./_global":46}],50:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":39,"./_dom-create":40,"./_fails":44}],50:[function(require,module,exports){
+},{"./_descriptors":40,"./_dom-create":41,"./_fails":45}],51:[function(require,module,exports){
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 // eslint-disable-next-line no-prototype-builtins
@@ -1672,19 +1776,19 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
-},{"./_cof":35}],51:[function(require,module,exports){
+},{"./_cof":36}],52:[function(require,module,exports){
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
 
-},{"./_cof":35}],52:[function(require,module,exports){
+},{"./_cof":36}],53:[function(require,module,exports){
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict';
 var create = require('./_object-create');
 var descriptor = require('./_property-desc');
@@ -1699,7 +1803,7 @@ module.exports = function (Constructor, NAME, next) {
   setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-},{"./_hide":47,"./_object-create":59,"./_property-desc":70,"./_set-to-string-tag":72,"./_wks":85}],54:[function(require,module,exports){
+},{"./_hide":48,"./_object-create":60,"./_property-desc":71,"./_set-to-string-tag":73,"./_wks":86}],55:[function(require,module,exports){
 'use strict';
 var LIBRARY = require('./_library');
 var $export = require('./_export');
@@ -1771,18 +1875,18 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
-},{"./_export":43,"./_has":46,"./_hide":47,"./_iter-create":53,"./_iterators":56,"./_library":57,"./_object-gpo":66,"./_redefine":71,"./_set-to-string-tag":72,"./_wks":85}],55:[function(require,module,exports){
+},{"./_export":44,"./_has":47,"./_hide":48,"./_iter-create":54,"./_iterators":57,"./_library":58,"./_object-gpo":67,"./_redefine":72,"./_set-to-string-tag":73,"./_wks":86}],56:[function(require,module,exports){
 module.exports = function (done, value) {
   return { value: value, done: !!done };
 };
 
-},{}],56:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = {};
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = true;
 
-},{}],58:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 var META = require('./_uid')('meta');
 var isObject = require('./_is-object');
 var has = require('./_has');
@@ -1837,7 +1941,7 @@ var meta = module.exports = {
   onFreeze: onFreeze
 };
 
-},{"./_fails":44,"./_has":46,"./_is-object":52,"./_object-dp":60,"./_uid":82}],59:[function(require,module,exports){
+},{"./_fails":45,"./_has":47,"./_is-object":53,"./_object-dp":61,"./_uid":83}],60:[function(require,module,exports){
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = require('./_an-object');
 var dPs = require('./_object-dps');
@@ -1880,7 +1984,7 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":33,"./_dom-create":40,"./_enum-bug-keys":41,"./_html":48,"./_object-dps":61,"./_shared-key":73}],60:[function(require,module,exports){
+},{"./_an-object":34,"./_dom-create":41,"./_enum-bug-keys":42,"./_html":49,"./_object-dps":62,"./_shared-key":74}],61:[function(require,module,exports){
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -1898,7 +2002,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":33,"./_descriptors":39,"./_ie8-dom-define":49,"./_to-primitive":81}],61:[function(require,module,exports){
+},{"./_an-object":34,"./_descriptors":40,"./_ie8-dom-define":50,"./_to-primitive":82}],62:[function(require,module,exports){
 var dP = require('./_object-dp');
 var anObject = require('./_an-object');
 var getKeys = require('./_object-keys');
@@ -1913,7 +2017,7 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   return O;
 };
 
-},{"./_an-object":33,"./_descriptors":39,"./_object-dp":60,"./_object-keys":68}],62:[function(require,module,exports){
+},{"./_an-object":34,"./_descriptors":40,"./_object-dp":61,"./_object-keys":69}],63:[function(require,module,exports){
 var pIE = require('./_object-pie');
 var createDesc = require('./_property-desc');
 var toIObject = require('./_to-iobject');
@@ -1931,7 +2035,7 @@ exports.f = require('./_descriptors') ? gOPD : function getOwnPropertyDescriptor
   if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
 };
 
-},{"./_descriptors":39,"./_has":46,"./_ie8-dom-define":49,"./_object-pie":69,"./_property-desc":70,"./_to-iobject":78,"./_to-primitive":81}],63:[function(require,module,exports){
+},{"./_descriptors":40,"./_has":47,"./_ie8-dom-define":50,"./_object-pie":70,"./_property-desc":71,"./_to-iobject":79,"./_to-primitive":82}],64:[function(require,module,exports){
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
 var toIObject = require('./_to-iobject');
 var gOPN = require('./_object-gopn').f;
@@ -1952,7 +2056,7 @@ module.exports.f = function getOwnPropertyNames(it) {
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
-},{"./_object-gopn":64,"./_to-iobject":78}],64:[function(require,module,exports){
+},{"./_object-gopn":65,"./_to-iobject":79}],65:[function(require,module,exports){
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
 var $keys = require('./_object-keys-internal');
 var hiddenKeys = require('./_enum-bug-keys').concat('length', 'prototype');
@@ -1961,10 +2065,10 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
-},{"./_enum-bug-keys":41,"./_object-keys-internal":67}],65:[function(require,module,exports){
+},{"./_enum-bug-keys":42,"./_object-keys-internal":68}],66:[function(require,module,exports){
 exports.f = Object.getOwnPropertySymbols;
 
-},{}],66:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = require('./_has');
 var toObject = require('./_to-object');
@@ -1979,7 +2083,7 @@ module.exports = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto : null;
 };
 
-},{"./_has":46,"./_shared-key":73,"./_to-object":80}],67:[function(require,module,exports){
+},{"./_has":47,"./_shared-key":74,"./_to-object":81}],68:[function(require,module,exports){
 var has = require('./_has');
 var toIObject = require('./_to-iobject');
 var arrayIndexOf = require('./_array-includes')(false);
@@ -1998,7 +2102,7 @@ module.exports = function (object, names) {
   return result;
 };
 
-},{"./_array-includes":34,"./_has":46,"./_shared-key":73,"./_to-iobject":78}],68:[function(require,module,exports){
+},{"./_array-includes":35,"./_has":47,"./_shared-key":74,"./_to-iobject":79}],69:[function(require,module,exports){
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = require('./_object-keys-internal');
 var enumBugKeys = require('./_enum-bug-keys');
@@ -2007,10 +2111,10 @@ module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
 
-},{"./_enum-bug-keys":41,"./_object-keys-internal":67}],69:[function(require,module,exports){
+},{"./_enum-bug-keys":42,"./_object-keys-internal":68}],70:[function(require,module,exports){
 exports.f = {}.propertyIsEnumerable;
 
-},{}],70:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -2020,10 +2124,10 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],71:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = require('./_hide');
 
-},{"./_hide":47}],72:[function(require,module,exports){
+},{"./_hide":48}],73:[function(require,module,exports){
 var def = require('./_object-dp').f;
 var has = require('./_has');
 var TAG = require('./_wks')('toStringTag');
@@ -2032,14 +2136,14 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-},{"./_has":46,"./_object-dp":60,"./_wks":85}],73:[function(require,module,exports){
+},{"./_has":47,"./_object-dp":61,"./_wks":86}],74:[function(require,module,exports){
 var shared = require('./_shared')('keys');
 var uid = require('./_uid');
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
-},{"./_shared":74,"./_uid":82}],74:[function(require,module,exports){
+},{"./_shared":75,"./_uid":83}],75:[function(require,module,exports){
 var global = require('./_global');
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
@@ -2047,7 +2151,7 @@ module.exports = function (key) {
   return store[key] || (store[key] = {});
 };
 
-},{"./_global":45}],75:[function(require,module,exports){
+},{"./_global":46}],76:[function(require,module,exports){
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -2066,7 +2170,7 @@ module.exports = function (TO_STRING) {
   };
 };
 
-},{"./_defined":38,"./_to-integer":77}],76:[function(require,module,exports){
+},{"./_defined":39,"./_to-integer":78}],77:[function(require,module,exports){
 var toInteger = require('./_to-integer');
 var max = Math.max;
 var min = Math.min;
@@ -2075,7 +2179,7 @@ module.exports = function (index, length) {
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
 
-},{"./_to-integer":77}],77:[function(require,module,exports){
+},{"./_to-integer":78}],78:[function(require,module,exports){
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
 var floor = Math.floor;
@@ -2083,7 +2187,7 @@ module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-},{}],78:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject');
 var defined = require('./_defined');
@@ -2091,7 +2195,7 @@ module.exports = function (it) {
   return IObject(defined(it));
 };
 
-},{"./_defined":38,"./_iobject":50}],79:[function(require,module,exports){
+},{"./_defined":39,"./_iobject":51}],80:[function(require,module,exports){
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer');
 var min = Math.min;
@@ -2099,14 +2203,14 @@ module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
 
-},{"./_to-integer":77}],80:[function(require,module,exports){
+},{"./_to-integer":78}],81:[function(require,module,exports){
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function (it) {
   return Object(defined(it));
 };
 
-},{"./_defined":38}],81:[function(require,module,exports){
+},{"./_defined":39}],82:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -2120,14 +2224,14 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":52}],82:[function(require,module,exports){
+},{"./_is-object":53}],83:[function(require,module,exports){
 var id = 0;
 var px = Math.random();
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var global = require('./_global');
 var core = require('./_core');
 var LIBRARY = require('./_library');
@@ -2138,10 +2242,10 @@ module.exports = function (name) {
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
 };
 
-},{"./_core":36,"./_global":45,"./_library":57,"./_object-dp":60,"./_wks-ext":84}],84:[function(require,module,exports){
+},{"./_core":37,"./_global":46,"./_library":58,"./_object-dp":61,"./_wks-ext":85}],85:[function(require,module,exports){
 exports.f = require('./_wks');
 
-},{"./_wks":85}],85:[function(require,module,exports){
+},{"./_wks":86}],86:[function(require,module,exports){
 var store = require('./_shared')('wks');
 var uid = require('./_uid');
 var Symbol = require('./_global').Symbol;
@@ -2154,7 +2258,7 @@ var $exports = module.exports = function (name) {
 
 $exports.store = store;
 
-},{"./_global":45,"./_shared":74,"./_uid":82}],86:[function(require,module,exports){
+},{"./_global":46,"./_shared":75,"./_uid":83}],87:[function(require,module,exports){
 'use strict';
 var addToUnscopables = require('./_add-to-unscopables');
 var step = require('./_iter-step');
@@ -2190,9 +2294,9 @@ addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-},{"./_add-to-unscopables":32,"./_iter-define":54,"./_iter-step":55,"./_iterators":56,"./_to-iobject":78}],87:[function(require,module,exports){
+},{"./_add-to-unscopables":33,"./_iter-define":55,"./_iter-step":56,"./_iterators":57,"./_to-iobject":79}],88:[function(require,module,exports){
 
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 var $at = require('./_string-at')(true);
 
@@ -2211,7 +2315,7 @@ require('./_iter-define')(String, 'String', function (iterated) {
   return { value: point, done: false };
 });
 
-},{"./_iter-define":54,"./_string-at":75}],89:[function(require,module,exports){
+},{"./_iter-define":55,"./_string-at":76}],90:[function(require,module,exports){
 'use strict';
 // ECMAScript 6 symbols shim
 var global = require('./_global');
@@ -2447,13 +2551,13 @@ setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
 
-},{"./_an-object":33,"./_descriptors":39,"./_enum-keys":42,"./_export":43,"./_fails":44,"./_global":45,"./_has":46,"./_hide":47,"./_is-array":51,"./_library":57,"./_meta":58,"./_object-create":59,"./_object-dp":60,"./_object-gopd":62,"./_object-gopn":64,"./_object-gopn-ext":63,"./_object-gops":65,"./_object-keys":68,"./_object-pie":69,"./_property-desc":70,"./_redefine":71,"./_set-to-string-tag":72,"./_shared":74,"./_to-iobject":78,"./_to-primitive":81,"./_uid":82,"./_wks":85,"./_wks-define":83,"./_wks-ext":84}],90:[function(require,module,exports){
+},{"./_an-object":34,"./_descriptors":40,"./_enum-keys":43,"./_export":44,"./_fails":45,"./_global":46,"./_has":47,"./_hide":48,"./_is-array":52,"./_library":58,"./_meta":59,"./_object-create":60,"./_object-dp":61,"./_object-gopd":63,"./_object-gopn":65,"./_object-gopn-ext":64,"./_object-gops":66,"./_object-keys":69,"./_object-pie":70,"./_property-desc":71,"./_redefine":72,"./_set-to-string-tag":73,"./_shared":75,"./_to-iobject":79,"./_to-primitive":82,"./_uid":83,"./_wks":86,"./_wks-define":84,"./_wks-ext":85}],91:[function(require,module,exports){
 require('./_wks-define')('asyncIterator');
 
-},{"./_wks-define":83}],91:[function(require,module,exports){
+},{"./_wks-define":84}],92:[function(require,module,exports){
 require('./_wks-define')('observable');
 
-},{"./_wks-define":83}],92:[function(require,module,exports){
+},{"./_wks-define":84}],93:[function(require,module,exports){
 require('./es6.array.iterator');
 var global = require('./_global');
 var hide = require('./_hide');
@@ -2474,30 +2578,7 @@ for (var i = 0; i < DOMIterables.length; i++) {
   Iterators[NAME] = Iterators.Array;
 }
 
-},{"./_global":45,"./_hide":47,"./_iterators":56,"./_wks":85,"./es6.array.iterator":86}],93:[function(require,module,exports){
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
-},{}],94:[function(require,module,exports){
+},{"./_global":46,"./_hide":48,"./_iterators":57,"./_wks":86,"./es6.array.iterator":87}],94:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -13247,7 +13328,7 @@ exports.insert = function (css) {
 
 },{}],98:[function(require,module,exports){
 var __vueify_insert__ = require("vueify/lib/insert-css")
-var __vueify_style__ = __vueify_insert__.insert("\n.action-link[_v-1ea4f974] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-1ea4f974] {\n    margin-bottom: 0;\n}\n")
+var __vueify_style__ = __vueify_insert__.insert("\n.action-link[_v-716d9d19] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-716d9d19] {\n    margin-bottom: 0;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -13421,22 +13502,22 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-1ea4f974=\"\">\n    <div _v-1ea4f974=\"\">\n        <div class=\"panel panel-default\" _v-1ea4f974=\"\">\n            <div class=\"panel-heading\" _v-1ea4f974=\"\">\n                <div style=\"display: flex; justify-content: space-between; align-items: center;\" _v-1ea4f974=\"\">\n                    <span _v-1ea4f974=\"\">\n                        Personal Access Tokens\n                    </span>\n\n                    <a class=\"action-link\" @click=\"showCreateTokenForm\" _v-1ea4f974=\"\">\n                        Create New Token\n                    </a>\n                </div>\n            </div>\n\n            <div class=\"panel-body\" _v-1ea4f974=\"\">\n                <!-- No Tokens Notice -->\n                <p class=\"m-b-none\" v-if=\"tokens.length === 0\" _v-1ea4f974=\"\">\n                    You have not created any personal access tokens.\n                </p>\n\n                <!-- Personal Access Tokens -->\n                <table class=\"table table-borderless m-b-none\" v-if=\"tokens.length > 0\" _v-1ea4f974=\"\">\n                    <thead _v-1ea4f974=\"\">\n                        <tr _v-1ea4f974=\"\">\n                            <th _v-1ea4f974=\"\">Name</th>\n                            <th _v-1ea4f974=\"\"></th>\n                        </tr>\n                    </thead>\n\n                    <tbody _v-1ea4f974=\"\">\n                        <tr v-for=\"token in tokens\" _v-1ea4f974=\"\">\n                            <!-- Client Name -->\n                            <td style=\"vertical-align: middle;\" _v-1ea4f974=\"\">\n                                {{ token.name }}\n                            </td>\n\n                            <!-- Delete Button -->\n                            <td style=\"vertical-align: middle;\" _v-1ea4f974=\"\">\n                                <a class=\"action-link text-danger\" @click=\"revoke(token)\" _v-1ea4f974=\"\">\n                                    Delete\n                                </a>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n\n    <!-- Create Token Modal -->\n    <div class=\"modal fade\" id=\"modal-create-token\" tabindex=\"-1\" role=\"dialog\" _v-1ea4f974=\"\">\n        <div class=\"modal-dialog\" _v-1ea4f974=\"\">\n            <div class=\"modal-content\" _v-1ea4f974=\"\">\n                <div class=\"modal-header\" _v-1ea4f974=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-1ea4f974=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-1ea4f974=\"\">\n                        Create Token\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-1ea4f974=\"\">\n                    <!-- Form Errors -->\n                    <div class=\"alert alert-danger\" v-if=\"form.errors.length > 0\" _v-1ea4f974=\"\">\n                        <p _v-1ea4f974=\"\"><strong _v-1ea4f974=\"\">Whoops!</strong> Something went wrong!</p>\n                        <br _v-1ea4f974=\"\">\n                        <ul _v-1ea4f974=\"\">\n                            <li v-for=\"error in form.errors\" _v-1ea4f974=\"\">\n                                {{ error }}\n                            </li>\n                        </ul>\n                    </div>\n\n                    <!-- Create Token Form -->\n                    <form class=\"form-horizontal\" role=\"form\" @submit.prevent=\"store\" _v-1ea4f974=\"\">\n                        <!-- Name -->\n                        <div class=\"form-group\" _v-1ea4f974=\"\">\n                            <label class=\"col-md-4 control-label\" _v-1ea4f974=\"\">Name</label>\n\n                            <div class=\"col-md-6\" _v-1ea4f974=\"\">\n                                <input id=\"create-token-name\" type=\"text\" class=\"form-control\" name=\"name\" v-model=\"form.name\" _v-1ea4f974=\"\">\n                            </div>\n                        </div>\n\n                        <!-- Scopes -->\n                        <div class=\"form-group\" v-if=\"scopes.length > 0\" _v-1ea4f974=\"\">\n                            <label class=\"col-md-4 control-label\" _v-1ea4f974=\"\">Scopes</label>\n\n                            <div class=\"col-md-6\" _v-1ea4f974=\"\">\n                                <div v-for=\"scope in scopes\" _v-1ea4f974=\"\">\n                                    <div class=\"checkbox\" _v-1ea4f974=\"\">\n                                        <label _v-1ea4f974=\"\">\n                                            <input type=\"checkbox\" @click=\"toggleScope(scope.id)\" :checked=\"scopeIsAssigned(scope.id)\" _v-1ea4f974=\"\">\n\n                                                {{ scope.id }}\n                                        </label>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-1ea4f974=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-1ea4f974=\"\">Close</button>\n\n                    <button type=\"button\" class=\"btn btn-primary\" @click=\"store\" _v-1ea4f974=\"\">\n                        Create\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Access Token Modal -->\n    <div class=\"modal fade\" id=\"modal-access-token\" tabindex=\"-1\" role=\"dialog\" _v-1ea4f974=\"\">\n        <div class=\"modal-dialog\" _v-1ea4f974=\"\">\n            <div class=\"modal-content\" _v-1ea4f974=\"\">\n                <div class=\"modal-header\" _v-1ea4f974=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-1ea4f974=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-1ea4f974=\"\">\n                        Personal Access Token\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-1ea4f974=\"\">\n                    <p _v-1ea4f974=\"\">\n                        Here is your new personal access token. This is the only time it will be shown so don't lose it!\n                        You may now use this token to make API requests.\n                    </p>\n\n                    <pre _v-1ea4f974=\"\"><code _v-1ea4f974=\"\">{{ accessToken }}</code></pre>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-1ea4f974=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-1ea4f974=\"\">Close</button>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div _v-716d9d19=\"\">\n    <div _v-716d9d19=\"\">\n        <div class=\"panel panel-default\" _v-716d9d19=\"\">\n            <div class=\"panel-heading\" _v-716d9d19=\"\">\n                <div style=\"display: flex; justify-content: space-between; align-items: center;\" _v-716d9d19=\"\">\n                    <span _v-716d9d19=\"\">\n                        Personal Access Tokens\n                    </span>\n\n                    <a class=\"action-link\" @click=\"showCreateTokenForm\" _v-716d9d19=\"\">\n                        Create New Token\n                    </a>\n                </div>\n            </div>\n\n            <div class=\"panel-body\" _v-716d9d19=\"\">\n                <!-- No Tokens Notice -->\n                <p class=\"m-b-none\" v-if=\"tokens.length === 0\" _v-716d9d19=\"\">\n                    You have not created any personal access tokens.\n                </p>\n\n                <!-- Personal Access Tokens -->\n                <table class=\"table table-borderless m-b-none\" v-if=\"tokens.length > 0\" _v-716d9d19=\"\">\n                    <thead _v-716d9d19=\"\">\n                        <tr _v-716d9d19=\"\">\n                            <th _v-716d9d19=\"\">Name</th>\n                            <th _v-716d9d19=\"\"></th>\n                        </tr>\n                    </thead>\n\n                    <tbody _v-716d9d19=\"\">\n                        <tr v-for=\"token in tokens\" _v-716d9d19=\"\">\n                            <!-- Client Name -->\n                            <td style=\"vertical-align: middle;\" _v-716d9d19=\"\">\n                                {{ token.name }}\n                            </td>\n\n                            <!-- Delete Button -->\n                            <td style=\"vertical-align: middle;\" _v-716d9d19=\"\">\n                                <a class=\"action-link text-danger\" @click=\"revoke(token)\" _v-716d9d19=\"\">\n                                    Delete\n                                </a>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n\n    <!-- Create Token Modal -->\n    <div class=\"modal fade\" id=\"modal-create-token\" tabindex=\"-1\" role=\"dialog\" _v-716d9d19=\"\">\n        <div class=\"modal-dialog\" _v-716d9d19=\"\">\n            <div class=\"modal-content\" _v-716d9d19=\"\">\n                <div class=\"modal-header\" _v-716d9d19=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-716d9d19=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-716d9d19=\"\">\n                        Create Token\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-716d9d19=\"\">\n                    <!-- Form Errors -->\n                    <div class=\"alert alert-danger\" v-if=\"form.errors.length > 0\" _v-716d9d19=\"\">\n                        <p _v-716d9d19=\"\"><strong _v-716d9d19=\"\">Whoops!</strong> Something went wrong!</p>\n                        <br _v-716d9d19=\"\">\n                        <ul _v-716d9d19=\"\">\n                            <li v-for=\"error in form.errors\" _v-716d9d19=\"\">\n                                {{ error }}\n                            </li>\n                        </ul>\n                    </div>\n\n                    <!-- Create Token Form -->\n                    <form class=\"form-horizontal\" role=\"form\" @submit.prevent=\"store\" _v-716d9d19=\"\">\n                        <!-- Name -->\n                        <div class=\"form-group\" _v-716d9d19=\"\">\n                            <label class=\"col-md-4 control-label\" _v-716d9d19=\"\">Name</label>\n\n                            <div class=\"col-md-6\" _v-716d9d19=\"\">\n                                <input id=\"create-token-name\" type=\"text\" class=\"form-control\" name=\"name\" v-model=\"form.name\" _v-716d9d19=\"\">\n                            </div>\n                        </div>\n\n                        <!-- Scopes -->\n                        <div class=\"form-group\" v-if=\"scopes.length > 0\" _v-716d9d19=\"\">\n                            <label class=\"col-md-4 control-label\" _v-716d9d19=\"\">Scopes</label>\n\n                            <div class=\"col-md-6\" _v-716d9d19=\"\">\n                                <div v-for=\"scope in scopes\" _v-716d9d19=\"\">\n                                    <div class=\"checkbox\" _v-716d9d19=\"\">\n                                        <label _v-716d9d19=\"\">\n                                            <input type=\"checkbox\" @click=\"toggleScope(scope.id)\" :checked=\"scopeIsAssigned(scope.id)\" _v-716d9d19=\"\">\n\n                                                {{ scope.id }}\n                                        </label>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </form>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-716d9d19=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-716d9d19=\"\">Close</button>\n\n                    <button type=\"button\" class=\"btn btn-primary\" @click=\"store\" _v-716d9d19=\"\">\n                        Create\n                    </button>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <!-- Access Token Modal -->\n    <div class=\"modal fade\" id=\"modal-access-token\" tabindex=\"-1\" role=\"dialog\" _v-716d9d19=\"\">\n        <div class=\"modal-dialog\" _v-716d9d19=\"\">\n            <div class=\"modal-content\" _v-716d9d19=\"\">\n                <div class=\"modal-header\" _v-716d9d19=\"\">\n                    <button type=\"button \" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\" _v-716d9d19=\"\">×</button>\n\n                    <h4 class=\"modal-title\" _v-716d9d19=\"\">\n                        Personal Access Token\n                    </h4>\n                </div>\n\n                <div class=\"modal-body\" _v-716d9d19=\"\">\n                    <p _v-716d9d19=\"\">\n                        Here is your new personal access token. This is the only time it will be shown so don't lose it!\n                        You may now use this token to make API requests.\n                    </p>\n\n                    <pre _v-716d9d19=\"\"><code _v-716d9d19=\"\">{{ accessToken }}</code></pre>\n                </div>\n\n                <!-- Modal Actions -->\n                <div class=\"modal-footer\" _v-716d9d19=\"\">\n                    <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\" _v-716d9d19=\"\">Close</button>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.dispose(function () {
-    __vueify_insert__.cache["\n.action-link[_v-1ea4f974] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-1ea4f974] {\n    margin-bottom: 0;\n}\n"] = false
+    __vueify_insert__.cache["\n.action-link[_v-716d9d19] {\n    cursor: pointer;\n}\n\n.m-b-none[_v-716d9d19] {\n    margin-bottom: 0;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
-    hotAPI.createRecord("_v-1ea4f974", module.exports)
+    hotAPI.createRecord("_v-716d9d19", module.exports)
   } else {
-    hotAPI.update("_v-1ea4f974", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+    hotAPI.update("_v-716d9d19", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"axios":1,"babel-runtime/helpers/typeof":28,"vue":96,"vue-hot-reload-api":95,"vueify/lib/insert-css":97}],99:[function(require,module,exports){
+},{"axios":1,"babel-runtime/helpers/typeof":29,"vue":96,"vue-hot-reload-api":95,"vueify/lib/insert-css":97}],99:[function(require,module,exports){
 'use strict';
 
 var _PersonalAccessTokens = require('./components/passport/PersonalAccessTokens.vue');

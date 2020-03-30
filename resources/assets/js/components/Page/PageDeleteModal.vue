@@ -1,6 +1,6 @@
 <template>
   <!-- Modal -->
-  <div id="deleteModal" class="modal fade" role="dialog">
+  <div id="deleteModal" class="modal" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
