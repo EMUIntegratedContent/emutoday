@@ -2013,6 +2013,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2269,9 +2272,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
-    updateMainStoriesOrder: function updateMainStoriesOrder(evt) {
-      this.record.mainStories = evt;
-    },
     fetchCurrentEmail: function fetchCurrentEmail(recid) {
       var _this = this;
 
@@ -2419,6 +2419,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return; // prevents multiple stories being removed
         }
       }
+    },
+    handleOtherStoryAdded: function handleOtherStoryAdded(otherStoryObj) {
+      if (otherStoryObj) {
+        this.record.otherStories.push(otherStoryObj);
+      }
+    },
+    handleOtherStoryRemoved: function handleOtherStoryRemoved(otherStoryId) {
+      for (var _i2 = 0; _i2 < this.record.otherStories.length; _i2++) {
+        if (otherStoryId == this.record.otherStories[_i2].id) {
+          this.record.otherStories.splice(this.record.otherStories[_i2], 1);
+          return;
+        }
+      }
+    },
+    updateMainStoriesOrder: function updateMainStoriesOrder(evt) {
+      this.record.mainStories = evt;
+    },
+    updateOtherStoriesOrder: function updateOtherStoriesOrder(evt) {
+      this.record.otherStories = evt;
     }
   },
   watch: {},
@@ -2444,18 +2463,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     // 		}
     // 	}
     // },
-    'other-story-added': function otherStoryAdded(otherStoryObj) {
-      if (otherStoryObj) {
-        this.record.otherStories.push(otherStoryObj);
-      }
-    },
-    'other-story-removed': function otherStoryRemoved(otherStoryId) {
-      for (i = 0; i < this.record.otherStories.length; i++) {
-        if (otherStoryId == this.record.otherStories[i].id) {
-          this.record.otherStories.$remove(this.record.otherStories[i]);
-        }
-      }
-    },
+    // 'other-story-added': function (otherStoryObj) {
+    // 	if (otherStoryObj) {
+    // 		this.record.otherStories.push(otherStoryObj)
+    // 	}
+    // },
+    // 'other-story-removed': function (otherStoryId) {
+    // 	for (i = 0; i < this.record.otherStories.length; i++) {
+    // 		if (otherStoryId == this.record.otherStories[i].id) {
+    // 			this.record.otherStories.$remove(this.record.otherStories[i])
+    // 		}
+    // 	}
+    // },
     'event-added': function eventAdded(eventObj) {
       if (eventObj) {
         this.record.events.push(eventObj);
@@ -3261,7 +3280,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    chrisFilterItems: function chrisFilterItems() {
+    itemsFilteredPaginated: function itemsFilteredPaginated() {
       var _this = this;
 
       var items = [];
@@ -3327,9 +3346,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     filterByStoryType: function filterByStoryType(value) {
-      console.log("FILTER BY STORY TYPE!!!");
-      console.log(value);
-
       if (this.items_filter_storytype === '') {
         return value.story_type !== '';
       } else {
@@ -3426,7 +3442,7 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
-     * Uses vue-sortable
+     * Uses vue-draggable
      */
     updateOrder: function updateOrder(event) {
       // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
@@ -4029,6 +4045,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _directives_iconradio_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_directives_iconradio_js__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _Pagination_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Pagination.vue */ "./resources/assets/js/components/Pagination.vue");
 /* harmony import */ var _directives_flatpickr_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../directives/flatpickr.js */ "./resources/assets/js/directives/flatpickr.js");
+/* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuedraggable */ "./node_modules/vuedraggable/dist/vuedraggable.common.js");
+/* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_5__);
 //
 //
 //
@@ -4151,6 +4169,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -4163,12 +4197,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   components: {
     EmailStoryPod: _EmailStoryPod_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    Pagination: _Pagination_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+    draggable: vuedraggable__WEBPACK_IMPORTED_MODULE_5___default.a
   },
   props: ['stypes', 'mainStory', 'otherStories'],
-  created: function created() {},
-  ready: function ready() {
-    var twoWeeksEarlier = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(2, 'w');
+  created: function created() {
+    var twoWeeksEarlier = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(100, 'w');
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD");
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
@@ -4187,10 +4221,38 @@ __webpack_require__.r(__webpack_exports__);
       isEndDate: false,
       currentPage: 1,
       itemsPerPage: 10,
-      resultCount: 0
+      resultCount: 0,
+      drag: false
     };
   },
   computed: {
+    itemsFilteredPaginated: function itemsFilteredPaginated() {
+      var _this = this;
+
+      if (!this.queueStories) return false;
+      var items = [];
+
+      if (this.stories_filter_storytype != '') {
+        items = this.queueStories.filter(function (it) {
+          return it.story_type == _this.stories_filter_storytype;
+        });
+      } else {
+        items = this.queueStories;
+      }
+
+      if (items.length == 0) {
+        return items;
+      }
+
+      this.resultCount = items.length;
+
+      if (this.currentPage > this.totalPages) {
+        this.currentPage = 1;
+      }
+
+      var index = (this.currentPage - 1) * this.itemsPerPage;
+      return items.slice(index, index + this.itemsPerPage);
+    },
     totalPages: function totalPages() {
       return Math.ceil(this.queueStories.length / this.itemsPerPage);
     },
@@ -4286,7 +4348,7 @@ __webpack_require__.r(__webpack_exports__);
       return 'fa ' + faicon + ' fa-fw';
     },
     fetchAllRecords: function fetchAllRecords() {
-      var _this = this;
+      var _this2 = this;
 
       this.loadingQueue = true;
       var routeurl = '/api/email/stories/otherstories'; // if a start date is set, get stories whose start_date is on or after this date
@@ -4303,14 +4365,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.$http.get(routeurl).then(function (response) {
-        _this.$set('queueStories', response.data.newdata.data);
+        _this2.queueStories = response.data.newdata.data;
+        _this2.resultCount = _this2.queueStories.length;
 
-        _this.resultCount = _this.queueStories.length;
-
-        _this.setPage(1); // reset paginator
+        _this2.setPage(1); // reset paginator
 
 
-        _this.loadingQueue = false;
+        _this2.loadingQueue = false;
       }, function (response) {
         //error callback
         console.log("ERRORS");
@@ -4325,7 +4386,7 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     /**
-     * Uses vue-sortable
+     * Uses vue-draggable
      */
     updateOrder: function updateOrder(event) {
       // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
@@ -4333,6 +4394,13 @@ __webpack_require__.r(__webpack_exports__);
       var newIndex = event.newIndex; // move the item in the underlying array
 
       this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
+      this.$emit('updated-other-story-order', this.usedStories);
+    },
+    handleOtherStoryAdded: function handleOtherStoryAdded(evt) {
+      this.$emit('other-story-added', evt);
+    },
+    handleOtherStoryRemoved: function handleOtherStoryRemoved(evt) {
+      this.$emit('other-story-removed', evt);
     }
   },
   filters: {
@@ -32258,6 +32326,14 @@ var render = function() {
                                   attrs: {
                                     stypes: _vm.stypes,
                                     "other-stories": _vm.record.otherStories
+                                  },
+                                  on: {
+                                    "other-story-added":
+                                      _vm.handleOtherStoryAdded,
+                                    "other-story-removed":
+                                      _vm.handleOtherStoryRemoved,
+                                    "updated-other-story-order":
+                                      _vm.updateOtherStoriesOrder
                                   }
                                 })
                               ],
@@ -35062,7 +35138,6 @@ var render = function() {
                       _c(
                         "draggable",
                         {
-                          attrs: { group: "people" },
                           on: {
                             start: function($event) {
                               _vm.drag = true
@@ -35249,7 +35324,7 @@ var render = function() {
             "div",
             { attrs: { id: "email-items" } },
             [
-              _vm._l(_vm.chrisFilterItems, function(item, index) {
+              _vm._l(_vm.itemsFilteredPaginated, function(item, index) {
                 return _c("email-story-pod", {
                   key: "email-story-item-" + index,
                   attrs: {
@@ -35909,35 +35984,40 @@ var render = function() {
                 _vm.usedStories.length > 0
                   ? [
                       _c(
-                        "ul",
+                        "draggable",
                         {
-                          directives: [
-                            {
-                              name: "sortable",
-                              rawName: "v-sortable",
-                              value: { onUpdate: _vm.updateOrder },
-                              expression: "{ onUpdate: updateOrder }"
-                            }
-                          ],
-                          staticClass: "list-group"
+                          on: {
+                            start: function($event) {
+                              _vm.drag = true
+                            },
+                            end: function($event) {
+                              _vm.drag = false
+                            },
+                            change: _vm.updateOrder
+                          },
+                          model: {
+                            value: _vm.usedStories,
+                            callback: function($$v) {
+                              _vm.usedStories = $$v
+                            },
+                            expression: "usedStories"
+                          }
                         },
-                        _vm._l(_vm.usedStories, function(story) {
-                          return _c(
-                            "li",
-                            { staticClass: "list-group-item" },
-                            [
-                              _c("email-story-pod", {
-                                attrs: {
-                                  pid: "otherstory-list-stories",
-                                  "pod-type": "otherstory",
-                                  item: story
-                                }
-                              })
-                            ],
-                            1
-                          )
+                        _vm._l(_vm.usedStories, function(story, index) {
+                          return _c("email-story-pod", {
+                            key: "used-other-story-draggable-" + index,
+                            attrs: {
+                              pid: "otherstory-list-stories",
+                              "pod-type": "otherstory",
+                              item: story
+                            },
+                            on: {
+                              "other-story-added": _vm.handleOtherStoryAdded,
+                              "other-story-removed": _vm.handleOtherStoryRemoved
+                            }
+                          })
                         }),
-                        0
+                        1
                       )
                     ]
                   : [
@@ -35972,12 +36052,6 @@ var render = function() {
                           rawName: "v-model",
                           value: _vm.startdate,
                           expression: "startdate"
-                        },
-                        {
-                          name: "flatpickr",
-                          rawName: "v-flatpickr",
-                          value: _vm.startdate,
-                          expression: "startdate"
                         }
                       ],
                       attrs: { type: "text", initval: _vm.startdate },
@@ -36004,14 +36078,6 @@ var render = function() {
                   _c("p", [
                     _vm.enddate
                       ? _c("input", {
-                          directives: [
-                            {
-                              name: "flatpickr",
-                              rawName: "v-flatpickr",
-                              value: _vm.enddate,
-                              expression: "enddate"
-                            }
-                          ],
                           attrs: { type: "text", initval: _vm.enddate }
                         })
                       : _vm._e()
@@ -36057,14 +36123,6 @@ var render = function() {
               _c(
                 "div",
                 {
-                  directives: [
-                    {
-                      name: "iconradio",
-                      rawName: "v-iconradio",
-                      value: _vm.stories_filter_storytype,
-                      expression: "stories_filter_storytype"
-                    }
-                  ],
                   staticClass: "btn-group btn-group-xs",
                   attrs: {
                     role: "group",
@@ -36083,6 +36141,11 @@ var render = function() {
                             "data-toggle": "tooltip",
                             "data-placement": "top",
                             title: item.name
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.stories_filter_storytype = item.shortname
+                            }
                           }
                         },
                         [
@@ -36090,6 +36153,7 @@ var render = function() {
                             attrs: { type: "radio", autocomplete: "off" },
                             domProps: { value: item.shortname }
                           }),
+                          _vm._v(" "),
                           _c("span", {
                             staticClass: "item-type-icon-shrt",
                             class: _vm.typeIcon(item.shortname)
@@ -36112,7 +36176,10 @@ var render = function() {
                 ? [
                     _vm.queueStories.length > 0
                       ? [
-                          _vm._l(_vm.queueStories, function(story, index) {
+                          _vm._l(_vm.itemsFilteredPaginated, function(
+                            story,
+                            index
+                          ) {
                             return _c("email-story-pod", {
                               key: "otherstory-story-" + index,
                               attrs: {
@@ -36120,6 +36187,11 @@ var render = function() {
                                 "pod-type": "otherstoryqueue",
                                 item: story,
                                 "other-stories": _vm.usedStories
+                              },
+                              on: {
+                                "other-story-added": _vm.handleOtherStoryAdded,
+                                "other-story-removed":
+                                  _vm.handleOtherStoryRemoved
                               }
                             })
                           }),

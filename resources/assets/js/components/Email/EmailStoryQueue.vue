@@ -16,16 +16,18 @@
             <h3>Side Stories</h3>
             <template v-if="!loadingUsed">
               <template v-if="usedStories.length > 0">
-                <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
-                    <li v-for="story in usedStories" class="list-group-item">
-                      <email-story-pod
-                          pid="otherstory-list-stories"
-                          pod-type="otherstory"
-                          :item="story"
-                          >
-                      </email-story-pod>
-                    </li>
-                </ul>
+                <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">
+                  <email-story-pod
+                      pid="otherstory-list-stories"
+                      pod-type="otherstory"
+                      :item="story"
+                      v-for="(story, index) in usedStories"
+                      :key="'used-other-story-draggable-' + index"
+                      @other-story-added="handleOtherStoryAdded"
+                      @other-story-removed="handleOtherStoryRemoved"
+                  >
+                  </email-story-pod>
+                </draggable>
               </template>
               <template v-else>
                 <p>There are no side stories set for this email.</p>
@@ -39,11 +41,13 @@
             <form class="form-inline">
               <div class="form-group">
                   <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>
+                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate"></p>
+<!--                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>-->
               </div>
               <div v-if="isEndDate" class="form-group">
                   <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>
+                  <p><input v-if="enddate" type="text" :initval="enddate"></p>
+<!--                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>-->
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
               <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
@@ -52,9 +56,18 @@
                 <div class="btn-group btn-group-xs" role="group">
                     <label>Filter: </label>
                 </div>
-                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="stories_filter_storytype">
+                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
                      <template v-for="item in storyTypeIcons">
-                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" :title="item.name"><input type="radio" autocomplete="off" :value="item.shortname" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+                         <label
+                             class="btn btn-default"
+                             data-toggle="tooltip"
+                             data-placement="top"
+                             :title="item.name"
+                             @click="stories_filter_storytype = item.shortname"
+                         >
+                           <input type="radio" autocomplete="off" :value="item.shortname" />
+                           <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+                         </label>
                     </template>
                 </div>
             </div>
@@ -68,7 +81,9 @@
                       :item="story"
                       :other-stories="usedStories"
                       :key="'otherstory-story-' + index"
-                      v-for="(story, index) in queueStories"
+                      v-for="(story, index) in itemsFilteredPaginated"
+                      @other-story-added="handleOtherStoryAdded"
+                      @other-story-removed="handleOtherStoryRemoved"
                   >
                   </email-story-pod>
                   <ul class="pagination">
@@ -127,18 +142,17 @@ import EmailStoryPod from './EmailStoryPod.vue'
 import iconradio from '../../directives/iconradio.js'
 import Pagination from '../Pagination.vue'
 import flatpickr from "../../directives/flatpickr.js"
+import draggable from 'vuedraggable'
 
 export default  {
     directives: {iconradio, flatpickr},
-    components: {EmailStoryPod,Pagination},
+    components: {EmailStoryPod,Pagination,draggable},
     props: ['stypes','mainStory','otherStories'],
     created(){
-    },
-    ready() {
-        let twoWeeksEarlier = moment().subtract(2, 'w')
-        this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
-        this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
-        this.fetchAllRecords()
+      let twoWeeksEarlier = moment().subtract(100, 'w')
+      this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
+      this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+      this.fetchAllRecords()
     },
     data: function() {
         return {
@@ -155,9 +169,27 @@ export default  {
             currentPage: 1,
             itemsPerPage: 10,
             resultCount: 0,
+            drag: false
         }
     },
     computed: {
+        itemsFilteredPaginated() {
+          if(!this.queueStories) return false
+          let items = []
+          if (this.stories_filter_storytype != '') {
+            items = this.queueStories.filter(it => it.story_type == this.stories_filter_storytype)
+          } else {
+            items = this.queueStories
+          }
+
+          if(items.length == 0){ return items }
+          this.resultCount = items.length
+          if (this.currentPage > this.totalPages) {
+            this.currentPage = 1
+          }
+          let index = (this.currentPage-1) * this.itemsPerPage
+          return items.slice(index, index + this.itemsPerPage)
+        },
         totalPages: function() {
           return Math.ceil(this.queueStories.length / this.itemsPerPage)
         },
@@ -267,7 +299,7 @@ export default  {
           this.$http.get(routeurl)
 
           .then((response) =>{
-              this.$set('queueStories', response.data.newdata.data)
+              this.queueStories = response.data.newdata.data
               this.resultCount = this.queueStories.length
               this.setPage(1) // reset paginator
               this.loadingQueue = false;
@@ -287,7 +319,7 @@ export default  {
           // flatpickr directive method
       },
       /**
-       * Uses vue-sortable
+       * Uses vue-draggable
        */
       updateOrder: function(event){
         // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
@@ -296,7 +328,14 @@ export default  {
 
         // move the item in the underlying array
         this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
+        this.$emit('updated-other-story-order', this.usedStories)
       },
+      handleOtherStoryAdded(evt) {
+        this.$emit('other-story-added', evt)
+      },
+      handleOtherStoryRemoved(evt) {
+        this.$emit('other-story-removed', evt)
+      }
     },
     filters: {
       paginate: function(list) {

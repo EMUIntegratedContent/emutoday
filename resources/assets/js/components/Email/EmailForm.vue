@@ -102,6 +102,9 @@
 																			<email-story-queue
 																					:stypes="stypes"
 																					:other-stories="record.otherStories"
+																					@other-story-added="handleOtherStoryAdded"
+																					@other-story-removed="handleOtherStoryRemoved"
+																					@updated-other-story-order="updateOtherStoriesOrder"
 																			></email-story-queue>
 									</div>
 									<div class="tab-pane" id="announcements">
@@ -649,9 +652,6 @@
 			},
 
 			methods: {
-				updateMainStoriesOrder(evt) {
-					this.record.mainStories = evt
-				},
 				fetchCurrentEmail: function (recid) {
 					this.$http.get('/api/email/' + recid + '/edit')
 
@@ -799,6 +799,25 @@
 						}
 					}
 				},
+				handleOtherStoryAdded: function (otherStoryObj) {
+					if (otherStoryObj) {
+						this.record.otherStories.push(otherStoryObj)
+					}
+				},
+				handleOtherStoryRemoved: function (otherStoryId) {
+					for (let i = 0; i < this.record.otherStories.length; i++) {
+						if (otherStoryId == this.record.otherStories[i].id) {
+							this.record.otherStories.splice(this.record.otherStories[i], 1)
+							return
+						}
+					}
+				},
+				updateMainStoriesOrder(evt) {
+					this.record.mainStories = evt
+				},
+				updateOtherStoriesOrder(evt) {
+					this.record.otherStories = evt
+				},
 			},
 			watch: {},
 
@@ -824,18 +843,18 @@
 				// 		}
 				// 	}
 				// },
-				'other-story-added': function (otherStoryObj) {
-					if (otherStoryObj) {
-						this.record.otherStories.push(otherStoryObj)
-					}
-				},
-				'other-story-removed': function (otherStoryId) {
-					for (i = 0; i < this.record.otherStories.length; i++) {
-						if (otherStoryId == this.record.otherStories[i].id) {
-							this.record.otherStories.$remove(this.record.otherStories[i])
-						}
-					}
-				},
+				// 'other-story-added': function (otherStoryObj) {
+				// 	if (otherStoryObj) {
+				// 		this.record.otherStories.push(otherStoryObj)
+				// 	}
+				// },
+				// 'other-story-removed': function (otherStoryId) {
+				// 	for (i = 0; i < this.record.otherStories.length; i++) {
+				// 		if (otherStoryId == this.record.otherStories[i].id) {
+				// 			this.record.otherStories.$remove(this.record.otherStories[i])
+				// 		}
+				// 	}
+				// },
 				'event-added': function (eventObj) {
 					if (eventObj) {
 						this.record.events.push(eventObj)

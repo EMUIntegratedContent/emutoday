@@ -22,7 +22,7 @@
             <h3>Main Stories</h3>
             <template v-if="!loadingUsed">
               <template v-if="usedStories.length > 0">
-                <draggable v-model="usedStories" group="people" @start="drag=true" @end="drag=false" @change="updateOrder">
+                <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">
                   <email-story-pod
                       pid="main-story-item"
                       v-for="(story, index) in usedStories"
@@ -83,7 +83,7 @@
                     pid="email-items"
                     :main-stories="usedStories"
                     pod-type="mainstoryqueue"
-                    v-for="(item, index) in chrisFilterItems"
+                    v-for="(item, index) in itemsFilteredPaginated"
                     :key="'email-story-item-' + index"
                     :item="item"
                     @main-story-added="handleMainStoryAdded"
@@ -181,7 +181,7 @@ export default  {
         }
     },
     computed: {
-        chrisFilterItems() {
+        itemsFilteredPaginated() {
           let items = []
           if (this.items_filter_storytype != '') {
             items = this.items.filter(it => it.story_type == this.items_filter_storytype)
@@ -242,8 +242,6 @@ export default  {
           }
       },
       filterByStoryType: function (value) {
-        console.log("FILTER BY STORY TYPE!!!")
-        console.log(value)
           if (this.items_filter_storytype === '') {
               return value.story_type !== '';
           } else {
@@ -332,7 +330,7 @@ export default  {
           // flatpickr directive method
       },
       /**
-       * Uses vue-sortable
+       * Uses vue-draggable
        */
       updateOrder: function(event){
         // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
