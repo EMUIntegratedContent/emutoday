@@ -29,7 +29,7 @@
                                           <a v-if="email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' && storyHasTag(email.mainStories[0], 'external'))" style="text-decoration: none;" :href="email.mainStories[0].small_images[0].link">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                           <a v-else :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                         </h2>
-                                        {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}
+                                        {{ email.mainStories[0].email_images[0].teaser | truncate('135') }}
                                     </div>
                                 </article>
                               </template>
@@ -66,7 +66,7 @@
                                                                               <a v-if="email.mainStories[1].story_type == 'external' || (email.mainStories[1].story_type == 'article' && storyHasTag(email.mainStories[1], 'external'))" style="text-decoration: none;" :href="email.mainStories[1].small_images[0].link">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
                                                                               <a v-else style="text-decoration: none;" :href="email.mainStories[1].full_url">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
                                                                             </h3>
-                                                                                  <p>{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>
+                                                                                  <p>{{ email.mainStories[1].email_images[0].teaser | truncate('110') }}</p>
                                                                           </td>
                                                                   </tr>
                                                               </table>
@@ -98,7 +98,7 @@
                                                                                 <a v-if="email.mainStories[2].story_type == 'external' || (email.mainStories[2].story_type == 'article' && storyHasTag(email.mainStories[2], 'external'))" style="text-decoration: none;" :href="email.mainStories[2].small_images[0].link">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
                                                                                 <a v-else style="text-decoration: none;" :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
                                                                               </h3>
-                                                                                    <p>{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>
+                                                                                    <p>{{ email.mainStories[2].email_images[0].teaser | truncate('110') }}</p>
                                                                             </td>
                                                                     </tr>
                                                                 </table>
@@ -536,11 +536,8 @@ export default {
   },
   methods: {
     storyHasTag: function(story, tag){
-      console.log("STORY HAS TAGS FUNCTION")
       var storyHasTag = false
-      console.log(story.tags)
       story.tags.forEach(function(tg){
-        console.log(tg.name)
         if(tg.name == tag){
           storyHasTag = true
         }

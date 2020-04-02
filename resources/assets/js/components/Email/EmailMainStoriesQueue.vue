@@ -22,16 +22,18 @@
             <h3>Main Stories</h3>
             <template v-if="!loadingUsed">
               <template v-if="usedStories.length > 0">
-                <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
-                    <li v-for="story in usedStories" class="list-group-item">
-                      <email-story-pod
-                          pid="main-story-item"
-                          pod-type="mainstory"
-                          :item="story"
-                          >
-                      </email-story-pod>
-                    </li>
-                </ul>
+                <draggable v-model="usedStories" group="people" @start="drag=true" @end="drag=false" @change="updateOrder">
+                  <email-story-pod
+                      pid="main-story-item"
+                      v-for="(story, index) in usedStories"
+                      pod-type="mainstory"
+                      :item="story"
+                      :key="'used-story-draggable-' + index"
+                      @main-story-added="handleMainStoryAdded"
+                      @main-story-removed="handleMainStoryRemoved"
+                  >
+                  </email-story-pod>
+                </draggable>
               </template>
               <template v-else>
                 <p>There are no side stories set for this email.</p>
@@ -39,7 +41,6 @@
             </template>
             <template v-else>
               <p>Loading this email's stories. Please wait...</p>
-              {{ startdate}}
             </template>
             <hr/>
             <!-- Date filter -->
@@ -64,7 +65,15 @@
 <!--                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_filter_storytype">-->
                 <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
                     <template v-for="item in storyTypeIcons">
-                         <label class="btn btn-default" data-toggle="tooltip" data-placement="top" :title="item.name"><input type="radio" autocomplete="off" :value="item.shortname" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+                         <label
+                             class="btn btn-default"
+                             data-toggle="tooltip"
+                             data-placement="top"
+                             :title="item.name"
+                             @click="items_filter_storytype = item.shortname">
+                           <input type="radio" autocomplete="off" :value="item.shortname" />
+                           <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+                         </label>
                     </template>
                 </div>
             </div>
@@ -74,17 +83,20 @@
                     pid="email-items"
                     :main-stories="usedStories"
                     pod-type="mainstoryqueue"
-                    v-for="(item, index) in items"
+                    v-for="(item, index) in chrisFilterItems"
                     :key="'email-story-item-' + index"
-                    :item="item">
+                    :item="item"
+                    @main-story-added="handleMainStoryAdded"
+                    @main-story-removed="handleMainStoryRemoved"
+                >
                 </email-story-pod>
 
                 <ul class="pagination">
                   <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
                     <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
                   </li>
-                  <li v-for="pageNumber in totalPages" :class="{active: (pageNumber+1) == currentPage}" class="page-item">
-                    <a class="page-link" href="#" @click.prevent="setPage(pageNumber+1)">{{ pageNumber+1 }} <span v-if="(pageNumber+1) == currentPage" class="sr-only">(current)</span></a>
+                  <li v-for="pageNumber in totalPages" :class="{active: (pageNumber) == currentPage}" class="page-item">
+                    <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber }} <span v-if="(pageNumber) == currentPage" class="sr-only">(current)</span></a>
                   </li>
                   <li v-bind:class="{disabled: (currentPage == totalPages)}" class="page-item">
                     <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
@@ -138,13 +150,14 @@ import EmailStoryPod from './EmailStoryPod.vue'
 import iconradio from '../../directives/iconradio.js'
 import Pagination from '../Pagination.vue'
 import flatpickr from "../../directives/flatpickr.js"
+import draggable from 'vuedraggable'
 
 export default  {
     directives: {iconradio, flatpickr},
-    components: { EmailStoryPod, Pagination },
+    components: { EmailStoryPod, Pagination, draggable },
     props: ['stypes','mainStories'],
     created(){
-      let twoWeeksEarlier = moment().subtract(300, 'w')
+      let twoWeeksEarlier = moment().subtract(100, 'w')
       this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
       this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
       this.fetchAllRecords()
@@ -163,10 +176,28 @@ export default  {
             isEndDate: false,
             currentPage: 1,
             itemsPerPage: 10,
-            resultCount: 0
+            resultCount: 0,
+            drag: false,
         }
     },
     computed: {
+        chrisFilterItems() {
+          let items = []
+          if (this.items_filter_storytype != '') {
+            items = this.items.filter(it => it.story_type == this.items_filter_storytype)
+          } else {
+            items = this.items
+          }
+
+          if(items.length == 0){ return items }
+          this.resultCount = items.length
+          if (this.currentPage > this.totalPages) {
+            this.currentPage = 1
+          }
+          let index = (this.currentPage-1) * this.itemsPerPage
+          return items.slice(index, index + this.itemsPerPage)
+        },
+
         mainStoryId: function(){
           return this.mainStory ? this.mainStory.id : null
         },
@@ -211,6 +242,8 @@ export default  {
           }
       },
       filterByStoryType: function (value) {
+        console.log("FILTER BY STORY TYPE!!!")
+        console.log(value)
           if (this.items_filter_storytype === '') {
               return value.story_type !== '';
           } else {
@@ -308,7 +341,14 @@ export default  {
 
         // move the item in the underlying array
         this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
+        this.$emit('updated-main-story-order', this.usedStories)
       },
+      handleMainStoryAdded(evt) {
+        this.$emit('main-story-added', evt)
+      },
+      handleMainStoryRemoved(evt) {
+        this.$emit('main-story-removed', evt)
+      }
     },
     filters: {
       paginate: function(list) {
@@ -361,7 +401,8 @@ export default  {
         // set events from property to data
         this.usedStories = value
         this.loadingUsed = false
-      }
+      },
+
     },
 }
 </script>

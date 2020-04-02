@@ -6,7 +6,6 @@
               <div class="col-sm-12">
                   <div v-show="podType == 'mainstoryqueue'" class="pull-right">
                       <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
-                      <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory" :disabled="mainStoriesFull" />  Main Story</label>
                   </div><!-- /.pull-left -->
                   <div v-show="podType == 'otherstoryqueue'" class="pull-right">
                       <label><input type="checkbox" @click="toggleEmitOtherStory(item)" v-model="checked" :checked="isOtherStory" /> Email Story</label>
@@ -265,6 +264,7 @@ export default {
     },
     computed: {
       mainStoriesFull: function(){
+        if(!this.mainStories) return false
         return !this.checked && this.mainStories.length == 3 ? true : false
       },
       timefromNow:function() {
@@ -345,20 +345,20 @@ export default {
         },
         emitMainStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('main-story-added', storyObj)
+          this.$emit('main-story-added', storyObj)
         },
         emitMainStoryRemove: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('main-story-removed', storyObj.id)
+          this.$emit('main-story-removed', storyObj.id)
         },
         emitOtherStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('other-story-added', storyObj)
+          this.$emit('other-story-added', storyObj)
         },
         emitOtherStoryRemove: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
           // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-          this.$dispatch('other-story-removed', storyObj.id)
+          this.$emit('other-story-removed', storyObj.id)
         },
         toggleEmitMainStory: function(storyObj){
           // function will run before this.checked is switched

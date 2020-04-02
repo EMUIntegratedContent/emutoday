@@ -93,6 +93,9 @@
 																			<email-main-stories-queue
 																					:stypes="stypes"
 																					:main-stories="record.mainStories"
+																					@main-story-added="handleMainStoryAdded"
+																					@main-story-removed="handleMainStoryRemoved"
+																					@updated-main-story-order="updateMainStoriesOrder"
 																			></email-main-stories-queue>
 									</div>
 									<div class="tab-pane" id="stories">
@@ -147,13 +150,13 @@
 							<!-- /.medium-4 columns -->
 							<!-- "LIVE VIEW" OF EMAIL -->
 							<div v-bind:class="[md12col, lg7col]">
-															<email-live-view
-																	:email="record"
-																	:announcements="record.announcements"
-																	:events="record.events"
-																	:other-stories="record.otherStories"
-																	:main-stories="record.mainStories"
-															></email-live-view>
+									<email-live-view
+											:email="record"
+											:announcements="record.announcements"
+											:events="record.events"
+											:other-stories="record.otherStories"
+											:main-stories="record.mainStories"
+									></email-live-view>
 							</div>
 							<!-- /.medium-8 columns -->
 						</div>
@@ -646,6 +649,9 @@
 			},
 
 			methods: {
+				updateMainStoriesOrder(evt) {
+					this.record.mainStories = evt
+				},
 				fetchCurrentEmail: function (recid) {
 					this.$http.get('/api/email/' + recid + '/edit')
 
@@ -780,6 +786,19 @@
 						}
 					});
 				},
+				handleMainStoryAdded: function (mainStoryObj) {
+					if (mainStoryObj) {
+						this.record.mainStories.push(mainStoryObj)
+					}
+				},
+				handleMainStoryRemoved: function (mainStoryId) {
+					for (let i = 0; i < this.record.mainStories.length; i++) {
+						if (mainStoryId == this.record.mainStories[i].id) {
+							this.record.mainStories.splice(this.record.mainStories[i], 1)
+							return // prevents multiple stories being removed
+						}
+					}
+				},
 			},
 			watch: {},
 
@@ -793,18 +812,18 @@
 			events: {
 				// Generated from the EmailStoryPod using the $dispatch property of the vm
 				//https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
-				'main-story-added': function (mainStoryObj) {
-					if (mainStoryObj) {
-						this.record.mainStories.push(mainStoryObj)
-					}
-				},
-				'main-story-removed': function (mainStoryId) {
-					for (i = 0; i < this.record.mainStories.length; i++) {
-						if (mainStoryId == this.record.mainStories[i].id) {
-							this.record.mainStories.$remove(this.record.mainStories[i])
-						}
-					}
-				},
+				// 'main-story-added': function (mainStoryObj) {
+				// 	if (mainStoryObj) {
+				// 		this.record.mainStories.push(mainStoryObj)
+				// 	}
+				// },
+				// 'main-story-removed': function (mainStoryId) {
+				// 	for (i = 0; i < this.record.mainStories.length; i++) {
+				// 		if (mainStoryId == this.record.mainStories[i].id) {
+				// 			this.record.mainStories.$remove(this.record.mainStories[i])
+				// 		}
+				// 	}
+				// },
 				'other-story-added': function (otherStoryObj) {
 					if (otherStoryObj) {
 						this.record.otherStories.push(otherStoryObj)
