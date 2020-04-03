@@ -40,17 +40,35 @@
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
-                  <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate"></p>
+                  <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>\
 <!--                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>-->
+                  <p>
+                    <date-picker
+                        id="start-date"
+                        v-if="startdate"
+                        v-model="startdate"
+                        value-type="YYYY-MM-DD"
+                        format="MM/DD/YYYY"
+                        :clearable="false"
+                    ></date-picker>
+                  </p>
               </div>
               <div v-if="isEndDate" class="form-group">
-                  <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate"></p>
+                  <label for="end-date"> and </label>
 <!--                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>-->
+                  <p>
+                    <date-picker
+                        id="end-date"
+                        v-if="enddate"
+                        v-model="enddate"
+                        value-type="YYYY-MM-DD"
+                        format="MM/DD/YYYY"
+                        :clearable="false"
+                    ></date-picker>
+                  </p>
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
-              <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
+              <p><button type="button" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</button></p>
             </form>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-xs" role="group">
@@ -90,8 +108,8 @@
                     <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
                       <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
                     </li>
-                    <li v-for="pageNumber in totalPages" :class="{active: (pageNumber+1) == currentPage}" class="page-item">
-                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber+1)">{{ pageNumber+1 }} <span v-if="(pageNumber+1) == currentPage" class="sr-only">(current)</span></a>
+                    <li v-for="pageNumber in totalPages" :class="{active: (pageNumber) == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber }} <span v-if="(pageNumber) == currentPage" class="sr-only">(current)</span></a>
                     </li>
                     <li v-bind:class="{disabled: (currentPage == totalPages)}" class="page-item">
                       <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
@@ -139,14 +157,12 @@
 
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
-import iconradio from '../../directives/iconradio.js'
 import Pagination from '../Pagination.vue'
-import flatpickr from "../../directives/flatpickr.js"
 import draggable from 'vuedraggable'
+import DatePicker from 'vue2-datepicker'
 
 export default  {
-    directives: {iconradio, flatpickr},
-    components: {EmailStoryPod,Pagination,draggable},
+    components: {EmailStoryPod,Pagination,draggable,DatePicker},
     props: ['stypes','mainStory','otherStories'],
     created(){
       let twoWeeksEarlier = moment().subtract(100, 'w')

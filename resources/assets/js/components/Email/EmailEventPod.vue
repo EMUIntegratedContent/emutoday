@@ -361,10 +361,9 @@ export default {
       return timepartstatus;
     },
     promotedIcon: function() {
+      let pIcon = ''
       if (this.item.is_promoted === 1){
         pIcon = 'fa fa fa-star'
-      } else {
-        pIcon = ''
       }
       return pIcon
     },
@@ -437,13 +436,12 @@ export default {
       }
     },
     emitEventAdd: function(eventObj){
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('event-added', eventObj)
+      // Dispatch an event that propagates upward along the parent chain using $emit()
+      this.$emit('event-added', eventObj)
     },
     emitEventRemove: function(eventObj){
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
       // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('event-removed', eventObj.id)
+      this.$emit('event-removed', eventObj.id)
     },
     toggleEmitEvent: function(eventObj){
       // function will run before this.checked is switched
@@ -452,22 +450,6 @@ export default {
       } else {
         this.emitEventRemove(eventObj)
       }
-    },
-    updateItem: function(){
-      /*
-      this.patchRecord.is_archived = this.item.is_archived;
-
-      this.$http.patch('/api/email/stories/other/update' + this.item.id , this.patchRecord , {
-        method: 'PATCH'
-      } )
-      .then((response) => {
-        console.log('good?'+ response)
-        this.checkAfterUpdate(response.data.newdata)
-
-      }, (response) => {
-        console.log('bad?'+ response)
-      });
-      */
     },
     hasHttp: function(value) { // Checks if links given 'http'
       return (value.substr(0, 4)) == 'http' ? value : 'https://'+value;

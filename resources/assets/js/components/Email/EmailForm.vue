@@ -110,11 +110,17 @@
 									<div class="tab-pane" id="announcements">
 																			<email-announcement-queue
 																					:announcements="record.announcements"
+																					@announcement-added="handleAnnouncementAdded"
+																					@announcement-removed="handleAnnouncementRemoved"
+																					@updated-announcement-order="updateAnnouncementsOrder"
 																			></email-announcement-queue>
 									</div>
 									<div class="tab-pane" id="events">
 																			<email-event-queue
 																					:events="record.events"
+																					@event-added="handleEventAdded"
+																					@event-removed="handleEventRemoved"
+																					@updated-event-order="updateEventsOrder"
 																			></email-event-queue>
 									</div>
 									<div class="tab-pane" id="president">
@@ -178,16 +184,29 @@
 								<span class="input-group-addon">
 									<input type="checkbox" v-model="record.is_approved" aria-label="Set as time">
 								</span>
-									<input id="send-at" type="text" class="form-control" v-model="record.send_at"
-												 aria-describedby="errorSendAt"/>
+<!--									<input id="send-at" type="text" class="form-control" v-model="record.send_at"-->
+<!--												 aria-describedby="errorSendAt"/>-->
+
+									<date-picker
+											v-model="record.send_at"
+											:default-value="dateObject.sendAtDefault"
+											value-type="YYYY-MM-DD HH:mm:ss"
+											type="datetime"
+											format="MM/DD/YYYY h:mm A"
+											:minute-step="5"
+											:show-second="false"
+											:use12h="true"
+											:clearable="true"
+											aria-describedby="errorSendAt"
+									></date-picker>
 								</div><!-- /input-group -->
 								<h3>To which mailing list(s) should this email be sent?</h3>
 								<ul>
 									<li v-for="recipient in record.recipients">{{ recipient.email_address }}</li>
 								</ul>
-								<label for="recipients">Select recipient(s)
+								<label for="recipients" style="width: 300px">Select recipient(s)
 									<v-select id="minical"
-														:value.sync="record.recipients"
+														v-model="record.recipients"
 														:options="recipientsList"
 														:multiple="true"
 														placeholder="Select recipient(s)"
@@ -411,20 +430,21 @@
 
 	<script>
 		import moment from 'moment'
-		import flatpickr from 'flatpickr'
-		import vSelect from "vue-select"
-		import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue' // FIX  v-for="item in items | filterBy filterByStoryType | paginate"
-		import EmailStoryQueue from './EmailStoryQueue.vue' // FIX  v-for="item in items | filterBy filterByStoryType | paginate"
-		import EmailEventQueue from './EmailEventQueue.vue' // v-for="event in queueEvents | paginate"
-		import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue' // v-for="announcement in queueAnnouncements | paginate"
-		import EmailDeleteModal from './EmailDeleteModal.vue' // GOOD!
-		import EmailStatsModal from './EmailStatsModal.vue' // GOOD!
-		import EmailCloneModal from './EmailCloneModal.vue' // GOOD!
-		import EmailLiveView from './EmailLiveView.vue' // GOOD!
+		import DatePicker from 'vue2-datepicker'
+		import "vue-select/dist/vue-select.css"
+		import 'vue2-datepicker/index.css'
+		import vSelect from 'vue-select'
+		import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue'
+		import EmailStoryQueue from './EmailStoryQueue.vue'
+		import EmailEventQueue from './EmailEventQueue.vue'
+		import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
+		import EmailDeleteModal from './EmailDeleteModal.vue'
+		import EmailStatsModal from './EmailStatsModal.vue'
+		import EmailCloneModal from './EmailCloneModal.vue'
+		import EmailLiveView from './EmailLiveView.vue'
 
 		export default {
-			directives: {},
-			components: { vSelect, EmailMainStoriesQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailLiveView, EmailDeleteModal, EmailStatsModal, EmailCloneModal },
+			components: { vSelect, EmailMainStoriesQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailLiveView, EmailDeleteModal, EmailStatsModal, EmailCloneModal, DatePicker },
 			props: {
 				cuserRoles: { default: {} },
 				errors: {
@@ -518,8 +538,6 @@
 				}
 			},
 			created: function () {
-			},
-			ready: function () {
 				if (this.recordexists) {
 					this.fetchCurrentEmail(this.recordid)
 				}
@@ -656,7 +674,7 @@
 					this.$http.get('/api/email/' + recid + '/edit')
 
 					.then((response) => {
-						this.$set('record', response.data.newdata.data)
+						this.record = response.data.newdata.data
 						this.setupDatePickers();
 					}, (response) => {
 						this.formErrors = response.data.error.message;
@@ -667,7 +685,7 @@
 					this.$http.get('/api/email/recipients')
 
 					.then((response) => {
-						this.$set('recipientsList', response.body.newdata)
+						this.recipientsList = response.body.newdata
 					}, (response) => {
 						this.formErrors = response.data.error.message;
 					}).bind(this);
@@ -763,28 +781,15 @@
 				},
 
 				setupDatePickers: function () {
-					let self = this
 					let today = moment()
 
-					this.dateObject.sendAtMin = today.format('YYYY-MM-DD')
-					if (this.record.send_at === '') {
-						this.dateObject.sendAtDefault = today.format('YYYY-MM-DD')
+					//this.dateObject.sendAtMin = today.format('YYYY-MM-DD')
+					if (!this.record.send_at) {
+						this.dateObject.sendAtDefault = today.add(1, 'hour').format('YYYY-MM-DD HH:00:00')
 					}
 					else {
 						this.dateObject.sendAtDefault = this.record.send_at;
 					}
-					this.sendAtdatePicker = flatpickr(document.getElementById("send-at"), {
-						minDate: self.dateObject.sendAtMin,
-						defaultDate: self.dateObject.sendAtDefault,
-						enableTime: true,
-						altInput: true,
-						altInputClass: "form-control",
-						dateFormat: "Y-m-d H:i:S",
-						minDate: today.format('YYYY-MM-DD'),
-						onChange (dateObject, dateString) {
-							self.record.send_at = dateString;
-						}
-					});
 				},
 				handleMainStoryAdded: function (mainStoryObj) {
 					if (mainStoryObj) {
@@ -812,15 +817,48 @@
 						}
 					}
 				},
+				handleAnnouncementAdded: function (anouncementObj) {
+					if (anouncementObj) {
+						this.record.announcements.push(anouncementObj)
+					}
+				},
+				handleAnnouncementRemoved: function (announcementId) {
+					for (let i = 0; i < this.record.announcements.length; i++) {
+						if (announcementId == this.record.announcements[i].id) {
+							this.record.announcements.splice(this.record.announcements[i], 1)
+							return
+						}
+					}
+				},
+				handleEventAdded: function (eventObj) {
+					if (eventObj) {
+						this.record.events.push(eventObj)
+					}
+				},
+				handleEventRemoved: function (eventId) {
+					for (let i = 0; i < this.record.events.length; i++) {
+						if (eventId == this.record.events[i].id) {
+							this.record.events.splice(this.record.events[i], 1)
+							return
+						}
+					}
+				},
 				updateMainStoriesOrder(evt) {
 					this.record.mainStories = evt
 				},
 				updateOtherStoriesOrder(evt) {
 					this.record.otherStories = evt
 				},
+				updateAnnouncementsOrder(evt) {
+					this.record.announcements = evt
+				},
+				updateEventsOrder(evt) {
+					this.record.events = evt
+				},
 			},
-			watch: {},
+			watch: {
 
+			},
 			filters: {
 				formatDate: function (value) {
 					if (value) {
@@ -828,58 +866,6 @@
 					}
 				},
 			},
-			events: {
-				// Generated from the EmailStoryPod using the $dispatch property of the vm
-				//https://v1.vuejs.org/guide/components.html#Parent-Child-Communication
-				// 'main-story-added': function (mainStoryObj) {
-				// 	if (mainStoryObj) {
-				// 		this.record.mainStories.push(mainStoryObj)
-				// 	}
-				// },
-				// 'main-story-removed': function (mainStoryId) {
-				// 	for (i = 0; i < this.record.mainStories.length; i++) {
-				// 		if (mainStoryId == this.record.mainStories[i].id) {
-				// 			this.record.mainStories.$remove(this.record.mainStories[i])
-				// 		}
-				// 	}
-				// },
-				// 'other-story-added': function (otherStoryObj) {
-				// 	if (otherStoryObj) {
-				// 		this.record.otherStories.push(otherStoryObj)
-				// 	}
-				// },
-				// 'other-story-removed': function (otherStoryId) {
-				// 	for (i = 0; i < this.record.otherStories.length; i++) {
-				// 		if (otherStoryId == this.record.otherStories[i].id) {
-				// 			this.record.otherStories.$remove(this.record.otherStories[i])
-				// 		}
-				// 	}
-				// },
-				'event-added': function (eventObj) {
-					if (eventObj) {
-						this.record.events.push(eventObj)
-					}
-				},
-				'event-removed': function (eventId) {
-					for (i = 0; i < this.record.events.length; i++) {
-						if (eventId == this.record.events[i].id) {
-							this.record.events.$remove(this.record.events[i])
-						}
-					}
-				},
-				'announcement-added': function (announcementObj) {
-					if (announcementObj) {
-						this.record.announcements.push(announcementObj)
-					}
-				},
-				'announcement-removed': function (announcementId) {
-					for (i = 0; i < this.record.announcements.length; i++) {
-						if (announcementId == this.record.announcements[i].id) {
-							this.record.announcements.$remove(this.record.announcements[i])
-						}
-					}
-				},
-			}
 		};
 
 	</script>
