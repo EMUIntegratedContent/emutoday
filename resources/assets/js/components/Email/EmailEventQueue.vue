@@ -13,6 +13,11 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Events</h3>
+            <div class="form-group">
+              <label for="include-events-chk">
+                Exclude the events in this email? <input id="include-events-chk" type="checkbox" v-model="excludeEvents" @change="emitExcludeEvents">
+              </label>
+            </div><!-- /input-group -->
             <template v-if="!loadingUsed">
               <template v-if="usedEvents.length > 0">
                 <draggable v-model="usedEvents" @start="drag=true" @end="drag=false" @change="updateOrder">
@@ -130,7 +135,16 @@ import DatePicker from 'vue2-datepicker'
 
 export default  {
   components: {EmailEventPod, draggable, DatePicker},
-  props: ['events'],
+  props: {
+    'events': {
+      type: Array,
+      required: true
+    },
+    'excludeEventsChecked': {
+      type: Number,
+      default: 0
+    }
+  },
   data: function() {
     return {
       currentDate: moment(),
@@ -146,6 +160,7 @@ export default  {
       itemsPerPage: 10,
       resultCount: 0,
       drag: false,
+      excludeEvents: false,
     }
   },
   created() {
@@ -232,6 +247,10 @@ export default  {
     },
     handleEventRemoved(evt) {
       this.$emit('event-removed', evt)
+    },
+    emitExcludeEvents() {
+      let nbr = this.excludeEvents ? 1 : 0
+      this.$emit('toggle-exclude-events', nbr)
     }
   },
   filters: {
@@ -255,6 +274,9 @@ export default  {
   },
 
   watch: {
+    excludeEventsChecked: function() {
+      this.excludeEvents = this.excludeEventsChecked
+    },
     events: function (value) {
       // set events from property to data
       this.usedEvents = value

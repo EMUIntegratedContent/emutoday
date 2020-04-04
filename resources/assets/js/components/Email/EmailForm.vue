@@ -81,7 +81,7 @@
 												 :class="record.announcements.length < 1 ? 'insufficient' : ''" @click="activeSubTab = 3">Announcements ({{
 										record.announcements.length }})</a></li>
 									<li :class="{ 'active' : activeSubTab == 4 }"><a href="#events" role="tab" data-toggle="tab"
-												 :class="record.events.length < 1 ? 'insufficient' : ''" @click="activeSubTab = 4">Events ({{ record.events.length }})</a>
+												 :class="record.events.length < 1 && !record.exclude_events ? 'insufficient' : ''" @click="activeSubTab = 4">Events ({{ record.events.length }})</a>
 									</li>
 									<li :class="{ 'active' : activeSubTab == 5 }"><a href="#president" role="tab" data-toggle="tab"
 												 :class="record.is_president_included && (!record.president_url || !record.president_teaser) ? 'insufficient' : ''" @click="activeSubTab = 5">President</a>
@@ -118,9 +118,11 @@
 									<div class="tab-pane" id="events">
 																			<email-event-queue
 																					:events="record.events"
+																					:exclude-events-checked="record.exclude_events"
 																					@event-added="handleEventAdded"
 																					@event-removed="handleEventRemoved"
 																					@updated-event-order="updateEventsOrder"
+																					@toggle-exclude-events="handleToggleExcludeEvents"
 																			></email-event-queue>
 									</div>
 									<div class="tab-pane" id="president">
@@ -255,10 +257,17 @@
 											aria-hidden="true"></i> Email {{ record.otherStories.length > 0 ? 'has' : 'does not have' }} at
 										least one side story.
 									</li>
-									<li class="list-group-item"><i
-											:class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-											aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one
-										event.
+									<li class="list-group-item">
+										<template v-if="record.exclude_events">
+											<i class="fa fa-check-circle fa-3x" aria-hidden="true"></i>
+											Events have been excluded from this email.
+										</template>
+										<template v-else>
+											<i
+													:class="record.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
+													aria-hidden="true"></i> Email {{ record.events.length > 0 ? 'has' : 'does not have' }} at least one
+											event.
+										</template>
 									</li>
 									<li class="list-group-item"><i
 											:class="record.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
@@ -490,6 +499,7 @@
 						id: '',
 						clone: [],
 						created_at: null,
+						exclude_events: 0,
 						is_approved: false,
 						is_president_included: false,
 						is_ready: false,
@@ -641,8 +651,8 @@
 				progress: function () {
 					let progress = 0
 
-					// Progress is measured differently for emails with president message versus ones without
-					if (!this.record.is_president_included) {
+					// Normal (NO presidential message, with events)
+					if (!this.record.is_president_included && !this.record.exclude_events) {
 						this.record.title ? progress += 13 : ''
 						this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
 						this.record.events.length > 0 ? progress += 15 : ''
@@ -651,7 +661,8 @@
 						this.record.recipients.length > 0 ? progress += 14 : ''
 						this.record.send_at && this.record.is_approved ? progress += 13 : ''
 					}
-					else {
+					// Presidential message, with events
+					else if(this.record.is_president_included && !this.record.exclude_events) {
 						this.record.title ? progress += 12 : ''
 						this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
 						this.record.events.length > 0 ? progress += 11 : ''
@@ -661,6 +672,26 @@
 						this.record.send_at && this.record.is_approved ? progress += 13 : ''
 						this.record.president_teaser ? progress += 8 : ''
 						this.record.president_url ? progress += 8 : ''
+					}
+					// Presidential message, NO events
+					else if(this.record.is_president_included && this.record.exclude_events) {
+						this.record.title ? progress += 13 : ''
+						this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : ''
+						this.record.announcements.length > 0 ? progress += 15 : ''
+						this.record.otherStories.length > 0 ? progress += 15 : ''
+						this.record.recipients.length > 0 ? progress += 15 : ''
+						this.record.send_at && this.record.is_approved ? progress += 15 : ''
+						this.record.president_teaser ? progress += 6 : ''
+						this.record.president_url ? progress += 6 : ''
+					}
+					// NO presidential message, NO events
+					else if(!this.record.is_president_included && this.record.exclude_events) {
+						this.record.title ? progress += 16 : ''
+						this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 17 : ''
+						this.record.announcements.length > 0 ? progress += 17 : ''
+						this.record.otherStories.length > 0 ? progress += 17 : ''
+						this.record.recipients.length > 0 ? progress += 17 : ''
+						this.record.send_at && this.record.is_approved ? progress += 16 : ''
 					}
 
 					return progress
@@ -858,6 +889,9 @@
 				updateEventsOrder(evt) {
 					this.record.events = evt
 				},
+				handleToggleExcludeEvents(evt) {
+					this.record.exclude_events = evt
+				}
 			},
 			watch: {
 

@@ -175,7 +175,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="!email.exclude_events">
                             <td valign="middle">
                                 <div style="padding-top: 5px;">
                                     <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/calendar">What's Happening at EMU  &#10137;</a></h2>

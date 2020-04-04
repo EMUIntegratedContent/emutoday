@@ -1279,6 +1279,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    currency: function currency(amount) {
+      if (isNaN(amount)) return amount;
+      return '$' + parseFloat(amount).toFixed(2);
+    },
+    momentPretty: function momentPretty(datetime) {
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(datetime).format('ddd, MM-DD-YYYY');
+    },
     // Handle the form submission here
     timeDiffNow: function timeDiffNow(val) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(val).diff(moment__WEBPACK_IMPORTED_MODULE_0___default()(), 'minutes');
@@ -1494,6 +1501,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -1504,7 +1516,16 @@ __webpack_require__.r(__webpack_exports__);
     draggable: vuedraggable__WEBPACK_IMPORTED_MODULE_2___default.a,
     DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  props: ['events'],
+  props: {
+    'events': {
+      type: Array,
+      required: true
+    },
+    'excludeEventsChecked': {
+      type: Number,
+      "default": 0
+    }
+  },
   data: function data() {
     return {
       currentDate: moment__WEBPACK_IMPORTED_MODULE_0___default()(),
@@ -1519,7 +1540,8 @@ __webpack_require__.r(__webpack_exports__);
       currentPage: 0,
       itemsPerPage: 10,
       resultCount: 0,
-      drag: false
+      drag: false,
+      excludeEvents: false
     };
   },
   created: function created() {
@@ -1607,6 +1629,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     handleEventRemoved: function handleEventRemoved(evt) {
       this.$emit('event-removed', evt);
+    },
+    emitExcludeEvents: function emitExcludeEvents() {
+      var nbr = this.excludeEvents ? 1 : 0;
+      this.$emit('toggle-exclude-events', nbr);
     }
   },
   filters: {
@@ -1630,6 +1656,9 @@ __webpack_require__.r(__webpack_exports__);
   // when the instance is created
   events: {},
   watch: {
+    excludeEventsChecked: function excludeEventsChecked() {
+      this.excludeEvents = this.excludeEventsChecked;
+    },
     events: function events(value) {
       // set events from property to data
       this.usedEvents = value;
@@ -1666,6 +1695,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _EmailStatsModal_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./EmailStatsModal.vue */ "./resources/assets/js/components/Email/EmailStatsModal.vue");
 /* harmony import */ var _EmailCloneModal_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./EmailCloneModal.vue */ "./resources/assets/js/components/Email/EmailCloneModal.vue");
 /* harmony import */ var _EmailLiveView_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./EmailLiveView.vue */ "./resources/assets/js/components/Email/EmailLiveView.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2170,6 +2208,7 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         clone: [],
         created_at: null,
+        exclude_events: 0,
         is_approved: false,
         is_president_included: false,
         is_ready: false,
@@ -2318,9 +2357,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     // Progress of email bulider (adds up to 100%)
     progress: function progress() {
-      var progress = 0; // Progress is measured differently for emails with president message versus ones without
+      var progress = 0; // Normal (NO presidential message, with events)
 
-      if (!this.record.is_president_included) {
+      if (!this.record.is_president_included && !this.record.exclude_events) {
         this.record.title ? progress += 13 : '';
         this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : '';
         this.record.events.length > 0 ? progress += 15 : '';
@@ -2328,17 +2367,36 @@ __webpack_require__.r(__webpack_exports__);
         this.record.otherStories.length > 0 ? progress += 15 : '';
         this.record.recipients.length > 0 ? progress += 14 : '';
         this.record.send_at && this.record.is_approved ? progress += 13 : '';
-      } else {
-        this.record.title ? progress += 12 : '';
-        this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : '';
-        this.record.events.length > 0 ? progress += 11 : '';
-        this.record.announcements.length > 0 ? progress += 11 : '';
-        this.record.otherStories.length > 0 ? progress += 11 : '';
-        this.record.recipients.length > 0 ? progress += 11 : '';
-        this.record.send_at && this.record.is_approved ? progress += 13 : '';
-        this.record.president_teaser ? progress += 8 : '';
-        this.record.president_url ? progress += 8 : '';
-      }
+      } // Presidential message, with events
+      else if (this.record.is_president_included && !this.record.exclude_events) {
+          this.record.title ? progress += 12 : '';
+          this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : '';
+          this.record.events.length > 0 ? progress += 11 : '';
+          this.record.announcements.length > 0 ? progress += 11 : '';
+          this.record.otherStories.length > 0 ? progress += 11 : '';
+          this.record.recipients.length > 0 ? progress += 11 : '';
+          this.record.send_at && this.record.is_approved ? progress += 13 : '';
+          this.record.president_teaser ? progress += 8 : '';
+          this.record.president_url ? progress += 8 : '';
+        } // Presidential message, NO events
+        else if (this.record.is_president_included && this.record.exclude_events) {
+            this.record.title ? progress += 13 : '';
+            this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 15 : '';
+            this.record.announcements.length > 0 ? progress += 15 : '';
+            this.record.otherStories.length > 0 ? progress += 15 : '';
+            this.record.recipients.length > 0 ? progress += 15 : '';
+            this.record.send_at && this.record.is_approved ? progress += 15 : '';
+            this.record.president_teaser ? progress += 6 : '';
+            this.record.president_url ? progress += 6 : '';
+          } // NO presidential message, NO events
+          else if (!this.record.is_president_included && this.record.exclude_events) {
+              this.record.title ? progress += 16 : '';
+              this.record.mainStories.length == 1 || this.record.mainStories.length == 3 ? progress += 17 : '';
+              this.record.announcements.length > 0 ? progress += 17 : '';
+              this.record.otherStories.length > 0 ? progress += 17 : '';
+              this.record.recipients.length > 0 ? progress += 17 : '';
+              this.record.send_at && this.record.is_approved ? progress += 16 : '';
+            }
 
       return progress;
     },
@@ -2532,6 +2590,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     updateEventsOrder: function updateEventsOrder(evt) {
       this.record.events = evt;
+    },
+    handleToggleExcludeEvents: function handleToggleExcludeEvents(evt) {
+      this.record.exclude_events = evt;
     }
   },
   watch: {},
@@ -45803,11 +45864,11 @@ var render = function() {
                 _c("p", [
                   _vm._v(
                     "From: " +
-                      _vm._s(_vm._f("momentPretty")(_vm.item.start_date)) +
+                      _vm._s(_vm.momentPretty(_vm.item.start_date)) +
                       ", " +
                       _vm._s(_vm.item.start_time) +
                       " To: " +
-                      _vm._s(_vm._f("momentPretty")(_vm.item.end_date)) +
+                      _vm._s(_vm.momentPretty(_vm.item.end_date)) +
                       ", " +
                       _vm._s(_vm.item.end_time)
                   )
@@ -45998,9 +46059,7 @@ var render = function() {
                     _vm.item.free
                       ? _c("p", [_vm._v("Cost: Free")])
                       : _c("p", [
-                          _vm._v(
-                            "Cost: " + _vm._s(_vm._f("currency")(_vm.item.cost))
-                          )
+                          _vm._v("Cost: " + _vm._s(_vm.currency(_vm.item.cost)))
                         ]),
                     _vm._v(" "),
                     _c("p", [
@@ -46154,6 +46213,52 @@ var render = function() {
         { staticClass: "col-md-12" },
         [
           _c("h3", [_vm._v("Events")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "include-events-chk" } }, [
+              _vm._v("\n                Exclude the events in this email? "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.excludeEvents,
+                    expression: "excludeEvents"
+                  }
+                ],
+                attrs: { id: "include-events-chk", type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.excludeEvents)
+                    ? _vm._i(_vm.excludeEvents, null) > -1
+                    : _vm.excludeEvents
+                },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$a = _vm.excludeEvents,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.excludeEvents = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.excludeEvents = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.excludeEvents = $$c
+                      }
+                    },
+                    _vm.emitExcludeEvents
+                  ]
+                }
+              })
+            ])
+          ]),
           _vm._v(" "),
           !_vm.loadingUsed
             ? [
@@ -46952,7 +47057,8 @@ var render = function() {
                                     "a",
                                     {
                                       class:
-                                        _vm.record.events.length < 1
+                                        _vm.record.events.length < 1 &&
+                                        !_vm.record.exclude_events
                                           ? "insufficient"
                                           : "",
                                       attrs: {
@@ -47091,11 +47197,18 @@ var render = function() {
                               },
                               [
                                 _c("email-event-queue", {
-                                  attrs: { events: _vm.record.events },
+                                  attrs: {
+                                    events: _vm.record.events,
+                                    "exclude-events-checked":
+                                      _vm.record.exclude_events
+                                  },
                                   on: {
                                     "event-added": _vm.handleEventAdded,
                                     "event-removed": _vm.handleEventRemoved,
-                                    "updated-event-order": _vm.updateEventsOrder
+                                    "updated-event-order":
+                                      _vm.updateEventsOrder,
+                                    "toggle-exclude-events":
+                                      _vm.handleToggleExcludeEvents
                                   }
                                 })
                               ],
@@ -47749,24 +47862,42 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
-                              _c("li", { staticClass: "list-group-item" }, [
-                                _c("i", {
-                                  class:
-                                    _vm.record.events.length > 0
-                                      ? "fa fa-check-circle fa-3x"
-                                      : "fa fa-times-circle fa-3x",
-                                  attrs: { "aria-hidden": "true" }
-                                }),
-                                _vm._v(
-                                  " Email " +
-                                    _vm._s(
-                                      _vm.record.events.length > 0
-                                        ? "has"
-                                        : "does not have"
-                                    ) +
-                                    " at least one\n\t\t\t\t\t\t\t\t\t\tevent.\n\t\t\t\t\t\t\t\t\t"
-                                )
-                              ]),
+                              _c(
+                                "li",
+                                { staticClass: "list-group-item" },
+                                [
+                                  _vm.record.exclude_events
+                                    ? [
+                                        _c("i", {
+                                          staticClass:
+                                            "fa fa-check-circle fa-3x",
+                                          attrs: { "aria-hidden": "true" }
+                                        }),
+                                        _vm._v(
+                                          "\n\t\t\t\t\t\t\t\t\t\t\tEvents have been excluded from this email.\n\t\t\t\t\t\t\t\t\t\t"
+                                        )
+                                      ]
+                                    : [
+                                        _c("i", {
+                                          class:
+                                            _vm.record.events.length > 0
+                                              ? "fa fa-check-circle fa-3x"
+                                              : "fa fa-times-circle fa-3x",
+                                          attrs: { "aria-hidden": "true" }
+                                        }),
+                                        _vm._v(
+                                          " Email " +
+                                            _vm._s(
+                                              _vm.record.events.length > 0
+                                                ? "has"
+                                                : "does not have"
+                                            ) +
+                                            " at least one\n\t\t\t\t\t\t\t\t\t\t\tevent.\n\t\t\t\t\t\t\t\t\t\t"
+                                        )
+                                      ]
+                                ],
+                                2
+                              ),
                               _vm._v(" "),
                               _c("li", { staticClass: "list-group-item" }, [
                                 _c("i", {
@@ -48935,118 +49066,128 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _c("tr", [
-                        _c("td", { attrs: { valign: "middle" } }, [
-                          _c(
-                            "div",
-                            { staticStyle: { "padding-top": "5px" } },
-                            [
-                              _vm._m(7),
-                              _vm._v(" "),
-                              _vm.email.events.length > 0
-                                ? [
-                                    _c(
-                                      "ul",
-                                      {
-                                        staticStyle: {
-                                          "margin-left": "0",
-                                          "padding-left": "7px",
-                                          float: "left",
-                                          "padding-bottom": "5px"
-                                        }
-                                      },
-                                      _vm._l(_vm.email.events, function(evt) {
-                                        return _c(
-                                          "li",
+                      !_vm.email.exclude_events
+                        ? _c("tr", [
+                            _c("td", { attrs: { valign: "middle" } }, [
+                              _c(
+                                "div",
+                                { staticStyle: { "padding-top": "5px" } },
+                                [
+                                  _vm._m(7),
+                                  _vm._v(" "),
+                                  _vm.email.events.length > 0
+                                    ? [
+                                        _c(
+                                          "ul",
                                           {
                                             staticStyle: {
-                                              "list-style": "none",
                                               "margin-left": "0",
-                                              clear: "both"
+                                              "padding-left": "7px",
+                                              float: "left",
+                                              "padding-bottom": "5px"
                                             }
                                           },
-                                          [
-                                            _c(
-                                              "div",
+                                          _vm._l(_vm.email.events, function(
+                                            evt
+                                          ) {
+                                            return _c(
+                                              "li",
                                               {
                                                 staticStyle: {
-                                                  "font-size": "18px",
-                                                  "font-weight": "bold",
-                                                  "line-height": "110%",
-                                                  display: "inline-block",
-                                                  width: "50px",
-                                                  height: "50px",
-                                                  padding: "6px 10px 10px",
-                                                  float: "left",
-                                                  "text-align": "center",
-                                                  "margin-bottom": "14px",
-                                                  "margin-right": "10px",
-                                                  color: "#ffffff",
-                                                  "background-color": "#2b873b"
-                                                }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  _vm._s(
-                                                    _vm._f("dateParse")(
-                                                      evt.start_date
-                                                    )
-                                                  ) + " "
-                                                )
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "div",
-                                              {
-                                                staticStyle: {
-                                                  width: "72%",
-                                                  display: "inline-block",
-                                                  "padding-top": "5px",
-                                                  "padding-bottom": "10px",
-                                                  float: "left"
+                                                  "list-style": "none",
+                                                  "margin-left": "0",
+                                                  clear: "both"
                                                 }
                                               },
                                               [
                                                 _c(
-                                                  "a",
+                                                  "div",
                                                   {
                                                     staticStyle: {
-                                                      "text-decoration": "none"
-                                                    },
-                                                    attrs: {
-                                                      href: evt.full_url
+                                                      "font-size": "18px",
+                                                      "font-weight": "bold",
+                                                      "line-height": "110%",
+                                                      display: "inline-block",
+                                                      width: "50px",
+                                                      height: "50px",
+                                                      padding: "6px 10px 10px",
+                                                      float: "left",
+                                                      "text-align": "center",
+                                                      "margin-bottom": "14px",
+                                                      "margin-right": "10px",
+                                                      color: "#ffffff",
+                                                      "background-color":
+                                                        "#2b873b"
                                                     }
                                                   },
-                                                  [_vm._v(_vm._s(evt.title))]
+                                                  [
+                                                    _vm._v(
+                                                      _vm._s(
+                                                        _vm._f("dateParse")(
+                                                          evt.start_date
+                                                        )
+                                                      ) + " "
+                                                    )
+                                                  ]
+                                                ),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  {
+                                                    staticStyle: {
+                                                      width: "72%",
+                                                      display: "inline-block",
+                                                      "padding-top": "5px",
+                                                      "padding-bottom": "10px",
+                                                      float: "left"
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "a",
+                                                      {
+                                                        staticStyle: {
+                                                          "text-decoration":
+                                                            "none"
+                                                        },
+                                                        attrs: {
+                                                          href: evt.full_url
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(evt.title)
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
                                                 )
                                               ]
                                             )
-                                          ]
-                                        )
-                                      }),
-                                      0
-                                    )
-                                  ]
-                                : [
-                                    _c(
-                                      "p",
-                                      {
-                                        staticClass: "insufficient",
-                                        staticStyle: { padding: "0 5px" }
-                                      },
-                                      [
-                                        _vm._v(
-                                          'No events set yet. Select at least one from the "Events" tab.'
+                                          }),
+                                          0
                                         )
                                       ]
-                                    )
-                                  ]
-                            ],
-                            2
-                          )
-                        ])
-                      ]),
+                                    : [
+                                        _c(
+                                          "p",
+                                          {
+                                            staticClass: "insufficient",
+                                            staticStyle: { padding: "0 5px" }
+                                          },
+                                          [
+                                            _vm._v(
+                                              'No events set yet. Select at least one from the "Events" tab.'
+                                            )
+                                          ]
+                                        )
+                                      ]
+                                ],
+                                2
+                              )
+                            ])
+                          ])
+                        : _vm._e(),
                       _vm._v(" "),
                       _vm._m(8),
                       _vm._v(" "),

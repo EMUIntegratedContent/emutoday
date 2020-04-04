@@ -381,6 +381,7 @@
                             </div>
                         </td>
                     </tr>
+                    @if(!$email->exclude_events)
                     <tr>
                         <td valign="middle">
                             <div class="indent" >
@@ -396,6 +397,7 @@
                             </div>
                         </td>
                     </tr>
+                    @endif
                     <tr style="background:#515151; color:#ffffff; border:0;">
                         <td style="border:0; ">
                             <table style="margin-left: auto; margin-right: auto; margin-top: 3px; margin-bottom: 3px;">

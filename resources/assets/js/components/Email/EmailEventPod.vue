@@ -23,7 +23,7 @@
         </div><!-- /.row -->
       </div>  <!-- /.box-header -->
       <div v-if="showBody" class="box-body">
-        <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
+        <p>From: {{ momentPretty(item.start_date) }}, {{item.start_time}} To: {{ momentPretty(item.end_date) }}, {{item.end_time}}</p>
         <template v-if="item.all_day">
           <p>All Day Event</p>
         </template>
@@ -66,7 +66,7 @@
           </template>
           <hr/>
           <p v-if="item.free">Cost: Free</p>
-          <p v-else>Cost: {{item.cost | currency }}</p>
+          <p v-else>Cost: {{ currency(item.cost) }}</p>
           <p>Participation: {{eventParticipation}}</p>
           <template v-if="item.tickets">
             <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="hasHttp(item.ticket_details_online)">{{item.ticket_details_online}}</a></p>
@@ -408,6 +408,13 @@ export default {
     }
   },
   methods:{
+    currency(amount) {
+      if(isNaN(amount)) return amount
+      return '$' + parseFloat(amount).toFixed(2)
+    },
+    momentPretty(datetime) {
+      return moment(datetime).format('ddd, MM-DD-YYYY')
+    },
     // Handle the form submission here
     timeDiffNow:function(val){
       return  moment(val).diff(moment(), 'minutes');
