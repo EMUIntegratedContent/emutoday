@@ -82,6 +82,7 @@
                              data-placement="top"
                              :title="item.name"
                              @click="stories_filter_storytype = item.shortname"
+                             :class="{ 'active' : stories_filter_storytype == item.shortname || (stories_filter_storytype == '' && item.shortname == 'all') }"
                          >
                            <input type="radio" autocomplete="off" :value="item.shortname" />
                            <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>

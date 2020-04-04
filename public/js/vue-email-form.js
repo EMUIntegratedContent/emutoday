@@ -2147,6 +2147,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      activeBuildTab: 1,
+      activeSubTab: 1,
       sendtimes: [],
       formErrors: {},
       formSuccess: {
@@ -2214,12 +2216,15 @@ __webpack_require__.r(__webpack_exports__);
       },
       sendAtdatePicker: null,
       showAddRecipient: false,
-      newRecipient: null
+      newRecipient: null,
+      existingEmail: false // set to the value of prop recordexisits; updatable so as not to manipulte prop recordexists
+
     };
   },
   created: function created() {
     if (this.recordexists) {
       this.fetchCurrentEmail(this.recordid);
+      this.existingEmail = true;
     } else {
       this.newform = true;
       this.setupDatePickers();
@@ -2309,7 +2314,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     // Switch verbage of submit button.
     submitBtnLabel: function submitBtnLabel() {
-      return this.recordexists ? 'Update Email' : 'Create Email';
+      return this.existingEmail ? 'Update Email' : 'Create Email';
     },
     // Progress of email bulider (adds up to 100%)
     progress: function progress() {
@@ -2375,7 +2380,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     onRefresh: function onRefresh() {
       this.recordId = this.currentRecordId;
-      this.recordexists = true;
+      this.existingEmail = true;
       this.fetchCurrentEmail(this.currentRecordId);
     },
     submitForm: function submitForm() {
@@ -2385,8 +2390,8 @@ __webpack_require__.r(__webpack_exports__);
         scrollTop: 0
       }, 'fast'); // Decide route to submit form to
 
-      var method = this.recordexists ? 'put' : 'post';
-      var route = this.recordexists ? '/api/email/' + this.record.id : '/api/email'; // Submit form.
+      var method = this.existingEmail ? 'put' : 'post';
+      var route = this.existingEmail ? '/api/email/' + this.record.id : '/api/email'; // Submit form.
 
       this.$http[method](route, this.record) //
       // Do this when response gets back.
@@ -2396,7 +2401,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this3.formMessage.isErr = false;
         _this3.currentRecordId = response.data.newdata.data.id;
-        _this3.recordexists = true;
+        _this3.existingEmail = true;
         _this3.formErrors = {}; // Clear errors
 
         if (_this3.newform) {
@@ -2473,8 +2478,7 @@ __webpack_require__.r(__webpack_exports__);
     handleMainStoryRemoved: function handleMainStoryRemoved(mainStoryId) {
       for (var i = 0; i < this.record.mainStories.length; i++) {
         if (mainStoryId == this.record.mainStories[i].id) {
-          this.record.mainStories.splice(this.record.mainStories[i], 1);
-          return; // prevents multiple stories being removed
+          this.record.mainStories.splice(i, 1);
         }
       }
     },
@@ -2486,7 +2490,7 @@ __webpack_require__.r(__webpack_exports__);
     handleOtherStoryRemoved: function handleOtherStoryRemoved(otherStoryId) {
       for (var i = 0; i < this.record.otherStories.length; i++) {
         if (otherStoryId == this.record.otherStories[i].id) {
-          this.record.otherStories.splice(this.record.otherStories[i], 1);
+          this.record.otherStories.splice(i, 1);
           return;
         }
       }
@@ -2499,7 +2503,7 @@ __webpack_require__.r(__webpack_exports__);
     handleAnnouncementRemoved: function handleAnnouncementRemoved(announcementId) {
       for (var i = 0; i < this.record.announcements.length; i++) {
         if (announcementId == this.record.announcements[i].id) {
-          this.record.announcements.splice(this.record.announcements[i], 1);
+          this.record.announcements.splice(i, 1);
           return;
         }
       }
@@ -2512,7 +2516,7 @@ __webpack_require__.r(__webpack_exports__);
     handleEventRemoved: function handleEventRemoved(eventId) {
       for (var i = 0; i < this.record.events.length; i++) {
         if (eventId == this.record.events[i].id) {
-          this.record.events.splice(this.record.events[i], 1);
+          this.record.events.splice(i, 1);
           return;
         }
       }
@@ -3129,6 +3133,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuedraggable */ "./node_modules/vuedraggable/dist/vuedraggable.common.js");
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_4__);
+//
+//
 //
 //
 //
@@ -4095,6 +4101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuedraggable */ "./node_modules/vuedraggable/dist/vuedraggable.common.js");
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
+//
 //
 //
 //
@@ -46618,7 +46625,68 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "ul",
+              { staticClass: "nav nav-tabs", attrs: { role: "tablist" } },
+              [
+                _c("li", { class: { active: _vm.activeBuildTab == 1 } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "#step-1",
+                        role: "tab",
+                        "data-toggle": "tab"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.activeBuildTab = 1
+                        }
+                      }
+                    },
+                    [_vm._v("Step 1: Basic Information")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", { class: { active: _vm.activeBuildTab == 2 } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "#step-2",
+                        role: "tab",
+                        "data-toggle": "tab"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.activeBuildTab = 2
+                        }
+                      }
+                    },
+                    [_vm._v("Step 2: Build Email")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("li", { class: { active: _vm.activeBuildTab == 3 } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: {
+                        href: "#step-3",
+                        role: "tab",
+                        "data-toggle": "tab"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.activeBuildTab = 3
+                        }
+                      }
+                    },
+                    [_vm._v("Step 3: Schedule & Review")]
+                  )
+                ])
+              ]
+            ),
             _vm._v(" "),
             _c(
               "form",
@@ -46770,124 +46838,173 @@ var render = function() {
                               attrs: { role: "tablist" }
                             },
                             [
-                              _c("li", { staticClass: "active" }, [
-                                _c(
-                                  "a",
-                                  {
-                                    class:
-                                      _vm.record.mainStories.length != 1 &&
-                                      _vm.record.mainStories.length != 3
-                                        ? "insufficient"
-                                        : "",
-                                    attrs: {
-                                      href: "#main-story",
-                                      role: "tab",
-                                      "data-toggle": "tab"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Main\n\t\t\t\t\t\t\t\t\t\tStories (" +
-                                        _vm._s(_vm.record.mainStories.length) +
-                                        ")"
-                                    )
-                                  ]
-                                )
-                              ]),
+                              _c(
+                                "li",
+                                { class: { active: _vm.activeSubTab == 1 } },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      class:
+                                        _vm.record.mainStories.length != 1 &&
+                                        _vm.record.mainStories.length != 3
+                                          ? "insufficient"
+                                          : "",
+                                      attrs: {
+                                        href: "#main-story",
+                                        role: "tab",
+                                        "data-toggle": "tab"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.activeSubTab = 1
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Main\n\t\t\t\t\t\t\t\t\t\tStories (" +
+                                          _vm._s(
+                                            _vm.record.mainStories.length
+                                          ) +
+                                          ")"
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
-                              _c("li", [
-                                _c(
-                                  "a",
-                                  {
-                                    class:
-                                      _vm.record.otherStories.length < 1
-                                        ? "insufficient"
-                                        : "",
-                                    attrs: {
-                                      href: "#stories",
-                                      role: "tab",
-                                      "data-toggle": "tab"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Side Stories (" +
-                                        _vm._s(_vm.record.otherStories.length) +
-                                        ")"
-                                    )
-                                  ]
-                                )
-                              ]),
+                              _c(
+                                "li",
+                                { class: { active: _vm.activeSubTab == 2 } },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      class:
+                                        _vm.record.otherStories.length < 1
+                                          ? "insufficient"
+                                          : "",
+                                      attrs: {
+                                        href: "#stories",
+                                        role: "tab",
+                                        "data-toggle": "tab"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.activeSubTab = 2
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Side Stories (" +
+                                          _vm._s(
+                                            _vm.record.otherStories.length
+                                          ) +
+                                          ")"
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
-                              _c("li", [
-                                _c(
-                                  "a",
-                                  {
-                                    class:
-                                      _vm.record.announcements.length < 1
-                                        ? "insufficient"
-                                        : "",
-                                    attrs: {
-                                      href: "#announcements",
-                                      role: "tab",
-                                      "data-toggle": "tab"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Announcements (" +
-                                        _vm._s(
-                                          _vm.record.announcements.length
-                                        ) +
-                                        ")"
-                                    )
-                                  ]
-                                )
-                              ]),
+                              _c(
+                                "li",
+                                { class: { active: _vm.activeSubTab == 3 } },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      class:
+                                        _vm.record.announcements.length < 1
+                                          ? "insufficient"
+                                          : "",
+                                      attrs: {
+                                        href: "#announcements",
+                                        role: "tab",
+                                        "data-toggle": "tab"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.activeSubTab = 3
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Announcements (" +
+                                          _vm._s(
+                                            _vm.record.announcements.length
+                                          ) +
+                                          ")"
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
-                              _c("li", [
-                                _c(
-                                  "a",
-                                  {
-                                    class:
-                                      _vm.record.events.length < 1
-                                        ? "insufficient"
-                                        : "",
-                                    attrs: {
-                                      href: "#events",
-                                      role: "tab",
-                                      "data-toggle": "tab"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      "Events (" +
-                                        _vm._s(_vm.record.events.length) +
-                                        ")"
-                                    )
-                                  ]
-                                )
-                              ]),
+                              _c(
+                                "li",
+                                { class: { active: _vm.activeSubTab == 4 } },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      class:
+                                        _vm.record.events.length < 1
+                                          ? "insufficient"
+                                          : "",
+                                      attrs: {
+                                        href: "#events",
+                                        role: "tab",
+                                        "data-toggle": "tab"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.activeSubTab = 4
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Events (" +
+                                          _vm._s(_vm.record.events.length) +
+                                          ")"
+                                      )
+                                    ]
+                                  )
+                                ]
+                              ),
                               _vm._v(" "),
-                              _c("li", [
-                                _c(
-                                  "a",
-                                  {
-                                    class:
-                                      _vm.record.is_president_included &&
-                                      (!_vm.record.president_url ||
-                                        !_vm.record.president_teaser)
-                                        ? "insufficient"
-                                        : "",
-                                    attrs: {
-                                      href: "#president",
-                                      role: "tab",
-                                      "data-toggle": "tab"
-                                    }
-                                  },
-                                  [_vm._v("President")]
-                                )
-                              ])
+                              _c(
+                                "li",
+                                { class: { active: _vm.activeSubTab == 5 } },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      class:
+                                        _vm.record.is_president_included &&
+                                        (!_vm.record.president_url ||
+                                          !_vm.record.president_teaser)
+                                          ? "insufficient"
+                                          : "",
+                                      attrs: {
+                                        href: "#president",
+                                        role: "tab",
+                                        "data-toggle": "tab"
+                                      },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.activeSubTab = 5
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("President")]
+                                  )
+                                ]
+                              )
                             ]
                           ),
                           _vm._v(" "),
@@ -47800,13 +47917,13 @@ var render = function() {
                             {
                               name: "show",
                               rawName: "v-show",
-                              value: _vm.recordexists,
-                              expression: "recordexists"
+                              value: _vm.existingEmail,
+                              expression: "existingEmail"
                             }
                           ],
                           staticClass: "row"
                         },
-                        [_vm._m(1)]
+                        [_vm._m(0)]
                       )
                     ]
                   )
@@ -47847,11 +47964,11 @@ var render = function() {
                   _vm._v(" "),
                   _c("h3", [_vm._v("Statistics")]),
                   _vm._v(" "),
-                  _vm._m(2),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c("h3", [_vm._v("Actions")]),
                   _vm._v(" "),
-                  _vm._m(3)
+                  _vm._m(2)
                 ],
                 2
               ),
@@ -47885,40 +48002,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "ul",
-      { staticClass: "nav nav-tabs", attrs: { role: "tablist" } },
-      [
-        _c("li", { staticClass: "active" }, [
-          _c(
-            "a",
-            { attrs: { href: "#step-1", role: "tab", "data-toggle": "tab" } },
-            [_vm._v("Step 1: Basic Information")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c(
-            "a",
-            { attrs: { href: "#step-2", role: "tab", "data-toggle": "tab" } },
-            [_vm._v("Step 2: Build Email")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("li", [
-          _c(
-            "a",
-            { attrs: { href: "#step-3", role: "tab", "data-toggle": "tab" } },
-            [_vm._v("Step 3: Schedule & Review")]
-          )
-        ])
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -49928,6 +50011,12 @@ var render = function() {
                         "label",
                         {
                           staticClass: "btn btn-default",
+                          class: {
+                            active:
+                              _vm.items_filter_storytype == item.shortname ||
+                              (_vm.items_filter_storytype == "" &&
+                                item.shortname == "all")
+                          },
                           attrs: {
                             "data-toggle": "tooltip",
                             "data-placement": "top",
@@ -50792,6 +50881,12 @@ var render = function() {
                         "label",
                         {
                           staticClass: "btn btn-default",
+                          class: {
+                            active:
+                              _vm.stories_filter_storytype == item.shortname ||
+                              (_vm.stories_filter_storytype == "" &&
+                                item.shortname == "all")
+                          },
                           attrs: {
                             "data-toggle": "tooltip",
                             "data-placement": "top",

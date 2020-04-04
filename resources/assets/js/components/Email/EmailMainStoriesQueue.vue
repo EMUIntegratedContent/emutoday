@@ -88,7 +88,9 @@
                              data-toggle="tooltip"
                              data-placement="top"
                              :title="item.name"
-                             @click="items_filter_storytype = item.shortname">
+                             @click="items_filter_storytype = item.shortname"
+                             :class="{ 'active' : items_filter_storytype == item.shortname || (items_filter_storytype == '' && item.shortname == 'all') }"
+                         >
                            <input type="radio" autocomplete="off" :value="item.shortname" />
                            <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
                          </label>

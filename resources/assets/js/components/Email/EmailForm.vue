@@ -35,9 +35,9 @@
 			</div>
 			<!-- TABS: BUILD STEPS -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li class="active"><a href="#step-1" role="tab" data-toggle="tab">Step 1: Basic Information</a></li>
-				<li><a href="#step-2" role="tab" data-toggle="tab">Step 2: Build Email</a></li>
-				<li><a href="#step-3" role="tab" data-toggle="tab">Step 3: Schedule &amp; Review</a></li>
+				<li :class="{ 'active' : activeBuildTab == 1 }"><a href="#step-1" role="tab" data-toggle="tab" @click="activeBuildTab = 1">Step 1: Basic Information</a></li>
+				<li :class="{ 'active' : activeBuildTab == 2 }"><a href="#step-2" role="tab" data-toggle="tab" @click="activeBuildTab = 2">Step 2: Build Email</a></li>
+				<li :class="{ 'active' : activeBuildTab == 3 }"><a href="#step-3" role="tab" data-toggle="tab" @click="activeBuildTab = 3">Step 3: Schedule &amp; Review</a></li>
 			</ul>
 			<!-- EMAIL FORM -->
 			<form>
@@ -71,20 +71,20 @@
 								<h2>Build Your Email</h2>
 								<!-- Nav tabs -->
 								<ul class="nav nav-tabs" role="tablist">
-									<li class="active"><a href="#main-story" role="tab" data-toggle="tab"
-																				:class="(record.mainStories.length != 1 && record.mainStories.length != 3) ? 'insufficient' : ''">Main
+									<li :class="{ 'active' : activeSubTab == 1 }"><a href="#main-story" role="tab" data-toggle="tab"
+																				:class="(record.mainStories.length != 1 && record.mainStories.length != 3) ? 'insufficient' : ''" @click="activeSubTab = 1">Main
 										Stories ({{ record.mainStories.length }})</a></li>
-									<li><a href="#stories" role="tab" data-toggle="tab"
-												 :class="record.otherStories.length < 1 ? 'insufficient' : ''">Side Stories ({{
+									<li :class="{ 'active' : activeSubTab == 2 }"><a href="#stories" role="tab" data-toggle="tab"
+												 :class="record.otherStories.length < 1 ? 'insufficient' : ''" @click="activeSubTab = 2">Side Stories ({{
 										record.otherStories.length }})</a></li>
-									<li><a href="#announcements" role="tab" data-toggle="tab"
-												 :class="record.announcements.length < 1 ? 'insufficient' : ''">Announcements ({{
+									<li :class="{ 'active' : activeSubTab == 3 }"><a href="#announcements" role="tab" data-toggle="tab"
+												 :class="record.announcements.length < 1 ? 'insufficient' : ''" @click="activeSubTab = 3">Announcements ({{
 										record.announcements.length }})</a></li>
-									<li><a href="#events" role="tab" data-toggle="tab"
-												 :class="record.events.length < 1 ? 'insufficient' : ''">Events ({{ record.events.length }})</a>
+									<li :class="{ 'active' : activeSubTab == 4 }"><a href="#events" role="tab" data-toggle="tab"
+												 :class="record.events.length < 1 ? 'insufficient' : ''" @click="activeSubTab = 4">Events ({{ record.events.length }})</a>
 									</li>
-									<li><a href="#president" role="tab" data-toggle="tab"
-												 :class="record.is_president_included && (!record.president_url || !record.president_teaser) ? 'insufficient' : ''">President</a>
+									<li :class="{ 'active' : activeSubTab == 5 }"><a href="#president" role="tab" data-toggle="tab"
+												 :class="record.is_president_included && (!record.president_url || !record.president_teaser) ? 'insufficient' : ''" @click="activeSubTab = 5">President</a>
 									</li>
 								</ul>
 								<!-- Tab panes -->
@@ -301,7 +301,7 @@
 							</div>
 						</div>
 						<!-- /.row -->
-						<div class="row" v-show="recordexists">
+						<div class="row" v-show="existingEmail">
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 								<!-- Trigger the delete modal -->
 								<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email
@@ -468,6 +468,8 @@
 			},
 			data: function () {
 				return {
+					activeBuildTab: 1,
+					activeSubTab: 1,
 					sendtimes: [],
 					formErrors: {},
 					formSuccess: {
@@ -535,11 +537,13 @@
 					sendAtdatePicker: null,
 					showAddRecipient: false,
 					newRecipient: null,
+					existingEmail: false, // set to the value of prop recordexisits; updatable so as not to manipulte prop recordexists
 				}
 			},
 			created: function () {
 				if (this.recordexists) {
 					this.fetchCurrentEmail(this.recordid)
+					this.existingEmail = true
 				}
 				else {
 					this.newform = true;
@@ -631,7 +635,7 @@
 				},
 				// Switch verbage of submit button.
 				submitBtnLabel: function () {
-					return (this.recordexists) ? 'Update Email' : 'Create Email'
+					return (this.existingEmail) ? 'Update Email' : 'Create Email'
 				},
 				// Progress of email bulider (adds up to 100%)
 				progress: function () {
@@ -703,7 +707,7 @@
 
 				onRefresh: function () {
 					this.recordId = this.currentRecordId;
-					this.recordexists = true;
+					this.existingEmail = true;
 					this.fetchCurrentEmail(this.currentRecordId);
 				},
 
@@ -711,8 +715,8 @@
 					$('html, body').animate({ scrollTop: 0 }, 'fast');
 
 					// Decide route to submit form to
-					let method = (this.recordexists) ? 'put' : 'post'
-					let route = (this.recordexists) ? '/api/email/' + this.record.id : '/api/email';
+					let method = (this.existingEmail) ? 'put' : 'post'
+					let route = (this.existingEmail) ? '/api/email/' + this.record.id : '/api/email';
 
 					// Submit form.
 					this.$http[method](route, this.record) //
@@ -723,7 +727,7 @@
 						this.formMessage.isOk = response.ok; // Success message
 						this.formMessage.isErr = false;
 						this.currentRecordId = response.data.newdata.data.id;
-						this.recordexists = true;
+						this.existingEmail = true;
 						this.formErrors = {}; // Clear errors
 
 						if (this.newform) {
@@ -799,8 +803,7 @@
 				handleMainStoryRemoved: function (mainStoryId) {
 					for (let i = 0; i < this.record.mainStories.length; i++) {
 						if (mainStoryId == this.record.mainStories[i].id) {
-							this.record.mainStories.splice(this.record.mainStories[i], 1)
-							return // prevents multiple stories being removed
+							this.record.mainStories.splice(i, 1)
 						}
 					}
 				},
@@ -812,7 +815,7 @@
 				handleOtherStoryRemoved: function (otherStoryId) {
 					for (let i = 0; i < this.record.otherStories.length; i++) {
 						if (otherStoryId == this.record.otherStories[i].id) {
-							this.record.otherStories.splice(this.record.otherStories[i], 1)
+							this.record.otherStories.splice(i, 1)
 							return
 						}
 					}
@@ -825,7 +828,7 @@
 				handleAnnouncementRemoved: function (announcementId) {
 					for (let i = 0; i < this.record.announcements.length; i++) {
 						if (announcementId == this.record.announcements[i].id) {
-							this.record.announcements.splice(this.record.announcements[i], 1)
+							this.record.announcements.splice(i, 1)
 							return
 						}
 					}
@@ -838,7 +841,7 @@
 				handleEventRemoved: function (eventId) {
 					for (let i = 0; i < this.record.events.length; i++) {
 						if (eventId == this.record.events[i].id) {
-							this.record.events.splice(this.record.events[i], 1)
+							this.record.events.splice(i, 1)
 							return
 						}
 					}
