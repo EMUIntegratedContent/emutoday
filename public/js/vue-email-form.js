@@ -580,8 +580,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   created: function created() {
-    //let today = moment()
-    var today = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(100, 'w');
+    var today = moment__WEBPACK_IMPORTED_MODULE_0___default()(); //let today = moment().subtract(100, 'w')
+
     this.startdate = today.format("YYYY-MM-DD");
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
@@ -1545,8 +1545,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    //let today = moment()
-    var today = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(70, 'w');
+    var today = moment__WEBPACK_IMPORTED_MODULE_0___default()(); //let today = moment().subtract(70, 'w')
+
     this.startdate = today.format("YYYY-MM-DD");
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
@@ -3373,7 +3373,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ['stypes', 'mainStories'],
   created: function created() {
-    var twoWeeksEarlier = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(100, 'w');
+    var twoWeeksEarlier = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(2, 'w');
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD");
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
@@ -4332,7 +4332,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: ['stypes', 'mainStory', 'otherStories'],
   created: function created() {
-    var twoWeeksEarlier = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(100, 'w');
+    var twoWeeksEarlier = moment__WEBPACK_IMPORTED_MODULE_0___default()().subtract(2, 'w');
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD");
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD");
     this.fetchAllRecords();
