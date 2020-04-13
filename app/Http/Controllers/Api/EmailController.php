@@ -80,6 +80,7 @@ class EmailController extends ApiController
           $email->is_approved           = $request->get('is_approved', 0);
           $email->send_at               = $sendAt;
           $email->is_president_included = $request->get('is_president_included', 0);
+          $email->exclude_events 				= $request->get('exclude_events', 0);
           $email->president_teaser      = $request->get('president_teaser', null);
           $email->president_url         = $request->get('president_url', null);
 
@@ -169,11 +170,12 @@ class EmailController extends ApiController
            $sendAt = \Carbon\Carbon::parse($request->get('send_at'));
          }
 
-         $email->title           	    = $request->get('title');
+         $email->title           	    	= $request->get('title');
          $email->subheading             = $request->get('subheading', null);
          $email->is_approved            = $request->get('is_approved', 0);
          $email->send_at                = $sendAt;
          $email->is_president_included  = $request->get('is_president_included', 0);
+         $email->exclude_events  				= $request->get('exclude_events', 0);
          $email->president_teaser       = $request->get('president_teaser', null);
          $email->president_url          = $request->get('president_url', null);
 
@@ -267,6 +269,7 @@ class EmailController extends ApiController
           $email->title                     = $request->get('title');
           $email->subheading                = $request->get('subheading', null);
           $email->is_president_included     = $request->get('is_president_included', 0);
+          $email->exclude_events     				= $request->get('exclude_events', 0);
           $email->president_teaser          = $request->get('president_teaser', null);
           $email->president_url             = $request->get('president_url', null);
           $email->clone_email_id            = $request->get('id'); // mark from which email this one was cloned
@@ -466,7 +469,7 @@ class EmailController extends ApiController
     if($email->mainstories()->first() &&
        ($email->mainstories()->count() == 1 || $email->mainstories()->count() == 3) &&
        $email->announcements()->first() &&
-       $email->events()->first() &&
+			 ($email->events()->first() || $email->exclude_events) &&
        $email->stories()->first() &&
        $email->recipients()->first() &&
        \Carbon\Carbon::parse($email->send_at) >= date('Y-m-d H:i:s') &&

@@ -23,8 +23,8 @@
     <div v-if="showBody" class="box-body">
       <p>{{item.announcement}}</p>
       <div class="announcement-info">
-        Submitted On: {{item.submission_date}}</br>
-        By: {{item.submitter}}</br>
+        Submitted On: {{item.submission_date}}<br>
+        By: {{item.submitter}}<br>
         Dates: {{item.start_date}} - {{item.end_date}}
       </div>
     </div><!-- /.box-body -->
@@ -151,7 +151,7 @@ h5 {
 import moment from 'moment'
 import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 
-module.exports  = {
+export default {
   directives: {},
   components: {VuiFlipSwitch},
   props: ['item','pid','podType','announcements'],
@@ -243,7 +243,6 @@ module.exports  = {
     timeLeft: function() {
       if(moment(this.item.start_date).isSameOrBefore(moment())){
         let tlft = this.timeDiffNow(this.item.end_date, 'hours');
-        console.log('id='+ this.item.id + '  -'+ tlft)
         if (tlft < 0) {
           return 'Event Ended ' + moment(this.item.end_date).fromNow()
         } else {
@@ -271,13 +270,12 @@ module.exports  = {
     },
 
     emitAnnouncementAdd: function(announcementObj){
-      // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('announcement-added', announcementObj)
+      // Dispatch an announcement that propagates upward along the parent chain using $emit()
+      this.$emit('announcement-added', announcementObj)
     },
     emitAnnouncementRemove: function(announcementObj){
-      // Dispatch an announcement that propagates upward along the parent chain using $dispatch()
       // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('announcement-removed', announcementObj.id)
+      this.$emit('announcement-removed', announcementObj.id)
     },
     toggleEmitAnnouncement: function(announcementObj){
       // function will run before this.checked is switched
@@ -286,23 +284,7 @@ module.exports  = {
       } else {
         this.emitAnnouncementRemove(announcementObj)
       }
-    },
-    updateItem: function(){
-      /*
-      this.patchRecord.is_archived = this.item.is_archived;
-
-      this.$http.patch('/api/announcement/updateitem/' + this.item.id , this.patchRecord , {
-        method: 'PATCH'
-      } )
-      .then((response) => {
-        console.log('good?'+ response)
-        this.checkAfterUpdate(response.data.newdata)
-
-      }, (response) => {
-        console.log('bad?'+ response)
-      });
-      */
-    },
+    }
   },
   watch: {
   },

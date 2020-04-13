@@ -20,7 +20,7 @@ const mix = require('laravel-mix');
 |
 */
 // Compile the front-end SASS styles
-mix.sass('resources/assets/sass/public-app.scss', '../resources/assets/css/zfoundation.css');
+//mix.sass('resources/assets/sass/public-app.scss', '../resources/assets/css/zfoundation.css');
 
 // Combine all the front-end styles into one stylesheet
 mix.combine([
@@ -76,6 +76,7 @@ mix.combine([
 
 // Compile vue files
 mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js');
+mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js');
 mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js');
 mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js');
 

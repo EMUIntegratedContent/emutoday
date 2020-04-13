@@ -20,6 +20,7 @@ class Email extends Model
       'is_sent',
       'send_at',
       'is_president_included',
+			'exclude_events',
       'president_teaser',
       'president_url'
     ];

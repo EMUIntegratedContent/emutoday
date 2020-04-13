@@ -29,7 +29,7 @@
                                           <a v-if="email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' && storyHasTag(email.mainStories[0], 'external'))" style="text-decoration: none;" :href="email.mainStories[0].small_images[0].link">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                           <a v-else :href="email.mainStories[0].full_url">{{ email.mainStories[0].email_images[0].title }}  &#10137;</a>
                                         </h2>
-                                        {{ email.mainStories[0].email_images[0].teaser | truncate '135' }}
+                                        {{ email.mainStories[0].email_images[0].teaser | truncate('135') }}
                                     </div>
                                 </article>
                               </template>
@@ -66,7 +66,7 @@
                                                                               <a v-if="email.mainStories[1].story_type == 'external' || (email.mainStories[1].story_type == 'article' && storyHasTag(email.mainStories[1], 'external'))" style="text-decoration: none;" :href="email.mainStories[1].small_images[0].link">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
                                                                               <a v-else style="text-decoration: none;" :href="email.mainStories[1].full_url">{{ email.mainStories[1].email_images[0].title }}  &#10137;</a>
                                                                             </h3>
-                                                                                  <p>{{ email.mainStories[1].email_images[0].teaser | truncate '110' }}</p>
+                                                                                  <p>{{ email.mainStories[1].email_images[0].teaser | truncate('110') }}</p>
                                                                           </td>
                                                                   </tr>
                                                               </table>
@@ -98,7 +98,7 @@
                                                                                 <a v-if="email.mainStories[2].story_type == 'external' || (email.mainStories[2].story_type == 'article' && storyHasTag(email.mainStories[2], 'external'))" style="text-decoration: none;" :href="email.mainStories[2].small_images[0].link">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
                                                                                 <a v-else style="text-decoration: none;" :href="email.mainStories[2].full_url">{{ email.mainStories[2].email_images[0].title }}  &#10137;</a>
                                                                               </h3>
-                                                                                    <p>{{ email.mainStories[2].email_images[0].teaser | truncate '110' }}</p>
+                                                                                    <p>{{ email.mainStories[2].email_images[0].teaser | truncate('110') }}</p>
                                                                             </td>
                                                                     </tr>
                                                                 </table>
@@ -130,7 +130,7 @@
                                       <a v-if="story.story_type == 'external' || (story.story_type == 'article' && storyHasTag(story, 'external'))" style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
                                       <a v-else style="text-decoration: none;" :href="story.full_url">{{ story.title }}</a>
                                     </li>
-                                  <ul>
+                                  </ul>
                                 </template>
                                 <template v-else>
                                   <p style="padding:0 5px" class="insufficient">No side stories set yet. Select at least one from the "Side Stories" tab.</p>
@@ -167,7 +167,7 @@
                                         <a v-if="announcement.link != ''" style="text-decoration: none;" :href="announcement.link">{{ announcement.title }}</a>
                                         <a v-else style="text-decoration: none; " :href="'/announcement/' + announcement.id">{{ announcement.title }}</a>
                                       </li>
-                                    <ul>
+                                    </ul>
                                   </template>
                                   <template v-else>
                                     <p style="padding:0 5px" class="insufficient">No announcements set yet. Select at least one from the "Announcements" tab.</p>
@@ -175,7 +175,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="!email.exclude_events">
                             <td valign="middle">
                                 <div style="padding-top: 5px;">
                                     <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/calendar">What's Happening at EMU  &#10137;</a></h2>
@@ -185,7 +185,7 @@
                                           <div style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;">{{ evt.start_date | dateParse }} </div>
                                           <div style="width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;"><a style="text-decoration: none;" :href="evt.full_url">{{ evt.title }}</a></div>
                                         </li>
-                                      <ul>
+                                      </ul>
                                     </template>
                                     <template v-else>
                                       <p style="padding:0 5px" class="insufficient">No events set yet. Select at least one from the "Events" tab.</p>
@@ -536,11 +536,8 @@ export default {
   },
   methods: {
     storyHasTag: function(story, tag){
-      console.log("STORY HAS TAGS FUNCTION")
       var storyHasTag = false
-      console.log(story.tags)
       story.tags.forEach(function(tg){
-        console.log(tg.name)
         if(tg.name == tag){
           storyHasTag = true
         }

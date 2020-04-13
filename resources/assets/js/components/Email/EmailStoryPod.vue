@@ -1,6 +1,6 @@
 <template>
-    <div :class="specialItem">
-    <div class="box box-solid {{item.group}}">
+  <div>
+    <div class="box box-solid" :class="item.group">
         <div class="box-header with-border">
           <div class="row">
               <div class="col-sm-12">
@@ -15,7 +15,7 @@
           <div class="row">
             <a v-on:click.prevent="toggleBody" href="#">
               <div class="col-sm-9">
-                <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
+                <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" :title="item.story_type"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
               </div><!-- /.col-md-12 -->
               <div class="col-sm-3">
                 <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right" @click="emitMainStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
@@ -50,7 +50,7 @@
                 </div><!-- /.row -->
             </div><!-- /.box-footer -->
     </div><!-- /.box- -->
-</div>
+  </div>
 </template>
 <style scoped>
         .box {
@@ -237,7 +237,7 @@
 import moment from 'moment'
 
 /** Show all stories with a emutoday_email picture type set **/
-module.exports  = {
+export default {
     directives: {},
     components: {},
     props: ['item','pid','mainStories','podType','draggable','otherStories'],
@@ -264,12 +264,14 @@ module.exports  = {
     },
     computed: {
       mainStoriesFull: function(){
+        if(!this.mainStories) return false
         return !this.checked && this.mainStories.length == 3 ? true : false
       },
       timefromNow:function() {
           return moment(this.item.start_date).fromNow()
       },
       typeIcon: function() {
+          let faicon = ''
           switch (this.item.story_type) {
               case 'emutoday':
               case 'story':
@@ -343,20 +345,20 @@ module.exports  = {
         },
         emitMainStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('main-story-added', storyObj)
+          this.$emit('main-story-added', storyObj)
         },
         emitMainStoryRemove: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('main-story-removed', storyObj.id)
+          this.$emit('main-story-removed', storyObj.id)
         },
         emitOtherStoryAdd: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
-          this.$dispatch('other-story-added', storyObj)
+          this.$emit('other-story-added', storyObj)
         },
         emitOtherStoryRemove: function(storyObj){
           // Dispatch an event that propagates upward along the parent chain using $dispatch()
           // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-          this.$dispatch('other-story-removed', storyObj.id)
+          this.$emit('other-story-removed', storyObj.id)
         },
         toggleEmitMainStory: function(storyObj){
           // function will run before this.checked is switched

@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="form-group">
-                <label>
-                    Include the presidential section in this email? <input type="checkbox" v-model="isPresidentIncluded" aria-label="">
+                <label for="president-chk">
+                    Include the presidential section in this email? <input type="checkbox" id="president-chk" v-model="isPresidentIncluded" aria-label="">
                 </label>
             </div><!-- /input-group -->
         </div><!-- /.col-md-12 -->
@@ -28,9 +28,10 @@
 export default  {
   directives: {},
   components: {},
-  props: ['teaser', 'isPresidentIncluded', 'presidentUrl'],
+  props: ['teaser', 'presidentUrl'],
   data: function() {
     return {
+        isPresidentIncluded: false
     }
   },
   ready() {

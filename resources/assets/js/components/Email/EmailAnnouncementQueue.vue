@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
           <p>You will only be presented announcements that are:</p>
@@ -15,16 +16,18 @@
             <h3>Announcements</h3>
             <template v-if="!loadingUsed">
               <template v-if="usedAnnouncements.length > 0">
-                <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
-                    <li v-for="announcement in usedAnnouncements" class="list-group-item">
-                      <email-announcement-pod
-                          pid="otherstory-list-stories"
-                          pod-type="announcement"
-                          :item="announcement"
-                          >
-                      </email-announcement-pod>
-                    </li>
-                </ul>
+                <draggable v-model="usedAnnouncements" @start="drag=true" @end="drag=false" @change="updateOrder">
+                  <email-announcement-pod
+                      pid="otherstory-list-stories"
+                      pod-type="announcement"
+                      v-for="(announcement, index) in usedAnnouncements"
+                      :key="'used-announcement-' + index"
+                      :item="announcement"
+                      @announcement-added="handleAnnouncementAdded"
+                      @announcement-removed="handleAnnouncementRemoved"
+                  >
+                  </email-announcement-pod>
+                </draggable>
               </template>
               <template v-else>
                 <p>There are no announcements set for this email.</p>
@@ -38,32 +41,56 @@
             <form class="form-inline">
               <div class="form-group">
                   <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>
+<!--                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>-->
+                  <p>
+                    <date-picker
+                        id="start-date"
+                        v-if="startdate"
+                        v-model="startdate"
+                        value-type="YYYY-MM-DD"
+                        format="MM/DD/YYYY"
+                        :clearable="false"
+                    ></date-picker>
+                  </p>
               </div>
               <div v-if="isEndDate" class="form-group">
-                  <label for="start-date"> and </label>
-                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"><p>
+                  <label for="end-date"> and </label>
+<!--                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>-->
+                  <p>
+                    <date-picker
+                        id="end-date"
+                        v-if="enddate"
+                        v-model="enddate"
+                        value-type="YYYY-MM-DD"
+                        format="MM/DD/YYYY"
+                        :clearable="false"
+                    ></date-picker>
+                  </p>
               </div>
               <p><button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button></p>
-              <p><a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</a></p>
+              <p><button type="button" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</button></p>
             </form>
             <div id="email-announcements">
               <template v-if="!loadingQueue">
                 <template v-if="queueAnnouncements.length > 0">
+<!--                  announcement in queueAnnouncements | paginate-->
                   <email-announcement-pod
                       pid="announcement-queue-announcements"
                       pod-type="announcementqueue"
                       :item="announcement"
                       :announcements="usedAnnouncements"
-                      v-for="announcement in queueAnnouncements | paginate"
+                      :key="'announcement-item-' + index"
+                      v-for="(announcement, index) in announcementsPaginated"
+                      @announcement-added="handleAnnouncementAdded"
+                      @announcement-removed="handleAnnouncementRemoved"
                   >
                   </email-announcement-pod>
                   <ul class="pagination">
                     <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
                       <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
                     </li>
-                    <li v-for="pageNumber in totalPages" :class="{active: (pageNumber+1) == currentPage}" class="page-item">
-                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber+1)">{{ pageNumber+1 }} <span v-if="(pageNumber+1) == currentPage" class="sr-only">(current)</span></a>
+                    <li v-for="pageNumber in totalPages" :class="{active: (pageNumber) == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber}} <span v-if="(pageNumber) == currentPage" class="sr-only">(current)</span></a>
                     </li>
                     <li v-bind:class="{disabled: (currentPage == totalPages)}" class="page-item">
                       <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
@@ -80,6 +107,7 @@
             </div>
         </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
+  </div>
 </template>
 <style scoped>
 #rangetoggle{
@@ -92,11 +120,11 @@
 import moment from 'moment'
 import EmailAnnouncementPod from './EmailAnnouncementPod.vue'
 import Pagination from '../Pagination.vue'
-import flatpickr from "../../directives/flatpickr.js"
+import draggable from 'vuedraggable'
+import DatePicker from 'vue2-datepicker'
 
 export default {
-  directives: {flatpickr},
-  components: {EmailAnnouncementPod},
+  components: {EmailAnnouncementPod, Pagination, draggable, DatePicker},
   props: ['announcements'],
   data: function() {
     return {
@@ -112,17 +140,29 @@ export default {
       currentPage: 0,
       itemsPerPage: 10,
       resultCount: 0,
+      drag: false,
     }
   },
 
-  ready: function() {
+  created() {
     let today = moment()
+    //let today = moment().subtract(100, 'w')
     this.startdate = today.format("YYYY-MM-DD")
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
   },
 
   computed: {
+    announcementsPaginated() {
+      if(!this.queueAnnouncements) return false
+
+      this.resultCount = this.queueAnnouncements.length
+      if (this.currentPage > this.totalPages) {
+        this.currentPage = 1
+      }
+      let index = (this.currentPage-1) * this.itemsPerPage
+      return this.queueAnnouncements.slice(index, index + this.itemsPerPage)
+    },
     totalPages: function() {
       return Math.ceil(this.queueAnnouncements.length / this.itemsPerPage)
     },
@@ -159,7 +199,7 @@ export default {
         this.$http.get(routeurl)
 
         .then((response) =>{
-            this.$set('queueAnnouncements', response.data.newdata.data)
+            this.queueAnnouncements = response.data.newdata.data
             this.resultCount = this.queueAnnouncements.length
             this.setPage(1) // reset paginator
             this.loadingQueue = false;
@@ -177,7 +217,7 @@ export default {
         // flatpickr directive method
     },
     /**
-     * Uses vue-sortable
+     * Uses vue-draggable
      */
     updateOrder: function(event){
       // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
@@ -186,7 +226,14 @@ export default {
 
       // move the item in the underlying array
       this.usedAnnouncements.splice(newIndex, 0, this.usedAnnouncements.splice(oldIndex, 1)[0]);
+      this.$emit('updated-announcement-order', this.usedAnnouncements)
     },
+    handleAnnouncementAdded(evt) {
+      this.$emit('announcement-added', evt)
+    },
+    handleAnnouncementRemoved(evt) {
+      this.$emit('announcement-removed', evt)
+    }
   },
   filters: {
     paginate: function(list) {

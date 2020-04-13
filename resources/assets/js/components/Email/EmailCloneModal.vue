@@ -11,7 +11,7 @@
         <div class="modal-body">
           <p v-if="!disableClone">Are you sure you want to clone "{{ email.title }}"?</p>
           <div v-show="cloneStatus.is_set && cloneStatus.is_success"  class="alert" :class="'alert-' + [cloneStatus.is_success ? 'success' : 'danger']">
-            <p>{{{ cloneStatus.message }}}</p>
+            <p v-html="cloneStatus.message"></p>
           </div>
         </div>
         <div class="modal-footer">

@@ -1,7 +1,7 @@
 {
     "/js/vue-announcement-form.js": "/js/vue-announcement-form.js",
     "/js/vue-caleventview.js": "/js/vue-caleventview.js",
-    "/../resources/assets/css/zfoundation.css": "/../resources/assets/css/zfoundation.css",
+    "/js/vue-email-form.js": "/js/vue-email-form.js",
     "/js/vue-event-form.js": "/js/vue-event-form.js",
     "/css/public-styles.css": "/css/public-styles.css",
     "/js/public-scripts.js": "/js/public-scripts.js"
