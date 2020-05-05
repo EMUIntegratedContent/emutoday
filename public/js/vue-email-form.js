@@ -75127,6 +75127,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
@@ -75134,7 +75137,17 @@ var state = {
   // When the app starts, count is set to 0
   recordId: 0,
   recordIsDirty: false,
-  recordState: 'init'
+  recordState: 'init',
+  magazineBuilderArticlesMain: [],
+  magazineBuilderArticlesSub: [],
+  usedMainArticle: null,
+  usedSubArticle1: null,
+  usedSubArticle2: null,
+  usedSubArticle3: null,
+  usedSubArticle4: null,
+  usedSubArticle5: null,
+  usedOtherArticles: [],
+  modalPosition: ''
 };
 var mutations = {
   // A mutation receives the current state as the first argument
@@ -75147,6 +75160,33 @@ var mutations = {
   },
   RECORD_STATE: function RECORD_STATE(state, value) {
     state.recordState = value;
+  },
+  setMagazineArticlesMain: function setMagazineArticlesMain(state, articles) {
+    state.magazineBuilderArticlesMain = articles;
+  },
+  setMagazineArticlesSub: function setMagazineArticlesSub(state, articles) {
+    state.magazineBuilderArticlesSub = articles;
+  },
+  setMainArticle: function setMainArticle(state, article) {
+    state.usedMainArticle = article;
+  },
+  setSubArticle1: function setSubArticle1(state, article) {
+    state.usedSubArticle1 = article;
+  },
+  setSubArticle2: function setSubArticle2(state, article) {
+    state.usedSubArticle2 = article;
+  },
+  setSubArticle3: function setSubArticle3(state, article) {
+    state.usedSubArticle3 = article;
+  },
+  setSubArticle4: function setSubArticle4(state, article) {
+    state.usedSubArticle4 = article;
+  },
+  setSubArticle5: function setSubArticle5(state, article) {
+    state.usedSubArticle5 = article;
+  },
+  setModalPosition: function setModalPosition(state, position) {
+    state.modalPosition = position;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({

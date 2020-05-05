@@ -224,50 +224,40 @@ class MagazineController extends Controller
     public function edit($id)
     {
       $magazine = $this->magazine->findOrFail($id);
-            $storys = Story::where([
-                ['story_type', 'article'],
-                ['is_approved',1]
-                ])
-                ->with(['images' => function($query){
-                    $query->where('group','=','article');
-                  }])->orderBy('id', 'desc')->get();
+			$storys = Story::where([
+					['story_type', 'article'],
+					['is_approved',1]
+					])
+					->with(['images' => function($query){
+							$query->where('group','=','article');
+						}])->orderBy('id', 'desc')->get();
+			$storyimgs = $this->storyImage->where([
+									['group','article'],
+									['image_type', 'small'],
+									])
+									->orderBy('updated_at', 'desc')->get();
+			$mediatypes = Mediatype::where('group','magazine')->pluck('type','id');
+			$magazineMedia = Mediatype::ofGroup('magazine')->get();
+			foreach ($magazineMedia as $img) {
+							$magazine->mediafiles()->firstorCreate([
+									'mediatype_id'=> $img->id,
+									'group'=> $img->group,
+									'type'=> $img->type
+					]);
+			}
 
+			$mediafile = $this->mediafile;
+			$mediafiles = $magazine->mediafiles;
+			$magazineStorys = $magazine->storys;
+			$original_story_ids = $magazineStorys->pluck('id');
 
-
-            $storyimgs = $this->storyImage->where([
-                        ['group','article'],
-                        ['image_type', 'small'],
-                        ])
-                        ->orderBy('updated_at', 'desc')->get();
-      // $storys =  $this->story->where('story_type', 'article')->orderBy('updated_at', 'desc')->get();
-            $mediatypes = Mediatype::where('group','magazine')->pluck('type','id');
-
-            // foreach ($mediatypes as $mediatype) {
-            // 	$magazinefile = $magazine->mediafiles->firstOrCreate(['mediatype_id' => $mediatype->id]);
-            // }
-            $magazineMedia = Mediatype::ofGroup('magazine')->get();
-            // $otherImages = Imagetype::ofGroup('magazine')->isRequired(0)->get();
-            foreach ($magazineMedia as $img) {
-                    $magazine->mediafiles()->firstorCreate([
-                        'mediatype_id'=> $img->id,
-                        'group'=> $img->group,
-                        'type'=> $img->type
-                ]);
-            }
-
-            $mediafile = $this->mediafile;
-            $mediafiles = $magazine->mediafiles;
-            $magazineStorys = $magazine->storys;
-            $original_story_ids = $magazineStorys->pluck('id');
-            // dd($original_story_ids);
-
-            JavaScript::put([
-                    'mainrecordid' => $magazine->id,
-                    'mediatypes' => $mediatypes,
-                    'original_story_ids' => $original_story_ids,
-                    'magazinestorys' => $magazineStorys->toArray(),
-                    'storyimgs' => $storyimgs->toArray(),
-                    'storys' => $storys->toArray()
+			JavaScript::put([
+							'mainrecordid' => $magazine->id,
+							'mediatypes' => $mediatypes,
+							'original_story_ids' => $original_story_ids,
+							'magazinestorys' => $magazineStorys->toArray(),
+							'storyimgs' => $storyimgs->toArray(),
+							'storys' => $storys->toArray()
       ]);
 
       return view('admin.magazine.edit', compact('magazine', 'storys','storyimgs','mediatypes', 'mediafiles','mediafile','original_story_ids'));
