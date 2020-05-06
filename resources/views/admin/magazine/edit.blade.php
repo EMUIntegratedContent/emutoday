@@ -128,17 +128,17 @@
                         </div><!-- /.form-group -->
                             </div><!-- /.col-md-6 -->
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    {!! Form::text('original_story_ids', $original_story_ids, ['id'=> 'original_story_ids',  'class' => 'form-control']) !!}
-                                    {!! Form::label('story_ids') !!}
-                                    {!! Form::text('story_ids', null, ['id'=> 'story_ids',  'class' => 'form-control', 'readonly' => 'readonly']) !!}
-                                </div>
+{{--                                <div class="form-group">--}}
+{{--                                    {!! Form::text('original_story_ids', $original_story_ids, ['id'=> 'original_story_ids',  'class' => 'form-control']) !!}--}}
+{{--                                    {!! Form::label('story_ids') !!}--}}
+{{--                                    {!! Form::text('story_ids', null, ['id'=> 'story_ids',  'class' => 'form-control', 'readonly' => 'readonly']) !!}--}}
+{{--                                </div>--}}
                             </div><!-- /.col-md-4 -->
                         </div><!-- /.row -->
                         </div> <!-- /.box-body -->
                         <div class="box-footer">
                             <div class="form-group">
-                                {!! Form::submit('Update Magazine', ['class' => 'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Update Magazine Content', ['class' => 'btn btn-primary btn-block']) !!}
                                 {!! Form::close() !!}
 
                             </div>
@@ -155,26 +155,26 @@
             @endif
             </div> <!-- /.col-sm-6 -->
         </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">Magazine Builder</h3>
-                        <div class="box-tools">
-                            <div class="btn-toolbar btn-group-sm">
-                                <a href="/preview/magazine/{{$magazine->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
-                            </div><!-- /.btn-toolbar -->
-                        </div><!-- /.box-tools -->
-                    </div>
-                    <div class="box-body">
-                @include('admin.magazine.templates.layoutindex')
-            </div><!-- /.box-body -->
-            <div class="box-footer">
+{{--    <div class="row">--}}
+{{--        <div class="col-sm-12">--}}
+{{--            <div class="box box-primary">--}}
+{{--                    <div class="box-header">--}}
+{{--                        <h3 class="box-title">Magazine Builder</h3>--}}
+{{--                        <div class="box-tools">--}}
+{{--                            <div class="btn-toolbar btn-group-sm">--}}
+{{--                                <a href="/preview/magazine/{{$magazine->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>--}}
+{{--                            </div><!-- /.btn-toolbar -->--}}
+{{--                        </div><!-- /.box-tools -->--}}
+{{--                    </div>--}}
+{{--                    <div class="box-body">--}}
+{{--                @include('admin.magazine.templates.layoutindex')--}}
+{{--            </div><!-- /.box-body -->--}}
+{{--            <div class="box-footer">--}}
 
-            </div><!-- /.box-footer -->
-            </div><!-- /.box -->
-            </div>
-        </div>
+{{--            </div><!-- /.box-footer -->--}}
+{{--            </div><!-- /.box -->--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
     <!--- VUE MAGAZINE BUILDER 2020 -->
     <div class="row">

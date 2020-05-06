@@ -26,7 +26,7 @@ class MagazineController extends Controller
 {
 
   protected $magazines;
-  protected $articleCount = 6;
+  protected $articleCount = 7;
   protected $bugService;
 
   public function __construct(Magazine $magazine, Story $story,StoryImage $storyImage, Mediafile $mediafile, IBug $bugService)
@@ -273,40 +273,22 @@ class MagazineController extends Controller
     public function update(Request $request, $id)
     {
       $magazine = $this->magazine->findOrFail($id);
-      $storyIDString =  $request->get('story_ids');
-      $storyIDarray = explode(",", $storyIDString);
-      $storyIDarrayCount = count($storyIDarray);
-      $storyIDsForPivotArray =[];
 
-       for ($x = 0; $x < $storyIDarrayCount; $x++) {
-          $namedKey = $storyIDarray[$x];
-           if($namedKey != 0) {
-           $attributeArray = array();
-           $attributeArray["story_position"] = intval($x);
-           $storyIDsForPivotArray[intval($namedKey)] = $attributeArray;
-            }
+			// Magazine is not ready unless positions 0-5 are filled (Saving stories now handled in Api/MagazineController because Magazine Builder is in Vue)
+			$neededPositions = [0,1,2,3,4,5];
+			$positions = [];
+			foreach($magazine->storys as $story) {
+				$positions[] = $story->pivot->story_position;
+			}
 
-       }
-       $magazine->is_ready = 1;
-
-       if (empty($storyIDsForPivotArray)) {
-           $magazine->is_ready = 0;
-       } else {
-           if(count($storyIDsForPivotArray) < $this->articleCount){
-               $magazine->is_ready = 0;
-           } else {
-            //    $page->is_ready = 1;
-           }
-           $magazine->storys()->sync($storyIDsForPivotArray);
-
-       }
-
+			 $sufficientStories = count(array_intersect($positions, $neededPositions)) == count($neededPositions);
        $magazineMediaCount = Mediatype::ofGroup('magazine')->where('is_required',1)->count();
 
-
-       if($magazine->mediafiles->count() < $magazineMediaCount){
-           $magazine->is_ready = 0;
-       }
+       if(!$sufficientStories || $magazine->mediafiles->count() < $magazineMediaCount){
+				 	$magazine->is_ready = 0;
+       } else {
+					$magazine->is_ready = 1;
+			 }
 
       $magazine->year = $request->year;
       $magazine->season   = $request->season;
