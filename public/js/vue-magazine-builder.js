@@ -202,6 +202,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -393,6 +395,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -414,12 +417,39 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {},
-  ready: function ready() {},
   computed: {
     articleImage: function articleImage() {
       return this.article.images.find(function (img) {
         return img.image_type == 'small';
       });
+    },
+    showRemoveBtn: function showRemoveBtn() {
+      // Determine if the current article is the one being used at this position
+      var position = this.modalPosition;
+      var article_id = this.article.id;
+
+      switch (position) {
+        case 'main':
+          return this.usedMainArticle && this.usedMainArticle.id == article_id;
+
+        case 'sub-1':
+          return this.usedSubArticle1 && this.usedSubArticle1.id == article_id;
+
+        case 'sub-2':
+          return this.usedSubArticle2 && this.usedSubArticle2.id == article_id;
+
+        case 'sub-3':
+          return this.usedSubArticle3 && this.usedSubArticle3.id == article_id;
+
+        case 'sub-4':
+          return this.usedSubArticle4 && this.usedSubArticle4.id == article_id;
+
+        case 'sub-5':
+          return this.usedSubArticle5 && this.usedSubArticle5.id == article_id;
+
+        default:
+          return false;
+      }
     }
   },
   methods: {
@@ -434,8 +464,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     useArticle: function useArticle() {
-      console.log("USED ARTICLE!!");
       this.$emit('use-article', this.article);
+    },
+    removeArticle: function removeArticle() {
+      this.$emit('remove-article', this.article.id);
     }
   },
   watch: {},
@@ -546,6 +578,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -553,9 +602,15 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     MagazineArticleModal: _MagazineArticleModal__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: {},
+  props: {
+    issueId: {
+      type: Number,
+      "default": 5
+    }
+  },
   created: function created() {
-    this.fetchArticles();
+    this.fetchQueueArticles();
+    this.fetchIssueArticles(this.issueId);
   },
   data: function data() {
     return {};
@@ -660,7 +715,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.redBtn[data-v-67b20bfa] {\n\tbackground: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[data-v-67b20bfa], .nav-tabs > li.active > a[data-v-67b20bfa]:hover, .nav-tabs > li.active > a[data-v-67b20bfa]:focus {\n\tcolor: #3c8dbc;\n}\n.nav-tabs a.disabled[data-v-67b20bfa] {\n\tcolor: #d2d6de;\n}\n.mainstory-box[data-v-67b20bfa] {\n\twidth: 100%;\n\tmin-height: 50px;\n\tborder-bottom: 1px solid black;\n\tposition: relative;\n\toverflow: hidden\n}\n.substory-box[data-v-67b20bfa] {\n\tfloat: left;\n\twidth: 20%;\n\tmin-height: 50px;\n\tposition: relative;\n}\n.builder-exchange[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-container[data-v-67b20bfa] {\n\tborder: 1px solid black;\n}\n", ""]);
+exports.push([module.i, "\n.redBtn[data-v-67b20bfa] {\n\tbackground: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[data-v-67b20bfa], .nav-tabs > li.active > a[data-v-67b20bfa]:hover, .nav-tabs > li.active > a[data-v-67b20bfa]:focus {\n\tcolor: #3c8dbc;\n}\n.nav-tabs a.disabled[data-v-67b20bfa] {\n\tcolor: #d2d6de;\n}\n.mainstory-box[data-v-67b20bfa] {\n\twidth: 100%;\n\tmin-height: 50px;\n\tborder-bottom: 1px solid black;\n\tposition: relative;\n\toverflow: hidden\n}\n.substory-box[data-v-67b20bfa] {\n\tfloat: left;\n\twidth: 20%;\n\tmin-height: 50px;\n\tposition: relative;\n\tborder: 1px solid white;\n}\n.builder-exchange[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-container[data-v-67b20bfa] {\n\tborder: 1px solid black;\n}\n.builder-container .btn[data-v-67b20bfa] {\n\topacity: 0.7;\n}\n.builder-container .btn[data-v-67b20bfa]:hover{\n\topacity: 1;\n}\n.builder-article-title[data-v-67b20bfa] {\n\ttext-align: center;\n\tfont-weight: bold;\n\tpadding-top: 3px;\n}\n", ""]);
 
 // exports
 
@@ -40347,7 +40402,7 @@ var render = function() {
                     {
                       staticClass: "btn btn-sm btn-info",
                       attrs: { type: "button" },
-                      on: { click: _vm.fetchArticles }
+                      on: { click: _vm.fetchQueueArticles }
                     },
                     [_vm._v("Filter")]
                   ),
@@ -40428,7 +40483,12 @@ var render = function() {
                       return _c("magazine-article-pod", {
                         key: "main-article-" + index,
                         attrs: { type: "main", article: mainArticle },
-                        on: { "use-article": _vm.handleSetMainArticle }
+                        on: {
+                          "use-article": _vm.handleSetMainArticle,
+                          "remove-article": function($event) {
+                            return _vm.handleSetMainArticle(null)
+                          }
+                        }
                       })
                     }),
                     _vm._v(" "),
@@ -40543,7 +40603,12 @@ var render = function() {
                 return _c("magazine-article-pod", {
                   key: "sub-article-" + index,
                   attrs: { type: "sub", article: subArticle },
-                  on: { "use-article": _vm.handleSetSubArticle }
+                  on: {
+                    "use-article": _vm.handleSetSubArticle,
+                    "remove-article": function($event) {
+                      return _vm.handleSetSubArticle(null)
+                    }
+                  }
                 })
               }),
               _vm._v(" "),
@@ -40686,20 +40751,35 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-sm-3" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-sm btn-success pull-right",
-                attrs: { type: "button", title: "Use this article" },
-                on: { click: _vm.useArticle }
-              },
-              [
-                _c("i", {
-                  staticClass: "fa fa-arrow-right",
-                  attrs: { "aria-hidden": "true" }
-                })
-              ]
-            )
+            !_vm.showRemoveBtn
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-success pull-right",
+                    attrs: { type: "button", title: "Use this article" },
+                    on: { click: _vm.useArticle }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-arrow-right",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              : _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-sm btn-danger pull-right",
+                    attrs: { type: "button", title: "Use this article" },
+                    on: { click: _vm.removeArticle }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-close",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
           ])
         ])
       ]),
@@ -40842,8 +40922,7 @@ var render = function() {
                         _c(
                           "button",
                           {
-                            staticClass:
-                              "btn btn-sm btn-warning builder-remove",
+                            staticClass: "btn btn-sm btn-danger builder-remove",
                             attrs: { type: "button", "data-toggle": "modal" },
                             on: {
                               click: function($event) {
@@ -40870,7 +40949,23 @@ var render = function() {
                             alt: _vm.mainArticleImage(_vm.usedMainArticle)
                               .moretext
                           }
-                        })
+                        }),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "builder-article-title" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href:
+                                  "/admin/queuearticle/magazine/article/" +
+                                  _vm.usedMainArticle.id +
+                                  "/edit",
+                                target: "_blank"
+                              }
+                            },
+                            [_vm._v(_vm._s(_vm.usedMainArticle.title))]
+                          )
+                        ])
                       ]
                     : [_vm._m(0)]
                 ],
@@ -40910,7 +41005,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-warning builder-remove",
+                          staticClass: "btn btn-sm btn-danger builder-remove",
                           attrs: { type: "button", "data-toggle": "modal" },
                           on: {
                             click: function($event) {
@@ -40935,7 +41030,23 @@ var render = function() {
                             _vm.subArticleImage(_vm.usedSubArticle1).filename,
                           alt: _vm.subArticleImage(_vm.usedSubArticle1).moretext
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "builder-article-title" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href:
+                                "/admin/queuearticle/magazine/article/" +
+                                _vm.usedSubArticle1.id +
+                                "/edit",
+                              target: "_blank"
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.usedSubArticle1.title))]
+                        )
+                      ])
                     ]
                   : [_vm._m(1)]
               ],
@@ -40974,7 +41085,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-warning builder-remove",
+                          staticClass: "btn btn-sm btn-danger builder-remove",
                           attrs: { type: "button", "data-toggle": "modal" },
                           on: {
                             click: function($event) {
@@ -40999,7 +41110,23 @@ var render = function() {
                             _vm.subArticleImage(_vm.usedSubArticle2).filename,
                           alt: _vm.subArticleImage(_vm.usedSubArticle2).moretext
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "builder-article-title" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href:
+                                "/admin/queuearticle/magazine/article/" +
+                                _vm.usedSubArticle2.id +
+                                "/edit",
+                              target: "_blank"
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.usedSubArticle2.title))]
+                        )
+                      ])
                     ]
                   : [_vm._m(2)]
               ],
@@ -41038,7 +41165,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-warning builder-remove",
+                          staticClass: "btn btn-sm btn-danger builder-remove",
                           attrs: { type: "button", "data-toggle": "modal" },
                           on: {
                             click: function($event) {
@@ -41063,7 +41190,23 @@ var render = function() {
                             _vm.subArticleImage(_vm.usedSubArticle3).filename,
                           alt: _vm.subArticleImage(_vm.usedSubArticle3).moretext
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "builder-article-title" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href:
+                                "/admin/queuearticle/magazine/article/" +
+                                _vm.usedSubArticle3.id +
+                                "/edit",
+                              target: "_blank"
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.usedSubArticle3.title))]
+                        )
+                      ])
                     ]
                   : [_vm._m(3)]
               ],
@@ -41102,7 +41245,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-warning builder-remove",
+                          staticClass: "btn btn-sm btn-danger builder-remove",
                           attrs: { type: "button", "data-toggle": "modal" },
                           on: {
                             click: function($event) {
@@ -41127,7 +41270,23 @@ var render = function() {
                             _vm.subArticleImage(_vm.usedSubArticle4).filename,
                           alt: _vm.subArticleImage(_vm.usedSubArticle4).moretext
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "builder-article-title" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href:
+                                "/admin/queuearticle/magazine/article/" +
+                                _vm.usedSubArticle4.id +
+                                "/edit",
+                              target: "_blank"
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.usedSubArticle4.title))]
+                        )
+                      ])
                     ]
                   : [_vm._m(4)]
               ],
@@ -41166,7 +41325,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-sm btn-warning builder-remove",
+                          staticClass: "btn btn-sm btn-danger builder-remove",
                           attrs: { type: "button", "data-toggle": "modal" },
                           on: {
                             click: function($event) {
@@ -41191,7 +41350,23 @@ var render = function() {
                             _vm.subArticleImage(_vm.usedSubArticle5).filename,
                           alt: _vm.subArticleImage(_vm.usedSubArticle5).moretext
                         }
-                      })
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "builder-article-title" }, [
+                        _c(
+                          "a",
+                          {
+                            attrs: {
+                              href:
+                                "/admin/queuearticle/magazine/article/" +
+                                _vm.usedSubArticle5.id +
+                                "/edit",
+                              target: "_blank"
+                            }
+                          },
+                          [_vm._v(_vm._s(_vm.usedSubArticle5.title))]
+                        )
+                      ])
                     ]
                   : [_vm._m(5)]
               ],
@@ -41213,7 +41388,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
+    return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Main Article Not Set")])
     ])
   },
@@ -41221,7 +41396,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
+    return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Not Set")])
     ])
   },
@@ -41229,7 +41404,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
+    return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Not Set")])
     ])
   },
@@ -41237,7 +41412,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
+    return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Not Set")])
     ])
   },
@@ -41245,7 +41420,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
+    return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Not Set")])
     ])
   },
@@ -41253,7 +41428,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "text-center" }, [
+    return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Not Set")])
     ])
   },
@@ -63871,7 +64046,7 @@ var builderMixin = {
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['magazineBuilderArticlesMain', 'magazineBuilderArticlesSub', 'usedMainArticle', 'usedSubArticle1', 'usedSubArticle2', 'usedSubArticle3', 'usedSubArticle4', 'usedSubArticle5', 'modalPosition'])),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['setMagazineArticlesMain', 'setMagazineArticlesSub', 'setMainArticle', 'setSubArticle1', 'setSubArticle2', 'setSubArticle3', 'setSubArticle4', 'setSubArticle5', 'setModalPosition']), {
-    fetchArticles: function fetchArticles() {
+    fetchQueueArticles: function fetchQueueArticles() {
       var _this = this;
 
       var routeUrl = '/api/magazine/articles'; // if a start date is set, get stories whose start_date is on or after this date
@@ -63913,6 +64088,60 @@ var builderMixin = {
         _this.setMagazineArticlesSub(subStories);
       })["catch"](function (e) {
         console.log(e);
+      });
+    },
+    fetchIssueArticles: function fetchIssueArticles(issueID) {
+      var _this2 = this;
+
+      var routeUrl = "/api/magazine/issuearticles/".concat(issueID);
+      this.$http.get(routeUrl).then(function (response) {
+        _this2.setIssueArticles(response.body.stories);
+      })["catch"](function (e) {
+        console.log(e);
+      });
+    },
+    // Do this after fetching the issue articles
+    setIssueArticles: function setIssueArticles(articles) {
+      var _this3 = this;
+
+      articles.forEach(function (article) {
+        var position = article.pivot.story_position;
+
+        switch (position) {
+          case 0:
+            _this3.setMainArticle(article);
+
+            break;
+
+          case 1:
+            _this3.setSubArticle1(article);
+
+            break;
+
+          case 2:
+            _this3.setSubArticle2(article);
+
+            break;
+
+          case 3:
+            _this3.setSubArticle3(article);
+
+            break;
+
+          case 4:
+            _this3.setSubArticle4(article);
+
+            break;
+
+          case 5:
+            _this3.setSubArticle5(article);
+
+            break;
+          // Any position > 6 goes in the other story list
+
+          default:
+            break;
+        }
       });
     }
   })

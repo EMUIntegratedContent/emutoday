@@ -7,7 +7,8 @@
             <h6 class="box-title" @click="showBody = !showBody">{{ article.title }}</h6>
           </div><!-- /.col-md-12 -->
           <div class="col-sm-3">
-            <button type="button" class="btn btn-sm btn-success pull-right" title="Use this article" @click="useArticle"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+            <button v-if="!showRemoveBtn" type="button" class="btn btn-sm btn-success pull-right" title="Use this article" @click="useArticle"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+            <button v-else type="button" class="btn btn-sm btn-danger pull-right" title="Use this article" @click="removeArticle"><i class="fa fa-close" aria-hidden="true"></i></button>
           </div><!-- /.col-md-12 -->
         </div><!-- /.row -->
       </div>  <!-- /.box-header -->
@@ -64,13 +65,32 @@ export default {
   created: function () {
 
   },
-  ready: function() {
-  },
   computed: {
     articleImage() {
       return this.article.images.find(img => {
         return img.image_type == 'small'
       })
+    },
+    showRemoveBtn() {
+      // Determine if the current article is the one being used at this position
+      const position = this.modalPosition
+      const article_id = this.article.id
+      switch (position) {
+        case 'main':
+          return this.usedMainArticle && this.usedMainArticle.id == article_id
+        case 'sub-1':
+          return this.usedSubArticle1 && this.usedSubArticle1.id == article_id
+        case 'sub-2':
+          return this.usedSubArticle2 && this.usedSubArticle2.id == article_id
+        case 'sub-3':
+          return this.usedSubArticle3 && this.usedSubArticle3.id == article_id
+        case 'sub-4':
+          return this.usedSubArticle4 && this.usedSubArticle4.id == article_id
+        case 'sub-5':
+          return this.usedSubArticle5 && this.usedSubArticle5.id == article_id
+        default:
+          return false
+      }
     }
   },
   methods: {
@@ -85,8 +105,10 @@ export default {
       }
     },
     useArticle() {
-      console.log("USED ARTICLE!!")
       this.$emit('use-article', this.article)
+    },
+    removeArticle() {
+      this.$emit('remove-article', this.article.id)
     }
   },
   watch: {

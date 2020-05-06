@@ -38,7 +38,7 @@
 							</p>
 						</div>
 						<p>
-							<button type="button" class="btn btn-sm btn-info" @click="fetchArticles">Filter</button>
+							<button type="button" class="btn btn-sm btn-info" @click="fetchQueueArticles">Filter</button>
 							<button type="button" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</button>
 						</p>
 					</form>
@@ -55,6 +55,7 @@
 								:article="mainArticle"
 								:key="'main-article-' + index"
 								@use-article="handleSetMainArticle"
+								@remove-article="handleSetMainArticle(null)"
 						></magazine-article-pod>
 						<ul class="pagination">
 							<li v-bind:class="{disabled: (currentPageMain <= 1)}" class="page-item">
@@ -77,6 +78,7 @@
 							:article="subArticle"
 							:key="'sub-article-' + index"
 							@use-article="handleSetSubArticle"
+							@remove-article="handleSetSubArticle(null)"
 					></magazine-article-pod>
 					<ul class="pagination">
 						<li v-bind:class="{disabled: (currentPageSub <= 1)}" class="page-item">

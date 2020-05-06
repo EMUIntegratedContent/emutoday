@@ -20,8 +20,9 @@ use League\Fractal\Serializer\DataArraySerializer;
 use Emutoday\Today\Transformers\FractalStoryTransformerModel;
 class MagazineController extends ApiController
 {
-  function __construct()
+  function __construct(Magazine $magazine)
   { //
+  	$this->magazine = $magazine;
   }
 
   /**
@@ -31,7 +32,7 @@ class MagazineController extends ApiController
 	 * @param string $toDate
    * @return JsonResponse
    */
-  public function getMagazineArticles(Request $request, $fromDate = null, $toDate = null){
+  public function getArticles(Request $request, $fromDate = null, $toDate = null){
 		if($fromDate && !$toDate){
 			$stories = Story::where([
 				['start_date', '>=', $fromDate],
@@ -59,4 +60,18 @@ class MagazineController extends ApiController
 		}
 		return $this->setStatusCode(200)->respond(['stories' => $stories]);
   }
+
+	/**
+	 * Get all Magazine articles and their images (for the current issue)
+	 * @param Request $request
+	 * @param $issue_id
+	 * @return JsonResponse
+	 */
+  public function getArticlesForIssue(Request $request, $issue_id) {
+		$magazine = $this->magazine->findOrFail($issue_id);
+		$stories = $magazine->storys()->with(['images' => function($query){
+			$query->where('group','=','article');
+		}])->orderBy('id', 'desc')->get();
+		return $this->setStatusCode(200)->respond(['issue_id' => $issue_id, 'stories' => $stories]);
+	}
 }

@@ -189,10 +189,7 @@
                     </div><!-- /.box-tools -->
                 </div>
                 <div class="box-body" id="vue-magazine-builder">
-                    <magazine-builder
-                            framework="bootstrap"
-                            :cuser-roles="{{$currentUser->roles}}"
-                    ></magazine-builder>
+                    <magazine-builder issueId="{{$magazine->id}}"></magazine-builder>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
 
@@ -228,8 +225,9 @@
         <script>
 
         $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
 
-          //Initialize Select2 Elements
+					//Initialize Select2 Elements
           $(".select2").select2();
 
 

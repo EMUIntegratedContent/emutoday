@@ -39,7 +39,7 @@ export const builderMixin = {
 			'setSubArticle5',
 			'setModalPosition',
 		]),
-		fetchArticles: function () {
+		fetchQueueArticles: function () {
 			let routeUrl = '/api/magazine/articles';
 
 			// if a start date is set, get stories whose start_date is on or after this date
@@ -82,6 +82,45 @@ export const builderMixin = {
 			})
 			.catch(e => {
 				console.log(e)
+			})
+		},
+		fetchIssueArticles: function (issueID) {
+			let routeUrl = `/api/magazine/issuearticles/${issueID}`;
+			this.$http.get(routeUrl)
+			.then((response) => {
+				this.setIssueArticles(response.body.stories)
+			})
+			.catch(e => {
+				console.log(e)
+			})
+		},
+		// Do this after fetching the issue articles
+		setIssueArticles(articles) {
+			articles.forEach(article => {
+				const position = article.pivot.story_position
+				switch (position) {
+					case 0:
+						this.setMainArticle(article)
+						break
+					case 1:
+						this.setSubArticle1(article)
+						break
+					case 2:
+						this.setSubArticle2(article)
+						break
+					case 3:
+						this.setSubArticle3(article)
+						break
+					case 4:
+						this.setSubArticle4(article)
+						break
+					case 5:
+						this.setSubArticle5(article)
+						break
+					// Any position > 6 goes in the other story list
+					default:
+						break
+				}
 			})
 		}
 	}

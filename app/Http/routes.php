@@ -113,7 +113,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('expertmediarequest/list/search', 'Api\ExpertMediaRequestController@search')->name('api_expertmediarequest_search');
     Route::post('expertspeakerrequest', 'Api\ExpertSpeakerRequestController@store')->name('api_expertspeakerrequest_store'); // Save expert speaker request to db
 
-		Route::get('magazine/articles/{fromDate?}/{toDate?}', 'Api\MagazineController@getMagazineArticles')->name('api_magazine_articles');
+		Route::get('magazine/articles/{fromDate?}/{toDate?}', 'Api\MagazineController@getArticles')->name('api_magazine_articles');
+		Route::get('magazine/issuearticles/{issue_id}', 'Api\MagazineController@getArticlesForIssue')->name('api_magazine_articles_issue');
 		/**
      * List of Buildings for EventForm
      */
