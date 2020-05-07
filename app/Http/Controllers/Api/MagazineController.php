@@ -71,7 +71,7 @@ class MagazineController extends ApiController
 		$magazine = $this->magazine->findOrFail($issue_id);
 		$stories = $magazine->storys()->with(['images' => function($query){
 			$query->where('group','=','article');
-		}])->orderBy('id', 'desc')->get();
+		}])->orderBy('story_position', 'asc')->get();
 		return $this->setStatusCode(200)->respond(['issue_id' => $issue_id, 'stories' => $stories]);
 	}
 }

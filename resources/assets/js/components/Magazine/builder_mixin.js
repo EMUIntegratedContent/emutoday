@@ -18,12 +18,7 @@ export const builderMixin = {
 		...mapState([
 			'magazineBuilderArticlesMain',
 			'magazineBuilderArticlesSub',
-			'usedMainArticle',
-			'usedSubArticle1',
-			'usedSubArticle2',
-			'usedSubArticle3',
-			'usedSubArticle4',
-			'usedSubArticle5',
+			'issueArticles',
 			'modalPosition'
 		]),
 	},
@@ -31,12 +26,8 @@ export const builderMixin = {
 		...mapMutations([
 			'setMagazineArticlesMain',
 			'setMagazineArticlesSub',
-			'setMainArticle',
-			'setSubArticle1',
-			'setSubArticle2',
-			'setSubArticle3',
-			'setSubArticle4',
-			'setSubArticle5',
+			'setIssueArticleAtIndex',
+			'setIssueArticles',
 			'setModalPosition',
 		]),
 		fetchQueueArticles: function () {
@@ -88,40 +79,14 @@ export const builderMixin = {
 			let routeUrl = `/api/magazine/issuearticles/${issueID}`;
 			this.$http.get(routeUrl)
 			.then((response) => {
-				this.setIssueArticles(response.body.stories)
+				response.body.stories.forEach(article => {
+					const position = article.pivot.story_position
+					this.setIssueArticleAtIndex({index: position, article: article})
+				})
 			})
 			.catch(e => {
 				console.log(e)
 			})
 		},
-		// Do this after fetching the issue articles
-		setIssueArticles(articles) {
-			articles.forEach(article => {
-				const position = article.pivot.story_position
-				switch (position) {
-					case 0:
-						this.setMainArticle(article)
-						break
-					case 1:
-						this.setSubArticle1(article)
-						break
-					case 2:
-						this.setSubArticle2(article)
-						break
-					case 3:
-						this.setSubArticle3(article)
-						break
-					case 4:
-						this.setSubArticle4(article)
-						break
-					case 5:
-						this.setSubArticle5(article)
-						break
-					// Any position > 6 goes in the other story list
-					default:
-						break
-				}
-			})
-		}
 	}
 };

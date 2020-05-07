@@ -75147,6 +75147,7 @@ var state = {
   usedSubArticle4: null,
   usedSubArticle5: null,
   usedOtherArticles: [],
+  issueArticles: [null, null, null, null, null, null],
   modalPosition: ''
 };
 var mutations = {
@@ -75160,6 +75161,11 @@ var mutations = {
   },
   RECORD_STATE: function RECORD_STATE(state, value) {
     state.recordState = value;
+  },
+  setIssueArticleAtIndex: function setIssueArticleAtIndex(state, _ref) {
+    var index = _ref.index,
+        article = _ref.article;
+    state.issueArticles.splice(index, 1, article);
   },
   setMagazineArticlesMain: function setMagazineArticlesMain(state, articles) {
     state.magazineBuilderArticlesMain = articles;
@@ -75187,6 +75193,9 @@ var mutations = {
   },
   setModalPosition: function setModalPosition(state, position) {
     state.modalPosition = position;
+  },
+  setIssueArticles: function setIssueArticles(state, articles) {
+    state.issueArticles = articles;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({

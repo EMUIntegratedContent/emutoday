@@ -32,7 +32,13 @@
           </div><!-- /.col-md-6 -->
           <div class="col-sm-6">
             <div class="btn-group pull-right">
-<!--              <a :href="item.edit_url" target="_blank" class="btn bg-orange btn-xs footer-btn" data-toggle="tooltip" title="preview"><i class="fa fa-pencil"></i></a>-->
+              <a
+                :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'"
+                target="_blank"
+                class="btn btn-xs btn-warning builder-exchange"
+              >
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </a>
             </div>
           </div><!-- /.col-md-6 -->
         </div><!-- /.row -->
@@ -75,22 +81,7 @@ export default {
       // Determine if the current article is the one being used at this position
       const position = this.modalPosition
       const article_id = this.article.id
-      switch (position) {
-        case 'main':
-          return this.usedMainArticle && this.usedMainArticle.id == article_id
-        case 'sub-1':
-          return this.usedSubArticle1 && this.usedSubArticle1.id == article_id
-        case 'sub-2':
-          return this.usedSubArticle2 && this.usedSubArticle2.id == article_id
-        case 'sub-3':
-          return this.usedSubArticle3 && this.usedSubArticle3.id == article_id
-        case 'sub-4':
-          return this.usedSubArticle4 && this.usedSubArticle4.id == article_id
-        case 'sub-5':
-          return this.usedSubArticle5 && this.usedSubArticle5.id == article_id
-        default:
-          return false
-      }
+      return this.issueArticles[position] && this.issueArticles[position].id == article_id
     }
   },
   methods: {
@@ -108,7 +99,7 @@ export default {
       this.$emit('use-article', this.article)
     },
     removeArticle() {
-      this.$emit('remove-article', this.article.id)
+      this.$emit('remove-article')
     }
   },
   watch: {

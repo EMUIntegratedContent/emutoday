@@ -309,31 +309,11 @@ __webpack_require__.r(__webpack_exports__);
         this.isEndDate = true;
       }
     },
-    handleSetMainArticle: function handleSetMainArticle(article) {
-      this.setMainArticle(article);
-    },
-    handleSetSubArticle: function handleSetSubArticle(article) {
-      switch (this.modalPosition) {
-        case "sub-1":
-          this.setSubArticle1(article);
-          break;
-
-        case "sub-2":
-          this.setSubArticle2(article);
-          break;
-
-        case "sub-3":
-          this.setSubArticle3(article);
-          break;
-
-        case "sub-4":
-          this.setSubArticle4(article);
-          break;
-
-        case "sub-5":
-          this.setSubArticle5(article);
-          break;
-      }
+    handleSetArticle: function handleSetArticle(article) {
+      this.setIssueArticleAtIndex({
+        index: this.modalPosition,
+        article: article
+      });
     }
   },
   watch: {},
@@ -354,6 +334,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _builder_mixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./builder_mixin */ "./resources/assets/js/components/Magazine/builder_mixin.js");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -427,29 +413,7 @@ __webpack_require__.r(__webpack_exports__);
       // Determine if the current article is the one being used at this position
       var position = this.modalPosition;
       var article_id = this.article.id;
-
-      switch (position) {
-        case 'main':
-          return this.usedMainArticle && this.usedMainArticle.id == article_id;
-
-        case 'sub-1':
-          return this.usedSubArticle1 && this.usedSubArticle1.id == article_id;
-
-        case 'sub-2':
-          return this.usedSubArticle2 && this.usedSubArticle2.id == article_id;
-
-        case 'sub-3':
-          return this.usedSubArticle3 && this.usedSubArticle3.id == article_id;
-
-        case 'sub-4':
-          return this.usedSubArticle4 && this.usedSubArticle4.id == article_id;
-
-        case 'sub-5':
-          return this.usedSubArticle5 && this.usedSubArticle5.id == article_id;
-
-        default:
-          return false;
-      }
+      return this.issueArticles[position] && this.issueArticles[position].id == article_id;
     }
   },
   methods: {
@@ -467,7 +431,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$emit('use-article', this.article);
     },
     removeArticle: function removeArticle() {
-      this.$emit('remove-article', this.article.id);
+      this.$emit('remove-article');
     }
   },
   watch: {},
@@ -497,56 +461,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MagazineArticleModal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MagazineArticleModal */ "./resources/assets/js/components/Magazine/MagazineArticleModal.vue");
 /* harmony import */ var _builder_mixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./builder_mixin */ "./resources/assets/js/components/Magazine/builder_mixin.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -40484,9 +40398,9 @@ var render = function() {
                         key: "main-article-" + index,
                         attrs: { type: "main", article: mainArticle },
                         on: {
-                          "use-article": _vm.handleSetMainArticle,
+                          "use-article": _vm.handleSetArticle,
                           "remove-article": function($event) {
-                            return _vm.handleSetMainArticle(null)
+                            return _vm.handleSetArticle(null)
                           }
                         }
                       })
@@ -40604,9 +40518,9 @@ var render = function() {
                   key: "sub-article-" + index,
                   attrs: { type: "sub", article: subArticle },
                   on: {
-                    "use-article": _vm.handleSetSubArticle,
+                    "use-article": _vm.handleSetArticle,
                     "remove-article": function($event) {
-                      return _vm.handleSetSubArticle(null)
+                      return _vm.handleSetArticle(null)
                     }
                   }
                 })
@@ -40824,28 +40738,41 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-sm-6" }, [
             _vm._v(
-              "\n            Start Date: " +
+              "\n          Start Date: " +
                 _vm._s(_vm.momentPretty(_vm.article.start_date)) +
-                "\n          "
+                "\n        "
             )
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("div", { staticClass: "btn-group pull-right" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-xs btn-warning builder-exchange",
+                  attrs: {
+                    href:
+                      "/admin/queuearticle/magazine/article/" +
+                      _vm.article.id +
+                      "/edit",
+                    target: "_blank"
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fa fa-pencil",
+                    attrs: { "aria-hidden": "true" }
+                  })
+                ]
+              )
+            ])
+          ])
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-6" }, [
-      _c("div", { staticClass: "btn-group pull-right" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -40882,502 +40809,208 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "builder-container" }, [
-            _c("div", { staticClass: "mainstory-box" }, [
-              _c(
-                "div",
-                {
-                  staticStyle: {
-                    margin: "0 auto",
-                    "max-width": "950px",
-                    position: "relative"
-                  }
-                },
-                [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-sm btn-info builder-exchange",
-                      attrs: {
-                        type: "button",
-                        "data-toggle": "modal",
-                        "data-target": "#articleQueueModal"
-                      },
-                      on: {
-                        click: function($event) {
-                          return _vm.setModalPosition("main")
-                        }
-                      }
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "fa fa-exchange",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _vm.usedMainArticle
-                    ? [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-sm btn-danger builder-remove",
-                            attrs: { type: "button", "data-toggle": "modal" },
-                            on: {
-                              click: function($event) {
-                                return _vm.setMainArticle(null)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fa fa-close",
-                              attrs: { "aria-hidden": "true" }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("img", {
-                          attrs: {
-                            width: "100%",
-                            src:
-                              _vm.mainArticleImage(_vm.usedMainArticle)
-                                .image_path +
-                              _vm.mainArticleImage(_vm.usedMainArticle)
-                                .filename,
-                            alt: _vm.mainArticleImage(_vm.usedMainArticle)
-                              .moretext
+          _c(
+            "div",
+            { staticClass: "builder-container" },
+            [
+              _c("div", { staticClass: "mainstory-box" }, [
+                _c(
+                  "div",
+                  {
+                    staticStyle: {
+                      margin: "0 auto",
+                      "max-width": "950px",
+                      position: "relative"
+                    }
+                  },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-info builder-exchange",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#articleQueueModal"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.setModalPosition(0)
                           }
-                        }),
-                        _vm._v(" "),
-                        _c("p", { staticClass: "builder-article-title" }, [
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "fa fa-exchange",
+                          attrs: { "aria-hidden": "true" }
+                        })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm.issueArticles[0]
+                      ? [
                           _c(
-                            "a",
+                            "button",
                             {
-                              attrs: {
-                                href:
-                                  "/admin/queuearticle/magazine/article/" +
-                                  _vm.usedMainArticle.id +
-                                  "/edit",
-                                target: "_blank"
+                              staticClass:
+                                "btn btn-sm btn-danger builder-remove",
+                              attrs: { type: "button", "data-toggle": "modal" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.setIssueArticleAtIndex({
+                                    index: 0,
+                                    article: null
+                                  })
+                                }
                               }
                             },
-                            [_vm._v(_vm._s(_vm.usedMainArticle.title))]
-                          )
-                        ])
-                      ]
-                    : [_vm._m(0)]
-                ],
-                2
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "substory-box" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info builder-exchange",
-                    attrs: {
-                      type: "button",
-                      "data-toggle": "modal",
-                      "data-target": "#articleQueueModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.setModalPosition("sub-1")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", {
-                      staticClass: "fa fa-exchange",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.usedSubArticle1
-                  ? [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-danger builder-remove",
-                          attrs: { type: "button", "data-toggle": "modal" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setSubArticle1(null)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-close",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        attrs: {
-                          width: "100%",
-                          src:
-                            _vm.subArticleImage(_vm.usedSubArticle1)
-                              .image_path +
-                            _vm.subArticleImage(_vm.usedSubArticle1).filename,
-                          alt: _vm.subArticleImage(_vm.usedSubArticle1).moretext
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "builder-article-title" }, [
-                        _c(
-                          "a",
-                          {
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-close",
+                                attrs: { "aria-hidden": "true" }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("img", {
                             attrs: {
-                              href:
-                                "/admin/queuearticle/magazine/article/" +
-                                _vm.usedSubArticle1.id +
-                                "/edit",
-                              target: "_blank"
+                              width: "100%",
+                              src:
+                                _vm.mainArticleImage(_vm.issueArticles[0])
+                                  .image_path +
+                                _vm.mainArticleImage(_vm.issueArticles[0])
+                                  .filename,
+                              alt: _vm.mainArticleImage(_vm.issueArticles[0])
+                                .moretext
                             }
-                          },
-                          [_vm._v(_vm._s(_vm.usedSubArticle1.title))]
-                        )
-                      ])
-                    ]
-                  : [_vm._m(1)]
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "substory-box" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info builder-exchange",
-                    attrs: {
-                      type: "button",
-                      "data-toggle": "modal",
-                      "data-target": "#articleQueueModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.setModalPosition("sub-2")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", {
-                      staticClass: "fa fa-exchange",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.usedSubArticle2
-                  ? [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-danger builder-remove",
-                          attrs: { type: "button", "data-toggle": "modal" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setSubArticle2(null)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-close",
-                            attrs: { "aria-hidden": "true" }
-                          })
+                          }),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "builder-article-title" }, [
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  href:
+                                    "/admin/queuearticle/magazine/article/" +
+                                    _vm.issueArticles[0].id +
+                                    "/edit",
+                                  target: "_blank"
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.issueArticles[0].title))]
+                            )
+                          ])
                         ]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        attrs: {
-                          width: "100%",
-                          src:
-                            _vm.subArticleImage(_vm.usedSubArticle2)
-                              .image_path +
-                            _vm.subArticleImage(_vm.usedSubArticle2).filename,
-                          alt: _vm.subArticleImage(_vm.usedSubArticle2).moretext
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "builder-article-title" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "/admin/queuearticle/magazine/article/" +
-                                _vm.usedSubArticle2.id +
-                                "/edit",
-                              target: "_blank"
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.usedSubArticle2.title))]
-                        )
-                      ])
-                    ]
-                  : [_vm._m(2)]
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "substory-box" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info builder-exchange",
-                    attrs: {
-                      type: "button",
-                      "data-toggle": "modal",
-                      "data-target": "#articleQueueModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.setModalPosition("sub-3")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", {
-                      staticClass: "fa fa-exchange",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.usedSubArticle3
-                  ? [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-danger builder-remove",
-                          attrs: { type: "button", "data-toggle": "modal" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setSubArticle3(null)
-                            }
-                          }
-                        },
+                      : [_vm._m(0)]
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.issueArticles, function(article, index) {
+                return [
+                  index >= 1 && index <= 5
+                    ? _c(
+                        "div",
+                        { staticClass: "substory-box" },
                         [
-                          _c("i", {
-                            staticClass: "fa fa-close",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        attrs: {
-                          width: "100%",
-                          src:
-                            _vm.subArticleImage(_vm.usedSubArticle3)
-                              .image_path +
-                            _vm.subArticleImage(_vm.usedSubArticle3).filename,
-                          alt: _vm.subArticleImage(_vm.usedSubArticle3).moretext
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "builder-article-title" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "/admin/queuearticle/magazine/article/" +
-                                _vm.usedSubArticle3.id +
-                                "/edit",
-                              target: "_blank"
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.usedSubArticle3.title))]
-                        )
-                      ])
-                    ]
-                  : [_vm._m(3)]
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "substory-box" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info builder-exchange",
-                    attrs: {
-                      type: "button",
-                      "data-toggle": "modal",
-                      "data-target": "#articleQueueModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.setModalPosition("sub-4")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", {
-                      staticClass: "fa fa-exchange",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.usedSubArticle4
-                  ? [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-danger builder-remove",
-                          attrs: { type: "button", "data-toggle": "modal" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setSubArticle4(null)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-close",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        attrs: {
-                          width: "100%",
-                          src:
-                            _vm.subArticleImage(_vm.usedSubArticle4)
-                              .image_path +
-                            _vm.subArticleImage(_vm.usedSubArticle4).filename,
-                          alt: _vm.subArticleImage(_vm.usedSubArticle4).moretext
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "builder-article-title" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "/admin/queuearticle/magazine/article/" +
-                                _vm.usedSubArticle4.id +
-                                "/edit",
-                              target: "_blank"
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.usedSubArticle4.title))]
-                        )
-                      ])
-                    ]
-                  : [_vm._m(4)]
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "substory-box" },
-              [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-sm btn-info builder-exchange",
-                    attrs: {
-                      type: "button",
-                      "data-toggle": "modal",
-                      "data-target": "#articleQueueModal"
-                    },
-                    on: {
-                      click: function($event) {
-                        return _vm.setModalPosition("sub-5")
-                      }
-                    }
-                  },
-                  [
-                    _c("i", {
-                      staticClass: "fa fa-exchange",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ]
-                ),
-                _vm._v(" "),
-                _vm.usedSubArticle5
-                  ? [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-sm btn-danger builder-remove",
-                          attrs: { type: "button", "data-toggle": "modal" },
-                          on: {
-                            click: function($event) {
-                              return _vm.setSubArticle5(null)
-                            }
-                          }
-                        },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-close",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("img", {
-                        attrs: {
-                          width: "100%",
-                          src:
-                            _vm.subArticleImage(_vm.usedSubArticle5)
-                              .image_path +
-                            _vm.subArticleImage(_vm.usedSubArticle5).filename,
-                          alt: _vm.subArticleImage(_vm.usedSubArticle5).moretext
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("p", { staticClass: "builder-article-title" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href:
-                                "/admin/queuearticle/magazine/article/" +
-                                _vm.usedSubArticle5.id +
-                                "/edit",
-                              target: "_blank"
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.usedSubArticle5.title))]
-                        )
-                      ])
-                    ]
-                  : [_vm._m(5)]
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("div", { staticStyle: { clear: "both" } })
-          ])
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-xs btn-info builder-exchange",
+                              attrs: {
+                                type: "button",
+                                "data-toggle": "modal",
+                                "data-target": "#articleQueueModal"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.setModalPosition(index)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-exchange",
+                                attrs: { "aria-hidden": "true" }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          article
+                            ? [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-xs btn-danger builder-remove",
+                                    attrs: {
+                                      type: "button",
+                                      "data-toggle": "modal"
+                                    },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.setIssueArticleAtIndex({
+                                          index: index,
+                                          article: null
+                                        })
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-close",
+                                      attrs: { "aria-hidden": "true" }
+                                    })
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("img", {
+                                  attrs: {
+                                    width: "100%",
+                                    src:
+                                      _vm.subArticleImage(article).image_path +
+                                      _vm.subArticleImage(article).filename,
+                                    alt: _vm.subArticleImage(article).moretext
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "p",
+                                  { staticClass: "builder-article-title" },
+                                  [
+                                    _c(
+                                      "a",
+                                      {
+                                        attrs: {
+                                          href:
+                                            "/admin/queuearticle/magazine/article/" +
+                                            article.id +
+                                            "/edit",
+                                          target: "_blank"
+                                        }
+                                      },
+                                      [_vm._v(_vm._s(article.title))]
+                                    )
+                                  ]
+                                )
+                              ]
+                            : [_vm._m(1, true)]
+                        ],
+                        2
+                      )
+                    : _vm._e()
+                ]
+              }),
+              _vm._v(" "),
+              _c("div", { staticStyle: { clear: "both" } })
+            ],
+            2
+          )
         ]),
         _vm._v(" "),
-        _vm._m(6)
+        _vm._m(2)
       ])
     ],
     1
@@ -41390,38 +41023,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Main Article Not Set")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "builder-article-title" }, [
-      _c("strong", [_vm._v("Not Set")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "builder-article-title" }, [
-      _c("strong", [_vm._v("Not Set")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "builder-article-title" }, [
-      _c("strong", [_vm._v("Not Set")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "builder-article-title" }, [
-      _c("strong", [_vm._v("Not Set")])
     ])
   },
   function() {
@@ -64044,8 +63645,8 @@ var builderMixin = {
       isEndDate: false
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['magazineBuilderArticlesMain', 'magazineBuilderArticlesSub', 'usedMainArticle', 'usedSubArticle1', 'usedSubArticle2', 'usedSubArticle3', 'usedSubArticle4', 'usedSubArticle5', 'modalPosition'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['setMagazineArticlesMain', 'setMagazineArticlesSub', 'setMainArticle', 'setSubArticle1', 'setSubArticle2', 'setSubArticle3', 'setSubArticle4', 'setSubArticle5', 'setModalPosition']), {
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['magazineBuilderArticlesMain', 'magazineBuilderArticlesSub', 'issueArticles', 'modalPosition'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['setMagazineArticlesMain', 'setMagazineArticlesSub', 'setIssueArticleAtIndex', 'setIssueArticles', 'setModalPosition']), {
     fetchQueueArticles: function fetchQueueArticles() {
       var _this = this;
 
@@ -64095,53 +63696,16 @@ var builderMixin = {
 
       var routeUrl = "/api/magazine/issuearticles/".concat(issueID);
       this.$http.get(routeUrl).then(function (response) {
-        _this2.setIssueArticles(response.body.stories);
+        response.body.stories.forEach(function (article) {
+          var position = article.pivot.story_position;
+
+          _this2.setIssueArticleAtIndex({
+            index: position,
+            article: article
+          });
+        });
       })["catch"](function (e) {
         console.log(e);
-      });
-    },
-    // Do this after fetching the issue articles
-    setIssueArticles: function setIssueArticles(articles) {
-      var _this3 = this;
-
-      articles.forEach(function (article) {
-        var position = article.pivot.story_position;
-
-        switch (position) {
-          case 0:
-            _this3.setMainArticle(article);
-
-            break;
-
-          case 1:
-            _this3.setSubArticle1(article);
-
-            break;
-
-          case 2:
-            _this3.setSubArticle2(article);
-
-            break;
-
-          case 3:
-            _this3.setSubArticle3(article);
-
-            break;
-
-          case 4:
-            _this3.setSubArticle4(article);
-
-            break;
-
-          case 5:
-            _this3.setSubArticle5(article);
-
-            break;
-          // Any position > 6 goes in the other story list
-
-          default:
-            break;
-        }
       });
     }
   })
@@ -64219,6 +63783,7 @@ var state = {
   usedSubArticle4: null,
   usedSubArticle5: null,
   usedOtherArticles: [],
+  issueArticles: [null, null, null, null, null, null],
   modalPosition: ''
 };
 var mutations = {
@@ -64232,6 +63797,11 @@ var mutations = {
   },
   RECORD_STATE: function RECORD_STATE(state, value) {
     state.recordState = value;
+  },
+  setIssueArticleAtIndex: function setIssueArticleAtIndex(state, _ref) {
+    var index = _ref.index,
+        article = _ref.article;
+    state.issueArticles.splice(index, 1, article);
   },
   setMagazineArticlesMain: function setMagazineArticlesMain(state, articles) {
     state.magazineBuilderArticlesMain = articles;
@@ -64259,6 +63829,9 @@ var mutations = {
   },
   setModalPosition: function setModalPosition(state, position) {
     state.modalPosition = position;
+  },
+  setIssueArticles: function setIssueArticles(state, articles) {
+    state.issueArticles = articles;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({

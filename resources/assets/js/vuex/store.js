@@ -18,6 +18,7 @@ const state = {
     usedSubArticle4: null,
     usedSubArticle5: null,
     usedOtherArticles: [],
+    issueArticles: [null,null,null,null,null,null],
     modalPosition: ''
 }
 const mutations = {
@@ -31,6 +32,9 @@ const mutations = {
     },
     RECORD_STATE (state, value) {
         state.recordState = value
+    },
+    setIssueArticleAtIndex (state, {index, article}) {
+        state.issueArticles.splice(index, 1, article)
     },
     setMagazineArticlesMain (state, articles) {
         state.magazineBuilderArticlesMain = articles
@@ -58,6 +62,9 @@ const mutations = {
     },
     setModalPosition (state, position) {
         state.modalPosition = position
+    },
+    setIssueArticles (state, articles) {
+        state.issueArticles = articles
     }
 }
 export default new Vuex.Store({

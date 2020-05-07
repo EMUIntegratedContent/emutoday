@@ -54,8 +54,8 @@
 								type="main"
 								:article="mainArticle"
 								:key="'main-article-' + index"
-								@use-article="handleSetMainArticle"
-								@remove-article="handleSetMainArticle(null)"
+								@use-article="handleSetArticle"
+								@remove-article="handleSetArticle(null)"
 						></magazine-article-pod>
 						<ul class="pagination">
 							<li v-bind:class="{disabled: (currentPageMain <= 1)}" class="page-item">
@@ -77,8 +77,8 @@
 							type="sub"
 							:article="subArticle"
 							:key="'sub-article-' + index"
-							@use-article="handleSetSubArticle"
-							@remove-article="handleSetSubArticle(null)"
+							@use-article="handleSetArticle"
+							@remove-article="handleSetArticle(null)"
 					></magazine-article-pod>
 					<ul class="pagination">
 						<li v-bind:class="{disabled: (currentPageSub <= 1)}" class="page-item">
@@ -196,27 +196,8 @@
 					this.isEndDate = true
 				}
 			},
-			handleSetMainArticle(article) {
-				this.setMainArticle(article)
-			},
-			handleSetSubArticle(article) {
-				switch (this.modalPosition) {
-					case "sub-1":
-						this.setSubArticle1(article)
-						break
-					case "sub-2":
-						this.setSubArticle2(article)
-						break
-					case "sub-3":
-						this.setSubArticle3(article)
-						break
-					case "sub-4":
-						this.setSubArticle4(article)
-						break
-					case "sub-5":
-						this.setSubArticle5(article)
-						break
-				}
+			handleSetArticle(article) {
+				this.setIssueArticleAtIndex({index: this.modalPosition, article: article})
 			}
 		},
 		watch: {
