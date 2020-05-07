@@ -11,13 +11,6 @@ const state = {
     recordState: 'init',
     magazineBuilderArticlesMain: [],
     magazineBuilderArticlesSub: [],
-    usedMainArticle: null,
-    usedSubArticle1: null,
-    usedSubArticle2: null,
-    usedSubArticle3: null,
-    usedSubArticle4: null,
-    usedSubArticle5: null,
-    usedOtherArticles: [],
     issueArticles: [null,null,null,null,null,null],
     modalPosition: ''
 }
@@ -33,6 +26,14 @@ const mutations = {
     RECORD_STATE (state, value) {
         state.recordState = value
     },
+    addOtherArticle(state) {
+      state.issueArticles.push(null)
+    },
+    // When removing an article that is not part of the normal magazine buidler (index > 5),
+    // Any articles that come after it must move up
+    removeOtherArticleAtIndex(state, index) {
+        state.issueArticles.splice(index, 1)
+    },
     setIssueArticleAtIndex (state, {index, article}) {
         state.issueArticles.splice(index, 1, article)
     },
@@ -41,24 +42,6 @@ const mutations = {
     },
     setMagazineArticlesSub (state, articles) {
         state.magazineBuilderArticlesSub = articles
-    },
-    setMainArticle (state, article) {
-        state.usedMainArticle = article
-    },
-    setSubArticle1 (state, article) {
-        state.usedSubArticle1 = article
-    },
-    setSubArticle2 (state, article) {
-        state.usedSubArticle2 = article
-    },
-    setSubArticle3 (state, article) {
-        state.usedSubArticle3 = article
-    },
-    setSubArticle4 (state, article) {
-        state.usedSubArticle4 = article
-    },
-    setSubArticle5 (state, article) {
-        state.usedSubArticle5 = article
     },
     setModalPosition (state, position) {
         state.modalPosition = position

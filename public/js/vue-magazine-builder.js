@@ -515,6 +515,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -525,7 +540,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     issueId: {
       type: Number,
-      "default": 5
+      required: true
     }
   },
   created: function created() {
@@ -553,6 +568,9 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    handleAddOtherArticle: function handleAddOtherArticle() {
+      this.addOtherArticle();
+    },
     mainArticleImage: function mainArticleImage(article) {
       if (!article) return null;
       return article.images.find(function (img) {
@@ -633,13 +651,13 @@ __webpack_require__.r(__webpack_exports__);
       });
       var routeUrl = "/api/magazine/savearticles";
       this.$http.put(routeUrl, {
-        issueId: 5,
+        issueId: this.issueId,
         articles: issueArticleIDs
       }).then(function (response) {
-        console.log(response.body);
         _this.saving = false;
         _this.saveError = false;
-        _this.saved = true;
+        _this.saved = true; // Make sure the articles on the server match what's on the front end
+
         response.body.newdata.stories.forEach(function (article) {
           var position = article.pivot.story_position;
 
@@ -734,7 +752,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.redBtn[data-v-67b20bfa] {\n\tbackground: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[data-v-67b20bfa], .nav-tabs > li.active > a[data-v-67b20bfa]:hover, .nav-tabs > li.active > a[data-v-67b20bfa]:focus {\n\tcolor: #3c8dbc;\n}\n.nav-tabs a.disabled[data-v-67b20bfa] {\n\tcolor: #d2d6de;\n}\n.mainstory-box[data-v-67b20bfa] {\n\twidth: 100%;\n\tmin-height: 50px;\n\tborder-bottom: 1px solid black;\n\tposition: relative;\n\toverflow: hidden;\n\tmax-width: 950px;\n}\n.substory-box[data-v-67b20bfa] {\n\tfloat: left;\n\twidth: 20%;\n\tmin-height: 50px;\n\tposition: relative;\n\tborder: 1px solid white;\n}\n.builder-exchange[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-container[data-v-67b20bfa] {\n\tborder: 1px solid black;\n}\n.builder-container .btn[data-v-67b20bfa] {\n\topacity: 0.7;\n}\n.builder-container .btn[data-v-67b20bfa]:hover{\n\topacity: 1;\n}\n.builder-article-title[data-v-67b20bfa] {\n\ttext-align: center;\n\tfont-weight: bold;\n\tpadding-top: 3px;\n}\n", ""]);
+exports.push([module.i, "\n.redBtn[data-v-67b20bfa] {\n\tbackground: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[data-v-67b20bfa], .nav-tabs > li.active > a[data-v-67b20bfa]:hover, .nav-tabs > li.active > a[data-v-67b20bfa]:focus {\n\tcolor: #3c8dbc;\n}\n.nav-tabs a.disabled[data-v-67b20bfa] {\n\tcolor: #d2d6de;\n}\n.mainstory-box[data-v-67b20bfa] {\n\twidth: 100%;\n\tmin-height: 50px;\n\tborder-bottom: 1px solid black;\n\tposition: relative;\n\toverflow: hidden;\n\tmax-width: 950px;\n}\n.substory-box[data-v-67b20bfa] {\n\tfloat: left;\n\twidth: 20%;\n\tmin-height: 50px;\n\tposition: relative;\n\tborder: 1px solid white;\n}\n.other-substory-box[data-v-67b20bfa] {\n\tposition: relative;\n\tborder: 1px solid black;\n\tpadding: 5px;\n\tmargin-bottom: 3px;\n}\n.builder-exchange[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-exchange-sub[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:30%;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove-sub[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:30%;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove-other[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\tbottom: 5px;\n\tz-index:50\n}\n.builder-container[data-v-67b20bfa] {\n\tborder: 1px solid black;\n}\n.builder-container .btn[data-v-67b20bfa], .other-stories-container .btn[data-v-67b20bfa] {\n\topacity: 0.7;\n}\n.builder-container .btn[data-v-67b20bfa]:hover{\n\topacity: 1;\n}\n.builder-article-title[data-v-67b20bfa] {\n\ttext-align: center;\n\tfont-weight: bold;\n\tpadding-top: 3px;\n}\n", ""]);
 
 // exports
 
@@ -41042,7 +41060,7 @@ var render = function() {
                             "button",
                             {
                               staticClass:
-                                "btn btn-xs btn-info builder-exchange",
+                                "btn btn-xs btn-info builder-exchange-sub",
                               attrs: {
                                 type: "button",
                                 "data-toggle": "modal",
@@ -41068,7 +41086,7 @@ var render = function() {
                                   "button",
                                   {
                                     staticClass:
-                                      "btn btn-xs btn-danger builder-remove",
+                                      "btn btn-xs btn-danger builder-remove-sub",
                                     attrs: {
                                       type: "button",
                                       "data-toggle": "modal"
@@ -41097,7 +41115,7 @@ var render = function() {
                                         staticClass: "btn btn-xs btn-success",
                                         staticStyle: {
                                           position: "absolute",
-                                          bottom: "40px",
+                                          top: "5px",
                                           left: "5px"
                                         },
                                         attrs: { type: "button" },
@@ -41129,7 +41147,7 @@ var render = function() {
                                         staticClass: "btn btn-xs btn-success",
                                         staticStyle: {
                                           position: "absolute",
-                                          bottom: "40px",
+                                          top: "5px",
                                           right: "5px"
                                         },
                                         attrs: { type: "button" },
@@ -41195,7 +41213,215 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(2)
+        _c(
+          "div",
+          {
+            staticClass:
+              "col-xs-12 col-sm-12 col-md-6 col-lg-4 other-stories-container"
+          },
+          [
+            _c("h3", [_vm._v("Other Stories")]),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v(
+                "These articles will only show in the list on the /magazine/issue page. They will NOT be visible on the magazine homepage."
+              )
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.issueArticles, function(article, index) {
+              return [
+                index > 5 && article
+                  ? _c("div", { staticClass: "other-substory-box" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-xs btn-info builder-exchange",
+                          attrs: {
+                            type: "button",
+                            "data-toggle": "modal",
+                            "data-target": "#articleQueueModal"
+                          },
+                          on: {
+                            click: function($event) {
+                              return _vm.setModalPosition(index)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-exchange",
+                            attrs: { "aria-hidden": "true" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-xs btn-danger builder-remove-other",
+                          attrs: { type: "button", "data-toggle": "modal" },
+                          on: {
+                            click: function($event) {
+                              return _vm.removeOtherArticleAtIndex(index)
+                            }
+                          }
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "fa fa-close",
+                            attrs: { "aria-hidden": "true" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      index > 1 || _vm.mainArticleImage(article)
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-xs btn-success",
+                              staticStyle: {
+                                position: "absolute",
+                                top: "5px",
+                                right: "5px"
+                              },
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.moveArticleLeft(index, article)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-arrow-up",
+                                attrs: { "aria-hidden": "true" }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      index < _vm.issueArticles.length - 1 &&
+                      _vm.issueArticles[index + 1]
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-xs btn-success",
+                              staticStyle: {
+                                position: "absolute",
+                                bottom: "5px",
+                                right: "5px"
+                              },
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.moveArticleRight(index, article)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-arrow-down",
+                                attrs: { "aria-hidden": "true" }
+                              })
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("img", {
+                        attrs: {
+                          width: "100",
+                          src:
+                            _vm.subArticleImage(article).image_path +
+                            _vm.subArticleImage(article).filename,
+                          alt: _vm.subArticleImage(article).moretext
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          attrs: {
+                            href:
+                              "/admin/queuearticle/magazine/article/" +
+                              article.id +
+                              "/edit",
+                            target: "_blank"
+                          }
+                        },
+                        [_vm._v(_vm._s(article.title))]
+                      )
+                    ])
+                  : index > 5 && !article
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "other-substory-box",
+                        staticStyle: { "min-height": "73px" }
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-xs btn-info builder-exchange",
+                            attrs: {
+                              type: "button",
+                              "data-toggle": "modal",
+                              "data-target": "#articleQueueModal"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.setModalPosition(index)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-exchange",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-xs btn-danger builder-remove-other",
+                            attrs: { type: "button", "data-toggle": "modal" },
+                            on: {
+                              click: function($event) {
+                                return _vm.removeOtherArticleAtIndex(index)
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-close",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  : _vm._e()
+              ]
+            }),
+            _vm._v(" "),
+            _vm.issueArticles.length > 5 &&
+            _vm.issueArticles[_vm.issueArticles.length - 1]
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-block",
+                    on: { click: _vm.handleAddOtherArticle }
+                  },
+                  [_vm._v("Add Article")]
+                )
+              : _vm._e()
+          ],
+          2
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
@@ -41252,20 +41478,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("p", { staticClass: "builder-article-title" }, [
       _c("strong", [_vm._v("Not Set")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-12 col-sm-12 col-md-6 col-lg-4" }, [
-      _c("h3", [_vm._v("Other Stories")]),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "These articles will only show in the list on the /magazine/issue page. They will NOT be visible on the magazine homepage."
-        )
-      ])
     ])
   }
 ]
@@ -63867,7 +64079,7 @@ var builderMixin = {
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['magazineBuilderArticlesMain', 'magazineBuilderArticlesSub', 'issueArticles', 'modalPosition'])),
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['setMagazineArticlesMain', 'setMagazineArticlesSub', 'setIssueArticleAtIndex', 'setIssueArticles', 'setModalPosition']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapMutations"])(['addOtherArticle', 'removeOtherArticleAtIndex', 'setMagazineArticlesMain', 'setMagazineArticlesSub', 'setIssueArticleAtIndex', 'setIssueArticles', 'setModalPosition']), {
     fetchQueueArticles: function fetchQueueArticles() {
       var _this = this;
 
@@ -63997,13 +64209,6 @@ var state = {
   recordState: 'init',
   magazineBuilderArticlesMain: [],
   magazineBuilderArticlesSub: [],
-  usedMainArticle: null,
-  usedSubArticle1: null,
-  usedSubArticle2: null,
-  usedSubArticle3: null,
-  usedSubArticle4: null,
-  usedSubArticle5: null,
-  usedOtherArticles: [],
   issueArticles: [null, null, null, null, null, null],
   modalPosition: ''
 };
@@ -64019,6 +64224,14 @@ var mutations = {
   RECORD_STATE: function RECORD_STATE(state, value) {
     state.recordState = value;
   },
+  addOtherArticle: function addOtherArticle(state) {
+    state.issueArticles.push(null);
+  },
+  // When removing an article that is not part of the normal magazine buidler (index > 5),
+  // Any articles that come after it must move up
+  removeOtherArticleAtIndex: function removeOtherArticleAtIndex(state, index) {
+    state.issueArticles.splice(index, 1);
+  },
   setIssueArticleAtIndex: function setIssueArticleAtIndex(state, _ref) {
     var index = _ref.index,
         article = _ref.article;
@@ -64029,24 +64242,6 @@ var mutations = {
   },
   setMagazineArticlesSub: function setMagazineArticlesSub(state, articles) {
     state.magazineBuilderArticlesSub = articles;
-  },
-  setMainArticle: function setMainArticle(state, article) {
-    state.usedMainArticle = article;
-  },
-  setSubArticle1: function setSubArticle1(state, article) {
-    state.usedSubArticle1 = article;
-  },
-  setSubArticle2: function setSubArticle2(state, article) {
-    state.usedSubArticle2 = article;
-  },
-  setSubArticle3: function setSubArticle3(state, article) {
-    state.usedSubArticle3 = article;
-  },
-  setSubArticle4: function setSubArticle4(state, article) {
-    state.usedSubArticle4 = article;
-  },
-  setSubArticle5: function setSubArticle5(state, article) {
-    state.usedSubArticle5 = article;
   },
   setModalPosition: function setModalPosition(state, position) {
     state.modalPosition = position;

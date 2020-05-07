@@ -24,6 +24,8 @@ export const builderMixin = {
 	},
 	methods: {
 		...mapMutations([
+			'addOtherArticle',
+			'removeOtherArticleAtIndex',
 			'setMagazineArticlesMain',
 			'setMagazineArticlesSub',
 			'setIssueArticleAtIndex',

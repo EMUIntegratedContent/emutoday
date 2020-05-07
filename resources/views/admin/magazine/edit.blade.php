@@ -164,7 +164,7 @@
                     </div><!-- /.box-tools -->
                 </div>
                 <div class="box-body" id="vue-magazine-builder">
-                    <magazine-builder issueId="{{$magazine->id}}"></magazine-builder>
+                    <magazine-builder issue-id="{{$magazine->id}}"></magazine-builder>
                 </div><!-- /.box-body -->
                 <div class="box-footer">
 

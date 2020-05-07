@@ -22,11 +22,11 @@
 					</div>
 					<template v-for="(article, index) in issueArticles">
 						<div v-if="index >= 1 && index <= 5" class="substory-box">
-							<button type="button" class="btn btn-xs btn-info builder-exchange" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+							<button type="button" class="btn btn-xs btn-info builder-exchange-sub" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
 							<template v-if="article">
-								<button type="button" class="btn btn-xs btn-danger builder-remove" data-toggle="modal" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
-								<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="position: absolute; bottom: 40px; left: 5px" @click="moveArticleLeft(index, article)"><i :class="index == 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-left'" aria-hidden="true"></i></button>
-								<button v-if="index < 5 || issueArticles.length > 6" type="button" class="btn btn-xs btn-success" style="position: absolute; bottom: 40px; right: 5px" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-xs btn-danger builder-remove-sub" data-toggle="modal" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
+								<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="position: absolute; top: 5px; left: 5px" @click="moveArticleLeft(index, article)"><i :class="index == 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-left'" aria-hidden="true"></i></button>
+								<button v-if="index < 5 || issueArticles.length > 6" type="button" class="btn btn-xs btn-success" style="position: absolute; top: 5px; right: 5px" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
 								<img width="100%" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
 								<p class="builder-article-title">
 									<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
@@ -40,9 +40,24 @@
 					<div style="clear: both"></div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 other-stories-container">
 				<h3>Other Stories</h3>
 				<p>These articles will only show in the list on the /magazine/issue page. They will NOT be visible on the magazine homepage.</p>
+				<template v-for="(article, index) in issueArticles">
+					<div v-if="index > 5 && article" class="other-substory-box">
+						<button type="button" class="btn btn-xs btn-info builder-exchange" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+						<button type="button" class="btn btn-xs btn-danger builder-remove-other" data-toggle="modal" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="position: absolute; top: 5px; right: 5px" @click="moveArticleLeft(index, article)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+						<button v-if="index < issueArticles.length - 1 && issueArticles[index+1]" type="button" class="btn btn-xs btn-success" style="position: absolute; bottom: 5px; right: 5px" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+						<img width="100" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
+						<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
+					</div>
+					<div v-else-if="index > 5 && !article" class="other-substory-box" style="min-height: 73px">
+						<button type="button" class="btn btn-xs btn-info builder-exchange" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+						<button type="button" class="btn btn-xs btn-danger builder-remove-other" data-toggle="modal" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
+					</div>
+				</template>
+				<button v-if="issueArticles.length > 5 && issueArticles[issueArticles.length-1]" class="btn btn-primary btn-block" @click="handleAddOtherArticle">Add Article</button>
 			</div>
 		</div>
 		<div class="row">
@@ -65,7 +80,7 @@
 		props: {
 			issueId: {
 				type: Number,
-				default: 5
+				required: true
 			}
 		},
 		created: function () {
@@ -95,6 +110,9 @@
 			},
 		},
 		methods: {
+			handleAddOtherArticle() {
+				this.addOtherArticle()
+			},
 			mainArticleImage(article) {
 				if(!article) return null
 				return article.images.find(img => {
@@ -147,14 +165,14 @@
 
 				let routeUrl = `/api/magazine/savearticles`;
 				this.$http.put(routeUrl, {
-					issueId: 5,
+					issueId: this.issueId,
 					articles: issueArticleIDs
 				})
 				.then((response) => {
-					console.log(response.body)
 					this.saving = false
 					this.saveError = false
 					this.saved = true
+					// Make sure the articles on the server match what's on the front end
 					response.body.newdata.stories.forEach(article => {
 						const position = article.pivot.story_position
 						this.setIssueArticleAtIndex({index: position, article: article})
@@ -206,6 +224,13 @@
 		border: 1px solid white;
 	}
 
+	.other-substory-box {
+		position: relative;
+		border: 1px solid black;
+		padding: 5px;
+		margin-bottom: 3px;
+	}
+
 	.builder-exchange {
 		position: absolute;
 		left:5px;
@@ -220,10 +245,31 @@
 		z-index:50
 	}
 
+	.builder-exchange-sub {
+		position: absolute;
+		left:30%;
+		top: 5px;
+		z-index:50
+	}
+
+	.builder-remove-sub {
+		position: absolute;
+		right:30%;
+		top: 5px;
+		z-index:50
+	}
+
+	.builder-remove-other {
+		position: absolute;
+		left:5px;
+		bottom: 5px;
+		z-index:50
+	}
+
 	.builder-container {
 		border: 1px solid black;
 	}
-	.builder-container .btn {
+	.builder-container .btn, .other-stories-container .btn {
 		opacity: 0.7;
 	}
 	.builder-container .btn:hover{
