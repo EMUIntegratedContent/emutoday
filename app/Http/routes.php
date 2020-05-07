@@ -115,6 +115,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
 		Route::get('magazine/articles/{fromDate?}/{toDate?}', 'Api\MagazineController@getArticles')->name('api_magazine_articles');
 		Route::get('magazine/issuearticles/{issue_id}', 'Api\MagazineController@getArticlesForIssue')->name('api_magazine_articles_issue');
+		Route::put('magazine/savearticles/', 'Api\MagazineController@saveArticles')->name('api_magazine_save_articles');
 		/**
      * List of Buildings for EventForm
      */

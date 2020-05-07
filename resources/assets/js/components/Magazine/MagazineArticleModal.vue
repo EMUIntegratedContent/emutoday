@@ -44,57 +44,54 @@
 					</form>
 					<hr>
 					Filter Story Titles: <input v-model="searchString" /><button v-if="searchString != ''" @click="searchString = ''">X</button>
-					<template v-if="modalPosition == 'main'">
-						<hr>
-						<h3>Main Articles</h3>
-						<p>Flagged as featured articles and have the "front" image type. Can also be used as sub articles.</p>
-						<p class="text-red" v-if="mainArticlesPaginated.length == 0">-- No matching articles found --</p>
-						<magazine-article-pod
-								v-for="(mainArticle, index) in mainArticlesPaginated"
-								type="main"
-								:article="mainArticle"
-								:key="'main-article-' + index"
-								@use-article="handleSetArticle"
-								@remove-article="handleSetArticle(null)"
-						></magazine-article-pod>
-						<ul class="pagination">
-							<li v-bind:class="{disabled: (currentPageMain <= 1)}" class="page-item">
-								<a href="#" @click.prevent="setPageMain(currentPageMain-1)" class="page-link" tabindex="-1">Previous</a>
-							</li>
-							<li v-for="pageNumber in totalPagesMain" :class="{active: (pageNumber) == currentPageMain}" class="page-item">
-								<a class="page-link" href="#" @click.prevent="setPageMain(pageNumber)">{{ pageNumber }} <span v-if="(pageNumber) == currentPageMain" class="sr-only">(current)</span></a>
-							</li>
-							<li v-bind:class="{disabled: (currentPageMain == totalPagesMain)}" class="page-item">
-								<a class="page-link" @click.prevent="setPageMain(currentPageMain+1)" href="#">Next</a>
-							</li>
-						</ul>
-					</template>
 					<hr>
-					<h3>Sub Articles</h3>
-					<p>These articles can not be used as the main article.</p>
+					<h3>Main Articles</h3>
+					<p>Flagged as featured articles and have the "front" image type. Can also be used as sub articles.</p>
+					<p class="text-red" v-if="mainArticlesPaginated.length == 0">-- No matching articles found --</p>
 					<magazine-article-pod
-							v-for="(subArticle, index) in subArticlesPaginated"
-							type="sub"
-							:article="subArticle"
-							:key="'sub-article-' + index"
+							v-for="(mainArticle, index) in mainArticlesPaginated"
+							type="main"
+							:article="mainArticle"
+							:key="'main-article-' + index"
 							@use-article="handleSetArticle"
 							@remove-article="handleSetArticle(null)"
 					></magazine-article-pod>
 					<ul class="pagination">
-						<li v-bind:class="{disabled: (currentPageSub <= 1)}" class="page-item">
-							<a href="#" @click.prevent="setPageSub(currentPageSub-1)" class="page-link" tabindex="-1">Previous</a>
+						<li v-bind:class="{disabled: (currentPageMain <= 1)}" class="page-item">
+							<a href="#" @click.prevent="setPageMain(currentPageMain-1)" class="page-link" tabindex="-1">Previous</a>
 						</li>
-						<li v-for="pageNumber in totalPagesSub" :class="{active: (pageNumber) == currentPageSub}" class="page-item">
-							<a class="page-link" href="#" @click.prevent="setPageSub(pageNumber)">{{ pageNumber }} <span v-if="(pageNumber) == currentPageSub" class="sr-only">(current)</span></a>
+						<li v-for="pageNumber in totalPagesMain" :class="{active: (pageNumber) == currentPageMain}" class="page-item">
+							<a class="page-link" href="#" @click.prevent="setPageMain(pageNumber)">{{ pageNumber }} <span v-if="(pageNumber) == currentPageMain" class="sr-only">(current)</span></a>
 						</li>
-						<li v-bind:class="{disabled: (currentPageSub == totalPagesSub)}" class="page-item">
-							<a class="page-link" @click.prevent="setPageSub(currentPageSub+1)" href="#">Next</a>
+						<li v-bind:class="{disabled: (currentPageMain == totalPagesMain)}" class="page-item">
+							<a class="page-link" @click.prevent="setPageMain(currentPageMain+1)" href="#">Next</a>
 						</li>
 					</ul>
+					<template v-if="modalPosition != 0">
+						<hr>
+						<h3>Sub Articles</h3>
+						<p>These articles can not be used as the main article.</p>
+						<magazine-article-pod
+								v-for="(subArticle, index) in subArticlesPaginated"
+								type="sub"
+								:article="subArticle"
+								:key="'sub-article-' + index"
+								@use-article="handleSetArticle"
+								@remove-article="handleSetArticle(null)"
+						></magazine-article-pod>
+						<ul class="pagination">
+							<li v-bind:class="{disabled: (currentPageSub <= 1)}" class="page-item">
+								<a href="#" @click.prevent="setPageSub(currentPageSub-1)" class="page-link" tabindex="-1">Previous</a>
+							</li>
+							<li v-for="pageNumber in totalPagesSub" :class="{active: (pageNumber) == currentPageSub}" class="page-item">
+								<a class="page-link" href="#" @click.prevent="setPageSub(pageNumber)">{{ pageNumber }} <span v-if="(pageNumber) == currentPageSub" class="sr-only">(current)</span></a>
+							</li>
+							<li v-bind:class="{disabled: (currentPageSub == totalPagesSub)}" class="page-item">
+								<a class="page-link" @click.prevent="setPageSub(currentPageSub+1)" href="#">Next</a>
+							</li>
+						</ul>
+					</template>
 				</div>
-<!--				<div class="modal-footer">-->
-<!--					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>-->
-<!--				</div>-->
 			</div>
 		</div>
 	</div>

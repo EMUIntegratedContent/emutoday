@@ -201,9 +201,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -509,6 +506,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -527,7 +533,11 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchIssueArticles(this.issueId);
   },
   data: function data() {
-    return {};
+    return {
+      saving: false,
+      saved: false,
+      saveError: false
+    };
   },
   computed: {
     isAdmin: function isAdmin() {
@@ -544,13 +554,108 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     mainArticleImage: function mainArticleImage(article) {
+      if (!article) return null;
       return article.images.find(function (img) {
         return img.image_type == 'front';
+      });
+    },
+    moveArticleLeft: function moveArticleLeft(index, article) {
+      var prevArticle = this.issueArticles[index - 1];
+
+      if (prevArticle) {
+        this.setIssueArticleAtIndex({
+          index: index,
+          article: prevArticle
+        });
+      } else {
+        this.setIssueArticleAtIndex({
+          index: index,
+          article: null
+        });
+      }
+
+      this.setIssueArticleAtIndex({
+        index: index - 1,
+        article: article
+      });
+    },
+    moveArticleRight: function moveArticleRight(index, article) {
+      var nextArticle = this.issueArticles[index + 1];
+
+      if (nextArticle) {
+        // The next article should not be moved left (up) to the main story if it doesn't have the appropriate image
+        if (index == 0) {
+          if (this.mainArticleImage(nextArticle)) {
+            this.setIssueArticleAtIndex({
+              index: index,
+              article: nextArticle
+            });
+          } else {
+            this.setIssueArticleAtIndex({
+              index: index,
+              article: null
+            });
+          }
+        } else {
+          this.setIssueArticleAtIndex({
+            index: index,
+            article: nextArticle
+          });
+        }
+      } else {
+        this.setIssueArticleAtIndex({
+          index: index,
+          article: null
+        });
+      }
+
+      this.setIssueArticleAtIndex({
+        index: index + 1,
+        article: article
       });
     },
     subArticleImage: function subArticleImage(article) {
       return article.images.find(function (img) {
         return img.image_type == 'small';
+      });
+    },
+    saveArticles: function saveArticles() {
+      var _this = this;
+
+      this.saveError = false;
+      this.saved = false;
+      this.saving = true; // Just send the issue article IDs, not entire objects
+
+      var issueArticleIDs = [];
+      this.issueArticles.forEach(function (ia) {
+        var articleID = ia ? ia.id : null;
+        issueArticleIDs.push(articleID);
+      });
+      var routeUrl = "/api/magazine/savearticles";
+      this.$http.put(routeUrl, {
+        issueId: 5,
+        articles: issueArticleIDs
+      }).then(function (response) {
+        console.log(response.body);
+        _this.saving = false;
+        _this.saveError = false;
+        _this.saved = true;
+        response.body.newdata.stories.forEach(function (article) {
+          var position = article.pivot.story_position;
+
+          _this.setIssueArticleAtIndex({
+            index: position,
+            article: article
+          });
+        });
+        setTimeout(function () {
+          _this.saved = false;
+        }, 3000);
+      })["catch"](function (e) {
+        console.log(e);
+        _this.saving = false;
+        _this.saved = false;
+        _this.saveError = true;
       });
     }
   },
@@ -629,7 +734,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.redBtn[data-v-67b20bfa] {\n\tbackground: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[data-v-67b20bfa], .nav-tabs > li.active > a[data-v-67b20bfa]:hover, .nav-tabs > li.active > a[data-v-67b20bfa]:focus {\n\tcolor: #3c8dbc;\n}\n.nav-tabs a.disabled[data-v-67b20bfa] {\n\tcolor: #d2d6de;\n}\n.mainstory-box[data-v-67b20bfa] {\n\twidth: 100%;\n\tmin-height: 50px;\n\tborder-bottom: 1px solid black;\n\tposition: relative;\n\toverflow: hidden\n}\n.substory-box[data-v-67b20bfa] {\n\tfloat: left;\n\twidth: 20%;\n\tmin-height: 50px;\n\tposition: relative;\n\tborder: 1px solid white;\n}\n.builder-exchange[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-container[data-v-67b20bfa] {\n\tborder: 1px solid black;\n}\n.builder-container .btn[data-v-67b20bfa] {\n\topacity: 0.7;\n}\n.builder-container .btn[data-v-67b20bfa]:hover{\n\topacity: 1;\n}\n.builder-article-title[data-v-67b20bfa] {\n\ttext-align: center;\n\tfont-weight: bold;\n\tpadding-top: 3px;\n}\n", ""]);
+exports.push([module.i, "\n.redBtn[data-v-67b20bfa] {\n\tbackground: hsl(0, 90%, 70%);\n}\n.nav-tabs > li.active > a[data-v-67b20bfa], .nav-tabs > li.active > a[data-v-67b20bfa]:hover, .nav-tabs > li.active > a[data-v-67b20bfa]:focus {\n\tcolor: #3c8dbc;\n}\n.nav-tabs a.disabled[data-v-67b20bfa] {\n\tcolor: #d2d6de;\n}\n.mainstory-box[data-v-67b20bfa] {\n\twidth: 100%;\n\tmin-height: 50px;\n\tborder-bottom: 1px solid black;\n\tposition: relative;\n\toverflow: hidden;\n\tmax-width: 950px;\n}\n.substory-box[data-v-67b20bfa] {\n\tfloat: left;\n\twidth: 20%;\n\tmin-height: 50px;\n\tposition: relative;\n\tborder: 1px solid white;\n}\n.builder-exchange[data-v-67b20bfa] {\n\tposition: absolute;\n\tleft:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-remove[data-v-67b20bfa] {\n\tposition: absolute;\n\tright:5px;\n\ttop: 5px;\n\tz-index:50\n}\n.builder-container[data-v-67b20bfa] {\n\tborder: 1px solid black;\n}\n.builder-container .btn[data-v-67b20bfa] {\n\topacity: 0.7;\n}\n.builder-container .btn[data-v-67b20bfa]:hover{\n\topacity: 1;\n}\n.builder-article-title[data-v-67b20bfa] {\n\ttext-align: center;\n\tfont-weight: bold;\n\tpadding-top: 3px;\n}\n", ""]);
 
 // exports
 
@@ -40338,7 +40443,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("hr"),
-              _vm._v("\n\t\t\t\t\tFilter Story Titles: "),
+              _vm._v("\n\t\t\t\tFilter Story Titles: "),
               _c("input", {
                 directives: [
                   {
@@ -40372,151 +40477,26 @@ var render = function() {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.modalPosition == "main"
-                ? [
-                    _c("hr"),
-                    _vm._v(" "),
-                    _c("h3", [_vm._v("Main Articles")]),
-                    _vm._v(" "),
-                    _c("p", [
-                      _vm._v(
-                        'Flagged as featured articles and have the "front" image type. Can also be used as sub articles.'
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _vm.mainArticlesPaginated.length == 0
-                      ? _c("p", { staticClass: "text-red" }, [
-                          _vm._v("-- No matching articles found --")
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm._l(_vm.mainArticlesPaginated, function(
-                      mainArticle,
-                      index
-                    ) {
-                      return _c("magazine-article-pod", {
-                        key: "main-article-" + index,
-                        attrs: { type: "main", article: mainArticle },
-                        on: {
-                          "use-article": _vm.handleSetArticle,
-                          "remove-article": function($event) {
-                            return _vm.handleSetArticle(null)
-                          }
-                        }
-                      })
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "ul",
-                      { staticClass: "pagination" },
-                      [
-                        _c(
-                          "li",
-                          {
-                            staticClass: "page-item",
-                            class: { disabled: _vm.currentPageMain <= 1 }
-                          },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#", tabindex: "-1" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.setPageMain(
-                                      _vm.currentPageMain - 1
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v("Previous")]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm._l(_vm.totalPagesMain, function(pageNumber) {
-                          return _c(
-                            "li",
-                            {
-                              staticClass: "page-item",
-                              class: {
-                                active: pageNumber == _vm.currentPageMain
-                              }
-                            },
-                            [
-                              _c(
-                                "a",
-                                {
-                                  staticClass: "page-link",
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.setPageMain(pageNumber)
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(_vm._s(pageNumber) + " "),
-                                  pageNumber == _vm.currentPageMain
-                                    ? _c("span", { staticClass: "sr-only" }, [
-                                        _vm._v("(current)")
-                                      ])
-                                    : _vm._e()
-                                ]
-                              )
-                            ]
-                          )
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "li",
-                          {
-                            staticClass: "page-item",
-                            class: {
-                              disabled:
-                                _vm.currentPageMain == _vm.totalPagesMain
-                            }
-                          },
-                          [
-                            _c(
-                              "a",
-                              {
-                                staticClass: "page-link",
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.setPageMain(
-                                      _vm.currentPageMain + 1
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v("Next")]
-                            )
-                          ]
-                        )
-                      ],
-                      2
-                    )
-                  ]
-                : _vm._e(),
-              _vm._v(" "),
               _c("hr"),
               _vm._v(" "),
-              _c("h3", [_vm._v("Sub Articles")]),
+              _c("h3", [_vm._v("Main Articles")]),
               _vm._v(" "),
               _c("p", [
-                _vm._v("These articles can not be used as the main article.")
+                _vm._v(
+                  'Flagged as featured articles and have the "front" image type. Can also be used as sub articles.'
+                )
               ]),
               _vm._v(" "),
-              _vm._l(_vm.subArticlesPaginated, function(subArticle, index) {
+              _vm.mainArticlesPaginated.length == 0
+                ? _c("p", { staticClass: "text-red" }, [
+                    _vm._v("-- No matching articles found --")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.mainArticlesPaginated, function(mainArticle, index) {
                 return _c("magazine-article-pod", {
-                  key: "sub-article-" + index,
-                  attrs: { type: "sub", article: subArticle },
+                  key: "main-article-" + index,
+                  attrs: { type: "main", article: mainArticle },
                   on: {
                     "use-article": _vm.handleSetArticle,
                     "remove-article": function($event) {
@@ -40534,7 +40514,7 @@ var render = function() {
                     "li",
                     {
                       staticClass: "page-item",
-                      class: { disabled: _vm.currentPageSub <= 1 }
+                      class: { disabled: _vm.currentPageMain <= 1 }
                     },
                     [
                       _c(
@@ -40545,7 +40525,7 @@ var render = function() {
                           on: {
                             click: function($event) {
                               $event.preventDefault()
-                              return _vm.setPageSub(_vm.currentPageSub - 1)
+                              return _vm.setPageMain(_vm.currentPageMain - 1)
                             }
                           }
                         },
@@ -40554,12 +40534,12 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  _vm._l(_vm.totalPagesSub, function(pageNumber) {
+                  _vm._l(_vm.totalPagesMain, function(pageNumber) {
                     return _c(
                       "li",
                       {
                         staticClass: "page-item",
-                        class: { active: pageNumber == _vm.currentPageSub }
+                        class: { active: pageNumber == _vm.currentPageMain }
                       },
                       [
                         _c(
@@ -40570,13 +40550,13 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
-                                return _vm.setPageSub(pageNumber)
+                                return _vm.setPageMain(pageNumber)
                               }
                             }
                           },
                           [
                             _vm._v(_vm._s(pageNumber) + " "),
-                            pageNumber == _vm.currentPageSub
+                            pageNumber == _vm.currentPageMain
                               ? _c("span", { staticClass: "sr-only" }, [
                                   _vm._v("(current)")
                                 ])
@@ -40592,7 +40572,7 @@ var render = function() {
                     {
                       staticClass: "page-item",
                       class: {
-                        disabled: _vm.currentPageSub == _vm.totalPagesSub
+                        disabled: _vm.currentPageMain == _vm.totalPagesMain
                       }
                     },
                     [
@@ -40604,7 +40584,7 @@ var render = function() {
                           on: {
                             click: function($event) {
                               $event.preventDefault()
-                              return _vm.setPageSub(_vm.currentPageSub + 1)
+                              return _vm.setPageMain(_vm.currentPageMain + 1)
                             }
                           }
                         },
@@ -40614,7 +40594,133 @@ var render = function() {
                   )
                 ],
                 2
-              )
+              ),
+              _vm._v(" "),
+              _vm.modalPosition != 0
+                ? [
+                    _c("hr"),
+                    _vm._v(" "),
+                    _c("h3", [_vm._v("Sub Articles")]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v(
+                        "These articles can not be used as the main article."
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.subArticlesPaginated, function(
+                      subArticle,
+                      index
+                    ) {
+                      return _c("magazine-article-pod", {
+                        key: "sub-article-" + index,
+                        attrs: { type: "sub", article: subArticle },
+                        on: {
+                          "use-article": _vm.handleSetArticle,
+                          "remove-article": function($event) {
+                            return _vm.handleSetArticle(null)
+                          }
+                        }
+                      })
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      { staticClass: "pagination" },
+                      [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "page-item",
+                            class: { disabled: _vm.currentPageSub <= 1 }
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "page-link",
+                                attrs: { href: "#", tabindex: "-1" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.setPageSub(
+                                      _vm.currentPageSub - 1
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("Previous")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.totalPagesSub, function(pageNumber) {
+                          return _c(
+                            "li",
+                            {
+                              staticClass: "page-item",
+                              class: {
+                                active: pageNumber == _vm.currentPageSub
+                              }
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "page-link",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.setPageSub(pageNumber)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(_vm._s(pageNumber) + " "),
+                                  pageNumber == _vm.currentPageSub
+                                    ? _c("span", { staticClass: "sr-only" }, [
+                                        _vm._v("(current)")
+                                      ])
+                                    : _vm._e()
+                                ]
+                              )
+                            ]
+                          )
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "li",
+                          {
+                            staticClass: "page-item",
+                            class: {
+                              disabled: _vm.currentPageSub == _vm.totalPagesSub
+                            }
+                          },
+                          [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "page-link",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.setPageSub(
+                                      _vm.currentPageSub + 1
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("Next")]
+                            )
+                          ]
+                        )
+                      ],
+                      2
+                    )
+                  ]
+                : _vm._e()
             ],
             2
           )
@@ -40813,99 +40919,117 @@ var render = function() {
             "div",
             { staticClass: "builder-container" },
             [
-              _c("div", { staticClass: "mainstory-box" }, [
-                _c(
-                  "div",
-                  {
-                    staticStyle: {
-                      margin: "0 auto",
-                      "max-width": "950px",
-                      position: "relative"
-                    }
-                  },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-sm btn-info builder-exchange",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": "modal",
-                          "data-target": "#articleQueueModal"
-                        },
-                        on: {
-                          click: function($event) {
-                            return _vm.setModalPosition(0)
-                          }
-                        }
+              _c(
+                "div",
+                { staticClass: "mainstory-box" },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-info builder-exchange",
+                      attrs: {
+                        type: "button",
+                        "data-toggle": "modal",
+                        "data-target": "#articleQueueModal"
                       },
-                      [
-                        _c("i", {
-                          staticClass: "fa fa-exchange",
-                          attrs: { "aria-hidden": "true" }
-                        })
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _vm.issueArticles[0]
-                      ? [
+                      on: {
+                        click: function($event) {
+                          return _vm.setModalPosition(0)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "fa fa-exchange",
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.issueArticles[0]
+                    ? [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-danger builder-remove",
+                            attrs: { type: "button", "data-toggle": "modal" },
+                            on: {
+                              click: function($event) {
+                                return _vm.setIssueArticleAtIndex({
+                                  index: 0,
+                                  article: null
+                                })
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-close",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-sm btn-success",
+                            staticStyle: {
+                              position: "absolute",
+                              bottom: "40px",
+                              left: "5px"
+                            },
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.moveArticleRight(
+                                  0,
+                                  _vm.issueArticles[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-down",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("img", {
+                          attrs: {
+                            width: "100%",
+                            src:
+                              _vm.mainArticleImage(_vm.issueArticles[0])
+                                .image_path +
+                              _vm.mainArticleImage(_vm.issueArticles[0])
+                                .filename,
+                            alt: _vm.mainArticleImage(_vm.issueArticles[0])
+                              .moretext
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("p", { staticClass: "builder-article-title" }, [
                           _c(
-                            "button",
+                            "a",
                             {
-                              staticClass:
-                                "btn btn-sm btn-danger builder-remove",
-                              attrs: { type: "button", "data-toggle": "modal" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.setIssueArticleAtIndex({
-                                    index: 0,
-                                    article: null
-                                  })
-                                }
+                              attrs: {
+                                href:
+                                  "/admin/queuearticle/magazine/article/" +
+                                  _vm.issueArticles[0].id +
+                                  "/edit",
+                                target: "_blank"
                               }
                             },
-                            [
-                              _c("i", {
-                                staticClass: "fa fa-close",
-                                attrs: { "aria-hidden": "true" }
-                              })
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("img", {
-                            attrs: {
-                              width: "100%",
-                              src:
-                                _vm.mainArticleImage(_vm.issueArticles[0])
-                                  .image_path +
-                                _vm.mainArticleImage(_vm.issueArticles[0])
-                                  .filename,
-                              alt: _vm.mainArticleImage(_vm.issueArticles[0])
-                                .moretext
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "builder-article-title" }, [
-                            _c(
-                              "a",
-                              {
-                                attrs: {
-                                  href:
-                                    "/admin/queuearticle/magazine/article/" +
-                                    _vm.issueArticles[0].id +
-                                    "/edit",
-                                  target: "_blank"
-                                }
-                              },
-                              [_vm._v(_vm._s(_vm.issueArticles[0].title))]
-                            )
-                          ])
-                        ]
-                      : [_vm._m(0)]
-                  ],
-                  2
-                )
-              ]),
+                            [_vm._v(_vm._s(_vm.issueArticles[0].title))]
+                          )
+                        ])
+                      ]
+                    : [_vm._m(0)]
+                ],
+                2
+              ),
               _vm._v(" "),
               _vm._l(_vm.issueArticles, function(article, index) {
                 return [
@@ -40966,6 +41090,67 @@ var render = function() {
                                   ]
                                 ),
                                 _vm._v(" "),
+                                index > 1 || _vm.mainArticleImage(article)
+                                  ? _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-xs btn-success",
+                                        staticStyle: {
+                                          position: "absolute",
+                                          bottom: "40px",
+                                          left: "5px"
+                                        },
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.moveArticleLeft(
+                                              index,
+                                              article
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("i", {
+                                          class:
+                                            index == 1
+                                              ? "fa fa-arrow-up"
+                                              : "fa fa-arrow-left",
+                                          attrs: { "aria-hidden": "true" }
+                                        })
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                index < 5 || _vm.issueArticles.length > 6
+                                  ? _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-xs btn-success",
+                                        staticStyle: {
+                                          position: "absolute",
+                                          bottom: "40px",
+                                          right: "5px"
+                                        },
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.moveArticleRight(
+                                              index,
+                                              article
+                                            )
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fa fa-arrow-right",
+                                          attrs: { "aria-hidden": "true" }
+                                        })
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
                                 _c("img", {
                                   attrs: {
                                     width: "100%",
@@ -41011,6 +41196,42 @@ var render = function() {
         ]),
         _vm._v(" "),
         _vm._m(2)
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          {
+            staticClass: "col-xs-12 mt-3",
+            staticStyle: { "margin-top": "15px" }
+          },
+          [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-block",
+                on: { click: _vm.saveArticles }
+              },
+              [_vm._v("Update Magazine Builder")]
+            ),
+            _vm._v(" "),
+            _vm.saving
+              ? _c("p", { staticClass: "text-info" }, [_vm._v("Saving...")])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.saved
+              ? _c("p", { staticClass: "text-success" }, [
+                  _vm._v("Articles saved")
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.saveError
+              ? _c("p", { staticClass: "text-danger" }, [
+                  _vm._v("Error saving articles")
+                ])
+              : _vm._e()
+          ]
+        )
       ])
     ],
     1

@@ -275,16 +275,17 @@ class MagazineController extends Controller
       $magazine = $this->magazine->findOrFail($id);
 
 			// Magazine is not ready unless positions 0-5 are filled (Saving stories now handled in Api/MagazineController because Magazine Builder is in Vue)
-			$neededPositions = [0,1,2,3,4,5];
-			$positions = [];
+			$missingArticles = 6;
 			foreach($magazine->storys as $story) {
-				$positions[] = $story->pivot->story_position;
+				$position = $story->pivot->story_position;
+				if($position <= 5) {
+					$missingArticles--;
+				}
 			}
 
-			 $sufficientStories = count(array_intersect($positions, $neededPositions)) == count($neededPositions);
        $magazineMediaCount = Mediatype::ofGroup('magazine')->where('is_required',1)->count();
 
-       if(!$sufficientStories || $magazine->mediafiles->count() < $magazineMediaCount){
+       if($missingArticles > 0 || $magazine->mediafiles->count() < $magazineMediaCount){
 				 	$magazine->is_ready = 0;
        } else {
 					$magazine->is_ready = 1;
