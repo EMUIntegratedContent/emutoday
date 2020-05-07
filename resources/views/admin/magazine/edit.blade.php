@@ -13,7 +13,6 @@
 
     @section('style-plugin')
         @parent
-        <link rel="stylesheet" href="/css/my-redips.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="/themes/plugins/flatpickr/flatpickr.min.css" type="text/css" media="screen" />
 
     @endsection
@@ -36,8 +35,6 @@
     @endsection
     @section('scripts-app')
         <!-- App related Scripts  that need to be loaded in the header -->
-        <script src="/js/redips-drag-min.js"></script>
-
         @parent
     @endsection
 
@@ -192,7 +189,6 @@
         @endsection
         @section('footer-app')
             @parent
-            <script src="/js/magbuild-redips.js"></script>
             <script type="text/javascript" src="/js/vue-magazine-builder.js"></script>
         @endsection
         @section('footer-script')

@@ -7,10 +7,12 @@
 				<p>These articles will show on the magazine homepage in the order shown below.</p>
 				<div class="builder-container">
 					<div class="mainstory-box">
-						<button type="button" class="btn btn-sm btn-info builder-exchange" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(0)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+						<div class="magazine-tool-container">
+							<button v-if="issueArticles[0]" type="button" class="btn btn-sm btn-success magazine-tool-btn" style="margin-right: 20px;" @click="moveArticleRight(0, issueArticles[0])"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+							<button type="button" class="btn btn-sm btn-info magazine-tool-btn" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(0)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+							<button v-if="issueArticles[0]" type="button" class="btn btn-sm btn-danger magazine-tool-btn" data-toggle="modal" @click="setIssueArticleAtIndex({index: 0, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
+						</div>
 						<template v-if="issueArticles[0]">
-							<button type="button" class="btn btn-sm btn-danger builder-remove" data-toggle="modal" @click="setIssueArticleAtIndex({index: 0, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
-							<button type="button" class="btn btn-sm btn-success" style="position: absolute; bottom: 40px; left: 5px" @click="moveArticleRight(0, issueArticles[0])"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
 							<img width="100%" :src="mainArticleImage(issueArticles[0]).image_path + mainArticleImage(issueArticles[0]).filename" :alt="mainArticleImage(issueArticles[0]).moretext">
 							<p class="builder-article-title">
 								<a :href="'/admin/queuearticle/magazine/article/' + issueArticles[0].id + '/edit'" target="_blank">{{ issueArticles[0].title }}</a>
@@ -22,11 +24,13 @@
 					</div>
 					<template v-for="(article, index) in issueArticles">
 						<div v-if="index >= 1 && index <= 5" class="substory-box">
-							<button type="button" class="btn btn-xs btn-info builder-exchange-sub" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+							<div class="magazine-tool-container">
+								<button v-if="article && (index > 1 || mainArticleImage(article))" type="button" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleLeft(index, article)"><i :class="index == 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-left'" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+								<button type="button" class="btn btn-xs btn-danger" data-toggle="modal" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
+								<button v-if="article && (index < 5 || issueArticles.length > 6)" type="button" class="btn btn-xs btn-success" style="margin-left: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+							</div>
 							<template v-if="article">
-								<button type="button" class="btn btn-xs btn-danger builder-remove-sub" data-toggle="modal" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
-								<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="position: absolute; top: 5px; left: 5px" @click="moveArticleLeft(index, article)"><i :class="index == 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-left'" aria-hidden="true"></i></button>
-								<button v-if="index < 5 || issueArticles.length > 6" type="button" class="btn btn-xs btn-success" style="position: absolute; top: 5px; right: 5px" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
 								<img width="100%" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
 								<p class="builder-article-title">
 									<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
@@ -45,10 +49,12 @@
 				<p>These articles will only show in the list on the /magazine/issue page. They will NOT be visible on the magazine homepage.</p>
 				<template v-for="(article, index) in issueArticles">
 					<div v-if="index > 5 && article" class="other-substory-box">
-						<button type="button" class="btn btn-xs btn-info builder-exchange" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-						<button type="button" class="btn btn-xs btn-danger builder-remove-other" data-toggle="modal" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
-						<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="position: absolute; top: 5px; right: 5px" @click="moveArticleLeft(index, article)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
-						<button v-if="index < issueArticles.length - 1 && issueArticles[index+1]" type="button" class="btn btn-xs btn-success" style="position: absolute; bottom: 5px; right: 5px" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+						<div class="magazine-tool-container" style="margin-bottom: 2px">
+							<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleLeft(index, article)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+							<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+							<button type="button" class="btn btn-xs btn-danger" data-toggle="modal" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
+							<button v-if="index < issueArticles.length - 1 && issueArticles[index+1]" type="button" class="btn btn-xs btn-success" style="margin-left: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+						</div>
 						<img width="100" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
 						<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
 					</div>
@@ -79,7 +85,7 @@
 		components: { MagazineArticleModal },
 		props: {
 			issueId: {
-				type: Number,
+				type: String,
 				required: true
 			}
 		},
@@ -238,27 +244,6 @@
 		z-index:50
 	}
 
-	.builder-remove {
-		position: absolute;
-		right:5px;
-		top: 5px;
-		z-index:50
-	}
-
-	.builder-exchange-sub {
-		position: absolute;
-		left:30%;
-		top: 5px;
-		z-index:50
-	}
-
-	.builder-remove-sub {
-		position: absolute;
-		right:30%;
-		top: 5px;
-		z-index:50
-	}
-
 	.builder-remove-other {
 		position: absolute;
 		left:5px;
@@ -279,5 +264,13 @@
 		text-align: center;
 		font-weight: bold;
 		padding-top: 3px;
+	}
+	.magazine-tool-container {
+		text-align: center;
+		padding: 3px;
+		background: #444444;
+	}
+	.magazine-tool-btn {
+		margin-right: 5px;
 	}
 </style>

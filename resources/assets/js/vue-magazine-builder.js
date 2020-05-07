@@ -18,7 +18,5 @@ var vm = new Vue({
         MagazineBuilder,
     },
     store,
-    created() {
-      console.log('Magazine builder ready');
-    }
+    created() {}
 });
