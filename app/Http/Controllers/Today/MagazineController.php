@@ -126,7 +126,8 @@ class MagazineController extends Controller
 
         $magazine = null;
         if($story->magazines){
-            $magazine = $story->magazines->first();
+        		// An article should only ever belong to one issue, but just in case, make sre the highest-number issue ID is the one used.
+            $magazine = $story->magazines()->orderBy('id', 'DESC')->first();
             $sideFeaturedStorys = $magazine->storys()
 							->where([
 								['story_type', 'article'],
