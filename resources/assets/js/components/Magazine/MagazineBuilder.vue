@@ -220,7 +220,6 @@
 		border-bottom: 1px solid black;
 		position: relative;
 		overflow: hidden;
-		max-width: 950px;
 	}
 	.substory-box {
 		float: left;
