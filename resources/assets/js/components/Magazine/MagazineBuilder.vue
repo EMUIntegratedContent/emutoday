@@ -8,8 +8,8 @@
 				<div class="builder-container">
 					<div class="mainstory-box">
 						<div class="magazine-tool-container">
-							<button v-if="issueArticles[0]" type="button" class="btn btn-sm btn-success magazine-tool-btn" style="margin-right: 20px;" @click="moveArticleRight(0, issueArticles[0])"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
 							<button type="button" class="btn btn-sm btn-info magazine-tool-btn" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(0)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+							<button v-if="issueArticles[0]" type="button" class="btn btn-sm btn-success magazine-tool-btn" @click="moveArticleRight(0, issueArticles[0])"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
 							<button v-if="issueArticles[0]" type="button" class="btn btn-sm btn-danger magazine-tool-btn" data-toggle="modal" @click="setIssueArticleAtIndex({index: 0, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
 						</div>
 						<template v-if="issueArticles[0]">
@@ -25,10 +25,10 @@
 					<template v-for="(article, index) in issueArticles">
 						<div v-if="index >= 1 && index <= 5" class="substory-box">
 							<div class="magazine-tool-container">
-								<button v-if="article && (index > 1 || mainArticleImage(article))" type="button" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleLeft(index, article)"><i :class="index == 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-left'" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-								<button type="button" class="btn btn-xs btn-danger" data-toggle="modal" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
-								<button v-if="article && (index < 5 || issueArticles.length > 6)" type="button" class="btn btn-xs btn-success" style="margin-left: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+								<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+								<button v-if="article && (index > 1 || mainArticleImage(article))" class="btn btn-xs btn-success" style="margin-left: 20px;" @click="moveArticleLeft(index, article)"><i :class="index == 1 ? 'fa fa-arrow-up' : 'fa fa-arrow-left'" aria-hidden="true"></i></button>
+								<button v-if="article && (index < 5 || issueArticles.length > 6)" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+								<button class="btn btn-xs btn-danger" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
 							</div>
 							<template v-if="article">
 								<img width="100%" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
@@ -50,17 +50,17 @@
 				<template v-for="(article, index) in issueArticles">
 					<div v-if="index > 5 && article" class="other-substory-box">
 						<div class="magazine-tool-container" style="margin-bottom: 2px">
-							<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleLeft(index, article)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
 							<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-							<button type="button" class="btn btn-xs btn-danger" data-toggle="modal" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
-							<button v-if="index < issueArticles.length - 1 && issueArticles[index+1]" type="button" class="btn btn-xs btn-success" style="margin-left: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+							<button v-if="index > 1 || mainArticleImage(article)" type="button" class="btn btn-xs btn-success" style="margin-left: 20px;" @click="moveArticleLeft(index, article)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+							<button v-if="index < issueArticles.length - 1 && issueArticles[index+1]" type="button" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+							<button type="button" class="btn btn-xs btn-danger" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
 						</div>
 						<img width="100" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
 						<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
 					</div>
 					<div v-else-if="index > 5 && !article" class="other-substory-box" style="min-height: 73px">
 						<button type="button" class="btn btn-xs btn-info builder-exchange" data-toggle="modal" data-target="#articleQueueModal" @click="setModalPosition(index)"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-						<button type="button" class="btn btn-xs btn-danger builder-remove-other" data-toggle="modal" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
+						<button type="button" class="btn btn-xs btn-danger builder-remove-other" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
 					</div>
 				</template>
 				<button v-if="issueArticles.length > 5 && issueArticles[issueArticles.length-1]" class="btn btn-primary btn-block" @click="handleAddOtherArticle">Add Article</button>

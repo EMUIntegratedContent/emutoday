@@ -40365,7 +40365,13 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("h4", { staticClass: "modal-title" }, [
-              _vm._v("Choose Article " + _vm._s(_vm.modalPosition))
+              _vm._v(
+                _vm._s(
+                  _vm.modalPosition == 0
+                    ? "Choose Main Article"
+                    : "Choose Article " + _vm.modalPosition
+                )
+              )
             ])
           ]),
           _vm._v(" "),
@@ -40948,32 +40954,6 @@ var render = function() {
                 { staticClass: "mainstory-box" },
                 [
                   _c("div", { staticClass: "magazine-tool-container" }, [
-                    _vm.issueArticles[0]
-                      ? _c(
-                          "button",
-                          {
-                            staticClass:
-                              "btn btn-sm btn-success magazine-tool-btn",
-                            staticStyle: { "margin-right": "20px" },
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                return _vm.moveArticleRight(
-                                  0,
-                                  _vm.issueArticles[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fa fa-arrow-down",
-                              attrs: { "aria-hidden": "true" }
-                            })
-                          ]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
                     _c(
                       "button",
                       {
@@ -40996,6 +40976,31 @@ var render = function() {
                         })
                       ]
                     ),
+                    _vm._v(" "),
+                    _vm.issueArticles[0]
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "btn btn-sm btn-success magazine-tool-btn",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.moveArticleRight(
+                                  0,
+                                  _vm.issueArticles[0]
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-down",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ]
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _vm.issueArticles[0]
                       ? _c(
@@ -41070,14 +41075,35 @@ var render = function() {
                             "div",
                             { staticClass: "magazine-tool-container" },
                             [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-xs btn-info",
+                                  attrs: {
+                                    "data-toggle": "modal",
+                                    "data-target": "#articleQueueModal"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.setModalPosition(index)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-exchange",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
                               article &&
                               (index > 1 || _vm.mainArticleImage(article))
                                 ? _c(
                                     "button",
                                     {
                                       staticClass: "btn btn-xs btn-success",
-                                      staticStyle: { "margin-right": "20px" },
-                                      attrs: { type: "button" },
+                                      staticStyle: { "margin-left": "20px" },
                                       on: {
                                         click: function($event) {
                                           return _vm.moveArticleLeft(
@@ -41099,62 +41125,13 @@ var render = function() {
                                   )
                                 : _vm._e(),
                               _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-xs btn-info",
-                                  attrs: {
-                                    type: "button",
-                                    "data-toggle": "modal",
-                                    "data-target": "#articleQueueModal"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.setModalPosition(index)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-exchange",
-                                    attrs: { "aria-hidden": "true" }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-xs btn-danger",
-                                  attrs: {
-                                    type: "button",
-                                    "data-toggle": "modal"
-                                  },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.setIssueArticleAtIndex({
-                                        index: index,
-                                        article: null
-                                      })
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-close",
-                                    attrs: { "aria-hidden": "true" }
-                                  })
-                                ]
-                              ),
-                              _vm._v(" "),
                               article &&
                               (index < 5 || _vm.issueArticles.length > 6)
                                 ? _c(
                                     "button",
                                     {
                                       staticClass: "btn btn-xs btn-success",
-                                      staticStyle: { "margin-left": "20px" },
-                                      attrs: { type: "button" },
+                                      staticStyle: { "margin-right": "20px" },
                                       on: {
                                         click: function($event) {
                                           return _vm.moveArticleRight(
@@ -41171,7 +41148,28 @@ var render = function() {
                                       })
                                     ]
                                   )
-                                : _vm._e()
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-xs btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.setIssueArticleAtIndex({
+                                        index: index,
+                                        article: null
+                                      })
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-close",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ]
+                              )
                             ]
                           ),
                           _vm._v(" "),
@@ -41247,28 +41245,6 @@ var render = function() {
                           staticStyle: { "margin-bottom": "2px" }
                         },
                         [
-                          index > 1 || _vm.mainArticleImage(article)
-                            ? _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-xs btn-success",
-                                  staticStyle: { "margin-right": "20px" },
-                                  attrs: { type: "button" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.moveArticleLeft(index, article)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-arrow-up",
-                                    attrs: { "aria-hidden": "true" }
-                                  })
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
                           _c(
                             "button",
                             {
@@ -41292,24 +41268,27 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-xs btn-danger",
-                              attrs: { type: "button", "data-toggle": "modal" },
-                              on: {
-                                click: function($event) {
-                                  return _vm.removeOtherArticleAtIndex(index)
-                                }
-                              }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "fa fa-close",
-                                attrs: { "aria-hidden": "true" }
-                              })
-                            ]
-                          ),
+                          index > 1 || _vm.mainArticleImage(article)
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-xs btn-success",
+                                  staticStyle: { "margin-left": "20px" },
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.moveArticleLeft(index, article)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-arrow-up",
+                                    attrs: { "aria-hidden": "true" }
+                                  })
+                                ]
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           index < _vm.issueArticles.length - 1 &&
                           _vm.issueArticles[index + 1]
@@ -41317,7 +41296,7 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass: "btn btn-xs btn-success",
-                                  staticStyle: { "margin-left": "20px" },
+                                  staticStyle: { "margin-right": "20px" },
                                   attrs: { type: "button" },
                                   on: {
                                     click: function($event) {
@@ -41335,7 +41314,26 @@ var render = function() {
                                   })
                                 ]
                               )
-                            : _vm._e()
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-xs btn-danger",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.removeOtherArticleAtIndex(index)
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "fa fa-close",
+                                attrs: { "aria-hidden": "true" }
+                              })
+                            ]
+                          )
                         ]
                       ),
                       _vm._v(" "),
@@ -41399,7 +41397,7 @@ var render = function() {
                           {
                             staticClass:
                               "btn btn-xs btn-danger builder-remove-other",
-                            attrs: { type: "button", "data-toggle": "modal" },
+                            attrs: { type: "button" },
                             on: {
                               click: function($event) {
                                 return _vm.removeOtherArticleAtIndex(index)
