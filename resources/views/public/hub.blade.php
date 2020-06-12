@@ -275,20 +275,21 @@
                 </div>
                <!-- /end .card -->
             </div><!-- /end .row -->
+
+            @unless(empty($featuredevents[0]))
             <div id="news-headline-bar-bottom" class="row" >
                 <div class="card small-12 medium-12 large-12 columns">
                     <div class="card-section">
                         <h4><a title="EMU campus events calendar." href="{{ url('/calendar') }}" class="bold-green-link">Events Calendar</a></h4>
-                        @unless(empty($featuredevents[0]))
                             <div id="five-events-bar">
                                 <div class="row large-up-4 medium-up-3 show-for-medium">
                                     @each('public.featuredeventhub', $featuredevents, 'fevent')
                                 </div><!-- row event block grid end -->
                             </div> <!--end of five events bar-->
-                        @endunless
                     </div>
                 </div><!-- /end .card -->
             </div><!-- /end .row -->
+            @endunless
         </div><!-- /end #news-headline-bar -->
     </div><!-- /end #content-area -->
 @endsection

@@ -983,6 +983,10 @@ ul.accordion li{
 	margin: .3rem 0 .5rem 0;
 	font: bold 16px;
 }
+.emergency-yellow.event-notice h3{
+    font-size: 1rem;
+    margin-top: .5rem;
+}
 .emergency-yellow h3:before{
 	content:"\f071";
 	font-family: FontAwesome;
@@ -992,6 +996,9 @@ ul.accordion li{
 	color: #c4942c;
 	padding-left: 0rem;
     padding-right: .8rem;
+}
+.emergency-yellow.event-notice h3:before{
+    font-size: 1rem;
 }
 .emergency-yellow p{
 	color:#333;
