@@ -6,7 +6,7 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
         { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
         { name: 'links', groups: [ 'links' ] },
-        { name: 'insert', groups: [ 'insert' ] },
+        { name: 'insert' },
         { name: 'document', groups: [ 'document', 'doctools', 'mode' ] },
         { name: 'styles', groups: [ 'styles' ] },
         { name: 'colors', groups: [ 'colors' ] },
@@ -14,8 +14,8 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'others', groups: [ 'others' ] },
         { name: 'about', groups: [ 'about' ] }
     ];
-    config.extraPlugins = 'autogrow,horizontalrule';
-    config.extraAllowedContent = 'div(*){*};hr';
+    config.extraPlugins = 'autogrow,horizontalrule,iframe,videoembed';
+    config.extraAllowedContent = 'div(*){*};hr;iframe[*]';
     config.removeButtons = 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview';
     config.pasteFilter = 'plain-text';
     config.height ='25em';

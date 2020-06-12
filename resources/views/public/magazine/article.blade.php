@@ -77,17 +77,22 @@
           <h6 class="headline-block">Popular Articles</h6>
           <ul class="feature-list">
             @foreach ($sideStoryBlurbs as $ssblurb)
-              <li><a href="
-              @if($ssblurb->story->tags()->first())
-                  @if($ssblurb->story->tags()->first()->name == 'external')
-                    {{$ssblurb->link}}
+              <li>
+                <a href="
+                  @if($ssblurb->story->tags()->first())
+                      @if($ssblurb->story->tags()->first()->name == 'external')
+                        {{$ssblurb->link}}
+                      @else
+                        /magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}
+                      @endif
                   @else
                     /magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}
                   @endif
-              @else
-                /magazine/{{$ssblurb->story->story_folder}}/{{$ssblurb->story->id}}
-              @endif
-              ">{{$ssblurb->caption}}</a></li>
+                  ">
+                  <img src="{{ $ssblurb->image_path . $ssblurb->filename }}" alt="{{ $ssblurb->alt_text }}">
+                  {{$ssblurb->caption}}
+                </a>
+              </li>
             @endforeach
           </ul>
         </div>
