@@ -217,8 +217,13 @@ class PreviewController extends Controller
 
           $storyImages = $magazine->storyImages();
 
-          $articleTotal = 6;
-          $articleCount = count($magazine->storys);
+					$missingArticles = 6;
+					foreach($magazine->storys as $story) {
+						$position = $story->pivot->story_position;
+						if($position <= 5) {
+							$missingArticles--;
+						}
+					}
 
           $barImgs = collect();
           $magazineCover = $magazine->mediafiles()->where('type','cover')->first();
@@ -235,14 +240,13 @@ class PreviewController extends Controller
               return redirect()->back();
           }
 
-          if ($articleCount < $articleTotal){
-              $articlesNeeded = $articleTotal - $articleCount;
-              flash()->warning('Need to Add '. $articlesNeeded .' more articles');
+          if ($missingArticles > 0){
+              flash()->warning('Need to Add '. $missingArticles .' more articles');
               return redirect()->back();
           }
 
 
-          foreach ($magazine->storys()->take(6)->get() as $story) {
+          foreach ($magazine->storys()->whereIn('story_position', [0, 1, 2, 3, 4, 5])->get() as $story) {
                       if ($story->pivot->story_position === 0) {
                               $heroImg = $story->storyImages()->where('image_type', 'front')->first();
                       } else {

@@ -66,7 +66,7 @@ protected $statusCode = 200;
      */
     public function respond($data, $headers = [])
     {
-        return response()->json( $data, $this->getStatusCode(), $headers);
+        return response()->json($data, $this->getStatusCode(), $headers);
     }
 
     /**

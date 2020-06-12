@@ -13,7 +13,6 @@
 
     @section('style-plugin')
         @parent
-        <link rel="stylesheet" href="/css/my-redips.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="/themes/plugins/flatpickr/flatpickr.min.css" type="text/css" media="screen" />
 
     @endsection
@@ -36,8 +35,6 @@
     @endsection
     @section('scripts-app')
         <!-- App related Scripts  that need to be loaded in the header -->
-        <script src="/js/redips-drag-min.js"></script>
-
         @parent
     @endsection
 
@@ -128,17 +125,12 @@
                         </div><!-- /.form-group -->
                             </div><!-- /.col-md-6 -->
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    {!! Form::text('original_story_ids', $original_story_ids, ['id'=> 'original_story_ids',  'class' => 'form-control']) !!}
-                                    {!! Form::label('story_ids') !!}
-                                    {!! Form::text('story_ids', null, ['id'=> 'story_ids',  'class' => 'form-control', 'readonly' => 'readonly']) !!}
-                                </div>
                             </div><!-- /.col-md-4 -->
                         </div><!-- /.row -->
                         </div> <!-- /.box-body -->
                         <div class="box-footer">
                             <div class="form-group">
-                                {!! Form::submit('Update Magazine', ['class' => 'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Update Magazine Content', ['class' => 'btn btn-primary btn-block']) !!}
                                 {!! Form::close() !!}
 
                             </div>
@@ -155,26 +147,28 @@
             @endif
             </div> <!-- /.col-sm-6 -->
         </div>
+
+    <!--- VUE MAGAZINE BUILDER 2020 -->
     <div class="row">
         <div class="col-sm-12">
             <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">Magazine Builder</h3>
-                        <div class="box-tools">
-                            <div class="btn-toolbar btn-group-sm">
-                                <a href="/preview/magazine/{{$magazine->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
-                            </div><!-- /.btn-toolbar -->
-                        </div><!-- /.box-tools -->
-                    </div>
-                    <div class="box-body">
-                @include('admin.magazine.templates.layoutindex')
-            </div><!-- /.box-body -->
-            <div class="box-footer">
+                <div class="box-header">
+                    <h3 class="box-title">Magazine Builder</h3>
+                    <div class="box-tools">
+                        <div class="btn-toolbar btn-group-sm">
+                            <a href="/preview/magazine/{{$magazine->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+                        </div><!-- /.btn-toolbar -->
+                    </div><!-- /.box-tools -->
+                </div>
+                <div class="box-body" id="vue-magazine-builder">
+                    <magazine-builder issue-id="{{$magazine->id}}"></magazine-builder>
+                </div><!-- /.box-body -->
+                <div class="box-footer">
 
-            </div><!-- /.box-footer -->
+                </div><!-- /.box-footer -->
             </div><!-- /.box -->
-            </div>
         </div>
+    </div>
         @endsection
         @section('footer-vendor')
 
@@ -193,20 +187,18 @@
             <script src="/themes/plugins/flatpickr/flatpickr.min.js"></script>
 
         @endsection
-
         @section('footer-app')
             @parent
-            <script src="/js/magbuild-redips.js"></script>
-
+            <script type="text/javascript" src="/js/vue-magazine-builder.js"></script>
         @endsection
-
         @section('footer-script')
         @parent
         <script>
 
         $(function () {
+          $('[data-toggle="tooltip"]').tooltip();
 
-          //Initialize Select2 Elements
+					//Initialize Select2 Elements
           $(".select2").select2();
 
 

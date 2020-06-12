@@ -28,6 +28,7 @@ class Story extends Model
          'story_type',
          'author_id', 'author_info',
          'priority', 'contact_id',
+		 		 'clicks'
      ];
      protected $dates = ['start_date', 'end_date'];
 
@@ -38,7 +39,7 @@ class Story extends Model
     protected $presenter = 'Emutoday\Presenters\StoryPresenter';
 
     use Eloquence;
-    protected $searchableColumns = ['title', 'subtitle', 'teaser', 'content'];
+    protected $searchableColumns = ['title', 'subtitle', 'teaser', 'content', 'clicks'];
 
     /**
     *
