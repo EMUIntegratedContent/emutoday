@@ -126,38 +126,47 @@ class MagazineController extends Controller
 
         $magazine = null;
         if($story->magazines){
-        		// An article should only ever belong to one issue, but just in case, make sre the highest-number issue ID is the one used.
+            // An article should only ever belong to one issue, but just in case, make sre the highest-number issue ID is the one used.
             $magazine = $story->magazines()->orderBy('id', 'DESC')->first();
-            $sideFeaturedStorys = $magazine->storys()
-							->where([
-								['story_type', 'article'],
-								['id', '<>', $id],
-								['is_approved', 1],
-								['start_date', '<=', date('Y-m-d H:i:s')],
-							])->orderBy('clicks', 'desc')->take(3)->get();
+            if ($magazine) {
+                $sideFeaturedStorys = $magazine->storys()
+                ->where([
+                    ['story_type', 'article'],
+                    ['id', '<>', $id],
+                    ['is_approved', 1],
+                    ['start_date', '<=', date('Y-m-d H:i:s')],
+                ])->orderBy('clicks', 'desc')->take(3)->get();
+            }
         } else {
-					$sideFeaturedStorys = $this->story
-						->where([
-							['story_type', 'article'],
-							['id', '<>', $id],
-							['is_approved', 1],
-							['start_date', '<=', date('Y-m-d H:i:s')],
-						])
-						->orderBy('clicks', 'desc')->take(3)->get();
-				}
+            $sideFeaturedStorys = $this->story
+            ->where([
+                ['story_type', 'article'],
+                ['id', '<>', $id],
+                ['is_approved', 1],
+                ['start_date', '<=', date('Y-m-d H:i:s')],
+            ])
+            ->orderBy('clicks', 'desc')->take(3)->get();
+        }
         $mainImage = $story->storyImages()->where('image_type', 'story')->first();
         $sideStoryBlurbs = collect();
+
+        if ($magazine) {
             foreach ($sideFeaturedStorys as $sideFeaturedStory) {
                 $sideStoryBlurbs->push(
-                	$sideFeaturedStory->storyImages()->where('image_type', 'small')->first()
-								);
+                    $sideFeaturedStory->storyImages()->where('image_type', 'small')->first()
+                );
             }
+        }
 
-				// Register a click for this article
-				$story->clicks += 1;
-				$story->save();
+        // Register a click for this article
+        $story->clicks += 1;
+        $story->save();
 
-        return view('public.magazine.article', compact('magazine','story', 'mainImage','sideStoryBlurbs', 'sideFeaturedStorys'));
+        if ($magazine) {
+            return view('public.magazine.article', compact('magazine','story', 'mainImage','sideStoryBlurbs', 'sideFeaturedStorys'));
+        } else {
+            return view('public.magazine.article', compact('magazine','story', 'mainImage','sideStoryBlurbs'));
+        }
     }
 
     /**
