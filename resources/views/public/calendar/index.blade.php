@@ -38,15 +38,6 @@
                     </div>
                 </div><!--row 2 in calendar bar-->
                 @endunless
-
-                <!-- TEMP -->
-                <div class="row emergency-yellow event-notice">
-                     <div class="large-12 medium-12 small-12 columns">
-                         <h3>All University events are canceled through July 31. For timely updates, <a href="https://www.emich.edu/coronavirus/index.php" target="_blank">visit the COVID-19 webpage.</a></h3>
-                     </div>
-                </div>
-                <!-- TEMP -->
-
             </div><!--end calendar row column-->
         </div><!--end calendar bar row 1-->
 
