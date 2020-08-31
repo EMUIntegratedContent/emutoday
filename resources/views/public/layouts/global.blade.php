@@ -81,7 +81,7 @@
                     <li><a title="External link to the EMU athletics page." href="http://www.emueagles.com/" target="_blank">Athletics</a></li>
                 </ul>
                 <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
-                    <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe</a></li>
+                    <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a></li>
                     <li><a title="Submit a campus event." href="/calendar/event/form">Submit an Event</a></li>
                     <li><a title="Submit an announcement." href="/announcement/form">Submit an Announcement</a></li>
                 </ul>
@@ -141,7 +141,7 @@
 
 
                                 <div class="large-5 medium-6 columns show-for-large text text-right">
-                                    <span class="smaller"><a title="Subscribe to EMU Today" href="/subscribe">Subscribe</a> | <a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="{{ url('/announcement/form') }}">Submit an Announcement</a></span>
+                                    <span class="smaller"><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a> | <a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="{{ url('/announcement/form') }}">Submit an Announcement</a></span>
                                 </div><!-- large-3 -->
 
                             </div><!-- row -->
