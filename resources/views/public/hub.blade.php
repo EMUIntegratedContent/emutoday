@@ -263,9 +263,13 @@
                                 <ul class="twitter-content">
                                     @unless(empty($tweets))
                                         @foreach($tweets as $tweet)
-                                            <li>
-                                                <a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> <?=$tweet['text'];?>
-                                            </li>
+                                            <? if(isset($tweet['user'])): ?>
+                                                <? if(isset($tweet['user']['screen_name'])): ?>
+                                                    <li>
+                                                        <a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> <?=$tweet['text'];?>
+                                                    </li>
+                                                <? endif; ?>
+                                            <? endif; ?>
                                         @endforeach
                                     @endunless
                                 </ul>

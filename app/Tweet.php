@@ -99,7 +99,11 @@ class Tweet extends Model
 
     //////////////////////////////////////
     // Sort the array based on time or creatation. Please leave function as inline anonymous
-    usort($tweets, function($x, $y){return strtotime($y['created_at']) - strtotime($x['created_at']);});
+    usort($tweets, function($x, $y){
+        if (isset($y['created_at']) && isset($x['created_at'])){ 
+            return strtotime($y['created_at']) - strtotime($x['created_at']);
+        }
+    });
 
     //////////////////////////////////////
     // Too many?! !
@@ -111,24 +115,30 @@ class Tweet extends Model
     //////////////////////////////////////
     // add markup to tweet text, it comes in raw
     for ($i=0; $i<count($tweets); $i++){ // URL
-      preg_match_all('/http[^\s]+\S/', $tweets[$i]['text'], $matches); for ($j=0; $j<count($matches[0]); $j++){
-        if(!mb_detect_encoding(substr($matches[0][$j],-1))){continue;} // so if it ends with that ellipsis, skip appending markup
-        $tweets[$i]['text'] = str_replace($matches[0][$j], "<a href='" . $matches[0][$j] . "' target='_blank'/>".$matches[0][$j].'</a> ' ,$tweets[$i]['text']);
-      }
+        if (isset($tweets[$i]['text'])){
+            preg_match_all('/http[^\s]+\S/', $tweets[$i]['text'], $matches); for ($j=0; $j<count($matches[0]); $j++){
+                if(!mb_detect_encoding(substr($matches[0][$j],-1))){continue;} // so if it ends with that ellipsis, skip appending markup
+                $tweets[$i]['text'] = str_replace($matches[0][$j], "<a href='" . $matches[0][$j] . "' target='_blank'/>".$matches[0][$j].'</a> ' ,$tweets[$i]['text']);
+            }
+        }
     }
     for ($i=0; $i<count($tweets); $i++){ // @at
-      preg_match_all('/@[^\s]+\S/', $tweets[$i]['text'], $matches);
-      for ($j=0; $j<count($matches[0]); $j++){
-        if(!mb_detect_encoding(substr($matches[0][$j],-1))){continue;}
-        $tweets[$i]['text'] = str_replace($matches[0][$j], "<a href='https://twitter.com/".$matches[0][$j]."' target='_blank'/>".$matches[0][$j].'</a>' ,$tweets[$i]['text']);
-      }
+        if (isset($tweets[$i]['text'])){
+            preg_match_all('/@[^\s]+\S/', $tweets[$i]['text'], $matches);
+            for ($j=0; $j<count($matches[0]); $j++){
+                if(!mb_detect_encoding(substr($matches[0][$j],-1))){continue;}
+                $tweets[$i]['text'] = str_replace($matches[0][$j], "<a href='https://twitter.com/".$matches[0][$j]."' target='_blank'/>".$matches[0][$j].'</a>' ,$tweets[$i]['text']);
+            }
+        }
     }
     for ($i=0; $i<count($tweets); $i++){ // #hastag
-      preg_match_all('/#[^\s]+\S/', $tweets[$i]['text'], $matches);
-      for ($j=0; $j<count($matches[0]); $j++){
-        if(!mb_detect_encoding(substr($matches[0][$j],-1))){continue;}
-        $tweets[$i]['text'] = str_replace($matches[0][$j], "<a href='https://twitter.com/".$matches[0][$j]."' target='_blank'/>".$matches[0][$j].'</a>' ,$tweets[$i]['text']);
-      }
+        if (isset($tweets[$i]['text'])){
+            preg_match_all('/#[^\s]+\S/', $tweets[$i]['text'], $matches);
+            for ($j=0; $j<count($matches[0]); $j++){
+                if(!mb_detect_encoding(substr($matches[0][$j],-1))){continue;}
+                $tweets[$i]['text'] = str_replace($matches[0][$j], "<a href='https://twitter.com/".$matches[0][$j]."' target='_blank'/>".$matches[0][$j].'</a>' ,$tweets[$i]['text']);
+            }
+        }
     }
 
     //////////////////////////////////////
