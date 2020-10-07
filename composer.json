@@ -3,10 +3,10 @@
     "description": "Eastern Michigan University news, magazine articles, events and announcements.",
     "type": "project",
     "license": "proprietary",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "homepage": "https://today.emich.edu",
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.4",
         "laravel/framework": "^5.6.0",
         "laravel/passport": "~5.0",
         "laravelcollective/html": "5.5.*",
@@ -25,14 +25,14 @@
         "snowfire/beautymail": "^1.0.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/tinker": "^1.0",
-        "laravelium/feed": "2.12.*"
+        "laravelium/feed": "2.12.*",
+        "laravel/homestead": "8.0.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "^7.0",
         "symfony/dom-crawler": "2.8.*|3.0.*",
-        "laravel/homestead": "^7.0",
         "filp/whoops": "~2.0"
     },
     "autoload": {

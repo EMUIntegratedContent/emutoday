@@ -39,7 +39,7 @@ class UserController extends Controller
         $permissions = $this->permission->get();
         $roles = $this->role->get();
 
-        return view('admin.user.index', compact('users','permissions','roles','bugAnnouncements'));
+        return view('admin.user.index', compact('users','permissions','roles'));
     }
 
     public function form(User $user, Mediafile $mediafile)

@@ -58,7 +58,7 @@ class AnnouncementController extends Controller
         } else {
             $atype = $atype;
         }
-        $announcement = $this->announcement;
+        $announcements = $this->announcement;
 
         return view('admin.announcement.queue', compact('announcements', 'atype'));
     }
