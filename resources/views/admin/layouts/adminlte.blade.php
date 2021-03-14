@@ -114,7 +114,7 @@ Sidebar Menu
 <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-        2019
+        @php echo date('Y') @endphp
     </div>
     <!-- Default to the left -->
     <strong><a href="today.emich.edu">EMU-Today</a></strong>

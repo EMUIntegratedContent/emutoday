@@ -19,10 +19,11 @@
                 <div class="row">
                     <div class="large-12 medium-12 small-12 columns"><h3 class="cal-caps toptitle">Events Calendar</h3></div>
                 </div>
+
+                @unless(empty($featuredevents[0]))
                 <div id="five-events-container" class="row">
                     <div class="large-12 medium-12 small-12 columns">
 
-                        @unless(empty($featuredevents[0]))
                         <div id="five-events-bar">
                             <div id="news-title-bar" class="row">
                                 <div class="large-12 medium-12 show-for-medium columns">
@@ -34,10 +35,9 @@
                                 @each('public.calendar.partials.featuredevent', $featuredevents, 'fevent')
                             </div><!-- row event block grid end -->
                         </div> <!--end of five events bar-->
-                        @endunless
-
                     </div>
                 </div><!--row 2 in calendar bar-->
+                @endunless
             </div><!--end calendar row column-->
         </div><!--end calendar bar row 1-->
 

@@ -186,7 +186,8 @@ class ExternalApiController extends ApiController
               $events = MiniCalendar::find($miniCalendar)->events()->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('start_time', 'asc');
               $events = $events->get();
               //add the day's events into the eventsArray
-              $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+              // $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+              $eventsArr[] = array('date' => $date, 'date_events' => $events);
           }
           $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
           return $return;
@@ -206,7 +207,8 @@ class ExternalApiController extends ApiController
           $events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date])->orderBy('start_time', 'asc');
           $events = $events->get();
           //add the day's events into the eventsArray
-          $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+          // $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+          $eventsArr[] = array('date' => $date, 'date_events' => $events);
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
       return $return;
@@ -264,7 +266,8 @@ class ExternalApiController extends ApiController
           $events = Event::select('*')->where(['is_approved' => 1, 'start_date' => $date->start_date, 'hsc_reviewed' => 1, ['hsc_rewards', '>', 0]])->orderBy('title', 'asc');
           $events = $events->get();
           //add the day's events into the eventsArray
-          $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+          // $eventsArr[] = array('date' => $date->start_date, 'date_events' => $events);
+          $eventsArr[] = array('date' => $date, 'date_events' => $events);
       }
       $return = ['events' => $eventsArr, 'numDatesGross' => $numDatesGross];
       return $return;

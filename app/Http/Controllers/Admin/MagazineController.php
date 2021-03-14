@@ -26,7 +26,7 @@ class MagazineController extends Controller
 {
 
   protected $magazines;
-  protected $articleCount = 6;
+  protected $articleCount = 7;
   protected $bugService;
 
   public function __construct(Magazine $magazine, Story $story,StoryImage $storyImage, Mediafile $mediafile, IBug $bugService)
@@ -224,50 +224,40 @@ class MagazineController extends Controller
     public function edit($id)
     {
       $magazine = $this->magazine->findOrFail($id);
-            $storys = Story::where([
-                ['story_type', 'article'],
-                ['is_approved',1]
-                ])
-                ->with(['images' => function($query){
-                    $query->where('group','=','article');
-                  }])->orderBy('id', 'desc')->get();
+			$storys = Story::where([
+					['story_type', 'article'],
+					['is_approved',1]
+					])
+					->with(['images' => function($query){
+							$query->where('group','=','article');
+						}])->orderBy('id', 'desc')->get();
+			$storyimgs = $this->storyImage->where([
+									['group','article'],
+									['image_type', 'small'],
+									])
+									->orderBy('updated_at', 'desc')->get();
+			$mediatypes = Mediatype::where('group','magazine')->pluck('type','id');
+			$magazineMedia = Mediatype::ofGroup('magazine')->get();
+			foreach ($magazineMedia as $img) {
+							$magazine->mediafiles()->firstorCreate([
+									'mediatype_id'=> $img->id,
+									'group'=> $img->group,
+									'type'=> $img->type
+					]);
+			}
 
+			$mediafile = $this->mediafile;
+			$mediafiles = $magazine->mediafiles;
+			$magazineStorys = $magazine->storys;
+			$original_story_ids = $magazineStorys->pluck('id');
 
-
-            $storyimgs = $this->storyImage->where([
-                        ['group','article'],
-                        ['image_type', 'small'],
-                        ])
-                        ->orderBy('updated_at', 'desc')->get();
-      // $storys =  $this->story->where('story_type', 'article')->orderBy('updated_at', 'desc')->get();
-            $mediatypes = Mediatype::where('group','magazine')->pluck('type','id');
-
-            // foreach ($mediatypes as $mediatype) {
-            // 	$magazinefile = $magazine->mediafiles->firstOrCreate(['mediatype_id' => $mediatype->id]);
-            // }
-            $magazineMedia = Mediatype::ofGroup('magazine')->get();
-            // $otherImages = Imagetype::ofGroup('magazine')->isRequired(0)->get();
-            foreach ($magazineMedia as $img) {
-                    $magazine->mediafiles()->firstorCreate([
-                        'mediatype_id'=> $img->id,
-                        'group'=> $img->group,
-                        'type'=> $img->type
-                ]);
-            }
-
-            $mediafile = $this->mediafile;
-            $mediafiles = $magazine->mediafiles;
-            $magazineStorys = $magazine->storys;
-            $original_story_ids = $magazineStorys->pluck('id');
-            // dd($original_story_ids);
-
-            JavaScript::put([
-                    'mainrecordid' => $magazine->id,
-                    'mediatypes' => $mediatypes,
-                    'original_story_ids' => $original_story_ids,
-                    'magazinestorys' => $magazineStorys->toArray(),
-                    'storyimgs' => $storyimgs->toArray(),
-                    'storys' => $storys->toArray()
+			JavaScript::put([
+							'mainrecordid' => $magazine->id,
+							'mediatypes' => $mediatypes,
+							'original_story_ids' => $original_story_ids,
+							'magazinestorys' => $magazineStorys->toArray(),
+							'storyimgs' => $storyimgs->toArray(),
+							'storys' => $storys->toArray()
       ]);
 
       return view('admin.magazine.edit', compact('magazine', 'storys','storyimgs','mediatypes', 'mediafiles','mediafile','original_story_ids'));
@@ -283,40 +273,23 @@ class MagazineController extends Controller
     public function update(Request $request, $id)
     {
       $magazine = $this->magazine->findOrFail($id);
-      $storyIDString =  $request->get('story_ids');
-      $storyIDarray = explode(",", $storyIDString);
-      $storyIDarrayCount = count($storyIDarray);
-      $storyIDsForPivotArray =[];
 
-       for ($x = 0; $x < $storyIDarrayCount; $x++) {
-          $namedKey = $storyIDarray[$x];
-           if($namedKey != 0) {
-           $attributeArray = array();
-           $attributeArray["story_position"] = intval($x);
-           $storyIDsForPivotArray[intval($namedKey)] = $attributeArray;
-            }
-
-       }
-       $magazine->is_ready = 1;
-
-       if (empty($storyIDsForPivotArray)) {
-           $magazine->is_ready = 0;
-       } else {
-           if(count($storyIDsForPivotArray) < $this->articleCount){
-               $magazine->is_ready = 0;
-           } else {
-            //    $page->is_ready = 1;
-           }
-           $magazine->storys()->sync($storyIDsForPivotArray);
-
-       }
+			// Magazine is not ready unless positions 0-5 are filled (Saving stories now handled in Api/MagazineController because Magazine Builder is in Vue)
+			$missingArticles = 6;
+			foreach($magazine->storys as $story) {
+				$position = $story->pivot->story_position;
+				if($position <= 5) {
+					$missingArticles--;
+				}
+			}
 
        $magazineMediaCount = Mediatype::ofGroup('magazine')->where('is_required',1)->count();
 
-
-       if($magazine->mediafiles->count() < $magazineMediaCount){
-           $magazine->is_ready = 0;
-       }
+       if($missingArticles > 0 || $magazine->mediafiles->count() < $magazineMediaCount){
+				 	$magazine->is_ready = 0;
+       } else {
+					$magazine->is_ready = 1;
+			 }
 
       $magazine->year = $request->year;
       $magazine->season   = $request->season;
