@@ -29,7 +29,7 @@
         <div id="tier2-nav">
                             <div class="row">
                                 <div class="large-7 medium-7 small-12 columns">
-                                    <h1 class="magazine-title"><a href="/magazine">EASTERN</a></h1><span class="magazine-for-title">&nbsp;magazine</span>
+                                    <h1 class="magazine-title"><a href="https://magazine.emich.edu">EASTERN</a></h1><span class="magazine-for-title">&nbsp;magazine</span>
                                 </div>
                                 <!-- large-9 -->
                                  <div class="large-5 medium-5 columns hide-for-large hide-for-medium show-for-small text search-small-left">
@@ -61,8 +61,7 @@
                                 <div class="large-12 medium-12 columns show-for-large">
                                     <ul id="tier3-nav-main">
                                         <li><a title="Eastern Magazine homepage." class="{{ set_active('/')}}" href="{{ url('/magazine/') }}"><i class="fa fa-home" alt="home"><div class="visuallyhidden">Home</div></i></a></li>
-                                        <li><a title="EMU Today Past Issues." class="{{ set_active('magazine/issue')}}" href="/magazine/issue">Current Issue</a></li>
-                                         <li><a href="http://www.emich.edu/magazine">Past Issues</a></li>
+                                        <li><a title="EMU Today Past Issues." class="{{ set_active('magazine/issue')}}" href="https://magazine.emich.edu">Current Issue</a></li>
                 <li><a href="http://www.emich.edu/alumni">Alumni</a></li>
                 <li><a href="/hub">EMU Today</a></li>
                                     </ul>

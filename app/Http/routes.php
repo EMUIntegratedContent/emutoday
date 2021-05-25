@@ -255,10 +255,12 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('calendar/event/{id}', 'Today\CalendarController@show');
     Route::get('calendar/{year?}/{month?}/{day?}/{id?}', 'Today\CalendarController@index');
 
+    //
     Route::get('magazine/archives', 'Today\MagazineController@archives');
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
+    //
 
     Route::get('hub', 'MainController@index');
 
