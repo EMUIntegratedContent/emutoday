@@ -20334,7 +20334,7 @@ var staticRenderFns = [
         _c("li", [
           _c(
             "a",
-            { attrs: { href: "http://www.emueagles.com/calendar.aspx" } },
+            { attrs: { href: "https://www.emueagles.com/calendar.aspx" } },
             [_vm._v("Athletics")]
           )
         ]),

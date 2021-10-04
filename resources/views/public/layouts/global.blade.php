@@ -78,7 +78,7 @@
                     <li><a title="Eastern Experts are availble for interviews and speaking engagements." href="{{ url('/experts') }}">Eastern Experts</a></li>
                     <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
                     <li><a title="External link to WEMU." href="http://www.wemu.org" target="_blank">WEMU</a></li>
-                    <li><a title="External link to the EMU athletics page." href="http://www.emueagles.com/" target="_blank">Athletics</a></li>
+                    <li><a title="External link to the EMU athletics page." href="https://www.emueagles.com/" target="_blank">Athletics</a></li>
                 </ul>
                 <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
                     <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a></li>
