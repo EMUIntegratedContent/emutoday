@@ -6720,7 +6720,7 @@ module.exports = plugin;
   }
 
   function decodeQueryParamPart(part) {
-    // http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
+    // https://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
     part = part.replace(/\+/gm, '%20');
     return tryDecode(part, true);
   }
@@ -12409,7 +12409,7 @@ map.option = map.optgroup = [1, '<select multiple="multiple">', '</select>'];
 
 map.thead = map.tbody = map.colgroup = map.caption = map.tfoot = [1, '<table>', '</table>'];
 
-map.g = map.defs = map.symbol = map.use = map.image = map.text = map.circle = map.ellipse = map.line = map.path = map.polygon = map.polyline = map.rect = [1, '<svg ' + 'xmlns="http://www.w3.org/2000/svg" ' + 'xmlns:xlink="http://www.w3.org/1999/xlink" ' + 'xmlns:ev="http://www.w3.org/2001/xml-events"' + 'version="1.1">', '</svg>'];
+map.g = map.defs = map.symbol = map.use = map.image = map.text = map.circle = map.ellipse = map.line = map.path = map.polygon = map.polyline = map.rect = [1, '<svg ' + 'xmlns="https://www.w3.org/2000/svg" ' + 'xmlns:xlink="https://www.w3.org/1999/xlink" ' + 'xmlns:ev="https://www.w3.org/2001/xml-events"' + 'version="1.1">', '</svg>'];
 
 /**
  * Check if a node is a supported template node with a
@@ -14297,7 +14297,7 @@ function prefix(prop) {
 }
 
 // xlink
-var xlinkNS = 'http://www.w3.org/1999/xlink';
+var xlinkNS = 'https://www.w3.org/1999/xlink';
 var xlinkRE = /^xlink:/;
 
 // check for attributes that prohibit interpolations

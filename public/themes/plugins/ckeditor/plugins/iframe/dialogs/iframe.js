@@ -5,7 +5,7 @@
 
 ( function() {
 	// Map 'true' and 'false' values to match W3C's specifications
-	// http://www.w3.org/TR/REC-html40/present/frames.html#h-16.5
+	// https://www.w3.org/TR/REC-html40/present/frames.html#h-16.5
 	var checkboxValues = {
 		scrolling: { 'true': 'yes', 'false': 'no' },
 		frameborder: { 'true': '1', 'false': '0' }
