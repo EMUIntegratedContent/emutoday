@@ -219,7 +219,7 @@
               </div>
               <div class="card small-12 medium-6 large-6 columns" data-equalizer-watch>
                   <div class="card-section" data-equalizer-watch>
-                      <h6><a class="bold-green-link" title="External link to EMU's Twitter page." href="https://www.emich.edu/twitter/">Twitter
+                      <h6><a class="bold-green-link" title="External link to EMU's Twitter page." href="https://twitter.com/EasternMichU/">Twitter
                                           <i class="fa fa-arrow-right"></i></a></h6>
                       <div class="row newshub-tab-front">
                           <div class="large-12 medium-12 small-12 columns">
