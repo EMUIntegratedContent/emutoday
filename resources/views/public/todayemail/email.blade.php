@@ -409,7 +409,7 @@
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="{{ url('/') }}/calendar">Calendar</a></li>
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="{{ url('/') }}/announcement">Announcements</a></li>
                                     <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 5px; text-decoration: none;" href="{{ url('/') }}/story/news">News</a></li>
-                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;" href="{{ url('/') }}/magazine">Eastern Magazine</a></li>
+                                    <li style="display: inline-block; padding: 0; margin: 0;"><a style="color: #ffffff; padding-left: 5px; padding-right: 0; text-decoration: none;" href="https://magazine.emich.edu">Eastern Magazine</a></li>
 
 
                                         </ul>
@@ -428,7 +428,7 @@
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/facebook-base-icons.png"></a>
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
-                                                <a href="http://www.emich.edu/twitter/"><img class="img-circle" alt="Twitter" src="{{ url('/') }}/assets/imgs/icons/twitter-base-icons.png"></a>
+                                                <a href="https://www.emich.edu/communications/expertise/social-media//"><img class="img-circle" alt="Twitter" src="{{ url('/') }}/assets/imgs/icons/twitter-base-icons.png"></a>
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                                                 <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube" src="{{ url('/') }}/assets/imgs/icons/you-tube-base-icons.png"></a>
@@ -443,7 +443,7 @@
                                                 <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle" alt="Snap Chat" src="{{ url('/') }}/assets/imgs/icons/snapchat.png"></a>
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
-                                                <a href="http://blogemu.com/"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/e-base-icons.png"></a>
+                                                <a href="https://blog.emich.edu/"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/e-base-icons.png"></a>
                                             </li>
                                         </ul>
                                     </td>

@@ -220,7 +220,7 @@
                                                     <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="/assets/imgs/icons/facebook-base-icons.png"></a>
                                                 </li>
                                                 <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
-                                                    <a href="http://www.emich.edu/twitter/"><img class="img-circle" alt="Twitter" src="/assets/imgs/icons/twitter-base-icons.png"></a>
+                                                    <a href="https://www.emich.edu/communications/expertise/social-media//"><img class="img-circle" alt="Twitter" src="/assets/imgs/icons/twitter-base-icons.png"></a>
                                                 </li>
                                                 <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
                                                     <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube" src="/assets/imgs/icons/you-tube-base-icons.png"></a>
@@ -235,7 +235,7 @@
                                                     <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle" alt="Snap Chat" src="/assets/imgs/icons/snapchat.png"></a>
                                                 </li>
                                                 <li style="display: inline-block; list-style-type:none; padding-right:7px;margin: 0;">
-                                                    <a href="http://blogemu.com/"><img class="img-circle" alt="Blog EMU" src="/assets/imgs/icons/e-base-icons.png"></a>
+                                                    <a href="https://blog.emich.edu/"><img class="img-circle" alt="Blog EMU" src="/assets/imgs/icons/e-base-icons.png"></a>
                                                 </li>
                                             </ul>
                                         </td>

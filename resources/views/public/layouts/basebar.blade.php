@@ -17,11 +17,11 @@
             <div id="social-links" class="small-12 medium-centered small-centered columns">
                 <ul class="social-icons">
                     <li><a class="facebook" title="External link to EMU's Facebook page." href="https://www.facebook.com/EasternMichU/"><span class="visuallyhidden">Facebook</span></a></li>
-                    <li><a class="twitter" title="External link to EMU's Twitter page." href="http://www.emich.edu/twitter/"><span class="visuallyhidden">Twitter</span></a></li>
+                    <li><a class="twitter" title="External link to EMU's Twitter page." href="https://twitter.com/EasternMichU/"><span class="visuallyhidden">Twitter</span></a></li>
                     <li><a class="youtube" title="External link to EMU's YouTube page." href="https://www.youtube.com/user/emichigan08"><span class="visuallyhidden">YouTube</span></a></li>
                     <li><a class="instagram" title="External link to EMU's Instagram page." href="https://instagram.com/easternmichigan/"><span class="visuallyhidden">Instagram</span></a></li>
                     <li><a class="linkedin" title="External link to EMU's LinkedIn page." href="https://www.linkedin.com/edu/school?id=18604"><span class="visuallyhidden">LinkedIn</span></a></li>
-                    <li><a class="blogemu" title="External link to the BlogEMU page." href="http://blogemu.com/"><span class="visuallyhidden">BlogEMU</span></a></li>
+                    <li><a class="blogemu" title="External link to the BlogEMU page." href="https://blog.emich.edu/"><span class="visuallyhidden">BlogEMU</span></a></li>
                 </ul>
             </div><!-- END social links -->
         </div>

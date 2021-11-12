@@ -559,7 +559,7 @@ var wysihtml5 = {
         // Opera 11 puts HTML elements in the null namespace, it seems, and IE 7 has undefined namespaceURI
         function isHtmlNamespace(node) {
             var ns;
-            return typeof node.namespaceURI == UNDEF || ((ns = node.namespaceURI) === null || ns == "http://www.w3.org/1999/xhtml");
+            return typeof node.namespaceURI == UNDEF || ((ns = node.namespaceURI) === null || ns == "https://www.w3.org/1999/xhtml");
         }
 
         function parentElement(node) {
@@ -762,7 +762,7 @@ var wysihtml5 = {
         }
 
         function comparePoints(nodeA, offsetA, nodeB, offsetB) {
-            // See http://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-Range-Comparing
+            // See https://www.w3.org/TR/DOM-Level-2-Traversal-Range/ranges.html#Level-2-Range-Comparing
             var nodeC, root, childA, childB, n;
             if (nodeA == nodeB) {
                 // Case 1: nodes are the same

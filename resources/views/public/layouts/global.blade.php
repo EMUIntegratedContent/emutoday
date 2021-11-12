@@ -74,11 +74,11 @@
                     <li><a title="EMU Today events calendar." href="/calendar">Calendar</a></li>
                     <li><a title="EMU Today campus announcements." href="/announcement">Announcements</a></li>
                     <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a></li>
-                    <li><a title="Eastern Magazine's homepage" href="/magazine">Eastern Magazine</a></li>
+                    <li><a title="Eastern Magazine's homepage" href="https://magazine.emich.edu">Eastern Magazine</a></li>
                     <li><a title="Eastern Experts are availble for interviews and speaking engagements." href="{{ url('/experts') }}">Eastern Experts</a></li>
                     <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
-                    <li><a title="External link to WEMU." href="http://www.wemu.org" target="_blank">WEMU</a></li>
-                    <li><a title="External link to the EMU athletics page." href="http://www.emueagles.com/" target="_blank">Athletics</a></li>
+                    <li><a title="External link to WEMU." href="https://www.wemu.org" target="_blank">WEMU</a></li>
+                    <li><a title="External link to the EMU athletics page." href="https://www.emueagles.com/" target="_blank">Athletics</a></li>
                 </ul>
                 <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
                     <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a></li>
@@ -162,8 +162,8 @@
                                         <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern Magazine</a></li>
                                         <li><a title="Eastern Experts are availble for interviews and speaking engagements." class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern Experts</a></li>
                                         <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
-                                        <li><a title="External link to WEMU." href="http://wemu.org" target="_blank">WEMU</a></li>
-                                        <li><a title="External link to EMU athletics site." href="http://emueagles.com" target="_blank">Athletics</a></li>
+                                        <li><a title="External link to WEMU." href="https://www.wemu.org" target="_blank">WEMU</a></li>
+                                        <li><a title="External link to EMU athletics site." href="https://www.emueagles.com" target="_blank">Athletics</a></li>
                                     </ul>
                                 </div>
                             </nav>

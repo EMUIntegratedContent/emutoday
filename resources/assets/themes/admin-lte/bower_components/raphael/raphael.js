@@ -390,7 +390,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     **
 	     * Can be “SVG”, “VML” or empty, depending on browser support.
 	    \*/
-	    R.type = (g.win.SVGAngle || g.doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML");
+	    R.type = (g.win.SVGAngle || g.doc.implementation.hasFeature("https://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1") ? "SVG" : "VML");
 	    if (R.type == "VML") {
 	        var d = g.doc.createElement("div"),
 	            b;
@@ -1893,7 +1893,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        a2c = function (x1, y1, rx, ry, angle, large_arc_flag, sweep_flag, x2, y2, recursive) {
 	            // for more information of where this math came from visit:
-	            // http://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
+	            // https://www.w3.org/TR/SVG11/implnote.html#ArcImplementationNotes
 	            var _120 = PI * 120 / 180,
 	                rad = PI / 180 * (+angle || 0),
 	                res = [],
@@ -3411,7 +3411,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     | "M10,20L30,40"
 	     * Here we can see two commands: “M”, with arguments `(10, 20)` and “L” with arguments `(30, 40)`. Upper case letter mean command is absolute, lower case—relative.
 	     *
-	     # <p>Here is short list of commands available, for more details see <a href="http://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path's data attribute's format are described in the SVG specification.">SVG path string format</a>.</p>
+	     # <p>Here is short list of commands available, for more details see <a href="https://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path's data attribute's format are described in the SVG specification.">SVG path string format</a>.</p>
 	     # <table><thead><tr><th>Command</th><th>Name</th><th>Parameters</th></tr></thead><tbody>
 	     # <tr><td>M</td><td>moveto</td><td>(x y)+</td></tr>
 	     # <tr><td>Z</td><td>closepath</td><td>(none)</td></tr>
@@ -5933,7 +5933,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        eve = R.eve,
 	        E = "",
 	        S = " ";
-	    var xlink = "http://www.w3.org/1999/xlink",
+	    var xlink = "https://www.w3.org/1999/xlink",
 	        markers = {
 	            block: "M5,0 0,2.5 5,5z",
 	            classic: "M5,0 0,2.5 5,5 3.5,3 3.5,2z",
@@ -5958,7 +5958,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	        } else {
-	            el = R._g.doc.createElementNS("http://www.w3.org/2000/svg", el);
+	            el = R._g.doc.createElementNS("https://www.w3.org/2000/svg", el);
 	            el.style && (el.style.webkitTapHighlightColor = "rgba(0,0,0,0)");
 	        }
 	        return el;
@@ -6903,7 +6903,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     = (array) array of values of the attribute if attrsNames is passed in.
 	     = (object) object of attributes if nothing is passed in.
 	     > Possible parameters
-	     # <p>Please refer to the <a href="http://www.w3.org/TR/SVG/" title="The W3C Recommendation for the SVG language describes these properties in detail.">SVG specification</a> for an explanation of these parameters.</p>
+	     # <p>Please refer to the <a href="https://www.w3.org/TR/SVG/" title="The W3C Recommendation for the SVG language describes these properties in detail.">SVG specification</a> for an explanation of these parameters.</p>
 	     o arrow-end (string) arrowhead on the end of the path. The format for string is `<type>[-<width>[-<length>]]`. Possible types: `classic`, `block`, `open`, `oval`, `diamond`, `none`, width: `wide`, `narrow`, `medium`, length: `long`, `short`, `midium`.
 	     o clip-rect (string) comma or space separated values: x, y, width and height
 	     o cursor (string) CSS type of the cursor
@@ -6946,7 +6946,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * gradient from white to black or “`r(0.25, 0.75)#fff-#000`” – gradient from white to black with focus point
 	     * at 0.25, 0.75. Focus point coordinates are in 0..1 range. Radial gradients can only be applied to circles and ellipses.
 	     > Path String
-	     # <p>Please refer to <a href="http://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path’s data attribute’s format are described in the SVG specification.">SVG documentation regarding path string</a>. Raphaël fully supports it.</p>
+	     # <p>Please refer to <a href="https://www.w3.org/TR/SVG/paths.html#PathData" title="Details of a path’s data attribute’s format are described in the SVG specification.">SVG documentation regarding path string</a>. Raphaël fully supports it.</p>
 	     > Colour Parsing
 	     # <ul>
 	     #     <li>Colour name (“<code>red</code>”, “<code>green</code>”, “<code>cornflowerblue</code>”, etc)</li>
@@ -7209,8 +7209,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            height: height,
 	            version: 1.1,
 	            width: width,
-	            xmlns: "http://www.w3.org/2000/svg",
-	            "xmlns:xlink": "http://www.w3.org/1999/xlink"
+	            xmlns: "https://www.w3.org/2000/svg",
+	            "xmlns:xlink": "https://www.w3.org/1999/xlink"
 	        });
 	        if (container == 1) {
 	            cnvs.style.cssText = css + "position:absolute;left:" + x + "px;top:" + y + "px";

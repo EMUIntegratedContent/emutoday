@@ -20334,7 +20334,7 @@ var staticRenderFns = [
         _c("li", [
           _c(
             "a",
-            { attrs: { href: "http://www.emueagles.com/calendar.aspx" } },
+            { attrs: { href: "https://www.emueagles.com/calendar.aspx" } },
             [_vm._v("Athletics")]
           )
         ]),
@@ -30814,7 +30814,7 @@ var isBooleanAttr = makeMap(
   'truespeed,typemustmatch,visible'
 );
 
-var xlinkNS = 'http://www.w3.org/1999/xlink';
+var xlinkNS = 'https://www.w3.org/1999/xlink';
 
 var isXlink = function (name) {
   return name.charAt(5) === ':' && name.slice(0, 5) === 'xlink'
@@ -30912,8 +30912,8 @@ function stringifyObject (value) {
 /*  */
 
 var namespaceMap = {
-  svg: 'http://www.w3.org/2000/svg',
-  math: 'http://www.w3.org/1998/Math/MathML'
+  svg: 'https://www.w3.org/2000/svg',
+  math: 'https://www.w3.org/1998/Math/MathML'
 };
 
 var isHTMLTag = makeMap(

@@ -1,0 +1,7 @@
+SetEnvIf Referer emich.edu internal
+#
+<Files *>
+order Deny,Allow
+Deny from all
+Allow from env=internal
+</Files>

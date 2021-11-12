@@ -12,7 +12,7 @@ jvm.SVGElement = function(name, config){
 
 jvm.inherits(jvm.SVGElement, jvm.AbstractElement);
 
-jvm.SVGElement.svgns = "http://www.w3.org/2000/svg";
+jvm.SVGElement.svgns = "https://www.w3.org/2000/svg";
 
 /**
  * Creates DOM element.
