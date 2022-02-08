@@ -37,10 +37,10 @@
                     <h1>Request an Eastern Expert</h1>
                     <p>The Office of Media Relations works directly with journalists to develop stories and track down expert sources for print, electronic, and broadcast media.</p>
                     <h4>Need a source quickly?</h4>
-                    <p>You don't have to go through the directory. We'll track down a media expert for you and arrange the interview. Contact Geoff Larcom at 734.487.4400 or email at glarcom@emich.edu.</p>
+                    <p>You don't have to go through the directory. We'll track down a media expert for you and arrange the interview. Contact Melissa Thrasher at 734.487.4401 or email at mthrashe@emich.edu.</p>
                     <h4>Browse the Directory</h4>
                     <p>Find an expert, then complete the Request an Eastern Expert form from the individual’s bio page. We'll get back to you to arrange the interview.<br />
-                        Journalists: Please fill out this form. The Media Relations Office will quickly track down the expert you need. Or just give us a call at 734.487.4400.</p>
+                        Journalists: Please fill out this form. The Media Relations Office will quickly track down the expert you need. Or just give us a call at 734.487.4401.</p>
                 </div>
               </div>
               <div class="row">

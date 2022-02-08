@@ -19,8 +19,8 @@
                   <div class="large-12 medium-12 small-12 columns">
                     <h2>Eastern Experts and Community Speakers</h2>
                     <p>EMU Office of Media Relations<br />
-                    Phone: 734.487.4400<br />
-                    glarcom@emich.edu</p>
+                    Phone: 734.487.4401<br />
+                    mthrashe@emich.edu</p>
                   </div>
               </div>
           </div>

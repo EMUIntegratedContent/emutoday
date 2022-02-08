@@ -25,10 +25,10 @@
                                 on communication strategies.</p>
                             <h2>Contact</h2>
                             <p>
-                                Geoff Larcom, Executive Director, Media Relations<br/>
-                                734.487.4400<br/>
-                                cell: 734.417.9658<br/>
-                                glarcom@emich.edu
+                                Melissa Thrasher<br/>
+                                Director of Media Relations<br/>
+                                734.487.4401<br/>
+                                mthrashe@emich.edu
                             </p>
                             <h2>Details about Eastern Michigan University</h2>
                             <ul>
