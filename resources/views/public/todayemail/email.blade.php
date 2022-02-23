@@ -432,25 +432,25 @@
                                 <tr style="border:none; background-color: #333333; color: #ffffff;">
                                     <td valign="top" style="padding:5px; border:0; background-color: #333333; color: #ffffff;">
                                         <ul style="padding-left: 5px; text-align:center; padding-bottom: 0px; margin-bottom: 0;">
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://www.facebook.com/EasternMichU/"><img class="img-circle" alt="Facebook" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/facebook-lg.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://www.emich.edu/communications/expertise/social-media//"><img class="img-circle" alt="Twitter" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/twitter-lg.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://www.youtube.com/user/emichigan08"><img class="img-circle" alt="YouTube" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/youtube-lg.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://instagram.com/easternmichigan/"><img class="img-circle" alt="Instagram" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/instagram-lg.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://www.linkedin.com/edu/school?id=18604"><img class="img-circle" alt="Linked-In" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/linkedin-lg.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle" alt="Snap Chat" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/snapchat-lg.png"></a>
                                             </li>
-                                            <li style="display: inline-block; list-style-type:none; padding-right:5px; margin: 0;">
+                                            <li style="display: inline-block; list-style-type:none; margin: 0;">
                                                 <a href="https://blog.emich.edu/"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/blogemu-lg.png"></a>
                                             </li>
                                         </ul>
