@@ -49672,7 +49672,7 @@ var staticRenderFns = [
                                       attrs: {
                                         alt: "Facebook",
                                         src:
-                                          "/assets/imgs/icons/2018-social-icons/facebook-lg.png"
+                                          "/assets/imgs/icons/2018-social-icons/facebook.png"
                                       }
                                     })
                                   ]
@@ -49704,7 +49704,7 @@ var staticRenderFns = [
                                       attrs: {
                                         alt: "Twitter",
                                         src:
-                                          "/assets/imgs/icons/2018-social-icons/twitter-lg.png"
+                                          "/assets/imgs/icons/2018-social-icons/twitter.png"
                                       }
                                     })
                                   ]
@@ -49737,7 +49737,7 @@ var staticRenderFns = [
                                       attrs: {
                                         alt: "YouTube",
                                         src:
-                                          "/assets/imgs/icons/2018-social-icons/youtube-lg.png"
+                                          "/assets/imgs/icons/2018-social-icons/youtube.png"
                                       }
                                     })
                                   ]
@@ -49770,7 +49770,7 @@ var staticRenderFns = [
                                       attrs: {
                                         alt: "Instagram",
                                         src:
-                                          "/assets/imgs/icons/2018-social-icons/instagram-lg.png"
+                                          "/assets/imgs/icons/2018-social-icons/instagram.png"
                                       }
                                     })
                                   ]
@@ -49803,7 +49803,7 @@ var staticRenderFns = [
                                       attrs: {
                                         alt: "Linked-In",
                                         src:
-                                          "/assets/imgs/icons/2018-social-icons/linkedin-lg.png"
+                                          "/assets/imgs/icons/2018-social-icons/linkedin.png"
                                       }
                                     })
                                   ]
@@ -49835,7 +49835,7 @@ var staticRenderFns = [
                                       staticClass: "img-circle",
                                       attrs: {
                                         alt: "Snap Chat",
-                                        src: "/assets/imgs/icons/2018-social-icons/snapchat-lg.png"
+                                        src: "/assets/imgs/icons/2018-social-icons/snapchat.png"
                                       }
                                     })
                                   ]
@@ -49863,7 +49863,7 @@ var staticRenderFns = [
                                       attrs: {
                                         alt: "Blog EMU",
                                         src:
-                                          "/assets/imgs/icons/2018-social-icons/blogemu-lg.png"
+                                          "/assets/imgs/icons/2018-social-icons/blogemu.png"
                                       }
                                     })
                                   ]
