@@ -134,9 +134,11 @@
     }
     .img-circle {
     	border-radius: 50%;
-    	width: 70%;
-        -moz-filter: grayscale(100%);
-        filter: grayscale(100%);
+    	width: 80%;
+    	-moz-filter: grayscale(100%);
+    	filter: grayscale(100%);
+    	margin-left: -3px;
+    	margin-right: -3px;
     }
     .img-circle:hover {
         transition: all 0.2s ease;
