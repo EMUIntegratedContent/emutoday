@@ -77,7 +77,13 @@
                               </form>
                             </div>
                           </div>
+                        @elseif(
+	                        ($story->story_type == 'story' || $story->story_type == 'article' || $story->story_type == 'student')
+	                        && $stillNeedTheseImgs
+                        )
+                            DEMOTE DIALOG HERE
                         @endif
+
                         {{-- the following story_types may have images  --}}
                             @if($currentRequiredImages !== null)
                                 {{-- display the appropriate for for the required images --}}
