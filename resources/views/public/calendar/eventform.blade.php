@@ -18,15 +18,15 @@
     <div class="medium-12 column">
       @include('public.components.errors')
       <div class="row">
-        <div class="medium-6 columns">
+        <div class="large-6 medium-12 small-12 columns">
           <h3 class="cal-caps toptitle">Events Calendar</h3>
-          <div id="vue-event-form">
+          <div id="vue-event-form" style="margin-bottom: 2rem;">
             <event-form ref="eform" eventexists="{{$event->exists ? true: false}}" editeventid="{{$event->exists ? $event->id : null }}">
               <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
             </event-form>
           </div><!-- /#vue-event-form -->
         </div><!-- /.medium-6 column -->
-        <div class="medium-6 columns" id="user-events-tables">
+        <div class="large-6 medium-12 small-12 columns" id="user-events-tables">
         @endsection
 
         @section('content-middle')
