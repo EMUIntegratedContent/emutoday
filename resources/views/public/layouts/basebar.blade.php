@@ -21,6 +21,7 @@
                     <li><a class="youtube" title="External link to EMU's YouTube page." href="https://www.youtube.com/user/emichigan08"><span class="visuallyhidden">YouTube</span></a></li>
                     <li><a class="instagram" title="External link to EMU's Instagram page." href="https://instagram.com/easternmichigan/"><span class="visuallyhidden">Instagram</span></a></li>
                     <li><a class="linkedin" title="External link to EMU's LinkedIn page." href="https://www.linkedin.com/edu/school?id=18604"><span class="visuallyhidden">LinkedIn</span></a></li>
+                    <li><a class="snapchat" title="External link to EMU's Snapchat page." href="https://www.snapchat.com/add/EasternMichigan"><span class="visuallyhidden">Snapchat</span></a></li>
                     <li><a class="blogemu" title="External link to the BlogEMU page." href="https://blog.emich.edu/"><span class="visuallyhidden">BlogEMU</span></a></li>
                 </ul>
             </div><!-- END social links -->
@@ -32,21 +33,21 @@
             <div class="small-12 medium-8 small-centered columns">
                 <div class="base-data">
                     <p><a title="External link to the Eastern Michigan University homepage." href="https://www.emich.edu">Eastern Michigan University</a><br />
-                    Ypsilanti, MI, USA 48197 | <a href="tel:+1-734-487-1849">734.487.1849</a> | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
-                    <hr>
-                    <p class="divider">
-                        <a title="External link to the notice of non-discrimination." href="https://www.emich.edu/nondiscrimination/index.php">Non-Discrimination Statement</a> |
-                        <a title="External link to the EMU board of regent's policy page." href="https://www.emich.edu/policies/">Policies</a> |
-                        <a title="External link to the seuxal misconduct reporting form." href="https://www.emich.edu/title-nine/reporting/index.php">Report a Title IX Incident</a> |
-                        <a title="External link to report an accessibility issue." href="https://www.emich.edu/accessibility/index.php">Accessibility</a> |
-                        <a title="External link to EMU's privacy statement." href="https://www.emich.edu/privacy/index.php">Privacy Statement</a> |
-                        <a title="External link to EMU police department homepage." href="https://www.emich.edu/police/">Annual Security Report</a> |
-                        <a title="EMU Today copyright." href="https://www.emich.edu/copyright/index.php">Copyright © <?php echo date('Y'); ?></a>
-                        <a id="admin-area-lock" title="Administrator dashboard access for site admins only." href="/admin/dashboard"><i class="fa fa-lock"></i><span class="visuallyhidden">Admin Dashboard</span></a>
-                    </p>
+                        Ypsilanti, MI, USA 48197 | <a href="tel:+1-734-487-1849">734.487.1849</a> | <a href="https://www.emich.edu/communications/staff.php">Contacts</a></p>
+                        <hr>
+                        <p class="divider">
+                            <a title="External link to the notice of non-discrimination." href="https://www.emich.edu/nondiscrimination/index.php">Non-Discrimination Statement</a> |
+                            <a title="External link to the EMU board of regent's policy page." href="https://www.emich.edu/policies/">Policies</a> |
+                            <a title="External link to the seuxal misconduct reporting form." href="https://www.emich.edu/title-nine/reporting/index.php">Report a Title IX Incident</a> |
+                            <a title="External link to report an accessibility issue." href="https://www.emich.edu/accessibility/index.php">Accessibility</a> |
+                            <a title="External link to EMU's privacy statement." href="https://www.emich.edu/privacy/index.php">Privacy Statement</a> |
+                            <a title="External link to EMU police department homepage." href="https://www.emich.edu/police/">Annual Security Report</a> |
+                            <a title="EMU Today copyright." href="https://www.emich.edu/copyright/index.php">Copyright © <?php echo date('Y'); ?></a>
+                            <a id="admin-area-lock" title="Administrator dashboard access for site admins only." href="/admin/dashboard"><i class="fa fa-lock"></i><span class="visuallyhidden">Admin Dashboard</span></a>
+                        </p>
+                    </div>
                 </div>
+                <div class="small-12 medium-2 small-centered columns hide-for-small-only">&nbsp;</div>
             </div>
-            <div class="small-12 medium-2 small-centered columns hide-for-small-only">&nbsp;</div>
-        </div>
-    </section>
-</footer>
+        </section>
+    </footer>
