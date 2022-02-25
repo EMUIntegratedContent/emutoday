@@ -78,28 +78,48 @@ class StoryController extends Controller
             $storyGroup = $story->storyType->group;
             $qtype = $request->qtype;
             $gtype = $request->gtype;
-            $stype = $request->stype;
 
             $requiredImages = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
-            $otherImages = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
-            $stypelist = StoryType::where('level', 1)->pluck('name','shortname');
-            $stypes = $story->story_type;
             $stype = $story->story_type;
             foreach ($requiredImages as $img) {
-                $story->storyImages()->create([
-                    'imagetype_id'=> $img->id,
-                    'group'=> $storyGroup,
-                    'image_type'=> $img->type,
-                    'image_name'=> 'img' . $story->id . '_' . $img->type
+							// Since we can now demote stories, don't create image types if they already exist! CP (2/25/22)
+							$existingImg = StoryImage::where([
+								['story_id', '=', $story->id],
+								['imagetype_id', '=', $img->id]
+							])->first();
+							if(!$existingImg) {
+								$story->storyImages()->create([
+									'imagetype_id'=> $img->id,
+									'group'=> $storyGroup,
+									'image_type'=> $img->type,
+									'image_name'=> 'img' . $story->id . '_' . $img->type
 
-                ]);
+								]);
+							}
             }
-
 
             flash()->success('Story has been Promoted.');
             $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
             return redirect($rurl);
-
         }
+
+	public function demoteStory(Request $request)
+	{
+		{
+			$story = $this->story->findOrFail($request->id);
+			$story->story_type = 'news';
+			$story->save();
+
+			$qtype = $request->qtype;
+			$gtype = $request->gtype;
+			$stype = $story->story_type;
+
+			flash()->success("Story has been demoted to 'News'.");
+			$rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
+			return redirect($rurl);
+
+		}
+
+	}
 
 }

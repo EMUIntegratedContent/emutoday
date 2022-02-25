@@ -77,13 +77,15 @@
                               </form>
                             </div>
                           </div>
+
                         @elseif(
 	                        ($story->story_type == 'story' || $story->story_type == 'article' || $story->story_type == 'student')
-	                        && $stillNeedTheseImgs
+	                        && $canDemote
                         )
-                            DEMOTE DIALOG HERE
-                        @endif
 
+                            {{-- allow admins to demote a story to 'News' if elevated and sufficient images for elevate stories not present  --}}
+                            @include('admin.story.subviews.demote',['story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype])
+                        @endif
                         {{-- the following story_types may have images  --}}
                             @if($currentRequiredImages !== null)
                                 {{-- display the appropriate for for the required images --}}

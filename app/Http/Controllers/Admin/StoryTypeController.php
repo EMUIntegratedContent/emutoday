@@ -218,25 +218,13 @@ class StoryTypeController extends Controller
             $stype = 'news';
             $stypes = 'news';
         } else {
-
-            $currentRequiredImages = null;
-            $currentOtherImages = null;
-            $stillNeedTheseImgs = null;
-
-            $imagetypeNames = Imagetype::ofGroup($storyGroup)->get()->keyBy('id');
-
             $requiredImageListCollection = Imagetype::ofGroup($storyGroup)->isRequired(1)->get();
             $otherImageListCollection = Imagetype::ofGroup($storyGroup)->isRequired(0)->get();
 
             // List out the  required image types  needed
             $requiredImageList = Imagetype::ofGroup($storyGroup)->isRequired(1)->pluck('type', 'id');
-            $requiredImageListArray = $requiredImageList->toArray();
 
-            // List out all the possible other image types
-            $otherImageList = Imagetype::ofGroup($storyGroup)->isRequired(0)->pluck('type', 'id');
-            $otherImageListArray = $otherImageList->toArray();
-
-            //create array of requireed images to compare with actual iamges
+            //create array of required images to compare with actual images
             $requiredImageCollect = Imagetype::ofGroup($storyGroup)->isRequired(1)->pluck('id');//keyBy('id');
             $requiredImageKeyArray = $requiredImageCollect->toArray();
 
@@ -244,9 +232,8 @@ class StoryTypeController extends Controller
 
             $remainingRequiredImagesNeeded = $requiredImageList->count() - $currentRequiredImages->count();
 
-            $stillNeedTheseImgs = null;
-
             if($remainingRequiredImagesNeeded > 0) {
+								$canDemote = true;
                 $currentRequiredImagesIdsList = $currentRequiredImages->pluck('imagetype_id');
                 $currentRequiredImagesIdsListArray = $currentRequiredImagesIdsList->toArray();
 
@@ -254,9 +241,20 @@ class StoryTypeController extends Controller
 
                 $currentOtherImages = null;
 
-                return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+                return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs', 'canDemote'));
 
             } else {
+								// $stillNeedTheseImgs does NOT take into account if the filename field is blank in story_images. This does.
+								$canDemote = DB::table('story_images')
+									->select('story_images.image_name')
+									->join('imagetypes', function ($join) {
+										$join->on('imagetypes.id', '=', 'story_images.imagetype_id')
+											->where('imagetypes.is_required', '=', 1);
+									})
+									->where('story_images.story_id', '=', $story->id)
+									->where('story_images.filename', '=', '')
+									->where('story_images.group', '=', $storyGroup)
+									->count();
                 $otherImageCollect = Imagetype::ofGroup($storyGroup)->isRequired(0)->pluck('id');//keyBy('id');
                 $otherImageKeyArray = $otherImageCollect->toArray();
 
@@ -269,11 +267,11 @@ class StoryTypeController extends Controller
                         $currentOtherImagesIdsListArray = $currentOtherImagesIdsList->toArray();
                         $stillNeedTheseImgs = $otherImageListCollection->except($currentOtherImagesIdsListArray);
 
-                        return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+                        return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs', 'canDemote'));
 
                 } else {
                     $stillNeedTheseImgs = null;
-                    return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs'));
+                    return view('admin.story.form', compact('story','qtype','gtype','sroute','stype' ,'stypes', 'stypelist' ,'currentRequiredImages','currentOtherImages', 'stillNeedTheseImgs', 'canDemote'));
                 }
             }
         }
@@ -395,8 +393,6 @@ public function addNewImage($id, Request $request)
 public function promoteStory($id, Request $request)
 {
     $story = $this->story->findOrFail($id);
-    //return 'working on it' . $story->id;
-    //
     $story->story_type = $request->new_story_type;
     $story->save();
     $storyGroup = $story->storyType->group;
@@ -408,13 +404,19 @@ public function promoteStory($id, Request $request)
     $stypes = $story->story_type;
 
     foreach ($requiredImages as $img) {
-        $story->storyImages()->create([
-            'imagetype_id'=> $img->id,
-            'group'=> $storyGroup,
-            'image_type'=> $img->type,
-            'image_name'=> 'img' . $story->id . '_' . $img->type
+			$existingImg = StoryImage::where([
+				['story_id', '=', $story->id],
+				['imagetype_id', '=', $img->id]
+			])->first();
+			if(!$existingImg) {
+				$story->storyImages()->create([
+					'imagetype_id'=> $img->id,
+					'group'=> $storyGroup,
+					'image_type'=> $img->type,
+					'image_name'=> 'img' . $story->id . '_' . $img->type
 
-        ]);
+				]);
+			}
     }
 
 

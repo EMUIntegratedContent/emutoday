@@ -422,6 +422,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
         Route::post('promotestory', 'Admin\StoryController@promoteStory')->name('admin_promotestory');
         Route::put('story/{id}/updatefrompreview', 'Admin\StoryController@updateFromPreview')->name('admin_preview_story_update');
+				// CP 2/25/22
+				Route::post('demotestory', 'Admin\StoryController@demoteStory')->name('admin_story_demote');
 
         Route::post('{qtype}/{gtype}/{stype}/{story}/addnewstoryimage', 'Admin\StoryImageController@addNewStoryImage')->name('admin_storyimage_add_new_storyimage');
         Route::get('storyimage/{storyimage}/confirm', 'Admin\StoryImageController@confirm')->name('admin_storyimage_confirm');
