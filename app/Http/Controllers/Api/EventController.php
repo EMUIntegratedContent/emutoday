@@ -148,7 +148,7 @@ class EventController extends ApiController
     }
 
       /**
-      * Retieve resource for editing
+      * Retrieve resource for editing
       *
       * @param  int  $id
       * @return \Illuminate\Http\Response

@@ -260,6 +260,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('magazine/article/{id?}', 'Today\MagazineController@article');
     Route::get('magazine/issue/{year?}/{season?}', 'Today\MagazineController@issue');
     Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
+    Route::get('magazine/{year?}/{season?}', 'Today\MagazineController@index');
     //
 
     Route::get('hub', 'MainController@index');

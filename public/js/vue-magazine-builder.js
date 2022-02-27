@@ -48665,7 +48665,7 @@ var isBooleanAttr = makeMap(
   'truespeed,typemustmatch,visible'
 );
 
-var xlinkNS = 'https://www.w3.org/1999/xlink';
+var xlinkNS = 'http://www.w3.org/1999/xlink';
 
 var isXlink = function (name) {
   return name.charAt(5) === ':' && name.slice(0, 5) === 'xlink'
@@ -48763,8 +48763,8 @@ function stringifyObject (value) {
 /*  */
 
 var namespaceMap = {
-  svg: 'https://www.w3.org/2000/svg',
-  math: 'https://www.w3.org/1998/Math/MathML'
+  svg: 'http://www.w3.org/2000/svg',
+  math: 'http://www.w3.org/1998/Math/MathML'
 };
 
 var isHTMLTag = makeMap(
@@ -56540,7 +56540,7 @@ var __vue_render__ = function __vue_render__() {
 
   return _c('svg', {
     attrs: {
-      "xmlns": "https://www.w3.org/2000/svg",
+      "xmlns": "http://www.w3.org/2000/svg",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -56586,7 +56586,7 @@ var __vue_render__$1 = function __vue_render__() {
 
   return _c('svg', {
     attrs: {
-      "xmlns": "https://www.w3.org/2000/svg",
+      "xmlns": "http://www.w3.org/2000/svg",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {

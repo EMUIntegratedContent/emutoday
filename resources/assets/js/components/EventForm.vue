@@ -599,8 +599,7 @@ export default  {
     mounted() {
         this.record_exists = this.recordexists;
         if(this.thisRecordExists){
-            var fetchme = this.recordid ? this.recordid : this.record.id;
-            console.log(fetchme);
+            let fetchme = this.recordid ? this.recordid : this.record.id;
             this.fetchCurrentRecord(fetchme)
         }
         this.setupDatePickers();
@@ -943,7 +942,7 @@ export default  {
             this.formMessage.isOk = false;
             this.formMessage.isErr = false;
 
-            if(confirm('Would you like to delete this Event')==true){
+            if(confirm('Would you like to delete this event?')==true){
                 $('html, body').animate({ scrollTop: 0 }, 'fast');
 
                 var tempid = 0;
@@ -998,10 +997,11 @@ export default  {
         },
 
         cloneEvent: function(e) {
+          if(confirm('Would you like to clone this event?')==true) {
             this.record.exists = this.record_exists = false;
-
             e.preventDefault();
-            this.submitForm(e);
+            this.submitForm(e, true);
+          }
         },
 
         cancelEvent: function(e){
@@ -1009,9 +1009,9 @@ export default  {
             this.formMessage.isOk = false;
             this.formMessage.isErr = false;
 
-            if(confirm('Would you like to cancel this Event')==true){
+            if(confirm('Would you like to cancel this event?')==true){
                 $('html, body').animate({ scrollTop: 0 }, 'fast');
-
+                let tempid
                 this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
                 this.$http.patch('/api/event/'+tempid+'/cancel')
 
@@ -1031,7 +1031,7 @@ export default  {
             }
         },
 
-        submitForm: function(e) {
+        submitForm: function(e, doClone) {
             e.preventDefault();
             this.formMessage.isOk = false;
             this.formMessage.isErr = false;
@@ -1049,8 +1049,8 @@ export default  {
             }
             this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
 
-            let method = (this.thisRecordExists) ? 'put' : 'post'
-            let route =  (this.thisRecordExists) ? '/api/event/' + this.record.id : '/api/event';
+            let method = doClone ? 'post' : 'put'
+            let route =  doClone ? '/api/event' : '/api/event/' + this.record.id;
 
             this.$http[method](route, this.record)
 
@@ -1070,7 +1070,6 @@ export default  {
                 this.formMessage.isOk = false;
                 this.formMessage.isErr = true;
                 //error callback
-                console.log("FORM ERRORS" + JSON.stringify(response));
                 this.formErrors = response.data.error.message;
             }).bind(this);
         },

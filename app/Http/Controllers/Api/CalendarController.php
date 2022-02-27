@@ -29,7 +29,7 @@ class CalendarController extends ApiController
      */
     public function eventsByDay($year = null, $month = null, $day = null, $id = null)
     {
-      $mondifier;
+			$mondifier;
       if ($year == null) {
         $mondifier = "all";
       } else {
