@@ -93,7 +93,8 @@ class FractalEventTransformerModelFull extends Fractal\TransformerAbstract
       'home_priority'           => $event->home_priority,
       'minicalendars' => $event->minicalendars()->select('calendar', 'id as value')->get(),
       'eventcategories' => $event->eventcategories()->select('category', 'id as value')->get(),
-      'full_url' => url('/') . '/calendar/' . $start_date->format('Y') . '/' . $start_date->format('m') . '/' . $start_date->format('d') . '/' . $event->id
+      'full_url' => url('/') . '/calendar/' . $start_date->format('Y') . '/' . $start_date->format('m') . '/' . $start_date->format('d') . '/' . $event->id,
+			'is_archived'           => $event->is_archived,
     ];
   }
 }

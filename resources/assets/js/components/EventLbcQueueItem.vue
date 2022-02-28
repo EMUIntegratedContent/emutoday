@@ -17,7 +17,7 @@
                 <label>reviewed:</label>
               </div><!-- /.form-group -->
               <div class="form-group">
-                <vui-flip-switch id="switch-{{item.id}}"
+                <vui-flip-switch :id="'switch-'+item.id"
                 v-on:click.prevent="changeIsReviewed"
                 :value.sync="patchRecord.lbc_reviewed" >
                 </vui-flip-switch>
@@ -32,7 +32,7 @@
                 <label>approved:</label>
               </div><!-- /.form-group -->
               <div class="form-group">
-                <vui-flip-switch id="switch-{{item.id}}"
+                <vui-flip-switch :id="'switch-'+item.id"
                 v-on:click.prevent="changeIsApproved"
                 :value.sync="patchRecord.lbc_approved" >
                 </vui-flip-switch>
@@ -58,10 +58,10 @@
       <hr/>
       <div class="item-info">
         <p>Title: {{item.title}}</p>
-        <p v-if"item.short_title">Short-title: {{item.shor_title}}</p>
+        <p v-if="item.short_title">Short-title: {{item.shor_title}}</p>
         <p>Description: {{item.description}}</p>
         <template v-if="isOnCampus">
-          <p>Location: <a href="http://emich.edu/maps/?building={{item.building}}" target="_blank">{{item.location}}</a></p>
+          <p>Location: <a :href="'http://emich.edu/maps/?building='+item.building" target="_blank">{{item.location}}</a></p>
         </template>
         <hr/>
         <template v-else>
@@ -78,15 +78,15 @@
         <template v-if="item.related_link_1">
           <p>For more information, visit:</p>
           <ul>
-            <li><a href="{{item.related_link_1 | hasHttp}}" target="_blank">
+            <li><a :href="item.related_link_1 | hasHttp" target="_blank">
               <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
               <template v-else>{{item.related_link_1}}</template>
             </a></li>
-            <li v-if="item.related_link_2"><a href="{{item.related_link_2 | hasHttp}}" target="_blank">
+            <li v-if="item.related_link_2"><a :href="item.related_link_2 | hasHttp" target="_blank">
               <template v-if="item.related_link_2_txt">{{item.related_link_2_txt}}</template>
               <template v-else>{{item.related_link_2}}</template>
             </a></li>
-            <li v-if="item.related_link_3"><a href="{{item.related_link_3 | hasHttp}}" target="_blank">
+            <li v-if="item.related_link_3"><a :href="item.related_link_3 | hasHttp" target="_blank">
               <template v-if="item.related_link_3_txt">{{item.related_link_3_txt}}</template>
               <template v-else>{{item.related_link_3}}</template>
             </a></li>
@@ -97,7 +97,7 @@
         <p v-else>Cost: {{item.cost | currency }}</p>
         <p>Participation: {{eventParticipation}}</p>
         <template v-if="item.tickets">
-          <p v-if="item.ticket_details_online">For Tickets Visit: <a href="{{item.ticket_details_online | hasHttp}}">{{item.ticket_details_online}}</a></p>
+          <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="item.ticket_details_online | hasHttp">{{item.ticket_details_online}}</a></p>
           <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
           <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
           <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>

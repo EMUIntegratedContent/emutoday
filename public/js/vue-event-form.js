@@ -602,6 +602,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5065,13 +5068,35 @@ var render = function() {
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: this.record.is_canceled == 1,
-                  expression: "this.record.is_canceled == 1"
+                  value: _vm.record.is_canceled == 1,
+                  expression: "record.is_canceled == 1"
                 }
               ],
               class: _vm.calloutFail
             },
             [_c("h5", [_vm._v("This event has been canceled.")])]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.record.is_archived == 1,
+                  expression: "record.is_archived == 1"
+                }
+              ],
+              class: _vm.calloutFail
+            },
+            [
+              _c("h5", [
+                _vm._v(
+                  "This event is archived because it ended more than two years ago. It will no longer display publicly."
+                )
+              ])
+            ]
           ),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [

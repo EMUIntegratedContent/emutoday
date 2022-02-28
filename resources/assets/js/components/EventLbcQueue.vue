@@ -20,13 +20,14 @@
     <div class="col-md-6">
       <h3><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>
       <div id="items-approved">
+<!--        v-for="item in itemsUnapproved | orderBy 'start_date' 1"-->
         <event-queue-item
-
         pid="items-approved"
-        v-for="item in itemsUnapproved | orderBy 'start_date' 1"
+        v-for="(item, i) in itemsUnapproved"
         @item-change="moveToApproved"
         :item="item"
-        :index="$index"
+        :index="i"
+        :key="'items-unapproved-'+i"
         :is="approved-list">
         </event-queue-item>
       </div>
@@ -34,14 +35,15 @@
 
     <div class="col-md-6">
       <h3><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>
+<!--      v-for="item in itemsApproved | orderBy 'start_date' 1"-->
       <div id="items-approved">
         <event-queue-item
-
         pid="items-approved"
-        v-for="item in itemsApproved | orderBy 'start_date' 1"
+        v-for="(item, i) in itemsApproved"
         @item-change="moveToUnApproved"
         :item="item"
-        :index="$index"
+        :index="i"
+        :key="'items-approved-'+i"
         :is="approved-list">
         </event-queue-item>
       </div>

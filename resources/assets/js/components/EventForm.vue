@@ -9,8 +9,11 @@
         <div v-show="formMessage.isErr"  :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
-        <div v-show="this.record.is_canceled == 1" :class="calloutFail">
+        <div v-show="record.is_canceled == 1" :class="calloutFail">
           <h5>This event has been canceled.</h5>
+        </div>
+        <div v-show="record.is_archived == 1" :class="calloutFail">
+          <h5>This event is archived because it ended more than two years ago. It will no longer display publicly.</h5>
         </div>
         <div class="form-group">
           <label>Title <span :class="iconStar" class="reqstar"></span></label>

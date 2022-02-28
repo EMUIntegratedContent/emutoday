@@ -3,6 +3,7 @@
     "/js/vue-caleventview.js": "/js/vue-caleventview.js",
     "/js/vue-email-form.js": "/js/vue-email-form.js",
     "/js/vue-event-form.js": "/js/vue-event-form.js",
+    "/js/vue-event-queue.js": "/js/vue-event-queue.js",
     "/js/vue-magazine-builder.js": "/js/vue-magazine-builder.js",
     "/css/public-styles.css": "/css/public-styles.css"
 }

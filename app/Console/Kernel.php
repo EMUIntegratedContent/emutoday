@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(Commands\SendTodayEmails::class)->cron('*/5 * * * *');
         $schedule->command(Commands\SendStoryIdeaEmail::class)->cron('0 8 * * 3');
         $schedule->command(Commands\SendIndividualStoryIdeaEmail::class)->cron('0 8 * * 0-6');
+        $schedule->command(Commands\ArchiveEvents::class)->cron('0 0 * * *');
     }
 
     /**
