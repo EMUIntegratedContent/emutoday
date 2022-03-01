@@ -2,14 +2,12 @@
 
 <div class="toolbar-row">
     <div class="toolbar-block">
-        <!-- theRecordID:{{thisRecordId}} theRecordState:{{thisRecordState}} isDirty:{{thisRecordIsDirty}} -->
     </div><!-- /.tool-block -->
     <div class="toolbar-block pull-right">
         <div class="btn-toolbar btn-group-sm ">
-
-            <a id="btn-preview-{{id}}" :href="previewLink"  :disabled="disabledPreview" v-show="!disabledPreview" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
-            <a id="btn-new-{{id}}" :href="createNewLink" :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-plus-square"></i></a>
-            <a id="btn-list-{{id}}" :href="listLink"  :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-list-alt"></i></a>
+            <a :id="'btn-preview-'+recordId" :href="previewLink"  :disabled="disabledPreview" v-show="!disabledPreview" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+            <a :id="'btn-new-'+recordId" :href="createNewLink" :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-plus-square"></i></a>
+            <a :id="'btn-list-'+recordId" :href="listLink"  :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-list-alt"></i></a>
         </div><!-- /.btn-toolbar -->
     </div><!-- /.toolbar-block -->
 </div><!-- /.center-text -->
@@ -24,7 +22,7 @@ text-align: right;
 .toolbar-block {
 
   display: inline-block;
-}​
+}
 #items-unapproved .box {
     margin-bottom: 4px;
 }
@@ -47,18 +45,6 @@ export default  {
         'gtype',
         'qtype'
     ],
-    vuex: {
-        getters: {
-            // note that you're passing the function itself, and not the value 'getCount()'
-            // counterValue: getCount,
-            thisRecordId: getRecordId,
-            thisRecordIsDirty: getRecordIsDirty,
-            thisRecordState: getRecordState,
-
-        },
-    },
-
-
     ready() {
     },
     data: function() {
@@ -67,6 +53,15 @@ export default  {
         }
     },
     computed: {
+      thisRecordId () {
+        return this.getRecordId
+      },
+      thisRecordIsDirty () {
+        return this.getRecordIsDirty
+      },
+      thisRecordState () {
+        return this.getRecordState
+      },
         canSeeListView:function(){
             if(this.viewType == 'list'){
                 return false

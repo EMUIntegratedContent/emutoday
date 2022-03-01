@@ -36,9 +36,9 @@
                 <div class="box box-primary">
                         <div class="box-header with-border">
                             <div id="vue-box-tools">
-                                <box-tools v-ref:boxtools sroute="{{$sroute}}" gtype="{{$gtype}}" qtype="{{$qtype}}" stype="{{$stype}}" viewtype="form"
+                                <box-tools ref="boxtools" sroute="{{$sroute}}" gtype="{{$gtype}}" qtype="{{$qtype}}" stype="{{$stype}}" viewtype="form"
                                 :current-user="{{$currentUser}}"
-                                :record-id="{{$story->exists ? $story->id: null}}"
+                                :record-id="{{$story->exists ? $story->id: 0}}"
                                 ></box-tools>
                             </div>
                         </div> 	<!-- /.box-header -->
