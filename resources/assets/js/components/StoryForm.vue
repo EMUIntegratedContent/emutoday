@@ -101,7 +101,7 @@
         <div v-if="needAuthor && isAdmin" class="form-inline author">
           <label>Choose existing Author:</label>
           <v-select
-              :value.sync="selectedAuthor"
+              v-model="selectedAuthor"
               :options="optionsAuthorlist"
               :multiple="false"
               placeholder="Author (leaving this blank will set you as the author)"
@@ -114,7 +114,7 @@
         <div v-if="isAdmin && needContact" class="form-inline author">
           <label>Story contact:</label>
           <v-select
-              :value.sync="selectedContact"
+              v-model="selectedContact"
               :options="optionsContactlist"
               :multiple="false"
               placeholder="Contact (leaving this blank will set the system default as the contact)"
@@ -126,7 +126,13 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Start Date: <i class="fi-star reqstar"></i>
-<!--          <input v-if="fdate" type="text" :value="fdate" :initval="fdate" v-flatpickr="fdate">-->
+            <date-picker
+                id="start-date"
+                v-model="fdate"
+                value-type="YYYY-MM-DD"
+                format="MM/DD/YYYY"
+                :clearable="false"
+            ></date-picker>
           </label>
           <p>NOTE: For external story with "video" tag, treat this field as the END Date.</p>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
@@ -137,7 +143,7 @@
           <label>Tags:
           <v-select
               :class="[formErrors.tags ? 'invalid-input' : '']"
-              :value.sync="tags"
+              v-model="tags"
               :options="taglist"
               :multiple="true"
               placeholder="Select tags"
@@ -260,13 +266,13 @@ button.button-primary {
 // var moment = require('moment')
 import moment from 'moment'
 import vSelect from "vue-select"
-// import ckrte from "../directives/ckrte.js"
-import flatpickr from "../directives/flatpickr.js"
-import { storyMixin } from "./story_mixin";
+import { storyMixin } from "./story_mixin"
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
+import 'vue-select/dist/vue-select.css'
 
 export default {
-  directives: { flatpickr },
-  components: { vSelect },
+  components: { vSelect, DatePicker },
   mixins: [storyMixin],
   props: {
     cuser: { default: {} },
@@ -280,42 +286,32 @@ export default {
   data() {
     return {
       editorConfig: {
-        toolbar: [
-          { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', '-', 'Save', 'NewPage', 'ExportPdf', 'Preview', 'Print', '-', 'Templates' ] },
-          { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
-          { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
-          '/',
-          { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
-          { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
-          { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-          { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-          '/',
-          { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-          { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-          { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
-          { name: 'others', items: [ '-' ] },
-          { name: 'about', items: [ 'About' ] }
-        ],
+        // toolbar: [],
         toolbarGroups: [
-          { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
           { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
-          { name: 'forms' },
-          '/',
+          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+          { name: 'forms', groups: [ 'forms' ] },
           { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-          { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-          { name: 'links' },
+          { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+          { name: 'links', groups: [ 'links' ] },
           { name: 'insert' },
-          '/',
-          { name: 'styles' },
-          { name: 'colors' },
-          { name: 'tools' },
-          { name: 'others' },
-          { name: 'about' }
-        ]
-        // removePlugins: 'elementspath',
-        // allowedContent: 'h2 ol ul li p b i strong em; a[!href];'
+          { name: 'document', groups: [ 'document', 'doctools', 'mode' ] },
+          { name: 'styles', groups: [ 'styles' ] },
+          { name: 'colors', groups: [ 'colors' ] },
+          { name: 'tools', groups: [ 'tools' ] },
+          { name: 'others', groups: [ 'others' ] },
+          { name: 'about', groups: [ 'about' ] }
+        ],
+        extraPlugins: 'autogrow,horizontalrule,iframe,videoembed,image2',
+        extraAllowedContent: 'div(*){*};hr;iframe[*]',
+        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview',
+        pasteFilter: 'plain-text',
+        height: '25em',
+        filebrowserWindowFeatures: 'resizable=no',
+        filebrowserBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
+        filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
+        filebrowserUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
+        filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
       },
       tags: [],
       taglist: [],
@@ -547,7 +543,6 @@ export default {
       this.updateRecordId(this.currentRecordId);
       this.updateRecordState('edit');
       this.updateRecordIsDirty(false);
-      this.recordId = this.currentRecordId;
       // this.recordexists = true;
       this.fetchCurrentRecord();
     },
