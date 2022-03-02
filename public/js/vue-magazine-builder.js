@@ -64257,9 +64257,27 @@ var mutations = {
     state.issueArticles = articles;
   }
 };
+var actions = {
+  updateRecordId: function updateRecordId(_ref2, value) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+    commit('RECORD_ID', value);
+  },
+  updateRecordIsDirty: function updateRecordIsDirty(_ref3, value) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+    commit('RECORD_IS_DIRTY', value);
+  },
+  updateRecordState: function updateRecordState(_ref4, value) {
+    var commit = _ref4.commit,
+        state = _ref4.state;
+    commit('RECORD_STATE', value);
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: state,
-  mutations: mutations
+  mutations: mutations,
+  actions: actions
 }));
 
 /***/ }),

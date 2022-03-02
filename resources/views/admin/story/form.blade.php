@@ -12,7 +12,9 @@
         @endsection
         @section('scripts-plugin')
             <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
-            <script src="/themes/plugins/ckeditor/ckeditor.js"></script>
+{{--            <script src="/themes/plugins/ckeditor/ckeditor.js"></script>--}}
+{{--            <script src="/themes/ckeditor4_full.js"></script>--}}
+            <script src="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"></script>
             @parent
         @endsection
         @section('scripts-app')
@@ -45,7 +47,7 @@
                     <div class="box-body">
                         <story-form
                             :cuser="{{$currentUser}}"
-                            recordexists="{{$story->exists ? true: false}}"
+{{--                            recordexists="{{$story->exists ? true: false}}"--}}
 
                             stypes="{{$stypes}}"
                             stype="{{$stype}}"

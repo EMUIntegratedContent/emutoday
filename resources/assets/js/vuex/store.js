@@ -50,7 +50,19 @@ const mutations = {
         state.issueArticles = articles
     }
 }
+const actions = {
+    updateRecordId ({ commit, state }, value) {
+        commit('RECORD_ID', value)
+    },
+    updateRecordIsDirty ({ commit, state }, value) {
+        commit('RECORD_IS_DIRTY', value)
+    },
+    updateRecordState ({ commit, state }, value) {
+        commit('RECORD_STATE', value)
+    }
+}
 export default new Vuex.Store({
     state,
-    mutations
+    mutations,
+    actions
 })

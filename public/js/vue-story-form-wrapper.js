@@ -215,8 +215,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _directives_flatpickr_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../directives/flatpickr.js */ "./resources/assets/js/directives/flatpickr.js");
-/* harmony import */ var _vuex_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../vuex/actions */ "./resources/assets/js/vuex/actions.js");
-/* harmony import */ var _vuex_getters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../vuex/getters */ "./resources/assets/js/vuex/getters.js");
+/* harmony import */ var _story_mixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./story_mixin */ "./resources/assets/js/components/story_mixin.js");
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -474,8 +480,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // import flatpickr from 'flatpickr';
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   directives: {
     flatpickr: _directives_flatpickr_js__WEBPACK_IMPORTED_MODULE_2__["default"]
@@ -483,13 +487,12 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     vSelect: vue_select__WEBPACK_IMPORTED_MODULE_1___default.a
   },
+  mixins: [_story_mixin__WEBPACK_IMPORTED_MODULE_3__["storyMixin"]],
   props: {
     cuser: {
       "default": {}
     },
-    recordexists: {
-      "default": false
-    },
+    // recordexists: { default: false },
     editid: {
       "default": ''
     },
@@ -508,6 +511,87 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      editorConfig: {
+        toolbar: [{
+          name: 'document',
+          groups: ['mode', 'document', 'doctools'],
+          items: ['Source', '-', 'Save', 'NewPage', 'ExportPdf', 'Preview', 'Print', '-', 'Templates']
+        }, {
+          name: 'clipboard',
+          groups: ['clipboard', 'undo'],
+          items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
+        }, {
+          name: 'editing',
+          groups: ['find', 'selection', 'spellchecker'],
+          items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']
+        }, {
+          name: 'forms',
+          items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField']
+        }, '/', {
+          name: 'basicstyles',
+          groups: ['basicstyles', 'cleanup'],
+          items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat']
+        }, {
+          name: 'paragraph',
+          groups: ['list', 'indent', 'blocks', 'align', 'bidi'],
+          items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']
+        }, {
+          name: 'links',
+          items: ['Link', 'Unlink', 'Anchor']
+        }, {
+          name: 'insert',
+          items: ['Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']
+        }, '/', {
+          name: 'styles',
+          items: ['Styles', 'Format', 'Font', 'FontSize']
+        }, {
+          name: 'colors',
+          items: ['TextColor', 'BGColor']
+        }, {
+          name: 'tools',
+          items: ['Maximize', 'ShowBlocks']
+        }, {
+          name: 'others',
+          items: ['-']
+        }, {
+          name: 'about',
+          items: ['About']
+        }],
+        toolbarGroups: [{
+          name: 'document',
+          groups: ['mode', 'document', 'doctools']
+        }, {
+          name: 'clipboard',
+          groups: ['clipboard', 'undo']
+        }, {
+          name: 'editing',
+          groups: ['find', 'selection', 'spellchecker']
+        }, {
+          name: 'forms'
+        }, '/', {
+          name: 'basicstyles',
+          groups: ['basicstyles', 'cleanup']
+        }, {
+          name: 'paragraph',
+          groups: ['list', 'indent', 'blocks', 'align', 'bidi']
+        }, {
+          name: 'links'
+        }, {
+          name: 'insert'
+        }, '/', {
+          name: 'styles'
+        }, {
+          name: 'colors'
+        }, {
+          name: 'tools'
+        }, {
+          name: 'others'
+        }, {
+          name: 'about'
+        }] // removePlugins: 'elementspath',
+        // allowedContent: 'h2 ol ul li p b i strong em; a[!href];'
+
+      },
       tags: [],
       taglist: [],
       selectedAuthor: null,
@@ -566,7 +650,6 @@ __webpack_require__.r(__webpack_exports__);
       startdatePicker: null,
       date: {},
       currentDate: {},
-      recordState: '',
       recordOld: {
         id: '',
         user_id: '',
@@ -605,9 +688,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.currentDate = moment__WEBPACK_IMPORTED_MODULE_0___default()();
-    this.recordState = 'created';
+    this.updateRecordState('created');
 
-    if (this.recordexists) {
+    if (this.editid != '') {
       this.currentRecordId = this.editid;
       this.singleStype = true;
       this.newform = false;
@@ -620,7 +703,7 @@ __webpack_require__.r(__webpack_exports__);
       this.fdate = this.currentDate;
       this.setAuthorToCurrentUser(this.currentUser.id);
       this.record.author_id = this.record.user_id;
-      this.recordState = 'new';
+      this.updateRecordState('new');
     }
 
     this.fetchTagsList();
@@ -670,7 +753,8 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     submitBtnLabel: function submitBtnLabel() {
-      return this.recordexists ? 'Update Story' : 'Save Story';
+      // return (this.recordexists) ? 'Update Story' : 'Save Story';
+      return this.record.id ? 'Update Story' : 'Save Story';
     },
     hasLocalRecordChanged: function hasLocalRecordChanged() {
       var ckval = false;
@@ -731,10 +815,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     onRefresh: function onRefresh() {
       this.updateRecordId(this.currentRecordId);
-      this.recordState = 'edit';
-      this.recordIsDirty = false;
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
+      this.updateRecordState('edit');
+      this.updateRecordIsDirty(false);
+      this.recordId = this.currentRecordId; // this.recordexists = true;
+
       this.fetchCurrentRecord();
     },
     oldRefresh: function oldRefresh() {
@@ -771,7 +855,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     onBlur: function onBlur(evt) {
       if (!this.recordIsDirty) {
-        this.recordIsDirty = true;
         this.updateRecordIsDirty(true);
       }
     },
@@ -787,7 +870,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     checkContentChange: function checkContentChange() {
       if (!this.recordIsDirty) {
-        this.recordIsDirty = true;
         this.updateRecordIsDirty(true);
       }
     },
@@ -910,13 +992,11 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         // Set the default author based on the author table's id, not the user table's id!
         this.setAuthorToCurrentUser(this.currentUser.id);
-      }
+      } // this.recordexists = true;
 
-      this.recordexists = true;
-      this.recordState = "edit";
-      this.recordIsDirty = false;
+
+      this.updateRecordState("edit");
       this.updateRecordId(this.currentRecordId);
-      console.log("SPNGBB");
       this.updateRecordIsDirty(false);
     },
     saveAuthor: function saveAuthor(e) {
@@ -1043,10 +1123,12 @@ __webpack_require__.r(__webpack_exports__);
         tempid = this.currentRecordId;
       } else {
         tempid = this.record.id;
-      }
+      } // let method = (this.recordexists) ? 'put' : 'post'
 
-      var method = this.recordexists ? 'put' : 'post';
-      var route = this.recordexists ? '/api/story/' + tempid : '/api/story';
+
+      var method = this.record.id ? 'put' : 'post'; // let route = (this.recordexists) ? '/api/story/' + tempid : '/api/story';
+
+      var route = this.record.id ? '/api/story/' + tempid : '/api/story';
       this.$http[method](route, this.record).then(function (response) {
         _this12.formMessage.msg = response.data.message;
         _this12.currentRecordId = response.data.newdata.record_id;
@@ -1089,9 +1171,10 @@ __webpack_require__.r(__webpack_exports__);
       if ((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')) {
         this.resetAuthor(); // changes author back to current user
       } // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
+      // if (!this.contactManuallyChanged && !this.recordexists) {
 
 
-      if (!this.contactManuallyChanged && !this.recordexists) {
+      if (!this.contactManuallyChanged && !this.record.id) {
         if (!this.record.contact) {
           if (val == 'article') {
             this.fetchDefaultMagazineContact();
@@ -22939,7 +23022,22 @@ var render = function() {
                 ]
               ),
               _vm._v(" "),
-              _c("ckeditor", { attrs: { value: "Hello, World!" } }),
+              _c("ckeditor", {
+                attrs: {
+                  "editor-url":
+                    "https://cdn.ckeditor.com/4.17.2/full/ckeditor.js",
+                  id: "content",
+                  name: "content",
+                  config: _vm.editorConfig
+                },
+                model: {
+                  value: _vm.content,
+                  callback: function($$v) {
+                    _vm.content = $$v
+                  },
+                  expression: "content"
+                }
+              }),
               _vm._v(" "),
               _vm.formErrors.content
                 ? _c("p", { staticClass: "help-text invalid" }, [
@@ -23159,30 +23257,30 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "col-md-6" }, [
           _vm.isAdmin
-            ? _c(
-                "div",
-                { staticClass: "form-group" },
-                [
-                  _c("label", { attrs: { for: "tags" } }, [_vm._v("Tags:")]),
-                  _vm._v(" "),
-                  _c("v-select", {
-                    class: [_vm.formErrors.tags ? "invalid-input" : ""],
-                    attrs: {
-                      value: _vm.tags,
-                      options: _vm.taglist,
-                      multiple: true,
-                      placeholder: "Select tags",
-                      label: "name"
-                    },
-                    on: {
-                      "update:value": function($event) {
-                        _vm.tags = $event
+            ? _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "label",
+                  [
+                    _vm._v("Tags:\n          "),
+                    _c("v-select", {
+                      class: [_vm.formErrors.tags ? "invalid-input" : ""],
+                      attrs: {
+                        value: _vm.tags,
+                        options: _vm.taglist,
+                        multiple: true,
+                        placeholder: "Select tags",
+                        label: "name"
+                      },
+                      on: {
+                        "update:value": function($event) {
+                          _vm.tags = $event
+                        }
                       }
-                    }
-                  })
-                ],
-                1
-              )
+                    })
+                  ],
+                  1
+                )
+              ])
             : _vm._e()
         ])
       ]),
@@ -23231,7 +23329,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("label", { attrs: { for: "start-date" } }, [
+    return _c("label", [
       _vm._v("Start Date: "),
       _c("i", { staticClass: "fi-star reqstar" })
     ])
@@ -38240,6 +38338,42 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/story_mixin.js":
+/*!*******************************************************!*\
+  !*** ./resources/assets/js/components/story_mixin.js ***!
+  \*******************************************************/
+/*! exports provided: storyMixin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storyMixin", function() { return storyMixin; });
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_1__);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var storyMixin = {
+  created: function created() {},
+  data: function data() {
+    return {
+      startDate: null,
+      endDate: null,
+      isEndDate: false
+    };
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])(['recordId', 'recordIsDirty', 'recordState'])),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['updateRecordId', 'updateRecordIsDirty', 'updateRecordState']))
+};
+
+/***/ }),
+
 /***/ "./resources/assets/js/directives/flatpickr.js":
 /*!*****************************************************!*\
   !*** ./resources/assets/js/directives/flatpickr.js ***!
@@ -38315,39 +38449,6 @@ new Vue({
     BoxTools: _components_BoxTools_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 });
-
-/***/ }),
-
-/***/ "./resources/assets/js/vuex/actions.js":
-/*!*********************************************!*\
-  !*** ./resources/assets/js/vuex/actions.js ***!
-  \*********************************************/
-/*! exports provided: updateRecordId, updateRecordIsDirty, updateRecordState */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRecordId", function() { return updateRecordId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRecordIsDirty", function() { return updateRecordIsDirty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateRecordState", function() { return updateRecordState; });
-// An action will receive the store as the first argument.
-// Since we are only interested in the dispatch (and optionally the state)
-// we can pull those two parameters using the ES6 destructuring feature
-var updateRecordId = function updateRecordId(_ref, value) {
-  var dispatch = _ref.dispatch,
-      state = _ref.state;
-  dispatch('RECORD_ID', value);
-};
-var updateRecordIsDirty = function updateRecordIsDirty(_ref2, value) {
-  var dispatch = _ref2.dispatch,
-      state = _ref2.state;
-  dispatch('RECORD_IS_DIRTY', value);
-};
-var updateRecordState = function updateRecordState(_ref3, value) {
-  var dispatch = _ref3.dispatch,
-      state = _ref3.state;
-  dispatch('RECORD_STATE', value);
-};
 
 /***/ }),
 
@@ -38444,9 +38545,27 @@ var mutations = {
     state.issueArticles = articles;
   }
 };
+var actions = {
+  updateRecordId: function updateRecordId(_ref2, value) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+    commit('RECORD_ID', value);
+  },
+  updateRecordIsDirty: function updateRecordIsDirty(_ref3, value) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+    commit('RECORD_IS_DIRTY', value);
+  },
+  updateRecordState: function updateRecordState(_ref4, value) {
+    var commit = _ref4.commit,
+        state = _ref4.state;
+    commit('RECORD_STATE', value);
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: state,
-  mutations: mutations
+  mutations: mutations,
+  actions: actions
 }));
 
 /***/ }),

@@ -69,7 +69,13 @@
               v-show="stype == 'featurephoto'">(optional)</span></p>
 <!--          <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType"-->
 <!--                    :content="content" :fresh="isFresh" rows="200"></textarea>-->
-          <ckeditor value="Hello, World!"></ckeditor>
+          <ckeditor
+              editor-url="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"
+              id="content"
+              name="content"
+              v-model="content"
+              :config="editorConfig"
+          ></ckeditor>
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
         </div>
         <div class="form-group user-display">
@@ -119,15 +125,16 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="start-date">Start Date: <i class="fi-star reqstar"></i></label>
+          <label>Start Date: <i class="fi-star reqstar"></i>
 <!--          <input v-if="fdate" type="text" :value="fdate" :initval="fdate" v-flatpickr="fdate">-->
+          </label>
           <p>NOTE: For external story with "video" tag, treat this field as the END Date.</p>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
         </div><!--form-group -->
       </div><!-- /.small-6 columns -->
       <div class="col-md-6">
         <div v-if="isAdmin" class="form-group">
-          <label for="tags">Tags:</label>
+          <label>Tags:
           <v-select
               :class="[formErrors.tags ? 'invalid-input' : '']"
               :value.sync="tags"
@@ -136,7 +143,7 @@
               placeholder="Select tags"
               label="name">
           </v-select>
-
+          </label>
         </div><!-- /.form-group -->
       </div><!-- /.small-6 columns -->
     </div><!-- /.row -->
@@ -255,23 +262,61 @@ import moment from 'moment'
 import vSelect from "vue-select"
 // import ckrte from "../directives/ckrte.js"
 import flatpickr from "../directives/flatpickr.js"
-import { updateRecordId, updateRecordIsDirty, updateRecordState } from '../vuex/actions'
-import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters'
-// import flatpickr from 'flatpickr';
+import { storyMixin } from "./story_mixin";
+
 export default {
   directives: { flatpickr },
   components: { vSelect },
+  mixins: [storyMixin],
   props: {
     cuser: { default: {} },
-    recordexists: { default: false },
+    // recordexists: { default: false },
     editid: { default: '' },
     stypes: { default: {} },
     gtype: { default: '' },
     qtype: { default: '' },
     stype: { default: '' },
   },
-  data: function () {
+  data() {
     return {
+      editorConfig: {
+        toolbar: [
+          { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source', '-', 'Save', 'NewPage', 'ExportPdf', 'Preview', 'Print', '-', 'Templates' ] },
+          { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+          { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
+          '/',
+          { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
+          { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
+          { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+          { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+          '/',
+          { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+          { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+          { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+          { name: 'others', items: [ '-' ] },
+          { name: 'about', items: [ 'About' ] }
+        ],
+        toolbarGroups: [
+          { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+          { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ] },
+          { name: 'forms' },
+          '/',
+          { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+          { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+          { name: 'links' },
+          { name: 'insert' },
+          '/',
+          { name: 'styles' },
+          { name: 'colors' },
+          { name: 'tools' },
+          { name: 'others' },
+          { name: 'about' }
+        ]
+        // removePlugins: 'elementspath',
+        // allowedContent: 'h2 ol ul li p b i strong em; a[!href];'
+      },
       tags: [],
       taglist: [],
       selectedAuthor: null,
@@ -330,7 +375,6 @@ export default {
       startdatePicker: null,
       date: {},
       currentDate: {},
-      recordState: '',
       recordOld: {
         id: '',
         user_id: '',
@@ -369,8 +413,8 @@ export default {
   },
   created: function () {
     this.currentDate = moment();
-    this.recordState = 'created';
-    if (this.recordexists) {
+    this.updateRecordState('created');
+    if (this.editid != '') {
       this.currentRecordId = this.editid;
       this.singleStype = true;
       this.newform = false;
@@ -384,7 +428,7 @@ export default {
       this.fdate = this.currentDate;
       this.setAuthorToCurrentUser(this.currentUser.id)
       this.record.author_id = this.record.user_id;
-      this.recordState = 'new';
+      this.updateRecordState('new');
     }
     this.fetchTagsList();
     this.fetchCurrentTags();
@@ -435,7 +479,8 @@ export default {
       }
     },
     submitBtnLabel: function () {
-      return (this.recordexists) ? 'Update Story' : 'Save Story';
+      // return (this.recordexists) ? 'Update Story' : 'Save Story';
+      return (this.record.id) ? 'Update Story' : 'Save Story';
     },
     hasLocalRecordChanged: function () {
       var ckval = false
@@ -500,10 +545,10 @@ export default {
 
     onRefresh: function () {
       this.updateRecordId(this.currentRecordId);
-      this.recordState = 'edit';
-      this.recordIsDirty = false;
+      this.updateRecordState('edit');
+      this.updateRecordIsDirty(false);
       this.recordId = this.currentRecordId;
-      this.recordexists = true;
+      // this.recordexists = true;
       this.fetchCurrentRecord();
     },
     oldRefresh: function () {
@@ -539,7 +584,6 @@ export default {
 
     onBlur: function (evt) {
       if (!this.recordIsDirty) {
-        this.recordIsDirty = true
         this.updateRecordIsDirty(true);
       }
     },
@@ -556,7 +600,6 @@ export default {
     },
     checkContentChange: function () {
       if (!this.recordIsDirty) {
-        this.recordIsDirty = true
         this.updateRecordIsDirty(true);
       }
     },
@@ -687,12 +730,10 @@ export default {
         // Set the default author based on the author table's id, not the user table's id!
         this.setAuthorToCurrentUser(this.currentUser.id)
       }
-      this.recordexists = true;
+      // this.recordexists = true;
 
-      this.recordState = "edit"
-      this.recordIsDirty = false;
+      this.updateRecordState("edit")
       this.updateRecordId(this.currentRecordId);
-      console.log("SPNGBB")
       this.updateRecordIsDirty(false);
     },
 
@@ -834,8 +875,10 @@ export default {
       else {
         tempid = this.record.id;
       }
-      let method = (this.recordexists) ? 'put' : 'post'
-      let route = (this.recordexists) ? '/api/story/' + tempid : '/api/story';
+      // let method = (this.recordexists) ? 'put' : 'post'
+      let method = (this.record.id) ? 'put' : 'post'
+      // let route = (this.recordexists) ? '/api/story/' + tempid : '/api/story';
+      let route = (this.record.id) ? '/api/story/' + tempid : '/api/story';
 
       this.$http[method](route, this.record)
 
@@ -884,7 +927,8 @@ export default {
       }
 
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
-      if (!this.contactManuallyChanged && !this.recordexists) {
+      // if (!this.contactManuallyChanged && !this.recordexists) {
+      if (!this.contactManuallyChanged && !this.record.id) {
         if (!this.record.contact) {
           if (val == 'article') {
             this.fetchDefaultMagazineContact()
