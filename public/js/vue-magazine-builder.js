@@ -64274,10 +64274,22 @@ var actions = {
     commit('RECORD_STATE', value);
   }
 };
+var getters = {
+  getRecordId: function getRecordId(state) {
+    return state.recordId;
+  },
+  getRecordIsDirty: function getRecordIsDirty(state) {
+    return state.recordIsDirty;
+  },
+  getRecordState: function getRecordState(state) {
+    return state.recordState;
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: state,
   mutations: mutations,
-  actions: actions
+  actions: actions,
+  getters: getters
 }));
 
 /***/ }),

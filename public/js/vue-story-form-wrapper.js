@@ -95,7 +95,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _vuex_getters__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../vuex/getters */ "./resources/assets/js/vuex/getters.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -136,16 +142,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {};
   },
-  computed: {
-    thisRecordId: function thisRecordId() {
-      return this.getRecordId;
-    },
-    thisRecordIsDirty: function thisRecordIsDirty() {
-      return this.getRecordIsDirty;
-    },
-    thisRecordState: function thisRecordState() {
-      return this.getRecordState;
-    },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    thisRecordId: 'getRecordId',
+    thisRecordIsDirty: 'getRecordIsDirty',
+    thisRecordState: 'getRecordState'
+  }), {
     canSeeListView: function canSeeListView() {
       if (this.viewType == 'list') {
         return false;
@@ -192,7 +193,7 @@ __webpack_require__.r(__webpack_exports__);
         return '/admin/' + this.gtype + '/' + this.stype + '/setup';
       }
     }
-  },
+  }),
   methods: {},
   // the `events` option simply calls `$on` for you
   // when the instance is created
@@ -520,57 +521,52 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
+      // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
       editorConfig: {
+        height: '500px',
         // toolbar: [],
         toolbarGroups: [{
           name: 'clipboard',
           groups: ['clipboard', 'undo']
-        }, {
-          name: 'editing',
-          groups: ['find', 'selection', 'spellchecker', 'editing']
-        }, {
-          name: 'forms',
-          groups: ['forms']
-        }, {
+        }, // { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+        // { name: 'forms', groups: [ 'forms' ] },
+        {
           name: 'basicstyles',
           groups: ['basicstyles', 'cleanup']
         }, {
           name: 'paragraph',
-          groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']
-        }, {
-          name: 'links',
-          groups: ['links']
-        }, {
+          groups: ['list', 'indent' // 'blocks',
+          // 'align',
+          // 'bidi',
+          // 'paragraph'
+          ]
+        }, // { name: 'links', groups: [ 'links' ] },
+        {
           name: 'insert'
         }, {
           name: 'document',
-          groups: ['document', 'doctools', 'mode']
-        }, {
-          name: 'styles',
-          groups: ['styles']
-        }, {
-          name: 'colors',
-          groups: ['colors']
-        }, {
-          name: 'tools',
-          groups: ['tools']
-        }, {
-          name: 'others',
-          groups: ['others']
-        }, {
-          name: 'about',
-          groups: ['about']
-        }],
-        extraPlugins: 'autogrow,horizontalrule,iframe,videoembed,image2',
+          groups: [// 'document',
+          // 'doctools',
+          'mode']
+        } // { name: 'styles', groups: [ 'styles' ] },
+        // { name: 'colors', groups: [ 'colors' ] },
+        // { name: 'tools', groups: [ 'tools' ] },
+        // { name: 'others', groups: [ 'others' ] },
+        // { name: 'about', groups: [ 'about' ] }
+        ],
+        extraPlugins: 'horizontalrule,iframe,videoembed,image2',
         extraAllowedContent: 'div(*){*};hr;iframe[*]',
-        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview',
-        pasteFilter: 'plain-text',
-        height: '25em',
-        filebrowserWindowFeatures: 'resizable=no',
+        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Table,Smiley,SpecialChar,PageBreak,Save,NewPage,Print,ExportPdf',
+        // pasteFilter: 'plain-text',
+        // filebrowserWindowFeatures: 'resizable=yes',
+        filebrowserUploadMethod: 'form',
+        // need this to upload files
         filebrowserBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
         filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
         filebrowserUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-        filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
+        filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images',
+        skin: 'moono'
       },
       tags: [],
       taglist: [],
@@ -591,7 +587,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       userRoles: [],
       needAuthor: false,
-      hasAuthor: false,
       needContact: false,
       contactManuallyChanged: false,
       authorlist: [],
@@ -753,14 +748,13 @@ __webpack_require__.r(__webpack_exports__);
 
       return ckval;
     },
-    // hasAuthor: function () {
-    //   if (this.record.author_id === 0) {
-    //     return false;
-    //   }
-    //   else {
-    //     return true;
-    //   }
-    // },
+    hasAuthor: function hasAuthor() {
+      if (this.record.author_id === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     recordSlug: function recordSlug() {
       if (this.record.title) {
         return this.record.title.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
@@ -815,12 +809,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.needAuthor = true;
-      this.hasAuthor = true;
     },
     resetAuthor: function resetAuthor() {
       this.setAuthorToCurrentUser(this.currentUser.id);
       this.needAuthor = false;
-      this.hasAuthor = true;
       this.saveAuthorMessage.isOk = '';
     },
     changeContact: function changeContact(evt) {
@@ -1131,11 +1123,9 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     selectedAuthor: function selectedAuthor() {
       this.fetchAuthor();
-      this.hasAuthor = false;
     },
     selectedContact: function selectedContact() {
       this.fetchContact();
-      this.hasAuthor = false;
     },
     'record.story_type': function recordStory_type(val) {
       // Change author to "Official Statements" if this is an advisory or statement story type
@@ -1256,6 +1246,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\np[data-v-76b962b2] {\n  margin: 0;\n}\nlabel[data-v-76b962b2] {\n  display: block;\n}\nlabel > span[data-v-76b962b2] {\n  display: inline-block;\n  width: 8em;\n  vertical-align: top;\n}\n.valid-titleField[data-v-76b962b2] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.no-input[data-v-76b962b2] {\n  background-color: #fefefe;\n  border-color: #cacaca;\n}\n.invalid-input[data-v-76b962b2] {\n  background-color: rgba(236, 88, 64, 0.1);\n  border: 1px dotted red;\n}\n.invalid[data-v-76b962b2] {\n  color: #ff0000;\n}\n.user-display[data-v-76b962b2] {\n  color: #666;\n  font-size: 16px;\n}\n.user-display .user-name[data-v-76b962b2] {\n\n  font-style: italic;\n}\n.user-display .user-info[data-v-76b962b2] {\n  font-size: 14px;\n}\nfieldset label.radiobtns[data-v-76b962b2] {\n  display: inline;\n  margin: 4px;\n  padding: 2px;\n}\n[type='text'][data-v-76b962b2], [type='password'][data-v-76b962b2], [type='date'][data-v-76b962b2], [type='datetime'][data-v-76b962b2], [type='datetime-local'][data-v-76b962b2], [type='month'][data-v-76b962b2], [type='week'][data-v-76b962b2], [type='email'][data-v-76b962b2], [type='number'][data-v-76b962b2], [type='search'][data-v-76b962b2], [type='tel'][data-v-76b962b2], [type='time'][data-v-76b962b2], [type='url'][data-v-76b962b2], [type='color'][data-v-76b962b2],\ntextarea[data-v-76b962b2] {\n  margin: 0;\n  padding: 0;\n  padding-left: 8px;\n  width: 100%;\n}\n[type='file'][data-v-76b962b2], [type='checkbox'][data-v-76b962b2], [type='radio'][data-v-76b962b2] {\n  margin: 0;\n  margin-left: 8px;\n  padding: 0;\n  padding-left: 2px;\n}\n.reqstar[data-v-76b962b2] {\n  font-size: .5rem;\n  color: #E33100;\n  vertical-align: text-top;\n}\nbutton.button-primary[data-v-76b962b2] {\n  margin-top: 1rem;\n}\n.form-group[data-v-76b962b2] {\n  margin-bottom: 5px;\n}\n.callout[data-v-76b962b2] {\n  margin-bottom: 8px;\n  padding: 8px 30px 8px 15px;\n}\n.save-author[data-v-76b962b2] {\n  vertical-align: bottom;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/*.cke_editable {*/\n/*  overflow-y: scroll !important;*/\n/*}*/\n/*.cke_contents {*/\n/*  max-height: 100px !important;*/\n/*}*/\n.cke_show_borders {\n  overflow-y: scroll !important;\n  overflow-x: scroll !important;\n}\n", ""]);
 
 // exports
 
@@ -36573,6 +36582,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--5-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--5-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--5-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--5-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./StoryForm.vue?vue&type=style&index=1&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -37102,26 +37141,20 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "toolbar-block pull-right" }, [
       _c("div", { staticClass: "btn-toolbar btn-group-sm " }, [
-        _c(
-          "a",
-          {
-            directives: [
+        !_vm.disabledPreview
+          ? _c(
+              "a",
               {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.disabledPreview,
-                expression: "!disabledPreview"
-              }
-            ],
-            staticClass: "btn bg-orange btn-sm",
-            attrs: {
-              id: "btn-preview-" + _vm.recordId,
-              href: _vm.previewLink,
-              disabled: _vm.disabledPreview
-            }
-          },
-          [_c("i", { staticClass: "fa fa-eye" })]
-        ),
+                staticClass: "btn bg-orange btn-sm",
+                attrs: {
+                  id: "btn-preview-" + _vm.recordId,
+                  href: _vm.previewLink,
+                  disabled: _vm.disabledPreview
+                }
+              },
+              [_c("i", { staticClass: "fa fa-eye" })]
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c(
           "a",
@@ -57027,7 +57060,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _StoryForm_vue_vue_type_template_id_76b962b2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StoryForm.vue?vue&type=template&id=76b962b2&scoped=true& */ "./resources/assets/js/components/StoryForm.vue?vue&type=template&id=76b962b2&scoped=true&");
 /* harmony import */ var _StoryForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StoryForm.vue?vue&type=script&lang=js& */ "./resources/assets/js/components/StoryForm.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _StoryForm_vue_vue_type_style_index_0_id_76b962b2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./StoryForm.vue?vue&type=style&index=0&id=76b962b2&scoped=true&lang=css& */ "./resources/assets/js/components/StoryForm.vue?vue&type=style&index=0&id=76b962b2&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./StoryForm.vue?vue&type=style&index=1&lang=css& */ "./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -57036,7 +57071,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__["default"])(
   _StoryForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _StoryForm_vue_vue_type_template_id_76b962b2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _StoryForm_vue_vue_type_template_id_76b962b2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -57081,6 +57116,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_0_id_76b962b2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_0_id_76b962b2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_0_id_76b962b2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_0_id_76b962b2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
  /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_0_id_76b962b2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css&":
+/*!***************************************************************************************!*\
+  !*** ./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css& ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--5-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--5-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./StoryForm.vue?vue&type=style&index=1&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/assets/js/components/StoryForm.vue?vue&type=style&index=1&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_5_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_5_2_node_modules_vue_loader_lib_index_js_vue_loader_options_StoryForm_vue_vue_type_style_index_1_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -57179,33 +57230,6 @@ new Vue({
 
 /***/ }),
 
-/***/ "./resources/assets/js/vuex/getters.js":
-/*!*********************************************!*\
-  !*** ./resources/assets/js/vuex/getters.js ***!
-  \*********************************************/
-/*! exports provided: getRecordId, getRecordIsDirty, getRecordState */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecordId", function() { return getRecordId; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecordIsDirty", function() { return getRecordIsDirty; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRecordState", function() { return getRecordState; });
-// This getter is a function which just returns the count
-// With ES6 you can also write it as:
-// export const getCount = state => state.count
-var getRecordId = function getRecordId(state) {
-  return state.recordId;
-};
-var getRecordIsDirty = function getRecordIsDirty(state) {
-  return state.recordIsDirty;
-};
-var getRecordState = function getRecordState(state) {
-  return state.recordState;
-};
-
-/***/ }),
-
 /***/ "./resources/assets/js/vuex/store.js":
 /*!*******************************************!*\
   !*** ./resources/assets/js/vuex/store.js ***!
@@ -57289,10 +57313,22 @@ var actions = {
     commit('RECORD_STATE', value);
   }
 };
+var getters = {
+  getRecordId: function getRecordId(state) {
+    return state.recordId;
+  },
+  getRecordIsDirty: function getRecordIsDirty(state) {
+    return state.recordIsDirty;
+  },
+  getRecordState: function getRecordState(state) {
+    return state.recordState;
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: state,
   mutations: mutations,
-  actions: actions
+  actions: actions,
+  getters: getters
 }));
 
 /***/ }),

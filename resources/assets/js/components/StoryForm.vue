@@ -285,33 +285,48 @@ export default {
   },
   data() {
     return {
+      // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
+      // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
       editorConfig: {
+        height: '500px',
         // toolbar: [],
         toolbarGroups: [
           { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-          { name: 'forms', groups: [ 'forms' ] },
-          { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-          { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-          { name: 'links', groups: [ 'links' ] },
+          // { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+          // { name: 'forms', groups: [ 'forms' ] },
+          { name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+          { name: 'paragraph', groups: [
+              'list',
+              'indent',
+              // 'blocks',
+              // 'align',
+              // 'bidi',
+              // 'paragraph'
+            ]},
+          // { name: 'links', groups: [ 'links' ] },
           { name: 'insert' },
-          { name: 'document', groups: [ 'document', 'doctools', 'mode' ] },
-          { name: 'styles', groups: [ 'styles' ] },
-          { name: 'colors', groups: [ 'colors' ] },
-          { name: 'tools', groups: [ 'tools' ] },
-          { name: 'others', groups: [ 'others' ] },
-          { name: 'about', groups: [ 'about' ] }
+          { name: 'document', groups: [
+              // 'document',
+              // 'doctools',
+              'mode'
+            ]},
+          // { name: 'styles', groups: [ 'styles' ] },
+          // { name: 'colors', groups: [ 'colors' ] },
+          // { name: 'tools', groups: [ 'tools' ] },
+          // { name: 'others', groups: [ 'others' ] },
+          // { name: 'about', groups: [ 'about' ] }
         ],
-        extraPlugins: 'autogrow,horizontalrule,iframe,videoembed,image2',
+        extraPlugins: 'horizontalrule,iframe,videoembed,image2',
         extraAllowedContent: 'div(*){*};hr;iframe[*]',
-        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview',
-        pasteFilter: 'plain-text',
-        height: '25em',
-        filebrowserWindowFeatures: 'resizable=no',
+        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Table,Smiley,SpecialChar,PageBreak,Save,NewPage,Print,ExportPdf',
+        // pasteFilter: 'plain-text',
+        // filebrowserWindowFeatures: 'resizable=yes',
+        filebrowserUploadMethod: 'form', // need this to upload files
         filebrowserBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
         filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
         filebrowserUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-        filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
+        filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images',
+        skin: 'moono',
       },
       tags: [],
       taglist: [],
@@ -332,7 +347,6 @@ export default {
       },
       userRoles: [],
       needAuthor: false,
-      hasAuthor: false,
       needContact: false,
       contactManuallyChanged: false,
       authorlist: [],
@@ -494,14 +508,14 @@ export default {
       }
       return ckval
     },
-    // hasAuthor: function () {
-    //   if (this.record.author_id === 0) {
-    //     return false;
-    //   }
-    //   else {
-    //     return true;
-    //   }
-    // },
+    hasAuthor: function () {
+      if (this.record.author_id === 0) {
+        return false;
+      }
+      else {
+        return true;
+      }
+    },
     recordSlug: function () {
       if (this.record.title) {
         return this.record.title.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '')
@@ -559,12 +573,12 @@ export default {
         this.author = this.authorNew;
       }
       this.needAuthor = true;
-      this.hasAuthor = true;
+
     },
     resetAuthor: function () {
       this.setAuthorToCurrentUser(this.currentUser.id)
       this.needAuthor = false;
-      this.hasAuthor = true;
+
       this.saveAuthorMessage.isOk = '';
     },
     changeContact: function (evt) {
@@ -903,11 +917,9 @@ export default {
   watch: {
     selectedAuthor: function () {
       this.fetchAuthor();
-      this.hasAuthor = false;
     },
     selectedContact: function () {
       this.fetchContact();
-      this.hasAuthor = false;
     },
     'record.story_type': function (val) {
       // Change author to "Official Statements" if this is an advisory or statement story type
@@ -940,3 +952,16 @@ export default {
 
 
 </script>
+
+<style>
+/*.cke_editable {*/
+/*  overflow-y: scroll !important;*/
+/*}*/
+/*.cke_contents {*/
+/*  max-height: 100px !important;*/
+/*}*/
+.cke_show_borders {
+  overflow-y: scroll !important;
+  overflow-x: scroll !important;
+}
+</style>

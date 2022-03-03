@@ -61,8 +61,21 @@ const actions = {
         commit('RECORD_STATE', value)
     }
 }
+
+const getters = {
+    getRecordId (state) {
+        return state.recordId
+    },
+    getRecordIsDirty (state) {
+        return state.recordIsDirty
+    },
+    getRecordState (state) {
+        return state.recordState
+    }
+}
 export default new Vuex.Store({
     state,
     mutations,
-    actions
+    actions,
+    getters
 })

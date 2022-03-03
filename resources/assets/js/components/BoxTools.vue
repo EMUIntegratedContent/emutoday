@@ -5,7 +5,7 @@
     </div><!-- /.tool-block -->
     <div class="toolbar-block pull-right">
         <div class="btn-toolbar btn-group-sm ">
-            <a :id="'btn-preview-'+recordId" :href="previewLink"  :disabled="disabledPreview" v-show="!disabledPreview" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+            <a v-if="!disabledPreview" :id="'btn-preview-'+recordId" :href="previewLink"  :disabled="disabledPreview" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
             <a :id="'btn-new-'+recordId" :href="createNewLink" :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-plus-square"></i></a>
             <a :id="'btn-list-'+recordId" :href="listLink"  :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-list-alt"></i></a>
         </div><!-- /.btn-toolbar -->
@@ -32,7 +32,7 @@ text-align: right;
 }
 </style>
 <script>
-import { getRecordId, getRecordIsDirty, getRecordState } from '../vuex/getters'
+import { mapGetters } from "vuex"
 
 export default  {
     props: [
@@ -53,15 +53,13 @@ export default  {
         }
     },
     computed: {
-      thisRecordId () {
-        return this.getRecordId
-      },
-      thisRecordIsDirty () {
-        return this.getRecordIsDirty
-      },
-      thisRecordState () {
-        return this.getRecordState
-      },
+      ...mapGetters(
+        {
+          thisRecordId: 'getRecordId',
+          thisRecordIsDirty: 'getRecordIsDirty',
+          thisRecordState: 'getRecordState'
+        }
+      ),
         canSeeListView:function(){
             if(this.viewType == 'list'){
                 return false
