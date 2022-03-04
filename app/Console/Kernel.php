@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\SendTodayEmails::class,
         Commands\SendStoryIdeaEmail::class,
         Commands\SendIndividualStoryIdeaEmail::class,
+        Commands\ArchiveEvents::class
     ];
 
     /**

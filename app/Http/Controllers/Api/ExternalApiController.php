@@ -66,6 +66,7 @@ class ExternalApiController extends ApiController
     $conditions = array(); //conditions for the where clause
     $conditions[] = array('is_approved', 1);
     $conditions[] = array('is_canceled', 0);
+		$conditions[] = array('is_archived', 0);
     $conditions[] = array('hsc_reviewed', 1);
     $conditions[] = array('hsc_rewards', '>', 0);
 
@@ -96,7 +97,8 @@ class ExternalApiController extends ApiController
       ->where([
         ['home_priority', '>', 0],
         ['end_date', '>=', $today],
-        ['is_approved', 1]
+        ['is_approved', 1],
+				['is_archived', 0]
       ])->limit($limit);
 
     if($sortBy == 'priority'){
@@ -115,6 +117,7 @@ class ExternalApiController extends ApiController
     $news
       ->where([
         ['is_approved', 1],
+				['is_archived', 0],
         ['start_date', '<=', $today],
       ])
       ->whereIn('story_type', ['news', 'story'])
