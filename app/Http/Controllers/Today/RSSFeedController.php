@@ -41,6 +41,16 @@ class RSSFeedController extends Controller {
       return redirect()->home();
   }
 
+	public function getAnnouncements($type = "rss")
+	{
+		if ($type === "rss" || $type === "atom") {
+			return $this->builder->render($type, 'announcements');
+		}
+
+		//If invalid feed requested, redirect home
+		return redirect()->home();
+	}
+
   public function getEventsICal(){
     // Get all future events and past events of two months ago or less
     $events = Event::where([ ['is_approved', 1], ['start_date', '>=', date('Y-m-d', strtotime(date("Y-m-d",strtotime("-2 months"))))] ])->orderBy('start_date', 'asc')->get();

@@ -36,6 +36,7 @@ Route::get('/cas/logout', function(){
 # RSS Feeds
 Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
 Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
+Route::get('/feed/announcements/{type?}', 'Today\RSSFeedController@getAnnouncements')->name('rss_feed_announcements');
 Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
 
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){

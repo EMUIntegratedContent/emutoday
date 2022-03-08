@@ -1706,7 +1706,7 @@ img.magazine-logo {
 /* Story Imagebox and Caption Fix */
 /* CONTAINER */
 #story-content figure {
-  float:right;
+  /*float:right;*/
   max-width: 45%;
 	border-style: solid;
 	border-width: 1px;
@@ -1761,12 +1761,12 @@ img.magazine-logo {
     float: left;
     width: 50%;
     border-bottom: 1px solid #ccc;
-    padding: 1.3rem;   
+    padding: 1.3rem;
 }
 #experts-area article.expert-listing:nth-child(odd){
     border-left: 1px solid #ccc;
 }
-#experts-area article.expert-listing .photobox{   
+#experts-area article.expert-listing .photobox{
 }
 #experts-area  article.expert-listing .text-expertbox{
 
@@ -1795,10 +1795,10 @@ ul.side-nav.experts-nav li a.home-style:not(.button) {
     background-color: #fff;
     color: #006633;
     display: block;
-    font-size: 1.3rem; 
+    font-size: 1.3rem;
     font-weight: 500;
     line-height: 1.2rem;
-    padding: 0.9rem 1rem; 
+    padding: 0.9rem 1rem;
     border-right: 1px solid #ccc;
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
@@ -1819,7 +1819,7 @@ ul.experts-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400
 .search-container{
     color: #333;
     padding: 1.4rem 1.8rem;
-    border: 1px solid #ccc; 
+    border: 1px solid #ccc;
     margin: .6rem 1rem 2rem;
     width: 96%;
     position: relative;
@@ -1850,13 +1850,13 @@ ul.experts-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
 #experts-area article.expert-listing {
     height: auto;
-    width: 100%; 
+    width: 100%;
 }
 #experts-area article.expert-listing:nth-child(odd){
     border-left: none;
 }
 .search-container{
-    width: 94%; 
+    width: 94%;
 }
 
 } /* min-width 641px and max-width 1024px, use when QAing tablet-only issues */
@@ -1867,13 +1867,13 @@ ul.experts-nav li a:not(.button) {color: #333;font-size: 1.1rem;font-weight: 400
 @media only screen and (max-width: 40em) {
    #experts-area article.expert-listing {
     height: auto;
-    width: 100%; 
+    width: 100%;
 }
 #experts-area article.expert-listing:nth-child(odd){
     border-left: none;
 }
 .search-container{
-    width: 92%; 
+    width: 92%;
 }
 
 } /* max-width 640px, mobile-only styles, use when QAing mobile issues */
@@ -2531,7 +2531,7 @@ ul.pagination li.active {
 /* Story Images / Imagebox and Caption Fix */
 /* CONTAINER */
 .vis_container, #story-content-edit figure {
-  float:right;
+  /*float:right;*/
   max-width: 45%;
 	border-style: solid;
 	border-width: 1px;
@@ -2555,7 +2555,7 @@ ul.pagination li.active {
     margin-right: 1rem;
     max-width: 100%;
     clear:both;
-    float:left !important;
+    /*float:right !important;*/
   }
 }
 #story-content-edit p img {
