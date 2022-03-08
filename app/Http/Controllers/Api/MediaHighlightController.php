@@ -53,7 +53,7 @@ class MediaHighlightController extends ApiController
   {
     $highlight = new MediaHighlight;
     $validation = \Validator::make( Input::all(), [
-      'title'          => 'required|max:100',
+      'title'          => 'required|max:250',
       'url'            => 'required',
       'source'         => 'required',
       'start_date'     => 'required|date_format:Y-m-d'
@@ -108,7 +108,7 @@ class MediaHighlightController extends ApiController
   {
     $highlight = MediaHighlight::findOrFail($id);
     $validation = \Validator::make( Input::all(), [
-      'title'          => 'required|max:100',
+      'title'          => 'required|max:250',
       'url'            => 'required',
       'source'         => 'required',
       'start_date'     => 'required|date_format:Y-m-d'

@@ -264,7 +264,6 @@ button.button-primary {
 </style>
 
 <script>
-// var moment = require('moment')
 import moment from 'moment'
 import vSelect from "vue-select"
 import { storyMixin } from "./story_mixin"

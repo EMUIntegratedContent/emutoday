@@ -45,14 +45,22 @@
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
           <label>Source Name: <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.source" class="form-control" v-bind:class="[formErrors.source ? 'invalid-input' : '']" type="text" :value="record.source"/>
+          <input v-model="record.source" class="form-control" v-bind:class="[formErrors.source ? 'invalid-input' : '']" type="text" />
           <p v-if="formErrors.source" class="help-text invalid">Need a source</p>
         </div> <!--form-group -->
       </div> <!-- /.small-6 columns -->
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <label for="start-date">Highlight Date: <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input id="start-date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" type="text" v-model="record.start_date"/>
+          <label>Highlight Date: <span v-bind:class="iconStar" class="reqstar"></span><br>
+          <date-picker
+              id="start-date"
+              v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"
+              v-model="record.start_date"
+              value-type="YYYY-MM-DD"
+              format="MM/DD/YYYY"
+              :clearable="false"
+          ></date-picker>
+          </label>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a highlight date</p>
         </div> <!--form-group -->
       </div> <!-- /.small-6 columns -->
@@ -60,10 +68,10 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="tags">Tags:</label>
+          <label>Tags:</label>
             <v-select
             :class="[formErrors.tags ? 'invalid-input' : '']"
-            :value.sync="record.tags"
+            v-model="record.tags"
             :options="taglist"
             :multiple="true"
             placeholder="Select tags"
@@ -176,12 +184,13 @@ h5.form-control {
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
 import vSelect from "vue-select"
-module.exports = {
-  directives: {},
-  components: {vSelect},
+import 'vue-select/dist/vue-select.css'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
+import 'vue-select/dist/vue-select.css'
+export default {
+  components: {vSelect, DatePicker},
   props: {
     errors: {
       default: ''
@@ -225,7 +234,7 @@ module.exports = {
         tags: [],
       },
       totalChars: {
-        title: 100,
+        title: 250,
       },
       newTag: null,
       showAddTag: false,
@@ -243,8 +252,6 @@ module.exports = {
     }
   },
   created: function() {
-  },
-  ready: function() {
     if(this.recordexists){
       this.fetchCurrentRecord(this.recordid)
     } else {
@@ -324,7 +331,7 @@ module.exports = {
 
       .then((response) => {
         console.log(response.data.data)
-        this.$set('record', response.data.data)
+        this.record = response.data.data
         this.user_id = response.data.data.user_id
         this.setupDatePickers()
         this.fetchCurrentTags()
@@ -390,27 +397,13 @@ module.exports = {
         this.dateObject.startDateMin = this.record.start_date;
         this.dateObject.startDateDefault = this.record.start_date;
       }
-      this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-        // minDate: self.dateObject.startDateMin,
-        defaultDate: self.dateObject.startDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d",
-        // minDate: new Date(),
-        onChange(dateObject, dateString) {
-          self.record.start_date = dateString;
-          self.startdatePicker.value = dateString;
-        }
-      });
     },
 
     // Fetch the tags that match THIS record
     fetchTagsList: function() {
         this.$http.get('/api/mediahighlights/taglist/')
           .then((response) =>{
-            this.$set('taglist', response.data.newdata)
+            this.taglist = response.data.newdata
           }, (response) => {
             this.formErrors = response.data.error.message;
           });
@@ -419,7 +412,7 @@ module.exports = {
     fetchCurrentTags: function(){
         this.$http.get('/api/mediahighlights/taglist/'+ this.recordid)
             .then((response) => {
-              this.$set('tags', response.data.newdata)
+              this.tags = response.data.newdata
             }, (response) => {
               this.formErrors = response.data.error.message
             });
@@ -454,7 +447,7 @@ module.exports = {
       this.formMessage.isOk = false
       this.formMessage.isErr = false
     },
-    
+
     /**
      * Controls if add tag fiels are shown
      */
