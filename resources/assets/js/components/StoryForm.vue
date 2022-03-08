@@ -129,9 +129,10 @@
             <date-picker
                 id="start-date"
                 v-model="fdate"
-                value-type="YYYY-MM-DD"
-                format="MM/DD/YYYY"
+                value-type="YYYY-MM-DD HH:mm:ss"
+                format="MM/DD/YYYY h:mm A"
                 :clearable="false"
+                type="datetime"
             ></date-picker>
           </label>
           <p>NOTE: For external story with "video" tag, treat this field as the END Date.</p>
