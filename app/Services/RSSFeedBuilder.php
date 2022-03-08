@@ -23,7 +23,7 @@ class RSSFeedBuilder{
 		}
 
 		if($type == 'events'){
-			if(!$feed->isCached()){
+			if (!$feed->isCached()) {
 				$events = $this->getEventsData();
 				$feed->title = "EMU Today - Events";
 				$feed->description = "A listing of events from EMU Today";
@@ -34,12 +34,12 @@ class RSSFeedBuilder{
 				$feed->setShortening(true);
 				$feed->setTextLimit(140);
 
-				if(!empty($events)){
+				if (count($events) > 0) {
 					$feed->pubdate = $events[0]->created_at;
-					foreach($events as $event){
-						$urlPath = '/calendar/'.$event->start_date->format('Y').'/'.$event->start_date->format('n').'/'.$event->start_date->format('j').'/'.$event->id;
+					foreach ($events as $event) {
+						$urlPath = '/calendar/' . $event->start_date->format('Y') . '/' . $event->start_date->format('n') . '/' . $event->start_date->format('j') . '/' . $event->id;
 						// set event info
-						$feed->add($event->title, $event->contact_person, URL::to($urlPath), $event->start_date, $event->location, $event->description);
+						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $event->title), $event->contact_person, URL::to($urlPath), $event->start_date, $event->location, $event->description);
 					}
 				}
 			}
@@ -72,7 +72,7 @@ class RSSFeedBuilder{
 							$txt .= 'Phone: ' . $announcement->phone;
 						}
 						// set announcement info
-						$feed->add($announcement->title, $announcement->email_link_txt, '', $announcement->start_date, $announcement->announcement, $txt);
+						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $announcement->title), $announcement->email_link_txt, '', $announcement->start_date, $announcement->announcement, $txt);
 					}
 				}
 			}
@@ -92,7 +92,7 @@ class RSSFeedBuilder{
 					$feed->pubdate = $storys[0]->created_at;
 					foreach($storys as $story){
 						// set story info
-						$feed->add($story->title, $story->author['first_name'].' '.$story->author['last_name'], URL::to('/story/'.$story->story_type.'/'.$story->id), $story->created_at, $story->teaser, $story->content);
+						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $story->title), $story->author['first_name'].' '.$story->author['last_name'], URL::to('/story/'.$story->story_type.'/'.$story->id), $story->created_at, $story->teaser, $story->content);
 					}
 				}
 			}
@@ -112,6 +112,19 @@ class RSSFeedBuilder{
 		$maxSize = $this->config['max_size'];
 		$storys = Story::where([['is_approved', 1], ['is_archived', 0]])->whereIn('story_type', ['news', 'advisory', 'statement'])->orderBy('created_at', 'desc')->paginate($maxSize);
 		return $storys;
+	}
+
+	/**
+	 * Creating rss feed with our most recent news.
+	 * The size of the feed is defined in feed.php config.
+	 *
+	 * @return mixed
+	 */
+	private function getEventsData()
+	{
+		$maxSize = $this->config['max_size'];
+		$events = Event::where([['is_approved', 1], ['start_date', '>=', date('Y-m-d H:i:s')]])->orderBy('start_date', 'asc')->paginate($maxSize);
+		return $events;
 	}
 
 	/**
