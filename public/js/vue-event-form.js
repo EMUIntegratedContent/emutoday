@@ -6531,8 +6531,6 @@ var render = function() {
               _vm.hasCost
                 ? _c("div", { staticClass: "form-group" }, [
                     _c("div", { staticClass: "input-group" }, [
-                      _c("span", { class: _vm.inputGroupLabel }, [_vm._v("$")]),
-                      _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
@@ -6544,7 +6542,7 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         class: [_vm.formErrors.cost ? "invalid-input" : ""],
-                        attrs: { name: "event-cost", type: "number" },
+                        attrs: { name: "event-cost" },
                         domProps: { value: _vm.record.cost },
                         on: {
                           input: function($event) {
@@ -6559,8 +6557,6 @@ var render = function() {
                   ])
                 : _c("div", { class: _vm.formGroup }, [
                     _c("div", { staticClass: "input-group" }, [
-                      _c("span", { class: _vm.inputGroupLabel }, [_vm._v("$")]),
-                      _vm._v(" "),
                       _c("input", {
                         directives: [
                           {
@@ -6572,11 +6568,7 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         class: [_vm.formErrors.cost ? "invalid-input" : ""],
-                        attrs: {
-                          name: "event-cost",
-                          type: "number",
-                          readonly: "readonly"
-                        },
+                        attrs: { name: "event-cost", readonly: "readonly" },
                         domProps: { value: _vm.record.cost },
                         on: {
                           input: function($event) {

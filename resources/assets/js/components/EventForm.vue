@@ -299,14 +299,14 @@
         <label>Event Cost <span :class="iconStar" class="reqstar"></span></label>
         <div v-if="hasCost" class="form-group">
           <div class="input-group">
-            <span :class="inputGroupLabel">$</span>
-            <input v-model="record.cost" class="form-control" :class="[formErrors.cost ? 'invalid-input' : '']" name="event-cost"  type="number">
+<!--            <span :class="inputGroupLabel">$</span>-->
+            <input v-model="record.cost" class="form-control" :class="[formErrors.cost ? 'invalid-input' : '']" name="event-cost">
           </div><!-- /. input-group -->
         </div>
         <div v-else :class="formGroup">
           <div class="input-group">
-            <span :class="inputGroupLabel">$</span>
-            <input v-model="record.cost" class="form-control" :class="[formErrors.cost ? 'invalid-input' : '']" name="event-cost"  type="number" readonly="readonly">
+<!--            <span :class="inputGroupLabel">$</span>-->
+            <input v-model="record.cost" class="form-control" :class="[formErrors.cost ? 'invalid-input' : '']" name="event-cost" readonly="readonly">
           </div><!-- /. input-group -->
         </div>
       </div><!-- /.md8col -->
