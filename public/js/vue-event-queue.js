@@ -908,6 +908,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1227,16 +1230,11 @@ __webpack_require__.r(__webpack_exports__);
       this.formMessage.msg = false;
       this.formMessage.err = false;
       $("#automail").prop('checked') == true ? this.patchRecord.automail = true : this.patchRecord.automail = false;
-      console.log(">::patchRecord::< " + JSON.stringify(this.patchRecord));
       this.$http.patch('/api/event/updateitem/' + this.item.id, this.patchRecord, {
         method: 'PATCH'
       }).then(function (response) {
-        console.log('good?' + response);
-
         _this3.checkAfterUpdate(response.data.newdata);
-      }, function (response) {
-        console.log('bad?' + response);
-      });
+      }, function (response) {});
     },
     checkAfterUpdate: function checkAfterUpdate(ndata) {
       this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
@@ -1281,12 +1279,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     emitEventElevate: function emitEventElevate(eventObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('event-elevated', eventObj);
+      this.$emit('event-elevated', eventObj);
     },
     emitEventDemote: function emitEventDemote(eventObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
       // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('event-demoted', eventObj.id);
+      this.$emit('event-demoted', eventObj.id);
     },
     toggleEmitEventElevate: function toggleEmitEventElevate(eventObj) {
       // function will run before this.checked is switched
@@ -1305,19 +1303,10 @@ __webpack_require__.r(__webpack_exports__);
           this.emitEventDemote(eventObj);
         }
       }
-    }
-  },
-  watch: {
-    priorityChanged: function priorityChanged(val, oldVal) {
-      if (val != oldVal) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  },
-  directives: {},
-  filters: {
+    },
+    momentPretty: function momentPretty(val) {
+      return val ? moment__WEBPACK_IMPORTED_MODULE_0___default()(val).format('ddd MM-DD-YYYY') : '';
+    },
     yesNo: function yesNo(value) {
       return value == true ? 'Yes' : 'No';
     },
@@ -1333,19 +1322,17 @@ __webpack_require__.r(__webpack_exports__);
     hasHttp: function hasHttp(value) {
       // Checks if links given 'http'
       return value.substr(0, 4) == 'http' ? value : 'https://' + value;
-    },
-    momentPretty: {
-      read: function read(val) {
-        console.log('read-val' + val);
-        return val ? moment__WEBPACK_IMPORTED_MODULE_0___default()(val).format('ddd, MM-DD-YYYY') : '';
-      },
-      write: function write(val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal);
-        return moment__WEBPACK_IMPORTED_MODULE_0___default()(val).format('YYYY-MM-DD');
-      }
     }
   },
-  events: {}
+  watch: {
+    priorityChanged: function priorityChanged(val, oldVal) {
+      if (val != oldVal) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -1480,7 +1467,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.vuiflipswitch {\n    position: relative; width: 36px;\n    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n    display: none;\n}\n.vuiflipswitch-label {\n    display: block; overflow: hidden; cursor: pointer;\n    border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n    display: block; width: 200%; margin-left: -100%;\n    transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n    display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n    box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n    content: \"Y\";\n    padding-left: 5px;\n    background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n    content: \"N\";\n    padding-right: 5px;\n    background-color: #EEEEEE; color: #666666;\n    text-align: right;\n}\n.vuiflipswitch-switch {\n    display: block;\n    width: 16px;\n    margin: 0;\n    background: #666666;\n    position: absolute; top: 0; bottom: 0;\n    /*right: 16px;*/\n    /*border: 2px solid #666666; */\n    border-radius: 4px;\n    transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n    margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n    right: 0px;\n    background-color: #605CA8;\n}\nselect.form-control {\n    height:22px;\n    border: 1px solid #666666;\n}\nh6 {\n    margin-top: 0;\n    margin-bottom: 0;\n}\n.form-group {\n    /*border: 1px solid red;*/\n}\n.form-group label{\n    margin-bottom: 0;\n}\n.box.box-solid.box-default {\n    border: 1px solid #666666;\n}\n", ""]);
+exports.push([module.i, "\n.vuiflipswitch {\n  position: relative; width: 36px;\n  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;\n}\n.vuiflipswitch-checkbox {\n  display: none;\n}\n.vuiflipswitch-label {\n  display: block; overflow: hidden; cursor: pointer;\n  border: 1px solid #666666; border-radius: 4px;\n}\n.vuiflipswitch-inner {\n  display: block; width: 200%; margin-left: -100%;\n  transition: margin 0.3s ease-in 0s;\n}\n.vuiflipswitch-inner:before, .vuiflipswitch-inner:after {\n  display: block; float: left; width: 50%; height: 20px; padding: 0; line-height: 20px;\n  font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;\n  box-sizing: border-box;\n}\n.vuiflipswitch-inner:before {\n  content: \"Y\";\n  padding-left: 5px;\n  background-color: #EEEEEE; color: #605CA8;\n}\n.vuiflipswitch-inner:after {\n  content: \"N\";\n  padding-right: 5px;\n  background-color: #EEEEEE; color: #666666;\n  text-align: right;\n}\n.vuiflipswitch-switch {\n  display: block;\n  width: 16px;\n  margin: 0;\n  background: #666666;\n  position: absolute; top: 0; bottom: 0;\n  /*right: 16px;*/\n  /*border: 2px solid #666666; */\n  border-radius: 4px;\n  transition: all 0.3s ease-in 0s;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-inner {\n  margin-left: 0;\n}\n.vuiflipswitch-checkbox:checked + .vuiflipswitch-label .vuiflipswitch-switch {\n  right: 0px;\n  background-color: #605CA8;\n}\nselect.form-control {\n  height:22px;\n  border: 1px solid #666666;\n}\nh6 {\n  margin-top: 0;\n  margin-bottom: 0;\n}\n.form-group {\n  /*border: 1px solid red;*/\n}\n.form-group label{\n  margin-bottom: 0;\n}\n.box.box-solid.box-default {\n  border: 1px solid #666666;\n}\n", ""]);
 
 // exports
 
@@ -41330,7 +41317,7 @@ var render = function() {
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-sm 12 col-md-4" }, [
               _c("div", { staticClass: "box-date-top pull-left" }, [
-                _vm._v(_vm._s(_vm._f("titleDateLong")(_vm.item.start_date)))
+                _vm._v(_vm._s(_vm.titleDateLong(_vm.item.start_date)))
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "pull-right" }, [
@@ -41355,34 +41342,34 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-sm 12 col-md-8" }, [
               _c("form", { staticClass: "form-inline pull-right" }, [
-                _vm._m(0),
+                _c("div", {
+                  staticClass: "form-group",
+                  attrs: { id: "applabel" }
+                }),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group" },
-                  [
-                    _c("vui-flip-switch", {
-                      attrs: {
-                        id: "switch-" + _vm.item.id,
-                        value: _vm.patchRecord.is_approved
-                      },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.changeIsApproved($event)
-                        },
-                        "update:value": function($event) {
-                          return _vm.$set(
-                            _vm.patchRecord,
-                            "is_approved",
-                            $event
-                          )
+                _c("div", { staticClass: "form-group" }, [
+                  _vm.item.is_approved
+                    ? _c("input", {
+                        staticClass: "btn btn-warning btn-xs",
+                        attrs: { type: "button", value: "Unapprove" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.changeIsApproved($event)
+                          }
                         }
-                      }
-                    })
-                  ],
-                  1
-                ),
+                      })
+                    : _c("input", {
+                        staticClass: "btn btn-success btn-xs",
+                        attrs: { type: "button", value: "Approve" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.changeIsApproved($event)
+                          }
+                        }
+                      })
+                ]),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -41843,12 +41830,12 @@ var render = function() {
                 _c("p", [
                   _vm._v(
                     "From: " +
-                      _vm._s(_vm._f("momentPretty")(_vm.item.start_date)) +
+                      _vm._s(_vm.momentPretty(_vm.item.start_date)) +
                       ", " +
                       _vm._s(_vm.item.start_time) +
                       " To: " +
-                      _vm._s(_vm._f("momentPretty")(_vm.item.end_date)) +
-                      ",\n        " +
+                      _vm._s(_vm.momentPretty(_vm.item.end_date)) +
+                      ",\n          " +
                       _vm._s(_vm.item.end_time)
                   )
                 ]),
@@ -41949,9 +41936,7 @@ var render = function() {
                                 "a",
                                 {
                                   attrs: {
-                                    href: _vm._f("hasHttp")(
-                                      _vm.item.related_link_1
-                                    ),
+                                    href: _vm.hasHttp(_vm.item.related_link_1),
                                     target: "_blank"
                                   }
                                 },
@@ -41974,7 +41959,7 @@ var render = function() {
                                     "a",
                                     {
                                       attrs: {
-                                        href: _vm._f("hasHttp")(
+                                        href: _vm.hasHttp(
                                           _vm.item.related_link_2
                                         ),
                                         target: "_blank"
@@ -42006,7 +41991,7 @@ var render = function() {
                                     "a",
                                     {
                                       attrs: {
-                                        href: _vm._f("hasHttp")(
+                                        href: _vm.hasHttp(
                                           _vm.item.related_link_3
                                         ),
                                         target: "_blank"
@@ -42058,7 +42043,7 @@ var render = function() {
                                   "a",
                                   {
                                     attrs: {
-                                      href: _vm._f("hasHttp")(
+                                      href: _vm.hasHttp(
                                         _vm.item.ticket_details_online
                                       )
                                     }
@@ -42105,7 +42090,7 @@ var render = function() {
                     _c("p", [
                       _vm._v(
                         "LBC Approved: " +
-                          _vm._s(_vm._f("yesNo")(_vm.item.lbc_approved))
+                          _vm._s(_vm.yesNo(_vm.item.lbc_approved))
                       )
                     ]),
                     _vm._v(" "),
@@ -42140,7 +42125,9 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-sm-12 col-md-3" }, [
-                _vm._v("\n          " + _vm._s(_vm.item.id) + "\n          "),
+                _vm._v(
+                  "\n            " + _vm._s(_vm.item.id) + "\n            "
+                ),
                 _c("div", { staticClass: "btn-group pull-right" }, [
                   _c(
                     "button",
@@ -42164,16 +42151,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group", attrs: { id: "applabel" } }, [
-      _c("label", [_vm._v(" approved:")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

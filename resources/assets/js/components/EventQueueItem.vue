@@ -7,7 +7,7 @@
       <div class="box-header with-border">
         <div class="row">
           <div class="col-sm 12 col-md-4">
-            <div class="box-date-top pull-left">{{ item.start_date | titleDateLong }}</div>
+            <div class="box-date-top pull-left">{{ titleDateLong(item.start_date) }}</div>
             <div class="pull-right">
               <label data-toggle="tooltip" data-placement="top" title="Promoted"><span class="item-promoted-icon"
                                                                                        :class="promotedIcon"></span></label>
@@ -38,13 +38,16 @@
               </template>
               -->
               <div id="applabel" class="form-group">
-                <label> approved:</label>
+<!--                <label> approved:</label>-->
               </div>
               <div class="form-group">
-                <vui-flip-switch :id="'switch-'+item.id"
-                                 v-on:click.prevent="changeIsApproved"
-                                 :value.sync="patchRecord.is_approved">
-                </vui-flip-switch>
+<!--                <vui-flip-switch :id="'switch-'+item.id"-->
+<!--                                 v-on:click.prevent="changeIsApproved"-->
+<!--                                 :value.sync="patchRecord.is_approved">-->
+<!--                </vui-flip-switch>-->
+                <input type="button" v-if="item.is_approved" value="Unapprove" class="btn btn-warning btn-xs" @click.prevent="changeIsApproved">
+                <input type="button" v-else value="Approve" class="btn btn-success btn-xs" @click.prevent="changeIsApproved">
+<!--                <input type="checkbox" :value="patchRecord.is_approved" @change.prevent="changeIsApproved" :checked="item.is_approved == 1">-->
               </div>
               <button v-show="pid == 'item-elevated'" type="button"
                       class="btn btn-sm btn-danger pull-right remove-event-btn" @click="emitEventDemote(item)"><i
@@ -110,7 +113,7 @@
 
           <hr/>
         </template>
-        <p>From: {{ item.start_date | momentPretty }}, {{ item.start_time }} To: {{ item.end_date | momentPretty }},
+        <p>From: {{ momentPretty(item.start_date) }}, {{ item.start_time }} To: {{ momentPretty(item.end_date) }},
           {{ item.end_time }}</p>
         <template v-if="item.all_day">
           <p>All Day Event</p>
@@ -139,15 +142,15 @@
           <template v-if="item.related_link_1">
             <p>For more information, visit:</p>
             <ul>
-              <li><a :href="item.related_link_1 | hasHttp" target="_blank">
+              <li><a :href="hasHttp(item.related_link_1)" target="_blank">
                 <template v-if="item.related_link_1_txt">{{ item.related_link_1_txt }}</template>
                 <template v-else>{{ item.related_link_1 }}</template>
               </a></li>
-              <li v-if="item.related_link_2"><a :href="item.related_link_2 | hasHttp" target="_blank">
+              <li v-if="item.related_link_2"><a :href="hasHttp(item.related_link_2)" target="_blank">
                 <template v-if="item.related_link_2_txt">{{ item.related_link_2_txt }}</template>
                 <template v-else>{{ item.related_link_2 }}</template>
               </a></li>
-              <li v-if="item.related_link_3"><a :href="item.related_link_3 | hasHttp" target="_blank">
+              <li v-if="item.related_link_3"><a :href="hasHttp(item.related_link_3)" target="_blank">
                 <template v-if="item.related_link_3_txt">{{ item.related_link_3_txt }}</template>
                 <template v-else>{{ item.related_link_3 }}</template>
               </a></li>
@@ -158,14 +161,14 @@
           <p v-else>Cost: {{ item.cost | currency }}</p>
           <p>Participation: {{ eventParticipation }}</p>
           <template v-if="item.tickets">
-            <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="item.ticket_details_online | hasHttp">{{ item.ticket_details_online }}</a>
+            <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="hasHttp(item.ticket_details_online)">{{ item.ticket_details_online }}</a>
             </p>
             <p v-if="item.ticket_details_phone">For Tickets Call: {{ item.ticket_details_phone }}</p>
             <p v-if="item.ticket_details_office">For Tickets Office: {{ item.ticket_details_office }}</p>
             <p v-if="item.ticket_details_other">Or: {{ item.ticket_details_other }}</p>
           </template>
           <hr/>
-          <p>LBC Approved: {{ item.lbc_approved | yesNo }}</p>
+          <p>LBC Approved: {{ yesNo(item.lbc_approved) }}</p>
           <hr/>
           <p>Submitted by: {{ item.submitter }}</p>
         </div>
@@ -703,16 +706,12 @@ export default {
 
       $("#automail").prop('checked') == true ? this.patchRecord.automail = true : this.patchRecord.automail = false;
 
-      console.log(">::patchRecord::< " + JSON.stringify(this.patchRecord));
       this.$http.patch('/api/event/updateitem/' + this.item.id, this.patchRecord, {
         method: 'PATCH'
       })
       .then((response) => {
-        console.log('good?' + response)
         this.checkAfterUpdate(response.data.newdata)
-
       }, (response) => {
-        console.log('bad?' + response)
       });
     },
     checkAfterUpdate: function (ndata) {
@@ -758,12 +757,12 @@ export default {
     },
     emitEventElevate: function (eventObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('event-elevated', eventObj)
+      this.$emit('event-elevated', eventObj)
     },
     emitEventDemote: function (eventObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
       // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('event-demoted', eventObj.id)
+      this.$emit('event-demoted', eventObj.id)
     },
     toggleEmitEventElevate: function (eventObj) {
       // function will run before this.checked is switched
@@ -787,20 +786,9 @@ export default {
         }
       }
     },
-  },
-  watch: {
-    priorityChanged: function (val, oldVal) {
-      if (val != oldVal) {
-        return true
-      }
-      else {
-        return false
-      }
-    }
-  },
-  directives: {},
-
-  filters: {
+    momentPretty(val) {
+      return val ? moment(val).format('ddd MM-DD-YYYY') : '';
+    },
     yesNo: function (value) {
       return (value == true) ? 'Yes' : 'No';
     },
@@ -815,21 +803,18 @@ export default {
     },
     hasHttp: function (value) { // Checks if links given 'http'
       return (value.substr(0, 4)) == 'http' ? value : 'https://' + value;
-    },
-    momentPretty: {
-      read: function (val) {
-        console.log('read-val' + val)
-
-        return val ? moment(val).format('ddd, MM-DD-YYYY') : '';
-      },
-      write: function (val, oldVal) {
-        console.log('write-val' + val + '--' + oldVal)
-
-        return moment(val).format('YYYY-MM-DD');
-      }
     }
   },
-  events: {}
+  watch: {
+    priorityChanged: function (val, oldVal) {
+      if (val != oldVal) {
+        return true
+      }
+      else {
+        return false
+      }
+    }
+  }
 };
 
 
