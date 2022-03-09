@@ -183,7 +183,7 @@
     <div :class="md12col">
       <div v-bind:class="formGroup">
         <label>Related Link</label>
-        <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+        <p class="help-text" id="title-helptext-2">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
         <div class="input-group input-group-flat">
           <span :class="inputGroupLabel">http://</span>
           <input v-model="record.related_link_1" class="form-control" v-bind:class="[formErrors.related_link_1 ? 'invalid-input' : '']" name="related_link_1" type="text" maxlength="255">
@@ -215,7 +215,7 @@
       <div :class="md12col">
         <div v-bind:class="formGroup">
           <label>Related Link</label>
-          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+          <p class="help-text" id="title-helptext-3">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
           <div class="input-group input-group-flat">
             <span :class="inputGroupLabel">http://</span>
             <input v-model="record.related_link_2" class="form-control" v-bind:class="[formErrors.related_link_2 ? 'invalid-input' : '']" name="related_link_2" type="text" maxlength="255">
@@ -248,7 +248,7 @@
       <div :class="md12col">
         <div v-bind:class="formGroup">
           <label>Related Link</label>
-          <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
+          <p class="help-text" id="title-helptext-4">Please enter the url for your related web page. (ex. www.yourlink.com)</p>
           <div class="input-group input-group-flat">
             <span :class="inputGroupLabel">http://</span>
             <input v-model="record.related_link_3" class="form-control" v-bind:class="[formErrors.related_link_3 ? 'invalid-input' : '']" name="related_link_3" type="text" maxlength="255">
@@ -1052,8 +1052,8 @@ export default  {
             }
             this.record.minicals = (this.record.minicalendars)?this.record.minicalendars:null;
 
-            let method = doClone ? 'post' : 'put'
-            let route =  doClone ? '/api/event' : '/api/event/' + this.record.id;
+            let method = (!this.record.id || doClone === true) ? 'post' : 'put'
+            let route =  (!this.record.id || doClone === true) ? '/api/event' : '/api/event/' + this.record.id;
 
             this.$http[method](route, this.record)
 

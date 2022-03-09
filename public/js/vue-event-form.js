@@ -1178,8 +1178,8 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.record.minicals = this.record.minicalendars ? this.record.minicalendars : null;
-      var method = doClone ? 'post' : 'put';
-      var route = doClone ? '/api/event' : '/api/event/' + this.record.id;
+      var method = !this.record.id || doClone === true ? 'post' : 'put';
+      var route = !this.record.id || doClone === true ? '/api/event' : '/api/event/' + this.record.id;
       this.$http[method](route, this.record).then(function (response) {
         response.status;
         _this8.formMessage.msg = response.data.message;
@@ -5954,7 +5954,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "p",
-              { staticClass: "help-text", attrs: { id: "title-helptext" } },
+              { staticClass: "help-text", attrs: { id: "title-helptext-2" } },
               [
                 _vm._v(
                   "Please enter the url for your related web page. (ex. www.yourlink.com)"
@@ -6106,7 +6106,7 @@ var render = function() {
                     "p",
                     {
                       staticClass: "help-text",
-                      attrs: { id: "title-helptext" }
+                      attrs: { id: "title-helptext-3" }
                     },
                     [
                       _vm._v(
@@ -6272,7 +6272,7 @@ var render = function() {
                     "p",
                     {
                       staticClass: "help-text",
-                      attrs: { id: "title-helptext" }
+                      attrs: { id: "title-helptext-4" }
                     },
                     [
                       _vm._v(
