@@ -87,7 +87,7 @@
                 <input type="text" class="hidden" name="caption" id="caption" v-model="formInputs.caption"/>
                 <input type="text" class="hidden" name="alt_text" id="alt_text" v-model="formInputs.alt_text"/>
                 <div class="fa fa-photo btn btn-info btn-sm block m-b file-upload">
-                  <input v-el:eventimg type="file" @change="getFileName" class="file-input" name="eventimg"
+                  <input ref="eventimg" type="file" @change="getFileName" class="file-input" name="eventimg"
                          id="eventimg">
                 </div>
                 <button v-if="eventimage" id="btn-mediafile-upload" type="submit"
@@ -390,10 +390,9 @@ h5 {
 </style>
 <script>
 import moment from 'moment'
-import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
 export default {
-  components: { VuiFlipSwitch },
+  components: { },
   props: ['item', 'pid', 'index', 'elevatedEvents'],
   data: function () {
     return {
@@ -649,8 +648,8 @@ export default {
       console.log('priority=' + this.item.priority)
     },
     getFileName () {
-      var files = this.$els.eventimg.files;
-      this.eventimage = this.$els.eventimg.files[0].name;
+      var files = this.$refs.eventimg.files;
+      this.eventimage = this.$refs.eventimg.files[0].name;
       console.log(this.eventimage);
     },
     addMediaFile (event) {
@@ -659,7 +658,7 @@ export default {
       this.formMessage.msg = false;
       this.formMessage.err = false;
 
-      var files = this.$els.eventimg.files;
+      var files = this.$refs.eventimg.files;
       var data = new FormData();
       data.append('event_id', this.formInputs.event_id);
       data.append('caption', this.formInputs.caption);
