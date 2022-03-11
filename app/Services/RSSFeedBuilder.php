@@ -72,7 +72,7 @@ class RSSFeedBuilder{
 							$txt .= 'Phone: ' . $announcement->phone;
 						}
 						// set announcement info
-						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $announcement->title), $announcement->email_link_txt, '', $announcement->start_date, $announcement->announcement, $txt);
+						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $announcement->title), $announcement->email_link_txt, URL::to('/announcement'), $announcement->start_date, $announcement->announcement, $txt);
 					}
 				}
 			}
