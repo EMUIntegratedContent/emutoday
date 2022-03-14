@@ -73,19 +73,19 @@ class EventController extends ApiController
 
         if ($user->hasRole('contributor_1')){
             if($fromDate && !$toDate){
-                $events = $user->events()->where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('start_date', 'desc')->get();
+                $events = $user->events()->where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('start_date', 'asc')->get();
             } elseif($fromDate && $toDate){
-                $events = $user->events()->where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
+                $events = $user->events()->where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
             } else {
-                $events = $user->events()->where('is_archived', '<>', 1)->orderBy('start_date', 'desc')->get();
+                $events = $user->events()->where('is_archived', '<>', 1)->orderBy('start_date', 'asc')->get();
             }
         } else {
               if($fromDate && !$toDate){
-                  $events  = Event::where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('start_date', 'desc')->get();
+                  $events  = Event::where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('start_date', 'asc')->get();
               } elseif($fromDate && $toDate){
-                  $events  = Event::where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
+                  $events  = Event::where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
               } else {
-                  $events  = Event::where('is_archived', '<>', 1)->orderBy('start_date', 'desc')->get();
+                  $events  = Event::where('is_archived', '<>', 1)->orderBy('start_date', 'asc')->get();
               }
         }
 
