@@ -660,15 +660,19 @@ export default {
 
       var files = this.$refs.eventimg.files;
       var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
+      data.append('event_id', this.item.id);
       data.append('caption', this.formInputs.caption);
       data.append('alt_text', this.formInputs.alt_text);
 
       if (files[0]) {
         data.append('eventimg', files[0]);
       }
-      var action = '/api/event/addMediaFile/' + this.formInputs.event_id;
-      this.$http.post(action, data)
+      var action = '/api/event/addMediaFile/' + this.item.id;
+      this.$http.post(action, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
       .then((response) => {
         console.log('good?' + JSON.stringify(response))
         this.checkAfterUpdate(response.data.newdata)
@@ -685,8 +689,8 @@ export default {
       this.formMessage.err = false;
 
       var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
-      var action = '/api/event/removeMediaFile/' + this.formInputs.event_id;
+      data.append('event_id', this.item.id);
+      var action = '/api/event/removeMediaFile/' + this.item.id;
       this.$http.post(action, data)
       .then((response) => {
         // console.log('good?'+ JSON.stringify(response))

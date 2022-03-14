@@ -909,6 +909,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
@@ -945,12 +946,10 @@ __webpack_require__.r(__webpack_exports__);
       },
       itemCurrent: 1,
       currentDate: {},
-      record: {},
-      token: ''
+      record: {}
     };
   },
   created: function created() {
-    this.token = document.querySelector('meta[name="_token"]').getAttribute('content');
     this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
     this.initRecord.priority = this.patchRecord.priority = this.item.priority;
     this.initRecord.home_priority = this.patchRecord.home_priority = this.item.home_priority;
@@ -1180,7 +1179,7 @@ __webpack_require__.r(__webpack_exports__);
       this.formMessage.err = false;
       var files = this.$refs.eventimg.files;
       var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
+      data.append('event_id', this.item.id);
       data.append('caption', this.formInputs.caption);
       data.append('alt_text', this.formInputs.alt_text);
 
@@ -1188,8 +1187,12 @@ __webpack_require__.r(__webpack_exports__);
         data.append('eventimg', files[0]);
       }
 
-      var action = '/api/event/addMediaFile/' + this.formInputs.event_id;
-      this.$http.post(action, data).then(function (response) {
+      var action = '/api/event/addMediaFile/' + this.item.id;
+      this.$http.post(action, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (response) {
         console.log('good?' + JSON.stringify(response));
 
         _this.checkAfterUpdate(response.data.newdata);
@@ -1208,8 +1211,8 @@ __webpack_require__.r(__webpack_exports__);
       this.formMessage.msg = false;
       this.formMessage.err = false;
       var data = new FormData();
-      data.append('event_id', this.formInputs.event_id);
-      var action = '/api/event/removeMediaFile/' + this.formInputs.event_id;
+      data.append('event_id', this.item.id);
+      var action = '/api/event/removeMediaFile/' + this.item.id;
       this.$http.post(action, data).then(function (response) {
         // console.log('good?'+ JSON.stringify(response))
         _this2.formMessage.msg = response.body.message;
