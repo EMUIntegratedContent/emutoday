@@ -909,7 +909,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
@@ -946,10 +945,12 @@ __webpack_require__.r(__webpack_exports__);
       },
       itemCurrent: 1,
       currentDate: {},
-      record: {}
+      record: {},
+      token: ''
     };
   },
   created: function created() {
+    this.token = document.querySelector('meta[name="_token"]').getAttribute('content');
     this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
     this.initRecord.priority = this.patchRecord.priority = this.item.priority;
     this.initRecord.home_priority = this.patchRecord.home_priority = this.item.home_priority;

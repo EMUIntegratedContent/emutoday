@@ -541,8 +541,10 @@ __webpack_require__.r(__webpack_exports__);
           // 'bidi',
           // 'paragraph'
           ]
-        }, // { name: 'links', groups: [ 'links' ] },
-        {
+        }, {
+          name: 'links',
+          groups: ['links']
+        }, {
           name: 'insert'
         }, {
           name: 'document',

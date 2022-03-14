@@ -303,7 +303,7 @@ export default {
               // 'bidi',
               // 'paragraph'
             ]},
-          // { name: 'links', groups: [ 'links' ] },
+          { name: 'links', groups: [ 'links' ] },
           { name: 'insert' },
           { name: 'document', groups: [
               // 'document',
