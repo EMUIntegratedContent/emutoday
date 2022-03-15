@@ -8,9 +8,11 @@ Vue.use(require('vue-router'))
 var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
 Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
 
-import EventView from './components/EventView.vue';
+import EventView from './components/EventView.vue'
+import store from './vuex/store'
 
 new Vue({
     el: '#vue-caleventview',
+    store,
     components: {EventView},
 });

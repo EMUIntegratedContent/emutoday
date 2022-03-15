@@ -64210,6 +64210,7 @@ __webpack_require__.r(__webpack_exports__);
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var state = {
+  calendarCategories: [],
   // When the app starts, count is set to 0
   recordId: 0,
   recordIsDirty: false,
@@ -64217,7 +64218,8 @@ var state = {
   magazineBuilderArticlesMain: [],
   magazineBuilderArticlesSub: [],
   issueArticles: [null, null, null, null, null, null],
-  modalPosition: ''
+  modalPosition: '',
+  selectedCalendarCategory: null
 };
 var mutations = {
   // A mutation receives the current state as the first argument
@@ -64239,6 +64241,9 @@ var mutations = {
   removeOtherArticleAtIndex: function removeOtherArticleAtIndex(state, index) {
     state.issueArticles.splice(index, 1);
   },
+  setCalendarCategories: function setCalendarCategories(state, categories) {
+    state.calendarCategories = categories;
+  },
   setIssueArticleAtIndex: function setIssueArticleAtIndex(state, _ref) {
     var index = _ref.index,
         article = _ref.article;
@@ -64255,6 +64260,9 @@ var mutations = {
   },
   setIssueArticles: function setIssueArticles(state, articles) {
     state.issueArticles = articles;
+  },
+  setSelectedCalendarCategory: function setSelectedCalendarCategory(state, category) {
+    state.selectedCalendarCategory = category;
   }
 };
 var actions = {
