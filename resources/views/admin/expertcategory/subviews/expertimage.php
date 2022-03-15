@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
               {!! Form::label('moretext', 'More Text Link') !!}
-              {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
+              {!! Form::text('moretext', null, ['class' => 'forFully qualified URL of YouTube video m-control input-sm']) !!}
               <span class="help-block">Text used to link to full story page when the story is the main feature on emu-today page</span>
             </div>
 

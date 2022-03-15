@@ -103,6 +103,11 @@
                                 {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
                                 <span class="help-block">Fully qualified URL of YouTube video </span>
                             </div>
+                            <div class="form-group">
+                                {!! Form::label('moretext', 'More Text') !!}
+                                {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
+                                <span class="help-block">Text used for URL (defaults to "Read Story" if blank)</span>
+                            </div>
                         @elseif($storyImage->group == 'featurephoto')
                             <div class="form-group">
                                 {!! Form::label('title', 'Title/Header') !!}
