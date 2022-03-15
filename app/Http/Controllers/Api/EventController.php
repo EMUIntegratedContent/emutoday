@@ -73,19 +73,19 @@ class EventController extends ApiController
 
         if ($user->hasRole('contributor_1')){
             if($fromDate && !$toDate){
-                $events = $user->events()->where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('start_date', 'asc')->get();
+                $events = $user->events()->where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             } elseif($fromDate && $toDate){
-                $events = $user->events()->where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+                $events = $user->events()->where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             } else {
-                $events = $user->events()->where('is_archived', '<>', 1)->orderBy('start_date', 'asc')->get();
+                $events = $user->events()->where('is_archived', '<>', 1)->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             }
         } else {
               if($fromDate && !$toDate){
-                  $events  = Event::where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('start_date', 'asc')->get();
+                  $events  = Event::where([['start_date', '>=', $fromDate],['is_archived', '<>', 1]])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
               } elseif($fromDate && $toDate){
-                  $events  = Event::where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'asc')->get();
+                  $events  = Event::where('is_archived', '<>', 1)->whereBetween('start_date', array($fromDate, $toDate))->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
               } else {
-                  $events  = Event::where('is_archived', '<>', 1)->orderBy('start_date', 'asc')->get();
+                  $events  = Event::where('is_archived', '<>', 1)->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
               }
         }
 
@@ -106,11 +106,11 @@ class EventController extends ApiController
 
         if ($user->hasRole('lbc_approver')){
             if($fromDate && !$toDate){
-                $events  = Event::where([['start_date', '>=', $fromDate], ['lbc_approved', '1'], ['lbc_reviewed', '0']])->get();
+                $events  = Event::where([['start_date', '>=', $fromDate], ['lbc_approved', '1'], ['lbc_reviewed', '0']])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             } elseif($fromDate && $toDate){
-                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->whereBetween('start_date', array($fromDate, $toDate))->get();
+                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             } else {
-                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->get();
+                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             }
         }
 
@@ -131,11 +131,11 @@ class EventController extends ApiController
 
         if ($user->hasRole('hsc_rewards')){
           if($fromDate && !$toDate){
-            $events  = Event::where([['is_approved','=','1'],['start_date', '>=', $fromDate]])->get();
+            $events  = Event::where([['is_approved','=','1'],['start_date', '>=', $fromDate]])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
           } elseif($fromDate && $toDate){
-            $events  = Event::where('is_approved','=','1')->whereBetween('start_date', array($fromDate, $toDate))->get();
+            $events  = Event::where('is_approved','=','1')->whereBetween('start_date', array($fromDate, $toDate))->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
           } else {
-            $events  = Event::where('is_approved','=','1')->get();
+            $events  = Event::where('is_approved','=','1')->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
           }
         }
 
