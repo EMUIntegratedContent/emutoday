@@ -923,14 +923,16 @@ export default {
     },
     'record.story_type': function (val) {
       // Change author to "Official Statements" if this is an advisory or statement story type
-      var previousStype = this.stype;
-      var newStype = val;
+      let previousStype = this.stype;
+      let newStype = val;
       this.stype = newStype; // change the stype
-      if (this.stype == 'statement' || this.stype == 'advisory') {
-        this.resetAuthor() // changes author to "Official Statement"
-      }
-      if ((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')) {
-        this.resetAuthor() // changes author back to current user
+      if(this.editid == '') {
+        if (this.stype == 'statement' || this.stype == 'advisory') {
+          this.resetAuthor() // changes author to "Official Statement"
+        }
+        if ((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')) {
+          this.resetAuthor() // changes author back to current user
+        }
       }
 
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
