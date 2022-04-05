@@ -402,6 +402,7 @@
                                     </li>
                                     @endforeach
                                 </ul>
+                                <div style="width:75%;display:inline-block;padding-top:0px;padding-bottom:20px;float:left;padding-left:10px;"><a href="{{ url('/') }}/calendar" style="color:#046a38;text-decoration:none" target="_blank">View all calendar events &#10137;</a>
                             </div>
                         </td>
                     </tr>
