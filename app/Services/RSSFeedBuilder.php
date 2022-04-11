@@ -92,7 +92,7 @@ class RSSFeedBuilder{
 					$feed->pubdate = $storys[0]->created_at;
 					foreach($storys as $story){
 						// set story info
-						if(!$story->author['first_name']) {
+						if(!$story->author) {
 							$author = '';
 						} else {
 							$author = $story->author['first_name'].' '.$story->author['last_name'];
