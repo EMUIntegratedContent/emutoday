@@ -44,10 +44,10 @@ class ExternalApiController extends ApiController
       $conditions[] = array('end_date', '<=', $endDate);
     }
     if($miniCalendar){
-        $events = MiniCalendar::find($miniCalendar)->events()->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
+        $events = MiniCalendar::find($miniCalendar)->events()->where($conditions)->limit($limit)->orderBy('start_date', 'asc')->orderBy('start_time', 'asc');
     } else {
         $events = Event::select('*');
-        $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc');
+        $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc')->orderBy('start_time', 'asc');
     }
 
     $result = $events->get();
