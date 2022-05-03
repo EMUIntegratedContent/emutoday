@@ -113,9 +113,10 @@ class RSSFeedBuilder{
 	 *
 	 * @return mixed
 	 */
-	private function getNewsData(){
+	private function
+	(){
 		$maxSize = $this->config['max_size'];
-		$storys = Story::where([['is_approved', 1], ['is_archived', 0]])->whereIn('story_type', ['news', 'advisory', 'statement'])->orderBy('created_at', 'desc')->paginate($maxSize);
+		$storys = Story::where([['is_approved', 1], ['is_archived', 0]])->whereIn('story_type', ['news', 'advisory', 'statement', 'story', 'article'])->orderBy('created_at', 'desc')->paginate($maxSize);
 		return $storys;
 	}
 
