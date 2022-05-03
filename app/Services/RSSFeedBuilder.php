@@ -128,7 +128,7 @@ class RSSFeedBuilder{
 	private function getEventsData()
 	{
 		$maxSize = $this->config['max_size'];
-		$events = Event::where([['is_approved', 1], ['start_date', '>=', date('Y-m-d H:i:s')]])->orderBy('start_date', 'asc')->paginate($maxSize);
+		$events = Event::where([['is_approved', 1], ['start_date', '>=', date('Y-m-d H:i:s')]])->orderBy('start_date', 'desc')->paginate($maxSize);
 		return $events;
 	}
 
