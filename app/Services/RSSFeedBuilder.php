@@ -97,7 +97,7 @@ class RSSFeedBuilder{
 						} else {
 							$author = $story->author['first_name'].' '.$story->author['last_name'];
 						}
-						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $story->title), $author, URL::to('/story/'.$story->story_type.'/'.$story->id), $story->created_at, $story->teaser, $story->content);
+						$feed->add(str_replace(array('"', '&'), array("''", 'and'), $story->title), $author, URL::to('/story/'.$story->story_type.'/'.$story->id), $story->start_date, $story->teaser, $story->content);
 					}
 				}
 			}
