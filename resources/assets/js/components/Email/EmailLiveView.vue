@@ -190,7 +190,7 @@
                                     <template v-else>
                                       <p style="padding:0 5px" class="insufficient">No events set yet. Select at least one from the "Events" tab.</p>
                                     </template>
-                                    <div style="width:75%;display:inline-block;padding-top:0px;padding-bottom:20px;float:left;padding-left:10px;"><a href="{{ url('/') }}/calendar" style="color:#046a38;text-decoration:none" target="_blank">View all calendar events &#10137;</a>
+                                    <div style="width:75%;display:inline-block;padding-top:0px;padding-bottom:20px;float:left;padding-left:10px;"><a href="/calendar" style="color:#046a38;text-decoration:none" target="_blank">View all calendar events &#10137;</a>
                                 </div>
                             </td>
                         </tr>
