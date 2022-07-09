@@ -7,9 +7,9 @@
     "homepage": "https://today.emich.edu",
     "require": {
         "php": ">=7.3",
-        "laravel/framework": "v5.7.29",
+        "laravel/framework": "v5.8.38",
         "laravel/passport": "^7.0",
-        "laravelcollective/html": "5.5.*",
+        "laravelcollective/html": "v5.8.1",
         "laracasts/presenter": "^0.2.4",
         "laracasts/utilities": "~2.1",
         "laracasts/flash": "^2.0",

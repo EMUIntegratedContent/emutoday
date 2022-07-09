@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class StoryIdeaMedium extends Model
 {
   /**
+   * Indicates if the IDs are auto-incrementing.
+   *
+   * @var bool
+   */
+  public $incrementing = true;
+
+  /**
    * The database table used by the model.
    *
    * @var string
