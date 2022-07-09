@@ -16,7 +16,7 @@ use Analytics;
 // For search
 use Illuminate\Pagination\LengthAwarePaginator;
 use Emutoday\Helpers\Interfaces\ISearch;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\URL;
 
 class DashboardController extends Controller

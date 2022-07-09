@@ -8,7 +8,7 @@ use Emutoday\StoryIdeaMedium;
 use Emutoday\Tag;
 use Emutoday\Author;
 use Emutoday\MiniCalendar;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 /*

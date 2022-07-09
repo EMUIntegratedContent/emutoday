@@ -8,7 +8,7 @@ use Emutoday\User;
 use Illuminate\Http\Request;
 
 
-use Illuminate\Support\Facades\Input as Input;
+use Illuminate\Support\Facades\Request as Input;
 use Carbon\Carbon;
 // use emutoday\Emutoday\Transformers\FractalAnnouncementTransformer;
 

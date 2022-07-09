@@ -8,7 +8,7 @@ use Emutoday\User;
 use Emutoday\Author;
 use Carbon\Carbon;
 
-use Illuminate\Support\Facades\Input as Input;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Http\Request;
 
 

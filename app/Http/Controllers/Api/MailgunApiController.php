@@ -5,7 +5,7 @@ namespace Emutoday\Http\Controllers\Api;
 use Log;
 use Emutoday\Email;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input as Input;
+use Illuminate\Support\Facades\Request as Input;
 use Carbon\Carbon;
 use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\Serializer\DataArraySerializer;

@@ -9,7 +9,7 @@ use Emutoday\Story;
 use Emutoday\StoryImage;
 use Emutoday\Mediafile;
 use Emutoday\Mediatype;
-use Illuminate\Support\Facades\Input as Input;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\File;
 // import the Intervention Image Manage
 use Intervention\Image\ImageManagerStatic as Image;

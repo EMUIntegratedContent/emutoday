@@ -9,7 +9,7 @@ use Emutoday\Expert;
 use Illuminate\Http\Request;
 use Emutoday\Http\Requests;
 
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\File;
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManagerStatic as Image;

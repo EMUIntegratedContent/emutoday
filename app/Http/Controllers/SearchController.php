@@ -3,7 +3,7 @@
 namespace Emutoday\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Support\Facades\URL;
 use Emutoday\Http\Requests;
 use Emutoday\Helpers\Interfaces\ISearch;
