@@ -157,7 +157,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
-        Barryvdh\Cors\ServiceProvider::class,
+//        Barryvdh\Cors\ServiceProvider::class,
         Snowfire\Beautymail\BeautymailServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Laravelium\Feed\FeedServiceProvider::class,

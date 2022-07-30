@@ -136,7 +136,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
      */
     Route::get('minicalslist', function() {
         return MiniCalendar::select('calendar', 'id as value', 'parent')->where('calendar', '<>', 'Welcome Weeks')->orderBy('calendar', 'asc')->get();
-    })  ;
+    });
 
     Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
         return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->orderBy('last_Name', 'asc')->get();
@@ -296,8 +296,8 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::resource('experts', 'Today\ExpertsController');
     //Route::resource('expertrequest', 'Today\ExpertRequestController');
 
-    Route::auth();
-    //watch out for match anything ROUTES
+//    Route::auth();
+//    //watch out for match anything ROUTES
     Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
     {
         Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
