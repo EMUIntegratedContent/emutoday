@@ -28,7 +28,8 @@
         "laravel/homestead": "v13.2.1",
         "apereo/phpcas": "1.3.8",
         "laravel/helpers": "^1.5",
-        "sofa/eloquence-base": "^7.1"
+        "sofa/eloquence-base": "^7.1",
+        "fruitcake/laravel-cors": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

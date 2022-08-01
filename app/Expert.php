@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Emutoday\StoryImage;
 use Emutoday\Experts\Searchable;
 use Sofa\Eloquence\Eloquence;
+use DateTimeInterface;
 
 class Expert extends Model
 {
@@ -96,5 +97,18 @@ class Expert extends Model
 
     public function previousTitles(){
         return $this->hasMany('Emutoday\ExpertTitles');
+    }
+
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

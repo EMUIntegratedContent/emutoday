@@ -5,6 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Emutoday\MediaHighlight\Searchable;
 use Sofa\Eloquence\Eloquence;
+use DateTimeInterface;
 
 class MediaHighlight extends Model
 {
@@ -38,5 +39,18 @@ class MediaHighlight extends Model
 
     public function getFullNameAttribute(){
         return $this->addedBy()->first()->first_name . ' '. $this->addedBy()->first()->last_name;
+    }
+
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
 use Emutoday\StoryType;
+use DateTimeInterface;
 
 class Story extends Model
 {
@@ -243,6 +244,17 @@ class Story extends Model
                 return $query->storyType->where('group', $group);
         }
 
-
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 
 }

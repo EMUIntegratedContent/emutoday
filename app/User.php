@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Emutoday\Mediafile;
 use Sofa\Eloquence\Eloquence;
 use Laravel\Passport\HasApiTokens;
+use DateTimeInterface;
 
 class User extends Authenticatable
 {
@@ -109,5 +110,18 @@ class User extends Authenticatable
 
     public function isEmailBuilder() {
         return $this->hasRole('emails');
+    }
+
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

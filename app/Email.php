@@ -5,6 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Sofa\Eloquence\Eloquence;
 use Laracasts\Presenter\PresentableTrait;
+use DateTimeInterface;
 
 class Email extends Model
 {
@@ -68,4 +69,17 @@ class Email extends Model
     return $this->hasMany('Emutoday\EmailSendTimes')
   }
   */
+
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

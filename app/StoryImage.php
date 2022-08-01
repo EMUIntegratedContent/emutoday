@@ -4,6 +4,8 @@ namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
+use DateTimeInterface;
+
 class StoryImage extends Model
 {
     use PresentableTrait;
@@ -48,6 +50,19 @@ class StoryImage extends Model
     public function scopeOfType($query, $itype)
     {
         return $query->where('image_type',$itype);
+    }
+
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 
 }

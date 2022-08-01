@@ -3,6 +3,7 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use DateTimeInterface;
 
 class Author extends Model
 {
@@ -26,5 +27,18 @@ class Author extends Model
     public function user()
     {
         return $this->hasOne('Emutoday\User');
+    }
+
+    /**
+     * ADDED FOR LARAVEL 7 TO KEEP EXISTING DATETIME FORMAT
+     * https://laravel.com/docs/7.x/upgrade#date-serialization
+     * Prepare a date for array / JSON serialization.
+     *
+     * @param \DateTimeInterface $date
+     * @return string
+     */
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }
