@@ -28,7 +28,9 @@
         "apereo/phpcas": "1.3.8",
         "laravel/helpers": "^1.5",
         "sofa/eloquence-base": "^7.1",
-        "fruitcake/laravel-cors": "^3.0"
+        "fruitcake/laravel-cors": "^3.0",
+        "laravel/legacy-factories": "^1.3",
+        "laravelium/feed": "^8.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
