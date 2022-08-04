@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use DB;
 use Log;
+use Illuminate\Pagination\Paginator;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         view()->composer('*', \Emutoday\Http\ViewComposers\AddCurrentUser::class);
 
         // $this->app['view']->composer(['*'], Composers\AddCurrentUser::class);
@@ -30,7 +33,6 @@ class AppServiceProvider extends ServiceProvider
                 );
             });
         }
-
     }
 
     /**
