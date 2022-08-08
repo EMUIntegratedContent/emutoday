@@ -158,9 +158,9 @@ return [
         Laracasts\Flash\FlashServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
 //        Barryvdh\Cors\ServiceProvider::class,
-        Snowfire\Beautymail\BeautymailServiceProvider::class,
+//        Snowfire\Beautymail\BeautymailServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-        Laravelium\Feed\FeedServiceProvider::class,
+//        Laravelium\Feed\FeedServiceProvider::class,
         Laravel\Tinker\TinkerServiceProvider::class,
 
         /*

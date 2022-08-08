@@ -4,8 +4,6 @@ namespace Emutoday\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Emutoday\Http\Requests;
-
 use Emutoday\Story;
 use Emutoday\Page;
 use Emutoday\Announcement;
@@ -14,7 +12,6 @@ use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
 use DB;
-use Emutoday\User;
 
 class MainController extends Controller
 {
@@ -43,7 +40,6 @@ class MainController extends Controller
 
     $currentTime = Carbon::now();
 
-
     $page = $this->page->where([
       ['is_ready', 1],
       ['is_archived', 0],
@@ -61,6 +57,7 @@ class MainController extends Controller
           ])->orderBy('start_date', 'desc')->first();
       }
 
+      // TODO this query is throwing an error
       $currentStorysBasic = $this->story->where([
         ['is_approved', 1],
         ['is_archived', 0],
@@ -71,146 +68,147 @@ class MainController extends Controller
       ->orderBy('priority','desc')
       ->orderBy('start_date','asc')
       ->take($this->recordLimitNews)->with('storyImages')->get();
-
-        $currentAnnouncements = $this->announcement->where([
-          ['is_approved', 1],
-          ['is_archived', 0],
-          ['type', 'general'],
-          ['start_date', '<=', $currentDateStart],
-          ['end_date', '>=', $currentDateEnd],
-          ['priority', '<', 1000000] // don't count special announcements.
-        ])
-        ->orderBy('priority','desc')
-        ->orderBy('start_date','asc')
-        ->take($this->recordLimitAnnouncements)->get();
-
-        //make sure there are enough announcements with a priority over 0
-        //if not requery with out priority limitation
-        if($currentAnnouncements->count() < $this->recordLimitAnnouncements ){
-          $currentAnnouncements = $this->announcement->where([
-            ['is_approved', 1],
-            ['is_archived', 0],
-            ['type', 'general'],
-            ['start_date', '<=', $currentDateStart],
-            ['end_date', '>=', $currentDateEnd],
-          ])
-          ->orderBy('priority','desc')
-          ->orderBy('start_date','asc')
-          ->take($this->recordLimitAnnouncements)->get();
-        }
-
-        // Find a special announcement (value of 1000000), if there is one.
-        $topAnnouncement = $this->announcement->where([
-          ['is_approved', 1],
-          ['is_archived', 0],
-          ['type', 'general'],
-          ['start_date', '<=', $currentDateStart],
-          ['end_date', '>=', $currentDateEnd],
-          ['priority', 1000000],
-        ])
-        ->orderBy('start_date', 'desc')
-        ->first();
-
-        $events = $this->event->where([
-          ['is_approved', 1],
-          ['priority', '>', 0],
-          ['end_date', '>=', $currentDateStart]
-        ])
-        ->orderBy('priority','desc')
-        ->orderBy('start_date','desc')
-        ->take($this->recordLimitEvents)->get();
-
-        $currentHRAnnouncements = $this->announcement->where([
-          ['is_approved', 1],
-          ['is_archived', 0],
-          ['type', 'hr'],
-          ['start_date', '<=', $currentDateStart],
-          ['end_date', '>=', $currentDateEnd],
-          ['priority', '>', 0]
-        ])
-        ->orderBy('priority','desc')
-        ->orderBy('start_date','asc')
-        ->take($this->recordLimitHR)->get();
-
-        //make sure there are enough announcements with a priority over 0
-        //if not requery with out priority limitation
-        if($currentHRAnnouncements->count() < $this->recordLimitHR ){
-          $currentHRAnnouncements = $this->announcement->where([
-            ['is_approved', 1],
-            ['is_archived', 0],
-            ['type', 'hr'],
-            ['start_date', '<=', $currentDateStart],
-            ['end_date', '>=', $currentDateEnd]
-          ])
-          ->orderBy('priority','desc')
-          ->orderBy('start_date','asc')
-          ->take($this->recordLimitHR)->get();
-        }
-
-        $barImgs = collect();
-
-        if(!is_null($page)){
-            $storys = $page->storys()->get();
-            foreach ($storys as $story) {
-              if ($story->pivot->page_position === 0) {
-                // IMPORTANT TO HAVE 'emutoday_front' FOR 'article' TYPE STORY WITH HIGHER 'id' THAN 'article_front'
-                if($story->story_type == 'article'){
-                    $heroImg = $story->storyImages()->where('image_type', 'hero')->orderBy('id', 'desc')->first();
-                } else {
-                    $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
-                }
-              } else {
-                $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
-              }
-            }
-            $storyImages = $page->storyImages;
-        } else {
-            $storyImages = null;
-        }
-
-        $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
-          $query->where('name', 'video');
-        })->where([
-          ['is_approved',1],
-          ['story_type', 'external'],
-          ['start_date', '>=', Carbon::now()]
-        ])
-        ->with('storyImages')->get();
-
-        if(count($allStorysWithVideoTag)> 0) {
-          $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
-          $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
-        } else {
-          $currentStoryImageWithVideoTag = null;
-        }
-
-        $twitter_feeds = [
-          'EasternMichU',
-          'emunews',
-        ];
-        $twitter_settings = [
-          'count' => 3,
-        ];
-
-        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
-
-        // Show up to 4 featured events on the front page
-        $featuredevents =  Event::where([
-          ['is_approved', 1],
-          ['mediafile_id', '>', 0],
-          ['end_date', '>=', date('Y-m-d')]
-        ])
-          ->orderBy('start_date', 'asc')
-          ->take(4)->get();
-
-        JavaScript::put([
-          'jsis' => 'hi',
-          'cdnow' => Carbon::now(),
-          'cdstart' => Carbon::now()->subDays(7),
-          'cdend' => Carbon::now()->addDays(7),
-          'currentPage' => $page
-        ]);
-
+//
+//        $currentAnnouncements = $this->announcement->where([
+//          ['is_approved', 1],
+//          ['is_archived', 0],
+//          ['type', 'general'],
+//          ['start_date', '<=', $currentDateStart],
+//          ['end_date', '>=', $currentDateEnd],
+//          ['priority', '<', 1000000] // don't count special announcements.
+//        ])
+//        ->orderBy('priority','desc')
+//        ->orderBy('start_date','asc')
+//        ->take($this->recordLimitAnnouncements)->get();
+//
+//        //make sure there are enough announcements with a priority over 0
+//        //if not requery with out priority limitation
+//        if($currentAnnouncements->count() < $this->recordLimitAnnouncements ){
+//          $currentAnnouncements = $this->announcement->where([
+//            ['is_approved', 1],
+//            ['is_archived', 0],
+//            ['type', 'general'],
+//            ['start_date', '<=', $currentDateStart],
+//            ['end_date', '>=', $currentDateEnd],
+//          ])
+//          ->orderBy('priority','desc')
+//          ->orderBy('start_date','asc')
+//          ->take($this->recordLimitAnnouncements)->get();
+//        }
+//
+//        // Find a special announcement (value of 1000000), if there is one.
+//        $topAnnouncement = $this->announcement->where([
+//          ['is_approved', 1],
+//          ['is_archived', 0],
+//          ['type', 'general'],
+//          ['start_date', '<=', $currentDateStart],
+//          ['end_date', '>=', $currentDateEnd],
+//          ['priority', 1000000],
+//        ])
+//        ->orderBy('start_date', 'desc')
+//        ->first();
+//
+//        $events = $this->event->where([
+//          ['is_approved', 1],
+//          ['priority', '>', 0],
+//          ['end_date', '>=', $currentDateStart]
+//        ])
+//        ->orderBy('priority','desc')
+//        ->orderBy('start_date','desc')
+//        ->take($this->recordLimitEvents)->get();
+//
+//        $currentHRAnnouncements = $this->announcement->where([
+//          ['is_approved', 1],
+//          ['is_archived', 0],
+//          ['type', 'hr'],
+//          ['start_date', '<=', $currentDateStart],
+//          ['end_date', '>=', $currentDateEnd],
+//          ['priority', '>', 0]
+//        ])
+//        ->orderBy('priority','desc')
+//        ->orderBy('start_date','asc')
+//        ->take($this->recordLimitHR)->get();
+//
+//        //make sure there are enough announcements with a priority over 0
+//        //if not requery with out priority limitation
+//        if($currentHRAnnouncements->count() < $this->recordLimitHR ){
+//          $currentHRAnnouncements = $this->announcement->where([
+//            ['is_approved', 1],
+//            ['is_archived', 0],
+//            ['type', 'hr'],
+//            ['start_date', '<=', $currentDateStart],
+//            ['end_date', '>=', $currentDateEnd]
+//          ])
+//          ->orderBy('priority','desc')
+//          ->orderBy('start_date','asc')
+//          ->take($this->recordLimitHR)->get();
+//        }
+//
+//        $barImgs = collect();
+//
+//        if(!is_null($page)){
+//            $storys = $page->storys()->get();
+//            foreach ($storys as $story) {
+//              if ($story->pivot->page_position === 0) {
+//                // IMPORTANT TO HAVE 'emutoday_front' FOR 'article' TYPE STORY WITH HIGHER 'id' THAN 'article_front'
+//                if($story->story_type == 'article'){
+//                    $heroImg = $story->storyImages()->where('image_type', 'hero')->orderBy('id', 'desc')->first();
+//                } else {
+//                    $heroImg = $story->storyImages()->where('image_type', 'front')->orderBy('id', 'desc')->first();
+//                }
+//              } else {
+//                $barImgs[$story->pivot->page_position] = $story->storyImages()->where('image_type', 'small')->first();
+//              }
+//            }
+//            $storyImages = $page->storyImages;
+//        } else {
+//            $storyImages = null;
+//        }
+//
+//        $allStorysWithVideoTag = Story::whereHas('tags', function ($query) {
+//          $query->where('name', 'video');
+//        })->where([
+//          ['is_approved',1],
+//          ['story_type', 'external'],
+//          ['start_date', '>=', Carbon::now()]
+//        ])
+//        ->with('storyImages')->get();
+//
+//        if(count($allStorysWithVideoTag)> 0) {
+//          $currentStoryWithVideoTag = $allStorysWithVideoTag->first();
+//          $currentStoryImageWithVideoTag = $currentStoryWithVideoTag->storyImages()->first();
+//        } else {
+//          $currentStoryImageWithVideoTag = null;
+//        }
+//
+//        $twitter_feeds = [
+//          'EasternMichU',
+//          'emunews',
+//        ];
+//        $twitter_settings = [
+//          'count' => 3,
+//        ];
+//
+//        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
+//
+//        // Show up to 4 featured events on the front page
+//        $featuredevents =  Event::where([
+//          ['is_approved', 1],
+//          ['mediafile_id', '>', 0],
+//          ['end_date', '>=', date('Y-m-d')]
+//        ])
+//          ->orderBy('start_date', 'asc')
+//          ->take(4)->get();
+//
+//        JavaScript::put([
+//          'jsis' => 'hi',
+//          'cdnow' => Carbon::now(),
+//          'cdstart' => Carbon::now()->subDays(7),
+//          'cdend' => Carbon::now()->addDays(7),
+//          'currentPage' => $page
+//        ]);
+//
+        //return view('public.hub2');
         return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events','currentStoryImageWithVideoTag','currentHRAnnouncements', 'featuredevents'));
 
       }

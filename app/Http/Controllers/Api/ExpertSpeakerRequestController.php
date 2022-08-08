@@ -6,7 +6,7 @@ use Emutoday\ExpertSpeakerRequest;
 use Emutoday\Expert;
 use Emutoday\User;
 use Illuminate\Http\Request;
-use Snowfire\Beautymail\Beautymail;
+//use Snowfire\Beautymail\Beautymail;
 
 
 use Illuminate\Support\Facades\Request as Input;
@@ -70,26 +70,27 @@ class ExpertSpeakerRequestController extends ApiController
         // Don't need to save the request...you can if you want, but there's no backend to manage them
         //if($expertSpeakerRequest->save()) {
             // Send an email to the expert
-            $beautymail = app()->make(Beautymail::class);
-            $beautymail->send('public.expertrequest.speakeremail.requesttoexpert', ['invitation' => $expertSpeakerRequest], function($message) use($expertSpeakerRequest)
-            {
-                $message
-        			->from('noreply@today.emich.edu')
-        			//->to('cpuzzuol@emich.edu', 'Chris Puzzuoli')
-                    ->to($expertSpeakerRequest->expert->email, $expertSpeakerRequest->expert->first_name . ' ' . $expertSpeakerRequest->expert->last_name)
-        			->subject('You have been requested for a speaking engagement through EMU Today.');
-            });
-
-            // Send an email to the requestee
-            $beautymail = app()->make(Beautymail::class);
-            $beautymail->send('public.expertrequest.speakeremail.requestreceipt', ['invitation' => $expertSpeakerRequest], function($message) use($expertSpeakerRequest)
-            {
-                $message
-        			->from('noreply@today.emich.edu')
-        			//->to('cpuzzuol@emich.edu', 'Chris Puzzuoli')
-                    ->to($expertSpeakerRequest->contact_email, $expertSpeakerRequest->contact_name )
-        			->subject('Your request for an Eastern Expert.');
-            });
+        // TODO replace snowfire/beautymail with Laravel Mailables
+//            $beautymail = app()->make(Beautymail::class);
+//            $beautymail->send('public.expertrequest.speakeremail.requesttoexpert', ['invitation' => $expertSpeakerRequest], function($message) use($expertSpeakerRequest)
+//            {
+//                $message
+//        			->from('noreply@today.emich.edu')
+//        			//->to('cpuzzuol@emich.edu', 'Chris Puzzuoli')
+//                    ->to($expertSpeakerRequest->expert->email, $expertSpeakerRequest->expert->first_name . ' ' . $expertSpeakerRequest->expert->last_name)
+//        			->subject('You have been requested for a speaking engagement through EMU Today.');
+//            });
+//
+//            // Send an email to the requestee
+//            $beautymail = app()->make(Beautymail::class);
+//            $beautymail->send('public.expertrequest.speakeremail.requestreceipt', ['invitation' => $expertSpeakerRequest], function($message) use($expertSpeakerRequest)
+//            {
+//                $message
+//        			->from('noreply@today.emich.edu')
+//        			//->to('cpuzzuol@emich.edu', 'Chris Puzzuoli')
+//                    ->to($expertSpeakerRequest->contact_email, $expertSpeakerRequest->contact_name )
+//        			->subject('Your request for an Eastern Expert.');
+//            });
 
           return $this->setStatusCode(201)
           ->respondSavedWithData('Expert speaker request successfully submitted. The expert has been notified and you should receive a confirmation copy of this request soon.',[ 'record_id' => $expertSpeakerRequest->id ]);

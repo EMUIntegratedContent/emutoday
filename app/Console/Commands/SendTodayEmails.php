@@ -4,7 +4,6 @@ namespace Emutoday\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
-use Snowfire\Beautymail\Beautymail;
 use Emutoday\Email;
 use Emutoday\Story;
 use Emutoday\Imagetype;

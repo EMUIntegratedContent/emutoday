@@ -470,3 +470,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('/testoauth', function () {
         return response()->json("Now that's what I call a secure API!");
     })->middleware('client_credentials');
+
+
+    //Route::feeds(); // RSS Feeds from Laravel 9 (https://github.com/spatie/laravel-feed)

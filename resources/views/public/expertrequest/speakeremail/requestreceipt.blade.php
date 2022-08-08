@@ -1,8 +1,8 @@
-@extends('beautymail::templates.widgets')
+{{--@extends('beautymail::templates.widgets')--}}
 
 @section('content')
 
-	@include('beautymail::templates.widgets.articleStart', ['color' => '#a2e600'])
+{{--	@include('beautymail::templates.widgets.articleStart', ['color' => '#a2e600'])--}}
 		<h1 class="secondary"><strong>Hello, {{ $invitation->contact_name }}! Your expert speaker request has been submitted through EMU Today</h1>
 		<ul>
       <li>
@@ -41,6 +41,6 @@
     </ul>
 		<hr />
     <p>This email was generated on EMU Today's Expert Search (today.emich.edu/experts). </p>
-	@include('beautymail::templates.widgets.articleEnd')
+{{--	@include('beautymail::templates.widgets.articleEnd')--}}
 
 @stop
