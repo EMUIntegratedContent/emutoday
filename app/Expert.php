@@ -33,24 +33,24 @@ class Expert extends Model
     'submitter_email'
   ];
 
-  use Eloquence;
-  protected $searchableColumns = [
-      'display_name' => 100,
-      'first_name' => 95,
-      'last_name' => 100,
-      'title' => 100,
-      'biography' => 50,
-      'teaser' => 40,
-      'office_phone' => 10,
-      'email' => 40,
-      'education.education' => 20,
-      'expertCategories.category' => 80,
-      'expertise.expertise' => 250,
-      'languages.language' => 20,
-      'previousTitles.title' => 20,
-      'socialMediaLinks.title' => 10,
-      'socialMediaLinks.url' => 10,
-  ];
+//  use Eloquence;
+//  protected $searchableColumns = [
+//      'display_name' => 100,
+//      'first_name' => 95,
+//      'last_name' => 100,
+//      'title' => 100,
+//      'biography' => 50,
+//      'teaser' => 40,
+//      'office_phone' => 10,
+//      'email' => 40,
+//      'education.education' => 20,
+//      'expertCategories.category' => 80,
+//      'expertise.expertise' => 250,
+//      'languages.language' => 20,
+//      'previousTitles.title' => 20,
+//      'socialMediaLinks.title' => 10,
+//      'socialMediaLinks.url' => 10,
+//  ];
 
   public function getFullNameAttribute(){
     return $this->last_name . ', '. $this->first_name;

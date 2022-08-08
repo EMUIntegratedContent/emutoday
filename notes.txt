@@ -7,3 +7,5 @@ LINK: https://github.com/gulpjs/gulp/issues/2162
 
 Snowfire/beautymail does not work with Laravel 9. Replace with "Markdown Mailables" https://laravel.com/docs/9.x/mail#markdown-mailables
 Laravelium/laravel-feed does not work with Laravel 9. Replace with spatie/laravel-feed instead. https://github.com/spatie/laravel-feed
+
+"sofa/eloquence-base": "^7.1" does NOT work with PHP 8. Causes 502 Bad Gateway (xdebug infinite loop) https://github.com/jarektkaczyk/eloquence/issues/270

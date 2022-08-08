@@ -58,12 +58,12 @@ class Event extends Model
 
     protected $presenter = 'Emutoday\Presenters\EventPresenter';
 
-    use Eloquence;
-
-    protected $searchableColumns = [
-        'title', 'short_title',
-        'description', 'submitter'
-    ];
+//    use Eloquence;
+//
+//    protected $searchableColumns = [
+//        'title', 'short_title',
+//        'description', 'submitter'
+//    ];
 
 
     public function mediaFile()

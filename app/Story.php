@@ -7,8 +7,10 @@ use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
 use Emutoday\StoryType;
 use DateTimeInterface;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
-class Story extends Model
+class Story extends Model implements Feedable
 {
     /**
      * The database table used by the model.
@@ -39,8 +41,25 @@ class Story extends Model
     use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\StoryPresenter';
 
-    use Eloquence;
-    protected $searchableColumns = ['title', 'subtitle', 'teaser', 'content', 'clicks'];
+//    use Eloquence;
+//    protected $searchableColumns = ['title', 'subtitle', 'teaser', 'content', 'clicks'];
+
+    public function toFeedItem(): FeedItem
+    {
+        // TODO: Implement toFeedItem() method.
+        return FeedItem::create([
+            'id' => $this->id,
+            'title' => $this->title,
+            'summary' => $this->teaser ?: 'TEASER',
+            'link' => $this->external_link ?: 'http://nhl.com',
+            'authorName' => $this->author_info ?: 'EMU Today',
+            'updated' => $this->updated_at
+        ]);
+    }
+
+    public function getAllFeedItems() {
+        return Story::all();
+    }
 
     /**
     *
@@ -256,5 +275,4 @@ class Story extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
-
 }

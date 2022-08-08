@@ -35,8 +35,8 @@ class Announcement extends Model
     use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\AnnouncementPresenter';
 
-    use Eloquence;
-    protected $searchableColumns = ['title', 'announcement', 'submitter'];
+//    use Eloquence;
+//    protected $searchableColumns = ['title', 'announcement', 'submitter'];
 
     public function user()
     {

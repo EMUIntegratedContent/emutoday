@@ -10,6 +10,7 @@
         "laravel/framework": "v9.23.0",
         "laravel/passport": "^v10.4.1",
         "laravelcollective/html": "v6.3.0",
+        "laracasts/presenter": "^0.2.5",
         "laracasts/utilities": "~3.2.1",
         "laracasts/flash": "^3.2.1",
         "intervention/image": "^2.7",

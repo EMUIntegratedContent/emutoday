@@ -472,4 +472,4 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     })->middleware('client_credentials');
 
 
-    //Route::feeds(); // RSS Feeds from Laravel 9 (https://github.com/spatie/laravel-feed)
+    Route::feeds(); // RSS Feeds from Laravel 9 (https://github.com/spatie/laravel-feed)

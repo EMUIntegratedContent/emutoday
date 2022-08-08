@@ -30,8 +30,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-    use Eloquence;
-    protected $searchableColumns = ['last_name', 'first_name', 'email'];
+//    use Eloquence;
+//    protected $searchableColumns = ['last_name', 'first_name', 'email'];
 
     /**
      * [getFullNameAttribute description]

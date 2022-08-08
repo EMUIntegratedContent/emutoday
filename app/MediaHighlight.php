@@ -9,7 +9,7 @@ use DateTimeInterface;
 
 class MediaHighlight extends Model
 {
-    use Eloquence;
+//    use Eloquence;
     
     protected $fillable = [
       'title',
@@ -20,10 +20,10 @@ class MediaHighlight extends Model
       'added_by'
     ];
 
-    protected $searchableColumns = [
-        'title' => 100,
-        'source' => 90
-    ];
+//    protected $searchableColumns = [
+//        'title' => 100,
+//        'source' => 90
+//    ];
 
     protected $dates = [
       'start_date'
