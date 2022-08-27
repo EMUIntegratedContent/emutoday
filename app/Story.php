@@ -2,7 +2,9 @@
 
 namespace Emutoday;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
 use Emutoday\StoryType;
@@ -46,19 +48,30 @@ class Story extends Model implements Feedable
 
     public function toFeedItem(): FeedItem
     {
-        // TODO: Implement toFeedItem() method.
+        // set story info
+        if(!$this->author) {
+            $author = '';
+        } else {
+            $author = $this->author['first_name'].' '.$this->author['last_name'];
+        }
+
+        $daysAgo = Carbon::parse($this->start_date)->diffInDays();
+        $authorInfo = "$author ($daysAgo days ago)";
+        // Spatie feed absolutely refuses to show these chars properly (title only)...
+        $title = str_replace(array('"', '&', "'"), array("`", 'and', "`"), $this->title);
+
         return FeedItem::create([
             'id' => $this->id,
-            'title' => $this->title,
-            'summary' => $this->teaser ?: 'TEASER',
-            'link' => $this->external_link ?: 'http://nhl.com',
-            'authorName' => $this->author_info ?: 'EMU Today',
+            'title' => $title,
+            'summary' => $this->content,
+            'link' => URL::to('/story/'.$this->story_type.'/'.$this->id),
+            'authorName' => $authorInfo,
             'updated' => $this->updated_at
         ]);
     }
 
     public function getAllFeedItems() {
-        return Story::all();
+        return Story::where([['is_approved', 1], ['is_archived', 0]])->whereIn('story_type', ['news', 'advisory', 'statement', 'story', 'article'])->orderBy('created_at', 'desc')->get();
     }
 
     /**

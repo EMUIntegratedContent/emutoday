@@ -34,10 +34,11 @@ Route::get('/cas/logout', function(){
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise a user won't be logged out properly.
 
 # RSS Feeds
-Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
-Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
-Route::get('/feed/announcements/{type?}', 'Today\RSSFeedController@getAnnouncements')->name('rss_feed_announcements');
-Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
+//Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
+//Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
+//Route::get('/feed/announcements/{type?}', 'Today\RSSFeedController@getAnnouncements')->name('rss_feed_announcements');
+//Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
+Route::feeds(); // RSS Feeds from Laravel 9 (https://github.com/ spatie/laravel-feed)
 
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']  ], function(){
     Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
@@ -470,6 +471,3 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     Route::get('/testoauth', function () {
         return response()->json("Now that's what I call a secure API!");
     })->middleware('client_credentials');
-
-
-    Route::feeds(); // RSS Feeds from Laravel 9 (https://github.com/spatie/laravel-feed)

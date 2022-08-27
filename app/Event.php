@@ -3,14 +3,17 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use Carbon\Carbon;
 use Sofa\Eloquence\Eloquence;
 use DateTimeInterface;
 
 use Emutoday\Category;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
-class Event extends Model
+class Event extends Model implements Feedable
 {
 
     /**
@@ -64,6 +67,30 @@ class Event extends Model
 //        'title', 'short_title',
 //        'description', 'submitter'
 //    ];
+
+    public function toFeedItem(): FeedItem
+    {
+        $author = $this->contact_person;
+        $startDate = date('n/j/Y', strtotime($this->start_date));
+
+        $authorInfo = "$author (Event Date: $startDate)";
+        $urlPath = '/calendar/' . $this->start_date->format('Y') . '/' . $this->start_date->format('n') . '/' . $this->start_date->format('j') . '/' . $this->id;
+        // Spatie feed absolutely refuses to show these chars properly (title only)...
+        $title = str_replace(array('"', '&', "'"), array("`", 'and', "`"), $this->title);
+
+        return FeedItem::create([
+            'id' => $this->id,
+            'title' => $title,
+            'summary' => $this->description,
+            'link' => URL::to($urlPath),
+            'authorName' => $authorInfo,
+            'updated' => $this->updated_at
+        ]);
+    }
+
+    public function getAllFeedItems() {
+        return Event::where([['is_approved', 1], ['start_date', '>=', date('Y-m-d H:i:s')]])->orderBy('start_date', 'asc')->get();
+    }
 
 
     public function mediaFile()

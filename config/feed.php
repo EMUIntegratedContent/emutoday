@@ -1,7 +1,7 @@
 <?php
 return [
     'feeds' => [
-        'main' => [
+        'news' => [
             /*
              * Here you can specify which class and method will return
              * the items that should appear in the feed. For example:
@@ -15,7 +15,7 @@ return [
             /*
              * The feed will be available on this url.
              */
-            'url' => '/feed',
+            'url' => '/feed/news',
 
             'title' => 'EMU Today - News',
             'description' => 'News headlines from EMU Today',
@@ -31,12 +31,12 @@ return [
             /*
              * The format of the feed. Acceptable values are 'rss', 'atom', or 'json'.
              */
-            'format' => 'atom',
+            'format' => 'rss',
 
             /*
              * The view that will render the feed.
              */
-            'view' => 'feed::atom',
+            'view' => 'feed::rss',
 
             /*
              * The mime type to be used in the <link> tag. Set to an empty string to automatically
@@ -49,6 +49,30 @@ return [
              * determine the correct value.
              */
             'contentType' => '',
+        ],
+        'events' => [
+            'items' => 'Emutoday\Event@getAllFeedItems',
+            'url' => '/feed/events',
+            'title' => 'EMU Today - Events',
+            'description' => 'Events from EMU Today',
+            'language' => 'en-US',
+            'image' => '',
+            'format' => 'atom',
+            'view' => 'feed::atom',
+            'type' => '',
+            'contentType' => '',
+        ],
+        'announcements' => [
+            'items' => 'Emutoday\Announcement@getAllFeedItems',
+            'url' => '/feed/announcements',
+            'title' => 'EMU Today - Announcements',
+            'description' => 'Announcements from EMU Today',
+            'language' => 'en-US',
+            'image' => '',
+            'format' => 'rss',
+            'view' => 'feed::rss',
+            'type' => '',
+            'contentType' => 'application/rss+xml',
         ],
     ],
 ];

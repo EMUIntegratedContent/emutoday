@@ -2,12 +2,16 @@
 
 namespace Emutoday;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
 use DateTimeInterface;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
-class Announcement extends Model
+class Announcement extends Model implements Feedable
 {
 
     protected $fillable = [
@@ -37,6 +41,49 @@ class Announcement extends Model
 
 //    use Eloquence;
 //    protected $searchableColumns = ['title', 'announcement', 'submitter'];
+
+    public function toFeedItem(): FeedItem
+    {
+        $txt = $this->announcement;
+        if($this->link) {
+            $txt .= "<br><br>";
+            $txt .= 'Link: <a href="'. $this->link . '">'. $this->link_txt .'</a>';
+        }
+        if($this->email_link) {
+            $txt .= "<br><br>";
+            $txt .= 'Email: <a href="mailto:'. $this->email_link . '">'. $this->email_link_txt .'</a>';
+        }
+        if($this->phone) {
+            $txt .= "<br><br>";
+            $txt .= 'Phone: ' . $this->phone;
+        }
+
+        // Put the num of days ago along with the author.
+        $daysAgo = $this->created_at->diffInDays();
+        $author = $this->email_link_txt ?: 'unknown';
+        $authorInfo = "$author ($daysAgo days ago)";
+        // Spatie feed absolutely refuses to show these chars properly (title only)...
+        $title = str_replace(array('"', '&', "'"), array("`", 'and', "`"), $this->title);
+
+        return FeedItem::create([
+            'id' => $this->id,
+            'title' => $title,
+            'summary' => $txt,
+            'link' => URL::to('/announcement'),
+            'authorName' => $authorInfo,
+            'updated' => $this->updated_at
+        ]);
+    }
+
+    public function getAllFeedItems() {
+        $now = date('Y-m-d H:i:s');
+        return Announcement::where([
+            ['is_approved', 1],
+            ['is_archived', 0],
+            ['start_date', '<=', $now],
+            ['end_date', '>=', $now]
+        ])->whereIn('type', ['general'])->orderBy('created_at', 'desc')->get();
+    }
 
     public function user()
     {
