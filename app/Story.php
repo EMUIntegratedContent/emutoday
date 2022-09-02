@@ -6,11 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
-use Sofa\Eloquence\Eloquence;
-use Emutoday\StoryType;
 use DateTimeInterface;
 use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
+use Illuminate\Support\Facades\DB;
 
 class Story extends Model implements Feedable
 {
@@ -43,8 +42,33 @@ class Story extends Model implements Feedable
     use PresentableTrait;
     protected $presenter = 'Emutoday\Presenters\StoryPresenter';
 
-//    use Eloquence;
-//    protected $searchableColumns = ['title', 'subtitle', 'teaser', 'content', 'clicks'];
+    /**
+     * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * @param $searchTerm
+     * @return mixed
+     */
+    public static function runSearch($searchTerm) {
+//                'title' => 50,
+//                'content' => 35,
+//                'teaser' => 20,
+//                'subtitle' => 10,
+        $stories = DB::select(
+            "
+                    SELECT title, subtitle, story_type, teaser, id, start_date
+                    FROM storys 
+                    WHERE is_approved = 1 
+                      AND start_date <= :start_date
+                      AND story_type NOT IN ('article', 'external')
+                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term)
+                    ORDER BY start_date DESC
+                ",
+            array(
+                'start_date' => date('Y-m-d'),
+                'search_term' => "%$searchTerm%"
+            )
+        );
+        return self::hydrate($stories); // takes the raw query and turns it into a collection of models
+    }
 
     public function toFeedItem(): FeedItem
     {
