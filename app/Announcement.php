@@ -4,6 +4,7 @@ namespace Emutoday;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use Sofa\Eloquence\Eloquence;
@@ -41,6 +42,27 @@ class Announcement extends Model implements Feedable
 
 //    use Eloquence;
 //    protected $searchableColumns = ['title', 'announcement', 'submitter'];
+
+    /**
+     * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * @param $searchTerm
+     * @return mixed
+     */
+    public static function runSearch($searchTerm) {
+        $items = DB::select(
+            "
+                    SELECT title, announcement, submitter, id
+                    FROM announcements 
+                    WHERE is_approved = 1 
+                      AND MATCH(title, announcement) AGAINST (:search_term)
+                    ORDER BY start_date DESC
+                ",
+            array(
+                'search_term' => "%$searchTerm%"
+            )
+        );
+        return self::hydrate($items); // takes the raw query and turns it into a collection of models
+    }
 
     public function toFeedItem(): FeedItem
     {

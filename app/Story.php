@@ -47,12 +47,8 @@ class Story extends Model implements Feedable
      * @param $searchTerm
      * @return mixed
      */
-    public static function runSearch($searchTerm) {
-//                'title' => 50,
-//                'content' => 35,
-//                'teaser' => 20,
-//                'subtitle' => 10,
-        $stories = DB::select(
+    public static function runSearchNonMagazine($searchTerm) {
+        $items = DB::select(
             "
                     SELECT title, subtitle, story_type, teaser, id, start_date
                     FROM storys 
@@ -67,7 +63,31 @@ class Story extends Model implements Feedable
                 'search_term' => "%$searchTerm%"
             )
         );
-        return self::hydrate($stories); // takes the raw query and turns it into a collection of models
+        return self::hydrate($items); // takes the raw query and turns it into a collection of models
+    }
+
+    /**
+     * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * @param $searchTerm
+     * @return mixed
+     */
+    public static function runSearchMagazine($searchTerm) {
+        $items = DB::select(
+            "
+                    SELECT title, subtitle, story_type, teaser, id, start_date
+                    FROM storys 
+                    WHERE is_approved = 1 
+                      AND start_date <= :start_date
+                      AND story_type IN ('article')
+                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term)
+                    ORDER BY start_date DESC
+                ",
+            array(
+                'start_date' => date('Y-m-d'),
+                'search_term' => "%$searchTerm%"
+            )
+        );
+        return self::hydrate($items); // takes the raw query and turns it into a collection of models
     }
 
     public function toFeedItem(): FeedItem

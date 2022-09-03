@@ -48,15 +48,6 @@ class SearchController extends Controller
 
         // Story results
         if(!$filter || $filter == 'stories' || $filter == 'all'){
-            $searchStoryResults = array();
-            $searchStoryResultsNonMagazine = Story::runSearch($searchTerm);
-
-            foreach($searchStoryResultsNonMagazine as $nm_story){
-                $searchStoryResults[] = $nm_story;
-            }
-
-            // TODO: use similar method in Story::runSearch for all the other searchable models. And try to refine to get better results.
-//
 //            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
 //            $searchStoryResultsMagazine = Story::search($searchTermWild, [
 //                'title' => 50,
@@ -68,31 +59,39 @@ class SearchController extends Controller
 //            foreach($searchStoryResultsMagazine as $m_story){
 //                $searchStoryResults[] = $m_story;
 //            }
-//        } else {
-//            $searchStoryResults = array();
-//        }
-//
-//        // Event results
-//        if(!$filter || $filter == 'events' || $filter == 'all'){
+            $searchStoryResults = array();
+            $searchStoryResultsNonMagazine = Story::runSearchNonMagazine($searchTerm);
+
+            foreach($searchStoryResultsNonMagazine as $nm_story){
+                $searchStoryResults[] = $nm_story;
+            }
+        } else {
+            $searchStoryResults = array();
+        }
+
+        // Event results
+        if(!$filter || $filter == 'events' || $filter == 'all'){
 //            $searchEventResults = Event::search($searchTermWild, [
 //                'title' => 10,
 //            ], false)->where('is_approved', 1)->get();
-//        } else {
-//            $searchEventResults = array();
-//        }
-//
+            $searchEventResults = Event::runSearch($searchTerm);
+        } else {
+            $searchEventResults = array();
+        }
+
 //        // Announcement results
-//        if(!$filter || $filter == 'announcements' || $filter == 'all'){
+        if(!$filter || $filter == 'announcements' || $filter == 'all'){
 //            $searchAnnouncementResults = Announcement::search($searchTermWild, [
 //                'title' => 50,
 //                'announcement' => 35
 //            ], false)->where('is_approved', 1)->select('title','announcement','submitter','id')->get();
-//        } else {
-//            $searchAnnouncementResults = array();
-//        }
-//
-//        // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
-//        if( ($filter && $filter == 'magazine') || $isSearchFromMagazine){
+            $searchAnnouncementResults = Announcement::runSearch($searchTerm);
+        } else {
+            $searchAnnouncementResults = array();
+        }
+
+        // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
+        if( ($filter && $filter == 'magazine') || $isSearchFromMagazine){
 //            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
 //            $searchMagazineResults = Story::search($searchTermWild, [
 //                'title' => 50,
@@ -100,26 +99,26 @@ class SearchController extends Controller
 //                'teaser' => 20,
 //                'subtitle' => 10,
 //            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->orderBy('start_date', 'DESC')->get();
-//
-//
-//        } else {
-//            $searchMagazineResults = array();
-//        }
-//
-//        // Expert results
-//        if(!$filter || $filter == 'experts' || $filter == 'all'){
+            $searchMagazineResults = Story::runSearchMagazine($searchTerm);
+
+        } else {
+            $searchMagazineResults = array();
+        }
+
+        // Expert results
+        if(!$filter || $filter == 'experts' || $filter == 'all'){
 //            $searchExpertsResults = Expert::search($searchTermWild, [
 //                'first_name' => 50,
 //                'last_name' => 50,
 //                'display_name' => 50,
 //                'title' => 30,
 //            ], false)->where('is_approved', 1)->select('id','first_name','last_name','display_name','title')->get();
-//        } else {
-//            $searchExpertsResults = array();
+            $searchExpertsResults = Expert::runSearch($searchTerm);
+        } else {
+            $searchExpertsResults = array();
         }
 
-//        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults, $searchExpertsResults));
-        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults));
+        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults, $searchExpertsResults));
 
         $numResults = count($allStories);
 

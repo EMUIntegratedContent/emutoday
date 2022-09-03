@@ -5,6 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Emutoday\StoryImage;
 use Emutoday\Experts\Searchable;
+use Illuminate\Support\Facades\DB;
 use Sofa\Eloquence\Eloquence;
 use DateTimeInterface;
 
@@ -13,25 +14,25 @@ class Expert extends Model
     /* elasticsearch trait (not in use as of 5/15/17...using Sofa/Eloquence instead) */
     //use Searchable; //elasticsearch trait
 
-  protected $fillable = [
-    'display_name',
-    'first_name',
-    'last_name',
-    'title',
-    'biography',
-    'teaser',
-    'is_media_expert',
-    'is_community_speaker',
-    'interviews',
-    'office_phone',
-    'cell_phone',
-    'release_cell_phone',
-    'email',
-    'is_approved',
-    'submitter_name',
-    'submitter_phone',
-    'submitter_email'
-  ];
+    protected $fillable = [
+        'display_name',
+        'first_name',
+        'last_name',
+        'title',
+        'biography',
+        'teaser',
+        'is_media_expert',
+        'is_community_speaker',
+        'interviews',
+        'office_phone',
+        'cell_phone',
+        'release_cell_phone',
+        'email',
+        'is_approved',
+        'submitter_name',
+        'submitter_phone',
+        'submitter_email'
+    ];
 
 //  use Eloquence;
 //  protected $searchableColumns = [
@@ -52,15 +53,37 @@ class Expert extends Model
 //      'socialMediaLinks.url' => 10,
 //  ];
 
-  public function getFullNameAttribute(){
-    return $this->last_name . ', '. $this->first_name;
-  }
+    /**
+     * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * @param $searchTerm
+     * @return mixed
+     */
+    public static function runSearch($searchTerm)
+    {
+        $items = DB::select(
+            "
+                    SELECT id, first_name, last_name, display_name, title
+                    FROM experts 
+                    WHERE is_approved = 1 
+                      AND MATCH(title, first_name, last_name, display_name) AGAINST (:search_term)
+                ",
+            array(
+                'search_term' => "%$searchTerm%"
+            )
+        );
+        return self::hydrate($items); // takes the raw query and turns it into a collection of models
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->last_name . ', ' . $this->first_name;
+    }
 
     public function addImage()
     {
         return $this->expertImages()->create([
-            'image_name'=> 'img' . $this->id . '_expert',
-            'image_type'=> 'headshot',
+            'image_name' => 'img' . $this->id . '_expert',
+            'image_type' => 'headshot',
         ]);
     }
 
@@ -75,27 +98,32 @@ class Expert extends Model
     }
 
     public function expertCategories()
-	{
-		return $this->belongsToMany('Emutoday\ExpertCategory', 'experts_expertcategory', 'expert_id', 'cat_id');
-	}
+    {
+        return $this->belongsToMany('Emutoday\ExpertCategory', 'experts_expertcategory', 'expert_id', 'cat_id');
+    }
 
-    public function education(){
+    public function education()
+    {
         return $this->hasMany('Emutoday\ExpertEducation');
     }
 
-    public function languages(){
+    public function languages()
+    {
         return $this->hasMany('Emutoday\ExpertLanguages');
     }
 
-    public function expertise(){
+    public function expertise()
+    {
         return $this->hasMany('Emutoday\ExpertExpertise');
     }
 
-    public function socialMediaLinks(){
+    public function socialMediaLinks()
+    {
         return $this->hasMany('Emutoday\ExpertSocial');
     }
 
-    public function previousTitles(){
+    public function previousTitles()
+    {
         return $this->hasMany('Emutoday\ExpertTitles');
     }
 

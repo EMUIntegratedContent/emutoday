@@ -3,6 +3,7 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use Carbon\Carbon;
@@ -67,6 +68,26 @@ class Event extends Model implements Feedable
 //        'title', 'short_title',
 //        'description', 'submitter'
 //    ];
+
+    /**
+     * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * @param $searchTerm
+     * @return mixed
+     */
+    public static function runSearch($searchTerm) {
+        $items = DB::select(
+            "
+                    SELECT *
+                    FROM cea_events 
+                    WHERE is_approved = 1 
+                      AND MATCH(title) AGAINST (:search_term)
+                ",
+            array(
+                'search_term' => "%$searchTerm%"
+            )
+        );
+        return self::hydrate($items); // takes the raw query and turns it into a collection of models
+    }
 
     public function toFeedItem(): FeedItem
     {
