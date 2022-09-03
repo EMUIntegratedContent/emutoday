@@ -50,17 +50,18 @@ class Story extends Model implements Feedable
     public static function runSearchNonMagazine($searchTerm) {
         $items = DB::select(
             "
-                    SELECT title, subtitle, story_type, teaser, id, start_date
+                    SELECT title, subtitle, story_type, teaser, id, start_date, MATCH(title, subtitle, teaser, content) AGAINST (:search_term WITH QUERY EXPANSION) AS score
                     FROM storys 
                     WHERE is_approved = 1 
                       AND start_date <= :start_date
                       AND story_type NOT IN ('article', 'external')
-                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term)
-                    ORDER BY start_date DESC
+                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term2 WITH QUERY EXPANSION)
+                    ORDER BY score DESC, start_date DESC
                 ",
             array(
+                'search_term' => "%$searchTerm%",
                 'start_date' => date('Y-m-d'),
-                'search_term' => "%$searchTerm%"
+                'search_term2' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
