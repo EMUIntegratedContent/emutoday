@@ -43,7 +43,6 @@
                     <li class="search-result-item">
                         @if($searchResult->getTable() == 'storys')
                             {{-- dd($searchResult->story_type) --}}
-                            {{ $searchResult->score }}
                             @if($searchResult->story_type == 'article')
                             <a href="/magazine/{{$searchResult->story_type}}/{{$searchResult->id}}">
                             @else

@@ -62,13 +62,18 @@ class Expert extends Model
     {
         $items = DB::select(
             "
-                    SELECT id, first_name, last_name, display_name, title
+                    SELECT id, first_name, last_name, display_name, title,
+                        MATCH(first_name, last_name, display_name) AGAINST (:search_term) AS score_fld,
+                        MATCH(title) AGAINST (:search_term2) AS score_title
                     FROM experts 
                     WHERE is_approved = 1 
-                      AND MATCH(title, first_name, last_name, display_name) AGAINST (:search_term)
+                      AND MATCH(title, first_name, last_name, display_name) AGAINST (:search_term3)
+                    ORDER BY (score_fld * 5)+(score_title * 3) DESC
                 ",
             array(
-                'search_term' => "%$searchTerm%"
+                'search_term' => "%$searchTerm%",
+                'search_term2' => "%$searchTerm%",
+                'search_term3' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models

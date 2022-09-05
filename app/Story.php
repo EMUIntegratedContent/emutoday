@@ -50,18 +50,23 @@ class Story extends Model implements Feedable
     public static function runSearchNonMagazine($searchTerm) {
         $items = DB::select(
             "
-                    SELECT title, subtitle, story_type, teaser, id, start_date, MATCH(title, subtitle, teaser, content) AGAINST (:search_term WITH QUERY EXPANSION) AS score
+                    SELECT title, subtitle, story_type, teaser, id, start_date, 
+                        MATCH(title) AGAINST (:search_term) AS score_title,
+                        MATCH(content) AGAINST (:search_term2) AS score_content,
+                        MATCH(subtitle, teaser) AGAINST (:search_term3) AS score_subteaser
                     FROM storys 
                     WHERE is_approved = 1 
                       AND start_date <= :start_date
                       AND story_type NOT IN ('article', 'external')
-                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term2 WITH QUERY EXPANSION)
-                    ORDER BY score DESC, start_date DESC
+                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term4)
+                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser) DESC
                 ",
             array(
                 'search_term' => "%$searchTerm%",
+                'search_term2' => "%$searchTerm%",
+                'search_term3' => "%$searchTerm%",
                 'start_date' => date('Y-m-d'),
-                'search_term2' => "%$searchTerm%"
+                'search_term4' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
@@ -75,17 +80,23 @@ class Story extends Model implements Feedable
     public static function runSearchMagazine($searchTerm) {
         $items = DB::select(
             "
-                    SELECT title, subtitle, story_type, teaser, id, start_date
+                    SELECT title, subtitle, story_type, teaser, id, start_date, 
+                        MATCH(title) AGAINST (:search_term) AS score_title,
+                        MATCH(content) AGAINST (:search_term2) AS score_content,
+                        MATCH(subtitle, teaser) AGAINST (:search_term3) AS score_subteaser
                     FROM storys 
                     WHERE is_approved = 1 
                       AND start_date <= :start_date
                       AND story_type IN ('article')
-                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term)
-                    ORDER BY start_date DESC
+                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term4)
+                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser) DESC
                 ",
             array(
+                'search_term' => "%$searchTerm%",
+                'search_term2' => "%$searchTerm%",
+                'search_term3' => "%$searchTerm%",
                 'start_date' => date('Y-m-d'),
-                'search_term' => "%$searchTerm%"
+                'search_term4' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models

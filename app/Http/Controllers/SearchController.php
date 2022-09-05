@@ -48,7 +48,7 @@ class SearchController extends Controller
 
         // Story results
         if(!$filter || $filter == 'stories' || $filter == 'all'){
-//            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
+            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
 //            $searchStoryResultsMagazine = Story::search($searchTermWild, [
 //                'title' => 50,
 //                'content' => 35,
@@ -71,6 +71,7 @@ class SearchController extends Controller
 
         // Event results
         if(!$filter || $filter == 'events' || $filter == 'all'){
+            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
 //            $searchEventResults = Event::search($searchTermWild, [
 //                'title' => 10,
 //            ], false)->where('is_approved', 1)->get();
@@ -79,12 +80,14 @@ class SearchController extends Controller
             $searchEventResults = array();
         }
 
-//        // Announcement results
+        // Announcement results
         if(!$filter || $filter == 'announcements' || $filter == 'all'){
+            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
 //            $searchAnnouncementResults = Announcement::search($searchTermWild, [
 //                'title' => 50,
 //                'announcement' => 35
 //            ], false)->where('is_approved', 1)->select('title','announcement','submitter','id')->get();
+//            $searchAnnouncementResults = array();
             $searchAnnouncementResults = Announcement::runSearch($searchTerm);
         } else {
             $searchAnnouncementResults = array();
@@ -92,7 +95,8 @@ class SearchController extends Controller
 
         // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
         if( ($filter && $filter == 'magazine') || $isSearchFromMagazine){
-//            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
+            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
+            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
 //            $searchMagazineResults = Story::search($searchTermWild, [
 //                'title' => 50,
 //                'content' => 35,
@@ -100,13 +104,13 @@ class SearchController extends Controller
 //                'subtitle' => 10,
 //            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->orderBy('start_date', 'DESC')->get();
             $searchMagazineResults = Story::runSearchMagazine($searchTerm);
-
         } else {
             $searchMagazineResults = array();
         }
 
         // Expert results
         if(!$filter || $filter == 'experts' || $filter == 'all'){
+            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
 //            $searchExpertsResults = Expert::search($searchTermWild, [
 //                'first_name' => 50,
 //                'last_name' => 50,
