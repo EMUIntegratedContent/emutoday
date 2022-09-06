@@ -5,7 +5,8 @@ REASON: node updated to version 10 on local machine
 SOLUTION: In file './package.json', under devDependencies, include "natives": "^1.1.3". Then run npm update.
 LINK: https://github.com/gulpjs/gulp/issues/2162
 
-Snowfire/beautymail does not work with Laravel 9. Replace with "Markdown Mailables" https://laravel.com/docs/9.x/mail#markdown-mailables
+DONE - Snowfire/beautymail does not work with Laravel 9. Replace with regular Mail facade and re-work some of the formatting.
+
 DONE- Laravelium/laravel-feed does not work with Laravel 9. Replace with spatie/laravel-feed instead. https://github.com/spatie/laravel-feed
 
 DONE- "sofa/eloquence-base": "^7.1" does NOT work with PHP 8. Causes 502 Bad Gateway (xdebug infinite loop) https://github.com/jarektkaczyk/eloquence/issues/270

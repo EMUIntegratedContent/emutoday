@@ -109,10 +109,10 @@ class CalendarController extends Controller
               // The user is logged in...
               $user = \Auth::user();
 
-              return redirect()->action('Admin\EventController@form');
+              //return redirect()->action('Admin\EventController@form');
             } else {
-              $user = cas()->user();
-
+                $user = cas()->user();
+            }
               $approveditems = $this->events->where([
                   ['is_approved', 1],
                   ['submitter', $user]
@@ -124,7 +124,6 @@ class CalendarController extends Controller
                   ])->get();
 
               return view('public.calendar.eventform', compact('event','approveditems','submitteditems'));
-            }
         }
 
         public function userEvents(Event $event)
