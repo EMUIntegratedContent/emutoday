@@ -452,7 +452,7 @@
                                                 <a href="https://www.snapchat.com/add/EasternMichigan"><img class="img-circle" alt="Snap Chat" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/snapchat.png"></a>
                                             </li>
                                             <li style="display: inline-block; list-style-type:none; padding-right:7px; margin: 0;">
-                                                <a href="https://blog.emich.edu/"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/blogemu.png"></a>
+                                                <a href="https://www.tiktok.com/@easternmichiganu"><img class="img-circle" alt="Blog EMU" src="{{ url('/') }}/assets/imgs/icons/2018-social-icons/tiktok.png"></a>
                                             </li>
                                         </ul>
                                     </td>

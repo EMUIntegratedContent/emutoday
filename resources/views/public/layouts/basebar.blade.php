@@ -22,7 +22,7 @@
                     <li><a class="instagram" title="External link to EMU's Instagram page." href="https://instagram.com/easternmichigan/"><span class="visuallyhidden">Instagram</span></a></li>
                     <li><a class="linkedin" title="External link to EMU's LinkedIn page." href="https://www.linkedin.com/edu/school?id=18604"><span class="visuallyhidden">LinkedIn</span></a></li>
                     <li><a class="snapchat" title="External link to EMU's Snapchat page." href="https://www.snapchat.com/add/EasternMichigan"><span class="visuallyhidden">Snapchat</span></a></li>
-                    <li><a class="blogemu" title="External link to the BlogEMU page." href="https://blog.emich.edu/"><span class="visuallyhidden">BlogEMU</span></a></li>
+                    <li><a class="tiktok" title="External link to the BlogEMU page." href="https://www.tiktok.com/@easternmichiganu"><span class="visuallyhidden">TikTok</span></a></li>
                 </ul>
             </div><!-- END social links -->
         </div>
