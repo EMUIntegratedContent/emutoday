@@ -2318,10 +2318,10 @@ ul.social-icons li a.linkedin{
 ul.social-icons li a.snapchat{
     background-image: url("/assets/imgs/icons/2018-social-icons/snapchat-lg.png");
 }
-ul.social-icons li a.blogemu{
-    background-image: url("/assets/imgs/icons/2018-social-icons/blogemu-lg.png");
+ul.social-icons li a.tiktok{
+    background-image: url("/assets/imgs/icons/2018-social-icons/tiktok-lg.png");
 }
-ul.social-icons li a.facebook:hover, ul.social-icons li a.twitter:hover, ul.social-icons li a.youtube:hover, ul.social-icons li a.instagram:hover, ul.social-icons li a.linkedin:hover, ul.social-icons li a.snapchat:hover, ul.social-icons li a.blogemu:hover{
+ul.social-icons li a.facebook:hover, ul.social-icons li a.twitter:hover, ul.social-icons li a.youtube:hover, ul.social-icons li a.instagram:hover, ul.social-icons li a.linkedin:hover, ul.social-icons li a.snapchat:hover, ul.social-icons li a.tiktok:hover{
     -moz-filter: grayscale(0%);
     filter: grayscale(0%);
 }

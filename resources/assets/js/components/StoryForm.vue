@@ -292,35 +292,35 @@ export default {
         // toolbar: [],
         toolbarGroups: [
           { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-          // { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
           // { name: 'forms', groups: [ 'forms' ] },
           { name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
           { name: 'paragraph', groups: [
               'list',
               'indent',
-              // 'blocks',
-              // 'align',
+              'blocks',
+              'align',
               // 'bidi',
-              // 'paragraph'
+              'paragraph'
             ]},
           { name: 'links', groups: [ 'links' ] },
           { name: 'insert' },
           { name: 'document', groups: [
-              // 'document',
-              // 'doctools',
+              'document',
+              'doctools',
               'mode'
             ]},
-          // { name: 'styles', groups: [ 'styles' ] },
+          { name: 'styles', groups: [ 'styles' ] },
           // { name: 'colors', groups: [ 'colors' ] },
-          // { name: 'tools', groups: [ 'tools' ] },
-          // { name: 'others', groups: [ 'others' ] },
-          // { name: 'about', groups: [ 'about' ] }
+          { name: 'tools', groups: [ 'tools' ] },
+          { name: 'others', groups: [ 'others' ] },
+          { name: 'about', groups: [ 'about' ] }
         ],
         extraPlugins: 'horizontalrule,iframe,videoembed,image2',
         extraAllowedContent: 'div(*){*};hr;iframe[*]',
-        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Table,Smiley,SpecialChar,PageBreak,Save,NewPage,Print,ExportPdf',
+        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
         // pasteFilter: 'plain-text',
-        // filebrowserWindowFeatures: 'resizable=yes',
+        filebrowserWindowFeatures: 'resizable=yes',
         filebrowserUploadMethod: 'form', // need this to upload files
         filebrowserBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
         filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
@@ -328,6 +328,7 @@ export default {
         filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images',
         skin: 'moono',
       },
+
       tags: [],
       taglist: [],
       selectedAuthor: null,
