@@ -42,13 +42,14 @@ class MediaHighlightController extends Controller
           // MediaHighlight::search creates some odd alphebetizing when used with an empty search
           // Get the records for the current page
           if($searchterm){
-            $highlightDates = MediaHighlight::search($searchterm);
+//            $highlightDates = MediaHighlight::search($searchterm);
+
+            $highlightDates = MediaHighlight::runSearch($searchterm);
 
             // Get total number of records prior to offset for pagination!
             $totalRecords = $highlightDates->count();
 
             $highlightDates = $highlightDates
-                              ->orderBy('start_date', 'desc')
                               ->skip($offset)
                               ->take($perPage)
                               ->whereHas('tags', function($query) use ($searchTag){
@@ -67,32 +68,31 @@ class MediaHighlightController extends Controller
             // Get total number of records prior to offset for pagination!
             $totalRecords = $highlightDates->count();
 
-            $highlightDates = $highlightDates
-                              ->skip($offset)
-                              ->take($perPage)
-
-                              ->get()
-                              ->groupBy(function($item){
-                                return $item->start_date->format('M d, Y');
-                              });
+              $highlightDates = $highlightDates
+                  ->skip($offset)
+                  ->take($perPage)
+                  ->get()
+                  ->groupBy(function($item){
+                      return $item->start_date->format('M d, Y');
+                  });
           }
       } else {
         $currentTag = null;
-        // Expert::search creates some odd alphebetizing when used with an empty search
+        // Expert::search creates some odd alphabetizing when used with an empty search
         // Get the records for the current page
-        $highlightDates = MediaHighlight::search($searchterm);
+        $highlightDates = MediaHighlight::runSearch($searchterm);
 
         // Get total number of records prior to offset for pagination!
         $totalRecords = $highlightDates->count();
 
-        $highlightDates = $highlightDates
-                          ->orderBy('start_date', 'desc')
+          $highlightDates = $highlightDates
                           ->skip($offset)
                           ->take($perPage)
-                          ->get()
-                          ->groupBy(function($item){
-                            return $item->start_date->format('M d, Y');
-                          });
+                          ->groupBy('start_date');
+
+//          ->groupBy(function($item){
+//              return $item->start_date->format('M d, Y');
+//          });
       }
 
       // Paginate
