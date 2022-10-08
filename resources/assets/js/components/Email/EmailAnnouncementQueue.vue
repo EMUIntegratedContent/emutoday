@@ -176,9 +176,6 @@ export default {
           this.isEndDate = true
       }
     },
-    onCalendarChange: function(){
-        // flatpickr directive method
-    },
     fetchAllRecords: function() {
         this.loadingQueue = true
 

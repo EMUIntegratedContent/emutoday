@@ -83,6 +83,7 @@ mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-bu
 mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js');
 mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
 mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
+mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js');
 
 /*
 |--------------------------------------------------------------------------

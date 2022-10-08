@@ -1,9 +1,10 @@
 <template>
+  <div>
     <div @mouseover="isMousedOver = true" @mouseout="isMousedOver = false">
-        <img class="topic-image" :src="isMousedOver ? '/imgs/swapstory.png' : imageSrc" alt="story image" @click="openModal">
-        <div class="stories-content">
-            {{ story ? story.title : 'No story selected' }}
-        </div>
+      <img class="topic-image" :src="isMousedOver ? '/imgs/swapstory.png' : imageSrc" alt="story image" @click="openModal">
+      <div class="stories-content">
+        {{ story ? story.title : 'No story selected' }}
+      </div>
     </div><!-- /end root element -->
 
     <page-story-swap-modal
@@ -11,6 +12,7 @@
         :stypes="stypes"
         :current-story="story"
     ></page-story-swap-modal>
+  </div>
 </template>
 
 <style scoped>
@@ -23,7 +25,7 @@
 
 <script>
 import PageStorySwapModal from './PageStorySwapModal.vue'
-module.exports = {
+export default {
   directives: {},
   components: {PageStorySwapModal},
   props: {

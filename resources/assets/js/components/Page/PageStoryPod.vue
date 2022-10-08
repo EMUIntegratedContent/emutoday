@@ -1,6 +1,6 @@
 <template>
 <div :class="specialItem">
-    <div class="box box-solid {{item.story_group.group}} {{ currentStory && currentStory.id == item.id && podType == 'queue' ? 'set' : '' }}">
+    <div :class="'box box-solid ' + item.story_group.group + currentStory && currentStory.id == item.id && podType == 'queue' ? ' set' : ''">
         <div class="box-header with-border">
           <div class="row">
               <div class="col-sm-8">
@@ -15,7 +15,7 @@
           <div class="row">
             <a v-on:click.prevent="toggleBody" href="#">
               <div class="col-sm-9">
-                <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
+                <h6 class="box-title"><label data-toggle="tooltip" data-placement="top" :title="item.story_type"><span class="item-type-icon" :class="typeIcon"></span></label>{{item.title}}</h6>
               </div>
             </a>
           </div><!-- /.row -->
@@ -237,7 +237,7 @@
 
 import moment from 'moment'
 
-module.exports  = {
+export default {
     directives: {},
     components: {},
     props: {

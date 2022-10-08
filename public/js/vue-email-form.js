@@ -427,10 +427,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuedraggable */ "./node_modules/vuedraggable/dist/vuedraggable.common.js");
 /* harmony import */ var vuedraggable__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vuedraggable__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
-var _methods;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -602,15 +598,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return Math.ceil(this.queueAnnouncements.length / this.itemsPerPage);
     }
   },
-  methods: (_methods = {
+  methods: {
     toggleRange: function toggleRange() {
       if (this.isEndDate) {
         this.isEndDate = false;
       } else {
         this.isEndDate = true;
       }
-    },
-    onCalendarChange: function onCalendarChange() {// flatpickr directive method
     },
     fetchAllRecords: function fetchAllRecords() {
       var _this = this;
@@ -646,20 +640,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (pageNumber > 0 && pageNumber <= this.totalPages) {
         this.currentPage = pageNumber;
       }
-    }
-  }, _defineProperty(_methods, "onCalendarChange", function onCalendarChange() {// flatpickr directive method
-  }), _defineProperty(_methods, "updateOrder", function updateOrder(event) {
-    // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
-    var oldIndex = event.oldIndex;
-    var newIndex = event.newIndex; // move the item in the underlying array
+    },
+    onCalendarChange: function onCalendarChange() {// flatpickr directive method
+    },
 
-    this.usedAnnouncements.splice(newIndex, 0, this.usedAnnouncements.splice(oldIndex, 1)[0]);
-    this.$emit('updated-announcement-order', this.usedAnnouncements);
-  }), _defineProperty(_methods, "handleAnnouncementAdded", function handleAnnouncementAdded(evt) {
-    this.$emit('announcement-added', evt);
-  }), _defineProperty(_methods, "handleAnnouncementRemoved", function handleAnnouncementRemoved(evt) {
-    this.$emit('announcement-removed', evt);
-  }), _methods),
+    /**
+     * Uses vue-draggable
+     */
+    updateOrder: function updateOrder(event) {
+      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
+      var oldIndex = event.oldIndex;
+      var newIndex = event.newIndex; // move the item in the underlying array
+
+      this.usedAnnouncements.splice(newIndex, 0, this.usedAnnouncements.splice(oldIndex, 1)[0]);
+      this.$emit('updated-announcement-order', this.usedAnnouncements);
+    },
+    handleAnnouncementAdded: function handleAnnouncementAdded(evt) {
+      this.$emit('announcement-added', evt);
+    },
+    handleAnnouncementRemoved: function handleAnnouncementRemoved(evt) {
+      this.$emit('announcement-removed', evt);
+    }
+  },
   filters: {
     paginate: function paginate(list) {
       // only run if there are items in the list

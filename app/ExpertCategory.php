@@ -3,7 +3,6 @@
 namespace Emutoday;
 
 use Illuminate\Database\Eloquent\Model;
-use Emutoday\ExpertCategory;
 
 class ExpertCategory extends Model
 {
