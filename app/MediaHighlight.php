@@ -58,33 +58,21 @@ class MediaHighlight extends Model
     /**
      * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
      * @param $searchTerm
+     * @param null $tag
      * @return mixed
      */
-    public static function runSearch($searchTerm) {
-        $items = DB::select(
-            "
-                    SELECT title, `source`, url, start_date
-                    FROM media_highlights 
-                    WHERE is_archived = 0 
-                      AND MATCH(title, `source`) AGAINST (:search_term)
-                    ORDER BY start_date DESC
-                ",
-            array(
-                'search_term' => "%$searchTerm%"
-            )
-        );
-
-        if($searchTerm == '') {
-            $items = DB::select(
-                "
-                    SELECT title, `source`, url, start_date
-                    FROM media_highlights 
-                    WHERE is_archived = 0
-                    ORDER BY start_date DESC
-                ",
-                array()
-            );
+    public static function runSearch($searchTerm, $tag = null) {
+        $sql = "SELECT h.title, h.source, h.url, h.start_date
+                    FROM media_highlights h";
+        if($tag) {
+            $sql .= " JOIN mediahighlights_tags t ON t.mediahighlight_id = h.id";
         }
+        $sql .= " WHERE h.is_archived = 0";
+        if($searchTerm) {
+            $sql .= " AND MATCH(h.title, h.source) AGAINST (:search_term)";
+        }
+        $sql .= " ORDER BY h.start_date DESC";
+        $items = DB::select($sql, ['search_term' => "%$searchTerm%"]);
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
     }
 }

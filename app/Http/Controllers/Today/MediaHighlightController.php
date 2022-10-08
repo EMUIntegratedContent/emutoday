@@ -44,7 +44,7 @@ class MediaHighlightController extends Controller
           if($searchterm){
 //            $highlightDates = MediaHighlight::search($searchterm);
 
-            $highlightDates = MediaHighlight::runSearch($searchterm);
+            $highlightDates = MediaHighlight::runSearch($searchterm, $currentTag);
 
             // Get total number of records prior to offset for pagination!
             $totalRecords = $highlightDates->count();
@@ -52,13 +52,8 @@ class MediaHighlightController extends Controller
             $highlightDates = $highlightDates
                               ->skip($offset)
                               ->take($perPage)
-                              ->whereHas('tags', function($query) use ($searchTag){
-                                $query->where('name', $searchTag);
-                              })
-                              ->get()
-                              ->groupBy(function($item){
-                                return $item->start_date->format('M d, Y');
-                              });
+                              ->groupBy('start_date');
+//            {{ TODO: See how to order ASC }}
           } else {
             $highlightDates = MediaHighlight::
                                 whereHas('tags', function($query) use ($searchTag){
@@ -71,10 +66,7 @@ class MediaHighlightController extends Controller
               $highlightDates = $highlightDates
                   ->skip($offset)
                   ->take($perPage)
-                  ->get()
-                  ->groupBy(function($item){
-                      return $item->start_date->format('M d, Y');
-                  });
+                  ->groupBy('start_date');
           }
       } else {
         $currentTag = null;
@@ -89,10 +81,6 @@ class MediaHighlightController extends Controller
                           ->skip($offset)
                           ->take($perPage)
                           ->groupBy('start_date');
-
-//          ->groupBy(function($item){
-//              return $item->start_date->format('M d, Y');
-//          });
       }
 
       // Paginate

@@ -13,3 +13,20 @@ DONE- "sofa/eloquence-base": "^7.1" does NOT work with PHP 8. Causes 502 Bad Gat
 - Tried replacing with Laravel Scout https://laravel.com/docs/9.x/scout, but it doesn't allow for complicated enough queries
 - Using FULLTEXT indexing with mysql tables combined with raw SQL queries using MATCH - AGAINST (https://www.mysqltutorial.org/activating-full-text-searching.aspx)
 - Try this to improve search results (ranking) https://stackoverflow.com/questions/4767145/give-some-fields-more-relevance-and-sort-by-relevance-in-mysql-full-text-search
+
+
+FULLTEXT INDEXES (not comprehensive)
+create fulltext index fulltext_expertise
+    on expertsexpertise (expertise);
+
+create fulltext index fulltext_education
+    on expertseducation (education);
+
+create fulltext index fulltext_languages
+    on expertslanguages (language);
+
+create fulltext index fulltext_social
+    on expertssocial (title);
+
+create fulltext index fulltext_title
+    on expertstitles (title);

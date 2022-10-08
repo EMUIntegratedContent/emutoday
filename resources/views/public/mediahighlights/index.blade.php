@@ -13,7 +13,7 @@
                 <p>Samples of external media coverage focused on Eastern Michigan University. Click the link to read or view the story. (EMU is not responsible for broken links or archived content on these external websites).</p>
                   {{-- dd($highlightDatesPaginated) --}}
                 @foreach ($highlightDatesPaginated as $date => $highlightDate)
-                  <h2 class="mediahighlight-date">{{ $date }}</h2>
+                  <h2 class="mediahighlight-date">{{ date('M j, Y', strtotime($date)) }}</h2>
                   <ul class="news-headlines">
                   @foreach($highlightDate as $highlight)
                       <li>

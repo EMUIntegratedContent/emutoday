@@ -94,7 +94,9 @@ class Tweet extends Model
       curl_close($feed);
 
       // decode json format tweets
-      $tweets = array_merge($tweets, json_decode($json, true));
+        if($json) {
+            $tweets = array_merge($tweets, json_decode($json, true));
+        }
     }
 
     //////////////////////////////////////

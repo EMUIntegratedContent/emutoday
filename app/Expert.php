@@ -56,26 +56,56 @@ class Expert extends Model
     /**
      * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
      * @param $searchTerm
+     * @param null $catetory
      * @return mixed
      */
-    public static function runSearch($searchTerm)
+    public static function runSearch($searchTerm, $catetory = null)
     {
-        $items = DB::select(
-            "
-                    SELECT id, first_name, last_name, display_name, title,
-                        MATCH(first_name, last_name, display_name) AGAINST (:search_term) AS score_fld,
-                        MATCH(title) AGAINST (:search_term2) AS score_title
-                    FROM experts 
+        $conditions = [
+            'search_term' => "%$searchTerm%",
+            'search_term2' => "%$searchTerm%",
+            'search_term3' => "%$searchTerm%",
+            'search_term4' => "%$searchTerm%",
+            'search_term5' => "%$searchTerm%",
+            'search_term6' => "%$searchTerm%",
+            'search_term7' => "%$searchTerm%",
+            'search_term8' => "%$searchTerm%"
+        ];
+
+        // TODO: get the combined count of scores between all of the join fields
+        $sql = "
+            SELECT DISTINCT e.id, e.first_name, e.last_name, e.display_name, e.title,
+                        MATCH(e.first_name, e.last_name, e.display_name) AGAINST (:search_term) AS score_fld,
+                        MATCH(e.title) AGAINST (:search_term2) AS score_title
+                    FROM experts e";
+
+        if($catetory) {
+            $sql .= " JOIN experts_expertcategory ec ON ec.expert_id = e.id AND ec.cat_id = 
+                (SELECT DISTINCT id FROM expertscategory WHERE category = :category)
+            ";
+            $conditions['category'] = $catetory;
+        }
+        $sql .= " LEFT JOIN expertseducation ee ON ee.expert_id = e.id
+            LEFT JOIN expertsexpertise ex ON ex.expert_id = e.id
+            LEFT JOIN expertslanguages el ON el.expert_id = e.id
+            LEFT JOIN expertssocial es ON es.expert_id = e.id
+            LEFT JOIN expertstitles et ON et.expert_id = e.id
+        ";
+        $sql .= "
                     WHERE is_approved = 1 
-                      AND MATCH(title, first_name, last_name, display_name) AGAINST (:search_term3)
-                    ORDER BY (score_fld * 5)+(score_title * 3) DESC
-                ",
-            array(
-                'search_term' => "%$searchTerm%",
-                'search_term2' => "%$searchTerm%",
-                'search_term3' => "%$searchTerm%"
-            )
-        );
+                      AND 
+                      (
+                        MATCH(e.title, e.first_name, e.last_name, e.display_name) AGAINST (:search_term3)
+                        OR MATCH(ee.education) AGAINST (:search_term4)
+                        OR MATCH(ex.expertise) AGAINST (:search_term5)
+                        OR MATCH(el.language) AGAINST (:search_term6)
+                        OR MATCH(es.title) AGAINST (:search_term7)
+                        OR MATCH(et.title) AGAINST (:search_term8)
+                      )
+                    ORDER BY last_name ASC
+        ";
+        //ORDER BY (score_fld * 5)+(score_title * 3) DESC
+        $items = DB::select($sql, $conditions);
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
     }
 

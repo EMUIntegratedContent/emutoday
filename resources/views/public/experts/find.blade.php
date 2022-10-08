@@ -51,6 +51,7 @@
                 
                 <div class="row">
                     <div class="large-12 medium-12 small-12 columns">
+{{--                        {{ // TODO: See if pagination works for collections (throws an error currently) }} --}}
                         <p>{!! $experts->render() !!}</p>
                     </div>
                 </div>
