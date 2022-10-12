@@ -187,58 +187,44 @@ export default {
   computed: {
     itemsFilteredPaginated() {
       // TODO: Update filtered and paginated page stories (follow example in EmailMainStoriesQueue.vue) CP 10/8/22
-      // var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      // const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       //
       // if (this.stories_filter_storytype === '') {
       //   return value.story_type !== '' && regexp.test(value.title)
       // } else {
       //   return value.story_type === this.stories_filter_storytype && regexp.test(value.title)
       // }
-
-    //   let items = []
-    //   if (this.items_filter_storytype != '') {
-    //     items = this.items.filter(it => it.story_type == this.items_filter_storytype)
-    //   } else {
-    //     items = this.items
-    //   }
-    //
-    //   if(items.length == 0){ return items }
-    //   this.resultCount = items.length
-    //   if (this.currentPage > this.totalPages) {
-    //     this.currentPage = 1
-    //   }
-    //   let index = (this.currentPage-1) * this.itemsPerPage
-    //   return items.slice(index, index + this.itemsPerPage)
-    // },
-    //   totalPages: function() {
-    //     return Math.ceil(this.resultCount / this.itemsPerPage)
-    //   },
-    //   s_types:function(){
-    //       try {
-    //           return JSON.parse(this.stypes);
-    //       } catch(e) {
-    //           return this.stypes;
-    //       }
-    //   },
-    //   storyTypeIcons:function() {
-    //       if (this.isString(this.s_types)){
-    //           return [
-    //               {
-    //               name: 'all',
-    //               shortname: ''
-    //               },
-    //               {
-    //               name: 'none',
-    //               shortname: 'x'
-    //               }
-    //           ]
-    //       } else {
-    //           this.s_types.push({
-    //               name: 'all',
-    //               shortname: ''
-    //           })
-    //           return this.s_types;
-    //       }
+      //
+      // // only run if there are items in the list
+      // if (list.length == 0) {
+      //   return
+      // }
+      // this.resultCount = list.length
+      // if (this.currentPage > this.totalPages) {
+      //   this.currentPage = 1
+      // }
+      // const index = (this.currentPage - 1) * this.itemsPerPage
+      // return list.slice(index, index + this.itemsPerPage)
+    },
+      storyTypeIcons:function() {
+          if (this.isString(this.s_types)){
+              return [
+                  {
+                  name: 'all',
+                  shortname: ''
+                  },
+                  {
+                  name: 'none',
+                  shortname: 'x'
+                  }
+              ]
+          } else {
+              this.s_types.push({
+                  name: 'all',
+                  shortname: ''
+              })
+              return this.s_types;
+          }
       }
   },
   methods: {

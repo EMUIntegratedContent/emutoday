@@ -5,6 +5,7 @@ namespace Emutoday;
 use Illuminate\Database\Eloquent\Model;
 use Emutoday\StoryImage;
 use Emutoday\Experts\Searchable;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Sofa\Eloquence\Eloquence;
 use DateTimeInterface;
@@ -69,14 +70,23 @@ class Expert extends Model
             'search_term5' => "%$searchTerm%",
             'search_term6' => "%$searchTerm%",
             'search_term7' => "%$searchTerm%",
-            'search_term8' => "%$searchTerm%"
+            'search_term8' => "%$searchTerm%",
+            'search_term9' => "%$searchTerm%",
+            'search_term10' => "%$searchTerm%",
+            'search_term11' => "%$searchTerm%",
+            'search_term12' => "%$searchTerm%",
+            'search_term13' => "%$searchTerm%"
         ];
 
-        // TODO: get the combined count of scores between all of the join fields
         $sql = "
-            SELECT DISTINCT e.id, e.first_name, e.last_name, e.display_name, e.title,
-                        MATCH(e.first_name, e.last_name, e.display_name) AGAINST (:search_term) AS score_fld,
-                        MATCH(e.title) AGAINST (:search_term2) AS score_title
+            SELECT DISTINCT e.id AS id, e.first_name, e.last_name, e.display_name, e.title, ei.id AS imgId,
+                        GROUP_CONCAT(MATCH(e.first_name, e.last_name, e.display_name) AGAINST (:search_term) +
+                        MATCH(e.title) AGAINST (:search_term2) +
+                        MATCH(ee.education) AGAINST (:search_term3) +
+                        MATCH(ex.expertise) AGAINST (:search_term4) +
+                        MATCH(el.language) AGAINST (:search_term5) +
+                        MATCH(es.title) AGAINST (:search_term6) +
+                        MATCH(et.title) AGAINST (:search_term7) SEPARATOR '@@') AS score_fld
                     FROM experts e";
 
         if($catetory) {
@@ -90,23 +100,26 @@ class Expert extends Model
             LEFT JOIN expertslanguages el ON el.expert_id = e.id
             LEFT JOIN expertssocial es ON es.expert_id = e.id
             LEFT JOIN expertstitles et ON et.expert_id = e.id
+            LEFT JOIN experts_images ei ON ei.expert_id = e.id
         ";
         $sql .= "
                     WHERE is_approved = 1 
                       AND 
                       (
-                        MATCH(e.title, e.first_name, e.last_name, e.display_name) AGAINST (:search_term3)
-                        OR MATCH(ee.education) AGAINST (:search_term4)
-                        OR MATCH(ex.expertise) AGAINST (:search_term5)
-                        OR MATCH(el.language) AGAINST (:search_term6)
-                        OR MATCH(es.title) AGAINST (:search_term7)
-                        OR MATCH(et.title) AGAINST (:search_term8)
+                        MATCH(e.title, e.first_name, e.last_name, e.display_name) AGAINST (:search_term8)
+                        OR MATCH(ee.education) AGAINST (:search_term9)
+                        OR MATCH(ex.expertise) AGAINST (:search_term10)
+                        OR MATCH(el.language) AGAINST (:search_term11)
+                        OR MATCH(es.title) AGAINST (:search_term12)
+                        OR MATCH(et.title) AGAINST (:search_term13)
                       )
-                    ORDER BY last_name ASC
+                    GROUP BY e.id, e.last_name
+                    ORDER BY e.last_name ASC
         ";
-        //ORDER BY (score_fld * 5)+(score_title * 3) DESC
         $items = DB::select($sql, $conditions);
-        return self::hydrate($items); // takes the raw query and turns it into a collection of models
+        $numRows = count($items);
+        $items = self::hydrate($items);
+        return new LengthAwarePaginator($items, $numRows, 10);
     }
 
     public function getFullNameAttribute()
