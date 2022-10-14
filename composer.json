@@ -19,7 +19,6 @@
         "barryvdh/laravel-debugbar": "^3.4",
         "subfission/cas": "^v4.2.0",
         "google/apiclient": "dev-main",
-        "barryvdh/laravel-cors": "v3.0.0",
         "doctrine/dbal": "~2.13",
         "guzzlehttp/guzzle": "^7.4.5",
         "laravel/tinker": "^v2.7.2",
