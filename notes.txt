@@ -16,6 +16,17 @@ DONE- "sofa/eloquence-base": "^7.1" does NOT work with PHP 8. Causes 502 Bad Gat
 
 
 FULLTEXT INDEXES (not comprehensive)
+
+// EXPERTS
+create fulltext index experts_first_last_display_fulltext
+    on experts (first_name, last_name, display_name);
+
+create fulltext index experts_fulltext
+    on experts (title, first_name, last_name, display_name);
+
+create fulltext index experts_title_fulltext
+    on experts (title);
+
 create fulltext index fulltext_expertise
     on expertsexpertise (expertise);
 
@@ -30,3 +41,31 @@ create fulltext index fulltext_social
 
 create fulltext index fulltext_title
     on expertstitles (title);
+
+// ANNOUNCEMENTS
+create fulltext index announcement_fulltext
+    on announcements (title, announcement);
+
+// EVENTS
+create fulltext index cea_events_fulltext
+    on cea_events (title);
+
+// MEDIA HIGHLIGHTS
+create fulltext highlights_fulltext
+   on media_highlights (title, source);
+
+create fulltext index cea_events_fulltext
+   on cea_events (title);
+
+// STORIES
+create fulltext index storys_fulltext
+    on storys (title, subtitle, teaser, content);
+
+create fulltext index storys_title_fulltext
+    on storys (title);
+
+create fulltext index storys_teaser_subtitle_fulltext
+    on storys (teaser, subtitle);
+
+create fulltext index storys_content_fulltext
+    on storys (content);
