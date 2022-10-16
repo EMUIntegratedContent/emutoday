@@ -434,7 +434,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$http.get('/api/mediahighlights/' + recid + '/edit').then(function (response) {
-        console.log(response.data.data);
         _this.record = response.data.data;
         _this.user_id = response.data.data.user_id;
 
@@ -37294,9 +37293,6 @@ var vm = new Vue({
   el: '#vue-mediahighlight',
   components: {
     MediahighlightForm: _components_MediahighlightForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  ready: function ready() {
-    console.log('MediahighlightForm ready');
   }
 });
 

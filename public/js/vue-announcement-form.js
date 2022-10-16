@@ -446,7 +446,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.currentDate = moment__WEBPACK_IMPORTED_MODULE_0___default()(); //console.log('this.currentDate=' + this.currentDate)
+    this.currentDate = moment__WEBPACK_IMPORTED_MODULE_0___default()();
   },
   mounted: function mounted() {
     this.refreshUserAnnouncementTable();
@@ -458,13 +458,11 @@ __webpack_require__.r(__webpack_exports__);
     this.record.type = this.type;
 
     if (this.recordexists) {
-      //console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid);
     } else {
       if (this.type == 'hr') {
         this.record.announcement = "HR";
-      } //console.log('type'+ this.type)
-
+      }
 
       this.setupDatePickers();
     }

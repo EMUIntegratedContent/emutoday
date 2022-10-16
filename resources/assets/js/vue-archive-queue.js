@@ -12,8 +12,5 @@ import ArchiveQueue from './components/ArchiveQueue.vue'
 
 new Vue({
     el: '#vue-archive-queue',
-    components: {ArchiveQueue},
-    ready() {
-      console.log('new Vue Archive Queue ready');
-    }
+    components: {ArchiveQueue}
 });

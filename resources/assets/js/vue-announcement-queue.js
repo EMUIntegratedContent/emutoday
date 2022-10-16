@@ -16,8 +16,5 @@ new Vue({
     el: '#vue-announcement-queue',
     components: {
       AnnouncementQueue
-    },
-    ready() {
-      console.log('new Vue Announcement Queue ready');
     }
 });

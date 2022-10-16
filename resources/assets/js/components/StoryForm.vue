@@ -564,7 +564,6 @@ export default {
     oldRefresh: function () {
       this.recordOld = JSON.parse(JSON.stringify(this.record));
       this.$nextTick(function () {
-        console.log('nextTick')
       });
     },
     changeAuthor: function () {
@@ -622,8 +621,6 @@ export default {
       .then((response) => {
         this.authorlist = response.data
       }, (response) => {
-        //error callback
-        console.log("ERRORS");
       }).bind(this);
     },
 
@@ -632,8 +629,6 @@ export default {
       .then((response) => {
         this.contactlist = response.data
       }, (response) => {
-        //error callback
-        console.log("ERRORS");
       }).bind(this);
     },
 
@@ -648,8 +643,6 @@ export default {
           this.contact = response.data
         }
       }, (response) => {
-        //error callback
-        console.log("COULDN'T GET DEFAULT CONTACT");
       }).bind(this);
     },
 
@@ -659,8 +652,6 @@ export default {
         this.defaultcontact = response.data
         this.contact = response.data
       }, (response) => {
-        //error callback
-        console.log("COULDN'T GET DEFAULT MAGAZINE CONTACT");
       }).bind(this);
     },
 

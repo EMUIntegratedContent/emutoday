@@ -11,8 +11,5 @@ import EventQueue from './components/EventHscQueue.vue'
 
 new Vue({
     el: '#vue-event-queue',
-    components: {EventQueue},
-    ready() {
-      console.log('new Vue Event HSC Queue ready');
-    }
+    components: {EventQueue}
 });

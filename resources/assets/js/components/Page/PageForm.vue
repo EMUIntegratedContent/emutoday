@@ -21,6 +21,8 @@
                 story-number="0"
                 :story="slotStories.main_story"
                 :stypes="stypes"
+                @modal-data-loaded="handleSubstoryLoaded"
+                @sub-story-swapped="handleSwap"
             ></page-substory>
           </div>
           <div class="col-sm-12 col-md-12 col-lg-6 columns">
@@ -29,13 +31,35 @@
                 <h4 class="subhead-title">Hub Page Information</h4>
               </div>
               <div class="col-sm-12 col-md-6">
-                <label>Start Date/Time *</label>
-                <input id="start-date" type="text" v-model="record.start_date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']" />
+                <label>Start Date/Time *
+                  <date-picker
+                      v-model="record.start_date"
+                      value-type="YYYY-MM-DD HH:mm:ss"
+                      type="datetime"
+                      format="MM/DD/YYYY h:mm A"
+                      :minute-step="1"
+                      :show-second="false"
+                      :use12h="true"
+                      :clearable="true"
+                      v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"
+                  ></date-picker>
+                </label>
                 <p v-if="formErrors.start_date" class="help-text invalid">A start date is required.</p>
               </div>
               <div class="col-sm-12 col-md-6">
-                <label>End Date/Time *</label>
-                <input id="end-date" type="text" v-model="record.end_date" class="form-control" v-bind:class="[formErrors.end_date ? 'invalid-input' : '']" />
+                <label>End Date/Time *
+                  <date-picker
+                      v-model="record.end_date"
+                      value-type="YYYY-MM-DD HH:mm:ss"
+                      type="datetime"
+                      format="MM/DD/YYYY h:mm A"
+                      :minute-step="1"
+                      :show-second="false"
+                      :use12h="true"
+                      :clearable="true"
+                      v-bind:class="[formErrors.end_date ? 'invalid-input' : '']"
+                  ></date-picker>
+                </label>
                 <p v-if="formErrors.end_date" class="help-text invalid">An end date is required.</p>
               </div>
               <!--<div class="col-sm-12 col-md-6">
@@ -77,6 +101,8 @@
                   story-number="1"
                   :story="slotStories.sub_story_1"
                   :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
               ></page-substory>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
@@ -84,6 +110,8 @@
                   story-number="2"
                   :story="slotStories.sub_story_2"
                   :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
               ></page-substory>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
@@ -91,6 +119,8 @@
                   story-number="3"
                   :story="slotStories.sub_story_3"
                   :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
               ></page-substory>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
@@ -98,6 +128,8 @@
                   story-number="4"
                   :story="slotStories.sub_story_4"
                   :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
               ></page-substory>
             </div>
           </div>
@@ -141,14 +173,14 @@
 
 <script>
 import moment from 'moment'
-import flatpickr from 'flatpickr'
-import vSelect from "vue-select"
 import PageSubstory from './PageSubstory.vue'
 import PageDeleteModal from './PageDeleteModal.vue'
+import DatePicker from 'vue2-datepicker'
+import 'vue2-datepicker/index.css'
 
 export default {
   directives: {},
-  components: {PageSubstory, PageDeleteModal, vSelect},
+  components: {PageSubstory, PageDeleteModal, DatePicker},
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -215,8 +247,6 @@ export default {
     }
   },
   created: function () {
-  },
-  ready: function() {
     if(this.recordexists){
       this.fetchCurrentPage(this.recordid)
     } else {
@@ -254,16 +284,38 @@ export default {
   },
 
   methods: {
+    handleSubstoryLoaded (evt) {
+      this.numLoadedComponents++
+    },
+    handleSwap(storyData) {
+      switch(storyData.storyNumber){
+        case "0":
+          this.$set(this.slotStories, 'main_story', storyData.story)
+          break;
+        case "1":
+          this.$set(this.slotStories, 'sub_story_1', storyData.story)
+          break;
+        case "2":
+          this.$set(this.slotStories, 'sub_story_2', storyData.story)
+          break;
+        case "3":
+          this.$set(this.slotStories, 'sub_story_3', storyData.story)
+          break;
+        case "4":
+          this.$set(this.slotStories, 'sub_story_4', storyData.story)
+          break;
+      }
+    },
     fetchCurrentPage: function(recid) {
       this.$http.get('/api/page/' + recid + '/edit')
 
       .then((response) => {
-        this.$set('record', response.data.newdata.data)
+        this.record = response.data.newdata.data
         this.setPageStorySlots(this.record.stories)
         this.setupDatePickers();
       }, (response) => {
         this.formErrors = response.data.error.message;
-      }).bind(this);
+      });
     },
 
     nowOnReload:function() {
@@ -304,6 +356,10 @@ export default {
         })
     },
     submitForm: function() {
+      if(this.formErrors.endDateBeforeStart) {
+        alert('The end date occurs before the start date. Please fix this before submitting.')
+        return false
+      }
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       // Decide route to submit form to
@@ -355,73 +411,37 @@ export default {
       } else {
         this.dateObject.endDateDefault = this.record.end_date;
       }
-
-      this.startDatepicker = flatpickr(document.getElementById("start-date"), {
-        defaultDate: self.dateObject.startDateDefault,
-        enableTime: true,
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d H:i:S",
-        onChange: function(dateObj, dateStr, instance) {
-          self.record.start_date = dateStr;
-          self.endDatepicker.set("minDate", dateObj.fp_incr(1));
-        }
-      });
-
-      this.endDatepicker = flatpickr(document.getElementById("end-date"), {
-        //minDate: self.dateObject.endDateMin,
-        defaultDate: self.dateObject.endDateDefault,
-        enableTime: true,
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d H:i:S",
-        onChange: function(dateObj, dateStr, instance) {
-            self.record.end_date = dateStr;
-            self.startDatepicker.set("maxDate", dateObj.fp_incr(-1));
-        }
-      });
     },
 
     toggleCallout:function(evt){
       this.formMessage.isOk = false
       this.formMessage.isErr = false
     },
+    checkStartEndDates () {
+      const sd = moment(this.record.start_date, 'YYYY-MM-DD HH:mm:ss')
+      const ed = moment(this.record.end_date, 'YYYY-MM-DD HH:mm:ss')
+      if(ed.isBefore(sd)) {
+        this.formMessage.isErr = true
+        this.formMessage.isOk = false
+        this.formErrors.endDateBeforeStart = 'The end date occurs before the start date.'
+      } else {
+        delete this.formErrors.endDateBeforeStart
+        // There could be other errors at this point
+        if(!this.formErrors.length) {
+          this.$set(this.formMessage, 'isErr', false)
+          this.$set(this.formMessage, 'isok', false)
+        }
+      }
+    }
   },
   watch: {
-  },
-  filters: {
-    formatDate: function(value) {
-      if (value) {
-        return moment(String(value)).format('LLLL')
-      }
+    'record.start_date' () {
+      this.checkStartEndDates()
     },
-  },
-  events: {
-      'modal-data-loaded': function(){
-            this.numLoadedComponents++
-      },
-      'story-swapped': function (storyData) {
-          // storyData[0] contains the story object
-          // storyData[1] contains the story's position in the page builder
-          switch(storyData[1]){
-              case "0":
-                this.$set('slotStories.main_story', storyData[0])
-                break;
-              case "1":
-                this.$set('slotStories.sub_story_1', storyData[0])
-                break;
-              case "2":
-                this.$set('slotStories.sub_story_2', storyData[0])
-                break;
-              case "3":
-                this.$set('slotStories.sub_story_3', storyData[0])
-                break;
-              case "4":
-                this.$set('slotStories.sub_story_4', storyData[0])
-                break;
-          }
-      },
-  },
+    'record.end_date' () {
+      this.checkStartEndDates()
+    }
+  }
 };
 
 </script>

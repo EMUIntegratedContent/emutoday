@@ -13,8 +13,5 @@ import EventQueue from './components/EventQueue.vue'
 
 new Vue({
     el: '#vue-event-queue',
-    components: {EventQueue},
-    ready() {
-      console.log('new Vue Event Queue ready');
-    }
+    components: {EventQueue}
 });

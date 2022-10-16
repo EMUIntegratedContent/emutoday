@@ -11,8 +11,5 @@ import MediahighlightForm from './components/MediahighlightForm.vue';
 
 var vm = new Vue({
     el: '#vue-mediahighlight',
-    components: {MediahighlightForm},
-    ready() {
-      console.log('MediahighlightForm ready');
-    }
+    components: {MediahighlightForm}
 });

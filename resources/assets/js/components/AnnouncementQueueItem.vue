@@ -268,7 +268,6 @@ module.exports  = {
     },
     hasIsApprovedChanged: function(){
       if (this.initRecord.is_approved != this.patchRecord.is_approved){
-        console.log('is_approved => initRecord='+ this.initRecord.is_approved  + ' patchRecord=>' +this.patchRecord.is_approved );
         return true
       } else {
         return false
@@ -358,7 +357,6 @@ module.exports  = {
       } else {
         this.showBody = false;
       }
-      console.log('toggleBody' + this.showBody)
     },
     changeIsApproved: function(){
       this.patchRecord.is_approved = (this.item.is_approved === 0)?1:0;
@@ -371,12 +369,8 @@ module.exports  = {
         method: 'PATCH'
       } )
       .then((response) => {
-        console.log('good?'+ response)
-
         this.checkAfterUpdate(response.data.newdata)
-
       }, (response) => {
-        console.log('bad?'+ response)
       });
     },
     updateItem: function(){
@@ -388,7 +382,6 @@ module.exports  = {
       .then((response) => {
         this.checkAfterUpdate(response.data.newdata)
       }, (response) => {
-        console.log('bad?'+ response)
       });
     },
     checkAfterUpdate: function(ndata){
@@ -459,27 +452,15 @@ module.exports  = {
     },
 
   },
-  watch: {
-    'isapproved': function(val, oldVal) {
-      if (val !=  oldVal) {
-        console.log('val change')
-      }
-    }
-  },
-  events: {},
   filters: {
     titleDateLong: function (value) {
       return  moment(value).format("ddd MM/DD")
     },
     momentPretty: {
       read: function(val) {
-        console.log('read-val'+ val )
-
         return 	val ?  moment(val).format('MM-DD-YYYY') : '';
       },
       write: function(val, oldVal) {
-        console.log('write-val'+ val + '--'+ oldVal)
-
         return moment(val).format('YYYY-MM-DD');
       }
     }

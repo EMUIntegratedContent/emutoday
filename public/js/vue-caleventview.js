@@ -675,9 +675,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     dispatchNewEvent: function dispatchNewEvent(value, cateid) {
-      console.log(value);
-      console.log(cateid); // find the category name based on the id and set it as the selected one in the store
-
+      // find the category name based on the id and set it as the selected one in the store
       if (cateid === false) {
         this.setSelectedCalendarCategory(null);
       } else if (cateid !== undefined) {
@@ -768,10 +766,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     fetchCategoryList: function fetchCategoryList() {
       this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar).then(function (response) {
-        // console.log('response->categories=' + JSON.stringify(response.data));
         this.setCalendarCategories(response.data);
-      }, function (response) {//  this.$set(this.formErrors, response.data);
-      });
+      }, function (response) {});
     },
     removex: function removex(val) {
       return val[0] == 'x' ? '_' : val;

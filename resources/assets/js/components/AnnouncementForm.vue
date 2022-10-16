@@ -349,7 +349,6 @@ export default  {
     },
     created: function() {
         this.currentDate = moment();
-        //console.log('this.currentDate=' + this.currentDate)
     },
     mounted: function() {
         this.refreshUserAnnouncementTable();
@@ -358,13 +357,11 @@ export default  {
         }
         this.record.type = this.type;
         if(this.recordexists){
-            //console.log('recordid'+ this.recordid)
             this.fetchCurrentRecord(this.recordid)
         } else {
             if(this.type == 'hr') {
                 this.record.announcement = "HR";
             }
-            //console.log('type'+ this.type)
             this.setupDatePickers();
         }
 

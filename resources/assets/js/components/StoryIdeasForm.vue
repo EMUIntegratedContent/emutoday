@@ -410,7 +410,6 @@ module.exports = {
               window.location.href = "/admin/storyideas"
               this.setupDatePickers();
           }, (response) => {
-            console.log('Error: '+JSON.stringify(response))
           }).bind(this)
         }
     },

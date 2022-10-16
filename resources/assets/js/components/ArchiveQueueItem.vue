@@ -339,7 +339,6 @@ module.exports = {
                     this.isFailedUnarchived = false
                 }, (response) => {
                     //error callback
-                    console.log("Error unarchiving record");
                     this.showArchivedButtons = false
                     this.showRetryButtons = true
                     this.isFailedUnarchived = true
@@ -371,7 +370,6 @@ module.exports = {
                     this.isFailedDeleted = false
                 }, (response) => {
                     //error callback
-                    console.log("Error deleting record");
                     this.showArchivedButtons = true
                     this.isFailedDeleted = true
                     this.confirmDelete = false

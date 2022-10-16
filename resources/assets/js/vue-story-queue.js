@@ -14,8 +14,5 @@ import StoryQueue from './components/StoryQueue.vue';
 
 new Vue({
     el: '#vue-story-queue',
-    components: {StoryQueue},
-    ready() {
-       console.log('Vue StoryQueue ready');
-    }
+    components: {StoryQueue}
 });

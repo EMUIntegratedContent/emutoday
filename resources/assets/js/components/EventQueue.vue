@@ -56,7 +56,6 @@
       <div class="col-md-4">
         <h3><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>
         <div id="items-approved">
-<!--          v-for="item in itemsApproved | orderBy 'start_date' 1"-->
           <event-queue-item
               pid="items-approved"
               v-for="(item, i) in itemsApproved"
@@ -70,44 +69,6 @@
       </div><!-- /.col-md-6 -->
       <div class="col-md-4">
         <div id="items-live">
-          <!-- ELEVATED ANNOUNCEMENTS -->
-          <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY "NEEDED" AGAIN -->
-          <!--
-          <template v-if="canElevate">
-            <h3><span class="badge">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated</h3>
-            <p>To rearrange the order of events, drag the pod to the desired location. To demote an event, click the red 'X' on the pod. Click "save order" button when done. Note: this list is NOT filtered by date.</p>
-            <div v-show="ordersave.isOk"  class="alert alert-success alert-dismissible">
-              <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-              <h5>{{ordersave.msg}}</h5>
-            </div>
-            <div v-show="ordersave.isErr"  class="alert alert-danger alert-dismissible">
-              <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-              <h5>{{ordersave.msg}}</h5>
-            </div>
-            <template v-if="elevateditemschanged">
-              <div class="ordersave-container">
-                <button @click="updateElevatedOrder" class="btn btn-info">Save Order</button>
-                <button @click="resetElevatedOrder" class="btn btn-default">Reset</button>
-              </div>
-            </template>
-            <template v-if="elevateditems.length > 0">
-              <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
-                <li v-for="item in elevateditems" class="list-group-item">
-                  <event-queue-item
-                    pid="item-elevated"
-                    :item="item"
-                    :is="item-elevated"
-                  >
-                  </event-queue-item>
-                </li>
-              </ul>
-            </template>
-            <template v-else>
-              <p>There are no elevated announcements.</p>
-            </template>
-          </template>
-          <hr /> --><!-- End elevated announcements -->
-<!--          v-for="item in itemsLive | orderBy 'start_date' -1"-->
           <h3><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live Events</h3>
           <event-queue-item
               pid="items-live"
@@ -241,8 +202,6 @@ export default {
         // this.checkOverDataFilter()
         this.loading = false
       }, (response) => {
-        //error callback
-        console.log("ERRORS")
       }).bind(this);
 
       this.fetchElevatedRecords(); //get elevated records regardless of date
@@ -261,8 +220,6 @@ export default {
         this.elevateditems = response.data.data
         this.loading = false;
       }, (response) => {
-        //error callback
-        console.log("ERRORS");
       }).bind(this);
     },
 
@@ -316,9 +273,7 @@ export default {
         method: 'PATCH'
       })
       .then((response) => {
-        console.log('good_eventQueue' + response)
       }, (response) => {
-        console.log('bad?' + response)
       });
     },
     checkOverData: function () {

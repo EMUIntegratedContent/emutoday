@@ -11,8 +11,5 @@ import ExpertSpeakerRequestForm from './components/ExpertSpeakerRequestForm.vue'
 
 var vm = new Vue({
     el: '#vue-expertspeakerrequest-form',
-    components: {ExpertSpeakerRequestForm},
-    ready() {
-      console.log('Expert Speaker Request Form ready');
-    }
+    components: {ExpertSpeakerRequestForm}
 });

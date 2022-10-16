@@ -2133,9 +2133,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -3492,6 +3489,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3593,13 +3616,6 @@ __webpack_require__.r(__webpack_exports__);
         this.isEndDate = false;
       } else {
         this.isEndDate = true;
-      }
-    },
-    filterByStoryType: function filterByStoryType(value) {
-      if (this.items_filter_storytype === '') {
-        return value.story_type !== '';
-      } else {
-        return value.story_type === this.items_filter_storytype;
       }
     },
     isString: function isString(val) {
@@ -4854,7 +4870,6 @@ module.exports = {
         }
 
         this.pageRange = newPageNumbers;
-        console.log(this.paginateditems);
       }
 
       if (direction == 'end') {
@@ -5085,7 +5100,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\nh4[data-v-45fec84e] {\n    margin-top: 3px;\n    font-size: 18px;\n}\n.btn-default[data-v-45fec84e]:active, .btn-default.active[data-v-45fec84e], .open > .dropdown-toggle.btn-default[data-v-45fec84e] {\n    background-color: #605ca8;\n    color: #ffffff;\n}\n.btn-default[data-v-45fec84e]:active, .btn-default.active[data-v-45fec84e], .open > .dropdown-toggle.btn-default[data-v-45fec84e] {\n    color: #ffffff;\n}\nspan.item-type-icon[data-v-45fec84e]:active, span.item-type-icon.active[data-v-45fec84e]{\n    background-color: #605ca8;\n    color: #ffffff;\n}\n#items-unapproved .box[data-v-45fec84e] {\n    margin-bottom: 4px;\n}\n#items-approved .box[data-v-45fec84e] {\n    margin-bottom: 4px;\n}\n#items-live .box[data-v-45fec84e] {\n    margin-bottom: 4px;\n}\n#rangetoggle[data-v-45fec84e]{\n    color: #FF851B;\n    margin-left: 5px;\n    border-bottom: 2px #FF851B dotted;\n}\n", ""]);
+exports.push([module.i, "\nh4[data-v-45fec84e] {\n  margin-top: 3px;\n  font-size: 18px;\n}\n.btn-default[data-v-45fec84e]:active, .btn-default.active[data-v-45fec84e], .open > .dropdown-toggle.btn-default[data-v-45fec84e] {\n  background-color: #605ca8;\n  color: #ffffff;\n}\n.btn-default[data-v-45fec84e]:active, .btn-default.active[data-v-45fec84e], .open > .dropdown-toggle.btn-default[data-v-45fec84e] {\n  color: #ffffff;\n}\nspan.item-type-icon[data-v-45fec84e]:active, span.item-type-icon.active[data-v-45fec84e] {\n  background-color: #605ca8;\n  color: #ffffff;\n}\n#items-unapproved .box[data-v-45fec84e] {\n  margin-bottom: 4px;\n}\n#items-approved .box[data-v-45fec84e] {\n  margin-bottom: 4px;\n}\n#items-live .box[data-v-45fec84e] {\n  margin-bottom: 4px;\n}\n#rangetoggle[data-v-45fec84e] {\n  color: #FF851B;\n  margin-left: 5px;\n  border-bottom: 2px #FF851B dotted;\n}\n", ""]);
 
 // exports
 
@@ -46841,7 +46856,7 @@ var render = function() {
                   [
                     _vm._v(
                       _vm._s(_vm.newform ? "Create Email" : "Update Email") +
-                        "\n\t\t\t\t\t"
+                        "\n\t\t\t\t"
                     )
                   ]
                 ),
@@ -46857,7 +46872,7 @@ var render = function() {
                           "data-target": "#cloneModal"
                         }
                       },
-                      [_vm._v("\n\t\t\t\t\t\tClone Email\n\t\t\t\t\t")]
+                      [_vm._v("\n\t\t\t\t\tClone Email\n\t\t\t\t")]
                     )
                   : _vm._e()
               ])
@@ -47101,7 +47116,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "Main\n\t\t\t\t\t\t\t\t\t\tStories (" +
+                                        "Main\n\t\t\t\t\t\t\t\t\tStories (" +
                                           _vm._s(
                                             _vm.record.mainStories.length
                                           ) +
@@ -47360,7 +47375,7 @@ var render = function() {
                                     _c("div", { staticClass: "form-group" }, [
                                       _c("label", [
                                         _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tInclude the presidential section in this email? "
+                                          "\n\t\t\t\t\t\t\t\t\t\t\t\t\tInclude the presidential section in this email? "
                                         ),
                                         _c("input", {
                                           directives: [
@@ -47490,7 +47505,7 @@ var render = function() {
                                             },
                                             [
                                               _vm._v(
-                                                "The teaser is required when\n\t\t\t\t\t\t\t\t\t\t\t\t\t\tincluding a presidential message."
+                                                "The teaser is required when\n\t\t\t\t\t\t\t\t\t\t\t\t\tincluding a presidential message."
                                               )
                                             ]
                                           )
@@ -47604,7 +47619,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", [
                               _vm._v(
-                                "Checking the box next to the date picker will schedule the email for delivery at the date and time\n\t\t\t\t\t\t\t\t\tchosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must\n\t\t\t\t\t\t\t\t\tbe approved."
+                                "Checking the box next to the date picker will schedule the email for delivery at the date and time\n\t\t\t\t\t\t\t\tchosen. In addition, this email must have all mandatory criteria (see checklists on this page) and must\n\t\t\t\t\t\t\t\tbe approved."
                               )
                             ]),
                             _vm._v(" "),
@@ -47727,9 +47742,7 @@ var render = function() {
                                 attrs: { for: "recipients" }
                               },
                               [
-                                _vm._v(
-                                  "Select recipient(s)\n\t\t\t\t\t\t\t\t\t"
-                                ),
+                                _vm._v("Select recipient(s)\n\t\t\t\t\t\t\t\t"),
                                 _c("v-select", {
                                   attrs: {
                                     id: "minical",
@@ -47917,7 +47930,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("p", [
                               _vm._v(
-                                "This email will not send unless all of the mandatory criteria are met. You may still save emails that\n\t\t\t\t\t\t\t\t\tare not ready to be sent."
+                                "This email will not send unless all of the mandatory criteria are met. You may still save emails that\n\t\t\t\t\t\t\t\tare not ready to be sent."
                               )
                             ]),
                             _vm._v(" "),
@@ -47934,7 +47947,7 @@ var render = function() {
                                     _vm._s(
                                       _vm.record.title ? "has" : "does not have"
                                     ) +
-                                    " a title.\n\t\t\t\t\t\t\t\t\t"
+                                    " a title.\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -47953,7 +47966,7 @@ var render = function() {
                                         ? "has"
                                         : "does not have"
                                     ) +
-                                    " a main\n\t\t\t\t\t\t\t\t\t\tstory.\n\t\t\t\t\t\t\t\t\t"
+                                    " a main\n\t\t\t\t\t\t\t\t\tstory.\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -47972,7 +47985,7 @@ var render = function() {
                                         ? "only has 1 sub-main story (0 or 2 required)"
                                         : "has 0 or 2 sub-main stories"
                                     ) +
-                                    ".\n\t\t\t\t\t\t\t\t\t"
+                                    ".\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -47991,7 +48004,7 @@ var render = function() {
                                         ? "has"
                                         : "does not have"
                                     ) +
-                                    " at\n\t\t\t\t\t\t\t\t\t\tleast one side story.\n\t\t\t\t\t\t\t\t\t"
+                                    " at\n\t\t\t\t\t\t\t\t\tleast one side story.\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -48007,7 +48020,7 @@ var render = function() {
                                           attrs: { "aria-hidden": "true" }
                                         }),
                                         _vm._v(
-                                          "\n\t\t\t\t\t\t\t\t\t\t\tEvents have been excluded from this email.\n\t\t\t\t\t\t\t\t\t\t"
+                                          "\n\t\t\t\t\t\t\t\t\t\tEvents have been excluded from this email.\n\t\t\t\t\t\t\t\t\t"
                                         )
                                       ]
                                     : [
@@ -48025,7 +48038,7 @@ var render = function() {
                                                 ? "has"
                                                 : "does not have"
                                             ) +
-                                            " at least one\n\t\t\t\t\t\t\t\t\t\t\tevent.\n\t\t\t\t\t\t\t\t\t\t"
+                                            " at least one\n\t\t\t\t\t\t\t\t\t\tevent.\n\t\t\t\t\t\t\t\t\t"
                                         )
                                       ]
                                 ],
@@ -48047,7 +48060,7 @@ var render = function() {
                                         ? "has"
                                         : "does not have"
                                     ) +
-                                    " at\n\t\t\t\t\t\t\t\t\t\tleast one announcement.\n\t\t\t\t\t\t\t\t\t"
+                                    " at\n\t\t\t\t\t\t\t\t\tleast one announcement.\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -48066,7 +48079,7 @@ var render = function() {
                                             ? "has"
                                             : "does not have"
                                         ) +
-                                        " teaser text\n\t\t\t\t\t\t\t\t\t\tfor the message from the president.\n\t\t\t\t\t\t\t\t\t"
+                                        " teaser text\n\t\t\t\t\t\t\t\t\tfor the message from the president.\n\t\t\t\t\t\t\t\t"
                                     )
                                   ])
                                 : _vm._e(),
@@ -48086,7 +48099,7 @@ var render = function() {
                                             ? "has"
                                             : "does not have"
                                         ) +
-                                        " a URL to the\n\t\t\t\t\t\t\t\t\t\tmessage from the president.\n\t\t\t\t\t\t\t\t\t"
+                                        " a URL to the\n\t\t\t\t\t\t\t\t\tmessage from the president.\n\t\t\t\t\t\t\t\t"
                                     )
                                   ])
                                 : _vm._e(),
@@ -48106,7 +48119,7 @@ var render = function() {
                                         ? "has"
                                         : "does not have"
                                     ) +
-                                    " at least\n\t\t\t\t\t\t\t\t\t\tone recipient.\n\t\t\t\t\t\t\t\t\t"
+                                    " at least\n\t\t\t\t\t\t\t\t\tone recipient.\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -48126,7 +48139,7 @@ var render = function() {
                                         ? "have"
                                         : "have not"
                                     ) +
-                                    " been confirmed.\n\t\t\t\t\t\t\t\t\t"
+                                    " been confirmed.\n\t\t\t\t\t\t\t\t"
                                 )
                               ])
                             ]),
@@ -48148,7 +48161,7 @@ var render = function() {
                                         ? "has"
                                         : "does not have"
                                     ) +
-                                    " a message\n\t\t\t\t\t\t\t\t\t\tfrom the president.\n\t\t\t\t\t\t\t\t\t"
+                                    " a message\n\t\t\t\t\t\t\t\t\tfrom the president.\n\t\t\t\t\t\t\t\t"
                                 )
                               ]),
                               _vm._v(" "),
@@ -48166,7 +48179,7 @@ var render = function() {
                                         ? "has"
                                         : "does not have"
                                     ) +
-                                    " a subheading.\n\t\t\t\t\t\t\t\t\t"
+                                    " a subheading.\n\t\t\t\t\t\t\t\t"
                                 )
                               ])
                             ])
@@ -48281,7 +48294,7 @@ var staticRenderFns = [
             "data-target": "#deleteModal"
           }
         },
-        [_vm._v("Delete Email\n\t\t\t\t\t\t\t\t")]
+        [_vm._v("Delete Email\n\t\t\t\t\t\t\t")]
       )
     ])
   },
@@ -48305,7 +48318,7 @@ var staticRenderFns = [
             staticClass: "fa fa-bar-chart",
             attrs: { "aria-hidden": "true" }
           }),
-          _vm._v(" View Statistics\n\t\t\t\t\t\t")
+          _vm._v(" View Statistics\n\t\t\t\t\t")
         ]
       )
     ])
@@ -48325,7 +48338,7 @@ var staticRenderFns = [
             "data-target": "#deleteModal"
           }
         },
-        [_vm._v("Delete Email\n\t\t\t\t\t\t")]
+        [_vm._v("Delete Email\n\t\t\t\t\t")]
       )
     ])
   }
@@ -50291,7 +50304,7 @@ var render = function() {
                   _vm.isEndDate
                     ? _c("span", [_vm._v(" - Remove ")])
                     : _c("span", [_vm._v(" + Add ")]),
-                  _vm._v("Range")
+                  _vm._v("Range\n          ")
                 ]
               )
             ])
@@ -50496,31 +50509,35 @@ var staticRenderFns = [
           _c("li", [
             _vm._v("The "),
             _c("strong", [_vm._v("top story")]),
-            _vm._v(" image comes from the "),
+            _vm._v(" image comes from the\n          "),
             _c("mark", [_vm._v("emutoday_email")]),
-            _vm._v(" image type as defined in the story's admin area.")
+            _vm._v(
+              "\n          image type as defined in the story's admin area.\n        "
+            )
           ]),
           _vm._v(" "),
           _c("li", [
             _vm._v("The "),
             _c("strong", [_vm._v("sub-main")]),
-            _vm._v(" images come from the "),
+            _vm._v(" images come from the\n          "),
             _c("mark", [_vm._v("emutoday_small")]),
-            _vm._v(" image type as defined in the story's admin area.")
+            _vm._v(
+              "\n          image type as defined in the story's admin area.\n        "
+            )
           ]),
           _vm._v(" "),
           _c("li", [
             _vm._v("For the main and both sub-main stories, the "),
             _c("strong", [_vm._v("story title")]),
-            _vm._v(" comes from the "),
+            _vm._v(" comes from the\n          "),
             _c("mark", [_vm._v('"Title/Header"')]),
-            _vm._v(" field in the story's "),
+            _vm._v("\n          field in the story's\n          "),
             _c("mark", [_vm._v("emutoday_email")]),
-            _vm._v(" image editor area, while the "),
+            _vm._v("\n          image editor area, while the "),
             _c("strong", [_vm._v("subtext")]),
-            _vm._v(" comes from the "),
+            _vm._v(" comes from the\n          "),
             _c("mark", [_vm._v('"Teaser/Byline"')]),
-            _vm._v(" field of that same area.")
+            _vm._v("\n          field of that same area.\n        ")
           ])
         ])
       ])
@@ -75275,10 +75292,7 @@ var vm = new Vue({
   components: {
     EmailForm: _components_Email_EmailForm_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  store: _vuex_store__WEBPACK_IMPORTED_MODULE_3__["default"],
-  ready: function ready() {
-    console.log('Email Form ready');
-  }
+  store: _vuex_store__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 
 /***/ }),

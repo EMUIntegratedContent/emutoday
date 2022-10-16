@@ -15,8 +15,5 @@ var vm = new Vue({
     el: '#vue-page',
     components: {
         PageForm,
-    },
-    ready() {
-      console.log('Page Form ready');
     }
 });

@@ -17,8 +17,5 @@ var vm = new Vue({
     components: {
         EmailForm,
     },
-    store,
-    ready() {
-      console.log('Email Form ready');
-    }
+    store
 });

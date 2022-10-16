@@ -186,9 +186,6 @@
 								<span class="input-group-addon">
 									<input type="checkbox" v-model="record.is_approved" aria-label="Set as time">
 								</span>
-<!--									<input id="send-at" type="text" class="form-control" v-model="record.send_at"-->
-<!--												 aria-describedby="errorSendAt"/>-->
-
 									<date-picker
 											v-model="record.send_at"
 											:default-value="dateObject.sendAtDefault"

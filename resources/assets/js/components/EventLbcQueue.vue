@@ -136,12 +136,7 @@ export default  {
           this.checkOverDataFilter()
           this.loading = false
       }, (response) => {
-          //error callback
-          console.log("ERRORS")
       }).bind(this);
-    },
-    checkOverDataFilter: function() {
-      console.log('items=' + this.items)
     },
     filterItemsUnapproved: function(items) {
       return items.filter(function(item) {

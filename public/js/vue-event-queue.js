@@ -217,45 +217,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -345,10 +306,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.allitems = response.data.data; // this.checkOverDataFilter()
 
         _this.loading = false;
-      }, function (response) {
-        //error callback
-        console.log("ERRORS");
-      }).bind(this);
+      }, function (response) {}).bind(this);
       this.fetchElevatedRecords(); //get elevated records regardless of date
     },
 
@@ -363,10 +321,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.get(routeurl).then(function (response) {
         _this2.elevateditems = response.data.data;
         _this2.loading = false;
-      }, function (response) {
-        //error callback
-        console.log("ERRORS");
-      }).bind(this);
+      }, function (response) {}).bind(this);
     },
     filterItemsApproved: function filterItemsApproved(items) {
       var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
@@ -415,11 +370,7 @@ __webpack_require__.r(__webpack_exports__);
     updateRecord: function updateRecord(item) {
       this.$http.patch('/api/event/updateItem/' + item.id, item, {
         method: 'PATCH'
-      }).then(function (response) {
-        console.log('good_eventQueue' + response);
-      }, function (response) {
-        console.log('bad?' + response);
-      });
+      }).then(function (response) {}, function (response) {});
     },
     checkOverData: function checkOverData() {
       for (var i = 0; i < this.allitems.length; i++) {
@@ -1052,7 +1003,6 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.pid == 'items-live') {
         if (this.index < 4) {
-          console.log('topitems');
           sclass = 'topitems';
         }
       }
@@ -1144,31 +1094,21 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
-    // onFileChange(event) {
-    //     var files = this.$els.eventimg.files;
-    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
-    //     this.formInputs.attachment = event.target.file;
-    // },
     // Handle the form submission here
     timeDiffNow: function timeDiffNow(val) {
       return moment__WEBPACK_IMPORTED_MODULE_0___default()(val).diff(moment__WEBPACK_IMPORTED_MODULE_0___default()(), 'minutes');
     },
     changeIsApproved: function changeIsApproved() {
       this.patchRecord.is_approved = this.item.is_approved === 0 ? 1 : 0;
-      console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
       this.updateItem();
     },
     editItem: function editItem(ev) {
       window.location.href = this.itemEditPath;
     },
-    priorityChange: function priorityChange(event) {
-      console.log('priority=' + this.item.priority);
-    },
+    priorityChange: function priorityChange(event) {},
     getFileName: function getFileName() {
       var files = this.$refs.eventimg.files;
       this.eventimage = this.$refs.eventimg.files[0].name;
-      console.log(this.eventimage);
     },
     addMediaFile: function addMediaFile(event) {
       var _this = this;
@@ -1193,14 +1133,11 @@ __webpack_require__.r(__webpack_exports__);
           'Content-Type': 'multipart/form-data'
         }
       }).then(function (response) {
-        console.log('good?' + JSON.stringify(response));
-
         _this.checkAfterUpdate(response.data.newdata);
 
         _this.formMessage.msg = response.body.message;
       }, function (response) {
         _this.formMessage.err = "Something when wrong.";
-        console.log('bad?' + JSON.stringify(response));
       });
     },
     removeMediaFile: function removeMediaFile(event) {
@@ -1214,13 +1151,11 @@ __webpack_require__.r(__webpack_exports__);
       data.append('event_id', this.item.id);
       var action = '/api/event/removeMediaFile/' + this.item.id;
       this.$http.post(action, data).then(function (response) {
-        // console.log('good?'+ JSON.stringify(response))
         _this2.formMessage.msg = response.body.message;
 
         _this2.checkAfterUpdate(response.data.newdata);
       }, function (response) {
         _this2.formMessage.err = "Something when wrong.";
-        console.log('bad?' + JSON.stringify(response));
       });
     },
     updateItem: function updateItem() {
@@ -1261,8 +1196,6 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.showPanel = false;
       }
-
-      console.log('this.showPanel' + this.showPanel);
     },
     toggleBody: function toggleBody(ev) {
       if (this.showBody == false) {
@@ -1270,8 +1203,6 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.showBody = false;
       }
-
-      console.log('toggleBody' + this.showBody);
     },
     doThis: function doThis(ev) {
       this.item.is_approved = this.is_approved === 0 ? 1 : 0;
@@ -60294,9 +60225,6 @@ new Vue({
   el: '#vue-event-queue',
   components: {
     EventQueue: _components_EventQueue_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  },
-  ready: function ready() {
-    console.log('new Vue Event Queue ready');
   }
 });
 

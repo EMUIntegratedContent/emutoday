@@ -114,8 +114,6 @@ module.exports = {
                     }
                 }
                 this.pageRange = newPageNumbers
-
-                console.log(this.paginateditems)
             }
 
             if(direction == 'end'){

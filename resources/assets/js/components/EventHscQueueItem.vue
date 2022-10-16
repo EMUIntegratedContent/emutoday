@@ -260,9 +260,6 @@ module.exports  = {
     }
   },
   created: function () {
-    // this.hsc_rewards = this.item.approved;
-    // this.currentDate = moment();
-    // console.log('this.currentDate=' + this.currentDate)
   },
   ready: function() {
     this.initRecord.hsc_rewards = this.patchRecord.hsc_rewards = this.item.hsc_rewards;
@@ -339,10 +336,8 @@ module.exports  = {
     itemStatus : function() {
       let sclass = 'box-default';
 
-      // console.log('pid' + this.pid + ' index='+ this.index);
       if (this.pid == 'items-live'){
         if(this.index < 4){
-          console.log('topitems');
           sclass = 'topitems';
         }
       }
@@ -362,12 +357,6 @@ module.exports  = {
 
   },
   methods:{
-    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
-    // onFileChange(event) {
-    //     var files = this.$els.eventimg.files;
-    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
-    //     this.formInputs.attachment = event.target.file;
-    // },
     // Handle the form submission here
     timeDiffNow:function(val){
       return  moment(val).diff(moment(), 'minutes');
@@ -387,11 +376,9 @@ module.exports  = {
         method: 'PATCH'
       })
       .then((response) => {
-        console.log('good?:: '+ JSON.stringify(response))
         this.checkAfterUpdate(response.data.newdata)
 
       }, (response) => {
-        console.log('bad?'+ response)
       });
     },
     onCalendarChange: function(){
@@ -400,7 +387,6 @@ module.exports  = {
     checkAfterUpdate: function(ndata){
       this.item.hsc_rewards = this.initRecord.hsc_rewards = ndata.hsc_rewards;
       this.item.hsc_reviewed = this.initRecord.hsc_reviewed = ndata.hsc_reviewed;
-      console.log(ndata);
     },
     togglePanel: function(ev) {
       if(this.showPanel === false) {
@@ -408,7 +394,6 @@ module.exports  = {
       } else {
         this.showPanel = false;
       }
-      console.log('this.showPanel' + this.showPanel)
     },
     toggleBody: function(ev) {
       if(this.showBody == false) {
@@ -416,23 +401,11 @@ module.exports  = {
       } else {
         this.showBody = false;
       }
-      console.log('toggleBody' + this.showBody)
     },
     doThis: function(ev) {
       this.item.hsc_rewards = (this.hsc_rewards === 0)?1:0;
       this.$emit('item-change',this.item);
-    },
-    // addMediaFile: function(ev) {
-    //     var formData = new FormData();
-    //     formData.append('image', fileInput ,this.$els.finput.files[0]);
-    //
-    //     // var fileinputObject = this.$els.finput;
-    //     // console.log('fileinputObject.name= '+ fileinputObject.name)
-    //     // console.log('fileinputObject.value= '+ fileinputObject.value)
-    //     // console.log('fileinputObject.files= '+ fileinputObject.files[0])
-    //     console.log('ev ' + ev + 'this.item.id= '+  this.item)
-    // }
-
+    }
   },
   watch: {
   },
@@ -458,29 +431,12 @@ module.exports  = {
     },
     momentPretty: {
       read: function(val) {
-        console.log('read-val'+ val )
-
         return val ?  moment(val).format('ddd, MM-DD-YYYY') : '';
       },
       write: function(val, oldVal) {
-        console.log('write-val'+ val + '--'+ oldVal)
-
         return moment(val).format('YYYY-MM-DD');
       }
     }
-  },
-  events: {
-
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
   }
 };
 

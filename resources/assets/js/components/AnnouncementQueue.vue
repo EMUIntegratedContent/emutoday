@@ -249,8 +249,6 @@ export default {
           this.$set('elevateditems', response.data.data)
           this.loading = false;
       }, (response) => {
-          //error callback
-          console.log("ERRORS");
       }).bind(this);
     },
 
@@ -313,7 +311,6 @@ export default {
            //error callback
            this.ordersave.isErr = true
            this.ordersave.msg = "Order was not updated"
-           console.log("ERRORS")
        }).bind(this);
 
        this.elevateditemschanged = false;

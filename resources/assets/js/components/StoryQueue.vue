@@ -493,7 +493,6 @@ export default  {
                 this.loading = false;
             }, (response) => {
                 //error callback
-                console.log("ERRORS");
             }).bind(this);
 
             this.fetchElevatedRecords(); //get elevated records regardless of date

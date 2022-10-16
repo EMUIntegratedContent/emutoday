@@ -14,8 +14,5 @@ import store from './vuex/store';
 var vm = new Vue({
     el: '#vue-storyidea',
     components: { StoryideasBoxTools, StoryideasForm },
-    store,
-    ready() {
-      console.log('Story idea Form ready');
-    }
+    store
 });

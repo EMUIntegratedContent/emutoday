@@ -15,8 +15,5 @@ var vm = new Vue({
     components: {
         ExpertList,
         ExpertBoxTools
-    },
-    ready() {
-      console.log('Expert List ready');
     }
 });

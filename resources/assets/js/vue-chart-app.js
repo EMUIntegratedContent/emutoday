@@ -10,8 +10,5 @@ Vue.use(VueCharts);
 import PageChartApp from './components/PageChartApp.vue'
 new Vue({
     el: '#vue-chart-app',
-    components: {PageChartApp},
-    ready() {
-      console.log('vue ready');
-    }
+    components: {PageChartApp}
 });

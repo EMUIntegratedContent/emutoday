@@ -283,7 +283,6 @@ module.exports = {
         .then((response) => {
           this.$set('allCategories', response.data)
         }, (response) => {
-          console.log("Error fetching expert categories")
         }).bind(this);
     },
 
@@ -293,7 +292,6 @@ module.exports = {
         .then((response) => {
           this.$set('associatedCategories', response.data)
         }, (response) => {
-          console.log("Error fetching associated categories")
         }).bind(this);
     },
 
@@ -366,7 +364,6 @@ module.exports = {
         .then((response) =>{
             window.location.href = "/admin/expertcategory";
         }, (response) => {
-          console.log('Error: '+JSON.stringify(response))
         }).bind(this);
       }
     },

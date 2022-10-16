@@ -11,8 +11,5 @@ import AuthorForm from './components/AuthorForm.vue';
 
 var vm = new Vue({
     el: '#vue-authors',
-    components: {AuthorForm},
-    ready() {
-      console.log('AuthorForm ready');
-    }
+    components: {AuthorForm}
 });

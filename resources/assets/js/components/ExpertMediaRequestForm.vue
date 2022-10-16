@@ -503,7 +503,6 @@ module.exports = {
           .then((response) => {
             this.$set('record', response.data.newdata)
           }, (response) => {
-            console.log("Unable to fetch request.");
           }).bind(this);
       },
 
@@ -530,7 +529,6 @@ module.exports = {
           .then((response) => {
             this.$set('selectedExpert', response.data.newdata[0])
           }, (response) => {
-            console.log("Unable to fetch experts.");
           }).bind(this);
       },
 

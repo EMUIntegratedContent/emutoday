@@ -127,8 +127,6 @@ export default {
                     this.$set('allitems', response.data.data)
                     this.makePagination(response.data.meta.pagination)
                 }, (response) => {
-                    //error callback
-                    console.log("Error fetching archive records");
                 }).bind(this);
         },
 

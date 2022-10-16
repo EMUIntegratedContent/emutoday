@@ -330,7 +330,6 @@ export default {
       this.$http.get('/api/mediahighlights/' + recid + '/edit')
 
       .then((response) => {
-        console.log(response.data.data)
         this.record = response.data.data
         this.user_id = response.data.data.user_id
         this.setupDatePickers()

@@ -149,12 +149,7 @@ export default  {
         this.checkOverDataFilter()
         this.loading = false
       }, (response) => {
-        //error callback
-        console.log("ERRORS")
       }).bind(this);
-    },
-    checkOverDataFilter: function() {
-      console.log('items=' + this.items)
     },
     filterItemsNoPoints: function(items) {
       return items.filter(function(item) {
@@ -187,7 +182,6 @@ export default  {
       return this.xitems.findIndex(item => item.id == mid)
     },
     checkOverData: function() {
-      console.log('this.items='+ this.allitems)
       for (var i=0; i < this.allitems.length; i++ ) {
         if( this.allitems[i].hsc_reviewed == 1) {
           this.items.push(this.allitems.splice(i,1));

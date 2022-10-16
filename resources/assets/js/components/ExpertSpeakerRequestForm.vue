@@ -444,7 +444,6 @@ module.exports = {
           .then((response) => {
             this.$set('selectedExpert', response.data.newdata[0])
           }, (response) => {
-            console.log("Unable to fetch experts.");
           }).bind(this);
       },
 

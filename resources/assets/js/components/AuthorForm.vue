@@ -275,7 +275,6 @@ module.exports = {
   },
   ready: function() {
     if(this.recordexists){
-      //console.log('recordid'+ this.recordid)
       this.fetchCurrentRecord(this.recordid)
       this.fetchCurrentPrimaryContact()
       this.fetchCurrentPrimaryMagainzeContact()

@@ -19,19 +19,13 @@ var vm = new Vue({
         ExpertForm,
         ExpertBoxTools
     },
-    store,
-    ready() {
-      console.log('Expert Form ready');
-    }
+    store
 });
 
 var vmpublic = new Vue({
     el: '#vue-experts-public',
     components: {ExpertFormPublic},
-    store,
-    ready() {
-      console.log('Public Expert Form ready');
-    }
+    store
 });
 
 function assignEventListeners(){

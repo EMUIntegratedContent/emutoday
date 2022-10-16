@@ -300,8 +300,6 @@ export default {
       });
     },
     dispatchNewEvent: function (value, cateid) {
-      console.log(value)
-      console.log(cateid)
       // find the category name based on the id and set it as the selected one in the store
       if(cateid === false) {
         this.setSelectedCalendarCategory(null)
@@ -397,11 +395,9 @@ export default {
     },
     fetchCategoryList: function () {
       this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar).then(function (response) {
-        // console.log('response->categories=' + JSON.stringify(response.data));
         this.setCalendarCategories(response.data)
 
       }, function (response) {
-        //  this.$set(this.formErrors, response.data);
       });
     },
     removex (val) {

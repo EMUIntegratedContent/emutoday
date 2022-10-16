@@ -11,9 +11,5 @@ import ExpertcategoryForm from './components/ExpertcategoryForm.vue';
 
 var vm = new Vue({
     el: '#vue-expertcategory',
-    components: {ExpertcategoryForm},
-
-    ready() {
-      console.log('Expert Category Form ready');
-    }
+    components: {ExpertcategoryForm}
 });

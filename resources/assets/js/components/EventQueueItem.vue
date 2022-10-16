@@ -538,7 +538,6 @@ export default {
       let sclass = 'box-default';
       if (this.pid == 'items-live') {
         if (this.index < 4) {
-          console.log('topitems');
           sclass = 'topitems';
         }
       }
@@ -624,12 +623,6 @@ export default {
     },
   },
   methods: {
-    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
-    // onFileChange(event) {
-    //     var files = this.$els.eventimg.files;
-    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
-    //     this.formInputs.attachment = event.target.file;
-    // },
     // Handle the form submission here
     timeDiffNow: function (val) {
       return moment(val).diff(moment(), 'minutes');
@@ -637,7 +630,6 @@ export default {
     },
     changeIsApproved: function () {
       this.patchRecord.is_approved = (this.item.is_approved === 0) ? 1 : 0;
-      console.log('this.patchRecord.is_approved =' + this.patchRecord.is_approved);
       this.updateItem();
 
     },
@@ -645,12 +637,11 @@ export default {
       window.location.href = this.itemEditPath;
     },
     priorityChange (event) {
-      console.log('priority=' + this.item.priority)
+
     },
     getFileName () {
-      var files = this.$refs.eventimg.files;
+      let files = this.$refs.eventimg.files;
       this.eventimage = this.$refs.eventimg.files[0].name;
-      console.log(this.eventimage);
     },
     addMediaFile (event) {
       event.preventDefault();
@@ -674,12 +665,10 @@ export default {
         }
       })
       .then((response) => {
-        console.log('good?' + JSON.stringify(response))
         this.checkAfterUpdate(response.data.newdata)
         this.formMessage.msg = response.body.message;
       }, (response) => {
         this.formMessage.err = "Something when wrong.";
-        console.log('bad?' + JSON.stringify(response))
       });
     },
     removeMediaFile (event) {
@@ -693,12 +682,10 @@ export default {
       var action = '/api/event/removeMediaFile/' + this.item.id;
       this.$http.post(action, data)
       .then((response) => {
-        // console.log('good?'+ JSON.stringify(response))
         this.formMessage.msg = response.body.message;
         this.checkAfterUpdate(response.data.newdata)
       }, (response) => {
-        this.formMessage.err = "Something when wrong.";
-        console.log('bad?' + JSON.stringify(response))
+        this.formMessage.err = "Something when wrong."
       });
     },
     updateItem: function () {
@@ -743,7 +730,6 @@ export default {
       else {
         this.showPanel = false;
       }
-      console.log('this.showPanel' + this.showPanel)
     },
     toggleBody: function (ev) {
       if (this.showBody == false) {
@@ -752,7 +738,6 @@ export default {
       else {
         this.showBody = false;
       }
-      console.log('toggleBody' + this.showBody)
     },
     doThis: function (ev) {
       this.item.is_approved = (this.is_approved === 0) ? 1 : 0;
