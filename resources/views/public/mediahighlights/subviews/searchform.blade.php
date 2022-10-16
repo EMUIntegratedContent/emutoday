@@ -16,8 +16,8 @@
             @foreach($tags as $tag)
                 <option
                   value="{{ $tag->name }}"
-                  @if(isset($currentTag))
-                      @if ($currentTag == $tag->name)
+                  @if(isset($searchTag))
+                      @if ($searchTag == $tag->name)
                           selected
                       @endif
                   @endif

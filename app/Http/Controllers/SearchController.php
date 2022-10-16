@@ -47,79 +47,38 @@ class SearchController extends Controller
         $offset = ($page * $perPage) - $perPage;
 
         // Story results
+        $searchStoryResults = array();
         if(!$filter || $filter == 'stories' || $filter == 'all'){
-            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
-//            $searchStoryResultsMagazine = Story::search($searchTermWild, [
-//                'title' => 50,
-//                'content' => 35,
-//                'teaser' => 20,
-//                'subtitle' => 10,
-//            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->orderBy('start_date', 'DESC')->get();
-//
-//            foreach($searchStoryResultsMagazine as $m_story){
-//                $searchStoryResults[] = $m_story;
-//            }
-            $searchStoryResults = array();
             $searchStoryResultsNonMagazine = Story::runSearchNonMagazine($searchTerm);
 
             foreach($searchStoryResultsNonMagazine as $nm_story){
                 $searchStoryResults[] = $nm_story;
             }
-        } else {
-            $searchStoryResults = array();
         }
 
         // Event results
+        $searchEventResults = array();
         if(!$filter || $filter == 'events' || $filter == 'all'){
-            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
-//            $searchEventResults = Event::search($searchTermWild, [
-//                'title' => 10,
-//            ], false)->where('is_approved', 1)->get();
             $searchEventResults = Event::runSearch($searchTerm);
-        } else {
-            $searchEventResults = array();
         }
 
         // Announcement results
+        $searchAnnouncementResults = array();
         if(!$filter || $filter == 'announcements' || $filter == 'all'){
-            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
-//            $searchAnnouncementResults = Announcement::search($searchTermWild, [
-//                'title' => 50,
-//                'announcement' => 35
-//            ], false)->where('is_approved', 1)->select('title','announcement','submitter','id')->get();
-//            $searchAnnouncementResults = array();
             $searchAnnouncementResults = Announcement::runSearch($searchTerm);
-        } else {
-            $searchAnnouncementResults = array();
         }
 
         // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
+        $searchMagazineResults = array();
         if( ($filter && $filter == 'magazine') || $isSearchFromMagazine){
             // Magazine stories should be filtered by is_approved AND a start date before or on the current date
-            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
-//            $searchMagazineResults = Story::search($searchTermWild, [
-//                'title' => 50,
-//                'content' => 35,
-//                'teaser' => 20,
-//                'subtitle' => 10,
-//            ], false)->select('title','subtitle','story_type','teaser','id','start_date')->where('is_approved', 1)->where('start_date', '<=', date('Y-m-d'))->whereIn('story_type', ['article'])->orderBy('start_date', 'DESC')->get();
             $searchMagazineResults = Story::runSearchMagazine($searchTerm);
-        } else {
-            $searchMagazineResults = array();
         }
 
         // Expert results
+        $searchExpertsResults = array();
         if(!$filter || $filter == 'experts' || $filter == 'all'){
-            // The original search query from sofa/eloquent before it had to be replaced by a custom query because eloquent doesn't work with PHP8
-//            $searchExpertsResults = Expert::search($searchTermWild, [
-//                'first_name' => 50,
-//                'last_name' => 50,
-//                'display_name' => 50,
-//                'title' => 30,
-//            ], false)->where('is_approved', 1)->select('id','first_name','last_name','display_name','title')->get();
             $searchExpertsResults = Expert::runSearch($searchTerm);
-        } else {
-            $searchExpertsResults = array();
         }
 
         $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults, $searchExpertsResults));
@@ -145,39 +104,20 @@ class SearchController extends Controller
         $searchterm = $request->get('q');
 
         $searchCategory = $request->get('category');
-        // Fields and scores set in Emutoday/Expert model class
-        if($searchCategory){
-            // Expert::search creates some odd alphebetizing when used with an empty search
-            if($searchterm){
-//              $experts = Expert::search($searchterm)
-//                              ->where('is_approved', 1)
-//                              ->whereHas('expertCategories', function($query) use ($searchCategory){
-//                                  $query->where('category', $searchCategory);
-//                              })
-//                              ->orderBy('last_name', 'ASC')
-//                              ->paginate(10);
-                $experts = Expert::runSearch($searchterm, $searchCategory);
-            } else {
-              $experts = Expert::where('is_approved', 1)
-                              ->whereHas('expertCategories', function($query) use ($searchCategory){
-                                  $query->where('category', $searchCategory);
-                              })
-                              ->orderBy('last_name', 'ASC')
-                              ->paginate(10);
-            }
+
+        if($searchterm) {
+            $experts = Expert::runSearch($searchterm, $searchCategory);
         } else {
-          // Expert::search creates some odd alphabetizing when used with an empty search
-          if($searchterm){
-            $experts = Expert::runSearch($searchterm);
-          } else {
-            $experts = Expert::where('is_approved', 1)->orderBy('last_name', 'ASC')->paginate(10);
-          }
+            $experts = Expert::where('is_approved', 1)
+                ->whereHas('expertCategories', function($query) use ($searchCategory){
+                    $query->where('category', $searchCategory);
+                })
+                ->orderBy('last_name', 'ASC')
+                ->paginate(10);
         }
 
         $expertCategories = ExpertCategory::orderBy('category', 'asc')->get();
 
         return view('public.experts.find', ['experts' => $experts, 'expertCategories' => $expertCategories, 'currentCategory' => $searchCategory]);
     }
-
-
 }

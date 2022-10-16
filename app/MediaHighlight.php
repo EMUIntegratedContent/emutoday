@@ -62,6 +62,7 @@ class MediaHighlight extends Model
      * @return mixed
      */
     public static function runSearch($searchTerm, $tag = null) {
+        $conditions = [];
         $sql = "SELECT h.title, h.source, h.url, h.start_date
                     FROM media_highlights h";
         if($tag) {
@@ -70,9 +71,10 @@ class MediaHighlight extends Model
         $sql .= " WHERE h.is_archived = 0";
         if($searchTerm) {
             $sql .= " AND MATCH(h.title, h.source) AGAINST (:search_term)";
+            $conditions['search_term'] = "%$searchTerm%";
         }
         $sql .= " ORDER BY h.start_date DESC";
-        $items = DB::select($sql, ['search_term' => "%$searchTerm%"]);
+        $items = DB::select($sql, $conditions);
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
     }
 }
