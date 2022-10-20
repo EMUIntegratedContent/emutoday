@@ -51,7 +51,7 @@ create fulltext index cea_events_fulltext
     on cea_events (title);
 
 // MEDIA HIGHLIGHTS
-create fulltext highlights_fulltext
+create fulltext index highlights_fulltext
    on media_highlights (title, source);
 
 create fulltext index cea_events_fulltext
