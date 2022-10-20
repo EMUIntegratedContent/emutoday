@@ -7,12 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
-use Sofa\Eloquence\Eloquence;
 use DateTimeInterface;
-use Spatie\Feed\Feedable;
-use Spatie\Feed\FeedItem;
 
-class Announcement extends Model implements Feedable
+class Announcement extends Model
 {
 
     protected $fillable = [
@@ -95,16 +92,6 @@ class Announcement extends Model implements Feedable
             'authorName' => $authorInfo,
             'updated' => $this->updated_at
         ]);
-    }
-
-    public function getAllFeedItems() {
-        $now = date('Y-m-d H:i:s');
-        return Announcement::where([
-            ['is_approved', 1],
-            ['is_archived', 0],
-            ['start_date', '<=', $now],
-            ['end_date', '>=', $now]
-        ])->whereIn('type', ['general'])->orderBy('created_at', 'desc')->get();
     }
 
     public function user()

@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL;
 use Laracasts\Presenter\PresentableTrait;
 use DateTimeInterface;
-use Spatie\Feed\Feedable;
-use Spatie\Feed\FeedItem;
 use Illuminate\Support\Facades\DB;
 
-class Story extends Model implements Feedable
+class Story extends Model
 {
     /**
      * The database table used by the model.
@@ -100,34 +98,6 @@ class Story extends Model implements Feedable
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
-    }
-
-    public function toFeedItem(): FeedItem
-    {
-        // set story info
-        if(!$this->author) {
-            $author = '';
-        } else {
-            $author = $this->author['first_name'].' '.$this->author['last_name'];
-        }
-
-        $daysAgo = Carbon::parse($this->start_date)->diffInDays();
-        $authorInfo = "$author ($daysAgo days ago)";
-        // Spatie feed absolutely refuses to show these chars properly (title only)...
-        $title = str_replace(array('"', '&', "'"), array("`", 'and', "`"), $this->title);
-
-        return FeedItem::create([
-            'id' => $this->id,
-            'title' => $title,
-            'summary' => $this->content,
-            'link' => URL::to('/story/'.$this->story_type.'/'.$this->id),
-            'authorName' => $authorInfo,
-            'updated' => $this->updated_at
-        ]);
-    }
-
-    public function getAllFeedItems() {
-        return Story::where([['is_approved', 1], ['is_archived', 0]])->whereIn('story_type', ['news', 'advisory', 'statement', 'story', 'article'])->orderBy('created_at', 'desc')->get();
     }
 
     /**
