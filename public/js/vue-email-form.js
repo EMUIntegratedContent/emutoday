@@ -51096,7 +51096,6 @@ var render = function() {
                   ? _c("span", [_vm._v("between")])
                   : _c("span", [_vm._v("on or after")])
               ]),
-              _vm._v("\\\n"),
               _vm._v(" "),
               _c(
                 "p",

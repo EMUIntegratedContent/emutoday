@@ -40,7 +40,7 @@
             <!-- Date filter -->
             <form class="form-inline">
               <div class="form-group">
-                  <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>\
+                  <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
 <!--                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>-->
                   <p>
                     <date-picker

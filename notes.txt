@@ -69,3 +69,6 @@ create fulltext index storys_teaser_subtitle_fulltext
 
 create fulltext index storys_content_fulltext
     on storys (content);
+
+create fulltext index storys_imgs_fulltext
+    on story_images (title, caption, teaser, moretext);

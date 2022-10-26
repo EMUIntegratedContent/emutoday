@@ -48,23 +48,33 @@ class Story extends Model
     public static function runSearchNonMagazine($searchTerm) {
         $items = DB::select(
             "
-                    SELECT title, subtitle, story_type, teaser, id, start_date, 
-                        MATCH(title) AGAINST (:search_term) AS score_title,
-                        MATCH(content) AGAINST (:search_term2) AS score_content,
-                        MATCH(subtitle, teaser) AGAINST (:search_term3) AS score_subteaser
-                    FROM storys 
-                    WHERE is_approved = 1 
-                      AND start_date <= :start_date
-                      AND story_type NOT IN ('article', 'external')
-                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term4)
-                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser) DESC
+                SELECT DISTINCT s.id, s.title, s.subtitle, s.story_type, s.teaser, s.start_date,
+                MATCH(s.title) AGAINST (:search_term) AS score_title,
+                MATCH(s.content) AGAINST (:search_term2) AS score_content,
+                MATCH(s.subtitle, s.teaser) AGAINST (:search_term3) AS score_subteaser,
+                si.imgs_score
+                FROM storys s
+                LEFT JOIN (
+                    SELECT id, story_id, title, MATCH(title, caption, teaser, moretext) AGAINST (:search_term4) AS imgs_score
+                    FROM story_images
+                    WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term5)
+                ) si ON si.story_id = s.id
+                WHERE s.is_approved = 1
+                AND s.start_date <= :start_date
+                AND s.story_type NOT IN ('article', 'external')
+                AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term6) OR imgs_score IS NOT NULL)
+                GROUP BY s.id, si.imgs_score
+                HAVING SUM(score_subteaser + score_content + score_title + imgs_score) > 3
+                ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(imgs_score*2) DESC
                 ",
             array(
                 'search_term' => "%$searchTerm%",
                 'search_term2' => "%$searchTerm%",
                 'search_term3' => "%$searchTerm%",
                 'start_date' => date('Y-m-d'),
-                'search_term4' => "%$searchTerm%"
+                'search_term4' => "%$searchTerm%",
+                'search_term5' => "%$searchTerm%",
+                'search_term6' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
@@ -78,23 +88,33 @@ class Story extends Model
     public static function runSearchMagazine($searchTerm) {
         $items = DB::select(
             "
-                    SELECT title, subtitle, story_type, teaser, id, start_date, 
-                        MATCH(title) AGAINST (:search_term) AS score_title,
-                        MATCH(content) AGAINST (:search_term2) AS score_content,
-                        MATCH(subtitle, teaser) AGAINST (:search_term3) AS score_subteaser
-                    FROM storys 
-                    WHERE is_approved = 1 
-                      AND start_date <= :start_date
-                      AND story_type IN ('article')
-                      AND MATCH(title, subtitle, teaser, content) AGAINST (:search_term4)
-                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser) DESC
+                    SELECT DISTINCT s.id, s.title, s.subtitle, s.story_type, s.teaser, s.start_date,
+                    MATCH(s.title) AGAINST (:search_term) AS score_title,
+                    MATCH(s.content) AGAINST (:search_term2) AS score_content,
+                    MATCH(s.subtitle, s.teaser) AGAINST (:search_term3) AS score_subteaser,
+                    si.imgs_score
+                    FROM storys s
+                    LEFT JOIN (
+                        SELECT id, story_id, title, MATCH(title, caption, teaser, moretext) AGAINST (:search_term4) AS imgs_score
+                        FROM story_images
+                        WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term5)
+                    ) si ON si.story_id = s.id
+                    WHERE s.is_approved = 1
+                    AND s.start_date <= :start_date
+                    AND s.story_type IN ('article')
+                    AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term6) OR imgs_score IS NOT NULL)
+                    GROUP BY s.id, si.imgs_score
+                    HAVING SUM(score_subteaser + score_content + score_title + imgs_score) > 3
+                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(imgs_score*2) DESC
                 ",
             array(
                 'search_term' => "%$searchTerm%",
                 'search_term2' => "%$searchTerm%",
                 'search_term3' => "%$searchTerm%",
                 'start_date' => date('Y-m-d'),
-                'search_term4' => "%$searchTerm%"
+                'search_term4' => "%$searchTerm%",
+                'search_term5' => "%$searchTerm%",
+                'search_term6' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
