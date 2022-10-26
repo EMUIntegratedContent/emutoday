@@ -93,7 +93,7 @@ class SearchController extends Controller
             $storiesPaginated->appends('filter', $filter);
         }
 
-        return view('public.searchresults', compact('storiesPaginated', 'searchTerm', 'numResults', 'isSearchFromMagazine'));
+        return view('public.searchresults', compact('storiesPaginated', 'searchTerm', 'numResults', 'isSearchFromMagazine', 'filter'));
 
     }
 
