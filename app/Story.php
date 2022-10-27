@@ -52,20 +52,27 @@ class Story extends Model
                 MATCH(s.title) AGAINST (:search_term) AS score_title,
                 MATCH(s.content) AGAINST (:search_term2) AS score_content,
                 MATCH(s.subtitle, s.teaser) AGAINST (:search_term3) AS score_subteaser,
-                si.imgs_score
+                si.score_imgs
                 FROM storys s
                 LEFT JOIN (
-                    SELECT id, story_id, title, MATCH(title, caption, teaser, moretext) AGAINST (:search_term4) AS imgs_score
-                    FROM story_images
-                    WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term5)
+                    SELECT DISTINCT si.story_id, score_imgs
+                    FROM story_images si
+                    JOIN (
+                        SELECT story_id, MAX(MATCH(title, caption, teaser, moretext) AGAINST (:search_term4)) AS score_imgs
+                        FROM story_images
+                        WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term5)
+                        GROUP BY story_id
+                    ) si2 ON si2.story_id = si.story_id
+                    WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term6)
+                    GROUP BY si.story_id
                 ) si ON si.story_id = s.id
                 WHERE s.is_approved = 1
                 AND s.start_date <= :start_date
                 AND s.story_type NOT IN ('article', 'external')
-                AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term6) OR imgs_score IS NOT NULL)
-                GROUP BY s.id, si.imgs_score
-                HAVING SUM(score_subteaser + score_content + score_title + imgs_score) > 3
-                ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(imgs_score*2) DESC
+                AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term7) OR score_imgs IS NOT NULL)
+                GROUP BY s.id
+                HAVING SUM(score_subteaser + score_content + score_title + score_imgs) > 3
+                ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(score_imgs*2) DESC;
                 ",
             array(
                 'search_term' => "%$searchTerm%",
@@ -74,7 +81,8 @@ class Story extends Model
                 'start_date' => date('Y-m-d'),
                 'search_term4' => "%$searchTerm%",
                 'search_term5' => "%$searchTerm%",
-                'search_term6' => "%$searchTerm%"
+                'search_term6' => "%$searchTerm%",
+                'search_term7' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
@@ -92,20 +100,27 @@ class Story extends Model
                     MATCH(s.title) AGAINST (:search_term) AS score_title,
                     MATCH(s.content) AGAINST (:search_term2) AS score_content,
                     MATCH(s.subtitle, s.teaser) AGAINST (:search_term3) AS score_subteaser,
-                    si.imgs_score
+                    si.score_imgs
                     FROM storys s
                     LEFT JOIN (
-                        SELECT id, story_id, title, MATCH(title, caption, teaser, moretext) AGAINST (:search_term4) AS imgs_score
-                        FROM story_images
-                        WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term5)
+                        SELECT DISTINCT si.story_id, score_imgs
+                        FROM story_images si
+                        JOIN (
+                            SELECT story_id, MAX(MATCH(title, caption, teaser, moretext) AGAINST (:search_term4)) AS score_imgs
+                            FROM story_images
+                            WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term5)
+                            GROUP BY story_id
+                        ) si2 ON si2.story_id = si.story_id
+                        WHERE MATCH(title, caption, teaser, moretext) AGAINST (:search_term6)
+                        GROUP BY si.story_id
                     ) si ON si.story_id = s.id
                     WHERE s.is_approved = 1
                     AND s.start_date <= :start_date
                     AND s.story_type IN ('article')
-                    AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term6) OR imgs_score IS NOT NULL)
-                    GROUP BY s.id, si.imgs_score
-                    HAVING SUM(score_subteaser + score_content + score_title + imgs_score) > 3
-                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(imgs_score*2) DESC
+                    AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term7) OR score_imgs IS NOT NULL)
+                    GROUP BY s.id
+                    HAVING SUM(score_subteaser + score_content + score_title + score_imgs) > 3
+                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(score_imgs*2) DESC;
                 ",
             array(
                 'search_term' => "%$searchTerm%",
@@ -114,7 +129,8 @@ class Story extends Model
                 'start_date' => date('Y-m-d'),
                 'search_term4' => "%$searchTerm%",
                 'search_term5' => "%$searchTerm%",
-                'search_term6' => "%$searchTerm%"
+                'search_term6' => "%$searchTerm%",
+                'search_term7' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models
