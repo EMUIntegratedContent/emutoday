@@ -68,22 +68,34 @@ class Event extends Model
 
     /**
      * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * Note that the composite field 'search_score' is required for proper sorting of search results!
      * @param $searchTerm
      * @return mixed
      */
     public static function runSearch($searchTerm) {
         $items = DB::select(
             "
-                    SELECT id, title, description, start_date, MATCH(title) AGAINST (:search_term) AS search_score
+                    SELECT id, title, description, start_date, 
+                        SUM(
+                            (MATCH(title) AGAINST (:search_term))*2 +
+                            (MATCH(description) AGAINST (:search_term2))*2
+                        ) AS search_score
                         FROM cea_events
                         WHERE is_approved = 1   
                             AND is_archived = 0
-                            AND MATCH(title) AGAINST (:search_term2)
+                            AND (
+                                MATCH(title) AGAINST (:search_term3)
+                                OR MATCH(description) AGAINST (:search_term4)
+                            )
+                        GROUP BY id
                         HAVING search_score >= 3
+                        ORDER BY search_score DESC
                 ",
             array(
                 'search_term' => "%$searchTerm%",
-                'search_term2' => "%$searchTerm%"
+                'search_term2' => "%$searchTerm%",
+                'search_term3' => "%$searchTerm%",
+                'search_term4' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models

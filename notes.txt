@@ -50,6 +50,9 @@ create fulltext index announcement_fulltext
 create fulltext index cea_events_fulltext
     on cea_events (title);
 
+create fulltext index cea_eventsdescr_fulltext
+    on cea_events (description);
+
 // MEDIA HIGHLIGHTS
 create fulltext index highlights_fulltext
    on media_highlights (title, source);

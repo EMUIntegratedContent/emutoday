@@ -42,6 +42,7 @@ class Announcement extends Model
 
     /**
      * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * Note that the composite field 'search_score' is required for proper sorting of search results!
      * @param $searchTerm
      * @return mixed
      */

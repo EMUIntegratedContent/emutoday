@@ -42,6 +42,7 @@ class Story extends Model
 
     /**
      * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
+     * Note that the composite field 'search_score' is required for proper sorting of search results!
      * @param $searchTerm
      * @return mixed
      */
@@ -50,10 +51,10 @@ class Story extends Model
             "
                 SELECT DISTINCT s.id, s.title, s.subtitle, s.story_type, s.teaser, s.start_date,
                     SUM(
-                        (MATCH(s.title) AGAINST (:search_term))*5 +
-                        (MATCH(s.content) AGAINST (:search_term2))*2 +
+                        (MATCH(s.title) AGAINST (:search_term))*2 +
+                        (MATCH(s.content) AGAINST (:search_term2))*1.5 +
                         (MATCH(s.subtitle, s.teaser) AGAINST (:search_term3))*1 +
-                        (si.score_imgs)*2
+                        (si.score_imgs)*1.5
                     ) AS search_score
                 FROM storys s
                 LEFT JOIN (
@@ -101,10 +102,10 @@ class Story extends Model
             "
                     SELECT DISTINCT s.id, s.title, s.subtitle, s.story_type, s.teaser, s.start_date,
                         SUM(
-                            (MATCH(s.title) AGAINST (:search_term))*5 +
-                            (MATCH(s.content) AGAINST (:search_term2))*2 +
+                            (MATCH(s.title) AGAINST (:search_term))*2 +
+                            (MATCH(s.content) AGAINST (:search_term2))*1.5 +
                             (MATCH(s.subtitle, s.teaser) AGAINST (:search_term3))*1 +
-                            (si.score_imgs)*2
+                            (si.score_imgs)*1.5
                         ) AS search_score
                     FROM storys s
                     LEFT JOIN (
