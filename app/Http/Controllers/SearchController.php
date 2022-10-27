@@ -94,7 +94,6 @@ class SearchController extends Controller
         }
 
         return view('public.searchresults', compact('storiesPaginated', 'searchTerm', 'numResults', 'isSearchFromMagazine', 'filter'));
-
     }
 
     /**
@@ -106,7 +105,7 @@ class SearchController extends Controller
         $searchCategory = $request->get('category');
 
         if($searchterm) {
-            $experts = Expert::runSearch($searchterm, $searchCategory);
+            $experts = Expert::runSearch($searchterm, $searchCategory, true);
         } else {
             if($searchCategory) {
                 $experts = Expert::where('is_approved', 1)

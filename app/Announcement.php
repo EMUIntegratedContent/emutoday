@@ -48,14 +48,17 @@ class Announcement extends Model
     public static function runSearch($searchTerm) {
         $items = DB::select(
             "
-                    SELECT title, announcement, submitter, id
-                    FROM announcements 
-                    WHERE is_approved = 1 
-                      AND MATCH(title, announcement) AGAINST (:search_term)
-                    ORDER BY start_date DESC
+                    SELECT title, announcement, submitter, id, MATCH(title, announcement) AGAINST (:search_term) AS search_score
+                    FROM announcements
+                    WHERE is_approved = 1
+                        AND is_archived = 0
+                        AND MATCH(title, announcement) AGAINST (:search_term2)
+                    HAVING search_score >= 3
+                    ORDER BY start_date DESC, search_score DESC
                 ",
             array(
-                'search_term' => "%$searchTerm%"
+                'search_term' => "%$searchTerm%",
+                'search_term2' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models

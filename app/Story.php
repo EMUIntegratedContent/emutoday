@@ -49,10 +49,12 @@ class Story extends Model
         $items = DB::select(
             "
                 SELECT DISTINCT s.id, s.title, s.subtitle, s.story_type, s.teaser, s.start_date,
-                MATCH(s.title) AGAINST (:search_term) AS score_title,
-                MATCH(s.content) AGAINST (:search_term2) AS score_content,
-                MATCH(s.subtitle, s.teaser) AGAINST (:search_term3) AS score_subteaser,
-                si.score_imgs
+                    SUM(
+                        (MATCH(s.title) AGAINST (:search_term))*5 +
+                        (MATCH(s.content) AGAINST (:search_term2))*2 +
+                        (MATCH(s.subtitle, s.teaser) AGAINST (:search_term3))*1 +
+                        (si.score_imgs)*2
+                    ) AS search_score
                 FROM storys s
                 LEFT JOIN (
                     SELECT DISTINCT si.story_id, score_imgs
@@ -67,12 +69,13 @@ class Story extends Model
                     GROUP BY si.story_id
                 ) si ON si.story_id = s.id
                 WHERE s.is_approved = 1
-                AND s.start_date <= :start_date
-                AND s.story_type NOT IN ('article', 'external')
-                AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term7) OR score_imgs IS NOT NULL)
+                    AND s.is_archived = 0
+                    AND s.start_date <= :start_date
+                    AND s.story_type NOT IN ('article', 'external')
+                    AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term7) OR score_imgs IS NOT NULL)
                 GROUP BY s.id
-                HAVING SUM(score_subteaser + score_content + score_title + score_imgs) > 3
-                ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(score_imgs*2) DESC;
+                HAVING search_score >= 3
+                ORDER BY search_score DESC;
                 ",
             array(
                 'search_term' => "%$searchTerm%",
@@ -97,10 +100,12 @@ class Story extends Model
         $items = DB::select(
             "
                     SELECT DISTINCT s.id, s.title, s.subtitle, s.story_type, s.teaser, s.start_date,
-                    MATCH(s.title) AGAINST (:search_term) AS score_title,
-                    MATCH(s.content) AGAINST (:search_term2) AS score_content,
-                    MATCH(s.subtitle, s.teaser) AGAINST (:search_term3) AS score_subteaser,
-                    si.score_imgs
+                        SUM(
+                            (MATCH(s.title) AGAINST (:search_term))*5 +
+                            (MATCH(s.content) AGAINST (:search_term2))*2 +
+                            (MATCH(s.subtitle, s.teaser) AGAINST (:search_term3))*1 +
+                            (si.score_imgs)*2
+                        ) AS search_score
                     FROM storys s
                     LEFT JOIN (
                         SELECT DISTINCT si.story_id, score_imgs
@@ -115,12 +120,12 @@ class Story extends Model
                         GROUP BY si.story_id
                     ) si ON si.story_id = s.id
                     WHERE s.is_approved = 1
-                    AND s.start_date <= :start_date
-                    AND s.story_type IN ('article')
-                    AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term7) OR score_imgs IS NOT NULL)
+                        AND s.start_date <= :start_date
+                        AND s.story_type IN ('article')
+                        AND (MATCH(s.title, s.subtitle, s.teaser, s.content) AGAINST (:search_term7) OR score_imgs IS NOT NULL)
                     GROUP BY s.id
-                    HAVING SUM(score_subteaser + score_content + score_title + score_imgs) > 3
-                    ORDER BY (score_title * 5)+(score_content * 2)+(score_subteaser)+(score_imgs*2) DESC;
+                    HAVING search_score > 3
+                    ORDER BY search_score DESC;
                 ",
             array(
                 'search_term' => "%$searchTerm%",

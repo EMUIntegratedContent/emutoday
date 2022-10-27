@@ -74,13 +74,16 @@ class Event extends Model
     public static function runSearch($searchTerm) {
         $items = DB::select(
             "
-                    SELECT *
-                    FROM cea_events 
-                    WHERE is_approved = 1 
-                      AND MATCH(title) AGAINST (:search_term)
+                    SELECT id, title, description, start_date, MATCH(title) AGAINST (:search_term) AS search_score
+                        FROM cea_events
+                        WHERE is_approved = 1   
+                            AND is_archived = 0
+                            AND MATCH(title) AGAINST (:search_term2)
+                        HAVING search_score >= 3
                 ",
             array(
-                'search_term' => "%$searchTerm%"
+                'search_term' => "%$searchTerm%",
+                'search_term2' => "%$searchTerm%"
             )
         );
         return self::hydrate($items); // takes the raw query and turns it into a collection of models

@@ -35,32 +35,14 @@ class Expert extends Model
         'submitter_email'
     ];
 
-//  use Eloquence;
-//  protected $searchableColumns = [
-//      'display_name' => 100,
-//      'first_name' => 95,
-//      'last_name' => 100,
-//      'title' => 100,
-//      'biography' => 50,
-//      'teaser' => 40,
-//      'office_phone' => 10,
-//      'email' => 40,
-//      'education.education' => 20,
-//      'expertCategories.category' => 80,
-//      'expertise.expertise' => 250,
-//      'languages.language' => 20,
-//      'previousTitles.title' => 20,
-//      'socialMediaLinks.title' => 10,
-//      'socialMediaLinks.url' => 10,
-//  ];
-
     /**
      * Custom search created by Chris Puzzuoli for EMU Today. Uses mysql FULLTEXT to match columns against the search term.
      * @param $searchTerm
      * @param null $catetory
+     * @param bool $orderByLastName
      * @return mixed
      */
-    public static function runSearch($searchTerm, $catetory = null)
+    public static function runSearch($searchTerm, $catetory = null, $orderByLastName = false)
     {
         $conditions = [
             'search_term' => "%$searchTerm%",
@@ -75,19 +57,24 @@ class Expert extends Model
             'search_term10' => "%$searchTerm%",
             'search_term11' => "%$searchTerm%",
             'search_term12' => "%$searchTerm%",
-            'search_term13' => "%$searchTerm%"
+            'search_term13' => "%$searchTerm%",
+            'search_term14' => "%$searchTerm%",
+            'search_term15' => "%$searchTerm%",
+            'search_term16' => "%$searchTerm%",
+            'search_term17' => "%$searchTerm%"
         ];
 
         $sql = "
             SELECT DISTINCT e.id AS id, e.first_name, e.last_name, e.display_name, e.title, ei.id AS imgId,
-                        GROUP_CONCAT(MATCH(e.first_name, e.last_name, e.display_name) AGAINST (:search_term) +
-                        MATCH(e.title) AGAINST (:search_term2) +
-                        MATCH(ee.education) AGAINST (:search_term3) +
-                        MATCH(ex.expertise) AGAINST (:search_term4) +
-                        MATCH(el.language) AGAINST (:search_term5) +
-                        MATCH(es.title) AGAINST (:search_term6) +
-                        MATCH(et.title) AGAINST (:search_term7) SEPARATOR '@@') AS score_fld
-                    FROM experts e";
+                SUM(
+                    MATCH(e.first_name, e.last_name, e.display_name) AGAINST (:search_term) +
+                    IF(ee.score_edu IS NOT NULL, (ee.score_edu)*2, 0) +
+                    IF(ex.score_exp IS NOT NULL, (ex.score_exp)*3, 0) +
+                    IF(el.score_lang IS NOT NULL, (el.score_lang)*1, 0) +
+                    IF(es.score_soc IS NOT NULL, (es.score_soc)*1, 0) +
+                    IF(et.score_ttl IS NOT NULL, (et.score_ttl)*2, 0)
+                ) as search_score
+            FROM experts e";
 
         if($catetory) {
             $sql .= " JOIN experts_expertcategory ec ON ec.expert_id = e.id AND ec.cat_id = 
@@ -95,27 +82,88 @@ class Expert extends Model
             ";
             $conditions['category'] = $catetory;
         }
-        $sql .= " LEFT JOIN expertseducation ee ON ee.expert_id = e.id
-            LEFT JOIN expertsexpertise ex ON ex.expert_id = e.id
-            LEFT JOIN expertslanguages el ON el.expert_id = e.id
-            LEFT JOIN expertssocial es ON es.expert_id = e.id
-            LEFT JOIN expertstitles et ON et.expert_id = e.id
+        $sql .= " 
+            LEFT JOIN (
+                SELECT DISTINCT ee.expert_id, score_edu
+                FROM expertseducation ee
+                JOIN (
+                    SELECT expert_id, MAX(MATCH(education) AGAINST (:search_term2)) AS score_edu
+                    FROM expertseducation
+                    WHERE MATCH(education) AGAINST (:search_term3)
+                    GROUP BY expert_id
+                ) ee2 ON ee2.expert_id = ee.expert_id
+                WHERE MATCH(education) AGAINST (:search_term4)
+                GROUP BY ee.expert_id
+            ) ee ON ee.expert_id = e.id
+            LEFT JOIN (
+                SELECT DISTINCT ex.expert_id, score_exp
+                FROM expertsexpertise ex
+                JOIN (
+                    SELECT expert_id, MAX(MATCH(expertise) AGAINST (:search_term5)) AS score_exp
+                    FROM expertsexpertise
+                    WHERE MATCH(expertise) AGAINST (:search_term6)
+                    GROUP BY expert_id
+                ) ex2 ON ex2.expert_id = ex.expert_id
+                WHERE MATCH(expertise) AGAINST (:search_term7)
+                GROUP BY ex.expert_id
+            ) ex ON ex.expert_id = e.id
+            LEFT JOIN (
+                SELECT DISTINCT el.expert_id, score_lang
+                FROM expertslanguages el
+                JOIN (
+                    SELECT expert_id, MAX(MATCH(language) AGAINST (:search_term8)) AS score_lang
+                    FROM expertslanguages
+                    WHERE MATCH(language) AGAINST (:search_term9)
+                    GROUP BY expert_id
+                ) el2 ON el2.expert_id = el.expert_id
+                WHERE MATCH(language) AGAINST (:search_term10)
+                GROUP BY el.expert_id
+            ) el ON el.expert_id = e.id
+            LEFT JOIN (
+                SELECT DISTINCT es.expert_id, score_soc
+                FROM expertssocial es
+                JOIN (
+                    SELECT expert_id, MAX(MATCH(title) AGAINST (:search_term11)) AS score_soc
+                    FROM expertssocial
+                    WHERE MATCH(title) AGAINST (:search_term12)
+                    GROUP BY expert_id
+                ) es2 ON es2.expert_id = es.expert_id
+                WHERE MATCH(title) AGAINST (:search_term13)
+                GROUP BY es.expert_id
+            ) es ON es.expert_id = e.id
+            LEFT JOIN (
+                SELECT DISTINCT et.expert_id, score_ttl
+                FROM expertstitles et
+                JOIN (
+                    SELECT expert_id, MAX(MATCH(title) AGAINST (:search_term14)) AS score_ttl
+                    FROM expertstitles
+                    WHERE MATCH(title) AGAINST (:search_term15)
+                    GROUP BY expert_id
+                ) et2 ON et2.expert_id = et.expert_id
+                WHERE MATCH(title) AGAINST (:search_term16)
+                GROUP BY et.expert_id
+            ) et ON et.expert_id = e.id
             LEFT JOIN experts_images ei ON ei.expert_id = e.id
         ";
         $sql .= "
                     WHERE is_approved = 1 
                       AND 
                       (
-                        MATCH(e.title, e.first_name, e.last_name, e.display_name) AGAINST (:search_term8)
-                        OR MATCH(ee.education) AGAINST (:search_term9)
-                        OR MATCH(ex.expertise) AGAINST (:search_term10)
-                        OR MATCH(el.language) AGAINST (:search_term11)
-                        OR MATCH(es.title) AGAINST (:search_term12)
-                        OR MATCH(et.title) AGAINST (:search_term13)
+                        MATCH(e.title, e.first_name, e.last_name, e.display_name) AGAINST (:search_term17)
+                        OR score_edu IS NOT NULL
+                        OR score_exp IS NOT NULL
+                        OR score_lang IS NOT NULL
+                        OR score_soc IS NOT NULL
+                        OR score_ttl IS NOT NULL
                       )
-                    GROUP BY e.id, e.last_name
-                    ORDER BY e.last_name ASC
+                    GROUP BY e.id, e.last_name, ei.id
+                    HAVING search_score >= 7
         ";
+        if($orderByLastName) {
+            $sql .= "ORDER BY e.last_name ASC, search_score DESC";
+        } else {
+            $sql .= "ORDER BY search_score DESC";
+        }
         $items = DB::select($sql, $conditions);
         $numRows = count($items);
         $items = self::hydrate($items);

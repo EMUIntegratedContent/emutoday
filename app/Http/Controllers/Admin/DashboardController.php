@@ -101,7 +101,7 @@ class DashboardController extends Controller
         }
 
         // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
-        if( ($filter && $filter == 'magazine')){
+        if(($filter && $filter == 'magazine')){
             $allStoryResults = Story::search($searchTermWild, [
                 'title' => 50,
                 'content' => 35,
@@ -119,11 +119,6 @@ class DashboardController extends Controller
         } else {
             $searchMagazineResults = array();
         }
-
-        //$storiesPaginated = $this->searchRepo->search();
-        // $numResults = count($storiesPaginated);
-
-        //return view('public.searchresults2', compact('storiesPaginated', 'searchTerm', 'numResults'));
 
 
         $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults));
