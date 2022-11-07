@@ -27,6 +27,7 @@
             <li class="btn btn-default {{ Request::get('filter') == 'events' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=events">Events</a></li>
             <li class="btn btn-default {{ Request::get('filter') == 'announcements' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=announcements">Announcements</a></li>
             <li class="btn btn-default {{ Request::get('filter') == 'magazine' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=magazine">Magazine</a></li>
+            <li class="btn btn-default {{ Request::get('filter') == 'experts' ? 'active' : '' }}"><a href="/admin/search?searchterm={{ $searchTerm }}&filter=experts">Experts</a></li>
           </ul>
         </div>
       </div>

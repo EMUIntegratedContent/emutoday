@@ -2,6 +2,7 @@
 
 namespace Emutoday\Http\Controllers\Admin;
 
+use Emutoday\Expert;
 use Illuminate\Http\Request;
 
 use Emutoday\Story;
@@ -62,66 +63,49 @@ class DashboardController extends Controller
         $searchTerm = $request->input('searchterm');
         $filter = $request->input('filter');
 
+        $isSearchFromMagazine = strpos($referer, '/magazine');  //determine if the search originates from the EMU Magazine page
+
         //Pagination properties
         $page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
         $perPage = 10;
         $offset = ($page * $perPage) - $perPage;
 
-        $searchTermWild = '*' . str_replace(' ', '*', $searchTerm)  . '*'; // Astrix to search anywhere in string.
-
         // Story results
+        $searchStoryResults = array();
         if(!$filter || $filter == 'stories' || $filter == 'all'){
-            $searchStoryResults = Story::search($searchTermWild, [
-                'title' => 50,
-                'content' => 35,
-                'teaser' => 20,
-                'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id')->get();
-        } else {
-            $searchStoryResults = array();
+            $searchStoryResultsNonMagazine = Story::runSearchNonMagazine($searchTerm);
+
+            foreach($searchStoryResultsNonMagazine as $nm_story){
+                $searchStoryResults[] = $nm_story;
+            }
         }
 
         // Event results
+        $searchEventResults = array();
         if(!$filter || $filter == 'events' || $filter == 'all'){
-            $searchEventResults = Event::search($searchTermWild, [
-                'title' => 10,
-            ], false)->get();
-        } else {
-            $searchEventResults = array();
+            $searchEventResults = Event::runSearch($searchTerm);
         }
 
         // Announcement results
+        $searchAnnouncementResults = array();
         if(!$filter || $filter == 'announcements' || $filter == 'all'){
-            $searchAnnouncementResults = Announcement::search($searchTermWild, [
-                'title' => 50,
-                'announcement' => 35
-            ], false)->select('title','announcement','submitter','id')->get();
-        } else {
-            $searchAnnouncementResults = array();
+            $searchAnnouncementResults = Announcement::runSearch($searchTerm);
         }
 
         // Magazine results (fetch ONLY if user is filtering by magazine OR the search originated from the EMU Magazine site)
-        if(($filter && $filter == 'magazine')){
-            $allStoryResults = Story::search($searchTermWild, [
-                'title' => 50,
-                'content' => 35,
-                'teaser' => 20,
-                'subtitle' => 10,
-            ], false)->select('title','subtitle','story_type','teaser','id')->get();
-
-            $searchMagazineResults = array();
-
-            foreach($allStoryResults as $article){
-                if($article->story_type == 'article'){
-                    $searchMagazineResults[] = $article;
-                }
-            }
-        } else {
-            $searchMagazineResults = array();
+        $searchMagazineResults = array();
+        if( ($filter && $filter == 'magazine') || $isSearchFromMagazine){
+            // Magazine stories should be filtered by is_approved AND a start date before or on the current date
+            $searchMagazineResults = Story::runSearchMagazine($searchTerm);
         }
 
+        // Expert results
+        $searchExpertsResults = array();
+        if(!$filter || $filter == 'experts' || $filter == 'all'){
+            $searchExpertsResults = Expert::runSearch($searchTerm);
+        }
 
-        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults));
+        $allStories = $this->searchProvider->condenseSearch(array($searchStoryResults, $searchEventResults, $searchAnnouncementResults, $searchMagazineResults, $searchExpertsResults));
 
         $numResults = count($allStories);
 
@@ -133,8 +117,7 @@ class DashboardController extends Controller
             $storiesPaginated->appends('filter', $filter);
         }
 
-        // return view('admin.searchresults', compact('searchTerm', 'searchStorys','searchEvents','searchAnnouncements'));
-        return view('admin.searchresults', compact('storiesPaginated', 'searchTermWild', 'searchTerm', 'numResults'));
+        return view('admin.searchresults', compact('storiesPaginated', 'searchTerm', 'numResults', 'isSearchFromMagazine', 'filter'));
     }
 
 }

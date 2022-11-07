@@ -643,7 +643,7 @@ export default {
           this.contact = response.data
         }
       }, (response) => {
-      }).bind(this);
+      });
     },
 
     fetchDefaultMagazineContact: function () {
@@ -652,7 +652,7 @@ export default {
         this.defaultcontact = response.data
         this.contact = response.data
       }, (response) => {
-      }).bind(this);
+      });
     },
 
     // Fetch the tags that match THIS record
@@ -770,22 +770,14 @@ export default {
     fetchAuthor: function () {
       if (this.selectedAuthor) {
         this.$http.get('/api/author/' + this.selectedAuthor.value)
-
-        .then(
-            (response) => {
-              this.author.id = response.body.id;
-              this.record.author_id = response.body.id;
-              this.author.first_name = response.body.first_name;
-              this.author.last_name = response.body.last_name;
-              this.author.phone = response.body.phone;
-              this.author.email = response.body.email;
-            },
-            (response) => {
-              //err
-            }
-        )
-
-        .bind(this);
+        .then((response) => {
+            this.author.id = response.body.id;
+            this.record.author_id = response.body.id;
+            this.author.first_name = response.body.first_name;
+            this.author.last_name = response.body.last_name;
+            this.author.phone = response.body.phone;
+            this.author.email = response.body.email;
+        })
       }
       else {
         this.author.id = '';
@@ -802,15 +794,12 @@ export default {
 
         .then(
             (response) => {
-              this.contact.id = response.body.id;
-              this.record.contact_id = response.body.id;
-              this.contact.first_name = response.body.first_name;
-              this.contact.last_name = response.body.last_name;
-              this.contact.phone = response.body.phone;
-              this.contact.email = response.body.email;
-            },
-            (response) => {
-              //err
+              this.contact.id = response.data.id;
+              this.record.contact_id = response.data.id;
+              this.contact.first_name = response.data.first_name;
+              this.contact.last_name = response.data.last_name;
+              this.contact.phone = response.data.phone;
+              this.contact.email = response.data.email;
             }
         )
 

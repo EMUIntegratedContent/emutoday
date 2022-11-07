@@ -21,10 +21,10 @@
                     <div class="accordion-content" data-tab-content>
                         <p>{!! $announcement->announcement !!}</p>
                         @if($announcement->link)
-                            <p>For more information visit: <a href="{{ (substr($announcement->link, 0, 4) == 'http') ? $announcement->link : 'https://'.$announcement->link }}" class="accordion-link" target="_blank">{{$announcement->link_txt or 'More Info'}}</a></p>
+                            <p>For more information visit: <a href="{{ (substr($announcement->link, 0, 4) == 'http') ? $announcement->link : 'https://'.$announcement->link }}" class="accordion-link" target="_blank">{{$announcement->link_txt ?: 'More Info'}}</a></p>
                         @endif
                         @if($announcement->email_link)
-                            <p>Contact Email: <a href="mailto:{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt or $announcement->email_link}}</a></p>
+                            <p>Contact Email: <a href="mailto:{{$announcement->email_link}}" class="accordion-link" target="_blank">{{$announcement->email_link_txt ?: $announcement->email_link}}</a></p>
                         @endif
                         @if($announcement->phone)
                             <p>Contact Phone: <a href="tel:{{$announcement->phone}}">{{$announcement->phone}}</a></p>
