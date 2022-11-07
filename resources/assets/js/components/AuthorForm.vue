@@ -66,7 +66,7 @@
           <div class="input-group input-group-flat">
             <select v-model="record.user_id">
                 <option :value="null">-none-</option>
-                <option v-for="user in users" v-bind:value="user.id" selected="{{ record.user_id == user.id }}">
+                <option v-for="user in users" v-bind:value="user.id" :selected="record.user_id == user.id">
                     {{ user.first_name }} {{ user.last_name }}
                 </option>
             </select>
@@ -205,11 +205,7 @@ h5.form-control {
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
-module.exports = {
-  directives: {},
-  components: {},
+export default {
   props: {
     errors: {
       default: ''
@@ -228,11 +224,12 @@ module.exports = {
     },
     user: {
       default: ''
-    },
-    user_id: '',
+    }
   },
   data: function() {
     return {
+      record_id: null,
+      record_exists: false,
       startdatePicker: null,
       enddatePicker: null,
       currentPrimaryContact: '',
@@ -253,7 +250,7 @@ module.exports = {
         is_contact: '',
         is_principal_contact: '',
         is_principal_magazine_contact: '',
-        user_id: '',
+        user_id: null,
       },
       totalChars: {
         start: 0,
@@ -269,13 +266,15 @@ module.exports = {
       },
       formInputs: {},
       formErrors: {},
+      users: []
     }
   },
   created: function() {
-  },
-  ready: function() {
+    this.fetchUsers()
     if(this.recordexists){
-      this.fetchCurrentRecord(this.recordid)
+      this.record_id = this.recordid
+      this.record_exists = this.recordexists
+      this.fetchCurrentRecord(this.record_id)
       this.fetchCurrentPrimaryContact()
       this.fetchCurrentPrimaryMagainzeContact()
     }
@@ -319,32 +318,26 @@ module.exports = {
 
     // Switch verbage of submit button.
     submitBtnLabel:function(){
-      return (this.recordexists)?'Update Author': 'Create Author'
+      return (this.record_exists)?'Update Author': 'Create Author'
     },
   },
 
   methods: {
-    readyAgain: function() {
-
-    },
-
     fetchUsers: function(recid){
         let route =  (recid) ? '/api/users/' + recid : '/api/users';
-
         this.$http.get(route)
-
         .then((response) => {
-          this.$set('users', response.data.newdata)
+          this.users = response.data.newdata
         }, (response) => {
           this.formErrors = response.data.error.message;
-        }).bind(this);
+        });
     },
     fetchSubmittedRecord: function(recid){
       // Sets params for update record, Passes an id to fetchCurrentRecord
-      this.recordexists = true;
+      this.record_exists = true;
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
-      this.recordid = recid;
+      this.record_id = recid;
       this.formErrors = {};
       this.fetchCurrentRecord(recid);
     },
@@ -353,33 +346,33 @@ module.exports = {
       this.$http.get('/api/authors/' + recid + '/edit')
 
       .then((response) => {
-        this.$set('record', response.data.data)
-        this.user_id = response.data.data.user_id
+        this.record = response.data.data
+        this.record.user_id = response.data.data.user_id
 
-        this.fetchUsers(this.user_id)
+        this.fetchUsers(this.record.user_id)
       }, (response) => {
         this.formErrors = response.data.error.message;
-      }).bind(this);
+      });
     },
 
     fetchCurrentPrimaryContact: function(){
       this.$http.get('/api/authors/primarycontact')
 
       .then((response) => {
-        this.$set('currentPrimaryContact', response.data.newdata.name);
+        this.currentPrimaryContact = response.data.newdata.name;
       }, (response) => {
         this.formErrors = response.data.error.message;
-      }).bind(this);
+      });
     },
 
     fetchCurrentPrimaryMagainzeContact: function(){
       this.$http.get('/api/authors/primarymagazinecontact')
 
       .then((response) => {
-        this.$set('currentPrimaryMagazineContact', response.data.newdata.name);
+        this.currentPrimaryMagazineContact = response.data.newdata.name;
       }, (response) => {
         this.formErrors = response.data.error.message;
-      }).bind(this);
+      });
     },
 
     submitForm: function(e) {
@@ -389,9 +382,9 @@ module.exports = {
 
       this.record.type = this.type;
 
-      // Dicide route to submit form to
-      let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/authors/' + this.record.id : '/api/authors';
+      // Decide route to submit form to
+      let method = (this.record_exists) ? 'put' : 'post'
+      let route =  (this.record_exists) ? '/api/authors/' + this.record.id : '/api/authors';
 
       // Submit form.
       this.$http[method](route, this.record) //
@@ -401,11 +394,10 @@ module.exports = {
         this.formMessage.msg = response.data.message;
         this.formMessage.isOk = response.ok; // Success message
         this.currentRecordId = response.data.newdata.record_id;
-        this.recordid = response.data.newdata.record_id;
         this.record_id = response.data.newdata.record_id;
         this.record.id = response.data.newdata.record_id;
         this.formMessage.isErr = false;
-        this.recordexists = true;
+        this.record_exists = true;
         this.formErrors = {}; // Clear errors?
         this.fetchCurrentRecord(this.record.id)
       }, (response) => { // If invalid. error callback
@@ -413,16 +405,8 @@ module.exports = {
         this.formMessage.isErr = true;
         // Set errors from validation to vue data
         this.formErrors = response.data.error.message;
-      }).bind(this);
+      });
     }
-  },
-  watch: {
-
-  },
-
-  filters: {
-  },
-  events: {
   }
 };
 

@@ -1,5 +1,6 @@
 {
     "/js/vue-announcement-form.js": "/js/vue-announcement-form.js",
+    "/js/vue-author-form.js": "/js/vue-author-form.js",
     "/js/vue-caleventview.js": "/js/vue-caleventview.js",
     "/js/vue-email-form.js": "/js/vue-email-form.js",
     "/js/vue-event-form.js": "/js/vue-event-form.js",
