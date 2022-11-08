@@ -558,21 +558,18 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           name: 'others',
           groups: ['others']
-        }, {
-          name: 'about',
-          groups: ['about']
-        }],
-        extraPlugins: 'horizontalrule,iframe,videoembed,image2',
+        } // { name: 'about', groups: [ 'about' ] }
+        ],
+        extraPlugins: 'file-manager,horizontalrule,iframe,videoembed',
+        Flmngr: {
+          urlFileManager: "/flmngr.php",
+          urlFiles: "/imgs/uploads/story/images/"
+        },
         extraAllowedContent: 'div(*){*};hr;iframe[*]',
         removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
         // pasteFilter: 'plain-text',
-        filebrowserWindowFeatures: 'resizable=yes',
-        filebrowserUploadMethod: 'form',
-        // need this to upload files
-        filebrowserBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
-        filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
-        filebrowserUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-        filebrowserImageUploadUrl: '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images',
+        // filebrowserWindowFeatures: 'resizable=yes',
+        // filebrowserUploadMethod: 'form', // need this to upload files
         skin: 'moono'
       },
       tags: [],
