@@ -316,16 +316,19 @@ export default {
           { name: 'others', groups: [ 'others' ] },
           // { name: 'about', groups: [ 'about' ] }
         ],
-        extraPlugins: 'file-manager,horizontalrule,iframe,videoembed',
+        extraPlugins: 'image2,file-manager,horizontalrule,iframe,videoembed',
         Flmngr : {
           urlFileManager: "/flmngr.php",
           urlFiles: "/imgs/uploads/story/images/"
         },
         extraAllowedContent: 'div(*){*};hr;iframe[*]',
         removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
-        // pasteFilter: 'plain-text',
-        // filebrowserWindowFeatures: 'resizable=yes',
-        // filebrowserUploadMethod: 'form', // need this to upload files
+        pasteFilter: 'plain-text',
+        filebrowserWindowFeatures: 'resizable=yes',
+        filebrowserBrowseUrl: '/flmngr.php',
+        filebrowserImageBrowseUrl: '/flmngr.php',
+        // filebrowserUploadUrl: '/flmngr.php',
+        // filebrowserImageUploadUrl: '/flmngr.php',
         skin: 'moono',
       },
 
