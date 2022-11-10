@@ -129,11 +129,6 @@ class StoryImageController extends Controller
       $storyImage->image_extension = $imgFileExtension;
       $imgFileName = $storyImage->image_name . '-'. date('YmdHis') . '.' . $storyImage->image_extension;
 
-      if($imgFile->getSize() > 2000000) {
-        $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
-        flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
-        return redirect($rurl);
-      }
       Image::make($imgFilePath)
       ->save(public_path() . $destinationFolder . $imgFileName);
 

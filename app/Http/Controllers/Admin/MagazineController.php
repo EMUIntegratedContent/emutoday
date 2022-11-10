@@ -126,12 +126,6 @@ class MagazineController extends Controller
 
          $imgFileName = $mediafile->name . '.' . $mediafile->ext;
 
-        if($imgFile->getSize() > 2000000) {
-            $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
-            flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
-            return redirect(route('admin_magazine_edit', $magazine->id));
-        }
-
         Image::make($imgFilePath)
                         ->save(public_path() . $destinationFolder . $imgFileName);
 
@@ -173,11 +167,6 @@ class MagazineController extends Controller
             $imgFileName = $mediafile->name . '.' . $mediafile->ext;
             $mediafile->filename = $imgFileName;
 
-            if($imgFile->getSize() > 2000000) {
-                $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
-                flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
-                return redirect()->back();
-            }
             Image::make($imgFilePath)
                       ->save(public_path() . $destinationFolder . $imgFileName);
         }

@@ -75,13 +75,6 @@ class MediafileController extends Controller
 
                          $imgFileName = $mediafile->name . '.' . $mediafile->ext;
 
-
-
-                if($imgFile->getSize() > 2000000) {
-                    $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
-                    flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
-                    return redirect()->action('Admin\UserController@edit', $user->id);
-                }
                 Image::make($imgFilePath)
                      ->save(public_path() . $destinationFolder . $imgFileName);
 
@@ -129,11 +122,6 @@ class MediafileController extends Controller
 
                      $imgFileName = $mediafile->name . '.' . $mediafile->ext;
 
-                        if($imgFile->getSize() > 2000000) {
-                            $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
-                            flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
-                            return redirect()->action('Admin\UserController@edit', $user->id);
-                        }
                      Image::make($imgFilePath)
                                          ->save(public_path() . $mediafile->path . $imgFileName);
 

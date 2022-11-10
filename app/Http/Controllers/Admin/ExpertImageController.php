@@ -102,11 +102,6 @@ class ExpertImageController extends Controller
       $expertImage->image_extension = $imgFileExtension;
       $imgFileName = $expertImage->image_name . '-'. date('YmdHis') . '.' . $expertImage->image_extension;
 
-        if($imgFile->getSize() > 2000000) {
-            $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
-            flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
-            return redirect($rurl);
-        }
       Image::make($imgFilePath)
       ->save(public_path() . $destinationFolder . $imgFileName);
 
