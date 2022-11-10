@@ -26,7 +26,7 @@
             {!! Form::hidden('image_name', null, ['class' => 'form-control', 'readonly' => 'readonly']) !!}
 
         <div class="form-group">
-            <label class="control-label" for="image">Select File</label>
+            <label class="control-label" for="image">Select File (max size {{ ini_get('upload_max_filesize') }})</label>
             {!! Form::file('image', null, array('required', 'class'=>'form-control input-sm')) !!}
             <span class="help-block">{{$storyImage->imgtype->helptxt}}</span>
 
@@ -34,7 +34,7 @@
         <div class="form-group">
           {!! Form::label('alt_text', 'Image alt text') !!}
           {!! Form::text('alt_text', null, ['class' => 'form-control input-sm']) !!}
-          <span class="help-block">Describe this image so visually-impaired users can understand it. </span>
+          <span class="help-block">Describe this image so visually-impaired users can understand it.</span>
         </div>
         @if($storyImage->group == 'emutoday')
             <div class="form-group">
