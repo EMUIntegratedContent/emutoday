@@ -77,13 +77,14 @@ class MediafileController extends Controller
 
 
 
-                    $image = Image::make($imgFilePath)
+                if($imgFile->getSize() > 2000000) {
+                    $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
+                    flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
+                    return redirect()->action('Admin\UserController@edit', $user->id);
+                }
+                Image::make($imgFilePath)
                      ->save(public_path() . $destinationFolder . $imgFileName);
-                    //  ->fit(100)
-                    //  ->save(public_path() . $destinationFolder . 'thumbnails/' . 'thumb-' . $imgFileName);
 
-                // 	}
-                //
                     $mediafile->filename = $imgFileName;
                     $mediafile->type = 'avatar';
                     $mediafile->group = $group;
@@ -92,7 +93,7 @@ class MediafileController extends Controller
                     $mediafile->save();
                     $user->mediaFiles()->save($mediafile);
                     flash()->success('User Image has been added');
-                    return redirect()->action('Admin\UserController@edit', $user->id);//->with('status', 'Story has been created.');
+                    return redirect()->action('Admin\UserController@edit', $user->id);
 
 
             }
@@ -127,7 +128,13 @@ class MediafileController extends Controller
                      $mediafile->ext = $imgFileExtension;
 
                      $imgFileName = $mediafile->name . '.' . $mediafile->ext;
-                     $image = Image::make($imgFilePath)
+
+                        if($imgFile->getSize() > 2000000) {
+                            $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
+                            flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
+                            return redirect()->action('Admin\UserController@edit', $user->id);
+                        }
+                     Image::make($imgFilePath)
                                          ->save(public_path() . $mediafile->path . $imgFileName);
 
                 }

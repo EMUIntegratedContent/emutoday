@@ -91,6 +91,8 @@ class StoryImageController extends Controller
     $stype = $request->get('stype');
     //create new instance of model to save from form
     $storyImage = $this->storyImages->findOrFail($id);
+    $story = $storyImage->story;
+    $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
 
     $storyImage->image_type = $request->get('image_type');
     $storyImage->is_active = $request->get('is_active');
@@ -126,15 +128,19 @@ class StoryImageController extends Controller
       }
       $storyImage->image_extension = $imgFileExtension;
       $imgFileName = $storyImage->image_name . '-'. date('YmdHis') . '.' . $storyImage->image_extension;
-      $image = Image::make($imgFilePath)
+
+      if($imgFile->getSize() > 2000000) {
+        $imgFileSize = number_format($imgFile->getSize() / 1000000, 1);
+        flash()->error("File is too large ($imgFileSize MB)! Maximum upload size is 2 MB.");
+        return redirect($rurl);
+      }
+      Image::make($imgFilePath)
       ->save(public_path() . $destinationFolder . $imgFileName);
 
       $storyImage->filename = $imgFileName;
     }
 
     $storyImage->save();
-    $story = $storyImage->story;
-    $stype = $story->story_type;
     if($request->img_type == 'front' || $request->img_type == 'hero') {
       // Stories with 'front' image can be featured story on Magazines,
       // Stories with 'hero' image can be featured story on Today.
@@ -142,7 +148,6 @@ class StoryImageController extends Controller
       $story->save();
     }
     flash()->success('Image has been updated.');
-    $rurl = '/admin/'.$qtype.'/'.$gtype.'/'.$stype.'/'.$story->id.'/edit';
 
     return redirect($rurl);
   }
