@@ -399,7 +399,6 @@ class EventController extends ApiController
             $mediafile->name = 'event'. '-' .$event->id . '-' . date('YmdHis');
             $mediafile->ext = $imgFileExtension;
             $imgFileName = $mediafile->name . '.' . $mediafile->ext;
-
             Image::make($imgFilePath)
             ->save(public_path() . $destinationFolder . $imgFileName);
             $mediafile->filename = $imgFileName;
