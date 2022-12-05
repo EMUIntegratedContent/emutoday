@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import moment from 'moment'
 
 Vue.use(Vuex)
 
