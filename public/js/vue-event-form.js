@@ -17571,6 +17571,2469 @@ function genPropsAccessExp(name) {
 
 /***/ }),
 
+/***/ "./node_modules/axios/index.js":
+/*!*************************************!*\
+  !*** ./node_modules/axios/index.js ***!
+  \*************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/adapters/xhr.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/adapters/xhr.js ***!
+  \************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
+var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
+var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
+var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
+var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
+var transitionalDefaults = __webpack_require__(/*! ../defaults/transitional */ "./node_modules/axios/lib/defaults/transitional.js");
+var AxiosError = __webpack_require__(/*! ../core/AxiosError */ "./node_modules/axios/lib/core/AxiosError.js");
+var CanceledError = __webpack_require__(/*! ../cancel/CanceledError */ "./node_modules/axios/lib/cancel/CanceledError.js");
+var parseProtocol = __webpack_require__(/*! ../helpers/parseProtocol */ "./node_modules/axios/lib/helpers/parseProtocol.js");
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+    var responseType = config.responseType;
+    var onCanceled;
+    function done() {
+      if (config.cancelToken) {
+        config.cancelToken.unsubscribe(onCanceled);
+      }
+
+      if (config.signal) {
+        config.signal.removeEventListener('abort', onCanceled);
+      }
+    }
+
+    if (utils.isFormData(requestData) && utils.isStandardBrowserEnv()) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    var fullPath = buildFullPath(config.baseURL, config.url);
+
+    request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    function onloadend() {
+      if (!request) {
+        return;
+      }
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !responseType || responseType === 'text' ||  responseType === 'json' ?
+        request.responseText : request.response;
+      var response = {
+        data: responseData,
+        status: request.status,
+        statusText: request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(function _resolve(value) {
+        resolve(value);
+        done();
+      }, function _reject(err) {
+        reject(err);
+        done();
+      }, response);
+
+      // Clean up request
+      request = null;
+    }
+
+    if ('onloadend' in request) {
+      // Use onloadend if available
+      request.onloadend = onloadend;
+    } else {
+      // Listen for ready state to emulate onloadend
+      request.onreadystatechange = function handleLoad() {
+        if (!request || request.readyState !== 4) {
+          return;
+        }
+
+        // The request errored out and we didn't get a response, this will be
+        // handled by onerror instead
+        // With one exception: request that using file: protocol, most browsers
+        // will return status as 0 even though it's a successful request
+        if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+          return;
+        }
+        // readystate handler is calling before onerror or ontimeout handlers,
+        // so we should call onloadend on the next 'tick'
+        setTimeout(onloadend);
+      };
+    }
+
+    // Handle browser request cancellation (as opposed to a manual cancellation)
+    request.onabort = function handleAbort() {
+      if (!request) {
+        return;
+      }
+
+      reject(new AxiosError('Request aborted', AxiosError.ECONNABORTED, config, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(new AxiosError('Network Error', AxiosError.ERR_NETWORK, config, request, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      var timeoutErrorMessage = config.timeout ? 'timeout of ' + config.timeout + 'ms exceeded' : 'timeout exceeded';
+      var transitional = config.transitional || transitionalDefaults;
+      if (config.timeoutErrorMessage) {
+        timeoutErrorMessage = config.timeoutErrorMessage;
+      }
+      reject(new AxiosError(
+        timeoutErrorMessage,
+        transitional.clarifyTimeoutError ? AxiosError.ETIMEDOUT : AxiosError.ECONNABORTED,
+        config,
+        request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
+        cookies.read(config.xsrfCookieName) :
+        undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (!utils.isUndefined(config.withCredentials)) {
+      request.withCredentials = !!config.withCredentials;
+    }
+
+    // Add responseType to request if needed
+    if (responseType && responseType !== 'json') {
+      request.responseType = config.responseType;
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken || config.signal) {
+      // Handle cancellation
+      // eslint-disable-next-line func-names
+      onCanceled = function(cancel) {
+        if (!request) {
+          return;
+        }
+        reject(!cancel || (cancel && cancel.type) ? new CanceledError() : cancel);
+        request.abort();
+        request = null;
+      };
+
+      config.cancelToken && config.cancelToken.subscribe(onCanceled);
+      if (config.signal) {
+        config.signal.aborted ? onCanceled() : config.signal.addEventListener('abort', onCanceled);
+      }
+    }
+
+    if (!requestData) {
+      requestData = null;
+    }
+
+    var protocol = parseProtocol(fullPath);
+
+    if (protocol && [ 'http', 'https', 'file' ].indexOf(protocol) === -1) {
+      reject(new AxiosError('Unsupported protocol ' + protocol + ':', AxiosError.ERR_BAD_REQUEST, config));
+      return;
+    }
+
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/axios.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/axios.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+var Axios = __webpack_require__(/*! ./core/Axios */ "./node_modules/axios/lib/core/Axios.js");
+var mergeConfig = __webpack_require__(/*! ./core/mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
+var defaults = __webpack_require__(/*! ./defaults */ "./node_modules/axios/lib/defaults/index.js");
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios(defaultConfig);
+  var instance = bind(Axios.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  // Factory for creating new instances
+  instance.create = function create(instanceConfig) {
+    return createInstance(mergeConfig(defaultConfig, instanceConfig));
+  };
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios;
+
+// Expose Cancel & CancelToken
+axios.CanceledError = __webpack_require__(/*! ./cancel/CanceledError */ "./node_modules/axios/lib/cancel/CanceledError.js");
+axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ "./node_modules/axios/lib/cancel/CancelToken.js");
+axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+axios.VERSION = (__webpack_require__(/*! ./env/data */ "./node_modules/axios/lib/env/data.js").version);
+axios.toFormData = __webpack_require__(/*! ./helpers/toFormData */ "./node_modules/axios/lib/helpers/toFormData.js");
+
+// Expose AxiosError class
+axios.AxiosError = __webpack_require__(/*! ../lib/core/AxiosError */ "./node_modules/axios/lib/core/AxiosError.js");
+
+// alias for CanceledError for backward compatibility
+axios.Cancel = axios.CanceledError;
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+
+// Expose isAxiosError
+axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
+
+module.exports = axios;
+
+// Allow use of default import syntax in TypeScript
+module.exports["default"] = axios;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/CancelToken.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var CanceledError = __webpack_require__(/*! ./CanceledError */ "./node_modules/axios/lib/cancel/CanceledError.js");
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+
+  // eslint-disable-next-line func-names
+  this.promise.then(function(cancel) {
+    if (!token._listeners) return;
+
+    var i;
+    var l = token._listeners.length;
+
+    for (i = 0; i < l; i++) {
+      token._listeners[i](cancel);
+    }
+    token._listeners = null;
+  });
+
+  // eslint-disable-next-line func-names
+  this.promise.then = function(onfulfilled) {
+    var _resolve;
+    // eslint-disable-next-line func-names
+    var promise = new Promise(function(resolve) {
+      token.subscribe(resolve);
+      _resolve = resolve;
+    }).then(onfulfilled);
+
+    promise.cancel = function reject() {
+      token.unsubscribe(_resolve);
+    };
+
+    return promise;
+  };
+
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new CanceledError(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `CanceledError` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Subscribe to the cancel signal
+ */
+
+CancelToken.prototype.subscribe = function subscribe(listener) {
+  if (this.reason) {
+    listener(this.reason);
+    return;
+  }
+
+  if (this._listeners) {
+    this._listeners.push(listener);
+  } else {
+    this._listeners = [listener];
+  }
+};
+
+/**
+ * Unsubscribe from the cancel signal
+ */
+
+CancelToken.prototype.unsubscribe = function unsubscribe(listener) {
+  if (!this._listeners) {
+    return;
+  }
+  var index = this._listeners.indexOf(listener);
+  if (index !== -1) {
+    this._listeners.splice(index, 1);
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/CanceledError.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/CanceledError.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var AxiosError = __webpack_require__(/*! ../core/AxiosError */ "./node_modules/axios/lib/core/AxiosError.js");
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * A `CanceledError` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function CanceledError(message) {
+  // eslint-disable-next-line no-eq-null,eqeqeq
+  AxiosError.call(this, message == null ? 'canceled' : message, AxiosError.ERR_CANCELED);
+  this.name = 'CanceledError';
+}
+
+utils.inherits(CanceledError, AxiosError, {
+  __CANCEL__: true
+});
+
+module.exports = CanceledError;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/isCancel.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
+  \***************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/Axios.js":
+/*!**********************************************!*\
+  !*** ./node_modules/axios/lib/core/Axios.js ***!
+  \**********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var buildURL = __webpack_require__(/*! ../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ "./node_modules/axios/lib/core/InterceptorManager.js");
+var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ "./node_modules/axios/lib/core/dispatchRequest.js");
+var mergeConfig = __webpack_require__(/*! ./mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
+var buildFullPath = __webpack_require__(/*! ./buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
+var validator = __webpack_require__(/*! ../helpers/validator */ "./node_modules/axios/lib/helpers/validator.js");
+
+var validators = validator.validators;
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(configOrUrl, config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof configOrUrl === 'string') {
+    config = config || {};
+    config.url = configOrUrl;
+  } else {
+    config = configOrUrl || {};
+  }
+
+  config = mergeConfig(this.defaults, config);
+
+  // Set config.method
+  if (config.method) {
+    config.method = config.method.toLowerCase();
+  } else if (this.defaults.method) {
+    config.method = this.defaults.method.toLowerCase();
+  } else {
+    config.method = 'get';
+  }
+
+  var transitional = config.transitional;
+
+  if (transitional !== undefined) {
+    validator.assertOptions(transitional, {
+      silentJSONParsing: validators.transitional(validators.boolean),
+      forcedJSONParsing: validators.transitional(validators.boolean),
+      clarifyTimeoutError: validators.transitional(validators.boolean)
+    }, false);
+  }
+
+  // filter out skipped interceptors
+  var requestInterceptorChain = [];
+  var synchronousRequestInterceptors = true;
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    if (typeof interceptor.runWhen === 'function' && interceptor.runWhen(config) === false) {
+      return;
+    }
+
+    synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
+
+    requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  var responseInterceptorChain = [];
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  var promise;
+
+  if (!synchronousRequestInterceptors) {
+    var chain = [dispatchRequest, undefined];
+
+    Array.prototype.unshift.apply(chain, requestInterceptorChain);
+    chain = chain.concat(responseInterceptorChain);
+
+    promise = Promise.resolve(config);
+    while (chain.length) {
+      promise = promise.then(chain.shift(), chain.shift());
+    }
+
+    return promise;
+  }
+
+
+  var newConfig = config;
+  while (requestInterceptorChain.length) {
+    var onFulfilled = requestInterceptorChain.shift();
+    var onRejected = requestInterceptorChain.shift();
+    try {
+      newConfig = onFulfilled(newConfig);
+    } catch (error) {
+      onRejected(error);
+      break;
+    }
+  }
+
+  try {
+    promise = dispatchRequest(newConfig);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+
+  while (responseInterceptorChain.length) {
+    promise = promise.then(responseInterceptorChain.shift(), responseInterceptorChain.shift());
+  }
+
+  return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  var fullPath = buildFullPath(config.baseURL, config.url);
+  return buildURL(fullPath, config.params, config.paramsSerializer);
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, config) {
+    return this.request(mergeConfig(config || {}, {
+      method: method,
+      url: url,
+      data: (config || {}).data
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+
+  function generateHTTPMethod(isForm) {
+    return function httpMethod(url, data, config) {
+      return this.request(mergeConfig(config || {}, {
+        method: method,
+        headers: isForm ? {
+          'Content-Type': 'multipart/form-data'
+        } : {},
+        url: url,
+        data: data
+      }));
+    };
+  }
+
+  Axios.prototype[method] = generateHTTPMethod();
+
+  Axios.prototype[method + 'Form'] = generateHTTPMethod(true);
+});
+
+module.exports = Axios;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/AxiosError.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/core/AxiosError.js ***!
+  \***************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [config] The config.
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+function AxiosError(message, code, config, request, response) {
+  Error.call(this);
+  this.message = message;
+  this.name = 'AxiosError';
+  code && (this.code = code);
+  config && (this.config = config);
+  request && (this.request = request);
+  response && (this.response = response);
+}
+
+utils.inherits(AxiosError, Error, {
+  toJSON: function toJSON() {
+    return {
+      // Standard
+      message: this.message,
+      name: this.name,
+      // Microsoft
+      description: this.description,
+      number: this.number,
+      // Mozilla
+      fileName: this.fileName,
+      lineNumber: this.lineNumber,
+      columnNumber: this.columnNumber,
+      stack: this.stack,
+      // Axios
+      config: this.config,
+      code: this.code,
+      status: this.response && this.response.status ? this.response.status : null
+    };
+  }
+});
+
+var prototype = AxiosError.prototype;
+var descriptors = {};
+
+[
+  'ERR_BAD_OPTION_VALUE',
+  'ERR_BAD_OPTION',
+  'ECONNABORTED',
+  'ETIMEDOUT',
+  'ERR_NETWORK',
+  'ERR_FR_TOO_MANY_REDIRECTS',
+  'ERR_DEPRECATED',
+  'ERR_BAD_RESPONSE',
+  'ERR_BAD_REQUEST',
+  'ERR_CANCELED'
+// eslint-disable-next-line func-names
+].forEach(function(code) {
+  descriptors[code] = {value: code};
+});
+
+Object.defineProperties(AxiosError, descriptors);
+Object.defineProperty(prototype, 'isAxiosError', {value: true});
+
+// eslint-disable-next-line func-names
+AxiosError.from = function(error, code, config, request, response, customProps) {
+  var axiosError = Object.create(prototype);
+
+  utils.toFlatObject(error, axiosError, function filter(obj) {
+    return obj !== Error.prototype;
+  });
+
+  AxiosError.call(axiosError, error.message, code, config, request, response);
+
+  axiosError.name = error.name;
+
+  customProps && Object.assign(axiosError, customProps);
+
+  return axiosError;
+};
+
+module.exports = AxiosError;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/InterceptorManager.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected, options) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected,
+    synchronous: options ? options.synchronous : false,
+    runWhen: options ? options.runWhen : null
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/buildFullPath.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/buildFullPath.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var isAbsoluteURL = __webpack_require__(/*! ../helpers/isAbsoluteURL */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
+var combineURLs = __webpack_require__(/*! ../helpers/combineURLs */ "./node_modules/axios/lib/helpers/combineURLs.js");
+
+/**
+ * Creates a new URL by combining the baseURL with the requestedURL,
+ * only when the requestedURL is not already an absolute URL.
+ * If the requestURL is absolute, this function returns the requestedURL untouched.
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} requestedURL Absolute or relative URL to combine
+ * @returns {string} The combined full path
+ */
+module.exports = function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !isAbsoluteURL(requestedURL)) {
+    return combineURLs(baseURL, requestedURL);
+  }
+  return requestedURL;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/dispatchRequest.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var transformData = __webpack_require__(/*! ./transformData */ "./node_modules/axios/lib/core/transformData.js");
+var isCancel = __webpack_require__(/*! ../cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+var defaults = __webpack_require__(/*! ../defaults */ "./node_modules/axios/lib/defaults/index.js");
+var CanceledError = __webpack_require__(/*! ../cancel/CanceledError */ "./node_modules/axios/lib/cancel/CanceledError.js");
+
+/**
+ * Throws a `CanceledError` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+
+  if (config.signal && config.signal.aborted) {
+    throw new CanceledError();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData.call(
+    config,
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers
+  );
+
+  utils.forEach(
+    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData.call(
+      config,
+      response.data,
+      response.headers,
+      config.transformResponse
+    );
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData.call(
+          config,
+          reason.response.data,
+          reason.response.headers,
+          config.transformResponse
+        );
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/mergeConfig.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/core/mergeConfig.js ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Config-specific merge-function which creates a new config-object
+ * by merging two configuration objects together.
+ *
+ * @param {Object} config1
+ * @param {Object} config2
+ * @returns {Object} New object resulting from merging config2 to config1
+ */
+module.exports = function mergeConfig(config1, config2) {
+  // eslint-disable-next-line no-param-reassign
+  config2 = config2 || {};
+  var config = {};
+
+  function getMergedValue(target, source) {
+    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
+      return utils.merge(target, source);
+    } else if (utils.isPlainObject(source)) {
+      return utils.merge({}, source);
+    } else if (utils.isArray(source)) {
+      return source.slice();
+    }
+    return source;
+  }
+
+  // eslint-disable-next-line consistent-return
+  function mergeDeepProperties(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      return getMergedValue(config1[prop], config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      return getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function valueFromConfig2(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      return getMergedValue(undefined, config2[prop]);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function defaultToConfig2(prop) {
+    if (!utils.isUndefined(config2[prop])) {
+      return getMergedValue(undefined, config2[prop]);
+    } else if (!utils.isUndefined(config1[prop])) {
+      return getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  // eslint-disable-next-line consistent-return
+  function mergeDirectKeys(prop) {
+    if (prop in config2) {
+      return getMergedValue(config1[prop], config2[prop]);
+    } else if (prop in config1) {
+      return getMergedValue(undefined, config1[prop]);
+    }
+  }
+
+  var mergeMap = {
+    'url': valueFromConfig2,
+    'method': valueFromConfig2,
+    'data': valueFromConfig2,
+    'baseURL': defaultToConfig2,
+    'transformRequest': defaultToConfig2,
+    'transformResponse': defaultToConfig2,
+    'paramsSerializer': defaultToConfig2,
+    'timeout': defaultToConfig2,
+    'timeoutMessage': defaultToConfig2,
+    'withCredentials': defaultToConfig2,
+    'adapter': defaultToConfig2,
+    'responseType': defaultToConfig2,
+    'xsrfCookieName': defaultToConfig2,
+    'xsrfHeaderName': defaultToConfig2,
+    'onUploadProgress': defaultToConfig2,
+    'onDownloadProgress': defaultToConfig2,
+    'decompress': defaultToConfig2,
+    'maxContentLength': defaultToConfig2,
+    'maxBodyLength': defaultToConfig2,
+    'beforeRedirect': defaultToConfig2,
+    'transport': defaultToConfig2,
+    'httpAgent': defaultToConfig2,
+    'httpsAgent': defaultToConfig2,
+    'cancelToken': defaultToConfig2,
+    'socketPath': defaultToConfig2,
+    'responseEncoding': defaultToConfig2,
+    'validateStatus': mergeDirectKeys
+  };
+
+  utils.forEach(Object.keys(config1).concat(Object.keys(config2)), function computeConfigValue(prop) {
+    var merge = mergeMap[prop] || mergeDeepProperties;
+    var configValue = merge(prop);
+    (utils.isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
+  });
+
+  return config;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/settle.js":
+/*!***********************************************!*\
+  !*** ./node_modules/axios/lib/core/settle.js ***!
+  \***********************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var AxiosError = __webpack_require__(/*! ./AxiosError */ "./node_modules/axios/lib/core/AxiosError.js");
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(new AxiosError(
+      'Request failed with status code ' + response.status,
+      [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
+      response.config,
+      response.request,
+      response
+    ));
+  }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/transformData.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/transformData.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var defaults = __webpack_require__(/*! ../defaults */ "./node_modules/axios/lib/defaults/index.js");
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  var context = this || defaults;
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn.call(context, data, headers);
+  });
+
+  return data;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/defaults/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/defaults/index.js ***!
+  \**************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+var normalizeHeaderName = __webpack_require__(/*! ../helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
+var AxiosError = __webpack_require__(/*! ../core/AxiosError */ "./node_modules/axios/lib/core/AxiosError.js");
+var transitionalDefaults = __webpack_require__(/*! ./transitional */ "./node_modules/axios/lib/defaults/transitional.js");
+var toFormData = __webpack_require__(/*! ../helpers/toFormData */ "./node_modules/axios/lib/helpers/toFormData.js");
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(/*! ../adapters/xhr */ "./node_modules/axios/lib/adapters/xhr.js");
+  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(/*! ../adapters/http */ "./node_modules/axios/lib/adapters/xhr.js");
+  }
+  return adapter;
+}
+
+function stringifySafely(rawValue, parser, encoder) {
+  if (utils.isString(rawValue)) {
+    try {
+      (parser || JSON.parse)(rawValue);
+      return utils.trim(rawValue);
+    } catch (e) {
+      if (e.name !== 'SyntaxError') {
+        throw e;
+      }
+    }
+  }
+
+  return (encoder || JSON.stringify)(rawValue);
+}
+
+var defaults = {
+
+  transitional: transitionalDefaults,
+
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Accept');
+    normalizeHeaderName(headers, 'Content-Type');
+
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+
+    var isObjectPayload = utils.isObject(data);
+    var contentType = headers && headers['Content-Type'];
+
+    var isFileList;
+
+    if ((isFileList = utils.isFileList(data)) || (isObjectPayload && contentType === 'multipart/form-data')) {
+      var _FormData = this.env && this.env.FormData;
+      return toFormData(isFileList ? {'files[]': data} : data, _FormData && new _FormData());
+    } else if (isObjectPayload || contentType === 'application/json') {
+      setContentTypeIfUnset(headers, 'application/json');
+      return stringifySafely(data);
+    }
+
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    var transitional = this.transitional || defaults.transitional;
+    var silentJSONParsing = transitional && transitional.silentJSONParsing;
+    var forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+    var strictJSONParsing = !silentJSONParsing && this.responseType === 'json';
+
+    if (strictJSONParsing || (forcedJSONParsing && utils.isString(data) && data.length)) {
+      try {
+        return JSON.parse(data);
+      } catch (e) {
+        if (strictJSONParsing) {
+          if (e.name === 'SyntaxError') {
+            throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+          }
+          throw e;
+        }
+      }
+    }
+
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+  maxBodyLength: -1,
+
+  env: {
+    FormData: __webpack_require__(/*! ./env/FormData */ "./node_modules/axios/lib/helpers/null.js")
+  },
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  },
+
+  headers: {
+    common: {
+      'Accept': 'application/json, text/plain, */*'
+    }
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/defaults/transitional.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/defaults/transitional.js ***!
+  \*********************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = {
+  silentJSONParsing: true,
+  forcedJSONParsing: true,
+  clarifyTimeoutError: false
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/env/data.js":
+/*!********************************************!*\
+  !*** ./node_modules/axios/lib/env/data.js ***!
+  \********************************************/
+/***/ ((module) => {
+
+module.exports = {
+  "version": "0.27.2"
+};
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/bind.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/bind.js ***!
+  \************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/buildURL.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
+  \****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    var hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/combineURLs.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
+  \*******************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/cookies.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/cookies.js ***!
+  \***************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs support document.cookie
+    (function standardBrowserEnv() {
+      return {
+        write: function write(name, value, expires, path, domain, secure) {
+          var cookie = [];
+          cookie.push(name + '=' + encodeURIComponent(value));
+
+          if (utils.isNumber(expires)) {
+            cookie.push('expires=' + new Date(expires).toGMTString());
+          }
+
+          if (utils.isString(path)) {
+            cookie.push('path=' + path);
+          }
+
+          if (utils.isString(domain)) {
+            cookie.push('domain=' + domain);
+          }
+
+          if (secure === true) {
+            cookie.push('secure');
+          }
+
+          document.cookie = cookie.join('; ');
+        },
+
+        read: function read(name) {
+          var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+          return (match ? decodeURIComponent(match[3]) : null);
+        },
+
+        remove: function remove(name) {
+          this.write(name, '', Date.now() - 86400000);
+        }
+      };
+    })() :
+
+  // Non standard browser env (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return {
+        write: function write() {},
+        read: function read() { return null; },
+        remove: function remove() {}
+      };
+    })()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isAbsoluteURL.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
+  \*********************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isAxiosError.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Determines whether the payload is an error thrown by Axios
+ *
+ * @param {*} payload The value to test
+ * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
+ */
+module.exports = function isAxiosError(payload) {
+  return utils.isObject(payload) && (payload.isAxiosError === true);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isURLSameOrigin.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
+  \***********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs have full support of the APIs needed to test
+  // whether the request URL is of the same origin as current location.
+    (function standardBrowserEnv() {
+      var msie = /(msie|trident)/i.test(navigator.userAgent);
+      var urlParsingNode = document.createElement('a');
+      var originURL;
+
+      /**
+    * Parse a URL to discover it's components
+    *
+    * @param {String} url The URL to be parsed
+    * @returns {Object}
+    */
+      function resolveURL(url) {
+        var href = url;
+
+        if (msie) {
+        // IE needs attribute set twice to normalize properties
+          urlParsingNode.setAttribute('href', href);
+          href = urlParsingNode.href;
+        }
+
+        urlParsingNode.setAttribute('href', href);
+
+        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+          host: urlParsingNode.host,
+          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+            urlParsingNode.pathname :
+            '/' + urlParsingNode.pathname
+        };
+      }
+
+      originURL = resolveURL(window.location.href);
+
+      /**
+    * Determine if a URL shares the same origin as the current location
+    *
+    * @param {String} requestURL The URL to test
+    * @returns {boolean} True if URL shares the same origin, otherwise false
+    */
+      return function isURLSameOrigin(requestURL) {
+        var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+        return (parsed.protocol === originURL.protocol &&
+            parsed.host === originURL.host);
+      };
+    })() :
+
+  // Non standard browser envs (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return function isURLSameOrigin() {
+        return true;
+      };
+    })()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/normalizeHeaderName.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
+  \***************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = function normalizeHeaderName(headers, normalizedName) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/null.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/null.js ***!
+  \************************************************/
+/***/ ((module) => {
+
+// eslint-disable-next-line strict
+module.exports = null;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/parseHeaders.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
+  \********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+// Headers whose duplicates are ignored by node
+// c.f. https://nodejs.org/api/http.html#http_message_headers
+var ignoreDuplicateOf = [
+  'age', 'authorization', 'content-length', 'content-type', 'etag',
+  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+  'referer', 'retry-after', 'user-agent'
+];
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+module.exports = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) { return parsed; }
+
+  utils.forEach(headers.split('\n'), function parser(line) {
+    i = line.indexOf(':');
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        return;
+      }
+      if (key === 'set-cookie') {
+        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+      } else {
+        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+      }
+    }
+  });
+
+  return parsed;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/parseProtocol.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/parseProtocol.js ***!
+  \*********************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = function parseProtocol(url) {
+  var match = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
+  return match && match[1] || '';
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/spread.js":
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/spread.js ***!
+  \**************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/toFormData.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/toFormData.js ***!
+  \******************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+/* provided dependency */ var Buffer = __webpack_require__(/*! buffer */ "./node_modules/buffer/index.js")["Buffer"];
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Convert a data object to FormData
+ * @param {Object} obj
+ * @param {?Object} [formData]
+ * @returns {Object}
+ **/
+
+function toFormData(obj, formData) {
+  // eslint-disable-next-line no-param-reassign
+  formData = formData || new FormData();
+
+  var stack = [];
+
+  function convertValue(value) {
+    if (value === null) return '';
+
+    if (utils.isDate(value)) {
+      return value.toISOString();
+    }
+
+    if (utils.isArrayBuffer(value) || utils.isTypedArray(value)) {
+      return typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
+    }
+
+    return value;
+  }
+
+  function build(data, parentKey) {
+    if (utils.isPlainObject(data) || utils.isArray(data)) {
+      if (stack.indexOf(data) !== -1) {
+        throw Error('Circular reference detected in ' + parentKey);
+      }
+
+      stack.push(data);
+
+      utils.forEach(data, function each(value, key) {
+        if (utils.isUndefined(value)) return;
+        var fullKey = parentKey ? parentKey + '.' + key : key;
+        var arr;
+
+        if (value && !parentKey && typeof value === 'object') {
+          if (utils.endsWith(key, '{}')) {
+            // eslint-disable-next-line no-param-reassign
+            value = JSON.stringify(value);
+          } else if (utils.endsWith(key, '[]') && (arr = utils.toArray(value))) {
+            // eslint-disable-next-line func-names
+            arr.forEach(function(el) {
+              !utils.isUndefined(el) && formData.append(fullKey, convertValue(el));
+            });
+            return;
+          }
+        }
+
+        build(value, fullKey);
+      });
+
+      stack.pop();
+    } else {
+      formData.append(parentKey, convertValue(data));
+    }
+  }
+
+  build(obj);
+
+  return formData;
+}
+
+module.exports = toFormData;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/validator.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/validator.js ***!
+  \*****************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var VERSION = (__webpack_require__(/*! ../env/data */ "./node_modules/axios/lib/env/data.js").version);
+var AxiosError = __webpack_require__(/*! ../core/AxiosError */ "./node_modules/axios/lib/core/AxiosError.js");
+
+var validators = {};
+
+// eslint-disable-next-line func-names
+['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach(function(type, i) {
+  validators[type] = function validator(thing) {
+    return typeof thing === type || 'a' + (i < 1 ? 'n ' : ' ') + type;
+  };
+});
+
+var deprecatedWarnings = {};
+
+/**
+ * Transitional option validator
+ * @param {function|boolean?} validator - set to false if the transitional option has been removed
+ * @param {string?} version - deprecated version / removed since version
+ * @param {string?} message - some message with additional info
+ * @returns {function}
+ */
+validators.transitional = function transitional(validator, version, message) {
+  function formatMessage(opt, desc) {
+    return '[Axios v' + VERSION + '] Transitional option \'' + opt + '\'' + desc + (message ? '. ' + message : '');
+  }
+
+  // eslint-disable-next-line func-names
+  return function(value, opt, opts) {
+    if (validator === false) {
+      throw new AxiosError(
+        formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')),
+        AxiosError.ERR_DEPRECATED
+      );
+    }
+
+    if (version && !deprecatedWarnings[opt]) {
+      deprecatedWarnings[opt] = true;
+      // eslint-disable-next-line no-console
+      console.warn(
+        formatMessage(
+          opt,
+          ' has been deprecated since v' + version + ' and will be removed in the near future'
+        )
+      );
+    }
+
+    return validator ? validator(value, opt, opts) : true;
+  };
+};
+
+/**
+ * Assert object's properties type
+ * @param {object} options
+ * @param {object} schema
+ * @param {boolean?} allowUnknown
+ */
+
+function assertOptions(options, schema, allowUnknown) {
+  if (typeof options !== 'object') {
+    throw new AxiosError('options must be an object', AxiosError.ERR_BAD_OPTION_VALUE);
+  }
+  var keys = Object.keys(options);
+  var i = keys.length;
+  while (i-- > 0) {
+    var opt = keys[i];
+    var validator = schema[opt];
+    if (validator) {
+      var value = options[opt];
+      var result = value === undefined || validator(value, opt, options);
+      if (result !== true) {
+        throw new AxiosError('option ' + opt + ' must be ' + result, AxiosError.ERR_BAD_OPTION_VALUE);
+      }
+      continue;
+    }
+    if (allowUnknown !== true) {
+      throw new AxiosError('Unknown option ' + opt, AxiosError.ERR_BAD_OPTION);
+    }
+  }
+}
+
+module.exports = {
+  assertOptions: assertOptions,
+  validators: validators
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/utils.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/utils.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+// eslint-disable-next-line func-names
+var kindOf = (function(cache) {
+  // eslint-disable-next-line func-names
+  return function(thing) {
+    var str = toString.call(thing);
+    return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
+  };
+})(Object.create(null));
+
+function kindOfTest(type) {
+  type = type.toLowerCase();
+  return function isKindOf(thing) {
+    return kindOf(thing) === type;
+  };
+}
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return Array.isArray(val);
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+/**
+ * Determine if a value is a Buffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Buffer, otherwise false
+ */
+function isBuffer(val) {
+  return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
+    && typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @function
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+var isArrayBuffer = kindOfTest('ArrayBuffer');
+
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = (val) && (val.buffer) && (isArrayBuffer(val.buffer));
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === 'number';
+}
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
+
+/**
+ * Determine if a value is a plain Object
+ *
+ * @param {Object} val The value to test
+ * @return {boolean} True if value is a plain Object, otherwise false
+ */
+function isPlainObject(val) {
+  if (kindOf(val) !== 'object') {
+    return false;
+  }
+
+  var prototype = Object.getPrototypeOf(val);
+  return prototype === null || prototype === Object.prototype;
+}
+
+/**
+ * Determine if a value is a Date
+ *
+ * @function
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+var isDate = kindOfTest('Date');
+
+/**
+ * Determine if a value is a File
+ *
+ * @function
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+var isFile = kindOfTest('File');
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @function
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+var isBlob = kindOfTest('Blob');
+
+/**
+ * Determine if a value is a FileList
+ *
+ * @function
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+var isFileList = kindOfTest('FileList');
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} thing The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(thing) {
+  var pattern = '[object FormData]';
+  return thing && (
+    (typeof FormData === 'function' && thing instanceof FormData) ||
+    toString.call(thing) === pattern ||
+    (isFunction(thing.toString) && thing.toString() === pattern)
+  );
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ * @function
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+var isURLSearchParams = kindOfTest('URLSearchParams');
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  navigator.product -> 'ReactNative'
+ * nativescript
+ *  navigator.product -> 'NativeScript' or 'NS'
+ */
+function isStandardBrowserEnv() {
+  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+                                           navigator.product === 'NativeScript' ||
+                                           navigator.product === 'NS')) {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined'
+  );
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== 'object') {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (isPlainObject(result[key]) && isPlainObject(val)) {
+      result[key] = merge(result[key], val);
+    } else if (isPlainObject(val)) {
+      result[key] = merge({}, val);
+    } else if (isArray(val)) {
+      result[key] = val.slice();
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+/**
+ * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
+ *
+ * @param {string} content with BOM
+ * @return {string} content value without BOM
+ */
+function stripBOM(content) {
+  if (content.charCodeAt(0) === 0xFEFF) {
+    content = content.slice(1);
+  }
+  return content;
+}
+
+/**
+ * Inherit the prototype methods from one constructor into another
+ * @param {function} constructor
+ * @param {function} superConstructor
+ * @param {object} [props]
+ * @param {object} [descriptors]
+ */
+
+function inherits(constructor, superConstructor, props, descriptors) {
+  constructor.prototype = Object.create(superConstructor.prototype, descriptors);
+  constructor.prototype.constructor = constructor;
+  props && Object.assign(constructor.prototype, props);
+}
+
+/**
+ * Resolve object with deep prototype chain to a flat object
+ * @param {Object} sourceObj source object
+ * @param {Object} [destObj]
+ * @param {Function} [filter]
+ * @returns {Object}
+ */
+
+function toFlatObject(sourceObj, destObj, filter) {
+  var props;
+  var i;
+  var prop;
+  var merged = {};
+
+  destObj = destObj || {};
+
+  do {
+    props = Object.getOwnPropertyNames(sourceObj);
+    i = props.length;
+    while (i-- > 0) {
+      prop = props[i];
+      if (!merged[prop]) {
+        destObj[prop] = sourceObj[prop];
+        merged[prop] = true;
+      }
+    }
+    sourceObj = Object.getPrototypeOf(sourceObj);
+  } while (sourceObj && (!filter || filter(sourceObj, destObj)) && sourceObj !== Object.prototype);
+
+  return destObj;
+}
+
+/*
+ * determines whether a string ends with the characters of a specified string
+ * @param {String} str
+ * @param {String} searchString
+ * @param {Number} [position= 0]
+ * @returns {boolean}
+ */
+function endsWith(str, searchString, position) {
+  str = String(str);
+  if (position === undefined || position > str.length) {
+    position = str.length;
+  }
+  position -= searchString.length;
+  var lastIndex = str.indexOf(searchString, position);
+  return lastIndex !== -1 && lastIndex === position;
+}
+
+
+/**
+ * Returns new array from array like object
+ * @param {*} [thing]
+ * @returns {Array}
+ */
+function toArray(thing) {
+  if (!thing) return null;
+  var i = thing.length;
+  if (isUndefined(i)) return null;
+  var arr = new Array(i);
+  while (i-- > 0) {
+    arr[i] = thing[i];
+  }
+  return arr;
+}
+
+// eslint-disable-next-line func-names
+var isTypedArray = (function(TypedArray) {
+  // eslint-disable-next-line func-names
+  return function(thing) {
+    return TypedArray && thing instanceof TypedArray;
+  };
+})(typeof Uint8Array !== 'undefined' && Object.getPrototypeOf(Uint8Array));
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isPlainObject: isPlainObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  extend: extend,
+  trim: trim,
+  stripBOM: stripBOM,
+  inherits: inherits,
+  toFlatObject: toFlatObject,
+  kindOf: kindOf,
+  kindOfTest: kindOfTest,
+  endsWith: endsWith,
+  toArray: toArray,
+  isTypedArray: isTypedArray,
+  isFileList: isFileList
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/assets/js/components/EventForm.vue?vue&type=script&lang=js":
 /*!**********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/assets/js/components/EventForm.vue?vue&type=script&lang=js ***!
@@ -17582,607 +20045,601 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.es.js");
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
 // import flatpickr from "flatpickr"
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   directives: {},
   components: {
-    vSelect: (vue_select__WEBPACK_IMPORTED_MODULE_0___default())
+    vSelect: vue_select__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    // recordexists: {default: false},
-    // recordid: {default: ''},
-    // framework: {default: 'foundation'},
+    recordexists: {
+      "default": false
+    },
+    recordid: {
+      "default": ''
+    },
+    framework: {
+      "default": 'foundation'
+    },
     isadmin: {
       "default": false
     }
   },
   data: function data() {
     return {
-      //   minicalslist: [],
-      //   dateObject: {
-      //     startDateMin: '',
-      //     startDateDefault: '',
-      //     endDateMin: '',
-      //     endDateDefault: '',
-      //     startTimeDefault: '',
-      //     endTimeDefault: '',
-      //     regDateMin: '',
-      //     regDateDefault: ''
-      //   },
-      //   startdatePicker: null,
-      //   enddatePicker: null,
-      //   starttimePicker: null,
-      //   endtimePicker: null,
-      //   regdeadlinePicker: null,
-      //   sdate: '',
-      //   edate: '',
-      //   stime: '',
-      //   rdate: '',
-      //   ticketoptions: [
-      //     {label: 'Online', value: 'online'},
-      //     {label: 'Phone', value: 'phone'},
-      //     {label: 'Ticket Office', value: 'office'},
-      //     {label: 'Online, Phone and Ticket Office', value: 'all'},
-      //     {label: 'Other', value: 'other'},
-      //   ],
-      //   participants: [
-      //     {label: 'Campus Only', value: 'campus'},
-      //     {label: 'Open to Public', value: 'public'},
-      //     {label: 'Students Only', value: 'students'},
-      //     {label: 'Invitation Only', value: 'invite'},
-      //     {label: 'Tickets Required', value: 'tickets'},
-      //   ],
-      //   totalChars: {
-      //     start: 0,
-      //     title: 80,
-      //     description: 255
-      //   },
-      //   building_in: [],
-      //   building: null,
-      //   room: '',
-      //   buildings: [],
-      //   zcategories: [],
-      //   zcats: [],
-      //   categories: [],
-      //   minicals: null,
-      //   minicalendars: {},
-      //   record: {
-      //     id: null,
-      //     on_campus: 1,
-      //     all_day: 0,
-      //     no_end_time: 0,
-      //     free: 0,
-      //     title: '',
-      //     description: '',
-      //     mini_calendar: '',
-      //     building: '',
-      //     categories: [],
-      //     is_canceled: 0,
-      //     is_hidden: 0,
-      //     start_time: '12:00 PM',
-      //     end_time: '12:00 PM',
-      //     admin_pre_approved: false,
-      //   },
-      //   record_exists: false,
-      //   response: {},
-      //   formStatus: {},
-      //   vModelLike: "",
-      //   formMessage: {
-      //     isOk: false,
-      //     isErr: false,
-      //     msg: ''
-      //   },
-      //   formInputs: {},
-      //   formErrors: {}
+      minicalslist: [],
+      dateObject: {
+        startDateMin: '',
+        startDateDefault: '',
+        endDateMin: '',
+        endDateDefault: '',
+        startTimeDefault: '',
+        endTimeDefault: '',
+        regDateMin: '',
+        regDateDefault: ''
+      },
+      startdatePicker: null,
+      enddatePicker: null,
+      starttimePicker: null,
+      endtimePicker: null,
+      regdeadlinePicker: null,
+      sdate: '',
+      edate: '',
+      stime: '',
+      rdate: '',
+      ticketoptions: [{
+        label: 'Online',
+        value: 'online'
+      }, {
+        label: 'Phone',
+        value: 'phone'
+      }, {
+        label: 'Ticket Office',
+        value: 'office'
+      }, {
+        label: 'Online, Phone and Ticket Office',
+        value: 'all'
+      }, {
+        label: 'Other',
+        value: 'other'
+      }],
+      participants: [{
+        label: 'Campus Only',
+        value: 'campus'
+      }, {
+        label: 'Open to Public',
+        value: 'public'
+      }, {
+        label: 'Students Only',
+        value: 'students'
+      }, {
+        label: 'Invitation Only',
+        value: 'invite'
+      }, {
+        label: 'Tickets Required',
+        value: 'tickets'
+      }],
+      totalChars: {
+        start: 0,
+        title: 80,
+        description: 255
+      },
+      building_in: [],
+      building: null,
+      room: '',
+      buildings: [],
+      zcategories: [],
+      zcats: [],
+      categories: [],
+      minicals: null,
+      minicalendars: {},
+      record: {
+        id: null,
+        on_campus: 1,
+        all_day: 0,
+        no_end_time: 0,
+        free: 0,
+        title: '',
+        description: '',
+        mini_calendar: '',
+        building: '',
+        categories: [],
+        is_canceled: 0,
+        is_hidden: 0,
+        start_time: '12:00 PM',
+        end_time: '12:00 PM',
+        admin_pre_approved: false
+      },
+      record_exists: false,
+      response: {},
+      formStatus: {},
+      vModelLike: "",
+      formMessage: {
+        isOk: false,
+        isErr: false,
+        msg: ''
+      },
+      formInputs: {},
+      formErrors: {}
     };
   },
   mounted: function mounted() {
-    // this.record_exists = this.recordexists;
-    // if (this.thisRecordExists) {
-    //   let fetchme = this.recordid ? this.recordid : this.record.id;
-    //   this.fetchCurrentRecord(fetchme)
-    // }
+    this.record_exists = this.recordexists;
+    if (this.thisRecordExists) {
+      var fetchme = this.recordid ? this.recordid : this.record.id;
+      this.fetchCurrentRecord(fetchme);
+    }
     // this.setupDatePickers();
-    // this.fetchMiniCalsList();
-    // this.fetchForSelectBuildingList("");
-    // this.fetchForSelectCategoriesList("");
-    //
-    // // Don't submit form on 'enter'
-    // $(document).on('keyup keypress', 'form input[type="text"]', function (e) {
-    //   if (e.which == 13) {
-    //     e.preventDefault();
-    //     return false;
-    //   }
-    // });
+    this.fetchMiniCalsList();
+    this.fetchForSelectBuildingList("");
+    this.fetchForSelectCategoriesList("");
+
+    // Don't submit form on 'enter'
+    $(document).on('keyup keypress', 'form input[type="text"]', function (e) {
+      if (e.which == 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
   },
   computed: {
-    // dropDownSelect: function () {
-    //   return (this.framework == 'foundation') ? 'fdropdown' : ''
-    // },
-    // md6col: function () {
-    //   return (this.framework == 'foundation') ? 'medium-6 columns' : 'col-md-6'
-    // },
-    // md12col: function () {
-    //   return (this.framework == 'foundation') ? 'medium-12 columns' : 'col-md-12'
-    // },
-    // md8col: function () {
-    //   return (this.framework == 'foundation') ? 'medium-8 columns' : 'col-md-8'
-    // },
-    // md4col: function () {
-    //   return (this.framework == 'foundation') ? 'medium-4 columns' : 'col-md-4'
-    // },
-    // md2col: function () {
-    //   return (this.framework == 'foundation') ? 'medium-2 columns' : 'col-md-2'
-    // },
-    // md10col: function () {
-    //   return (this.framework == 'foundation') ? 'medium-10 columns' : 'col-md-10'
-    // },
-    // btnPrimary: function () {
-    //   return (this.framework == 'foundation') ? 'button button-primary' : 'btn btn-primary'
-    // },
-    // formGroup: function () {
-    //   return (this.framework == 'foundation') ? 'form-group' : 'form-group'
-    // },
-    // inputGroupLabel: function () {
-    //   return (this.framework == 'foundation') ? 'input-group-label' : 'input-group-addon'
-    // },
-    // iconStar: function () {
-    //   return (this.framework == 'foundation') ? 'fi-star' : 'fa fa-star'
-    // },
-    // calloutSuccess: function () {
-    //   return (this.framework == 'foundation') ? 'callout success' : 'alert alert-success'
-    // },
-    // calloutFail: function () {
-    //   return (this.framework == 'foundation') ? 'callout alert' : 'alert alert-danger'
-    // },
-    // submitBtnLabel: function () {
-    //   return (this.thisRecordExists) ? 'Update Event' : 'Submit For Approval'
-    // },
-    // computedLocation: function () {
-    //   let bldg, room;
-    //
-    //   if (this.building) {
-    //     this.record.building = this.building.name;
-    //     bldg = this.record.building
-    //     room = (this.record.room) ? ' - ' + this.record.room : '';
-    //   } else {
-    //     bldg = ''
-    //     room = ''
-    //   }
-    //   return bldg + room;
-    // },
-    // cancelStatus: function () {
-    //   return (this.record.is_canceled == 1) ? 'Uncancel Event' : 'Cancel Event'
-    // },
-    // isOnCampus: function () {
-    //   return this.record.on_campus == 1 ? true : false;
-    // },
-    // realCost: function () {
-    //   if (this.record.free == 1) {
-    //     return '0.00';
-    //   } else {
-    //     return '';
-    //   }
-    // },
-    // hasCost: function () {
-    //   if (this.record.free == 1) {
-    //     this.record.cost = '0.00';
-    //     return false;
-    //   } else {
-    //     return true;
-    //   }
-    // },
-    // titleChars: function () {
-    //   var str = this.record.title;
-    //   var cclength = str.length;
-    //   return this.totalChars.title - cclength;
-    // },
-    // descriptionChars: function () {
-    //   var str = this.record.description;
-    //   var cclength = str.length;
-    //   return this.totalChars.description - cclength;
-    // },
-    // hasStartTime: function () {
-    //   return this.record.all_day == 1 ? false : true;
-    // },
-    // hasEndTime: function () {
-    //   return (this.record.all_day == 1 || this.record.no_end_time == 1) ? false : true;
-    // },
-    // isAdmin: function () {
-    //   return window.location.href.indexOf("admin") > -1;
-    // },
-    // thisRecordExists: function () {
-    //   if (this.recordexists || this.record_exists) {
-    //     return true;
-    //   }
-    //   return false;
-    // }
+    dropDownSelect: function dropDownSelect() {
+      return this.framework == 'foundation' ? 'fdropdown' : '';
+    },
+    md6col: function md6col() {
+      return this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6';
+    },
+    md12col: function md12col() {
+      return this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12';
+    },
+    md8col: function md8col() {
+      return this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8';
+    },
+    md4col: function md4col() {
+      return this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4';
+    },
+    md2col: function md2col() {
+      return this.framework == 'foundation' ? 'medium-2 columns' : 'col-md-2';
+    },
+    md10col: function md10col() {
+      return this.framework == 'foundation' ? 'medium-10 columns' : 'col-md-10';
+    },
+    btnPrimary: function btnPrimary() {
+      return this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary';
+    },
+    formGroup: function formGroup() {
+      return this.framework == 'foundation' ? 'form-group' : 'form-group';
+    },
+    inputGroupLabel: function inputGroupLabel() {
+      return this.framework == 'foundation' ? 'input-group-label' : 'input-group-addon';
+    },
+    iconStar: function iconStar() {
+      return this.framework == 'foundation' ? 'fi-star' : 'fa fa-star';
+    },
+    calloutSuccess: function calloutSuccess() {
+      return this.framework == 'foundation' ? 'callout success' : 'alert alert-success';
+    },
+    calloutFail: function calloutFail() {
+      return this.framework == 'foundation' ? 'callout alert' : 'alert alert-danger';
+    },
+    submitBtnLabel: function submitBtnLabel() {
+      return this.thisRecordExists ? 'Update Event' : 'Submit For Approval';
+    },
+    computedLocation: function computedLocation() {
+      var bldg, room;
+      if (this.building) {
+        this.record.building = this.building.name;
+        bldg = this.record.building;
+        room = this.record.room ? ' - ' + this.record.room : '';
+      } else {
+        bldg = '';
+        room = '';
+      }
+      return bldg + room;
+    },
+    cancelStatus: function cancelStatus() {
+      return this.record.is_canceled == 1 ? 'Uncancel Event' : 'Cancel Event';
+    },
+    isOnCampus: function isOnCampus() {
+      return this.record.on_campus == 1 ? true : false;
+    },
+    realCost: function realCost() {
+      if (this.record.free == 1) {
+        return '0.00';
+      } else {
+        return '';
+      }
+    },
+    hasCost: function hasCost() {
+      if (this.record.free == 1) {
+        this.record.cost = '0.00';
+        return false;
+      } else {
+        return true;
+      }
+    },
+    titleChars: function titleChars() {
+      var str = this.record.title;
+      var cclength = str.length;
+      return this.totalChars.title - cclength;
+    },
+    descriptionChars: function descriptionChars() {
+      var str = this.record.description;
+      var cclength = str.length;
+      return this.totalChars.description - cclength;
+    },
+    hasStartTime: function hasStartTime() {
+      return this.record.all_day == 1 ? false : true;
+    },
+    hasEndTime: function hasEndTime() {
+      return this.record.all_day == 1 || this.record.no_end_time == 1 ? false : true;
+    },
+    isAdmin: function isAdmin() {
+      return window.location.href.indexOf("admin") > -1;
+    },
+    thisRecordExists: function thisRecordExists() {
+      if (this.recordexists || this.record_exists) {
+        return true;
+      }
+      return false;
+    }
   },
   methods: {
-    // refreshUserEventTable: function () {
-    //   $.get('/calendar/user/events', function (data) {
-    //     data = $.parseJSON(data);
-    //     $('#user-events-tables').html(data);
-    //   });
-    // },
-    //
-    // fetchMiniCalsList: function () {
-    //   this.$http.get('/api/minicalslist')
-    //       .then((response) => {
-    //         this.minicalslist = response.data;
-    //
-    //         let self = this;
-    //
-    //         $.each(response.data, function (index, value) {
-    //           self.minicalslist[index].label = value.calendar;
-    //           self.minicalslist[index].code = value.value;
-    //         });
-    //       }, (response) => {
-    //         //error callback
-    //         console.log("ERRORS");
-    //         this.formErrors = response.data.error.message;
-    //
-    //       }).bind(this);
-    // },
-    // setupDatePickers: function () {
-    //   var self = this;
-    //   if (this.record.start_date === '') {
-    //     this.dateObject.startDateMin = this.currentDate;
-    //     this.dateObject.startDateDefault = null;
-    //
-    //     this.dateObject.endDateMin = null;
-    //     this.dateObject.endDateDefault = null;
-    //   } else {
-    //     this.dateObject.startDateMin = this.record.start_date;
-    //     this.dateObject.startDateDefault = this.record.start_date;
-    //     this.dateObject.endDateMin = this.record.start_date;
-    //     this.dateObject.endDateDefault = this.record.end_date;
-    //     this.dateObject.startTimeDefault = this.record.start_time;
-    //     this.dateObject.endTimeDefault = this.record.end_time;
-    //     this.dateObject.regDateMin = this.record.start_date;
-    //     this.dateObject.regDateDefault = this.record.reg_deadline;
-    //   }
-    //   this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-    //     // minDate: self.dateObject.startDateMin,
-    //     defaultDate: self.dateObject.startDateDefault,
-    //     enableTime: false,
-    //     // altFormat: "m-d-Y",
-    //     altInput: true,
-    //     altInputClass: "form-control",
-    //     dateFormat: "Y-m-d",
-    //     // minDate: new Date(),
-    //     onChange(dateObject, dateString) {
-    //       self.enddatePicker.set("minDate", dateObject);
-    //       self.record.start_date = dateString;
-    //       self.startdatePicker.value = dateString;
-    //     }
-    //   });
-    //
-    //   this.enddatePicker = flatpickr(document.getElementById("end-date"), {
-    //     minDate: self.dateObject.endDateMin,
-    //     defaultDate: self.dateObject.endDateDefault,
-    //     enableTime: false,
-    //     // altFormat: "m-d-Y",
-    //     altInput: true,
-    //     altInputClass: "form-control",
-    //     dateFormat: "Y-m-d",
-    //     // minDate: new Date(),
-    //     onChange(dateObject, dateString) {
-    //       self.startdatePicker.set("maxDate", dateObject);
-    //       self.record.end_date = dateString;
-    //       self.enddatePicker.value = dateString;
-    //     }
-    //   });
-    //
-    //   this.starttimePicker = flatpickr(document.getElementById("start-time"), {
-    //     noCalendar: true,
-    //     enableTime: true,
-    //     defaultDate: self.dateObject.startTimeDefault,
-    //     dateFormat: "h:i K",
-    //     onChange(timeObject, timeString) {
-    //       self.record.start_time = timeString;
-    //       self.starttimePicker.value = timeString;
-    //     }
-    //   });
-    //   this.endtimePicker = flatpickr(document.getElementById("end-time"), {
-    //     noCalendar: true,
-    //     enableTime: true,
-    //     defaultDate: self.dateObject.endTimeDefault,
-    //     dateFormat: "h:i K",
-    //     onChange(timeObject, timeString) {
-    //       self.record.end_time = timeString;
-    //       self.endtimePicker.value = timeString;
-    //     }
-    //   });
-    //
-    //   this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"), {
-    //     minDate: self.dateObject.regDateMin,
-    //     defaultDate: self.dateObject.regDateDefault,
-    //     enableTime: false,
-    //     // altFormat: "m-d-Y",
-    //     altInput: true,
-    //     altInputClass: "form-control",
-    //     dateFormat: "Y-m-d",
-    //     onChange(dateObject, dateString) {
-    //       self.record.reg_deadline = dateString;
-    //       self.regdeadlinePicker.value = dateString;
-    //     }
-    //   });
-    // },
-    //
-    // fetchSubmittedRecord: function (recid) {
-    //   // Sets params for update record, Passes an id to fetchCurrentRecord
-    //   this.record.exists = this.record_exists = true;
-    //   this.formMessage.isOk = false;
-    //   this.formMessage.isErr = false;
-    //   this.record.id = recid;
-    //   this.formErrors = {};
-    //   this.fetchCurrentRecord();
-    // },
-    //
-    // cancelRecord: function (recid) {
-    //   // toggles cancel
-    //   this.formMessage.isOk = false;
-    //   this.formMessage.msg = false;
-    //
-    //   this.$http.patch('/api/event/' + recid + '/cancel')
-    //       .then((response) => {
-    //         this.formMessage.isOk = response.ok;
-    //         this.formMessage.msg = response.body.message;
-    //       }, (response) => {
-    //         console.log(JSON.stringify(response))
-    //       }).bind(this);
-    //   this.refreshUserEventTable();
-    // },
-    //
-    // fetchCurrentRecord: function () {
-    //   var fetchme = this.recordid ? this.recordid : this.record.id;
-    //   this.$http.get('/api/event/' + fetchme + '/edit')
-    //
-    //       .then((response) => {
-    //         this.record = response.data.data;
-    //         this.record.exists = this.record_exists = true;
-    //         this.currentRecordId = this.record.id;
-    //         this.checkOverData();
-    //         this.record.start_time = response.data.data.start_time;
-    //       }, (response) => {
-    //         //error callback
-    //         console.log(response);
-    //         console.log("FETCH ERRORS");
-    //       }).bind(this);
-    // },
-    // checkOverData: function () { // Used after fetching an event
-    //   // Check event location
-    //   // not null and has more than white space
-    //   if (this.record.building != null && /\S/.test(this.record.building)) {
-    //     // Is on campus
-    //     this.record.on_campus = 1; // bool
-    //     this.building = {id: 0, name: this.convertFromSlug(this.record.building)};
-    //     this.building.label = this.building.name;
-    //   } else {
-    //     // Not on campus
-    //     this.record.on_campus = 0; // bool
-    //     this.record.locationoffcampus = this.record.location;
-    //   }
-    //
-    //   if (!this.record.categories) {
-    //     this.record.categories = [];
-    //   }
-    //   let self = this;
-    //
-    //   $.each(this.record.eventcategories, function (index, value) {
-    //     self.record.eventcategories[index].label = value.category;
-    //     self.record.eventcategories[index].code = value.value;
-    //   });
-    //
-    //   $.each(this.record.minicalendars, function (index, value) {
-    //     self.record.minicalendars[index].label = value.calendar;
-    //     self.record.minicalendars[index].code = value.value;
-    //   });
-    //
-    //   this.record.categories = self.record.eventcategories;
-    //
-    //   this.setupDatePickers();
-    // },
-    // fetchForSelectCategoriesList(search, loading) {
-    //   loading ? loading(true) : undefined;
-    //   this.$http.get('/api/categorylist', {
-    //     q: search
-    //   }).then(resp => {
-    //     this.zcats = resp.data;
-    //     let self = this;
-    //
-    //     $.each(resp.data, function (index, value) {
-    //       self.zcats[index].label = value.category;
-    //       self.zcats[index].code = value.value;
-    //     });
-    //
-    //     loading ? loading(true) : undefined;
-    //   })
-    // },
-    // fetchForSelectBuildingList(search, loading) {
-    //   loading ? loading(true) : undefined;
-    //
-    //   this.$http.get('/api/buildinglist', {
-    //     q: search
-    //   }).then(resp => {
-    //     this.buildings = resp.data;
-    //     let self = this;
-    //
-    //     $.each(resp.data, function (index, value) {
-    //       self.buildings[index].label = value.name;
-    //     });
-    //
-    //     loading ? loading(true) : undefined;
-    //   })
-    // },
-    // delEvent: function (e) {
-    //   e.preventDefault();
-    //   this.formMessage.isOk = false;
-    //   this.formMessage.isErr = false;
-    //
-    //   if (confirm('Would you like to delete this event?') == true) {
-    //     $('html, body').animate({scrollTop: 0}, 'fast');
-    //
-    //     var tempid = 0;
-    //
-    //
-    //     this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
-    //     this.$http.post('/api/event/' + tempid + '/delete')
-    //
-    //         .then((response) => {
-    //           // If user admin
-    //           if (window.location.href.indexOf("admin") > -1) {
-    //             window.location.href = "/admin/event/queue";
-    //           } else { // Not user admin
-    //             // Clear out values;
-    //             this.record = {
-    //               on_campus: 1,
-    //               all_day: 0,
-    //               no_end_time: 0,
-    //               free: 0,
-    //               title: '',
-    //               description: '',
-    //               mini_calendar: '',
-    //               building: '',
-    //               categories: []
-    //             };
-    //             this.record.location = '';
-    //             this.building = null;
-    //             this.buildings = null;
-    //             this.record.room = null;
-    //             this.record.building = null;
-    //             this.record.building_id = null;
-    //             this.record.lbc_approved = false;
-    //             this.record.sdate = '';
-    //             this.record.edate = '';
-    //             this.record.stime = '';
-    //             this.record.rdate = '';
-    //             this.formMessage.isOk = response.ok;
-    //             this.formMessage.msg = response.body;
-    //             this.record.exists = this.record_exists = false;
-    //             var d = new Date();
-    //             var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-    //             this.record.start_date = tempdate;
-    //             this.record.end_date = tempdate;
-    //             this.record.reg_deadline = tempdate;
-    //             this.setupDatePickers();
-    //           }
-    //         }, (response) => {
-    //           console.log('Error: ' + JSON.stringify(response))
-    //         }).bind(this);
-    //     this.refreshUserEventTable();
-    //   }
-    // },
-    //
-    // cloneEvent: function (e) {
-    //   if (confirm('Would you like to clone this event?') == true) {
-    //     this.record.exists = this.record_exists = false;
-    //     e.preventDefault();
-    //     this.submitForm(e, true);
-    //   }
-    // },
-    //
-    // cancelEvent: function (e) {
-    //   e.preventDefault();
-    //   this.formMessage.isOk = false;
-    //   this.formMessage.isErr = false;
-    //
-    //   if (confirm('Would you like to cancel this event?') == true) {
-    //     $('html, body').animate({scrollTop: 0}, 'fast');
-    //     let tempid
-    //     this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
-    //     this.$http.patch('/api/event/' + tempid + '/cancel')
-    //
-    //         .then((response) => {
-    //           if (this.record.is_canceled == 0) {
-    //             this.record.is_canceled = 1
-    //           } else {
-    //             this.record.is_canceled = 0
-    //           }
-    //
-    //           this.formMessage.msg = "Event's status has been changed.";
-    //           this.formMessage.isOk = response.ok;
-    //         }, (response) => {
-    //           console.log('Error: ' + JSON.stringify(response))
-    //         }).bind(this);
-    //     this.refreshUserEventTable();
-    //   }
-    // },
-    //
-    // submitForm: function (e, doClone) {
-    //   e.preventDefault();
-    //   this.formMessage.isOk = false;
-    //   this.formMessage.isErr = false;
-    //
-    //   $('html, body').animate({scrollTop: 0}, 'fast');
-    //
-    //   if (this.record.on_campus == true) {
-    //     this.record.location = this.computedLocation;
-    //   } else {
-    //     this.record.location = this.record.locationoffcampus;
-    //     // clearout these values
-    //     this.record.building = null;
-    //     this.record.building_id = null;
-    //     this.record.room = null;
-    //   }
-    //   this.record.minicals = (this.record.minicalendars) ? this.record.minicalendars : null;
-    //
-    //   let method = (!this.record.id || doClone === true) ? 'post' : 'put'
-    //   let route = (!this.record.id || doClone === true) ? '/api/event' : '/api/event/' + this.record.id;
-    //
-    //   this.$http[method](route, this.record)
-    //
-    //       .then((response) => {
-    //         response.status;
-    //         this.formMessage.msg = response.data.message;
-    //         this.formMessage.isOk = response.ok;
-    //         this.formMessage.isErr = false;
-    //         this.currentRecordId = response.data.newdata.record_id;
-    //         this.record_id = response.data.newdata.record_id;
-    //         this.record.id = response.data.newdata.record_id;
-    //         this.record.exists = true;
-    //         this.formErrors = {};
-    //         this.refreshUserEventTable();
-    //         this.fetchCurrentRecord(this.currentRecordId)
-    //       }, (response) => {
-    //         this.formMessage.isOk = false;
-    //         this.formMessage.isErr = true;
-    //         //error callback
-    //         this.formErrors = response.data.error.message;
-    //       }).bind(this);
-    // },
-    // convertToSlug: function (value) {
-    //   return value.toLowerCase()
-    //       .replace(/[^a-z0-9-]+/g, '-')
-    //       .replace(/^-+|-+$/g, '');
-    // },
-    // convertFromSlug: function (value) {
-    //
-    //   /* READ: for some reason, buildings do not have foreign key relations to events;
-    //   * they are merely being stored as slugs in the events table.
-    //   * This causes problems when trying to reproduce names that have capital letters other than the first letter
-    //   * (e.g. "McKenny Hall" or "Rec/IM Building")
-    //   * In lieu of breaking the entire events table, whenever a slug has special formatting, just put it in a conditional statement
-    //   *
-    //   * CP 1/22/18
-    //   */
-    //   if (value == 'mckenny-hall') {
-    //     return 'McKenny Hall'
-    //   } else if (value == 'recim-building' || value == 'rec/im-building') {
-    //     return 'Rec/IM Building'
-    //   } else if (value == 'rec/im-softball-complex') {
-    //     return 'Rec/IM Softball Complex'
-    //   } else {
-    //     return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
-    //       return arguments[0].toUpperCase()
-    //     })
-    //   }
-    //
-    // }
+    refreshUserEventTable: function refreshUserEventTable() {
+      $.get('/calendar/user/events', function (data) {
+        data = $.parseJSON(data);
+        $('#user-events-tables').html(data);
+      });
+    },
+    fetchMiniCalsList: function fetchMiniCalsList() {
+      var _this = this;
+      this.$http.get('/api/minicalslist').then(function (response) {
+        _this.minicalslist = response.data;
+        var self = _this;
+        $.each(response.data, function (index, value) {
+          self.minicalslist[index].label = value.calendar;
+          self.minicalslist[index].code = value.value;
+        });
+      }, function (response) {
+        //error callback
+        console.log("ERRORS");
+        _this.formErrors = response.data.error.message;
+      });
+    },
+    setupDatePickers: function setupDatePickers() {
+      var self = this;
+      if (this.record.start_date === '') {
+        this.dateObject.startDateMin = this.currentDate;
+        this.dateObject.startDateDefault = null;
+        this.dateObject.endDateMin = null;
+        this.dateObject.endDateDefault = null;
+      } else {
+        this.dateObject.startDateMin = this.record.start_date;
+        this.dateObject.startDateDefault = this.record.start_date;
+        this.dateObject.endDateMin = this.record.start_date;
+        this.dateObject.endDateDefault = this.record.end_date;
+        this.dateObject.startTimeDefault = this.record.start_time;
+        this.dateObject.endTimeDefault = this.record.end_time;
+        this.dateObject.regDateMin = this.record.start_date;
+        this.dateObject.regDateDefault = this.record.reg_deadline;
+      }
+      this.startdatePicker = flatpickr(document.getElementById("start-date"), {
+        // minDate: self.dateObject.startDateMin,
+        defaultDate: self.dateObject.startDateDefault,
+        enableTime: false,
+        // altFormat: "m-d-Y",
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        // minDate: new Date(),
+        onChange: function onChange(dateObject, dateString) {
+          self.enddatePicker.set("minDate", dateObject);
+          self.record.start_date = dateString;
+          self.startdatePicker.value = dateString;
+        }
+      });
+      this.enddatePicker = flatpickr(document.getElementById("end-date"), {
+        minDate: self.dateObject.endDateMin,
+        defaultDate: self.dateObject.endDateDefault,
+        enableTime: false,
+        // altFormat: "m-d-Y",
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        // minDate: new Date(),
+        onChange: function onChange(dateObject, dateString) {
+          self.startdatePicker.set("maxDate", dateObject);
+          self.record.end_date = dateString;
+          self.enddatePicker.value = dateString;
+        }
+      });
+      this.starttimePicker = flatpickr(document.getElementById("start-time"), {
+        noCalendar: true,
+        enableTime: true,
+        defaultDate: self.dateObject.startTimeDefault,
+        dateFormat: "h:i K",
+        onChange: function onChange(timeObject, timeString) {
+          self.record.start_time = timeString;
+          self.starttimePicker.value = timeString;
+        }
+      });
+      this.endtimePicker = flatpickr(document.getElementById("end-time"), {
+        noCalendar: true,
+        enableTime: true,
+        defaultDate: self.dateObject.endTimeDefault,
+        dateFormat: "h:i K",
+        onChange: function onChange(timeObject, timeString) {
+          self.record.end_time = timeString;
+          self.endtimePicker.value = timeString;
+        }
+      });
+      this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"), {
+        minDate: self.dateObject.regDateMin,
+        defaultDate: self.dateObject.regDateDefault,
+        enableTime: false,
+        // altFormat: "m-d-Y",
+        altInput: true,
+        altInputClass: "form-control",
+        dateFormat: "Y-m-d",
+        onChange: function onChange(dateObject, dateString) {
+          self.record.reg_deadline = dateString;
+          self.regdeadlinePicker.value = dateString;
+        }
+      });
+    },
+    fetchSubmittedRecord: function fetchSubmittedRecord(recid) {
+      // Sets params for update record, Passes an id to fetchCurrentRecord
+      this.record.exists = this.record_exists = true;
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      this.record.id = recid;
+      this.formErrors = {};
+      this.fetchCurrentRecord();
+    },
+    cancelRecord: function cancelRecord(recid) {
+      var _this2 = this;
+      // toggles cancel
+      this.formMessage.isOk = false;
+      this.formMessage.msg = false;
+      this.$http.patch('/api/event/' + recid + '/cancel').then(function (response) {
+        _this2.formMessage.isOk = response.ok;
+        _this2.formMessage.msg = response.body.message;
+      }, function (response) {
+        console.log(JSON.stringify(response));
+      });
+      this.refreshUserEventTable();
+    },
+    fetchCurrentRecord: function fetchCurrentRecord() {
+      var _this3 = this;
+      var fetchme = this.recordid ? this.recordid : this.record.id;
+      this.$http.get('/api/event/' + fetchme + '/edit').then(function (response) {
+        _this3.record = response.data.data;
+        _this3.record.exists = _this3.record_exists = true;
+        _this3.currentRecordId = _this3.record.id;
+        _this3.checkOverData();
+        _this3.record.start_time = response.data.data.start_time;
+      }, function (response) {
+        //error callback
+        console.log(response);
+        console.log("FETCH ERRORS");
+      });
+    },
+    checkOverData: function checkOverData() {
+      // Used after fetching an event
+      // Check event location
+      // not null and has more than white space
+      if (this.record.building != null && /\S/.test(this.record.building)) {
+        // Is on campus
+        this.record.on_campus = 1; // bool
+        this.building = {
+          id: 0,
+          name: this.convertFromSlug(this.record.building)
+        };
+        this.building.label = this.building.name;
+      } else {
+        // Not on campus
+        this.record.on_campus = 0; // bool
+        this.record.locationoffcampus = this.record.location;
+      }
+      if (!this.record.categories) {
+        this.record.categories = [];
+      }
+      var self = this;
+      $.each(this.record.eventcategories, function (index, value) {
+        self.record.eventcategories[index].label = value.category;
+        self.record.eventcategories[index].code = value.value;
+      });
+      $.each(this.record.minicalendars, function (index, value) {
+        self.record.minicalendars[index].label = value.calendar;
+        self.record.minicalendars[index].code = value.value;
+      });
+      this.record.categories = self.record.eventcategories;
+      this.setupDatePickers();
+    },
+    fetchForSelectCategoriesList: function fetchForSelectCategoriesList(search, loading) {
+      var _this4 = this;
+      loading ? loading(true) : undefined;
+      this.$http.get('/api/categorylist', {
+        q: search
+      }).then(function (resp) {
+        _this4.zcats = resp.data;
+        var self = _this4;
+        $.each(resp.data, function (index, value) {
+          self.zcats[index].label = value.category;
+          self.zcats[index].code = value.value;
+        });
+        loading ? loading(true) : undefined;
+      });
+    },
+    fetchForSelectBuildingList: function fetchForSelectBuildingList(search, loading) {
+      var _this5 = this;
+      loading ? loading(true) : undefined;
+      this.$http.get('/api/buildinglist', {
+        q: search
+      }).then(function (resp) {
+        _this5.buildings = resp.data;
+        var self = _this5;
+        $.each(resp.data, function (index, value) {
+          self.buildings[index].label = value.name;
+        });
+        loading ? loading(true) : undefined;
+      });
+    },
+    delEvent: function delEvent(e) {
+      var _this6 = this;
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      if (confirm('Would you like to delete this event?') == true) {
+        $('html, body').animate({
+          scrollTop: 0
+        }, 'fast');
+        var tempid = 0;
+        this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+        this.$http.post('/api/event/' + tempid + '/delete').then(function (response) {
+          // If user admin
+          if (window.location.href.indexOf("admin") > -1) {
+            window.location.href = "/admin/event/queue";
+          } else {
+            // Not user admin
+            // Clear out values;
+            _this6.record = {
+              on_campus: 1,
+              all_day: 0,
+              no_end_time: 0,
+              free: 0,
+              title: '',
+              description: '',
+              mini_calendar: '',
+              building: '',
+              categories: []
+            };
+            _this6.record.location = '';
+            _this6.building = null;
+            _this6.buildings = null;
+            _this6.record.room = null;
+            _this6.record.building = null;
+            _this6.record.building_id = null;
+            _this6.record.lbc_approved = false;
+            _this6.record.sdate = '';
+            _this6.record.edate = '';
+            _this6.record.stime = '';
+            _this6.record.rdate = '';
+            _this6.formMessage.isOk = response.ok;
+            _this6.formMessage.msg = response.body;
+            _this6.record.exists = _this6.record_exists = false;
+            var d = new Date();
+            var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+            _this6.record.start_date = tempdate;
+            _this6.record.end_date = tempdate;
+            _this6.record.reg_deadline = tempdate;
+            _this6.setupDatePickers();
+          }
+        }, function (response) {
+          console.log('Error: ' + JSON.stringify(response));
+        });
+        this.refreshUserEventTable();
+      }
+    },
+    cloneEvent: function cloneEvent(e) {
+      if (confirm('Would you like to clone this event?') == true) {
+        this.record.exists = this.record_exists = false;
+        e.preventDefault();
+        this.submitForm(e, true);
+      }
+    },
+    cancelEvent: function cancelEvent(e) {
+      var _this7 = this;
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      if (confirm('Would you like to cancel this event?') == true) {
+        $('html, body').animate({
+          scrollTop: 0
+        }, 'fast');
+        var tempid;
+        this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+        this.$http.patch('/api/event/' + tempid + '/cancel').then(function (response) {
+          if (_this7.record.is_canceled == 0) {
+            _this7.record.is_canceled = 1;
+          } else {
+            _this7.record.is_canceled = 0;
+          }
+          _this7.formMessage.msg = "Event's status has been changed.";
+          _this7.formMessage.isOk = response.ok;
+        }, function (response) {
+          console.log('Error: ' + JSON.stringify(response));
+        });
+        this.refreshUserEventTable();
+      }
+    },
+    submitForm: function submitForm(e, doClone) {
+      var _this8 = this;
+      e.preventDefault();
+      this.formMessage.isOk = false;
+      this.formMessage.isErr = false;
+      $('html, body').animate({
+        scrollTop: 0
+      }, 'fast');
+      if (this.record.on_campus == true) {
+        this.record.location = this.computedLocation;
+      } else {
+        this.record.location = this.record.locationoffcampus;
+        // clearout these values
+        this.record.building = null;
+        this.record.building_id = null;
+        this.record.room = null;
+      }
+      this.record.minicals = this.record.minicalendars ? this.record.minicalendars : null;
+      var method = !this.record.id || doClone === true ? 'post' : 'put';
+      var route = !this.record.id || doClone === true ? '/api/event' : '/api/event/' + this.record.id;
+      this.$http[method](route, this.record).then(function (response) {
+        response.status;
+        _this8.formMessage.msg = response.data.message;
+        _this8.formMessage.isOk = response.ok;
+        _this8.formMessage.isErr = false;
+        _this8.currentRecordId = response.data.newdata.record_id;
+        _this8.record_id = response.data.newdata.record_id;
+        _this8.record.id = response.data.newdata.record_id;
+        _this8.record.exists = true;
+        _this8.formErrors = {};
+        _this8.refreshUserEventTable();
+        _this8.fetchCurrentRecord(_this8.currentRecordId);
+      }, function (response) {
+        _this8.formMessage.isOk = false;
+        _this8.formMessage.isErr = true;
+        //error callback
+        _this8.formErrors = response.data.error.message;
+      });
+    },
+    convertToSlug: function convertToSlug(value) {
+      return value.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+    },
+    convertFromSlug: function convertFromSlug(value) {
+      /* READ: for some reason, buildings do not have foreign key relations to events;
+      * they are merely being stored as slugs in the events table.
+      * This causes problems when trying to reproduce names that have capital letters other than the first letter
+      * (e.g. "McKenny Hall" or "Rec/IM Building")
+      * In lieu of breaking the entire events table, whenever a slug has special formatting, just put it in a conditional statement
+      *
+      * CP 1/22/18
+      */
+      if (value == 'mckenny-hall') {
+        return 'McKenny Hall';
+      } else if (value == 'recim-building' || value == 'rec/im-building') {
+        return 'Rec/IM Building';
+      } else if (value == 'rec/im-softball-complex') {
+        return 'Rec/IM Softball Complex';
+      } else {
+        return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
+          return arguments[0].toUpperCase();
+        });
+      }
+    }
   }
 });
 
@@ -18201,9 +20658,2903 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _withScopeId = function _withScopeId(n) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-18f13152"), n = n(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)(), n;
+};
+var _hoisted_1 = {
+  "class": "row"
+};
+var _hoisted_2 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "There are errors.", -1 /* HOISTED */);
+});
+var _hoisted_3 = [_hoisted_2];
+var _hoisted_4 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "This event has been canceled.", -1 /* HOISTED */);
+});
+var _hoisted_5 = [_hoisted_4];
+var _hoisted_6 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, "This event is archived because it ended more than two years ago. It will no longer display publicly.", -1 /* HOISTED */);
+});
+var _hoisted_7 = [_hoisted_6];
+var _hoisted_8 = {
+  "class": "form-group"
+};
+var _hoisted_9 = {
+  "class": "help-text",
+  id: "title-helptext"
+};
+var _hoisted_10 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_11 = {
+  "class": "form-group"
+};
+var _hoisted_12 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Short Title - for departmental use only", -1 /* HOISTED */);
+});
+var _hoisted_13 = {
+  "class": "row"
+};
+var _hoisted_14 = {
+  "class": "help-text",
+  id: "description-helptext"
+};
+var _hoisted_15 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_16 = {
+  "class": "row"
+};
+var _hoisted_17 = {
+  "class": "form-group"
+};
+var _hoisted_18 = {
+  "class": "row"
+};
+var _hoisted_19 = {
+  "class": "row"
+};
+var _hoisted_20 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Building", -1 /* HOISTED */);
+});
+var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Room", -1 /* HOISTED */);
+});
+var _hoisted_22 = {
+  "class": "row"
+};
+var _hoisted_23 = {
+  "class": "row"
+};
+var _hoisted_24 = {
+  "class": "form-group"
+};
+var _hoisted_25 = {
+  "for": "start-date"
+};
+var _hoisted_26 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_27 = {
+  "class": "form-group"
+};
+var _hoisted_28 = {
+  "for": "end-date"
+};
+var _hoisted_29 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_30 = {
+  "class": "row"
+};
+var _hoisted_31 = {
+  "class": "form-group"
+};
+var _hoisted_32 = {
+  "for": "all-day"
+};
+var _hoisted_33 = {
+  "class": "form-group"
+};
+var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "no-end-time"
+  }, "No End Time:", -1 /* HOISTED */);
+});
+var _hoisted_35 = {
+  "class": "row"
+};
+var _hoisted_36 = {
+  "class": "form-group"
+};
+var _hoisted_37 = {
+  "for": "start-time"
+};
+var _hoisted_38 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_39 = {
+  "class": "form-group"
+};
+var _hoisted_40 = {
+  "for": "end-time"
+};
+var _hoisted_41 = {
+  "class": "row"
+};
+var _hoisted_42 = {
+  "class": "form-group"
+};
+var _hoisted_43 = {
+  "class": "row"
+};
+var _hoisted_44 = {
+  "class": "form-group"
+};
+var _hoisted_45 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, "(Jane Doe)", -1 /* HOISTED */);
+});
+var _hoisted_46 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_47 = {
+  "class": "form-group"
+};
+var _hoisted_48 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, "(ex.janedoe@emich.edu)", -1 /* HOISTED */);
+});
+var _hoisted_49 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_50 = {
+  "class": "row"
+};
+var _hoisted_51 = {
+  "class": "form-group"
+};
+var _hoisted_52 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, "(ex. 734.487.1849)", -1 /* HOISTED */);
+});
+var _hoisted_53 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_54 = {
+  "class": "form-group"
+};
+var _hoisted_55 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, "(ex. 734.487.1849)", -1 /* HOISTED */);
+});
+var _hoisted_56 = {
+  "class": "row"
+};
+var _hoisted_57 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Related Link", -1 /* HOISTED */);
+});
+var _hoisted_58 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text",
+    id: "title-helptext-2"
+  }, "Please enter the url for your related web page. (ex. www.yourlink.com)", -1 /* HOISTED */);
+});
+var _hoisted_59 = {
+  "class": "input-group input-group-flat"
+};
+var _hoisted_60 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_61 = {
+  "class": "row"
+};
+var _hoisted_62 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text",
+    id: "link_txt-helptext"
+  }, "(ex. The event webpage)", -1 /* HOISTED */);
+});
+var _hoisted_63 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_64 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Example of Related Link", -1 /* HOISTED */);
+});
+var _hoisted_65 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text"
+  }, "Below is how it may look. ", -1 /* HOISTED */);
+});
+var _hoisted_66 = {
+  "class": "form-control"
+};
+var _hoisted_67 = {
+  href: "#"
+};
+var _hoisted_68 = {
+  "class": "row"
+};
+var _hoisted_69 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Related Link", -1 /* HOISTED */);
+});
+var _hoisted_70 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text",
+    id: "title-helptext-3"
+  }, "Please enter the url for your related web page. (ex. www.yourlink.com)", -1 /* HOISTED */);
+});
+var _hoisted_71 = {
+  "class": "input-group input-group-flat"
+};
+var _hoisted_72 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_73 = {
+  "class": "row"
+};
+var _hoisted_74 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text",
+    id: "link_txt-helptext"
+  }, "(ex. The event webpage)", -1 /* HOISTED */);
+});
+var _hoisted_75 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_76 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Example of Related Link", -1 /* HOISTED */);
+});
+var _hoisted_77 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text"
+  }, "Below is how it may look. ", -1 /* HOISTED */);
+});
+var _hoisted_78 = {
+  "class": "form-control"
+};
+var _hoisted_79 = {
+  href: "#"
+};
+var _hoisted_80 = {
+  "class": "row"
+};
+var _hoisted_81 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Related Link", -1 /* HOISTED */);
+});
+var _hoisted_82 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text",
+    id: "title-helptext-4"
+  }, "Please enter the url for your related web page. (ex. www.yourlink.com)", -1 /* HOISTED */);
+});
+var _hoisted_83 = {
+  "class": "input-group input-group-flat"
+};
+var _hoisted_84 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_85 = {
+  "class": "row"
+};
+var _hoisted_86 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text",
+    id: "link_txt-helptext"
+  }, "(ex. The event webpage)", -1 /* HOISTED */);
+});
+var _hoisted_87 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_88 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Example of Related Link", -1 /* HOISTED */);
+});
+var _hoisted_89 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", {
+    "class": "help-text"
+  }, "Below is how it may look. ", -1 /* HOISTED */);
+});
+var _hoisted_90 = {
+  "class": "form-control"
+};
+var _hoisted_91 = {
+  href: "#"
+};
+var _hoisted_92 = {
+  "class": "row"
+};
+var _hoisted_93 = {
+  "class": "form-group"
+};
+var _hoisted_94 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+    "for": "reg-deadline"
+  }, "Registration Deadline", -1 /* HOISTED */);
+});
+var _hoisted_95 = {
+  key: 0,
+  "class": "help-text invalid"
+};
+var _hoisted_96 = {
+  "class": "row"
+};
+var _hoisted_97 = {
+  "class": "row"
+};
+var _hoisted_98 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Free", -1 /* HOISTED */);
+});
+var _hoisted_99 = {
+  key: 0,
+  "class": "form-group"
+};
+var _hoisted_100 = {
+  "class": "input-group"
+};
+var _hoisted_101 = {
+  "class": "input-group"
+};
+var _hoisted_102 = {
+  "class": "row"
+};
+var _hoisted_103 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Tickets Available", -1 /* HOISTED */);
+});
+var _hoisted_104 = ["value"];
+var _hoisted_105 = {
+  key: 0
+};
+var _hoisted_106 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, "(ex. http://www.emich.edu/calendar)", -1 /* HOISTED */);
+});
+var _hoisted_107 = {
+  key: 1
+};
+var _hoisted_108 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("em", null, "(ex. 734.487.1849)", -1 /* HOISTED */);
+});
+var _hoisted_109 = {
+  key: 2
+};
+var _hoisted_110 = {
+  key: 3
+};
+var _hoisted_111 = {
+  "class": "row"
+};
+var _hoisted_112 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Participants", -1 /* HOISTED */);
+});
+var _hoisted_113 = ["value"];
+var _hoisted_114 = {
+  "class": "row"
+};
+var _hoisted_115 = {
+  "for": "lbc-approved"
+};
+var _hoisted_116 = {
+  "class": "row"
+};
+var _hoisted_117 = {
+  "for": "minical"
+};
+var _hoisted_118 = {
+  "class": "row",
+  id: "submit-area"
+};
+var _hoisted_119 = {
+  "class": "checkbox"
+};
+var _hoisted_120 = {
+  "class": "checkbox"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.isadmin), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  <form>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <slot name=\"csrf\"></slot>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div v-bind:class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"formMessage.isOk\" :class=\"calloutSuccess\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <h5>{{ formMessage.msg }}</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"formMessage.isErr\" :class=\"calloutFail\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <h5>There are errors.</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"record.is_canceled == 1\" :class=\"calloutFail\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <h5>This event has been canceled.</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"record.is_archived == 1\" :class=\"calloutFail\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <h5>This event is archived because it ended more than two years ago. It will no longer display publicly.</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Title <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p class=\"help-text\" id=\"title-helptext\">Please enter a title ({{ titleChars }} characters left)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input v-model=\"record.title\" class=\"form-control\" :class=\"[formErrors.title ? 'invalid-input' : '']\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 name=\"title\" type=\"text\" maxlength=\"80\" autofocus>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.title\" class=\"help-text invalid\"> Please Include a Title!</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Short Title - for departmental use only</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input v-model=\"record.short_title\" class=\"form-control\" type=\"text\" placeholder=\"Short Title\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 name=\"short-title\" maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Description <span :class=\"iconStar\" class=\"reqstar\"></span>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\" id=\"description-helptext\">({{ descriptionChars }} characters left)</p></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <textarea v-model=\"record.description\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    :class=\"[formErrors.description ? 'invalid-input' : '']\" name=\"description\" type=\"textarea\" rows=\"6\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    maxlength=\"255\"></textarea>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.description\" class=\"help-text invalid\">Need a Description!</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Is Event on Campus?"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input id=\"on-campus-yes\" name=\"on_campus\" type=\"checkbox\" value=\"1\" v-model=\"record.on_campus\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <template v-if=\"isOnCampus\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div :class=\"md8col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <label>Building</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <v-select"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  v-model=\"building\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  :options=\"buildings\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  placeholder=\"Select a Building...\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              ></v-select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>&lt;!&ndash; /.md8col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div :class=\"md4col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <label>Room</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.room\" :class=\"[formErrors.room ? 'invalid-input' : '']\" name=\"room\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     class='mockh5' maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>&lt;!&ndash; /.md4col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <template v-if=\"isOnCampus\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <label>Location <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"computedLocation\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     readonly=\"readonly\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <template v-else>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <label>Location <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.locationoffcampus\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     :class=\"[formErrors.location ? 'invalid-input' : '']\" name=\"location\" type=\"text\" maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"start-date\">Event Start Date: <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"start-date\" :class=\"[formErrors.start_date ? 'invalid-input' : '']\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 v-model=\"record.start_date\" aria-describedby=\"errorStartDate\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.start_date\" class=\"help-text invalid\">Need a Start Date</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash;form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"end-date\">End Date: <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"end-date\" :class=\"[formErrors.end_date ? 'invalid-input' : '']\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 v-model=\"record.end_date\" aria-describedby=\"errorEndDate\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          &lt;!&ndash; <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.end_date\" class=\"help-text invalid\">Need an End Date</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash;form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"all-day\">All Day Event:"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input id=\"all-day\" name=\"all_day\" type=\"checkbox\" value=\"1\" v-model=\"record.all_day\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.small-6 column &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"hasStartTime\" class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"no-end-time\">No End Time:</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"no-end-time\" name=\"no_end_time\" type=\"checkbox\" value=\"1\" v-model=\"record.no_end_time\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.small-6 column &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"hasStartTime\" class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"start-time\">Start Time: <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"start-time\" class=\"form-control\" type=\"text\" v-model=\"record.start_time\" readonly/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.start_time\" class=\"help-text invalid\">Need a Start Time</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-show=\"hasEndTime\" class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"end-time\">End Time: <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"end-time\" class=\"form-control\" type=\"text\" v-model=\"record.end_time\" readonly/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Categories: <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <v-select"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              v-model=\"record.categories\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              :class=\"[formErrors.categories ? 'invalid-input' : '']\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              :options=\"zcats\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              :multiple=\"true\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              placeholder=\"Select related categories...\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          ></v-select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Contact Person: <span :class=\"iconStar\" class=\"reqstar\"></span><em>(Jane Doe)</em></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input v-model=\"record.contact_person\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 :class=\"[formErrors.contact_person ? 'invalid-input' : '']\" name=\"contact-person\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.contact_person\" class=\"help-text invalid\">Need a Contact Person!</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Contact Email: <span :class=\"iconStar\" class=\"reqstar\"></span><em>(ex.janedoe@emich.edu)</em></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input v-model=\"record.contact_email\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 :class=\"[formErrors.contact_email ? 'invalid-input' : '']\" name=\"contact-email\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.contact_email\" class=\"help-text invalid\">Need a Contact Email!</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Contact Phone: <span :class=\"iconStar\" class=\"reqstar\"></span> <em>(ex. 734.487.1849)</em>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input v-model=\"record.contact_phone\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   :class=\"[formErrors.contact_phone ? 'invalid-input' : '']\" name=\"contact-phone\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p v-if=\"formErrors.contact_phone\" class=\"help-text invalid\">Need a Contact Phone!</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Contact Fax: <em>(ex. 734.487.1849)</em>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input v-model=\"record.contact_fax\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   :class=\"[formErrors.contact_fax ? 'invalid-input' : '']\" name=\"contact-fax\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    &lt;!&ndash; RELATED LINKS &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Related Link</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p class=\"help-text\" id=\"title-helptext-2\">Please enter the url for your related web page. (ex."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            www.yourlink.com)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div class=\"input-group input-group-flat\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <span :class=\"inputGroupLabel\">http://</span>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input v-model=\"record.related_link_1\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   v-bind:class=\"[formErrors.related_link_1 ? 'invalid-input' : '']\" name=\"related_link_1\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   maxlength=\"255\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.related_link_1\" class=\"help-text invalid\">Please make sure url is properly formed.</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.col-md-4 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\" v-show=\"record.related_link_1\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md4col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p class=\"help-text\" id=\"link_txt-helptext\">(ex. The event webpage)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input v-model=\"record.related_link_1_txt\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 v-bind:class=\"[formErrors.related_link_1_txt ? 'invalid-input' : '']\" name=\"related_link_1_txt\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 type=\"text\" maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.related_link_1_txt\" class=\"help-text invalid\">Please include a descriptive text for your"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            related link.</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.col-md-4 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md8col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Example of Related Link</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p class=\"help-text\">Below is how it may look. </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <h5 class=\"form-control\">For more information, visit <a href=\"#\"> {{ record.related_link_1_txt }}</a>.</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    &lt;!&ndash; Two &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <template v-if=\"record.related_link_1 && record.related_link_1_txt\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Related Link</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\" id=\"title-helptext-3\">Please enter the url for your related web page. (ex."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              www.yourlink.com)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div class=\"input-group input-group-flat\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <span :class=\"inputGroupLabel\">http://</span>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.related_link_2\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     v-bind:class=\"[formErrors.related_link_2 ? 'invalid-input' : '']\" name=\"related_link_2\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     maxlength=\"255\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p v-if=\"formErrors.related_link_2\" class=\"help-text invalid\">Please make sure url is properly formed.</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.col-md-4 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div class=\"row\" v-show=\"record.related_link_2\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"md4col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\" id=\"link_txt-helptext\">(ex. The event webpage)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input v-model=\"record.related_link_2_txt\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   v-bind:class=\"[formErrors.related_link_2_txt ? 'invalid-input' : '']\" name=\"related_link_2_txt\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   type=\"text\" maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p v-if=\"formErrors.related_link_2_txt\" class=\"help-text invalid\">Please include a descriptive text for your"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              related link.</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.col-md-4 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"md8col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Example of Related Link</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\">Below is how it may look. </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <h5 class=\"form-control\">For more information, visit: <a href=\"#\"> {{ record.related_link_2_txt }}</a>.</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    &lt;!&ndash; three &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <template v-if=\"record.related_link_2 && record.related_link_2_txt\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Related Link</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\" id=\"title-helptext-4\">Please enter the url for your related web page. (ex."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              www.yourlink.com)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div class=\"input-group input-group-flat\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <span :class=\"inputGroupLabel\">http://</span>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.related_link_3\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     v-bind:class=\"[formErrors.related_link_3 ? 'invalid-input' : '']\" name=\"related_link_3\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     maxlength=\"255\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p v-if=\"formErrors.related_link_3\" class=\"help-text invalid\">Please make sure url is properly formed.</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.col-md-4 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div class=\"row\" v-show=\"record.related_link_3\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"md4col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Descriptive text for link.<span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\" id=\"link_txt-helptext\">(ex. The event webpage)</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input v-model=\"record.related_link_3_txt\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   v-bind:class=\"[formErrors.related_link_3_txt ? 'invalid-input' : '']\" name=\"related_link_3_txt\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                   type=\"text\" maxlength=\"80\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p v-if=\"formErrors.related_link_3_txt\" class=\"help-text invalid\">Please include a descriptive text for your"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              related link.</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.col-md-4 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"md8col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div v-bind:class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Example of Related Link</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <p class=\"help-text\">Below is how it may look. </p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <h5 class=\"form-control\">For more information, visit: <a href=\"#\"> {{ record.related_link_3_txt }}</a>.</h5>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    &lt;!&ndash; RELATED LINKS &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"reg-deadline\">Registration Deadline</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"reg-deadline\" :class=\"[formErrors.reg_deadline ? 'invalid-input' : '']\" type=\"text\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 v-model=\"record.reg_deadline\" aria-describedby=\"errorRegDeadline\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.reg_deadline\" class=\"help-text invalid\">Error</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col&ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div :class=\"md2col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Free</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input id=\"free\" name=\"free\" type=\"checkbox\" value=\"1\" v-model=\"record.free\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>&lt;!&ndash; /.form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>&lt;!&ndash; /.md4col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <div :class=\"md10col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Event Cost <span :class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div v-if=\"hasCost\" class=\"form-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <div class=\"input-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                &lt;!&ndash;            <span :class=\"inputGroupLabel\">$</span>&ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                       name=\"event-cost\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              </div>&lt;!&ndash; /. input-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <div v-else :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <div class=\"input-group\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                &lt;!&ndash;            <span :class=\"inputGroupLabel\">$</span>&ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <input v-model=\"record.cost\" class=\"form-control\" :class=\"[formErrors.cost ? 'invalid-input' : '']\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                       name=\"event-cost\" readonly=\"readonly\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              </div>&lt;!&ndash; /. input-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </div>&lt;!&ndash; /.md8col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.medium-6 &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Tickets Available</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <select v-model=\"record.tickets\" class=\"form-control\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <option v-for=\"ticketoption in ticketoptions\" :value=\"ticketoption.value\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              {{ ticketoption.label }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </option>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <template v-if=\"record.tickets == 'online' || record.tickets == 'all'\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Link: <em>(ex. http://www.emich.edu/calendar)</em>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.ticket_details_online\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     :class=\"[formErrors.ticket_details_online ? 'invalid-input' : '']\" name=\"ticket-details-online\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     type=\"text\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <template v-if=\"record.tickets == 'phone' || record.tickets == 'all'\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Tickets by Phone <em>(ex. 734.487.1849)</em>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.ticket_details_phone\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     :class=\"[formErrors.ticket_details_phone ? 'invalid-input' : '']\" name=\"ticket-details-phone\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     type=\"text\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <template v-if=\"record.tickets == 'office' || record.tickets == 'all'\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Address"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.ticket_details_office\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     :class=\"[formErrors.ticket_details_office ? 'invalid-input' : '']\" name=\"ticket-details-office\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     type=\"text\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <template v-if=\"record.tickets == 'other'\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <label>Other"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <input v-model=\"record.ticket_details_other\" class=\"form-control\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     :class=\"[formErrors.ticket_details_other ? 'invalid-input' : '']\" name=\"ticket-details-other\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                     type=\"text\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.form-group &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label>Participants</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <select v-model=\"record.participants\" class=\"form-control\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <option v-for=\"participant in participants\" :value=\"participant.value\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              {{ participant.label }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </option>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash;/.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"lbc-approved\">Request for LBC"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <input id=\"lbc-approved\" name=\"lbc-approved\" type=\"checkbox\" value=\"1\" v-model=\"record.lbc_approved\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md6col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md6col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md12col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <label for=\"minical\">Select your department's mini calendar(s)"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <v-select id=\"minical\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    v-model=\"record.minicalendars\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    :options=\"minicalslist\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    :multiple=\"true\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    placeholder=\"Select Mini Calendar\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          ></v-select>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>&lt;!&ndash; /.row &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <div class=\"row\" id=\"submit-area\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div v-if=\"isadmin\" :class=\"md4col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"checkbox\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label><input type=\"checkbox\" v-model=\"record.admin_pre_approved\">Auto Approve</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div class=\"checkbox\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label><input type=\"checkbox\" v-model=\"record.is_hidden\">Hide from EMU Today Calendar (will still show on mini"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            calendars, if applicable)</label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      <div :class=\"md8col\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        <div :class=\"formGroup\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <button id=\"btn-event\" v-on:click=\"submitForm\" type=\"submit\" v-bind:class=\"btnPrimary\">{{ submitBtnLabel }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </button>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <button v-if=\"thisRecordExists\" id=\"btn-clone\" v-on:click=\"cloneEvent\" type=\"submit\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  v-bind:class=\"btnPrimary\">Clone Event"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </button>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <button v-if=\"thisRecordExists && isAdmin\" id=\"btn-cancel\" v-on:click=\"cancelEvent\" type=\"submit\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  v-bind:class=\"btnPrimary\">{{ cancelStatus }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </button>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <button v-if=\"thisRecordExists\" id=\"btn-delete\" v-on:click=\"delEvent\" type=\"submit\" class=\"redBtn\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  v-bind:class=\"btnPrimary\">Delete Event"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          </button>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("        </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("      </div>&lt;!&ndash; /.md12col &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  </form>")], 2112 /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */);
+  var _component_v_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-select");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "csrf", {}, undefined, true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.calloutSuccess)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formMessage.msg), 1 /* TEXT */)], 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.formMessage.isOk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.calloutFail)
+  }, _hoisted_3, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.formMessage.isErr]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.calloutFail)
+  }, _hoisted_5, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.record.is_canceled == 1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.calloutFail)
+  }, _hoisted_7, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.record.is_archived == 1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Title "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_9, "Please enter a title (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.titleChars) + " characters left)", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return _ctx.record.title = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.title ? 'invalid-input' : '']]),
+    name: "title",
+    type: "text",
+    maxlength: "80",
+    autofocus: ""
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.title]]), _ctx.formErrors.title ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_10, " Please Include a Title!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return _ctx.record.short_title = $event;
+    }),
+    "class": "form-control",
+    type: "text",
+    placeholder: "Short Title",
+    name: "short-title",
+    maxlength: "80"
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.short_title]])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Description "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_14, "(" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.descriptionChars) + " characters left)", 1 /* TEXT */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return _ctx.record.description = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.description ? 'invalid-input' : '']]),
+    name: "description",
+    type: "textarea",
+    rows: "6",
+    maxlength: "255"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.description]]), _ctx.formErrors.description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_15, "Need a Description!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Is Event on Campus? "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "on-campus-yes",
+    name: "on_campus",
+    type: "checkbox",
+    value: "1",
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+      return _ctx.record.on_campus = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.on_campus]])])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [$options.isOnCampus ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 0
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md8col)
+  }, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+    modelValue: _ctx.building,
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+      return _ctx.building = $event;
+    }),
+    options: _ctx.buildings,
+    placeholder: "Select a Building..."
+  }, null, 8 /* PROPS */, ["modelValue", "options"])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md8col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md4col)
+  }, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+      return _ctx.record.room = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([[_ctx.formErrors.room ? 'invalid-input' : ''], "mockh5"]),
+    name: "room",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.room]])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md4col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row ")], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [$options.isOnCampus ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 0
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Location "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+      return $options.computedLocation = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.location ? 'invalid-input' : '']]),
+    name: "location",
+    type: "text",
+    readonly: "readonly"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $options.computedLocation]])], 64 /* STABLE_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Location "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+      return _ctx.record.locationoffcampus = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.location ? 'invalid-input' : '']]),
+    name: "location",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.locationoffcampus]])], 64 /* STABLE_FRAGMENT */))], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_25, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Event Start Date: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "start-date",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.formErrors.start_date ? 'invalid-input' : '']),
+    type: "text",
+    "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+      return _ctx.record.start_date = $event;
+    }),
+    "aria-describedby": "errorStartDate"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.start_date]]), _ctx.formErrors.start_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_26, "Need a Start Date")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("End Date: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "end-date",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.formErrors.end_date ? 'invalid-input' : '']),
+    type: "text",
+    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+      return _ctx.record.end_date = $event;
+    }),
+    "aria-describedby": "errorEndDate"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.end_date]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <datepicker id=\"end-date\" :readonly=\"true\" format=\"YYYY-MM-DD\" name=\"end-date\" :value.sync=\"edate\"></datepicker> "), _ctx.formErrors.end_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_29, "Need an End Date")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("All Day Event: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "all-day",
+    name: "all_day",
+    type: "checkbox",
+    value: "1",
+    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+      return _ctx.record.all_day = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.all_day]])])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-6 column "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "no-end-time",
+    name: "no_end_time",
+    type: "checkbox",
+    value: "1",
+    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+      return _ctx.record.no_end_time = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.no_end_time]])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $options.hasStartTime]])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-6 column ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Start Time: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "start-time",
+    "class": "form-control",
+    type: "text",
+    "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+      return _ctx.record.start_time = $event;
+    }),
+    readonly: ""
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.start_time]]), _ctx.formErrors.start_time ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_38, "Need a Start Time")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $options.hasStartTime]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("End Time: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "end-time",
+    "class": "form-control",
+    type: "text",
+    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+      return _ctx.record.end_time = $event;
+    }),
+    readonly: ""
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.end_time]])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $options.hasEndTime]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Categories: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+    modelValue: _ctx.record.categories,
+    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+      return _ctx.record.categories = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.formErrors.categories ? 'invalid-input' : '']),
+    options: _ctx.zcats,
+    multiple: true,
+    placeholder: "Select related categories..."
+  }, null, 8 /* PROPS */, ["modelValue", "class", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Contact Person: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */), _hoisted_45]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+      return _ctx.record.contact_person = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.contact_person ? 'invalid-input' : '']]),
+    name: "contact-person",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.contact_person]]), _ctx.formErrors.contact_person ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_46, "Need a Contact Person!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Contact Email: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */), _hoisted_48]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+      return _ctx.record.contact_email = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.contact_email ? 'invalid-input' : '']]),
+    name: "contact-email",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.contact_email]]), _ctx.formErrors.contact_email ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_49, "Need a Contact Email!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Contact Phone: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(), _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
+      return _ctx.record.contact_phone = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.contact_phone ? 'invalid-input' : '']]),
+    name: "contact-phone",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.contact_phone]]), _ctx.formErrors.contact_phone ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_53, "Need a Contact Phone!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Contact Fax: "), _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
+      return _ctx.record.contact_fax = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.contact_fax ? 'invalid-input' : '']]),
+    name: "contact-fax",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.contact_fax]])])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" RELATED LINKS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_57, _hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.inputGroupLabel)
+  }, "http://", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
+      return _ctx.record.related_link_1 = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.related_link_1 ? 'invalid-input' : '']]),
+    name: "related_link_1",
+    type: "text",
+    maxlength: "255"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.related_link_1]])]), _ctx.formErrors.related_link_1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_60, "Please make sure url is properly formed.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-4 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md4col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Descriptive text for link."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), _hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[20] || (_cache[20] = function ($event) {
+      return _ctx.record.related_link_1_txt = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.related_link_1_txt ? 'invalid-input' : '']]),
+    name: "related_link_1_txt",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.related_link_1_txt]]), _ctx.formErrors.related_link_1_txt ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_63, "Please include a descriptive text for your related link.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-4 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md8col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_64, _hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_66, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("For more information, visit "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.record.related_link_1_txt), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(".")])], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.record.related_link_1]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Two "), _ctx.record.related_link_1 && _ctx.record.related_link_1_txt ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 0
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_69, _hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_71, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.inputGroupLabel)
+  }, "http://", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
+      return _ctx.record.related_link_2 = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.related_link_2 ? 'invalid-input' : '']]),
+    name: "related_link_2",
+    type: "text",
+    maxlength: "255"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.related_link_2]])]), _ctx.formErrors.related_link_2 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_72, "Please make sure url is properly formed.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-4 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_73, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md4col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Descriptive text for link."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), _hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
+      return _ctx.record.related_link_2_txt = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.related_link_2_txt ? 'invalid-input' : '']]),
+    name: "related_link_2_txt",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.related_link_2_txt]]), _ctx.formErrors.related_link_2_txt ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_75, "Please include a descriptive text for your related link.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-4 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md8col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_76, _hoisted_77, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_78, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("For more information, visit: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_79, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.record.related_link_2_txt), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(".")])], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.record.related_link_2]])], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" three "), _ctx.record.related_link_2 && _ctx.record.related_link_2_txt ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    key: 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_80, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_81, _hoisted_82, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_83, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.inputGroupLabel)
+  }, "http://", 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
+      return _ctx.record.related_link_3 = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.related_link_3 ? 'invalid-input' : '']]),
+    name: "related_link_3",
+    type: "text",
+    maxlength: "255"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.related_link_3]])]), _ctx.formErrors.related_link_3 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_84, "Please make sure url is properly formed.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-4 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_85, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md4col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Descriptive text for link."), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), _hoisted_86, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[24] || (_cache[24] = function ($event) {
+      return _ctx.record.related_link_3_txt = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.related_link_3_txt ? 'invalid-input' : '']]),
+    name: "related_link_3_txt",
+    type: "text",
+    maxlength: "80"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.related_link_3_txt]]), _ctx.formErrors.related_link_3_txt ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_87, "Please include a descriptive text for your related link.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-4 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md8col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_88, _hoisted_89, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_90, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("For more information, visit: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_91, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.record.related_link_3_txt), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(".")])], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.record.related_link_3]])], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" RELATED LINKS "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_92, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_93, [_hoisted_94, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "reg-deadline",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.formErrors.reg_deadline ? 'invalid-input' : '']),
+    type: "text",
+    "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
+      return _ctx.record.reg_deadline = $event;
+    }),
+    "aria-describedby": "errorRegDeadline"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.reg_deadline]]), _ctx.formErrors.reg_deadline ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_95, "Error")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_96, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_97, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md2col)
+  }, [_hoisted_98, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "free",
+    name: "free",
+    type: "checkbox",
+    value: "1",
+    "onUpdate:modelValue": _cache[26] || (_cache[26] = function ($event) {
+      return _ctx.record.free = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.free]])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md4col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md10col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Event Cost "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
+  }, null, 2 /* CLASS */)]), $options.hasCost ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_99, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_100, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <span :class=\"inputGroupLabel\">$</span>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
+      return _ctx.record.cost = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.cost ? 'invalid-input' : '']]),
+    name: "event-cost"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.cost]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /. input-group ")])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 1,
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_101, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <span :class=\"inputGroupLabel\">$</span>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[28] || (_cache[28] = function ($event) {
+      return _ctx.record.cost = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.cost ? 'invalid-input' : '']]),
+    name: "event-cost",
+    readonly: "readonly"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.cost]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /. input-group ")], 2 /* CLASS */))], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md8col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.medium-6 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_102, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_103, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
+      return _ctx.record.tickets = $event;
+    }),
+    "class": "form-control"
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.ticketoptions, function (ticketoption) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: ticketoption.value
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(ticketoption.label), 9 /* TEXT, PROPS */, _hoisted_104);
+  }), 256 /* UNKEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.record.tickets]]), _ctx.record.tickets == 'online' || _ctx.record.tickets == 'all' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_105, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Link: "), _hoisted_106, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[30] || (_cache[30] = function ($event) {
+      return _ctx.record.ticket_details_online = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.ticket_details_online ? 'invalid-input' : '']]),
+    name: "ticket-details-online",
+    type: "text"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.ticket_details_online]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.record.tickets == 'phone' || _ctx.record.tickets == 'all' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_107, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Tickets by Phone "), _hoisted_108, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[31] || (_cache[31] = function ($event) {
+      return _ctx.record.ticket_details_phone = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.ticket_details_phone ? 'invalid-input' : '']]),
+    name: "ticket-details-phone",
+    type: "text"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.ticket_details_phone]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.record.tickets == 'office' || _ctx.record.tickets == 'all' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_109, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Address "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[32] || (_cache[32] = function ($event) {
+      return _ctx.record.ticket_details_office = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.ticket_details_office ? 'invalid-input' : '']]),
+    name: "ticket-details-office",
+    type: "text"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.ticket_details_office]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.record.tickets == 'other' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_110, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Other "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    "onUpdate:modelValue": _cache[33] || (_cache[33] = function ($event) {
+      return _ctx.record.ticket_details_other = $event;
+    }),
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["form-control", [_ctx.formErrors.ticket_details_other ? 'invalid-input' : '']]),
+    name: "ticket-details-other",
+    type: "text"
+  }, null, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.record.ticket_details_other]])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.form-group ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_111, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [_hoisted_112, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+    "onUpdate:modelValue": _cache[34] || (_cache[34] = function ($event) {
+      return _ctx.record.participants = $event;
+    }),
+    "class": "form-control"
+  }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.participants, function (participant) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: participant.value
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(participant.label), 9 /* TEXT, PROPS */, _hoisted_113);
+  }), 256 /* UNKEYED_FRAGMENT */))], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, _ctx.record.participants]])], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("/.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_114, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_115, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Request for LBC "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    id: "lbc-approved",
+    name: "lbc-approved",
+    type: "checkbox",
+    value: "1",
+    "onUpdate:modelValue": _cache[35] || (_cache[35] = function ($event) {
+      return _ctx.record.lbc_approved = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.lbc_approved]])])], 2 /* CLASS */)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
+  }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md6col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_116, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_117, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Select your department's mini calendar(s) "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+    id: "minical",
+    modelValue: _ctx.record.minicalendars,
+    "onUpdate:modelValue": _cache[36] || (_cache[36] = function ($event) {
+      return _ctx.record.minicalendars = $event;
+    }),
+    options: _ctx.minicalslist,
+    multiple: true,
+    placeholder: "Select Mini Calendar"
+  }, null, 8 /* PROPS */, ["modelValue", "options"])])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_118, [$props.isadmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md4col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_119, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[37] || (_cache[37] = function ($event) {
+      return _ctx.record.admin_pre_approved = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.admin_pre_approved]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Auto Approve")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_120, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "checkbox",
+    "onUpdate:modelValue": _cache[38] || (_cache[38] = function ($event) {
+      return _ctx.record.is_hidden = $event;
+    })
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.record.is_hidden]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Hide from EMU Today Calendar (will still show on mini calendars, if applicable)")])])], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md8col)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    id: "btn-event",
+    onClick: _cache[39] || (_cache[39] = function () {
+      return $options.submitForm && $options.submitForm.apply($options, arguments);
+    }),
+    type: "submit",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.btnPrimary)
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.submitBtnLabel), 3 /* TEXT, CLASS */), $options.thisRecordExists ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
+    id: "btn-clone",
+    onClick: _cache[40] || (_cache[40] = function () {
+      return $options.cloneEvent && $options.cloneEvent.apply($options, arguments);
+    }),
+    type: "submit",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.btnPrimary)
+  }, "Clone Event ", 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.thisRecordExists && $options.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    id: "btn-cancel",
+    onClick: _cache[41] || (_cache[41] = function () {
+      return $options.cancelEvent && $options.cancelEvent.apply($options, arguments);
+    }),
+    type: "submit",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.btnPrimary)
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.cancelStatus), 3 /* TEXT, CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.thisRecordExists ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 2,
+    id: "btn-delete",
+    onClick: _cache[42] || (_cache[42] = function () {
+      return $options.delEvent && $options.delEvent.apply($options, arguments);
+    }),
+    type: "submit",
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["redBtn", $options.btnPrimary])
+  }, "Delete Event ", 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.md12col ")])]);
 }
+
+/***/ }),
+
+/***/ "./node_modules/base64-js/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/base64-js/index.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.byteLength = byteLength
+exports.toByteArray = toByteArray
+exports.fromByteArray = fromByteArray
+
+var lookup = []
+var revLookup = []
+var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+for (var i = 0, len = code.length; i < len; ++i) {
+  lookup[i] = code[i]
+  revLookup[code.charCodeAt(i)] = i
+}
+
+// Support decoding URL-safe base64 strings, as Node.js does.
+// See: https://en.wikipedia.org/wiki/Base64#URL_applications
+revLookup['-'.charCodeAt(0)] = 62
+revLookup['_'.charCodeAt(0)] = 63
+
+function getLens (b64) {
+  var len = b64.length
+
+  if (len % 4 > 0) {
+    throw new Error('Invalid string. Length must be a multiple of 4')
+  }
+
+  // Trim off extra bytes after placeholder bytes are found
+  // See: https://github.com/beatgammit/base64-js/issues/42
+  var validLen = b64.indexOf('=')
+  if (validLen === -1) validLen = len
+
+  var placeHoldersLen = validLen === len
+    ? 0
+    : 4 - (validLen % 4)
+
+  return [validLen, placeHoldersLen]
+}
+
+// base64 is 4/3 + up to two characters of the original data
+function byteLength (b64) {
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function _byteLength (b64, validLen, placeHoldersLen) {
+  return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+}
+
+function toByteArray (b64) {
+  var tmp
+  var lens = getLens(b64)
+  var validLen = lens[0]
+  var placeHoldersLen = lens[1]
+
+  var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+
+  var curByte = 0
+
+  // if there are placeholders, only get up to the last complete 4 chars
+  var len = placeHoldersLen > 0
+    ? validLen - 4
+    : validLen
+
+  var i
+  for (i = 0; i < len; i += 4) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 18) |
+      (revLookup[b64.charCodeAt(i + 1)] << 12) |
+      (revLookup[b64.charCodeAt(i + 2)] << 6) |
+      revLookup[b64.charCodeAt(i + 3)]
+    arr[curByte++] = (tmp >> 16) & 0xFF
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 2) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 2) |
+      (revLookup[b64.charCodeAt(i + 1)] >> 4)
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  if (placeHoldersLen === 1) {
+    tmp =
+      (revLookup[b64.charCodeAt(i)] << 10) |
+      (revLookup[b64.charCodeAt(i + 1)] << 4) |
+      (revLookup[b64.charCodeAt(i + 2)] >> 2)
+    arr[curByte++] = (tmp >> 8) & 0xFF
+    arr[curByte++] = tmp & 0xFF
+  }
+
+  return arr
+}
+
+function tripletToBase64 (num) {
+  return lookup[num >> 18 & 0x3F] +
+    lookup[num >> 12 & 0x3F] +
+    lookup[num >> 6 & 0x3F] +
+    lookup[num & 0x3F]
+}
+
+function encodeChunk (uint8, start, end) {
+  var tmp
+  var output = []
+  for (var i = start; i < end; i += 3) {
+    tmp =
+      ((uint8[i] << 16) & 0xFF0000) +
+      ((uint8[i + 1] << 8) & 0xFF00) +
+      (uint8[i + 2] & 0xFF)
+    output.push(tripletToBase64(tmp))
+  }
+  return output.join('')
+}
+
+function fromByteArray (uint8) {
+  var tmp
+  var len = uint8.length
+  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+  var parts = []
+  var maxChunkLength = 16383 // must be multiple of 3
+
+  // go through the array every three bytes, we'll deal with trailing stuff later
+  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    parts.push(encodeChunk(
+      uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+    ))
+  }
+
+  // pad the end with zeros, but make sure to not forget the extra bytes
+  if (extraBytes === 1) {
+    tmp = uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 2] +
+      lookup[(tmp << 4) & 0x3F] +
+      '=='
+    )
+  } else if (extraBytes === 2) {
+    tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+    parts.push(
+      lookup[tmp >> 10] +
+      lookup[(tmp >> 4) & 0x3F] +
+      lookup[(tmp << 2) & 0x3F] +
+      '='
+    )
+  }
+
+  return parts.join('')
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/buffer/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/buffer/index.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+/* eslint-disable no-proto */
+
+
+
+var base64 = __webpack_require__(/*! base64-js */ "./node_modules/base64-js/index.js")
+var ieee754 = __webpack_require__(/*! ieee754 */ "./node_modules/ieee754/index.js")
+var isArray = __webpack_require__(/*! isarray */ "./node_modules/isarray/index.js")
+
+exports.Buffer = Buffer
+exports.SlowBuffer = SlowBuffer
+exports.INSPECT_MAX_BYTES = 50
+
+/**
+ * If `Buffer.TYPED_ARRAY_SUPPORT`:
+ *   === true    Use Uint8Array implementation (fastest)
+ *   === false   Use Object implementation (most compatible, even IE6)
+ *
+ * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+ * Opera 11.6+, iOS 4.2+.
+ *
+ * Due to various browser bugs, sometimes the Object implementation will be used even
+ * when the browser supports typed arrays.
+ *
+ * Note:
+ *
+ *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+ *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+ *
+ *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+ *
+ *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+ *     incorrect length in some situations.
+
+ * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+ * get the Object implementation, which is slower but behaves correctly.
+ */
+Buffer.TYPED_ARRAY_SUPPORT = __webpack_require__.g.TYPED_ARRAY_SUPPORT !== undefined
+  ? __webpack_require__.g.TYPED_ARRAY_SUPPORT
+  : typedArraySupport()
+
+/*
+ * Export kMaxLength after typed array support is determined.
+ */
+exports.kMaxLength = kMaxLength()
+
+function typedArraySupport () {
+  try {
+    var arr = new Uint8Array(1)
+    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+    return arr.foo() === 42 && // typed array instances can be augmented
+        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+  } catch (e) {
+    return false
+  }
+}
+
+function kMaxLength () {
+  return Buffer.TYPED_ARRAY_SUPPORT
+    ? 0x7fffffff
+    : 0x3fffffff
+}
+
+function createBuffer (that, length) {
+  if (kMaxLength() < length) {
+    throw new RangeError('Invalid typed array length')
+  }
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = new Uint8Array(length)
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    if (that === null) {
+      that = new Buffer(length)
+    }
+    that.length = length
+  }
+
+  return that
+}
+
+/**
+ * The Buffer constructor returns instances of `Uint8Array` that have their
+ * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+ * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+ * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+ * returns a single octet.
+ *
+ * The `Uint8Array` prototype remains unmodified.
+ */
+
+function Buffer (arg, encodingOrOffset, length) {
+  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+    return new Buffer(arg, encodingOrOffset, length)
+  }
+
+  // Common case.
+  if (typeof arg === 'number') {
+    if (typeof encodingOrOffset === 'string') {
+      throw new Error(
+        'If encoding is specified then the first argument must be a string'
+      )
+    }
+    return allocUnsafe(this, arg)
+  }
+  return from(this, arg, encodingOrOffset, length)
+}
+
+Buffer.poolSize = 8192 // not used by this implementation
+
+// TODO: Legacy, not needed anymore. Remove in next major version.
+Buffer._augment = function (arr) {
+  arr.__proto__ = Buffer.prototype
+  return arr
+}
+
+function from (that, value, encodingOrOffset, length) {
+  if (typeof value === 'number') {
+    throw new TypeError('"value" argument must not be a number')
+  }
+
+  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+    return fromArrayBuffer(that, value, encodingOrOffset, length)
+  }
+
+  if (typeof value === 'string') {
+    return fromString(that, value, encodingOrOffset)
+  }
+
+  return fromObject(that, value)
+}
+
+/**
+ * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+ * if value is a number.
+ * Buffer.from(str[, encoding])
+ * Buffer.from(array)
+ * Buffer.from(buffer)
+ * Buffer.from(arrayBuffer[, byteOffset[, length]])
+ **/
+Buffer.from = function (value, encodingOrOffset, length) {
+  return from(null, value, encodingOrOffset, length)
+}
+
+if (Buffer.TYPED_ARRAY_SUPPORT) {
+  Buffer.prototype.__proto__ = Uint8Array.prototype
+  Buffer.__proto__ = Uint8Array
+  if (typeof Symbol !== 'undefined' && Symbol.species &&
+      Buffer[Symbol.species] === Buffer) {
+    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+    Object.defineProperty(Buffer, Symbol.species, {
+      value: null,
+      configurable: true
+    })
+  }
+}
+
+function assertSize (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('"size" argument must be a number')
+  } else if (size < 0) {
+    throw new RangeError('"size" argument must not be negative')
+  }
+}
+
+function alloc (that, size, fill, encoding) {
+  assertSize(size)
+  if (size <= 0) {
+    return createBuffer(that, size)
+  }
+  if (fill !== undefined) {
+    // Only pay attention to encoding if it's a string. This
+    // prevents accidentally sending in a number that would
+    // be interpretted as a start offset.
+    return typeof encoding === 'string'
+      ? createBuffer(that, size).fill(fill, encoding)
+      : createBuffer(that, size).fill(fill)
+  }
+  return createBuffer(that, size)
+}
+
+/**
+ * Creates a new filled Buffer instance.
+ * alloc(size[, fill[, encoding]])
+ **/
+Buffer.alloc = function (size, fill, encoding) {
+  return alloc(null, size, fill, encoding)
+}
+
+function allocUnsafe (that, size) {
+  assertSize(size)
+  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+    for (var i = 0; i < size; ++i) {
+      that[i] = 0
+    }
+  }
+  return that
+}
+
+/**
+ * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+ * */
+Buffer.allocUnsafe = function (size) {
+  return allocUnsafe(null, size)
+}
+/**
+ * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+ */
+Buffer.allocUnsafeSlow = function (size) {
+  return allocUnsafe(null, size)
+}
+
+function fromString (that, string, encoding) {
+  if (typeof encoding !== 'string' || encoding === '') {
+    encoding = 'utf8'
+  }
+
+  if (!Buffer.isEncoding(encoding)) {
+    throw new TypeError('"encoding" must be a valid string encoding')
+  }
+
+  var length = byteLength(string, encoding) | 0
+  that = createBuffer(that, length)
+
+  var actual = that.write(string, encoding)
+
+  if (actual !== length) {
+    // Writing a hex string, for example, that contains invalid characters will
+    // cause everything after the first invalid character to be ignored. (e.g.
+    // 'abxxcd' will be treated as 'ab')
+    that = that.slice(0, actual)
+  }
+
+  return that
+}
+
+function fromArrayLike (that, array) {
+  var length = array.length < 0 ? 0 : checked(array.length) | 0
+  that = createBuffer(that, length)
+  for (var i = 0; i < length; i += 1) {
+    that[i] = array[i] & 255
+  }
+  return that
+}
+
+function fromArrayBuffer (that, array, byteOffset, length) {
+  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+  if (byteOffset < 0 || array.byteLength < byteOffset) {
+    throw new RangeError('\'offset\' is out of bounds')
+  }
+
+  if (array.byteLength < byteOffset + (length || 0)) {
+    throw new RangeError('\'length\' is out of bounds')
+  }
+
+  if (byteOffset === undefined && length === undefined) {
+    array = new Uint8Array(array)
+  } else if (length === undefined) {
+    array = new Uint8Array(array, byteOffset)
+  } else {
+    array = new Uint8Array(array, byteOffset, length)
+  }
+
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    // Return an augmented `Uint8Array` instance, for best performance
+    that = array
+    that.__proto__ = Buffer.prototype
+  } else {
+    // Fallback: Return an object instance of the Buffer class
+    that = fromArrayLike(that, array)
+  }
+  return that
+}
+
+function fromObject (that, obj) {
+  if (Buffer.isBuffer(obj)) {
+    var len = checked(obj.length) | 0
+    that = createBuffer(that, len)
+
+    if (that.length === 0) {
+      return that
+    }
+
+    obj.copy(that, 0, 0, len)
+    return that
+  }
+
+  if (obj) {
+    if ((typeof ArrayBuffer !== 'undefined' &&
+        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+        return createBuffer(that, 0)
+      }
+      return fromArrayLike(that, obj)
+    }
+
+    if (obj.type === 'Buffer' && isArray(obj.data)) {
+      return fromArrayLike(that, obj.data)
+    }
+  }
+
+  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+}
+
+function checked (length) {
+  // Note: cannot use `length < kMaxLength()` here because that fails when
+  // length is NaN (which is otherwise coerced to zero.)
+  if (length >= kMaxLength()) {
+    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+  }
+  return length | 0
+}
+
+function SlowBuffer (length) {
+  if (+length != length) { // eslint-disable-line eqeqeq
+    length = 0
+  }
+  return Buffer.alloc(+length)
+}
+
+Buffer.isBuffer = function isBuffer (b) {
+  return !!(b != null && b._isBuffer)
+}
+
+Buffer.compare = function compare (a, b) {
+  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+    throw new TypeError('Arguments must be Buffers')
+  }
+
+  if (a === b) return 0
+
+  var x = a.length
+  var y = b.length
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i]
+      y = b[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+Buffer.isEncoding = function isEncoding (encoding) {
+  switch (String(encoding).toLowerCase()) {
+    case 'hex':
+    case 'utf8':
+    case 'utf-8':
+    case 'ascii':
+    case 'latin1':
+    case 'binary':
+    case 'base64':
+    case 'ucs2':
+    case 'ucs-2':
+    case 'utf16le':
+    case 'utf-16le':
+      return true
+    default:
+      return false
+  }
+}
+
+Buffer.concat = function concat (list, length) {
+  if (!isArray(list)) {
+    throw new TypeError('"list" argument must be an Array of Buffers')
+  }
+
+  if (list.length === 0) {
+    return Buffer.alloc(0)
+  }
+
+  var i
+  if (length === undefined) {
+    length = 0
+    for (i = 0; i < list.length; ++i) {
+      length += list[i].length
+    }
+  }
+
+  var buffer = Buffer.allocUnsafe(length)
+  var pos = 0
+  for (i = 0; i < list.length; ++i) {
+    var buf = list[i]
+    if (!Buffer.isBuffer(buf)) {
+      throw new TypeError('"list" argument must be an Array of Buffers')
+    }
+    buf.copy(buffer, pos)
+    pos += buf.length
+  }
+  return buffer
+}
+
+function byteLength (string, encoding) {
+  if (Buffer.isBuffer(string)) {
+    return string.length
+  }
+  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+    return string.byteLength
+  }
+  if (typeof string !== 'string') {
+    string = '' + string
+  }
+
+  var len = string.length
+  if (len === 0) return 0
+
+  // Use a for loop to avoid recursion
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+        return len
+      case 'utf8':
+      case 'utf-8':
+      case undefined:
+        return utf8ToBytes(string).length
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return len * 2
+      case 'hex':
+        return len >>> 1
+      case 'base64':
+        return base64ToBytes(string).length
+      default:
+        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+Buffer.byteLength = byteLength
+
+function slowToString (encoding, start, end) {
+  var loweredCase = false
+
+  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+  // property of a typed array.
+
+  // This behaves neither like String nor Uint8Array in that we set start/end
+  // to their upper/lower bounds if the value passed is out of range.
+  // undefined is handled specially as per ECMA-262 6th Edition,
+  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+  if (start === undefined || start < 0) {
+    start = 0
+  }
+  // Return early if start > this.length. Done here to prevent potential uint32
+  // coercion fail below.
+  if (start > this.length) {
+    return ''
+  }
+
+  if (end === undefined || end > this.length) {
+    end = this.length
+  }
+
+  if (end <= 0) {
+    return ''
+  }
+
+  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+  end >>>= 0
+  start >>>= 0
+
+  if (end <= start) {
+    return ''
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  while (true) {
+    switch (encoding) {
+      case 'hex':
+        return hexSlice(this, start, end)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Slice(this, start, end)
+
+      case 'ascii':
+        return asciiSlice(this, start, end)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Slice(this, start, end)
+
+      case 'base64':
+        return base64Slice(this, start, end)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return utf16leSlice(this, start, end)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = (encoding + '').toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+// Buffer instances.
+Buffer.prototype._isBuffer = true
+
+function swap (b, n, m) {
+  var i = b[n]
+  b[n] = b[m]
+  b[m] = i
+}
+
+Buffer.prototype.swap16 = function swap16 () {
+  var len = this.length
+  if (len % 2 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 16-bits')
+  }
+  for (var i = 0; i < len; i += 2) {
+    swap(this, i, i + 1)
+  }
+  return this
+}
+
+Buffer.prototype.swap32 = function swap32 () {
+  var len = this.length
+  if (len % 4 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 32-bits')
+  }
+  for (var i = 0; i < len; i += 4) {
+    swap(this, i, i + 3)
+    swap(this, i + 1, i + 2)
+  }
+  return this
+}
+
+Buffer.prototype.swap64 = function swap64 () {
+  var len = this.length
+  if (len % 8 !== 0) {
+    throw new RangeError('Buffer size must be a multiple of 64-bits')
+  }
+  for (var i = 0; i < len; i += 8) {
+    swap(this, i, i + 7)
+    swap(this, i + 1, i + 6)
+    swap(this, i + 2, i + 5)
+    swap(this, i + 3, i + 4)
+  }
+  return this
+}
+
+Buffer.prototype.toString = function toString () {
+  var length = this.length | 0
+  if (length === 0) return ''
+  if (arguments.length === 0) return utf8Slice(this, 0, length)
+  return slowToString.apply(this, arguments)
+}
+
+Buffer.prototype.equals = function equals (b) {
+  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+  if (this === b) return true
+  return Buffer.compare(this, b) === 0
+}
+
+Buffer.prototype.inspect = function inspect () {
+  var str = ''
+  var max = exports.INSPECT_MAX_BYTES
+  if (this.length > 0) {
+    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+    if (this.length > max) str += ' ... '
+  }
+  return '<Buffer ' + str + '>'
+}
+
+Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+  if (!Buffer.isBuffer(target)) {
+    throw new TypeError('Argument must be a Buffer')
+  }
+
+  if (start === undefined) {
+    start = 0
+  }
+  if (end === undefined) {
+    end = target ? target.length : 0
+  }
+  if (thisStart === undefined) {
+    thisStart = 0
+  }
+  if (thisEnd === undefined) {
+    thisEnd = this.length
+  }
+
+  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+    throw new RangeError('out of range index')
+  }
+
+  if (thisStart >= thisEnd && start >= end) {
+    return 0
+  }
+  if (thisStart >= thisEnd) {
+    return -1
+  }
+  if (start >= end) {
+    return 1
+  }
+
+  start >>>= 0
+  end >>>= 0
+  thisStart >>>= 0
+  thisEnd >>>= 0
+
+  if (this === target) return 0
+
+  var x = thisEnd - thisStart
+  var y = end - start
+  var len = Math.min(x, y)
+
+  var thisCopy = this.slice(thisStart, thisEnd)
+  var targetCopy = target.slice(start, end)
+
+  for (var i = 0; i < len; ++i) {
+    if (thisCopy[i] !== targetCopy[i]) {
+      x = thisCopy[i]
+      y = targetCopy[i]
+      break
+    }
+  }
+
+  if (x < y) return -1
+  if (y < x) return 1
+  return 0
+}
+
+// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+//
+// Arguments:
+// - buffer - a Buffer to search
+// - val - a string, Buffer, or number
+// - byteOffset - an index into `buffer`; will be clamped to an int32
+// - encoding - an optional encoding, relevant is val is a string
+// - dir - true for indexOf, false for lastIndexOf
+function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+  // Empty buffer means no match
+  if (buffer.length === 0) return -1
+
+  // Normalize byteOffset
+  if (typeof byteOffset === 'string') {
+    encoding = byteOffset
+    byteOffset = 0
+  } else if (byteOffset > 0x7fffffff) {
+    byteOffset = 0x7fffffff
+  } else if (byteOffset < -0x80000000) {
+    byteOffset = -0x80000000
+  }
+  byteOffset = +byteOffset  // Coerce to Number.
+  if (isNaN(byteOffset)) {
+    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+    byteOffset = dir ? 0 : (buffer.length - 1)
+  }
+
+  // Normalize byteOffset: negative offsets start from the end of the buffer
+  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+  if (byteOffset >= buffer.length) {
+    if (dir) return -1
+    else byteOffset = buffer.length - 1
+  } else if (byteOffset < 0) {
+    if (dir) byteOffset = 0
+    else return -1
+  }
+
+  // Normalize val
+  if (typeof val === 'string') {
+    val = Buffer.from(val, encoding)
+  }
+
+  // Finally, search either indexOf (if dir is true) or lastIndexOf
+  if (Buffer.isBuffer(val)) {
+    // Special case: looking for empty string/buffer always fails
+    if (val.length === 0) {
+      return -1
+    }
+    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+  } else if (typeof val === 'number') {
+    val = val & 0xFF // Search for a byte value [0-255]
+    if (Buffer.TYPED_ARRAY_SUPPORT &&
+        typeof Uint8Array.prototype.indexOf === 'function') {
+      if (dir) {
+        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+      } else {
+        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+      }
+    }
+    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+  }
+
+  throw new TypeError('val must be string, number or Buffer')
+}
+
+function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+  var indexSize = 1
+  var arrLength = arr.length
+  var valLength = val.length
+
+  if (encoding !== undefined) {
+    encoding = String(encoding).toLowerCase()
+    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+        encoding === 'utf16le' || encoding === 'utf-16le') {
+      if (arr.length < 2 || val.length < 2) {
+        return -1
+      }
+      indexSize = 2
+      arrLength /= 2
+      valLength /= 2
+      byteOffset /= 2
+    }
+  }
+
+  function read (buf, i) {
+    if (indexSize === 1) {
+      return buf[i]
+    } else {
+      return buf.readUInt16BE(i * indexSize)
+    }
+  }
+
+  var i
+  if (dir) {
+    var foundIndex = -1
+    for (i = byteOffset; i < arrLength; i++) {
+      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+        if (foundIndex === -1) foundIndex = i
+        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+      } else {
+        if (foundIndex !== -1) i -= i - foundIndex
+        foundIndex = -1
+      }
+    }
+  } else {
+    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+    for (i = byteOffset; i >= 0; i--) {
+      var found = true
+      for (var j = 0; j < valLength; j++) {
+        if (read(arr, i + j) !== read(val, j)) {
+          found = false
+          break
+        }
+      }
+      if (found) return i
+    }
+  }
+
+  return -1
+}
+
+Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+  return this.indexOf(val, byteOffset, encoding) !== -1
+}
+
+Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+}
+
+Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+}
+
+function hexWrite (buf, string, offset, length) {
+  offset = Number(offset) || 0
+  var remaining = buf.length - offset
+  if (!length) {
+    length = remaining
+  } else {
+    length = Number(length)
+    if (length > remaining) {
+      length = remaining
+    }
+  }
+
+  // must be an even number of digits
+  var strLen = string.length
+  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+  if (length > strLen / 2) {
+    length = strLen / 2
+  }
+  for (var i = 0; i < length; ++i) {
+    var parsed = parseInt(string.substr(i * 2, 2), 16)
+    if (isNaN(parsed)) return i
+    buf[offset + i] = parsed
+  }
+  return i
+}
+
+function utf8Write (buf, string, offset, length) {
+  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+function asciiWrite (buf, string, offset, length) {
+  return blitBuffer(asciiToBytes(string), buf, offset, length)
+}
+
+function latin1Write (buf, string, offset, length) {
+  return asciiWrite(buf, string, offset, length)
+}
+
+function base64Write (buf, string, offset, length) {
+  return blitBuffer(base64ToBytes(string), buf, offset, length)
+}
+
+function ucs2Write (buf, string, offset, length) {
+  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+}
+
+Buffer.prototype.write = function write (string, offset, length, encoding) {
+  // Buffer#write(string)
+  if (offset === undefined) {
+    encoding = 'utf8'
+    length = this.length
+    offset = 0
+  // Buffer#write(string, encoding)
+  } else if (length === undefined && typeof offset === 'string') {
+    encoding = offset
+    length = this.length
+    offset = 0
+  // Buffer#write(string, offset[, length][, encoding])
+  } else if (isFinite(offset)) {
+    offset = offset | 0
+    if (isFinite(length)) {
+      length = length | 0
+      if (encoding === undefined) encoding = 'utf8'
+    } else {
+      encoding = length
+      length = undefined
+    }
+  // legacy write(string, encoding, offset, length) - remove in v0.13
+  } else {
+    throw new Error(
+      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+    )
+  }
+
+  var remaining = this.length - offset
+  if (length === undefined || length > remaining) length = remaining
+
+  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+    throw new RangeError('Attempt to write outside buffer bounds')
+  }
+
+  if (!encoding) encoding = 'utf8'
+
+  var loweredCase = false
+  for (;;) {
+    switch (encoding) {
+      case 'hex':
+        return hexWrite(this, string, offset, length)
+
+      case 'utf8':
+      case 'utf-8':
+        return utf8Write(this, string, offset, length)
+
+      case 'ascii':
+        return asciiWrite(this, string, offset, length)
+
+      case 'latin1':
+      case 'binary':
+        return latin1Write(this, string, offset, length)
+
+      case 'base64':
+        // Warning: maxLength not taken into account in base64Write
+        return base64Write(this, string, offset, length)
+
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+      case 'utf-16le':
+        return ucs2Write(this, string, offset, length)
+
+      default:
+        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+        encoding = ('' + encoding).toLowerCase()
+        loweredCase = true
+    }
+  }
+}
+
+Buffer.prototype.toJSON = function toJSON () {
+  return {
+    type: 'Buffer',
+    data: Array.prototype.slice.call(this._arr || this, 0)
+  }
+}
+
+function base64Slice (buf, start, end) {
+  if (start === 0 && end === buf.length) {
+    return base64.fromByteArray(buf)
+  } else {
+    return base64.fromByteArray(buf.slice(start, end))
+  }
+}
+
+function utf8Slice (buf, start, end) {
+  end = Math.min(buf.length, end)
+  var res = []
+
+  var i = start
+  while (i < end) {
+    var firstByte = buf[i]
+    var codePoint = null
+    var bytesPerSequence = (firstByte > 0xEF) ? 4
+      : (firstByte > 0xDF) ? 3
+      : (firstByte > 0xBF) ? 2
+      : 1
+
+    if (i + bytesPerSequence <= end) {
+      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+      switch (bytesPerSequence) {
+        case 1:
+          if (firstByte < 0x80) {
+            codePoint = firstByte
+          }
+          break
+        case 2:
+          secondByte = buf[i + 1]
+          if ((secondByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+            if (tempCodePoint > 0x7F) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 3:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              codePoint = tempCodePoint
+            }
+          }
+          break
+        case 4:
+          secondByte = buf[i + 1]
+          thirdByte = buf[i + 2]
+          fourthByte = buf[i + 3]
+          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              codePoint = tempCodePoint
+            }
+          }
+      }
+    }
+
+    if (codePoint === null) {
+      // we did not generate a valid codePoint so insert a
+      // replacement char (U+FFFD) and advance only 1 byte
+      codePoint = 0xFFFD
+      bytesPerSequence = 1
+    } else if (codePoint > 0xFFFF) {
+      // encode to utf16 (surrogate pair dance)
+      codePoint -= 0x10000
+      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+      codePoint = 0xDC00 | codePoint & 0x3FF
+    }
+
+    res.push(codePoint)
+    i += bytesPerSequence
+  }
+
+  return decodeCodePointsArray(res)
+}
+
+// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+// the lowest limit is Chrome, with 0x10000 args.
+// We go 1 magnitude less, for safety
+var MAX_ARGUMENTS_LENGTH = 0x1000
+
+function decodeCodePointsArray (codePoints) {
+  var len = codePoints.length
+  if (len <= MAX_ARGUMENTS_LENGTH) {
+    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+  }
+
+  // Decode in chunks to avoid "call stack size exceeded".
+  var res = ''
+  var i = 0
+  while (i < len) {
+    res += String.fromCharCode.apply(
+      String,
+      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+    )
+  }
+  return res
+}
+
+function asciiSlice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i] & 0x7F)
+  }
+  return ret
+}
+
+function latin1Slice (buf, start, end) {
+  var ret = ''
+  end = Math.min(buf.length, end)
+
+  for (var i = start; i < end; ++i) {
+    ret += String.fromCharCode(buf[i])
+  }
+  return ret
+}
+
+function hexSlice (buf, start, end) {
+  var len = buf.length
+
+  if (!start || start < 0) start = 0
+  if (!end || end < 0 || end > len) end = len
+
+  var out = ''
+  for (var i = start; i < end; ++i) {
+    out += toHex(buf[i])
+  }
+  return out
+}
+
+function utf16leSlice (buf, start, end) {
+  var bytes = buf.slice(start, end)
+  var res = ''
+  for (var i = 0; i < bytes.length; i += 2) {
+    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+  }
+  return res
+}
+
+Buffer.prototype.slice = function slice (start, end) {
+  var len = this.length
+  start = ~~start
+  end = end === undefined ? len : ~~end
+
+  if (start < 0) {
+    start += len
+    if (start < 0) start = 0
+  } else if (start > len) {
+    start = len
+  }
+
+  if (end < 0) {
+    end += len
+    if (end < 0) end = 0
+  } else if (end > len) {
+    end = len
+  }
+
+  if (end < start) end = start
+
+  var newBuf
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    newBuf = this.subarray(start, end)
+    newBuf.__proto__ = Buffer.prototype
+  } else {
+    var sliceLen = end - start
+    newBuf = new Buffer(sliceLen, undefined)
+    for (var i = 0; i < sliceLen; ++i) {
+      newBuf[i] = this[i + start]
+    }
+  }
+
+  return newBuf
+}
+
+/*
+ * Need to make sure that buffer isn't trying to write out of bounds.
+ */
+function checkOffset (offset, ext, length) {
+  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+}
+
+Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    checkOffset(offset, byteLength, this.length)
+  }
+
+  var val = this[offset + --byteLength]
+  var mul = 1
+  while (byteLength > 0 && (mul *= 0x100)) {
+    val += this[offset + --byteLength] * mul
+  }
+
+  return val
+}
+
+Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  return this[offset]
+}
+
+Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return this[offset] | (this[offset + 1] << 8)
+}
+
+Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  return (this[offset] << 8) | this[offset + 1]
+}
+
+Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return ((this[offset]) |
+      (this[offset + 1] << 8) |
+      (this[offset + 2] << 16)) +
+      (this[offset + 3] * 0x1000000)
+}
+
+Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] * 0x1000000) +
+    ((this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    this[offset + 3])
+}
+
+Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var val = this[offset]
+  var mul = 1
+  var i = 0
+  while (++i < byteLength && (mul *= 0x100)) {
+    val += this[offset + i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+  var i = byteLength
+  var mul = 1
+  var val = this[offset + --i]
+  while (i > 0 && (mul *= 0x100)) {
+    val += this[offset + --i] * mul
+  }
+  mul *= 0x80
+
+  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+  return val
+}
+
+Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 1, this.length)
+  if (!(this[offset] & 0x80)) return (this[offset])
+  return ((0xff - this[offset] + 1) * -1)
+}
+
+Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset] | (this[offset + 1] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 2, this.length)
+  var val = this[offset + 1] | (this[offset] << 8)
+  return (val & 0x8000) ? val | 0xFFFF0000 : val
+}
+
+Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset]) |
+    (this[offset + 1] << 8) |
+    (this[offset + 2] << 16) |
+    (this[offset + 3] << 24)
+}
+
+Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+
+  return (this[offset] << 24) |
+    (this[offset + 1] << 16) |
+    (this[offset + 2] << 8) |
+    (this[offset + 3])
+}
+
+Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, true, 23, 4)
+}
+
+Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 4, this.length)
+  return ieee754.read(this, offset, false, 23, 4)
+}
+
+Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, true, 52, 8)
+}
+
+Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+  if (!noAssert) checkOffset(offset, 8, this.length)
+  return ieee754.read(this, offset, false, 52, 8)
+}
+
+function checkInt (buf, value, offset, ext, max, min) {
+  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+}
+
+Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var mul = 1
+  var i = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  byteLength = byteLength | 0
+  if (!noAssert) {
+    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+    checkInt(this, value, offset, byteLength, maxBytes, 0)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    this[offset + i] = (value / mul) & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+function objectWriteUInt16 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+      (littleEndian ? i : 1 - i) * 8
+  }
+}
+
+Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+function objectWriteUInt32 (buf, value, offset, littleEndian) {
+  if (value < 0) value = 0xffffffff + value + 1
+  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+  }
+}
+
+Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset + 3] = (value >>> 24)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 1] = (value >>> 8)
+    this[offset] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = 0
+  var mul = 1
+  var sub = 0
+  this[offset] = value & 0xFF
+  while (++i < byteLength && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) {
+    var limit = Math.pow(2, 8 * byteLength - 1)
+
+    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+  }
+
+  var i = byteLength - 1
+  var mul = 1
+  var sub = 0
+  this[offset + i] = value & 0xFF
+  while (--i >= 0 && (mul *= 0x100)) {
+    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+      sub = 1
+    }
+    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+  }
+
+  return offset + byteLength
+}
+
+Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+  if (value < 0) value = 0xff + value + 1
+  this[offset] = (value & 0xff)
+  return offset + 1
+}
+
+Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+  } else {
+    objectWriteUInt16(this, value, offset, true)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 8)
+    this[offset + 1] = (value & 0xff)
+  } else {
+    objectWriteUInt16(this, value, offset, false)
+  }
+  return offset + 2
+}
+
+Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value & 0xff)
+    this[offset + 1] = (value >>> 8)
+    this[offset + 2] = (value >>> 16)
+    this[offset + 3] = (value >>> 24)
+  } else {
+    objectWriteUInt32(this, value, offset, true)
+  }
+  return offset + 4
+}
+
+Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+  value = +value
+  offset = offset | 0
+  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+  if (value < 0) value = 0xffffffff + value + 1
+  if (Buffer.TYPED_ARRAY_SUPPORT) {
+    this[offset] = (value >>> 24)
+    this[offset + 1] = (value >>> 16)
+    this[offset + 2] = (value >>> 8)
+    this[offset + 3] = (value & 0xff)
+  } else {
+    objectWriteUInt32(this, value, offset, false)
+  }
+  return offset + 4
+}
+
+function checkIEEE754 (buf, value, offset, ext, max, min) {
+  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+  if (offset < 0) throw new RangeError('Index out of range')
+}
+
+function writeFloat (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+  return offset + 4
+}
+
+Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+  return writeFloat(this, value, offset, false, noAssert)
+}
+
+function writeDouble (buf, value, offset, littleEndian, noAssert) {
+  if (!noAssert) {
+    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+  }
+  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+  return offset + 8
+}
+
+Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, true, noAssert)
+}
+
+Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+  return writeDouble(this, value, offset, false, noAssert)
+}
+
+// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+  if (!start) start = 0
+  if (!end && end !== 0) end = this.length
+  if (targetStart >= target.length) targetStart = target.length
+  if (!targetStart) targetStart = 0
+  if (end > 0 && end < start) end = start
+
+  // Copy 0 bytes; we're done
+  if (end === start) return 0
+  if (target.length === 0 || this.length === 0) return 0
+
+  // Fatal error conditions
+  if (targetStart < 0) {
+    throw new RangeError('targetStart out of bounds')
+  }
+  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+  // Are we oob?
+  if (end > this.length) end = this.length
+  if (target.length - targetStart < end - start) {
+    end = target.length - targetStart + start
+  }
+
+  var len = end - start
+  var i
+
+  if (this === target && start < targetStart && targetStart < end) {
+    // descending copy from end
+    for (i = len - 1; i >= 0; --i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+    // ascending copy from start
+    for (i = 0; i < len; ++i) {
+      target[i + targetStart] = this[i + start]
+    }
+  } else {
+    Uint8Array.prototype.set.call(
+      target,
+      this.subarray(start, start + len),
+      targetStart
+    )
+  }
+
+  return len
+}
+
+// Usage:
+//    buffer.fill(number[, offset[, end]])
+//    buffer.fill(buffer[, offset[, end]])
+//    buffer.fill(string[, offset[, end]][, encoding])
+Buffer.prototype.fill = function fill (val, start, end, encoding) {
+  // Handle string cases:
+  if (typeof val === 'string') {
+    if (typeof start === 'string') {
+      encoding = start
+      start = 0
+      end = this.length
+    } else if (typeof end === 'string') {
+      encoding = end
+      end = this.length
+    }
+    if (val.length === 1) {
+      var code = val.charCodeAt(0)
+      if (code < 256) {
+        val = code
+      }
+    }
+    if (encoding !== undefined && typeof encoding !== 'string') {
+      throw new TypeError('encoding must be a string')
+    }
+    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+      throw new TypeError('Unknown encoding: ' + encoding)
+    }
+  } else if (typeof val === 'number') {
+    val = val & 255
+  }
+
+  // Invalid ranges are not set to a default, so can range check early.
+  if (start < 0 || this.length < start || this.length < end) {
+    throw new RangeError('Out of range index')
+  }
+
+  if (end <= start) {
+    return this
+  }
+
+  start = start >>> 0
+  end = end === undefined ? this.length : end >>> 0
+
+  if (!val) val = 0
+
+  var i
+  if (typeof val === 'number') {
+    for (i = start; i < end; ++i) {
+      this[i] = val
+    }
+  } else {
+    var bytes = Buffer.isBuffer(val)
+      ? val
+      : utf8ToBytes(new Buffer(val, encoding).toString())
+    var len = bytes.length
+    for (i = 0; i < end - start; ++i) {
+      this[i + start] = bytes[i % len]
+    }
+  }
+
+  return this
+}
+
+// HELPER FUNCTIONS
+// ================
+
+var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+function base64clean (str) {
+  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+  // Node converts strings with length < 2 to ''
+  if (str.length < 2) return ''
+  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+  while (str.length % 4 !== 0) {
+    str = str + '='
+  }
+  return str
+}
+
+function stringtrim (str) {
+  if (str.trim) return str.trim()
+  return str.replace(/^\s+|\s+$/g, '')
+}
+
+function toHex (n) {
+  if (n < 16) return '0' + n.toString(16)
+  return n.toString(16)
+}
+
+function utf8ToBytes (string, units) {
+  units = units || Infinity
+  var codePoint
+  var length = string.length
+  var leadSurrogate = null
+  var bytes = []
+
+  for (var i = 0; i < length; ++i) {
+    codePoint = string.charCodeAt(i)
+
+    // is surrogate component
+    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+      // last char was a lead
+      if (!leadSurrogate) {
+        // no lead yet
+        if (codePoint > 0xDBFF) {
+          // unexpected trail
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        } else if (i + 1 === length) {
+          // unpaired lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+          continue
+        }
+
+        // valid lead
+        leadSurrogate = codePoint
+
+        continue
+      }
+
+      // 2 leads in a row
+      if (codePoint < 0xDC00) {
+        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        leadSurrogate = codePoint
+        continue
+      }
+
+      // valid surrogate pair
+      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+    } else if (leadSurrogate) {
+      // valid bmp char, but last char was a lead
+      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+    }
+
+    leadSurrogate = null
+
+    // encode utf8
+    if (codePoint < 0x80) {
+      if ((units -= 1) < 0) break
+      bytes.push(codePoint)
+    } else if (codePoint < 0x800) {
+      if ((units -= 2) < 0) break
+      bytes.push(
+        codePoint >> 0x6 | 0xC0,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x10000) {
+      if ((units -= 3) < 0) break
+      bytes.push(
+        codePoint >> 0xC | 0xE0,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else if (codePoint < 0x110000) {
+      if ((units -= 4) < 0) break
+      bytes.push(
+        codePoint >> 0x12 | 0xF0,
+        codePoint >> 0xC & 0x3F | 0x80,
+        codePoint >> 0x6 & 0x3F | 0x80,
+        codePoint & 0x3F | 0x80
+      )
+    } else {
+      throw new Error('Invalid code point')
+    }
+  }
+
+  return bytes
+}
+
+function asciiToBytes (str) {
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    // Node's code seems to be doing this and not & 0x7F..
+    byteArray.push(str.charCodeAt(i) & 0xFF)
+  }
+  return byteArray
+}
+
+function utf16leToBytes (str, units) {
+  var c, hi, lo
+  var byteArray = []
+  for (var i = 0; i < str.length; ++i) {
+    if ((units -= 2) < 0) break
+
+    c = str.charCodeAt(i)
+    hi = c >> 8
+    lo = c % 256
+    byteArray.push(lo)
+    byteArray.push(hi)
+  }
+
+  return byteArray
+}
+
+function base64ToBytes (str) {
+  return base64.toByteArray(base64clean(str))
+}
+
+function blitBuffer (src, dst, offset, length) {
+  for (var i = 0; i < length; ++i) {
+    if ((i + offset >= dst.length) || (i >= src.length)) break
+    dst[i + offset] = src[i]
+  }
+  return i
+}
+
+function isnan (val) {
+  return val !== val // eslint-disable-line no-self-compare
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-8.use[1]!./node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-8.use[2]!./node_modules/vue-select/dist/vue-select.css":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-8.use[1]!./node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-8.use[2]!./node_modules/vue-select/dist/vue-select.css ***!
+  \**************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ":root{--vs-colors--lightest: rgba(60, 60, 60, .26);--vs-colors--light: rgba(60, 60, 60, .5);--vs-colors--dark: #333;--vs-colors--darkest: rgba(0, 0, 0, .15);--vs-search-input-color: inherit;--vs-search-input-placeholder-color: inherit;--vs-font-size: 1rem;--vs-line-height: 1.4;--vs-state-disabled-bg: rgb(248, 248, 248);--vs-state-disabled-color: var(--vs-colors--light);--vs-state-disabled-controls-color: var(--vs-colors--light);--vs-state-disabled-cursor: not-allowed;--vs-border-color: var(--vs-colors--lightest);--vs-border-width: 1px;--vs-border-style: solid;--vs-border-radius: 4px;--vs-actions-padding: 4px 6px 0 3px;--vs-controls-color: var(--vs-colors--light);--vs-controls-size: 1;--vs-controls--deselect-text-shadow: 0 1px 0 #fff;--vs-selected-bg: #f0f0f0;--vs-selected-color: var(--vs-colors--dark);--vs-selected-border-color: var(--vs-border-color);--vs-selected-border-style: var(--vs-border-style);--vs-selected-border-width: var(--vs-border-width);--vs-dropdown-bg: #fff;--vs-dropdown-color: inherit;--vs-dropdown-z-index: 1000;--vs-dropdown-min-width: 160px;--vs-dropdown-max-height: 350px;--vs-dropdown-box-shadow: 0px 3px 6px 0px var(--vs-colors--darkest);--vs-dropdown-option-bg: #000;--vs-dropdown-option-color: var(--vs-dropdown-color);--vs-dropdown-option-padding: 3px 20px;--vs-dropdown-option--active-bg: #5897fb;--vs-dropdown-option--active-color: #fff;--vs-dropdown-option--deselect-bg: #fb5858;--vs-dropdown-option--deselect-color: #fff;--vs-transition-timing-function: cubic-bezier(1, -.115, .975, .855);--vs-transition-duration: .15s}.v-select{position:relative;font-family:inherit}.v-select,.v-select *{box-sizing:border-box}:root{--vs-transition-timing-function: cubic-bezier(1, .5, .8, 1);--vs-transition-duration: .15s}@keyframes vSelectSpinner{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.vs__fade-enter-active,.vs__fade-leave-active{pointer-events:none;transition:opacity var(--vs-transition-duration) var(--vs-transition-timing-function)}.vs__fade-enter,.vs__fade-leave-to{opacity:0}:root{--vs-disabled-bg: var(--vs-state-disabled-bg);--vs-disabled-color: var(--vs-state-disabled-color);--vs-disabled-cursor: var(--vs-state-disabled-cursor)}.vs--disabled .vs__dropdown-toggle,.vs--disabled .vs__clear,.vs--disabled .vs__search,.vs--disabled .vs__selected,.vs--disabled .vs__open-indicator{cursor:var(--vs-disabled-cursor);background-color:var(--vs-disabled-bg)}.v-select[dir=rtl] .vs__actions{padding:0 3px 0 6px}.v-select[dir=rtl] .vs__clear{margin-left:6px;margin-right:0}.v-select[dir=rtl] .vs__deselect{margin-left:0;margin-right:2px}.v-select[dir=rtl] .vs__dropdown-menu{text-align:right}.vs__dropdown-toggle{-webkit-appearance:none;-moz-appearance:none;appearance:none;display:flex;padding:0 0 4px;background:none;border:var(--vs-border-width) var(--vs-border-style) var(--vs-border-color);border-radius:var(--vs-border-radius);white-space:normal}.vs__selected-options{display:flex;flex-basis:100%;flex-grow:1;flex-wrap:wrap;padding:0 2px;position:relative}.vs__actions{display:flex;align-items:center;padding:var(--vs-actions-padding)}.vs--searchable .vs__dropdown-toggle{cursor:text}.vs--unsearchable .vs__dropdown-toggle{cursor:pointer}.vs--open .vs__dropdown-toggle{border-bottom-color:transparent;border-bottom-left-radius:0;border-bottom-right-radius:0}.vs__open-indicator{fill:var(--vs-controls-color);transform:scale(var(--vs-controls-size));transition:transform var(--vs-transition-duration) var(--vs-transition-timing-function);transition-timing-function:var(--vs-transition-timing-function)}.vs--open .vs__open-indicator{transform:rotate(180deg) scale(var(--vs-controls-size))}.vs--loading .vs__open-indicator{opacity:0}.vs__clear{fill:var(--vs-controls-color);padding:0;border:0;background-color:transparent;cursor:pointer;margin-right:8px}.vs__dropdown-menu{display:block;box-sizing:border-box;position:absolute;top:calc(100% - var(--vs-border-width));left:0;z-index:var(--vs-dropdown-z-index);padding:5px 0;margin:0;width:100%;max-height:var(--vs-dropdown-max-height);min-width:var(--vs-dropdown-min-width);overflow-y:auto;box-shadow:var(--vs-dropdown-box-shadow);border:var(--vs-border-width) var(--vs-border-style) var(--vs-border-color);border-top-style:none;border-radius:0 0 var(--vs-border-radius) var(--vs-border-radius);text-align:left;list-style:none;background:var(--vs-dropdown-bg);color:var(--vs-dropdown-color)}.vs__no-options{text-align:center}.vs__dropdown-option{line-height:1.42857143;display:block;padding:var(--vs-dropdown-option-padding);clear:both;color:var(--vs-dropdown-option-color);white-space:nowrap;cursor:pointer}.vs__dropdown-option--highlight{background:var(--vs-dropdown-option--active-bg);color:var(--vs-dropdown-option--active-color)}.vs__dropdown-option--deselect{background:var(--vs-dropdown-option--deselect-bg);color:var(--vs-dropdown-option--deselect-color)}.vs__dropdown-option--disabled{background:var(--vs-state-disabled-bg);color:var(--vs-state-disabled-color);cursor:var(--vs-state-disabled-cursor)}.vs__selected{display:flex;align-items:center;background-color:var(--vs-selected-bg);border:var(--vs-selected-border-width) var(--vs-selected-border-style) var(--vs-selected-border-color);border-radius:var(--vs-border-radius);color:var(--vs-selected-color);line-height:var(--vs-line-height);margin:4px 2px 0;padding:0 .25em;z-index:0}.vs__deselect{display:inline-flex;-webkit-appearance:none;-moz-appearance:none;appearance:none;margin-left:4px;padding:0;border:0;cursor:pointer;background:none;fill:var(--vs-controls-color);text-shadow:var(--vs-controls--deselect-text-shadow)}.vs--single .vs__selected{background-color:transparent;border-color:transparent}.vs--single.vs--open .vs__selected,.vs--single.vs--loading .vs__selected{position:absolute;opacity:.4}.vs--single.vs--searching .vs__selected{display:none}.vs__search::-webkit-search-cancel-button{display:none}.vs__search::-webkit-search-decoration,.vs__search::-webkit-search-results-button,.vs__search::-webkit-search-results-decoration,.vs__search::-ms-clear{display:none}.vs__search,.vs__search:focus{color:var(--vs-search-input-color);-webkit-appearance:none;-moz-appearance:none;appearance:none;line-height:var(--vs-line-height);font-size:var(--vs-font-size);border:1px solid transparent;border-left:none;outline:none;margin:4px 0 0;padding:0 7px;background:none;box-shadow:none;width:0;max-width:100%;flex-grow:1;z-index:1}.vs__search::-moz-placeholder{color:var(--vs-search-input-placeholder-color)}.vs__search::placeholder{color:var(--vs-search-input-placeholder-color)}.vs--unsearchable .vs__search{opacity:1}.vs--unsearchable:not(.vs--disabled) .vs__search{cursor:pointer}.vs--single.vs--searching:not(.vs--open):not(.vs--loading) .vs__search{opacity:.2}.vs__spinner{align-self:center;opacity:0;font-size:5px;text-indent:-9999em;overflow:hidden;border-top:.9em solid rgba(100,100,100,.1);border-right:.9em solid rgba(100,100,100,.1);border-bottom:.9em solid rgba(100,100,100,.1);border-left:.9em solid rgba(60,60,60,.45);transform:translateZ(0) scale(var(--vs-controls--spinner-size, var(--vs-controls-size)));animation:vSelectSpinner 1.1s infinite linear;transition:opacity .1s}.vs__spinner,.vs__spinner:after{border-radius:50%;width:5em;height:5em;transform:scale(var(--vs-controls--spinner-size, var(--vs-controls-size)))}.vs--loading .vs__spinner{opacity:1}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
 
 /***/ }),
 
@@ -18328,6 +23679,340 @@ module.exports = function (cssWithMappingToString) {
 
   return list;
 };
+
+/***/ }),
+
+/***/ "./node_modules/ieee754/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/ieee754/index.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = (nBytes * 8) - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = ((value * c) - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/isarray/index.js":
+/*!***************************************!*\
+  !*** ./node_modules/isarray/index.js ***!
+  \***************************************/
+/***/ ((module) => {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/process/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+/***/ ((module) => {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-select/dist/vue-select.css":
+/*!*****************************************************!*\
+  !*** ./node_modules/vue-select/dist/vue-select.css ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _css_loader_dist_cjs_js_clonedRuleSet_8_use_1_laravel_mix_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_8_use_2_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../css-loader/dist/cjs.js??clonedRuleSet-8.use[1]!../../laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-8.use[2]!./vue-select.css */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-8.use[1]!./node_modules/laravel-mix/node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-8.use[2]!./node_modules/vue-select/dist/vue-select.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_css_loader_dist_cjs_js_clonedRuleSet_8_use_1_laravel_mix_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_8_use_2_vue_select_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_css_loader_dist_cjs_js_clonedRuleSet_8_use_1_laravel_mix_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_8_use_2_vue_select_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -18783,1499 +24468,790 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-resource/dist/vue-resource.esm.js":
-/*!************************************************************!*\
-  !*** ./node_modules/vue-resource/dist/vue-resource.esm.js ***!
-  \************************************************************/
+/***/ "./node_modules/vue-select/dist/vue-select.es.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/vue-select/dist/vue-select.es.js ***!
+  \*******************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Http": () => (/* binding */ Http),
-/* harmony export */   "Resource": () => (/* binding */ Resource),
-/* harmony export */   "Url": () => (/* binding */ Url),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ Ce)
 /* harmony export */ });
-/*!
- * vue-resource v1.5.3
- * https://github.com/pagekit/vue-resource
- * Released under the MIT License.
- */
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+var E = Object.defineProperty, M = Object.defineProperties;
+var x = Object.getOwnPropertyDescriptors;
+var V = Object.getOwnPropertySymbols;
+var I = Object.prototype.hasOwnProperty, N = Object.prototype.propertyIsEnumerable;
+var C = (e, t, s) => t in e ? E(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s, f = (e, t) => {
+  for (var s in t || (t = {}))
+    I.call(t, s) && C(e, s, t[s]);
+  if (V)
+    for (var s of V(t))
+      N.call(t, s) && C(e, s, t[s]);
+  return e;
+}, m = (e, t) => M(e, x(t));
 
-/**
- * Promises/A+ polyfill v1.1.4 (https://github.com/bramstein/promis)
- */
-var RESOLVED = 0;
-var REJECTED = 1;
-var PENDING = 2;
-function Promise$1(executor) {
-  this.state = PENDING;
-  this.value = undefined;
-  this.deferred = [];
-  var promise = this;
-
-  try {
-    executor(function (x) {
-      promise.resolve(x);
-    }, function (r) {
-      promise.reject(r);
-    });
-  } catch (e) {
-    promise.reject(e);
-  }
-}
-
-Promise$1.reject = function (r) {
-  return new Promise$1(function (resolve, reject) {
-    reject(r);
-  });
-};
-
-Promise$1.resolve = function (x) {
-  return new Promise$1(function (resolve, reject) {
-    resolve(x);
-  });
-};
-
-Promise$1.all = function all(iterable) {
-  return new Promise$1(function (resolve, reject) {
-    var count = 0,
-        result = [];
-
-    if (iterable.length === 0) {
-      resolve(result);
+const U = {
+  props: {
+    autoscroll: {
+      type: Boolean,
+      default: !0
     }
-
-    function resolver(i) {
-      return function (x) {
-        result[i] = x;
-        count += 1;
-
-        if (count === iterable.length) {
-          resolve(result);
-        }
+  },
+  watch: {
+    typeAheadPointer() {
+      this.autoscroll && this.maybeAdjustScroll();
+    },
+    open(e) {
+      this.autoscroll && e && this.$nextTick(() => this.maybeAdjustScroll());
+    }
+  },
+  methods: {
+    maybeAdjustScroll() {
+      var t;
+      const e = ((t = this.$refs.dropdownMenu) == null ? void 0 : t.children[this.typeAheadPointer]) || !1;
+      if (e) {
+        const s = this.getDropdownViewport(), { top: n, bottom: l, height: i } = e.getBoundingClientRect();
+        if (n < s.top)
+          return this.$refs.dropdownMenu.scrollTop = e.offsetTop;
+        if (l > s.bottom)
+          return this.$refs.dropdownMenu.scrollTop = e.offsetTop - (s.height - i);
+      }
+    },
+    getDropdownViewport() {
+      return this.$refs.dropdownMenu ? this.$refs.dropdownMenu.getBoundingClientRect() : {
+        height: 0,
+        top: 0,
+        bottom: 0
       };
     }
-
-    for (var i = 0; i < iterable.length; i += 1) {
-      Promise$1.resolve(iterable[i]).then(resolver(i), reject);
+  }
+}, q = {
+  data() {
+    return {
+      typeAheadPointer: -1
+    };
+  },
+  watch: {
+    filteredOptions() {
+      for (let e = 0; e < this.filteredOptions.length; e++)
+        if (this.selectable(this.filteredOptions[e])) {
+          this.typeAheadPointer = e;
+          break;
+        }
+    },
+    open(e) {
+      e && this.typeAheadToLastSelected();
+    },
+    selectedValue() {
+      this.open && this.typeAheadToLastSelected();
     }
-  });
+  },
+  methods: {
+    typeAheadUp() {
+      for (let e = this.typeAheadPointer - 1; e >= 0; e--)
+        if (this.selectable(this.filteredOptions[e])) {
+          this.typeAheadPointer = e;
+          break;
+        }
+    },
+    typeAheadDown() {
+      for (let e = this.typeAheadPointer + 1; e < this.filteredOptions.length; e++)
+        if (this.selectable(this.filteredOptions[e])) {
+          this.typeAheadPointer = e;
+          break;
+        }
+    },
+    typeAheadSelect() {
+      const e = this.filteredOptions[this.typeAheadPointer];
+      e && this.selectable(e) && this.select(e);
+    },
+    typeAheadToLastSelected() {
+      this.typeAheadPointer = this.selectedValue.length !== 0 ? this.filteredOptions.indexOf(this.selectedValue[this.selectedValue.length - 1]) : -1;
+    }
+  }
+}, J = {
+  props: {
+    loading: {
+      type: Boolean,
+      default: !1
+    }
+  },
+  data() {
+    return {
+      mutableLoading: !1
+    };
+  },
+  watch: {
+    search() {
+      this.$emit("search", this.search, this.toggleLoading);
+    },
+    loading(e) {
+      this.mutableLoading = e;
+    }
+  },
+  methods: {
+    toggleLoading(e = null) {
+      return e == null ? this.mutableLoading = !this.mutableLoading : this.mutableLoading = e;
+    }
+  }
+}, S = (e, t) => {
+  const s = e.__vccOpts || e;
+  for (const [n, l] of t)
+    s[n] = l;
+  return s;
+}, H = {}, X = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "10",
+  height: "10"
+}, Y = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", { d: "M6.895455 5l2.842897-2.842898c.348864-.348863.348864-.914488 0-1.263636L9.106534.261648c-.348864-.348864-.914489-.348864-1.263636 0L5 3.104545 2.157102.261648c-.348863-.348864-.914488-.348864-1.263636 0L.261648.893466c-.348864.348864-.348864.914489 0 1.263636L3.104545 5 .261648 7.842898c-.348864.348863-.348864.914488 0 1.263636l.631818.631818c.348864.348864.914773.348864 1.263636 0L5 6.895455l2.842898 2.842897c.348863.348864.914772.348864 1.263636 0l.631818-.631818c.348864-.348864.348864-.914489 0-1.263636L6.895455 5z" }, null, -1), Q = [
+  Y
+];
+function G(e, t) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", X, Q);
+}
+const W = /* @__PURE__ */ S(H, [["render", G]]), Z = {}, ee = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "14",
+  height: "10"
+}, te = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", { d: "M9.211364 7.59931l4.48338-4.867229c.407008-.441854.407008-1.158247 0-1.60046l-.73712-.80023c-.407008-.441854-1.066904-.441854-1.474243 0L7 5.198617 2.51662.33139c-.407008-.441853-1.066904-.441853-1.474243 0l-.737121.80023c-.407008.441854-.407008 1.158248 0 1.600461l4.48338 4.867228L7 10l2.211364-2.40069z" }, null, -1), se = [
+  te
+];
+function ie(e, t) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", ee, se);
+}
+const oe = /* @__PURE__ */ S(Z, [["render", ie]]), T = {
+  Deselect: W,
+  OpenIndicator: oe
+}, ne = {
+  mounted(e, { instance: t }) {
+    if (t.appendToBody) {
+      const {
+        height: s,
+        top: n,
+        left: l,
+        width: i
+      } = t.$refs.toggle.getBoundingClientRect();
+      let y = window.scrollX || window.pageXOffset, o = window.scrollY || window.pageYOffset;
+      e.unbindPosition = t.calculatePosition(e, t, {
+        width: i + "px",
+        left: y + l + "px",
+        top: o + n + s + "px"
+      }), document.body.appendChild(e);
+    }
+  },
+  unmounted(e, { instance: t }) {
+    t.appendToBody && (e.unbindPosition && typeof e.unbindPosition == "function" && e.unbindPosition(), e.parentNode && e.parentNode.removeChild(e));
+  }
 };
-
-Promise$1.race = function race(iterable) {
-  return new Promise$1(function (resolve, reject) {
-    for (var i = 0; i < iterable.length; i += 1) {
-      Promise$1.resolve(iterable[i]).then(resolve, reject);
-    }
-  });
-};
-
-var p = Promise$1.prototype;
-
-p.resolve = function resolve(x) {
-  var promise = this;
-
-  if (promise.state === PENDING) {
-    if (x === promise) {
-      throw new TypeError('Promise settled with itself.');
-    }
-
-    var called = false;
-
-    try {
-      var then = x && x['then'];
-
-      if (x !== null && typeof x === 'object' && typeof then === 'function') {
-        then.call(x, function (x) {
-          if (!called) {
-            promise.resolve(x);
-          }
-
-          called = true;
-        }, function (r) {
-          if (!called) {
-            promise.reject(r);
-          }
-
-          called = true;
+function le(e) {
+  const t = {};
+  return Object.keys(e).sort().forEach((s) => {
+    t[s] = e[s];
+  }), JSON.stringify(t);
+}
+let ae = 0;
+function re() {
+  return ++ae;
+}
+const de = {
+  components: f({}, T),
+  directives: { appendToBody: ne },
+  mixins: [U, q, J],
+  compatConfig: {
+    MODE: 3
+  },
+  emits: [
+    "open",
+    "close",
+    "update:modelValue",
+    "search",
+    "search:compositionstart",
+    "search:compositionend",
+    "search:keydown",
+    "search:blur",
+    "search:focus",
+    "search:input",
+    "option:created",
+    "option:selecting",
+    "option:selected",
+    "option:deselecting",
+    "option:deselected"
+  ],
+  props: {
+    modelValue: {},
+    components: {
+      type: Object,
+      default: () => ({})
+    },
+    options: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: !1
+    },
+    clearable: {
+      type: Boolean,
+      default: !0
+    },
+    deselectFromDropdown: {
+      type: Boolean,
+      default: !1
+    },
+    searchable: {
+      type: Boolean,
+      default: !0
+    },
+    multiple: {
+      type: Boolean,
+      default: !1
+    },
+    placeholder: {
+      type: String,
+      default: ""
+    },
+    transition: {
+      type: String,
+      default: "vs__fade"
+    },
+    clearSearchOnSelect: {
+      type: Boolean,
+      default: !0
+    },
+    closeOnSelect: {
+      type: Boolean,
+      default: !0
+    },
+    label: {
+      type: String,
+      default: "label"
+    },
+    autocomplete: {
+      type: String,
+      default: "off"
+    },
+    reduce: {
+      type: Function,
+      default: (e) => e
+    },
+    selectable: {
+      type: Function,
+      default: (e) => !0
+    },
+    getOptionLabel: {
+      type: Function,
+      default(e) {
+        return typeof e == "object" ? e.hasOwnProperty(this.label) ? e[this.label] : console.warn(`[vue-select warn]: Label key "option.${this.label}" does not exist in options object ${JSON.stringify(e)}.
+https://vue-select.org/api/props.html#getoptionlabel`) : e;
+      }
+    },
+    getOptionKey: {
+      type: Function,
+      default(e) {
+        if (typeof e != "object")
+          return e;
+        try {
+          return e.hasOwnProperty("id") ? e.id : le(e);
+        } catch (t) {
+          return console.warn(`[vue-select warn]: Could not stringify this option to generate unique key. Please provide'getOptionKey' prop to return a unique key for each option.
+https://vue-select.org/api/props.html#getoptionkey`, e, t);
+        }
+      }
+    },
+    onTab: {
+      type: Function,
+      default: function() {
+        this.selectOnTab && !this.isComposing && this.typeAheadSelect();
+      }
+    },
+    taggable: {
+      type: Boolean,
+      default: !1
+    },
+    tabindex: {
+      type: Number,
+      default: null
+    },
+    pushTags: {
+      type: Boolean,
+      default: !1
+    },
+    filterable: {
+      type: Boolean,
+      default: !0
+    },
+    filterBy: {
+      type: Function,
+      default(e, t, s) {
+        return (t || "").toLocaleLowerCase().indexOf(s.toLocaleLowerCase()) > -1;
+      }
+    },
+    filter: {
+      type: Function,
+      default(e, t) {
+        return e.filter((s) => {
+          let n = this.getOptionLabel(s);
+          return typeof n == "number" && (n = n.toString()), this.filterBy(s, n, t);
         });
+      }
+    },
+    createOption: {
+      type: Function,
+      default(e) {
+        return typeof this.optionList[0] == "object" ? { [this.label]: e } : e;
+      }
+    },
+    resetOnOptionsChange: {
+      default: !1,
+      validator: (e) => ["function", "boolean"].includes(typeof e)
+    },
+    clearSearchOnBlur: {
+      type: Function,
+      default: function({ clearSearchOnSelect: e, multiple: t }) {
+        return e && !t;
+      }
+    },
+    noDrop: {
+      type: Boolean,
+      default: !1
+    },
+    inputId: {
+      type: String
+    },
+    dir: {
+      type: String,
+      default: "auto"
+    },
+    selectOnTab: {
+      type: Boolean,
+      default: !1
+    },
+    selectOnKeyCodes: {
+      type: Array,
+      default: () => [13]
+    },
+    searchInputQuerySelector: {
+      type: String,
+      default: "[type=search]"
+    },
+    mapKeydown: {
+      type: Function,
+      default: (e, t) => e
+    },
+    appendToBody: {
+      type: Boolean,
+      default: !1
+    },
+    calculatePosition: {
+      type: Function,
+      default(e, t, { width: s, top: n, left: l }) {
+        e.style.top = n, e.style.left = l, e.style.width = s;
+      }
+    },
+    dropdownShouldOpen: {
+      type: Function,
+      default({ noDrop: e, open: t, mutableLoading: s }) {
+        return e ? !1 : t && !s;
+      }
+    },
+    uid: {
+      type: [String, Number],
+      default: () => re()
+    }
+  },
+  data() {
+    return {
+      search: "",
+      open: !1,
+      isComposing: !1,
+      pushedTags: [],
+      _value: [],
+      deselectButtons: []
+    };
+  },
+  computed: {
+    isReducingValues() {
+      return this.$props.reduce !== this.$options.props.reduce.default;
+    },
+    isTrackingValues() {
+      return typeof this.modelValue == "undefined" || this.isReducingValues;
+    },
+    selectedValue() {
+      let e = this.modelValue;
+      return this.isTrackingValues && (e = this.$data._value), e != null && e !== "" ? [].concat(e) : [];
+    },
+    optionList() {
+      return this.options.concat(this.pushTags ? this.pushedTags : []);
+    },
+    searchEl() {
+      return this.$slots.search ? this.$refs.selectedOptions.querySelector(this.searchInputQuerySelector) : this.$refs.search;
+    },
+    scope() {
+      const e = {
+        search: this.search,
+        loading: this.loading,
+        searching: this.searching,
+        filteredOptions: this.filteredOptions
+      };
+      return {
+        search: {
+          attributes: f({
+            disabled: this.disabled,
+            placeholder: this.searchPlaceholder,
+            tabindex: this.tabindex,
+            readonly: !this.searchable,
+            id: this.inputId,
+            "aria-autocomplete": "list",
+            "aria-labelledby": `vs${this.uid}__combobox`,
+            "aria-controls": `vs${this.uid}__listbox`,
+            ref: "search",
+            type: "search",
+            autocomplete: this.autocomplete,
+            value: this.search
+          }, this.dropdownOpen && this.filteredOptions[this.typeAheadPointer] ? {
+            "aria-activedescendant": `vs${this.uid}__option-${this.typeAheadPointer}`
+          } : {}),
+          events: {
+            compositionstart: () => this.isComposing = !0,
+            compositionend: () => this.isComposing = !1,
+            keydown: this.onSearchKeyDown,
+            blur: this.onSearchBlur,
+            focus: this.onSearchFocus,
+            input: (t) => this.search = t.target.value
+          }
+        },
+        spinner: {
+          loading: this.mutableLoading
+        },
+        noOptions: {
+          search: this.search,
+          loading: this.mutableLoading,
+          searching: this.searching
+        },
+        openIndicator: {
+          attributes: {
+            ref: "openIndicator",
+            role: "presentation",
+            class: "vs__open-indicator"
+          }
+        },
+        listHeader: e,
+        listFooter: e,
+        header: m(f({}, e), { deselect: this.deselect }),
+        footer: m(f({}, e), { deselect: this.deselect })
+      };
+    },
+    childComponents() {
+      return f(f({}, T), this.components);
+    },
+    stateClasses() {
+      return {
+        "vs--open": this.dropdownOpen,
+        "vs--single": !this.multiple,
+        "vs--multiple": this.multiple,
+        "vs--searching": this.searching && !this.noDrop,
+        "vs--searchable": this.searchable && !this.noDrop,
+        "vs--unsearchable": !this.searchable,
+        "vs--loading": this.mutableLoading,
+        "vs--disabled": this.disabled
+      };
+    },
+    searching() {
+      return !!this.search;
+    },
+    dropdownOpen() {
+      return this.dropdownShouldOpen(this);
+    },
+    searchPlaceholder() {
+      return this.isValueEmpty && this.placeholder ? this.placeholder : void 0;
+    },
+    filteredOptions() {
+      const e = [].concat(this.optionList);
+      if (!this.filterable && !this.taggable)
+        return e;
+      const t = this.search.length ? this.filter(e, this.search, this) : e;
+      if (this.taggable && this.search.length) {
+        const s = this.createOption(this.search);
+        this.optionExists(s) || t.unshift(s);
+      }
+      return t;
+    },
+    isValueEmpty() {
+      return this.selectedValue.length === 0;
+    },
+    showClearButton() {
+      return !this.multiple && this.clearable && !this.open && !this.isValueEmpty;
+    }
+  },
+  watch: {
+    options(e, t) {
+      const s = () => typeof this.resetOnOptionsChange == "function" ? this.resetOnOptionsChange(e, t, this.selectedValue) : this.resetOnOptionsChange;
+      !this.taggable && s() && this.clearSelection(), this.modelValue && this.isTrackingValues && this.setInternalValueFromOptions(this.modelValue);
+    },
+    modelValue: {
+      immediate: !0,
+      handler(e) {
+        this.isTrackingValues && this.setInternalValueFromOptions(e);
+      }
+    },
+    multiple() {
+      this.clearSelection();
+    },
+    open(e) {
+      this.$emit(e ? "open" : "close");
+    }
+  },
+  created() {
+    this.mutableLoading = this.loading;
+  },
+  methods: {
+    setInternalValueFromOptions(e) {
+      Array.isArray(e) ? this.$data._value = e.map((t) => this.findOptionFromReducedValue(t)) : this.$data._value = this.findOptionFromReducedValue(e);
+    },
+    select(e) {
+      this.$emit("option:selecting", e), this.isOptionSelected(e) ? this.deselectFromDropdown && (this.clearable || this.multiple && this.selectedValue.length > 1) && this.deselect(e) : (this.taggable && !this.optionExists(e) && (this.$emit("option:created", e), this.pushTag(e)), this.multiple && (e = this.selectedValue.concat(e)), this.updateValue(e), this.$emit("option:selected", e)), this.onAfterSelect(e);
+    },
+    deselect(e) {
+      this.$emit("option:deselecting", e), this.updateValue(this.selectedValue.filter((t) => !this.optionComparator(t, e))), this.$emit("option:deselected", e);
+    },
+    clearSelection() {
+      this.updateValue(this.multiple ? [] : null);
+    },
+    onAfterSelect(e) {
+      this.closeOnSelect && (this.open = !this.open, this.searchEl.blur()), this.clearSearchOnSelect && (this.search = "");
+    },
+    updateValue(e) {
+      typeof this.modelValue == "undefined" && (this.$data._value = e), e !== null && (Array.isArray(e) ? e = e.map((t) => this.reduce(t)) : e = this.reduce(e)), this.$emit("update:modelValue", e);
+    },
+    toggleDropdown(e) {
+      const t = e.target !== this.searchEl;
+      t && e.preventDefault();
+      const s = [
+        ...this.deselectButtons || [],
+        this.$refs.clearButton
+      ];
+      if (this.searchEl === void 0 || s.filter(Boolean).some((n) => n.contains(e.target) || n === e.target)) {
+        e.preventDefault();
         return;
       }
-    } catch (e) {
-      if (!called) {
-        promise.reject(e);
-      }
-
-      return;
-    }
-
-    promise.state = RESOLVED;
-    promise.value = x;
-    promise.notify();
-  }
-};
-
-p.reject = function reject(reason) {
-  var promise = this;
-
-  if (promise.state === PENDING) {
-    if (reason === promise) {
-      throw new TypeError('Promise settled with itself.');
-    }
-
-    promise.state = REJECTED;
-    promise.value = reason;
-    promise.notify();
-  }
-};
-
-p.notify = function notify() {
-  var promise = this;
-  nextTick(function () {
-    if (promise.state !== PENDING) {
-      while (promise.deferred.length) {
-        var deferred = promise.deferred.shift(),
-            onResolved = deferred[0],
-            onRejected = deferred[1],
-            resolve = deferred[2],
-            reject = deferred[3];
-
-        try {
-          if (promise.state === RESOLVED) {
-            if (typeof onResolved === 'function') {
-              resolve(onResolved.call(undefined, promise.value));
-            } else {
-              resolve(promise.value);
-            }
-          } else if (promise.state === REJECTED) {
-            if (typeof onRejected === 'function') {
-              resolve(onRejected.call(undefined, promise.value));
-            } else {
-              reject(promise.value);
-            }
-          }
-        } catch (e) {
-          reject(e);
-        }
-      }
-    }
-  });
-};
-
-p.then = function then(onResolved, onRejected) {
-  var promise = this;
-  return new Promise$1(function (resolve, reject) {
-    promise.deferred.push([onResolved, onRejected, resolve, reject]);
-    promise.notify();
-  });
-};
-
-p["catch"] = function (onRejected) {
-  return this.then(undefined, onRejected);
-};
-
-/**
- * Promise adapter.
- */
-
-if (typeof Promise === 'undefined') {
-  window.Promise = Promise$1;
-}
-
-function PromiseObj(executor, context) {
-  if (executor instanceof Promise) {
-    this.promise = executor;
-  } else {
-    this.promise = new Promise(executor.bind(context));
-  }
-
-  this.context = context;
-}
-
-PromiseObj.all = function (iterable, context) {
-  return new PromiseObj(Promise.all(iterable), context);
-};
-
-PromiseObj.resolve = function (value, context) {
-  return new PromiseObj(Promise.resolve(value), context);
-};
-
-PromiseObj.reject = function (reason, context) {
-  return new PromiseObj(Promise.reject(reason), context);
-};
-
-PromiseObj.race = function (iterable, context) {
-  return new PromiseObj(Promise.race(iterable), context);
-};
-
-var p$1 = PromiseObj.prototype;
-
-p$1.bind = function (context) {
-  this.context = context;
-  return this;
-};
-
-p$1.then = function (fulfilled, rejected) {
-  if (fulfilled && fulfilled.bind && this.context) {
-    fulfilled = fulfilled.bind(this.context);
-  }
-
-  if (rejected && rejected.bind && this.context) {
-    rejected = rejected.bind(this.context);
-  }
-
-  return new PromiseObj(this.promise.then(fulfilled, rejected), this.context);
-};
-
-p$1["catch"] = function (rejected) {
-  if (rejected && rejected.bind && this.context) {
-    rejected = rejected.bind(this.context);
-  }
-
-  return new PromiseObj(this.promise["catch"](rejected), this.context);
-};
-
-p$1["finally"] = function (callback) {
-  return this.then(function (value) {
-    callback.call(this);
-    return value;
-  }, function (reason) {
-    callback.call(this);
-    return Promise.reject(reason);
-  });
-};
-
-/**
- * Utility functions.
- */
-var _ref = {},
-    hasOwnProperty = _ref.hasOwnProperty,
-    slice = [].slice,
-    debug = false,
-    ntick;
-var inBrowser = typeof window !== 'undefined';
-function Util (_ref2) {
-  var config = _ref2.config,
-      nextTick = _ref2.nextTick;
-  ntick = nextTick;
-  debug = config.debug || !config.silent;
-}
-function warn(msg) {
-  if (typeof console !== 'undefined' && debug) {
-    console.warn('[VueResource warn]: ' + msg);
-  }
-}
-function error(msg) {
-  if (typeof console !== 'undefined') {
-    console.error(msg);
-  }
-}
-function nextTick(cb, ctx) {
-  return ntick(cb, ctx);
-}
-function trim(str) {
-  return str ? str.replace(/^\s*|\s*$/g, '') : '';
-}
-function trimEnd(str, chars) {
-  if (str && chars === undefined) {
-    return str.replace(/\s+$/, '');
-  }
-
-  if (!str || !chars) {
-    return str;
-  }
-
-  return str.replace(new RegExp("[" + chars + "]+$"), '');
-}
-function toLower(str) {
-  return str ? str.toLowerCase() : '';
-}
-function toUpper(str) {
-  return str ? str.toUpperCase() : '';
-}
-var isArray = Array.isArray;
-function isString(val) {
-  return typeof val === 'string';
-}
-function isFunction(val) {
-  return typeof val === 'function';
-}
-function isObject(obj) {
-  return obj !== null && typeof obj === 'object';
-}
-function isPlainObject(obj) {
-  return isObject(obj) && Object.getPrototypeOf(obj) == Object.prototype;
-}
-function isBlob(obj) {
-  return typeof Blob !== 'undefined' && obj instanceof Blob;
-}
-function isFormData(obj) {
-  return typeof FormData !== 'undefined' && obj instanceof FormData;
-}
-function when(value, fulfilled, rejected) {
-  var promise = PromiseObj.resolve(value);
-
-  if (arguments.length < 2) {
-    return promise;
-  }
-
-  return promise.then(fulfilled, rejected);
-}
-function options(fn, obj, opts) {
-  opts = opts || {};
-
-  if (isFunction(opts)) {
-    opts = opts.call(obj);
-  }
-
-  return merge(fn.bind({
-    $vm: obj,
-    $options: opts
-  }), fn, {
-    $options: opts
-  });
-}
-function each(obj, iterator) {
-  var i, key;
-
-  if (isArray(obj)) {
-    for (i = 0; i < obj.length; i++) {
-      iterator.call(obj[i], obj[i], i);
-    }
-  } else if (isObject(obj)) {
-    for (key in obj) {
-      if (hasOwnProperty.call(obj, key)) {
-        iterator.call(obj[key], obj[key], key);
-      }
-    }
-  }
-
-  return obj;
-}
-var assign = Object.assign || _assign;
-function merge(target) {
-  var args = slice.call(arguments, 1);
-  args.forEach(function (source) {
-    _merge(target, source, true);
-  });
-  return target;
-}
-function defaults(target) {
-  var args = slice.call(arguments, 1);
-  args.forEach(function (source) {
-    for (var key in source) {
-      if (target[key] === undefined) {
-        target[key] = source[key];
-      }
-    }
-  });
-  return target;
-}
-
-function _assign(target) {
-  var args = slice.call(arguments, 1);
-  args.forEach(function (source) {
-    _merge(target, source);
-  });
-  return target;
-}
-
-function _merge(target, source, deep) {
-  for (var key in source) {
-    if (deep && (isPlainObject(source[key]) || isArray(source[key]))) {
-      if (isPlainObject(source[key]) && !isPlainObject(target[key])) {
-        target[key] = {};
-      }
-
-      if (isArray(source[key]) && !isArray(target[key])) {
-        target[key] = [];
-      }
-
-      _merge(target[key], source[key], deep);
-    } else if (source[key] !== undefined) {
-      target[key] = source[key];
-    }
-  }
-}
-
-/**
- * Root Prefix Transform.
- */
-function root (options$$1, next) {
-  var url = next(options$$1);
-
-  if (isString(options$$1.root) && !/^(https?:)?\//.test(url)) {
-    url = trimEnd(options$$1.root, '/') + '/' + url;
-  }
-
-  return url;
-}
-
-/**
- * Query Parameter Transform.
- */
-function query (options$$1, next) {
-  var urlParams = Object.keys(Url.options.params),
-      query = {},
-      url = next(options$$1);
-  each(options$$1.params, function (value, key) {
-    if (urlParams.indexOf(key) === -1) {
-      query[key] = value;
-    }
-  });
-  query = Url.params(query);
-
-  if (query) {
-    url += (url.indexOf('?') == -1 ? '?' : '&') + query;
-  }
-
-  return url;
-}
-
-/**
- * URL Template v2.0.6 (https://github.com/bramstein/url-template)
- */
-function expand(url, params, variables) {
-  var tmpl = parse(url),
-      expanded = tmpl.expand(params);
-
-  if (variables) {
-    variables.push.apply(variables, tmpl.vars);
-  }
-
-  return expanded;
-}
-function parse(template) {
-  var operators = ['+', '#', '.', '/', ';', '?', '&'],
-      variables = [];
-  return {
-    vars: variables,
-    expand: function expand(context) {
-      return template.replace(/\{([^{}]+)\}|([^{}]+)/g, function (_, expression, literal) {
-        if (expression) {
-          var operator = null,
-              values = [];
-
-          if (operators.indexOf(expression.charAt(0)) !== -1) {
-            operator = expression.charAt(0);
-            expression = expression.substr(1);
-          }
-
-          expression.split(/,/g).forEach(function (variable) {
-            var tmp = /([^:*]*)(?::(\d+)|(\*))?/.exec(variable);
-            values.push.apply(values, getValues(context, operator, tmp[1], tmp[2] || tmp[3]));
-            variables.push(tmp[1]);
-          });
-
-          if (operator && operator !== '+') {
-            var separator = ',';
-
-            if (operator === '?') {
-              separator = '&';
-            } else if (operator !== '#') {
-              separator = operator;
-            }
-
-            return (values.length !== 0 ? operator : '') + values.join(separator);
-          } else {
-            return values.join(',');
-          }
-        } else {
-          return encodeReserved(literal);
-        }
-      });
-    }
-  };
-}
-
-function getValues(context, operator, key, modifier) {
-  var value = context[key],
-      result = [];
-
-  if (isDefined(value) && value !== '') {
-    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-      value = value.toString();
-
-      if (modifier && modifier !== '*') {
-        value = value.substring(0, parseInt(modifier, 10));
-      }
-
-      result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : null));
-    } else {
-      if (modifier === '*') {
-        if (Array.isArray(value)) {
-          value.filter(isDefined).forEach(function (value) {
-            result.push(encodeValue(operator, value, isKeyOperator(operator) ? key : null));
-          });
-        } else {
-          Object.keys(value).forEach(function (k) {
-            if (isDefined(value[k])) {
-              result.push(encodeValue(operator, value[k], k));
-            }
-          });
-        }
-      } else {
-        var tmp = [];
-
-        if (Array.isArray(value)) {
-          value.filter(isDefined).forEach(function (value) {
-            tmp.push(encodeValue(operator, value));
-          });
-        } else {
-          Object.keys(value).forEach(function (k) {
-            if (isDefined(value[k])) {
-              tmp.push(encodeURIComponent(k));
-              tmp.push(encodeValue(operator, value[k].toString()));
-            }
-          });
-        }
-
-        if (isKeyOperator(operator)) {
-          result.push(encodeURIComponent(key) + '=' + tmp.join(','));
-        } else if (tmp.length !== 0) {
-          result.push(tmp.join(','));
-        }
-      }
-    }
-  } else {
-    if (operator === ';') {
-      result.push(encodeURIComponent(key));
-    } else if (value === '' && (operator === '&' || operator === '?')) {
-      result.push(encodeURIComponent(key) + '=');
-    } else if (value === '') {
-      result.push('');
-    }
-  }
-
-  return result;
-}
-
-function isDefined(value) {
-  return value !== undefined && value !== null;
-}
-
-function isKeyOperator(operator) {
-  return operator === ';' || operator === '&' || operator === '?';
-}
-
-function encodeValue(operator, value, key) {
-  value = operator === '+' || operator === '#' ? encodeReserved(value) : encodeURIComponent(value);
-
-  if (key) {
-    return encodeURIComponent(key) + '=' + value;
-  } else {
-    return value;
-  }
-}
-
-function encodeReserved(str) {
-  return str.split(/(%[0-9A-Fa-f]{2})/g).map(function (part) {
-    if (!/%[0-9A-Fa-f]/.test(part)) {
-      part = encodeURI(part);
-    }
-
-    return part;
-  }).join('');
-}
-
-/**
- * URL Template (RFC 6570) Transform.
- */
-function template (options) {
-  var variables = [],
-      url = expand(options.url, options.params, variables);
-  variables.forEach(function (key) {
-    delete options.params[key];
-  });
-  return url;
-}
-
-/**
- * Service for URL templating.
- */
-function Url(url, params) {
-  var self = this || {},
-      options$$1 = url,
-      transform;
-
-  if (isString(url)) {
-    options$$1 = {
-      url: url,
-      params: params
-    };
-  }
-
-  options$$1 = merge({}, Url.options, self.$options, options$$1);
-  Url.transforms.forEach(function (handler) {
-    if (isString(handler)) {
-      handler = Url.transform[handler];
-    }
-
-    if (isFunction(handler)) {
-      transform = factory(handler, transform, self.$vm);
-    }
-  });
-  return transform(options$$1);
-}
-/**
- * Url options.
- */
-
-Url.options = {
-  url: '',
-  root: null,
-  params: {}
-};
-/**
- * Url transforms.
- */
-
-Url.transform = {
-  template: template,
-  query: query,
-  root: root
-};
-Url.transforms = ['template', 'query', 'root'];
-/**
- * Encodes a Url parameter string.
- *
- * @param {Object} obj
- */
-
-Url.params = function (obj) {
-  var params = [],
-      escape = encodeURIComponent;
-
-  params.add = function (key, value) {
-    if (isFunction(value)) {
-      value = value();
-    }
-
-    if (value === null) {
-      value = '';
-    }
-
-    this.push(escape(key) + '=' + escape(value));
-  };
-
-  serialize(params, obj);
-  return params.join('&').replace(/%20/g, '+');
-};
-/**
- * Parse a URL and return its components.
- *
- * @param {String} url
- */
-
-
-Url.parse = function (url) {
-  var el = document.createElement('a');
-
-  if (document.documentMode) {
-    el.href = url;
-    url = el.href;
-  }
-
-  el.href = url;
-  return {
-    href: el.href,
-    protocol: el.protocol ? el.protocol.replace(/:$/, '') : '',
-    port: el.port,
-    host: el.host,
-    hostname: el.hostname,
-    pathname: el.pathname.charAt(0) === '/' ? el.pathname : '/' + el.pathname,
-    search: el.search ? el.search.replace(/^\?/, '') : '',
-    hash: el.hash ? el.hash.replace(/^#/, '') : ''
-  };
-};
-
-function factory(handler, next, vm) {
-  return function (options$$1) {
-    return handler.call(vm, options$$1, next);
-  };
-}
-
-function serialize(params, obj, scope) {
-  var array = isArray(obj),
-      plain = isPlainObject(obj),
-      hash;
-  each(obj, function (value, key) {
-    hash = isObject(value) || isArray(value);
-
-    if (scope) {
-      key = scope + '[' + (plain || hash ? key : '') + ']';
-    }
-
-    if (!scope && array) {
-      params.add(value.name, value.value);
-    } else if (hash) {
-      serialize(params, value, key);
-    } else {
-      params.add(key, value);
-    }
-  });
-}
-
-/**
- * XDomain client (Internet Explorer).
- */
-function xdrClient (request) {
-  return new PromiseObj(function (resolve) {
-    var xdr = new XDomainRequest(),
-        handler = function handler(_ref) {
-      var type = _ref.type;
-      var status = 0;
-
-      if (type === 'load') {
-        status = 200;
-      } else if (type === 'error') {
-        status = 500;
-      }
-
-      resolve(request.respondWith(xdr.responseText, {
-        status: status
-      }));
-    };
-
-    request.abort = function () {
-      return xdr.abort();
-    };
-
-    xdr.open(request.method, request.getUrl());
-
-    if (request.timeout) {
-      xdr.timeout = request.timeout;
-    }
-
-    xdr.onload = handler;
-    xdr.onabort = handler;
-    xdr.onerror = handler;
-    xdr.ontimeout = handler;
-
-    xdr.onprogress = function () {};
-
-    xdr.send(request.getBody());
-  });
-}
-
-/**
- * CORS Interceptor.
- */
-var SUPPORTS_CORS = inBrowser && 'withCredentials' in new XMLHttpRequest();
-function cors (request) {
-  if (inBrowser) {
-    var orgUrl = Url.parse(location.href);
-    var reqUrl = Url.parse(request.getUrl());
-
-    if (reqUrl.protocol !== orgUrl.protocol || reqUrl.host !== orgUrl.host) {
-      request.crossOrigin = true;
-      request.emulateHTTP = false;
-
-      if (!SUPPORTS_CORS) {
-        request.client = xdrClient;
-      }
-    }
-  }
-}
-
-/**
- * Form data Interceptor.
- */
-function form (request) {
-  if (isFormData(request.body)) {
-    request.headers["delete"]('Content-Type');
-  } else if (isObject(request.body) && request.emulateJSON) {
-    request.body = Url.params(request.body);
-    request.headers.set('Content-Type', 'application/x-www-form-urlencoded');
-  }
-}
-
-/**
- * JSON Interceptor.
- */
-function json (request) {
-  var type = request.headers.get('Content-Type') || '';
-
-  if (isObject(request.body) && type.indexOf('application/json') === 0) {
-    request.body = JSON.stringify(request.body);
-  }
-
-  return function (response) {
-    return response.bodyText ? when(response.text(), function (text) {
-      var type = response.headers.get('Content-Type') || '';
-
-      if (type.indexOf('application/json') === 0 || isJson(text)) {
-        try {
-          response.body = JSON.parse(text);
-        } catch (e) {
-          response.body = null;
-        }
-      } else {
-        response.body = text;
-      }
-
-      return response;
-    }) : response;
-  };
-}
-
-function isJson(str) {
-  var start = str.match(/^\s*(\[|\{)/);
-  var end = {
-    '[': /]\s*$/,
-    '{': /}\s*$/
-  };
-  return start && end[start[1]].test(str);
-}
-
-/**
- * JSONP client (Browser).
- */
-function jsonpClient (request) {
-  return new PromiseObj(function (resolve) {
-    var name = request.jsonp || 'callback',
-        callback = request.jsonpCallback || '_jsonp' + Math.random().toString(36).substr(2),
-        body = null,
-        handler,
-        script;
-
-    handler = function handler(_ref) {
-      var type = _ref.type;
-      var status = 0;
-
-      if (type === 'load' && body !== null) {
-        status = 200;
-      } else if (type === 'error') {
-        status = 500;
-      }
-
-      if (status && window[callback]) {
-        delete window[callback];
-        document.body.removeChild(script);
-      }
-
-      resolve(request.respondWith(body, {
-        status: status
-      }));
-    };
-
-    window[callback] = function (result) {
-      body = JSON.stringify(result);
-    };
-
-    request.abort = function () {
-      handler({
-        type: 'abort'
-      });
-    };
-
-    request.params[name] = callback;
-
-    if (request.timeout) {
-      setTimeout(request.abort, request.timeout);
-    }
-
-    script = document.createElement('script');
-    script.src = request.getUrl();
-    script.type = 'text/javascript';
-    script.async = true;
-    script.onload = handler;
-    script.onerror = handler;
-    document.body.appendChild(script);
-  });
-}
-
-/**
- * JSONP Interceptor.
- */
-function jsonp (request) {
-  if (request.method == 'JSONP') {
-    request.client = jsonpClient;
-  }
-}
-
-/**
- * Before Interceptor.
- */
-function before (request) {
-  if (isFunction(request.before)) {
-    request.before.call(this, request);
-  }
-}
-
-/**
- * HTTP method override Interceptor.
- */
-function method (request) {
-  if (request.emulateHTTP && /^(PUT|PATCH|DELETE)$/i.test(request.method)) {
-    request.headers.set('X-HTTP-Method-Override', request.method);
-    request.method = 'POST';
-  }
-}
-
-/**
- * Header Interceptor.
- */
-function header (request) {
-  var headers = assign({}, Http.headers.common, !request.crossOrigin ? Http.headers.custom : {}, Http.headers[toLower(request.method)]);
-  each(headers, function (value, name) {
-    if (!request.headers.has(name)) {
-      request.headers.set(name, value);
-    }
-  });
-}
-
-/**
- * XMLHttp client (Browser).
- */
-function xhrClient (request) {
-  return new PromiseObj(function (resolve) {
-    var xhr = new XMLHttpRequest(),
-        handler = function handler(event) {
-      var response = request.respondWith('response' in xhr ? xhr.response : xhr.responseText, {
-        status: xhr.status === 1223 ? 204 : xhr.status,
-        // IE9 status bug
-        statusText: xhr.status === 1223 ? 'No Content' : trim(xhr.statusText)
-      });
-      each(trim(xhr.getAllResponseHeaders()).split('\n'), function (row) {
-        response.headers.append(row.slice(0, row.indexOf(':')), row.slice(row.indexOf(':') + 1));
-      });
-      resolve(response);
-    };
-
-    request.abort = function () {
-      return xhr.abort();
-    };
-
-    xhr.open(request.method, request.getUrl(), true);
-
-    if (request.timeout) {
-      xhr.timeout = request.timeout;
-    }
-
-    if (request.responseType && 'responseType' in xhr) {
-      xhr.responseType = request.responseType;
-    }
-
-    if (request.withCredentials || request.credentials) {
-      xhr.withCredentials = true;
-    }
-
-    if (!request.crossOrigin) {
-      request.headers.set('X-Requested-With', 'XMLHttpRequest');
-    } // deprecated use downloadProgress
-
-
-    if (isFunction(request.progress) && request.method === 'GET') {
-      xhr.addEventListener('progress', request.progress);
-    }
-
-    if (isFunction(request.downloadProgress)) {
-      xhr.addEventListener('progress', request.downloadProgress);
-    } // deprecated use uploadProgress
-
-
-    if (isFunction(request.progress) && /^(POST|PUT)$/i.test(request.method)) {
-      xhr.upload.addEventListener('progress', request.progress);
-    }
-
-    if (isFunction(request.uploadProgress) && xhr.upload) {
-      xhr.upload.addEventListener('progress', request.uploadProgress);
-    }
-
-    request.headers.forEach(function (value, name) {
-      xhr.setRequestHeader(name, value);
-    });
-    xhr.onload = handler;
-    xhr.onabort = handler;
-    xhr.onerror = handler;
-    xhr.ontimeout = handler;
-    xhr.send(request.getBody());
-  });
-}
-
-/**
- * Http client (Node).
- */
-function nodeClient (request) {
-  var client = __webpack_require__(/*! got */ "?3cb3");
-
-  return new PromiseObj(function (resolve) {
-    var url = request.getUrl();
-    var body = request.getBody();
-    var method = request.method;
-    var headers = {},
-        handler;
-    request.headers.forEach(function (value, name) {
-      headers[name] = value;
-    });
-    client(url, {
-      body: body,
-      method: method,
-      headers: headers
-    }).then(handler = function handler(resp) {
-      var response = request.respondWith(resp.body, {
-        status: resp.statusCode,
-        statusText: trim(resp.statusMessage)
-      });
-      each(resp.headers, function (value, name) {
-        response.headers.set(name, value);
-      });
-      resolve(response);
-    }, function (error$$1) {
-      return handler(error$$1.response);
-    });
-  });
-}
-
-/**
- * Base client.
- */
-function Client (context) {
-  var reqHandlers = [sendRequest],
-      resHandlers = [];
-
-  if (!isObject(context)) {
-    context = null;
-  }
-
-  function Client(request) {
-    while (reqHandlers.length) {
-      var handler = reqHandlers.pop();
-
-      if (isFunction(handler)) {
-        var _ret = function () {
-          var response = void 0,
-              next = void 0;
-          response = handler.call(context, request, function (val) {
-            return next = val;
-          }) || next;
-
-          if (isObject(response)) {
-            return {
-              v: new PromiseObj(function (resolve, reject) {
-                resHandlers.forEach(function (handler) {
-                  response = when(response, function (response) {
-                    return handler.call(context, response) || response;
-                  }, reject);
-                });
-                when(response, resolve, reject);
-              }, context)
-            };
-          }
-
-          if (isFunction(response)) {
-            resHandlers.unshift(response);
-          }
-        }();
-
-        if (typeof _ret === "object") return _ret.v;
-      } else {
-        warn("Invalid interceptor of type " + typeof handler + ", must be a function");
-      }
-    }
-  }
-
-  Client.use = function (handler) {
-    reqHandlers.push(handler);
-  };
-
-  return Client;
-}
-
-function sendRequest(request) {
-  var client = request.client || (inBrowser ? xhrClient : nodeClient);
-  return client(request);
-}
-
-/**
- * HTTP Headers.
- */
-
-var Headers = /*#__PURE__*/function () {
-  function Headers(headers) {
-    var _this = this;
-
-    this.map = {};
-    each(headers, function (value, name) {
-      return _this.append(name, value);
-    });
-  }
-
-  var _proto = Headers.prototype;
-
-  _proto.has = function has(name) {
-    return getName(this.map, name) !== null;
-  };
-
-  _proto.get = function get(name) {
-    var list = this.map[getName(this.map, name)];
-    return list ? list.join() : null;
-  };
-
-  _proto.getAll = function getAll(name) {
-    return this.map[getName(this.map, name)] || [];
-  };
-
-  _proto.set = function set(name, value) {
-    this.map[normalizeName(getName(this.map, name) || name)] = [trim(value)];
-  };
-
-  _proto.append = function append(name, value) {
-    var list = this.map[getName(this.map, name)];
-
-    if (list) {
-      list.push(trim(value));
-    } else {
-      this.set(name, value);
-    }
-  };
-
-  _proto["delete"] = function _delete(name) {
-    delete this.map[getName(this.map, name)];
-  };
-
-  _proto.deleteAll = function deleteAll() {
-    this.map = {};
-  };
-
-  _proto.forEach = function forEach(callback, thisArg) {
-    var _this2 = this;
-
-    each(this.map, function (list, name) {
-      each(list, function (value) {
-        return callback.call(thisArg, value, name, _this2);
-      });
-    });
-  };
-
-  return Headers;
-}();
-
-function getName(map, name) {
-  return Object.keys(map).reduce(function (prev, curr) {
-    return toLower(name) === toLower(curr) ? curr : prev;
-  }, null);
-}
-
-function normalizeName(name) {
-  if (/[^a-z0-9\-#$%&'*+.^_`|~]/i.test(name)) {
-    throw new TypeError('Invalid character in header field name');
-  }
-
-  return trim(name);
-}
-
-/**
- * HTTP Response.
- */
-
-var Response = /*#__PURE__*/function () {
-  function Response(body, _ref) {
-    var url = _ref.url,
-        headers = _ref.headers,
-        status = _ref.status,
-        statusText = _ref.statusText;
-    this.url = url;
-    this.ok = status >= 200 && status < 300;
-    this.status = status || 0;
-    this.statusText = statusText || '';
-    this.headers = new Headers(headers);
-    this.body = body;
-
-    if (isString(body)) {
-      this.bodyText = body;
-    } else if (isBlob(body)) {
-      this.bodyBlob = body;
-
-      if (isBlobText(body)) {
-        this.bodyText = blobText(body);
-      }
-    }
-  }
-
-  var _proto = Response.prototype;
-
-  _proto.blob = function blob() {
-    return when(this.bodyBlob);
-  };
-
-  _proto.text = function text() {
-    return when(this.bodyText);
-  };
-
-  _proto.json = function json() {
-    return when(this.text(), function (text) {
-      return JSON.parse(text);
-    });
-  };
-
-  return Response;
-}();
-Object.defineProperty(Response.prototype, 'data', {
-  get: function get() {
-    return this.body;
-  },
-  set: function set(body) {
-    this.body = body;
-  }
-});
-
-function blobText(body) {
-  return new PromiseObj(function (resolve) {
-    var reader = new FileReader();
-    reader.readAsText(body);
-
-    reader.onload = function () {
-      resolve(reader.result);
-    };
-  });
-}
-
-function isBlobText(body) {
-  return body.type.indexOf('text') === 0 || body.type.indexOf('json') !== -1;
-}
-
-/**
- * HTTP Request.
- */
-
-var Request = /*#__PURE__*/function () {
-  function Request(options$$1) {
-    this.body = null;
-    this.params = {};
-    assign(this, options$$1, {
-      method: toUpper(options$$1.method || 'GET')
-    });
-
-    if (!(this.headers instanceof Headers)) {
-      this.headers = new Headers(this.headers);
-    }
-  }
-
-  var _proto = Request.prototype;
-
-  _proto.getUrl = function getUrl() {
-    return Url(this);
-  };
-
-  _proto.getBody = function getBody() {
-    return this.body;
-  };
-
-  _proto.respondWith = function respondWith(body, options$$1) {
-    return new Response(body, assign(options$$1 || {}, {
-      url: this.getUrl()
-    }));
-  };
-
-  return Request;
-}();
-
-/**
- * Service for sending network requests.
- */
-var COMMON_HEADERS = {
-  'Accept': 'application/json, text/plain, */*'
-};
-var JSON_CONTENT_TYPE = {
-  'Content-Type': 'application/json;charset=utf-8'
-};
-function Http(options$$1) {
-  var self = this || {},
-      client = Client(self.$vm);
-  defaults(options$$1 || {}, self.$options, Http.options);
-  Http.interceptors.forEach(function (handler) {
-    if (isString(handler)) {
-      handler = Http.interceptor[handler];
-    }
-
-    if (isFunction(handler)) {
-      client.use(handler);
-    }
-  });
-  return client(new Request(options$$1)).then(function (response) {
-    return response.ok ? response : PromiseObj.reject(response);
-  }, function (response) {
-    if (response instanceof Error) {
-      error(response);
-    }
-
-    return PromiseObj.reject(response);
-  });
-}
-Http.options = {};
-Http.headers = {
-  put: JSON_CONTENT_TYPE,
-  post: JSON_CONTENT_TYPE,
-  patch: JSON_CONTENT_TYPE,
-  "delete": JSON_CONTENT_TYPE,
-  common: COMMON_HEADERS,
-  custom: {}
-};
-Http.interceptor = {
-  before: before,
-  method: method,
-  jsonp: jsonp,
-  json: json,
-  form: form,
-  header: header,
-  cors: cors
-};
-Http.interceptors = ['before', 'method', 'jsonp', 'json', 'form', 'header', 'cors'];
-['get', 'delete', 'head', 'jsonp'].forEach(function (method$$1) {
-  Http[method$$1] = function (url, options$$1) {
-    return this(assign(options$$1 || {}, {
-      url: url,
-      method: method$$1
-    }));
-  };
-});
-['post', 'put', 'patch'].forEach(function (method$$1) {
-  Http[method$$1] = function (url, body, options$$1) {
-    return this(assign(options$$1 || {}, {
-      url: url,
-      method: method$$1,
-      body: body
-    }));
-  };
-});
-
-/**
- * Service for interacting with RESTful services.
- */
-function Resource(url, params, actions, options$$1) {
-  var self = this || {},
-      resource = {};
-  actions = assign({}, Resource.actions, actions);
-  each(actions, function (action, name) {
-    action = merge({
-      url: url,
-      params: assign({}, params)
-    }, options$$1, action);
-
-    resource[name] = function () {
-      return (self.$http || Http)(opts(action, arguments));
-    };
-  });
-  return resource;
-}
-
-function opts(action, args) {
-  var options$$1 = assign({}, action),
-      params = {},
-      body;
-
-  switch (args.length) {
-    case 2:
-      params = args[0];
-      body = args[1];
-      break;
-
-    case 1:
-      if (/^(POST|PUT|PATCH)$/i.test(options$$1.method)) {
-        body = args[0];
-      } else {
-        params = args[0];
-      }
-
-      break;
-
-    case 0:
-      break;
-
-    default:
-      throw 'Expected up to 2 arguments [params, body], got ' + args.length + ' arguments';
-  }
-
-  options$$1.body = body;
-  options$$1.params = assign({}, options$$1.params, params);
-  return options$$1;
-}
-
-Resource.actions = {
-  get: {
-    method: 'GET'
-  },
-  save: {
-    method: 'POST'
-  },
-  query: {
-    method: 'GET'
-  },
-  update: {
-    method: 'PUT'
-  },
-  remove: {
-    method: 'DELETE'
-  },
-  "delete": {
-    method: 'DELETE'
-  }
-};
-
-/**
- * Install plugin.
- */
-
-function plugin(Vue) {
-  if (plugin.installed) {
-    return;
-  }
-
-  Util(Vue);
-  Vue.url = Url;
-  Vue.http = Http;
-  Vue.resource = Resource;
-  Vue.Promise = PromiseObj;
-  Object.defineProperties(Vue.prototype, {
-    $url: {
-      get: function get() {
-        return options(Vue.url, this, this.$options.url);
+      this.open && t ? this.searchEl.blur() : this.disabled || (this.open = !0, this.searchEl.focus());
+    },
+    isOptionSelected(e) {
+      return this.selectedValue.some((t) => this.optionComparator(t, e));
+    },
+    isOptionDeselectable(e) {
+      return this.isOptionSelected(e) && this.deselectFromDropdown;
+    },
+    optionComparator(e, t) {
+      return this.getOptionKey(e) === this.getOptionKey(t);
+    },
+    findOptionFromReducedValue(e) {
+      const t = (n) => JSON.stringify(this.reduce(n)) === JSON.stringify(e), s = [...this.options, ...this.pushedTags].filter(t);
+      return s.length === 1 ? s[0] : s.find((n) => this.optionComparator(n, this.$data._value)) || e;
+    },
+    closeSearchOptions() {
+      this.open = !1, this.$emit("search:blur");
+    },
+    maybeDeleteValue() {
+      if (!this.searchEl.value.length && this.selectedValue && this.selectedValue.length && this.clearable) {
+        let e = null;
+        this.multiple && (e = [
+          ...this.selectedValue.slice(0, this.selectedValue.length - 1)
+        ]), this.updateValue(e);
       }
     },
-    $http: {
-      get: function get() {
-        return options(Vue.http, this, this.$options.http);
+    optionExists(e) {
+      return this.optionList.some((t) => this.optionComparator(t, e));
+    },
+    normalizeOptionForSlot(e) {
+      return typeof e == "object" ? e : { [this.label]: e };
+    },
+    pushTag(e) {
+      this.pushedTags.push(e);
+    },
+    onEscape() {
+      this.search.length ? this.search = "" : this.searchEl.blur();
+    },
+    onSearchBlur() {
+      if (this.mousedown && !this.searching)
+        this.mousedown = !1;
+      else {
+        const { clearSearchOnSelect: e, multiple: t } = this;
+        this.clearSearchOnBlur({ clearSearchOnSelect: e, multiple: t }) && (this.search = ""), this.closeSearchOptions();
+        return;
+      }
+      if (this.search.length === 0 && this.options.length === 0) {
+        this.closeSearchOptions();
+        return;
       }
     },
-    $resource: {
-      get: function get() {
-        return Vue.resource.bind(this);
-      }
+    onSearchFocus() {
+      this.open = !0, this.$emit("search:focus");
     },
-    $promise: {
-      get: function get() {
-        var _this = this;
-
-        return function (executor) {
-          return new Vue.Promise(executor, _this);
-        };
-      }
+    onMousedown() {
+      this.mousedown = !0;
+    },
+    onMouseUp() {
+      this.mousedown = !1;
+    },
+    onSearchKeyDown(e) {
+      const t = (l) => (l.preventDefault(), !this.isComposing && this.typeAheadSelect()), s = {
+        8: (l) => this.maybeDeleteValue(),
+        9: (l) => this.onTab(),
+        27: (l) => this.onEscape(),
+        38: (l) => (l.preventDefault(), this.typeAheadUp()),
+        40: (l) => (l.preventDefault(), this.typeAheadDown())
+      };
+      this.selectOnKeyCodes.forEach((l) => s[l] = t);
+      const n = this.mapKeydown(s, this);
+      if (typeof n[e.keyCode] == "function")
+        return n[e.keyCode](e);
     }
-  });
+  }
+}, he = ["dir"], ce = ["id", "aria-expanded", "aria-owns"], ue = {
+  ref: "selectedOptions",
+  class: "vs__selected-options"
+}, pe = ["disabled", "title", "aria-label", "onClick"], fe = {
+  ref: "actions",
+  class: "vs__actions"
+}, ge = ["disabled"], ye = { class: "vs__spinner" }, me = ["id"], be = ["id", "aria-selected", "onMouseover", "onClick"], _e = {
+  key: 0,
+  class: "vs__no-options"
+}, Oe = /* @__PURE__ */ (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Sorry, no matching options. "), we = ["id"];
+function ve(e, t, s, n, l, i) {
+  const y = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDirective)("append-to-body");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    dir: s.dir,
+    class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["v-select", i.stateClasses])
+  }, [
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "header", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.header))),
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+      id: `vs${s.uid}__combobox`,
+      ref: "toggle",
+      class: "vs__dropdown-toggle",
+      role: "combobox",
+      "aria-expanded": i.dropdownOpen.toString(),
+      "aria-owns": `vs${s.uid}__listbox`,
+      "aria-label": "Search for option",
+      onMousedown: t[1] || (t[1] = (o) => i.toggleDropdown(o))
+    }, [
+      (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", ue, [
+        ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(!0), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(i.selectedValue, (o, p) => (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "selected-option-container", {
+          option: i.normalizeOptionForSlot(o),
+          deselect: i.deselect,
+          multiple: s.multiple,
+          disabled: s.disabled
+        }, () => [
+          ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+            key: s.getOptionKey(o),
+            class: "vs__selected"
+          }, [
+            (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "selected-option", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.normalizeOptionForSlot(o))), () => [
+              (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(s.getOptionLabel(o)), 1)
+            ]),
+            s.multiple ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+              key: 0,
+              ref_for: !0,
+              ref: (g) => l.deselectButtons[p] = g,
+              disabled: s.disabled,
+              type: "button",
+              class: "vs__deselect",
+              title: `Deselect ${s.getOptionLabel(o)}`,
+              "aria-label": `Deselect ${s.getOptionLabel(o)}`,
+              onClick: (g) => i.deselect(o)
+            }, [
+              ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(i.childComponents.Deselect)))
+            ], 8, pe)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("", !0)
+          ]))
+        ])), 256)),
+        (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "search", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.search)), () => [
+          (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", (0,vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps)({ class: "vs__search" }, i.scope.search.attributes, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toHandlers)(i.scope.search.events)), null, 16)
+        ])
+      ], 512),
+      (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", fe, [
+        (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+          ref: "clearButton",
+          disabled: s.disabled,
+          type: "button",
+          class: "vs__clear",
+          title: "Clear Selected",
+          "aria-label": "Clear Selected",
+          onClick: t[0] || (t[0] = (...o) => i.clearSelection && i.clearSelection(...o))
+        }, [
+          ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(i.childComponents.Deselect)))
+        ], 8, ge), [
+          [vue__WEBPACK_IMPORTED_MODULE_0__.vShow, i.showClearButton]
+        ]),
+        (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "open-indicator", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.openIndicator)), () => [
+          s.noDrop ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("", !0) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(i.childComponents.OpenIndicator), (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.mergeProps)({ key: 0 }, i.scope.openIndicator.attributes)), null, 16))
+        ]),
+        (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "spinner", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.spinner)), () => [
+          (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", ye, "Loading...", 512), [
+            [vue__WEBPACK_IMPORTED_MODULE_0__.vShow, e.mutableLoading]
+          ])
+        ])
+      ], 512)
+    ], 40, ce),
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.Transition, { name: s.transition }, {
+      default: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(() => [
+        i.dropdownOpen ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", {
+          id: `vs${s.uid}__listbox`,
+          ref: "dropdownMenu",
+          key: `vs${s.uid}__listbox`,
+          class: "vs__dropdown-menu",
+          role: "listbox",
+          tabindex: "-1",
+          onMousedown: t[2] || (t[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((...o) => i.onMousedown && i.onMousedown(...o), ["prevent"])),
+          onMouseup: t[3] || (t[3] = (...o) => i.onMouseUp && i.onMouseUp(...o))
+        }, [
+          (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "list-header", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.listHeader))),
+          ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(!0), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(i.filteredOptions, (o, p) => ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+            id: `vs${s.uid}__option-${p}`,
+            key: s.getOptionKey(o),
+            role: "option",
+            class: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["vs__dropdown-option", {
+              "vs__dropdown-option--deselect": i.isOptionDeselectable(o) && p === e.typeAheadPointer,
+              "vs__dropdown-option--selected": i.isOptionSelected(o),
+              "vs__dropdown-option--highlight": p === e.typeAheadPointer,
+              "vs__dropdown-option--disabled": !s.selectable(o)
+            }]),
+            "aria-selected": p === e.typeAheadPointer ? !0 : null,
+            onMouseover: (g) => s.selectable(o) ? e.typeAheadPointer = p : null,
+            onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)((g) => s.selectable(o) ? i.select(o) : null, ["prevent", "stop"])
+          }, [
+            (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "option", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.normalizeOptionForSlot(o))), () => [
+              (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(s.getOptionLabel(o)), 1)
+            ])
+          ], 42, be))), 128)),
+          i.filteredOptions.length === 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _e, [
+            (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "no-options", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.noOptions)), () => [
+              Oe
+            ])
+          ])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("", !0),
+          (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "list-footer", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.listFooter)))
+        ], 40, me)), [
+          [y]
+        ]) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", {
+          key: 1,
+          id: `vs${s.uid}__listbox`,
+          role: "listbox",
+          style: { display: "none", visibility: "hidden" }
+        }, null, 8, we))
+      ]),
+      _: 3
+    }, 8, ["name"]),
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(e.$slots, "footer", (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeProps)((0,vue__WEBPACK_IMPORTED_MODULE_0__.guardReactiveProps)(i.scope.footer)))
+  ], 10, he);
 }
-
-if (typeof window !== 'undefined' && window.Vue && !window.Vue.resource) {
-  window.Vue.use(plugin);
-}
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (plugin);
+const Ce = /* @__PURE__ */ S(de, [["render", ve]]);
 
 
-
-/***/ }),
-
-/***/ "./node_modules/vue-select/dist/vue-select.js":
-/*!****************************************************!*\
-  !*** ./node_modules/vue-select/dist/vue-select.js ***!
-  \****************************************************/
-/***/ (function(module) {
-
-!function(t,e){ true?module.exports=e():0}("undefined"!=typeof self?self:this,(function(){return(()=>{var t={646:t=>{t.exports=function(t){if(Array.isArray(t)){for(var e=0,n=new Array(t.length);e<t.length;e++)n[e]=t[e];return n}}},713:t=>{t.exports=function(t,e,n){return e in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}},860:t=>{t.exports=function(t){if(Symbol.iterator in Object(t)||"[object Arguments]"===Object.prototype.toString.call(t))return Array.from(t)}},206:t=>{t.exports=function(){throw new TypeError("Invalid attempt to spread non-iterable instance")}},319:(t,e,n)=>{var o=n(646),i=n(860),s=n(206);t.exports=function(t){return o(t)||i(t)||s()}},8:t=>{function e(n){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?t.exports=e=function(t){return typeof t}:t.exports=e=function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},e(n)}t.exports=e}},e={};function n(o){var i=e[o];if(void 0!==i)return i.exports;var s=e[o]={exports:{}};return t[o](s,s.exports,n),s.exports}n.n=t=>{var e=t&&t.__esModule?()=>t.default:()=>t;return n.d(e,{a:e}),e},n.d=(t,e)=>{for(var o in e)n.o(e,o)&&!n.o(t,o)&&Object.defineProperty(t,o,{enumerable:!0,get:e[o]})},n.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),n.r=t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})};var o={};return(()=>{"use strict";n.r(o),n.d(o,{VueSelect:()=>m,default:()=>O,mixins:()=>_});var t=n(319),e=n.n(t),i=n(8),s=n.n(i),r=n(713),a=n.n(r);const l={props:{autoscroll:{type:Boolean,default:!0}},watch:{typeAheadPointer:function(){this.autoscroll&&this.maybeAdjustScroll()},open:function(t){var e=this;this.autoscroll&&t&&this.$nextTick((function(){return e.maybeAdjustScroll()}))}},methods:{maybeAdjustScroll:function(){var t,e=(null===(t=this.$refs.dropdownMenu)||void 0===t?void 0:t.children[this.typeAheadPointer])||!1;if(e){var n=this.getDropdownViewport(),o=e.getBoundingClientRect(),i=o.top,s=o.bottom,r=o.height;if(i<n.top)return this.$refs.dropdownMenu.scrollTop=e.offsetTop;if(s>n.bottom)return this.$refs.dropdownMenu.scrollTop=e.offsetTop-(n.height-r)}},getDropdownViewport:function(){return this.$refs.dropdownMenu?this.$refs.dropdownMenu.getBoundingClientRect():{height:0,top:0,bottom:0}}}},c={data:function(){return{typeAheadPointer:-1}},watch:{filteredOptions:function(){for(var t=0;t<this.filteredOptions.length;t++)if(this.selectable(this.filteredOptions[t])){this.typeAheadPointer=t;break}},open:function(t){t&&this.typeAheadToLastSelected()},selectedValue:function(){this.open&&this.typeAheadToLastSelected()}},methods:{typeAheadUp:function(){for(var t=this.typeAheadPointer-1;t>=0;t--)if(this.selectable(this.filteredOptions[t])){this.typeAheadPointer=t;break}},typeAheadDown:function(){for(var t=this.typeAheadPointer+1;t<this.filteredOptions.length;t++)if(this.selectable(this.filteredOptions[t])){this.typeAheadPointer=t;break}},typeAheadSelect:function(){var t=this.filteredOptions[this.typeAheadPointer];t&&this.selectable(t)&&this.select(t)},typeAheadToLastSelected:function(){this.typeAheadPointer=0!==this.selectedValue.length?this.filteredOptions.indexOf(this.selectedValue[this.selectedValue.length-1]):-1}}},u={props:{loading:{type:Boolean,default:!1}},data:function(){return{mutableLoading:!1}},watch:{search:function(){this.$emit("search",this.search,this.toggleLoading)},loading:function(t){this.mutableLoading=t}},methods:{toggleLoading:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;return this.mutableLoading=null==t?!this.mutableLoading:t}}};function p(t,e,n,o,i,s,r,a){var l,c="function"==typeof t?t.options:t;if(e&&(c.render=e,c.staticRenderFns=n,c._compiled=!0),o&&(c.functional=!0),s&&(c._scopeId="data-v-"+s),r?(l=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),i&&i.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(r)},c._ssrRegister=l):i&&(l=a?function(){i.call(this,(c.functional?this.parent:this).$root.$options.shadowRoot)}:i),l)if(c.functional){c._injectStyles=l;var u=c.render;c.render=function(t,e){return l.call(e),u(t,e)}}else{var p=c.beforeCreate;c.beforeCreate=p?[].concat(p,l):[l]}return{exports:t,options:c}}const h={Deselect:p({},(function(){var t=this.$createElement,e=this._self._c||t;return e("svg",{attrs:{xmlns:"http://www.w3.org/2000/svg",width:"10",height:"10"}},[e("path",{attrs:{d:"M6.895455 5l2.842897-2.842898c.348864-.348863.348864-.914488 0-1.263636L9.106534.261648c-.348864-.348864-.914489-.348864-1.263636 0L5 3.104545 2.157102.261648c-.348863-.348864-.914488-.348864-1.263636 0L.261648.893466c-.348864.348864-.348864.914489 0 1.263636L3.104545 5 .261648 7.842898c-.348864.348863-.348864.914488 0 1.263636l.631818.631818c.348864.348864.914773.348864 1.263636 0L5 6.895455l2.842898 2.842897c.348863.348864.914772.348864 1.263636 0l.631818-.631818c.348864-.348864.348864-.914489 0-1.263636L6.895455 5z"}})])}),[],!1,null,null,null).exports,OpenIndicator:p({},(function(){var t=this.$createElement,e=this._self._c||t;return e("svg",{attrs:{xmlns:"http://www.w3.org/2000/svg",width:"14",height:"10"}},[e("path",{attrs:{d:"M9.211364 7.59931l4.48338-4.867229c.407008-.441854.407008-1.158247 0-1.60046l-.73712-.80023c-.407008-.441854-1.066904-.441854-1.474243 0L7 5.198617 2.51662.33139c-.407008-.441853-1.066904-.441853-1.474243 0l-.737121.80023c-.407008.441854-.407008 1.158248 0 1.600461l4.48338 4.867228L7 10l2.211364-2.40069z"}})])}),[],!1,null,null,null).exports},d={inserted:function(t,e,n){var o=n.context;if(o.appendToBody){var i=o.$refs.toggle.getBoundingClientRect(),s=i.height,r=i.top,a=i.left,l=i.width,c=window.scrollX||window.pageXOffset,u=window.scrollY||window.pageYOffset;t.unbindPosition=o.calculatePosition(t,o,{width:l+"px",left:c+a+"px",top:u+r+s+"px"}),document.body.appendChild(t)}},unbind:function(t,e,n){n.context.appendToBody&&(t.unbindPosition&&"function"==typeof t.unbindPosition&&t.unbindPosition(),t.parentNode&&t.parentNode.removeChild(t))}};const f=function(t){var e={};return Object.keys(t).sort().forEach((function(n){e[n]=t[n]})),JSON.stringify(e)};var y=0;const b=function(){return++y};function g(t,e){var n=Object.keys(t);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(t);e&&(o=o.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),n.push.apply(n,o)}return n}function v(t){for(var e=1;e<arguments.length;e++){var n=null!=arguments[e]?arguments[e]:{};e%2?g(Object(n),!0).forEach((function(e){a()(t,e,n[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(n)):g(Object(n)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(n,e))}))}return t}const m=p({components:v({},h),directives:{appendToBody:d},mixins:[l,c,u],props:{value:{},components:{type:Object,default:function(){return{}}},options:{type:Array,default:function(){return[]}},disabled:{type:Boolean,default:!1},clearable:{type:Boolean,default:!0},deselectFromDropdown:{type:Boolean,default:!1},searchable:{type:Boolean,default:!0},multiple:{type:Boolean,default:!1},placeholder:{type:String,default:""},transition:{type:String,default:"vs__fade"},clearSearchOnSelect:{type:Boolean,default:!0},closeOnSelect:{type:Boolean,default:!0},label:{type:String,default:"label"},autocomplete:{type:String,default:"off"},reduce:{type:Function,default:function(t){return t}},selectable:{type:Function,default:function(t){return!0}},getOptionLabel:{type:Function,default:function(t){return"object"===s()(t)?t.hasOwnProperty(this.label)?t[this.label]:console.warn('[vue-select warn]: Label key "option.'.concat(this.label,'" does not')+" exist in options object ".concat(JSON.stringify(t),".\n")+"https://vue-select.org/api/props.html#getoptionlabel"):t}},getOptionKey:{type:Function,default:function(t){if("object"!==s()(t))return t;try{return t.hasOwnProperty("id")?t.id:f(t)}catch(e){return console.warn("[vue-select warn]: Could not stringify this option to generate unique key. Please provide'getOptionKey' prop to return a unique key for each option.\nhttps://vue-select.org/api/props.html#getoptionkey",t,e)}}},onTab:{type:Function,default:function(){this.selectOnTab&&!this.isComposing&&this.typeAheadSelect()}},taggable:{type:Boolean,default:!1},tabindex:{type:Number,default:null},pushTags:{type:Boolean,default:!1},filterable:{type:Boolean,default:!0},filterBy:{type:Function,default:function(t,e,n){return(e||"").toLocaleLowerCase().indexOf(n.toLocaleLowerCase())>-1}},filter:{type:Function,default:function(t,e){var n=this;return t.filter((function(t){var o=n.getOptionLabel(t);return"number"==typeof o&&(o=o.toString()),n.filterBy(t,o,e)}))}},createOption:{type:Function,default:function(t){return"object"===s()(this.optionList[0])?a()({},this.label,t):t}},resetOnOptionsChange:{default:!1,validator:function(t){return["function","boolean"].includes(s()(t))}},clearSearchOnBlur:{type:Function,default:function(t){var e=t.clearSearchOnSelect,n=t.multiple;return e&&!n}},noDrop:{type:Boolean,default:!1},inputId:{type:String},dir:{type:String,default:"auto"},selectOnTab:{type:Boolean,default:!1},selectOnKeyCodes:{type:Array,default:function(){return[13]}},searchInputQuerySelector:{type:String,default:"[type=search]"},mapKeydown:{type:Function,default:function(t,e){return t}},appendToBody:{type:Boolean,default:!1},calculatePosition:{type:Function,default:function(t,e,n){var o=n.width,i=n.top,s=n.left;t.style.top=i,t.style.left=s,t.style.width=o}},dropdownShouldOpen:{type:Function,default:function(t){var e=t.noDrop,n=t.open,o=t.mutableLoading;return!e&&(n&&!o)}},uid:{type:[String,Number],default:function(){return b()}}},data:function(){return{search:"",open:!1,isComposing:!1,pushedTags:[],_value:[]}},computed:{isTrackingValues:function(){return void 0===this.value||this.$options.propsData.hasOwnProperty("reduce")},selectedValue:function(){var t=this.value;return this.isTrackingValues&&(t=this.$data._value),null!=t&&""!==t?[].concat(t):[]},optionList:function(){return this.options.concat(this.pushTags?this.pushedTags:[])},searchEl:function(){return this.$scopedSlots.search?this.$refs.selectedOptions.querySelector(this.searchInputQuerySelector):this.$refs.search},scope:function(){var t=this,e={search:this.search,loading:this.loading,searching:this.searching,filteredOptions:this.filteredOptions};return{search:{attributes:v({disabled:this.disabled,placeholder:this.searchPlaceholder,tabindex:this.tabindex,readonly:!this.searchable,id:this.inputId,"aria-autocomplete":"list","aria-labelledby":"vs".concat(this.uid,"__combobox"),"aria-controls":"vs".concat(this.uid,"__listbox"),ref:"search",type:"search",autocomplete:this.autocomplete,value:this.search},this.dropdownOpen&&this.filteredOptions[this.typeAheadPointer]?{"aria-activedescendant":"vs".concat(this.uid,"__option-").concat(this.typeAheadPointer)}:{}),events:{compositionstart:function(){return t.isComposing=!0},compositionend:function(){return t.isComposing=!1},keydown:this.onSearchKeyDown,blur:this.onSearchBlur,focus:this.onSearchFocus,input:function(e){return t.search=e.target.value}}},spinner:{loading:this.mutableLoading},noOptions:{search:this.search,loading:this.mutableLoading,searching:this.searching},openIndicator:{attributes:{ref:"openIndicator",role:"presentation",class:"vs__open-indicator"}},listHeader:e,listFooter:e,header:v({},e,{deselect:this.deselect}),footer:v({},e,{deselect:this.deselect})}},childComponents:function(){return v({},h,{},this.components)},stateClasses:function(){return{"vs--open":this.dropdownOpen,"vs--single":!this.multiple,"vs--multiple":this.multiple,"vs--searching":this.searching&&!this.noDrop,"vs--searchable":this.searchable&&!this.noDrop,"vs--unsearchable":!this.searchable,"vs--loading":this.mutableLoading,"vs--disabled":this.disabled}},searching:function(){return!!this.search},dropdownOpen:function(){return this.dropdownShouldOpen(this)},searchPlaceholder:function(){return this.isValueEmpty&&this.placeholder?this.placeholder:void 0},filteredOptions:function(){var t=[].concat(this.optionList);if(!this.filterable&&!this.taggable)return t;var e=this.search.length?this.filter(t,this.search,this):t;if(this.taggable&&this.search.length){var n=this.createOption(this.search);this.optionExists(n)||e.unshift(n)}return e},isValueEmpty:function(){return 0===this.selectedValue.length},showClearButton:function(){return!this.multiple&&this.clearable&&!this.open&&!this.isValueEmpty}},watch:{options:function(t,e){var n=this;!this.taggable&&("function"==typeof n.resetOnOptionsChange?n.resetOnOptionsChange(t,e,n.selectedValue):n.resetOnOptionsChange)&&this.clearSelection(),this.value&&this.isTrackingValues&&this.setInternalValueFromOptions(this.value)},value:{immediate:!0,handler:function(t){this.isTrackingValues&&this.setInternalValueFromOptions(t)}},multiple:function(){this.clearSelection()},open:function(t){this.$emit(t?"open":"close")}},created:function(){this.mutableLoading=this.loading,this.$on("option:created",this.pushTag)},methods:{setInternalValueFromOptions:function(t){var e=this;Array.isArray(t)?this.$data._value=t.map((function(t){return e.findOptionFromReducedValue(t)})):this.$data._value=this.findOptionFromReducedValue(t)},select:function(t){this.$emit("option:selecting",t),this.isOptionSelected(t)?this.deselectFromDropdown&&(this.clearable||this.multiple&&this.selectedValue.length>1)&&this.deselect(t):(this.taggable&&!this.optionExists(t)&&this.$emit("option:created",t),this.multiple&&(t=this.selectedValue.concat(t)),this.updateValue(t),this.$emit("option:selected",t)),this.onAfterSelect(t)},deselect:function(t){var e=this;this.$emit("option:deselecting",t),this.updateValue(this.selectedValue.filter((function(n){return!e.optionComparator(n,t)}))),this.$emit("option:deselected",t)},clearSelection:function(){this.updateValue(this.multiple?[]:null)},onAfterSelect:function(t){var e=this;this.closeOnSelect&&(this.open=!this.open,this.searchEl.blur()),this.clearSearchOnSelect&&(this.search=""),this.noDrop&&this.multiple&&this.$nextTick((function(){return e.$refs.search.focus()}))},updateValue:function(t){var e=this;void 0===this.value&&(this.$data._value=t),null!==t&&(t=Array.isArray(t)?t.map((function(t){return e.reduce(t)})):this.reduce(t)),this.$emit("input",t)},toggleDropdown:function(t){var n=t.target!==this.searchEl;n&&t.preventDefault();var o=[].concat(e()(this.$refs.deselectButtons||[]),e()([this.$refs.clearButton]||0));void 0===this.searchEl||o.filter(Boolean).some((function(e){return e.contains(t.target)||e===t.target}))?t.preventDefault():this.open&&n?this.searchEl.blur():this.disabled||(this.open=!0,this.searchEl.focus())},isOptionSelected:function(t){var e=this;return this.selectedValue.some((function(n){return e.optionComparator(n,t)}))},isOptionDeselectable:function(t){return this.isOptionSelected(t)&&this.deselectFromDropdown},optionComparator:function(t,e){return this.getOptionKey(t)===this.getOptionKey(e)},findOptionFromReducedValue:function(t){var n=this,o=[].concat(e()(this.options),e()(this.pushedTags)).filter((function(e){return JSON.stringify(n.reduce(e))===JSON.stringify(t)}));return 1===o.length?o[0]:o.find((function(t){return n.optionComparator(t,n.$data._value)}))||t},closeSearchOptions:function(){this.open=!1,this.$emit("search:blur")},maybeDeleteValue:function(){if(!this.searchEl.value.length&&this.selectedValue&&this.selectedValue.length&&this.clearable){var t=null;this.multiple&&(t=e()(this.selectedValue.slice(0,this.selectedValue.length-1))),this.updateValue(t)}},optionExists:function(t){var e=this;return this.optionList.some((function(n){return e.optionComparator(n,t)}))},normalizeOptionForSlot:function(t){return"object"===s()(t)?t:a()({},this.label,t)},pushTag:function(t){this.pushedTags.push(t)},onEscape:function(){this.search.length?this.search="":this.searchEl.blur()},onSearchBlur:function(){if(!this.mousedown||this.searching){var t=this.clearSearchOnSelect,e=this.multiple;return this.clearSearchOnBlur({clearSearchOnSelect:t,multiple:e})&&(this.search=""),void this.closeSearchOptions()}this.mousedown=!1,0!==this.search.length||0!==this.options.length||this.closeSearchOptions()},onSearchFocus:function(){this.open=!0,this.$emit("search:focus")},onMousedown:function(){this.mousedown=!0},onMouseUp:function(){this.mousedown=!1},onSearchKeyDown:function(t){var e=this,n=function(t){return t.preventDefault(),!e.isComposing&&e.typeAheadSelect()},o={8:function(t){return e.maybeDeleteValue()},9:function(t){return e.onTab()},27:function(t){return e.onEscape()},38:function(t){return t.preventDefault(),e.typeAheadUp()},40:function(t){return t.preventDefault(),e.typeAheadDown()}};this.selectOnKeyCodes.forEach((function(t){return o[t]=n}));var i=this.mapKeydown(o,this);if("function"==typeof i[t.keyCode])return i[t.keyCode](t)}}},(function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"v-select",class:t.stateClasses,attrs:{dir:t.dir}},[t._t("header",null,null,t.scope.header),t._v(" "),n("div",{ref:"toggle",staticClass:"vs__dropdown-toggle",attrs:{id:"vs"+t.uid+"__combobox",role:"combobox","aria-expanded":t.dropdownOpen.toString(),"aria-owns":"vs"+t.uid+"__listbox","aria-label":"Search for option"},on:{mousedown:function(e){return t.toggleDropdown(e)}}},[n("div",{ref:"selectedOptions",staticClass:"vs__selected-options"},[t._l(t.selectedValue,(function(e){return t._t("selected-option-container",[n("span",{key:t.getOptionKey(e),staticClass:"vs__selected"},[t._t("selected-option",[t._v("\n            "+t._s(t.getOptionLabel(e))+"\n          ")],null,t.normalizeOptionForSlot(e)),t._v(" "),t.multiple?n("button",{ref:"deselectButtons",refInFor:!0,staticClass:"vs__deselect",attrs:{disabled:t.disabled,type:"button",title:"Deselect "+t.getOptionLabel(e),"aria-label":"Deselect "+t.getOptionLabel(e)},on:{click:function(n){return t.deselect(e)}}},[n(t.childComponents.Deselect,{tag:"component"})],1):t._e()],2)],{option:t.normalizeOptionForSlot(e),deselect:t.deselect,multiple:t.multiple,disabled:t.disabled})})),t._v(" "),t._t("search",[n("input",t._g(t._b({staticClass:"vs__search"},"input",t.scope.search.attributes,!1),t.scope.search.events))],null,t.scope.search)],2),t._v(" "),n("div",{ref:"actions",staticClass:"vs__actions"},[n("button",{directives:[{name:"show",rawName:"v-show",value:t.showClearButton,expression:"showClearButton"}],ref:"clearButton",staticClass:"vs__clear",attrs:{disabled:t.disabled,type:"button",title:"Clear Selected","aria-label":"Clear Selected"},on:{click:t.clearSelection}},[n(t.childComponents.Deselect,{tag:"component"})],1),t._v(" "),t._t("open-indicator",[t.noDrop?t._e():n(t.childComponents.OpenIndicator,t._b({tag:"component"},"component",t.scope.openIndicator.attributes,!1))],null,t.scope.openIndicator),t._v(" "),t._t("spinner",[n("div",{directives:[{name:"show",rawName:"v-show",value:t.mutableLoading,expression:"mutableLoading"}],staticClass:"vs__spinner"},[t._v("Loading...")])],null,t.scope.spinner)],2)]),t._v(" "),n("transition",{attrs:{name:t.transition}},[t.dropdownOpen?n("ul",{directives:[{name:"append-to-body",rawName:"v-append-to-body"}],key:"vs"+t.uid+"__listbox",ref:"dropdownMenu",staticClass:"vs__dropdown-menu",attrs:{id:"vs"+t.uid+"__listbox",role:"listbox",tabindex:"-1"},on:{mousedown:function(e){return e.preventDefault(),t.onMousedown(e)},mouseup:t.onMouseUp}},[t._t("list-header",null,null,t.scope.listHeader),t._v(" "),t._l(t.filteredOptions,(function(e,o){return n("li",{key:t.getOptionKey(e),staticClass:"vs__dropdown-option",class:{"vs__dropdown-option--deselect":t.isOptionDeselectable(e)&&o===t.typeAheadPointer,"vs__dropdown-option--selected":t.isOptionSelected(e),"vs__dropdown-option--highlight":o===t.typeAheadPointer,"vs__dropdown-option--disabled":!t.selectable(e)},attrs:{id:"vs"+t.uid+"__option-"+o,role:"option","aria-selected":o===t.typeAheadPointer||null},on:{mouseover:function(n){t.selectable(e)&&(t.typeAheadPointer=o)},click:function(n){n.preventDefault(),n.stopPropagation(),t.selectable(e)&&t.select(e)}}},[t._t("option",[t._v("\n          "+t._s(t.getOptionLabel(e))+"\n        ")],null,t.normalizeOptionForSlot(e))],2)})),t._v(" "),0===t.filteredOptions.length?n("li",{staticClass:"vs__no-options"},[t._t("no-options",[t._v("\n          Sorry, no matching options.\n        ")],null,t.scope.noOptions)],2):t._e(),t._v(" "),t._t("list-footer",null,null,t.scope.listFooter)],2):n("ul",{staticStyle:{display:"none",visibility:"hidden"},attrs:{id:"vs"+t.uid+"__listbox",role:"listbox"}})]),t._v(" "),t._t("footer",null,null,t.scope.footer)],2)}),[],!1,null,null,null).exports,_={ajax:u,pointer:c,pointerScroll:l},O=m})(),o})()}));
-//# sourceMappingURL=vue-select.js.map
 
 /***/ }),
 
@@ -20511,16 +25487,6 @@ function compileToFunction(template, options) {
 
 
 
-/***/ }),
-
-/***/ "?3cb3":
-/*!*********************!*\
-  !*** got (ignored) ***!
-  \*********************/
-/***/ (() => {
-
-/* (ignored) */
-
 /***/ })
 
 /******/ 	});
@@ -20543,7 +25509,7 @@ function compileToFunction(template, options) {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -20618,9 +25584,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 /* harmony import */ var _components_EventForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/EventForm */ "./resources/assets/js/components/EventForm.vue");
-/* harmony import */ var vue_resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-resource */ "./node_modules/vue-resource/dist/vue-resource.esm.js");
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
-/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 // var Vue = require('vue');
 // window.Vue = Vue
 //
@@ -20653,11 +25618,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// Remember the token we created in the <head> tags? Get it here.
+var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+(axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-CSRF-TOKEN"]) = CSRFToken;
 var app = (0,vue__WEBPACK_IMPORTED_MODULE_0__.createApp)({
   components: {
     EventForm: _components_EventForm__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
+app.config.globalProperties.$http = (axios__WEBPACK_IMPORTED_MODULE_2___default());
 app.mount('#vue-event-form');
 })();
 
