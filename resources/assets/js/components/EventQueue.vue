@@ -6,12 +6,12 @@
           <div class="form-group">
             <label>Showing events starting <span v-if="isEndDate">between</span><span
                 v-else>on or after</span>
-              <date-picker v-if="startdate" v-model="startdate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>
+<!--              <date-picker v-if="startdate" v-model="startdate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>-->
             </label>
           </div>
           <div v-if="isEndDate" class="form-group">
             <label> and
-              <date-picker v-if="enddate" v-model="enddate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>
+<!--              <date-picker v-if="enddate" v-model="enddate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>-->
             </label>
           </div>
           <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
@@ -115,12 +115,15 @@
 <script>
 import moment from 'moment';
 import EventQueueItem from './EventQueueItem.vue'
-import DatePicker from 'vue2-datepicker'
+// import DatePicker from 'vue2-datepicker'
 import "vue-select/dist/vue-select.css"
-import 'vue2-datepicker/index.css'
+// import 'vue2-datepicker/index.css'
 
 export default {
-  components: { EventQueueItem, DatePicker },
+  components: {
+    EventQueueItem,
+    // DatePicker
+  },
   props: ['annrecords', 'role'],
   data: function () {
     return {
@@ -201,8 +204,8 @@ export default {
         this.allitems = response.data.data
         // this.checkOverDataFilter()
         this.loading = false
-      }, (response) => {
-      }).bind(this);
+      }).catch(() => {
+      })
 
       this.fetchElevatedRecords(); //get elevated records regardless of date
     },
@@ -219,8 +222,8 @@ export default {
       .then((response) => {
         this.elevateditems = response.data.data
         this.loading = false;
-      }, (response) => {
-      }).bind(this);
+      }).catch((response) => {
+      })
     },
 
     filterItemsApproved: function (items) {
@@ -326,11 +329,11 @@ export default {
         this.$set('elevateditems', response.data.data)
         this.ordersave.isOk = true
         this.ordersave.msg = "Order was updated"
-      }, (response) => {
+      }).catch(() => {
         //error callback
         this.ordersave.isErr = true
         this.ordersave.msg = "Order was not updated"
-      }).bind(this);
+      })
 
       this.elevateditemschanged = false;
     },

@@ -853,9 +853,11 @@ textarea {
 </style>
 
 <script>
-// import flatpickr from "flatpickr"
+import flatpickr from "flatpickr"
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
+// import flatPickr from 'vue-flatpickr-component'
+// import 'flatpickr/dist/flatpickr.css'
 
 export default {
   directives: {},
@@ -954,7 +956,7 @@ export default {
       let fetchme = this.recordid ? this.recordid : this.record.id;
       this.fetchCurrentRecord(fetchme)
     }
-    // this.setupDatePickers();
+    this.setupDatePickers();
     this.fetchMiniCalsList();
     this.fetchForSelectBuildingList("");
     this.fetchForSelectCategoriesList("");
@@ -1405,25 +1407,27 @@ export default {
       let route = (!this.record.id || doClone === true) ? '/api/event' : '/api/event/' + this.record.id;
 
       this.$http[method](route, this.record)
-
-          .then((response) => {
-            response.status;
-            this.formMessage.msg = response.data.message;
-            this.formMessage.isOk = response.ok;
-            this.formMessage.isErr = false;
-            this.currentRecordId = response.data.newdata.record_id;
-            this.record_id = response.data.newdata.record_id;
-            this.record.id = response.data.newdata.record_id;
-            this.record.exists = true;
-            this.formErrors = {};
+        .then((response) => {
+          response.status;
+          this.formMessage.msg = response.data.message;
+          this.formMessage.isOk = true;
+          this.formMessage.isErr = false;
+          this.currentRecordId = response.data.newdata.record_id;
+          this.record_id = response.data.newdata.record_id;
+          this.record.id = response.data.newdata.record_id;
+          this.record.exists = true;
+          this.formErrors = {};
+          setTimeout(() => {
             this.refreshUserEventTable();
             this.fetchCurrentRecord(this.currentRecordId)
-          }, (response) => {
-            this.formMessage.isOk = false;
-            this.formMessage.isErr = true;
-            //error callback
-            this.formErrors = response.data.error.message;
-          })
+          }, 3000)
+        })
+        .catch((e) => {
+          this.formMessage.isOk = false;
+          this.formMessage.isErr = true;
+          //error callback
+          this.formErrors = e.response.data.error.message;
+        })
     },
     convertToSlug: function (value) {
       return value.toLowerCase()
