@@ -44,7 +44,7 @@
         "font-awesome": "^4.7.0",
         "lodash": "^4.17.15",
         "macaddress": "^0.2.9",
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "popper.js": "^1.16.0",
         "postcss-filter-plugins": "^3.0.1",
         "postcss-loader": "^3.0.0",
