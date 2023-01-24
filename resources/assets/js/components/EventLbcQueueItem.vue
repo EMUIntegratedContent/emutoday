@@ -1,14 +1,10 @@
 <template>
-
-  <!-- <div class="box box-default box-solid"> -->
   <div :class="specialItem">
-
     <div :class="liveTimeStatusClass" class="box box-solid">
-
       <div class="box-header with-border">
         <div class="row">
           <div class="col-sm 12 col-md-4">
-            <div class="box-date-top pull-left">{{item.start_date | titleDateLong}}</div>
+            <div class="box-date-top pull-left">{{ titleDateLong(item.start_date) }}</div>
           </div><!-- /.col-sm-6 -->
           <!-- REVIEWED switch -->
           <div class="col-sm 12 col-md-4">
@@ -18,8 +14,9 @@
               </div><!-- /.form-group -->
               <div class="form-group">
                 <vui-flip-switch :id="'switch-'+item.id"
-                v-on:click.prevent="changeIsReviewed"
-                :value.sync="patchRecord.lbc_reviewed" >
+                                 @input="changeIsReviewed"
+                                 v-model:checked="patchRecord.lbc_reviewed"
+                >
                 </vui-flip-switch>
               </div>
             </form>
@@ -33,8 +30,9 @@
               </div><!-- /.form-group -->
               <div class="form-group">
                 <vui-flip-switch :id="'switch-'+item.id"
-                v-on:click.prevent="changeIsApproved"
-                :value.sync="patchRecord.lbc_approved" >
+                                 @input="changeIsReviewed"
+                                 v-model:checked="patchRecord.lbc_approved"
+                >
                 </vui-flip-switch>
               </div>
             </form>
@@ -51,22 +49,17 @@
     </div>  <!-- /.box-header -->
 
     <div v-if="showBody" class="box-body">
-      <p>From: {{item.start_date | momentPretty}}, {{item.start_time}} To: {{item.end_date | momentPretty}}, {{item.end_time}}</p>
+      <p>From: {{ momentPretty(item.start_date) }}, {{item.start_time}} To: {{ momentPretty(item.end_date) }}, {{item.end_time}}</p>
       <template v-if="item.all_day">
         <p>All Day Event</p>
       </template>
       <hr/>
       <div class="item-info">
         <p>Title: {{item.title}}</p>
-        <p v-if="item.short_title">Short-title: {{item.shor_title}}</p>
+        <p v-if="item.short_title">Short-title: {{item.short_title}}</p>
         <p>Description: {{item.description}}</p>
-        <template v-if="isOnCampus">
-          <p>Location: <a :href="'http://emich.edu/maps/?building='+item.building" target="_blank">{{item.location}}</a></p>
-        </template>
         <hr/>
-        <template v-else>
-          <p>Location: {{item.location}}</p>
-        </template>
+        <p>Location: {{item.location}}</p>
         <template v-if="item.contact_person || item.contact_person || item.contact_person">
           <p>Contact:</p>
           <ul>
@@ -79,14 +72,14 @@
           <p>For more information, visit:</p>
           <ul>
             <li><a :href="item.related_link_1 | hasHttp" target="_blank">
-              <template v-if="item.related_link_1_txt">{{item.related_link_1_txt}}</template>
+              <template v-if="item.related_link_1_txt">{{hasHttp(item.related_link_1_txt)}}</template>
               <template v-else>{{item.related_link_1}}</template>
             </a></li>
-            <li v-if="item.related_link_2"><a :href="item.related_link_2 | hasHttp" target="_blank">
+            <li v-if="item.related_link_2"><a :href="hasHttp(item.related_link_2)" target="_blank">
               <template v-if="item.related_link_2_txt">{{item.related_link_2_txt}}</template>
               <template v-else>{{item.related_link_2}}</template>
             </a></li>
-            <li v-if="item.related_link_3"><a :href="item.related_link_3 | hasHttp" target="_blank">
+            <li v-if="item.related_link_3"><a :href="hasHttp(tem.related_link_3)" target="_blank">
               <template v-if="item.related_link_3_txt">{{item.related_link_3_txt}}</template>
               <template v-else>{{item.related_link_3}}</template>
             </a></li>
@@ -94,39 +87,29 @@
         </template>
         <hr/>
         <p v-if="item.free">Cost: Free</p>
-        <p v-else>Cost: {{item.cost | currency }}</p>
-        <p>Participation: {{eventParticipation}}</p>
+        <p v-else>Cost: {{item.cost}}</p>
         <template v-if="item.tickets">
-          <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="item.ticket_details_online | hasHttp">{{item.ticket_details_online}}</a></p>
+          <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="hasHttp(item.ticket_details_online)">{{item.ticket_details_online}}</a></p>
           <p v-if="item.ticket_details_phone">For Tickets Call: {{item.ticket_details_phone}}</p>
           <p v-if="item.ticket_details_office">For Tickets Office: {{item.ticket_details_office}}</p>
           <p v-if="item.ticket_details_other">Or: {{item.ticket_details_other}}</p>
         </template>
         <hr/>
         <p>Submitted by: {{item.submitter}}</p>
-        <p>LBC Approved: {{item.lbc_approved | yesNo }}</p>
-        <p>LBC Reviewed: {{item.lbc_reviewed | yesNo }}</p>
+        <p>LBC Approved: {{ yesNo(item.lbc_approved) }}</p>
+        <p>LBC Reviewed: {{ yesNo(item.lbc_reviewed) }}</p>
       </div>
     </div><!-- /.box-body -->
-
 
     <div :class="addSeperator" class="box-footer list-footer">
       <div class="row">
         <div class="col-sm-12 col-md-9">
-          <!-- <span>Start {{item.start_date_time}}</span> <span>End {{item.end_date_time}}</span> -->
-
           <span v-if="itemCurrent" :class="timeFromNowStatus">Live {{timefromNow}}</span> <span :class="timeLeftStatus">{{timeLeft}}</span>
-
-
-
         </div><!-- /.col-md-7 -->
         <div class="col-sm-12 col-md-3">
           {{item.id}}
           <div class="btn-group pull-right">
-
-            <!-- <button v-on:click.prevent="previewItem" class="btn bg-orange btn-xs footer-btn"><i class="fa fa-eye"></i></button> -->
           </div><!-- /.btn-toolbar -->
-
         </div><!-- /.col-md-7 -->
       </div><!-- /.row -->
     </div><!-- /.box-footer -->
@@ -253,8 +236,10 @@ padding: 3px 6px;
 <script>
 import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
-module.exports  = {
-  components: {VuiFlipSwitch},
+export default {
+  components: {
+    VuiFlipSwitch
+  },
   props: ['item','pid','index'],
   data: function() {
     return {
@@ -294,12 +279,7 @@ module.exports  = {
       }
     }
   },
-  created: function () {
-    // this.lbc_approved = this.item.approved;
-    // this.currentDate = moment();
-    // console.log('this.currentDate=' + this.currentDate)
-  },
-  ready: function() {
+  created: function() {
     this.initRecord.lbc_approved = this.patchRecord.lbc_approved = this.item.lbc_approved;
     this.initRecord.lbc_reviewed = this.patchRecord.lbc_reviewed = this.item.lbc_reviewed;
   },
@@ -311,14 +291,6 @@ module.exports  = {
       }
       return asclass;
     },
-    // hasIsApprovedChanged: function(){
-    //   if (this.initRecord.lbc_approved != this.patchRecord.lbc_approved){
-    //     console.log('lbc_approved => initRecord='+ this.initRecord.lbc_approved  + ' patchRecord=>' +this.patchRecord.lbc_approved );
-    //     return true
-    //   } else {
-    //     return false
-    //   }
-    // },
     timeLeftStatus: function(){
       let diff = this.timeDiffNow(this.item.end_date_time)
       if(diff <= 0){
@@ -328,10 +300,7 @@ module.exports  = {
       } else {
         return 'time-is-long'
       }
-
-
     },
-
     timeFromNowStatus: function(){
       let diff = this.timeDiffNow(this.item.start_date_time)
       if(diff <= 0){
@@ -346,10 +315,8 @@ module.exports  = {
       return moment(this.item.start_date_time).fromNow()
     },
     timeLeft: function() {
-
       if(moment(this.item.start_date_time).isSameOrBefore(moment())){
         let tlft = this.timeDiffNow(this.item.end_date_time);
-        console.log('id='+ this.item.id + ' timeLeft'+tlft)
         if (tlft < 0) {
           this.itemCurrent = 0;
           return 'Event Ended ' + moment(this.item.end_date_time).fromNow()
@@ -357,12 +324,9 @@ module.exports  = {
           this.itemCurrent = 1;
           return  ' and Ends ' + moment(this.item.end_date_time).fromNow()
         }
-
       }  else {
         return ''
       }
-
-
     },
     specialItem: function(){
       let extrasep;
@@ -389,22 +353,14 @@ module.exports  = {
           timepartstatus = 'event-negative';
         } else {
           timepartstatus = 'event-positive';
-
         }
-
       }
-
       return timepartstatus;
-
-
     },
     itemStatus : function() {
       let sclass = 'box-default';
-
-      // console.log('pid' + this.pid + ' index='+ this.index);
       if (this.pid == 'items-live'){
         if(this.index < 4){
-          console.log('topitems');
           sclass = 'topitems';
         }
       }
@@ -418,18 +374,9 @@ module.exports  = {
     },
     itemPreviewPath: function(){
       return '/preview/event/'+ this.item.id
-    },
-
-
-
+    }
   },
   methods:{
-    // We will call this event each time the file upload input changes. This will push the data to our data property above so we can use the data on form submission.
-    // onFileChange(event) {
-    //     var files = this.$els.eventimg.files;
-    //     console.log("onFileChange" + files + "firstFile="+ files[0].name);
-    //     this.formInputs.attachment = event.target.file;
-    // },
     // Handle the form submission here
     timeDiffNow:function(val){
       return  moment(val).diff(moment(), 'minutes');
@@ -442,26 +389,20 @@ module.exports  = {
     changeIsApproved: function(){
       this.patchRecord.lbc_reviewed = 1;
       this.patchRecord.lbc_approved = (this.item.lbc_approved === 0)?1:0;
-      console.log('this.patchRecord.lbc_approved ='+this.patchRecord.lbc_approved );
       this.updateItem();
     },
     updateItem: function(){
-      //    this.patchRecord.lbc_approved = this.item.lbc_approved;
       this.$http.patch('/api/event/updateitem/' + this.item.id , this.patchRecord , {
         method: 'PATCH'
       } )
       .then((response) => {
-        console.log('good?:: '+ JSON.stringify(response))
         this.checkAfterUpdate(response.data.newdata)
-
       }, (response) => {
-        console.log('bad?'+ response)
       });
     },
     checkAfterUpdate: function(ndata){
       this.item.lbc_approved = this.initRecord.lbc_approved = ndata.lbc_approved;
       this.item.lbc_reviewed = this.initRecord.lbc_reviewed = ndata.lbc_reviewed;
-      console.log(ndata);
     },
     togglePanel: function(ev) {
       if(this.showPanel === false) {
@@ -469,7 +410,6 @@ module.exports  = {
       } else {
         this.showPanel = false;
       }
-      console.log('this.showPanel' + this.showPanel)
     },
     toggleBody: function(ev) {
       if(this.showBody == false) {
@@ -477,31 +417,7 @@ module.exports  = {
       } else {
         this.showBody = false;
       }
-      console.log('toggleBody' + this.showBody)
     },
-    doThis: function(ev) {
-      this.item.lbc_approved = (this.lbc_approved === 0)?1:0;
-      this.$emit('item-change',this.item);
-    },
-    // addMediaFile: function(ev) {
-    //     var formData = new FormData();
-    //     formData.append('image', fileInput ,this.$els.finput.files[0]);
-    //
-    //     // var fileinputObject = this.$els.finput;
-    //     // console.log('fileinputObject.name= '+ fileinputObject.name)
-    //     // console.log('fileinputObject.value= '+ fileinputObject.value)
-    //     // console.log('fileinputObject.files= '+ fileinputObject.files[0])
-    //     console.log('ev ' + ev + 'this.item.id= '+  this.item)
-    // }
-
-  },
-  watch: {
-  },
-  directives: {
-    // mydatedropper: require('../directives/mydatedropper.js')
-    // dtpicker: require('../directives/dtpicker.js')
-  },
-  filters: {
     yesNo: function(value) {
       return (value == true) ? 'Yes' : 'No';
     },
@@ -517,33 +433,18 @@ module.exports  = {
     hasHttp: function(value) { // Checks if links given 'http'
       return (value.substr(0, 4)) == 'http' ? value : 'https://'+value;
     },
-    momentPretty: {
-      read: function(val) {
-        console.log('read-val'+ val )
-
-        return val ?  moment(val).format('ddd, MM-DD-YYYY') : '';
-      },
-      write: function(val, oldVal) {
-        console.log('write-val'+ val + '--'+ oldVal)
-
-        return moment(val).format('YYYY-MM-DD');
-      }
+    momentPretty: function(value) {
+      return moment(value).format('ddd, MM-DD-YYYY')
     }
   },
-  events: {
+  watch: {
+    'patchRecord.lbc_reviewed' () {
 
-    // 'building-change':function(name) {
-    // 	this.newbuilding = '';
-    // 	this.newbuilding = name;
-    // 	console.log(this.newbuilding);
-    // },
-    // 'categories-change':function(list) {
-    // 	this.categories = '';
-    // 	this.categories = list;
-    // 	console.log(this.categories);
-    // }
+    }
   }
 };
 
 
 </script>
+
+<style src="@vueform/toggle/themes/default.css"></style>

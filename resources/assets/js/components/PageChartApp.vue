@@ -99,8 +99,6 @@ export default  {
                console.log("ERRORS");
            }).bind(this);
        },
-       checkOverDataFilter:function() {
-       },
        formatReturn: function (items) {
          var itemsArray = [];
          for (item in items) {

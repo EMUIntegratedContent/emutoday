@@ -79,6 +79,8 @@ mix.combine([
 // mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js');
 mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').vue();
 mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js').vue();
+mix.js('resources/assets/js/vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js').vue();
+mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue();
 // mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js');
 // mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js');
 // mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js');

@@ -1,5 +1,7 @@
 {
     "/js/vue-event-form.js": "/js/vue-event-form.js",
     "/js/vue-event-queue.js": "/js/vue-event-queue.js",
+    "/js/vue-event-lbcqueue.js": "/js/vue-event-lbcqueue.js",
+    "/js/vue-event-hscqueue.js": "/js/vue-event-hscqueue.js",
     "/css/public-styles.css": "/css/public-styles.css"
 }

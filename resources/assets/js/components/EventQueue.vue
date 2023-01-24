@@ -6,11 +6,29 @@
           <div class="form-group">
             <label>Showing events starting <span v-if="isEndDate">between</span><span
                 v-else>on or after</span>
+              <flatpickr
+                  v-if="startdate"
+                  v-model="startdate"
+                  id="startDatePicker"
+                  :config="flatpickrConfig"
+                  class="form-control"
+                  name="startingDate"
+              >
+              </flatpickr>
 <!--              <date-picker v-if="startdate" v-model="startdate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>-->
             </label>
           </div>
           <div v-if="isEndDate" class="form-group">
             <label> and
+              <flatpickr
+                  v-if="enddate"
+                  v-model="enddate"
+                  id="endDatePicker"
+                  :config="flatpickrConfig"
+                  class="form-control"
+                  name="endingDate"
+              >
+              </flatpickr>
 <!--              <date-picker v-if="enddate" v-model="enddate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>-->
             </label>
           </div>
@@ -118,11 +136,14 @@ import EventQueueItem from './EventQueueItem.vue'
 // import DatePicker from 'vue2-datepicker'
 import "vue-select/dist/vue-select.css"
 // import 'vue2-datepicker/index.css'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 export default {
   components: {
     EventQueueItem,
     // DatePicker
+    flatpickr
   },
   props: ['annrecords', 'role'],
   data: function () {
@@ -148,6 +169,11 @@ export default {
         msg: '',
       },
       textFilter: '',
+      flatpickrConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+      }
     }
   },
   created () {
