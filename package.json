@@ -51,6 +51,7 @@
         "postcss-loader": "^7.0.2",
         "raw-loader": "^0.5.1",
         "sortablejs": "^1.15.0",
+        "sortablejs-vue3": "^1.2.6",
         "uniqid": "^5.4.0",
         "vue-charts": "^0.2.1",
         "vue-flatpickr-component": "^11.0.1",

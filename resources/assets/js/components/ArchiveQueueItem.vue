@@ -271,7 +271,7 @@ h5 {
 <script>
 import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
-module.exports = {
+export default {
     components: {
         VuiFlipSwitch
     },
@@ -290,12 +290,6 @@ module.exports = {
             isFailedUnarchived: false,
             confirmDelete: false,
         }
-    },
-    created: function() {
-
-    },
-    ready: function() {
-
     },
     computed: {
         unarchivedStatus: function() {
@@ -378,17 +372,6 @@ module.exports = {
         formatDate: function(date) {
             return moment(date).format("MM/DD/YYYY")
         }
-    },
-    watch: {
-
-    },
-    directives: {},
-
-    filters: {
-
-    },
-    events: {
-
     }
-};
+}
 </script>

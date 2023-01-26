@@ -4,7 +4,7 @@
       <div class="box-header with-border" >
         <div class="row">
           <div class="col-sm 12 col-md-4">
-            <div class="box-date-top pull-left">{{item.start_date | titleDateLong}}</div>
+            <div class="box-date-top pull-left">{{ titleDateLong(item.start_date) }}</div>
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
@@ -21,9 +21,10 @@
                   <label>  approved:</label>
                 </div><!-- /.form-group -->
                 <div class="form-group">
-                  <vui-flip-switch id="switch-{{item.id}}"
-                  v-on:click.prevent="changeIsApproved"
-                  :value.sync="patchRecord.is_approved" >
+                  <vui-flip-switch :id="'switch-'+item.id"
+                                   @input="changeIsApproved"
+                                   v-model:checked="patchRecord.is_approved"
+                  >
                   </vui-flip-switch>
                 </div>
               </template>
@@ -45,8 +46,8 @@
     <div v-if="showBody" class="box-body">
       <p>{{item.announcement}}</p>
       <div class="announcement-info">
-        Submitted On: {{item.submission_date}}</br>
-        By: {{item.submitter}}</br>
+        Submitted On: {{item.submission_date}}<br>
+        By: {{item.submitter}}<br>
         Dates: {{item.start_date}} - {{item.end_date}}
       </div>
     </div><!-- /.box-body -->
@@ -197,7 +198,7 @@ h5 {
 import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
-module.exports  = {
+export default{
   directives: {},
   components: {VuiFlipSwitch},
   props: ['item','pid','index','elevatedAnnouncements','atype'],
@@ -225,8 +226,7 @@ module.exports  = {
       },
     }
   },
-  created: function () {},
-  ready: function() {
+  created () {
     this.initRecord.is_approved = this.patchRecord.is_approved =  this.item.is_approved;
     this.initRecord.priority = this.patchRecord.priority = this.item.priority;
     this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
@@ -448,24 +448,14 @@ module.exports  = {
           this.emitSpecialAnnouncementRemove(announcementObj)
         }
       }
-
     },
-
-  },
-  filters: {
     titleDateLong: function (value) {
       return  moment(value).format("ddd MM/DD")
     },
-    momentPretty: {
-      read: function(val) {
-        return 	val ?  moment(val).format('MM-DD-YYYY') : '';
-      },
-      write: function(val, oldVal) {
-        return moment(val).format('YYYY-MM-DD');
-      }
+    momentPretty: function(value) {
+      return moment(value).format('ddd, MM-DD-YYYY')
     }
   }
-
 };
 
 
