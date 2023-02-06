@@ -78,6 +78,8 @@
             :index="i"
             :key="'unapproved-list-'+i"
             :atype="atype"
+            @special-announcement-added="specialAnnouncementAdded"
+            @special-announcement-removed="specialAnnouncementRemoved"
         >
         </announcement-queue-item>
       </div>
@@ -92,6 +94,8 @@
             :item="item"
             :key="'approved-list-'+i"
             :atype="atype"
+            @special-announcement-added="specialAnnouncementAdded"
+            @special-announcement-removed="specialAnnouncementRemoved"
         >
         </announcement-queue-item>
       </div>
@@ -120,42 +124,31 @@
             </div>
           </template>
           <template v-if="elevateditems.length > 0">
-<!--            <Sortable-->
-<!--                :list="elevateditems"-->
-<!--                item-key="id"-->
-<!--                tag="div"-->
-<!--                :options="options"-->
-<!--            >-->
-<!--              <&#45;&#45; The Header and Footer templates below are optional &ndash;&gt;-->
-<!--              <template #header>-->
-<!--                <header>-->
-<!--                  <h1>SortableJS Vue3 Demo</h1>-->
-<!--                </header>-->
-<!--              </template>-->
-<!--              <template #item="{element, index}">-->
-<!--                <div class="draggable" :key="element.id">-->
-<!--                  {{ element.name }}-->
-<!--                </div>-->
-<!--              </template>-->
-<!--              <template #footer>-->
-<!--                <footer class="draggable">A footer</footer>-->
-<!--              </template>-->
-<!--            </Sortable>-->
-
-
-
-<!--            <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">-->
-<!--              <li v-for="(item, i) in elevateditems" class="list-group-item" :key="'elevated-items-'+i">-->
-<!--                <announcement-queue-item-->
-<!--                  pid="item-elevated"-->
-<!--                  :item="item"-->
-<!--                  :index="i"-->
-<!--                  :elevated-announcements="elevateditems"-->
-<!--                  :atype="atype"-->
-<!--                >-->
-<!--                </announcement-queue-item>-->
-<!--              </li>-->
-<!--            </ul>-->
+<!--            {{ elevateditems }}-->
+            <Sortable
+                :list="elevateditems"
+                item-key="id"
+                tag="div"
+                :options="options"
+                @update="updateOrder"
+            >
+              <template #item="{element, i}">
+                  <announcement-queue-item
+                    class="draggable list-group-item"
+                    pid="item-elevated"
+                    :key="'item-elevated-'+i"
+                    :item="element"
+                    :index="i"
+                    :elevated-announcements="elevateditems"
+                    :atype="atype"
+                    @special-announcement-added="specialAnnouncementAdded"
+                    @special-announcement-removed="specialAnnouncementRemoved"
+                    @announcement-elevated="announcementElevated"
+                    @announcement-demoted="announcementDemoted"
+                  >
+                  </announcement-queue-item>
+              </template>
+            </Sortable>
           </template>
           <template v-else>
             <p>There are no elevated announcements.</p>
@@ -171,6 +164,10 @@
             :item="item"
             :index="i"
             :atype="atype"
+            @special-announcement-added="specialAnnouncementAdded"
+            @special-announcement-removed="specialAnnouncementRemoved"
+            @announcement-elevated="announcementElevated"
+            @announcement-demoted="announcementDemoted"
         >
         </announcement-queue-item>
       </div>
@@ -224,6 +221,9 @@ export default {
         altInput: true,
         dateFormat: "Y-m-d", // format sumbitted to the API
         enableTime: true
+      },
+      options: {
+
       }
     }
   },
@@ -366,37 +366,33 @@ export default {
       this.originalelevateditems = [];
       this.elevateditemschanged = false
     },
-  },
 
-  // the `events` option simply calls `$on` for you
-  // when the instance is created
-  events: {
-    'announcement-elevated': function (announcementObj) {
-      if (announcementObj) {
-        this.elevateditems.push(announcementObj)
-        this.updateElevatedOrder()
-      }
-    },
-    'announcement-demoted': function (announcementId) {
-      for (i = 0; i < this.elevateditems.length; i++) {
-        if (announcementId == this.elevateditems[i].id) {
-          this.elevateditems.$remove(this.elevateditems[i])
-          this.updateElevatedOrder()
-        }
-      }
-    },
-    'special-announcement-added': function (announcementObj) {
+    specialAnnouncementAdded (announcementObj) {
       if (announcementObj) {
         announcementObj.priority = 1000000 // 1000000 is an arbitrary high number used to denote a special announcement. There can only be ONE special announcement.
         this.updateElevatedOrder()
       }
     },
-    'special-announcement-removed': function (announcementObj) {
+    specialAnnouncementRemoved (announcementObj) {
       if (announcementObj) {
         announcementObj.priority = this.elevateditems.length // remove the priority of 1000000 and set it to the length of the elevated items array
         this.updateElevatedOrder()
       }
     },
+    announcementElevated (announcementObj) {
+      if (announcementObj) {
+        this.elevateditems.push(announcementObj)
+        this.updateElevatedOrder()
+      }
+    },
+    announcementDemoted (announcementId) {
+      for (let i = 0; i < this.elevateditems.length; i++) {
+        if (announcementId == this.elevateditems[i].id) {
+          this.elevateditems.splice(i, 1)
+          this.updateElevatedOrder()
+        }
+      }
+    }
   }
 }
 

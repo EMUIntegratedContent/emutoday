@@ -29,7 +29,7 @@
                 </div>
               </template>
               <template v-if="pid == 'item-elevated'">
-                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :checked="item.priority == 1000000" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
+                  <label v-if="atype == 'general'"><input type="checkbox" @click="toggleEmitSpecialAnnouncement(item)" v-model="checked" :disabled="item.priority != 1000000 && isSpecialAnnouncementPresent" />  Special</label>
                   <button type="button" class="btn btn-sm btn-danger pull-right remove-announcement-btn" @click="emitAnnouncementDemote(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
               </template>
           </form>
@@ -227,14 +227,17 @@ export default{
     }
   },
   created () {
-    this.initRecord.is_approved = this.patchRecord.is_approved =  this.item.is_approved;
-    this.initRecord.priority = this.patchRecord.priority = this.item.priority;
-    this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
+    this.initRecord.is_approved = this.patchRecord.is_approved =  this.item.is_approved
+    this.initRecord.priority = this.patchRecord.priority = this.item.priority
+    this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived
+    if(this.pid == 'item-elevated' && this.item.priority == 1000000) {
+      this.checked = true
+    }
   },
   computed: {
     isSpecialAnnouncementPresent: function(){
       if(this.elevatedAnnouncements){
-        for(i = 0; i < this.elevatedAnnouncements.length; i++){
+        for(let i = 0; i < this.elevatedAnnouncements.length; i++){
           if(this.elevatedAnnouncements[i].priority == 1000000){
             return true;
           }
@@ -313,9 +316,6 @@ export default{
         return 'time-is-long'
       }
     },
-    timefromNow:function() {
-      return moment(this.item.start_date).fromNow()
-    },
     timeLeft: function() {
       if(moment(this.item.start_date).isSameOrBefore(moment())){
         let tlft = this.timeDiffNow(this.item.end_date, 'hours');
@@ -330,7 +330,7 @@ export default{
     },
     isElevatedAnnouncement: function(){
       if(this.elevatedAnnouncements){
-        for(var i = 0; i < this.elevatedAnnouncements.length; i++) {
+        for(let i = 0; i < this.elevatedAnnouncements.length; i++) {
           if(this.elevatedAnnouncements[i].id == this.item.id){
             this.checked = true
             return true
@@ -395,13 +395,11 @@ export default{
       }
     },
     emitAnnouncementElevate: function(announcementObj){
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('announcement-elevated', announcementObj)
+      this.$emit('announcement-elevated', announcementObj)
     },
     emitAnnouncementDemote: function(announcementObj){
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
       // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('announcement-demoted', announcementObj.id)
+      this.$emit('announcement-demoted', announcementObj.id)
     },
     toggleEmitAnnouncementElevate: function(announcementObj){
       // function will run before this.checked is switched
@@ -424,11 +422,11 @@ export default{
     },
     emitSpecialAnnouncementAdd: function(announcementObj){
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('special-announcement-added', announcementObj)
+      this.$emit('special-announcement-added', announcementObj)
     },
     emitSpecialAnnouncementRemove: function(announcementObj){
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('special-announcement-removed', announcementObj)
+      this.$emit('special-announcement-removed', announcementObj)
     },
     toggleEmitSpecialAnnouncement: function(announcementObj){
       // function will run before this.checked is switched

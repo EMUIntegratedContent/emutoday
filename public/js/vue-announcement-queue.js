@@ -20090,7 +20090,8 @@ __webpack_require__.r(__webpack_exports__);
         dateFormat: "Y-m-d",
         // format sumbitted to the API
         enableTime: true
-      }
+      },
+      options: {}
     };
   },
   created: function created() {
@@ -20211,35 +20212,31 @@ __webpack_require__.r(__webpack_exports__);
       this.elevateditems = this.originalelevateditems;
       this.originalelevateditems = [];
       this.elevateditemschanged = false;
-    }
-  },
-  // the `events` option simply calls `$on` for you
-  // when the instance is created
-  events: {
-    'announcement-elevated': function announcementElevated(announcementObj) {
-      if (announcementObj) {
-        this.elevateditems.push(announcementObj);
-        this.updateElevatedOrder();
-      }
     },
-    'announcement-demoted': function announcementDemoted(announcementId) {
-      for (i = 0; i < this.elevateditems.length; i++) {
-        if (announcementId == this.elevateditems[i].id) {
-          this.elevateditems.$remove(this.elevateditems[i]);
-          this.updateElevatedOrder();
-        }
-      }
-    },
-    'special-announcement-added': function specialAnnouncementAdded(announcementObj) {
+    specialAnnouncementAdded: function specialAnnouncementAdded(announcementObj) {
       if (announcementObj) {
         announcementObj.priority = 1000000; // 1000000 is an arbitrary high number used to denote a special announcement. There can only be ONE special announcement.
         this.updateElevatedOrder();
       }
     },
-    'special-announcement-removed': function specialAnnouncementRemoved(announcementObj) {
+    specialAnnouncementRemoved: function specialAnnouncementRemoved(announcementObj) {
       if (announcementObj) {
         announcementObj.priority = this.elevateditems.length; // remove the priority of 1000000 and set it to the length of the elevated items array
         this.updateElevatedOrder();
+      }
+    },
+    announcementElevated: function announcementElevated(announcementObj) {
+      if (announcementObj) {
+        this.elevateditems.push(announcementObj);
+        this.updateElevatedOrder();
+      }
+    },
+    announcementDemoted: function announcementDemoted(announcementId) {
+      for (var i = 0; i < this.elevateditems.length; i++) {
+        if (announcementId == this.elevateditems[i].id) {
+          this.elevateditems.splice(i, 1);
+          this.updateElevatedOrder();
+        }
       }
     }
   }
@@ -20261,11 +20258,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _VuiFlipSwitch_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VuiFlipSwitch.vue */ "./resources/assets/js/components/VuiFlipSwitch.vue");
-var _computed;
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -20301,11 +20293,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
     this.initRecord.priority = this.patchRecord.priority = this.item.priority;
     this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived;
+    if (this.pid == 'item-elevated' && this.item.priority == 1000000) {
+      this.checked = true;
+    }
   },
-  computed: (_computed = {
+  computed: {
     isSpecialAnnouncementPresent: function isSpecialAnnouncementPresent() {
       if (this.elevatedAnnouncements) {
-        for (i = 0; i < this.elevatedAnnouncements.length; i++) {
+        for (var i = 0; i < this.elevatedAnnouncements.length; i++) {
           if (this.elevatedAnnouncements[i].priority == 1000000) {
             return true;
           }
@@ -20381,32 +20376,32 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       } else {
         return 'time-is-long';
       }
-    }
-  }, _defineProperty(_computed, "timefromNow", function timefromNow() {
-    return moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.start_date).fromNow();
-  }), _defineProperty(_computed, "timeLeft", function timeLeft() {
-    if (moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.start_date).isSameOrBefore(moment__WEBPACK_IMPORTED_MODULE_0___default()())) {
-      var tlft = this.timeDiffNow(this.item.end_date, 'hours');
-      if (tlft < 0) {
-        return 'Event Ended ' + moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.end_date).fromNow();
+    },
+    timeLeft: function timeLeft() {
+      if (moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.start_date).isSameOrBefore(moment__WEBPACK_IMPORTED_MODULE_0___default()())) {
+        var tlft = this.timeDiffNow(this.item.end_date, 'hours');
+        if (tlft < 0) {
+          return 'Event Ended ' + moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.end_date).fromNow();
+        } else {
+          return ' and Ends ' + moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.end_date).fromNow();
+        }
       } else {
-        return ' and Ends ' + moment__WEBPACK_IMPORTED_MODULE_0___default()(this.item.end_date).fromNow();
+        return '';
       }
-    } else {
-      return '';
-    }
-  }), _defineProperty(_computed, "isElevatedAnnouncement", function isElevatedAnnouncement() {
-    if (this.elevatedAnnouncements) {
-      for (var i = 0; i < this.elevatedAnnouncements.length; i++) {
-        if (this.elevatedAnnouncements[i].id == this.item.id) {
-          this.checked = true;
-          return true;
+    },
+    isElevatedAnnouncement: function isElevatedAnnouncement() {
+      if (this.elevatedAnnouncements) {
+        for (var i = 0; i < this.elevatedAnnouncements.length; i++) {
+          if (this.elevatedAnnouncements[i].id == this.item.id) {
+            this.checked = true;
+            return true;
+          }
         }
       }
+      this.checked = false;
+      return false;
     }
-    this.checked = false;
-    return false;
-  }), _computed),
+  },
   methods: {
     timeDiffNow: function timeDiffNow(val) {
       var mod = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'minutes';
@@ -20458,13 +20453,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     },
     emitAnnouncementElevate: function emitAnnouncementElevate(announcementObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('announcement-elevated', announcementObj);
+      this.$emit('announcement-elevated', announcementObj);
     },
     emitAnnouncementDemote: function emitAnnouncementDemote(announcementObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
       // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('announcement-demoted', announcementObj.id);
+      this.$emit('announcement-demoted', announcementObj.id);
     },
     toggleEmitAnnouncementElevate: function toggleEmitAnnouncementElevate(announcementObj) {
       // function will run before this.checked is switched
@@ -20487,11 +20480,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     emitSpecialAnnouncementAdd: function emitSpecialAnnouncementAdd(announcementObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('special-announcement-added', announcementObj);
+      this.$emit('special-announcement-added', announcementObj);
     },
     emitSpecialAnnouncementRemove: function emitSpecialAnnouncementRemove(announcementObj) {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('special-announcement-removed', announcementObj);
+      this.$emit('special-announcement-removed', announcementObj);
     },
     toggleEmitSpecialAnnouncement: function toggleEmitSpecialAnnouncement(announcementObj) {
       // function will run before this.checked is switched
@@ -20714,6 +20707,7 @@ var _hoisted_40 = {
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_flatpickr = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("flatpickr");
   var _component_announcement_queue_item = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("announcement-queue-item");
+  var _component_Sortable = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Sortable");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Showing announcements starting "), _ctx.isEndDate ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_6, "between")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_7, "on or after")), _ctx.startdate ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_flatpickr, {
     key: 2,
     modelValue: _ctx.startdate,
@@ -20762,15 +20756,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       item: item,
       index: i,
       key: 'unapproved-list-' + i,
-      atype: $props.atype
-    }, null, 8 /* PROPS */, ["item", "index", "atype"]);
+      atype: $props.atype,
+      onSpecialAnnouncementAdded: $options.specialAnnouncementAdded,
+      onSpecialAnnouncementRemoved: $options.specialAnnouncementRemoved
+    }, null, 8 /* PROPS */, ["item", "index", "atype", "onSpecialAnnouncementAdded", "onSpecialAnnouncementRemoved"]);
   }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-6 "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.itemsApproved ? $options.itemsApproved.length : 0), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Approved")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.itemsApproved, function (item, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_announcement_queue_item, {
       pid: "items-approved",
       item: item,
       key: 'approved-list-' + i,
-      atype: $props.atype
-    }, null, 8 /* PROPS */, ["item", "atype"]);
+      atype: $props.atype,
+      onSpecialAnnouncementAdded: $options.specialAnnouncementAdded,
+      onSpecialAnnouncementRemoved: $options.specialAnnouncementRemoved
+    }, null, 8 /* PROPS */, ["item", "atype", "onSpecialAnnouncementAdded", "onSpecialAnnouncementRemoved"]);
   }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ELEVATED ANNOUNCEMENTS "), $options.canElevate ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 0
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.elevateditems ? _ctx.elevateditems.length : 0), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Elevated")]), _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
@@ -20795,15 +20793,44 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "btn btn-default"
   }, "Reset")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.elevateditems.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 1
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <Sortable"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                :list=\"elevateditems\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                item-key=\"id\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                tag=\"div\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                :options=\"options\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            >"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <&#45;&#45; The Header and Footer templates below are optional &ndash;&gt;"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <template #header>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <header>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  <h1>SortableJS Vue3 Demo</h1>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                </header>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <template #item=\"{element, index}\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <div class=\"draggable\" :key=\"element.id\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  {{ element.name }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                </div>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <template #footer>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <footer class=\"draggable\">A footer</footer>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              </template>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </Sortable>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <ul class=\"list-group\" v-sortable=\"{ onUpdate: updateOrder }\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              <li v-for=\"(item, i) in elevateditems\" class=\"list-group-item\" :key=\"'elevated-items-'+i\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                <announcement-queue-item"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  pid=\"item-elevated\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  :item=\"item\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  :index=\"i\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  :elevated-announcements=\"elevateditems\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                  :atype=\"atype\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                >"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                </announcement-queue-item>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              </li>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            </ul>")], 64 /* STABLE_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_38, "There are no elevated announcements."))], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End elevated announcements "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.itemsLive ? $options.itemsLive.length : 0), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Live")]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.itemsLive, function (item, i) {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            {{ elevateditems }}"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Sortable, {
+    list: _ctx.elevateditems,
+    "item-key": "id",
+    tag: "div",
+    options: _ctx.options,
+    onUpdate: $options.updateOrder
+  }, {
+    item: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function (_ref) {
+      var element = _ref.element,
+        i = _ref.i;
+      return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_announcement_queue_item, {
+        "class": "draggable list-group-item",
+        pid: "item-elevated",
+        key: 'item-elevated-' + i,
+        item: element,
+        index: i,
+        "elevated-announcements": _ctx.elevateditems,
+        atype: $props.atype,
+        onSpecialAnnouncementAdded: $options.specialAnnouncementAdded,
+        onSpecialAnnouncementRemoved: $options.specialAnnouncementRemoved,
+        onAnnouncementElevated: $options.announcementElevated,
+        onAnnouncementDemoted: $options.announcementDemoted
+      }, null, 8 /* PROPS */, ["item", "index", "elevated-announcements", "atype", "onSpecialAnnouncementAdded", "onSpecialAnnouncementRemoved", "onAnnouncementElevated", "onAnnouncementDemoted"]))];
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["list", "options", "onUpdate"])], 64 /* STABLE_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_38, "There are no elevated announcements."))], 64 /* STABLE_FRAGMENT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" End elevated announcements "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.itemsLive ? $options.itemsLive.length : 0), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Live")]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.itemsLive, function (item, i) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_announcement_queue_item, {
       pid: "items-live",
       key: 'live-items-' + i,
       "elevated-announcements": _ctx.elevateditems,
       item: item,
       index: i,
-      atype: $props.atype
-    }, null, 8 /* PROPS */, ["elevated-announcements", "item", "index", "atype"]);
+      atype: $props.atype,
+      onSpecialAnnouncementAdded: $options.specialAnnouncementAdded,
+      onSpecialAnnouncementRemoved: $options.specialAnnouncementRemoved,
+      onAnnouncementElevated: $options.announcementElevated,
+      onAnnouncementDemoted: $options.announcementDemoted
+    }, null, 8 /* PROPS */, ["elevated-announcements", "item", "index", "atype", "onSpecialAnnouncementAdded", "onSpecialAnnouncementRemoved", "onAnnouncementElevated", "onAnnouncementDemoted"]);
   }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-6 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" ./row ")], 64 /* STABLE_FRAGMENT */);
 }
 
@@ -20863,7 +20890,7 @@ var _hoisted_11 = {
 var _hoisted_12 = {
   key: 0
 };
-var _hoisted_13 = ["checked", "disabled"];
+var _hoisted_13 = ["disabled"];
 var _hoisted_14 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
     "class": "fa fa-times",
@@ -20955,7 +20982,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return _ctx.checked = $event;
     }),
-    checked: $props.item.priority == 1000000,
     disabled: $props.item.priority != 1000000 && $options.isSpecialAnnouncementPresent
   }, null, 8 /* PROPS */, _hoisted_13), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, _ctx.checked]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Special")])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",

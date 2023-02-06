@@ -9,14 +9,27 @@
                 <label>Filter: </label>
             </div>
             <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="filter_storytype" @click="fetchAllRecords(1, this.resultsPerPage)">
-                <template v-for="item in storyTypeIcons">
-                     <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input type="radio" autocomplete="off" value="{{item.shortname}}" /><span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span></label>
+                <template v-for="(item, i) in storyTypeIcons" :key="'input-icon-'+i">
+                     <label
+                         class="btn btn-default"
+                         data-toggle="tooltip"
+                         data-placement="top"
+                         :title="item.name"
+                     >
+                       <input
+                           type="radio"
+                           autocomplete="off"
+                           :value="item.shortname"
+                       />
+                       <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+                     </label>
                 </template>
             </div>
         </div>
 
         <div id="archived-items-container">
-            <archive-queue-item v-for="item in allitems" :item="item" :index="$index" :entity-type="entityType">
+            <archive-queue-item
+                v-for="(item, i) in allitems" :item="item" :index="i" :entity-type="entityType" :key="'archive-announcement-'+i">
             </archive-queue-item>
         </div>
 
@@ -47,7 +60,6 @@
 import ArchiveQueueItem from './ArchiveQueueItem.vue'
 import Pagination from './Pagination.vue'
 import iconradio from '../directives/iconradio.js'
-import moment from 'moment';
 export default {
     directives: {iconradio},
     components: {
@@ -72,7 +84,7 @@ export default {
             filter_storytype: '',
         }
     },
-    ready() {
+    created() {
         this.fetchAllRecords();
     },
     computed: {
@@ -111,7 +123,7 @@ export default {
     },
     methods: {
         fetchAllRecords: function(pageNumber, numPerPage) {
-            var url = '/api/archive/queueload/'
+            let url = '/api/archive/queueload/'
 
             if(this.filter_storytype != ''){
                 url += this.filter_storytype
@@ -124,14 +136,14 @@ export default {
 
             this.$http.get(url)
                 .then((response) => {
-                    this.$set('allitems', response.data.data)
+                    this.allitems = response.data.data
                     this.makePagination(response.data.meta.pagination)
-                }, (response) => {
-                }).bind(this);
+                })
+                .catch(() => {})
         },
 
         makePagination: function(data) {
-            let pagination = {
+            this.pagination = {
                 current_page: data.current_page,
                 last_page: data.last_page,
                 next_page_url: data.next_page_url,
@@ -139,8 +151,6 @@ export default {
                 total_pages: data.total_pages,
                 total_records: data.total,
             }
-
-            this.$set('pagination', pagination)
         },
 
         isString: function(val){
