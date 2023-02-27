@@ -20555,8 +20555,8 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this.checkAfterUpdate(response.data.newdata);
-        _this.formMessage.msg = response.body.message;
-      }, function (response) {
+        _this.formMessage.msg = response.message;
+      })["catch"](function () {
         _this.formMessage.err = "Something when wrong.";
       });
     },

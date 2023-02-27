@@ -649,8 +649,8 @@ export default {
       this.formMessage.msg = false;
       this.formMessage.err = false;
 
-      var files = this.$refs.eventimg.files;
-      var data = new FormData();
+      const files = this.$refs.eventimg.files;
+      const data = new FormData();
       data.append('event_id', this.item.id);
       data.append('caption', this.formInputs.caption);
       data.append('alt_text', this.formInputs.alt_text);
@@ -658,7 +658,7 @@ export default {
       if (files[0]) {
         data.append('eventimg', files[0]);
       }
-      var action = '/api/event/addMediaFile/' + this.item.id;
+      const action = '/api/event/addMediaFile/' + this.item.id;
       this.$http.post(action, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -666,8 +666,9 @@ export default {
       })
       .then((response) => {
         this.checkAfterUpdate(response.data.newdata)
-        this.formMessage.msg = response.body.message;
-      }, (response) => {
+        this.formMessage.msg = response.message;
+      })
+      .catch(() => {
         this.formMessage.err = "Something when wrong.";
       });
     },
