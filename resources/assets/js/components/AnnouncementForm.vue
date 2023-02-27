@@ -3,10 +3,10 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
           <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr" :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
       </div>
@@ -128,13 +128,6 @@
     <div class="row">
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-<!--          <label for="start-date">Publish Date: <span v-bind:class="iconStar" class="reqstar"></span></label>-->
-<!--          <input id="start-date" class="form-control" v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"-->
-<!--                 type="text" :value="record.start_date"/>-->
-<!--          <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>-->
-
-
-
           <label for="publishDatePicker">Publish Date: <span v-bind:class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.start_date"
@@ -154,13 +147,6 @@
 
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-<!--          <label for="end-date">End Date: <span v-bind:class="iconStar" class="reqstar"></span></label>-->
-<!--          <input id="end-date" class="form-control" v-bind:class="[formErrors.end_date ? 'invalid-input' : '']"-->
-<!--                 type="text" :value="record.end_date"/>-->
-<!--          <p v-if="formErrors.end_date" class="help-text invalid">Need an End Date</p>-->
-
-
-          {{ endFlatpickrConfig }}
           <label for="endDatePicker">End Date: <span v-bind:class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.end_date"
@@ -505,14 +491,10 @@ export default {
 
   methods: {
     handleChangePubDate(evt) {
-      const dt = new Date(evt.target.value)
-      dt.setTime(dt.getTime() + dt.getTimezoneOffset()*60*1000) // Timezone offset to ensure right date
-      this.endFlatpickrConfig.minDate = dt
+      this.endFlatpickrConfig.minDate = moment(evt.target.value).format('YYYY-MM-DD')
     },
     handleChangeEndDate(evt) {
-      // const dt = new Date(evt.target.value)
-      // dt.setTime(dt.getTime() + dt.getTimezoneOffset()*60*1000) // Timezone offset to ensure right date
-      // this.pubFlatpickrConfig.maxDate = dt
+      this.pubFlatpickrConfig.maxDate = moment(evt.target.value).format('YYYY-MM-DD')
     },
     updatePreview: function () {
       if (this.framework == 'foundation') {
@@ -530,15 +512,6 @@ export default {
         });
       }
     },
-    fetchSubmittedRecord: function (recid) {
-      // Sets params for update record, Passes an id to fetchCurrentRecord
-      this.record.exists = this.record_exists = true;
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-      this.record.id = recid;
-      this.formErrors = {};
-      this.fetchCurrentRecord();
-    },
     fetchCurrentRecord: function () {
       let fetchme = this.recordid ? this.recordid : this.record.id;
       this.$http.get('/api/announcement/' + fetchme + '/edit')
@@ -551,7 +524,6 @@ export default {
             this.record.start_time = response.data.data.start_time;
           })
           .catch((e) => {
-            console.log(e)
             this.formErrors = response.data.error.message;
           })
     },
@@ -636,8 +608,6 @@ export default {
       $('html, body').animate({scrollTop: 0}, 'fast');
 
       this.record.type = this.type;
-      console.log('sd= ' + this.record.start_date);
-      console.log('ed= ' + this.record.end_date);
 
       // Dicide route to submit form to
       let method = (this.thisRecordExists) ? 'put' : 'post'
@@ -645,11 +615,10 @@ export default {
 
       // Submit form.
       this.$http[method](route, this.record) //
-
           // Do this when response gets back.
           .then((response) => { // If valid
-            this.formMessage.msg = response.data.message;
-            this.formMessage.isOk = response.ok; // Success message
+            this.formMessage.msg = response.data.message
+            this.formMessage.isOk = true
             this.currentRecordId = this.record.id = response.data.newdata.record_id;
             this.formMessage.isErr = false;
             this.record_exists = this.record.exists = true;

@@ -20231,14 +20231,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     handleChangePubDate: function handleChangePubDate(evt) {
-      var dt = new Date(evt.target.value);
-      dt.setTime(dt.getTime() + dt.getTimezoneOffset() * 60 * 1000); // Timezone offset to ensure right date
-      this.endFlatpickrConfig.minDate = dt;
+      this.endFlatpickrConfig.minDate = moment__WEBPACK_IMPORTED_MODULE_0___default()(evt.target.value).format('YYYY-MM-DD');
     },
     handleChangeEndDate: function handleChangeEndDate(evt) {
-      // const dt = new Date(evt.target.value)
-      // dt.setTime(dt.getTime() + dt.getTimezoneOffset()*60*1000) // Timezone offset to ensure right date
-      // this.pubFlatpickrConfig.maxDate = dt
+      this.pubFlatpickrConfig.maxDate = moment__WEBPACK_IMPORTED_MODULE_0___default()(evt.target.value).format('YYYY-MM-DD');
     },
     updatePreview: function updatePreview() {
       if (this.framework == 'foundation') {
@@ -20254,15 +20250,6 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
-    fetchSubmittedRecord: function fetchSubmittedRecord(recid) {
-      // Sets params for update record, Passes an id to fetchCurrentRecord
-      this.record.exists = this.record_exists = true;
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-      this.record.id = recid;
-      this.formErrors = {};
-      this.fetchCurrentRecord();
-    },
     fetchCurrentRecord: function fetchCurrentRecord() {
       var _this = this;
       var fetchme = this.recordid ? this.recordid : this.record.id;
@@ -20272,7 +20259,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.updatePreview();
         _this.record.start_time = response.data.data.start_time;
       })["catch"](function (e) {
-        console.log(e);
         _this.formErrors = response.data.error.message;
       });
     },
@@ -20353,8 +20339,6 @@ __webpack_require__.r(__webpack_exports__);
         scrollTop: 0
       }, 'fast');
       this.record.type = this.type;
-      console.log('sd= ' + this.record.start_date);
-      console.log('ed= ' + this.record.end_date);
 
       // Dicide route to submit form to
       var method = this.thisRecordExists ? 'put' : 'post';
@@ -20362,12 +20346,11 @@ __webpack_require__.r(__webpack_exports__);
 
       // Submit form.
       this.$http[method](route, this.record) //
-
       // Do this when response gets back.
       .then(function (response) {
         // If valid
         _this3.formMessage.msg = response.data.message;
-        _this3.formMessage.isOk = response.ok; // Success message
+        _this3.formMessage.isOk = true;
         _this3.currentRecordId = _this3.record.id = response.data.newdata.record_id;
         _this3.formMessage.isErr = false;
         _this3.record_exists = _this3.record.exists = true;
@@ -20595,11 +20578,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_flatpickr = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("flatpickr");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "csrf", {}, undefined, true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, [_ctx.formMessage.isOk ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.calloutSuccess)
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formMessage.msg), 1 /* TEXT */)], 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.formMessage.isOk]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.formMessage.msg), 1 /* TEXT */)], 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.formMessage.isErr ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 1,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.calloutFail)
-  }, _hoisted_3, 2 /* CLASS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, _ctx.formMessage.isErr]])], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-12 columns ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  }, _hoisted_3, 2 /* CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-12 columns ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md12col)
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
@@ -20701,7 +20686,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"start-date\">Publish Date: <span v-bind:class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"start-date\" class=\"form-control\" v-bind:class=\"[formErrors.start_date ? 'invalid-input' : '']\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 type=\"text\" :value=\"record.start_date\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.start_date\" class=\"help-text invalid\">Need a Start Date</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Publish Date: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Publish Date: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
   }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flatpickr, {
     modelValue: _ctx.record.start_date,
@@ -20717,7 +20702,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.md6col)
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($options.formGroup)
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <label for=\"end-date\">End Date: <span v-bind:class=\"iconStar\" class=\"reqstar\"></span></label>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <input id=\"end-date\" class=\"form-control\" v-bind:class=\"[formErrors.end_date ? 'invalid-input' : '']\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                 type=\"text\" :value=\"record.end_date\"/>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <p v-if=\"formErrors.end_date\" class=\"help-text invalid\">Need an End Date</p>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.endFlatpickrConfig) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("End Date: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("End Date: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$options.iconStar, "reqstar"])
   }, null, 2 /* CLASS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flatpickr, {
     modelValue: _ctx.record.end_date,
