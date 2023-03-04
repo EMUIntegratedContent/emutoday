@@ -81,7 +81,7 @@ export const builderMixin = {
 			let routeUrl = `/api/magazine/issuearticles/${issueID}`;
 			this.$http.get(routeUrl)
 			.then((response) => {
-				response.body.stories.forEach(article => {
+				response.data.stories.forEach(article => {
 					const position = article.pivot.story_position
 					this.setIssueArticleAtIndex({index: position, article: article})
 				})

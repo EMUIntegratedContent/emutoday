@@ -6,5 +6,8 @@
     "/js/vue-announcement-form.js": "/js/vue-announcement-form.js",
     "/js/vue-announcement-queue.js": "/js/vue-announcement-queue.js",
     "/js/vue-archive-queue.js": "/js/vue-archive-queue.js",
+    "/js/vue-magazine-builder.js": "/js/vue-magazine-builder.js",
+    "/js/vue-story-queue.js": "/js/vue-story-queue.js",
+    "/js/vue-story-form-wrapper.js": "/js/vue-story-form-wrapper.js",
     "/css/public-styles.css": "/css/public-styles.css"
 }

@@ -84,9 +84,10 @@ mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueu
 mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js');
 mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js');
 mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js');
-// mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js');
+mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js');
+mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js'); // NOT DONE!!!! CP 3/4/23
 // mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js');
-// mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js');
+mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js'); // NOT DONE!!!! CP 3/4/23
 // mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
 // mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js');
 // mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js');
