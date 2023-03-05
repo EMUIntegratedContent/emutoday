@@ -56,7 +56,7 @@
                  name="subtitle" type="text">
           <p v-if="formErrors.subtitle" class="help-text invalid"></p>
         </div>
-        <div class="form-group" v-if="stype == 'featurephoto'">
+        <div class="form-group" v-if="storyType == 'featurephoto'">
           <label>Photo credit</label>
           <p class="help-text" id="photo_credit-helptext">e.g. 'submitted by John Smith'</p>
           <input v-model="record.photo_credit" v-bind:class="[formErrors.photo_credit ? 'invalid-input' : '']"
@@ -64,18 +64,18 @@
           <p v-if="formErrors.photo_credit" class="help-text invalid"></p>
         </div>
         <div class="form-group">
-          <label>Content <i v-show="stype != 'featurephoto'" class="fi-star reqstar"></i></label>
+          <label>Content <i v-show="storyType != 'featurephoto'" class="fi-star reqstar"></i></label>
           <p class="help-text" id="content-helptext">Enter the story content <span
-              v-show="stype == 'featurephoto'">(optional)</span></p>
+              v-show="storyType == 'featurephoto'">(optional)</span></p>
           <!--          <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType"-->
           <!--                    :content="content" :fresh="isFresh" rows="200"></textarea>-->
-          <ckeditor
-              editor-url="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"
-              id="content"
-              name="content"
-              v-model="content"
-              :config="editorConfig"
-          ></ckeditor>
+<!--          <ckeditor-->
+<!--              editor-url="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"-->
+<!--              id="content"-->
+<!--              name="content"-->
+<!--              v-model="content"-->
+<!--              :config="editorConfig"-->
+<!--          ></ckeditor>-->
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
         </div>
         <div class="form-group user-display">
@@ -436,16 +436,18 @@ export default {
       formErrors: {},
       authorErrors: {},
       flatpickrConfig: {
-        altFormat: "m/d/Y", // format the user sees
+        altFormat: "m/d/Y h:i K", // format the user sees
         altInput: true,
         dateFormat: "Y-m-d H:i:s", // format sumbitted to the API
         enableTime: true
       },
+      storyType: null
     }
   },
   created: function () {
-    this.currentDate = moment();
-    this.updateRecordState('created');
+    this.storyType = JSON.parse(JSON.stringify(this.stype))
+    this.currentDate = moment()
+    this.updateRecordState('created')
     if (this.editid != '') {
       this.currentRecordId = this.editid;
       this.singleStype = true;
@@ -455,7 +457,7 @@ export default {
       this.newform = true;
       this.hasContent = true;
       this.record.user_id = this.cuser.id;
-      this.record.story_type = this.stype;
+      this.record.story_type = this.storyType;
       this.fdate = this.currentDate;
       this.setAuthorToCurrentUser(this.currentUser.id)
       this.record.author_id = this.record.user_id;
@@ -712,7 +714,7 @@ export default {
     setAuthorToCurrentUser: function (userId) {
       //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
       let url = '/api/authorbyuser/'
-      if (this.stype == 'statement') {
+      if (this.storyType == 'statement') {
         url += 1 // Jane Doe in the users table
       } else {
         url += userId
@@ -786,12 +788,12 @@ export default {
       if (this.selectedAuthor) {
         this.$http.get('/api/author/' + this.selectedAuthor.value)
             .then((response) => {
-              this.author.id = response.body.id;
-              this.record.author_id = response.body.id;
-              this.author.first_name = response.body.first_name;
-              this.author.last_name = response.body.last_name;
-              this.author.phone = response.body.phone;
-              this.author.email = response.body.email;
+              this.author.id = response.data.id;
+              this.record.author_id = response.data.id;
+              this.author.first_name = response.data.first_name;
+              this.author.last_name = response.data.last_name;
+              this.author.phone = response.data.phone;
+              this.author.email = response.data.email;
             })
       } else {
         this.author.id = '';
@@ -904,7 +906,6 @@ export default {
           })
     }
   },
-  filters: {},
   watch: {
     selectedAuthor: function () {
       this.fetchAuthor();
@@ -914,18 +915,17 @@ export default {
     },
     'record.story_type': function (val) {
       // Change author to "Official Statements" if this is an advisory or statement story type
-      let previousStype = this.stype;
+      let previousStype = JSON.parse(JSON.stringify(this.storyType));
       let newStype = val;
-      this.stype = newStype; // change the stype
+      this.storyType = newStype; // change the stype
       if (this.editid == '') {
-        if (this.stype == 'statement' || this.stype == 'advisory') {
+        if (this.storyType == 'statement' || this.storyType == 'advisory') {
           this.resetAuthor() // changes author to "Official Statement"
         }
         if ((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')) {
           this.resetAuthor() // changes author back to current user
         }
       }
-
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
       // if (!this.contactManuallyChanged && !this.recordexists) {
       if (!this.contactManuallyChanged && !this.record.id) {
@@ -938,9 +938,8 @@ export default {
         }
       }
     }
-  },
-  events: {}
-};
+  }
+}
 
 
 </script>

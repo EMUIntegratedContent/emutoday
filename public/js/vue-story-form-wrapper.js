@@ -20580,16 +20580,18 @@ __webpack_require__.r(__webpack_exports__);
       formErrors: {},
       authorErrors: {},
       flatpickrConfig: {
-        altFormat: "m/d/Y",
+        altFormat: "m/d/Y h:i K",
         // format the user sees
         altInput: true,
         dateFormat: "Y-m-d H:i:s",
         // format sumbitted to the API
         enableTime: true
-      }
+      },
+      storyType: null
     };
   },
   created: function created() {
+    this.storyType = JSON.parse(JSON.stringify(this.stype));
     this.currentDate = moment__WEBPACK_IMPORTED_MODULE_0___default()();
     this.updateRecordState('created');
     if (this.editid != '') {
@@ -20601,7 +20603,7 @@ __webpack_require__.r(__webpack_exports__);
       this.newform = true;
       this.hasContent = true;
       this.record.user_id = this.cuser.id;
-      this.record.story_type = this.stype;
+      this.record.story_type = this.storyType;
       this.fdate = this.currentDate;
       this.setAuthorToCurrentUser(this.currentUser.id);
       this.record.author_id = this.record.user_id;
@@ -20834,7 +20836,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this8 = this;
       //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
       var url = '/api/authorbyuser/';
-      if (this.stype == 'statement') {
+      if (this.storyType == 'statement') {
         url += 1; // Jane Doe in the users table
       } else {
         url += userId;
@@ -20895,12 +20897,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this10 = this;
       if (this.selectedAuthor) {
         this.$http.get('/api/author/' + this.selectedAuthor.value).then(function (response) {
-          _this10.author.id = response.body.id;
-          _this10.record.author_id = response.body.id;
-          _this10.author.first_name = response.body.first_name;
-          _this10.author.last_name = response.body.last_name;
-          _this10.author.phone = response.body.phone;
-          _this10.author.email = response.body.email;
+          _this10.author.id = response.data.id;
+          _this10.record.author_id = response.data.id;
+          _this10.author.first_name = response.data.first_name;
+          _this10.author.last_name = response.data.last_name;
+          _this10.author.phone = response.data.phone;
+          _this10.author.email = response.data.email;
         });
       } else {
         this.author.id = '';
@@ -21000,7 +21002,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  filters: {},
   watch: {
     selectedAuthor: function selectedAuthor() {
       this.fetchAuthor();
@@ -21010,11 +21011,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     'record.story_type': function recordStory_type(val) {
       // Change author to "Official Statements" if this is an advisory or statement story type
-      var previousStype = this.stype;
+      var previousStype = JSON.parse(JSON.stringify(this.storyType));
       var newStype = val;
-      this.stype = newStype; // change the stype
+      this.storyType = newStype; // change the stype
       if (this.editid == '') {
-        if (this.stype == 'statement' || this.stype == 'advisory') {
+        if (this.storyType == 'statement' || this.storyType == 'advisory') {
           this.resetAuthor(); // changes author to "Official Statement"
         }
 
@@ -21022,7 +21023,6 @@ __webpack_require__.r(__webpack_exports__);
           this.resetAuthor(); // changes author back to current user
         }
       }
-
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
       // if (!this.contactManuallyChanged && !this.recordexists) {
       if (!this.contactManuallyChanged && !this.record.id) {
@@ -21035,8 +21035,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     }
-  },
-  events: {}
+  }
 });
 
 /***/ }),
@@ -21344,7 +21343,6 @@ var _hoisted_63 = {
   "class": "form-group"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_ckeditor = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("ckeditor");
   var _component_v_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-select");
   var _component_flatpickr = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("flatpickr");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "csrf", {}, undefined, true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
@@ -21395,7 +21393,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     name: "subtitle",
     type: "text"
-  }, null, 34 /* CLASS, HYDRATE_EVENTS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.record.subtitle]]), $data.formErrors.subtitle ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_28)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $props.stype == 'featurephoto' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [_hoisted_30, _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  }, null, 34 /* CLASS, HYDRATE_EVENTS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.record.subtitle]]), $data.formErrors.subtitle ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_28)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $data.storyType == 'featurephoto' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [_hoisted_30, _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.record.photo_credit = $event;
     }),
@@ -21405,43 +21403,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     name: "photo_credit",
     type: "text"
-  }, null, 34 /* CLASS, HYDRATE_EVENTS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.record.photo_credit]]), $data.formErrors.photo_credit ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", _hoisted_34, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $props.stype != 'featurephoto']])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Enter the story content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "(optional)", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $props.stype == 'featurephoto']])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <textarea v-if=\"hasContent\" id=\"content\" name=\"content\" v-ckrte=\"content\" :type=\"editorType\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    :content=\"content\" :fresh=\"isFresh\" rows=\"200\"></textarea>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_ckeditor, {
-    "editor-url": "https://cdn.ckeditor.com/4.17.2/full/ckeditor.js",
-    id: "content",
-    name: "content",
-    modelValue: $data.content,
-    "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
-      return $data.content = $event;
-    }),
-    config: $data.editorConfig
-  }, null, 8 /* PROPS */, ["modelValue", "config"]), $data.formErrors.content ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_36, "Need Content!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, "Author: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.author.first_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.author.last_name), 1 /* TEXT */), $data.contact.id != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_39, "Contact: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.first_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.last_name) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.email) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.phone), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.contact.id == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_40, "Contact: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.first_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.last_name) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.email) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.phone), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.frm-group ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-12 columns ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+  }, null, 34 /* CLASS, HYDRATE_EVENTS */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.record.photo_credit]]), $data.formErrors.photo_credit ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", _hoisted_34, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.storyType != 'featurephoto']])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Enter the story content "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "(optional)", 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.storyType == 'featurephoto']])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <textarea v-if=\"hasContent\" id=\"content\" name=\"content\" v-ckrte=\"content\" :type=\"editorType\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                    :content=\"content\" :fresh=\"isFresh\" rows=\"200\"></textarea>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          <ckeditor"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              editor-url=\"https://cdn.ckeditor.com/4.17.2/full/ckeditor.js\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              id=\"content\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              name=\"content\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              v-model=\"content\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("              :config=\"editorConfig\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("          ></ckeditor>"), $data.formErrors.content ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_36, "Need Content!")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, "Author: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.author.first_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.author.last_name), 1 /* TEXT */), $data.contact.id != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_39, "Contact: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.first_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.last_name) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.email) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.contact.phone), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.contact.id == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_40, "Contact: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.first_name) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.last_name) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.email) + ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.defaultcontact.phone), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.frm-group ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-12 columns ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    onClick: _cache[9] || (_cache[9] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.toggleCallout && $options.toggleCallout.apply($options, arguments);
     }, ["prevent"])),
     "class": "btn btn-sm close"
   }, _hoisted_45), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.saveAuthorMessage.msg), 1 /* TEXT */)], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $data.saveAuthorMessage.isOk]]), !$data.needAuthor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
     key: 0,
-    onClick: _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[10] || (_cache[10] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.changeAuthor && $options.changeAuthor.apply($options, arguments);
     }, ["prevent"])),
     href: "#",
     "class": "btn btn-primary btn-sm"
   }, "Change Author")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.hasAuthor ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
     key: 1,
-    onClick: _cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[11] || (_cache[11] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.resetAuthor && $options.resetAuthor.apply($options, arguments);
     }, ["prevent"])),
     href: "#",
     "class": "btn btn-primary btn-sm"
   }, "Reset Author")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    onClick: _cache[13] || (_cache[13] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+    onClick: _cache[12] || (_cache[12] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.changeContact && $options.changeContact.apply($options, arguments);
     }, ["prevent"])),
     href: "#",
     "class": "btn btn-primary btn-sm"
   }, "Change Contact"), $data.needAuthor && $options.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $data.selectedAuthor,
-    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
       return $data.selectedAuthor = $event;
     }),
     options: $options.optionsAuthorlist,
@@ -21450,7 +21439,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     label: "name"
   }, null, 8 /* PROPS */, ["modelValue", "options"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-12 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [$options.isAdmin && $data.needContact ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_50, [_hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $data.selectedContact,
-    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
       return $data.selectedContact = $event;
     }),
     options: $options.optionsContactlist,
@@ -21459,7 +21448,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     label: "name"
   }, null, 8 /* PROPS */, ["modelValue", "options"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.col-md-6 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Start Date: "), _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            <date-picker"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                id=\"start-date\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                v-model=\"fdate\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                value-type=\"YYYY-MM-DD HH:mm:ss\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                format=\"MM/DD/YYYY h:mm A\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                :clearable=\"false\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                type=\"datetime\""), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("            ></date-picker>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_flatpickr, {
     modelValue: $data.fdate,
-    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
       return $data.fdate = $event;
     }),
     id: "start-date",
@@ -21469,7 +21458,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, null, 8 /* PROPS */, ["modelValue", "config"])]), _hoisted_56, $data.formErrors.start_date ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("p", _hoisted_57, "Need a Start Date")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("form-group ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-6 columns "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [$options.isAdmin ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Tags: "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$data.formErrors.tags ? 'invalid-input' : '']),
     modelValue: $data.tags,
-    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
       return $data.tags = $event;
     }),
     options: $data.taglist,
@@ -21477,7 +21466,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Select tags",
     label: "name"
   }, null, 8 /* PROPS */, ["class", "modelValue", "options"])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.form-group ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.small-6 columns ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), _hoisted_60, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" /.row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: _cache[18] || (_cache[18] = function () {
+    onClick: _cache[17] || (_cache[17] = function () {
       return $options.submitForm && $options.submitForm.apply($options, arguments);
     }),
     type: "submit",
