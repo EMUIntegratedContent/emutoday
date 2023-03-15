@@ -20089,7 +20089,7 @@ __webpack_require__.r(__webpack_exports__);
         altInput: true,
         dateFormat: "Y-m-d",
         // format sumbitted to the API
-        enableTime: true
+        enableTime: false
       },
       options: {}
     };

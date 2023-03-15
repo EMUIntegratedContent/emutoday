@@ -5,7 +5,7 @@
       <h5>{{ itemMsgStatus.msg }}</h5>
     </div>
     <div :class="specialItem">
-      <div class="box box-solid {{item.group}}">
+      <div class="box box-solid" :class="item.group">
         <div class="box-header with-border">
           <div class="row">
             <div class="col-sm-12 col-md-6">
@@ -79,7 +79,7 @@
           <p>Featured: {{ item.is_featured }}</p>
           <p>Live: {{ item.is_live }}</p>
           <p>Archived: {{ item.is_archived }}</p>
-          <p>Start Date/Time: {{ item.start_date | momentFull }}</p>
+          <p>Start Date/Time: {{ momentFull(item.start_date) }}</p>
           <template v-if="isPartOfHub">
             <div class="btn-group btn-xs form-inline">
               <div class="form-group">
@@ -335,6 +335,9 @@ h5 {
 .remove-story-btn {
   margin-left: 10px;
 }
+label > span.fa{
+  margin-right: 3px;
+}
 </style>
 <script>
 
@@ -464,52 +467,45 @@ export default {
 
     },
     readyIcon: function () {
+      let pIcon = 'fa fa-circle-o'
       if (this.item.is_ready === 1) {
         pIcon = 'fa fa-circle'
-      } else {
-        pIcon = 'fa fa-circle-o'
       }
       return pIcon
     },
     promotedIcon: function () {
+      let pIcon = ''
       if (this.item.is_promoted === 1) {
         pIcon = 'fa fa-arrow-circle-up'
-      } else {
-        pIcon = ''
       }
       return pIcon
     },
     liveIcon: function () {
+      let lIcon = ''
       if (this.item.is_live === 1) {
         lIcon = 'fa fa-home'
-      } else {
-        lIcon = ''
       }
       return lIcon
     },
     linkedIcon: function () {
       if (this.isPartOfHubOrMag) {
         return 'fa fa-chain'
-      } else {
-        return ''
       }
+      return ''
     },
     homeIcon: function () {
     },
     archivedIcon: function () {
+      let aIcon = ''
       if (this.item.archived === 1) {
         aIcon = 'fa fa-archive'
-      } else {
-        aIcon = ''
       }
       return aIcon
     },
     featuredIcon: function () {
-
+      let featuredicon = ''
       if (this.item.is_featured === 1) {
         featuredicon = 'fa fa-star'
-      } else {
-        featuredicon = ''
       }
       return featuredicon
     },
@@ -517,6 +513,7 @@ export default {
       return (this.item.is_ready === 1) ? 'Ready' : 'Not Ready';
     },
     typeIcon: function () {
+      let faicon
       switch (this.item.story_type) {
         case 'emutoday':
         case 'story':
@@ -646,9 +643,9 @@ export default {
       })
           .then((response) => {
             this.checkAfterUpdate(response.data.newdata)
+          }).catch((e) => {
 
-          }, (response) => {
-          });
+          })
     },
     updateItem: function () {
       this.patchRecord.is_archived = this.item.is_archived;
@@ -658,9 +655,8 @@ export default {
       })
           .then((response) => {
             this.checkAfterUpdate(response.data.newdata)
-
-          }, (response) => {
-          });
+          }).catch((e) => {
+          })
     },
     checkAfterUpdate: function (ndata) {
       this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
@@ -683,10 +679,10 @@ export default {
 
             self.$emit('item-change', self.item);
 
-          }, (response) => {
+          }).catch((e) => {
             self.itemMsgStatus.show = true;
             self.itemMsgStatus.level = 'danger';
-            self.itemMsgStatus.msg = response.data.error.message;
+            self.itemMsgStatus.msg = e.response.data.error.message
           });
     },
     doThis: function (ev) {
@@ -721,34 +717,10 @@ export default {
         }
       }
     },
-  },
-  watch: {
-    'isapproved': function (val, oldVal) {
-      if (val != oldVal) {
-      }
+    momentFull(val) {
+      return val ? moment(val).format('ddd MMM gg, YYYY @ h:mm a') : ''
     }
-  },
-
-  filters: {
-    momentPretty: {
-      read: function (val) {
-        return val ? moment(val).format('MM-DD-YYYY') : '';
-      },
-      write: function (val, oldVal) {
-        return moment(val).format('YYYY-MM-DD');
-      }
-    },
-    momentFull: {
-      read: function (val) {
-        return val ? moment(val).format('ddd MMM gg, YYYY @ h:mm a') : '';
-      },
-      write: function (val, oldVal) {
-        return moment(val).format('YYYY-MM-DD HH:mm:ss');
-      }
-    },
-
-  },
-  events: {}
+  }
 };
 
 

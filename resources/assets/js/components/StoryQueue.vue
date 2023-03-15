@@ -4,15 +4,32 @@
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
       <form class="form-inline">
         <div class="form-group">
-          <label for="start-date">Showing
-            <template v-if="stype == 'featurephoto'">photos</template>
+          <label for="start-date">Showing <template v-if="stype == 'featurephoto'">photos</template>
             <template v-else>stories</template>
-            starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-          <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate">
+            starting <span v-if="isEndDate">between</span><span v-else>on or after</span>
+            <flatpickr
+                v-if="startdate"
+                v-model="startdate"
+                id="start-date"
+                :config="flatpickrConfig"
+                class="form-control"
+                name="startingDate"
+            >
+            </flatpickr>
+          </label>
         </div>
         <div v-if="isEndDate" class="form-group">
-          <label for="start-date"> and </label>
-          <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate">
+          <label for="end-date"> and
+            <flatpickr
+                v-if="enddate"
+                v-model="enddate"
+                id="end-date"
+                :config="flatpickrConfig"
+                class="form-control"
+                name="endingDate"
+            >
+            </flatpickr>
+          </label>
         </div>
         <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
         <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span
@@ -42,30 +59,30 @@
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
-        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"
-             v-iconradio="items_unapproved_filter_storytype">
-          <template v-for="item in storyTypeIcons">
-            <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input
-                type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"
-                                                                                  :class="typeIcon(item.shortname)"></span></label>
-          </template>
-        </div>
+<!--        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"-->
+<!--             v-iconradio="items_unapproved_filter_storytype">-->
+<!--          <template v-for="item in storyTypeIcons">-->
+<!--            <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input-->
+<!--                type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"-->
+<!--                                                                                  :class="typeIcon(item.shortname)"></span></label>-->
+<!--          </template>-->
+<!--        </div>-->
       </div>
       <div id="items-unapproved">
-        <story-pod
-            pid="items-unapproved"
-            :role="role"
-            :sroute="sroute"
-            :stype="stype"
-            :gtype="gtype"
-            :qtype="qtype"
-            v-for="(item, i) in itemsUnapproved"
-            @item-change="moveToApproved"
-            :key="'iu-'+i"
-            :item="item"
-            :index="i"
-        >
-        </story-pod>
+<!--        <story-pod-->
+<!--            pid="items-unapproved"-->
+<!--            :role="role"-->
+<!--            :sroute="sroute"-->
+<!--            :stype="stype"-->
+<!--            :gtype="gtype"-->
+<!--            :qtype="qtype"-->
+<!--            v-for="(item, i) in itemsUnapproved"-->
+<!--            @item-change="moveToApproved"-->
+<!--            :key="'iu-'+i"-->
+<!--            :item="item"-->
+<!--            :index="i"-->
+<!--        >-->
+<!--        </story-pod>-->
       </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
@@ -74,30 +91,30 @@
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
-        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"
-             v-iconradio="items_approved_filter_storytype">
-          <template v-for="item in storyTypeIcons">
-            <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input
-                type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"
-                                                                                  :class="typeIcon(item.shortname)"></span></label>
-          </template>
-        </div>
+<!--        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"-->
+<!--             v-iconradio="items_approved_filter_storytype">-->
+<!--          <template v-for="item in storyTypeIcons">-->
+<!--            <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input-->
+<!--                type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"-->
+<!--                                                                                  :class="typeIcon(item.shortname)"></span></label>-->
+<!--          </template>-->
+<!--        </div>-->
       </div>
       <div id="items-approved">
-        <story-pod
-            pid="items-approved"
-            :role="role"
-            :sroute="sroute"
-            :stype="stype"
-            :gtype="gtype"
-            :qtype="qtype"
-            v-for="(item, i) in itemsApproved"
-            @item-change="moveToUnApproved"
-            :key="'ia-'+i"
-            :item="item"
-            :index="i"
-        >
-        </story-pod>
+<!--        <story-pod-->
+<!--            pid="items-approved"-->
+<!--            :role="role"-->
+<!--            :sroute="sroute"-->
+<!--            :stype="stype"-->
+<!--            :gtype="gtype"-->
+<!--            :qtype="qtype"-->
+<!--            v-for="(item, i) in itemsApproved"-->
+<!--            @item-change="moveToUnApproved"-->
+<!--            :key="'ia-'+i"-->
+<!--            :item="item"-->
+<!--            :index="i"-->
+<!--        >-->
+<!--        </story-pod>-->
       </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
@@ -122,20 +139,30 @@
             </div>
           </template>
           <template v-if="elevateditems.length > 0">
-            <ul class="list-group" v-sortable="{ onUpdate: updateOrder }">
-              <li v-for="(item, i) in elevateditems" :key="'ei-'+i" class="list-group-item">
+            <Sortable
+                :list="elevateditems"
+                item-key="id"
+                tag="div"
+                :options="options"
+                @update="updateOrder"
+            >
+              <template #item="{element, i}">
                 <story-pod
+                    class="draggable list-group-item"
                     pid="item-elevated"
+                    :key="'item-elevated-'+i"
                     :role="role"
                     :sroute="sroute"
                     :stype="stype"
                     :gtype="gtype"
                     :qtype="qtype"
-                    :item="item"
+                    :item="element"
+                    @story-elevated="storyElevated"
+                    @story-demoted="storyDemoted"
                 >
                 </story-pod>
-              </li>
-            </ul>
+              </template>
+            </Sortable>
           </template>
           <template v-else>
             <p>There are no elevated stories.</p>
@@ -144,19 +171,56 @@
         <hr/> <!-- End elevated announcements -->
         <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has
           passed</small></h4>
-        <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
-          <div class="btn-group btn-group-xs" role="group">
-            <label>Filter: </label>
+<!--        <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">-->
+<!--          <div class="btn-group btn-group-xs" role="group">-->
+<!--            <label>Filter: </label>-->
+<!--          </div>-->
+<!--          <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"-->
+<!--               v-iconradio="items_live_filter_storytype">-->
+<!--            <template v-for="item in storyTypeIcons">-->
+<!--              <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input-->
+<!--                  type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"-->
+<!--                                                                                    :class="typeIcon(item.shortname)"></span></label>-->
+<!--            </template>-->
+<!--          </div>-->
+<!--        </div>-->
+
+
+          <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
+            <div class="btn-group btn-group-xs" role="group">
+              <label>Filter: </label>
+            </div>
+            <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
+              <template v-for="item in storyTypeIcons">
+                <label
+                    class="btn btn-default"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    :title="item.name"
+                    @click="items_live_filter_storytype = item.shortname"
+                    :class="{ 'active' : items_live_filter_storytype == item.shortname || (items_live_filter_storytype == '' && item.shortname == 'all') }"
+                >
+                  <input type="radio" autocomplete="off" :value="item.shortname"/>
+                  <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+                </label>
+              </template>
+            </div>
           </div>
-          <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"
-               v-iconradio="items_live_filter_storytype">
-            <template v-for="item in storyTypeIcons">
-              <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input
-                  type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"
-                                                                                    :class="typeIcon(item.shortname)"></span></label>
-            </template>
-          </div>
-        </div>
+
+<!--        <story-pod-->
+<!--            pid="items-live"-->
+<!--            :role="role"-->
+<!--            :sroute="sroute"-->
+<!--            :stype="stype"-->
+<!--            :gtype="gtype"-->
+<!--            :qtype="qtype"-->
+<!--            v-for="item in itemsLive"-->
+<!--            @item-change="moveToUnApproved"-->
+<!--            :elevated-storys="elevateditems"-->
+<!--            :item="item"-->
+<!--            :index="$index"-->
+<!--            :is="items-live">-->
+<!--        </story-pod>-->
         <story-pod
             pid="items-live"
             :role="role"
@@ -164,12 +228,11 @@
             :stype="stype"
             :gtype="gtype"
             :qtype="qtype"
-            v-for="item in itemsLive"
+            v-for="(item, i) in itemsLiveFilteredPaginated"
             @item-change="moveToUnApproved"
             :elevated-storys="elevateditems"
             :item="item"
-            :index="$index"
-            :is="items-live">
+            :index="i">
         </story-pod>
       </div>
     </div><!-- /.col-md-4 -->
@@ -226,13 +289,14 @@ span.item-type-icon:active, span.item-type-icon.active {
 import moment from 'moment'
 import StoryPod from './StoryPod.vue'
 import IconToggleBtn from './IconToggleBtn.vue'
-import iconradio from '../directives/iconradio.js'
 import Pagination from './Pagination.vue'
-import flatpickr from "../directives/flatpickr.js"
+import {Sortable} from "sortablejs-vue3"
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  directives: {iconradio, flatpickr},
-  components: {StoryPod, IconToggleBtn, Pagination},
+  directives: {},
+  components: {StoryPod, IconToggleBtn, Pagination, flatpickr, Sortable},
   props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
   created() {
     let twoWeeksEarlier = moment().subtract(2, 'w')
@@ -273,6 +337,15 @@ export default {
         msg: '',
       },
       textFilter: '',
+      options: {
+
+      },
+      flatpickrConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+        enableTime: false
+      }
     }
   },
   computed: {
@@ -410,6 +483,16 @@ export default {
       }
     },
 
+    // TODO: START HERE. FINISHING POINT ON 3/15/23. Get the live story filters working.
+    itemsLiveFilteredPaginated() {
+      let items = this.items
+      if (this.items_live_filter_storytype != '') {
+        items = this.items.filter(it => it.story_type == this.items_live_filter_storytype)
+      }
+      return items
+    },
+
+
     typeIcon: function (sname) {
       let faicon
       switch (sname) {
@@ -481,14 +564,14 @@ export default {
         method: 'PATCH'
       })
           .then((response) => {
-          }, (response) => {
-          });
+          }).catch((e) => {
+          })
     },
 
     fetchAllRecords: function () {
       this.loading = true
 
-      var routeurl = '/api/' + this.gtype + '/' + this.stype + '/' + this.qtype;
+      let routeurl = '/api/' + this.gtype + '/' + this.stype + '/' + this.qtype;
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startdate) {
         routeurl = routeurl + '/' + this.startdate
@@ -502,13 +585,13 @@ export default {
       }
 
       this.$http.get(routeurl)
-
-          .then((response) => {
-            this.$set('allitems', response.data.data)
-            this.loading = false;
-          }, (response) => {
-            //error callback
-          }).bind(this);
+        .then((response) => {
+          this.allitems = response.data.data
+          this.loading = false;
+        }).catch((e) => {
+          //error callback
+          console.log(e)
+        })
 
       this.fetchElevatedRecords(); //get elevated records regardless of date
     },
@@ -523,22 +606,21 @@ export default {
       this.$http.get(routeurl)
 
           .then((response) => {
-            this.$set('elevateditems', response.data.data)
-            this.loading = false;
-          }, (response) => {
-            //error callback
-            console.log("ERRORS");
-          }).bind(this);
+            this.elevateditems = response.data.data
+            this.loading = false
+          }).catch((e) => {
+            console.log(e)
+          })
     },
 
     /**
-     * Uses vue-sortable
+     * Uses sortable
      */
     updateOrder: function (eventItem) {
       // Save the original order the first time this method is called
       if (!this.elevateditemschanged) {
         // https://forum-archive.vuejs.org/topic/3679/global-method-to-clone-object-in-vuejs-rather-then-reference-it-to-avoid-code-duplication/5
-        this.$set('originalelevateditems', JSON.parse(JSON.stringify(this.elevateditems)))
+        this.originalelevateditems = JSON.parse(JSON.stringify(this.elevateditems))
         this.elevateditemschanged = true
       }
       // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
@@ -554,19 +636,18 @@ export default {
       this.ordersave.isOk = false
       this.ordersave.isErr = false
 
-      var routeurl = '/api/story/elevated/reorder'
+      const routeurl = '/api/story/elevated/reorder'
       this.$http.put(routeurl, this.elevateditems)
-
-          .then((response) => {
-            this.$set('elevateditems', response.data.data)
-            this.ordersave.isOk = true
-            this.ordersave.msg = "Order was updated"
-          }, (response) => {
-            //error callback
-            this.ordersave.isErr = true
-            this.ordersave.msg = "Order was not updated"
-            console.log("ERRORS")
-          }).bind(this);
+        .then((response) => {
+          this.elevateditems = response.data.data
+          this.ordersave.isOk = true
+          this.ordersave.msg = "Order was updated"
+        }).catch((e) => {
+          //error callback
+          this.ordersave.isErr = true
+          this.ordersave.msg = "Order was not updated"
+          console.log(e)
+        })
 
       this.elevateditemschanged = false;
     },
@@ -581,22 +662,20 @@ export default {
       this.originalelevateditems = [];
       this.elevateditemschanged = false
     },
-  },
-  events: {
-    'story-elevated': function (storyObj) {
+    storyElevated (storyObj) {
       if (storyObj) {
         this.elevateditems.push(storyObj)
         this.updateElevatedOrder()
       }
     },
-    'story-demoted': function (storyId) {
-      for (i = 0; i < this.elevateditems.length; i++) {
-        if (storyId == this.elevateditems[i].id) {
-          this.elevateditems.$remove(this.elevateditems[i])
+    storyDemoted (storyObj) {
+      for (let i = 0; i < this.elevateditems.length; i++) {
+        if (storyObj == this.elevateditems[i].id) {
+          this.elevateditems.splice(i, 1)
           this.updateElevatedOrder()
         }
       }
-    },
+    }
   }
 }
 </script>

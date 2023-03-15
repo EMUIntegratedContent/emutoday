@@ -187,7 +187,7 @@ import moment from 'moment';
 import AnnouncementQueueItem from './AnnouncementQueueItem.vue'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
-import {Sortable} from "sortablejs-vue3";
+import {Sortable} from "sortablejs-vue3"
 
 export default {
   components: {
@@ -220,7 +220,7 @@ export default {
         altFormat: "m/d/Y", // format the user sees
         altInput: true,
         dateFormat: "Y-m-d", // format sumbitted to the API
-        enableTime: true
+        enableTime: false
       },
       options: {
 
