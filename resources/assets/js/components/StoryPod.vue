@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="itemMsgStatus.show" class="callout callout-{{itemMsgStatus.level}}">
+    <div v-show="itemMsgStatus.show" class="callout" :class="'callout-' + itemMsgStatus.level">
       <span class="Alert__close" @click="itemMsgStatus.show = false">X</span>
       <h5>{{ itemMsgStatus.msg }}</h5>
     </div>
@@ -10,7 +10,7 @@
           <div class="row">
             <div class="col-sm-12 col-md-6">
               <div class="pull-left">
-                <label data-toggle="tooltip" data-placement="top" title="{{item.story_type}}"><span
+                <label data-toggle="tooltip" data-placement="top" :title="item.story_type"><span
                     class="item-type-icon" :class="typeIcon"></span></label>
                 <label data-toggle="tooltip" data-placement="top" :title="isReadyStatus"><span
                     class="item-featured-icon" :class="readyIcon"></span></label>
@@ -41,9 +41,9 @@
                       <label>approved:</label>
                     </div><!-- /.form-group -->
                     <div class="form-group">
-                      <vui-flip-switch id="switch-{{item.id}}"
+                      <vui-flip-switch :id="'switch-' + item.id"
                                        v-on:click.prevent="changeIsApproved"
-                                       :value.sync="patchRecord.is_approved">
+                                       v-model:checked="patchRecord.is_approved">
                       </vui-flip-switch>
                     </div>
                   </template>
@@ -53,7 +53,7 @@
                     </div><!-- /.form-group -->
                   </template>
                 </template>
-                <button v-show="pid == 'item-elevated'" type="button"
+                <button v-if="pid == 'item-elevated'" type="button"
                         class="btn btn-sm btn-danger pull-right remove-story-btn" @click="emitStoryDemote(item)"><i
                     class="fa fa-times" aria-hidden="true"></i></button>
               </div><!-- /.pull-right -->
@@ -87,7 +87,7 @@
               </div>
               <div class="form-group">
                 <button v-for="hub in connectedHubs" v-on:click.prevent="gotoHub(hub.id)" class="btn bg-hub btn-xs"
-                        data-toggle="tooltip" data-placement="top" title="Edit Hub Id: {{hub.id}}"><i
+                        data-toggle="tooltip" data-placement="top" :title="'Edit Hub Id: ' + hub.id"><i
                     class="fa fa-newspaper-o"></i></button>
               </div>
             </div>
@@ -99,7 +99,7 @@
               </div>
               <div class="form-group">
                 <button v-for="mag in connectedMags" v-on:click.prevent="gotoMag(mag.id)" class="btn bg-hub btn-xs"
-                        data-toggle="tooltip" data-placement="top" title="Edit Mag Id: {{mag.id}}"><i
+                        data-toggle="tooltip" data-placement="top" :title="'Edit Mag Id: ' + mag.id"><i
                     class="fa fa-book"></i></button>
               </div>
             </div>
@@ -379,10 +379,7 @@ export default {
       },
     }
   },
-  created: function () {
-
-  },
-  ready: function () {
+  created () {
     this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
     this.initRecord.priority = this.patchRecord.priority = this.item.priority;
     this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;

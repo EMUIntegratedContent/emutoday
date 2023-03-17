@@ -1,4 +1,5 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
+require('laravel-mix-listen')
 
 /*
 |--------------------------------------------------------------------------
@@ -116,3 +117,87 @@ mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-for
 */
 // Refresh page in local environment
 // mix.browserSync('emutoday.test');
+
+/*
+|--------------------------------------------------------------------------
+| CKEditor 5 Configuraiton (used in Vue frontend)
+| Created by CP 3/17/23
+| https://github.com/ckeditor/ckeditor5-vue/issues/23
+| https://deniapps.com/blog/some-fixes-of-webpack-errors
+|--------------------------------------------------------------------------
+*/
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin')
+const CKEStyles = require('@ckeditor/ckeditor5-dev-utils').styles
+
+//Includes SVGs and CSS files from "node_modules/ckeditor5-*" and any other custom directories
+const CKEditorRegex = {
+    svg: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/, //If you have any custom plugins in your project with SVG icons, include their path in this regex as well.
+    css: /ckeditor5-[^/\\]+[/\\].+\.css$/,
+};
+// Keep comments un-ugly
+mix.options({
+    uglify: {
+        comments: false
+    }
+});
+// Configure CSS loaders to handle editor styles
+mix.webpackConfig({
+    devtool: "inline-source-map",
+    module: {
+        rules: [
+            {
+                test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+                use: ['raw-loader']
+            },
+            {
+                test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
+                use: [
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            injectType: "singletonStyleTag",
+                            attributes: {
+                                'data-cke': true,
+                            }
+                        }
+                    },
+                    "css-loader",
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions:
+                                CKEStyles.getPostCssConfig({
+                                themeImporter: {
+                                    themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+                                },
+                                minify: true
+                            })
+                        }
+                    },
+                ]
+            }
+        ]
+    },
+    plugins: [
+        new CKEditorWebpackPlugin({
+            language: 'en',
+            addMainLanguageTranslationsToAllAssets: true
+        })
+    ]
+});
+//Exclude CKEditor regex from mix's default rules
+mix.override(config => {
+    const rules = config.module.rules;
+    const targetSVG = (/(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/).toString();
+    const targetFont = (/(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/).toString();
+    const targetCSS = (/\.p?css$/).toString();
+
+    rules.forEach(rule => {
+        let test = rule.test.toString();
+        if ([targetSVG, targetFont].includes(rule.test.toString())) {
+            rule.exclude = CKEditorRegex.svg;
+        } else if (test === targetCSS) {
+            rule.exclude = CKEditorRegex.css;
+        }
+    });
+});

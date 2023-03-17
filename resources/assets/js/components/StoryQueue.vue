@@ -59,30 +59,37 @@
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
-<!--        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"-->
-<!--             v-iconradio="items_unapproved_filter_storytype">-->
-<!--          <template v-for="item in storyTypeIcons">-->
-<!--            <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input-->
-<!--                type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"-->
-<!--                                                                                  :class="typeIcon(item.shortname)"></span></label>-->
-<!--          </template>-->
-<!--        </div>-->
+        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
+          <template v-for="item in storyTypeIcons">
+            <label
+                class="btn btn-default"
+                data-toggle="tooltip"
+                data-placement="top"
+                :title="item.name"
+                @click="items_unapproved_filter_storytype = item.shortname"
+                :class="{ 'active' : items_unapproved_filter_storytype == item.shortname || (items_unapproved_filter_storytype == '' && item.shortname == 'all') }"
+            >
+              <input type="radio" autocomplete="off" :value="item.shortname"/>
+              <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+            </label>
+          </template>
+        </div>
       </div>
       <div id="items-unapproved">
-<!--        <story-pod-->
-<!--            pid="items-unapproved"-->
-<!--            :role="role"-->
-<!--            :sroute="sroute"-->
-<!--            :stype="stype"-->
-<!--            :gtype="gtype"-->
-<!--            :qtype="qtype"-->
-<!--            v-for="(item, i) in itemsUnapproved"-->
-<!--            @item-change="moveToApproved"-->
-<!--            :key="'iu-'+i"-->
-<!--            :item="item"-->
-<!--            :index="i"-->
-<!--        >-->
-<!--        </story-pod>-->
+        <story-pod
+            pid="items-unapproved"
+            :role="role"
+            :sroute="sroute"
+            :stype="stype"
+            :gtype="gtype"
+            :qtype="qtype"
+            v-for="(item, i) in itemsUnapprovedFilteredPaginated"
+            @item-change="moveToApproved"
+            :key="'iu-'+i"
+            :item="item"
+            :index="i"
+        >
+        </story-pod>
       </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
@@ -91,30 +98,37 @@
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
-<!--        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"-->
-<!--             v-iconradio="items_approved_filter_storytype">-->
-<!--          <template v-for="item in storyTypeIcons">-->
-<!--            <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input-->
-<!--                type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"-->
-<!--                                                                                  :class="typeIcon(item.shortname)"></span></label>-->
-<!--          </template>-->
-<!--        </div>-->
+        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
+          <template v-for="item in storyTypeIcons">
+            <label
+                class="btn btn-default"
+                data-toggle="tooltip"
+                data-placement="top"
+                :title="item.name"
+                @click="items_approved_filter_storytype = item.shortname"
+                :class="{ 'active' : items_approved_filter_storytype == item.shortname || (items_approved_filter_storytype == '' && item.shortname == 'all') }"
+            >
+              <input type="radio" autocomplete="off" :value="item.shortname"/>
+              <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+            </label>
+          </template>
+        </div>
       </div>
       <div id="items-approved">
-<!--        <story-pod-->
-<!--            pid="items-approved"-->
-<!--            :role="role"-->
-<!--            :sroute="sroute"-->
-<!--            :stype="stype"-->
-<!--            :gtype="gtype"-->
-<!--            :qtype="qtype"-->
-<!--            v-for="(item, i) in itemsApproved"-->
-<!--            @item-change="moveToUnApproved"-->
-<!--            :key="'ia-'+i"-->
-<!--            :item="item"-->
-<!--            :index="i"-->
-<!--        >-->
-<!--        </story-pod>-->
+        <story-pod
+            pid="items-approved"
+            :role="role"
+            :sroute="sroute"
+            :stype="stype"
+            :gtype="gtype"
+            :qtype="qtype"
+            v-for="(item, i) in itemsApprovedFilteredPaginated"
+            @item-change="moveToUnApproved"
+            :key="'ia-'+i"
+            :item="item"
+            :index="i"
+        >
+        </story-pod>
       </div>
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
@@ -171,21 +185,6 @@
         <hr/> <!-- End elevated announcements -->
         <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has
           passed</small></h4>
-<!--        <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">-->
-<!--          <div class="btn-group btn-group-xs" role="group">-->
-<!--            <label>Filter: </label>-->
-<!--          </div>-->
-<!--          <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"-->
-<!--               v-iconradio="items_live_filter_storytype">-->
-<!--            <template v-for="item in storyTypeIcons">-->
-<!--              <label class="btn btn-default" data-toggle="tooltip" data-placement="top" title="{{item.name}}"><input-->
-<!--                  type="radio" autocomplete="off" value="{{item.shortname}}"/><span class="item-type-icon-shrt"-->
-<!--                                                                                    :class="typeIcon(item.shortname)"></span></label>-->
-<!--            </template>-->
-<!--          </div>-->
-<!--        </div>-->
-
-
           <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
             <div class="btn-group btn-group-xs" role="group">
               <label>Filter: </label>
@@ -206,21 +205,6 @@
               </template>
             </div>
           </div>
-
-<!--        <story-pod-->
-<!--            pid="items-live"-->
-<!--            :role="role"-->
-<!--            :sroute="sroute"-->
-<!--            :stype="stype"-->
-<!--            :gtype="gtype"-->
-<!--            :qtype="qtype"-->
-<!--            v-for="item in itemsLive"-->
-<!--            @item-change="moveToUnApproved"-->
-<!--            :elevated-storys="elevateditems"-->
-<!--            :item="item"-->
-<!--            :index="$index"-->
-<!--            :is="items-live">-->
-<!--        </story-pod>-->
         <story-pod
             pid="items-live"
             :role="role"
@@ -299,7 +283,7 @@ export default {
   components: {StoryPod, IconToggleBtn, Pagination, flatpickr, Sortable},
   props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
   created() {
-    let twoWeeksEarlier = moment().subtract(2, 'w')
+    let twoWeeksEarlier = moment().subtract(2, 'years')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
@@ -319,7 +303,6 @@ export default {
       elevateditems: [],
       originalelevateditems: [],
       items: [],
-      xitems: [],
       items_unapproved_filtered: [],
       items_unapproved: [],
       items_approved: [],
@@ -349,6 +332,27 @@ export default {
     }
   },
   computed: {
+    itemsLiveFilteredPaginated() {
+      let items = this.itemsLive
+      if (this.items_live_filter_storytype != '') {
+        items = this.allitems.filter(it => it.story_type == this.items_live_filter_storytype)
+      }
+      return items
+    },
+    itemsApprovedFilteredPaginated() {
+      let items = this.itemsApproved
+      if (this.items_approved_filter_storytype != '') {
+        items = this.allitems.filter(it => it.story_type == this.items_approved_filter_storytype)
+      }
+      return items
+    },
+    itemsUnapprovedFilteredPaginated() {
+      let items = this.itemsUnapproved
+      if (this.items_unapproved_filter_storytype != '') {
+        items = this.allitems.filter(it => it.story_type == this.items_unapproved_filter_storytype)
+      }
+      return items
+    },
     checkRoleAndQueueType: function () {
       if (this.role === 'admin' || this.role === 'admin_super') {
         if (this.qtype === 'queueall') {
@@ -373,13 +377,9 @@ export default {
       return false
     },
     s_types: function () {
-      // var data = localStorage[key];
       try {
-        //   this.singleStype = false;
         return JSON.parse(this.stypes);
       } catch (e) {
-        //   this.singleStype = true;
-        // this.record.story_type = this.stypes;
         return this.stypes;
       }
     },
@@ -439,7 +439,7 @@ export default {
       return toString.call(val) === "[object String]";
     },
     filerStoryTypeCustom: function (value) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
 
       if (this.storytype === '') {
         return value.story_type !== '' && regexp.test(value.title)
@@ -447,15 +447,8 @@ export default {
         return value.story_type === this.storytype && regexp.test(value.title)
       }
     },
-    changeFilterByReadyStatus: function (evnt) {
-      if (this.readyStatus == '') {
-        this.resetReadyStatus();
-      } else {
-        this.filterReadyStatus();
-      }
-    },
     filterUnapprovedByStoryType: function (value) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
 
       if (this.items_unapproved_filter_storytype === '') {
         return value.story_type !== '' && regexp.test(value.title);
@@ -464,7 +457,7 @@ export default {
       }
     },
     filterApprovedByStoryType: function (value) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
 
       if (this.items_approved_filter_storytype === '') {
         return value.story_type !== '' && regexp.test(value.title);
@@ -472,9 +465,8 @@ export default {
         return value.story_type === this.items_approved_filter_storytype && regexp.test(value.title);
       }
     },
-
     filterLiveByStoryType: function (value) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
 
       if (this.items_live_filter_storytype === '') {
         return value.story_type !== '' && regexp.test(value.title);
@@ -482,17 +474,6 @@ export default {
         return value.story_type === this.items_live_filter_storytype && regexp.test(value.title);
       }
     },
-
-    // TODO: START HERE. FINISHING POINT ON 3/15/23. Get the live story filters working.
-    itemsLiveFilteredPaginated() {
-      let items = this.items
-      if (this.items_live_filter_storytype != '') {
-        items = this.items.filter(it => it.story_type == this.items_live_filter_storytype)
-      }
-      return items
-    },
-
-
     typeIcon: function (sname) {
       let faicon
       switch (sname) {
@@ -552,9 +533,6 @@ export default {
 
       this.updateRecord(changeditem)
     },
-    // movedItemIndex: function (mid) {
-    //   return this.xitems.findIndex(item => item.id == mid)
-    // },
     updateRecord: function (item) {
       const currentRecordId = item.id;
       item.start_date = moment(item.start_date, "MM-DD-YYYY").format("YYYY-MM-DD")

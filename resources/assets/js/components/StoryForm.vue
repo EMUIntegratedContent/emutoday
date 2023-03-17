@@ -69,13 +69,13 @@
               v-show="storyType == 'featurephoto'">(optional)</span></p>
           <!--          <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType"-->
           <!--                    :content="content" :fresh="isFresh" rows="200"></textarea>-->
-<!--          <ckeditor-->
-<!--              editor-url="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"-->
-<!--              id="content"-->
-<!--              name="content"-->
-<!--              v-model="content"-->
-<!--              :config="editorConfig"-->
-<!--          ></ckeditor>-->
+          <ckeditor
+              id="content"
+              name="content"
+              v-model="content"
+              :editor="editor"
+              :config="editorConfig"
+          ></ckeditor>
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
         </div>
         <div class="form-group user-display">
@@ -278,6 +278,14 @@ import {storyMixin} from "./story_mixin"
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import 'vue-select/dist/vue-select.css'
+import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
+// import '@ckeditor/ckeditor5-media-embed'
+import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials'
+import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold'
+import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic'
+import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline'
+import LinkPlugin from '@ckeditor/ckeditor5-link/src/link'
+import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph'
 
 export default {
   components: {vSelect, flatpickr},
@@ -293,57 +301,71 @@ export default {
   },
   data() {
     return {
-      // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
-      // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
+      editor: ClassicEditor,
+      // CKEditor 5 configuration
       editorConfig: {
         height: '500px',
-        // toolbar: [],
-        toolbarGroups: [
-          {name: 'clipboard', groups: ['clipboard', 'undo']},
-          {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
-          // { name: 'forms', groups: [ 'forms' ] },
-          {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
-          {
-            name: 'paragraph', groups: [
-              'list',
-              'indent',
-              'blocks',
-              'align',
-              // 'bidi',
-              'paragraph'
-            ]
-          },
-          {name: 'links', groups: ['links']},
-          {name: 'insert'},
-          {
-            name: 'document', groups: [
-              'document',
-              'doctools',
-              'mode'
-            ]
-          },
-          {name: 'styles', groups: ['styles']},
-          // { name: 'colors', groups: [ 'colors' ] },
-          {name: 'tools', groups: ['tools']},
-          {name: 'others', groups: ['others']},
-          // { name: 'about', groups: [ 'about' ] }
+        plugins: [
+          EssentialsPlugin,
+          BoldPlugin,
+          ItalicPlugin,
+          LinkPlugin,
+          ParagraphPlugin,
+          UnderlinePlugin
         ],
-        extraPlugins: 'image2,file-manager,horizontalrule,iframe,videoembed',
-        Flmngr: {
-          urlFileManager: "/flmngr.php",
-          urlFiles: "/imgs/uploads/story/images/"
+        toolbar: {
+          items: [
+              'undo', 'redo',
+              '|', 'bold', 'italic', 'underline',
+              '|', 'link'
+          ]
         },
-        extraAllowedContent: 'div(*){*};hr;iframe[*]',
-        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
-        pasteFilter: 'plain-text',
-        filebrowserWindowFeatures: 'resizable=yes',
-        filebrowserBrowseUrl: '/flmngr.php',
-        filebrowserImageBrowseUrl: '/flmngr.php',
+        toolbarGroups: [
+          { name: 'clipboard', groups: ['clipboard', 'undo'] },
+        //   {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
+        //   // { name: 'forms', groups: [ 'forms' ] },
+        //   {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+        //   {
+        //     name: 'paragraph', groups: [
+        //       'list',
+        //       'indent',
+        //       'blocks',
+        //       'align',
+        //       // 'bidi',
+        //       'paragraph'
+        //     ]
+        //   },
+        //   {name: 'links', groups: ['links']},
+        //   {name: 'insert'},
+        //   {
+        //     name: 'document', groups: [
+        //       'document',
+        //       'doctools',
+        //       'mode'
+        //     ]
+        //   },
+        //   {name: 'styles', groups: ['styles']},
+        //   // { name: 'colors', groups: [ 'colors' ] },
+        //   {name: 'tools', groups: ['tools']},
+        //   {name: 'others', groups: ['others']},
+        //   // { name: 'about', groups: [ 'about' ] }
+        ],
+        // extraPlugins: 'image,file-manager,horizontalrule,iframe,videoembed',
+        // extraPlugins: 'media-embed',
+        // Flmngr: {
+        //   urlFileManager: "/flmngr.php",
+        //   urlFiles: "/imgs/uploads/story/images/"
+        // },
+        // extraAllowedContent: 'div(*){*};hr;iframe[*]',
+        // removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
+        // pasteFilter: 'plain-text',
+        // filebrowserWindowFeatures: 'resizable=yes',
+        // filebrowserBrowseUrl: '/flmngr.php',
+        // filebrowserImageBrowseUrl: '/flmngr.php',
         // filebrowserUploadUrl: '/flmngr.php',
         // filebrowserImageUploadUrl: '/flmngr.php',
-        skin: 'moono',
+        skin: 'moono'
       },
-
       tags: [],
       taglist: [],
       selectedAuthor: null,
