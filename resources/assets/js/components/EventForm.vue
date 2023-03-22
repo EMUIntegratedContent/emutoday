@@ -860,7 +860,6 @@ import 'vue-select/dist/vue-select.css'
 // import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  directives: {},
   components: {
     vSelect
   },

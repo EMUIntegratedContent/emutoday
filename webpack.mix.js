@@ -92,6 +92,7 @@ mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-for
 // mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
 // mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js');
 // mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js');
+mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js'); // NOT DONE!!!! CP 3/21/23
 
 /*
 |--------------------------------------------------------------------------

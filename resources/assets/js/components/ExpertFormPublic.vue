@@ -260,7 +260,7 @@
         <!-- Biography -->
         <div v-bind:class="formGroup">
           <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="20"></textarea>
+<!--          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="20"></textarea>-->
           <p v-if="formErrors.biography" class="help-text invalid">You must enter a biography for this expert.</p>
         </div>
       </div>
@@ -450,15 +450,15 @@ h5.form-control {
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
-import ckrte from "../directives/ckrte.js";
-import vSelect from "vue-select";
-import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
-import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
-module.exports = {
-  directives: {ckrte,flatpickr},
-  components: {vSelect},
+import moment from 'moment'
+// import flatpickr from 'flatpickr';
+// import ckrte from "../directives/ckrte.js";
+// import vSelect from "vue-select";
+import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions'
+import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters'
+export default {
+  // directives: {ckrte,flatpickr},
+  // components: {vSelect},
   vuex: {
     getters: {
       thisRecordId: getRecordId,
@@ -570,7 +570,6 @@ module.exports = {
           previousTitles: [],
           social: [],
       },
-      recordState: '',
       response: {},
       social: [],
       totalChars: {
@@ -580,8 +579,6 @@ module.exports = {
   },
   created: function () {
     this.recordState = 'created';
-  },
-  ready: function() {
     if (this.recordexists){
       this.currentRecordId = this.recordid;
       this.newform = false;
@@ -601,7 +598,6 @@ module.exports = {
     }
   },
   computed: {
-
     // switch classes based on css framework. foundation or bootstrap
     md6col: function() {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
@@ -689,71 +685,65 @@ module.exports = {
         this.fetchLanguages();
         this.fetchPreviousTitles();
         this.fetchSocial();
-      }, (response) => {
+      }).catch((e) => {
         this.formErrors = response.data.error.message;
-      }).bind(this);
+      })
     },
 
     // Fetch the tags that match THIS record
     fetchCategoryList: function() {
         this.$http.get('/api/experts/category')
           .then((response) =>{
-            this.$set('categorieslist', response.data);
-        });
+            this.categorieslist = response.data
+          }).catch((e) => {})
     },
 
     // Fetch the categories that matches THIS expert
     fetchCurrentCategory(){
         this.$http.get('/api/experts/category/'+ this.currentRecordId)
             .then((response) => {
-                this.$set('categories', response.data);
-            }, (response) => {
-        });
+                this.categories = response.data
+            }).catch((e) => {})
     },
 
     // Fetch the education that matches THIS expert
     fetchEducation(){
         this.$http.get('/api/experts/education/'+ this.currentRecordId)
             .then((response) => {
-                this.$set('education', response.data);
-            }, (response) => {
-        });
+                this.education = response.data
+            }).catch((e) => {})
     },
 
     // Fetch the expertise that matches THIS expert
     fetchExpertise(){
         this.$http.get('/api/experts/expertise/'+ this.currentRecordId)
             .then((response) => {
-                this.$set('expertise', response.data);
-            }, (response) => {
-        });
+                this.expertise = response.data
+            }).catch((e) => {})
     },
 
     // Fetch the languages that matches THIS expert
     fetchLanguages(){
         this.$http.get('/api/experts/languages/'+ this.currentRecordId)
             .then((response) => {
-                this.$set('languages', response.data);
-            }, (response) => {
-        });
+                this.languages = response.data
+            }).catch((e) => {})
     },
 
     // Fetch the job titles that matches THIS expert
     fetchPreviousTitles(){
         this.$http.get('/api/experts/previoustitles/'+ this.currentRecordId)
             .then((response) => {
-                this.$set('previousTitles', response.data);
-            }, (response) => {
-        });
+                this.previousTitles = response.data
+            }).catch((e) => {})
     },
 
     // Fetch the social media links that matches THIS expert
     fetchSocial(){
         this.$http.get('/api/experts/social/'+ this.currentRecordId)
             .then((response) => {
-                this.$set('social', response.data);
-            }, (response) => {
-        });
+                this.social = response.data
+            }).catch((e) => {})
     },
 
     nowOnReload:function() {

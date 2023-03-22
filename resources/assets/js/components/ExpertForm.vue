@@ -446,13 +446,13 @@ h5.form-control {
 <script>
 import moment from 'moment';
 import flatpickr from 'flatpickr';
-import ckrte from "../directives/ckrte.js";
+import ckrte from "../directives/ckrte.js"
 import vSelect from "vue-select";
 import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
 import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
-module.exports = {
+export default {
   directives: {ckrte,flatpickr},
   components: {vSelect},
   vuex: {
