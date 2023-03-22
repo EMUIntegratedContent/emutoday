@@ -2,7 +2,7 @@
     "private": true,
     "name": "emutoday",
     "description": "/*[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)*/",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "directories": {
         "test": "tests"
     },
@@ -45,6 +45,7 @@
         "@ckeditor/ckeditor5-basic-styles": "^36.0.1",
         "@ckeditor/ckeditor5-block-quote": "^36.0.1",
         "@ckeditor/ckeditor5-build-classic": "^36.0.1",
+        "@ckeditor/ckeditor5-clipboard": "^36.0.1",
         "@ckeditor/ckeditor5-cloud-services": "^36.0.1",
         "@ckeditor/ckeditor5-code-block": "^36.0.1",
         "@ckeditor/ckeditor5-dev-translations": "^35.0.3",
@@ -52,6 +53,7 @@
         "@ckeditor/ckeditor5-dev-webpack-plugin": "^31.1.13",
         "@ckeditor/ckeditor5-editor-classic": "^36.0.1",
         "@ckeditor/ckeditor5-essentials": "^36.0.1",
+        "@ckeditor/ckeditor5-export-pdf": "^36.0.1",
         "@ckeditor/ckeditor5-find-and-replace": "^36.0.1",
         "@ckeditor/ckeditor5-font": "^36.0.1",
         "@ckeditor/ckeditor5-heading": "^36.0.1",
@@ -82,7 +84,7 @@
         "@ckeditor/ckeditor5-vue": "^4.0.1",
         "@ckeditor/ckeditor5-watchdog": "^36.0.1",
         "@ckeditor/ckeditor5-word-count": "^36.0.1",
-        "@edsdk/flmngr-ckeditor5": "^1.0.2",
+        "@edsdk/flmngr-ckeditor5": "^1.0.3",
         "@hapi/hoek": "^10.0.1",
         "@vueform/toggle": "^2.1.2",
         "admin-lte": "^3.2.0",

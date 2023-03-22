@@ -303,10 +303,16 @@ import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar'
 import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative'
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption'
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed'
-import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter'
+import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting'
+import ExportPdf from '@ckeditor/ckeditor5-export-pdf/src/exportpdf'
+import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
+import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters'
+import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials'
+import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard'
+// import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter'
 // import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar'
 // TODO figure out how to get Flmgngr to stop throwing a duplicate-module error
-// import Flmngr from "@edsdk/flmngr-ckeditor5/src/flmngr";
+// import Flmngr from "@edsdk/flmngr-ckeditor5/src/flmngr"
 
 export default {
   components: {vSelect, flatpickr},
@@ -352,7 +358,13 @@ export default {
           Table,
           TableToolbar,
           ImageCaption,
-          SimpleUploadAdapter
+          SourceEditing,
+          ExportPdf,
+          CloudServices,
+          SpecialCharacters,
+          SpecialCharactersEssentials,
+          Clipboard
+          // SimpleUploadAdapter
         ],
         alignment: {
           options: [ 'left', 'center', 'right', 'justify' ]
@@ -398,8 +410,9 @@ export default {
               '|', 'alignment', 'heading', 'fontFamily', 'fontSize',
               '|', 'imageInsert', 'mediaEmbed',
               '|', 'horizontalLine',
-              'insertTable',
-          ]
+              'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters'
+          ],
+          shouldNotGroupWhenFull: true
         },
         // toolbarGroups: [
         //   { name: 'clipboard', groups: ['clipboard', 'undo'] },
