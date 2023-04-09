@@ -12,6 +12,7 @@ use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
 use DB;
+use Mailgun\Mailgun;
 
 class MainController extends Controller
 {
@@ -299,7 +300,8 @@ class MainController extends Controller
       }
 
       /**
-      * Process subscribe form
+      * Process subscribe form.
+      * As of 4/9/23, automatically add the subscriber to the Mailgun list
       */
       public function subscribeForm(Request $request)
       {
@@ -308,14 +310,33 @@ class MainController extends Controller
           'email' => 'required|email',
         ]);
 
-        // Send
-        $to      = "webcomm@emich.edu";
-        $subject = $request->email." would like to subscribe to EMU Today\n\n";
-        $message = $request->email." would like to subscribe to EMU Today\n\n";
-        $headers = 'From: '.$request->email. "\r\n" .
-        'Reply-To: '.$request->email."\r\n" .
-        'X-Mailer: PHP/' . phpversion();
-        mail($to, $subject, $message, $headers);
+        # Instantiate the client.
+        $mgClient = Mailgun::create(env('MAILGUN_SECRET'));
+          $mailing_list = 'livemailersubscribers@today.emich.edu';
+          $address = $request->email;
+          $name = ' ';
+          $vars = [];
+          $subscribed = 'yes';
+          $upsert = 'yes';
+
+        # Issue the call to the client.
+        $mgClient->mailingList()->member()->create(
+          $mailing_list,
+          $address,
+          $name,
+          $vars,
+          $subscribed,
+          $upsert
+        );
+
+//        // Send
+//        $to      = "webcomm@emich.edu";
+//        $subject = $request->email." would like to subscribe to EMU Today\n\n";
+//        $message = $request->email." would like to subscribe to EMU Today\n\n";
+//        $headers = 'From: '.$request->email. "\r\n" .
+//        'Reply-To: '.$request->email."\r\n" .
+//        'X-Mailer: PHP/' . phpversion();
+//        mail($to, $subject, $message, $headers);
 
         // Return success to view
         $data = "Thank you, you have subscribed to EMU Today.";
