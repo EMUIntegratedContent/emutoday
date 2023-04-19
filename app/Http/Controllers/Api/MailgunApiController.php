@@ -24,7 +24,7 @@ class MailgunApiController extends ApiController
 
         // Secure the Webhook endpoint (Note: API key comes from .env file)
         if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['signature']['token'], $mailgun_post_data['signature']['timestamp'], $mailgun_post_data['signature']['signature'])){
-            if(!$this->incrementMailgunStat($mailgun_post_data['today-email-id'], 'open')){
+            if(!$this->incrementMailgunStat($mailgun_post_data['event-data']['user-variables']['today-email-id'], 'open')){
                 return $this->setStatusCode(400)
                     ->respond('Email not found.');
             }
@@ -43,7 +43,7 @@ class MailgunApiController extends ApiController
 
         // Secure the Webhook endpoint (Note: API key comes from .env file)
         if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['signature']['token'], $mailgun_post_data['signature']['timestamp'], $mailgun_post_data['signature']['signature'])){
-            if(!$this->incrementMailgunStat($mailgun_post_data['today-email-id'], 'click')){
+            if(!$this->incrementMailgunStat($mailgun_post_data['event-data']['user-variables']['today-email-id'], 'click')){
                 return $this->setStatusCode(400)
                     ->respond('Email not found.');
             }
@@ -62,7 +62,7 @@ class MailgunApiController extends ApiController
 
         // Secure the Webhook endpoint (Note: API key comes from .env file)
         if($this->verify(env('MAILGUN_SECRET'), $mailgun_post_data['signature']['token'], $mailgun_post_data['signature']['timestamp'], $mailgun_post_data['signature']['signature'])){
-            if(!$this->incrementMailgunStat($mailgun_post_data['today-email-id'], 'spam')){
+            if(!$this->incrementMailgunStat($mailgun_post_data['event-data']['user-variables']['today-email-id'], 'spam')){
                 return $this->setStatusCode(400)
                     ->respond('Email not found.');
             }
@@ -121,3 +121,4 @@ class MailgunApiController extends ApiController
         return hash_hmac('sha256', $timestamp.$token, $apiKey) === $signature;
     }
 }
+
