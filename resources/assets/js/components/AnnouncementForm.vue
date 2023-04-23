@@ -31,6 +31,7 @@
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <div v-bind:class="formGroup">
+            {{ formErrors }}
             <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span>
               <p class="help-text" id="announcement-helptext">({{ descriptionChars }} characters left)</p>
             </label>
@@ -524,7 +525,7 @@ export default {
             this.record.start_time = response.data.data.start_time;
           })
           .catch((e) => {
-            this.formErrors = response.data.error.message;
+            this.formErrors = e.response.data.error.message;
           })
     },
     checkOverData: function () {
@@ -626,11 +627,11 @@ export default {
             this.fetchCurrentRecord(this.record.id)
             this.refreshUserAnnouncementTable();
           })
-          .catch((response) => { // If invalid. error callback
-            this.formMessage.isOk = false;
-            this.formMessage.isErr = true;
+          .catch((e) => { // If invalid. error callback
+            this.formMessage.isOk = false
+            this.formMessage.isErr = true
             // Set errors from validation to vue data
-            this.formErrors = response.data.error.message;
+            this.formErrors = e.response.data.error.message
           })
     }
   }

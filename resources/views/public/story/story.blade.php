@@ -89,7 +89,7 @@
               </div>
               <div class="no-dots-bottom">
                 <p>
-                  Contact:<br>
+                  Media Contact:<br>
                   {{ $story->contact->first_name }} {{ $story->contact->last_name }}<br>
                   <a href="mailto:{{ $story->contact->email }}">{{ $story->contact->email }}</a><br>
                   <a href="tel:{{ $story->contact->phone }}">{{ $story->contact->phone }}</a>

@@ -12621,9 +12621,6 @@ var vm = new Vue({
     components: {
         ExpertList: _ExpertList2.default,
         ExpertBoxTools: _ExpertBoxTools2.default
-    },
-    ready: function ready() {
-        console.log('Expert List ready');
     }
 });
 

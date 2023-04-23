@@ -1,14 +1,6 @@
 {
     "/js/vue-event-form.js": "/js/vue-event-form.js",
     "/js/vue-event-queue.js": "/js/vue-event-queue.js",
-    "/js/vue-event-lbcqueue.js": "/js/vue-event-lbcqueue.js",
-    "/js/vue-event-hscqueue.js": "/js/vue-event-hscqueue.js",
-    "/js/vue-announcement-form.js": "/js/vue-announcement-form.js",
-    "/js/vue-announcement-queue.js": "/js/vue-announcement-queue.js",
-    "/js/vue-archive-queue.js": "/js/vue-archive-queue.js",
-    "/js/vue-magazine-builder.js": "/js/vue-magazine-builder.js",
-    "/js/vue-story-queue.js": "/js/vue-story-queue.js",
-    "/js/vue-story-form-wrapper.js": "/js/vue-story-form-wrapper.js",
     "/js/vue-expert-form.js": "/js/vue-expert-form.js",
     "/css/public-styles.css": "/css/public-styles.css"
 }
