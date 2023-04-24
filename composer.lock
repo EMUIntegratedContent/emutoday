@@ -980,21 +980,20 @@
         },
         {
             "name": "edsdk/flmngr-server-php",
-            "version": "1.5.7",
+            "version": "1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/edsdk/flmngr-server-php.git",
-                "reference": "f2cdb3fbe50a137b5a40a8c09f9684addd6da00f"
+                "reference": "814c69bb1956421e79bafdc08a6baf6ab8f088a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/edsdk/flmngr-server-php/zipball/f2cdb3fbe50a137b5a40a8c09f9684addd6da00f",
-                "reference": "f2cdb3fbe50a137b5a40a8c09f9684addd6da00f",
+                "url": "https://api.github.com/repos/edsdk/flmngr-server-php/zipball/814c69bb1956421e79bafdc08a6baf6ab8f088a6",
+                "reference": "814c69bb1956421e79bafdc08a6baf6ab8f088a6",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "ext-exif": "*",
                 "ext-gd": "*",
                 "ext-json": "*"
             },
@@ -1027,9 +1026,9 @@
             ],
             "support": {
                 "issues": "https://github.com/edsdk/flmngr-server-php/issues",
-                "source": "https://github.com/edsdk/flmngr-server-php/tree/1.5.7"
+                "source": "https://github.com/edsdk/flmngr-server-php/tree/1.5.4"
             },
-            "time": "2023-04-13T15:41:56+00:00"
+            "time": "2023-04-11T15:44:34+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -1385,16 +1384,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.296.0",
+            "version": "v0.297.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "30cf08b4f0a064f1c1271b5d8576fe9a6aa47c0c"
+                "reference": "a00a70ed5c425ba94bb7c6e4bb918ee5844d84a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/30cf08b4f0a064f1c1271b5d8576fe9a6aa47c0c",
-                "reference": "30cf08b4f0a064f1c1271b5d8576fe9a6aa47c0c",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/a00a70ed5c425ba94bb7c6e4bb918ee5844d84a8",
+                "reference": "a00a70ed5c425ba94bb7c6e4bb918ee5844d84a8",
                 "shasum": ""
             },
             "require": {
@@ -1423,9 +1422,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.296.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.297.0"
             },
-            "time": "2023-04-16T00:56:11+00:00"
+            "time": "2023-04-22T00:54:12+00:00"
         },
         {
             "name": "google/auth",

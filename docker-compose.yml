@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: 'localhost'
+      DB_PORT: 3306
+      DB_DATABASE: 'emutoday'
+      DB_USERNAME: 'homestead'
+      DB_PASSWORD: 'secret'
