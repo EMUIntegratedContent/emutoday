@@ -78,7 +78,6 @@ mix.combine([
 // Compile vue files
 // mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js');
 // mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js');
-// mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js');
 // mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
 // mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js');
 // mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js');
@@ -88,13 +87,13 @@ mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').v
 mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js').vue();
 // mix.js('resources/assets/js/vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js').vue();
 // mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue();
-// mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js');
-// mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js');
-// mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js');
-// mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js');
-// mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js'); // NOT DONE!!!! CP 3/4/23
-// mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js'); // NOT DONE!!!! CP 3/4/23
-mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js'); // NOT DONE!!!! CP 3/21/23
+// mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js').vue();
+// mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js').vue();
+// mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js').vue();
+// mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js').vue();
+// mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
+// mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
+// mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
 
 /*
 |--------------------------------------------------------------------------

@@ -91,18 +91,44 @@
     <div class="row">
       <div :class="md6col">
         <div class="form-group">
-          <label for="start-date">Event Start Date: <span :class="iconStar" class="reqstar"></span></label>
-          <input id="start-date" :class="[formErrors.start_date ? 'invalid-input' : '']" type="text"
-                 v-model="record.start_date" aria-describedby="errorStartDate"/>
+<!--          <label for="start-date">Event Start Date: <span :class="iconStar" class="reqstar"></span></label>-->
+<!--          <input id="start-date" :class="[formErrors.start_date ? 'invalid-input' : '']" type="text"-->
+<!--                 v-model="record.start_date" aria-describedby="errorStartDate"/>-->
+
+          <label for="start-date">Event Start Date: <span :class="iconStar" class="reqstar"></span>
+            <flatpickr
+                v-model="record.start_date"
+                id="start-date"
+                :config="startDateConfig"
+                class="form-control"
+                :class="[formErrors.start_date ? 'invalid-input' : '']"
+                aria-describedby="errorStartDate"
+                @onChange="handleChangeDate('start-date')"
+            >
+            </flatpickr>
+          </label>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
         </div><!--form-group -->
       </div><!-- /.md6col -->
       <div :class="md6col">
         <div class="form-group">
-          <label for="end-date">End Date: <span :class="iconStar" class="reqstar"></span></label>
-          <input id="end-date" :class="[formErrors.end_date ? 'invalid-input' : '']" type="text"
-                 v-model="record.end_date" aria-describedby="errorEndDate"/>
+<!--          <label for="end-date">End Date: <span :class="iconStar" class="reqstar"></span></label>-->
+<!--          <input id="end-date" :class="[formErrors.end_date ? 'invalid-input' : '']" type="text"-->
+<!--                 v-model="record.end_date" aria-describedby="errorEndDate"/>-->
           <!-- <datepicker id="end-date" :readonly="true" format="YYYY-MM-DD" name="end-date" :value.sync="edate"></datepicker> -->
+          {{ endDateConfig }}
+          <label for="start-date">End Date: <span :class="iconStar" class="reqstar"></span>
+            <flatpickr
+                v-model="record.end_date"
+                id="end-date"
+                :config="endDateConfig"
+                class="form-control"
+                :class="[formErrors.end_date ? 'invalid-input' : '']"
+                aria-describedby="errorEndDate"
+                @onChange="handleChangeDate('end-date')"
+            >
+            </flatpickr>
+          </label>
           <p v-if="formErrors.end_date" class="help-text invalid">Need an End Date</p>
         </div><!--form-group -->
       </div><!-- /.md6col -->
@@ -853,15 +879,15 @@ textarea {
 </style>
 
 <script>
-import flatpickr from "flatpickr"
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-// import flatPickr from 'vue-flatpickr-component'
-// import 'flatpickr/dist/flatpickr.css'
 
 export default {
   components: {
-    vSelect
+    vSelect,
+    flatpickr
   },
   props: {
     recordexists: {default: false},
@@ -871,6 +897,16 @@ export default {
   },
   data: function () {
     return {
+      startDateConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+      },
+      endDateConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+      },
       minicalslist: [],
       dateObject: {
         startDateMin: '',
@@ -955,7 +991,6 @@ export default {
       let fetchme = this.recordid ? this.recordid : this.record.id;
       this.fetchCurrentRecord(fetchme)
     }
-    this.setupDatePickers();
     this.fetchMiniCalsList();
     this.fetchForSelectBuildingList("");
     this.fetchForSelectCategoriesList("");
@@ -1098,91 +1133,105 @@ export default {
 
           })
     },
-    setupDatePickers: function () {
-      const self = this;
-      if (this.record.start_date === '') {
-        this.dateObject.startDateMin = this.currentDate;
-        this.dateObject.startDateDefault = null;
-
-        this.dateObject.endDateMin = null;
-        this.dateObject.endDateDefault = null;
-      } else {
-        this.dateObject.startDateMin = this.record.start_date;
-        this.dateObject.startDateDefault = this.record.start_date;
-        this.dateObject.endDateMin = this.record.start_date;
-        this.dateObject.endDateDefault = this.record.end_date;
-        this.dateObject.startTimeDefault = this.record.start_time;
-        this.dateObject.endTimeDefault = this.record.end_time;
-        this.dateObject.regDateMin = this.record.start_date;
-        this.dateObject.regDateDefault = this.record.reg_deadline;
+    handleChangeDate (type) {
+      if(type === 'start-date') {
+        this.endDateConfig.minDate = this.record.start_date
+        if(this.record.start_date > this.record.end_date) {
+          this.record.end_date = null
+        }
+      } else if (type === 'end-date') {
+        if(this.record.end_date < this.record.start_date) {
+          this.record.start_date = null
+          this.endDateConfig.maxDate = this.record.end_date
+        }
+        this.endDateConfig.minDate = this.record.start_date
       }
-      this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-        // minDate: self.dateObject.startDateMin,
-        defaultDate: self.dateObject.startDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d",
-        // minDate: new Date(),
-        onChange(dateObject, dateString) {
-          self.enddatePicker.set("minDate", dateObject);
-          self.record.start_date = dateString;
-          self.startdatePicker.value = dateString;
-        }
-      });
-
-      this.enddatePicker = flatpickr(document.getElementById("end-date"), {
-        minDate: self.dateObject.endDateMin,
-        defaultDate: self.dateObject.endDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d",
-        // minDate: new Date(),
-        onChange(dateObject, dateString) {
-          self.startdatePicker.set("maxDate", dateObject);
-          self.record.end_date = dateString;
-          self.enddatePicker.value = dateString;
-        }
-      });
-
-      this.starttimePicker = flatpickr(document.getElementById("start-time"), {
-        noCalendar: true,
-        enableTime: true,
-        defaultDate: self.dateObject.startTimeDefault,
-        dateFormat: "h:i K",
-        onChange(timeObject, timeString) {
-          self.record.start_time = timeString;
-          self.starttimePicker.value = timeString;
-        }
-      });
-      this.endtimePicker = flatpickr(document.getElementById("end-time"), {
-        noCalendar: true,
-        enableTime: true,
-        defaultDate: self.dateObject.endTimeDefault,
-        dateFormat: "h:i K",
-        onChange(timeObject, timeString) {
-          self.record.end_time = timeString;
-          self.endtimePicker.value = timeString;
-        }
-      });
-
-      this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"), {
-        minDate: self.dateObject.regDateMin,
-        defaultDate: self.dateObject.regDateDefault,
-        enableTime: false,
-        // altFormat: "m-d-Y",
-        altInput: true,
-        altInputClass: "form-control",
-        dateFormat: "Y-m-d",
-        onChange(dateObject, dateString) {
-          self.record.reg_deadline = dateString;
-          self.regdeadlinePicker.value = dateString;
-        }
-      });
     },
+    // setupDatePickers: function () {
+    //   const self = this;
+    //   if (this.record.start_date === '') {
+    //     this.dateObject.startDateMin = this.currentDate;
+    //     this.dateObject.startDateDefault = null;
+    //
+    //     this.dateObject.endDateMin = null;
+    //     this.dateObject.endDateDefault = null;
+    //   } else {
+    //     this.dateObject.startDateMin = this.record.start_date;
+    //     this.dateObject.startDateDefault = this.record.start_date;
+    //     this.dateObject.endDateMin = this.record.start_date;
+    //     this.dateObject.endDateDefault = this.record.end_date;
+    //     this.dateObject.startTimeDefault = this.record.start_time;
+    //     this.dateObject.endTimeDefault = this.record.end_time;
+    //     this.dateObject.regDateMin = this.record.start_date;
+    //     this.dateObject.regDateDefault = this.record.reg_deadline;
+    //   }
+    //   this.startdatePicker = flatpickr(document.getElementById("start-date"), {
+    //     // minDate: self.dateObject.startDateMin,
+    //     defaultDate: self.dateObject.startDateDefault,
+    //     enableTime: false,
+    //     // altFormat: "m-d-Y",
+    //     altInput: true,
+    //     altInputClass: "form-control",
+    //     dateFormat: "Y-m-d",
+    //     // minDate: new Date(),
+    //     onChange(dateObject, dateString) {
+    //       self.enddatePicker.set("minDate", dateObject);
+    //       self.record.start_date = dateString;
+    //       self.startdatePicker.value = dateString;
+    //     }
+    //   });
+    //
+    //   this.enddatePicker = flatpickr(document.getElementById("end-date"), {
+    //     minDate: self.dateObject.endDateMin,
+    //     defaultDate: self.dateObject.endDateDefault,
+    //     enableTime: false,
+    //     // altFormat: "m-d-Y",
+    //     altInput: true,
+    //     altInputClass: "form-control",
+    //     dateFormat: "Y-m-d",
+    //     // minDate: new Date(),
+    //     onChange(dateObject, dateString) {
+    //       self.startdatePicker.set("maxDate", dateObject);
+    //       self.record.end_date = dateString;
+    //       self.enddatePicker.value = dateString;
+    //     }
+    //   });
+    //
+    //   this.starttimePicker = flatpickr(document.getElementById("start-time"), {
+    //     noCalendar: true,
+    //     enableTime: true,
+    //     defaultDate: self.dateObject.startTimeDefault,
+    //     dateFormat: "h:i K",
+    //     onChange(timeObject, timeString) {
+    //       self.record.start_time = timeString;
+    //       self.starttimePicker.value = timeString;
+    //     }
+    //   });
+    //   this.endtimePicker = flatpickr(document.getElementById("end-time"), {
+    //     noCalendar: true,
+    //     enableTime: true,
+    //     defaultDate: self.dateObject.endTimeDefault,
+    //     dateFormat: "h:i K",
+    //     onChange(timeObject, timeString) {
+    //       self.record.end_time = timeString;
+    //       self.endtimePicker.value = timeString;
+    //     }
+    //   });
+    //
+    //   this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"), {
+    //     minDate: self.dateObject.regDateMin,
+    //     defaultDate: self.dateObject.regDateDefault,
+    //     enableTime: false,
+    //     // altFormat: "m-d-Y",
+    //     altInput: true,
+    //     altInputClass: "form-control",
+    //     dateFormat: "Y-m-d",
+    //     onChange(dateObject, dateString) {
+    //       self.record.reg_deadline = dateString;
+    //       self.regdeadlinePicker.value = dateString;
+    //     }
+    //   });
+    // },
 
     fetchSubmittedRecord: function (recid) {
       // Sets params for update record, Passes an id to fetchCurrentRecord
@@ -1255,8 +1304,6 @@ export default {
       });
 
       this.record.categories = self.record.eventcategories;
-
-      this.setupDatePickers();
     },
     fetchForSelectCategoriesList(search, loading) {
       loading ? loading(true) : undefined;
@@ -1340,7 +1387,6 @@ export default {
                 this.record.start_date = tempdate;
                 this.record.end_date = tempdate;
                 this.record.reg_deadline = tempdate;
-                this.setupDatePickers();
               }
             }, (response) => {
               console.log('Error: ' + JSON.stringify(response))
