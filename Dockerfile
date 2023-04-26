@@ -4,8 +4,9 @@ FROM php:8.1-apache
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
 RUN apt-get update && \
-    apt-get install -y libonig-dev libzip-dev zip unzip git libpng-dev libfreetype6-dev libjpeg62-turbo-dev && \
-    docker-php-ext-install pdo_mysql mysqli zip gd
+    apt-get install -y libonig-dev libzip-dev zip unzip git libpng-dev libfreetype6-dev libjpeg62-turbo-dev
+RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
+RUN docker-php-ext-install pdo_mysql mysqli zip gd
 
 COPY . /var/www/html/
 
@@ -15,7 +16,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN a2enmod rewrite
 
 # Copy the Apache virtual host configuration file to the container
-COPY ./docker/vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY vhost.conf /etc/apache2/sites-available/000-default.conf
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache

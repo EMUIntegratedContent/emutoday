@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./:/var/www/html
+      - .:/var/www/html
     depends_on:
       - db
 
@@ -21,6 +21,8 @@ services:
       MYSQL_PASSWORD: 'secret'
     volumes:
       - emutodaydb:/var/lib/mysql
+    ports:
+      - "3306:3306"
 
   mailhog:
     image: mailhog/mailhog:v1.0.0
