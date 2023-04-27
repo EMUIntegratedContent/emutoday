@@ -12,7 +12,7 @@ use Emutoday\User;
 use Emutoday\Tweet;
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;
-use Analytics;
+//use Analytics;
 
 // For search
 use Illuminate\Pagination\LengthAwarePaginator;
