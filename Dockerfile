@@ -8,21 +8,20 @@ RUN apt-get update && \
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
 RUN docker-php-ext-install pdo_mysql mysqli zip gd
 
-COPY . /var/www/html/
-
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN a2enmod rewrite
 
 # Copy the Apache virtual host configuration file to the container
-COPY vhost.conf /etc/apache2/sites-available/000-default.conf
+COPY docker_vhost.conf /etc/apache2/sites-available/000-default.conf
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Copy the shell script into the container
+COPY docker_postscript.sh /usr/local/bin/docker_postscript.sh
 
-# Clear Laravel cache
-#WORKDIR /var/www/html
-#RUN php artisan cache:clear
+# Set executable permissions for the shell script
+RUN chmod +x /usr/local/bin/docker_postscript.sh
 
-CMD ["apache2-foreground"]
+# Set the entrypoint to execute the shell script
+ENTRYPOINT ["/usr/local/bin/docker_postscript.sh"]
+
