@@ -21,7 +21,7 @@
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5">
       <form class="form-inline">
         <div class="form-group">
-          <label for="startDatePicker">Showing announcements starting <span v-if="isEndDate">between</span><span v-else>on or after</span>
+          <label>Showing announcements starting <span v-if="isEndDate">between</span><span v-else>on or after</span>
             <flatpickr
                 v-if="startdate"
                 v-model="startdate"
@@ -34,7 +34,7 @@
           </label>
         </div>
         <div v-if="isEndDate" class="form-group">
-          <label for="endDatePicker"> and
+          <label> and
             <flatpickr
                 v-if="enddate"
                 v-model="enddate"

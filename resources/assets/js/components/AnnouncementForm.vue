@@ -129,7 +129,7 @@
     <div class="row">
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <label for="publishDatePicker">Publish Date: <span v-bind:class="iconStar" class="reqstar"></span>
+          <label>Publish Date: <span v-bind:class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.start_date"
                 id="publishDatePicker"
@@ -148,7 +148,7 @@
 
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <label for="endDatePicker">End Date: <span v-bind:class="iconStar" class="reqstar"></span>
+          <label>End Date: <span v-bind:class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.end_date"
                 id="endDatePicker"

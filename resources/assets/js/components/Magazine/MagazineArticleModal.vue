@@ -12,7 +12,7 @@
 					<!-- Date filter -->
 					<form class="form-inline">
             <div class="form-group">
-              <label for="start-date">Showing articles with a Start Date <span v-if="isEndDate">between</span><span v-else>on or after</span>
+              <label>Showing articles with a Start Date <span v-if="isEndDate">between</span><span v-else>on or after</span>
                 <flatpickr
                     v-if="startDate"
                     v-model="startDate"
@@ -25,7 +25,7 @@
               </label>
             </div>
             <div v-if="isEndDate" class="form-group">
-              <label for="end-date"> and
+              <label> and
                 <flatpickr
                     v-if="endDate"
                     v-model="endDate"

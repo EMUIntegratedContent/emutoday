@@ -45,7 +45,14 @@
       <div :class="md6col">
         <div class="form-group">
           <label>Is Event on Campus?
-            <input id="on-campus-yes" name="on_campus" type="checkbox" value="1" v-model="record.on_campus"/>
+            <input
+                id="on-campus-yes"
+                name="on_campus"
+                type="checkbox"
+                :true-value="1"
+                :false-value="0"
+                v-model="record.on_campus"
+            />
           </label>
         </div>
       </div><!-- /.md6col -->
@@ -91,11 +98,7 @@
     <div class="row">
       <div :class="md6col">
         <div class="form-group">
-<!--          <label for="start-date">Event Start Date: <span :class="iconStar" class="reqstar"></span></label>-->
-<!--          <input id="start-date" :class="[formErrors.start_date ? 'invalid-input' : '']" type="text"-->
-<!--                 v-model="record.start_date" aria-describedby="errorStartDate"/>-->
-
-          <label for="start-date">Event Start Date: <span :class="iconStar" class="reqstar"></span>
+          <label>Start Date: <span :class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.start_date"
                 id="start-date"
@@ -112,12 +115,7 @@
       </div><!-- /.md6col -->
       <div :class="md6col">
         <div class="form-group">
-<!--          <label for="end-date">End Date: <span :class="iconStar" class="reqstar"></span></label>-->
-<!--          <input id="end-date" :class="[formErrors.end_date ? 'invalid-input' : '']" type="text"-->
-<!--                 v-model="record.end_date" aria-describedby="errorEndDate"/>-->
-          <!-- <datepicker id="end-date" :readonly="true" format="YYYY-MM-DD" name="end-date" :value.sync="edate"></datepicker> -->
-          {{ endDateConfig }}
-          <label for="start-date">End Date: <span :class="iconStar" class="reqstar"></span>
+          <label>End Date: <span :class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.end_date"
                 id="end-date"
@@ -138,29 +136,50 @@
       <div :class="md6col">
         <div class="form-group">
           <label for="all-day">All Day Event:
-            <input id="all-day" name="all_day" type="checkbox" value="1" v-model="record.all_day"/>
+            <input id="all-day" name="all_day" type="checkbox" :true-value="1"
+                   :false-value="0" v-model="record.all_day"/>
           </label>
         </div>
       </div><!-- /.small-6 column -->
       <div :class="md6col">
         <div v-show="hasStartTime" class="form-group">
           <label for="no-end-time">No End Time:</label>
-          <input id="no-end-time" name="no_end_time" type="checkbox" value="1" v-model="record.no_end_time"/>
+          <input id="no-end-time" name="no_end_time" type="checkbox" :true-value="1"
+                 :false-value="0" v-model="record.no_end_time"/>
         </div>
       </div><!-- /.small-6 column -->
     </div><!-- /.row -->
     <div class="row">
       <div :class="md6col">
         <div v-show="hasStartTime" class="form-group">
-          <label for="start-time">Start Time: <span :class="iconStar" class="reqstar"></span></label>
-          <input id="start-time" class="form-control" type="text" v-model="record.start_time" readonly/>
+          <label>Start Time: <span :class="iconStar" class="reqstar"></span>
+            <flatpickr
+                v-model="record.start_time"
+                id="start-time"
+                :config="startTimeConfig"
+                class="form-control"
+                :class="[formErrors.start_time ? 'invalid-input' : '']"
+                aria-describedby="errorStartTime"
+            >
+            </flatpickr>
+          </label>
           <p v-if="formErrors.start_time" class="help-text invalid">Need a Start Time</p>
         </div><!-- /.form-group -->
       </div><!-- /.md6col -->
       <div :class="md6col">
         <div v-show="hasEndTime" class="form-group">
-          <label for="end-time">End Time: <span :class="iconStar" class="reqstar"></span></label>
-          <input id="end-time" class="form-control" type="text" v-model="record.end_time" readonly/>
+          <label>End Time: <span :class="iconStar" class="reqstar"></span>
+            <flatpickr
+                v-model="record.end_time"
+                id="end-time"
+                :config="endTimeConfig"
+                class="form-control"
+                :class="[formErrors.end_time ? 'invalid-input' : '']"
+                aria-describedby="errorEndTime"
+            >
+            </flatpickr>
+          </label>
+          <p v-if="formErrors.end_time" class="help-text invalid">Need an End Time</p>
         </div><!-- /.form-group -->
       </div><!-- /.md6col -->
     </div><!-- /.row -->
@@ -279,7 +298,7 @@
         <div :class="md4col">
           <div v-bind:class="formGroup">
             <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
-            <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+            <p class="help-text" id="link_txt-helptext-2">(ex. The event webpage)</p>
             <input v-model="record.related_link_2_txt" class="form-control"
                    v-bind:class="[formErrors.related_link_2_txt ? 'invalid-input' : '']" name="related_link_2_txt"
                    type="text" maxlength="80">
@@ -318,7 +337,7 @@
         <div :class="md4col">
           <div v-bind:class="formGroup">
             <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
-            <p class="help-text" id="link_txt-helptext">(ex. The event webpage)</p>
+            <p class="help-text" id="link_txt-helptext-3">(ex. The event webpage)</p>
             <input v-model="record.related_link_3_txt" class="form-control"
                    v-bind:class="[formErrors.related_link_3_txt ? 'invalid-input' : '']" name="related_link_3_txt"
                    type="text" maxlength="80">
@@ -339,10 +358,17 @@
     <div class="row">
       <div :class="md6col">
         <div class="form-group">
-          <label for="reg-deadline">Registration Deadline</label>
-          <input id="reg-deadline" :class="[formErrors.reg_deadline ? 'invalid-input' : '']" type="text"
-                 v-model="record.reg_deadline" aria-describedby="errorRegDeadline"/>
-          <p v-if="formErrors.reg_deadline" class="help-text invalid">Error</p>
+          <label>Registration Deadline:
+            <flatpickr
+                v-model="record.reg_deadline"
+                id="reg-deadline"
+                :config="regDeadlineConfig"
+                class="form-control"
+                :class="[formErrors.reg_deadline ? 'invalid-input' : '']"
+                aria-describedby="regDeadlineDate"
+            >
+            </flatpickr>
+          </label>
         </div>
       </div><!-- /.md6col-->
     </div><!-- /.row -->
@@ -352,7 +378,8 @@
           <div :class="md2col">
             <label>Free</label>
             <div :class="formGroup">
-              <input id="free" name="free" type="checkbox" value="1" v-model="record.free"/>
+              <input id="free" name="free" type="checkbox" :true-value="1"
+                     :false-value="0" v-model="record.free"/>
             </div><!-- /.form-group -->
           </div><!-- /.md4col -->
           <div :class="md10col">
@@ -431,7 +458,8 @@
       <div :class="md6col">
         <div :class="formGroup">
           <label for="lbc-approved">Request for LBC
-            <input id="lbc-approved" name="lbc-approved" type="checkbox" value="1" v-model="record.lbc_approved"/>
+            <input id="lbc-approved" name="lbc-approved" type="checkbox" :true-value="1"
+                   :false-value="0" v-model="record.lbc_approved"/>
           </label>
         </div>
       </div><!-- /.md6col -->
@@ -442,7 +470,7 @@
       <div :class="md12col">
       </div><!-- /.md12col -->
       <div :class="md12col">
-        <label for="minical">Select your department's mini calendar(s)
+        <label>Select your department's mini calendar(s)
           <v-select id="minical"
                     v-model="record.minicalendars"
                     :options="minicalslist"
@@ -455,10 +483,12 @@
     <div class="row" id="submit-area">
       <div v-if="isadmin" :class="md4col">
         <div class="checkbox">
-          <label><input type="checkbox" v-model="record.admin_pre_approved">Auto Approve</label>
+          <label><input type="checkbox" v-model="record.admin_pre_approved" :true-value="1"
+                        :false-value="0">Auto Approve</label>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox" v-model="record.is_hidden">Hide from EMU Today Calendar (will still show on mini
+          <label><input type="checkbox" v-model="record.is_hidden" :true-value="1"
+                        :false-value="0">Hide from EMU Today Calendar (will still show on mini
             calendars, if applicable)</label>
         </div>
       </div>
@@ -586,7 +616,6 @@ textarea {
   resize: vertical !important;
 }
 </style>
-
 <style>
 .v-select {
   position: relative;
@@ -890,10 +919,10 @@ export default {
     flatpickr
   },
   props: {
-    recordexists: {default: false},
-    recordid: {default: ''},
-    framework: {default: 'foundation'},
-    isadmin: {default: false},
+    recordexists: { default: false },
+    recordid: { default: '' },
+    framework: { default: 'foundation' },
+    isadmin: { default: false },
   },
   data: function () {
     return {
@@ -907,17 +936,26 @@ export default {
         altInput: true,
         dateFormat: "Y-m-d", // format sumbitted to the API
       },
-      minicalslist: [],
-      dateObject: {
-        startDateMin: '',
-        startDateDefault: '',
-        endDateMin: '',
-        endDateDefault: '',
-        startTimeDefault: '',
-        endTimeDefault: '',
-        regDateMin: '',
-        regDateDefault: ''
+      startTimeConfig: {
+        enableTime: true,
+        noCalendar: true,
+        altFormat: "h:i K", // format the user sees
+        altInput: true,
+        dateFormat: "H:i", // format sumbitted to the API
       },
+      endTimeConfig: {
+        enableTime: true,
+        noCalendar: true,
+        altFormat: "h:i K", // format the user sees
+        altInput: true,
+        dateFormat: "H:i", // format sumbitted to the API
+      },
+      regDeadlineConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+      },
+      minicalslist: [],
       startdatePicker: null,
       enddatePicker: null,
       starttimePicker: null,
@@ -928,18 +966,18 @@ export default {
       stime: '',
       rdate: '',
       ticketoptions: [
-        {label: 'Online', value: 'online'},
-        {label: 'Phone', value: 'phone'},
-        {label: 'Ticket Office', value: 'office'},
-        {label: 'Online, Phone and Ticket Office', value: 'all'},
-        {label: 'Other', value: 'other'},
+        { label: 'Online', value: 'online' },
+        { label: 'Phone', value: 'phone' },
+        { label: 'Ticket Office', value: 'office' },
+        { label: 'Online, Phone and Ticket Office', value: 'all' },
+        { label: 'Other', value: 'other' },
       ],
       participants: [
-        {label: 'Campus Only', value: 'campus'},
-        {label: 'Open to Public', value: 'public'},
-        {label: 'Students Only', value: 'students'},
-        {label: 'Invitation Only', value: 'invite'},
-        {label: 'Tickets Required', value: 'tickets'},
+        { label: 'Campus Only', value: 'campus' },
+        { label: 'Open to Public', value: 'public' },
+        { label: 'Students Only', value: 'students' },
+        { label: 'Invitation Only', value: 'invite' },
+        { label: 'Tickets Required', value: 'tickets' },
       ],
       totalChars: {
         start: 0,
@@ -968,9 +1006,12 @@ export default {
         categories: [],
         is_canceled: 0,
         is_hidden: 0,
-        start_time: '12:00 PM',
-        end_time: '12:00 PM',
+        start_date: null,
+        end_date: null,
+        start_time: '12:00',
+        end_time: '12:00',
         admin_pre_approved: false,
+        reg_deadline: null
       },
       record_exists: false,
       response: {},
@@ -985,7 +1026,7 @@ export default {
       formErrors: {}
     }
   },
-  mounted() {
+  created () {
     this.record_exists = this.recordexists;
     if (this.thisRecordExists) {
       let fetchme = this.recordid ? this.recordid : this.record.id;
@@ -1054,7 +1095,8 @@ export default {
         this.record.building = this.building.name;
         bldg = this.record.building
         room = (this.record.room) ? ' - ' + this.record.room : '';
-      } else {
+      }
+      else {
         bldg = ''
         room = ''
       }
@@ -1069,7 +1111,8 @@ export default {
     realCost: function () {
       if (this.record.free == 1) {
         return '0.00';
-      } else {
+      }
+      else {
         return '';
       }
     },
@@ -1077,7 +1120,8 @@ export default {
       if (this.record.free == 1) {
         this.record.cost = '0.00';
         return false;
-      } else {
+      }
+      else {
         return true;
       }
     },
@@ -1117,121 +1161,36 @@ export default {
 
     fetchMiniCalsList: function () {
       this.$http.get('/api/minicalslist')
-          .then((response) => {
-            this.minicalslist = response.data;
+      .then((response) => {
+        this.minicalslist = response.data;
 
-            let self = this;
+        let self = this;
 
-            $.each(response.data, function (index, value) {
-              self.minicalslist[index].label = value.calendar;
-              self.minicalslist[index].code = value.value;
-            });
-          }, (response) => {
-            //error callback
-            console.log("ERRORS");
-            this.formErrors = response.data.error.message;
-
-          })
+        $.each(response.data, function (index, value) {
+          self.minicalslist[index].label = value.calendar;
+          self.minicalslist[index].code = value.value;
+        });
+      }, (response) => {
+        //error callback
+        console.log("ERRORS");
+        this.formErrors = response.data.error.message;
+      })
     },
     handleChangeDate (type) {
-      if(type === 'start-date') {
+      if (type === 'start-date') {
         this.endDateConfig.minDate = this.record.start_date
-        if(this.record.start_date > this.record.end_date) {
+        if (this.record.start_date > this.record.end_date) {
           this.record.end_date = null
         }
-      } else if (type === 'end-date') {
-        if(this.record.end_date < this.record.start_date) {
+      }
+      else if (type === 'end-date') {
+        if (this.record.end_date < this.record.start_date) {
           this.record.start_date = null
           this.endDateConfig.maxDate = this.record.end_date
         }
         this.endDateConfig.minDate = this.record.start_date
       }
     },
-    // setupDatePickers: function () {
-    //   const self = this;
-    //   if (this.record.start_date === '') {
-    //     this.dateObject.startDateMin = this.currentDate;
-    //     this.dateObject.startDateDefault = null;
-    //
-    //     this.dateObject.endDateMin = null;
-    //     this.dateObject.endDateDefault = null;
-    //   } else {
-    //     this.dateObject.startDateMin = this.record.start_date;
-    //     this.dateObject.startDateDefault = this.record.start_date;
-    //     this.dateObject.endDateMin = this.record.start_date;
-    //     this.dateObject.endDateDefault = this.record.end_date;
-    //     this.dateObject.startTimeDefault = this.record.start_time;
-    //     this.dateObject.endTimeDefault = this.record.end_time;
-    //     this.dateObject.regDateMin = this.record.start_date;
-    //     this.dateObject.regDateDefault = this.record.reg_deadline;
-    //   }
-    //   this.startdatePicker = flatpickr(document.getElementById("start-date"), {
-    //     // minDate: self.dateObject.startDateMin,
-    //     defaultDate: self.dateObject.startDateDefault,
-    //     enableTime: false,
-    //     // altFormat: "m-d-Y",
-    //     altInput: true,
-    //     altInputClass: "form-control",
-    //     dateFormat: "Y-m-d",
-    //     // minDate: new Date(),
-    //     onChange(dateObject, dateString) {
-    //       self.enddatePicker.set("minDate", dateObject);
-    //       self.record.start_date = dateString;
-    //       self.startdatePicker.value = dateString;
-    //     }
-    //   });
-    //
-    //   this.enddatePicker = flatpickr(document.getElementById("end-date"), {
-    //     minDate: self.dateObject.endDateMin,
-    //     defaultDate: self.dateObject.endDateDefault,
-    //     enableTime: false,
-    //     // altFormat: "m-d-Y",
-    //     altInput: true,
-    //     altInputClass: "form-control",
-    //     dateFormat: "Y-m-d",
-    //     // minDate: new Date(),
-    //     onChange(dateObject, dateString) {
-    //       self.startdatePicker.set("maxDate", dateObject);
-    //       self.record.end_date = dateString;
-    //       self.enddatePicker.value = dateString;
-    //     }
-    //   });
-    //
-    //   this.starttimePicker = flatpickr(document.getElementById("start-time"), {
-    //     noCalendar: true,
-    //     enableTime: true,
-    //     defaultDate: self.dateObject.startTimeDefault,
-    //     dateFormat: "h:i K",
-    //     onChange(timeObject, timeString) {
-    //       self.record.start_time = timeString;
-    //       self.starttimePicker.value = timeString;
-    //     }
-    //   });
-    //   this.endtimePicker = flatpickr(document.getElementById("end-time"), {
-    //     noCalendar: true,
-    //     enableTime: true,
-    //     defaultDate: self.dateObject.endTimeDefault,
-    //     dateFormat: "h:i K",
-    //     onChange(timeObject, timeString) {
-    //       self.record.end_time = timeString;
-    //       self.endtimePicker.value = timeString;
-    //     }
-    //   });
-    //
-    //   this.regdeadlinePicker = flatpickr(document.getElementById("reg-deadline"), {
-    //     minDate: self.dateObject.regDateMin,
-    //     defaultDate: self.dateObject.regDateDefault,
-    //     enableTime: false,
-    //     // altFormat: "m-d-Y",
-    //     altInput: true,
-    //     altInputClass: "form-control",
-    //     dateFormat: "Y-m-d",
-    //     onChange(dateObject, dateString) {
-    //       self.record.reg_deadline = dateString;
-    //       self.regdeadlinePicker.value = dateString;
-    //     }
-    //   });
-    // },
 
     fetchSubmittedRecord: function (recid) {
       // Sets params for update record, Passes an id to fetchCurrentRecord
@@ -1249,12 +1208,12 @@ export default {
       this.formMessage.msg = false;
 
       this.$http.patch('/api/event/' + recid + '/cancel')
-          .then((response) => {
-            this.formMessage.isOk = response.ok;
-            this.formMessage.msg = response.body.message;
-          }, (response) => {
-            console.log(JSON.stringify(response))
-          })
+      .then((response) => {
+        this.formMessage.isOk = response.ok;
+        this.formMessage.msg = response.body.message;
+      }, (response) => {
+        console.log(JSON.stringify(response))
+      })
       this.refreshUserEventTable();
     },
 
@@ -1262,27 +1221,28 @@ export default {
       var fetchme = this.recordid ? this.recordid : this.record.id;
       this.$http.get('/api/event/' + fetchme + '/edit')
 
-          .then((response) => {
-            this.record = response.data.data;
-            this.record.exists = this.record_exists = true;
-            this.currentRecordId = this.record.id;
-            this.checkOverData();
-            this.record.start_time = response.data.data.start_time;
-          }, (response) => {
-            //error callback
-            console.log(response);
-            console.log("FETCH ERRORS");
-          })
+      .then((response) => {
+        this.record = response.data.data;
+        this.record.exists = this.record_exists = true;
+        this.currentRecordId = this.record.id;
+        this.checkOverData();
+        this.record.start_time = response.data.data.start_time;
+      }, (response) => {
+        //error callback
+        console.log(response);
+        console.log("FETCH ERRORS");
+      })
     },
     checkOverData: function () { // Used after fetching an event
       // Check event location
       // not null and has more than white space
       if (this.record.building != null && /\S/.test(this.record.building)) {
         // Is on campus
-        this.record.on_campus = 1; // bool
-        this.building = {id: 0, name: this.convertFromSlug(this.record.building)};
+        this.record.on_campus = '1'; // bool
+        this.building = { id: 0, name: this.convertFromSlug(this.record.building) };
         this.building.label = this.building.name;
-      } else {
+      }
+      else {
         // Not on campus
         this.record.on_campus = 0; // bool
         this.record.locationoffcampus = this.record.location;
@@ -1305,7 +1265,7 @@ export default {
 
       this.record.categories = self.record.eventcategories;
     },
-    fetchForSelectCategoriesList(search, loading) {
+    fetchForSelectCategoriesList (search, loading) {
       loading ? loading(true) : undefined;
       this.$http.get('/api/categorylist', {
         q: search
@@ -1321,7 +1281,7 @@ export default {
         loading ? loading(true) : undefined;
       })
     },
-    fetchForSelectBuildingList(search, loading) {
+    fetchForSelectBuildingList (search, loading) {
       loading ? loading(true) : undefined;
 
       this.$http.get('/api/buildinglist', {
@@ -1343,7 +1303,7 @@ export default {
       this.formMessage.isErr = false;
 
       if (confirm('Would you like to delete this event?') == true) {
-        $('html, body').animate({scrollTop: 0}, 'fast');
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
 
         var tempid = 0;
 
@@ -1351,46 +1311,47 @@ export default {
         this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
         this.$http.post('/api/event/' + tempid + '/delete')
 
-            .then((response) => {
-              // If user admin
-              if (window.location.href.indexOf("admin") > -1) {
-                window.location.href = "/admin/event/queue";
-              } else { // Not user admin
-                // Clear out values;
-                this.record = {
-                  on_campus: 1,
-                  all_day: 0,
-                  no_end_time: 0,
-                  free: 0,
-                  title: '',
-                  description: '',
-                  mini_calendar: '',
-                  building: '',
-                  categories: []
-                };
-                this.record.location = '';
-                this.building = null;
-                this.buildings = null;
-                this.record.room = null;
-                this.record.building = null;
-                this.record.building_id = null;
-                this.record.lbc_approved = false;
-                this.record.sdate = '';
-                this.record.edate = '';
-                this.record.stime = '';
-                this.record.rdate = '';
-                this.formMessage.isOk = response.ok;
-                this.formMessage.msg = response.body;
-                this.record.exists = this.record_exists = false;
-                var d = new Date();
-                var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-                this.record.start_date = tempdate;
-                this.record.end_date = tempdate;
-                this.record.reg_deadline = tempdate;
-              }
-            }, (response) => {
-              console.log('Error: ' + JSON.stringify(response))
-            })
+        .then((response) => {
+          // If user admin
+          if (window.location.href.indexOf("admin") > -1) {
+            window.location.href = "/admin/event/queue";
+          }
+          else { // Not user admin
+            // Clear out values;
+            this.record = {
+              on_campus: 1,
+              all_day: 0,
+              no_end_time: 0,
+              free: 0,
+              title: '',
+              description: '',
+              mini_calendar: '',
+              building: '',
+              categories: []
+            };
+            this.record.location = '';
+            this.building = null;
+            this.buildings = null;
+            this.record.room = null;
+            this.record.building = null;
+            this.record.building_id = null;
+            this.record.lbc_approved = false;
+            this.record.sdate = '';
+            this.record.edate = '';
+            this.record.stime = '';
+            this.record.rdate = '';
+            this.formMessage.isOk = response.ok;
+            this.formMessage.msg = response.body;
+            this.record.exists = this.record_exists = false;
+            var d = new Date();
+            var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+            this.record.start_date = tempdate;
+            this.record.end_date = tempdate;
+            this.record.reg_deadline = tempdate;
+          }
+        }, (response) => {
+          console.log('Error: ' + JSON.stringify(response))
+        })
         this.refreshUserEventTable();
       }
     },
@@ -1409,23 +1370,24 @@ export default {
       this.formMessage.isErr = false;
 
       if (confirm('Would you like to cancel this event?') == true) {
-        $('html, body').animate({scrollTop: 0}, 'fast');
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
         let tempid
         this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
         this.$http.patch('/api/event/' + tempid + '/cancel')
 
-            .then((response) => {
-              if (this.record.is_canceled == 0) {
-                this.record.is_canceled = 1
-              } else {
-                this.record.is_canceled = 0
-              }
+        .then((response) => {
+          if (this.record.is_canceled == 0) {
+            this.record.is_canceled = 1
+          }
+          else {
+            this.record.is_canceled = 0
+          }
 
-              this.formMessage.msg = "Event's status has been changed.";
-              this.formMessage.isOk = response.ok;
-            }, (response) => {
-              console.log('Error: ' + JSON.stringify(response))
-            })
+          this.formMessage.msg = "Event's status has been changed.";
+          this.formMessage.isOk = response.ok;
+        }, (response) => {
+          console.log('Error: ' + JSON.stringify(response))
+        })
         this.refreshUserEventTable();
       }
     },
@@ -1435,11 +1397,12 @@ export default {
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
 
-      $('html, body').animate({scrollTop: 0}, 'fast');
+      $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       if (this.record.on_campus == true) {
         this.record.location = this.computedLocation;
-      } else {
+      }
+      else {
         this.record.location = this.record.locationoffcampus;
         // clearout these values
         this.record.building = null;
@@ -1452,32 +1415,32 @@ export default {
       let route = (!this.record.id || doClone === true) ? '/api/event' : '/api/event/' + this.record.id;
 
       this.$http[method](route, this.record)
-        .then((response) => {
-          response.status;
-          this.formMessage.msg = response.data.message;
-          this.formMessage.isOk = true;
-          this.formMessage.isErr = false;
-          this.currentRecordId = response.data.newdata.record_id;
-          this.record_id = response.data.newdata.record_id;
-          this.record.id = response.data.newdata.record_id;
-          this.record.exists = true;
-          this.formErrors = {};
-          setTimeout(() => {
-            this.refreshUserEventTable();
-            this.fetchCurrentRecord(this.currentRecordId)
-          }, 3000)
-        })
-        .catch((e) => {
-          this.formMessage.isOk = false;
-          this.formMessage.isErr = true;
-          //error callback
-          this.formErrors = e.response.data.error.message;
-        })
+      .then((response) => {
+        response.status;
+        this.formMessage.msg = response.data.message;
+        this.formMessage.isOk = true;
+        this.formMessage.isErr = false;
+        this.currentRecordId = response.data.newdata.record_id;
+        this.record_id = response.data.newdata.record_id;
+        this.record.id = response.data.newdata.record_id;
+        this.record.exists = true;
+        this.formErrors = {};
+        setTimeout(() => {
+          this.refreshUserEventTable();
+          this.fetchCurrentRecord(this.currentRecordId)
+        }, 3000)
+      })
+      .catch((e) => {
+        this.formMessage.isOk = false;
+        this.formMessage.isErr = true;
+        //error callback
+        this.formErrors = e.response.data.error.message;
+      })
     },
     convertToSlug: function (value) {
       return value.toLowerCase()
-          .replace(/[^a-z0-9-]+/g, '-')
-          .replace(/^-+|-+$/g, '');
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
     },
     convertFromSlug: function (value) {
 
@@ -1491,11 +1454,14 @@ export default {
       */
       if (value == 'mckenny-hall') {
         return 'McKenny Hall'
-      } else if (value == 'recim-building' || value == 'rec/im-building') {
+      }
+      else if (value == 'recim-building' || value == 'rec/im-building') {
         return 'Rec/IM Building'
-      } else if (value == 'rec/im-softball-complex') {
+      }
+      else if (value == 'rec/im-softball-complex') {
         return 'Rec/IM Softball Complex'
-      } else {
+      }
+      else {
         return value.replace(/-/g, " ").replace(/\b[a-z]/g, function () {
           return arguments[0].toUpperCase()
         })
