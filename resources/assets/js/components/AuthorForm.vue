@@ -3,10 +3,10 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
-          <h5>{{formMessage.msg}}</h5>
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
+          <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr"  :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
       </div>
@@ -18,16 +18,18 @@
         <!-- First Name -->
         <div v-bind:class="formGroup">
           <label>First Name <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.first_name" class="form-control" v-bind:class="[formErrors.first_name ? 'invalid-input' : '']" name="first_name" type="text">
-          <p v-if="formErrors.first_name" class="help-text invalid">{{formErrors.first_name}}</p>
+          <input v-model="record.first_name" class="form-control"
+                 v-bind:class="[formErrors.first_name ? 'invalid-input' : '']" name="first_name" type="text">
+          <p v-if="formErrors.first_name" class="help-text invalid">{{ formErrors.first_name }}</p>
         </div>
       </div>
       <div v-bind:class="md6col">
         <!-- Last Name -->
         <div v-bind:class="formGroup">
           <label>Last Name <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.last_name" class="form-control" v-bind:class="[formErrors.last_name ? 'invalid-input' : '']" name="last_name" type="text">
-          <p v-if="formErrors.last_name" class="help-text invalid">{{formErrors.last_name}}</p>
+          <input v-model="record.last_name" class="form-control"
+                 v-bind:class="[formErrors.last_name ? 'invalid-input' : '']" name="last_name" type="text">
+          <p v-if="formErrors.last_name" class="help-text invalid">{{ formErrors.last_name }}</p>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -40,7 +42,8 @@
           <label>Email <span v-bind:class="iconStar" class="reqstar"></span></label>
           <p class="help-text" id="title-helptext">Please enter the author's email address. (contact@emich.edu)</p>
           <div class="input-group input-group-flat">
-            <input v-model="record.email" class="form-control" v-bind:class="[formErrors.email ? 'invalid-input' : '']" name="email" type="text">
+            <input v-model="record.email" class="form-control" v-bind:class="[formErrors.email ? 'invalid-input' : '']"
+                   name="email" type="text">
           </div>
           <p v-if="formErrors.email" class="help-text invalid">Please make sure email is properly formed.</p>
         </div>
@@ -49,9 +52,10 @@
         <!-- Phone -->
         <div v-bind:class="formGroup">
           <label>Phone</label>
-          <p class="help-text" id="title-helptext">Please enter the contact person's phone number.</p>
+          <p class="help-text" id="phone-helptext">Please enter the contact person's phone number.</p>
           <div class="input-group input-group-flat">
-            <input v-model="record.phone" class="form-control" v-bind:class="[formErrors.phone ? 'invalid-input' : '']" name="phone" type="text">
+            <input v-model="record.phone" class="form-control" v-bind:class="[formErrors.phone ? 'invalid-input' : '']"
+                   name="phone" type="text">
           </div>
           <p v-if="formErrors.phone" class="help-text invalid">Please enter a phone number.</p>
         </div>
@@ -62,13 +66,13 @@
         <!-- Email -->
         <div v-bind:class="formGroup">
           <label>Associated User (can be empty)</label>
-          <p class="help-text" id="title-helptext">With which system user is this author associated (optional)?</p>
+          <p class="help-text" id="user-helptext">With which system user is this author associated (optional)?</p>
           <div class="input-group input-group-flat">
             <select v-model="record.user_id">
-                <option :value="null">-none-</option>
-                <option v-for="user in users" v-bind:value="user.id" :selected="record.user_id == user.id">
-                    {{ user.first_name }} {{ user.last_name }}
-                </option>
+              <option :value="null">-none-</option>
+              <option v-for="user in users" v-bind:value="user.id" :selected="record.user_id == user.id">
+                {{ user.first_name }} {{ user.last_name }}
+              </option>
             </select>
           </div>
           <p v-if="formErrors.user" class="help-text invalid">Not a valid selection.</p>
@@ -79,7 +83,8 @@
       <div :class="md6col">
         <div class="form-group">
           <label>Show this author as story contact?
-            <input id="is-contact-yes" name="is_contact" type="checkbox" value="1" v-model="record.is_contact"/>
+            <input id="is-contact-yes" name="is_contact" type="checkbox"
+                   :true-value="1" :false-value="0" v-model="record.is_contact"/>
           </label>
         </div>
       </div><!-- /.md6col -->
@@ -88,9 +93,12 @@
       <div :class="md12col">
         <div class="form-group">
           <label>This author should be the DEFAULT contact for a STORY if none is otherwise specified.
-            <input id="is-principal-contact-yes" name="is_principal_contact" type="checkbox" value="1" v-model="record.is_principal_contact"/>
+            <input id="is-principal-contact-yes" name="is_principal_contact" type="checkbox"
+                   :true-value="1" :false-value="0"
+                   v-model="record.is_principal_contact"/>
           </label>
-          <p>Notice: Selecting this will replace the currently-select principal story contact, who is {{currentPrimaryContact}}.</p>
+          <p>Notice: Selecting this will replace the currently-select principal story contact, who is
+            {{ currentPrimaryContact }}.</p>
         </div>
       </div><!-- /.md6col -->
     </div><!-- /.row -->
@@ -98,21 +106,23 @@
       <div :class="md12col">
         <div class="form-group">
           <label>This author should be the DEFAULT contact for a MAGAZINE ARTICLE if none is otherwise specified.
-            <input id="is-principal-magazine-contact-yes" name="is_principal_magazine_contact" type="checkbox" value="1" v-model="record.is_principal_magazine_contact"/>
+            <input id="is-principal-magazine-contact-yes" name="is_principal_magazine_contact" type="checkbox"
+                   :true-value="1" :false-value="0"
+                   v-model="record.is_principal_magazine_contact"/>
           </label>
-          <p>Notice: Selecting this will replace the currently-select principal magazine contact, who is {{currentPrimaryMagazineContact}}.</p>
+          <p>Notice: Selecting this will replace the currently-select principal magazine contact, who is
+            {{ currentPrimaryMagazineContact }}.</p>
         </div>
       </div><!-- /.md6col -->
     </div><!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
-          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{ submitBtnLabel }}</button>
         </div>
       </div>
     </div>
-
-</form>
+  </form>
 </template>
 
 <style scoped>
@@ -226,7 +236,7 @@ export default {
       default: ''
     }
   },
-  data: function() {
+  data: function () {
     return {
       record_id: null,
       record_exists: false,
@@ -239,7 +249,7 @@ export default {
       dateObject: {
         startDateMin: '',
         startDateDefault: '',
-        endDateMin:'',
+        endDateMin: '',
         endDateDefault: ''
       },
       record: {
@@ -269,9 +279,9 @@ export default {
       users: []
     }
   },
-  created: function() {
+  created: function () {
     this.fetchUsers()
-    if(this.recordexists){
+    if (this.recordexists) {
       this.record_id = this.recordid
       this.record_exists = this.recordexists
       this.fetchCurrentRecord(this.record_id)
@@ -282,100 +292,90 @@ export default {
   computed: {
 
     // switch classes based on css framework. foundation or bootstrap
-    md6col: function() {
+    md6col: function () {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
     },
-    md12col: function() {
+    md12col: function () {
       return (this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12')
     },
-    md8col: function() {
+    md8col: function () {
       return (this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8')
     },
-    md4col: function() {
+    md4col: function () {
       return (this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4')
     },
-    btnPrimary: function() {
+    btnPrimary: function () {
       return (this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary')
     },
-    formGroup: function() {
+    formGroup: function () {
       return (this.framework == 'foundation' ? 'form-group' : 'form-group')
     },
-    formControl: function() {
+    formControl: function () {
       return (this.framework == 'foundation' ? '' : 'form-control')
     },
-    calloutSuccess:function(){
-      return (this.framework == 'foundation')? 'callout success':'alert alert-success'
+    calloutSuccess: function () {
+      return (this.framework == 'foundation') ? 'callout success' : 'alert alert-success'
     },
-    calloutFail:function(){
-      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
+    calloutFail: function () {
+      return (this.framework == 'foundation') ? 'callout alert' : 'alert alert-danger'
     },
-    iconStar: function() {
+    iconStar: function () {
       return (this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star')
     },
-    inputGroupLabel:function(){
-      return (this.framework=='foundation')?'input-group-label':'input-group-addon'
+    inputGroupLabel: function () {
+      return (this.framework == 'foundation') ? 'input-group-label' : 'input-group-addon'
     },
 
     // Switch verbage of submit button.
-    submitBtnLabel:function(){
-      return (this.record_exists)?'Update Author': 'Create Author'
+    submitBtnLabel: function () {
+      return (this.record_exists) ? 'Update Author' : 'Create Author'
     },
   },
 
   methods: {
-    fetchUsers: function(recid){
-        let route =  (recid) ? '/api/users/' + recid : '/api/users';
-        this.$http.get(route)
-        .then((response) => {
-          this.users = response.data.newdata
-        }, (response) => {
-          this.formErrors = response.data.error.message;
-        });
-    },
-    fetchSubmittedRecord: function(recid){
-      // Sets params for update record, Passes an id to fetchCurrentRecord
-      this.record_exists = true;
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
-      this.record_id = recid;
-      this.formErrors = {};
-      this.fetchCurrentRecord(recid);
-    },
+    fetchUsers: function (recid) {
+      let route = (recid) ? '/api/users/' + recid : '/api/users';
+      this.$http.get(route)
+      .then((response) => {
+        this.users = response.data.newdata
 
-    fetchCurrentRecord: function(recid) {
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message;
+      });
+    },
+    fetchCurrentRecord: function (recid) {
       this.$http.get('/api/authors/' + recid + '/edit')
-
       .then((response) => {
         this.record = response.data.data
         this.record.user_id = response.data.data.user_id
-
         this.fetchUsers(this.record.user_id)
-      }, (response) => {
-        this.formErrors = response.data.error.message;
+        this.formMessage = {
+          isOk: false,
+              isErr: false,
+              msg: ''
+        }
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message;
       });
     },
-
-    fetchCurrentPrimaryContact: function(){
+    fetchCurrentPrimaryContact: function () {
       this.$http.get('/api/authors/primarycontact')
-
       .then((response) => {
         this.currentPrimaryContact = response.data.newdata.name;
-      }, (response) => {
-        this.formErrors = response.data.error.message;
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message;
       });
     },
-
-    fetchCurrentPrimaryMagainzeContact: function(){
+    fetchCurrentPrimaryMagainzeContact: function () {
       this.$http.get('/api/authors/primarymagazinecontact')
-
       .then((response) => {
         this.currentPrimaryMagazineContact = response.data.newdata.name;
-      }, (response) => {
-        this.formErrors = response.data.error.message;
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message;
       });
     },
 
-    submitForm: function(e) {
+    submitForm: function (e) {
       e.preventDefault(); // Stop form defualt action
 
       $('html, body').animate({ scrollTop: 0 }, 'fast');
@@ -384,30 +384,31 @@ export default {
 
       // Decide route to submit form to
       let method = (this.record_exists) ? 'put' : 'post'
-      let route =  (this.record_exists) ? '/api/authors/' + this.record.id : '/api/authors';
+      let route = (this.record_exists) ? '/api/authors/' + this.record.id : '/api/authors';
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then((response) => {
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
-        this.currentRecordId = response.data.newdata.record_id;
-        this.record_id = response.data.newdata.record_id;
-        this.record.id = response.data.newdata.record_id;
-        this.formMessage.isErr = false;
-        this.record_exists = true;
-        this.formErrors = {}; // Clear errors?
+        this.formMessage.msg = 'Author saved'
+        this.formMessage.isOk = true // Success message
+        this.currentRecordId = response.data.newdata.record_id
+        this.record_id = response.data.newdata.record_id
+        this.record.id = response.data.newdata.record_id
+        this.formMessage.isErr = false
+        this.record_exists = true
+        this.formErrors = {} // Clear errors?
         this.fetchCurrentRecord(this.record.id)
-      }, (response) => { // If invalid. error callback
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = true;
+      }).catch((e) => { // If invalid. error callback
+        console.log(e)
+        this.formMessage.isOk = false
+        this.formMessage.isErr = true
         // Set errors from validation to vue data
-        this.formErrors = response.data.error.message;
-      });
+        this.formErrors = e.response.data.error.message;
+      })
     }
   }
-};
+}
 
 </script>

@@ -1170,10 +1170,8 @@ export default {
           self.minicalslist[index].label = value.calendar;
           self.minicalslist[index].code = value.value;
         });
-      }, (response) => {
-        //error callback
-        console.log("ERRORS");
-        this.formErrors = response.data.error.message;
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message;
       })
     },
     handleChangeDate (type) {
@@ -1211,8 +1209,8 @@ export default {
       .then((response) => {
         this.formMessage.isOk = response.ok;
         this.formMessage.msg = response.body.message;
-      }, (response) => {
-        console.log(JSON.stringify(response))
+      }).catch((e) => {
+        console.log(e)
       })
       this.refreshUserEventTable();
     },
@@ -1227,10 +1225,8 @@ export default {
         this.currentRecordId = this.record.id;
         this.checkOverData();
         this.record.start_time = response.data.data.start_time;
-      }, (response) => {
-        //error callback
-        console.log(response);
-        console.log("FETCH ERRORS");
+      }).catch((e) => {
+        console.log(e)
       })
     },
     checkOverData: function () { // Used after fetching an event
@@ -1279,6 +1275,8 @@ export default {
         });
 
         loading ? loading(true) : undefined;
+      }).catch((e) => {
+        console.log(e)
       })
     },
     fetchForSelectBuildingList (search, loading) {
@@ -1295,6 +1293,8 @@ export default {
         });
 
         loading ? loading(true) : undefined;
+      }).catch((e) => {
+        console.log(e)
       })
     },
     delEvent: function (e) {
@@ -1343,14 +1343,14 @@ export default {
             this.formMessage.isOk = response.ok;
             this.formMessage.msg = response.body;
             this.record.exists = this.record_exists = false;
-            var d = new Date();
-            var tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+            let d = new Date();
+            let tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
             this.record.start_date = tempdate;
             this.record.end_date = tempdate;
             this.record.reg_deadline = tempdate;
           }
-        }, (response) => {
-          console.log('Error: ' + JSON.stringify(response))
+        }).catch((e) => {
+            console.log(e)
         })
         this.refreshUserEventTable();
       }
@@ -1385,8 +1385,8 @@ export default {
 
           this.formMessage.msg = "Event's status has been changed.";
           this.formMessage.isOk = response.ok;
-        }, (response) => {
-          console.log('Error: ' + JSON.stringify(response))
+        }).catch((e) => {
+          console.log(e)
         })
         this.refreshUserEventTable();
       }

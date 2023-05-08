@@ -345,7 +345,7 @@ class EmailController extends ApiController
                         $query->whereIn('imagetype_id', $email_imagetypes);
                       })
                       ->where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
-      } elseif($fromDate && $toDate){
+      } else if($fromDate && $toDate){
           $stories  = Story::whereHas('storyImages', function($query) use ($email_imagetypes){
                         $query->whereIn('imagetype_id', $email_imagetypes);
                       })
@@ -369,7 +369,7 @@ class EmailController extends ApiController
   public function getAllEmailReadyStories(Request $request, $fromDate = null, $toDate = null){
       if($fromDate && !$toDate){
           $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();
-      } elseif($fromDate && $toDate){
+      } else if($fromDate && $toDate){
           $stories  = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->get();
       } else {
           $stories  = Story::where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->get();

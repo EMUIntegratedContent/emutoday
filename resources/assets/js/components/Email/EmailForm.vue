@@ -58,8 +58,8 @@
 							<p v-if="formErrors.title" class="help-text invalid">Title must be at least 10 characters in length.</p>
 						</div>
 						<div class="form-group">
-							<label for="subheading">Subheading (optional)</label>
-							<textarea class="form-control" id="subheading" v-model="record.subheading"></textarea>
+              <label for="subheading">Subheading (optional)</label>
+              <textarea class="form-control" id="subheading" v-model="record.subheading"></textarea>
 						</div>
 					</div>
 					<!-- MAIN TAB 2 CONTENT -->
@@ -90,40 +90,40 @@
 								<!-- Tab panes -->
 								<div class="tab-content">
 									<div class="tab-pane active" id="main-story">
-																			<email-main-stories-queue
-																					:stypes="stypes"
-																					:main-stories="record.mainStories"
-																					@main-story-added="handleMainStoryAdded"
-																					@main-story-removed="handleMainStoryRemoved"
-																					@updated-main-story-order="updateMainStoriesOrder"
-																			></email-main-stories-queue>
+                    <email-main-stories-queue
+                        :stypes="stypes"
+                        :main-stories="record.mainStories"
+                        @main-story-added="handleMainStoryAdded"
+                        @main-story-removed="handleMainStoryRemoved"
+                        @updated-main-story-order="updateMainStoriesOrder"
+                    ></email-main-stories-queue>
 									</div>
 									<div class="tab-pane" id="stories">
-																			<email-story-queue
-																					:stypes="stypes"
-																					:other-stories="record.otherStories"
-																					@other-story-added="handleOtherStoryAdded"
-																					@other-story-removed="handleOtherStoryRemoved"
-																					@updated-other-story-order="updateOtherStoriesOrder"
-																			></email-story-queue>
+                    <email-story-queue
+                        :stypes="stypes"
+                        :other-stories="record.otherStories"
+                        @other-story-added="handleOtherStoryAdded"
+                        @other-story-removed="handleOtherStoryRemoved"
+                        @updated-other-story-order="updateOtherStoriesOrder"
+                    ></email-story-queue>
 									</div>
 									<div class="tab-pane" id="announcements">
-																			<email-announcement-queue
-																					:announcements="record.announcements"
-																					@announcement-added="handleAnnouncementAdded"
-																					@announcement-removed="handleAnnouncementRemoved"
-																					@updated-announcement-order="updateAnnouncementsOrder"
-																			></email-announcement-queue>
+<!--																			<email-announcement-queue-->
+<!--																					:announcements="record.announcements"-->
+<!--																					@announcement-added="handleAnnouncementAdded"-->
+<!--																					@announcement-removed="handleAnnouncementRemoved"-->
+<!--																					@updated-announcement-order="updateAnnouncementsOrder"-->
+<!--																			></email-announcement-queue>-->
 									</div>
 									<div class="tab-pane" id="events">
-																			<email-event-queue
-																					:events="record.events"
-																					:exclude-events-checked="record.exclude_events"
-																					@event-added="handleEventAdded"
-																					@event-removed="handleEventRemoved"
-																					@updated-event-order="updateEventsOrder"
-																					@toggle-exclude-events="handleToggleExcludeEvents"
-																			></email-event-queue>
+<!--																			<email-event-queue-->
+<!--																					:events="record.events"-->
+<!--																					:exclude-events-checked="record.exclude_events"-->
+<!--																					@event-added="handleEventAdded"-->
+<!--																					@event-removed="handleEventRemoved"-->
+<!--																					@updated-event-order="updateEventsOrder"-->
+<!--																					@toggle-exclude-events="handleToggleExcludeEvents"-->
+<!--																			></email-event-queue>-->
 									</div>
 									<div class="tab-pane" id="president">
 										<div class="row">
@@ -137,20 +137,22 @@
 											</div><!-- /.col-md-12 -->
 											<div class="col-xs-12">
 												<div class="form-group">
-													<label for="presidentTeaser">Teaser text</label>
-													<textarea class="form-control" id="presidentTeaser"
-																		v-bind:class="[formErrors.president_teaser ? 'invalid-input' : '']"
-																		v-model="record.president_teaser">{{ record.president_teaser }}</textarea>
+													<label>Teaser text
+                            <textarea class="form-control" id="presidentTeaser"
+                                      v-bind:class="[formErrors.president_teaser ? 'invalid-input' : '']"
+                                      v-model="record.president_teaser">{{ record.president_teaser }}</textarea>
+                          </label>
 													<p v-if="formErrors.president_teaser" class="help-text invalid">The teaser is required when
 														including a presidential message.</p>
 												</div>
 											</div><!-- /.col-md-12 -->
 											<div class="col-xs-12">
 												<div class="form-group">
-													<label for="presidentUrl">URL to president's statement</label>
+													<label>URL to president's statement
 													<input type="text" class="form-control" id="presidentUrl"
 																 v-bind:class="[formErrors.president_url ? 'invalid-input' : '']"
 																 v-model="record.president_url" placeholder="https://emich.edu/president-statement"/>
+                          </label>
 													<p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
 												</div>
 											</div><!-- /.col-md-12 -->
@@ -161,13 +163,13 @@
 							<!-- /.medium-4 columns -->
 							<!-- "LIVE VIEW" OF EMAIL -->
 							<div v-bind:class="[md12col, lg7col]">
-									<email-live-view
-											:email="record"
-											:announcements="record.announcements"
-											:events="record.events"
-											:other-stories="record.otherStories"
-											:main-stories="record.mainStories"
-									></email-live-view>
+<!--									<email-live-view-->
+<!--											:email="record"-->
+<!--											:announcements="record.announcements"-->
+<!--											:events="record.events"-->
+<!--											:other-stories="record.otherStories"-->
+<!--											:main-stories="record.mainStories"-->
+<!--									></email-live-view>-->
 							</div>
 							<!-- /.medium-8 columns -->
 						</div>
@@ -186,24 +188,20 @@
 								<span class="input-group-addon">
 									<input type="checkbox" v-model="record.is_approved" aria-label="Set as time">
 								</span>
-									<date-picker
-											v-model="record.send_at"
-											:default-value="dateObject.sendAtDefault"
-											value-type="YYYY-MM-DD HH:mm:ss"
-											type="datetime"
-											format="MM/DD/YYYY h:mm A"
-											:minute-step="5"
-											:show-second="false"
-											:use12h="true"
-											:clearable="true"
-											aria-describedby="errorSendAt"
-									></date-picker>
+                <flatpickr
+                    v-model="record.send_at"
+                    id="send-at"
+                    :config="flatpickrConfig"
+                    class="form-control"
+                    name="sendAt"
+                >
+                </flatpickr>
 								</div><!-- /input-group -->
 								<h3>To which mailing list(s) should this email be sent?</h3>
 								<ul>
 									<li v-for="recipient in record.recipients">{{ recipient.email_address }}</li>
 								</ul>
-								<label for="recipients" style="width: 300px">Select recipient(s)
+								<label style="width: 300px">Select recipient(s)
 									<v-select id="minical"
 														v-model="record.recipients"
 														:options="recipientsList"
@@ -348,27 +346,27 @@
 				</div>
 				<!-- /.medium-4 columns -->
 				<div v-bind:class="[md12col, lg8col]">
-					<email-live-view
-							:email="record"
-							:announcements="record.announcements"
-							:events="record.events"
-							:other-stories="record.otherStories"
-							:main-stories="record.mainStories"
-					></email-live-view>
+<!--					<email-live-view-->
+<!--							:email="record"-->
+<!--							:announcements="record.announcements"-->
+<!--							:events="record.events"-->
+<!--							:other-stories="record.otherStories"-->
+<!--							:main-stories="record.mainStories"-->
+<!--					></email-live-view>-->
 				</div>
 				<!-- /.medium-8 columns -->
 			</div>
 			<!-- /.row -->
 		</div>
-		<email-delete-modal
-				:email="record"
-		></email-delete-modal>
-		<email-stats-modal
-				:email="record"
-		></email-stats-modal>
-		<email-clone-modal
-				:email="record"
-		></email-clone-modal>
+<!--		<email-delete-modal-->
+<!--				:email="record"-->
+<!--		></email-delete-modal>-->
+<!--		<email-stats-modal-->
+<!--				:email="record"-->
+<!--		></email-stats-modal>-->
+<!--		<email-clone-modal-->
+<!--				:email="record"-->
+<!--		></email-clone-modal>-->
 	</div>
 </template>
 
@@ -436,21 +434,35 @@
 
 	<script>
 		import moment from 'moment'
-		import DatePicker from 'vue2-datepicker'
 		import "vue-select/dist/vue-select.css"
-		import 'vue2-datepicker/index.css'
 		import vSelect from 'vue-select'
+    import flatpickr from 'vue-flatpickr-component'
+    import 'flatpickr/dist/flatpickr.css'
+    import {Sortable} from "sortablejs-vue3"
 		import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue'
 		import EmailStoryQueue from './EmailStoryQueue.vue'
-		import EmailEventQueue from './EmailEventQueue.vue'
-		import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
-		import EmailDeleteModal from './EmailDeleteModal.vue'
-		import EmailStatsModal from './EmailStatsModal.vue'
-		import EmailCloneModal from './EmailCloneModal.vue'
-		import EmailLiveView from './EmailLiveView.vue'
+		// import EmailEventQueue from './EmailEventQueue.vue'
+		// import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
+		// import EmailDeleteModal from './EmailDeleteModal.vue'
+		// import EmailStatsModal from './EmailStatsModal.vue'
+		// import EmailCloneModal from './EmailCloneModal.vue'
+		// import EmailLiveView from './EmailLiveView.vue'
 
 		export default {
-			components: { vSelect, EmailMainStoriesQueue, EmailStoryQueue, EmailEventQueue, EmailAnnouncementQueue, EmailLiveView, EmailDeleteModal, EmailStatsModal, EmailCloneModal, DatePicker },
+			components: {
+        vSelect,
+        flatpickr,
+        Sortable,
+        EmailMainStoriesQueue,
+        EmailStoryQueue,
+        // EmailEventQueue,
+        // EmailAnnouncementQueue,
+        // EmailLiveView,
+        // EmailDeleteModal,
+        // EmailStatsModal,
+        // EmailCloneModal,
+        // DatePicker
+      },
 			props: {
 				cuserRoles: { default: {} },
 				errors: {
@@ -545,6 +557,12 @@
 					showAddRecipient: false,
 					newRecipient: null,
 					existingEmail: false, // set to the value of prop recordexisits; updatable so as not to manipulte prop recordexists
+          flatpickrConfig: {
+            altFormat: "m/d/Y h:i K", // format the user sees
+            altInput: true,
+            dateFormat: "Y-m-d H:i:s", // format sumbitted to the API
+            enableTime: true
+          }
 				}
 			},
 			created: function () {
@@ -708,26 +726,20 @@
 					.then((response) => {
 						this.record = response.data.newdata.data
 						this.setupDatePickers();
-					}, (response) => {
-						this.formErrors = response.data.error.message;
-					}).bind(this);
+					}).catch((e) => {
+            this.formErrors = e.response.data.error.message;
+          });
 				},
 
 				fetchRecipientsList: function () {
 					this.$http.get('/api/email/recipients')
-
 					.then((response) => {
-						this.recipientsList = response.body.newdata
-					}, (response) => {
-						this.formErrors = response.data.error.message;
-					}).bind(this);
+						this.recipientsList = response.data.newdata
+					}).catch((e) => {
+            this.formErrors = e.response.data.error.message;
+          });
 				},
 
-				// Restore email to settings when page loaded
-				resetEmail: function () {
-					console.log("Form reset!")
-					//this.$set('record', this.original)
-				},
 				nowOnReload: function () {
 					let newurl = '/admin/email/' + this.currentRecordId + '/edit';
 					document.location = newurl;
@@ -764,12 +776,11 @@
 						else {
 							this.onRefresh();
 						}
-					}, (response) => { // If invalid. error callback
-						this.formMessage.isOk = false;
-						this.formMessage.isErr = true;
-						// Set errors from validation to vue data
-						this.formErrors = response.data.error.message;
-					}).bind(this);
+					}).catch((e) => {
+            this.formMessage.isOk = false;
+            this.formMessage.isErr = true;
+            this.formErrors = e.response.data.error.message;
+          })
 				},
 
 				/**
@@ -791,10 +802,10 @@
 						this.formSuccess.email_address.push(response.data.message) //create success message
 
 						this.fetchRecipientsList() //get updated list of recipients
-					}, (response) => { // If invalid. error callback
-						this.formSuccess.email_address = []
-						this.formErrors = response.data.error.message; // Set errors from validation to vue data
-					}).bind(this);
+					}).catch((e) => {
+            this.formSuccess.email_address = []
+            this.formErrors = e.response.data.error.message;
+          })
 				},
 
 				toggleCallout: function (evt) {
