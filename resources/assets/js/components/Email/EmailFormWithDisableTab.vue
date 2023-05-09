@@ -28,7 +28,7 @@
       <h2>Basic Email Information</h2>
       <div class="form-group">
         <label for="email-title">Email Headline</label>
-        <input type="text" class="form-control" id="email-title" v-model="record.title" placeholder="Email headline goes here.">
+        <input type="text" class="form-control" id="email-title" v-model="emailBuilderEmail.title" placeholder="Email headline goes here.">
       </div>
       <div class="form-group">
         <label for="subheading">Subheading (optional)</label>

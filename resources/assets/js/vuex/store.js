@@ -10,7 +10,31 @@ const state = {
 	magazineBuilderArticlesSub: [],
 	issueArticles: [null, null, null, null, null, null],
 	modalPosition: '',
-	selectedCalendarCategory: null
+	selectedCalendarCategory: null,
+	// Email builder
+	emailBuilderEmail: {
+		id: '',
+		clone: [],
+		created_at: null,
+		exclude_events: 0,
+		is_approved: false,
+		is_president_included: false,
+		is_ready: false,
+		is_sent: 0,
+		mailgun_clicks: 0,
+		mailgun_opens: 0,
+		mailgun_spam: 0,
+		president_teaser: null,
+		president_url: null,
+		send_at: null,
+		subheading: null,
+		title: null,
+		announcements: [],
+		events: [],
+		mainStories: [],
+		otherStories: [],
+		recipients: [],
+	}
 }
 const mutations = {
 	// A mutation receives the current state as the first argument
@@ -52,6 +76,22 @@ const mutations = {
 	},
 	setSelectedCalendarCategory (state, category) {
 		state.selectedCalendarCategory = category
+	},
+	// Email Builder
+	addMainStory (state, story) {
+		state.emailBuilderEmail.mainStories.push(story)
+	},
+	removeMainStory (state, storyId) {
+		const story = state.emailBuilderEmail.mainStories.find(ms => ms.id == storyId)
+		if(story) {
+			state.emailBuilderEmail.mainStories.splice(state.emailBuilderEmail.mainStories.indexOf(story), 1)
+		}
+	},
+	setEmailBuilderEmail (state, email) {
+		state.emailBuilderEmail = email
+	},
+	setEmailBuilderEmailProp (state, { prop, value }) {
+		state.emailBuilderEmail[prop] = value
 	}
 }
 const actions = {

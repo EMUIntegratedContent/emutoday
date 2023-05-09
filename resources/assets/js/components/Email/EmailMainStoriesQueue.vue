@@ -33,11 +33,11 @@
     <div class="row">
       <div class="col-md-12">
         <h3>Main Stories</h3>
-        <template v-if="usedStories.length > 0">
-          <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">
+        <template v-if="emailBuilderEmail.mainStories.length">
+<!--          <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">-->
             <email-story-pod
                 pid="main-story-item"
-                v-for="(story, index) in usedStories"
+                v-for="(story, index) in emailBuilderEmail.mainStories"
                 pod-type="mainstory"
                 :item="story"
                 :key="'used-story-draggable-' + index"
@@ -45,10 +45,10 @@
                 @main-story-removed="handleMainStoryRemoved"
             >
             </email-story-pod>
-          </draggable>
+<!--          </draggable>-->
         </template>
         <template v-else>
-          <p>There are no side stories set for this email.</p>
+          <p>There are no main stories set for this email.</p>
         </template>
         <hr/>
         <!-- Date filter -->
@@ -108,7 +108,7 @@
         <div id="email-items">
           <email-story-pod
               pid="email-items"
-              :main-stories="usedStories"
+              :main-stories="emailBuilderEmail.mainStories"
               pod-type="mainstoryqueue"
               v-for="(item, index) in itemsFilteredPaginated"
               :key="'email-story-item-' + index"
@@ -185,6 +185,7 @@ import Pagination from '../Pagination.vue'
 import draggable from 'vuedraggable'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
+import { emailMixin } from './email_mixin'
 
 export default {
   components: {
@@ -194,9 +195,11 @@ export default {
     // DatePicker,
     flatpickr
   },
+  mixins: [ emailMixin ],
   props: ['stypes', 'mainStories'],
   created() {
-    let twoWeeksEarlier = moment().subtract(2, 'w')
+    // let twoWeeksEarlier = moment().subtract(2, 'w')
+    let twoWeeksEarlier = moment().subtract(1, 'y') // TODO change this back to 2 w!
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
@@ -382,10 +385,10 @@ export default {
     }
   },
   watch: {
-    mainStories: function (value) {
-      // set events from property to data
-      this.usedStories = value
-    }
+    // mainStories: function (value) {
+    //   // set events from property to data
+    //   this.usedStories = value
+    // }
   }
 }
 </script>
