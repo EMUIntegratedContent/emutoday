@@ -17,10 +17,20 @@ export const emailMixin = {
 	},
 	methods: {
 		...mapMutations([
+			'addAnnouncement',
+			'addEvent',
 			'addMainStory',
+			'addOtherStory',
+			'removeAnnouncement',
+			'removeEvent',
 			'removeMainStory',
+			'removeOtherStory',
 			'setEmailBuilderEmail',
-			'setEmailBuilderEmailProp'
+			'setEmailBuilderEmailProp',
+			'updateAnnouncementsOrder',
+			'updateEventsOrder',
+			'updateMainStoriesOrder',
+			'updateOtherStoriesOrder'
 		])
 	}
 };

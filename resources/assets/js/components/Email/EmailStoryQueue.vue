@@ -14,19 +14,23 @@
     <div class="row">
       <div class="col-md-12">
         <h3>Side Stories</h3>
-        <template v-if="usedStories.length > 0">
-          <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">
-            <email-story-pod
-                pid="otherstory-list-stories"
-                pod-type="otherstory"
-                :item="story"
-                v-for="(story, index) in usedStories"
-                :key="'used-other-story-draggable-' + index"
-                @other-story-added="handleOtherStoryAdded"
-                @other-story-removed="handleOtherStoryRemoved"
-            >
-            </email-story-pod>
-          </draggable>
+        <template v-if="emailBuilderEmail.otherStories.length">
+          <Sortable
+              :list="emailBuilderEmail.otherStories"
+              item-key="id"
+              tag="div"
+              :options="{}"
+              @update="updateOrder"
+          >
+            <template #item="{element, i}">
+              <email-story-pod
+                  pid="otherstory-list-stories"
+                  pod-type="otherstory"
+                  :item="element"
+              >
+              </email-story-pod>
+            </template>
+          </Sortable>
         </template>
         <template v-else>
           <p>There are no side stories set for this email.</p>
@@ -93,11 +97,9 @@
                   pid="otherstory-queue-stories"
                   pod-type="otherstoryqueue"
                   :item="story"
-                  :other-stories="usedStories"
+                  :other-stories="emailBuilderEmail.otherStories"
                   :key="'otherstory-story-' + index"
                   v-for="(story, index) in itemsFilteredPaginated"
-                  @other-story-added="handleOtherStoryAdded"
-                  @other-story-removed="handleOtherStoryRemoved"
               >
               </email-story-pod>
               <ul class="pagination">
@@ -152,26 +154,28 @@ span.item-type-icon:active, span.item-type-icon.active {
 }
 </style>
 <script>
-
+import { emailMixin } from './email_mixin'
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
 import Pagination from '../Pagination.vue'
 import draggable from 'vuedraggable'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
-// import DatePicker from 'vue2-datepicker'
+import { Sortable } from "sortablejs-vue3"
 
 export default {
+  mixins: [ emailMixin ],
   components: {
     EmailStoryPod,
     Pagination,
     draggable,
-    flatpickr
-    // DatePicker
+    flatpickr,
+    Sortable
   },
-  props: ['stypes', 'mainStory', 'otherStories'],
+  props: ['stypes'],
   created () {
-    let twoWeeksEarlier = moment().subtract(2, 'w')
+    // let twoWeeksEarlier = moment().subtract(2, 'w')
+    let twoWeeksEarlier = moment().subtract(1, 'y') // TODO change this back to 2 w!
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
@@ -180,7 +184,6 @@ export default {
     return {
       stories_filter_storytype: '',
       currentDate: moment(),
-      usedStories: [],
       queueStories: [],
       loadingQueue: true,
       eventMsg: null,
@@ -190,7 +193,6 @@ export default {
       currentPage: 1,
       itemsPerPage: 10,
       resultCount: 0,
-      drag: false,
       flatpickrConfig: {
         altFormat: "m/d/Y", // format the user sees
         altInput: true,
@@ -350,29 +352,11 @@ export default {
     },
 
     /**
-     * Uses vue-draggable
+     * Uses Vue Sortable
      */
     updateOrder: function (event) {
-      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
-      let oldIndex = event.oldIndex
-      let newIndex = event.newIndex
-
-      // move the item in the underlying array
-      this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
-      this.$emit('updated-other-story-order', this.usedStories)
-    },
-    handleOtherStoryAdded (evt) {
-      this.$emit('other-story-added', evt)
-    },
-    handleOtherStoryRemoved (evt) {
-      this.$emit('other-story-removed', evt)
+      this.updateOtherStoriesOrder({ newIndex: event.newIndex, oldIndex: event.oldIndex })
     }
   },
-  watch: {
-    otherStories: function (value) {
-      // set events from property to data
-      this.usedStories = value
-    }
-  }
 }
 </script>

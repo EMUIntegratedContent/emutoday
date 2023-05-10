@@ -4,11 +4,11 @@
       <div class="box-header with-border">
         <div class="row">
           <div class="col-sm-12">
-            <div v-show="podType == 'mainstoryqueue'" class="pull-right">
+            <div v-if="podType == 'mainstoryqueue'" class="pull-right">
               <label><input type="checkbox" @click="toggleEmitMainStory(item)" v-model="checked" :checked="isMainStory"
                             :disabled="mainStoriesFull"/> Main Story</label>
             </div><!-- /.pull-left -->
-            <div v-show="podType == 'otherstoryqueue'" class="pull-right">
+            <div v-if="podType == 'otherstoryqueue'" class="pull-right">
               <label><input type="checkbox" @click="toggleEmitOtherStory(item)" v-model="checked"
                             :checked="isOtherStory"/> Email Story</label>
             </div><!-- /.pull-left -->
@@ -21,10 +21,10 @@
                   class="item-type-icon" :class="typeIcon"></span></label>{{ item.title }}</h6>
             </div><!-- /.col-md-12 -->
             <div class="col-sm-3">
-              <button v-show="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right"
-                      @click="emitMainStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
-              <button v-show="podType == 'otherstory'" type="button" class="btn btn-sm btn-danger pull-right"
-                      @click="emitOtherStoryRemove(item)"><i class="fa fa-times" aria-hidden="true"></i></button>
+              <button v-if="podType == 'mainstory'" type="button" class="btn btn-sm btn-danger pull-right"
+                      @click="removeMainStory(item.id)"><i class="fa fa-times" aria-hidden="true"></i></button>
+              <button v-if="podType == 'otherstory'" type="button" class="btn btn-sm btn-danger pull-right"
+                      @click="removeOtherStory(item.id)"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div><!-- /.col-md-12 -->
           </a>
         </div><!-- /.row -->
@@ -264,14 +264,13 @@ h5 {
 }
 </style>
 <script>
-
+import { emailMixin } from './email_mixin'
 import moment from 'moment'
 
 /** Show all stories with a emutoday_email picture type set **/
 export default {
-  directives: {},
-  components: {},
-  props: ['item', 'pid', 'mainStories', 'podType', 'draggable', 'otherStories'],
+  mixins: [ emailMixin ],
+  props: ['item', 'pid', 'podType', 'draggable'],
   data: function () {
     return {
       options: [],
@@ -295,10 +294,10 @@ export default {
   },
   computed: {
     mainStoriesFull: function () {
-      if (!this.mainStories) {
+      if (!this.emailBuilderEmail.mainStories) {
         return false
       }
-      return !this.checked && this.mainStories.length == 3 ? true : false
+      return !this.checked && this.emailBuilderEmail.mainStories.length == 3 ? true : false
     },
     timefromNow: function () {
       return moment(this.item.start_date).fromNow()
@@ -341,9 +340,9 @@ export default {
       return 'fa ' + faicon + ' fa-fw'
     },
     isMainStory: function () {
-      if (this.mainStories) {
-        for (var i = 0; i < this.mainStories.length; i++) {
-          if (this.mainStories[i].id == this.item.id) {
+      if (this.emailBuilderEmail.mainStories) {
+        for (var i = 0; i < this.emailBuilderEmail.mainStories.length; i++) {
+          if (this.emailBuilderEmail.mainStories[i].id == this.item.id) {
             this.checked = true
             return true
           }
@@ -353,9 +352,9 @@ export default {
       return false
     },
     isOtherStory: function () {
-      if (this.otherStories) {
-        for (var i = 0; i < this.otherStories.length; i++) {
-          if (this.otherStories[i].id == this.item.id) {
+      if (this.emailBuilderEmail.otherStories) {
+        for (var i = 0; i < this.emailBuilderEmail.otherStories.length; i++) {
+          if (this.emailBuilderEmail.otherStories[i].id == this.item.id) {
             this.checked = true
             return true
           }
@@ -366,9 +365,6 @@ export default {
     }
   },
   methods: {
-    fetchEmailReadyStories: function () {
-
-    },
     toggleBody: function (ev) {
       if (this.showBody == false) {
         this.showBody = true;
@@ -377,67 +373,25 @@ export default {
         this.showBody = false;
       }
     },
-    emitMainStoryAdd: function (storyObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$emit('main-story-added', storyObj)
-    },
-    emitMainStoryRemove: function (storyObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$emit('main-story-removed', storyObj.id)
-    },
-    emitOtherStoryAdd: function (storyObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$emit('other-story-added', storyObj)
-    },
-    emitOtherStoryRemove: function (storyObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$emit('other-story-removed', storyObj.id)
-    },
     toggleEmitMainStory: function (storyObj) {
       storyObj = JSON.parse(JSON.stringify(storyObj))
-      // function will run before this.checked is switched
       if (!this.checked) {
-        this.emitMainStoryAdd(storyObj)
+        this.addMainStory(storyObj)
       }
       else {
-        this.emitMainStoryRemove(storyObj)
+        this.removeMainStory(storyObj.id)
       }
     },
     toggleEmitOtherStory: function (storyObj) {
-      // function will run before this.checked is switched
+      storyObj = JSON.parse(JSON.stringify(storyObj))
       if (!this.checked) {
-        this.emitOtherStoryAdd(storyObj)
+        this.addOtherStory(storyObj)
       }
       else {
-        this.emitOtherStoryRemove(storyObj)
-      }
-    },
-    /**
-     * Uses vue-sortable
-     */
-    updateOrder: function (event) {
-      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
-      let oldIndex = event.oldIndex
-      let newIndex = event.newIndex
-
-      // move the item in the underlying array
-      this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
-    },
-  },
-  watch: {},
-
-  filters: {
-    momentPretty: {
-      read: function (val) {
-        return val ? moment(val).format('MM-DD-YYYY') : '';
-      },
-      write: function (val, oldVal) {
-        return moment(val).format('YYYY-MM-DD');
+        this.removeOtherStory(storyObj.id)
       }
     }
-  },
-  events: {}
+  }
 };
 
 

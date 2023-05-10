@@ -54,7 +54,8 @@
           <div class="tab-pane active" id="step-1">
             <h2>Basic Email Information</h2>
             <div v-if="emailBuilderEmail.clone.length > 0" class="alert alert-info alert-dismissible">
-              <p>This email was cloned from <a :href="'/admin/email/'+ emailBuilderEmail.clone[0].id +'/edit'">this email</a> on
+              <p>This email was cloned from <a :href="'/admin/email/'+ emailBuilderEmail.clone[0].id +'/edit'">this
+                email</a> on
                 {{ emailBuilderEmail.created_at }}.</p>
             </div>
             <div class="form-group">
@@ -108,66 +109,46 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                   <div class="tab-pane active" id="main-story">
-<!--                    {{ emailBuilderEmail }}-->
                     <email-main-stories-queue
                         :stypes="stypes"
-                        @main-story-added="handleMainStoryAdded"
-                        @main-story-removed="handleMainStoryRemoved"
-                        @updated-main-story-order="handleUpdateMainStoriesOrder"
                     ></email-main-stories-queue>
                   </div>
                   <div class="tab-pane" id="stories">
-<!--                    <email-story-queue-->
-<!--                        :stypes="stypes"-->
-<!--                        @other-story-added="handleOtherStoryAdded"-->
-<!--                        @other-story-removed="handleOtherStoryRemoved"-->
-<!--                        @updated-other-story-order="handleUpdateOtherStoriesOrder"-->
-<!--                    ></email-story-queue>-->
+                    <email-story-queue
+                        :stypes="stypes"
+                    ></email-story-queue>
                   </div>
                   <div class="tab-pane" id="announcements">
-                    <!--																			<email-announcement-queue-->
-                    <!--																					@announcement-added="handleAnnouncementAdded"-->
-                    <!--																					@announcement-removed="handleAnnouncementRemoved"-->
-                    <!--																					@updated-announcement-order="handleUpdateAnnouncementsOrder"-->
-                    <!--																			></email-announcement-queue>-->
+                    <email-announcement-queue></email-announcement-queue>
                   </div>
                   <div class="tab-pane" id="events">
-                    <!--																			<email-event-queue-->
-                    <!--																					:exclude-events-checked="emailBuilderEmail.exclude_events"-->
-                    <!--																					@event-added="handleEventAdded"-->
-                    <!--																					@event-removed="handleEventRemoved"-->
-                    <!--																					@updated-event-order="handleUpdateEventsOrder"-->
-                    <!--																					@toggle-exclude-events="handleToggleExcludeEvents"-->
-                    <!--																			></email-event-queue>-->
+                    <email-event-queue></email-event-queue>
                   </div>
                   <div class="tab-pane" id="president">
                     <div class="row">
                       <div class="col-xs-12">
                         <div class="form-group">
-                          <label>
-                            Include the presidential section in this email? <input type="checkbox"
-                                                                                   v-model="emailBuilderEmail.is_president_included">
-                          </label>
+                          <label for="presidentIncl">Include the presidential section in this email?</label>
+                          &nbsp;<input type="checkbox" id="presIncl" v-model="emailBuilderEmail.is_president_included">
                         </div><!-- /input-group -->
                       </div><!-- /.col-md-12 -->
                       <div class="col-xs-12">
                         <div class="form-group">
-                          <label>Teaser text
-                            <textarea class="form-control" id="presidentTeaser"
-                                      v-bind:class="[formErrors.president_teaser ? 'invalid-input' : '']"
-                                      v-model="emailBuilderEmail.president_teaser">{{ emailBuilderEmail.president_teaser }}</textarea>
-                          </label>
+                          <label for="presidentTeaser">Teaser text</label>
+                          <textarea class="form-control" id="presidentTeaser"
+                                    v-bind:class="[formErrors.president_teaser ? 'invalid-input' : '']"
+                                    v-model="emailBuilderEmail.president_teaser">{{ emailBuilderEmail.president_teaser }}</textarea>
                           <p v-if="formErrors.president_teaser" class="help-text invalid">The teaser is required when
                             including a presidential message.</p>
                         </div>
                       </div><!-- /.col-md-12 -->
                       <div class="col-xs-12">
                         <div class="form-group">
-                          <label>URL to president's statement
-                            <input type="text" class="form-control" id="presidentUrl"
-                                   v-bind:class="[formErrors.president_url ? 'invalid-input' : '']"
-                                   v-model="emailBuilderEmail.president_url" placeholder="https://emich.edu/president-statement"/>
-                          </label>
+                          <label for="presidentUrl">URL to president's statement</label>
+                          <input type="text" class="form-control" id="presidentUrl"
+                                 v-bind:class="[formErrors.president_url ? 'invalid-input' : '']"
+                                 v-model="emailBuilderEmail.president_url"
+                                 placeholder="https://emich.edu/president-statement"/>
                           <p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
                         </div>
                       </div><!-- /.col-md-12 -->
@@ -215,7 +196,9 @@
                 </div><!-- /input-group -->
                 <h3>To which mailing list(s) should this email be sent?</h3>
                 <ul>
-                  <li v-for="(recipient, i) in emailBuilderEmail.recipients" :key="'recip-'+i">{{ recipient.email_address }}</li>
+                  <li v-for="(recipient, i) in emailBuilderEmail.recipients" :key="'recip-'+i">
+                    {{ recipient.email_address }}
+                  </li>
                 </ul>
                 <label style="width: 300px">Select recipient(s)
                   <v-select id="minical"
@@ -260,7 +243,8 @@
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.mainStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.mainStories.length > 0 ? 'has' : 'does not have' }} a main
+                      aria-hidden="true"></i> Email
+                    {{ emailBuilderEmail.mainStories.length > 0 ? 'has' : 'does not have' }} a main
                     story.
                   </li>
                   <li class="list-group-item"><i
@@ -271,7 +255,8 @@
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.otherStories.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.otherStories.length > 0 ? 'has' : 'does not have' }} at
+                      aria-hidden="true"></i> Email
+                    {{ emailBuilderEmail.otherStories.length > 0 ? 'has' : 'does not have' }} at
                     least one side story.
                   </li>
                   <li class="list-group-item">
@@ -282,29 +267,36 @@
                     <template v-else>
                       <i
                           :class="emailBuilderEmail.events.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                          aria-hidden="true"></i> Email {{ emailBuilderEmail.events.length > 0 ? 'has' : 'does not have' }} at
+                          aria-hidden="true"></i> Email {{
+                        emailBuilderEmail.events.length > 0 ? 'has' : 'does not have'
+                      }} at
                       least one
                       event.
                     </template>
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.announcements.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.announcements.length > 0 ? 'has' : 'does not have' }} at
+                      aria-hidden="true"></i> Email
+                    {{ emailBuilderEmail.announcements.length > 0 ? 'has' : 'does not have' }} at
                     least one announcement.
                   </li>
                   <li class="list-group-item" v-if="emailBuilderEmail.is_president_included"><i
                       :class="emailBuilderEmail.president_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_teaser ? 'has' : 'does not have' }} teaser text
+                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_teaser ? 'has' : 'does not have' }}
+                    teaser text
                     for the message from the president.
                   </li>
                   <li class="list-group-item" v-if="emailBuilderEmail.is_president_included"><i
                       :class="emailBuilderEmail.president_url ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_url ? 'has' : 'does not have' }} a URL to the
+                      aria-hidden="true"></i> Email {{ emailBuilderEmail.president_url ? 'has' : 'does not have' }} a
+                    URL to the
                     message from the president.
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.recipients.length > 0 ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.recipients.length > 0 ? 'has' : 'does not have' }} at
+                      aria-hidden="true"></i> Email {{
+                      emailBuilderEmail.recipients.length > 0 ? 'has' : 'does not have'
+                    }} at
                     least
                     one recipient.
                   </li>
@@ -320,13 +312,16 @@
                 <ul class="list-group">
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.is_president_included ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.is_president_included ? 'has' : 'does not have' }} a
+                      aria-hidden="true"></i> Email {{
+                      emailBuilderEmail.is_president_included ? 'has' : 'does not have'
+                    }} a
                     message
                     from the president.
                   </li>
                   <li class="list-group-item"><i
                       :class="emailBuilderEmail.subheading ? 'fa fa-check-circle fa-3x' : 'fa fa-exclamation-triangle fa-3x'"
-                      aria-hidden="true"></i> Email {{ emailBuilderEmail.subheading ? 'has' : 'does not have' }} a subheading.
+                      aria-hidden="true"></i> Email {{ emailBuilderEmail.subheading ? 'has' : 'does not have' }} a
+                    subheading.
                   </li>
                 </ul>
               </div>
@@ -349,7 +344,7 @@
         <div v-bind:class="[md12col, lg4col]">
           <h2>This email has already been sent!</h2>
           <h3>Sent</h3>
-          <p>{{ emailBuilderEmail.send_at | formatDate }}</p>
+          <p>{{ formatDate(emailBuilderEmail.send_at) }}</p>
           <h3>Recipients</h3>
           <template v-if="emailBuilderEmail.recipients.length > 0">
             <ul>
@@ -469,8 +464,8 @@ import { Sortable } from "sortablejs-vue3"
 import EmailMainStoriesQueue from './EmailMainStoriesQueue.vue'
 import EmailStoryQueue from './EmailStoryQueue.vue'
 import { emailMixin } from './email_mixin'
-// import EmailEventQueue from './EmailEventQueue.vue'
-// import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
+import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
+import EmailEventQueue from './EmailEventQueue.vue'
 // import EmailDeleteModal from './EmailDeleteModal.vue'
 // import EmailStatsModal from './EmailStatsModal.vue'
 // import EmailCloneModal from './EmailCloneModal.vue'
@@ -483,15 +478,15 @@ export default {
     Sortable,
     EmailMainStoriesQueue,
     EmailStoryQueue,
-    // EmailEventQueue,
-    // EmailAnnouncementQueue,
+    EmailAnnouncementQueue,
+    EmailEventQueue,
     // EmailLiveView,
     // EmailDeleteModal,
     // EmailStatsModal,
     // EmailCloneModal,
     // DatePicker
   },
-  mixins: [ emailMixin ],
+  mixins: [emailMixin],
   props: {
     cuserRoles: { default: {} },
     errors: {
@@ -533,33 +528,10 @@ export default {
       recipientsList: [],
       recordState: '',
       currentRecordId: null,
-      original: {
-        id: '',
-        clone: [],
-        created_at: null,
-        is_approved: false,
-        is_ready: false,
-        mailgun_clicks: 0,
-        mailgun_opens: 0,
-        mailgun_spam: 0,
-        send_at: null,
-        subheading: null,
-        title: null,
-        announcements: [],
-        events: [],
-        mainStories: [],
-        otherStories: [],
-        recipients: [],
-      },
-      response: {},
       totalChars: {
         title: 50,
       },
       userRoles: [],
-      dateObject: {
-        sendAtMin: '',
-        sendAtDefault: '',
-      },
       sendAtdatePicker: null,
       showAddRecipient: false,
       newRecipient: null,
@@ -579,8 +551,7 @@ export default {
       this.existingEmail = true
     }
     else {
-      this.newform = true;
-      this.setupDatePickers()
+      this.newform = true
     }
 
     this.fetchRecipientsList()
@@ -733,7 +704,6 @@ export default {
 
       .then((response) => {
         this.setEmailBuilderEmail(response.data.newdata.data)
-        this.setupDatePickers();
       }).catch((e) => {
         this.formErrors = e.response.data.error.message;
       });
@@ -830,71 +800,12 @@ export default {
       this.formErrors = {}
       this.newRecipient = null
     },
-
-    setupDatePickers: function () {
-      let today = moment()
-      if (!this.emailBuilderEmail.send_at) {
-        this.dateObject.sendAtDefault = today.add(1, 'hour').format('YYYY-MM-DD HH:00:00')
+    formatDate: function (date) {
+      if (date) {
+        return moment(date).format("LLLL")
       }
-      else {
-        this.dateObject.sendAtDefault = this.emailBuilderEmail.send_at;
-      }
-    },
-    handleMainStoryAdded: function (mainStoryObj) {
-      if (mainStoryObj) {
-        this.addMainStory(mainStoryObj)
-      }
-    },
-    handleMainStoryRemoved: function (mainStoryId) {
-      this.removeMainStory(mainStoryId)
-    },
-    handleOtherStoryAdded: function (otherStoryObj) {
-      if (otherStoryObj) {
-        // this.addOtherStory(otherStoryObj)
-      }
-    },
-    handleOtherStoryRemoved: function (otherStoryId) {
-      // this.removeOtherStory(otherStoryId)
-    },
-    handleAnnouncementAdded: function (anouncementObj) {
-      if (anouncementObj) {
-        // this.addAnnouncement(anouncementObj)
-      }
-    },
-    handleAnnouncementRemoved: function (announcementId) {
-      // this.removeAnnouncement(announcementId)
-    },
-    handleEventAdded: function (eventObj) {
-      if (eventObj) {
-        // this.addEvent(eventObj)
-      }
-    },
-    handleEventRemoved: function (eventId) {
-      // this.removeEvent(eventId)
-    },
-    handleUpdateMainStoriesOrder (evt) {
-      // this.updateMainStoriesOrder(evt)
-    },
-    handleUpdateOtherStoriesOrder (evt) {
-      // this.updateOtherStoriesOrder(evt)
-    },
-    handleUpdateAnnouncementsOrder (evt) {
-      // this.updateAnnouncementsOrder(evt)
-    },
-    handleUpdateEventsOrder (evt) {
-      // this.updateEventsOrder(evt)
-    },
-    handleToggleExcludeEvents (evt) {
-      // this.setEmailBuilderEmailProp({ prop: 'exclude_events', value: evt })
     }
-  },
-  filters: {
-    formatDate: function (value) {
-      if (value) {
-        return moment(String(value)).format('LLLL')
-      }
-    },
-  },
+  }
 };
 
 </script>

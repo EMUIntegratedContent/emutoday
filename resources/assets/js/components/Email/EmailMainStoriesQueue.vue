@@ -34,18 +34,22 @@
       <div class="col-md-12">
         <h3>Main Stories</h3>
         <template v-if="emailBuilderEmail.mainStories.length">
-<!--          <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">-->
-            <email-story-pod
-                pid="main-story-item"
-                v-for="(story, index) in emailBuilderEmail.mainStories"
-                pod-type="mainstory"
-                :item="story"
-                :key="'used-story-draggable-' + index"
-                @main-story-added="handleMainStoryAdded"
-                @main-story-removed="handleMainStoryRemoved"
-            >
-            </email-story-pod>
-<!--          </draggable>-->
+          <Sortable
+              :list="emailBuilderEmail.mainStories"
+              item-key="id"
+              tag="div"
+              :options="{}"
+              @update="updateOrder"
+          >
+            <template #item="{element, i}">
+              <email-story-pod
+                  pid="main-story-item"
+                  pod-type="mainstory"
+                  :item="element"
+              >
+              </email-story-pod>
+            </template>
+          </Sortable>
         </template>
         <template v-else>
           <p>There are no main stories set for this email.</p>
@@ -113,8 +117,6 @@
               v-for="(item, index) in itemsFilteredPaginated"
               :key="'email-story-item-' + index"
               :item="item"
-              @main-story-added="handleMainStoryAdded"
-              @main-story-removed="handleMainStoryRemoved"
           >
           </email-story-pod>
 
@@ -181,22 +183,20 @@ span.item-type-icon:active, span.item-type-icon.active {
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
 import Pagination from '../Pagination.vue'
-// import DatePicker from 'vue2-datepicker'
-import draggable from 'vuedraggable'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import { emailMixin } from './email_mixin'
+import { Sortable } from "sortablejs-vue3"
 
 export default {
   components: {
     EmailStoryPod,
     Pagination,
-    draggable,
-    // DatePicker,
-    flatpickr
+    flatpickr,
+    Sortable
   },
   mixins: [ emailMixin ],
-  props: ['stypes', 'mainStories'],
+  props: ['stypes'],
   created() {
     // let twoWeeksEarlier = moment().subtract(2, 'w')
     let twoWeeksEarlier = moment().subtract(1, 'y') // TODO change this back to 2 w!
@@ -208,7 +208,6 @@ export default {
     return {
       items_filter_storytype: '',
       currentDate: moment(),
-      usedStories: [],
       items: [],
       loadingQueue: true,
       eventMsg: null,
@@ -365,30 +364,10 @@ export default {
       }
     },
 
-    /**
-     * Uses vue-draggable
-     */
+    // Uses Vue Sortable
     updateOrder: function (event) {
-      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
-      let oldIndex = event.oldIndex
-      let newIndex = event.newIndex
-
-      // move the item in the underlying array
-      this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
-      this.$emit('updated-main-story-order', this.usedStories)
-    },
-    handleMainStoryAdded(evt) {
-      this.$emit('main-story-added', evt)
-    },
-    handleMainStoryRemoved(evt) {
-      this.$emit('main-story-removed', evt)
+      this.updateMainStoriesOrder({ newIndex: event.newIndex, oldIndex: event.oldIndex })
     }
-  },
-  watch: {
-    // mainStories: function (value) {
-    //   // set events from property to data
-    //   this.usedStories = value
-    // }
   }
 }
 </script>

@@ -1,4 +1,6 @@
 {
     "/js/vue-email-form.js": "/js/vue-email-form.js",
-    "/css/public-styles.css": "/css/public-styles.css"
+    "/js/vue-story-queue.js": "/js/vue-story-queue.js",
+    "/css/public-styles.css": "/css/public-styles.css",
+    "/css/admin-styles.css": "/css/admin-styles.css"
 }

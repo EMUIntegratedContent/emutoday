@@ -78,13 +78,46 @@ const mutations = {
 		state.selectedCalendarCategory = category
 	},
 	// Email Builder
+	addAnnouncement (state, ann) {
+		state.emailBuilderEmail.announcements.push(ann)
+	},
+	addEvent (state, event) {
+		state.emailBuilderEmail.events.push(event)
+	},
 	addMainStory (state, story) {
 		state.emailBuilderEmail.mainStories.push(story)
 	},
+	addOtherStory (state, story) {
+		state.emailBuilderEmail.otherStories.push(story)
+	},
+	removeAnnouncement (state, annId) {
+		const announcements = JSON.parse(JSON.stringify(state.emailBuilderEmail.announcements))
+		const announcement = announcements.find(an => an.id == annId)
+		if(announcement) {
+			announcements.splice(announcements.indexOf(announcement), 1)
+			state.emailBuilderEmail.announcements = JSON.parse(JSON.stringify(announcements))
+		}
+	},
+	removeEvent (state, eventId) {
+		const events = JSON.parse(JSON.stringify(state.emailBuilderEmail.events))
+		const event = events.find(ev => ev.id == eventId)
+		if(event) {
+			events.splice(events.indexOf(event), 1)
+			state.emailBuilderEmail.events = JSON.parse(JSON.stringify(events))
+		}
+	},
 	removeMainStory (state, storyId) {
-		const story = state.emailBuilderEmail.mainStories.find(ms => ms.id == storyId)
+		const mainStories = JSON.parse(JSON.stringify(state.emailBuilderEmail.mainStories))
+		const story = mainStories.find(ms => ms.id == storyId)
 		if(story) {
-			state.emailBuilderEmail.mainStories.splice(state.emailBuilderEmail.mainStories.indexOf(story), 1)
+			mainStories.splice(mainStories.indexOf(story), 1)
+			state.emailBuilderEmail.mainStories = JSON.parse(JSON.stringify(mainStories))
+		}
+	},
+	removeOtherStory (state, storyId) {
+		const story = state.emailBuilderEmail.otherStories.find(os => os.id == storyId)
+		if(story) {
+			state.emailBuilderEmail.otherStories.splice(state.emailBuilderEmail.otherStories.indexOf(story), 1)
 		}
 	},
 	setEmailBuilderEmail (state, email) {
@@ -92,6 +125,18 @@ const mutations = {
 	},
 	setEmailBuilderEmailProp (state, { prop, value }) {
 		state.emailBuilderEmail[prop] = value
+	},
+	updateAnnouncementsOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.announcements.splice(newIndex, 0, state.emailBuilderEmail.announcements.splice(oldIndex, 1)[0]);
+	},
+	updateEventsOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.events.splice(newIndex, 0, state.emailBuilderEmail.events.splice(oldIndex, 1)[0]);
+	},
+	updateMainStoriesOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.mainStories.splice(newIndex, 0, state.emailBuilderEmail.mainStories.splice(oldIndex, 1)[0]);
+	},
+	updateOtherStoriesOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.otherStories.splice(newIndex, 0, state.emailBuilderEmail.otherStories.splice(oldIndex, 1)[0]);
 	}
 }
 const actions = {

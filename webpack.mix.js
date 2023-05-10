@@ -91,7 +91,7 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 // mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js').vue();
 // mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js').vue();
 // mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js').vue();
-// mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
+mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
 // mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
 // mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
 
@@ -102,7 +102,11 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 |
 | The styles that will appear on the restricted admin pages
 |
-
+*/
+mix.styles([
+    'resources/assets/css/admin-less.css',
+    'resources/assets/css/admin.css',
+], 'public/css/admin-styles.css');
 /*
 |--------------------------------------------------------------------------
 | Back End Scripts
@@ -118,11 +122,11 @@ mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').v
 |--------------------------------------------------------------------------
 */
 // Refresh page in local environment
-// mix.browserSync('emutoday.test');
+// mix.browserSync('localhost:8080');
 
 /*
 |--------------------------------------------------------------------------
-| CKEditor 5 Configuraiton (used in Vue frontend)
+| CKEditor 5 Configuration (used in Vue frontend)
 | Created by CP 3/17/23
 | https://github.com/ckeditor/ckeditor5-vue/issues/23
 | https://deniapps.com/blog/some-fixes-of-webpack-errors

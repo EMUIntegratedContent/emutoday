@@ -15,7 +15,7 @@
         </div><!-- /.col-md-12 -->
         <div class="col-xs-12">
             <div class="form-group">
-              <label for="presidentUrl">URL to president's statement</label>
+              <label for="presidentUrl"><strong>URL to president's statement</strong></label>
               <input type="text" class="form-control" id="presidentUrl" v-model="presidentUrl" />
             </div>
         </div><!-- /.col-md-12 -->
@@ -33,25 +33,6 @@ export default  {
     return {
         isPresidentIncluded: false
     }
-  },
-  ready() {
-
-  },
-  computed: {
-
-  },
-  methods : {
-  },
-  filters: {
-
-  },
-
-  // the `events` option simply calls `$on` for you
-  // when the instance is created
-  events: {
-  },
-
-  watch: {
-  },
+  }
 }
 </script>
