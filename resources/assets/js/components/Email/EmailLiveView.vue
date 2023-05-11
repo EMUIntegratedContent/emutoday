@@ -25,22 +25,23 @@
 
               <tr>
                 <td valign="top" class="full-width-image">
-                  <template v-if="email.mainStories[0]">
+                  <template v-if="emailBuilderEmail.mainStories[0]">
                     <article>
-                      <img :alt="email.mainStories[0].email_images[0].caption"
-                           :src="email.mainStories[0].email_images[0].image_path + email.mainStories[0].email_images[0].filename"
+                      <img :alt="emailBuilderEmail.mainStories[0].email_images[0].caption"
+                           :src="emailBuilderEmail.mainStories[0].email_images[0].image_path + emailBuilderEmail.mainStories[0].email_images[0].filename"
                            style="border-right:0px solid #ffffff; max-width:600px;  border-top: 3px solid #97D700;"/>
                       <div class="indent" style="padding-bottom: 16px; margin-bottom: 10px;">
                         <h2>
-                          <a v-if="email.mainStories[0].story_type == 'external' || (email.mainStories[0].story_type == 'article' && storyHasTag(email.mainStories[0], 'external'))"
-                             style="text-decoration: none;" :href="email.mainStories[0].small_images[0].link">{{
-                              email.mainStories[0].email_images[0].title
+                          <a v-if="emailBuilderEmail.mainStories[0].story_type == 'external' || (emailBuilderEmail.mainStories[0].story_type == 'article' && storyHasTag(emailBuilderEmail.mainStories[0], 'external'))"
+                             style="text-decoration: none;"
+                             :href="emailBuilderEmail.mainStories[0].small_images[0].link">{{
+                              emailBuilderEmail.mainStories[0].email_images[0].title
                             }} &#10137;</a>
-                          <a v-else :href="email.mainStories[0].full_url">{{
-                              email.mainStories[0].email_images[0].title
+                          <a v-else :href="emailBuilderEmail.mainStories[0].full_url">{{
+                              emailBuilderEmail.mainStories[0].email_images[0].title
                             }} &#10137;</a>
                         </h2>
-                        {{ email.mainStories[0].email_images[0].teaser | truncate('135') }}
+                        {{ truncate(emailBuilderEmail.mainStories[0].email_images[0].teaser, '135') }}
                       </div>
                     </article>
                   </template>
@@ -55,7 +56,7 @@
                 </td>
               </tr>
               <!-- some emails might not have sub stories! -->
-              <template v-if="email.mainStories.length == 3">
+              <template v-if="emailBuilderEmail.mainStories.length == 3">
                 <tr>
                   <td>
                     <table>
@@ -65,29 +66,31 @@
                             <table>
                               <tr>
                                 <td class="inner">
-                                  <template v-if="email.mainStories[1]">
+                                  <template v-if="emailBuilderEmail.mainStories[1]">
                                     <table class="contents">
                                       <tr>
                                         <!-- -->
                                         <td style="text-align:left;"><img class="col-img"
-                                                                          :alt="email.mainStories[1].small_images[0].caption"
-                                                                          :src="'/imagecache/emailsub/' + email.mainStories[1].small_images[0].filename"/>
+                                                                          :alt="emailBuilderEmail.mainStories[1].small_images[0].caption"
+                                                                          :src="'/imagecache/emailsub/' + emailBuilderEmail.mainStories[1].small_images[0].filename"/>
                                         </td>
                                       </tr>
                                       <tr>
                                         <td class="text" style="text-align:left;">
                                           <h3>
-                                            <a v-if="email.mainStories[1].story_type == 'external' || (email.mainStories[1].story_type == 'article' && storyHasTag(email.mainStories[1], 'external'))"
+                                            <a v-if="emailBuilderEmail.mainStories[1].story_type == 'external' || (emailBuilderEmail.mainStories[1].story_type == 'article' && storyHasTag(emailBuilderEmail.mainStories[1], 'external'))"
                                                style="text-decoration: none;"
-                                               :href="email.mainStories[1].small_images[0].link">{{
-                                                email.mainStories[1].email_images[0].title
+                                               :href="emailBuilderEmail.mainStories[1].small_images[0].link">{{
+                                                emailBuilderEmail.mainStories[1].email_images[0].title
                                               }} &#10137;</a>
                                             <a v-else style="text-decoration: none;"
-                                               :href="email.mainStories[1].full_url">{{
-                                                email.mainStories[1].email_images[0].title
+                                               :href="emailBuilderEmail.mainStories[1].full_url">{{
+                                                emailBuilderEmail.mainStories[1].email_images[0].title
                                               }} &#10137;</a>
                                           </h3>
-                                          <p>{{ email.mainStories[1].email_images[0].teaser | truncate('110') }}</p>
+                                          <p>{{
+                                              truncate(emailBuilderEmail.mainStories[1].email_images[0].teaser, '110')
+                                            }}</p>
                                         </td>
                                       </tr>
                                     </table>
@@ -108,27 +111,30 @@
                             <table>
                               <tr>
                                 <td class="inner">
-                                  <template v-if="email.mainStories[2]">
+                                  <template v-if="emailBuilderEmail.mainStories[2]">
                                     <table class="contents">
                                       <tr>
-                                        <td><img class="col-img" :alt="email.mainStories[2].small_images[0].caption"
-                                                 :src="'/imagecache/emailsub/' + email.mainStories[2].small_images[0].filename"/>
+                                        <td><img class="col-img"
+                                                 :alt="emailBuilderEmail.mainStories[2].small_images[0].caption"
+                                                 :src="'/imagecache/emailsub/' + emailBuilderEmail.mainStories[2].small_images[0].filename"/>
                                         </td>
                                       </tr>
                                       <tr>
                                         <td class="text">
                                           <h3>
-                                            <a v-if="email.mainStories[2].story_type == 'external' || (email.mainStories[2].story_type == 'article' && storyHasTag(email.mainStories[2], 'external'))"
+                                            <a v-if="emailBuilderEmail.mainStories[2].story_type == 'external' || (emailBuilderEmail.mainStories[2].story_type == 'article' && storyHasTag(emailBuilderEmail.mainStories[2], 'external'))"
                                                style="text-decoration: none;"
-                                               :href="email.mainStories[2].small_images[0].link">{{
-                                                email.mainStories[2].email_images[0].title
+                                               :href="emailBuilderEmail.mainStories[2].small_images[0].link">{{
+                                                emailBuilderEmail.mainStories[2].email_images[0].title
                                               }} &#10137;</a>
                                             <a v-else style="text-decoration: none;"
-                                               :href="email.mainStories[2].full_url">{{
-                                                email.mainStories[2].email_images[0].title
+                                               :href="emailBuilderEmail.mainStories[2].full_url">{{
+                                                emailBuilderEmail.mainStories[2].email_images[0].title
                                               }} &#10137;</a>
                                           </h3>
-                                          <p>{{ email.mainStories[2].email_images[0].teaser | truncate('110') }}</p>
+                                          <p>{{
+                                              truncate(emailBuilderEmail.mainStories[2].email_images[0].teaser, '110')
+                                            }}</p>
                                         </td>
                                       </tr>
                                     </table>
@@ -155,9 +161,9 @@
                 <td valign="top">
                   <div>
                     <h2 class="moveover"><a href="/story/news">More News &#10137;</a></h2>
-                    <template v-if="email.otherStories.length > 0">
+                    <template v-if="emailBuilderEmail.otherStories.length > 0">
                       <ul style="padding-bottom: 0px; margin-left: 0px; padding-left: 24px; margin-bottom: 5px;">
-                        <li v-for="story in email.otherStories"
+                        <li v-for="story in emailBuilderEmail.otherStories"
                             style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                           <a v-if="story.story_type == 'external' || (story.story_type == 'article' && storyHasTag(story, 'external'))"
                              style="text-decoration: none;" :href="story.small_images[0].link">{{ story.title }}</a>
@@ -172,20 +178,21 @@
                   </div>
                 </td>
               </tr>
-              <tr v-if="email.is_president_included">
+              <tr v-if="emailBuilderEmail.is_president_included">
                 <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
                   <img src="/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith"
-                       width="109px" style="float:left; padding:0 15px 8px 0;"/>
+                       style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
-                    <template v-if="email.president_url">
-                      <a v-if="email.president_url" :href="email.president_url">From the President &#10137;</a>
+                    <template v-if="emailBuilderEmail.president_url">
+                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the
+                        President &#10137;</a>
                     </template>
                     <template v-else>
                       <span class="insufficient">From the President [NO URL]</span>
                     </template>
                   </h2>
-                  <template v-if="email.president_teaser">
-                    <p style="font-size:1.1rem;">{{ email.president_teaser }}</p>
+                  <template v-if="emailBuilderEmail.president_teaser">
+                    <p style="font-size:1.1rem;">{{ emailBuilderEmail.president_teaser }}</p>
                   </template>
                   <template v-else>
                     <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include
@@ -198,9 +205,9 @@
                   <div>
                     <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/announcement">Announcements
                       &#10137;</a></h2>
-                    <template v-if="email.announcements.length > 0">
+                    <template v-if="emailBuilderEmail.announcements.length > 0">
                       <ul style="padding-bottom: 16px; padding-top: 0px; margin-left: 0px; padding-left:24px; margin-top: 5px;">
-                        <li v-for="announcement in email.announcements"
+                        <li v-for="announcement in emailBuilderEmail.announcements"
                             style="padding-bottom: 5px; margin-left: 0; color:#046A38;">
                           <a v-if="announcement.link != ''" style="text-decoration: none;"
                              :href="announcement.link">{{ announcement.title }}</a>
@@ -216,33 +223,35 @@
                   </div>
                 </td>
               </tr>
-              <tr v-if="!email.exclude_events">
+              <tr v-if="!emailBuilderEmail.exclude_events">
                 <td valign="middle">
                   <div style="padding-top: 5px;">
                     <h2 class="moveover" style="border-top: 3px double #97D700;"><a href="/calendar">What's Happening at
                       EMU &#10137;</a></h2>
-                    <template v-if="email.events.length > 0">
-                      <ul style="margin-left: 0; padding-left: 7px; float: left; padding-bottom: 5px;">
-                        <li v-for="evt in email.events" style="list-style: none; margin-left: 0; clear: both;">
-                          <div
-                              style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;">
-                            {{ evt.start_date | dateParse }}
-                          </div>
-                          <div
-                              style="width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;">
-                            <a style="text-decoration: none;" :href="evt.full_url">{{ evt.title }}</a></div>
-                        </li>
-                      </ul>
-                    </template>
-                    <template v-else>
-                      <p style="padding:0 5px" class="insufficient">No events set yet. Select at least one from the
-                        "Events" tab.</p>
-                    </template>
-                  </div>
-                  <div
-                      style="width:75%;display:inline-block;padding-top:0px;padding-bottom:20px;float:left;padding-left:10px;">
-                    <a href="/calendar" style="color:#046a38;text-decoration:none" target="_blank">View all calendar
-                      events &#10137;</a>
+                    <div>
+                      <template v-if="emailBuilderEmail.events.length > 0">
+                        <ul style="margin-left: 0; padding-left: 7px; padding-bottom: 5px;">
+                          <li v-for="(evt, i) in emailBuilderEmail.events"
+                              style="list-style: none; margin-left: 0; clear: both;" :key="'emailev-'+i">
+                            <div
+                                style="font-size: 18px; font-weight: bold; line-height: 110%; display: inline-block; width: 50px; height: 50px;  padding: 6px 10px 10px; float: left; text-align: center; margin-bottom: 14px; margin-right: 10px; color:#ffffff; background-color: #2b873b;">
+                              {{ dateParse(evt.start_date) }}
+                            </div>
+                            <div
+                                style="width: 72%; display: inline-block; padding-top: 5px; padding-bottom: 10px; float: left;">
+                              <a style="text-decoration: none;" :href="evt.full_url">{{ evt.title }}</a></div>
+                          </li>
+                        </ul>
+                      </template>
+                      <template v-else>
+                        <p style="padding:0 5px" class="insufficient">No events set yet. Select at least one from the
+                          "Events" tab.</p>
+                      </template>
+                    </div>
+                    <div style="padding-top:75px;padding-bottom:20px;padding-left:10px;">
+                      <a href="/calendar" style="color:#046a38;text-decoration:none" target="_blank">View all calendar
+                        events &#10137;</a>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -346,9 +355,6 @@ body {
   line-height: 1.3rem;
   margin: 0 !important;
   padding: 0;
-  /*background-color: #f3f2ee;*/
-  /*background-color: #d6d2c4;*/
-  /*background-color: #e6e6e6;*/
   background-color: #e1e1e1;
   color: #636363;
 }
@@ -649,45 +655,37 @@ p.sub-title {
 }
 </style>
 <script>
-import moment from 'moment';
+import { emailMixin } from './email_mixin'
+import moment from 'moment'
 
 export default {
-  directives: {},
-  components: {},
-  props: ['announcements', 'events', 'otherStories', 'mainStories', 'email'],
-  data: function () {
+  mixins: [emailMixin],
+  data () {
     return {
       deleteConfirm: null,
     }
   },
-  ready: function () {
-
-  },
-  computed: {},
   methods: {
+    dateParse (date) {
+      return moment(date).format('MMM DD')
+    },
     storyHasTag: function (story, tag) {
-      var storyHasTag = false
+      let storyHasTag = false
       story.tags.forEach(function (tg) {
         if (tg.name == tag) {
           storyHasTag = true
         }
       })
       return storyHasTag
-    }
-  },
-  filters: {
-    truncate: function (text, stop, clamp) {
+    },
+    truncate (text, stop) {
       if (text.length > stop) {
         return text.substring(0, stop).replace(/\w+$/, '...')
-      } else {
+      }
+      else {
         return text
       }
-    },
-    dateParse: function (date) {
-      return moment(date).format('MMM DD')
     }
   },
-  events: {},
-  watch: {},
 }
 </script>

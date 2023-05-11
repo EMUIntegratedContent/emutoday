@@ -1,5 +1,4 @@
-import { mapActions, mapState, mapMutations, mapGetters } from "vuex"
-import moment from 'moment'
+import { mapState, mapMutations } from "vuex"
 
 export const emailMixin = {
 	created() {

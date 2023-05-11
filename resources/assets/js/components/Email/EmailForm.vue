@@ -30,6 +30,7 @@
               newform ? 'Create Email' : 'Update Email'
             }}
           </button>
+          &nbsp;
           <button v-if="!newform" class="btn btn-warning" type="button" data-toggle="modal" data-target="#cloneModal">
             Clone Email
           </button>
@@ -129,7 +130,14 @@
                       <div class="col-xs-12">
                         <div class="form-group">
                           <label for="presidentIncl">Include the presidential section in this email?</label>
-                          &nbsp;<input type="checkbox" id="presIncl" v-model="emailBuilderEmail.is_president_included">
+                          &nbsp;
+                          <input
+                              type="checkbox"
+                              id="presIncl"
+                              v-model="emailBuilderEmail.is_president_included"
+                              :true-value="1"
+                              :false-value="0"
+                          >
                         </div><!-- /input-group -->
                       </div><!-- /.col-md-12 -->
                       <div class="col-xs-12">
@@ -159,13 +167,7 @@
               <!-- /.medium-4 columns -->
               <!-- "LIVE VIEW" OF EMAIL -->
               <div v-bind:class="[md12col, lg7col]">
-                <!--									<email-live-view-->
-                <!--											:email="emailBuilderEmail"-->
-                <!--											:announcements="emailBuilderEmail.announcements"-->
-                <!--											:events="emailBuilderEmail.events"-->
-                <!--											:other-stories="emailBuilderEmail.otherStories"-->
-                <!--											:main-stories="emailBuilderEmail.mainStories"-->
-                <!--									></email-live-view>-->
+                  <email-live-view></email-live-view>
               </div>
               <!-- /.medium-8 columns -->
             </div>
@@ -183,7 +185,7 @@
                   be approved.</p>
                 <div class="input-group">
 								<span class="input-group-addon">
-									<input type="checkbox" v-model="emailBuilderEmail.is_approved" aria-label="Set as time">
+									<input type="checkbox" v-model="emailBuilderEmail.is_approved" :true-value="1" :false-value="0" aria-label="Set as time">
 								</span>
                   <flatpickr
                       v-model="emailBuilderEmail.send_at"
@@ -368,27 +370,15 @@
         </div>
         <!-- /.medium-4 columns -->
         <div v-bind:class="[md12col, lg8col]">
-          <!--					<email-live-view-->
-          <!--							:email="emailBuilderEmail"-->
-          <!--							:announcements="emailBuilderEmail.announcements"-->
-          <!--							:events="emailBuilderEmail.events"-->
-          <!--							:other-stories="emailBuilderEmail.otherStories"-->
-          <!--							:main-stories="emailBuilderEmail.mainStories"-->
-          <!--					></email-live-view>-->
+          <email-live-view></email-live-view>
         </div>
         <!-- /.medium-8 columns -->
       </div>
       <!-- /.row -->
     </div>
-    <!--		<email-delete-modal-->
-    <!--				:email="emailBuilderEmail"-->
-    <!--		></email-delete-modal>-->
-    <!--		<email-stats-modal-->
-    <!--				:email="emailBuilderEmail"-->
-    <!--		></email-stats-modal>-->
-    <!--		<email-clone-modal-->
-    <!--				:email="emailBuilderEmail"-->
-    <!--		></email-clone-modal>-->
+    		<email-delete-modal></email-delete-modal>
+    		<email-stats-modal></email-stats-modal>
+    		<email-clone-modal></email-clone-modal>
   </div>
 </template>
 
@@ -466,10 +456,10 @@ import EmailStoryQueue from './EmailStoryQueue.vue'
 import { emailMixin } from './email_mixin'
 import EmailAnnouncementQueue from './EmailAnnouncementQueue.vue'
 import EmailEventQueue from './EmailEventQueue.vue'
-// import EmailDeleteModal from './EmailDeleteModal.vue'
-// import EmailStatsModal from './EmailStatsModal.vue'
-// import EmailCloneModal from './EmailCloneModal.vue'
-// import EmailLiveView from './EmailLiveView.vue'
+import EmailDeleteModal from './EmailDeleteModal.vue'
+import EmailStatsModal from './EmailStatsModal.vue'
+import EmailCloneModal from './EmailCloneModal.vue'
+import EmailLiveView from './EmailLiveView.vue'
 
 export default {
   components: {
@@ -480,11 +470,10 @@ export default {
     EmailStoryQueue,
     EmailAnnouncementQueue,
     EmailEventQueue,
-    // EmailLiveView,
-    // EmailDeleteModal,
-    // EmailStatsModal,
-    // EmailCloneModal,
-    // DatePicker
+    EmailLiveView,
+    EmailDeleteModal,
+    EmailStatsModal,
+    EmailCloneModal
   },
   mixins: [emailMixin],
   props: {
@@ -539,7 +528,7 @@ export default {
       flatpickrConfig: {
         altFormat: "m/d/Y h:i K", // format the user sees
         altInput: true,
-        dateFormat: "Y-m-d H:i:s", // format sumbitted to the API
+        dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
         enableTime: true
       },
       iterator: 0
@@ -637,10 +626,6 @@ export default {
         }
       }
     },
-    // Switch verbage of submit button.
-    submitBtnLabel: function () {
-      return (this.existingEmail) ? 'Update Email' : 'Create Email'
-    },
     // Progress of email bulider (adds up to 100%)
     progress: function () {
       let progress = 0
@@ -701,7 +686,6 @@ export default {
   methods: {
     fetchCurrentEmail: function (recid) {
       this.$http.get('/api/email/' + recid + '/edit')
-
       .then((response) => {
         this.setEmailBuilderEmail(response.data.newdata.data)
       }).catch((e) => {
@@ -742,7 +726,7 @@ export default {
       // Do this when response gets back.
       .then((response) => {
         this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
+        this.formMessage.isOk = true; // Success message
         this.formMessage.isErr = false;
         this.currentRecordId = response.data.newdata.data.id;
         this.existingEmail = true;

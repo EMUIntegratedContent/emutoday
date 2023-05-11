@@ -175,7 +175,6 @@ export default {
   },
   created () {
     let today = moment()
-    //let today = moment().subtract(70, 'w')
     this.startdate = today.format("YYYY-MM-DD")
     this.enddate = today.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()

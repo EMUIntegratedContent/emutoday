@@ -174,8 +174,7 @@ export default {
   },
   props: ['stypes'],
   created () {
-    // let twoWeeksEarlier = moment().subtract(2, 'w')
-    let twoWeeksEarlier = moment().subtract(1, 'y') // TODO change this back to 2 w!
+    let twoWeeksEarlier = moment().subtract(2, 'w')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
