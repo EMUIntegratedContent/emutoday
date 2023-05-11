@@ -167,7 +167,7 @@
               <!-- /.medium-4 columns -->
               <!-- "LIVE VIEW" OF EMAIL -->
               <div v-bind:class="[md12col, lg7col]">
-                  <email-live-view></email-live-view>
+                <email-live-view></email-live-view>
               </div>
               <!-- /.medium-8 columns -->
             </div>
@@ -185,7 +185,8 @@
                   be approved.</p>
                 <div class="input-group">
 								<span class="input-group-addon">
-									<input type="checkbox" v-model="emailBuilderEmail.is_approved" :true-value="1" :false-value="0" aria-label="Set as time">
+									<input type="checkbox" v-model="emailBuilderEmail.is_approved" :true-value="1" :false-value="0"
+                         aria-label="Set as time">
 								</span>
                   <flatpickr
                       v-model="emailBuilderEmail.send_at"
@@ -376,9 +377,9 @@
       </div>
       <!-- /.row -->
     </div>
-    		<email-delete-modal></email-delete-modal>
-    		<email-stats-modal></email-stats-modal>
-    		<email-clone-modal></email-clone-modal>
+    <email-delete-modal></email-delete-modal>
+    <email-stats-modal></email-stats-modal>
+    <email-clone-modal></email-clone-modal>
   </div>
 </template>
 

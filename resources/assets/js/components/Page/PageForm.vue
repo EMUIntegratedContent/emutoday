@@ -17,13 +17,13 @@
         <div class="row" id="main-story">
           <div class="col-sm-12 col-md-12 col-lg-6 columns">
             <h4 class="subhead-title">Main Story</h4>
-            <page-substory
-                story-number="0"
-                :story="slotStories.main_story"
-                :stypes="stypes"
-                @modal-data-loaded="handleSubstoryLoaded"
-                @sub-story-swapped="handleSwap"
-            ></page-substory>
+<!--            <page-substory-->
+<!--                story-number="0"-->
+<!--                :story="slotStories.main_story"-->
+<!--                :stypes="stypes"-->
+<!--                @modal-data-loaded="handleSubstoryLoaded"-->
+<!--                @sub-story-swapped="handleSwap"-->
+<!--            ></page-substory>-->
           </div>
           <div class="col-sm-12 col-md-12 col-lg-6 columns">
             <div class="row" id="date-time-container">
@@ -32,33 +32,25 @@
               </div>
               <div class="col-sm-12 col-md-6">
                 <label>Start Date/Time *
-                  <date-picker
+                  <flatpickr
                       v-model="record.start_date"
-                      value-type="YYYY-MM-DD HH:mm:ss"
-                      type="datetime"
-                      format="MM/DD/YYYY h:mm A"
-                      :minute-step="1"
-                      :show-second="false"
-                      :use12h="true"
-                      :clearable="true"
+                      :config="flatpickrConfig"
+                      class="form-control"
                       v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"
-                  ></date-picker>
+                  >
+                  </flatpickr>
                 </label>
                 <p v-if="formErrors.start_date" class="help-text invalid">A start date is required.</p>
               </div>
               <div class="col-sm-12 col-md-6">
                 <label>End Date/Time *
-                  <date-picker
+                  <flatpickr
                       v-model="record.end_date"
-                      value-type="YYYY-MM-DD HH:mm:ss"
-                      type="datetime"
-                      format="MM/DD/YYYY h:mm A"
-                      :minute-step="1"
-                      :show-second="false"
-                      :use12h="true"
-                      :clearable="true"
+                      :config="flatpickrConfig"
+                      class="form-control"
                       v-bind:class="[formErrors.end_date ? 'invalid-input' : '']"
-                  ></date-picker>
+                  >
+                  </flatpickr>
                 </label>
                 <p v-if="formErrors.end_date" class="help-text invalid">An end date is required.</p>
               </div>
@@ -97,48 +89,48 @@
           </div>
           <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-3">
-              <page-substory
-                  story-number="1"
-                  :story="slotStories.sub_story_1"
-                  :stypes="stypes"
-                  @sub-story-swapped="handleSwap"
-                  @modal-data-loaded="handleSubstoryLoaded"
-              ></page-substory>
+<!--              <page-substory-->
+<!--                  story-number="1"-->
+<!--                  :story="slotStories.sub_story_1"-->
+<!--                  :stypes="stypes"-->
+<!--                  @sub-story-swapped="handleSwap"-->
+<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
+<!--              ></page-substory>-->
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-              <page-substory
-                  story-number="2"
-                  :story="slotStories.sub_story_2"
-                  :stypes="stypes"
-                  @sub-story-swapped="handleSwap"
-                  @modal-data-loaded="handleSubstoryLoaded"
-              ></page-substory>
+<!--              <page-substory-->
+<!--                  story-number="2"-->
+<!--                  :story="slotStories.sub_story_2"-->
+<!--                  :stypes="stypes"-->
+<!--                  @sub-story-swapped="handleSwap"-->
+<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
+<!--              ></page-substory>-->
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-              <page-substory
-                  story-number="3"
-                  :story="slotStories.sub_story_3"
-                  :stypes="stypes"
-                  @sub-story-swapped="handleSwap"
-                  @modal-data-loaded="handleSubstoryLoaded"
-              ></page-substory>
+<!--              <page-substory-->
+<!--                  story-number="3"-->
+<!--                  :story="slotStories.sub_story_3"-->
+<!--                  :stypes="stypes"-->
+<!--                  @sub-story-swapped="handleSwap"-->
+<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
+<!--              ></page-substory>-->
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-              <page-substory
-                  story-number="4"
-                  :story="slotStories.sub_story_4"
-                  :stypes="stypes"
-                  @sub-story-swapped="handleSwap"
-                  @modal-data-loaded="handleSubstoryLoaded"
-              ></page-substory>
+<!--              <page-substory-->
+<!--                  story-number="4"-->
+<!--                  :story="slotStories.sub_story_4"-->
+<!--                  :stypes="stypes"-->
+<!--                  @sub-story-swapped="handleSwap"-->
+<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
+<!--              ></page-substory>-->
             </div>
           </div>
         </div>
       </section><!-- end #page-builder-container -->
     </div><!-- /end root element -->
-    <page-delete-modal
-        :page="record"
-    ></page-delete-modal>
+<!--    <page-delete-modal-->
+<!--        :page="record"-->
+<!--    ></page-delete-modal>-->
   </div>
 
 </template>
@@ -173,14 +165,18 @@
 
 <script>
 import moment from 'moment'
-import PageSubstory from './PageSubstory.vue'
-import PageDeleteModal from './PageDeleteModal.vue'
-import DatePicker from 'vue2-datepicker'
-import 'vue2-datepicker/index.css'
+// import PageSubstory from './PageSubstory.vue'
+// import PageDeleteModal from './PageDeleteModal.vue'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 export default {
   directives: {},
-  components: {PageSubstory, PageDeleteModal, DatePicker},
+  components: {
+    // PageSubstory,
+    // PageDeleteModal,
+    flatpickr
+  },
   props: {
     cuserRoles: {default: {}},
     errors: {
@@ -207,14 +203,6 @@ export default {
       currentRecordId: null,
       currentSelectedStory: null,
       currentSwapId: null,
-      dateObject:{
-        endDateDefault: '',
-        endDateMax: '',
-        endDateMin: '',
-        startDateDefault: '',
-        startDateMax: '',
-        startDateMin: '',
-      },
       endDatepicker: null,
       formErrors: {},
       formMessage: {
@@ -244,6 +232,12 @@ export default {
       },
       startDatepicker: null,
       userRoles: [],
+      flatpickrConfig: {
+        altFormat: "m/d/Y h:i K", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
+        enableTime: true
+      }
     }
   },
   created: function () {
@@ -290,19 +284,19 @@ export default {
     handleSwap(storyData) {
       switch(storyData.storyNumber){
         case "0":
-          this.$set(this.slotStories, 'main_story', storyData.story)
+          this.slotStories.main_story = storyData.story
           break;
         case "1":
-          this.$set(this.slotStories, 'sub_story_1', storyData.story)
+          this.slotStories.sub_story_1 = storyData.story
           break;
         case "2":
-          this.$set(this.slotStories, 'sub_story_2', storyData.story)
+          this.slotStories.sub_story_2 = storyData.story
           break;
         case "3":
-          this.$set(this.slotStories, 'sub_story_3', storyData.story)
+          this.slotStories.sub_story_3 = storyData.story
           break;
         case "4":
-          this.$set(this.slotStories, 'sub_story_4', storyData.story)
+          this.slotStories.sub_story_4 = storyData.story
           break;
       }
     },
@@ -313,8 +307,8 @@ export default {
         this.record = response.data.newdata.data
         this.setPageStorySlots(this.record.stories)
         this.setupDatePickers();
-      }, (response) => {
-        this.formErrors = response.data.error.message;
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message;
       });
     },
 
@@ -331,7 +325,7 @@ export default {
 
     // Loop through the stories that belong to this page and add them to the correct slots
     setPageStorySlots: function(storiesArr){
-        var self = this
+        const self = this
         storiesArr.forEach(function(story){
             // make sure the pivot table exists on the story object
             if(story.pivot){
@@ -377,7 +371,7 @@ export default {
       // Do this when response gets back.
       .then((response) => {
         this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
+        this.formMessage.isOk = true; // Success message
         this.formMessage.isErr = false;
         this.currentRecordId = response.data.newdata.data.id;
         this.recordexists = true;
@@ -388,28 +382,20 @@ export default {
         } else {
           this.onRefresh();
         }
-      }, (response) => { // If invalid. error callback
+      }).catch((e) => {
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
-        // Set errors from validation to vue data
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+        this.formErrors = e.response.data.error.message;
+      })
     },
 
     setupDatePickers:function(){
-      let self = this
       let today = moment()
-
-      if (this.record.start_date === '') {
-        this.dateObject.startDateDefault = today.format('YYYY-MM-DD')
-      } else {
-        this.dateObject.startDateDefault = this.record.start_date;
+      if (!this.record.start_date) {
+        this.record.start_date = today.format('YYYY-MM-DD')
       }
-
-      if (this.record.end_date === '') {
-        this.dateObject.endDateDefault = today.format('YYYY-MM-DD')
-      } else {
-        this.dateObject.endDateDefault = this.record.end_date;
+      if (!this.record.end_date) {
+        this.record.end_date = today.format('YYYY-MM-DD')
       }
     },
 
@@ -428,8 +414,8 @@ export default {
         delete this.formErrors.endDateBeforeStart
         // There could be other errors at this point
         if(!this.formErrors.length) {
-          this.$set(this.formMessage, 'isErr', false)
-          this.$set(this.formMessage, 'isok', false)
+          this.formMessage.isErr = false
+          this.formMessage.isOk = false
         }
       }
     }
