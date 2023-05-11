@@ -24,6 +24,7 @@ export const emailMixin = {
 			'removeEvent',
 			'removeMainStory',
 			'removeOtherStory',
+			'resetEmailBuilderEmail',
 			'setEmailBuilderEmail',
 			'setEmailBuilderEmailProp',
 			'updateAnnouncementsOrder',

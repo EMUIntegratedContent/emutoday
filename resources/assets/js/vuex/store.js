@@ -1,5 +1,29 @@
 import Vuex from 'vuex'
 
+const defaultEmail = {
+	id: '',
+	clone: [],
+	created_at: null,
+	exclude_events: 0,
+	is_approved: false,
+	is_president_included: false,
+	is_ready: false,
+	is_sent: 0,
+	mailgun_clicks: 0,
+	mailgun_opens: 0,
+	mailgun_spam: 0,
+	president_teaser: null,
+	president_url: null,
+	send_at: null,
+	subheading: null,
+	title: null,
+	announcements: [],
+	events: [],
+	mainStories: [],
+	otherStories: [],
+	recipients: []
+}
+
 const state = {
 	calendarCategories: [],
 	// When the app starts, count is set to 0
@@ -12,29 +36,7 @@ const state = {
 	modalPosition: '',
 	selectedCalendarCategory: null,
 	// Email builder
-	emailBuilderEmail: {
-		id: '',
-		clone: [],
-		created_at: null,
-		exclude_events: 0,
-		is_approved: false,
-		is_president_included: false,
-		is_ready: false,
-		is_sent: 0,
-		mailgun_clicks: 0,
-		mailgun_opens: 0,
-		mailgun_spam: 0,
-		president_teaser: null,
-		president_url: null,
-		send_at: null,
-		subheading: null,
-		title: null,
-		announcements: [],
-		events: [],
-		mainStories: [],
-		otherStories: [],
-		recipients: [],
-	}
+	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail))
 }
 const mutations = {
 	// A mutation receives the current state as the first argument
@@ -119,6 +121,9 @@ const mutations = {
 		if(story) {
 			state.emailBuilderEmail.otherStories.splice(state.emailBuilderEmail.otherStories.indexOf(story), 1)
 		}
+	},
+	resetEmailBuilderEmail (state) {
+		state.emailBuilderEmail = JSON.parse(JSON.stringify(defaultEmail))
 	},
 	setEmailBuilderEmail (state, email) {
 		state.emailBuilderEmail = email

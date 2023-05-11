@@ -685,6 +685,7 @@ export default {
 
   methods: {
     fetchCurrentEmail: function (recid) {
+      this.resetEmailBuilderEmail()
       this.$http.get('/api/email/' + recid + '/edit')
       .then((response) => {
         this.setEmailBuilderEmail(response.data.newdata.data)
