@@ -33,22 +33,41 @@
           <div class="row">
             <!-- DATE filter -->
             <div class="col-xs-12 col-sm-12 col-md-6">
-              <form class="form">
+              <!-- Date filter -->
+              <form class="form-inline">
                 <div class="form-group">
-                  <label for="start-date">Starting <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-                  <!--                          <input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate" class="form-control">-->
-                  <date-picker v-model="startdate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>
+                  <label>Starting <span v-if="isEndDate">between</span><span v-else>on or after</span><br>
+                    <flatpickr
+                        v-model="startdate"
+                        id="startDatePicker"
+                        :config="flatpickrConfig"
+                        class="form-control"
+                        name="startingDate"
+                    >
+                    </flatpickr>
+                  </label>
                 </div>
                 <div v-if="isEndDate" class="form-group">
-                  <label for="start-date"> and </label>
-                  <!--                          <input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate" class="form-control">-->
-                  <date-picker v-model="enddate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>
+                  <label> and<br>
+                    <flatpickr
+                        v-model="enddate"
+                        id="endDatePicker"
+                        :config="flatpickrConfig"
+                        class="form-control"
+                        name="endingDate"
+                    >
+                    </flatpickr>
+                  </label>
                 </div>
-                <div class="form-group">
+                <p>
                   <button type="button" class="btn btn-sm btn-info" @click="fetchStories">Filter</button>
-                  <a href="#" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span
-                      v-else> + Add </span>Range</a>
-                </div>
+                </p>
+                <p>
+                  <button id="rangetoggle" type="button" @click="toggleRange"><span
+                      v-if="isEndDate"> - Remove </span><span
+                      v-else> + Add </span>Range
+                  </button>
+                </p>
               </form>
               <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-xs" role="group">
@@ -117,7 +136,7 @@
           </div>
         </div>
         <div class="modal-footer">
-<!--          this is the footer-->
+          <!--          this is the footer-->
         </div>
       </div>
     </div>
@@ -153,12 +172,15 @@ span.item-type-icon:active, span.item-type-icon.active {
 <script>
 import moment from 'moment'
 import PageStoryPod from './PageStoryPod.vue'
-import DatePicker from 'vue2-datepicker'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 import "vue-select/dist/vue-select.css"
-import 'vue2-datepicker/index.css'
 
 export default {
-  components: {PageStoryPod, DatePicker},
+  components: {
+    PageStoryPod,
+    flatpickr
+  },
   props: {
     storyNumber: {
       type: String,
@@ -186,32 +208,41 @@ export default {
       resultCount: 0,
       startdate: null,
       stories_filter_storytype: '',
-      textFilter: ''
+      textFilter: '',
+      flatpickrConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+        enableTime: false
+      }
     }
   },
-  created() {
+  created () {
     let oneMonthEarlier = moment().subtract(1, 'M')
     this.startdate = oneMonthEarlier.format("YYYY-MM-DD")
     this.enddate = oneMonthEarlier.clone().add(1, 'M').format("YYYY-MM-DD")
     this.fetchStories()
   },
   computed: {
-    itemsFilteredPaginated() {
+    itemsFilteredPaginated () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       let items = []
       if (this.stories_filter_storytype !== '') {
         items = this.queueStories.filter(it => {
           const isStoryType = it.story_type === this.stories_filter_storytype
           let txtSearch = true
-          if(this.textFilter !== '') {
+          if (this.textFilter !== '') {
+            console.log("BULLS")
             txtSearch = regexp.test(it.title)
           }
           return isStoryType && txtSearch
         })
-      } else {
-        if(this.textFilter !== '') {
+      }
+      else {
+        if (this.textFilter !== '') {
           items = this.queueStories.filter(it => regexp.test(it.title))
-        } else {
+        }
+        else {
           items = this.queueStories
         }
       }
@@ -246,7 +277,8 @@ export default {
             shortname: 'x'
           }
         ]
-      } else {
+      }
+      else {
         this.s_types.push({
           name: 'all',
           shortname: ''
@@ -259,9 +291,9 @@ export default {
     }
   },
   methods: {
-    handleStorySwapRequested(story) {
+    handleStorySwapRequested (story) {
       // Tell the parent which story and which position
-      this.$emit('story-swapped', {story: story, storyNumber: this.storyNumber})
+      this.$emit('story-swapped', { story: story, storyNumber: this.storyNumber })
     },
     emitDataLoaded: function () {
       // Dispatch an event that propagates upward along the parent chain using $dispatch()
@@ -271,13 +303,13 @@ export default {
     // fetch all emutoday_front and emutoday_small stories from the last month
     fetchStories: function () {
       this.loadingQueue = true
-
-      let routeurl = '/api/page/stories';
+      let routeurl = '/api/page/stories'
 
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startdate) {
         routeurl = routeurl + '/' + this.startdate
-      } else {
+      }
+      else {
         routeurl = routeurl + '/' + moment().subtract(1, 'M').format("YYYY-MM-DD")
       }
 
@@ -287,38 +319,38 @@ export default {
       }
 
       this.$http.get(routeurl)
-          .then((response) => {
-            // sub stories
-            if (this.storyNumber > 0) {
-              this.queueStories = response.data.newdata
-            } else {
-              // main story
-              this.queueStories = response.data.newdata.filter(function (story) {
-                // only pass stories with a front image
-                const frontImage = story.images.filter(function (image) {
-                  return image.image_type === 'front'
-                })
-                return frontImage.length >= 1
-              })
-            }
-            this.resultCount = this.queueStories.length
-            this.setPage(1) // reset paginator
-            this.loadingQueue = false;
-
-            // send a signal to the parent form component that the data for this modal was full loaded (initial page load only)
-            if (!this.isLoadedSignalSent) {
-              this.emitDataLoaded()
-            }
-          }, (response) => {
-            //error callback
-            console.log("ERRORS");
+      .then((response) => {
+        // sub stories
+        if (this.storyNumber > 0) {
+          this.queueStories = response.data.newdata
+        }
+        else {
+          // main story
+          this.queueStories = response.data.newdata.filter(function (story) {
+            // only pass stories with a front image
+            const frontImage = story.images.filter(function (image) {
+              return image.image_type === 'front'
+            })
+            return frontImage.length >= 1
           })
+        }
+        this.resultCount = this.queueStories.length
+        this.setPage(1) // reset paginator
+        this.loadingQueue = false;
+
+        // send a signal to the parent form component that the data for this modal was full loaded (initial page load only)
+        if (!this.isLoadedSignalSent) {
+          this.emitDataLoaded()
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     // filter only stories that are emutoday_front
     isString: function (val) {
       return toString.call(val) === "[object String]";
     },
-    setPage(pageNumber) {
+    setPage (pageNumber) {
       if (pageNumber > 0 && pageNumber <= this.totalPages) {
         this.currentPage = pageNumber
       }
@@ -326,7 +358,8 @@ export default {
     toggleRange: function () {
       if (this.isEndDate) {
         this.isEndDate = false
-      } else {
+      }
+      else {
         this.isEndDate = true
       }
     },
@@ -366,21 +399,6 @@ export default {
           break
       }
       return 'fa ' + faicon + ' fa-fw'
-    },
-
-  },
-  filters: {
-    paginate: function (list) {
-      // only run if there are items in the list
-      if (list.length == 0) {
-        return
-      }
-      this.resultCount = list.length
-      if (this.currentPage > this.totalPages) {
-        this.currentPage = 1
-      }
-      var index = (this.currentPage - 1) * this.itemsPerPage
-      return list.slice(index, index + this.itemsPerPage)
     }
   },
   watch: {

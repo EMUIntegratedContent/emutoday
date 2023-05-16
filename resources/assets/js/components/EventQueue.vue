@@ -253,13 +253,13 @@ export default {
     },
 
     filterItemsApproved: function (items) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function (item) {
         return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0 && regexp.test(item.title);  // true
       });
     },
     filterItemsUnapproved: function (items) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function (item) {
         return item.is_approved === 0 && regexp.test(item.title);
       });

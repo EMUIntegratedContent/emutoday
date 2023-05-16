@@ -18,7 +18,7 @@
 //     }
 // });
 
-import { createApp } from "vue";
+import { createApp } from "vue"
 import PageForm from "./components/Page/PageForm"
 import axios from "axios"
 

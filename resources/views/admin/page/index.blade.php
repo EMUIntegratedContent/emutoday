@@ -3,13 +3,9 @@
 @section('title', 'View Pages')
     @section('style-plugin')
         @parent
-
         <link rel="stylesheet" href="/themes/admin-lte/plugins/datatables/dataTables.bootstrap.css">
-
     @endsection
     @section('scripthead')
-        {{-- @include('admin.layouts.scriptshead') --}}
-        {{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
     @show
     @include('include.js')
     @section('content')
@@ -26,7 +22,6 @@
                     <div class="box-body">
                         <div id="vue-chart-app">
                             <page-chart-app gcols="{{$pgs}}">
-                                {{-- <page-chart-app gcols="{{json_encode($pgs)}}"> --}}
                             </page-chart-app>
                         </div>
                     </div><!-- /.box-body -->

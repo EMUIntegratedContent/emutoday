@@ -3,12 +3,14 @@
     <div>
       <!-- PROGRESS BAR -->
       <div class="progress">
-        <div v-if="numLoadedComponents >= 5" class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
+        <div v-if="numLoadedComponents >= 5" class="progress-bar" :class="progress == 100 ? 'progress-done' : ''"
+             role="progressbar" :aria-valuenow="progress"
              aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
           <span v-if="progress < 100">{{ progress }}% Complete</span>
           <span v-else>I'm Ready!</span>
         </div>
-        <div v-else class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" :aria-valuenow="100"
+        <div v-else class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar"
+             :aria-valuenow="100"
              aria-valuemin="0" aria-valuemax="100" style="width:100%">
           <span>Loading page...please wait.</span>
         </div>
@@ -17,13 +19,13 @@
         <div class="row" id="main-story">
           <div class="col-sm-12 col-md-12 col-lg-6 columns">
             <h4 class="subhead-title">Main Story</h4>
-<!--            <page-substory-->
-<!--                story-number="0"-->
-<!--                :story="slotStories.main_story"-->
-<!--                :stypes="stypes"-->
-<!--                @modal-data-loaded="handleSubstoryLoaded"-->
-<!--                @sub-story-swapped="handleSwap"-->
-<!--            ></page-substory>-->
+            <page-substory
+                story-number="0"
+                :story="slotStories.main_story"
+                :stypes="stypes"
+                @modal-data-loaded="handleSubstoryLoaded"
+                @sub-story-swapped="handleSwap"
+            ></page-substory>
           </div>
           <div class="col-sm-12 col-md-12 col-lg-6 columns">
             <div class="row" id="date-time-container">
@@ -54,29 +56,30 @@
                 </label>
                 <p v-if="formErrors.end_date" class="help-text invalid">An end date is required.</p>
               </div>
-              <!--<div class="col-sm-12 col-md-6">
-                  <label>Active?</label>
-                  <input type="checkbox" v-model="record.live" />
-              </div>-->
             </div><!-- /end #date-time-container -->
             <!-- SUCCESS/FAIL MESSAGES -->
             <div class="row">
               <div class="col-xs-12">
-                <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
+                <div v-show="formMessage.isOk" class="alert alert-success alert-dismissible">
                   <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-                  <p>{{formMessage.msg}}</p>
+                  <p>{{ formMessage.msg }}</p>
                 </div>
-                <div v-show="formMessage.isErr"  class="alert alert-danger alert-dismissible">
+                <div v-show="formMessage.isErr" class="alert alert-danger alert-dismissible">
                   <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-                  <p>The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following errors.</p>
+                  <p>The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following
+                    errors.</p>
                   <ul v-if="formErrors">
-                    <li v-for="error in formErrors">{{error}}</li>
+                    <li v-for="error in formErrors">{{ error }}</li>
                   </ul>
                 </div>
               </div>
               <div class="col-xs-12 text-right">
-                <button class="btn btn-success" type="button" @click="submitForm">{{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}</button>
-                <button v-show="!newpage" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Hub Page</button>
+                <button class="btn btn-success" type="button" @click="submitForm">
+                  {{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}
+                </button>&nbsp;
+                <button v-show="!newpage" type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#deleteModal">Delete Hub Page
+                </button>
               </div>
             </div>
           </div>
@@ -89,58 +92,59 @@
           </div>
           <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-3">
-<!--              <page-substory-->
-<!--                  story-number="1"-->
-<!--                  :story="slotStories.sub_story_1"-->
-<!--                  :stypes="stypes"-->
-<!--                  @sub-story-swapped="handleSwap"-->
-<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
-<!--              ></page-substory>-->
+              <page-substory
+                  story-number="1"
+                  :story="slotStories.sub_story_1"
+                  :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
+              ></page-substory>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-<!--              <page-substory-->
-<!--                  story-number="2"-->
-<!--                  :story="slotStories.sub_story_2"-->
-<!--                  :stypes="stypes"-->
-<!--                  @sub-story-swapped="handleSwap"-->
-<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
-<!--              ></page-substory>-->
+              <page-substory
+                  story-number="2"
+                  :story="slotStories.sub_story_2"
+                  :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
+              ></page-substory>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-<!--              <page-substory-->
-<!--                  story-number="3"-->
-<!--                  :story="slotStories.sub_story_3"-->
-<!--                  :stypes="stypes"-->
-<!--                  @sub-story-swapped="handleSwap"-->
-<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
-<!--              ></page-substory>-->
+              <page-substory
+                  story-number="3"
+                  :story="slotStories.sub_story_3"
+                  :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
+              ></page-substory>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3">
-<!--              <page-substory-->
-<!--                  story-number="4"-->
-<!--                  :story="slotStories.sub_story_4"-->
-<!--                  :stypes="stypes"-->
-<!--                  @sub-story-swapped="handleSwap"-->
-<!--                  @modal-data-loaded="handleSubstoryLoaded"-->
-<!--              ></page-substory>-->
+              <page-substory
+                  story-number="4"
+                  :story="slotStories.sub_story_4"
+                  :stypes="stypes"
+                  @sub-story-swapped="handleSwap"
+                  @modal-data-loaded="handleSubstoryLoaded"
+              ></page-substory>
             </div>
           </div>
         </div>
       </section><!-- end #page-builder-container -->
     </div><!-- /end root element -->
-<!--    <page-delete-modal-->
-<!--        :page="record"-->
-<!--    ></page-delete-modal>-->
+    <page-delete-modal
+        :page="record"
+    ></page-delete-modal>
   </div>
 
 </template>
 
 <style scoped>
-.progress-done{
+.progress-done {
   background-color: #3D9970 !important;
 }
-.valid{
-  color:#3c763d;
+
+.valid {
+  color: #3c763d;
 }
 
 .invalid {
@@ -165,20 +169,19 @@
 
 <script>
 import moment from 'moment'
-// import PageSubstory from './PageSubstory.vue'
-// import PageDeleteModal from './PageDeleteModal.vue'
+import PageSubstory from './PageSubstory.vue'
+import PageDeleteModal from './PageDeleteModal.vue'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  directives: {},
   components: {
-    // PageSubstory,
-    // PageDeleteModal,
+    PageSubstory,
+    PageDeleteModal,
     flatpickr
   },
   props: {
-    cuserRoles: {default: {}},
+    cuserRoles: { default: {} },
     errors: {
       default: ''
     },
@@ -198,7 +201,7 @@ export default {
       default: []
     }
   },
-  data: function() {
+  data: function () {
     return {
       currentRecordId: null,
       currentSelectedStory: null,
@@ -224,11 +227,11 @@ export default {
       },
       response: {},
       slotStories: {
-         main_story: null,
-          sub_story_1: null,
-          sub_story_2: null,
-          sub_story_3: null,
-          sub_story_4: null,
+        main_story: null,
+        sub_story_1: null,
+        sub_story_2: null,
+        sub_story_3: null,
+        sub_story_4: null,
       },
       startDatepicker: null,
       userRoles: [],
@@ -241,28 +244,31 @@ export default {
     }
   },
   created: function () {
-    if(this.recordexists){
+    if (this.recordexists) {
       this.fetchCurrentPage(this.recordid)
-    } else {
+    }
+    else {
       this.newpage = true;
       this.setupDatePickers()
     }
   },
   computed: {
-    isAdmin:function(){
-      if(this.userRoles.indexOf('admin')!= -1) {
+    isAdmin: function () {
+      if (this.userRoles.indexOf('admin') != -1) {
         return true;
-      } else {
+      }
+      else {
         if (this.userRoles.indexOf('admin_super') != -1) {
           return true;
-        } else {
+        }
+        else {
           return false;
         }
       }
     },
 
     // Progress of page bulider (adds up to 100%)
-    progress: function(){
+    progress: function () {
       let progress = 0
 
       this.record.start_date ? progress += 14 : ''
@@ -278,11 +284,11 @@ export default {
   },
 
   methods: {
-    handleSubstoryLoaded (evt) {
+    handleSubstoryLoaded () {
       this.numLoadedComponents++
     },
-    handleSwap(storyData) {
-      switch(storyData.storyNumber){
+    handleSwap (storyData) {
+      switch (storyData.storyNumber) {
         case "0":
           this.slotStories.main_story = storyData.story
           break;
@@ -300,7 +306,7 @@ export default {
           break;
       }
     },
-    fetchCurrentPage: function(recid) {
+    fetchCurrentPage: function (recid) {
       this.$http.get('/api/page/' + recid + '/edit')
 
       .then((response) => {
@@ -308,49 +314,48 @@ export default {
         this.setPageStorySlots(this.record.stories)
         this.setupDatePickers();
       }).catch((e) => {
-        this.formErrors = e.response.data.error.message;
-      });
+        this.formErrors = e.response.data.error.message
+      })
     },
 
-    nowOnReload:function() {
-      let newurl = '/admin/page/'+ this.currentRecordId+'/edit';
-      document.location = newurl;
+    nowOnReload: function () {
+      let newurl = '/admin/page/' + this.currentRecordId + '/edit'
+      document.location = newurl
     },
 
-    onRefresh: function() {
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
-      this.fetchCurrentPage(this.currentRecordId);
+    onRefresh: function () {
+      this.recordId = this.currentRecordId
+      this.fetchCurrentPage(this.currentRecordId)
     },
 
     // Loop through the stories that belong to this page and add them to the correct slots
-    setPageStorySlots: function(storiesArr){
-        const self = this
-        storiesArr.forEach(function(story){
-            // make sure the pivot table exists on the story object
-            if(story.pivot){
-                switch(story.pivot.page_position){
-                    case 0:
-                        self.slotStories.main_story = story
-                        break
-                    case 1:
-                        self.slotStories.sub_story_1 = story
-                        break
-                    case 2:
-                        self.slotStories.sub_story_2 = story
-                        break
-                    case 3:
-                        self.slotStories.sub_story_3 = story
-                        break
-                    case 4:
-                        self.slotStories.sub_story_4 = story
-                        break
-                }
-            }
-        })
+    setPageStorySlots: function (storiesArr) {
+      const self = this
+      storiesArr.forEach(function (story) {
+        // make sure the pivot table exists on the story object
+        if (story.pivot) {
+          switch (story.pivot.page_position) {
+            case 0:
+              self.slotStories.main_story = story
+              break
+            case 1:
+              self.slotStories.sub_story_1 = story
+              break
+            case 2:
+              self.slotStories.sub_story_2 = story
+              break
+            case 3:
+              self.slotStories.sub_story_3 = story
+              break
+            case 4:
+              self.slotStories.sub_story_4 = story
+              break
+          }
+        }
+      })
     },
-    submitForm: function() {
-      if(this.formErrors.endDateBeforeStart) {
+    submitForm: function () {
+      if (this.formErrors.endDateBeforeStart) {
         alert('The end date occurs before the start date. Please fix this before submitting.')
         return false
       }
@@ -358,38 +363,36 @@ export default {
 
       // Decide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/page/' + this.record.id : '/api/page';
+      let route = (this.recordexists) ? '/api/page/' + this.record.id : '/api/page';
 
       // Submit form.
       this.$http[method](route,
           {
-              page: this.record,
-              stories: this.slotStories
+            page: this.record,
+            stories: this.slotStories
           }
-      ) //
-
-      // Do this when response gets back.
+      )
       .then((response) => {
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = true; // Success message
-        this.formMessage.isErr = false;
-        this.currentRecordId = response.data.newdata.data.id;
-        this.recordexists = true;
+        this.formMessage.msg = response.data.message
+        this.formMessage.isOk = true // Success message
+        this.formMessage.isErr = false
+        this.currentRecordId = response.data.newdata.data.id
         this.formErrors = {}; // Clear errors
-
         if (this.newpage) {
           this.nowOnReload();
-        } else {
+        }
+        else {
           this.onRefresh();
         }
       }).catch((e) => {
+        console.log(e)
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
-        this.formErrors = e.response.data.error.message;
+        // this.formErrors = e.response.data.error.message
       })
     },
 
-    setupDatePickers:function(){
+    setupDatePickers: function () {
       let today = moment()
       if (!this.record.start_date) {
         this.record.start_date = today.format('YYYY-MM-DD')
@@ -399,21 +402,22 @@ export default {
       }
     },
 
-    toggleCallout:function(evt){
+    toggleCallout: function (evt) {
       this.formMessage.isOk = false
       this.formMessage.isErr = false
     },
     checkStartEndDates () {
       const sd = moment(this.record.start_date, 'YYYY-MM-DD HH:mm:ss')
       const ed = moment(this.record.end_date, 'YYYY-MM-DD HH:mm:ss')
-      if(ed.isBefore(sd)) {
+      if (ed.isBefore(sd)) {
         this.formMessage.isErr = true
         this.formMessage.isOk = false
         this.formErrors.endDateBeforeStart = 'The end date occurs before the start date.'
-      } else {
+      }
+      else {
         delete this.formErrors.endDateBeforeStart
         // There could be other errors at this point
-        if(!this.formErrors.length) {
+        if (!this.formErrors.length) {
           this.formMessage.isErr = false
           this.formMessage.isOk = false
         }

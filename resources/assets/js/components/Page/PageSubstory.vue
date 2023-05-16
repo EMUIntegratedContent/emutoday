@@ -31,7 +31,9 @@ import PageStorySwapModal from './PageStorySwapModal.vue'
 
 export default {
   directives: {},
-  components: {PageStorySwapModal},
+  components: {
+    PageStorySwapModal
+  },
   props: {
     story: {
       type: Object,

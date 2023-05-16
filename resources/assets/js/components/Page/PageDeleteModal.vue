@@ -28,19 +28,11 @@
 </style>
 <script>
 export default {
-  directives: {},
-  components: {},
   props: ['page'],
   data: function() {
     return {
       deleteConfirm: null,
     }
-  },
-  ready: function() {
-
-  },
-  computed: {
-
   },
   methods: {
     delPage: function() {
@@ -55,15 +47,6 @@ export default {
           }).bind(this);
         }
     },
-  },
-  filters: {
-
-  },
-  events: {
-
-  },
-  watch: {
-
-  },
+  }
 }
 </script>
