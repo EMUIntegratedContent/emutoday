@@ -21,9 +21,9 @@
 //     created() {}
 // });
 
-import { createApp } from "vue";
+import { createApp } from "vue"
 import MagazineBuilder from './components/Magazine/MagazineBuilder.vue'
-import store from './vuex/store';
+import store from './vuex/store'
 import axios from "axios"
 
 // Remember the token we created in the <head> tags? Get it here.

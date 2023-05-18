@@ -76,10 +76,8 @@ mix.combine([
 // ], 'public/js/public-scripts.js');
 
 // Compile vue files
-// mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js');
-
-// Stuff I've worked on already (comment out all but the one you're working on to save compile time)
-mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js').vue();
+mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js').vue();
+// mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js').vue();
 // mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js').vue();
 // mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue();
 // mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js').vue();

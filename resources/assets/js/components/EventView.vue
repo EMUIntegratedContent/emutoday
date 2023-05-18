@@ -30,7 +30,7 @@
       </div>
 
       <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns">
-        <event-view-side-bar :starthere.sync="starthere" v-on:change-eobject="handleEventFetch"></event-view-side-bar>
+        <event-view-side-bar :starthere.sync="starthere" @change-eobject="handleEventFetch"></event-view-side-bar>
       </div>
     </div>
   </div>
@@ -76,27 +76,28 @@ export default {
     ...mapState(['selectedCalendarCategory']),
   },
   methods: {
-    handleEventFetch: function (eobject) {
-      var route = '';
-
-      eobject.cateid ? route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar + '/' + eobject.cateid : route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar;
-
-      this.$http.get(route).then(function (response) {
-        this.eventlist = response.data;
-      });
+    handleEventFetch (eobject) {
+      let route = ''
+      eobject.cateid ? route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar + '/' + eobject.cateid : route = '/api/calendar/events/' + eobject.yearVar + '/' + eobject.monthVar + '/' + eobject.dayVar
+      this.$http.get(route)
+      .then((response) => {
+        this.eventlist = response.data
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    freshPageLand: function () {
-      var starthere = {};
+    freshPageLand () {
+      let starthere = {}
 
-      starthere.yearVar = this.varYearUnit;
-      starthere.monthVar = this.varMonthUnit;
-      starthere.dayVar = this.varDayUnit;
+      starthere.yearVar = this.varYearUnit
+      starthere.monthVar = this.varMonthUnit
+      starthere.dayVar = this.varDayUnit
 
-      this.starthere = starthere;
+      this.starthere = starthere
     }
   },
   mounted () {
-    this.freshPageLand();
+    this.freshPageLand()
   },
 }
 </script>

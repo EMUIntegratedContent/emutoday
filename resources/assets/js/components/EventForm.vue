@@ -615,8 +615,7 @@ h5.form-control, .mockh5 {
 textarea {
   resize: vertical !important;
 }
-</style>
-<style>
+
 .v-select {
   position: relative;
   font-family: inherit
@@ -624,6 +623,10 @@ textarea {
 
 .v-select, .v-select * {
   box-sizing: border-box
+}
+
+button {
+  margin-right: 2px;
 }
 
 @-webkit-keyframes vSelectSpinner {
