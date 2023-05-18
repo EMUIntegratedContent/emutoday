@@ -80,8 +80,7 @@ mix.combine([
 // mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js');
 
 // Stuff I've worked on already (comment out all but the one you're working on to save compile time)
-mix.js('resources/assets/js/vue-chart-app.js', 'public/js/vue-chart-app.js').vue();
-mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js').vue();
+// mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js').vue();
 // mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue();
 // mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js').vue();
 // mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').vue();
