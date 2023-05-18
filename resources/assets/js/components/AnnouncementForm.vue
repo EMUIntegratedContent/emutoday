@@ -31,7 +31,6 @@
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
           <div v-bind:class="formGroup">
-            {{ formErrors }}
             <label>Announcement <span v-bind:class="iconStar" class="reqstar"></span>
               <p class="help-text" id="announcement-helptext">({{ descriptionChars }} characters left)</p>
             </label>
@@ -50,8 +49,8 @@
       <div class="row">
         <div :class="md12col">
           <div v-bind:class="formGroup">
-            <label>Related Link</label>
-            <p class="help-text" id="title-helptext">Please enter the url for your related web page. (ex.
+            <label for="related-link">Related Link</label>
+            <p class="help-text" id="related-link">Please enter the url for your related web page. (ex.
               www.yourlink.com)</p>
             <div class="input-group input-group-flat">
               <span :class="inputGroupLabel">http://</span>
@@ -66,8 +65,9 @@
       <div class="row" v-if="generalForm">
         <div :class="md12col">
           <div v-bind:class="formGroup">
-            <label class="hidden" aria-label="Descriptive text for web page">Descriptive text for web page</label>
-            <p class="help-text" id="title-helptext">Please add descriptive text for link. <strong>Do not use web
+            <label class="hidden" aria-label="Descriptive text for web page" for="descr-helptxt">Descriptive text for
+              web page</label>
+            <p class="help-text" id="descr-helptxt">Please add descriptive text for link. <strong>Do not use web
               address.</strong> (ex. My Announcement Webpage)</p>
             <input v-model="record.link_txt" class="form-control"
                    v-bind:class="[formErrors.link_txt ? 'invalid-input' : '']" name="link_txt" type="text"
@@ -97,8 +97,8 @@
     <div v-if="generalForm" class="row">
       <div :class="md12col">
         <div v-bind:class="formGroup">
-          <label>Contact Email</label>
-          <p class="help-text" id="title-helptext">Please enter the contact person's email address.
+          <label for="email-helptext">Contact Email</label>
+          <p class="help-text" id="email-helptext">Please enter the contact person's email address.
             (contact@yourlink.com)</p>
           <div class="input-group">
             <span :class="inputGroupLabel">mailto:</span>
@@ -395,32 +395,31 @@ export default {
     this.currentDate = moment();
   },
   mounted: function () {
-    this.refreshUserAnnouncementTable();
+    this.refreshUserAnnouncementTable()
     if (this.framework == 'foundation') {
-      $(document).foundation();
+      $(document).foundation()
     }
-    this.record.type = this.type;
+    this.record.type = this.type
     if (this.recordexists) {
       this.fetchCurrentRecord(this.recordid)
-    } else {
-      if (this.type == 'hr') {
-        this.record.announcement = "HR";
-      }
-      this.setupDatePickers();
     }
-
+    else {
+      if (this.type == 'hr') {
+        this.record.announcement = "HR"
+      }
+    }
     this.updatePreview();
   },
   computed: {
     // Check announcement type. general or hr
     generalForm: function () {
       if (this.type != 'general') {
-        return false;
-      } else {
-        return true;
+        return false
+      }
+      else {
+        return true
       }
     },
-
     // switch classes based on css framework. foundation or bootstrap
     md6col: function () {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
@@ -464,37 +463,38 @@ export default {
     hasStartDate: function () {
       if (this.record.start_date === undefined || this.record.start_date == '') {
         return false
-      } else {
+      }
+      else {
         return true
       }
     },
     titleChars: function () {
       // Calulate title field character length and return remaining characters
-      const str = this.record.title;
-      const totalchars = (this.type === 'hr') ? this.totalChars.hr : this.totalChars.title;
-      const cclength = str.length;
-      return totalchars - cclength;
+      const str = this.record.title
+      const totalchars = (this.type === 'hr') ? this.totalChars.hr : this.totalChars.title
+      const cclength = str.length
+      return totalchars - cclength
     },
     descriptionChars: function () {
       // Calulate announcement field character length and return remaining characters
-      const str = this.record.announcement;
-      const cclength = str.length;
-      const totalchars = this.totalChars.announcement;
-      return totalchars - cclength;
+      const str = this.record.announcement
+      const cclength = str.length
+      const totalchars = this.totalChars.announcement
+      return totalchars - cclength
     },
     thisRecordExists: function () {
       if (this.recordexists || this.record_exists) {
-        return true;
+        return true
       }
-      return false;
+      return false
     }
   },
 
   methods: {
-    handleChangePubDate(evt) {
+    handleChangePubDate (evt) {
       this.endFlatpickrConfig.minDate = moment(evt.target.value).format('YYYY-MM-DD')
     },
-    handleChangeEndDate(evt) {
+    handleChangeEndDate (evt) {
       this.pubFlatpickrConfig.maxDate = moment(evt.target.value).format('YYYY-MM-DD')
     },
     updatePreview: function () {
@@ -502,138 +502,116 @@ export default {
         // Move this preview
         document.getElementById('preview-container').appendChild(
             document.getElementById('preview-contents')
-        );
+        )
       }
     },
     refreshUserAnnouncementTable: function () {
       if (this.framework == 'foundation') {
         $.get('/announcement/user/announcements', function (data) {
-          data = $.parseJSON(data);
-          $('#user-announcement-tables').html(data);
-        });
+          data = $.parseJSON(data)
+          $('#user-announcement-tables').html(data)
+        })
       }
     },
     fetchCurrentRecord: function () {
-      let fetchme = this.recordid ? this.recordid : this.record.id;
+      let fetchme = this.recordid ? this.recordid : this.record.id
       this.$http.get('/api/announcement/' + fetchme + '/edit')
 
-          .then((response) => {
-            this.record = response.data.data;
-
-            this.checkOverData();
-            this.updatePreview();
-            this.record.start_time = response.data.data.start_time;
-          })
-          .catch((e) => {
-            this.formErrors = e.response.data.error.message;
-          })
-    },
-    checkOverData: function () {
-      this.setupDatePickers();
+      .then((response) => {
+        this.record = response.data.data
+        this.updatePreview()
+        this.record.start_time = response.data.data.start_time
+      })
+      .catch((e) => {
+        this.formErrors = e.response.data.error.message
+      })
     },
     delAnnouncement: function (e) {
-      e.preventDefault();
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
+      e.preventDefault()
+      this.formMessage.isOk = false
+      this.formMessage.isErr = false
 
       if (confirm('Would you like to delete this Announcement') == true) {
-        $('html, body').animate({scrollTop: 0}, 'fast');
+        $('html, body').animate({ scrollTop: 0 }, 'fast')
 
-        let tempid = 0;
+        let tempid = 0
 
-        this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id;
+        this.currentRecordId ? tempid = this.currentRecordId : tempid = this.record.id
         this.$http.post('/api/announcement/' + tempid + '/delete')
 
-            .then((response) => {
-              // If user admin
-              if (window.location.href.indexOf("admin") > -1) {
-                window.location.href = "/admin/announcement/queue";
-              } else { // Not user admin
-                // Clear out values;
-                this.formMessage.isOk = response.ok;
-                this.formMessage.msg = response.body;
-                this.record_exists = false;
-                this.record = {
-                  title: '',
-                  announcement: '',
-                  start_date: '',
-                  end_date: '',
-                  approved_date: '',
-                  submission_date: '',
-                  is_approved: 0,
-                  is_archived: 0,
-                  is_promoted: 0,
-                  link_txt: '',
-                  link: '',
-                  email_link_txt: '',
-                  email_link: '',
-                  phone: '',
-                  type: ''
-                };
-                let d = new Date();
-                let tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-                this.record.start_date = tempdate;
-                this.record.end_date = tempdate;
-                this.setupDatePickers();
-              }
-            })
-            .catch((response) => {
-              console.log('Error: ' + JSON.stringify(response))
-            })
-        this.refreshUserAnnouncementTable();
+        .then((response) => {
+          // If user admin
+          if (window.location.href.indexOf("admin") > -1) {
+            window.location.href = "/admin/announcement/queue"
+          }
+          else { // Not user admin
+            // Clear out values;
+            this.formMessage.isOk = true
+            this.formMessage.msg = 'Success'
+            this.record_exists = false
+            this.record = {
+              title: '',
+              announcement: '',
+              start_date: '',
+              end_date: '',
+              approved_date: '',
+              submission_date: '',
+              is_approved: 0,
+              is_archived: 0,
+              is_promoted: 0,
+              link_txt: '',
+              link: '',
+              email_link_txt: '',
+              email_link: '',
+              phone: '',
+              type: ''
+            };
+            let d = new Date()
+            let tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate()
+            this.record.start_date = tempdate
+            this.record.end_date = tempdate
+          }
+        })
+        .catch((response) => {
+          console.log('Error: ' + JSON.stringify(response))
+        })
+        this.refreshUserAnnouncementTable()
       }
     },
-
-    setupDatePickers: function () {
-      let self = this;
-      if (this.record.start_date === '') {
-        this.dateObject.startDateMin = this.currentDate;
-        this.dateObject.startDateDefault = null;
-
-        this.dateObject.endDateMin = null;
-        this.dateObject.endDateDefault = null;
-      } else {
-        this.dateObject.startDateMin = this.record.start_date;
-        this.dateObject.startDateDefault = this.record.start_date;
-        this.dateObject.endDateMin = this.record.start_date;
-        this.dateObject.endDateDefault = this.record.end_date;
-      }
-    },
-
     submitForm: function (e) {
       e.preventDefault(); // Stop form defualt action
 
       this.formMessage.isOk = false;
       this.formMessage.isErr = false;
 
-      $('html, body').animate({scrollTop: 0}, 'fast');
+      $('html, body').animate({ scrollTop: 0 }, 'fast')
 
       this.record.type = this.type;
 
       // Dicide route to submit form to
       let method = (this.thisRecordExists) ? 'put' : 'post'
-      let route = (this.thisRecordExists) ? '/api/announcement/' + this.record.id : '/api/announcement';
+      let route = (this.thisRecordExists) ? '/api/announcement/' + this.record.id : '/api/announcement'
 
       // Submit form.
-      this.$http[method](route, this.record) //
-          // Do this when response gets back.
-          .then((response) => { // If valid
-            this.formMessage.msg = response.data.message
-            this.formMessage.isOk = true
-            this.currentRecordId = this.record.id = response.data.newdata.record_id;
-            this.formMessage.isErr = false;
-            this.record_exists = this.record.exists = true;
-            this.formErrors = {}; // Clear errors?
-            this.fetchCurrentRecord(this.record.id)
-            this.refreshUserAnnouncementTable();
-          })
-          .catch((e) => { // If invalid. error callback
-            this.formMessage.isOk = false
-            this.formMessage.isErr = true
-            // Set errors from validation to vue data
-            this.formErrors = e.response.data.error.message
-          })
+      this.$http[method](route, this.record)
+      // Do this when response gets back.
+      .then((response) => {
+        this.formMessage.msg = response.data.message
+        this.formMessage.isOk = true
+        this.currentRecordId = this.record.id = response.data.newdata.record_id
+        this.formMessage.isErr = false
+        this.record_exists = this.record.exists = true
+        this.formErrors = {} // Clear errors?
+        this.fetchCurrentRecord(this.record.id)
+        this.refreshUserAnnouncementTable()
+      })
+      .catch((e) => { // If invalid. error callback
+        this.formMessage.isOk = false
+        this.formMessage.isErr = true
+        // Set errors from validation to vue data
+        this.formErrors = e.response.data.error.message
+      })
     }
   }
-};
+}
 </script>

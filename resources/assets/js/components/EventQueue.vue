@@ -131,18 +131,14 @@
 }
 </style>
 <script>
-import moment from 'moment';
+import moment from 'moment'
 import EventQueueItem from './EventQueueItem.vue'
-// import DatePicker from 'vue2-datepicker'
-import "vue-select/dist/vue-select.css"
-// import 'vue2-datepicker/index.css'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
 export default {
   components: {
     EventQueueItem,
-    // DatePicker
     flatpickr
   },
   props: ['annrecords', 'role'],

@@ -4,9 +4,9 @@
     <div class="row">
       <div v-bind:class="md12col">
         <div v-show="formMessage.isOk" :class="calloutSuccess">
-          <h5>{{formMessage.msg}}</h5>
+          <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr"  :class="calloutFail">
+        <div v-show="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
       </div>
@@ -19,10 +19,11 @@
         <div v-bind:class="formGroup">
           <label>
             Title <span v-bind:class="iconStar" class="reqstar"></span>
-            <p class="help-text" id="title-helptext">({{titleChars}} characters left)</p>
+            <p class="help-text" id="title-helptext">({{ titleChars }} characters left)</p>
           </label>
-          <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']" name="title" type="text">
-          <p v-if="formErrors.title" class="help-text invalid">{{formErrors.title}}</p>
+          <input v-model="record.title" class="form-control" v-bind:class="[formErrors.title ? 'invalid-input' : '']"
+                 name="title" type="text">
+          <p v-if="formErrors.title" class="help-text invalid">{{ formErrors.title }}</p>
         </div>
       </div>
     </div>
@@ -33,9 +34,10 @@
           <label>URL <span v-bind:class="iconStar" class="reqstar"></span></label>
           <div class="input-group">
             <span class="input-group-addon">http://</span>
-            <input v-model="record.url" class="form-control" v-bind:class="[formErrors.url ? 'invalid-input' : '']" name="url" type="text">
+            <input v-model="record.url" class="form-control" v-bind:class="[formErrors.url ? 'invalid-input' : '']"
+                   name="url" type="text">
           </div>
-          <p v-if="formErrors.url" class="help-text invalid">{{formErrors.url}}</p>
+          <p v-if="formErrors.url" class="help-text invalid">{{ formErrors.url }}</p>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -45,21 +47,23 @@
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
           <label>Source Name: <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.source" class="form-control" v-bind:class="[formErrors.source ? 'invalid-input' : '']" type="text" />
+          <input v-model="record.source" class="form-control" v-bind:class="[formErrors.source ? 'invalid-input' : '']"
+                 type="text"/>
           <p v-if="formErrors.source" class="help-text invalid">Need a source</p>
         </div> <!--form-group -->
       </div> <!-- /.small-6 columns -->
       <div v-bind:class="md6col">
         <div v-bind:class="formGroup">
-          <label>Highlight Date: <span v-bind:class="iconStar" class="reqstar"></span><br>
-          <date-picker
-              id="start-date"
-              v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"
-              v-model="record.start_date"
-              value-type="YYYY-MM-DD"
-              format="MM/DD/YYYY"
-              :clearable="false"
-          ></date-picker>
+          <label for="start-date">Highlight Date: <span v-bind:class="iconStar" class="reqstar"></span><br>
+            <flatpickr
+                v-model="record.start_date"
+                id="start-date"
+                :config="flatpickrConfig"
+                class="form-control"
+                name="startingDate"
+                v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"
+            >
+            </flatpickr>
           </label>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a highlight date</p>
         </div> <!--form-group -->
@@ -69,40 +73,42 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Tags:</label>
-            <v-select
-            :class="[formErrors.tags ? 'invalid-input' : '']"
-            v-model="record.tags"
-            :options="taglist"
-            :multiple="true"
-            placeholder="Select tags"
-            label="name">
+          <v-select
+              :class="[formErrors.tags ? 'invalid-input' : '']"
+              v-model="record.tags"
+              :options="taglist"
+              :multiple="true"
+              placeholder="Select tags"
+              label="name">
           </v-select>
         </div><!-- /.form-group -->
       </div><!-- /.small-6 columns -->
       <div class="col-sm-6">
-          <label style="visibility:hidden">Add unlisted tag</label>
-          <div class="input-group" :class="successFailure">
+        <label style="visibility:hidden">Add unlisted tag</label>
+        <div class="input-group" :class="successFailure">
             <span class="input-group-btn">
-              <button class="btn btn-primary" type="button" @click.prevent="toggleAddTag">{{ showAddTag ? 'Hide me' : 'Add unlisted tag' }}</button>
+              <button class="btn btn-primary" type="button"
+                      @click.prevent="toggleAddTag">{{ showAddTag ? 'Hide me' : 'Add unlisted tag' }}</button>
             </span>
-            <input v-show="showAddTag" type="text" v-model="newTag" class="form-control" placeholder="new tag name goes here">
-            <span v-show="showAddTag" class="input-group-btn">
-              <button class="btn btn-default" type="button" @click.prevent="saveNewTag"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+          <input v-show="showAddTag" type="text" v-model="newTag" class="form-control"
+                 placeholder="new tag name goes here">
+          <span v-show="showAddTag" class="input-group-btn">
+              <button class="btn btn-default" type="button" @click.prevent="saveNewTag"><i class="fa fa-plus-square"
+                                                                                           aria-hidden="true"></i></button>
             </span>
-          </div><!-- /input-group -->
-          <p v-show="showAddTag && formErrors.name" class="help-text invalid">{{ formErrors.name }}</p>
-          <p v-show="showAddTag && formSuccess.tags" class="help-text valid">{{ formSuccess.tags }}</p>
+        </div><!-- /input-group -->
+        <p v-show="showAddTag && formErrors.name" class="help-text invalid">{{ formErrors.name }}</p>
+        <p v-show="showAddTag && formSuccess.tags" class="help-text valid">{{ formSuccess.tags }}</p>
       </div><!-- /.small-6 columns -->
     </div> <!-- /.row -->
     <div class="row">
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
-          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
+          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{ submitBtnLabel }}</button>
         </div>
       </div>
     </div>
-
-</form>
+  </form>
 </template>
 
 <style scoped>
@@ -138,8 +144,8 @@ label > span {
   border: 1px dotted red;
 }
 
-.valid{
-  color:#3c763d;
+.valid {
+  color: #3c763d;
 }
 
 .invalid {
@@ -181,16 +187,15 @@ h5.form-control {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 </style>
-
-
 <script>
 import vSelect from "vue-select"
 import 'vue-select/dist/vue-select.css'
-import DatePicker from 'vue2-datepicker'
-import 'vue2-datepicker/index.css'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 import 'vue-select/dist/vue-select.css'
+
 export default {
-  components: {vSelect, DatePicker},
+  components: { vSelect, flatpickr },
   props: {
     errors: {
       default: ''
@@ -212,11 +217,11 @@ export default {
     },
     user_id: '',
   },
-  data: function() {
+  data: function () {
     return {
       newform: false,
-      tags:[],
-      taglist:[],
+      tags: [],
+      taglist: [],
       startdatePicker: null,
       currentDate: {},
       dateObject: {
@@ -249,74 +254,77 @@ export default {
       formSuccess: {
         tags: [],
       },
+      flatpickrConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+      }
     }
   },
-  created: function() {
-    if(this.recordexists){
+  created: function () {
+    if (this.recordexists) {
       this.fetchCurrentRecord(this.recordid)
-    } else {
+    }
+    else {
       this.newform = true
-      this.setupDatePickers()
     }
     this.fetchTagsList()
   },
   computed: {
-
     // switch classes based on css framework. foundation or bootstrap
-    md6col: function() {
+    md6col: function () {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
     },
-    md12col: function() {
+    md12col: function () {
       return (this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12')
     },
-    md8col: function() {
+    md8col: function () {
       return (this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8')
     },
-    md4col: function() {
+    md4col: function () {
       return (this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4')
     },
-    btnPrimary: function() {
+    btnPrimary: function () {
       return (this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary')
     },
-    formGroup: function() {
+    formGroup: function () {
       return (this.framework == 'foundation' ? 'form-group' : 'form-group')
     },
-    formControl: function() {
+    formControl: function () {
       return (this.framework == 'foundation' ? '' : 'form-control')
     },
-    calloutSuccess:function(){
-      return (this.framework == 'foundation')? 'callout success':'alert alert-success'
+    calloutSuccess: function () {
+      return (this.framework == 'foundation') ? 'callout success' : 'alert alert-success'
     },
-    calloutFail:function(){
-      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
+    calloutFail: function () {
+      return (this.framework == 'foundation') ? 'callout alert' : 'alert alert-danger'
     },
-    iconStar: function() {
+    iconStar: function () {
       return (this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star')
     },
-    inputGroupLabel:function(){
-      return (this.framework=='foundation')?'input-group-label':'input-group-addon'
+    inputGroupLabel: function () {
+      return (this.framework == 'foundation') ? 'input-group-label' : 'input-group-addon'
     },
     // Switch verbage of submit button.
-    submitBtnLabel:function(){
-      return (this.recordexists)?'Update': 'Create'
+    submitBtnLabel: function () {
+      return (this.recordexists) ? 'Update' : 'Create'
     },
-    titleChars: function() {
+    titleChars: function () {
       // Calulate title field character length and return remaining characters
-      var str = this.record.title;
-      var totalchars = this.totalChars.title;
-      var cclength = str.length;
-      return totalchars - cclength;
+      const str = this.record.title
+      const totalchars = this.totalChars.title
+      const cclength = str.length
+      return totalchars - cclength
     },
-    successFailure: function(){
+    successFailure: function () {
       return {
         'has-success': this.formSuccess.tags != '',
         'has-error': this.formErrors.name
       }
-    },
+    }
   },
-
   methods: {
-    fetchSubmittedRecord: function(recid){
+    fetchSubmittedRecord: function (recid) {
       // Sets params for update record, Passes an id to fetchCurrentRecord
       this.recordexists = true;
       this.formMessage.isOk = false;
@@ -326,105 +334,87 @@ export default {
       this.fetchCurrentRecord(recid);
     },
 
-    fetchCurrentRecord: function(recid) {
+    fetchCurrentRecord: function (recid) {
       this.$http.get('/api/mediahighlights/' + recid + '/edit')
 
       .then((response) => {
         this.record = response.data.data
         this.user_id = response.data.data.user_id
-        this.setupDatePickers()
         this.fetchCurrentTags()
-      }, (response) => {
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message
+      })
     },
 
-    nowOnReload:function() {
-      let newurl = '/admin/mediahighlights/'+ this.recordid +'/edit';
-      document.location = newurl;
+    nowOnReload: function () {
+      let newurl = '/admin/mediahighlights/' + this.recordid + '/edit'
+      document.location = newurl
     },
 
-    onRefresh: function() {
-      this.recordexists = true;
-      this.fetchCurrentRecord(this.recordid);
+    onRefresh: function () {
+      this.fetchCurrentRecord(this.record.id)
     },
 
-    submitForm: function(e) {
+    submitForm: function (e) {
       e.preventDefault(); // Stop form defualt action
 
-      $('html, body').animate({ scrollTop: 0 }, 'fast');
+      $('html, body').animate({ scrollTop: 0 }, 'fast')
 
       this.record.type = this.type;
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/mediahighlights/' + this.record.id : '/api/mediahighlights';
+      let route = (this.recordexists) ? '/api/mediahighlights/' + this.record.id : '/api/mediahighlights'
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then((response) => {
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
-        this.recordid = response.data.newdata.record_id;
-        this.record_id = response.data.newdata.record_id;
-        this.record.id = response.data.newdata.record_id;
-        this.formMessage.isErr = false;
-        this.recordexists = true;
-        this.formErrors = {}; // Clear errors
+        this.formMessage.msg = response.data.message
+        this.formMessage.isOk = true // Success message
+        this.record.id = response.data.newdata.record_id
+        this.formMessage.isErr = false
+        this.formErrors = {}
 
         if (this.newform) {
-          this.nowOnReload();
-        } else {
-          this.onRefresh();
+          this.nowOnReload()
         }
-      }, (response) => { // If invalid. error callback
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = true;
+        else {
+          this.onRefresh()
+        }
+      }).catch((e) => {
+        this.formMessage.isOk = false
+        this.formMessage.isErr = true
         // Set errors from validation to vue data
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+        this.formErrors = e.response.data.error.message
+      })
     },
-
-    setupDatePickers:function(){
-      var self = this;
-      if (this.record.start_date === '') {
-        this.dateObject.startDateMin = this.currentDate;
-        this.dateObject.startDateDefault = null;
-      } else {
-        this.dateObject.startDateMin = this.record.start_date;
-        this.dateObject.startDateDefault = this.record.start_date;
-      }
-    },
-
     // Fetch the tags that match THIS record
-    fetchTagsList: function() {
-        this.$http.get('/api/mediahighlights/taglist/')
-          .then((response) =>{
-            this.taglist = response.data.newdata
-          }, (response) => {
-            this.formErrors = response.data.error.message;
-          });
+    fetchTagsList: function () {
+      this.$http.get('/api/mediahighlights/taglist/')
+      .then((response) => {
+        this.taglist = response.data.newdata
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message
+      })
     },
-
-    fetchCurrentTags: function(){
-        this.$http.get('/api/mediahighlights/taglist/'+ this.recordid)
-            .then((response) => {
-              this.tags = response.data.newdata
-            }, (response) => {
-              this.formErrors = response.data.error.message
-            });
+    fetchCurrentTags: function () {
+      this.$http.get('/api/mediahighlights/taglist/' + this.recordid)
+      .then((response) => {
+        this.tags = response.data.newdata
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message
+      })
     },
-
     /**
      * Save a previously unlisted tag mediahighlight_tags database table
      */
-    saveNewTag: function(){
+    saveNewTag: function () {
       let method = 'post'
-      let route =  '/api/mediahighlights/tag/store';
+      let route = '/api/mediahighlights/tag/store'
 
-      let tagObj = {name : this.newTag}
+      let tagObj = { name: this.newTag }
 
       // Submit form.
       this.$http[method](route, tagObj)
@@ -436,35 +426,27 @@ export default {
         this.formSuccess.tags.push(response.data.message) //create success message
 
         this.fetchTagsList() //get updated list of recipients
-      }, (response) => { // If invalid. error callback
+      }).catch((e) => { // If invalid. error callback
         this.formSuccess.tags = []
-        this.formErrors = response.data.error.message // Set errors from validation to vue data
-      }).bind(this);
+        this.formErrors = e.response.data.error.message // Set errors from validation to vue data
+      })
     },
 
-    toggleCallout:function(evt){
+    toggleCallout: function (evt) {
       this.formMessage.isOk = false
       this.formMessage.isErr = false
     },
 
     /**
-     * Controls if add tag fiels are shown
+     * Controls if add tag fields are shown
      */
-    toggleAddTag: function(){
+    toggleAddTag: function () {
       this.showAddTag ? this.showAddTag = false : this.showAddTag = true
       this.formSuccess.tags = []
       this.formErrors = {}
       this.newTag = null
     },
-  },
-  watch: {
-
-  },
-
-  filters: {
-  },
-  events: {
   }
-};
+}
 
 </script>
