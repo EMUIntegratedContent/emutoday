@@ -76,8 +76,14 @@ mix.combine([
 // ], 'public/js/public-scripts.js');
 
 // Compile vue files
-mix.js('resources/assets/js/vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js').vue();
-mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+mix.js('resources/assets/js/vue-expert-list.js', 'public/js/vue-expert-list.js').vue();
+mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
+// mix.js('resources/assets/js/vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js').vue();
+// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
 // mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue();
 // mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue();
 // mix.js('resources/assets/js/vue-oauth-personal-access-tokens.js', 'public/js/vue-oauth-personal-access-tokens.js').vue();
@@ -98,7 +104,6 @@ mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js')
 // mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js').vue();
 // mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
 // mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
-// mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
 
 /*
 |--------------------------------------------------------------------------
