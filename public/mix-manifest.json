@@ -1,7 +1,6 @@
 {
-    "/js/vue-storyideas-form.js": "/js/vue-storyideas-form.js",
-    "/js/vue-storyideas-list.js": "/js/vue-storyideas-list.js",
-    "/js/vue-archive-queue.js": "/js/vue-archive-queue.js",
+    "/js/vue-search-form-offcanvas.js": "/js/vue-search-form-offcanvas.js",
+    "/js/vue-search-form.js": "/js/vue-search-form.js",
     "/css/public-styles.css": "/css/public-styles.css",
     "/css/admin-styles.css": "/css/admin-styles.css"
 }

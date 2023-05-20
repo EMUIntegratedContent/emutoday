@@ -76,8 +76,10 @@ mix.combine([
 // ], 'public/js/public-scripts.js');
 
 // Compile vue files
-mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue();
-mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue();
+mix.js('resources/assets/js/vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js').vue();
+mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+// mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue();
+// mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue();
 // mix.js('resources/assets/js/vue-oauth-personal-access-tokens.js', 'public/js/vue-oauth-personal-access-tokens.js').vue();
 // mix.js('resources/assets/js/vue-oauth-clients.js', 'public/js/vue-oauth-clients.js').vue();
 // mix.js('resources/assets/js/vue-oauth-authorized-clients.js', 'public/js/vue-oauth-authorized-clients.js').vue();
@@ -92,7 +94,7 @@ mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-l
 // mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue();
 // mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js').vue();
 // mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js').vue();
-mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js').vue();
+// mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js').vue();
 // mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js').vue();
 // mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
 // mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
