@@ -76,25 +76,27 @@ mix.combine([
 // ], 'public/js/public-scripts.js');
 
 // Compile vue files
-mix.js('resources/assets/js/vue-oauth-personal-access-tokens.js', 'public/js/vue-oauth-personal-access-tokens.js').vue();
-mix.js('resources/assets/js/vue-oauth-clients.js', 'public/js/vue-oauth-clients.js').vue();
-mix.js('resources/assets/js/vue-oauth-authorized-clients.js', 'public/js/vue-oauth-authorized-clients.js').vue();
-mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js').vue();
-mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js').vue();
-mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js').vue();
-mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue();
-mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js').vue();
-mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').vue();
-mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js').vue();
-mix.js('resources/assets/js/vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js').vue();
-mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue();
-mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js').vue();
-mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js').vue();
+mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue();
+mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue();
+// mix.js('resources/assets/js/vue-oauth-personal-access-tokens.js', 'public/js/vue-oauth-personal-access-tokens.js').vue();
+// mix.js('resources/assets/js/vue-oauth-clients.js', 'public/js/vue-oauth-clients.js').vue();
+// mix.js('resources/assets/js/vue-oauth-authorized-clients.js', 'public/js/vue-oauth-authorized-clients.js').vue();
+// mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js').vue();
+// mix.js('resources/assets/js/vue-mediahighlight-form.js', 'public/js/vue-mediahighlight-form.js').vue();
+// mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js').vue();
+// mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue();
+// mix.js('resources/assets/js/vue-author-form.js', 'public/js/vue-author-form.js').vue();
+// mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').vue();
+// mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js').vue();
+// mix.js('resources/assets/js/vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js').vue();
+// mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue();
+// mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js').vue();
+// mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js').vue();
 mix.js('resources/assets/js/vue-archive-queue.js', 'public/js/vue-archive-queue.js').vue();
-mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js').vue();
-mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
-mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
-mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
+// mix.js('resources/assets/js/vue-magazine-builder.js', 'public/js/vue-magazine-builder.js').vue();
+// mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
+// mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
+// mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
 
 /*
 |--------------------------------------------------------------------------

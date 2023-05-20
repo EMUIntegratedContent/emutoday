@@ -68,7 +68,7 @@ class StoryIdeasController extends ApiController
             $idea->creator = \Auth::user()->id; // the currently logged-in user
             $idea->medium = Input::get('medium')['value'];
             $idea->assignee = Input::get('assignee')['value'];
-            $idea->deadline = Carbon::parse(Input::get('deadline')['date']);
+            $idea->deadline = Input::get('deadline') ? Carbon::parse(Input::get('deadline')) : null;
 
             $idea->save();
 
@@ -76,7 +76,7 @@ class StoryIdeasController extends ApiController
             $resource = new Fractal\Resource\Item($idea, new FractalStoryIdeaTransformerModel);
 
             return $this->setStatusCode(201)
-                ->respondSavedWithData('Story idea successfully saved!', ['record_id' => $idea->id]);
+                ->respondSavedWithData('Story idea successfully saved!', $fractal->createData($resource)->toArray());
         }
 
         return $this->setStatusCode(400)
@@ -107,7 +107,7 @@ class StoryIdeasController extends ApiController
             $idea->creator = Input::get('creator')['value'];
             $idea->assignee = Input::get('assignee')['value'];
             $idea->medium = Input::get('medium')['value'];
-            $idea->deadline = Carbon::parse(Input::get('deadline')['date']);
+            $idea->deadline = Input::get('deadline') ? Carbon::parse(Input::get('deadline')) : null;
             $idea->is_completed = Input::get('is_completed');
             $idea->is_archived = Input::get('is_archived');
 

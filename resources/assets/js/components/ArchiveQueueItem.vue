@@ -79,7 +79,7 @@
               {{ item.submitter }}</p>
             <p v-if="entityType == 'stories'">Story started on {{ formatDate(item.start_date) }}</p>
             <p v-if="entityType == 'storyideas'"><strong>Medium:</strong> {{ item.medium.medium }} | <strong>Due
-              date:</strong> {{ formatDate(item.deadline.date) }}</p>
+              date:</strong> {{ formatDate(item.deadline) }}</p>
           </div>
           <div class="col-sm-12 col-md-3">
             <div v-show="showArchivedButtons">
