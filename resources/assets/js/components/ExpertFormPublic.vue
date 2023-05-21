@@ -18,10 +18,10 @@
                 <!-- Expert Type -->
                 <h4>I'd like to be listed as a <span v-bind:class="iconStar" class="reqstar">*</span></h4>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="1" v-model="record.is_community_speaker" :checked="record.is_community_speaker == 1">Community Speaker</label>
+                    <label><input type="checkbox" :true-value="1" :false-value="0" v-model="record.is_community_speaker">Community Speaker</label>
                   </div>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="1" v-model="record.is_media_expert" :checked="record.is_media_expert == 1">Media Expert</label>
+                    <label><input type="checkbox" :true-value="1" :false-value="0" v-model="record.is_media_expert">Media Expert</label>
                   </div>
             </div>
             <!-- /.small-12 columns -->
@@ -44,10 +44,10 @@
                 <!-- Interview preferences -->
                 <h4>I will</h4>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="1" v-model="record.do_print_interviews" :checked="record.do_print_interviews == 1">Do interviews for print media</label>
+                    <label><input type="checkbox" v-model="record.do_print_interviews" :true-value="1" :false-value="0">Do interviews for print media</label>
                   </div>
                   <div class="checkbox">
-                    <label><input type="checkbox" value="1" v-model="record.do_broadcast_interviews" :checked="record.do_broadcast_interviews == 1">Do interviews for broadcast media</label>
+                    <label><input type="checkbox" v-model="record.do_broadcast_interviews" :true-value="1" :false-value="0">Do interviews for broadcast media</label>
                   </div>
             </div>
             <!-- /.small-12 columns -->
@@ -106,7 +106,7 @@
             <!-- Release cell -->
             <div v-bind:class="formGroup">
                 <label>Release Cell Number?</label>
-                <input type="checkbox" value="1" v-model="record.release_cell_phone" :checked="record.release_cell_phone == 1">
+                <input type="checkbox" v-model="record.release_cell_phone" :true-value="1" :false-value="0">
             </div>
           </div>
           <!-- /.small-12 columns -->
@@ -317,14 +317,14 @@
          <div v-bind:class="md12col">
              <!-- Is approved? -->
                <div v-bind:class="formGroup">
-                 <label><input type="checkbox" value="1" v-model="record.accept_policies">I have read and accepted the policies <span v-bind:class="iconStar" class="reqstar">*</span></label>
+                 <label><input type="checkbox" :true-value="1" :false-value="0" v-model="record.accept_policies">I have read and accepted the policies <span v-bind:class="iconStar" class="reqstar">*</span></label>
                </div>
                <p v-if="formErrors.accept_policies" class="help-text invalid">{{formErrors.accept_policies}}</p>
          </div>
          <!-- /.small-12 columns -->
        </div>
        <div class="row" v-show="currentRecordId">
-           <div v-bind:class="md12col" id="policies-container">
+           <div v-bind:class="md12col" id="removal-container">
                <p>Please note that when you update this expert, he/she will be removed from the experts list until an administrator has approved the changes.</p>
            </div>
            <!-- /.small-12 columns -->
@@ -342,6 +342,10 @@
 </template>
 
 <style scoped>
+button.btn-primary {
+  margin-right: 0.2rem;
+}
+
 .row {
   padding: 5px 0px 5px 0px;
 }

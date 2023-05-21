@@ -79,13 +79,13 @@
               <td>{{ expert.first_name }}</td>
               <td>{{ expert.title }}</td>
               <td>
-                <span v-show="expert.is_approved" class="label label-success">Yes</span>
-                <span v-show="!expert.is_approved && (expert.created_at != expert.updated_at)"
+                <span v-if="expert.is_approved" class="label label-success">Yes</span>
+                <span v-if="!expert.is_approved && (expert.created_at != expert.updated_at)"
                       class="label label-danger">No</span>
-                <span v-show="!expert.is_approved && (expert.created_at == expert.updated_at)" class="label label-info">New</span>
+                <span v-if="!expert.is_approved && (expert.created_at == expert.updated_at)" class="label label-info">New</span>
               </td>
               <td>
-                <a href="/admin/experts/{{ expert.id }}/edit" class="button success"><i class="fa fa-pencil-square-o"
+                <a :href="'/admin/experts/'+expert.id+'/edit'" class="button success"><i class="fa fa-pencil-square-o"
                                                                                         aria-hidden="true"></i></a>
               </td>
             </tr>

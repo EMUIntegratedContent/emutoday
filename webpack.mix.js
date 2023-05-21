@@ -79,7 +79,7 @@ mix.combine([
 // mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
 // mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
 // mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
-// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+mix.js('resources/assets/js/vue-expertcategory-form.js', 'public/js/vue-expertcategory-form.js').vue();
 mix.js('resources/assets/js/vue-expert-list.js', 'public/js/vue-expert-list.js').vue();
 mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
 // mix.js('resources/assets/js/vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js').vue();

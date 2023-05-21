@@ -17,8 +17,8 @@
       <div v-bind:class="md12col">
         <!-- Is approved? -->
         <div v-bind:class="formGroup">
-          <label>Approved for Public Display? <input type="checkbox" value="1" v-model="record.is_approved"
-                                                     :checked="record.is_approved == 1"></label>
+          <label>Approved for Public Display? <input type="checkbox" v-model="record.is_approved"
+                                                     :true-value="1" :false-value="0"></label>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -29,12 +29,12 @@
         <!-- Expert Type -->
         <h4>I'd like to be listed as a <span v-bind:class="iconStar" class="reqstar">*</span></h4>
         <div class="checkbox">
-          <label><input type="checkbox" value="1" v-model="record.is_community_speaker"
-                        :checked="record.is_community_speaker == 1">Community Speaker</label>
+          <label><input type="checkbox" v-model="record.is_community_speaker"
+                        :true-value="1" :false-value="0">Community Speaker</label>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox" value="1" v-model="record.is_media_expert"
-                        :checked="record.is_media_expert == 1">Media Expert</label>
+          <label><input type="checkbox" v-model="record.is_media_expert"
+                        :true-value="1" :false-value="0">Media Expert</label>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -111,8 +111,8 @@
         <!-- Release cell -->
         <div v-bind:class="formGroup">
           <label>Release Cell Number?</label>
-          <input type="checkbox" value="1" v-model="record.release_cell_phone"
-                 :checked="record.release_cell_phone == 1">
+          <input type="checkbox" v-model="record.release_cell_phone"
+                 :true-value="1" :false-value="0">
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -136,12 +136,12 @@
         <!-- Interview preferences -->
         <h4>Interview Preferences</h4>
         <div class="checkbox">
-          <label><input type="checkbox" value="1" v-model="record.do_print_interviews"
-                        :checked="record.do_print_interviews == 1">Print Interviews</label>
+          <label><input type="checkbox" v-model="record.do_print_interviews"
+                        :true-value="1" :false-value="0">Print Interviews</label>
         </div>
         <div class="checkbox">
-          <label><input type="checkbox" value="1" v-model="record.do_broadcast_interviews"
-                        :checked="record.do_broadcast_interviews == 1">Broadcast Media Interviews</label>
+          <label><input type="checkbox" v-model="record.do_broadcast_interviews"
+                        :true-value="1" :false-value="0">Broadcast Media Interviews</label>
         </div>
       </div>
       <!-- /.small-12 columns -->
@@ -368,6 +368,9 @@
 </template>
 
 <style scoped>
+button.btn-primary {
+  margin-right: 0.2rem;
+}
 .redBtn {
   background: hsl(0, 90%, 70%);
 }

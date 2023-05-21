@@ -142,14 +142,14 @@ h5.form-control {
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
-import vSelect from "vue-select";
-import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
-import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
-module.exports = {
-  directives: {flatpickr},
-  components: {vSelect},
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
+import vSelect from "vue-select"
+import 'vue-select/dist/vue-select.css'
+import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions'
+import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters'
+export default {
+  components: {vSelect, flatpickr},
   vuex: {
     getters: {
       thisRecordId: getRecordId,
