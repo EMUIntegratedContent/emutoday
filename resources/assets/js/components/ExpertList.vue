@@ -96,8 +96,8 @@
                 <a href="#" v-on:click.prevent="fetchExperts(currentSearch, pagination.current_page-1)"
                    class="page-link" tabindex="-1">Previous</a>
               </li>
-              <li v-for="pg in pagination.last_page" :class="{active: isActivePage(pg+1)}" class="page-item">
-                <a class="page-link" href="#" v-on:click.prevent="fetchExperts(currentSearch, pg+1)">{{ pg + 1 }}</a>
+              <li v-for="pg in pagination.last_page" :class="{active: isActivePage(pg)}" class="page-item">
+                <a class="page-link" href="#" v-on:click.prevent="fetchExperts(currentSearch, pg)">{{ pg }}</a>
               </li>
               <li v-bind:class="{disabled: !hasNext}" class="page-item">
                 <a class="page-link" v-on:click.prevent="fetchExperts(currentSearch, pagination.current_page+1)"
@@ -112,7 +112,10 @@
 </template>
 
 <style scoped>
-
+table {
+  border-collapse: separate !important;
+  border-spacing: 1rem !important;
+}
 </style>
 
 
