@@ -290,16 +290,13 @@ export default {
     movedItemIndex: function (mid) {
       return this.xitems.findIndex(item => item.id == mid)
     },
-    onCalendarChange: function () {
-      // flatpickr directive method
-    },
     updateRecord: function (item) {
       this.$http.patch('/api/event/updateItem/' + item.id, item, {
         method: 'PATCH'
       })
       .then((response) => {
-      }, (response) => {
-      });
+      }).catch((e) => {
+      })
     },
     checkOverData: function () {
       for (var i = 0; i < this.allitems.length; i++) {

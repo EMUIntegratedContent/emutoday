@@ -265,8 +265,6 @@ h5 {
 import moment from 'moment'
 
 export default {
-  directives: {},
-  components: {},
   props: {
     item: {
       type: Object,
@@ -295,11 +293,6 @@ export default {
       checked: false,
       swapped: false,
     }
-  },
-  created: function () {
-
-  },
-  ready: function () {
   },
   computed: {
     timefromNow: function () {

@@ -17,7 +17,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" @click="delPage" :disabled="deleteConfirm != 'delete'">Delete Page</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" @click="delPage"
+                  :disabled="deleteConfirm != 'delete'">Delete Page
+          </button>
         </div>
       </div>
     </div>
@@ -29,24 +31,24 @@
 <script>
 export default {
   props: ['page'],
-  data: function() {
+  data: function () {
     return {
       deleteConfirm: null,
     }
   },
   methods: {
-    delPage: function() {
-        // word 'delete' must be typed in modal
-        if(this.deleteConfirm == 'delete'){
-          this.deleteConfirm = null; // reset delete text
-          this.$http.delete('/api/page/'+this.page.id)
-          .then((response) =>{
-            window.location.href = "/admin/page";
-          }, (response) => {
-            console.log('Error: '+JSON.stringify(response))
-          }).bind(this);
-        }
-    },
+    delPage: function () {
+      // word 'delete' must be typed in modal
+      if (this.deleteConfirm == 'delete') {
+        this.deleteConfirm = null; // reset delete text
+        this.$http.delete('/api/page/' + this.page.id)
+        .then((response) => {
+          window.location.href = "/admin/page"
+        }).catch((e) => {
+          console.log(e)
+        })
+      }
+    }
   }
 }
 </script>

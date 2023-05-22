@@ -572,8 +572,8 @@ export default {
             this.record.end_date = tempdate
           }
         })
-        .catch((response) => {
-          console.log('Error: ' + JSON.stringify(response))
+        .catch((e) => {
+          console.log(e)
         })
         this.refreshUserAnnouncementTable()
       }

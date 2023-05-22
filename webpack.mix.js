@@ -76,9 +76,9 @@ mix.combine([
 // ], 'public/js/public-scripts.js');
 
 // Compile vue files
-// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
-// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
-// mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
+mix.js('resources/assets/js/vue-expert-request-list.js', 'public/js/vue-expert-request-list.js').vue();
+mix.js('resources/assets/js/vue-expertmediarequest-form.js', 'public/js/vue-expertmediarequest-form.js').vue();
+mix.js('resources/assets/js/vue-expertspeakerrequest-form.js', 'public/js/vue-expertspeakerrequest-form.js').vue();
 mix.js('resources/assets/js/vue-expertcategory-form.js', 'public/js/vue-expertcategory-form.js').vue();
 mix.js('resources/assets/js/vue-expert-list.js', 'public/js/vue-expert-list.js').vue();
 mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();

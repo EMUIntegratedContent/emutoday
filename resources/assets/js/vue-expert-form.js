@@ -31,7 +31,6 @@ appPublic.config.globalProperties.$http = axios
 appPublic.use(CKEditor)
 const vmpublic = appPublic.mount('#vue-experts-public')
 
-// console.log(appPublic)
 function assignEventListeners(){
   // Cancel and edit buttons need to call vue object methods
   $("#experts-area").on("click", ".editBtn", function(evt){

@@ -301,13 +301,12 @@ export default {
     timeLeft: function () {
 
       if (moment(this.item.start_date_time).isSameOrBefore(moment())) {
-        let tlft = this.timeDiffNow(this.item.end_date_time);
-        // console.log('id='+ this.item.id + ' timeLeft'+tlft)
+        let tlft = this.timeDiffNow(this.item.end_date_time)
         if (tlft < 0) {
-          this.itemCurrent = 0;
+          this.itemCurrent = 0
           return 'Event Ended ' + moment(this.item.end_date_time).fromNow()
         } else {
-          this.itemCurrent = 1;
+          this.itemCurrent = 1
           return ' and Ends ' + moment(this.item.end_date_time).fromNow()
         }
 

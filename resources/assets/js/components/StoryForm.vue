@@ -961,7 +961,7 @@ export default {
     },
     submitForm: function (e) {
       e.preventDefault();
-      this.formMessage.isOk = '';
+      this.formMessage.isOk = false;
       this.record.user_id = this.cuser.id;
       if (this.record.story_type === 'external' || this.isArticleExternal()) {
         this.record.content = 'not used';
@@ -993,31 +993,31 @@ export default {
       } else {
         tempid = this.record.id;
       }
-      // let method = (this.recordexists) ? 'put' : 'post'
       let method = (this.record.id) ? 'put' : 'post'
-      // let route = (this.recordexists) ? '/api/story/' + tempid : '/api/story';
-      let route = (this.record.id) ? '/api/story/' + tempid : '/api/story';
+      let route = (this.record.id) ? '/api/story/' + tempid : '/api/story'
 
       this.$http[method](route, this.record)
 
           .then((response) => {
 
-            this.formMessage.msg = response.data.message;
-            this.currentRecordId = response.data.newdata.record_id;
-            this.formMessage.isOk = response.ok;
-            this.formErrors = '';
+            this.formMessage.msg = response.data.message
+            this.currentRecordId = response.data.newdata.record_id
+            this.formMessage.isOk = true
+            this.formErrors = {}
 
-            this.response_record_id = response.data.newdata.record_id;
-            this.response_stype = response.data.newdata.stype;
+            this.response_record_id = response.data.newdata.record_id
+            this.response_stype = response.data.newdata.stype
 
             if (this.newform) {
-              this.nowOnReload();
+              this.nowOnReload()
             } else {
-              this.onRefresh();
+              this.onRefresh()
             }
           })
           .catch(e => {
             console.log(e)
+            this.formMessage.isOk = false
+            this.formMessage.isErr = true
             this.formErrors = e.response.data.error.message
           })
     }

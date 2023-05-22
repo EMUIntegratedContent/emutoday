@@ -371,6 +371,7 @@
 button.btn-primary {
   margin-right: 0.2rem;
 }
+
 .redBtn {
   background: hsl(0, 90%, 70%);
 }
@@ -513,9 +514,9 @@ import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/
 import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard'
 
 export default {
-  components: {vSelect},
+  components: { vSelect },
   props: {
-    cuserRoles: {default: {}},
+    cuserRoles: { default: {} },
     errors: {
       default: ''
     },
@@ -695,7 +696,8 @@ export default {
       this.fetchSocial();
       this.fetchCurrentCategory(this.currentRecordId);
       this.fetchCurrentRecord(this.currentRecordId);
-    } else {
+    }
+    else {
       this.hasContent = true;
       this.fetchCategoryList();
     }
@@ -743,10 +745,12 @@ export default {
     isAdmin: function () {
       if (this.userRoles.indexOf('admin') != -1) {
         return true;
-      } else {
+      }
+      else {
         if (this.userRoles.indexOf('admin_super') != -1) {
           return true;
-        } else {
+        }
+        else {
           return false;
         }
       }
@@ -759,14 +763,15 @@ export default {
     editorType: function () {
       if (this.isAdmin) {
         return 'admin'
-      } else {
+      }
+      else {
         return 'simple'
       }
     }
   },
 
   methods: {
-    getUserRoles() {
+    getUserRoles () {
       let roles = this.cuserRoles;
       let self = this;
       this.userRoles = [];
@@ -774,7 +779,8 @@ export default {
         roles.forEach(function (item, index) {
           self.userRoles.push(item.name);
         })
-      } else {
+      }
+      else {
         self.userRoles.push('guest');
       }
     },
@@ -782,14 +788,14 @@ export default {
     fetchCurrentRecord: function (recid) {
       this.$http.get('/api/experts/' + recid + '/edit')
 
-          .then((response) => {
-            this.record = response.data.data
-            this.recordOld = response.data.data
+      .then((response) => {
+        this.record = response.data.data
+        this.recordOld = response.data.data
 
-            this.hasContent = true;
-            this.currentRecordId = this.record.id;
-            this.biography = this.record.biography;
-          }).catch((e) => {
+        this.hasContent = true;
+        this.currentRecordId = this.record.id;
+        this.biography = this.record.biography;
+      }).catch((e) => {
         this.formErrors = e.response.data.error.message
       })
     },
@@ -797,71 +803,71 @@ export default {
     // Fetch the tags that match THIS record
     fetchCategoryList: function () {
       this.$http.get('/api/experts/category')
-          .then((response) => {
-            this.categorieslist = response.data
-          }).catch((e) => {
+      .then((response) => {
+        this.categorieslist = response.data
+      }).catch((e) => {
 
       })
     },
 
     // Fetch the categories that matches THIS expert
-    fetchCurrentCategory() {
+    fetchCurrentCategory () {
       this.$http.get('/api/experts/category/' + this.currentRecordId)
-          .then((response) => {
-            this.categories = response.data
-          }).catch((e) => {
+      .then((response) => {
+        this.categories = response.data
+      }).catch((e) => {
 
       })
     },
 
     // Fetch the education that matches THIS expert
-    fetchEducation() {
+    fetchEducation () {
       this.$http.get('/api/experts/education/' + this.currentRecordId)
-          .then((response) => {
-            this.education = response.data
-          })
-          .catch((e) => {
-          })
+      .then((response) => {
+        this.education = response.data
+      })
+      .catch((e) => {
+      })
     },
 
     // Fetch the expertise that matches THIS expert
-    fetchExpertise() {
+    fetchExpertise () {
       this.$http.get('/api/experts/expertise/' + this.currentRecordId)
-          .then((response) => {
-            this.expertise = response.data
-          })
-          .catch((e) => {
-          })
+      .then((response) => {
+        this.expertise = response.data
+      })
+      .catch((e) => {
+      })
     },
 
     // Fetch the languages that matches THIS expert
-    fetchLanguages() {
+    fetchLanguages () {
       this.$http.get('/api/experts/languages/' + this.currentRecordId)
-          .then((response) => {
-            this.languages = response.data
-          })
-          .catch((e) => {
-          })
+      .then((response) => {
+        this.languages = response.data
+      })
+      .catch((e) => {
+      })
     },
 
     // Fetch the job titles that matches THIS expert
-    fetchPreviousTitles() {
+    fetchPreviousTitles () {
       this.$http.get('/api/experts/previoustitles/' + this.currentRecordId)
-          .then((response) => {
-            this.previousTitles = response.data
-          })
-          .catch((e) => {
-          })
+      .then((response) => {
+        this.previousTitles = response.data
+      })
+      .catch((e) => {
+      })
     },
 
     // Fetch the social media links that matches THIS expert
-    fetchSocial() {
+    fetchSocial () {
       this.$http.get('/api/experts/social/' + this.currentRecordId)
-          .then((response) => {
-            this.social = response.data
-          })
-          .catch((e) => {
-          })
+      .then((response) => {
+        this.social = response.data
+      })
+      .catch((e) => {
+      })
     },
 
     nowOnReload: function () {
@@ -877,43 +883,49 @@ export default {
     submitForm: function (e) {
       e.preventDefault(); // Stop form defualt action
 
-      $('html, body').animate({scrollTop: 0}, 'fast');
+      $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       this.record.biography = this.biography;
 
       if (this.categories.length > 0) {
         this.record.categories = this.categories;
-      } else {
+      }
+      else {
         this.record.categories = [];
       }
 
       if (this.education.length > 0) {
         this.record.education = this.education;
-      } else {
+      }
+      else {
         this.record.education = [];
       }
 
       if (this.expertise.length > 0) {
         this.record.expertise = this.expertise;
-      } else {
+      }
+      else {
         this.record.expertise = [];
       }
 
       if (this.languages.length > 0) {
         this.record.languages = this.languages;
-      } else {
+      }
+      else {
         this.record.languages = [];
       }
 
       if (this.previousTitles.length > 0) {
         this.record.previousTitles = this.previousTitles;
-      } else {
+      }
+      else {
         this.record.previousTitles = [];
       }
 
       if (this.social.length > 0) {
         this.record.social = this.social;
-      } else {
+      }
+      else {
         this.record.social = [];
       }
 
@@ -924,20 +936,21 @@ export default {
       // Submit form.
       this.$http[method](route, this.record) //
 
-          // Do this when response gets back.
-          .then((response) => {
-            this.formMessage.msg = response.data.message;
-            this.formMessage.isOk = true; // Success message
-            this.currentRecordId = response.data.newdata.record_id;
-            this.record.id = response.data.newdata.record_id;
-            this.formMessage.isErr = false;
-            this.formErrors = {}; // Clear errors?
-            if (this.recordid == '') {
-              this.nowOnReload();
-            } else {
-              this.onRefresh();
-            }
-          }).catch((e) => { // If invalid. error callback
+      // Do this when response gets back.
+      .then((response) => {
+        this.formMessage.msg = response.data.message;
+        this.formMessage.isOk = true; // Success message
+        this.currentRecordId = response.data.newdata.record_id;
+        this.record.id = response.data.newdata.record_id;
+        this.formMessage.isErr = false;
+        this.formErrors = {}; // Clear errors?
+        if (this.recordid == '') {
+          this.nowOnReload();
+        }
+        else {
+          this.onRefresh();
+        }
+      }).catch((e) => { // If invalid. error callback
         this.formMessage.isOk = false
         this.formMessage.isErr = true
         // Set errors from validation to vue data
@@ -951,14 +964,14 @@ export default {
       this.formMessage.isErr = false;
 
       if (confirm('Would you like to delete this expert?')) {
-        $('html, body').animate({scrollTop: 0}, 'fast');
+        $('html, body').animate({ scrollTop: 0 }, 'fast');
 
         this.$http.post('/api/experts/' + this.record.id + '/delete')
 
-            .then(() => {
-              window.location.href = "/admin/experts"
-            }).catch((e) => {
-          console.log('Error: ' + JSON.stringify(e.response))
+        .then(() => {
+          window.location.href = "/admin/experts"
+        }).catch((e) => {
+          console.log(e)
         })
       }
     },
@@ -970,7 +983,7 @@ export default {
     },
 
     addTitle: function () {
-      this.previousTitles.push({value: '', title: ''});
+      this.previousTitles.push({ value: '', title: '' });
     },
 
     delLanguage: function (language) {
@@ -980,7 +993,7 @@ export default {
     },
 
     addLanguage: function () {
-      this.languages.push({value: '', language: ''});
+      this.languages.push({ value: '', language: '' });
     },
 
     delEducation: function (education) {
@@ -990,7 +1003,7 @@ export default {
     },
 
     addEducation: function () {
-      this.education.push({value: '', education: ''});
+      this.education.push({ value: '', education: '' });
     },
 
     delExpertise: function (expertise) {
@@ -1000,7 +1013,7 @@ export default {
     },
 
     addExpertise: function () {
-      this.expertise.push({value: '', expertise: ''});
+      this.expertise.push({ value: '', expertise: '' });
     },
 
     delSocial: function (link) {
@@ -1010,7 +1023,7 @@ export default {
     },
 
     addSocial: function () {
-      this.social.push({value: '', title: '', url: ''});
+      this.social.push({ value: '', title: '', url: '' });
     },
   }
 };

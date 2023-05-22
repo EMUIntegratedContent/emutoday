@@ -279,7 +279,6 @@ import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  directives: {},
   components: {StoryPod, IconToggleBtn, Pagination, flatpickr, Sortable},
   props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
   created() {

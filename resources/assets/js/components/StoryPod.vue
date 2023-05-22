@@ -345,7 +345,6 @@ import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
 export default {
-  directives: {},
   components: {VuiFlipSwitch},
   props: ['item', 'pid', 'sroute', 'qtype', 'gtype', 'stype', 'index', 'role', 'elevatedStorys'],
   data: function () {

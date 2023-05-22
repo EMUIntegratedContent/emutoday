@@ -1210,7 +1210,7 @@ export default {
 
       this.$http.patch('/api/event/' + recid + '/cancel')
       .then((response) => {
-        this.formMessage.isOk = response.ok;
+        this.formMessage.isOk = true
         this.formMessage.msg = response.body.message;
       }).catch((e) => {
         console.log(e)
@@ -1343,8 +1343,8 @@ export default {
             this.record.edate = '';
             this.record.stime = '';
             this.record.rdate = '';
-            this.formMessage.isOk = response.ok;
-            this.formMessage.msg = response.body;
+            this.formMessage.isOk = true
+            this.formMessage.msg = 'Event deleted';
             this.record.exists = this.record_exists = false;
             let d = new Date();
             let tempdate = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
@@ -1386,10 +1386,11 @@ export default {
             this.record.is_canceled = 0
           }
 
-          this.formMessage.msg = "Event's status has been changed.";
-          this.formMessage.isOk = response.ok;
+          this.formMessage.msg = "Event's status has been changed."
+          this.formMessage.isOk = true
         }).catch((e) => {
-          console.log(e)
+          this.formMessage.isOk = false
+          this.formMessage.isErr = true
         })
         this.refreshUserEventTable();
       }

@@ -232,7 +232,6 @@ export default {
           const isStoryType = it.story_type === this.stories_filter_storytype
           let txtSearch = true
           if (this.textFilter !== '') {
-            console.log("BULLS")
             txtSearch = regexp.test(it.title)
           }
           return isStoryType && txtSearch

@@ -46,7 +46,7 @@
 @endsection
 @section('footer-vendor')
     @parent
-    {{-- <script src="/js/admintools.js"></script> --}}
+
 @endsection
 
 @section('footer-plugin')
