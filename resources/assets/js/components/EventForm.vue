@@ -625,8 +625,8 @@ textarea {
   box-sizing: border-box
 }
 
-button {
-  margin-right: 2px;
+.btn-primary {
+  margin-right: 0.2rem;
 }
 
 @-webkit-keyframes vSelectSpinner {

@@ -1,10 +1,7 @@
 {
-    "/js/vue-expert-request-list.js": "/js/vue-expert-request-list.js",
-    "/js/vue-expertmediarequest-form.js": "/js/vue-expertmediarequest-form.js",
-    "/js/vue-expertspeakerrequest-form.js": "/js/vue-expertspeakerrequest-form.js",
-    "/js/vue-expertcategory-form.js": "/js/vue-expertcategory-form.js",
-    "/js/vue-expert-list.js": "/js/vue-expert-list.js",
-    "/js/vue-expert-form.js": "/js/vue-expert-form.js",
+    "/js/vue-event-hscqueue.js": "/js/vue-event-hscqueue.js",
+    "/js/vue-story-form-wrapper.js": "/js/vue-story-form-wrapper.js",
+    "/js/vue-story-queue.js": "/js/vue-story-queue.js",
     "/css/public-styles.css": "/css/public-styles.css",
     "/css/admin-styles.css": "/css/admin-styles.css"
 }

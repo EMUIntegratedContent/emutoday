@@ -203,6 +203,9 @@
 </template>
 
 <style scoped>
+.btn-primary {
+  margin-right: 0.2rem;
+}
 #submit-area {
   background: #e1e1e1;
   margin: 20px 0 0 0;
