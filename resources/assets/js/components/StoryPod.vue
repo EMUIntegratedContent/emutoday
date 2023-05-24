@@ -31,7 +31,7 @@
                     <label class="form-check-label">
                       Elevate
                       <input type="checkbox" class="form-check-input" @click="toggleEmitStoryElevate"
-                             :value="checked" :checked="isElevatedStory"/> |
+                             v-model="checked" :checked="isElevatedStory"/> |
                     </label>
                   </div>
                 </template>
