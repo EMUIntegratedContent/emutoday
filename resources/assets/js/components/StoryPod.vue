@@ -30,8 +30,8 @@
                   <div class="form-check">
                     <label class="form-check-label">
                       Elevate
-                      <input type="checkbox" class="form-check-input" @click="toggleEmitStoryElevate(item)"
-                             v-model="checked" :checked="isElevatedStory"/> |
+                      <input type="checkbox" class="form-check-input" @click="toggleEmitStoryElevate"
+                             :value="checked" :checked="isElevatedStory"/> |
                     </label>
                   </div>
                 </template>
@@ -41,9 +41,11 @@
                       <label>approved:</label>
                     </div><!-- /.form-group -->
                     <div class="form-group">
-                      <vui-flip-switch :id="'switch-' + item.id"
-                                       v-on:click.prevent="changeIsApproved"
-                                       v-model:checked="patchRecord.is_approved">
+                      <vui-flip-switch
+                          v-model="patchRecord.is_approved"
+                          :switchId="'switch-' + item.id"
+                          @update:modelValue="changeIsApproved"
+                      >
                       </vui-flip-switch>
                     </div>
                   </template>
@@ -335,7 +337,8 @@ h5 {
 .remove-story-btn {
   margin-left: 10px;
 }
-label > span.fa{
+
+label > span.fa {
   margin-right: 3px;
 }
 </style>
@@ -345,7 +348,7 @@ import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
 export default {
-  components: {VuiFlipSwitch},
+  components: { VuiFlipSwitch },
   props: ['item', 'pid', 'sroute', 'qtype', 'gtype', 'stype', 'index', 'role', 'elevatedStorys'],
   data: function () {
     return {
@@ -364,25 +367,21 @@ export default {
         level: '',
         msg: ''
       },
-      initRecord: {
-        is_approved: 0,
-        priority: 0,
-        is_canceled: 0,
-        eventimage: ''
-      },
       patchRecord: {
         is_approved: 0,
         priority: 0,
         is_canceled: 0,
         eventimage: ''
       },
+      itemCopy: null
     }
   },
   created () {
-    this.initRecord.is_approved = this.patchRecord.is_approved = this.item.is_approved;
-    this.initRecord.priority = this.patchRecord.priority = this.item.priority;
-    this.initRecord.is_canceled = this.patchRecord.is_canceled = this.item.is_canceled;
-    this.initRecord.eventimage = this.patchRecord.eventimage = this.item.eventimage;
+    this.itemCopy = JSON.parse(JSON.stringify(this.item))
+    this.patchRecord.is_approved = this.itemCopy.is_approved
+    this.patchRecord.priority = this.itemCopy.priority
+    this.patchRecord.is_canceled = this.itemCopy.is_canceled
+    this.patchRecord.eventimage = this.itemCopy.eventimage
   },
   computed: {
     specialItem: function () {
@@ -391,11 +390,13 @@ export default {
 
         if (this.index === 4) {
           extrasep = 'special-item special-item-last'
-        } else {
+        }
+        else {
           extrasep = 'special-item'
         }
 
-      } else {
+      }
+      else {
         extrasep = ''
       }
       return extrasep;
@@ -409,76 +410,73 @@ export default {
     isLiveColumn: function () {
       if (this.pid === 'items-live') {
         return true;
-      } else {
+      }
+      else {
         return false;
       }
     },
-    hasIsApprovedChanged: function () {
-      if (this.initRecord.is_approved != this.patchRecord.is_approved) {
-        return true
-      } else {
-        return false
-      }
-    },
     connectedHubs: function () {
-      return this.item.pages;
+      return this.itemCopy.pages;
     },
     connectedMags: function () {
-      return this.item.magazines;
+      return this.itemCopy.magazines;
     },
     isPartOfHub: function () {
-      if (this.item.pages.length > 0) {
+      if (this.itemCopy.pages.length > 0) {
         return 1
-      } else {
+      }
+      else {
         return 0
       }
     },
     isPartOfMag: function () {
-      if (this.item.magazines.length > 0) {
+      if (this.itemCopy.magazines.length > 0) {
         return 1
-      } else {
+      }
+      else {
         return 0
       }
     },
     isPartOfHubOrMag: function () {
       if (this.isPartOfHub === 1 || this.isPartOfMag === 1) {
         return 1
-      } else {
+      }
+      else {
         return 0
       }
     },
     timefromNow: function () {
-      return moment(this.item.start_date).fromNow()
+      return moment(this.itemCopy.start_date).fromNow()
     },
     isApproved: function () {
-      return this.item.is_approved;
+      return this.itemCopy.is_approved;
     },
     itemEditPath: function () {
-      return '/admin/' + this.qtype + '/' + this.gtype + '/' + this.item.story_type + '/' + this.item.id + '/edit'
+      return '/admin/' + this.qtype + '/' + this.gtype + '/' + this.itemCopy.story_type + '/' + this.itemCopy.id + '/edit'
     },
     itemPreviewPath: function () {
-      return '/preview/' + this.qtype + '/' + this.gtype + '/' + this.item.story_type + '/' + this.item.id
+      return '/preview/' + this.qtype + '/' + this.gtype + '/' + this.itemCopy.story_type + '/' + this.itemCopy.id
     },
     typeClass: function () {
 
     },
     readyIcon: function () {
       let pIcon = 'fa fa-circle-o'
-      if (this.item.is_ready === 1) {
+      if (this.itemCopy.is_ready === 1) {
         pIcon = 'fa fa-circle'
       }
       return pIcon
     },
     promotedIcon: function () {
       let pIcon = ''
-      if (this.item.is_promoted === 1) {
+      if (this.itemCopy.is_promoted === 1) {
         pIcon = 'fa fa-arrow-circle-up'
       }
       return pIcon
     },
     liveIcon: function () {
       let lIcon = ''
-      if (this.item.is_live === 1) {
+      if (this.itemCopy.is_live === 1) {
         lIcon = 'fa fa-home'
       }
       return lIcon
@@ -493,24 +491,24 @@ export default {
     },
     archivedIcon: function () {
       let aIcon = ''
-      if (this.item.archived === 1) {
+      if (this.itemCopy.archived === 1) {
         aIcon = 'fa fa-archive'
       }
       return aIcon
     },
     featuredIcon: function () {
       let featuredicon = ''
-      if (this.item.is_featured === 1) {
+      if (this.itemCopy.is_featured === 1) {
         featuredicon = 'fa fa-star'
       }
       return featuredicon
     },
     isReadyStatus: function () {
-      return (this.item.is_ready === 1) ? 'Ready' : 'Not Ready';
+      return (this.itemCopy.is_ready === 1) ? 'Ready' : 'Not Ready';
     },
     typeIcon: function () {
       let faicon
-      switch (this.item.story_type) {
+      switch (this.itemCopy.story_type) {
         case 'emutoday':
         case 'story':
           faicon = 'fa-file-image-o'
@@ -546,19 +544,20 @@ export default {
       return 'fa ' + faicon + ' fa-fw'
     },
     recordIsReady: function () {
-      switch (this.item.story_type) {
+      switch (this.itemCopy.story_type) {
         case 'article':
         case 'story':
         case 'student':
         case 'external':
-          if (this.item.is_promoted === 1) {
+          if (this.itemCopy.is_promoted === 1) {
             return true
-          } else {
+          }
+          else {
             return false
           }
           break;
         case 'featurephoto':
-          if (this.item.is_ready === 1) {
+          if (this.itemCopy.is_ready === 1) {
             return true
           }
           return false
@@ -573,21 +572,23 @@ export default {
     disabledArchive: function () {
       if (this.isPartOfHubOrMag) {
         return true
-      } else {
+      }
+      else {
         return false
       }
     },
     disabledPreview: function () {
       if (this.recordIsReady) {
         return false
-      } else {
+      }
+      else {
         return true
       }
     },
     isElevatedStory: function () {
       if (this.elevatedStorys) {
         for (var i = 0; i < this.elevatedStorys.length; i++) {
-          if (this.elevatedStorys[i].id == this.item.id) {
+          if (this.elevatedStorys[i].id == this.itemCopy.id) {
             this.checked = true
             return true
           }
@@ -613,111 +614,77 @@ export default {
     toggleBody: function (ev) {
       if (this.showBody == false) {
         this.showBody = true;
-      } else {
+      }
+      else {
         this.showBody = false;
       }
     },
-    approveItem: function (ev) {
-
-      if (this.item.is_approved === 1) {
-        this.item.xIs_approved = 0;
-      } else {
-        this.item.xIs_approved = 1;
-      }
-      this.updateRecordStatus();
+    changeIsApproved () {
+      this.updateItem()
     },
-    changeIsApproved: function () {
-      this.patchRecord.is_approved = (this.item.is_approved === 0) ? 1 : 0;
-      this.updateItem();
-
-    },
-    archiveItem: function () {
-      this.patchRecord.is_archived = 1;
-
-      this.$http.patch('/api/story/archiveitem/' + this.item.id, this.patchRecord, {
+    archiveItem () {
+      this.patchRecord.is_archived = this.itemCopy.is_archived = 1
+      this.$http.patch('/api/story/archiveitem/' + this.itemCopy.id, this.patchRecord, {
         method: 'PATCH'
       })
-          .then((response) => {
-            this.checkAfterUpdate(response.data.newdata)
-          }).catch((e) => {
-
-          })
+      .then((response) => {
+        this.checkAfterUpdate(response.data.newdata)
+        this.$emit('item-change', this.itemCopy)
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    updateItem: function () {
-      this.patchRecord.is_archived = this.item.is_archived;
+    updateItem () {
+      this.patchRecord.is_archived = this.item.is_archived
 
-      this.$http.patch('/api/story/updateitem/' + this.item.id, this.patchRecord, {
+      this.$http.patch('/api/story/updateitem/' + this.itemCopy.id, this.patchRecord, {
         method: 'PATCH'
       })
-          .then((response) => {
-            this.checkAfterUpdate(response.data.newdata)
-          }).catch((e) => {
-          })
+      .then((response) => {
+        this.checkAfterUpdate(response.data.newdata)
+        this.$emit('item-change', this.itemCopy)
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    checkAfterUpdate: function (ndata) {
-      this.item.is_approved = this.initRecord.is_approved = ndata.is_approved;
-      this.item.priority = this.initRecord.priority = ndata.priority;
-      this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
+    checkAfterUpdate (ndata) {
+      this.patchRecord.is_approved = this.itemCopy.is_approved = ndata.is_approved
+      this.patchRecord.priority = this.itemCopy.priority = ndata.priority
+      this.patchRecord.is_archived = this.itemCopy.is_archived = ndata.is_archived
 
       // Unapproved stories lose priority status
-      if (!this.item.is_approved) {
+      if (!this.patchRecord.is_approved) {
+        this.emitStoryDemote(this.itemCopy)
+      }
+    },
+    emitStoryElevate (storyObj) {
+      this.$emit('story-elevated', storyObj)
+    },
+    emitStoryDemote (storyObj) {
+      this.$emit('story-demoted', storyObj.id)
+    },
+    toggleEmitStoryElevate () {
+      if (this.checked === false) {
+        this.emitStoryElevate(this.item)
+      }
+      else {
         this.emitStoryDemote(this.item)
       }
     },
-    updateRecordStatus: function () {
-      let self = this
-      this.$http.patch('/api/story/updateQueue', this.item, {
-        method: 'PATCH'
-      })
-          .then((response) => {
-            self.response_approval = response.data.isapproved;
-            self.item.is_approved = (self.response_approval == 1) ? 1 : 0;
-
-            self.$emit('item-change', self.item);
-
-          }).catch((e) => {
-            self.itemMsgStatus.show = true;
-            self.itemMsgStatus.level = 'danger';
-            self.itemMsgStatus.msg = e.response.data.error.message
-          });
-    },
-    doThis: function (ev) {
-      this.item.is_approved = (this.is_approved === 0) ? 1 : 0;
-      this.$emit('item-change', this.item);
-    },
-    emitStoryElevate: function (storyObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      this.$dispatch('story-elevated', storyObj)
-    },
-    emitStoryDemote: function (storyObj) {
-      // Dispatch an event that propagates upward along the parent chain using $dispatch()
-      // IMPORTANT: You must emit the object id as opposed to the entire object because objects loaded from Laravel will be DIFFERENT objects
-      this.$dispatch('story-demoted', storyObj.id)
-    },
-    toggleEmitStoryElevate: function (storyObj) {
-      // function will run before this.checked is switched
-
-      //Check if browser is Safari. Safari treats the true/false nature of checkboxes differently than chrome and firefox
-      // https://www.learningjquery.com/2017/05/how-to-use-javascript-to-detect-browser
-      if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
-        if (this.checked === true) {
-          this.emitStoryElevate(storyObj)
-        } else {
-          this.emitStoryDemote(storyObj)
-        }
-      } else {
-        if (this.checked === false) {
-          this.emitStoryElevate(storyObj)
-        } else {
-          this.emitStoryDemote(storyObj)
-        }
-      }
-    },
-    momentFull(val) {
+    momentFull (val) {
       return val ? moment(val).format('ddd MMM gg, YYYY @ h:mm a') : ''
     }
+  },
+  watch: {
+    item () {
+      this.itemCopy = JSON.parse(JSON.stringify(this.item))
+      this.patchRecord.is_approved = this.itemCopy.is_approved
+      this.patchRecord.priority = this.itemCopy.priority
+      this.patchRecord.is_canceled = this.itemCopy.is_canceled
+      this.patchRecord.eventimage = this.itemCopy.eventimage
+    }
   }
-};
+}
 
 
 </script>

@@ -4,7 +4,8 @@
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
       <form class="form-inline">
         <div class="form-group">
-          <label for="start-date">Showing <template v-if="stype == 'featurephoto'">photos</template>
+          <label for="start-date">Showing
+            <template v-if="stype == 'featurephoto'">photos</template>
             <template v-else>stories</template>
             starting <span v-if="isEndDate">between</span><span v-else>on or after</span>
             <flatpickr
@@ -84,7 +85,7 @@
             :gtype="gtype"
             :qtype="qtype"
             v-for="(item, i) in itemsUnapprovedFilteredPaginated"
-            @item-change="moveToApproved"
+            @item-change="moveStory"
             :key="'iu-'+i"
             :item="item"
             :index="i"
@@ -123,10 +124,10 @@
             :gtype="gtype"
             :qtype="qtype"
             v-for="(item, i) in itemsApprovedFilteredPaginated"
-            @item-change="moveToUnApproved"
             :key="'ia-'+i"
             :item="item"
             :index="i"
+            @item-change="moveStory"
         >
         </story-pod>
       </div>
@@ -173,6 +174,7 @@
                     :item="element"
                     @story-elevated="storyElevated"
                     @story-demoted="storyDemoted"
+                    @item-change="moveStory"
                 >
                 </story-pod>
               </template>
@@ -185,26 +187,26 @@
         <hr/> <!-- End elevated announcements -->
         <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has
           passed</small></h4>
-          <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
-            <div class="btn-group btn-group-xs" role="group">
-              <label>Filter: </label>
-            </div>
-            <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
-              <template v-for="item in storyTypeIcons">
-                <label
-                    class="btn btn-default"
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    :title="item.name"
-                    @click="items_live_filter_storytype = item.shortname"
-                    :class="{ 'active' : items_live_filter_storytype == item.shortname || (items_live_filter_storytype == '' && item.shortname == 'all') }"
-                >
-                  <input type="radio" autocomplete="off" :value="item.shortname"/>
-                  <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
-                </label>
-              </template>
-            </div>
+        <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
+          <div class="btn-group btn-group-xs" role="group">
+            <label>Filter: </label>
           </div>
+          <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
+            <template v-for="item in storyTypeIcons">
+              <label
+                  class="btn btn-default"
+                  data-toggle="tooltip"
+                  data-placement="top"
+                  :title="item.name"
+                  @click="items_live_filter_storytype = item.shortname"
+                  :class="{ 'active' : items_live_filter_storytype == item.shortname || (items_live_filter_storytype == '' && item.shortname == 'all') }"
+              >
+                <input type="radio" autocomplete="off" :value="item.shortname"/>
+                <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
+              </label>
+            </template>
+          </div>
+        </div>
         <story-pod
             pid="items-live"
             :role="role"
@@ -213,10 +215,14 @@
             :gtype="gtype"
             :qtype="qtype"
             v-for="(item, i) in itemsLiveFilteredPaginated"
-            @item-change="moveToUnApproved"
+            :key="'pod-live-'+i"
             :elevated-storys="elevateditems"
             :item="item"
-            :index="i">
+            :index="i"
+            @story-elevated="storyElevated"
+            @story-demoted="storyDemoted"
+            @item-change="moveStory"
+        >
         </story-pod>
       </div>
     </div><!-- /.col-md-4 -->
@@ -274,15 +280,15 @@ import moment from 'moment'
 import StoryPod from './StoryPod.vue'
 import IconToggleBtn from './IconToggleBtn.vue'
 import Pagination from './Pagination.vue'
-import {Sortable} from "sortablejs-vue3"
+import { Sortable } from "sortablejs-vue3"
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  components: {StoryPod, IconToggleBtn, Pagination, flatpickr, Sortable},
+  components: { StoryPod, IconToggleBtn, Pagination, flatpickr, Sortable },
   props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
-  created() {
-    let twoWeeksEarlier = moment().subtract(2, 'years')
+  created () {
+    let twoWeeksEarlier = moment().subtract(1, 'years')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
@@ -302,9 +308,6 @@ export default {
       elevateditems: [],
       originalelevateditems: [],
       items: [],
-      items_unapproved_filtered: [],
-      items_unapproved: [],
-      items_approved: [],
       items_live: [],
       currentTypesFilter: [],
       loading: true,
@@ -319,9 +322,7 @@ export default {
         msg: '',
       },
       textFilter: '',
-      options: {
-
-      },
+      options: {},
       flatpickrConfig: {
         altFormat: "m/d/Y", // format the user sees
         altInput: true,
@@ -331,21 +332,21 @@ export default {
     }
   },
   computed: {
-    itemsLiveFilteredPaginated() {
+    itemsLiveFilteredPaginated () {
       let items = this.itemsLive
       if (this.items_live_filter_storytype != '') {
         items = this.allitems.filter(it => it.story_type == this.items_live_filter_storytype)
       }
       return items
     },
-    itemsApprovedFilteredPaginated() {
+    itemsApprovedFilteredPaginated () {
       let items = this.itemsApproved
       if (this.items_approved_filter_storytype != '') {
         items = this.allitems.filter(it => it.story_type == this.items_approved_filter_storytype)
       }
       return items
     },
-    itemsUnapprovedFilteredPaginated() {
+    itemsUnapprovedFilteredPaginated () {
       let items = this.itemsUnapproved
       if (this.items_unapproved_filter_storytype != '') {
         items = this.allitems.filter(it => it.story_type == this.items_unapproved_filter_storytype)
@@ -356,10 +357,12 @@ export default {
       if (this.role === 'admin' || this.role === 'admin_super') {
         if (this.qtype === 'queueall') {
           return true
-        } else {
+        }
+        else {
           return false
         }
-      } else {
+      }
+      else {
         return false
       }
     },
@@ -395,7 +398,8 @@ export default {
             shortname: 'x'
           }
         ]
-      } else {
+      }
+      else {
         this.s_types.push({
           name: 'all',
           shortname: ''
@@ -403,19 +407,19 @@ export default {
         return this.s_types;
       }
     },
-    itemsApproved: function () {
+    itemsApproved () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return this.allitems.filter(function (item) {
         return moment(item.start_date).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0 && regexp.test(item.title);
       })
     },
-    itemsUnapproved: function () {
+    itemsUnapproved () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return this.allitems.filter(function (item) {
         return item.is_approved === 0 && item.is_archived === 0 && regexp.test(item.title);
       })
     },
-    itemsLive: function () {
+    itemsLive () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return this.allitems.filter(function (item) {
         return (moment(item.start_date).isSameOrBefore(moment())
@@ -430,48 +434,13 @@ export default {
     toggleRange: function () {
       if (this.isEndDate) {
         this.isEndDate = false
-      } else {
+      }
+      else {
         this.isEndDate = true
       }
     },
     isString: function (val) {
       return toString.call(val) === "[object String]";
-    },
-    filerStoryTypeCustom: function (value) {
-      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
-
-      if (this.storytype === '') {
-        return value.story_type !== '' && regexp.test(value.title)
-      } else {
-        return value.story_type === this.storytype && regexp.test(value.title)
-      }
-    },
-    filterUnapprovedByStoryType: function (value) {
-      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
-
-      if (this.items_unapproved_filter_storytype === '') {
-        return value.story_type !== '' && regexp.test(value.title);
-      } else {
-        return value.story_type === this.items_unapproved_filter_storytype && regexp.test(value.title);
-      }
-    },
-    filterApprovedByStoryType: function (value) {
-      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
-
-      if (this.items_approved_filter_storytype === '') {
-        return value.story_type !== '' && regexp.test(value.title);
-      } else {
-        return value.story_type === this.items_approved_filter_storytype && regexp.test(value.title);
-      }
-    },
-    filterLiveByStoryType: function (value) {
-      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
-
-      if (this.items_live_filter_storytype === '') {
-        return value.story_type !== '' && regexp.test(value.title);
-      } else {
-        return value.story_type === this.items_live_filter_storytype && regexp.test(value.title);
-      }
     },
     typeIcon: function (sname) {
       let faicon
@@ -510,39 +479,18 @@ export default {
       }
       return 'fa ' + faicon + ' fa-fw'
     },
-
-    movedItemIndex: function (mid) {
-      return this.items_unapproved.findIndex(item => item.id == mid)
+    moveStory (changeditem) {
+      const index = this.allitems.findIndex(item => item.id == changeditem.id)
+      this.allitems[index] = changeditem
     },
-    moveToApproved: function (changeditem) {
-      let movedid = changeditem.id;
-      let movedRecord = changeditem;
-      let movedIndex = this.movedItemIndex(movedid);
-
-      if (movedRecord.is_approved === 1) {
-        this.items_unapproved.splice(movedIndex, 1);
-        this.items_approved.push(movedRecord);
-      } else {
-        this.items_approved.splice(movedIndex, 1);
-        this.items_unapproved.push(movedRecord);
-      }
-    },
-    moveToUnApproved: function (changeditem) {
-      changeditem.is_approved = 0;
-
-      this.updateRecord(changeditem)
-    },
-    updateRecord: function (item) {
-      const currentRecordId = item.id;
-      item.start_date = moment(item.start_date, "MM-DD-YYYY").format("YYYY-MM-DD")
-
-      const currentRecord = item;
+    updateRecord (item) {
       this.$http.patch('/api/story/' + item.id, item, {
         method: 'PATCH'
       })
-          .then((response) => {
-          }).catch((e) => {
-          })
+      .then((response) => {
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
     fetchAllRecords: function () {
@@ -552,7 +500,8 @@ export default {
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startdate) {
         routeurl = routeurl + '/' + this.startdate
-      } else {
+      }
+      else {
         routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
       }
 
@@ -562,13 +511,13 @@ export default {
       }
 
       this.$http.get(routeurl)
-        .then((response) => {
-          this.allitems = response.data.data
-          this.loading = false;
-        }).catch((e) => {
-          //error callback
-          console.log(e)
-        })
+      .then((response) => {
+        this.allitems = response.data.data
+        this.loading = false;
+      }).catch((e) => {
+        //error callback
+        console.log(e)
+      })
 
       this.fetchElevatedRecords(); //get elevated records regardless of date
     },
@@ -579,15 +528,15 @@ export default {
     fetchElevatedRecords: function () {
       this.loading = true
 
-      var routeurl = '/api/story/elevated';
+      const routeurl = '/api/story/elevated'
       this.$http.get(routeurl)
 
-          .then((response) => {
-            this.elevateditems = response.data.data
-            this.loading = false
-          }).catch((e) => {
-            console.log(e)
-          })
+      .then((response) => {
+        this.elevateditems = response.data.data
+        this.loading = false
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
     /**
@@ -615,16 +564,16 @@ export default {
 
       const routeurl = '/api/story/elevated/reorder'
       this.$http.put(routeurl, this.elevateditems)
-        .then((response) => {
-          this.elevateditems = response.data.data
-          this.ordersave.isOk = true
-          this.ordersave.msg = "Order was updated"
-        }).catch((e) => {
-          //error callback
-          this.ordersave.isErr = true
-          this.ordersave.msg = "Order was not updated"
-          console.log(e)
-        })
+      .then((response) => {
+        this.elevateditems = response.data.data
+        this.ordersave.isOk = true
+        this.ordersave.msg = "Order was updated"
+      }).catch((e) => {
+        //error callback
+        this.ordersave.isErr = true
+        this.ordersave.msg = "Order was not updated"
+        console.log(e)
+      })
 
       this.elevateditemschanged = false;
     },

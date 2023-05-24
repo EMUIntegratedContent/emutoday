@@ -9,13 +9,11 @@
           </div><!-- /.col-sm-6 -->
           <!-- REVIEWED switch -->
           <div class="col-sm 12 col-md-4">
-            {{ item.hsc_reviewed }}
             <form class="form-inline pull-right">
               <div id="applabel" class="form-group">
                 <label>reviewed:</label>
               </div><!-- /.form-group -->
               <div class="form-group">
-                {{ patchRecord.hsc_reviewed }}
                 <vui-flip-switch :id="'switch-'+item.id"
                                  @input="changeIsReviewed"
                                  v-model:checked="patchRecord.hsc_reviewed"
@@ -34,8 +32,8 @@
                        placeholder="0"
                        v-on:change.prevent="changePoints"
                        v-model="patchRecord.hsc_rewards"/>
-                <span class="input-group-addon btn bg-orange" v-on:click.prevent="changePoints"><i
-                    class="fa fa-save"></i></span>
+<!--                <span class="input-group-addon btn bg-orange" v-on:click.prevent="changePoints"><i-->
+<!--                    class="fa fa-save"></i></span>-->
               </div>
             </form>
           </div><!-- /.col-sm-6 -->

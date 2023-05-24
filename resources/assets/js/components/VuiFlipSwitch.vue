@@ -1,18 +1,16 @@
 <template>
   <div class="vuiflipswitch">
     <input
-        ref="chk"
-        :value="checked"
+        :id="switchId"
         type="checkbox"
-        @input="updateValue"
         name="vuiflipswitch"
         class="vuiflipswitch-checkbox"
-        :id="'vuiflipswitch-checkbox-'+uid"
         :checked="checked"
         :readonly="readonly"
         :disabled="disabled"
+        @change="chkToggle"
     >
-    <label :for="'vuiflipswitch-checkbox-'+uid" class="vuiflipswitch-label" :class="{checked:checked}">
+    <label :for="switchId" class="vuiflipswitch-label" :class="checked ? 'checked' : ''">
       <span class="vuiflipswitch-inner"></span>
       <span class="vuiflipswitch-switch"></span>
     </label>
@@ -21,31 +19,39 @@
 <script>
 export default {
   props: {
+    modelValue: [Number, String],
     disabled: {
       type: Boolean,
       default: false
     },
-    checked: [Boolean, Number],
+    switchId: {
+      type: String,
+      required: true
+    },
     readonly: {
       type: Boolean,
       default: false
     }
   },
-  emits: ['update:checked'],
-  mounted() {
-    this.uid = this.$refs.chk.__vnode.ctx.uid
+  created() {
+    this.checked = parseInt(JSON.parse(JSON.stringify(this.modelValue)))
   },
-  data: function () {
+  data () {
     return {
-      uid: null // Gets a unique ID for this element without having to explicitly pass one (otherwise only the first switch on every page would work)
+      checked: false
     }
   },
   methods: {
-    updateValue: function (evt) {
-      this.$emit('update:checked', evt.target.checked)
+    chkToggle () {
+      this.checked = this.checked ? 0 : 1
+      this.$emit('update:modelValue', this.checked)
     }
   },
-  events: {}
+  watch: {
+    modelValue () {
+      this.checked = parseInt(JSON.parse(JSON.stringify(this.modelValue)))
+    }
+  }
 }
 </script>
 <style>

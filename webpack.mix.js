@@ -83,7 +83,7 @@ mix.combine([
 // mix.js('resources/assets/js/vue-caleventview.js', 'public/js/vue-caleventview.js').vue();
 // mix.js('resources/assets/js/vue-email-form.js', 'public/js/vue-email-form.js').vue();
 // mix.js('resources/assets/js/vue-event-form.js', 'public/js/vue-event-form.js').vue();
-mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue(); // QUEUE messed up 5/22/23
+// mix.js('resources/assets/js/vue-event-hscqueue.js', 'public/js/vue-event-hscqueue.js').vue();
 // mix.js('resources/assets/js/vue-event-lbcqueue.js', 'public/js/vue-event-lbcqueue.js').vue();
 // mix.js('resources/assets/js/vue-event-queue.js', 'public/js/vue-event-queue.js').vue();
 // mix.js('resources/assets/js/vue-expert-form.js', 'public/js/vue-expert-form.js').vue();
