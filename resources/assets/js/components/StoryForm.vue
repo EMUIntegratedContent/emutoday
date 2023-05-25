@@ -411,7 +411,7 @@ export default {
               '|', 'alignment', 'heading', 'fontFamily', 'fontSize',
               '|', 'imageInsert', 'mediaEmbed',
               '|', 'horizontalLine',
-              'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters', 'file', 'fileRepository'
+              'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters'
           ],
           shouldNotGroupWhenFull: true,
         },
@@ -445,7 +445,7 @@ export default {
         //   {name: 'others', groups: ['others']},
         //   // { name: 'about', groups: [ 'about' ] }
         // ],
-        // extraPlugins: 'image,file-manager,horizontalrule,iframe,videoembed',
+        // extraPlugins: 'file-manager',
         // extraPlugins: 'media-embed',
         // extraAllowedContent: 'div(*){*};hr;iframe[*]',
         // removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
@@ -463,6 +463,65 @@ export default {
           urlFiles: "/imgs/uploads/story/images/"
         },
       },
+
+
+
+
+
+
+      // // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
+      // // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
+      // editorConfig: {
+      //   height: '500px',
+      //   // toolbar: [],
+      //   toolbarGroups: [
+      //     { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+      //     { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+      //     // { name: 'forms', groups: [ 'forms' ] },
+      //     { name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+      //     { name: 'paragraph', groups: [
+      //         'list',
+      //         'indent',
+      //         'blocks',
+      //         'align',
+      //         // 'bidi',
+      //         'paragraph'
+      //       ]},
+      //     { name: 'links', groups: [ 'links' ] },
+      //     { name: 'insert' },
+      //     { name: 'document', groups: [
+      //         'document',
+      //         'doctools',
+      //         'mode'
+      //       ]},
+      //     { name: 'styles', groups: [ 'styles' ] },
+      //     // { name: 'colors', groups: [ 'colors' ] },
+      //     { name: 'tools', groups: [ 'tools' ] },
+      //     { name: 'others', groups: [ 'others' ] },
+      //     // { name: 'about', groups: [ 'about' ] }
+      //   ],
+      //   extraPlugins: 'image2,file-manager,horizontalrule,iframe,videoembed',
+      //   Flmngr : {
+      //     urlFileManager: "/flmngr.php",
+      //     urlFiles: "/imgs/uploads/story/images/"
+      //   },
+      //   extraAllowedContent: 'div(*){*};hr;iframe[*]',
+      //   removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
+      //   pasteFilter: 'plain-text',
+      //   filebrowserWindowFeatures: 'resizable=yes',
+      //   filebrowserBrowseUrl: '/flmngr.php',
+      //   filebrowserImageBrowseUrl: '/flmngr.php',
+      //   // filebrowserUploadUrl: '/flmngr.php',
+      //   // filebrowserImageUploadUrl: '/flmngr.php',
+      //   skin: 'moono',
+      // },
+
+
+
+
+
+
+
       tags: [],
       taglist: [],
       selectedAuthor: null,
