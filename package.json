@@ -84,7 +84,7 @@
         "@ckeditor/ckeditor5-vue": "^4.0.1",
         "@ckeditor/ckeditor5-watchdog": "^36.0.1",
         "@ckeditor/ckeditor5-word-count": "^36.0.1",
-        "@edsdk/flmngr-ckeditor5": "^1.0.3",
+        "@edsdk/flmngr-ckeditor5": "^1.0.8",
         "@hapi/hoek": "^10.0.1",
         "@vueform/toggle": "^2.1.2",
         "admin-lte": "^3.2.0",

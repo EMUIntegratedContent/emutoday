@@ -126,14 +126,6 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Start Date: <i class="fi-star reqstar"></i>
-            <!--            <date-picker-->
-            <!--                id="start-date"-->
-            <!--                v-model="fdate"-->
-            <!--                value-type="YYYY-MM-DD HH:mm:ss"-->
-            <!--                format="MM/DD/YYYY h:mm A"-->
-            <!--                :clearable="false"-->
-            <!--                type="datetime"-->
-            <!--            ></date-picker>-->
             <flatpickr
                 v-model="fdate"
                 id="start-date"
@@ -269,6 +261,11 @@ button.button-primary {
 .save-author {
   vertical-align: bottom;
 }
+.ck.ck-content:not(.ck-comment__input *) {
+  height: 300px;
+  overflow-y: auto;
+}
+
 </style>
 
 <script>
@@ -312,7 +309,9 @@ import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard'
 // import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter'
 // import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar'
 // TODO figure out how to get Flmgngr to stop throwing a duplicate-module error
-// import Flmngr from "@edsdk/flmngr-ckeditor5/src/flmngr"
+import Flmngr from '@edsdk/flmngr-ckeditor5/src/flmngr'
+import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository'
+
 
 export default {
   components: {vSelect, flatpickr},
@@ -333,6 +332,8 @@ export default {
       editorConfig: {
         height: '500px',
         plugins: [
+          Flmngr,
+          FileRepository,
           EssentialsPlugin,
           BoldPlugin,
           ItalicPlugin,
@@ -410,9 +411,9 @@ export default {
               '|', 'alignment', 'heading', 'fontFamily', 'fontSize',
               '|', 'imageInsert', 'mediaEmbed',
               '|', 'horizontalLine',
-              'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters'
+              'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters', 'file', 'fileRepository'
           ],
-          shouldNotGroupWhenFull: true
+          shouldNotGroupWhenFull: true,
         },
         // toolbarGroups: [
         //   { name: 'clipboard', groups: ['clipboard', 'undo'] },
@@ -454,11 +455,13 @@ export default {
         // filebrowserImageBrowseUrl: '/flmngr.php',
         // filebrowserUploadUrl: '/flmngr.php',
         // filebrowserImageUploadUrl: '/flmngr.php',
-        // skin: 'moono'
-        // Flmngr: {
-        //   urlFileManager: "/flmngr.php",
-        //   urlFiles: "/imgs/uploads/story/images/"
-        // },
+        // skin: 'moono',
+        // toolbar: ['flmngr:flmngr'],
+        // fileRepositoryType: '@edsdk/flmngr-ckeditor5/src/flmngr',
+        Flmngr: {
+          urlFileManager: "/flmngr.php",
+          urlFiles: "/imgs/uploads/story/images/"
+        },
       },
       tags: [],
       taglist: [],
@@ -516,7 +519,6 @@ export default {
       content: '',
       startdatePicker: null,
       date: {},
-      currentDate: {},
       recordOld: {
         id: '',
         user_id: '',
@@ -562,7 +564,6 @@ export default {
   },
   created: function () {
     this.storyType = JSON.parse(JSON.stringify(this.stype))
-    this.currentDate = moment()
     this.updateRecordState('created')
     if (this.editid != '') {
       this.currentRecordId = this.editid;
@@ -574,7 +575,7 @@ export default {
       this.hasContent = true;
       this.record.user_id = this.cuser.id;
       this.record.story_type = this.storyType;
-      this.fdate = this.currentDate;
+      this.fdate = moment().format('YYYY-MM-DD 12:00:00');
       this.setAuthorToCurrentUser(this.currentUser.id)
       this.record.author_id = this.record.user_id;
       this.updateRecordState('new');

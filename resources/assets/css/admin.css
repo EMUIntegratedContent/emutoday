@@ -490,3 +490,10 @@ img.better-thumb {
   transform: translate(0, 0) !important;
   transition: transform 0.3s ease-out !important;
 }
+
+/* CKEditor 5 */
+.ck.ck-content:not(.ck-comment__input *) {
+  height: 250px;
+  overflow-y: auto;
+}
+
