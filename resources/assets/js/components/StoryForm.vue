@@ -67,8 +67,6 @@
           <label>Content <i v-show="storyType != 'featurephoto'" class="fi-star reqstar"></i></label>
           <p class="help-text" id="content-helptext">Enter the story content <span
               v-show="storyType == 'featurephoto'">(optional)</span></p>
-          <!--          <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType"-->
-          <!--                    :content="content" :fresh="isFresh" rows="200"></textarea>-->
           <ckeditor
               id="content"
               name="content"

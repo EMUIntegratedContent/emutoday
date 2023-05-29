@@ -56,7 +56,7 @@
     <h2 v-if="loading" class="col-md-12">Loading. Please Wait...</h2>
     <div class="col-md-4">
       <h4><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved<p></p></h4>
-      <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
+      <div v-if="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
@@ -95,7 +95,7 @@
     </div><!-- /.col-md-4 -->
     <div class="col-md-4">
       <h4><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved</h4>
-      <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
+      <div v-if="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
@@ -139,11 +139,11 @@
           <h3><span class="badge">{{ elevateditems ? elevateditems.length : 0 }}</span> Elevated (all story types)</h3>
           <p>To rearrange the order of stories, drag the pod to the desired location. To demote a story, click the red
             'X' on the pod. Click "save order" button when done. Note: this list is NOT filtered by date.</p>
-          <div v-show="ordersave.isOk" class="alert alert-success alert-dismissible">
+          <div v-if="ordersave.isOk" class="alert alert-success alert-dismissible">
             <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
             <h5>{{ ordersave.msg }}</h5>
           </div>
-          <div v-show="ordersave.isErr" class="alert alert-danger alert-dismissible">
+          <div v-if="ordersave.isErr" class="alert alert-danger alert-dismissible">
             <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
             <h5>{{ ordersave.msg }}</h5>
           </div>
@@ -187,7 +187,7 @@
         <hr/> <!-- End elevated announcements -->
         <h4><span class="badge">{{ itemsLive ? itemsLive.length : 0 }}</span> Live <small>Approved and Start Date has
           passed</small></h4>
-        <div v-show="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
+        <div v-if="checkRoleAndQueueType" class="btn-toolbar" role="toolbar">
           <div class="btn-group btn-group-xs" role="group">
             <label>Filter: </label>
           </div>

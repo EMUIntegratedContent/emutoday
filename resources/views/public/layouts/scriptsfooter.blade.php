@@ -1,11 +1,11 @@
 <script type="text/javascript" src="/js/public-scripts.js"></script>
 <!--[if IE]>
-    <script type="text/javascript" src="/js/foundation.min.js"></script>
+{{-- <script type="text/javascript" src="/js/foundation.min.js"></script> --}}
 <![endif]-->
 <script type="text/javascript" src="/js/vue-search-form.js"></script>
 <script type="text/javascript" src="/js/vue-search-form-offcanvas.js"></script>
-<script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>
-<script type="text/javascript" src="/js/app.js"></script>
+{{--<script type="text/javascript" src="/js/jquery.magnific-popup.js"></script>--}}
+{{--<script type="text/javascript" src="/js/app.js"></script>--}}
 <!-- Add-to-calendar free js plugin -->
 <script type="text/javascript" src="/add-to-calendar/ouical.min.js"></script>
 <!-- Add Event (replaced with a free solution (add-to-calendar/ouical.js) on 9/28/18) -->
@@ -31,24 +31,24 @@ window.addeventasync = function(){
 };
 */
 // Detects the presence of an alert issued from the emergency application on EMU's main website.
-$(document).ready(function(){
-    $.getJSON( "https://www.emich.edu/admin/api/emergency_api.php", function( data ) {
-        if(data.display == "yes"){
-            $( "#emergency-bar" ).removeClass("no")
-            $( "#emergency-title" ).html( data.title )
-            $( "#emergency-message" ).html( data.message )
-            $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.title + '</h3>')
-            $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message + '</p>')
-
-            if( data.severity == "yellow" ){
-                $("#emergency-bar").addClass("emergency-yellow")
-            }
-
-            if( data.severity == "red" ){
-                $("#emergency-bar").addClass("emergency-red")
-            }
-        }
-    });
-});
+// $(document).ready(function(){
+//     $.getJSON( "https://www.emich.edu/admin/api/emergency_api.php", function( data ) {
+//         if(data.display == "yes"){
+//             $( "#emergency-bar" ).removeClass("no")
+//             $( "#emergency-title" ).html( data.title )
+//             $( "#emergency-message" ).html( data.message )
+//             $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.title + '</h3>')
+//             $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message + '</p>')
+//
+//             if( data.severity == "yellow" ){
+//                 $("#emergency-bar").addClass("emergency-yellow")
+//             }
+//
+//             if( data.severity == "red" ){
+//                 $("#emergency-bar").addClass("emergency-red")
+//             }
+//         }
+//     });
+// });
 </script>
 @yield('scriptsfooter')

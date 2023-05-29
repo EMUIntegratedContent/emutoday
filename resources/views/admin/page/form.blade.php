@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/themes/admin-lte/plugins/datatables/dataTables.bootstrap.css">
     <link rel="stylesheet" href="/themes/admin-lte/plugins/iCheck/all.css">
     <link rel="stylesheet" href="/themes/admin-lte/plugins/select2/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+
 @endsection
 @section('scripthead')
     @show

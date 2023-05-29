@@ -292,8 +292,6 @@
         <!-- Biography -->
         <div v-bind:class="formGroup">
           <label>Biography <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <!--          <textarea v-if="hasContent" v-model="record.biography" id="biography" name="biography" v-ckrte="biography" :type="editorType" :biography="biography" :fresh="isFresh" rows="200"></textarea>-->
-          <!--          <p v-if="formErrors.biography" class="help-text invalid">Need biography.</p>-->
           <ckeditor
               id="content"
               name="content"

@@ -14,5 +14,8 @@
 // Foundation
 @import "node_modules/foundation-sites/scss/foundation";
 
+//@include foundation-flex-classes;
+//@include foundation-flex-grid;
+
 // Include Everything (True) for the Flex Grid :);
-@include foundation-everything(true);
+//@include foundation-everything(true);

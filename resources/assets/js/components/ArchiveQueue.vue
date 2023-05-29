@@ -5,24 +5,22 @@
       <p>Click the item's title to expand and view associated content. When you unarchive an item, it will be shown in
         green. If you reload the page or move to the next page, that item will no longer be shown in this queue.</p>
 
-      <div v-show="entityType == 'stories'" class="btn-toolbar" role="toolbar">
+      <div v-if="entityType == 'stories'" class="btn-toolbar" role="toolbar">
+
         <div class="btn-group btn-group-xs" role="group">
           <label>Filter: </label>
         </div>
-        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons"
-             v-iconradio="filter_storytype" @click="fetchAllRecords(1, this.resultsPerPage)">
-          <template v-for="(item, i) in storyTypeIcons" :key="'input-icon-'+i">
+        <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
+          <template v-for="item in storyTypeIcons" :key="'icon-' + item.name">
             <label
                 class="btn btn-default"
                 data-toggle="tooltip"
                 data-placement="top"
                 :title="item.name"
+                :class="{ 'active' : filter_storytype == item.shortname || (filter_storytype == '' && item.shortname == 'all') }"
+                @click="filter_storytype = item.shortname"
             >
-              <input
-                  type="radio"
-                  autocomplete="off"
-                  :value="item.shortname"
-              />
+              <input type="radio" autocomplete="off" :value="item.shortname"/>
               <span class="item-type-icon-shrt" :class="typeIcon(item.shortname)"></span>
             </label>
           </template>
@@ -31,7 +29,7 @@
 
       <div id="archived-items-container">
         <archive-queue-item
-            v-for="(item, i) in allitems" :item="item" :index="i" :entity-type="entityType"
+            v-for="(item, i) in itemsFilteredPaginated" :item="item" :index="i" :entity-type="entityType"
             :key="'archive-announcement-'+i">
         </archive-queue-item>
       </div>
@@ -64,10 +62,8 @@ span.item-type-icon:active, span.item-type-icon.active {
 <script>
 import ArchiveQueueItem from './ArchiveQueueItem.vue'
 import Pagination from './Pagination.vue'
-import iconradio from '../directives/iconradio.js'
 
 export default {
-  directives: {iconradio},
   components: {
     ArchiveQueueItem,
     Pagination
@@ -94,6 +90,13 @@ export default {
     this.fetchAllRecords();
   },
   computed: {
+    itemsFilteredPaginated () {
+      let items = this.allitems
+      if (this.filter_storytype != '') {
+        items = this.allitems.filter(it => it.story_type == this.filter_storytype)
+      }
+      return items
+    },
     compEntityType: function () {
       // Capitalize the entityType property
       return this.entityType.charAt(0).toUpperCase() + this.entityType.slice(1);

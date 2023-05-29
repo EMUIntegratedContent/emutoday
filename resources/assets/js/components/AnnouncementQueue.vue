@@ -124,7 +124,6 @@
             </div>
           </template>
           <template v-if="elevateditems.length > 0">
-<!--            {{ elevateditems }}-->
             <Sortable
                 :list="elevateditems"
                 item-key="id"
