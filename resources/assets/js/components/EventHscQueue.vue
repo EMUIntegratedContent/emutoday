@@ -141,7 +141,7 @@ export default {
     }
   },
   created() {
-    let twoWeeksEarlier = moment().subtract(1, 'w')
+    let twoWeeksEarlier = moment().subtract(2, 'w')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords();

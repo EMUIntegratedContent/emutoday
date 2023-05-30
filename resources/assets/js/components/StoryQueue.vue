@@ -288,7 +288,7 @@ export default {
   components: { StoryPod, IconToggleBtn, Pagination, flatpickr, Sortable },
   props: ['stypes', 'stype', 'sroute', 'qtype', 'gtype', 'cuser', 'role'],
   created () {
-    let twoWeeksEarlier = moment().subtract(1, 'years')
+    let twoWeeksEarlier = moment().subtract(2, 'weeks')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
     this.fetchAllRecords()
