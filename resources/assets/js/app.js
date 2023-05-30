@@ -12,12 +12,12 @@ $(document).ready(function() {
    * These blocks ensure image captions do not stretch image dimensions on news stories
    */
   $.each($('figure img'), function() {
-      var imgWidth = $(this).width();
-      var figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
+      const imgWidth = $(this).width();
+      const figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
       $(this).closest('figure').css({'width': figureWidth, 'overflow-wrap': 'break-word'});
   });
   $.each($('.visbox img'), function() {
-      var imgWidth = $(this).width();
+      const imgWidth = $(this).width();
       $(this).closest('div.visbox').css({'width': imgWidth, 'overflow-wrap': 'break-word'});
   });
 
@@ -31,15 +31,30 @@ $(document).ready(function() {
   })
 
   // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
-  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+  const isIE = /*@cc_on!@*/false || !!document.documentMode;
   if(isIE){
       $('#outdated-browser-container').html('<p class="browserupgrade">EMU Today does not support Internet Explorer 10 or below. Please download the latest versions of <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&utm_source=firefox-com" class="firefox">Firefox</a> or <a href="https://www.google.com/chrome/" class="chrome">Chrome</a> to improve your viewing experience.</p>');
   }
 
-});
+  $.getJSON( "https://www.emich.edu/admin/api/emergency_api.php", function( data ) {
+    if(data.display == "yes"){
+        $( "#emergency-bar" ).removeClass("no")
+        $( "#emergency-title" ).html( data.title )
+        $( "#emergency-message" ).html( data.message )
+        $( "#emergency-bar-content").append('<h3 id="emergency-title">' + data.title + '</h3>')
+        $( "#emergency-bar-content").append('<p id="emergency-message">' + data.message + '</p>')
+        if( data.severity == "yellow" ){
+            $("#emergency-bar").addClass("emergency-yellow")
+        }
+        if( data.severity == "red" ){
+            $("#emergency-bar").addClass("emergency-red")
+        }
+    }
+  })
+})
 
 // KEYBOARD BINDINGS
-var map = {}; // Stores key that have been pressed
+const map = {}; // Stores key that have been pressed
 onkeydown = onkeyup = function(e){
 	e = e || event; // to deal with IE
 	map[e.keyCode] = e.type == "keydown";

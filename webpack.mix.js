@@ -21,18 +21,18 @@ require('laravel-mix-listen')
 |
 */
 // Compile the front-end SASS styles
-mix.sass('resources/assets/sass/public-app.scss', '../resources/assets/css/zfoundation.css');
+// mix.sass('resources/assets/sass/public-app.scss', 'public/js/zfoundation222.css')
 
 // Combine all the front-end styles into one stylesheet
 mix.combine([
-    'resources/assets/css/zfoundation.css',
-    'resources/assets/css/main-styles.css',
-    'resources/assets/css/story-styles.css',
-    'resources/assets/css/magazine-styles.css',
-    'resources/assets/css/experts-styles.css',
-    'resources/assets/css/media-queries.css',
-    'resources/assets/css/basebar-styles.css',
-    'resources/assets/css/tweeks.css'
+	'resources/assets/css/zfoundation.css',
+	'resources/assets/css/main-styles.css',
+	'resources/assets/css/story-styles.css',
+	'resources/assets/css/magazine-styles.css',
+	'resources/assets/css/experts-styles.css',
+	'resources/assets/css/media-queries.css',
+	'resources/assets/css/basebar-styles.css',
+	'resources/assets/css/tweeks.css'
 ], 'public/css/public-styles.css')
 
 /*
@@ -44,38 +44,10 @@ mix.combine([
 |
 */
 mix.combine([
-    'resources/assets/js/vendor-public/jquery.min.js',
-    'node_modules/foundation-sites/dist/js/foundation.js',
-    'node_modules/magnific-popup/dist/jquery.magnific-popup.js',
-    'resources/assets/js/app.js',
-//     'node_modules/foundation-sites/js/foundation.core.js',
-//     'node_modules/foundation-sites/js/foundation.abide.js',
-//     'node_modules/foundation-sites/js/foundation.accordion.js',
-//     'node_modules/foundation-sites/js/foundation.accordionMenu.js',
-//     'node_modules/foundation-sites/js/foundation.drilldown.js',
-//     'node_modules/foundation-sites/js/foundation.dropdown.js',
-//     'node_modules/foundation-sites/js/foundation.dropdownMenu.js',
-//     'node_modules/foundation-sites/js/foundation.equalizer.js',
-//     // 'node_modules/foundation-sites/js/foundation.interchange.js',
-//     // 'node_modules/foundation-sites/js/foundation.magellan.js',
-//     'node_modules/foundation-sites/js/foundation.offcanvas.js',
-//     // 'node_modules/foundation-sites/js/foundation.orbit.js',
-//     'node_modules/foundation-sites/js/foundation.responsiveMenu.js',
-//     'node_modules/foundation-sites/js/foundation.responsiveToggle.js',
-//     'node_modules/foundation-sites/js/foundation.reveal.js',
-//     'node_modules/foundation-sites/js/foundation.slider.js',
-//     'node_modules/foundation-sites/js/foundation.sticky.js',
-//     // 'node_modules/foundation-sites/js/foundation.tabs.js',
-//     // 'node_modules/foundation-sites/js/foundation.toggler.js',
-//     'node_modules/foundation-sites/js/foundation.tooltip.js',
-//     'node_modules/foundation-sites/js/foundation.util.box.js',
-//     'node_modules/foundation-sites/js/foundation.util.keyboard.js',
-//     'node_modules/foundation-sites/js/foundation.util.mediaQuery.js',
-//     'node_modules/foundation-sites/js/foundation.util.motion.js',
-//     'node_modules/foundation-sites/js/foundation.util.nest.js',
-//     'node_modules/foundation-sites/js/foundation.util.timerAndImageLoader.js',
-//     'node_modules/foundation-sites/js/foundation.util.touch.js',
-//     'node_modules/foundation-sites/js/foundation.util.triggers.js',
+	'resources/assets/js/vendor-public/jquery.min.js',
+	'node_modules/foundation-sites/dist/js/foundation.min.js',
+	'node_modules/magnific-popup/dist/jquery.magnific-popup.js',
+	'resources/assets/js/app.js'
 ], 'public/js/public-scripts.js');
 
 // Compile vue files
@@ -103,8 +75,8 @@ mix.js('resources/assets/js/vue-oauth-personal-access-tokens.js', 'public/js/vue
 mix.js('resources/assets/js/vue-page-form.js', 'public/js/vue-page-form.js').vue();
 mix.js('resources/assets/js/vue-search-form.js', 'public/js/vue-search-form.js').vue();
 mix.js('resources/assets/js/vue-search-form-offcanvas.js', 'public/js/vue-search-form-offcanvas.js').vue();
-mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue(); // NOT DONE!!!! CP 3/4/23
-mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue(); // NOT DONE!!!! CP 3/4/23
+mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-form-wrapper.js').vue();
+mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue();
 mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue();
 mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue();
 
@@ -117,8 +89,8 @@ mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-l
 |
 */
 mix.styles([
-    'resources/assets/css/admin-less.css',
-    'resources/assets/css/admin.css',
+	'resources/assets/css/admin-less.css',
+	'resources/assets/css/admin.css',
 ], 'public/css/admin-styles.css');
 /*
 |--------------------------------------------------------------------------
@@ -150,76 +122,88 @@ const CKEStyles = require('@ckeditor/ckeditor5-dev-utils').styles
 
 //Includes SVGs and CSS files from "node_modules/ckeditor5-*" and any other custom directories
 const CKEditorRegex = {
-    svg: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/, //If you have any custom plugins in your project with SVG icons, include their path in this regex as well.
-    css: /ckeditor5-[^/\\]+[/\\].+\.css$/,
+	svg: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/, //If you have any custom plugins in your project with SVG icons, include their path in this regex as well.
+	css: /ckeditor5-[^/\\]+[/\\].+\.css$/,
 };
 // Keep comments un-ugly
 mix.options({
-    uglify: {
-        comments: false
-    }
+	uglify: {
+		comments: false
+	}
 });
 // Configure CSS loaders to handle editor styles
 mix.webpackConfig({
-    stats: {
-        children: true
-    },
-    devtool: "inline-source-map",
-    module: {
-        rules: [
-            {
-                test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-                use: ['raw-loader']
-            },
-            {
-                test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
-                use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            injectType: "singletonStyleTag",
-                            attributes: {
-                                'data-cke': true,
-                            }
-                        }
-                    },
-                    "css-loader",
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions:
-                                CKEStyles.getPostCssConfig({
-                                themeImporter: {
-                                    themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-                                },
-                                minify: true
-                            })
-                        }
-                    },
-                ]
-            }
-        ]
-    },
-    plugins: [
-        new CKEditorWebpackPlugin({
-            language: 'en',
-            addMainLanguageTranslationsToAllAssets: true
-        })
-    ]
+	stats: {
+		children: true
+	},
+	devtool: "inline-source-map",
+	module: {
+		rules: [
+			{
+				test: /\.s[ac]ss$/i,
+				use: [
+					{
+						loader: 'sass-loader',
+						options: {
+							implementation: require('node-sass'),
+						},
+					},
+				],
+			},
+			{
+				test: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
+				use: ['raw-loader']
+			},
+			{
+				test: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
+				use: [
+					{
+						loader: 'style-loader',
+						options: {
+							injectType: "singletonStyleTag",
+							attributes: {
+								'data-cke': true,
+							}
+						}
+					},
+					"css-loader",
+					{
+						loader: 'postcss-loader',
+						options: {
+							postcssOptions:
+								CKEStyles.getPostCssConfig({
+									themeImporter: {
+										themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+									},
+									minify: true
+								})
+						}
+					},
+				]
+			}
+		]
+	},
+	plugins: [
+		new CKEditorWebpackPlugin({
+			language: 'en',
+			addMainLanguageTranslationsToAllAssets: true
+		})
+	]
 });
 //Exclude CKEditor regex from mix's default rules
 mix.override(config => {
-    const rules = config.module.rules;
-    const targetSVG = (/(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/).toString();
-    const targetFont = (/(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/).toString();
-    const targetCSS = (/\.p?css$/).toString();
+	const rules = config.module.rules;
+	const targetSVG = (/(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/).toString();
+	const targetFont = (/(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/).toString();
+	const targetCSS = (/\.p?css$/).toString();
 
-    rules.forEach(rule => {
-        let test = rule.test.toString();
-        if ([targetSVG, targetFont].includes(rule.test.toString())) {
-            rule.exclude = CKEditorRegex.svg;
-        } else if (test === targetCSS) {
-            rule.exclude = CKEditorRegex.css;
-        }
-    });
+	rules.forEach(rule => {
+		let test = rule.test.toString();
+		if ([targetSVG, targetFont].includes(rule.test.toString())) {
+			rule.exclude = CKEditorRegex.svg;
+		}
+		else if (test === targetCSS) {
+			rule.exclude = CKEditorRegex.css;
+		}
+	});
 });

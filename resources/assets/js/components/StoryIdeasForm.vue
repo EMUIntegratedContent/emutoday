@@ -62,7 +62,7 @@
               id="idea"
               name="idea"
               :editor="editor"
-              :config="editorConfig"
+              :config="editorConfigFull"
           ></ckeditor>
           <p v-if="formErrors.idea" class="help-text invalid">Need idea text.</p>
         </div>
@@ -234,44 +234,15 @@ h5.form-control {
 
 
 <script>
+import { ckeditorMixin } from './ckeditor_config'
 import moment from 'moment'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import vSelect from "vue-select"
 import 'vue-select/dist/vue-select.css'
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
-import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials'
-import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold'
-import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic'
-import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline'
-import LinkPlugin from '@ckeditor/ckeditor5-link/src/link'
-import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph'
-import ListPlugin from '@ckeditor/ckeditor5-list/src/list'
-import IndentPlugin from '@ckeditor/ckeditor5-indent/src/indent'
-import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice'
-import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment'
-import Heading from '@ckeditor/ckeditor5-heading/src/heading'
-import FontSize from '@ckeditor/ckeditor5-font/src/fontsize'
-import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily'
-import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace'
-import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline'
-import Table from '@ckeditor/ckeditor5-table/src/table'
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar'
-import Image from '@ckeditor/ckeditor5-image/src/image'
-import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert'
-import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload'
-import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar'
-import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative'
-import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption'
-import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed'
-import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting'
-import ExportPdf from '@ckeditor/ckeditor5-export-pdf/src/exportpdf'
-import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
-import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters'
-import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials'
-import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard'
 
 export default {
+  mixins: [ckeditorMixin],
   components: {
     vSelect,
     flatpickr
@@ -299,140 +270,7 @@ export default {
   },
   data: function () {
     return {
-      editor: ClassicEditor,
-      // CKEditor 5 configuration
-      editorConfig: {
-        height: '500px',
-        plugins: [
-          EssentialsPlugin,
-          BoldPlugin,
-          ItalicPlugin,
-          LinkPlugin,
-          ParagraphPlugin,
-          UnderlinePlugin,
-          ListPlugin,
-          IndentPlugin,
-          PasteFromOffice,
-          Alignment,
-          Heading,
-          FindAndReplace,
-          HorizontalLine,
-          Image,
-          ImageToolbar,
-          ImageTextAlternative,
-          ImageInsert,
-          ImageUpload,
-          MediaEmbed,
-          // MediaEmbedToolbar,
-          FontSize,
-          FontFamily,
-          Table,
-          TableToolbar,
-          ImageCaption,
-          SourceEditing,
-          ExportPdf,
-          CloudServices,
-          SpecialCharacters,
-          SpecialCharactersEssentials,
-          Clipboard
-          // SimpleUploadAdapter
-        ],
-        alignment: {
-          options: [ 'left', 'center', 'right', 'justify' ]
-        },
-        fontSize: {
-          options: [
-            8,
-            10,
-            12,
-            'default',
-            16,
-            18,
-            20,
-            24
-          ]
-        },
-        image: {
-          toolbar: [ 'imageCaption', 'imageTextAlternative' ]
-        },
-        table: {
-          contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
-        },
-        // TODO: simpleUpload is not part of flmngr. Find out what flmngr won't work
-        simpleUpload: {
-          // The URL that the images are uploaded to.
-          uploadUrl: '/flmngr.php',
-
-          // // Enable the XMLHttpRequest.withCredentials property.
-          // withCredentials: true,
-          //
-          // // Headers sent along with the XMLHttpRequest to the upload server.
-          // headers: {
-          //   'X-CSRF-TOKEN': 'CSRF-Token',
-          //   Authorization: 'Bearer <JSON Web Token>'
-          // }
-        },
-        toolbar: {
-          items: [
-            'undo', 'redo',
-            '|', 'bold', 'italic', 'underline', 'findAndReplace',
-            '|', 'link', 'bulletedList', 'numberedList',
-            '|', 'outdent', 'indent', '|', 'bulletedList', 'numberedList',
-            '|', 'alignment', 'heading', 'fontFamily', 'fontSize',
-            '|', 'imageInsert', 'mediaEmbed',
-            '|', 'horizontalLine',
-            'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters'
-          ],
-          shouldNotGroupWhenFull: true
-        },
-        // toolbarGroups: [
-        //   { name: 'clipboard', groups: ['clipboard', 'undo'] },
-        //   {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
-        //   // { name: 'forms', groups: [ 'forms' ] },
-        //   {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
-        //   {
-        //     name: 'paragraph', groups: [
-        //       'list',
-        //       'indent',
-        //       'blocks',
-        //       'align',
-        //       // 'bidi',
-        //       'paragraph'
-        //     ]
-        //   },
-        //   {name: 'links', groups: ['links']},
-        //   {name: 'insert'},
-        //   {
-        //     name: 'document', groups: [
-        //       'document',
-        //       'doctools',
-        //       'mode'
-        //     ]
-        //   },
-        //   {name: 'styles', groups: ['styles']},
-        //   // { name: 'colors', groups: [ 'colors' ] },
-        //   {name: 'tools', groups: ['tools']},
-        //   {name: 'others', groups: ['others']},
-        //   // { name: 'about', groups: [ 'about' ] }
-        // ],
-        // extraPlugins: 'image,file-manager,horizontalrule,iframe,videoembed',
-        // extraPlugins: 'media-embed',
-        // extraAllowedContent: 'div(*){*};hr;iframe[*]',
-        // removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
-        // pasteFilter: 'plain-text',
-        // filebrowserWindowFeatures: 'resizable=yes',
-        // filebrowserBrowseUrl: '/flmngr.php',
-        // filebrowserImageBrowseUrl: '/flmngr.php',
-        // filebrowserUploadUrl: '/flmngr.php',
-        // filebrowserImageUploadUrl: '/flmngr.php',
-        // skin: 'moono'
-        // Flmngr: {
-        //   urlFileManager: "/flmngr.php",
-        //   urlFiles: "/imgs/uploads/story/images/"
-        // },
-      },
       idea: '',
-      ckfullyloaded: false,
       currentDate: {},
       formErrors: {},
       formInputs: {},
@@ -621,11 +459,6 @@ export default {
       let newurl = '/admin/storyideas/' + this.record_id + '/edit'
 
       document.location = newurl
-    },
-    onContentChange: function () {
-      if (!this.ckfullyloaded) {
-        this.ckfullyloaded = true
-      }
     },
     onRefresh: function () {
       this.fetchCurrentRecord(this.record.id)

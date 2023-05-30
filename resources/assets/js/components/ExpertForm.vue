@@ -297,7 +297,7 @@
               name="content"
               v-model="biography"
               :editor="editor"
-              :config="editorConfig"
+              :config="editorConfigFull"
           ></ckeditor>
           <p v-if="formErrors.biography" class="help-text invalid">Need biography.</p>
         </div>
@@ -479,39 +479,12 @@ h5.form-control {
 
 
 <script>
+import { ckeditorMixin } from './ckeditor_config'
 import vSelect from "vue-select"
 import 'vue-select/dist/vue-select.css'
 
-// TODO: need ckeditor here!
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
-import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials'
-import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold'
-import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic'
-import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline'
-import LinkPlugin from '@ckeditor/ckeditor5-link/src/link'
-import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph'
-import ListPlugin from '@ckeditor/ckeditor5-list/src/list'
-import IndentPlugin from '@ckeditor/ckeditor5-indent/src/indent'
-import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice'
-import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment'
-import Heading from '@ckeditor/ckeditor5-heading/src/heading'
-import FontSize from '@ckeditor/ckeditor5-font/src/fontsize'
-import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily'
-import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace'
-import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline'
-import Image from '@ckeditor/ckeditor5-image/src/image'
-import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert'
-import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload'
-import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar'
-import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative'
-import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption'
-import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed'
-import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting'
-import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters'
-import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials'
-import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard'
-
 export default {
+  mixins: [ckeditorMixin],
   components: { vSelect },
   props: {
     cuserRoles: { default: {} },
@@ -614,73 +587,7 @@ export default {
       totalChars: {
         title: 50,
       },
-      userRoles: [],
-      editor: ClassicEditor,
-      // CKEditor 5 configuration
-      editorConfig: {
-        height: '500px',
-        plugins: [
-          EssentialsPlugin,
-          BoldPlugin,
-          ItalicPlugin,
-          LinkPlugin,
-          ParagraphPlugin,
-          UnderlinePlugin,
-          ListPlugin,
-          IndentPlugin,
-          PasteFromOffice,
-          Alignment,
-          Heading,
-          FindAndReplace,
-          HorizontalLine,
-          Image,
-          ImageToolbar,
-          ImageTextAlternative,
-          ImageInsert,
-          ImageUpload,
-          MediaEmbed,
-          FontSize,
-          FontFamily,
-          ImageCaption,
-          SourceEditing,
-          SpecialCharacters,
-          SpecialCharactersEssentials,
-          Clipboard
-        ],
-        alignment: {
-          options: ['left', 'center', 'right', 'justify']
-        },
-        fontSize: {
-          options: [
-            8,
-            10,
-            12,
-            'default',
-            16,
-            18,
-            20,
-            24
-          ]
-        },
-        image: {
-          toolbar: ['imageCaption', 'imageTextAlternative']
-        },
-        table: {
-          contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
-        },
-        toolbar: {
-          items: [
-            'undo', 'redo',
-            '|', 'bold', 'italic', 'underline', 'findAndReplace',
-            '|', 'link', 'bulletedList', 'numberedList',
-            '|', 'outdent', 'indent', '|', 'bulletedList', 'numberedList',
-            '|', 'alignment', 'heading', 'fontFamily', 'fontSize',
-            '|', 'imageInsert', 'mediaEmbed',
-            '|', 'horizontalLine', 'sourceEditing', 'specialCharacters'
-          ],
-          shouldNotGroupWhenFull: true
-        }
-      }
+      userRoles: []
     }
   },
   created: function () {

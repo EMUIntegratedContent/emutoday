@@ -16,7 +16,6 @@ URL: http://today.emich.edu
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700");
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css);
 /****** General Styles *********/
-
 html, body {
   background-color: #343434;
 }
@@ -534,6 +533,11 @@ img.news-icon{
     position: absolute;
 }
 
+#news-headline-bar .card {
+    border: none;
+    background: none;
+}
+
 #news-headline-bar-middle .card-section a.popup-youtube:after{
 	text-decoration: none;
 	font-family: FontAwesome;
@@ -929,6 +933,13 @@ ul.accordion li{
     display: block;
     padding: 0px 5px 5px;
 }
+.submit-search-btn {
+    padding: 10px !important;
+}
+
+.search-results-form #search-btn {
+    padding: 11px;
+}
 
 /* EMU Emergency: CSS Styles should correspond to the CSS file on the emich server at: /data/main/htdocs/admin/wrapper/css/emu_attention.css */
 
@@ -1107,9 +1118,11 @@ ul.news-headlines a.statement-link::before, ul.news-headlines a.advisory-link::b
 }
 #more-stories-bar .card-section p.link-group{
   position: absolute;
-  bottom: 0rem;
+  bottom: 15px;
 }
-.more-story-caption{
+
+.off-canvas.position-right {
+    right: 0 !important;
 }
 
 /*News Headlines*/

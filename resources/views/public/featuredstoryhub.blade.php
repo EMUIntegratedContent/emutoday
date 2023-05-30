@@ -1,8 +1,6 @@
 <div class="column">
-  <div class="card">
-    <img class="story-image" src="/imagecache/original/{{$fstory->filename}}"
-         alt="{{ $fstory->alt_text != '' ? $fstory->alt_text : str_replace('"',"",$fstory->story->title) }}"
-         style="display: block;"/>
+  <div class="card" >
+    <img class="story-image" src="/imagecache/original/{{$fstory->filename}}" alt="{{ $fstory->alt_text != '' ? $fstory->alt_text : str_replace('"',"",$fstory->story->title) }}" style="display: block;"/>
     <div class="card-section" data-equalizer-watch>
       <p class="more-story-caption">{{$fstory->caption}}</p>
       <p class="link-group">
@@ -67,5 +65,5 @@
         @endif
       </p>
     </div>
-  </div>
+  </div><!-- /end .card -->
 </div>

@@ -72,7 +72,7 @@
               name="content"
               v-model="content"
               :editor="editor"
-              :config="editorConfig"
+              :config="editorConfigFull"
           ></ckeditor>
 <!--          <input type="text" id="editor" v-model="content" />-->
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
@@ -170,6 +170,9 @@
   </form>
 </template>
 <style scoped>
+.btn-primary {
+  margin-right: 0.2rem;
+}
 p {
   margin: 0;
 }
@@ -271,222 +274,25 @@ button.button-primary {
 import moment from 'moment'
 import vSelect from "vue-select"
 import {storyMixin} from "./story_mixin"
+import {ckeditorMixin} from './ckeditor_config'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
 import 'vue-select/dist/vue-select.css'
-import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
-import { Bold, Code, Italic, Strikethrough, Subscript, Superscript, Underline } from '@ckeditor/ckeditor5-basic-styles';
-import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
-import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials'
-import LinkPlugin from '@ckeditor/ckeditor5-link/src/link'
-import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph'
-import ListPlugin from '@ckeditor/ckeditor5-list/src/list'
-import IndentPlugin from '@ckeditor/ckeditor5-indent/src/indent'
-import PasteFromOffice from '@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice'
-import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment'
-import Heading from '@ckeditor/ckeditor5-heading/src/heading'
-import FontSize from '@ckeditor/ckeditor5-font/src/fontsize'
-import FontFamily from '@ckeditor/ckeditor5-font/src/fontfamily'
-import FindAndReplace from '@ckeditor/ckeditor5-find-and-replace/src/findandreplace'
-import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline'
-import Table from '@ckeditor/ckeditor5-table/src/table'
-import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar'
-// import Image from '@ckeditor/ckeditor5-image/src/image'
-// import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert'
-// import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload'
-// import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar'
-// import ImageTextAlternative from '@ckeditor/ckeditor5-image/src/imagetextalternative'
-// import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption'
-import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting'
-import ExportPdf from '@ckeditor/ckeditor5-export-pdf/src/exportpdf'
-import CloudServices from '@ckeditor/ckeditor5-cloud-services/src/cloudservices'
-import SpecialCharacters from '@ckeditor/ckeditor5-special-characters/src/specialcharacters'
-import SpecialCharactersEssentials from '@ckeditor/ckeditor5-special-characters/src/specialcharactersessentials'
-import Clipboard from '@ckeditor/ckeditor5-clipboard/src/clipboard'
-
-import { Highlight } from '@ckeditor/ckeditor5-highlight'
-import { BlockQuote } from '@ckeditor/ckeditor5-block-quote'
-import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed'
-import { CodeBlock } from '@ckeditor/ckeditor5-code-block'
-import { HtmlEmbed } from '@ckeditor/ckeditor5-html-embed'
-
-import { Image, ImageInsert, ImageUpload, ImageToolbar, ImageTextAlternative, ImageResize, ImageStyle, ImageCaption, ImageEditing } from '@ckeditor/ckeditor5-image'
-import { LinkImage } from '@ckeditor/ckeditor5-link'
-// import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter'
-// import MediaEmbedToolbar from '@ckeditor/ckeditor5-media-embed/src/mediaembedtoolbar'
-// TODO figure out how to get Flmgngr to stop throwing a duplicate-module error
-import Flmngr from '@edsdk/flmngr-ckeditor5/src/flmngr'
-import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository'
 
 
 export default {
   components: {vSelect, flatpickr},
-  mixins: [storyMixin],
+  mixins: [storyMixin, ckeditorMixin],
   props: {
     cuser: {default: {}},
-    // recordexists: { default: false },
     editid: {default: ''},
     stypes: {default: {}},
     gtype: {default: ''},
     qtype: {default: ''},
     stype: {default: ''},
   },
-  // mounted() {
-  //   ClassicEditor.create(document.querySelector('#editor'), this.editorConfig)
-  //   .then(editor => {
-  //     // Editor instance is ready
-  //   })
-  //   .catch(error => {
-  //     console.error(error);
-  //   });
-  // },
   data() {
     return {
-      editor: ClassicEditor,
-      // CKEditor 5 configuration
-      editorConfig: {
-        height: '500px',
-        plugins: [
-          FileRepository,
-          EssentialsPlugin,
-          Bold,
-          Code,
-          Italic,
-          LinkPlugin,
-          Strikethrough,
-          Subscript,
-          Superscript,
-          Underline,
-          Highlight,
-          BlockQuote,
-          CodeBlock,
-          MediaEmbed,
-          HtmlEmbed,
-          RemoveFormat,
-          ParagraphPlugin,
-          ListPlugin,
-          IndentPlugin,
-          PasteFromOffice,
-          Alignment,
-          Heading,
-          FindAndReplace,
-          HorizontalLine,
-          FontSize,
-          FontFamily,
-          Table,
-          TableToolbar,
-          SourceEditing,
-          ExportPdf,
-          CloudServices,
-          SpecialCharacters,
-          SpecialCharactersEssentials,
-          Clipboard,
-          Flmngr,
-          // SimpleUploadAdapter
-          Image,
-          ImageToolbar,
-          ImageTextAlternative,
-          ImageInsert,
-          ImageUpload,
-          ImageResize,
-          ImageStyle,
-          ImageCaption,
-          MediaEmbed,
-          // MediaEmbedToolbar,
-          LinkImage,
-        ],
-        alignment: {
-          options: [ 'left', 'center', 'right', 'justify' ]
-        },
-        fontSize: {
-          options: [
-            8,
-            10,
-            12,
-            'default',
-            16,
-            18,
-            20,
-            24
-          ]
-        },
-        image: {
-          styles: [
-            'alignCenter',
-            'alignLeft',
-            'alignRight'
-          ],
-          resizeOptions: [
-            {
-              name: 'resizeImage:original',
-              label: 'Original',
-              value: null
-            },
-            {
-              name: 'resizeImage:50',
-              label: '50%',
-              value: '50'
-            },
-            {
-              name: 'resizeImage:75',
-              label: '75%',
-              value: '75'
-            }
-          ],
-          toolbar: [
-            'imageTextAlternative', 'toggleImageCaption', '|',
-            'imageStyle:inline', 'imageStyle:wrapText', 'imageStyle:breakText', 'imageStyle:side', '|',
-            'resizeImage'
-          ],
-          insert: {
-            integrations: [
-              'insertImageViaUrl'
-            ]
-          }
-        },
-        table: {
-          contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
-        },
-        flmngr: {
-          urlFileManager: "/flmngr.php",
-          urlFiles: "/imgs/uploads/story/images/"
-        },
-        toolbar: {
-          items: [
-            'undo', 'redo',
-            '|', 'bold', 'italic', 'underline', 'findAndReplace',
-            '|', 'link', 'bulletedList', 'numberedList',
-            '|', 'outdent', 'indent',
-            '|', 'bulletedList', 'numberedList',
-            '|', 'alignment', 'heading', 'fontFamily', 'fontSize',
-            '|', 'horizontalLine', 'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters',
-            '|',
-            'upload', // Flmngr
-            'flmngr', // Flmngr
-            // 'imgpen',  // Flmngr
-            'linkImage',
-            'imageUpload',
-            // 'imageInsert',
-            {
-              label: 'Formatting',
-              icon: 'text',
-              items: [ 'strikethrough', 'subscript', 'superscript', 'code', '|', 'removeFormat' ]
-            },
-            {
-              label: 'Insert',
-              icon: 'plus',
-              items: [ 'highlight', 'blockQuote', 'mediaEmbed', 'codeBlock', 'htmlEmbed' ]
-            },
-          ],
-          shouldNotGroupWhenFull: true,
-        }
-      },
-
-
-
-
-
-
       // // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
       // // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
       // editorConfig: {

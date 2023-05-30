@@ -3,8 +3,6 @@
 @section('title', $story->exists ? 'Editing '.$story->title : 'Create New Story')
     @section('style-plugin')
         @parent
-        <!-- flatpickr fix... compile into admin-styles.css at a later date. -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/1.9.1/flatpickr.min.css" />
     @endsection
         @section('scripts-vendor')
             <!-- Vendor Scripts that need to be loaded in the header before other plugin or app scripts -->
@@ -44,7 +42,6 @@
                     <div class="box-body">
                         <story-form
                             :cuser="{{$currentUser}}"
-{{--                            recordexists="{{$story->exists ? true: false}}"--}}
                             stypes="{{$stypes}}"
                             stype="{{$stype}}"
                             gtype="{{$gtype}}"
