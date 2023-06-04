@@ -3,15 +3,10 @@
 namespace Emutoday\Http\Controllers\Today;
 
 use Emutoday\Http\Controllers\Controller;
-use Illuminate\Support\Collection;
 use Emutoday\MediaHighlight;
 use Emutoday\MediaHighlightTag;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-
-use Carbon\Carbon;
-use JavaScript;
-use DB;
 
 
 class MediaHighlightController extends Controller

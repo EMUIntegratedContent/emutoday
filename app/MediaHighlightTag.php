@@ -16,10 +16,6 @@ class MediaHighlightTag extends Model
     'name'
   ];
 
-  protected $dates = [
-
-  ];
-
   public function mediahighlights(){
     return $this->belongsToMany('Emutoday\MediaHighlight', 'mediahighlights_tags', 'mediahighlight_id', 'tag_id')->withTimestamps();
   }

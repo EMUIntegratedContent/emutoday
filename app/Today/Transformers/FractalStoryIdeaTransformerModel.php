@@ -3,7 +3,7 @@ namespace Emutoday\Today\Transformers;
 use Emutoday\StoryIdea;
 use Emutoday\StoryIdeaMedium;
 use League\Fractal;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class FractalStoryIdeaTransformerModel extends Fractal\TransformerAbstract
 {
@@ -16,8 +16,8 @@ class FractalStoryIdeaTransformerModel extends Fractal\TransformerAbstract
             'deadline'                  => $idea->deadline,
             'is_completed'              => $idea->is_completed,
             'is_archived'               => $idea->is_archived,
-            'creator'                   => $idea->creator()->select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->first(),
-            'assignee'                  => $idea->assignee()->select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->first(),
+            'creator'                   => $idea->creator()->select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->first(),
+            'assignee'                  => $idea->assignee()->select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->first(),
             'medium'                    => $idea->medium()->select('medium', 'id as value')->first(),
         ];
     }

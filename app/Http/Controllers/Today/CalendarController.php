@@ -2,7 +2,7 @@
 namespace Emutoday\Http\Controllers\Today;
 
 use Emutoday\Http\Controllers\Controller;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Emutoday\Event;
 use Carbon\Carbon;
 use JavaScript;
@@ -19,7 +19,6 @@ class CalendarController extends Controller
 
     public function index($year = null, $month = null, $day = null, $id = null)
     {
-        $cd;
         $eventid = $id;
         if ($year == null) {
             $cd = Carbon::now();
@@ -54,13 +53,9 @@ class CalendarController extends Controller
             $dayCounter++;
         }
         $totalDaysInArray = count($monthArray);
-        $firstOfYear =  Carbon::create($cd->year,1,1);
-        $lastDayOfYear = Carbon::create($cd->year,12,31);
-
-        //  $groupedevents = $this->events->whereBetween('start_date', [$firstOfYear, $lastDayOfYear])->get();
         $monthNumber = $cd->month;
-        $events_this_year = Event::where( \DB::raw('YEAR(start_date)'), '=', date('Y') )->get();
-        $events_this_month = Event::where( \DB::raw('MONTH(start_date)'), '=', $monthNumber )->get();
+
+        $events_this_month = Event::whereMonth( 'start_date', '=', $monthNumber )->get();
         $events = $this->events->where([
             ['start_date', '>', $cd],
             ['is_approved', 1],
@@ -70,8 +65,7 @@ class CalendarController extends Controller
             ->orderBy('start_date', 'asc')->get();
 
         $groupedevents = $events_this_month->groupBy(function ($item, $key) {
-            $startdate = $item['start_date'];
-            return $startdate->day;
+            return $item['start_date']->day;
         });
 
         $featuredevents =  Event::where([

@@ -11,6 +11,7 @@ use Emutoday\MiniCalendar;
 use Illuminate\Support\Facades\Request as Input;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -138,30 +139,29 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         return MiniCalendar::select('calendar', 'id as value', 'parent')->where('calendar', '<>', 'Welcome Weeks')->orderBy('calendar', 'asc')->get();
     });
 
-    Route::get('authorlist', function() { // is there a way to concat first_name and last_name here?
-        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->orderBy('last_Name', 'asc')->get();
+    Route::get('authorlist', function() {
+			return Author::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->orderBy('last_Name', 'asc')->get();
     });
 
-    Route::get('contactlist', function() { // is there a way to concat first_name and last_name here?
-        return Author::select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->where('is_contact', 1)->get();
+    Route::get('contactlist', function() {
+			return Author::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('is_contact', 1)->get();
     });
 
-    Route::get('contactdefault', function() { // is there a way to concat first_name and last_name here?
+    Route::get('contactdefault', function() {
         $author = Author::select()->where('is_principal_contact', 1)->first();
 
         return $author;
     });
 
-    Route::get('contactmagazinedefault', function() { // is there a way to concat first_name and last_name here?
+    Route::get('contactmagazinedefault', function() {
         $author = Author::select()->where('is_principal_magazine_contact', 1)->first();
 
         return $author;
     });
 
     Route::get('contactlist/{id}', function($id) {
-        $contact = Story::find($id)->contact()->select(DB::raw('CONCAT(first_Name, " ", last_Name) AS name'), 'id as value')->get();
+			return Story::find($id)->contact()->select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->get();
 
-        return $contact;
     });
 
     Route::get('taglist/{id}', function($id) {
@@ -179,11 +179,11 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     });
 
     Route::get('storyideaassignees', function() {
-        return User::select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->where('is_idea_assignee', 1)->orderBy('last_name', 'asc')->get();
+        return User::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('is_idea_assignee', 1)->orderBy('last_name', 'asc')->get();
     });
 
     Route::get('userlist', function() {
-        return User::select(DB::raw('CONCAT(first_name, " ", last_name) AS name'), 'id as value')->orderBy('last_name', 'asc')->get();
+        return User::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->orderBy('last_name', 'asc')->get();
     });
 
     Route::patch('event/updateItem/{event}', 'Api\EventController@updateItem');

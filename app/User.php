@@ -20,7 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'last_name', 'first_name', 'phone', 'email',
     ];
-    protected $dates = ['last_login_at'];
+    protected $casts = [
+			'last_login_at' => 'datetime'
+		];
 
     /**
     * The attributes that should be hidden for arrays.
@@ -30,8 +32,6 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-//    use Eloquence;
-//    protected $searchableColumns = ['last_name', 'first_name', 'email'];
 
     /**
      * [getFullNameAttribute description]

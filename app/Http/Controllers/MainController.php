@@ -11,7 +11,7 @@ use Emutoday\Event;
 use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Mailgun\Mailgun;
 
 class MainController extends Controller
@@ -190,7 +190,9 @@ class MainController extends Controller
           'count' => 3,
         ];
 
-        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
+				// TODO: see if this is still working after L10 upgrade (6/3/23)
+//        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
+				$tweets = [];
 
         // Show up to 4 featured events on the front page
         $featuredevents =  Event::where([

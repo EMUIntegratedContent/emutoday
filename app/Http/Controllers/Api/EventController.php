@@ -64,8 +64,6 @@ class EventController extends ApiController
 
     public function queueLoad($fromDate = null, $toDate = null)
     {
-      $currentDate = Carbon::now();
-
       if (\Auth::check()) {
         $user = \Auth::user();
 

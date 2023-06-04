@@ -26,10 +26,11 @@ class AnnouncementPresenter extends Presenter
   public function timelineHighlight()
   {
       if ($this->start_date && $this->end_date) {
-          if ($this->end_date->isPast()) {
+
+          if (Carbon::parse($this->end_date)->isPast()) {
             //event is over
               return 'medium-gray';
-          } elseif ($this->start_date->isFuture()) {
+          } elseif (Carbon::parse($this->start_date)->isFuture()) {
             //event is upcoming
               return 'warning';
           } elseif ($this->start_date->isPast() && $this->end_date->isFuture()) {
