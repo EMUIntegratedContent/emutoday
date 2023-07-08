@@ -139,22 +139,15 @@ export const ckeditorMixin = {
 					items: [
 						'undo', 'redo',
 						'|', 'bold', 'italic', 'underline', 'findAndReplace',
+						'|', 'strikethrough', 'subscript', 'superscript', 'code', 'removeFormat',
 						'|', 'link', 'bulletedList', 'numberedList',
 						'|', 'outdent', 'indent',
 						'|', 'bulletedList', 'numberedList',
 						'|', 'alignment', 'heading', 'fontFamily', 'fontSize',
 						'|', 'horizontalLine', 'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters',
-						'|',
-						'upload', // Flmngr
-						'flmngr', // Flmngr
-						// 'imgpen',  // Flmngr
+						'|', 'upload', 'flmngr', // 'imgpen',  // Flmngr
 						'linkImage',
 						'imageUpload',
-						{
-							label: 'Formatting',
-							icon: 'text',
-							items: [ 'strikethrough', 'subscript', 'superscript', 'code', '|', 'removeFormat' ]
-						},
 						{
 							label: 'Insert',
 							icon: 'plus',
@@ -212,17 +205,13 @@ export const ckeditorMixin = {
 					items: [
 						'undo', 'redo',
 						'|', 'bold', 'italic', 'underline', 'findAndReplace',
+						'|', 'strikethrough', 'subscript', 'superscript', 'code', 'removeFormat',
 						'|', 'link', 'bulletedList', 'numberedList',
 						'|', 'outdent', 'indent',
 						'|', 'bulletedList', 'numberedList',
 						'|', 'alignment', 'heading', 'fontFamily', 'fontSize',
 						'|', 'horizontalLine',
 						'|',
-						{
-							label: 'Formatting',
-							icon: 'text',
-							items: [ 'strikethrough', 'subscript', 'superscript', 'code', '|', 'removeFormat' ]
-						},
 						{
 							label: 'Insert',
 							icon: 'plus',
