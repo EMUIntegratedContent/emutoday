@@ -133,9 +133,9 @@ class PreviewController extends Controller{
 		$currentStorysBasic = $this->story->where('story_type', 'news')->paginate(3);
 		$currentAnnouncements = $this->announcement->where('is_approved', 1)->orderBy('priority', 'desc')->paginate(3);
 		$barImgs = collect();
+		$heroImg = null;
 		$storys = $page->storys()->get();
 		foreach($storys as $story){
-
 			if($story->story_type == 'article'){
 				if($story->pivot->page_position === 0){
 					$heroImg = $story->storyImages()->where('image_type', 'hero')->first();

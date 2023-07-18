@@ -25,12 +25,14 @@
       <div class="large-12 medium-12 small-12 columns">
         <!-- Story Page Title group -->
         <div id="title-grouping" class="row">
-          <h3>@if($story->story_type == 'featurephoto')Featured Photo: @endif {{ $story->title }}</h3>
-          @if($story->story_type != 'featurephoto')
-            @if(isset($story->subtitle))
-              <h5>{{ $story->subtitle }}</h5>
+          <div class="small-12 columns">
+            <h2>@if($story->story_type == 'featurephoto')Featured Photo: @endif {{ $story->title }}</h2>
+            @if($story->story_type != 'featurephoto')
+              @if(isset($story->subtitle))
+                <h3>{{ $story->subtitle }}</h3>
+              @endif
             @endif
-          @endif
+          </div>
         <!-- Full banner image area (displays only if it exists for this story) -->
           @if($fullBannerImage)
             <div class="small-12 columns">
@@ -54,7 +56,7 @@
             @if(isset($mainStoryImage) && !isset($fullBannerImage))
               <div id="big-feature-image">
                 <img src="{{$mainStoryImage->present()->mainImageURL }}"
-                     alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}"></a>
+                     alt="{{ $mainStoryImage->alt_text != '' ? $mainStoryImage->alt_text : str_replace('"', "", $story->title) }}">
 
                 <div class="feature-image-caption">{{ $mainStoryImage->caption }}</div>
               </div>

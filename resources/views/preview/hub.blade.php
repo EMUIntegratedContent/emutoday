@@ -20,9 +20,12 @@
           <div id="news-bar">
               <div class="row">
                   <div class="large-7 medium-12 small-12 columns">
+                    @if($heroImg)
                       <img src="/imagecache/original/{{$heroImg->filename}}" alt="{{ $heroImg->alt_text != '' ? $heroImg->alt_text : str_replace('"', "", $heroImg->title) }}">
+                    @endif
                   </div>
                   <div id="featured-text" class="large-5 medium-12 small-12 columns">
+                    @if($heroImg)
                       <h3>{{$heroImg->title}}</h3>
                       <p>{!! $heroImg->teaser !!}</p>
                       @if($heroImg->story->tags()->first() && $heroImg->link)
@@ -53,6 +56,7 @@
                                       aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
                                       class="button readmore bold-green-link">{{$heroImg->moretext}}</a></p>
                       @endif
+                    @endif
                   </div>
               </div>
           </div>
@@ -76,39 +80,34 @@
                                       @if($barImgs[$i]->story->tags()->first())
                                           @if($barImgs[$i]->story->tags()->first()->name == 'video')
                                               <a href="{{$barImgs[$i]->link}}"
-                                                 aria-label="{{$barImgs[$i]->caption}} - Watch" class="readmore bold-green-link">Watch&nbsp;<i
-                                                          class="fa fa-arrow-right"></i></a>
+                                                 aria-label="{{$barImgs[$i]->caption}} - Watch" class="readmore bold-green-link">Watch&nbsp;</a>
                                           @elseif($barImgs[$i]->story->tags()->first()->name == 'audio')
                                               <a href="{{$barImgs[$i]->link}}"
-                                                 aria-label="{{$barImgs[$i]->caption}} - Listen" class="readmore bold-green-link">Listen&nbsp;<i
-                                                          class="fa fa-arrow-right"></i></a>
+                                                 aria-label="{{$barImgs[$i]->caption}} - Listen" class="readmore bold-green-link">Listen&nbsp;</a>
                                           @elseif($barImgs[$i]->story->tags()->first()->name == 'gallery')
                                               <a href="{{$barImgs[$i]->link}}"
                                                  aria-label="{{$barImgs[$i]->caption}} - Gallery" class="readmore bold-green-link">View
-                                                  Gallery&nbsp;<i class="fa fa-arrow-right"></i></a>
+                                                  Gallery&nbsp;</a>
                                           @else
                                               @if($barImgs[$i]->moretext != "")
                                                   <a href="{{$barImgs[$i]->link}}"
                                                      aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                     class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;<i
-                                                              class="fa fa-arrow-right"></i></a>
+                                                     class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;</a>
                                               @else
                                                   <a href="{{$barImgs[$i]->link}}"
                                                      aria-label="{{$barImgs[$i]->caption}} - Read Story"
-                                                     class="readmore bold-green-link">Read Story&nbsp;<i
-                                                              class="fa fa-arrow-right"></i></a>
+                                                     class="readmore bold-green-link">Read Story&nbsp;</a>
                                               @endif
                                           @endif
                                       @else
                                           @if($barImgs[$i]->moretext != "")
                                               <a href="{{$barImgs[$i]->link}}"
                                                  aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                 class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;<i
-                                                          class="fa fa-arrow-right"></i></a>
+                                                 class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;</a>
                                           @else
                                               <a href="{{$barImgs[$i]->link}}"
                                                  aria-label="{{$barImgs[$i]->caption}} - Read Story" class="readmore bold-green-link">Read
-                                                  Story&nbsp;<i class="fa fa-arrow-right"></i></a>
+                                                  Story&nbsp;</a>
                                           @endif
                                       @endif
                                   @elseif($barImgs[$i]->story->story_type == 'article')
@@ -116,28 +115,25 @@
                                           @if($barImgs[$i]->story->tags()->first()->name == 'external')
                                               <a href="{{$barImgs[$i]->link}}"
                                                  aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                 class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;<i
-                                                          class="fa fa-arrow-right"></i></a>
+                                                 class="readmore bold-green-link">{{$barImgs[$i]->moretext}}&nbsp;</a>
                                           @else
                                               <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                                  aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                                 class="readmore bold-green-link">{{$barImgs[$i]->moretext}} <i
-                                                          class="fa fa-arrow-right"></i></a>
+                                                 class="readmore bold-green-link">{{$barImgs[$i]->moretext}} </a>
                                           @endif
                                       @else
                                           <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                              aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                             class="readmore bold-green-link">{{$barImgs[$i]->moretext}} <i
-                                                      class="fa fa-arrow-right"></i></a>
+                                             class="readmore bold-green-link">{{$barImgs[$i]->moretext}} </a>
                                       @endif
                                   @elseif($barImgs[$i]->story->story_type == 'featurephoto')
                                       <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                          aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">View Image&nbsp;
-                                          <i class="fa fa-arrow-right"></i></a>
+                                          </a>
                                   @else
                                       <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
                                          aria-label="{{$barImgs[$i]->caption}} - {{$barImgs[$i]->moretext}}"
-                                         class="readmore bold-green-link">{{$barImgs[$i]->moretext}} <i class="fa fa-arrow-right"></i></a>
+                                         class="readmore bold-green-link">{{$barImgs[$i]->moretext}} </a>
                                   @endif
                               </p>
                           </div>
@@ -156,7 +152,7 @@
               <div class="card small-12 medium-5 large-5 columns" data-equalizer-watch>
                   <div class="card-section" data-equalizer-watch>
                       <h6><a class="bold-green-link" title="EMU Today campus announcements." href="{{ url('/announcement') }}">Announcements
-                              <i class="fa fa-arrow-right"></i></a></h6>
+                              </a></h6>
                       <div class="row newshub-tab-front">
                           <div class="large-12 medium-12 small-12 columns">
                               <ul>
@@ -173,8 +169,7 @@
               <div class="card small-12 medium-7 large-7 columns" data-equalizer-watch>
                   <div class="card-section" data-equalizer-watch>
                       <h6><a class="bold-green-link" title="EMU news, press releases, and official statements."
-                             href="{{ url('/story/news') }}">News Headlines <i
-                                      class="fa fa-arrow-right"></i></a>
+                             href="{{ url('/story/news') }}">News Headlines </a>
                       </h6>
                       <div class="row newshub-tab-front">
                           <div class="large-12 medium-12 small-12 columns">
@@ -210,17 +205,17 @@
                   <div class="card-section">
                       @if(isset($currentStoryImageWithVideoTag))
                           <p>{{$currentStoryImageWithVideoTag->caption}}</p>
-                          <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="{{$currentStoryImageWithVideoTag->link}}" target="_blank">Watch Video <i class="fa fa-arrow-right"></i></a>
+                          <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="{{$currentStoryImageWithVideoTag->link}}" target="_blank">Watch Video </a>
                       @else
                           <p>Welcome to Education First, the official Eastern Michigan University YouTube Channel.</p>
-                          <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="https://www.youtube.com/user/emichigan08" target="blank">Watch Video <i class="fa fa-arrow-right"></i></a>
+                          <a class="popup-youtube bold-green-link" title="External link to a YouTube video." href="https://www.youtube.com/user/emichigan08" target="blank">Watch Video </a>
                       @endif
                   </div>
               </div>
               <div class="card small-12 medium-6 large-6 columns" data-equalizer-watch>
                   <div class="card-section" data-equalizer-watch>
                       <h6><a class="bold-green-link" title="External link to EMU's Twitter page." href="https://twitter.com/EasternMichU/">Twitter
-                                          <i class="fa fa-arrow-right"></i></a></h6>
+                                          </a></h6>
                       <div class="row newshub-tab-front">
                           <div class="large-12 medium-12 small-12 columns">
                               <ul class="twitter-content">
@@ -250,7 +245,7 @@
           <div id="news-headline-bar-bottom" class="row" data-equalizer>
               <div class="card small-12 medium-12 large-12 columns" data-equalizer-watch>
                   <div class="card-section" data-equalizer-watch>
-                      <h6><a title="EMU campus events calendar." href="{{ url('/calendar') }}" class="bold-green-link">Events Calendar</a> <i class="fa fa-arrow-right"></i></h6>
+                      <h6><a title="EMU campus events calendar." href="{{ url('/calendar') }}" class="bold-green-link">Events Calendar</a></h6>
                       @unless(empty($featuredevents[0]))
                           <div id="five-events-bar">
                               <div class="row large-up-4 medium-up-3 show-for-medium" data-equalizer>

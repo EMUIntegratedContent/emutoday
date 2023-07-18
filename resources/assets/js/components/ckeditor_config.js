@@ -147,7 +147,7 @@ export const ckeditorMixin = {
 						'|', 'horizontalLine', 'insertTable', 'exportPdf', 'sourceEditing', 'specialCharacters',
 						'|', 'upload', 'flmngr', // 'imgpen',  // Flmngr
 						'linkImage',
-						'imageUpload',
+						// 'imageUpload',
 						{
 							label: 'Insert',
 							icon: 'plus',
