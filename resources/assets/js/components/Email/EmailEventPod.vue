@@ -295,10 +295,9 @@ h5 {
 <script>
 import { emailMixin } from './email_mixin'
 import moment from 'moment'
-import VuiFlipSwitch from '../VuiFlipSwitch.vue'
 
 export default {
-  components: { VuiFlipSwitch },
+  components: { },
   mixins: [emailMixin],
   props: ['item', 'pid', 'podType'],
   data: function () {

@@ -492,7 +492,6 @@ export default {
         console.log(e)
       })
     },
-
     fetchAllRecords: function () {
       this.loading = true
 

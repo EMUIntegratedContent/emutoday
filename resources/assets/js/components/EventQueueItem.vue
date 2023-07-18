@@ -15,39 +15,11 @@
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
-              <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY "NEEDED" AGAIN -->
-              <!--
-              <template v-if="pid == 'items-live' || pid == 'items-approved'">
-                <div class="form-check">
-                  <label class="form-check-label">
-                    Elevate
-                    <input type="checkbox" class="form-check-input" @click="toggleEmitEventElevate(item)" v-model="checked" :checked="isElevatedEvent" /> |
-                  </label>
-                </div>
-              </template>
-              <template v-if="pid != 'item-elevated'">
-                <div id="applabel" class="form-group">
-                  <label> approved:</label>
-                </div>
-                <div class="form-group">
-                  <vui-flip-switch id="switch-{{item.id}}"
-                  v-on:click.prevent="changeIsApproved"
-                  :value.sync="patchRecord.is_approved" >
-                  </vui-flip-switch>
-                </div>
-              </template>
-              -->
               <div id="applabel" class="form-group">
-<!--                <label> approved:</label>-->
               </div>
               <div class="form-group">
-<!--                <vui-flip-switch :id="'switch-'+item.id"-->
-<!--                                 v-on:click.prevent="changeIsApproved"-->
-<!--                                 :value.sync="patchRecord.is_approved">-->
-<!--                </vui-flip-switch>-->
                 <input type="button" v-if="item.is_approved" value="Unapprove" class="btn btn-warning btn-xs" @click.prevent="changeIsApproved">
                 <input type="button" v-else value="Approve" class="btn btn-success btn-xs" @click.prevent="changeIsApproved">
-<!--                <input type="checkbox" :value="patchRecord.is_approved" @change.prevent="changeIsApproved" :checked="item.is_approved == 1">-->
               </div>
               <button v-show="pid == 'item-elevated'" type="button"
                       class="btn btn-sm btn-danger pull-right remove-event-btn" @click="emitEventDemote(item)"><i

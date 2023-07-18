@@ -21,9 +21,10 @@
                   <label>  approved:</label>
                 </div><!-- /.form-group -->
                 <div class="form-group">
-                  <vui-flip-switch :id="'switch-'+item.id"
-                                   @input="changeIsApproved"
-                                   v-model:checked="patchRecord.is_approved"
+                  <vui-flip-switch
+                      v-model="patchRecord.is_approved"
+                      :switch-id="'switch-'+item.id"
+                      @update:modelValue="changeIsApproved"
                   >
                   </vui-flip-switch>
                 </div>
@@ -205,31 +206,20 @@ export default{
     return {
       checked: false,
       showBody: false,
-      currentDate: {},
-      record: {
-        user_id : '',
-        title: '',
-        announcement: '',
-        start_date: ''
-      },
-      initRecord: {
-        is_approved: 0,
-        priority: 0,
-        is_archived: 0,
-
-      },
       patchRecord: {
         is_approved: 0,
         priority: 0,
         is_archived: 0,
       },
+      itemCopy: null
     }
   },
   created () {
-    this.initRecord.is_approved = this.patchRecord.is_approved =  this.item.is_approved
-    this.initRecord.priority = this.patchRecord.priority = this.item.priority
-    this.initRecord.is_archived = this.patchRecord.is_archived = this.item.is_archived
-    if(this.pid == 'item-elevated' && this.item.priority == 1000000) {
+    this.itemCopy = JSON.parse(JSON.stringify(this.item))
+    this.patchRecord.is_approved = this.itemCopy.is_approved
+    this.patchRecord.priority = this.itemCopy.priority
+    this.patchRecord.is_archived = this.itemCopy.is_archived
+    if(this.pid == 'item-elevated' && this.itemCopy.priority == 1000000) {
       this.checked = true
     }
   },
@@ -263,17 +253,10 @@ export default{
       return moment(this.item.start_date).fromNow()
     },
     isApproved: function() {
-      return this.item.is_approved;
+      return this.itemCopy.is_approved;
     },
     itemEditPath: function(){
       return '/admin/announcement/'+ this.item.id + '/edit'
-    },
-    hasIsApprovedChanged: function(){
-      if (this.initRecord.is_approved != this.patchRecord.is_approved){
-        return true
-      } else {
-        return false
-      }
     },
     liveTimeStatusClass: function(){
       let timepartstatus;
@@ -358,7 +341,7 @@ export default{
       }
     },
     changeIsApproved: function(){
-      this.patchRecord.is_approved = (this.item.is_approved === 0)?1:0;
+      // this.patchRecord.is_approved = (this.item.is_approved === 0)?1:0;
       this.updateItem();
     },
     archiveItem:function(){
@@ -369,28 +352,31 @@ export default{
       } )
       .then((response) => {
         this.checkAfterUpdate(response.data.newdata)
-      }, (response) => {
-      });
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     updateItem: function(){
       this.patchRecord.is_archived = this.item.is_archived;
 
-      this.$http.patch('/api/announcement/updateitem/' + this.item.id , this.patchRecord , {
+      this.$http.patch('/api/announcement/updateitem/' + this.itemCopy.id , this.patchRecord , {
         method: 'PATCH'
       } )
       .then((response) => {
         this.checkAfterUpdate(response.data.newdata)
-      }, (response) => {
-      });
+        this.$emit('item-change', this.itemCopy)
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     checkAfterUpdate: function(ndata){
-      this.item.is_approved = this.initRecord.is_approved =   ndata.is_approved;
-      this.item.priority = this.initRecord.priority =  ndata.priority;
-      this.item.is_archived = this.initRecord.is_archived = ndata.is_archived;
+      this.patchRecord.is_approved = this.itemCopy.is_approved = ndata.is_approved
+      this.patchRecord.priority = this.itemCopy.priority = ndata.priority
+      this.patchRecord.is_archived = this.itemCopy.is_archived = ndata.is_archived
 
       // Unapproved announcements lose priority status
-      if(!this.item.is_approved){
-        this.emitAnnouncementDemote(this.item)
+      if(!this.patchRecord.is_approved){
+        this.emitAnnouncementDemote(this.itemCopy)
       }
     },
     emitAnnouncementElevate: function(announcementObj){
@@ -451,6 +437,14 @@ export default{
     },
     momentPretty: function(value) {
       return moment(value).format('ddd, MM-DD-YYYY')
+    }
+  },
+  watch: {
+    item () {
+      this.itemCopy = JSON.parse(JSON.stringify(this.item))
+      this.patchRecord.is_approved = this.itemCopy.is_approved
+      this.patchRecord.priority = this.itemCopy.priority
+      this.patchRecord.is_archived = this.itemCopy.is_archived
     }
   }
 };

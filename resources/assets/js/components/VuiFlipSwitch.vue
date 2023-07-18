@@ -145,10 +145,6 @@ h6 {
   margin-bottom: 0;
 }
 
-.form-group {
-  /*border: 1px solid red;*/
-}
-
 .form-group label {
   margin-bottom: 0;
 }

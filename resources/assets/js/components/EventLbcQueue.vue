@@ -39,28 +39,28 @@
     <div class="col-md-6">
       <h3><span class="badge">{{ itemsUnapproved ? itemsUnapproved.length : 0 }}</span> Unapproved Events</h3>
       <div id="items-approved">
-                <event-queue-item
-                pid="items-approved"
-                v-for="(item, i) in itemsUnapproved"
-                @item-change="moveToApproved"
-                :item="item"
-                :index="i"
-                :key="'items-unapproved-'+i">
-                </event-queue-item>
+        <event-queue-item
+            pid="items-unapproved"
+            v-for="(item, i) in itemsUnapproved"
+            @item-change="moveEvent"
+            :item="item"
+            :index="i"
+            :key="'items-unapproved-'+i">
+        </event-queue-item>
       </div>
     </div><!-- /.col-md-6 -->
 
     <div class="col-md-6">
       <h3><span class="badge">{{ itemsApproved ? itemsApproved.length : 0 }}</span> Approved Events</h3>
       <div id="items-approved">
-                <event-queue-item
-                pid="items-approved"
-                v-for="(item, i) in itemsApproved"
-                @item-change="moveToUnApproved"
-                :item="item"
-                :index="i"
-                :key="'items-approved-'+i">
-                </event-queue-item>
+        <event-queue-item
+            pid="items-approved"
+            v-for="(item, i) in itemsApproved"
+            @item-change="moveEvent"
+            :item="item"
+            :index="i"
+            :key="'items-approved-'+i">
+        </event-queue-item>
       </div>
     </div>
   </div><!-- /.col-md-6 -->
@@ -128,8 +128,6 @@ export default {
     this.fetchAllRecords();
   },
   computed: {
-    top4: function () {
-    },
     currentDateAndTime: function () {
       return moment()
     },
@@ -152,7 +150,8 @@ export default {
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startdate) {
         routeurl = routeurl + '/' + this.startdate
-      } else {
+      }
+      else {
         routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
       }
       // if a date range is set, get stories between the start date and end date
@@ -161,19 +160,15 @@ export default {
       }
 
       this.$http.get(routeurl)
-          .then((response) => {
-            this.allitems = response.data.data
-            this.loading = false
-          }, () => {
-          })
+      .then((response) => {
+        this.allitems = response.data.data
+        this.loading = false
+      }, () => {
+      })
     },
-    moveToApproved: function (changeditem) {
-      changeditem.lbc_approved = 1;
-      this.updateRecord(changeditem)
-    },
-    moveToUnApproved: function (changeditem) {
-      changeditem.lbc_approved = 0;
-      this.updateRecord(changeditem)
+    moveEvent (changeditem) {
+      const index = this.allitems.findIndex(item => item.id == changeditem.id)
+      this.allitems[index] = changeditem
     },
     movedItemIndex: function (mid) {
       return this.xitems.findIndex(item => item.id == mid)
@@ -182,7 +177,8 @@ export default {
       for (let i = 0; i < this.allitems.length; i++) {
         if (this.allitems[i].lbc_approved == 1) {
           this.items.push(this.allitems.splice(i, 1));
-        } else {
+        }
+        else {
           this.xitems.push(this.allitems.splice(i, 1));
         }
       }
@@ -190,11 +186,11 @@ export default {
     toggleRange: function () {
       if (this.isEndDate) {
         this.isEndDate = false
-      } else {
+      }
+      else {
         this.isEndDate = true
       }
-    },
-  },
-  events: {}
+    }
+  }
 }
 </script>

@@ -80,6 +80,7 @@
             :atype="atype"
             @special-announcement-added="specialAnnouncementAdded"
             @special-announcement-removed="specialAnnouncementRemoved"
+            @item-change="moveAnnouncement"
         >
         </announcement-queue-item>
       </div>
@@ -96,6 +97,7 @@
             :atype="atype"
             @special-announcement-added="specialAnnouncementAdded"
             @special-announcement-removed="specialAnnouncementRemoved"
+            @item-change="moveAnnouncement"
         >
         </announcement-queue-item>
       </div>
@@ -159,7 +161,6 @@
             pid="items-live"
             v-for="(item, i) in itemsLive"
             :key="'live-items-'+i"
-            :elevated-announcements="elevateditems"
             :item="item"
             :index="i"
             :atype="atype"
@@ -167,6 +168,7 @@
             @special-announcement-removed="specialAnnouncementRemoved"
             @announcement-elevated="announcementElevated"
             @announcement-demoted="announcementDemoted"
+            @item-change="moveAnnouncement"
         >
         </announcement-queue-item>
       </div>
@@ -235,19 +237,19 @@ export default {
   },
 
   computed: {
-    itemsApproved: function () {
+    itemsApproved () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return this.allitems.filter(function (item) {
         return moment(item.start_date).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_archived === 0 && regexp.test(item.title);
       })
     },
-    itemsUnapproved: function () {
+    itemsUnapproved () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return this.allitems.filter(function (item) {
         return item.is_approved === 0 && item.is_archived === 0 && regexp.test(item.title);
       })
     },
-    itemsLive: function () {
+    itemsLive () {
       const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return this.allitems.filter(function (item) {
         return (moment(item.start_date).isSameOrBefore(moment())
@@ -315,6 +317,11 @@ export default {
           })
           .catch((e) => {
           })
+    },
+    moveAnnouncement (changeditem) {
+      const index = this.allitems.findIndex(item => item.id == changeditem.id)
+      console.log(index)
+      this.allitems[index] = changeditem
     },
     /**
      * Uses vue-sortable

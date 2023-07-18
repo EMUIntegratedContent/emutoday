@@ -48,7 +48,7 @@
             :item="item"
             :index="i"
             :key="'items-nopointsrev-'+i+'-'+counter"
-            @item-updated="counter++"
+            @item-change="moveEvent"
         >
         </event-queue-item>
       </div>
@@ -63,7 +63,7 @@
             :item="item"
             :index="i"
             :key="'items-nopoints-'+i+'-'+counter"
-            @item-updated="counter++"
+            @item-change="moveEvent"
         >
         </event-queue-item>
       </div>
@@ -79,7 +79,7 @@
             :item="item"
             :index="i"
             :key="'items-points-'+i+'-'+counter"
-            @item-updated="counter++"
+            @item-change="moveEvent"
         >
         </event-queue-item>
       </div>
@@ -192,14 +192,18 @@ export default {
           }, () => {
           })
     },
+    moveEvent (changeditem) {
+      const index = this.allitems.findIndex(item => item.id == changeditem.id)
+      this.allitems[index] = changeditem
+      this.counter++
+    },
     toggleRange: function () {
       if (this.isEndDate) {
         this.isEndDate = false
       } else {
         this.isEndDate = true
       }
-    },
-  },
-  events: {}
+    }
+  }
 }
 </script>

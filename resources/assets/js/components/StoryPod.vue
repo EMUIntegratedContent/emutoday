@@ -457,9 +457,6 @@ export default {
     itemPreviewPath: function () {
       return '/preview/' + this.qtype + '/' + this.gtype + '/' + this.itemCopy.story_type + '/' + this.itemCopy.id
     },
-    typeClass: function () {
-
-    },
     readyIcon: function () {
       let pIcon = 'fa fa-circle-o'
       if (this.itemCopy.is_ready === 1) {

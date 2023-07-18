@@ -14,9 +14,10 @@
                 <label>reviewed:</label>
               </div><!-- /.form-group -->
               <div class="form-group">
-                <vui-flip-switch :id="'switch-'+item.id"
-                                 @input="changeIsReviewed"
-                                 v-model:checked="patchRecord.hsc_reviewed"
+                <vui-flip-switch
+                    v-model="patchRecord.hsc_reviewed"
+                    :switch-id="'switch-'+item.id"
+                    @update:modelValue="changeIsReviewed"
                 >
                 </vui-flip-switch>
               </div>
@@ -32,8 +33,8 @@
                        placeholder="0"
                        v-on:change.prevent="changePoints"
                        v-model="patchRecord.hsc_rewards"/>
-<!--                <span class="input-group-addon btn bg-orange" v-on:click.prevent="changePoints"><i-->
-<!--                    class="fa fa-save"></i></span>-->
+                <!--                <span class="input-group-addon btn bg-orange" v-on:click.prevent="changePoints"><i-->
+                <!--                    class="fa fa-save"></i></span>-->
               </div>
             </form>
           </div><!-- /.col-sm-6 -->
@@ -248,7 +249,7 @@ import moment from 'moment'
 import VuiFlipSwitch from './VuiFlipSwitch.vue'
 
 export default {
-  components: {VuiFlipSwitch},
+  components: { VuiFlipSwitch },
   props: ['item', 'pid', 'index'],
   data: function () {
     return {
@@ -264,22 +265,24 @@ export default {
         hsc_reviewed: 0,
       },
       itemCurrent: 1,
-      currentDate: {},
-      record: {}
+      itemCopy: null
     }
   },
   created () {
-    this.patchRecord.hsc_rewards = this.item.hsc_rewards;
-    this.patchRecord.hsc_reviewed = this.item.hsc_reviewed;
+    this.itemCopy = JSON.parse(JSON.stringify(this.item))
+    this.patchRecord.hsc_rewards = this.itemCopy.hsc_rewards
+    this.patchRecord.hsc_reviewed = this.itemCopy.hsc_reviewed
   },
   computed: {
     timeLeftStatus: function () {
       let diff = this.timeDiffNow(this.item.end_date_time)
       if (diff <= 0) {
         return 'time-is-over'
-      } else if (diff > 0 && diff <= 720) {
+      }
+      else if (diff > 0 && diff <= 720) {
         return 'time-is-short'
-      } else {
+      }
+      else {
         return 'time-is-long'
       }
     },
@@ -287,9 +290,11 @@ export default {
       let diff = this.timeDiffNow(this.item.start_date_time)
       if (diff <= 0) {
         return 'time-is-over'
-      } else if (diff > 0 && diff <= 720) {
+      }
+      else if (diff > 0 && diff <= 720) {
         return 'time-is-short'
-      } else {
+      }
+      else {
         return 'time-is-long'
       }
     },
@@ -297,22 +302,20 @@ export default {
       return moment(this.item.start_date_time).fromNow()
     },
     timeLeft: function () {
-
       if (moment(this.item.start_date_time).isSameOrBefore(moment())) {
         let tlft = this.timeDiffNow(this.item.end_date_time)
         if (tlft < 0) {
           this.itemCurrent = 0
           return 'Event Ended ' + moment(this.item.end_date_time).fromNow()
-        } else {
+        }
+        else {
           this.itemCurrent = 1
           return ' and Ends ' + moment(this.item.end_date_time).fromNow()
         }
-
-      } else {
+      }
+      else {
         return ''
       }
-
-
     },
     reviewedItem: function () { // css class
       return this.patchRecord.hsc_reviewed ? 'reviewed-item' : '';
@@ -322,19 +325,16 @@ export default {
 
       if (moment().isBetween(this.item.start_date_time, this.item.end_date_time)) {
         timepartstatus = 'ongoing';
-      } else {
+      }
+      else {
         if (this.timeDiffNow(this.item.start_date_time) < 0) {
           timepartstatus = 'event-negative';
-        } else {
-          timepartstatus = 'event-positive';
-
         }
-
+        else {
+          timepartstatus = 'event-positive';
+        }
       }
-
       return timepartstatus;
-
-
     },
     itemStatus: function () {
       let sclass = 'box-default';
@@ -354,9 +354,7 @@ export default {
     },
     itemPreviewPath: function () {
       return '/preview/event/' + this.item.id
-    },
-
-
+    }
   },
   methods: {
     // Handle the form submission here
@@ -367,57 +365,66 @@ export default {
       this.updateItem();
     },
     changePoints: function () {
-      this.item.hsc_reviewed = this.patchRecord.hsc_reviewed = 1;
-      this.updateItem();
+      this.patchRecord.hsc_reviewed = 1
+      this.updateItem()
     },
     updateItem: function () {
-      this.$http.patch('/api/event/updateitem/' + this.item.id, this.patchRecord, {
+      this.$http.patch('/api/event/updateitem/' + this.itemCopy.id, this.patchRecord, {
         method: 'PATCH'
       })
-          .then((response) => {
-            this.item.hsc_rewards = response.data.newdata.hsc_rewards;
-            this.item.hsc_reviewed = response.data.newdata.hsc_reviewed;
-            this.$emit("item-updated", this.item)
-          }).catch((e) => {})
+      .then((response) => {
+        this.checkAfterUpdate(response.data.newdata)
+        this.$emit('item-change', this.itemCopy)
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    checkAfterUpdate: function (ndata) {
+      this.patchRecord.hsc_rewards = this.itemCopy.hsc_rewards = ndata.hsc_rewards
+      this.patchRecord.hsc_reviewed = this.itemCopy.hsc_reviewed = ndata.hsc_reviewed
     },
     togglePanel: function (ev) {
       if (this.showPanel === false) {
         this.showPanel = true;
-      } else {
+      }
+      else {
         this.showPanel = false;
       }
     },
     toggleBody: function (ev) {
       if (this.showBody == false) {
         this.showBody = true;
-      } else {
+      }
+      else {
         this.showBody = false;
       }
     },
-    doThis: function (ev) {
-      this.item.hsc_rewards = (this.hsc_rewards === 0) ? 1 : 0;
-      this.$emit('item-change', this.item);
-    },
-    yesNo: function(value) {
+    yesNo: function (value) {
       return (value == true) ? 'Yes' : 'No';
     },
     titleDay: function (value) {
-      return  moment(value).format("ddd")
+      return moment(value).format("ddd")
     },
     titleDate: function (value) {
-      return  moment(value).format("MM/DD")
+      return moment(value).format("MM/DD")
     },
     titleDateLong: function (value) {
-      return  moment(value).format("ddd MM/DD")
+      return moment(value).format("ddd MM/DD")
     },
-    hasHttp: function(value) { // Checks if links given 'http'
-      return (value.substr(0, 4)) == 'http' ? value : 'https://'+value;
+    hasHttp: function (value) { // Checks if links given 'http'
+      return (value.substr(0, 4)) == 'http' ? value : 'https://' + value;
     },
-    momentPretty: function(value) {
+    momentPretty: function (value) {
       return moment(value).format('ddd, MM-DD-YYYY')
     }
   },
-  watch: {}
+  watch: {
+    item () {
+      this.itemCopy = JSON.parse(JSON.stringify(this.item))
+      this.patchRecord.hsc_rewards = this.itemCopy.hsc_rewards
+      this.patchRecord.hsc_reviewed = this.itemCopy.hsc_reviewed
+    }
+  }
 };
 
 
