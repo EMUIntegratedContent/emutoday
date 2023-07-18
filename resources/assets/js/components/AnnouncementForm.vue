@@ -165,7 +165,7 @@
       </div> <!-- /.small-6 columns -->
     </div> <!-- /.row -->
 
-    <div id="preview-contents" class="row" v-show="record.title" v-if="framework == 'foundation'">
+    <div id="preview-contents" class="row" v-if="record.title && framework == 'foundation'">
       <div v-bind:class="md12col">
         <h3 class="cal-caps toptitle">Announcement Preview</h3>
         <ul class="accordion" data-accordion>

@@ -11,10 +11,10 @@
             </div><!-- /.pull-right -->
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
-            <label v-show="podType == 'eventqueue'" class="pull-right"><input type="checkbox" @click="toggleEvent(item)"
+            <label v-if="podType == 'eventqueue'" class="pull-right"><input type="checkbox" @click="toggleEvent(item)"
                                                                               v-model="checked" :checked="isEvent"/>
               Email Event</label>
-            <button v-show="podType == 'event'" type="button" class="btn btn-sm btn-danger pull-right"
+            <button v-if="podType == 'event'" type="button" class="btn btn-sm btn-danger pull-right"
                     @click="removeEvent(item.id)"><i class="fa fa-times" aria-hidden="true"></i></button>
           </div><!-- /.col-sm-6 -->
         </div><!-- /.row -->

@@ -201,6 +201,7 @@ class MainController extends Controller
           ['end_date', '>=', date('Y-m-d')]
         ])
           ->orderBy('start_date', 'asc')
+					->orderBy('start_time', 'asc')
           ->take(4)->get();
 
         JavaScript::put([

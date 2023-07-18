@@ -74,6 +74,7 @@ class CalendarController extends Controller
             ['end_date', '>=', date('Y-m-d')]
             ])
             ->orderBy('start_date', 'asc')
+						->orderBy('start_time', 'asc')
             ->take(5)->get();
 
             JavaScript::put([

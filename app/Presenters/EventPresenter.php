@@ -33,10 +33,10 @@ class EventPresenter extends Presenter{
 	//From 10:00 AM to 5:00 PM
 	public function displayTimeRange(){
 		if($this->no_end_time){
-			return $this->start_time;
+			return date_format($this->start_time, 'g:i a');
 		}
 		else{
-			return $this->start_time.' to '.$this->end_time;
+			return date_format($this->start_time, 'g:i a').' to '.date_format($this->end_time, 'g:i a');
 		}
 	}
 

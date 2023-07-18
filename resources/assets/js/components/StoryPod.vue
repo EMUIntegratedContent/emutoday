@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="itemMsgStatus.show" class="callout" :class="'callout-' + itemMsgStatus.level">
+    <div v-if="itemMsgStatus.show" class="callout" :class="'callout-' + itemMsgStatus.level">
       <span class="Alert__close" @click="itemMsgStatus.show = false">X</span>
       <h5>{{ itemMsgStatus.msg }}</h5>
     </div>

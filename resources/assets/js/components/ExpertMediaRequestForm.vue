@@ -3,17 +3,17 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isErr" :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
           <h5>{{ formMessage.msg }}</h5>
         </div>
       </div>
       <!-- /.small-12 columns -->
     </div>
     <!-- /.row -->
-    <div class="row" v-show="isAdmin">
+    <div class="row" v-if="isAdmin">
       <div v-bind:class="md12col">
         <!-- Acknowledged? -->
         <div class="checkbox">
@@ -243,9 +243,9 @@
     </div>
     <!-- /.row -->
   </form>
-  <div class="row" v-show="recordexists && !isAdmin">
+  <div class="row" v-if="recordexists && !isAdmin">
     <div v-bind:class="md12col">
-      <div v-show="formMessage.isOk" :class="calloutSuccess">
+      <div v-if="formMessage.isOk" :class="calloutSuccess">
         <h5>{{ formMessage.msg }}</h5>
       </div>
       <p><strong>An administrator will review your request soon. Here are the details of your submission.</strong></p>

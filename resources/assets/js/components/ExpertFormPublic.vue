@@ -3,10 +3,10 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
           <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr" :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
       </div>
@@ -320,7 +320,7 @@
       <!-- /.small-12 columns -->
     </div>
     <!-- /.row -->
-    <div class="row" v-show="!currentRecordId">
+    <div class="row" v-if="!currentRecordId">
       <div v-bind:class="md12col" id="policies-container">
         <!-- Terms and conditions -->
         <h5>Policies</h5>
@@ -339,7 +339,7 @@
       </div>
       <!-- /.small-12 columns -->
     </div>
-    <div class="row" v-show="currentRecordId">
+    <div class="row" v-if="currentRecordId">
       <div v-bind:class="md12col" id="removal-container">
         <p>Please note that when you update this expert, he/she will be removed from the experts list until an
           administrator has approved the changes.</p>

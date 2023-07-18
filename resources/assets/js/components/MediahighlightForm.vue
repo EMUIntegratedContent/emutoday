@@ -3,10 +3,10 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
           <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr" :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
       </div>
@@ -90,15 +90,15 @@
               <button class="btn btn-primary" type="button"
                       @click.prevent="toggleAddTag">{{ showAddTag ? 'Hide me' : 'Add unlisted tag' }}</button>
             </span>
-          <input v-show="showAddTag" type="text" v-model="newTag" class="form-control"
+          <input v-if="showAddTag" type="text" v-model="newTag" class="form-control"
                  placeholder="new tag name goes here">
-          <span v-show="showAddTag" class="input-group-btn">
+          <span v-if="showAddTag" class="input-group-btn">
               <button class="btn btn-default" type="button" @click.prevent="saveNewTag"><i class="fa fa-plus-square"
                                                                                            aria-hidden="true"></i></button>
             </span>
         </div><!-- /input-group -->
-        <p v-show="showAddTag && formErrors.name" class="help-text invalid">{{ formErrors.name }}</p>
-        <p v-show="showAddTag && formSuccess.tags" class="help-text valid">{{ formSuccess.tags }}</p>
+        <p v-if="showAddTag && formErrors.name" class="help-text invalid">{{ formErrors.name }}</p>
+        <p v-if="showAddTag && formSuccess.tags" class="help-text valid">{{ formSuccess.tags }}</p>
       </div><!-- /.small-6 columns -->
     </div> <!-- /.row -->
     <div class="row">

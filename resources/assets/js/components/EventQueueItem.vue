@@ -21,7 +21,7 @@
                 <input type="button" v-if="item.is_approved" value="Unapprove" class="btn btn-warning btn-xs" @click.prevent="changeIsApproved">
                 <input type="button" v-else value="Approve" class="btn btn-success btn-xs" @click.prevent="changeIsApproved">
               </div>
-              <button v-show="pid == 'item-elevated'" type="button"
+              <button v-if="pid == 'item-elevated'" type="button"
                       class="btn btn-sm btn-danger pull-right remove-event-btn" @click="emitEventDemote(item)"><i
                   class="fa fa-times" aria-hidden="true"></i></button>
             </form>
@@ -40,17 +40,17 @@
 
       <div v-if="showBody" class="box-body">
         <!-- <div class="box-body"> -->
-        <div v-show="formMessage.msg" class="callout bg-success">
+        <div v-if="formMessage.msg" class="callout bg-success">
           <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.err" class="callout bg-danger">
+        <div v-if="formMessage.err" class="callout bg-danger">
           <h5>{{ formMessage.err }}</h5>
         </div>
         <template v-if="canHaveImage">
           <img v-if="hasEventImage" :src="imageUrl"/><br/>
           <a v-on:click.prevent="togglePanel" style="width: 100px" class="btn btn-info btn-sm"
              href="#">{{ hasEventImage ? 'Change Image' : 'Promote Event' }}</a>
-          <div v-show="showPanel">
+          <div v-if="showPanel">
             <!-- <div class="panel"> -->
             <div>
               <form :id="'form-mediafile-upload'+item.id" @submit.prevent="addMediaFile" class="mediaform m-t"
@@ -130,7 +130,7 @@
           </template>
           <hr/>
           <p v-if="item.free">Cost: Free</p>
-          <p v-else>Cost: {{ item.cost | currency }}</p>
+          <p v-else>Cost: {{ currency(item.cost) }}</p>
           <p>Participation: {{ eventParticipation }}</p>
           <template v-if="item.tickets">
             <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="hasHttp(item.ticket_details_online)">{{ item.ticket_details_online }}</a>
@@ -595,10 +595,15 @@ export default {
     },
   },
   methods: {
+    currency (amount) {
+      if (isNaN(amount)) {
+        return amount
+      }
+      return '$' + parseFloat(amount).toFixed(2)
+    },
     // Handle the form submission here
     timeDiffNow: function (val) {
       return moment(val).diff(moment(), 'minutes');
-
     },
     changeIsApproved: function () {
       this.patchRecord.is_approved = (this.item.is_approved === 0) ? 1 : 0;
@@ -645,19 +650,20 @@ export default {
       });
     },
     removeMediaFile (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.formMessage.msg = false;
-      this.formMessage.err = false;
+      event.preventDefault()
+      event.stopPropagation()
+      this.formMessage.msg = false
+      this.formMessage.err = false
 
-      var data = new FormData();
-      data.append('event_id', this.item.id);
-      var action = '/api/event/removeMediaFile/' + this.item.id;
+      const data = new FormData()
+      data.append('event_id', this.item.id)
+      const action = '/api/event/removeMediaFile/' + this.item.id
       this.$http.post(action, data)
       .then((response) => {
-        this.formMessage.msg = response.body.message;
+        this.formMessage.msg = response.data.message
         this.checkAfterUpdate(response.data.newdata)
-      }, (response) => {
+      }).catch((e) => {
+        console.log(e)
         this.formMessage.err = "Something when wrong."
       });
     },

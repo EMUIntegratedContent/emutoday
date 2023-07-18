@@ -4,7 +4,7 @@
       <div class="box-header with-border">
         <div class="row">
           <div class="col-sm-8">
-            <span v-show="currentStory && currentStory.id == item.id && podType == 'queue'" class="success"><i
+            <span v-if="currentStory && currentStory.id == item.id && podType == 'queue'" class="success"><i
                 class="fa fa-check"></i> Set</span>
           </div>
           <div class="col-sm-4">

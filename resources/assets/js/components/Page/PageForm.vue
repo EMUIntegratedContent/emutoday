@@ -60,11 +60,11 @@
             <!-- SUCCESS/FAIL MESSAGES -->
             <div class="row">
               <div class="col-xs-12">
-                <div v-show="formMessage.isOk" class="alert alert-success alert-dismissible">
+                <div v-if="formMessage.isOk" class="alert alert-success alert-dismissible">
                   <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
                   <p>{{ formMessage.msg }}</p>
                 </div>
-                <div v-show="formMessage.isErr" class="alert alert-danger alert-dismissible">
+                <div v-if="formMessage.isErr" class="alert alert-danger alert-dismissible">
                   <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
                   <p>The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following
                     errors.</p>
@@ -77,7 +77,7 @@
                 <button class="btn btn-success" type="button" @click="submitForm">
                   {{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}
                 </button>&nbsp;
-                <button v-show="!newpage" type="button" class="btn btn-danger" data-toggle="modal"
+                <button v-if="!newpage" type="button" class="btn btn-danger" data-toggle="modal"
                         data-target="#deleteModal">Delete Hub Page
                 </button>
               </div>

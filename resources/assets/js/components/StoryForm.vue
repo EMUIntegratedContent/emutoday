@@ -3,7 +3,7 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div class="col-md-12">
-        <div v-show="formMessage.isOk" class="alert alert-success alert-dismissible">
+        <div v-if="formMessage.isOk" class="alert alert-success alert-dismissible">
           <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
           <h5>{{ formMessage.msg }}</h5>
         </div>
@@ -64,9 +64,9 @@
           <p v-if="formErrors.photo_credit" class="help-text invalid"></p>
         </div>
         <div class="form-group">
-          <label>Content <i v-show="storyType != 'featurephoto'" class="fi-star reqstar"></i></label>
+          <label>Content <i v-if="storyType != 'featurephoto'" class="fi-star reqstar"></i></label>
           <p class="help-text" id="content-helptext">Enter the story content <span
-              v-show="storyType == 'featurephoto'">(optional)</span></p>
+              v-if="storyType == 'featurephoto'">(optional)</span></p>
           <ckeditor
               id="content"
               name="content"
@@ -90,7 +90,7 @@
     </div><!-- /.row -->
     <div class="row">
       <div class="col-md-6">
-        <div v-show="saveAuthorMessage.isOk" class="alert alert-success alert-dismissible">
+        <div v-if="saveAuthorMessage.isOk" class="alert alert-success alert-dismissible">
           <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
           <h5>{{ saveAuthorMessage.msg }}</h5>
         </div>

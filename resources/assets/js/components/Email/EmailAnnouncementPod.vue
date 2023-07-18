@@ -7,12 +7,12 @@
             <div class="box-date-top pull-left">{{ titleDateLong(item.start_date) }}</div>
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
-            <label v-show="podType == 'announcementqueue'" class="pull-right"><input type="checkbox"
+            <label v-if="podType == 'announcementqueue'" class="pull-right"><input type="checkbox"
                                                                                      @click="toggleEmitAnnouncement(item)"
                                                                                      v-model="checked"
                                                                                      :checked="isAnnouncement"/> Email
               Announcement</label>
-            <button v-show="podType == 'announcement'" type="button" class="btn btn-sm btn-danger pull-right"
+            <button v-if="podType == 'announcement'" type="button" class="btn btn-sm btn-danger pull-right"
                     @click="removeAnnouncement(item.id)"><i class="fa fa-times" aria-hidden="true"></i></button>
           </div><!-- /.col-md-12 -->
         </div><!-- /.row -->

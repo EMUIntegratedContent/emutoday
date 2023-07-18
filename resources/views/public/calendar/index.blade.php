@@ -40,12 +40,6 @@
                 @endunless
             </div><!--end calendar row column-->
         </div><!--end calendar bar row 1-->
-
-            <!-- <component  :var-year-unit="{!! $varYearUnit !!}"
-            :var-month-unit="{!! $varMonthUnit !!}"
-            :var-day-unit="{!! $varDayUnit !!}"
-            :eventid="{!!$eventid!!}"
-            is="event-view"> -->
         <div id="vue-caleventview">
             <event-view
                 :var-year-unit="{!! $varYearUnit !!}"

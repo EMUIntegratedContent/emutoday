@@ -98,6 +98,6 @@ export default {
   },
   mounted () {
     this.freshPageLand()
-  },
+  }
 }
 </script>

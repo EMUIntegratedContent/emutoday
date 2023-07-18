@@ -52,7 +52,7 @@
         <p v-if="item.free">Cost: Free</p>
         <p v-else>
           <template v-if="isNumeric(item.cost)">
-            Cost: {{ item.cost | currency }}
+            Cost: {{ currency(item.cost) }}
           </template>
           <template v-else>
             Cost: {{ item.cost }}
@@ -131,7 +131,7 @@ p.description {
 </style>
 <script>
 
-import moment from 'moment';
+import moment from 'moment'
 
 export default {
   components: {},
@@ -144,8 +144,8 @@ export default {
     }
   },
   mounted () {
-    const start_datetime = moment(this.calendarDate(this.item.start_date) + ' ' + this.convertTimeformat(this.item.start_time));
-    const end_datetime = moment(this.calendarDate(this.item.end_date) + ' ' + this.convertTimeformat(this.item.end_time));
+    const start_datetime = moment(this.calendarDate(this.item.start_date) + ' ' + this.convertTimeformat(this.item.start_time), 'YYYY-MM-DD HH:mm:ss');
+    const end_datetime = moment(this.calendarDate(this.item.end_date) + ' ' + this.convertTimeformat(this.item.end_time), 'YYYY-MM-DD HH:mm:ss');
 
     this.addToCalendar = createCalendar({
       options: {
@@ -204,6 +204,12 @@ export default {
     }
   },
   methods: {
+    currency (amount) {
+      if (isNaN(amount)) {
+        return amount
+      }
+      return '$' + parseFloat(amount).toFixed(2)
+    },
     yesNo: function (value) {
       return (value == true) ? 'Yes' : 'No';
     },
@@ -241,8 +247,8 @@ export default {
       if (AMPM == "a.m." && hours == 12) {
         hours = hours - 12
       }
-      var sHours = hours.toString()
-      var sMinutes = minutes.toString()
+      let sHours = hours.toString()
+      let sMinutes = minutes.toString()
       if (hours < 10) {
         sHours = "0" + sHours
       }

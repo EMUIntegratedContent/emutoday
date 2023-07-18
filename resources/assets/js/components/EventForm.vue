@@ -3,16 +3,16 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
           <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr" :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
-        <div v-show="record.is_canceled == 1" :class="calloutFail">
+        <div v-if="record.is_canceled == 1" :class="calloutFail">
           <h5>This event has been canceled.</h5>
         </div>
-        <div v-show="record.is_archived == 1" :class="calloutFail">
+        <div v-if="record.is_archived == 1" :class="calloutFail">
           <h5>This event is archived because it ended more than two years ago. It will no longer display publicly.</h5>
         </div>
         <div class="form-group">
@@ -142,7 +142,7 @@
         </div>
       </div><!-- /.small-6 column -->
       <div :class="md6col">
-        <div v-show="hasStartTime" class="form-group">
+        <div v-if="hasStartTime" class="form-group">
           <label for="no-end-time">No End Time:</label>
           <input id="no-end-time" name="no_end_time" type="checkbox" :true-value="1"
                  :false-value="0" v-model="record.no_end_time"/>
@@ -151,7 +151,7 @@
     </div><!-- /.row -->
     <div class="row">
       <div :class="md6col">
-        <div v-show="hasStartTime" class="form-group">
+        <div v-if="hasStartTime" class="form-group">
           <label>Start Time: <span :class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.start_time"
@@ -167,7 +167,7 @@
         </div><!-- /.form-group -->
       </div><!-- /.md6col -->
       <div :class="md6col">
-        <div v-show="hasEndTime" class="form-group">
+        <div v-if="hasEndTime" class="form-group">
           <label>End Time: <span :class="iconStar" class="reqstar"></span>
             <flatpickr
                 v-model="record.end_time"
@@ -256,7 +256,7 @@
         </div>
       </div><!-- /.col-md-4 -->
     </div><!-- /.row -->
-    <div class="row" v-show="record.related_link_1">
+    <div class="row" v-if="record.related_link_1">
       <div :class="md4col">
         <div v-bind:class="formGroup">
           <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
@@ -294,7 +294,7 @@
           </div>
         </div><!-- /.col-md-4 -->
       </div><!-- /.row -->
-      <div class="row" v-show="record.related_link_2">
+      <div class="row" v-if="record.related_link_2">
         <div :class="md4col">
           <div v-bind:class="formGroup">
             <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
@@ -333,7 +333,7 @@
           </div>
         </div><!-- /.col-md-4 -->
       </div><!-- /.row -->
-      <div class="row" v-show="record.related_link_3">
+      <div class="row" v-if="record.related_link_3">
         <div :class="md4col">
           <div v-bind:class="formGroup">
             <label>Descriptive text for link.<span :class="iconStar" class="reqstar"></span></label>
@@ -1205,29 +1205,29 @@ export default {
 
     cancelRecord: function (recid) {
       // toggles cancel
-      this.formMessage.isOk = false;
-      this.formMessage.msg = false;
+      this.formMessage.isOk = false
+      this.formMessage.msg = false
 
       this.$http.patch('/api/event/' + recid + '/cancel')
       .then((response) => {
         this.formMessage.isOk = true
-        this.formMessage.msg = response.body.message;
+        this.formMessage.msg = response.data.message
       }).catch((e) => {
         console.log(e)
       })
-      this.refreshUserEventTable();
+      this.refreshUserEventTable()
     },
 
     fetchCurrentRecord: function () {
-      var fetchme = this.recordid ? this.recordid : this.record.id;
+      const fetchme = this.recordid ? this.recordid : this.record.id
       this.$http.get('/api/event/' + fetchme + '/edit')
 
       .then((response) => {
-        this.record = response.data.data;
-        this.record.exists = this.record_exists = true;
-        this.currentRecordId = this.record.id;
-        this.checkOverData();
-        this.record.start_time = response.data.data.start_time;
+        this.record = response.data.data
+        this.record.exists = this.record_exists = true
+        this.currentRecordId = this.record.id
+        this.checkOverData()
+        this.record.start_time = response.data.data.start_time
       }).catch((e) => {
         console.log(e)
       })

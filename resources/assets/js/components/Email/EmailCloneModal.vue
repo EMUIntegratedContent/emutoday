@@ -10,7 +10,7 @@
         </div>
         <div class="modal-body">
           <p v-if="!disableClone">Are you sure you want to clone "{{ emailBuilderEmail.title }}"?</p>
-          <div v-show="cloneStatus.is_set && cloneStatus.is_success"  class="alert" :class="'alert-' + [cloneStatus.is_success ? 'success' : 'danger']">
+          <div v-if="cloneStatus.is_set && cloneStatus.is_success"  class="alert" :class="'alert-' + [cloneStatus.is_success ? 'success' : 'danger']">
             <p v-html="cloneStatus.message"></p>
           </div>
         </div>

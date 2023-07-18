@@ -111,11 +111,11 @@
           <p>To rearrange the order of announcements, drag the pod to the desired location. To demote an announcement,
             click the red 'X' on the pod. Click "save order" button when done. Note: this list is NOT filtered by
             date.</p>
-          <div v-show="ordersave.isOk" class="alert alert-success alert-dismissible">
+          <div v-if="ordersave.isOk" class="alert alert-success alert-dismissible">
             <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
             <h5>{{ ordersave.msg }}</h5>
           </div>
-          <div v-show="ordersave.isErr" class="alert alert-danger alert-dismissible">
+          <div v-if="ordersave.isErr" class="alert alert-danger alert-dismissible">
             <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
             <h5>{{ ordersave.msg }}</h5>
           </div>

@@ -82,14 +82,14 @@
               date:</strong> {{ formatDate(item.deadline) }}</p>
           </div>
           <div class="col-sm-12 col-md-3">
-            <div v-show="showArchivedButtons">
-              <span v-show="isFailedDeleted" class="fail"><i class="fa fa-exclamation-triangle"></i> Error deleting item</span>
+            <div v-if="showArchivedButtons">
+              <span v-if="isFailedDeleted" class="fail"><i class="fa fa-exclamation-triangle"></i> Error deleting item</span>
               <div class="btn-group pull-right">
                 <button @click="unarchiveItem(item)" type="button" class="btn bg-green btn-xs footer-btn"
                         aria-label="unarchive item"><i class="fa fa-inbox"></i></button>
                 <button @click="deleteItemConfirm" type="button" class="btn bg-red btn-xs footer-btn"
                         aria-label="delete item initial step"><i class="fa fa-trash"></i></button>
-                <div v-show="confirmDelete" class="btn-group pull-right">
+                <div v-if="confirmDelete" class="btn-group pull-right">
                   <span class="confirmDelete">Sure?</span>
                   <button @click="confirmDelete = false" type="button" class="btn bg-gray btn-xs footer-btn"
                           aria-label="delete item no">No
@@ -101,7 +101,7 @@
               </div>
             </div>
             <!-- /.btn-toolbar -->
-            <div v-show="showUnarchivedButtons">
+            <div v-if="showUnarchivedButtons">
               <span class="success"><i class="fa fa-check"></i> Unarchived</span>
               <div class="btn-group pull-right">
                 <a :href="editItem(item)" type="button" class="btn bg-orange btn-xs footer-btn"
@@ -109,14 +109,14 @@
               </div>
             </div>
             <!-- /.btn-toolbar -->
-            <div v-show="showRetryButtons">
+            <div v-if="showRetryButtons">
               <span class="fail"><i class="fa fa-exclamation-triangle"></i> Error</span>
               <div class="btn-group pull-right">
                 <button @click="unarchiveItem(item)" type="button" class="btn bg-orange btn-xs footer-btn"
                         aria-label="unarchive item"><i class="fa fa-refresh"></i></button>
                 <button @click="deleteItemConfirm" type="button" class="btn bg-red btn-xs footer-btn"
                         aria-label="delete item initial step"><i class="fa fa-trash"></i></button>
-                <div v-show="confirmDelete" class="btn-group pull-right">
+                <div v-if="confirmDelete" class="btn-group pull-right">
                   <span class="confirmDelete">Sure?</span>
                   <button @click="confirmDelete = false" type="button" class="btn bg-gray btn-xs footer-btn"
                           aria-label="delete item no">No
@@ -128,7 +128,7 @@
               </div>
             </div>
             <!-- /.btn-toolbar -->
-            <div v-show="isDeleted" class="pull-right">
+            <div v-if="isDeleted" class="pull-right">
               <span class="fail"><i class="fa fa-trash"></i> Item Deleted</span>
             </div>
           </div>

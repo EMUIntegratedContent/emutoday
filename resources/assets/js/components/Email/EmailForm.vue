@@ -13,11 +13,11 @@
       <!-- SUCCESS/FAIL MESSAGES -->
       <div class="row">
         <div class="col-xs-12 col-sm-8">
-          <div v-show="formMessage.isOk" class="alert alert-success alert-dismissible">
+          <div v-if="formMessage.isOk" class="alert alert-success alert-dismissible">
             <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
             <p>{{ formMessage.msg }}</p>
           </div>
-          <div v-show="formMessage.isErr" class="alert alert-danger alert-dismissible">
+          <div v-if="formMessage.isErr" class="alert alert-danger alert-dismissible">
             <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
             <p>The email could not be {{ newform ? 'created' : 'updated' }}. Please fix the following errors.</p>
             <ul v-if="formErrors">
@@ -221,16 +221,16 @@
                             showAddRecipient ? 'Hide me' : 'Add unlisted recipient'
                           }}</button>
 											</span>
-                      <input v-show="showAddRecipient" type="text" v-model="newRecipient" class="form-control"
+                      <input v-if="showAddRecipient" type="text" v-model="newRecipient" class="form-control"
                              placeholder="mailing_list@emich.edu">
-                      <span v-show="showAddRecipient" class="input-group-btn">
+                      <span v-if="showAddRecipient" class="input-group-btn">
 												<button class="btn btn-default" type="button" @click.prevent="saveUnlistedRecipient"><i
                             class="fa fa-plus-square" aria-hidden="true"></i></button>
 											</span>
                     </div><!-- /input-group -->
-                    <p v-show="showAddRecipient && formErrors.email_address" class="help-text invalid">
+                    <p v-if="showAddRecipient && formErrors.email_address" class="help-text invalid">
                       {{ formErrors.email_address }}</p>
-                    <p v-show="showAddRecipient && formSuccess.email_address" class="help-text valid">
+                    <p v-if="showAddRecipient && formSuccess.email_address" class="help-text valid">
                       {{ formSuccess.email_address }}</p>
                   </div>
                 </div>
@@ -330,7 +330,7 @@
               </div>
             </div>
             <!-- /.row -->
-            <div class="row" v-show="existingEmail">
+            <div class="row" v-if="existingEmail">
               <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <!-- Trigger the delete modal -->
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Email
