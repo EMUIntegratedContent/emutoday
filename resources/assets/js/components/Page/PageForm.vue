@@ -181,7 +181,6 @@ export default {
     flatpickr
   },
   props: {
-    cuserRoles: { default: {} },
     errors: {
       default: ''
     },
@@ -354,11 +353,24 @@ export default {
         }
       })
     },
+
+    // Make sure all story IDs in the builder are unique. Otherwise, it causes conflicts with the logic when building the page.
+    checkUniqueIds() {
+      const ids = Object.values(this.slotStories).map(story => story.id)
+      return new Set(ids).size === Object.keys(this.slotStories).length
+    },
+
     submitForm: function () {
       if (this.formErrors.endDateBeforeStart) {
         alert('The end date occurs before the start date. Please fix this before submitting.')
         return false
       }
+
+      if(this.progress === 100 && !this.checkUniqueIds()) {
+        alert('You are using the same story multiple times. Please ensure each story is unique.')
+        return false
+      }
+
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       // Decide route to submit form to
@@ -388,17 +400,16 @@ export default {
         console.log(e)
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
-        // this.formErrors = e.response.data.error.message
       })
     },
 
     setupDatePickers: function () {
       let today = moment()
       if (!this.record.start_date) {
-        this.record.start_date = today.format('YYYY-MM-DD')
+        this.record.start_date = today.format('YYYY-MM-DD 00:00:00')
       }
       if (!this.record.end_date) {
-        this.record.end_date = today.format('YYYY-MM-DD')
+        this.record.end_date = today.format('YYYY-MM-DD 00:00:00')
       }
     },
 
