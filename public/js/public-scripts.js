@@ -1892,11 +1892,11 @@ $(document).ready(function() {
   /**
    * Any story image floated left should have no left margin, and a right margin
    */
-  $.each($('#story-content figure'), function(){
-    if($(this).css('float') == 'left'){
-      $(this).css({'margin-left': 0, 'margin-right': '1.11111rem'});
-    }
-  })
+  // $.each($('#story-content figure'), function(){
+  //   if($(this).css('float') == 'left'){
+  //     $(this).css({'margin-left': 0, 'margin-right': '1.11111rem'});
+  //   }
+  // })
 
   // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
   const isIE = /*@cc_on!@*/false || !!document.documentMode;

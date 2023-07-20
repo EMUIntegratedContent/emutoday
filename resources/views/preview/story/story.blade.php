@@ -45,7 +45,7 @@
           @endif
         </div>
         <!-- Story Page Content -->
-        <div id="story-content" class="row">
+        <div id="story-content" class="row ck-content">
         {!! Form::model($story,[
             'method' => 'put',
             'route' => ['admin_preview_story_update', $story->id],

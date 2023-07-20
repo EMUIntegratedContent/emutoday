@@ -32,7 +32,8 @@ mix.combine([
 	'resources/assets/css/experts-styles.css',
 	'resources/assets/css/media-queries.css',
 	'resources/assets/css/basebar-styles.css',
-	'resources/assets/css/tweeks.css'
+	'resources/assets/css/tweeks.css',
+	'resources/assets/css/ckeditor5-styles.css'
 ], 'public/css/public-styles.css')
 
 /*
