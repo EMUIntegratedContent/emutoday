@@ -100,6 +100,7 @@ export const ckeditorMixin = {
 						'alignLeft',
 						'alignRight'
 					],
+					resizeUnit: 'px',
 					resizeOptions: [
 						{
 							name: 'resizeImage:original',
@@ -107,14 +108,24 @@ export const ckeditorMixin = {
 							value: null
 						},
 						{
-							name: 'resizeImage:50',
-							label: '50%',
-							value: '50'
+							name: 'resizeImage:150',
+							label: '150px (Headshot Width)',
+							value: '150'
 						},
 						{
-							name: 'resizeImage:75',
-							label: '75%',
-							value: '75'
+							name: 'resizeImage:250',
+							label: '250px',
+							value: '250'
+						},
+						{
+							name: 'resizeImage:500',
+							label: '500px',
+							value: '500'
+						},
+						{
+							name: 'resizeImage:960',
+							label: '960px',
+							value: '960'
 						}
 					],
 					toolbar: [
