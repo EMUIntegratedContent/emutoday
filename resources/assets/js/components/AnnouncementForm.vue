@@ -192,7 +192,7 @@
       </div>
       <div :class="md8col">
         <div :class="formGroup">
-          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{ submitBtnLabel }}</button>
+          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary" id="submit-form-btn">{{ submitBtnLabel }}</button>
           <button v-if="thisRecordExists" id="btn-delete" v-on:click="delAnnouncement" type="submit" class="redBtn"
                   v-bind:class="btnPrimary">Delete Announcement
           </button>
@@ -307,6 +307,10 @@ textarea {
 .redBtn {
   background: hsl(0, 90%, 70%);
 }
+
+#submit-form-btn {
+  margin-right: 5px;
+}
 </style>
 
 
@@ -411,7 +415,6 @@ export default {
         this.record.announcement = "HR"
       }
     }
-    this.updatePreview();
   },
   computed: {
     // Check announcement type. general or hr
@@ -500,14 +503,6 @@ export default {
     handleChangeEndDate (evt) {
       this.pubFlatpickrConfig.maxDate = moment(evt.target.value).format('YYYY-MM-DD')
     },
-    updatePreview: function () {
-      if (this.framework == 'foundation') {
-        // Move this preview
-        document.getElementById('preview-container').appendChild(
-            document.getElementById('preview-contents')
-        )
-      }
-    },
     refreshUserAnnouncementTable: function () {
       if (this.framework == 'foundation') {
         $.get('/announcement/user/announcements', function (data) {
@@ -516,13 +511,18 @@ export default {
         })
       }
     },
-    fetchCurrentRecord: function () {
-      let fetchme = this.recordid ? this.recordid : this.record.id
+    fetchCurrentRecord: function (recid) {
+      let fetchme
+      // recid is passed when the public form is being used (happens in vue-announcement-form.js)
+      if(recid) {
+        fetchme = recid
+      } else {
+        fetchme = this.recordid ? this.recordid : this.record.id
+      }
       this.$http.get('/api/announcement/' + fetchme + '/edit')
 
       .then((response) => {
         this.record = response.data.data
-        this.updatePreview()
         this.record.start_time = response.data.data.start_time
       })
       .catch((e) => {

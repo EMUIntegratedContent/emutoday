@@ -7,7 +7,16 @@ const CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('co
 axios.defaults.headers.common['X-CSRF-TOKEN'] = CSRFToken
 
 const app = createApp({
-    components: { AnnouncementForm }
+	components: { AnnouncementForm }
 })
 app.config.globalProperties.$http = axios
-app.mount('#vue-announcements')
+const vm = app.mount('#vue-announcements')
+
+function assignEventListeners () {
+	// Edit buttons need to call vue object methods
+	$("#calendar-bar").on("click", ".editBtn", function (event) {
+		vm.$refs.aform.fetchCurrentRecord(this.parentNode.id)
+	})
+}
+
+assignEventListeners()

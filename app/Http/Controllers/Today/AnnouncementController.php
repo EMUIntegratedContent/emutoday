@@ -43,9 +43,7 @@ class AnnouncementController extends Controller
     public function announcementForm(Request $request, Announcement $announcement)
     {
       if (\Auth::check()) {
-        // The user is logged in...
-        $user = \Auth::user();
-
+        // The user is logged in...forward them to the admin form
         return redirect()->action('Admin\AnnouncementController@form');
       } else {
         $user = cas()->user();

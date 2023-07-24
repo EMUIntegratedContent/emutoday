@@ -10,4 +10,15 @@ const app = createApp({
     components: { EventForm }
 })
 app.config.globalProperties.$http = axios
-app.mount('#vue-event-form')
+const vm = app.mount('#vue-event-form')
+
+function assignEventListeners(){
+    // Cancel and edit buttons need to call vue object methods
+    $("#calendar-bar").on("click", ".editBtn", function(event){
+        vm.$refs.eform.fetchSubmittedRecord(this.parentNode.id)
+    })
+    $("#calendar-bar").on("click", ".cancelBtn", function(event){
+        vm.$refs.eform.cancelRecord(this.parentNode.id)
+    })
+}
+assignEventListeners()

@@ -908,6 +908,10 @@ textarea {
 .vs--loading .vs__spinner {
   opacity: 1
 }
+
+#btn-clone, #btn-event, #btn-cancel, #btn-delete {
+  margin-right: 5px;
+}
 </style>
 
 <script>
@@ -944,14 +948,14 @@ export default {
         noCalendar: true,
         altFormat: "h:i K", // format the user sees
         altInput: true,
-        dateFormat: "H:i", // format sumbitted to the API
+        dateFormat: "h:i K", // format sumbitted to the API
       },
       endTimeConfig: {
         enableTime: true,
         noCalendar: true,
         altFormat: "h:i K", // format the user sees
         altInput: true,
-        dateFormat: "H:i", // format sumbitted to the API
+        dateFormat: "h:i K", // format sumbitted to the API
       },
       regDeadlineConfig: {
         altFormat: "m/d/Y", // format the user sees
