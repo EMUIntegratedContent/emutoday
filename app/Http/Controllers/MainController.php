@@ -21,7 +21,7 @@ class MainController extends Controller
   protected $recordLimitNews = 4;
   protected $recordLimitAnnouncements = 4;
   protected $recordLimitEvents = 4;
-  protected $recordLimitHR = 3;
+  protected $recordLimitHR = 4;
 
   public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets)
 

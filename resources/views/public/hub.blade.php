@@ -247,6 +247,14 @@
                     </div>
                   </div>
                   <div class="card small-12 medium-6 large-3 large-push-6 columns" data-equalizer-watch>
+                    <img src="/assets/imgs/placeholder/magazine-summer-2023.png" alt="The cover of the summer 2023 issue of EMU Magazine">
+                    <div class="card-section">
+                      <p>A Common Thread: Fashion Marketing Innovation weaves a rich tapestry of engineering, technology and art.</p>
+                      <a class="bold-green-link" title="External link to the EMU Magazine summer 2023 issue."
+                         href="https://magazine.emich.edu/summer-2023/" target="blank">Read the latest issue</a>
+                    </div>
+                  </div>
+                  <div class="card small-12 medium-12 large-6 large-pull-3 columns" data-equalizer-watch>
                     <div class="card-section" data-equalizer-watch>
                       <h4><a class="bold-green-link" href="#">Working @ EMU</a></h4>
                       <div class="row newshub-tab-front">
@@ -257,25 +265,6 @@
                                 <a href="{{ (substr($currentHRAnnouncement->link, 0, 4) == 'http') ? $currentHRAnnouncement->link : 'https://'.$currentHRAnnouncement->link }}">{{$currentHRAnnouncement->title}}</a>
                               </li>
                             @endforeach
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card small-12 medium-12 large-6 large-pull-3 columns" data-equalizer-watch>
-                    <div class="card-section" data-equalizer-watch>
-                      <h4><a class="bold-green-link" title="External link to EMU's Twitter page."
-                             href="https://twitter.com/EasternMichU/">Twitter</a></h4>
-                      <div class="row newshub-tab-front">
-                        <div class="large-12 medium-12 small-12 columns">
-                          <ul class="twitter-content">
-                            @unless(empty($tweets))
-                              @foreach($tweets as $tweet)
-                                <li>
-                                  <a href="https://twitter.com/{{ $tweet['user']['screen_name'] }}/status/{{ $tweet['id'] }}">{{ '@' . $tweet['user']['screen_name'] }}</a> <?=$tweet['text'];?>
-                                </li>
-                              @endforeach
-                            @endunless
                           </ul>
                         </div>
                       </div>
