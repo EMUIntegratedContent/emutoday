@@ -6,7 +6,7 @@
 @section('style-plugin')
     @parent
 <!-- iCheck for checkboxes and radio inputs -->
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+{{--    --}}
 
     @endsection
     @section('style-app')

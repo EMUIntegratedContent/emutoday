@@ -2,7 +2,7 @@
 <!-- Event Views with Vues -->
 @section('styles')
 @parent
-<link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
+
 @endsection
 
 @section('title', 'Eastern Expert Form')
@@ -19,7 +19,7 @@
           <h1>Expert Form</h1>
           <div id="vue-experts-public">
               <expert-form-public
-                v-ref:foo
+                ref="efpublic"
                 errors="{{ json_encode($errors) }}"
                 framework="foundation"
                 recordexists="{{$expert->exists ? true: false}}"
@@ -69,6 +69,5 @@
 
 @section('scriptsfooter')
 @parent
-<script src="/themes/plugins/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="/js/vue-expert-form.js"></script>
 @endsection

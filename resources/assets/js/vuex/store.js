@@ -1,8 +1,28 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
-import moment from 'moment'
 
-Vue.use(Vuex)
+const defaultEmail = {
+	id: '',
+	clone: [],
+	created_at: null,
+	exclude_events: 0,
+	is_approved: false,
+	is_president_included: false,
+	is_ready: false,
+	is_sent: 0,
+	mailgun_clicks: 0,
+	mailgun_opens: 0,
+	mailgun_spam: 0,
+	president_teaser: null,
+	president_url: null,
+	send_at: null,
+	subheading: null,
+	title: null,
+	announcements: [],
+	events: [],
+	mainStories: [],
+	otherStories: [],
+	recipients: []
+}
 
 const state = {
 	calendarCategories: [],
@@ -14,7 +34,9 @@ const state = {
 	magazineBuilderArticlesSub: [],
 	issueArticles: [null, null, null, null, null, null],
 	modalPosition: '',
-	selectedCalendarCategory: null
+	selectedCalendarCategory: null,
+	// Email builder
+	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail))
 }
 const mutations = {
 	// A mutation receives the current state as the first argument
@@ -56,6 +78,70 @@ const mutations = {
 	},
 	setSelectedCalendarCategory (state, category) {
 		state.selectedCalendarCategory = category
+	},
+	// Email Builder
+	addAnnouncement (state, ann) {
+		state.emailBuilderEmail.announcements.push(ann)
+	},
+	addEvent (state, event) {
+		state.emailBuilderEmail.events.push(event)
+	},
+	addMainStory (state, story) {
+		state.emailBuilderEmail.mainStories.push(story)
+	},
+	addOtherStory (state, story) {
+		state.emailBuilderEmail.otherStories.push(story)
+	},
+	removeAnnouncement (state, annId) {
+		const announcements = JSON.parse(JSON.stringify(state.emailBuilderEmail.announcements))
+		const announcement = announcements.find(an => an.id == annId)
+		if(announcement) {
+			announcements.splice(announcements.indexOf(announcement), 1)
+			state.emailBuilderEmail.announcements = JSON.parse(JSON.stringify(announcements))
+		}
+	},
+	removeEvent (state, eventId) {
+		const events = JSON.parse(JSON.stringify(state.emailBuilderEmail.events))
+		const event = events.find(ev => ev.id == eventId)
+		if(event) {
+			events.splice(events.indexOf(event), 1)
+			state.emailBuilderEmail.events = JSON.parse(JSON.stringify(events))
+		}
+	},
+	removeMainStory (state, storyId) {
+		const mainStories = JSON.parse(JSON.stringify(state.emailBuilderEmail.mainStories))
+		const story = mainStories.find(ms => ms.id == storyId)
+		if(story) {
+			mainStories.splice(mainStories.indexOf(story), 1)
+			state.emailBuilderEmail.mainStories = JSON.parse(JSON.stringify(mainStories))
+		}
+	},
+	removeOtherStory (state, storyId) {
+		const story = state.emailBuilderEmail.otherStories.find(os => os.id == storyId)
+		if(story) {
+			state.emailBuilderEmail.otherStories.splice(state.emailBuilderEmail.otherStories.indexOf(story), 1)
+		}
+	},
+	resetEmailBuilderEmail (state) {
+		state.emailBuilderEmail = JSON.parse(JSON.stringify(defaultEmail))
+	},
+	setEmailBuilderEmail (state, email) {
+		state.emailBuilderEmail = email
+	},
+	setEmailBuilderEmailProp (state, { prop, value }) {
+		state.emailBuilderEmail[prop] = value
+	},
+	updateAnnouncementsOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.announcements.splice(newIndex, 0, state.emailBuilderEmail.announcements.splice(oldIndex, 1)[0]);
+	},
+	updateEventsOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.events.splice(newIndex, 0, state.emailBuilderEmail.events.splice(oldIndex, 1)[0]);
+	},
+	updateMainStoriesOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.mainStories.splice(newIndex, 0, state.emailBuilderEmail.mainStories.splice(oldIndex, 1)[0]);
+	},
+	updateOtherStoriesOrder (state, { newIndex, oldIndex }) {
+		state.emailBuilderEmail.otherStories.splice(newIndex, 0, state.emailBuilderEmail.otherStories.splice(oldIndex, 1)[0]);
 	}
 }
 const actions = {

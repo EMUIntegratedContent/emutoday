@@ -4,7 +4,7 @@
       <div class="box-header with-border">
         <div class="row">
           <div class="col-sm-8">
-            <span v-show="currentStory && currentStory.id == item.id && podType == 'queue'" class="success"><i
+            <span v-if="currentStory && currentStory.id == item.id && podType == 'queue'" class="success"><i
                 class="fa fa-check"></i> Set</span>
           </div>
           <div class="col-sm-4">
@@ -265,8 +265,6 @@ h5 {
 import moment from 'moment'
 
 export default {
-  directives: {},
-  components: {},
   props: {
     item: {
       type: Object,
@@ -295,11 +293,6 @@ export default {
       checked: false,
       swapped: false,
     }
-  },
-  created: function () {
-
-  },
-  ready: function () {
   },
   computed: {
     timefromNow: function () {

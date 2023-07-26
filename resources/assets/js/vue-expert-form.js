@@ -1,40 +1,43 @@
-var Vue = require('vue');
-
-import VueResource from 'vue-resource';
-Vue.use(VueResource);
+import { createApp } from "vue"
+import ExpertForm from './components/ExpertForm.vue'
+import ExpertFormPublic from './components/ExpertFormPublic.vue'
+import ExpertBoxTools from './components/ExpertBoxTools.vue'
+import store from './vuex/store'
+import axios from "axios"
+import CKEditor from '@ckeditor/ckeditor5-vue'
 
 // Remember the token we created in the <head> tags? Get it here.
-var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
-Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+const CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
+axios.defaults.headers.common['X-CSRF-TOKEN'] = CSRFToken
 
-// var moment = require('moment');
-import ExpertForm from './components/ExpertForm.vue';
-import ExpertFormPublic from './components/ExpertFormPublic.vue';
-import ExpertBoxTools from './components/ExpertBoxTools.vue';
-import store from './vuex/store';
-
-var vm = new Vue({
-    el: '#vue-experts',
+const appAdmin = createApp({
     components: {
         ExpertForm,
         ExpertBoxTools
     },
-    store
-});
+    store,
+})
+appAdmin.config.globalProperties.$http = axios
+appAdmin.use(CKEditor)
+appAdmin.mount('#vue-experts')
 
-var vmpublic = new Vue({
-    el: '#vue-experts-public',
-    components: {ExpertFormPublic},
+const appPublic = createApp({
+    components: {
+        ExpertFormPublic
+    },
     store
-});
+})
+appPublic.config.globalProperties.$http = axios
+appPublic.use(CKEditor)
+const vmpublic = appPublic.mount('#vue-experts-public')
 
 function assignEventListeners(){
   // Cancel and edit buttons need to call vue object methods
-  $("#experts-area").on("click", ".editBtn", function(event){
-    vmpublic.$refs.foo.fetchSubmittedRecord(this.parentNode.id);
+  $("#experts-area").on("click", ".editBtn", function(evt){
+      vmpublic.$refs.efpublic.fetchSubmittedRecord(this.parentNode.id)
   });
-  $("#experts-area").on("click", ".cancelBtn", function(event){
-    vmpublic.$refs.foo.cancelRecord(this.parentNode.id);
+  $("#experts-area").on("click", ".cancelBtn", function(evt){
+      vmpublic.$refs.efpublic.cancelRecord(this.parentNode.id)
   });
 }
 assignEventListeners();

@@ -54,7 +54,7 @@
             @endif
           </div>
           <!-- Story Page Content -->
-          <div id="story-content" class="row">
+          <div id="story-content" class="row ck-content">
             <!-- Story Content Column -->
             <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
               @if(isset($mainStoryImage) && !isset($fullBannerImage))

@@ -3,7 +3,7 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div class="col-md-12">
-        <div v-show="formMessage.isOk" class="alert alert-success alert-dismissible">
+        <div v-if="formMessage.isOk" class="alert alert-success alert-dismissible">
           <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
           <h5>{{ formMessage.msg }}</h5>
         </div>
@@ -56,7 +56,7 @@
                  name="subtitle" type="text">
           <p v-if="formErrors.subtitle" class="help-text invalid"></p>
         </div>
-        <div class="form-group" v-if="stype == 'featurephoto'">
+        <div class="form-group" v-if="storyType == 'featurephoto'">
           <label>Photo credit</label>
           <p class="help-text" id="photo_credit-helptext">e.g. 'submitted by John Smith'</p>
           <input v-model="record.photo_credit" v-bind:class="[formErrors.photo_credit ? 'invalid-input' : '']"
@@ -64,18 +64,17 @@
           <p v-if="formErrors.photo_credit" class="help-text invalid"></p>
         </div>
         <div class="form-group">
-          <label>Content <i v-show="stype != 'featurephoto'" class="fi-star reqstar"></i></label>
+          <label>Content <i v-if="storyType != 'featurephoto'" class="fi-star reqstar"></i></label>
           <p class="help-text" id="content-helptext">Enter the story content <span
-              v-show="stype == 'featurephoto'">(optional)</span></p>
-<!--          <textarea v-if="hasContent" id="content" name="content" v-ckrte="content" :type="editorType"-->
-<!--                    :content="content" :fresh="isFresh" rows="200"></textarea>-->
+              v-if="storyType == 'featurephoto'">(optional)</span></p>
           <ckeditor
-              editor-url="https://cdn.ckeditor.com/4.17.2/full/ckeditor.js"
               id="content"
               name="content"
               v-model="content"
-              :config="editorConfig"
+              :editor="editor"
+              :config="editorConfigFull"
           ></ckeditor>
+<!--          <input type="text" id="editor" v-model="content" />-->
           <p v-if="formErrors.content" class="help-text invalid">Need Content!</p>
         </div>
         <div class="form-group user-display">
@@ -91,7 +90,7 @@
     </div><!-- /.row -->
     <div class="row">
       <div class="col-md-6">
-        <div v-show="saveAuthorMessage.isOk" class="alert alert-success alert-dismissible">
+        <div v-if="saveAuthorMessage.isOk" class="alert alert-success alert-dismissible">
           <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
           <h5>{{ saveAuthorMessage.msg }}</h5>
         </div>
@@ -126,14 +125,14 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>Start Date: <i class="fi-star reqstar"></i>
-            <date-picker
-                id="start-date"
+            <flatpickr
                 v-model="fdate"
-                value-type="YYYY-MM-DD HH:mm:ss"
-                format="MM/DD/YYYY h:mm A"
-                :clearable="false"
-                type="datetime"
-            ></date-picker>
+                id="start-date"
+                :config="flatpickrConfig"
+                class="form-control"
+                name="startingDate"
+            >
+            </flatpickr>
           </label>
           <p>NOTE: For external story with "video" tag, treat this field as the END Date.</p>
           <p v-if="formErrors.start_date" class="help-text invalid">Need a Start Date</p>
@@ -142,14 +141,14 @@
       <div class="col-md-6">
         <div v-if="isAdmin" class="form-group">
           <label>Tags:
-          <v-select
-              :class="[formErrors.tags ? 'invalid-input' : '']"
-              v-model="tags"
-              :options="taglist"
-              :multiple="true"
-              placeholder="Select tags"
-              label="name">
-          </v-select>
+            <v-select
+                :class="[formErrors.tags ? 'invalid-input' : '']"
+                v-model="tags"
+                :options="taglist"
+                :multiple="true"
+                placeholder="Select tags"
+                label="name">
+            </v-select>
           </label>
         </div><!-- /.form-group -->
       </div><!-- /.small-6 columns -->
@@ -171,6 +170,9 @@
   </form>
 </template>
 <style scoped>
+.btn-primary {
+  margin-right: 0.2rem;
+}
 p {
   margin: 0;
 }
@@ -261,76 +263,88 @@ button.button-primary {
 .save-author {
   vertical-align: bottom;
 }
+.ck.ck-content:not(.ck-comment__input *) {
+  height: 300px;
+  overflow-y: auto;
+}
+
 </style>
 
 <script>
 import moment from 'moment'
 import vSelect from "vue-select"
-import { storyMixin } from "./story_mixin"
-import DatePicker from 'vue2-datepicker'
-import 'vue2-datepicker/index.css'
+import {storyMixin} from "./story_mixin"
+import {ckeditorMixin} from './ckeditor_config'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 import 'vue-select/dist/vue-select.css'
 
+
 export default {
-  components: { vSelect, DatePicker },
-  mixins: [storyMixin],
+  components: {vSelect, flatpickr},
+  mixins: [storyMixin, ckeditorMixin],
   props: {
-    cuser: { default: {} },
-    // recordexists: { default: false },
-    editid: { default: '' },
-    stypes: { default: {} },
-    gtype: { default: '' },
-    qtype: { default: '' },
-    stype: { default: '' },
+    cuser: {default: {}},
+    editid: {default: ''},
+    stypes: {default: {}},
+    gtype: {default: ''},
+    qtype: {default: ''},
+    stype: {default: ''},
   },
   data() {
     return {
-      // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
-      // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
-      editorConfig: {
-        height: '500px',
-        // toolbar: [],
-        toolbarGroups: [
-          { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-          { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-          // { name: 'forms', groups: [ 'forms' ] },
-          { name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
-          { name: 'paragraph', groups: [
-              'list',
-              'indent',
-              'blocks',
-              'align',
-              // 'bidi',
-              'paragraph'
-            ]},
-          { name: 'links', groups: [ 'links' ] },
-          { name: 'insert' },
-          { name: 'document', groups: [
-              'document',
-              'doctools',
-              'mode'
-            ]},
-          { name: 'styles', groups: [ 'styles' ] },
-          // { name: 'colors', groups: [ 'colors' ] },
-          { name: 'tools', groups: [ 'tools' ] },
-          { name: 'others', groups: [ 'others' ] },
-          // { name: 'about', groups: [ 'about' ] }
-        ],
-        extraPlugins: 'image2,file-manager,horizontalrule,iframe,videoembed',
-        Flmngr : {
-          urlFileManager: "/flmngr.php",
-          urlFiles: "/imgs/uploads/story/images/"
-        },
-        extraAllowedContent: 'div(*){*};hr;iframe[*]',
-        removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
-        pasteFilter: 'plain-text',
-        filebrowserWindowFeatures: 'resizable=yes',
-        filebrowserBrowseUrl: '/flmngr.php',
-        filebrowserImageBrowseUrl: '/flmngr.php',
-        // filebrowserUploadUrl: '/flmngr.php',
-        // filebrowserImageUploadUrl: '/flmngr.php',
-        skin: 'moono',
-      },
+      // // This is a complete list (I think?) of CKEditor 4 toolbar groups. Commenting out the ones we don't currently use...
+      // // List of buttons: https://ckeditor.com/old/forums/CKEditor/Complete-list-of-toolbar-items
+      // editorConfig: {
+      //   height: '500px',
+      //   // toolbar: [],
+      //   toolbarGroups: [
+      //     { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+      //     { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+      //     // { name: 'forms', groups: [ 'forms' ] },
+      //     { name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+      //     { name: 'paragraph', groups: [
+      //         'list',
+      //         'indent',
+      //         'blocks',
+      //         'align',
+      //         // 'bidi',
+      //         'paragraph'
+      //       ]},
+      //     { name: 'links', groups: [ 'links' ] },
+      //     { name: 'insert' },
+      //     { name: 'document', groups: [
+      //         'document',
+      //         'doctools',
+      //         'mode'
+      //       ]},
+      //     { name: 'styles', groups: [ 'styles' ] },
+      //     // { name: 'colors', groups: [ 'colors' ] },
+      //     { name: 'tools', groups: [ 'tools' ] },
+      //     { name: 'others', groups: [ 'others' ] },
+      //     // { name: 'about', groups: [ 'about' ] }
+      //   ],
+      //   extraPlugins: 'image2,file-manager,horizontalrule,iframe,videoembed',
+      //   Flmngr : {
+      //     urlFileManager: "/flmngr.php",
+      //     urlFiles: "/imgs/uploads/story/images/"
+      //   },
+      //   extraAllowedContent: 'div(*){*};hr;iframe[*]',
+      //   removeButtons: 'Cut,Copy,Paste,Anchor,Strike,Subscript,Superscript,Preview,Smiley,PageBreak,Save,NewPage,Print,Styles,Templates,ContentTemplates',
+      //   pasteFilter: 'plain-text',
+      //   filebrowserWindowFeatures: 'resizable=yes',
+      //   filebrowserBrowseUrl: '/flmngr.php',
+      //   filebrowserImageBrowseUrl: '/flmngr.php',
+      //   // filebrowserUploadUrl: '/flmngr.php',
+      //   // filebrowserImageUploadUrl: '/flmngr.php',
+      //   skin: 'moono',
+      // },
+
+
+
+
+
+
 
       tags: [],
       taglist: [],
@@ -388,7 +402,6 @@ export default {
       content: '',
       startdatePicker: null,
       date: {},
-      currentDate: {},
       recordOld: {
         id: '',
         user_id: '',
@@ -422,24 +435,30 @@ export default {
       },
       formInputs: {},
       formErrors: {},
-      authorErrors: {}
+      authorErrors: {},
+      flatpickrConfig: {
+        altFormat: "m/d/Y h:i K", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d H:i:s", // format sumbitted to the API
+        enableTime: true
+      },
+      storyType: null
     }
   },
   created: function () {
-    this.currentDate = moment();
-    this.updateRecordState('created');
+    this.storyType = JSON.parse(JSON.stringify(this.stype))
+    this.updateRecordState('created')
     if (this.editid != '') {
       this.currentRecordId = this.editid;
       this.singleStype = true;
       this.newform = false;
       this.fetchCurrentRecord();
-    }
-    else {
+    } else {
       this.newform = true;
       this.hasContent = true;
       this.record.user_id = this.cuser.id;
-      this.record.story_type = this.stype;
-      this.fdate = this.currentDate;
+      this.record.story_type = this.storyType;
+      this.fdate = moment().format('YYYY-MM-DD 12:00:00');
       this.setAuthorToCurrentUser(this.currentUser.id)
       this.record.author_id = this.record.user_id;
       this.updateRecordState('new');
@@ -462,12 +481,10 @@ export default {
     isAdmin: function () {
       if (this.userRoles.indexOf('admin') != -1) {
         return true;
-      }
-      else {
+      } else {
         if (this.userRoles.indexOf('admin_super') != -1) {
           return true;
-        }
-        else {
+        } else {
           return false;
         }
       }
@@ -515,8 +532,7 @@ export default {
     hasAuthor: function () {
       if (this.record.author_id === 0) {
         return false;
-      }
-      else {
+      } else {
         return true;
       }
     },
@@ -529,15 +545,14 @@ export default {
     hasStartDate: function () {
       if (this.record.start_date === undefined || this.record.start_date == '') {
         return false
-      }
-      else {
+      } else {
         return true
       }
 
     }
   },
   methods: {
-    getUserRoles () {
+    getUserRoles() {
       let roles = this.cuser.roles;
       let self = this;
       this.userRoles = [];
@@ -545,8 +560,7 @@ export default {
         roles.forEach(function (item, index) {
           self.userRoles.push(item.name);
         })
-      }
-      else {
+      } else {
         self.userRoles.push('guest');
       }
 
@@ -605,8 +619,7 @@ export default {
     onContentChange: function () {
       if (!this.ckfullyloaded) {
         this.ckfullyloaded = true
-      }
-      else {
+      } else {
         this.checkContentChange();
       }
     },
@@ -621,18 +634,20 @@ export default {
 
     fetchAuthorList: function () {
       this.$http.get('/api/authorlist')
-      .then((response) => {
-        this.authorlist = response.data
-      }, (response) => {
-      }).bind(this);
+          .then((response) => {
+            this.authorlist = response.data
+          }).catch(e => {
+        console.log(e)
+      })
     },
 
     fetchContactList: function () {
       this.$http.get('/api/contactlist')
-      .then((response) => {
-        this.contactlist = response.data
-      }, (response) => {
-      }).bind(this);
+          .then((response) => {
+            this.contactlist = response.data
+          }).catch(e => {
+        console.log(e)
+      })
     },
 
     /**
@@ -640,84 +655,83 @@ export default {
      */
     fetchDefaultContact: function (setContact) {
       this.$http.get('/api/contactdefault')
-      .then((response) => {
-        this.defaultcontact = response.data
-        if (setContact === true) {
-          this.contact = response.data
-        }
-      }, (response) => {
-      });
+          .then((response) => {
+            this.defaultcontact = response.data
+            if (setContact === true) {
+              this.contact = response.data
+            }
+          }, (response) => {
+          });
     },
 
     fetchDefaultMagazineContact: function () {
       this.$http.get('/api/contactmagazinedefault')
-      .then((response) => {
-        this.defaultcontact = response.data
-        this.contact = response.data
-      }, (response) => {
-      });
+          .then((response) => {
+            this.defaultcontact = response.data
+            this.contact = response.data
+          }, (response) => {
+          });
     },
 
     // Fetch the tags that match THIS record
     fetchTagsList: function () {
       this.$http.get('/api/taglist/')
-      .then((response) => {
-        this.taglist = response.data;
-      });
+          .then((response) => {
+            this.taglist = response.data;
+          });
     },
 
-    fetchCurrentTags () {
+    fetchCurrentTags() {
       this.$http.get('/api/taglist/' + this.currentRecordId)
-      .then((response) => {
-        this.tags = response.data;
-      }, (response) => {
+          .then((response) => {
+            this.tags = response.data;
+          }, (response) => {
 
-      });
+          });
     },
 
     fetchCurrentRecord: function () {
 
       this.$http.get('/api/story/' + this.currentRecordId + '/edit')
 
-      .then((response) => {
-        this.record = response.data.data
-        this.recordOld = response.data.data
+          .then((response) => {
+            this.record = response.data.data
+            this.recordOld = response.data.data
 
-        //set contact information
-        this.contact.id = response.data.data.contact.id
-        this.contact.first_name = response.data.data.contact.first_name
-        this.contact.last_name = response.data.data.contact.last_name
-        this.contact.email = response.data.data.contact.email
-        this.contact.phone = response.data.data.contact.phone
+            //set contact information
+            this.contact.id = response.data.data.contact.id
+            this.contact.first_name = response.data.data.contact.first_name
+            this.contact.last_name = response.data.data.contact.last_name
+            this.contact.email = response.data.data.contact.email
+            this.contact.phone = response.data.data.contact.phone
 
-        this.checkOverData();
-      }, (response) => {
-        this.formErrors = response.data.error.message;
-      }).bind(this);
-
+            this.checkOverData();
+          }).catch(e => {
+        console.log(e)
+        this.formErrors = e.response.data.error.message;
+      })
     },
     setAuthorToCurrentUser: function (userId) {
       //set the author to the AUTHOR table record, NOT THE USER table...search for the author by user_id fk
       let url = '/api/authorbyuser/'
-      if (this.stype == 'statement') {
+      if (this.storyType == 'statement') {
         url += 1 // Jane Doe in the users table
-      }
-      else {
+      } else {
         url += userId
       }
       this.$http.get(url)
 
-      .then((response) => {
-        if (response.data.newdata) {
-          this.author = response.data.newdata
-        }
-        else {
-          this.author = {}
-          this.record.author_id = 0
-        }
-      }, (response) => {
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+          .then((response) => {
+            if (response.data.newdata) {
+              this.author = response.data.newdata
+            } else {
+              this.author = {}
+              this.record.author_id = 0
+            }
+          }).catch(e => {
+        console.log(e)
+        this.formErrors = e.response.data.error.message;
+      })
     },
     checkOverData: function () {
       this.hasContent = true;
@@ -729,8 +743,7 @@ export default {
 
       if (this.record.author_id != 0) {
         this.author = this.record.author;
-      }
-      else {
+      } else {
         // Set the default author based on the author table's id, not the user table's id!
         this.setAuthorToCurrentUser(this.currentUser.id)
       }
@@ -749,40 +762,40 @@ export default {
 
       this.$http[method](route, this.author)
 
-      .then((response) => {
-        this.authorErrors = '';
-        this.fetchAuthorList();
+          .then((response) => {
+            this.authorErrors = '';
+            this.fetchAuthorList();
 
-        this.author.id = response.data.newdata.author.id;
-        this.record.author_id = response.data.newdata.author.id;
+            this.author.id = response.data.newdata.author.id;
+            this.record.author_id = response.data.newdata.author.id;
 
-        this.author.first_name = response.data.newdata.author.first_name;
-        this.author.last_name = response.data.newdata.author.last_name;
-        this.author.phone = response.data.newdata.author.phone;
-        this.author.email = response.data.newdata.author.email;
+            this.author.first_name = response.data.newdata.author.first_name;
+            this.author.last_name = response.data.newdata.author.last_name;
+            this.author.phone = response.data.newdata.author.phone;
+            this.author.email = response.data.newdata.author.email;
 
-        this.saveAuthorMessage.msg = response.data.message;
-        this.saveAuthorMessage.isOk = response.ok;
-        this.needAuthor = false;
+            this.saveAuthorMessage.msg = response.data.message;
+            this.saveAuthorMessage.isOk = response.ok;
+            this.needAuthor = false;
 
-      }, (response) => {
-        //error callback
-        this.authorErrors = response.data.error.message;
-      }).bind(this);
+          })
+          .catch(e => {
+            console.log(e)
+            this.authorErrors = e.response.data.error.message;
+          })
     },
     fetchAuthor: function () {
       if (this.selectedAuthor) {
         this.$http.get('/api/author/' + this.selectedAuthor.value)
-        .then((response) => {
-            this.author.id = response.body.id;
-            this.record.author_id = response.body.id;
-            this.author.first_name = response.body.first_name;
-            this.author.last_name = response.body.last_name;
-            this.author.phone = response.body.phone;
-            this.author.email = response.body.email;
-        })
-      }
-      else {
+            .then((response) => {
+              this.author.id = response.data.id;
+              this.record.author_id = response.data.id;
+              this.author.first_name = response.data.first_name;
+              this.author.last_name = response.data.last_name;
+              this.author.phone = response.data.phone;
+              this.author.email = response.data.email;
+            })
+      } else {
         this.author.id = '';
         this.record.author_id = '';
         this.author.first_name = '';
@@ -795,20 +808,19 @@ export default {
       if (this.selectedContact) {
         this.$http.get('/api/author/' + this.selectedContact.value)
 
-        .then(
-            (response) => {
-              this.contact.id = response.data.id;
-              this.record.contact_id = response.data.id;
-              this.contact.first_name = response.data.first_name;
-              this.contact.last_name = response.data.last_name;
-              this.contact.phone = response.data.phone;
-              this.contact.email = response.data.email;
-            }
-        )
-
-        .bind(this);
-      }
-      else {
+            .then(
+                (response) => {
+                  this.contact.id = response.data.id;
+                  this.record.contact_id = response.data.id;
+                  this.contact.first_name = response.data.first_name;
+                  this.contact.last_name = response.data.last_name;
+                  this.contact.phone = response.data.phone;
+                  this.contact.email = response.data.email;
+                }
+            ).catch(e => {
+          console.log(e)
+        })
+      } else {
         this.contact.id = '';
         this.record.contact_id = '';
         this.contact.first_name = '';
@@ -833,18 +845,16 @@ export default {
     },
     submitForm: function (e) {
       e.preventDefault();
-      this.formMessage.isOk = '';
+      this.formMessage.isOk = false;
       this.record.user_id = this.cuser.id;
       if (this.record.story_type === 'external' || this.isArticleExternal()) {
         this.record.content = 'not used';
-      }
-      else {
+      } else {
         this.record.content = this.content;
       }
       if (this.tags.length > 0) {
         this.record.tags = this.tags;
-      }
-      else {
+      } else {
         this.record.tags = [];
       }
 
@@ -864,40 +874,38 @@ export default {
       let tempid;
       if (typeof this.currentRecordId != 'undefined') {
         tempid = this.currentRecordId;
-      }
-      else {
+      } else {
         tempid = this.record.id;
       }
-      // let method = (this.recordexists) ? 'put' : 'post'
       let method = (this.record.id) ? 'put' : 'post'
-      // let route = (this.recordexists) ? '/api/story/' + tempid : '/api/story';
-      let route = (this.record.id) ? '/api/story/' + tempid : '/api/story';
+      let route = (this.record.id) ? '/api/story/' + tempid : '/api/story'
 
       this.$http[method](route, this.record)
 
-      .then((response) => {
+          .then((response) => {
 
-        this.formMessage.msg = response.data.message;
-        this.currentRecordId = response.data.newdata.record_id;
-        this.formMessage.isOk = response.ok;
-        this.formErrors = '';
+            this.formMessage.msg = response.data.message
+            this.currentRecordId = response.data.newdata.record_id
+            this.formMessage.isOk = true
+            this.formErrors = {}
 
-        this.response_record_id = response.data.newdata.record_id;
-        this.response_stype = response.data.newdata.stype;
+            this.response_record_id = response.data.newdata.record_id
+            this.response_stype = response.data.newdata.stype
 
-        if (this.newform) {
-          this.nowOnReload();
-        }
-        else {
-          this.onRefresh();
-        }
-      }, (response) => {
-        //error callback
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+            if (this.newform) {
+              this.nowOnReload()
+            } else {
+              this.onRefresh()
+            }
+          })
+          .catch(e => {
+            console.log(e)
+            this.formMessage.isOk = false
+            this.formMessage.isErr = true
+            this.formErrors = e.response.data.error.message
+          })
     }
   },
-  filters: {},
   watch: {
     selectedAuthor: function () {
       this.fetchAuthor();
@@ -907,34 +915,31 @@ export default {
     },
     'record.story_type': function (val) {
       // Change author to "Official Statements" if this is an advisory or statement story type
-      let previousStype = this.stype;
+      let previousStype = JSON.parse(JSON.stringify(this.storyType));
       let newStype = val;
-      this.stype = newStype; // change the stype
-      if(this.editid == '') {
-        if (this.stype == 'statement' || this.stype == 'advisory') {
+      this.storyType = newStype; // change the stype
+      if (this.editid == '') {
+        if (this.storyType == 'statement' || this.storyType == 'advisory') {
           this.resetAuthor() // changes author to "Official Statement"
         }
         if ((previousStype == 'statement' || previousStype == 'advisory') && (newStype != 'statement' || newStype != 'advisory')) {
           this.resetAuthor() // changes author back to current user
         }
       }
-
       // If this is a new story and it's going to be a magazine article, set the default magazine contact as the contact.
       // if (!this.contactManuallyChanged && !this.recordexists) {
       if (!this.contactManuallyChanged && !this.record.id) {
         if (!this.record.contact) {
           if (val == 'article') {
             this.fetchDefaultMagazineContact()
-          }
-          else {
+          } else {
             this.fetchDefaultContact(true)
           }
         }
       }
     }
-  },
-  events: {}
-};
+  }
+}
 
 
 </script>

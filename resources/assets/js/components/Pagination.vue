@@ -1,5 +1,5 @@
 <template>
-    <div v-show="paginateditems.total_pages > 0" class="row">
+    <div v-if="paginateditems.total_pages > 0" class="row">
         <div class="col-xs-12 col-sm-12 col-md-8">
             <ul class="pagination">
                 <li :class="!isLessPages ? 'disabled' : ''">

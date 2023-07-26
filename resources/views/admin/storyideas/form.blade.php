@@ -5,7 +5,7 @@
 @endsection
 @section('style-plugin')
     @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+
 
     @endsection
     @section('style-app')
@@ -46,7 +46,7 @@
                   <div class="box-header with-border">
                     <h3 class="box-title">{{$idea->exists ? 'Edit story idea ' . $idea->title : 'New story idea'}}</h3>
                     <div id="vue-box-tools">
-                        <storyideas-box-tools v-ref:expertboxtools viewtype="form"
+                        <storyideas-box-tools viewtype="form"
                         :current-user="{{$currentUser}}"
                         :record-id="{{$idea->exists ? $idea->id : null}}"
                         ></storyideas-box-tools>

@@ -54,7 +54,7 @@
                                  'class' => 'form',
                                  'files' => true]
                                  ) !!}
-                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'onclick' => 'return ConfirmDelete();')) !!}
+                                 {!! Form::submit('Delete Image', array('class'=>'btn btn-warning', 'onclick' => 'return confirm("Are you sure you want to delete the image?")')) !!}
                                  {!! Form::close() !!}
                                     </div>
                             @endif
@@ -66,15 +66,6 @@
 @section('footer')
     @parent
     <script>
-
-        function ConfirmDelete()
-        {
-            var x = confirm("Are you sure you want to delete?");
-            if (x)
-                return true;
-            else
-                return false;
-        }
 
     </script>
 

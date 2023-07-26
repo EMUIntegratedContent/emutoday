@@ -5,7 +5,7 @@
 @endsection
 @section('style-plugin')
   @parent
-<link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+
 <style>
 .fa-check-circle{
   color: #3D9970;

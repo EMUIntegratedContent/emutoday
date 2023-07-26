@@ -1,14 +1,15 @@
-var Vue = require('vue');
-
-import VueResource from 'vue-resource';
-Vue.use(VueResource);
+import { createApp } from "vue"
+import StoryideasList from './components/StoryideasList.vue'
+import axios from "axios"
+import store from './vuex/store'
 
 // Remember the token we created in the <head> tags? Get it here.
-var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
-Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+const CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content')
+axios.defaults.headers.common['X-CSRF-TOKEN'] = CSRFToken
 
-import StoryideasList from './components/StoryideasList.vue';
-var vm = new Vue({
-    el: '#vue-storyideas-list',
-    components: {StoryideasList}
-});
+const app = createApp({
+    components: { StoryideasList }
+})
+app.use(store)
+app.config.globalProperties.$http = axios
+app.mount('#vue-storyideas-list')

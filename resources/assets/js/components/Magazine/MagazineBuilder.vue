@@ -13,7 +13,7 @@
 							<button v-if="issueArticles[0]" type="button" class="btn btn-sm btn-danger magazine-tool-btn" data-toggle="modal" @click="setIssueArticleAtIndex({index: 0, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
 						</div>
 						<template v-if="issueArticles[0]">
-							<img width="100%" :src="mainArticleImage(issueArticles[0]).image_path + mainArticleImage(issueArticles[0]).filename" :alt="mainArticleImage(issueArticles[0]).moretext">
+							<img style="width: 100%" :src="mainArticleImage(issueArticles[0]).image_path + mainArticleImage(issueArticles[0]).filename" :alt="mainArticleImage(issueArticles[0]).moretext" />
 							<p class="builder-article-title">
 								<a :href="'/admin/queuearticle/magazine/article/' + issueArticles[0].id + '/edit'" target="_blank">{{ issueArticles[0].title }}</a>
 							</p>
@@ -31,7 +31,7 @@
 								<button class="btn btn-xs btn-danger" @click="setIssueArticleAtIndex({index: index, article: null})"><i class="fa fa-close" aria-hidden="true"></i></button>
 							</div>
 							<template v-if="article">
-								<img width="100%" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
+								<img style="width: 100%"  :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
 								<p class="builder-article-title">
 									<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
 								</p>
@@ -55,7 +55,7 @@
 							<button v-if="index < issueArticles.length - 1 && issueArticles[index+1]" type="button" class="btn btn-xs btn-success" style="margin-right: 20px;" @click="moveArticleRight(index, article)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
 							<button type="button" class="btn btn-xs btn-danger" @click="removeOtherArticleAtIndex(index)"><i class="fa fa-close" aria-hidden="true"></i></button>
 						</div>
-						<img width="100" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
+						<img style="width: 100%" :src="subArticleImage(article).image_path + subArticleImage(article).filename" :alt="subArticleImage(article).moretext">
 						<a :href="'/admin/queuearticle/magazine/article/' + article.id + '/edit'" target="_blank">{{ article.title }}</a>
 					</div>
 					<div v-else-if="index > 5 && !article" class="other-substory-box" style="min-height: 73px">
@@ -77,12 +77,14 @@
 	</div>
 </template>
 <script>
-	import MagazineArticleModal from "./MagazineArticleModal";
-	import { builderMixin } from "./builder_mixin";
+	import MagazineArticleModal from "./MagazineArticleModal"
+	import { builderMixin } from "./builder_mixin"
 
 	export default {
 		mixins: [ builderMixin ],
-		components: { MagazineArticleModal },
+		components: {
+      MagazineArticleModal
+    },
 		props: {
 			issueId: {
 				type: String,
@@ -179,7 +181,7 @@
 					this.saveError = false
 					this.saved = true
 					// Make sure the articles on the server match what's on the front end
-					response.body.newdata.stories.forEach(article => {
+					response.data.newdata.stories.forEach(article => {
 						const position = article.pivot.story_position
 						this.setIssueArticleAtIndex({index: position, article: article})
 					})
@@ -188,7 +190,6 @@
 					}, 3000)
 				})
 				.catch(e => {
-					console.log(e)
 					this.saving = false
 					this.saved = false
 					this.saveError = true

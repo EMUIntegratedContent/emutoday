@@ -4,20 +4,8 @@ namespace Emutoday\Http\Controllers\Admin;
 
 use Emutoday\Story;
 use Emutoday\StoryImage;
-use Emutoday\Tag;
-use Emutoday\User;
 use Emutoday\Imagetype;
-use Emutoday\StoryType;
-// use Emutoday\Emutoday\Transformers\FractalStoryTransformer;
-// use Emutoday\Emutoday\Transformers\FractalStoryExtraTransformer;
-// use Emutoday\Emutoday\Transformers\StoryTransformer;
-
-use League\Fractal\Manager;
-use League\Fractal;
 use Illuminate\Http\Request;
-use Emutoday\Http\Requests;
-use DB;
-use JavaScript;
 
 use Emutoday\Helpers\Interfaces\IBug;
 use Illuminate\Support\Facades\View;

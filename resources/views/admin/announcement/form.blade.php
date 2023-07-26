@@ -5,9 +5,6 @@
 @endsection
 @section('style-plugin')
     @parent
-    <!-- flatpickr fix... compile into admin-styles.css at a later date. -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.3/flatpickr.min.css" />
-
     @endsection
     @section('style-app')
         @parent

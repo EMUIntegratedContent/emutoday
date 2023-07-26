@@ -3,10 +3,10 @@
     <slot name="csrf"></slot>
     <div class="row">
       <div v-bind:class="md12col">
-        <div v-show="formMessage.isOk" :class="calloutSuccess">
-          <h5>{{formMessage.msg}}</h5>
+        <div v-if="formMessage.isOk" :class="calloutSuccess">
+          <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.isErr"  :class="calloutFail">
+        <div v-if="formMessage.isErr" :class="calloutFail">
           <h5>There are errors.</h5>
         </div>
       </div>
@@ -18,20 +18,21 @@
         <!-- Category -->
         <div v-bind:class="formGroup">
           <label>Category Name <span v-bind:class="iconStar" class="reqstar"></span></label>
-          <input v-model="record.category" class="form-control" v-bind:class="[formErrors.category ? 'invalid-input' : '']" name="category" type="text">
-          <p v-if="formErrors.category" class="help-text invalid">{{formErrors.category}}</p>
+          <input v-model="record.category" class="form-control"
+                 v-bind:class="[formErrors.category ? 'invalid-input' : '']" name="category" type="text">
+          <p v-if="formErrors.category" class="help-text invalid">{{ formErrors.category }}</p>
         </div>
       </div>
       <div v-bind:class="md6col">
-          <label>Related Categories</label>
-          <v-select
-          :class="[formErrors.tags ? 'invalid-input' : '']"
-          :value.sync="associatedCategories"
-          :options="allCategories"
-          :multiple="true"
-          placeholder="Select related categories"
-          label="category">
-          </v-select>
+        <label>Related Categories</label>
+        <v-select
+            :class="[formErrors.tags ? 'invalid-input' : '']"
+            v-model="associatedCategories"
+            :options="allCategories"
+            :multiple="true"
+            placeholder="Select related categories"
+            label="category">
+        </v-select>
       </div>
       <!-- /.small-12 columns -->
     </div>
@@ -40,19 +41,25 @@
     <div class="row">
       <div v-bind:class="md12col">
         <div v-bind:class="formGroup">
-          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{submitBtnLabel}}</button>
-          <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn" v-bind:class="btnPrimary">Delete Category</button>
+          <button v-on:click="submitForm" type="submit" v-bind:class="btnPrimary">{{ submitBtnLabel }}</button>
+          <button v-if="recordexists" id="btn-delete" v-on:click="delEvent" type="submit" class="redBtn"
+                  v-bind:class="btnPrimary">Delete Category
+          </button>
         </div>
       </div>
     </div>
     <!-- /.row -->
-</form>
+  </form>
 </template>
 
 <style scoped>
+button.btn-primary {
+  margin-right: 0.2rem !important;
+}
 .redBtn {
   background: hsl(0, 90%, 70%);
 }
+
 p {
   margin: 0;
 }
@@ -142,26 +149,11 @@ h5.form-control {
 
 
 <script>
-import moment from 'moment';
-import flatpickr from 'flatpickr';
-import vSelect from "vue-select";
-import { updateRecordId, updateRecordIsDirty, updateRecordState} from '../vuex/actions';
-import { getRecordId, getRecordState, getRecordIsDirty } from '../vuex/getters';
-module.exports = {
-  directives: {flatpickr},
-  components: {vSelect},
-  vuex: {
-    getters: {
-      thisRecordId: getRecordId,
-      thisRecordState: getRecordState,
-      thisRecordIsDirty: getRecordIsDirty
-    },
-    actions: {
-      updateRecordId,
-      updateRecordState,
-      updateRecordIsDirty
-    }
-  },
+import vSelect from "vue-select"
+import 'vue-select/dist/vue-select.css'
+
+export default {
+  components: { vSelect },
   props: {
     errors: {
       default: ''
@@ -176,8 +168,9 @@ module.exports = {
       default: 'foundation'
     },
   },
-  data: function() {
+  data: function () {
     return {
+      currentRecordId: null,
       ckfullyloaded: false,
       currentDate: {},
       record: {
@@ -197,185 +190,161 @@ module.exports = {
       },
       formInputs: {},
       formErrors: {},
-      isFresh: true,
-      hasContent: false,
       newform: false,
     }
   },
-  created: function() {
-  },
-  ready: function() {
-    if (this.recordexists){
-      this.currentRecordId = this.editid;
-      this.newform = false;
-      this.fetchAllCategories(this.recordid);
-      this.fetchAssociatedCategories(this.recordid);
-      this.fetchCurrentRecord(this.recordid);
-    } else {
-      this.newform = true;
-      this.hasContent = true;
-      this.recordState = 'new';
-
-      this.fetchAllCategories();
+  created () {
+    if (this.recordexists) {
+      this.currentRecordId = this.recordid
+      this.newform = false
+      this.fetchAllCategories(this.currentRecordId)
+      this.fetchAssociatedCategories(this.currentRecordId)
+      this.fetchCurrentRecord(this.currentRecordId)
+    }
+    else {
+      this.newform = true
+      this.fetchAllCategories()
     }
   },
   computed: {
 
     // switch classes based on css framework. foundation or bootstrap
-    md6col: function() {
+    md6col: function () {
       return (this.framework == 'foundation' ? 'medium-6 columns' : 'col-md-6')
     },
-    md12col: function() {
+    md12col: function () {
       return (this.framework == 'foundation' ? 'medium-12 columns' : 'col-md-12')
     },
-    md8col: function() {
+    md8col: function () {
       return (this.framework == 'foundation' ? 'medium-8 columns' : 'col-md-8')
     },
-    md4col: function() {
+    md4col: function () {
       return (this.framework == 'foundation' ? 'medium-4 columns' : 'col-md-4')
     },
-    btnPrimary: function() {
+    btnPrimary: function () {
       return (this.framework == 'foundation' ? 'button button-primary' : 'btn btn-primary')
     },
-    formGroup: function() {
+    formGroup: function () {
       return (this.framework == 'foundation' ? 'form-group' : 'form-group')
     },
-    formControl: function() {
+    formControl: function () {
       return (this.framework == 'foundation' ? '' : 'form-control')
     },
-    calloutSuccess:function(){
-      return (this.framework == 'foundation')? 'callout success':'alert alert-success'
+    calloutSuccess: function () {
+      return (this.framework == 'foundation') ? 'callout success' : 'alert alert-success'
     },
-    calloutFail:function(){
-      return (this.framework == 'foundation')? 'callout alert':'alert alert-danger'
+    calloutFail: function () {
+      return (this.framework == 'foundation') ? 'callout alert' : 'alert alert-danger'
     },
-    iconStar: function() {
+    iconStar: function () {
       return (this.framework == 'foundation' ? 'fi-star ' : 'fa fa-star')
     },
-    inputGroupLabel:function(){
-      return (this.framework=='foundation')?'input-group-label':'input-group-addon'
+    inputGroupLabel: function () {
+      return (this.framework == 'foundation') ? 'input-group-label' : 'input-group-addon'
     },
 
     // Switch verbage of submit button.
-    submitBtnLabel:function(){
-      return (this.recordexists)?'Update Category': 'Create Category'
+    submitBtnLabel: function () {
+      return (this.recordexists) ? 'Update Category' : 'Create Category'
     },
   },
 
   methods: {
-
-    fetchCurrentRecord: function(recid) {
+    fetchCurrentRecord: function (recid) {
       this.$http.get('/api/expertcategory/' + recid + '/edit')
+      .then((response) => {
+        this.record = response.data.data
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message
+      })
+    },
+    fetchAllCategories: function (id) {
+      let route = (this.recordexists) ? '/api/expertcategory/all/' + id : '/api/expertcategory/all/';
+
+      // Submit form.
+      this.$http.get(route)
+      .then((response) => {
+        this.allCategories = response.data
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+
+    fetchAssociatedCategories: function (id) {
+      this.$http.get('/api/expertcategory/associated/' + id)
 
       .then((response) => {
-        this.$set('record', response.data.data)
-      }, (response) => {
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+        this.associatedCategories = response.data
+      }).catch((e) => {
+        console.log(e)
+      })
     },
 
-    fetchAllCategories: function(id){
-        let route =  (this.recordexists) ? '/api/expertcategory/all/' + id : '/api/expertcategory/all/';
-
-        // Submit form.
-        this.$http.get(route) //
-
-        .then((response) => {
-          this.$set('allCategories', response.data)
-        }, (response) => {
-        }).bind(this);
-    },
-
-    fetchAssociatedCategories: function(id){
-        this.$http.get('/api/expertcategory/associated/' + id)
-
-        .then((response) => {
-          this.$set('associatedCategories', response.data)
-        }, (response) => {
-        }).bind(this);
-    },
-
-    nowOnReload:function() {
-      let newurl = '/admin/expertcategory/'+ this.currentRecordId+'/edit';
+    nowOnReload: function () {
+      let newurl = '/admin/expertcategory/' + this.currentRecordId + '/edit';
 
       document.location = newurl;
     },
 
-    onRefresh: function() {
-      this.updateRecordId(this.currentRecordId);
-      this.recordState = 'edit';
-      this.recordIsDirty = false;
+    submitForm (e) {
+      e.preventDefault() // Stop form defualt action
 
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
-      this.fetchCurrentRecord();
-    },
-
-    submitForm: function(e) {
-      e.preventDefault(); // Stop form defualt action
-
-      $('html, body').animate({ scrollTop: 0 }, 'fast');
+      $('html, body').animate({ scrollTop: 0 }, 'fast')
 
       if (this.associatedCategories.length > 0) {
-         this.record.associatedCategories = this.associatedCategories;
-      } else {
-         this.record.associatedCategories = [];
+        this.record.associatedCategories = this.associatedCategories
+      }
+      else {
+        this.record.associatedCategories = []
       }
 
       // Dicide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/expertcategory/' + this.record.id : '/api/expertcategory';
+      let route = (this.recordexists) ? '/api/expertcategory/' + this.record.id : '/api/expertcategory'
 
       // Submit form.
       this.$http[method](route, this.record) //
 
       // Do this when response gets back.
       .then((response) => {
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
-        this.currentRecordId = response.data.newdata.record_id;
-        this.formMessage.isErr = false;
-        this.recordexists = true;
-        this.formErrors = {}; // Clear errors?
+        this.formMessage.msg = response.data.message
+        this.formMessage.isOk = true // Success message
+        this.currentRecordId = response.data.newdata.record_id
+        this.formMessage.isErr = false
+        this.formErrors = {} // Clear errors?
 
         if (this.newform) {
-          this.nowOnReload();
-        } else {
-          this.onRefresh();
+          this.nowOnReload()
         }
-      }, (response) => { // If invalid. error callback
-        this.formMessage.isOk = false;
-        this.formMessage.isErr = true;
+        else {
+          this.fetchCurrentRecord(this.currentRecordId)
+        }
+      }).catch((e) => { // If invalid. error callback
+        this.formMessage.isOk = false
+        this.formMessage.isErr = true
         // Set errors from validation to vue data
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+        this.formErrors = e.response.data.error.message
+      })
     },
 
-    delEvent: function(e) {
-      e.preventDefault();
-      this.formMessage.isOk = false;
-      this.formMessage.isErr = false;
+    delEvent: function (e) {
+      e.preventDefault()
+      this.formMessage.isOk = false
+      this.formMessage.isErr = false
 
-      if(confirm('Would you like to delete this category')==true){
-        $('html, body').animate({ scrollTop: 0 }, 'fast');
+      if (confirm('Would you like to delete this category') == true) {
+        $('html, body').animate({ scrollTop: 0 }, 'fast')
 
-        this.$http.post('/api/expertcategory/'+this.record.id+'/delete')
+        this.$http.post('/api/expertcategory/' + this.record.id + '/delete')
 
-        .then((response) =>{
-            window.location.href = "/admin/expertcategory";
-        }, (response) => {
-        }).bind(this);
+        .then(() => {
+          window.location.href = "/admin/expertcategory"
+        }).catch((e) => {
+          console.log(e)
+        })
       }
-    },
-  },
-  watch: {
-
-  },
-
-  filters: {
-  },
-  events: {
+    }
   }
-};
+}
 
 </script>

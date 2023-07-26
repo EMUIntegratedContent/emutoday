@@ -5,7 +5,7 @@
 @endsection
 @section('style-plugin')
     @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+
     <link rel="stylesheet" href="/themes/admin-lte/plugins/select2/select2.min.css">
     @endsection
     @section('style-app')

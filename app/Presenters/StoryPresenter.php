@@ -16,7 +16,7 @@ class StoryPresenter extends Presenter
             } else {
                 $carbondate = Carbon::parse($this->start_date);
             }
-            return $carbondate->toDateString();
+            return $carbondate->format('Y-m-d');
         }
 
         return 'Not Published';

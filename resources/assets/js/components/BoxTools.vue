@@ -5,9 +5,9 @@
     </div><!-- /.tool-block -->
     <div class="toolbar-block pull-right">
         <div class="btn-toolbar btn-group-sm ">
-            <a v-if="!disabledPreview" :id="'btn-preview-'+recordId" :href="previewLink"  :disabled="disabledPreview" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
-            <a :id="'btn-new-'+recordId" :href="createNewLink" :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-plus-square"></i></a>
-            <a :id="'btn-list-'+recordId" :href="listLink"  :disabled="thisRecordIsDirty" class="btn bg-orange btn-sm"><i class="fa fa-list-alt"></i></a>
+            <a v-if="!disabledPreview" :id="'btn-preview-'+recordId" :href="previewLink" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+            <a v-if="!disabledCreate" :id="'btn-new-'+recordId" :href="createNewLink" class="btn bg-orange btn-sm"><i class="fa fa-plus-square"></i></a>
+            <a :id="'btn-list-'+recordId" :href="listLink" class="btn bg-orange btn-sm"><i class="fa fa-list-alt"></i></a>
         </div><!-- /.btn-toolbar -->
     </div><!-- /.toolbar-block -->
 </div><!-- /.center-text -->
@@ -32,8 +32,6 @@ text-align: right;
 }
 </style>
 <script>
-import { mapGetters } from "vuex"
-
 export default  {
     props: [
         'viewtype',
@@ -45,21 +43,7 @@ export default  {
         'gtype',
         'qtype'
     ],
-    ready() {
-    },
-    data: function() {
-        return {
-
-        }
-    },
     computed: {
-      ...mapGetters(
-        {
-          thisRecordId: 'getRecordId',
-          thisRecordIsDirty: 'getRecordIsDirty',
-          thisRecordState: 'getRecordState'
-        }
-      ),
         canSeeListView:function(){
             if(this.viewType == 'list'){
                 return false
@@ -77,29 +61,16 @@ export default  {
 
         },
         disabledCreate: function() {
-            if(this.thisRecordState == 'new'){
-                return true
-            } else {
-                return false
-            }
+           return this.recordId === 0
         },
 
         disabledPreview: function() {
-            if(this.thisRecordIsDirty){
-                return true
-            } else {
-                if (this.thisRecordId === 0 || this.thisRecordId === undefined) {
-                    return true
-                } else {
-                    return false
-                }
-
-            }
+            return this.recordId === 0 || this.recordId === undefined
         },
 
         previewLink:function() {
             let ftype = 'form'+ this.qtype + '/';
-            return '/preview/'+ ftype + this.gtype +  '/' +this.stype +  '/' +this.thisRecordId;
+            return '/preview/'+ ftype + this.gtype +  '/' +this.stype +  '/' +this.recordId;
         },
         listLink:function() {
              return '/admin/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;
@@ -110,19 +81,7 @@ export default  {
             } else {
                 return '/admin/'+ this.gtype +'/' + this.stype +  '/setup'
             }
-        },
-    },
-
-    methods : {
-
-
-    },
-
-
-    // the `events` option simply calls `$on` for you
-    // when the instance is created
-    events: {
-
+        }
     }
 }
 </script>

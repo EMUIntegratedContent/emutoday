@@ -10,21 +10,21 @@
         </div>
         <div class="modal-body">
           <ul>
-            <li><strong>Title:</strong> {{ email.title }}</li>
-            <li><strong>Sent At:</strong> {{ email.send_at | formatDate }}</li>
+            <li><strong>Title:</strong> {{ emailBuilderEmail.title }}</li>
+            <li><strong>Sent At:</strong> {{ formatDate(emailBuilderEmail.send_at) }}</li>
           </ul>
           <div class="row text-center">
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
               <h5 class="email-statistic">Opens</h5>
-              <span class="email-statistic">{{ email.mailgun_opens }}</span>
+              <span class="email-statistic">{{ emailBuilderEmail.mailgun_opens }}</span>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
               <h5 class="email-statistic">Clicks</h5>
-              <span class="email-statistic">{{ email.mailgun_clicks }}</span>
+              <span class="email-statistic">{{ emailBuilderEmail.mailgun_clicks }}</span>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
               <h5 class="email-statistic">Marked as Spam</h5>
-              <span class="email-statistic">{{ email.mailgun_spam }}</span>
+              <span class="email-statistic">{{ emailBuilderEmail.mailgun_spam }}</span>
             </div>
           </div>
         </div>
@@ -48,37 +48,16 @@
   }
 </style>
 <script>
+import { emailMixin } from './email_mixin'
 import moment from 'moment'
 export default {
-  directives: {},
-  components: {},
-  props: ['email'],
-  data: function() {
-    return {
-      deleteConfirm: null,
-    }
-  },
-  ready: function() {
-
-  },
-  computed: {
-
-  },
+  mixins: [ emailMixin ],
   methods: {
-
-  },
-  filters: {
     formatDate: function(value) {
       if (value) {
         return moment(String(value)).format('ddd MM/DD/YYYY @ h:mm A')
       }
-    },
-  },
-  events: {
-
-  },
-  watch: {
-
-  },
+    }
+  }
 }
 </script>

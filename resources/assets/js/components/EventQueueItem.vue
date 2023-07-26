@@ -15,41 +15,13 @@
           </div><!-- /.col-sm-6 -->
           <div class="col-sm 12 col-md-8">
             <form class="form-inline pull-right">
-              <!-- UNCOMMENT IF EVENT ELEVATION/RE-ORDERING ON FRONT PAGE IS SUDDENLY "NEEDED" AGAIN -->
-              <!--
-              <template v-if="pid == 'items-live' || pid == 'items-approved'">
-                <div class="form-check">
-                  <label class="form-check-label">
-                    Elevate
-                    <input type="checkbox" class="form-check-input" @click="toggleEmitEventElevate(item)" v-model="checked" :checked="isElevatedEvent" /> |
-                  </label>
-                </div>
-              </template>
-              <template v-if="pid != 'item-elevated'">
-                <div id="applabel" class="form-group">
-                  <label> approved:</label>
-                </div>
-                <div class="form-group">
-                  <vui-flip-switch id="switch-{{item.id}}"
-                  v-on:click.prevent="changeIsApproved"
-                  :value.sync="patchRecord.is_approved" >
-                  </vui-flip-switch>
-                </div>
-              </template>
-              -->
               <div id="applabel" class="form-group">
-<!--                <label> approved:</label>-->
               </div>
               <div class="form-group">
-<!--                <vui-flip-switch :id="'switch-'+item.id"-->
-<!--                                 v-on:click.prevent="changeIsApproved"-->
-<!--                                 :value.sync="patchRecord.is_approved">-->
-<!--                </vui-flip-switch>-->
                 <input type="button" v-if="item.is_approved" value="Unapprove" class="btn btn-warning btn-xs" @click.prevent="changeIsApproved">
                 <input type="button" v-else value="Approve" class="btn btn-success btn-xs" @click.prevent="changeIsApproved">
-<!--                <input type="checkbox" :value="patchRecord.is_approved" @change.prevent="changeIsApproved" :checked="item.is_approved == 1">-->
               </div>
-              <button v-show="pid == 'item-elevated'" type="button"
+              <button v-if="pid == 'item-elevated'" type="button"
                       class="btn btn-sm btn-danger pull-right remove-event-btn" @click="emitEventDemote(item)"><i
                   class="fa fa-times" aria-hidden="true"></i></button>
             </form>
@@ -68,17 +40,17 @@
 
       <div v-if="showBody" class="box-body">
         <!-- <div class="box-body"> -->
-        <div v-show="formMessage.msg" class="callout bg-success">
+        <div v-if="formMessage.msg" class="callout bg-success">
           <h5>{{ formMessage.msg }}</h5>
         </div>
-        <div v-show="formMessage.err" class="callout bg-danger">
+        <div v-if="formMessage.err" class="callout bg-danger">
           <h5>{{ formMessage.err }}</h5>
         </div>
         <template v-if="canHaveImage">
           <img v-if="hasEventImage" :src="imageUrl"/><br/>
           <a v-on:click.prevent="togglePanel" style="width: 100px" class="btn btn-info btn-sm"
              href="#">{{ hasEventImage ? 'Change Image' : 'Promote Event' }}</a>
-          <div v-show="showPanel">
+          <div v-if="showPanel">
             <!-- <div class="panel"> -->
             <div>
               <form :id="'form-mediafile-upload'+item.id" @submit.prevent="addMediaFile" class="mediaform m-t"
@@ -158,7 +130,7 @@
           </template>
           <hr/>
           <p v-if="item.free">Cost: Free</p>
-          <p v-else>Cost: {{ item.cost | currency }}</p>
+          <p v-else>Cost: {{ currency(item.cost) }}</p>
           <p>Participation: {{ eventParticipation }}</p>
           <template v-if="item.tickets">
             <p v-if="item.ticket_details_online">For Tickets Visit: <a :href="hasHttp(item.ticket_details_online)">{{ item.ticket_details_online }}</a>
@@ -623,10 +595,15 @@ export default {
     },
   },
   methods: {
+    currency (amount) {
+      if (isNaN(amount)) {
+        return amount
+      }
+      return '$' + parseFloat(amount).toFixed(2)
+    },
     // Handle the form submission here
     timeDiffNow: function (val) {
       return moment(val).diff(moment(), 'minutes');
-
     },
     changeIsApproved: function () {
       this.patchRecord.is_approved = (this.item.is_approved === 0) ? 1 : 0;
@@ -649,8 +626,8 @@ export default {
       this.formMessage.msg = false;
       this.formMessage.err = false;
 
-      var files = this.$refs.eventimg.files;
-      var data = new FormData();
+      const files = this.$refs.eventimg.files;
+      const data = new FormData();
       data.append('event_id', this.item.id);
       data.append('caption', this.formInputs.caption);
       data.append('alt_text', this.formInputs.alt_text);
@@ -658,7 +635,7 @@ export default {
       if (files[0]) {
         data.append('eventimg', files[0]);
       }
-      var action = '/api/event/addMediaFile/' + this.item.id;
+      const action = '/api/event/addMediaFile/' + this.item.id;
       this.$http.post(action, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -666,25 +643,27 @@ export default {
       })
       .then((response) => {
         this.checkAfterUpdate(response.data.newdata)
-        this.formMessage.msg = response.body.message;
-      }, (response) => {
+        this.formMessage.msg = response.message;
+      })
+      .catch(() => {
         this.formMessage.err = "Something when wrong.";
       });
     },
     removeMediaFile (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.formMessage.msg = false;
-      this.formMessage.err = false;
+      event.preventDefault()
+      event.stopPropagation()
+      this.formMessage.msg = false
+      this.formMessage.err = false
 
-      var data = new FormData();
-      data.append('event_id', this.item.id);
-      var action = '/api/event/removeMediaFile/' + this.item.id;
+      const data = new FormData()
+      data.append('event_id', this.item.id)
+      const action = '/api/event/removeMediaFile/' + this.item.id
       this.$http.post(action, data)
       .then((response) => {
-        this.formMessage.msg = response.body.message;
+        this.formMessage.msg = response.data.message
         this.checkAfterUpdate(response.data.newdata)
-      }, (response) => {
+      }).catch((e) => {
+        console.log(e)
         this.formMessage.err = "Something when wrong."
       });
     },

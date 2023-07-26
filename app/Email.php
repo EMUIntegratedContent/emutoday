@@ -26,7 +26,10 @@ class Email extends Model
       'president_url'
     ];
 
-  protected $dates = ['send_at', 'deleted_at'];
+  protected $casts = [
+		'send_at' => 'datetime',
+		'deleted_at' => 'datetime'
+	];
 
   public function announcements()
   {

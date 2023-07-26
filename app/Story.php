@@ -32,7 +32,10 @@ class Story extends Model
          'priority', 'contact_id',
 		 		 'clicks'
      ];
-     protected $dates = ['start_date', 'end_date'];
+     protected $casts = [
+			 'start_date' => 'datetime',
+			 'end_date' => 'datetime'
+		 ];
 
     /**
      * Vendor Package
@@ -265,11 +268,11 @@ class Story extends Model
 
         public function getPrettyStartDateAttribute()
         {
-          return $this->start_date->toDateString();
+          return $this->start_date;
         }
         public function getPrettyEndDateAttribute()
         {
-          return $this->end_date->toDateString();
+          return $this->end_date;
         }
 
         public function getStoryFolderAttribute()

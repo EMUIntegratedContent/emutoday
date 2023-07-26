@@ -11,7 +11,7 @@ use Emutoday\Event;
 use Emutoday\Tweet;
 use Carbon\Carbon;
 use JavaScript;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Mailgun\Mailgun;
 
 class MainController extends Controller
@@ -21,7 +21,7 @@ class MainController extends Controller
   protected $recordLimitNews = 4;
   protected $recordLimitAnnouncements = 4;
   protected $recordLimitEvents = 4;
-  protected $recordLimitHR = 3;
+  protected $recordLimitHR = 4;
 
   public function __construct(Page $page, Story $story, Announcement $announcement, Event $event, Tweet $tweets)
 
@@ -190,7 +190,9 @@ class MainController extends Controller
           'count' => 3,
         ];
 
-        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
+				// TODO: see if this is still working after L10 upgrade (6/3/23)
+//        $tweets = $this->tweets->get_feed($twitter_feeds, $twitter_settings);
+				$tweets = [];
 
         // Show up to 4 featured events on the front page
         $featuredevents =  Event::where([
@@ -199,6 +201,7 @@ class MainController extends Controller
           ['end_date', '>=', date('Y-m-d')]
         ])
           ->orderBy('start_date', 'asc')
+					->orderBy('start_time', 'asc')
           ->take(4)->get();
 
         JavaScript::put([

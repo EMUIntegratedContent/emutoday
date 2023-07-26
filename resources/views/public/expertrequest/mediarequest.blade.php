@@ -4,7 +4,7 @@
 @section('title', 'Request an Eastern Media Expert')
 @section('style-plugin')
     @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+
 @endsection
 @section('style-app')
     @parent

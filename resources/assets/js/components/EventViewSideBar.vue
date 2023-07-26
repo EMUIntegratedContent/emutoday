@@ -92,7 +92,7 @@
 }
 
 .calendar-bar {
-  background: # #bebdbd;
+  background: #bebdbd;
 }
 
 .calendar-bar h4 {
@@ -261,15 +261,9 @@ export default {
       },
     }
   },
-  watch: {
-    starthere: function (newVal) { // watch it
-      this.fetchCurrentEventsForCalendar(newVal);
-    }
-    // 'responseCategoriesEvent': 'fetchCategoryList',
-  },
   computed: {
     ...mapState(['calendarCategories', 'selectedCalendarCategory']),
-    currentDayInMonth: function () {
+    currentDayInMonth () {
       if (this.yearVar == this.currentDate.yearVar) {
         if (this.monthVar == this.currentDate.monthVar) {
           return this.currentDate.dayVar;
@@ -279,7 +273,7 @@ export default {
         return '';
       }
     },
-    selectedDayInMonth: function () {
+    selectedDayInMonth () {
       if (this.yearVar == this.selectedDate.yearVar) {
         if (this.monthVar == this.selectedDate.monthVar) {
           return this.selectedDate.dayVar;
@@ -288,18 +282,20 @@ export default {
       else {
         return '';
       }
-
-    },
+    }
   },
   methods: {
     ...mapMutations(['setCalendarCategories', 'setSelectedCalendarCategory']),
-    fetchEvents: function () {
-      this.$http.get('/api/events', function (data) {
-        this.monthArray = response.data.monthArray;
-        this.currentDay = response.data.dayInMonth;
-      });
+    fetchEvents () {
+      this.$http.get('/api/events')
+      .then((response) => {
+        this.monthArray = response.data.monthArray
+        this.currentDay = response.data.dayInMonth
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    dispatchNewEvent: function (value, cateid) {
+    dispatchNewEvent (value, cateid) {
       // find the category name based on the id and set it as the selected one in the store
       if(cateid === false) {
         this.setSelectedCalendarCategory(null)
@@ -319,90 +315,102 @@ export default {
 
       this.$emit('change-eobject', this.selectedDate);
     },
-    fetchEventsByDay: function (value) {
-      this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar + '/' + value).then(function (response) {
-        this.selectedDate.yearVar = response.data.yearVar;
-        this.selectedDate.monthVar = response.data.monthVar;
-        this.selectedDate.monthVarWord = response.data.monthVa;
-        this.elist = response.data.groupedByDay;
-      });
+    fetchEventsByDay (value) {
+      this.$http.get('/api/calendar/events/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar + '/' + value)
+      .then((response) => {
+        this.selectedDate.yearVar = response.data.yearVar
+        this.selectedDate.monthVar = response.data.monthVar
+        this.selectedDate.monthVarWord = response.data.monthVa
+        this.elist = response.data.groupedByDay
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    newMonth: function (monthkey) {
-      var newMonthVarUnit;
-      var newYearVar;
+    newMonth (monthkey) {
+      let newMonthVarUnit
+      let newYearVar
       if (monthkey == 'prev') {
         if (this.monthVar == 1) {
-          newMonthVarUnit = 12;
-          newYearVar = this.yearVar - 1;
+          newMonthVarUnit = 12
+          newYearVar = this.yearVar - 1
         }
         else {
-          newMonthVarUnit = this.monthVar - 1;
-          newYearVar = this.yearVar;
+          newMonthVarUnit = this.monthVar - 1
+          newYearVar = this.yearVar
         }
       }
       else {
         if (this.monthVar == 12) {
-          newMonthVarUnit = 1;
-          newYearVar = this.yearVar + 1;
+          newMonthVarUnit = 1
+          newYearVar = this.yearVar + 1
         }
         else {
-          newMonthVarUnit = this.monthVar + 1;
-          newYearVar = this.yearVar;
+          newMonthVarUnit = this.monthVar + 1
+          newYearVar = this.yearVar
         }
       }
-      this.fetchEventsForCalendarMonth(newYearVar, newMonthVarUnit);
+      this.fetchEventsForCalendarMonth(newYearVar, newMonthVarUnit)
+    },
+    fetchEventsForCalendarMonth (pyear, pmonth) {
+      this.yearVar = pyear
+      this.monthVar = pmonth
+      const apiurl = '/api/calendar/month/' + pyear + '/' + pmonth
+      this.$http.get(apiurl)
+      .then((response) => {
+        this.calDaysArray = response.data.calDaysArray
+        this.monthArray = response.data.monthArray
 
-    },
-    fetchEventsForCalendarMonth: function (pyear, pmonth) {
-      this.yearVar = pyear;
-      this.monthVar = pmonth;
-      const apiurl = '/api/calendar/month/' + pyear + '/' + pmonth;
-      this.$http.get(apiurl).then(function (response) {
-        this.calDaysArray = response.data.calDaysArray;
-        this.monthArray = response.data.monthArray;
+        this.selectedDate.yearVar = response.data.selectedYear
+        this.selectedDate.monthVar = response.data.selectedMonth
+        this.selectedDate.monthVarWord = response.data.selectedMonthWord
+        this.selectedDate.dayVar = response.data.selectedDay
 
-        this.selectedDate.yearVar = response.data.selectedYear;
-        this.selectedDate.monthVar = response.data.selectedMonth;
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord;
-        this.selectedDate.dayVar = response.data.selectedDay;
-
-        this.fetchCategoryList();
-      });
+        this.fetchCategoryList()
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    fetchCurrentEventsForCalendar: function (startObject) {
-      this.yearVar = startObject.yearVar;
-      this.monthVar = startObject.monthVar;
-      this.dayVar = startObject.dayVar;
-      const startapiurl = '/api/calendar/month/' + this.yearVar + '/' + this.monthVar + '/' + this.dayVar;
-      // this.$http.get('/api/calendar/month').then(function(response) {
-      this.$http.get(startapiurl).then(function (response) {
-        this.selectedDate.yearVar = response.data.selectedYear;
-        this.selectedDate.monthVar = response.data.selectedMonth;
-        this.selectedDate.monthVarWord = response.data.selectedMonthWord;
-        this.selectedDate.dayVar = response.data.selectedDay;
-        this.currentDate.yearVar = response.data.currentYear;
-        this.currentDate.monthVar = response.data.currentMonth;
-        this.currentDate.monthVarWord = response.data.currentMonthWord;
-        this.currentDate.dayVar = response.data.currentDay;
-        this.calDaysArray = response.data.calDaysArray;
-        this.pushFirstDateRange();
-        // this.$emit('responseCategoriesEvent');
-        this.fetchCategoryList();
-      });
+    fetchCurrentEventsForCalendar (startObject) {
+      this.yearVar = startObject.yearVar
+      this.monthVar = startObject.monthVar
+      this.dayVar = startObject.dayVar
+      const startapiurl = '/api/calendar/month/' + this.yearVar + '/' + this.monthVar + '/' + this.dayVar
+      this.$http.get(startapiurl)
+      .then((response) => {
+        this.selectedDate.yearVar = response.data.selectedYear
+        this.selectedDate.monthVar = response.data.selectedMonth
+        this.selectedDate.monthVarWord = response.data.selectedMonthWord
+        this.selectedDate.dayVar = response.data.selectedDay
+        this.currentDate.yearVar = response.data.currentYear
+        this.currentDate.monthVar = response.data.currentMonth
+        this.currentDate.monthVarWord = response.data.currentMonthWord
+        this.currentDate.dayVar = response.data.currentDay
+        this.calDaysArray = response.data.calDaysArray
+        this.pushFirstDateRange()
+        this.fetchCategoryList()
+      }).catch((e) => {
+        console.log(e)
+      })
     },
-    pushFirstDateRange: function () {
-      this.$emit('change-eobject', this.selectedDate);
+    pushFirstDateRange () {
+      this.$emit('change-eobject', this.selectedDate)
     },
-    fetchCategoryList: function () {
-      this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar).then(function (response) {
+    fetchCategoryList () {
+      this.$http.get('/api/active-categories/' + this.selectedDate.yearVar + '/' + this.selectedDate.monthVar)
+      .then((response) => {
         this.setCalendarCategories(response.data)
-
-      }, function (response) {
-      });
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     removex (val) {
-      return (val[0] == 'x') ? '_' : val;
+      return (val[0] == 'x') ? '_' : val
     }
-  }
-};
+  },
+  watch: {
+    starthere (newVal) { // watch it
+      this.fetchCurrentEventsForCalendar(newVal);
+    }
+  },
+}
 </script>

@@ -23,11 +23,15 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-9704867-7"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+			window.dataLayer = window.dataLayer || [];
 
-      gtag('config', 'UA-9704867-7');
+			function gtag () {
+				dataLayer.push(arguments);
+			}
+
+			gtag('js', new Date());
+
+			gtag('config', 'UA-9704867-7');
     </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -73,12 +77,17 @@
                     <li><a title="EMU Today homepage." href="/hub">Today</a></li>
                     <li><a title="EMU Today events calendar." href="/calendar">Calendar</a></li>
                     <li><a title="EMU Today campus announcements." href="/announcement">Announcements</a></li>
-                    <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a></li>
-                    <li><a title="Eastern Magazine's homepage" href="https://magazine.emich.edu">Eastern Magazine</a></li>
-                    <li><a title="Eastern Experts are availble for interviews and speaking engagements." href="{{ url('/experts') }}">Eastern Experts</a></li>
-                    <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
+                    <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a>
+                    </li>
+                    <li><a title="Eastern Magazine's homepage" href="https://magazine.emich.edu">Eastern Magazine</a>
+                    </li>
+                    <li><a title="Eastern Experts are availble for interviews and speaking engagements."
+                           href="{{ url('/experts') }}">Eastern Experts</a></li>
+                    <li><a title="Samples of external media coverage focused on Eastern Michigan University."
+                           href="/mediahighlights">Media Highlights</a></li>
                     <li><a title="External link to WEMU." href="https://www.wemu.org" target="_blank">WEMU</a></li>
-                    <li><a title="External link to the EMU athletics page." href="https://www.emueagles.com/" target="_blank">Athletics</a></li>
+                    <li><a title="External link to the EMU athletics page." href="https://www.emueagles.com/"
+                           target="_blank">Athletics</a></li>
                 </ul>
                 <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
                     <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a></li>
@@ -96,9 +105,10 @@
                         <div id="transparent-bar">
                             <div id="tier1-nav" class="row">
                                 <div class="large-9 medium-9 small-12 columns">
-                                    <a title="Eastern Michigan University homepage." href="https://www.emich.edu"><img class="full-logo"
-                                                                         alt="Eastern Michigan University"
-                                                                         src="/assets/imgs/home/block-e-box-inline-green-black.png"></a>
+                                    <a title="Eastern Michigan University homepage." href="https://www.emich.edu"><img
+                                                class="full-logo"
+                                                alt="Eastern Michigan University"
+                                                src="/assets/imgs/home/block-e-box-inline-green-black.png"></a>
 
                                 </div>
                                 <div class="large-3 medium-3 small-12 columns">
@@ -109,9 +119,6 @@
                                                        value="{{ csrf_token() }}">
                                             </search-form>
                                         </div><!-- /#vue-event-form -->
-                                        <!--<span class="menu-area show-for-small-only text-right"><a
-                                                    data-toggle="offCanvasRight">Menu &amp; Search <i
-                                                        class="fa fa-list"></i></a></span>-->
                                     </div> <!-- .icon-menu -->
                                 </div>
                             </div> <!-- tier2-nav -->
@@ -126,44 +133,55 @@
 
                                 <div class="large-5 medium-5 columns hide-for-large hide-for-medium show-for-small text search-small-left">
                                     <span class="menu-area show-for-small-only"><a
-                                                    data-toggle="offCanvasRight">Search &amp; Navigation <i
-                                                        class="fa fa-list"></i></a></span>
-                                 </div>
-
-
-                                 <div class="large-5 medium-5 columns hide-for-large show-for-medium hide-for-small text text-right">
-                                   <span class="menu-area hide-for-large text-right"><a
-                                                    data-toggle="offCanvasRight">Navigation <i
-                                                        class="fa fa-list"></i></a></span>
+                                                data-toggle="offCanvasRight">Search &amp; Navigation <i
+                                                    class="fa fa-list"></i></a></span>
                                 </div>
 
 
+                                <div class="large-5 medium-5 columns hide-for-large show-for-medium hide-for-small text text-right">
+                                   <span class="menu-area hide-for-large text-right"><a
+                                               data-toggle="offCanvasRight">Navigation <i
+                                                   class="fa fa-list"></i></a></span>
+                                </div>
 
 
                                 <div class="large-5 medium-6 columns show-for-large text text-right">
-                                    <span class="smaller"><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a> | <a href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a href="{{ url('/announcement/form') }}">Submit an Announcement</a></span>
+                                    <span class="smaller"><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a> | <a
+                                                href="{{ url('/calendar/event/form') }}">Submit an Event</a> | <a
+                                                href="{{ url('/announcement/form') }}">Submit an Announcement</a></span>
                                 </div><!-- large-3 -->
 
                             </div><!-- row -->
                         </div><!--tier1-nav -->
 
 
-
-
-
                         <div id="secondary-bar" class="show-for-large">
                             <nav id="tier3-nav" class="row">
                                 <div class="large-12 medium-12 columns hide-for-small-only">
                                     <ul id="tier3-nav-main">
-                                        <li><a title="EMU Today homepage." class="{{ set_active('hub')}}" href="{{ url('/') }}">Today</a></li>
-                                        <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}" href="{{ url('/calendar') }}">Calendar</a></li>
-                                        <li><a title="EMU Today campus announcements." class="{{ set_active('announcement')}}" href="{{ url('/announcement') }}">Announcements</a></li>
-                                        <li><a title="EMU Today campus news, press releases, and official statements." class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a></li>
-                                        <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern Magazine</a></li>
-                                        <li><a title="Eastern Experts are availble for interviews and speaking engagements." class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern Experts</a></li>
-                                        <li><a title="Samples of external media coverage focused on Eastern Michigan University." href="/mediahighlights">Media Highlights</a></li>
-                                        <li><a title="External link to WEMU." href="https://www.wemu.org" target="_blank">WEMU</a></li>
-                                        <li><a title="External link to EMU athletics site." href="https://www.emueagles.com" target="_blank">Athletics</a></li>
+                                        <li><a title="EMU Today homepage." class="{{ set_active('hub')}}"
+                                               href="{{ url('/') }}">Today</a></li>
+                                        <li><a title="EMU Today events calendar." class="{{ set_active('calendar')}}"
+                                               href="{{ url('/calendar') }}">Calendar</a></li>
+                                        <li><a title="EMU Today campus announcements."
+                                               class="{{ set_active('announcement')}}"
+                                               href="{{ url('/announcement') }}">Announcements</a></li>
+                                        <li><a title="EMU Today campus news, press releases, and official statements."
+                                               class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a>
+                                        </li>
+                                        <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern
+                                                Magazine</a></li>
+                                        <li>
+                                            <a title="Eastern Experts are availble for interviews and speaking engagements."
+                                               class="{{ set_active('experts')}}" href="{{ url('/experts') }}">Eastern
+                                                Experts</a></li>
+                                        <li>
+                                            <a title="Samples of external media coverage focused on Eastern Michigan University."
+                                               href="/mediahighlights">Media Highlights</a></li>
+                                        <li><a title="External link to WEMU." href="https://www.wemu.org"
+                                               target="_blank">WEMU</a></li>
+                                        <li><a title="External link to EMU athletics site."
+                                               href="https://www.emueagles.com" target="_blank">Athletics</a></li>
                                     </ul>
                                 </div>
                             </nav>

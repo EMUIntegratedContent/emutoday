@@ -16,7 +16,7 @@
                         <input class="input-group-field" type="text" name="searchterm" value="{{$searchTerm}}">
                         <input type="hidden" name="filter" value="{{$filter}}">
                         <div class="input-group-button">
-                            <input type="submit" class="button" value="Submit">
+                            <input type="submit" id="search-btn" class="button" value="Submit">
                         </div>
                     </div>
                 </form>

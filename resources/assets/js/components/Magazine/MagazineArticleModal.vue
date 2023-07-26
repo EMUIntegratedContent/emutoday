@@ -11,32 +11,32 @@
 				<div class="modal-body">
 					<!-- Date filter -->
 					<form class="form-inline">
-						<div class="form-group">
-							<label for="start-date">Showing articles with a Start Date <span v-if="isEndDate">between</span><span v-else>on or after</span></label>
-							<p>
-								<date-picker
-										id="start-date"
-										v-if="startDate"
-										v-model="startDate"
-										value-type="YYYY-MM-DD"
-										format="MM/DD/YYYY"
-										:clearable="false"
-								></date-picker>
-							</p>
-						</div>
-						<div v-if="isEndDate" class="form-group">
-							<label for="end-date"> and </label>
-							<p>
-								<date-picker
-										id="end-date"
-										v-if="endDate"
-										v-model="endDate"
-										value-type="YYYY-MM-DD"
-										format="MM/DD/YYYY"
-										:clearable="false"
-								></date-picker>
-							</p>
-						</div>
+            <div class="form-group">
+              <label>Showing articles with a Start Date <span v-if="isEndDate">between</span><span v-else>on or after</span>
+                <flatpickr
+                    v-if="startDate"
+                    v-model="startDate"
+                    id="start-date"
+                    :config="flatpickrConfig"
+                    class="form-control"
+                    name="startingDate"
+                >
+                </flatpickr>
+              </label>
+            </div>
+            <div v-if="isEndDate" class="form-group">
+              <label> and
+                <flatpickr
+                    v-if="endDate"
+                    v-model="endDate"
+                    id="endDatePicker"
+                    :config="flatpickrConfig"
+                    class="form-control"
+                    name="endingDate"
+                >
+                </flatpickr>
+              </label>
+            </div>
 						<p>
 							<button type="button" class="btn btn-sm btn-info" @click="fetchQueueArticles">Filter</button>
 							<button type="button" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span v-else> + Add </span>Range</button>
@@ -98,15 +98,14 @@
 </template>
 
 <script>
-	import { builderMixin } from "./builder_mixin";
-	import DatePicker from 'vue2-datepicker'
-	import 'vue2-datepicker/index.css'
-	import draggable from 'vuedraggable'
-	import MagazineArticlePod from "./MagazineArticlePod";
+	import { builderMixin } from "./builder_mixin"
+  import flatpickr from 'vue-flatpickr-component'
+  import 'flatpickr/dist/flatpickr.css'
+	import MagazineArticlePod from "./MagazineArticlePod"
 
 	export default {
 		mixins: [ builderMixin ],
-		components: { DatePicker, draggable, MagazineArticlePod },
+		components: { flatpickr, MagazineArticlePod },
 		props: {
 
 		},
@@ -121,7 +120,13 @@
 				currentPageSub: 1,
 				itemsPerPageSub: 10,
 				resultCountSub: 0,
-				searchString: ''
+				searchString: '',
+        flatpickrConfig: {
+          altFormat: "m/d/Y", // format the user sees
+          altInput: true,
+          dateFormat: "Y-m-d", // format sumbitted to the API
+          enableTime: true
+        },
 			}
 		},
 		computed: {

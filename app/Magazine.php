@@ -16,7 +16,10 @@ use PresentableTrait;
             'is_published', 'is_archived','cover_art',
             'is_ready', 'start_date', 'end_date', 'user_id'
         ];
-    protected $dates = ['start_date', 'end_date'];
+    protected $casts = [
+			'start_date' => 'datetime',
+			'end_date' => 'datetime'
+		];
 
 
     public function storys(){

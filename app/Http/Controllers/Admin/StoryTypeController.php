@@ -13,7 +13,7 @@ use League\Fractal\Manager;
 use League\Fractal;
 use Illuminate\Http\Request;
 use Emutoday\Http\Requests;
-use DB;
+use Illuminate\Support\Facades\DB;
 use JavaScript;
 
 use Emutoday\Helpers\Interfaces\IBug;

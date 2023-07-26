@@ -81,12 +81,12 @@ class ExpertsController extends Controller
 
   public function expertForm(Expert $expert)
   {
-      if (\Auth::check()) {
-        // The user is logged in...
-        $user = \Auth::user();
-
-        return redirect()->action('Admin\ExpertsController@form');
-      } else {
+//      if (\Auth::check()) {
+//        // The user is logged in...
+//        $user = \Auth::user();
+//
+//        return redirect()->action('Admin\ExpertsController@form');
+//      } else {
         $user = cas()->user();
 
         $expertSubmissions = $this->expert->where([
@@ -94,7 +94,7 @@ class ExpertsController extends Controller
             ])->get();
 
         return view('public.experts.form', compact('expert', 'expertSubmissions'));
-      }
+//      }
   }
 
   /**

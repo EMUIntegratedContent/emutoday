@@ -5,7 +5,7 @@
 @endsection
 @section('style-plugin')
     @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+
 
     @endsection
     @section('style-app')
@@ -46,7 +46,7 @@
 @endsection
 @section('footer-vendor')
     @parent
-    {{-- <script src="/js/admintools.js"></script> --}}
+
 @endsection
 
 @section('footer-plugin')

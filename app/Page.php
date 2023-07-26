@@ -20,7 +20,10 @@ class Page extends Model
         'template_elements',
       ];
 
-    protected $dates = ['end_date', 'start_date'];
+    protected $casts = [
+			'end_date' => 'datetime',
+			'start_date' => 'datetime'
+		];
 
     public function storys(){
         return $this->belongsToMany('Emutoday\Story')

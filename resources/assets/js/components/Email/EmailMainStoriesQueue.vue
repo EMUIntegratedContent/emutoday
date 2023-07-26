@@ -33,74 +33,66 @@
     <div class="row">
       <div class="col-md-12">
         <h3>Main Stories</h3>
-        <template v-if="!loadingUsed">
-          <template v-if="usedStories.length > 0">
-            <draggable v-model="usedStories" @start="drag=true" @end="drag=false" @change="updateOrder">
+        <template v-if="emailBuilderEmail.mainStories.length">
+          <Sortable
+              :list="emailBuilderEmail.mainStories"
+              item-key="id"
+              tag="div"
+              :options="{}"
+              @update="updateOrder"
+          >
+            <template #item="{element, i}">
               <email-story-pod
                   pid="main-story-item"
-                  v-for="(story, index) in usedStories"
                   pod-type="mainstory"
-                  :item="story"
-                  :key="'used-story-draggable-' + index"
-                  @main-story-added="handleMainStoryAdded"
-                  @main-story-removed="handleMainStoryRemoved"
+                  :item="element"
               >
               </email-story-pod>
-            </draggable>
-          </template>
-          <template v-else>
-            <p>There are no side stories set for this email.</p>
-          </template>
+            </template>
+          </Sortable>
         </template>
         <template v-else>
-          <p>Loading this email's stories. Please wait...</p>
+          <p>There are no main stories set for this email.</p>
         </template>
         <hr/>
         <!-- Date filter -->
         <form class="form-inline">
           <div class="form-group">
-            <label for="start-date">Starting <span v-if="isEndDate">between</span><span
-                v-else>on or after</span></label>
-            <!--                  <p><input v-if="startdate" v-model="startdate" type="text" :initval="startdate" v-flatpickr="startdate"></p>-->
-            <p>
-              <date-picker
-                  id="start-date"
-                  v-if="startdate"
+            <label>Starting <span v-if="isEndDate">between</span><span v-else>on or after</span><br>
+              <flatpickr
                   v-model="startdate"
-                  value-type="YYYY-MM-DD"
-                  format="MM/DD/YYYY"
-                  :clearable="false"
-              ></date-picker>
-            </p>
+                  id="startDatePicker"
+                  :config="flatpickrConfig"
+                  class="form-control"
+                  name="startingDate"
+              >
+              </flatpickr>
+            </label>
           </div>
           <div v-if="isEndDate" class="form-group">
-            <label for="end-date"> and </label>
-            <!--                  <p><input v-if="enddate" type="text" :initval="enddate" v-flatpickr="enddate"></p>-->
-            <p>
-              <date-picker
-                  id="end-date"
-                  v-if="enddate"
+            <label> and<br>
+              <flatpickr
                   v-model="enddate"
-                  value-type="YYYY-MM-DD"
-                  format="MM/DD/YYYY"
-                  :clearable="false"
-              ></date-picker>
-            </p>
+                  id="endDatePicker"
+                  :config="flatpickrConfig"
+                  class="form-control"
+                  name="endingDate"
+              >
+              </flatpickr>
+            </label>
           </div>
           <p>
             <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
           </p>
           <p>
-            <button type="button" id="rangetoggle" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span
-                v-else> + Add </span>Range
-            </button>
+            <button id="rangetoggle" type="button" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span
+              v-else> + Add </span>Range</button>
           </p>
         </form>
         <div class="btn-toolbar" role="toolbar">
           <div class="btn-group btn-group-xs" role="group">
             <label>Filter: </label>
           </div>
-          <!--                <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons" v-iconradio="items_filter_storytype">-->
           <div class="btn-group btn-group-xs" role="group" aria-label="typeFiltersLabel" data-toggle="buttons">
             <template v-for="item in storyTypeIcons">
               <label
@@ -120,13 +112,11 @@
         <div id="email-items">
           <email-story-pod
               pid="email-items"
-              :main-stories="usedStories"
+              :main-stories="emailBuilderEmail.mainStories"
               pod-type="mainstoryqueue"
               v-for="(item, index) in itemsFilteredPaginated"
               :key="'email-story-item-' + index"
               :item="item"
-              @main-story-added="handleMainStoryAdded"
-              @main-story-removed="handleMainStoryRemoved"
           >
           </email-story-pod>
 
@@ -185,7 +175,6 @@ span.item-type-icon:active, span.item-type-icon.active {
 
 #rangetoggle {
   color: #FF851B;
-  margin-left: 5px;
   border-bottom: 2px #FF851B dotted;
 }
 </style>
@@ -194,12 +183,20 @@ span.item-type-icon:active, span.item-type-icon.active {
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
 import Pagination from '../Pagination.vue'
-import DatePicker from 'vue2-datepicker'
-import draggable from 'vuedraggable'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
+import { emailMixin } from './email_mixin'
+import { Sortable } from "sortablejs-vue3"
 
 export default {
-  components: {EmailStoryPod, Pagination, draggable, DatePicker},
-  props: ['stypes', 'mainStories'],
+  components: {
+    EmailStoryPod,
+    Pagination,
+    flatpickr,
+    Sortable
+  },
+  mixins: [ emailMixin ],
+  props: ['stypes'],
   created() {
     let twoWeeksEarlier = moment().subtract(2, 'w')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
@@ -210,10 +207,8 @@ export default {
     return {
       items_filter_storytype: '',
       currentDate: moment(),
-      usedStories: [],
       items: [],
       loadingQueue: true,
-      loadingUsed: true,
       eventMsg: null,
       startdate: null,
       enddate: null,
@@ -222,6 +217,12 @@ export default {
       itemsPerPage: 10,
       resultCount: 0,
       drag: false,
+      flatpickrConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+        enableTime: false
+      }
     }
   },
   computed: {
@@ -346,16 +347,14 @@ export default {
       }
 
       this.$http.get(routeurl)
-
-          .then((response) => {
-            this.items = response.data.newdata.data
-            this.resultCount = this.items.length
-            this.setPage(1) // reset paginator
-            this.loadingQueue = false;
-          }, (response) => {
-            //error callback
-            console.log("ERRORS");
-          }).bind(this);
+        .then((response) => {
+          this.items = response.data.newdata.data
+          this.resultCount = this.items.length
+          this.setPage(1) // reset paginator
+          this.loadingQueue = false;
+        }).catch((e) => {
+          console.log(e)
+        })
     },
 
     setPage: function (pageNumber) {
@@ -364,79 +363,10 @@ export default {
       }
     },
 
-    onCalendarChange: function () {
-      // flatpickr directive method
-    },
-    /**
-     * Uses vue-draggable
-     */
+    // Uses Vue Sortable
     updateOrder: function (event) {
-      // https://stackoverflow.com/questions/34881844/resetting-a-vue-js-list-order-of-all-items-after-drag-and-drop
-      let oldIndex = event.oldIndex
-      let newIndex = event.newIndex
-
-      // move the item in the underlying array
-      this.usedStories.splice(newIndex, 0, this.usedStories.splice(oldIndex, 1)[0]);
-      this.$emit('updated-main-story-order', this.usedStories)
-    },
-    handleMainStoryAdded(evt) {
-      this.$emit('main-story-added', evt)
-    },
-    handleMainStoryRemoved(evt) {
-      this.$emit('main-story-removed', evt)
+      this.updateMainStoriesOrder({ newIndex: event.newIndex, oldIndex: event.oldIndex })
     }
-  },
-  filters: {
-    paginate: function (list) {
-      // only run if there are items in the list
-      if (list.length == 0) {
-        return
-      }
-      this.resultCount = list.length
-      if (this.currentPage > this.totalPages) {
-        this.currentPage = 1
-      }
-      var index = (this.currentPage - 1) * this.itemsPerPage
-      return list.slice(index, index + this.itemsPerPage)
-    },
-
-    byObject: function (array, options) {
-      var entry, found, i, key, len, result, value;
-      result = [];
-
-      if (Object.keys(options).length === 0) {
-        return array;
-      }
-      for (i = 0, len = array.length; i < len; i++) {
-        entry = array[i];
-        found = true;
-        for (key in options) {
-          value = options[key];
-
-          if (value === '') {
-            break;
-          }
-
-          if (entry[key] !== value) {
-            found = false;
-            break;
-          }
-        }
-        if (found) {
-          result.push(entry);
-        }
-      }
-      return result;
-    }
-  },
-  events: {},
-  watch: {
-    mainStories: function (value) {
-      // set events from property to data
-      this.usedStories = value
-      this.loadingUsed = false
-    },
-
-  },
+  }
 }
 </script>

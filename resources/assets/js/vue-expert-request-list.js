@@ -1,17 +1,13 @@
-var Vue = require('vue');
-
-import VueResource from 'vue-resource';
-Vue.use(VueResource);
+import { createApp } from "vue"
+import ExpertMediaRequestList from './components/ExpertRequestList.vue'
+import axios from "axios"
 
 // Remember the token we created in the <head> tags? Get it here.
-var CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content');
-Vue.http.headers.common['X-CSRF-TOKEN'] = CSRFToken;
+const CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content')
+axios.defaults.headers.common['X-CSRF-TOKEN'] = CSRFToken
 
-import ExpertMediaRequestList from './components/ExpertRequestList.vue';
-
-var vm = new Vue({
-    el: '#vue-expert-request-list',
-    components: {
-        ExpertMediaRequestList,
-    }
-});
+const app = createApp({
+    components: { ExpertMediaRequestList }
+})
+app.config.globalProperties.$http = axios
+app.mount('#vue-expert-request-list')

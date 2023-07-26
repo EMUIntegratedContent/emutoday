@@ -6,7 +6,7 @@
 @endsection
 @section('scriptshead')
     <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
-    <script src="/themes/plugins/ckeditor/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
     @parent
 @endsection
 @section('bodytop')
@@ -48,16 +48,6 @@
 
 @section('scriptsfooter')
   @parent
-    <script>
-    $(function () {
-    CKEDITOR.inline( 'cktextarea', {
-            // Define changes to default configuration here. For example:
-                filebrowserBrowseUrl : '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=files',
-                filebrowserImageBrowseUrl: '/themes/plugins/kcfinder/browse.php?opener=ckeditor&type=images',
-                filebrowserUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=files',
-                filebrowserImageUploadUrl : '/themes/plugins/kcfinder/upload.php?opener=ckeditor&type=images'
-        });
-    });
-    </script>
+  <script src="/js/emu-ckeditor5-blade-config.js"></script>
 
   @endsection

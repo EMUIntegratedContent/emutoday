@@ -76,9 +76,6 @@ class EventServiceProvider extends ServiceProvider
       } else {
         $mediafile->is_active = 0;
       }
-
-      // $storyImage->filename = $storyImage->image_name . '.' . $storyImage->image_extension;
-
     });
 
     Story::saving(function ($story)

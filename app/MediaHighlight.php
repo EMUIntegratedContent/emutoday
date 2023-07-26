@@ -10,8 +10,7 @@ use DateTimeInterface;
 
 class MediaHighlight extends Model
 {
-//    use Eloquence;
-    
+
     protected $fillable = [
       'title',
       'url',
@@ -21,13 +20,8 @@ class MediaHighlight extends Model
       'added_by'
     ];
 
-//    protected $searchableColumns = [
-//        'title' => 100,
-//        'source' => 90
-//    ];
-
-    protected $dates = [
-      'start_date'
+    protected $casts = [
+      'start_date' => 'datetime'
     ];
 
     public function tags(){
@@ -63,10 +57,12 @@ class MediaHighlight extends Model
      */
     public static function runSearch($searchTerm, $tag = null) {
         $conditions = [];
-        $sql = "SELECT h.title, h.source, h.url, h.start_date
+        $sql = "SELECT DISTINCT h.title, h.source, h.url, h.start_date
                     FROM media_highlights h";
         if($tag) {
             $sql .= " JOIN mediahighlights_tags t ON t.mediahighlight_id = h.id";
+            $sql .= " JOIN media_highlight_tags mt ON mt.name = :tag AND mt.id = t.tag_id";
+						$conditions['tag'] = $tag;
         }
         $sql .= " WHERE h.is_archived = 0";
         if($searchTerm) {

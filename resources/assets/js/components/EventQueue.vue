@@ -6,12 +6,30 @@
           <div class="form-group">
             <label>Showing events starting <span v-if="isEndDate">between</span><span
                 v-else>on or after</span>
-              <date-picker v-if="startdate" v-model="startdate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>
+              <flatpickr
+                  v-if="startdate"
+                  v-model="startdate"
+                  id="startDatePicker"
+                  :config="flatpickrConfig"
+                  class="form-control"
+                  name="startingDate"
+              >
+              </flatpickr>
+<!--              <date-picker v-if="startdate" v-model="startdate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>-->
             </label>
           </div>
           <div v-if="isEndDate" class="form-group">
             <label> and
-              <date-picker v-if="enddate" v-model="enddate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>
+              <flatpickr
+                  v-if="enddate"
+                  v-model="enddate"
+                  id="endDatePicker"
+                  :config="flatpickrConfig"
+                  class="form-control"
+                  name="endingDate"
+              >
+              </flatpickr>
+<!--              <date-picker v-if="enddate" v-model="enddate" value-type="YYYY-MM-DD" format="MM/DD/YYYY"></date-picker>-->
             </label>
           </div>
           <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
@@ -113,14 +131,16 @@
 }
 </style>
 <script>
-import moment from 'moment';
+import moment from 'moment'
 import EventQueueItem from './EventQueueItem.vue'
-import DatePicker from 'vue2-datepicker'
-import "vue-select/dist/vue-select.css"
-import 'vue2-datepicker/index.css'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  components: { EventQueueItem, DatePicker },
+  components: {
+    EventQueueItem,
+    flatpickr
+  },
   props: ['annrecords', 'role'],
   data: function () {
     return {
@@ -145,6 +165,11 @@ export default {
         msg: '',
       },
       textFilter: '',
+      flatpickrConfig: {
+        altFormat: "m/d/Y", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d", // format sumbitted to the API
+      }
     }
   },
   created () {
@@ -201,8 +226,8 @@ export default {
         this.allitems = response.data.data
         // this.checkOverDataFilter()
         this.loading = false
-      }, (response) => {
-      }).bind(this);
+      }).catch(() => {
+      })
 
       this.fetchElevatedRecords(); //get elevated records regardless of date
     },
@@ -219,18 +244,18 @@ export default {
       .then((response) => {
         this.elevateditems = response.data.data
         this.loading = false;
-      }, (response) => {
-      }).bind(this);
+      }).catch((response) => {
+      })
     },
 
     filterItemsApproved: function (items) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function (item) {
         return moment(item.start_date_time).isAfter(moment()) && item.is_approved === 1 && item.priority === 0 && item.is_promoted === 0 && regexp.test(item.title);  // true
       });
     },
     filterItemsUnapproved: function (items) {
-      var regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
+      const regexp = new RegExp(this.textFilter, 'gi'); // anywhere in the string, ignore case
       return items.filter(function (item) {
         return item.is_approved === 0 && regexp.test(item.title);
       });
@@ -265,16 +290,13 @@ export default {
     movedItemIndex: function (mid) {
       return this.xitems.findIndex(item => item.id == mid)
     },
-    onCalendarChange: function () {
-      // flatpickr directive method
-    },
     updateRecord: function (item) {
       this.$http.patch('/api/event/updateItem/' + item.id, item, {
         method: 'PATCH'
       })
       .then((response) => {
-      }, (response) => {
-      });
+      }).catch((e) => {
+      })
     },
     checkOverData: function () {
       for (var i = 0; i < this.allitems.length; i++) {
@@ -326,11 +348,11 @@ export default {
         this.$set('elevateditems', response.data.data)
         this.ordersave.isOk = true
         this.ordersave.msg = "Order was updated"
-      }, (response) => {
+      }).catch(() => {
         //error callback
         this.ordersave.isErr = true
         this.ordersave.msg = "Order was not updated"
-      }).bind(this);
+      })
 
       this.elevateditemschanged = false;
     },

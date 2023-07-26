@@ -73,8 +73,9 @@ $global-radius: 0;
 $global-text-direction: ltr;
 $global-flexbox: false;
 $print-transparent-backgrounds: true;
+$primary-color: #0f654a;
 
-@include add-foundation-colors;
+//@include add-foundation-colors;
 
 // 2. Breakpoints
 // --------------
@@ -96,8 +97,9 @@ $grid-column-count: 12;
 $grid-column-gutter: (
   small: 20px,
   medium: 30px,
+  large: 30px
 );
-$grid-column-align-edge: true;
+$grid-column-align-edge: false;
 $block-grid-max: 8;
 
 // 4. Base Typography
@@ -194,16 +196,16 @@ $input-error-font-weight: $global-weight-bold;
 // 7. Accordion
 // ------------
 
-// $accordion-background: $white;
-// $accordion-plusminus: true;
-// $accordion-item-color: foreground($accordion-background, #0f654a);
-// // $accordion-item-background-hover: $light-gray;
-// $accordion-item-background-hover: #f8f8f8;
-// $accordion-item-padding: 1.25rem 1rem;
-// $accordion-content-background: $white;
-// $accordion-content-border: 1px none $light-gray;
-// $accordion-content-color: foreground($accordion-background, $primary-color);
-// $accordion-content-padding: 0;
+ $accordion-background: $white;
+ $accordion-plusminus: true;
+ $accordion-item-color: foreground($accordion-background, #0f654a);
+ // $accordion-item-background-hover: $light-gray;
+ $accordion-item-background-hover: #f8f8f8;
+ $accordion-item-padding: 1.25rem 1rem;
+ $accordion-content-background: $white;
+ $accordion-content-border: 1px none $light-gray;
+ $accordion-content-color: foreground($accordion-background, $primary-color);
+ $accordion-content-padding: 0;
 
 // 8. Accordion Menu
 // -----------------
@@ -215,7 +217,7 @@ $accordionmenu-arrow-color: $primary-color;
 // --------
 
 $badge-background: $primary-color;
-$badge-color: foreground($badge-background);
+//$badge-color: foreground($badge-background);
 $badge-padding: 0.3em;
 $badge-minwidth: 2.1em;
 $badge-font-size: 0.6rem;
@@ -278,7 +280,7 @@ $callout-link-tint: 30%;
 $closebutton-position: right top;
 $closebutton-offset-horizontal: 1rem;
 $closebutton-offset-vertical: 0.5rem;
-$closebutton-size: 2em;
+//$closebutton-size: 2em;
 $closebutton-lineheight: 1;
 $closebutton-color: $dark-gray;
 $closebutton-color-hover: $black;
@@ -363,7 +365,7 @@ $input-radius: $global-radius;
 // ---------
 
 $label-background: $primary-color;
-$label-color: foreground($label-background);
+//$label-color: foreground($label-background);
 $label-font-size: 0.8rem;
 $label-padding: 0.33333rem 0.5rem;
 $label-radius: $global-radius;
@@ -398,7 +400,7 @@ $meter-fill-bad: $alert-color;
 // 24. Off-canvas
 // --------------
 
-$offcanvas-size: 250px;
+//$offcanvas-sizes: 250px;
 $offcanvas-background: $light-gray;
 $offcanvas-zindex: -1;
 $offcanvas-transition-length: 0.5s;
@@ -521,7 +523,7 @@ $tab-item-padding: 1.25rem 1.5rem;
 $tab-expand-max: 6;
 $tab-content-background: $white;
 $tab-content-border: $medium-gray;
-$tab-content-color: foreground($tab-background, $primary-color);
+//$tab-content-color: foreground($tab-background, $primary-color);
 $tab-content-padding: 1rem;
 
 // 33. Thumbnail

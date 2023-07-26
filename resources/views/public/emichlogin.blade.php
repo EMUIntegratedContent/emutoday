@@ -2,7 +2,6 @@
 @extends('public.layouts.global')
 @section('styles')
 @parent
-<link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css" />
 @endsection
 
 @section('content')

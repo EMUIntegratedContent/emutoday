@@ -33,8 +33,7 @@ class Kernel extends HttpKernel
         ],
 
         'cors' => [
-           //\Barryvdh\Cors\HandleCors::class, // PRE LARAVEL 7
-            \Fruitcake\Cors\HandleCors::class,        ],
+            \Illuminate\Http\Middleware\HandleCors::class,        ],
 
         'email' => [
           \Emutoday\Http\Middleware\EmailsMiddleware::class,

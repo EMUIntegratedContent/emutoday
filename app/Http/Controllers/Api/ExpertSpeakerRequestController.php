@@ -36,8 +36,6 @@ class ExpertSpeakerRequestController extends ApiController
         }
 
         if ($validation->passes()) {
-            $speakerDate = \DateTime::createFromFormat('Y-m-d h:i A', $request->get('time_needed'));
-
             $expertSpeakerRequest = new ExpertSpeakerRequest;
 
             $expertSpeakerRequest->expert_id = $request->get('expert_id');
@@ -47,7 +45,7 @@ class ExpertSpeakerRequestController extends ApiController
             $expertSpeakerRequest->contact_name = $request->get('contact_name');
             $expertSpeakerRequest->contact_phone = $request->get('contact_phone');
             $expertSpeakerRequest->contact_email = $request->get('contact_email');
-            $expertSpeakerRequest->time_needed = $speakerDate->format('Y-m-d H:i:s');
+            $expertSpeakerRequest->time_needed = $request->get('time_needed');
             $expertSpeakerRequest->length_of_presentation = $request->get('length_of_presentation');
             $expertSpeakerRequest->location = $request->get('location');
             $expertSpeakerRequest->event_description = $request->get('event_description', null);

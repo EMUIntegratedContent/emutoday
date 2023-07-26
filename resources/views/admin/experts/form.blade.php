@@ -5,7 +5,7 @@
 @endsection
 @section('style-plugin')
     @parent
-    <link rel="stylesheet" type="text/css" href="/css/flatpickr.min.css">
+{{--    --}}
 
     @endsection
     @section('style-app')
@@ -21,7 +21,7 @@
     @endsection
     @section('scripts-plugin')
         <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
-        <script src="/themes/plugins/ckeditor/ckeditor.js"></script>
+{{--        <script src="/themes/plugins/ckeditor/ckeditor.js"></script>--}}
         @parent
     @endsection
     @section('scripts-app')
@@ -46,9 +46,11 @@
                   <div class="box-header with-border">
                     <h3 class="box-title">{{$expert->exists ? 'Edit Expert ' . $expert->getFullNameAttribute() : 'New Expert'}}</h3>
                     <div id="vue-box-tools">
-                        <expert-box-tools v-ref:expertboxtools viewtype="form"
-                        :current-user="{{$currentUser}}"
-                        :record-id="{{$expert->exists ? $expert->id : null}}"
+                        <expert-box-tools
+                                ref="expertboxtools"
+                                viewtype="form"
+                                current-user="{{$currentUser}}"
+                                record-id="{{$expert->exists ? $expert->id : null}}"
                         ></expert-box-tools>
                     </div>
                   </div>	<!-- /.box-header -->
@@ -57,7 +59,6 @@
                         errors="{{ json_encode($errors) }}"
                         framework="bootstrap"
                         :cuser-roles="{{$currentUser->roles}}"
-                        recordexists="{{$expert->exists ? true: false}}"
                         recordid="{{$expert->exists ? $expert->id : null }}">
                           <input slot="csrf" type="hidden" name="_token" value="{{ csrf_token() }}">
                       </expert-form>

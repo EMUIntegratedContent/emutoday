@@ -3,12 +3,14 @@
     <div>
       <!-- PROGRESS BAR -->
       <div class="progress">
-        <div v-if="numLoadedComponents >= 5" class="progress-bar" :class="progress == 100 ? 'progress-done' : ''" role="progressbar" :aria-valuenow="progress"
+        <div v-if="numLoadedComponents >= 5" class="progress-bar" :class="progress == 100 ? 'progress-done' : ''"
+             role="progressbar" :aria-valuenow="progress"
              aria-valuemin="0" aria-valuemax="100" :style="'width:' + progress + '%'">
           <span v-if="progress < 100">{{ progress }}% Complete</span>
           <span v-else>I'm Ready!</span>
         </div>
-        <div v-else class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar" :aria-valuenow="100"
+        <div v-else class="progress-bar progress-bar-striped progress-bar-danger active" role="progressbar"
+             :aria-valuenow="100"
              aria-valuemin="0" aria-valuemax="100" style="width:100%">
           <span>Loading page...please wait.</span>
         </div>
@@ -32,59 +34,52 @@
               </div>
               <div class="col-sm-12 col-md-6">
                 <label>Start Date/Time *
-                  <date-picker
+                  <flatpickr
                       v-model="record.start_date"
-                      value-type="YYYY-MM-DD HH:mm:ss"
-                      type="datetime"
-                      format="MM/DD/YYYY h:mm A"
-                      :minute-step="1"
-                      :show-second="false"
-                      :use12h="true"
-                      :clearable="true"
+                      :config="flatpickrConfig"
+                      class="form-control"
                       v-bind:class="[formErrors.start_date ? 'invalid-input' : '']"
-                  ></date-picker>
+                  >
+                  </flatpickr>
                 </label>
                 <p v-if="formErrors.start_date" class="help-text invalid">A start date is required.</p>
               </div>
               <div class="col-sm-12 col-md-6">
                 <label>End Date/Time *
-                  <date-picker
+                  <flatpickr
                       v-model="record.end_date"
-                      value-type="YYYY-MM-DD HH:mm:ss"
-                      type="datetime"
-                      format="MM/DD/YYYY h:mm A"
-                      :minute-step="1"
-                      :show-second="false"
-                      :use12h="true"
-                      :clearable="true"
+                      :config="flatpickrConfig"
+                      class="form-control"
                       v-bind:class="[formErrors.end_date ? 'invalid-input' : '']"
-                  ></date-picker>
+                  >
+                  </flatpickr>
                 </label>
                 <p v-if="formErrors.end_date" class="help-text invalid">An end date is required.</p>
               </div>
-              <!--<div class="col-sm-12 col-md-6">
-                  <label>Active?</label>
-                  <input type="checkbox" v-model="record.live" />
-              </div>-->
             </div><!-- /end #date-time-container -->
             <!-- SUCCESS/FAIL MESSAGES -->
             <div class="row">
               <div class="col-xs-12">
-                <div v-show="formMessage.isOk"  class="alert alert-success alert-dismissible">
+                <div v-if="formMessage.isOk" class="alert alert-success alert-dismissible">
                   <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-                  <p>{{formMessage.msg}}</p>
+                  <p>{{ formMessage.msg }}</p>
                 </div>
-                <div v-show="formMessage.isErr"  class="alert alert-danger alert-dismissible">
+                <div v-if="formMessage.isErr" class="alert alert-danger alert-dismissible">
                   <button @click.prevent="toggleCallout" class="btn btn-sm close"><i class="fa fa-times"></i></button>
-                  <p>The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following errors.</p>
+                  <p>The hub page could not be {{ newpage ? 'created' : 'updated' }}. Please fix the following
+                    errors.</p>
                   <ul v-if="formErrors">
-                    <li v-for="error in formErrors">{{error}}</li>
+                    <li v-for="error in formErrors">{{ error }}</li>
                   </ul>
                 </div>
               </div>
               <div class="col-xs-12 text-right">
-                <button class="btn btn-success" type="button" @click="submitForm">{{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}</button>
-                <button v-show="!newpage" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete Hub Page</button>
+                <button class="btn btn-success" type="button" @click="submitForm">
+                  {{ newpage ? 'Create Hub Page' : 'Update Hub Page' }}
+                </button>&nbsp;
+                <button v-if="!newpage" type="button" class="btn btn-danger" data-toggle="modal"
+                        data-target="#deleteModal">Delete Hub Page
+                </button>
               </div>
             </div>
           </div>
@@ -144,11 +139,12 @@
 </template>
 
 <style scoped>
-.progress-done{
+.progress-done {
   background-color: #3D9970 !important;
 }
-.valid{
-  color:#3c763d;
+
+.valid {
+  color: #3c763d;
 }
 
 .invalid {
@@ -175,14 +171,16 @@
 import moment from 'moment'
 import PageSubstory from './PageSubstory.vue'
 import PageDeleteModal from './PageDeleteModal.vue'
-import DatePicker from 'vue2-datepicker'
-import 'vue2-datepicker/index.css'
+import flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.css'
 
 export default {
-  directives: {},
-  components: {PageSubstory, PageDeleteModal, DatePicker},
+  components: {
+    PageSubstory,
+    PageDeleteModal,
+    flatpickr
+  },
   props: {
-    cuserRoles: {default: {}},
     errors: {
       default: ''
     },
@@ -202,19 +200,11 @@ export default {
       default: []
     }
   },
-  data: function() {
+  data: function () {
     return {
       currentRecordId: null,
       currentSelectedStory: null,
       currentSwapId: null,
-      dateObject:{
-        endDateDefault: '',
-        endDateMax: '',
-        endDateMin: '',
-        startDateDefault: '',
-        startDateMax: '',
-        startDateMin: '',
-      },
       endDatepicker: null,
       formErrors: {},
       formMessage: {
@@ -236,39 +226,48 @@ export default {
       },
       response: {},
       slotStories: {
-         main_story: null,
-          sub_story_1: null,
-          sub_story_2: null,
-          sub_story_3: null,
-          sub_story_4: null,
+        main_story: null,
+        sub_story_1: null,
+        sub_story_2: null,
+        sub_story_3: null,
+        sub_story_4: null,
       },
       startDatepicker: null,
       userRoles: [],
+      flatpickrConfig: {
+        altFormat: "m/d/Y h:i K", // format the user sees
+        altInput: true,
+        dateFormat: "Y-m-d H:i:S", // format sumbitted to the API
+        enableTime: true
+      }
     }
   },
   created: function () {
-    if(this.recordexists){
+    if (this.recordexists) {
       this.fetchCurrentPage(this.recordid)
-    } else {
+    }
+    else {
       this.newpage = true;
       this.setupDatePickers()
     }
   },
   computed: {
-    isAdmin:function(){
-      if(this.userRoles.indexOf('admin')!= -1) {
+    isAdmin: function () {
+      if (this.userRoles.indexOf('admin') != -1) {
         return true;
-      } else {
+      }
+      else {
         if (this.userRoles.indexOf('admin_super') != -1) {
           return true;
-        } else {
+        }
+        else {
           return false;
         }
       }
     },
 
     // Progress of page bulider (adds up to 100%)
-    progress: function(){
+    progress: function () {
       let progress = 0
 
       this.record.start_date ? progress += 14 : ''
@@ -284,152 +283,154 @@ export default {
   },
 
   methods: {
-    handleSubstoryLoaded (evt) {
+    handleSubstoryLoaded () {
       this.numLoadedComponents++
     },
-    handleSwap(storyData) {
-      switch(storyData.storyNumber){
+    handleSwap (storyData) {
+      switch (storyData.storyNumber) {
         case "0":
-          this.$set(this.slotStories, 'main_story', storyData.story)
+          this.slotStories.main_story = storyData.story
           break;
         case "1":
-          this.$set(this.slotStories, 'sub_story_1', storyData.story)
+          this.slotStories.sub_story_1 = storyData.story
           break;
         case "2":
-          this.$set(this.slotStories, 'sub_story_2', storyData.story)
+          this.slotStories.sub_story_2 = storyData.story
           break;
         case "3":
-          this.$set(this.slotStories, 'sub_story_3', storyData.story)
+          this.slotStories.sub_story_3 = storyData.story
           break;
         case "4":
-          this.$set(this.slotStories, 'sub_story_4', storyData.story)
+          this.slotStories.sub_story_4 = storyData.story
           break;
       }
     },
-    fetchCurrentPage: function(recid) {
+    fetchCurrentPage: function (recid) {
       this.$http.get('/api/page/' + recid + '/edit')
 
       .then((response) => {
         this.record = response.data.newdata.data
         this.setPageStorySlots(this.record.stories)
         this.setupDatePickers();
-      }, (response) => {
-        this.formErrors = response.data.error.message;
-      });
+      }).catch((e) => {
+        this.formErrors = e.response.data.error.message
+      })
     },
 
-    nowOnReload:function() {
-      let newurl = '/admin/page/'+ this.currentRecordId+'/edit';
-      document.location = newurl;
+    nowOnReload: function () {
+      let newurl = '/admin/page/' + this.currentRecordId + '/edit'
+      document.location = newurl
     },
 
-    onRefresh: function() {
-      this.recordId = this.currentRecordId;
-      this.recordexists = true;
-      this.fetchCurrentPage(this.currentRecordId);
+    onRefresh: function () {
+      this.recordId = this.currentRecordId
+      this.fetchCurrentPage(this.currentRecordId)
     },
 
     // Loop through the stories that belong to this page and add them to the correct slots
-    setPageStorySlots: function(storiesArr){
-        var self = this
-        storiesArr.forEach(function(story){
-            // make sure the pivot table exists on the story object
-            if(story.pivot){
-                switch(story.pivot.page_position){
-                    case 0:
-                        self.slotStories.main_story = story
-                        break
-                    case 1:
-                        self.slotStories.sub_story_1 = story
-                        break
-                    case 2:
-                        self.slotStories.sub_story_2 = story
-                        break
-                    case 3:
-                        self.slotStories.sub_story_3 = story
-                        break
-                    case 4:
-                        self.slotStories.sub_story_4 = story
-                        break
-                }
-            }
-        })
+    setPageStorySlots: function (storiesArr) {
+      const self = this
+      storiesArr.forEach(function (story) {
+        // make sure the pivot table exists on the story object
+        if (story.pivot) {
+          switch (story.pivot.page_position) {
+            case 0:
+              self.slotStories.main_story = story
+              break
+            case 1:
+              self.slotStories.sub_story_1 = story
+              break
+            case 2:
+              self.slotStories.sub_story_2 = story
+              break
+            case 3:
+              self.slotStories.sub_story_3 = story
+              break
+            case 4:
+              self.slotStories.sub_story_4 = story
+              break
+          }
+        }
+      })
     },
-    submitForm: function() {
-      if(this.formErrors.endDateBeforeStart) {
+
+    // Make sure all story IDs in the builder are unique. Otherwise, it causes conflicts with the logic when building the page.
+    checkUniqueIds() {
+      const ids = Object.values(this.slotStories).map(story => story.id)
+      return new Set(ids).size === Object.keys(this.slotStories).length
+    },
+
+    submitForm: function () {
+      if (this.formErrors.endDateBeforeStart) {
         alert('The end date occurs before the start date. Please fix this before submitting.')
         return false
       }
+
+      if(this.progress === 100 && !this.checkUniqueIds()) {
+        alert('You are using the same story multiple times. Please ensure each story is unique.')
+        return false
+      }
+
       $('html, body').animate({ scrollTop: 0 }, 'fast');
 
       // Decide route to submit form to
       let method = (this.recordexists) ? 'put' : 'post'
-      let route =  (this.recordexists) ? '/api/page/' + this.record.id : '/api/page';
+      let route = (this.recordexists) ? '/api/page/' + this.record.id : '/api/page';
 
       // Submit form.
       this.$http[method](route,
           {
-              page: this.record,
-              stories: this.slotStories
+            page: this.record,
+            stories: this.slotStories
           }
-      ) //
-
-      // Do this when response gets back.
+      )
       .then((response) => {
-        this.formMessage.msg = response.data.message;
-        this.formMessage.isOk = response.ok; // Success message
-        this.formMessage.isErr = false;
-        this.currentRecordId = response.data.newdata.data.id;
-        this.recordexists = true;
+        this.formMessage.msg = response.data.message
+        this.formMessage.isOk = true // Success message
+        this.formMessage.isErr = false
+        this.currentRecordId = response.data.newdata.data.id
         this.formErrors = {}; // Clear errors
-
         if (this.newpage) {
           this.nowOnReload();
-        } else {
+        }
+        else {
           this.onRefresh();
         }
-      }, (response) => { // If invalid. error callback
+      }).catch((e) => {
+        console.log(e)
         this.formMessage.isOk = false;
         this.formMessage.isErr = true;
-        // Set errors from validation to vue data
-        this.formErrors = response.data.error.message;
-      }).bind(this);
+      })
     },
 
-    setupDatePickers:function(){
-      let self = this
+    setupDatePickers: function () {
       let today = moment()
-
-      if (this.record.start_date === '') {
-        this.dateObject.startDateDefault = today.format('YYYY-MM-DD')
-      } else {
-        this.dateObject.startDateDefault = this.record.start_date;
+      if (!this.record.start_date) {
+        this.record.start_date = today.format('YYYY-MM-DD 00:00:00')
       }
-
-      if (this.record.end_date === '') {
-        this.dateObject.endDateDefault = today.format('YYYY-MM-DD')
-      } else {
-        this.dateObject.endDateDefault = this.record.end_date;
+      if (!this.record.end_date) {
+        this.record.end_date = today.format('YYYY-MM-DD 00:00:00')
       }
     },
 
-    toggleCallout:function(evt){
+    toggleCallout: function (evt) {
       this.formMessage.isOk = false
       this.formMessage.isErr = false
     },
     checkStartEndDates () {
       const sd = moment(this.record.start_date, 'YYYY-MM-DD HH:mm:ss')
       const ed = moment(this.record.end_date, 'YYYY-MM-DD HH:mm:ss')
-      if(ed.isBefore(sd)) {
+      if (ed.isBefore(sd)) {
         this.formMessage.isErr = true
         this.formMessage.isOk = false
         this.formErrors.endDateBeforeStart = 'The end date occurs before the start date.'
-      } else {
+      }
+      else {
         delete this.formErrors.endDateBeforeStart
         // There could be other errors at this point
-        if(!this.formErrors.length) {
-          this.$set(this.formMessage, 'isErr', false)
-          this.$set(this.formMessage, 'isok', false)
+        if (!this.formErrors.length) {
+          this.formMessage.isErr = false
+          this.formMessage.isOk = false
         }
       }
     }

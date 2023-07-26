@@ -2,8 +2,6 @@
 
 namespace Emutoday\Http\Controllers\Api;
 
-
-
 use Illuminate\Support\Facades\Request as Input;
 // import the Intervention Image Manager Class
 use Intervention\Image\ImageManagerStatic as Image;
@@ -66,8 +64,6 @@ class EventController extends ApiController
 
     public function queueLoad($fromDate = null, $toDate = null)
     {
-      $currentDate = Carbon::now();
-
       if (\Auth::check()) {
         $user = \Auth::user();
 
@@ -104,13 +100,14 @@ class EventController extends ApiController
       if (\Auth::check()) {
         $user = \Auth::user();
 
+				$events = [];
         if ($user->hasRole('lbc_approver')){
             if($fromDate && !$toDate){
-                $events  = Event::where([['start_date', '>=', $fromDate], ['lbc_approved', '1'], ['lbc_reviewed', '0']])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
+                $events  = Event::where([['start_date', '>=', $fromDate], ['lbc_reviewed', '0']])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             } elseif($fromDate && $toDate){
-                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
+                $events  = Event::where([['lbc_reviewed', '0']])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             } else {
-                $events  = Event::where([['lbc_approved', '1'], ['lbc_reviewed', '0']])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
+                $events  = Event::where([['lbc_reviewed', '0']])->orderBy('is_promoted', 'desc')->orderBy('start_date', 'asc')->get();
             }
         }
 

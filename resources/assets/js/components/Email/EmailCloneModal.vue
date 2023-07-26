@@ -9,8 +9,8 @@
           <h4 class="modal-title">Clone email</h4>
         </div>
         <div class="modal-body">
-          <p v-if="!disableClone">Are you sure you want to clone "{{ email.title }}"?</p>
-          <div v-show="cloneStatus.is_set && cloneStatus.is_success"  class="alert" :class="'alert-' + [cloneStatus.is_success ? 'success' : 'danger']">
+          <p v-if="!disableClone">Are you sure you want to clone "{{ emailBuilderEmail.title }}"?</p>
+          <div v-if="cloneStatus.is_set && cloneStatus.is_success"  class="alert" :class="'alert-' + [cloneStatus.is_success ? 'success' : 'danger']">
             <p v-html="cloneStatus.message"></p>
           </div>
         </div>
@@ -31,11 +31,10 @@
 
 </style>
 <script>
+import { emailMixin } from './email_mixin'
 export default {
-  directives: {},
-  components: {},
-  props: ['email'],
-  data: function() {
+  mixins: [ emailMixin ],
+  data() {
     return {
       cloneStatus: {
         'is_set': false,
@@ -53,17 +52,17 @@ export default {
   },
   methods: {
     cloneEmail: function() {
-      this.$http.post('/api/email/clone', this.email)
+      this.$http.post('/api/email/clone', this.emailBuilderEmail)
       .then((response) =>{
         this.disableClone = true
         this.cloneStatus.is_set = true
         this.cloneStatus.message = response.data.message + ' <a href="/admin/email/' + response.data.newdata.data.id + '/edit">Go now.</a>'
-      }, (response) => {
+      }).catch(() => {
         this.disableClone = true
         this.cloneStatus.is_set = true
         this.cloneStatus.is_success = false
         this.cloneStatus.message = 'There was a problem cloning this email. Please notify a site admin.'
-      }).bind(this);
+      })
     },
     resetModal: function(){
       this.cloneStatus.is_set = false
@@ -71,15 +70,6 @@ export default {
       this.cloneStatus.is_success = true
       this.disableClone = false
     },
-  },
-  filters: {
-
-  },
-  events: {
-
-  },
-  watch: {
-
-  },
+  }
 }
 </script>

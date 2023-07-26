@@ -1,7 +1,13 @@
-var Vue = require('vue');
-
+import { createApp } from "vue";
 import AuthorizedClients from './components/passport/AuthorizedClients.vue'
-new Vue({
-    el: '#vue-oauth-authorized-clients',
-    components: {AuthorizedClients}
-});
+import axios from "axios"
+
+// Remember the token we created in the <head> tags? Get it here.
+const CSRFToken = document.querySelector('meta[name="_token"]').getAttribute('content')
+axios.defaults.headers.common['X-CSRF-TOKEN'] = CSRFToken
+
+const app = createApp({
+    components: { AuthorizedClients }
+})
+app.config.globalProperties.$http = axios
+app.mount('#vue-oauth-authorized-clients')

@@ -16,7 +16,9 @@ class StoryIdea extends Model
       'is_completed',
       'medium',
   ];
-  protected $dates = ['deadline'];
+  protected $casts = [
+		'deadline' => 'datetime'
+	];
 
   /**
    * This story idea's creator
