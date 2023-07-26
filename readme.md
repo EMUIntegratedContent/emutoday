@@ -34,7 +34,7 @@ Obtain the **.env** file (stored outside this repo) and place it in the root of 
 contains application keys and passwords.
 
 <h3>Step 4</h3>
-**FIRST TIME ONLY** 
+**FIRST TIME ONLY**
 - Download the `oauth.php` file (stored outside this repo) to your local machine at the directory `/path/to/emutoday/app/Http/Requests`.
 - Most of the `public/imgs` subdirectories are not included in the GitHub repo. Download the imgs directory (stored outside this repo) to your local machine and place the missing subdirectories into `/path/to/emutoday/public`.
 
