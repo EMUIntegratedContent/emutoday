@@ -140,21 +140,21 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     });
 
     Route::get('authorlist', function() {
-			return Author::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->orderBy('last_Name', 'asc')->get();
+			return Author::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('hidden', 0)->orderBy('last_Name', 'asc')->get();
     });
 
     Route::get('contactlist', function() {
-			return Author::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('is_contact', 1)->get();
+			return Author::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('hidden', 0)->where('is_contact', 1)->orderBy('last_Name', 'asc')->get();
     });
 
     Route::get('contactdefault', function() {
-        $author = Author::select()->where('is_principal_contact', 1)->first();
+        $author = Author::select()->where('hidden', 0)->where('is_principal_contact', 1)->first();
 
         return $author;
     });
 
     Route::get('contactmagazinedefault', function() {
-        $author = Author::select()->where('is_principal_magazine_contact', 1)->first();
+        $author = Author::select()->where('hidden', 0)->where('is_principal_magazine_contact', 1)->first();
 
         return $author;
     });
@@ -179,11 +179,11 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
     });
 
     Route::get('storyideaassignees', function() {
-        return User::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('is_idea_assignee', 1)->orderBy('last_name', 'asc')->get();
+        return User::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('hidden', 0)->where('is_idea_assignee', 1)->orderBy('last_name', 'asc')->get();
     });
 
     Route::get('userlist', function() {
-        return User::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->orderBy('last_name', 'asc')->get();
+        return User::select('id AS value')->selectRaw('CONCAT(first_Name, " ", last_Name) AS name')->where('hidden', 0)->orderBy('last_name', 'asc')->get();
     });
 
     Route::patch('event/updateItem/{event}', 'Api\EventController@updateItem');

@@ -33,9 +33,14 @@ class UserController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->user->paginate(10);
+				$showarchived = $request->input('showarchived'); // Should archived users be shown?
+				if($showarchived) {
+					$users = $this->user->paginate(10);
+				} else {
+					$users = $this->user->where('hidden', '0')->paginate(10);
+				}
         $permissions = $this->permission->get();
         $roles = $this->role->get();
 
@@ -75,12 +80,31 @@ class UserController extends Controller
 
     public function update(Requests\User_UpdateRequest $request, $id)
     {
-        $user = $this->user->findOrFail($id);
-        $user->fill($request->only('last_name', 'first_name', 'phone', 'email'))->save();
-        $rolesList = $request->input('role_list') == null ? [] : $request->input('role_list');
-        $user->roles()->sync($rolesList);
-        flash()->success('User has been updated.');
-        return redirect()->action('Admin\UserController@edit', $user->id);//->with('status', 'User has been updated.');
+			$archive_user = $request->input('archive_user');
+			$unarchive_user = $request->input('unarchive_user');
+
+			$user = $this->user->findOrFail($id);
+			// If archive_user is selected, set the hidden field to 1 and remove all the user's roles
+			if($archive_user == '1') {
+				$user->roles()->sync([]); // Remove user roles
+				$user->hidden = 1;
+				$user->is_idea_assignee = 0; // remove from story idea assignment list
+				$user->save();
+			}
+			// If unarchive_user is selected, set the hidden field to 0
+			else if ($unarchive_user == '1') {
+				$user->hidden = 0;
+				$user->save();
+			}
+			// Normal update without archiving.
+			else {
+				$user->fill($request->only('last_name', 'first_name', 'phone', 'email'))->save();
+				$rolesList = $request->input('role_list') == null ? [] : $request->input('role_list');
+				$user->roles()->sync($rolesList);
+			}
+
+			flash()->success('User has been updated.');
+			return redirect()->action('Admin\UserController@edit', $user->id);//->with('status', 'User has been updated.');
     }
     public function confirm(Requests\User_DeleteRequest $request, $id)
     {

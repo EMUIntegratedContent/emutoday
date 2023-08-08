@@ -14,6 +14,13 @@
       </div>
       <!-- /.box-header -->
       <div class="box-body table-responsive no-padding">
+
+        {{-- Filter archived users showing on table. JQuery onclick in admin-emucustom.js --}}
+        <p style="margin-left: 10px">Show archived users <input type="checkbox" name="showarchived" id="showarchived"
+               @if(request()->has('showarchived'))
+                checked
+               @endif
+          /></p>
         <table class="table table-hover">
           <tr>
             <th>Id</th>
@@ -32,6 +39,9 @@
               </td>
               <td>
                 <a href="/admin/user/{{ $user->id}}/edit">{{ $user->email }}</a>
+                @if($user->hidden)
+                  <span class="label label-warning">Archived</span>
+                @endif
               </td>
               <td>{{ $user->last_name }}</td>
               <td>{{ $user->first_name }}</td>
@@ -105,3 +115,4 @@
   </div><!-- /.col-md-6 -->
 </div><!-- /.row -->
 @endsection
+

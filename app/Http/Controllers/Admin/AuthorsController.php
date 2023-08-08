@@ -34,9 +34,14 @@ class AuthorsController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function index($atype = null)
+    public function index(Request $request, $atype = null)
     {
-      $authorsPaginated = Author::orderBy('last_name', 'asc')->paginate(10);
+			$showarchived = $request->input('showarchived'); // Should archived users be shown?
+			if($showarchived) {
+				$authorsPaginated = Author::orderBy('last_name', 'asc')->paginate(10);
+			} else {
+				$authorsPaginated = Author::where('hidden', '0')->orderBy('last_name', 'asc')->paginate(10);
+			}
       return view('admin.authors.index', compact('atype','authorsPaginated'));
     }
 

@@ -101,6 +101,7 @@ mix.styles([
 | The scripts that will run on the restricted admin pages
 |
 */
+mix.js('resources/assets/js/admin-emucustom.js', 'public/js/admin-emucustom.js').vue();
 
 /*
 |--------------------------------------------------------------------------

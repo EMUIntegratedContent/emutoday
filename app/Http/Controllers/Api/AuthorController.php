@@ -142,35 +142,44 @@ class AuthorController extends ApiController{
 			$author->phone = $request->get('phone');
 			$author->user_id = $request->get('user_id', null);
 
-			//If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
-			if($request->get('is_principal_contact') == 1){
-				$author->is_principal_contact = 1;
-				$author->is_contact = 1;
-				Author::where('id', '!=', $author->id)->update(['is_principal_contact' => 0]);
-			}
-			else{
-				$author->is_principal_contact = 0;
-				if($request->get('is_contact') == 1){
-					$author->is_contact = 1;
-				}
-				else{
-					$author->is_contact = 0;
-				}
-			}
-
-			//If this author is set as the PRIMARY MAGAZINE contact, set all other authors' is_principal_magazine_contact fields to 0 and mark this author as a contact automatically
-			if($request->get('is_principal_magazine_contact') == 1){
-				$author->is_principal_magazine_contact = 1;
-				$author->is_contact = 1;
-				Author::where('id', '!=', $author->id)->update(['is_principal_magazine_contact' => 0]);
-			}
-			else{
+			// If a user is archived, make sure they are not set as a contact, or default mag/story dontact
+			if($request->get('hidden')) {
 				$author->is_principal_magazine_contact = 0;
-				if($request->get('is_contact') == 1){
+				$author->is_contact = 0;
+				$author->is_principal_contact = 0;
+				$author->hidden = 1;
+			} else {
+				$author->hidden = 0;
+				//If this author is set as the PRIMARY STORY contact, set all other authors' is_principal_contact fields to 0 and mark this author as a contact automatically
+				if($request->get('is_principal_contact') == 1){
+					$author->is_principal_contact = 1;
 					$author->is_contact = 1;
+					Author::where('id', '!=', $author->id)->update(['is_principal_contact' => 0]);
 				}
 				else{
-					$author->is_contact = 0;
+					$author->is_principal_contact = 0;
+					if($request->get('is_contact') == 1){
+						$author->is_contact = 1;
+					}
+					else{
+						$author->is_contact = 0;
+					}
+				}
+
+				//If this author is set as the PRIMARY MAGAZINE contact, set all other authors' is_principal_magazine_contact fields to 0 and mark this author as a contact automatically
+				if($request->get('is_principal_magazine_contact') == 1){
+					$author->is_principal_magazine_contact = 1;
+					$author->is_contact = 1;
+					Author::where('id', '!=', $author->id)->update(['is_principal_magazine_contact' => 0]);
+				}
+				else{
+					$author->is_principal_magazine_contact = 0;
+					if($request->get('is_contact') == 1){
+						$author->is_contact = 1;
+					}
+					else{
+						$author->is_contact = 0;
+					}
 				}
 			}
 

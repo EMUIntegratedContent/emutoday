@@ -14,12 +14,17 @@
     </div>
     <!-- /.row -->
     <div class="row">
+      <div v-bind:class="md12col" v-if="record.hidden == '1'">
+        <div class="alert alert-warning" role="alert">
+          This author is archived. Information cannot be changed for this author while archived.
+        </div>
+      </div>
       <div v-bind:class="md6col">
         <!-- First Name -->
         <div v-bind:class="formGroup">
           <label>First Name <span v-bind:class="iconStar" class="reqstar"></span></label>
           <input v-model="record.first_name" class="form-control"
-                 v-bind:class="[formErrors.first_name ? 'invalid-input' : '']" name="first_name" type="text">
+                 v-bind:class="[formErrors.first_name ? 'invalid-input' : '']" name="first_name" type="text" :readonly="record.hidden == '1'">
           <p v-if="formErrors.first_name" class="help-text invalid">{{ formErrors.first_name }}</p>
         </div>
       </div>
@@ -28,7 +33,7 @@
         <div v-bind:class="formGroup">
           <label>Last Name <span v-bind:class="iconStar" class="reqstar"></span></label>
           <input v-model="record.last_name" class="form-control"
-                 v-bind:class="[formErrors.last_name ? 'invalid-input' : '']" name="last_name" type="text">
+                 v-bind:class="[formErrors.last_name ? 'invalid-input' : '']" name="last_name" type="text" :readonly="record.hidden == '1'">
           <p v-if="formErrors.last_name" class="help-text invalid">{{ formErrors.last_name }}</p>
         </div>
       </div>
@@ -43,7 +48,7 @@
           <p class="help-text" id="title-helptext">Please enter the author's email address. (contact@emich.edu)</p>
           <div class="input-group input-group-flat">
             <input v-model="record.email" class="form-control" v-bind:class="[formErrors.email ? 'invalid-input' : '']"
-                   name="email" type="text">
+                   name="email" type="text" :readonly="record.hidden == '1'">
           </div>
           <p v-if="formErrors.email" class="help-text invalid">Please make sure email is properly formed.</p>
         </div>
@@ -55,7 +60,7 @@
           <p class="help-text" id="phone-helptext">Please enter the contact person's phone number.</p>
           <div class="input-group input-group-flat">
             <input v-model="record.phone" class="form-control" v-bind:class="[formErrors.phone ? 'invalid-input' : '']"
-                   name="phone" type="text">
+                   name="phone" type="text" :readonly="record.hidden == '1'">
           </div>
           <p v-if="formErrors.phone" class="help-text invalid">Please enter a phone number.</p>
         </div>
@@ -68,7 +73,7 @@
           <label>Associated User (can be empty)</label>
           <p class="help-text" id="user-helptext">With which system user is this author associated (optional)?</p>
           <div class="input-group input-group-flat">
-            <select v-model="record.user_id">
+            <select v-model="record.user_id" :readonly="record.hidden == '1'">
               <option :value="null">-none-</option>
               <option v-for="user in users" v-bind:value="user.id" :selected="record.user_id == user.id">
                 {{ user.first_name }} {{ user.last_name }}
@@ -84,7 +89,7 @@
         <div class="form-group">
           <label>Show this author as story contact?
             <input id="is-contact-yes" name="is_contact" type="checkbox"
-                   :true-value="1" :false-value="0" v-model="record.is_contact"/>
+                   :true-value="1" :false-value="0" v-model="record.is_contact" :readonly="record.hidden == '1'"/>
           </label>
         </div>
       </div><!-- /.md6col -->
@@ -95,7 +100,7 @@
           <label>This author should be the DEFAULT contact for a STORY if none is otherwise specified.
             <input id="is-principal-contact-yes" name="is_principal_contact" type="checkbox"
                    :true-value="1" :false-value="0"
-                   v-model="record.is_principal_contact"/>
+                   v-model="record.is_principal_contact" :readonly="record.hidden == '1'"/>
           </label>
           <p>Notice: Selecting this will replace the currently-select principal story contact, who is
             {{ currentPrimaryContact }}.</p>
@@ -108,10 +113,41 @@
           <label>This author should be the DEFAULT contact for a MAGAZINE ARTICLE if none is otherwise specified.
             <input id="is-principal-magazine-contact-yes" name="is_principal_magazine_contact" type="checkbox"
                    :true-value="1" :false-value="0"
-                   v-model="record.is_principal_magazine_contact"/>
+                   v-model="record.is_principal_magazine_contact" :readonly="record.hidden == '1'"/>
           </label>
           <p>Notice: Selecting this will replace the currently-select principal magazine contact, who is
             {{ currentPrimaryMagazineContact }}.</p>
+        </div>
+      </div><!-- /.md6col -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div :class="md12col">
+        <div class="panel panel-warning">
+          <div class="panel-body">
+            <div v-if="showArchive">
+              <label>Archive this author on save?
+                <input id="archive-on-save" name="archive-on-save" type="checkbox"
+                       :true-value="1" :false-value="0"
+                       v-model="archiveOnSave"/>
+              </label>
+              <p>Notice: Selecting this removes the author as default contact for stories and/or magazine articles if they are set.
+                They will no longer be selectable as an author or contacts for stories or articles.
+                Their attributions will still be recorded on stories and articles, and their association with a system user will be maintained.
+                They will still show in the authors table with an "Archived" tag next to their name.
+                You can unarchive an author at any time.
+              </p>
+            </div>
+            <div v-if="showUnarchive">
+              <label>Unarchive this author on save?
+                <input id="unarchive-on-save" name="unarchive-on-save" type="checkbox"
+                       :true-value="1" :false-value="0"
+                       v-model="unarchiveOnSave"/>
+              </label>
+              <p>Notice: Selecting this reinstates the author and gives you the option to add them as contacts for stories or articles.
+                You can re-archive an author at any time.
+              </p>
+            </div>
+          </div>
         </div>
       </div><!-- /.md6col -->
     </div><!-- /.row -->
@@ -261,6 +297,7 @@ export default {
         is_principal_contact: '',
         is_principal_magazine_contact: '',
         user_id: null,
+        hidden: 0
       },
       totalChars: {
         start: 0,
@@ -276,7 +313,11 @@ export default {
       },
       formInputs: {},
       formErrors: {},
-      users: []
+      users: [],
+      showUnarchive: false,
+      showArchive: false,
+      archiveOnSave: false,
+      unarchiveOnSave: false
     }
   },
   created: function () {
@@ -354,6 +395,17 @@ export default {
               isErr: false,
               msg: ''
         }
+
+        // Handle un-archiving of authors
+        if(this.record.hidden == '1') {
+          this.showUnarchive = true
+          this.showArchive = false
+        } else {
+          this.showArchive = true
+          this.showUnarchive = false
+        }
+        this.archiveOnSave = false
+        this.unarchiveOnSave = false
       }).catch((e) => {
         this.formErrors = e.response.data.error.message;
       });
@@ -385,6 +437,16 @@ export default {
       // Decide route to submit form to
       let method = (this.record_exists) ? 'put' : 'post'
       let route = (this.record_exists) ? '/api/authors/' + this.record.id : '/api/authors';
+
+      // Make a couple of changes to the archived record based on the un/archive status selected.
+      if(this.archiveOnSave) {
+        this.record.is_contact = 0
+        this.record.is_principal_contact = 0
+        this.record.is_principal_magazine_contact = 0
+        this.record.hidden = 1
+      } else if (this.unarchiveOnSave) {
+        this.record.hidden = 0
+      }
 
       // Submit form.
       this.$http[method](route, this.record) //

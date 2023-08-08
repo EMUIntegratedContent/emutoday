@@ -215,20 +215,7 @@ immediately after the control sidebar -->
 
 @show
 @section('footer-app')
-    {{-- <script>
-    var AdminLTEOptions = {
-    //Enable sidebar expand on hover effect for sidebar mini
-    //This option is forced to true if both the fixed layout and sidebar mini
-    //are used together
-    sidebarExpandOnHover: false,
-    //BoxRefresh Plugin
-    enableBoxRefresh: true,
-    //Bootstrap.js tooltip
-    enableBSToppltip: true
-};
-</script> --}}
 <script src="/themes/admin-lte/js/app.js"></script>
-{{-- <script src="/js/vue-ajax-form.js" ></script> --}}
 <script src="/js/admin-emucustom.js"></script>
 @show
 

@@ -8,29 +8,6 @@ $(document).ready(function() {
     fixedContentPos: false,
   });
 
-  /**
-   * These blocks ensure image captions do not stretch image dimensions on news stories.
-   * Commented out by CP 7/23/23. Should not be needed now that CKEditor5 styles are included publicly.
-   */
-  // $.each($('figure img'), function() {
-  //     const imgWidth = $(this).width();
-  //     const figureWidth = imgWidth + 40; //38px ~ 1.11rem x 2(sides)
-  //     $(this).closest('figure').css({'width': figureWidth, 'overflow-wrap': 'break-word'});
-  // });
-  // $.each($('.visbox img'), function() {
-  //     const imgWidth = $(this).width();
-  //     $(this).closest('div.visbox').css({'width': imgWidth, 'overflow-wrap': 'break-word'});
-  // });
-
-  /**
-   * Any story image floated left should have no left margin, and a right margin
-   */
-  // $.each($('#story-content figure'), function(){
-  //   if($(this).css('float') == 'left'){
-  //     $(this).css({'margin-left': 0, 'margin-right': '1.11111rem'});
-  //   }
-  // })
-
   // Internet Explorer 6-11 (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
   const isIE = /*@cc_on!@*/false || !!document.documentMode;
   if(isIE){
