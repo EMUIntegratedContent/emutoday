@@ -89,7 +89,8 @@ p.small-return-news {
     float: none;
 }
 
-.more-story-caption{
+.sharethis-inline-share-buttons {
+    margin-bottom: .5rem;
 }
 
 /*Calendar Page*/
