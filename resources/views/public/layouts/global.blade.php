@@ -40,6 +40,9 @@
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-K44PSS7');</script>
     <!-- End Google Tag Manager -->
+
+    <!-- ShareThis Buttons Script -->
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=64c3c1a3c73e910012491920&product=inline-share-buttons&source=platform" async="async"></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -206,7 +209,7 @@
 </div> <!-- .off-canvas-wrapper -->
 @section('footer-vendor')
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57b1dfed53cef787"></script>
+{{--    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57b1dfed53cef787"></script>--}}
 @show
 @section('footer-plugin')
 @show

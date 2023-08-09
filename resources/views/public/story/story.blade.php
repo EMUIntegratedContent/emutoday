@@ -33,6 +33,7 @@
 
 @section('content')
   <div id="news-story-bar">
+    @include('public.vendor.addthis')
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
         <!-- DO NOT SHOW ARTICLES WHOSE START DATE/TIME HAS NOT ARRIVED -->
