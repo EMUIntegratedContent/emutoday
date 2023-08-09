@@ -1207,8 +1207,7 @@ p.small-return-news {
 }
 .addthis{
     position: relative;
-    /*float:right;*/
-    margin-top: 0 0 0 1.2rem;
+    margin: 0 0 0 1.2rem;
     padding: .2rem 0 .4rem 0;
 }
 .addthis img{
@@ -1594,9 +1593,7 @@ h2.issue-date {
 		line-height:2rem;
 		font-weight: normal;
 }
-/*.addthis.magazine-top{
-    padding-top: .8rem
-}*/
+
 #news-story-bar.magazine-story .magazine-titlebar{
     width: 100%;
     clear: both;

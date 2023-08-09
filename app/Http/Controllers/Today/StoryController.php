@@ -87,6 +87,7 @@ class StoryController extends Controller{
 				$mainStoryImage = null;
 				$mainStoryImages = $story->storyImages()->where('image_type', 'story')->get();
 				$fullBannerImage = $story->storyImages()->where('image_type', 'full')->first(); // Added to EMU Today August 2018
+				// AddThis sharing buttons have been REPLACED by ShareThis. CP 8/9/23. This image is still relevant to those buttons!!
 				$addThisImage = $story->storyImages()->where('image_type', 'social')->first();
 
 				foreach($mainStoryImages as $mainimg){

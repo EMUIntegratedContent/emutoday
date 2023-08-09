@@ -15,12 +15,12 @@
 @endif
 <meta property="og:description" content="{{trim($story->subtitle)}}" />
   @if($story->story_type == 'news' && $addThisImage)
-  <meta property="og:image" content="http://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage->present()->mainImageURL)}}"/>
+  <meta property="og:image" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage->present()->mainImageURL)}}"/>
   <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($addThisImage->present()->mainImageURL)}}"/>
   <meta property="og:image:width" content="400" />
   <meta property="og:image:height" content="300" />
   @elseif($mainStoryImage)
-  <meta property="og:image" content="http://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>
+  <meta property="og:image" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>
   <meta property="og:image:secure_url" content="https://{{trim(Request::server('SERVER_NAME'))}}{{trim($mainStoryImage->present()->mainImageURL)}}"/>
   <meta property="og:image:width" content="400" />
   <meta property="og:image:height" content="300" />
@@ -33,7 +33,6 @@
 
 @section('content')
   <div id="news-story-bar">
-    @include('public.vendor.addthis')
     <div class="row">
       <div class="large-12 medium-12 small-12 columns">
         <!-- DO NOT SHOW ARTICLES WHOSE START DATE/TIME HAS NOT ARRIVED -->

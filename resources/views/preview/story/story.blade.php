@@ -45,12 +45,12 @@
           @endif
         </div>
         <!-- Story Page Content -->
-        <div id="story-content" class="row ck-content">
         {!! Form::model($story,[
             'method' => 'put',
             'route' => ['admin_preview_story_update', $story->id],
             'files' => true
         ]) !!}
+        <div id="story-content" class="row ck-content">
         <!-- Story Content Column -->
           <div class="large-9 large-push-3 medium-9 medium-push-3 small-12 columns">
             @if(isset($mainStoryImage) && !isset($fullBannerImage))
@@ -85,7 +85,7 @@
           <!-- Page Side Bar Column -->
           <div class="large-3 large-pull-9 medium-3 medium-pull-9 small-12 columns" id="story-sidebar">
             <div class="dots-bottom">
-              <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png"/></div>
+              <div class="addthis"><img src="/assets/imgs/icons/fake-sharethis.png"/></div>
               <p class="story-publish-date">{{ Carbon\Carbon::parse($story->present()->publishedDate)->format('F d, Y') }}</p>
             </div>
             <div class="dots-bottom">
@@ -125,12 +125,12 @@
               {!! Form::submit('Update Story', ['class' => 'button']) !!}
               {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
             </div><!-- /.button-group -->
-            {!! Form::close() !!}
           </div><!-- /.medium-8 columns -->
           <div class="medium-4 columns">
             <h6 class="subheader text-right">Start Date: {{$story->start_date}}</h6>
           </div><!-- /.medium-4 columns -->
         </div><!-- /.row -->
+        {!! Form::close() !!}
       </div>
 
     </div>

@@ -24,7 +24,7 @@
         <div id="story-content" class="row">
           <!-- Story Content Column -->
           <div class="large-9 medium-8 small-12 columns noleftpadding">
-            <div class="addthis"><img src="/assets/imgs/icons/fake-addthis.png" /></div>
+            <div class="addthis"><img src="/assets/imgs/icons/fake-sharethis.png" /></div>
             <h3>{{ $story->title }}</h3>
             <h5>{{ $story->subtitle }}</h5>
             <div id="big-feature-image">

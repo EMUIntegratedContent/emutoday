@@ -18,7 +18,7 @@
                 <div class="large-8 medium-8 small-12 columns">
                     <h2 class="issue-date news-caps">{{$magazine->season}} {{$magazine->year}}</h2></div>
                 <div class="large-4 medium-4 small-12 columns">
-                  <div class="addthis magazine-top"><a href="#"><img src="/assets/imgs/icons/fake-addthis.png" alt="addthis "></a></div>
+                  <div class="addthis magazine-top"><a href="#"><img src="/assets/imgs/icons/fake-sharethis.png" alt="addthis"></a></div>
                 </div>
               </div> <!-- issue-grouping -->
               <div id="story-listing">

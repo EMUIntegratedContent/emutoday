@@ -10,6 +10,7 @@
 @section('magazine-title'){{ $story->title }} @stop
 
 @section('addthisMeta')
+<!-- NOTE: addthis was discontinued by Oracle in April 2023, as of 8/9/23, EMU Today now uses ShareThis. These meta properties are STILL RELEVANT though so don't get rid of them!!!-->
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{trim(Request::fullUrl())}}" />
 <meta property="og:title" content="{{trim($story->title)}}" />
@@ -40,7 +41,6 @@
             @endif
           </div>
           <div class="large-4 medium-4 small-12 columns noleftpadding">
-            <div class="addthis_sharing_toolbox"><a class="addthis magazine-top" width="50px"></a></div>
           </div>
         </div>
         <div class="row">

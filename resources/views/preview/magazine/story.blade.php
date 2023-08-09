@@ -22,12 +22,12 @@
 @endsection
 @section('content')
   <div id="news-story-bar" class="magazine-story">
-    <div id="story-content" class="row">
-      {!! Form::model($story,[
+    {!! Form::model($story,[
           'method' => 'put',
           'route' => ['admin_preview_story_update', $story->id],
           'files' => true
       ]) !!}
+    <div id="story-content" class="row">
       <div class="large-9 medium-8 small-12 columns">
         <div id="issue-grouping" class="row">
           <div class="large-8 medium-8 small-12 columns">
@@ -39,7 +39,7 @@
             @endif
           </div>
           <div class="large-4 medium-4 small-12 columns noleftpadding">
-            <div class="addthis magazine-top"><a href=""><img src="/assets/imgs/icons/fake-addthis.png" alt="addthis "></a>
+            <div class="addthis magazine-top"><a href=""><img src="/assets/imgs/icons/fake-sharethis.png" alt="addthis "></a>
             </div>
           </div>
         </div>
@@ -78,9 +78,7 @@
           <div class="medium-12 columns">
             <div class="button-group">
               {!! Form::submit('Update Story', ['class' => 'button']) !!}
-              {{-- <a class="secondary button" href="{{route('admin_storytype_edit', ['stype' => $story->story_type, 'story'=> $story->id])}}">Cancel</a> --}}
             </div><!-- /.button-group -->
-            {!! Form::close() !!}
           </div><!-- /.medium-8 columns -->
         </div><!-- /.row -->
       </div>
@@ -109,6 +107,7 @@
         <a class="button magazine-button expanded" href="mailto:dgiffor2@emich.edu">Submit a Story Idea</a>
       </div>
     </div>
+    {!! Form::close() !!}
   </div>
 @endsection
 @section('scriptsfooter')
