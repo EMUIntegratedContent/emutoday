@@ -28,9 +28,7 @@
     @endsection
     @section('scripts-plugin')
         <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
-            <script src="/themes/plugins/ckeditor/ckeditor.js"></script>
             <script src="/themes/plugins/flatpickr/flatpickr.js"></script>
-
         @parent
     @endsection
     @section('scripts-app')
@@ -231,10 +229,10 @@
           });
 
         });
-        var fortnightago = new Date();
+        let fortnightago = new Date();
         fortnightago.setDate(fortnightago.getDate()-14);
 
-        var check_in = document.getElementById("start-date").flatpickr({
+        let check_in = document.getElementById("start-date").flatpickr({
           altInput: true,
           altInputClass: "form-control",
           altFormat: "m-d-Y",
@@ -243,7 +241,7 @@
             check_out.set("minDate", dateObj.fp_incr(1));
           }
         });
-        var check_out =document.getElementById("end-date").flatpickr({
+        let check_out =document.getElementById("end-date").flatpickr({
           altInput: true,
           altInputClass: "form-control",
           altFormat: "m-d-Y",

@@ -21,7 +21,6 @@
     @endsection
     @section('scripts-plugin')
         <!-- Scripts  for code libraries and plugins that need to be loaded in the header -->
-{{--        <script src="/themes/plugins/ckeditor/ckeditor.js"></script>--}}
         @parent
     @endsection
     @section('scripts-app')

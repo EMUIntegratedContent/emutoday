@@ -105,11 +105,6 @@
   </div>
   <div id="more-stories-bar">
       @include('public.components.sideblock', ['storytype'=> 'story', 'sideitems' => $sideStoryBlurbs])
-      {{--
-      @if(isset($sideStudentBlurbs))
-          @include('public.components.sideblock', ['sidetitle' => "<span class='truemu'>EMU</span> student profiles",'storytype'=> 'student', 'sideitems' => $sideStudentBlurbs])
-      @endif
-      --}}
   </div>
 @endsection
     @section('footer-vendor')
