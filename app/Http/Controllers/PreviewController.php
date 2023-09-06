@@ -35,6 +35,7 @@ class PreviewController extends Controller{
 
 
 	public function __construct(Page $page, Story $story, Magazine $magazine, Event $event, Announcement $announcement, Expert $expert){
+		$this->middleware('auth');
 		$this->page = $page;
 		$this->magazine = $magazine;
 		$this->story = $story;
