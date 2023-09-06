@@ -53,7 +53,7 @@
                     @if($page->is_ready === 0)
                         <button class="btn bg-orange btn-sm" disabled="disabled"><i class="fa fa-eye"></i></button>
                     @else
-                        <a href="/preview/page/{{$page->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+                        <a href="/admin/preview/page/{{$page->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
                     @endif
                     <a href="/admin/page/form" class="btn bg-orange"><i class="fa fa-plus-square"></i></a>
                     <a href="/admin/page" class="btn bg-orange"><i class="fa fa-list-alt"></i></a>
@@ -130,7 +130,7 @@
                         @if($page->is_ready === 0)
                         <button class="btn bg-orange btn-sm" disabled="disabled"><i class="fa fa-eye"></i></button>
                         @else
-                        <a href="/preview/page/{{$page->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+                        <a href="/admin/preview/page/{{$page->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
                         @endif
                     </div><!-- /.btn-toolbar -->
                 </div><!-- /.box-tools -->

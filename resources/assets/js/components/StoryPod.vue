@@ -455,7 +455,7 @@ export default {
       return '/admin/' + this.qtype + '/' + this.gtype + '/' + this.itemCopy.story_type + '/' + this.itemCopy.id + '/edit'
     },
     itemPreviewPath: function () {
-      return '/preview/' + this.qtype + '/' + this.gtype + '/' + this.itemCopy.story_type + '/' + this.itemCopy.id
+      return '/admin/preview/' + this.qtype + '/' + this.gtype + '/' + this.itemCopy.story_type + '/' + this.itemCopy.id
     },
     readyIcon: function () {
       let pIcon = 'fa fa-circle-o'

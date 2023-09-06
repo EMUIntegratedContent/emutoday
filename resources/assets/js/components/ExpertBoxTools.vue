@@ -49,7 +49,7 @@ export default  {
     },
     computed: {
         previewLink:function() {
-            return '/preview/experts/' + this.recordId;
+            return '/admin/preview/experts/' + this.recordId;
         },
         listLink:function() {
              return '/admin/experts';

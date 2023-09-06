@@ -70,7 +70,7 @@ export default  {
 
         previewLink:function() {
             let ftype = 'form'+ this.qtype + '/';
-            return '/preview/'+ ftype + this.gtype +  '/' +this.stype +  '/' +this.recordId;
+            return '/admin/preview/'+ ftype + this.gtype +  '/' +this.stype +  '/' +this.recordId;
         },
         listLink:function() {
              return '/admin/'+ this.gtype + '/'+ this.stype + '/'+ this.qtype;

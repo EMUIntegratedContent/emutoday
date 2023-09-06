@@ -353,7 +353,7 @@ export default {
       return this.item.hsc_reviewed;
     },
     itemPreviewPath: function () {
-      return '/preview/event/' + this.item.id
+      return '/admin/preview/event/' + this.item.id
     }
   },
   methods: {

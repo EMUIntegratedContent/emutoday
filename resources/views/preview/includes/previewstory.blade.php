@@ -2,7 +2,7 @@
 @if(isset($qtype))
     {{-- <p>{{$form}} - {{$sroute}} - {{$stype}}</p> --}}
 
-    <a class="warning button" href="/preview/return/{{$gtype}}/{{$stype}}/{{$qtype}}/{{$recordid}}">RETURN</a>
+    <a class="warning button" href="/admin/preview/return/{{$gtype}}/{{$stype}}/{{$qtype}}/{{$recordid}}">RETURN</a>
 
         {{-- @if($qtype === 'queueall')
             Route::get('{gtype}/{stype}/{qtype}','Admin\StoryTypeController@queue' );

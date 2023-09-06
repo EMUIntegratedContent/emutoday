@@ -154,7 +154,7 @@
                     <h3 class="box-title">Magazine Builder</h3>
                     <div class="box-tools">
                         <div class="btn-toolbar btn-group-sm">
-                            <a href="/preview/magazine/{{$magazine->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
+                            <a href="/admin/preview/magazine/{{$magazine->id}}" class="btn bg-orange btn-sm"><i class="fa fa-eye"></i></a>
                         </div><!-- /.btn-toolbar -->
                     </div><!-- /.box-tools -->
                 </div>

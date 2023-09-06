@@ -550,7 +550,7 @@ export default {
       return '/admin/event/' + this.item.id + '/edit'
     },
     itemPreviewPath: function () {
-      return '/preview/event/' + this.item.id
+      return '/admin/preview/event/' + this.item.id
     },
     isOnCampus: function () {
       if (this.item.building === null || this.item.building === "undefined") {

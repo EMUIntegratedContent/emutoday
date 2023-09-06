@@ -298,21 +298,34 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
 
 //    Route::auth();
 //    //watch out for match anything ROUTES
-    Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
-    {
-        Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
-
-        Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
-        Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
-
-        Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-
-        Route::get('story/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-        Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-    });
+//    Route::group(['prefix' => 'preview', 'middleware' => ['bindings']   ], function()
+//    {
+//        Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
+//
+//        Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
+//        Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
+//
+//        Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
+//
+//        Route::get('story/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
+//        Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
+//    });
 
     Route::group(['prefix' => 'admin', 'middleware' => ['bindings']  ], function()
     {
+				Route::group(['prefix' => 'preview', 'middleware' => ['bindings'] ], function()
+				{
+					Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
+					Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
+					Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
+
+					Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
+					Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
+
+					Route::get('{qtype}/{gtype}/{stype}/{story}', 'PreviewController@story')->name('preview_story');
+				});
+
+
         Route::get('mediahighlightstags/{id}/destroy', 'Admin\MediaHighlightTagController@destroy');
 
         Route::get('oauth/list', 'Admin\OAuthController@listClients')->name('list_user_oauth_clients');
@@ -450,17 +463,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::get('{qtype}/{gtype}/{stype}/form','Admin\StoryTypeController@storyTypeForm' );
 
         Route::get('{qtype}/{gtype}/{stype}/{story}/edit','Admin\StoryTypeController@storyTypeEdit' )->middleware('bindings');
-    });
-
-    Route::group(['prefix' => 'preview', 'middleware' => ['bindings'] ], function()
-    {
-        Route::get('page/{page}/', 'PreviewController@hub')->name('preview_hub');
-        Route::get('magazine/{magazine}/', 'PreviewController@magazine')->name('preview_magazine');
-
-        Route::get('magazine/{stype}/{story}/', 'PreviewController@story')->name('preview_story');
-        Route::get('return/{gtype}/{stype}/{qtype}/{recordid}', 'PreviewController@goBack');
-
-        Route::get('{qtype}/{gtype}/{stype}/{story}', 'PreviewController@story')->name('preview_story');
     });
 
     Route::group(['prefix' => 'mediahighlights'], function(){

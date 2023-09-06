@@ -389,7 +389,7 @@ export default {
       return this.item.lbc_reviewed;
     },
     itemPreviewPath: function () {
-      return '/preview/event/' + this.item.id
+      return '/admin/preview/event/' + this.item.id
     }
   },
   methods: {
