@@ -280,7 +280,7 @@
                         <h4><a title="EMU campus events calendar." href="{{ url('/calendar') }}"
                                class="bold-green-link">Events Calendar</a></h4>
                         <div id="five-events-bar">
-                          <div class="row large-up-4 medium-up-3 show-for-medium">
+                          <div class="row large-up-4 medium-up-2 small-up-1">
                             @each('public.featuredeventhub', $featuredevents, 'fevent')
                           </div><!-- row event block grid end -->
                         </div> <!--end of five events bar-->
