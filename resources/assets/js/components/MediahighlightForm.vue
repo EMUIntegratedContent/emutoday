@@ -339,7 +339,6 @@ export default {
 
       .then((response) => {
         this.record = response.data.data
-        this.user_id = response.data.data.user_id
         this.fetchCurrentTags()
       }).catch((e) => {
         this.formErrors = e.response.data.error.message
@@ -347,7 +346,7 @@ export default {
     },
 
     nowOnReload: function () {
-      let newurl = '/admin/mediahighlights/' + this.recordid + '/edit'
+      let newurl = '/admin/mediahighlights/' + this.record.id + '/edit'
       document.location = newurl
     },
 
@@ -392,7 +391,7 @@ export default {
     },
     // Fetch the tags that match THIS record
     fetchTagsList: function () {
-      this.$http.get('/api/mediahighlights/taglist/')
+      this.$http.get('/api/mediahighlights/taglist')
       .then((response) => {
         this.taglist = response.data.newdata
       }).catch((e) => {
@@ -400,7 +399,7 @@ export default {
       })
     },
     fetchCurrentTags: function () {
-      this.$http.get('/api/mediahighlights/taglist/' + this.recordid)
+      this.$http.get('/api/mediahighlights/taglist/' + this.record.id)
       .then((response) => {
         this.tags = response.data.newdata
       }).catch((e) => {
