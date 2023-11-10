@@ -48,6 +48,8 @@ class ExternalApiController extends ApiController
     } else {
         $events = Event::select('*');
         $events->where($conditions)->limit($limit)->orderBy('start_date', 'asc')->orderBy('start_time', 'asc');
+				// TODO: see if the Eagle apps people want the main endpoint to only include non-minicalendar events if one isn't set...
+				//$events->where($conditions)->whereDoesntHave('miniCalendars')->limit($limit)->orderBy('start_date', 'asc')->orderBy('start_time', 'asc');
     }
 
     $result = $events->get();
