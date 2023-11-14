@@ -18,7 +18,6 @@ class MiniCalendar extends Model
   public function events()
   {
     return $this->belongsToMany('Emutoday\Event', 'cea_event_minicalendar' , 'mini_calendar_id', 'event_id');
-
   }
 
   public function scopeLikeSearch($query, $field, $value){
