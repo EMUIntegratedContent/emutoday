@@ -1,0 +1,22 @@
+#emu-175-container {
+  background: #036937;
+  padding: 2rem;
+}
+
+/*#secondary-bar {*/
+/*  background: url("/assets/imgs/emu175/emu-175-green-100x100-logo.png") no-repeat;*/
+/*  background-position-x: right;*/
+/*  background-position-y: top;*/
+/*}*/
+
+#nav-175-wrapper {
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  position: relative;
+}
+#emu-175-menu-logo {
+  position: absolute;
+  height: 100px;
+  top: -35px;
+  margin-left: 13px;
+}

@@ -131,6 +131,13 @@
         </div>
       </div>
     @endif
+    <div id="emu-175-container">
+      <div class="row">
+        <div class="large-12 medium-12 small-12 columns">
+          <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo">
+        </div>
+      </div>
+    </div>
     <div id="news-headline-bar">
       <div class="row">
         <div class="large-12 medium-12 small-12 columns">
