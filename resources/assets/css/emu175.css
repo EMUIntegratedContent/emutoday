@@ -20,3 +20,40 @@
   top: -35px;
   margin-left: 13px;
 }
+
+#emu175-logo-container {
+  padding: 0 10px;
+}
+
+.emu-175-heading {
+  display: inline-block;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+#emu175-logo-container img {
+  margin: 0 5px 5px 0;
+}
+
+/* Medium and down */
+@media screen and (max-width: 63.9375em) {
+  #emu-175-menu-logo {
+    width: 75px;
+    height: 75px;
+    top: -6px;
+    left: 281px;
+    display: block !important;
+  }
+  #emu-175-container {
+    padding: 1rem 0;
+  }
+}
+
+@media screen and (max-width: 371px) {
+  #emu-175-menu-logo {
+    display: none;
+  }
+  #emu175-logo-container {
+    padding: 0;
+  }
+}

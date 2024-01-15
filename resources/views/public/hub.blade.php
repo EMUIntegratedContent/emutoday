@@ -133,8 +133,27 @@
     @endif
     <div id="emu-175-container">
       <div class="row">
-        <div class="large-12 medium-12 small-12 columns">
-          <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo">
+        <div class="large-3 medium-3 small-12 columns">
+          <div id="emu175-logo-container">
+            <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium">
+            <span class="hide-for-medium">
+              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium" width="75" height="75">
+            </span>
+            <h3 class="hide-for-medium emu-175-heading">175th Anniversary</h3>
+          </div>
+        </div>
+        <div class="large-9 medium-9 small-12 columns">
+          <div class="row">
+            <div class="small-12 columns">
+              <h3 class="show-for-medium emu-175-heading">Celebrating EMU's 175th Anniversary</h3>
+            </div>
+            <div class="large-6 medium-6 small-12 columns">
+              MEMORIES IN THE MAKING
+            </div>
+            <div class="large-6 medium-6 small-12 columns">
+              DID YOU KNOW?
+            </div>
+          </div>
         </div>
       </div>
     </div>
