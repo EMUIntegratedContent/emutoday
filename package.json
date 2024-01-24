@@ -2,7 +2,7 @@
   "private": true,
   "name": "emutoday",
   "description": "/*[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)*/",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "directories": {
     "test": "tests"
   },
@@ -97,7 +97,6 @@
     "macaddress": "^0.5.3",
     "magnific-popup": "^1.1.0",
     "moment": "^2.29.4",
-    "node-sass": "7.0.3",
     "popper.js": "^1.16.1",
     "postcss-filter-plugins": "^3.0.1",
     "postcss-loader": "^7.1.0",
