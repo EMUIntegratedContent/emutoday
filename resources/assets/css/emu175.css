@@ -26,13 +26,48 @@
 }
 
 .emu-175-heading {
+  font-size: 2.2rem;
   display: inline-block;
   color: #fff;
   text-transform: uppercase;
 }
 
+#emu175-container {
+  color: #eeeeee;
+}
+
+#emu-175-main-story-teaser {
+  padding: 0 3px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 #emu175-logo-container img {
   margin: 0 5px 5px 0;
+}
+
+#emu-175-container .bold-green-link{
+  text-transform: uppercase;
+  color: #97D700;
+  font-weight: 500;
+}
+
+#emu-175-container h4, #emu-175-container h3, #emu-175-container h2 {
+  text-transform: uppercase;
+  color: #eeeeee;
+}
+
+#dyk-container {
+  background: #42725d;
+  padding: 1rem 2rem;
+  color: #eeeeee;
+}
+
+#dyk-container h3 {
+  margin-bottom: 1.3rem;
+}
+
+#dyk-container hr {
+  margin: 1rem auto !important;
 }
 
 /* Medium and down */
