@@ -3729,6 +3729,7 @@ a.firefox:before {
   #dyk-container {
     background: none !important;
     color: #eeeeee;
+    padding: 1rem .5rem .5rem .5rem;
   }
   #emu-175-main-container {
     border-bottom: 2px inset #666666;
