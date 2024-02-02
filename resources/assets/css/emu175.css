@@ -1,6 +1,12 @@
 #emu-175-container {
   background: #036937;
   padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+#emu-175-container p {
+  font-size: 0.9rem;
+  color: #eeeeee;
 }
 
 /*#secondary-bar {*/
@@ -26,19 +32,15 @@
 }
 
 .emu-175-heading {
-  font-size: 2.2rem;
+  font-size: 2rem;
   display: inline-block;
+  padding-bottom: 1.7rem;
   color: #fff;
   text-transform: uppercase;
 }
 
 #emu175-container {
   color: #eeeeee;
-}
-
-#emu-175-main-story-teaser {
-  padding: 0 3px;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 #emu175-logo-container img {
@@ -58,7 +60,7 @@
 
 #dyk-container {
   background: #42725d;
-  padding: 1rem 2rem;
+  padding: 1.5rem;
   color: #eeeeee;
 }
 
@@ -70,8 +72,20 @@
   margin: 1rem auto !important;
 }
 
+#emu-175-main-container img {
+  width: 100%;
+  height: auto;
+}
+
+#emu-175-main-info {
+  padding: .5rem;
+}
+
 /* Medium and down */
 @media screen and (max-width: 63.9375em) {
+  .emu-175-heading {
+    font-size: 1.3rem;
+  }
   #emu-175-menu-logo {
     width: 75px;
     height: 75px;
@@ -82,9 +96,20 @@
   #emu-175-container {
     padding: 1rem 0;
   }
+  #dyk-container {
+    background: none !important;
+    color: #eeeeee;
+  }
+  #emu-175-main-container {
+    border-bottom: 2px inset #666666;
+  }
+  #emu-175-logo-container {
+    padding-bottom: 1rem;
+  }
 }
 
-@media screen and (max-width: 371px) {
+/* Small only */
+@media screen and (max-width: 39.9375em) {
   #emu-175-menu-logo {
     display: none;
   }
