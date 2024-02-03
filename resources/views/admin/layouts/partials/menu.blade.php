@@ -100,6 +100,9 @@
   </ul>
 </li>
 @endcan
+@can('admin', $currentUser)
+  <li><a href="/admin/emu175"><i class="fa fa-birthday-cake"></i> <span>EMU 175</span></a></li>
+@endcan
 {{-- Gate Facade allows multiple permission checks (unlike @can) --}}
 @if(Gate::check('admin') || Gate::check('experts'))
     <li class="treeview {{ set_active('admin/expert*') }}">

@@ -106,6 +106,10 @@
                                                                    :class="emailBuilderEmail.is_president_included && (!emailBuilderEmail.president_url || !emailBuilderEmail.president_teaser) ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 5">President</a>
                   </li>
+                  <li :class="{ 'active' : activeSubTab == 6 }"><a href="#emu-175-email" role="tab" data-toggle="tab"
+                                                                   :class="emailBuilderEmail.is_emu175_included && (!emailBuilderEmail.emu175_url || !emailBuilderEmail.emu175_teaser) ? 'insufficient' : ''"
+                                                                   @click="activeSubTab = 6">EMU 175</a>
+                  </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -158,6 +162,43 @@
                                  v-model="emailBuilderEmail.president_url"
                                  placeholder="https://emich.edu/president-statement"/>
                           <p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
+                    </div><!-- ./row -->
+                  </div>
+                  <div class="tab-pane" id="emu-175-email">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="presidentIncl">Include EMU 175th Anniversary information in this email?</label>
+                          &nbsp;
+                          <input
+                              type="checkbox"
+                              id="emu175Incl"
+                              v-model="emailBuilderEmail.is_emu175_included"
+                              :true-value="1"
+                              :false-value="0"
+                          >
+                        </div><!-- /input-group -->
+                      </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="emu175Teaser">Teaser text</label>
+                          <textarea class="form-control" id="emu175Teaser"
+                                    v-bind:class="[formErrors.emu175_teaser ? 'invalid-input' : '']"
+                                    v-model="emailBuilderEmail.emu175_teaser">{{ emailBuilderEmail.emu175_teaser }}</textarea>
+                          <p v-if="formErrors.emu175_teaser" class="help-text invalid">The teaser is required when
+                            including EMU 175th Anniversary information.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="emu175Url">URL to EMU 175 information</label>
+                          <input type="text" class="form-control" id="emu175Url"
+                                 v-bind:class="[formErrors.emu175_url ? 'invalid-input' : '']"
+                                 v-model="emailBuilderEmail.emu175_url"
+                          />
+                          <p v-if="formErrors.emu175_url" class="help-text invalid">The URL field is not valid.</p>
                         </div>
                       </div><!-- /.col-md-12 -->
                     </div><!-- ./row -->

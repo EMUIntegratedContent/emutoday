@@ -448,6 +448,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']  ], function() {
         Route::resource('role', 'Admin\RoleController');
         Route::resource('permission', 'Admin\PermissionController');
 
+				// EMU 175
+				Route::resource('emu175', 'Admin\EMU175Controller');
+
         Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
         Route::get('magazine/article/queuearticle', 'Admin\StoryTypeController@queueArticle')->name('admin_magazine_article_queue');
 
