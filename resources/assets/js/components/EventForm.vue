@@ -983,6 +983,7 @@ export default {
         { label: 'Campus Only', value: 'campus' },
         { label: 'Open to Public', value: 'public' },
         { label: 'Students Only', value: 'students' },
+        { label: 'Employees Only', value: 'employees' },
         { label: 'Invitation Only', value: 'invite' },
         { label: 'Tickets Required', value: 'tickets' },
       ],
