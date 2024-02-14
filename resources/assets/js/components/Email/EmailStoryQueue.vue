@@ -66,8 +66,10 @@
             <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>
           </p>
           <p>
-            <button href="#" id="rangetoggle" type="button" @click="toggleRange"><span v-if="isEndDate"> - Remove </span><span
-              v-else> + Add </span>Range</button>
+            <button href="#" id="rangetoggle" type="button" @click="toggleRange"><span
+                v-if="isEndDate"> - Remove </span><span
+                v-else> + Add </span>Range
+            </button>
           </p>
         </form>
         <div class="btn-toolbar" role="toolbar">
@@ -154,17 +156,17 @@ span.item-type-icon:active, span.item-type-icon.active {
 }
 </style>
 <script>
-import { emailMixin } from './email_mixin'
+import {emailMixin} from './email_mixin'
 import moment from 'moment'
 import EmailStoryPod from './EmailStoryPod.vue'
 import Pagination from '../Pagination.vue'
 import draggable from 'vuedraggable'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
-import { Sortable } from "sortablejs-vue3"
+import {Sortable} from "sortablejs-vue3"
 
 export default {
-  mixins: [ emailMixin ],
+  mixins: [emailMixin],
   components: {
     EmailStoryPod,
     Pagination,
@@ -173,7 +175,7 @@ export default {
     Sortable
   },
   props: ['stypes'],
-  created () {
+  created() {
     let twoWeeksEarlier = moment().subtract(2, 'w')
     this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
     this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
@@ -201,15 +203,14 @@ export default {
     }
   },
   computed: {
-    itemsFilteredPaginated () {
+    itemsFilteredPaginated() {
       if (!this.queueStories) {
         return false
       }
       let items = []
       if (this.stories_filter_storytype != '') {
         items = this.queueStories.filter(it => it.story_type == this.stories_filter_storytype)
-      }
-      else {
+      } else {
         items = this.queueStories
       }
 
@@ -246,8 +247,7 @@ export default {
             shortname: 'x'
           }
         ]
-      }
-      else {
+      } else {
         this.s_types.push({
           name: 'all',
           shortname: ''
@@ -260,16 +260,14 @@ export default {
     toggleRange: function () {
       if (this.isEndDate) {
         this.isEndDate = false
-      }
-      else {
+      } else {
         this.isEndDate = true
       }
     },
     filterByStoryType: function (value) {
       if (this.stories_filter_storytype === '') {
         return value.story_type !== '';
-      }
-      else {
+      } else {
         return value.story_type === this.stories_filter_storytype;
       }
     },
@@ -323,8 +321,7 @@ export default {
       // if a start date is set, get stories whose start_date is on or after this date
       if (this.startdate) {
         routeurl = routeurl + '/' + this.startdate
-      }
-      else {
+      } else {
         routeurl = routeurl + '/' + moment().subtract(2, 'w').format("YYYY-MM-DD")
       }
 
@@ -334,12 +331,12 @@ export default {
       }
 
       this.$http.get(routeurl)
-      .then((response) => {
-        this.queueStories = response.data.newdata.data
-        this.resultCount = this.queueStories.length
-        this.setPage(1) // reset paginator
-        this.loadingQueue = false;
-      }).catch((e) => {
+          .then((response) => {
+            this.queueStories = response.data.newdata.data
+            this.resultCount = this.queueStories.length
+            this.setPage(1) // reset paginator
+            this.loadingQueue = false;
+          }).catch((e) => {
         console.log(e)
       })
     },
@@ -354,7 +351,7 @@ export default {
      * Uses Vue Sortable
      */
     updateOrder: function (event) {
-      this.updateOtherStoriesOrder({ newIndex: event.newIndex, oldIndex: event.oldIndex })
+      this.updateOtherStoriesOrder({newIndex: event.newIndex, oldIndex: event.oldIndex})
     }
   },
 }
