@@ -26,7 +26,7 @@
         <!-- Story Page Title group -->
         <div id="title-grouping" class="row">
           <div class="small-12 columns">
-            <h2>@if($story->story_type == 'featurephoto')Featured Photo: @endif {{ $story->title }}</h2>
+            <h2>{{ $story->title }}</h2>
             @if($story->story_type != 'featurephoto')
               @if(isset($story->subtitle))
                 <h3>{{ $story->subtitle }}</h3>
@@ -102,7 +102,7 @@
                     {{ $story->author->first_name }} {{ $story->author->last_name }}
                   @endif
                 @else
-                  Photo:<br>
+                  Submitted by:<br>
                   {{$story->photo_credit}}
                 @endif
               </p>
