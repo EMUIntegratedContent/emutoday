@@ -133,25 +133,41 @@
     @endif
     <div id="emu-175-container">
       <div class="row">
-        <div class="large-3 medium-3 small-12 columns">
+        <div class="large-3 medium-3 small-12 columns" id="emu-175-logo-container">
           <div id="emu175-logo-container">
             <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium">
             <span class="hide-for-medium">
               <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium" width="75" height="75">
             </span>
-            <h3 class="hide-for-medium emu-175-heading">175th Anniversary</h3>
+            <h2 class="hide-for-medium emu-175-heading">175th Anniversary</h2>
           </div>
         </div>
         <div class="large-9 medium-9 small-12 columns">
-          <div class="row">
+          <div class="row gutter-large">
             <div class="small-12 columns">
-              <h3 class="show-for-medium emu-175-heading">Celebrating EMU's 175th Anniversary</h3>
+              <h2 class="show-for-medium emu-175-heading">Celebrating EMU's 175th Anniversary</h2>
+            </div>
+            <div class="large-6 medium-6 small-12 columns" id="emu-175-main-container">
+              <img id="emu-175-main-img" src="/assets/imgs/emu175/emu175-main.jpg"/>
+              <div id="emu-175-main-info">
+                <h3 id="emu-175-main-title">Memories in the Making</h3>
+                <p id="emu-175-main-teaser">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda corporis dignissimos ea eum?</p>
+                <p class="button-group">
+                  <a href="#" aira-label="stuff" class="bold-green-link">
+                    Find Details
+                  </a>
+                </p>
+              </div>
             </div>
             <div class="large-6 medium-6 small-12 columns">
-              MEMORIES IN THE MAKING
-            </div>
-            <div class="large-6 medium-6 small-12 columns">
-              DID YOU KNOW?
+              <div id="dyk-container">
+                <h3>Did you know?</h3>
+                <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>
+                <hr>
+                <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>
+                <hr>
+                <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>
+              </div>
             </div>
           </div>
         </div>
