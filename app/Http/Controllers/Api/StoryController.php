@@ -559,17 +559,17 @@ class StoryController extends ApiController
     $emu175ImageTypeIds = Imagetype::select('id')->where('type', 'emu175')->get(); // get email image types
 
     if ($fromDate && !$toDate) {
-      $stories = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->whereHas('images', function ($query) use ($emu175ImageTypeIds) {
+      $stories = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereHas('images', function ($query) use ($emu175ImageTypeIds) {
         $query->whereIn('imagetype_id', $emu175ImageTypeIds);
-      })->get();
+      })->orderBy('start_date', 'desc')->get();
     } else if ($fromDate && $toDate) {
-      $stories = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->orderBy('start_date', 'desc')->whereHas('images', function ($query) use ($emu175ImageTypeIds) {
+      $stories = Story::where([['start_date', '>=', $fromDate], ['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereBetween('start_date', array($fromDate, $toDate))->whereHas('images', function ($query) use ($emu175ImageTypeIds) {
         $query->whereIn('imagetype_id', $emu175ImageTypeIds);
-      })->get();
+      })->orderBy('start_date', 'desc')->get();
     } else {
-      $stories = Story::where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->orderBy('start_date', 'desc')->whereHas('images', function ($query) use ($emu175ImageTypeIds) {
+      $stories = Story::where([['is_archived', 0], ['is_approved', 1], ['is_ready', 1]])->whereHas('images', function ($query) use ($emu175ImageTypeIds) {
         $query->whereIn('imagetype_id', $emu175ImageTypeIds);
-      })->get();
+      })->orderBy('start_date', 'desc')->get();
     }
 
     $fractal = new Manager();

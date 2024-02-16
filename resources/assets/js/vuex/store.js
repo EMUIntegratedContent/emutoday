@@ -125,6 +125,9 @@ const mutations = {
 			state.emailBuilderEmail.otherStories.splice(state.emailBuilderEmail.otherStories.indexOf(story), 1)
 		}
 	},
+	removeEmu175Story (state) {
+		// TODO
+	},
 	resetEmailBuilderEmail (state) {
 		state.emailBuilderEmail = JSON.parse(JSON.stringify(defaultEmail))
 	},

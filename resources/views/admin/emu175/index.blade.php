@@ -16,7 +16,7 @@
 @endsection
 @section('content')
   <div id="vue-emu-175">
-    <emu-175-form></emu-175-form>
+    <emu-175-story-queue></emu-175-story-queue>
   </div>
 @endsection
 @section('footer-vendor')
