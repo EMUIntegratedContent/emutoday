@@ -564,19 +564,16 @@ export default {
       switch (this.item.participants) {
         case 'campus':
           return 'Campus Only'
-          break;
         case 'public':
           return 'Open to Public'
-          break;
         case 'students':
           return 'Students Only'
-          break;
+        case 'employees':
+          return 'Employees Only'
         case 'invite':
           return 'Invitation Only'
-          break;
         case 'tickets':
           return 'Tickets Required'
-          break;
         default:
           return ''
       }

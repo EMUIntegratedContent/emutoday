@@ -180,7 +180,7 @@
               </tr>
               <tr v-if="emailBuilderEmail.is_president_included">
                 <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
-                  <img src="/assets/imgs/email/president-jim-smith-136px.png" alt="EMU President Jim Smith"
+                  <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
                        style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
                     <template v-if="emailBuilderEmail.president_url">

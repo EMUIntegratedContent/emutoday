@@ -40,7 +40,7 @@
           <!-- Story Page Title group -->
           <div id="title-grouping" class="row">
             <div class="small-12 columns">
-              <h3>Featured Photo: {{ $story->title }}</h3>
+              <h3>{{ $story->title }}</h3>
               <h5>{{ $story->subtitle }}</h5>
             </div>
           </div>
@@ -67,7 +67,8 @@
               </div>
               <div class="dots-bottom">
                 <p>
-                  Photo {{ $story->photo_credit }}
+                  Submitted by:<br>
+                  {{ $story->photo_credit }}
                 </p>
               </div>
               {{--

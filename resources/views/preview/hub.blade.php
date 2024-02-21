@@ -128,7 +128,7 @@
                                       @endif
                                   @elseif($barImgs[$i]->story->story_type == 'featurephoto')
                                       <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"
-                                         aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">View Image&nbsp;
+                                         aria-label="{{$barImgs[$i]->caption}} - View" class="readmore bold-green-link">More Information&nbsp;
                                           </a>
                                   @else
                                       <a href="/story/{{$barImgs[$i]->story->story_type}}/{{$barImgs[$i]->story->id}}"

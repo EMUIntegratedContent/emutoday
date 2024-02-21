@@ -56,7 +56,7 @@
           @endif
         @elseif($fstory->story->story_type == 'featurephoto')
           <a href="/story/{{$fstory->story->story_type}}/{{$fstory->story->id}}"
-             aria-label="{{$fstory->caption}} - View" class="readmore bold-green-link">View Image&nbsp;
+             aria-label="{{$fstory->caption}} - View" class="readmore bold-green-link">More Information&nbsp;
           </a>
         @else
           <a href="/story/{{$fstory->story->story_type}}/{{$fstory->story->id}}"
