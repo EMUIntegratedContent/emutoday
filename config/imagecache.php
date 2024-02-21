@@ -63,7 +63,8 @@ return array(
         'expertthumb' => 'Emutoday\Today\Filters\ExpertThumb',
         'expertmedium' => 'Emutoday\Today\Filters\ExpertMedium',
         'emailmain' => 'Emutoday\Today\Filters\EmailMain',
-        'emailsub' => 'Emutoday\Today\Filters\EmailSub'
+        'emailsub' => 'Emutoday\Today\Filters\EmailSub',
+        'emu175' => 'Emutoday\Today\Filters\Emu175'
     ),
     /*
     |--------------------------------------------------------------------------

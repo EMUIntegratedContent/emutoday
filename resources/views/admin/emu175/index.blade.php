@@ -15,6 +15,7 @@
   @parent
 @endsection
 @section('content')
+  <h1>EMU 175 Hub Story</h1>
   <div id="vue-emu-175">
     <emu-175-story-queue></emu-175-story-queue>
   </div>

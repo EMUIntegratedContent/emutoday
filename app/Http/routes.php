@@ -231,6 +231,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
   Route::get('story/emu175stories/{fromDate?}/{toDate?}', 'Api\StoryController@getEmu175Stories')->name('api_story_emu175');
   Route::get('story/{story}/edit', 'Api\StoryController@edit');
+  Route::post('story/updateemu175', 'Api\StoryController@updateEmu175Story')->name('api_story_updateemu175');
 
   Route::get('{gtype}/{stype}/{qtype}/{fromDate?}/{toDate?}', 'Api\StoryController@queue')->name('api_storytype_queueload');
 

@@ -578,4 +578,26 @@ class StoryController extends ApiController
     return $this->setStatusCode(200)
         ->respondUpdatedWithData('Got stories with emutoday_175 image type.', $fractal->createData($resource)->toArray());
   }
+
+  public function updateEmu175Story(Request $request) {
+    $story_id = $request->get('id');
+    // Set the story as an emu175 hub story
+    if($story_id) {
+      $story = Story::findOrFail($story_id);
+      $story->is_emu175_hub_story = 1;
+      $story->save();
+    }
+    // Remove the current emu175 hub story (if any)
+    $stories = Story::where('is_emu175_hub_story', 1)->get();
+    foreach($stories as $s) {
+      // Don't unset the one that was just set!
+      if($s->id != $story_id) {
+        $s->is_emu175_hub_story = 0;
+        $s->save();
+      }
+    }
+
+    return $this->setStatusCode(201)
+          ->respondUpdatedWithData('EMU 175 story set!', []);
+  }
 }

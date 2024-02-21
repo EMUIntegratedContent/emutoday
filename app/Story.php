@@ -30,7 +30,7 @@ class Story extends Model
       'story_type',
       'author_id', 'author_info',
       'priority', 'contact_id',
-      'clicks'
+      'clicks', 'is_emu175_hub_story'
   ];
   protected $casts = [
       'start_date' => 'datetime',

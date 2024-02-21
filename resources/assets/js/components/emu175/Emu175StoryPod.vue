@@ -1,13 +1,12 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-12 col-md-6">
+      <div class="col-md-12">
         <div class="box box-solid" :class="item.group">
           <div class="box-header with-border">
             <div class="row">
               <div class="col-sm-12">
-                <label><input type="checkbox" @click="toggleEmit175Story(item)" v-model="checked"
-                              :checked="isEmu175Story"/> EMU 175 Story</label>
+                <label><input v-model="checked" type="checkbox" @change="toggleEmit175Story(item)"/> EMU 175 Story</label>
               </div>
             </div><!-- /.row -->
             <div class="row">
@@ -46,9 +45,6 @@
             </div><!-- /.row -->
           </div><!-- /.box-footer -->
         </div><!-- /.box- -->
-      </div>
-      <div class="col-sm-12 col-md-6">
-        Show the story here
       </div>
     </div>
   </div>
@@ -260,6 +256,8 @@ h5 {
 </style>
 <script>
 import moment from 'moment'
+import {mapMutations, mapState} from "vuex"
+import {nextTick} from "vue";
 
 /** Show all stories with a emutoday_175 picture type set **/
 export default {
@@ -277,18 +275,14 @@ export default {
       patchRecord: {
         priority: 0,
       },
-      checked: false,
+      checked: false
     }
   },
+  created() {
+    this.checked = this.emu175Story && this.emu175Story.id == this.item.id
+  },
   computed: {
-    // TODO
-    mainStoriesFull: function () {
-      return true;
-      // if (!this.emailBuilderEmail.mainStories) {
-      //   return false
-      // }
-      // return !this.checked && this.emailBuilderEmail.mainStories.length == 3 ? true : false
-    },
+    ...mapState(['emu175Story']),
     timefromNow: function () {
       return moment(this.item.start_date).fromNow()
     },
@@ -328,20 +322,6 @@ export default {
           break
       }
       return 'fa ' + faicon + ' fa-fw'
-    },
-    // TODO
-    isEmu175Story: function () {
-      // if (this.emailBuilderEmail.otherStories) {
-      //   for (var i = 0; i < this.emailBuilderEmail.otherStories.length; i++) {
-      //     if (this.emailBuilderEmail.otherStories[i].id == this.item.id) {
-      //       this.checked = true
-      //       return true
-      //     }
-      //   }
-      // }
-      // this.checked = false
-      // return false
-      return false
     }
   },
   methods: {
@@ -352,16 +332,19 @@ export default {
         this.showBody = false;
       }
     },
-    // TODO
-    toggleEmit175Story: function (storyObj) {
-      // storyObj = JSON.parse(JSON.stringify(storyObj))
-      // if (!this.checked) {
-      //   this.addOtherStory(storyObj)
-      // }
-      // else {
-      //   this.removeOtherStory(storyObj.id)
-      // }
+    toggleEmit175Story: function () {
+      this.$emit('toggle-emu175-story', this.checked)
     }
+  },
+  watch: {
+    // emu175Story: function (val) {
+    //   if(this.checked && val && val.id != this.item.id) {
+    //     this.checked = false
+    //   }
+    //   if(!this.checked && val && val.id == this.item.id) {
+    //     this.checked = true
+    //   }
+    // },
   }
 }
 

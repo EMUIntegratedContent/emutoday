@@ -23,28 +23,28 @@
               @if($heroImg->story->tags()->first()->name == 'video')
                 <p class="button-group"><a
                       href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}"
-                      aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
+                      aria-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
                       class="button readmore bold-green-link">{{$heroImg->moretext}}</a></p>
               @elseif($heroImg->story->tags()->first()->name == 'audio')
                 <p class="button-group"><a
                       href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}"
-                      aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
+                      aria-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
                       class="button readmore bold-green-link">{{$heroImg->moretext}}</a></p>
               @elseif($heroImg->story->tags()->first()->name == 'external')
                 <p class="button-group"><a
                       href="{{ (substr($heroImg->link, 0, 4) == 'http') ? $heroImg->link : 'https://'.$heroImg->link }}"
-                      aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
+                      aria-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
                       class="button readmore bold-green-link">{{$heroImg->moretext}}</a></p>
               @else
                 <p class="button-group"><a
                       href="/story/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}"
-                      aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
+                      aria-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
                       class="button readmore bold-green-link">{{$heroImg->moretext}}</a></p>
               @endif
             @else
               <p class="button-group"><a
                     href="/story/{{$heroImg->story->story_folder}}/{{$heroImg->story->id}}"
-                    aira-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
+                    aria-label="{{$heroImg->caption}} - {{$heroImg->moretext}}"
                     class="button readmore bold-green-link">{{$heroImg->moretext}}</a></p>
             @endif
           </div>
@@ -147,19 +147,27 @@
             <div class="small-12 columns">
               <h2 class="show-for-medium emu-175-heading">Celebrating EMU's 175th Anniversary</h2>
             </div>
-            <div class="large-6 medium-6 small-12 columns" id="emu-175-main-container">
-              <img id="emu-175-main-img" src="/assets/imgs/emu175/emu175-main.jpg"/>
-              <div id="emu-175-main-info">
-                <h3 id="emu-175-main-title">Memories in the Making</h3>
-                <p id="emu-175-main-teaser">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda corporis dignissimos ea eum?</p>
-                <p class="button-group">
-                  <a href="#" aira-label="stuff" class="bold-green-link">
-                    Find Details
-                  </a>
-                </p>
+            @if($emu175StoryImg)
+              <div class="large-6 medium-6 small-12 columns" id="emu-175-main-container">
+                <img
+                    id="emu-175-main-img"
+                    alt="{{ $emu175StoryImg->alt_text ? $emu175StoryImg->alt_text : 'The image for a story celebrating EMU\'s 175th anniversary' }}"
+                    src="/imagecache/emu175/{{ $emu175StoryImg->filename }}"/>
+                <div id="emu-175-main-info">
+                  <h3 id="emu-175-main-title">{{ $emu175StoryImg->title }}</h3>
+                  <p id="emu-175-main-teaser">{{ $emu175StoryImg->caption }}</p>
+                  <p class="button-group">
+                    <a href="/story/{{$emu175StoryImg->story->story_folder}}/{{$emu175StoryImg->story->id}}"
+                       aria-label="{{$emu175StoryImg->caption}} - {{$emu175StoryImg->moretext}}"
+                       class="bold-green-link"
+                    >
+                      {{ $emu175StoryImg->moretext }}
+                    </a>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="large-6 medium-6 small-12 columns">
+            @endif
+            <div class="{{ $emu175StoryImg ? 'large-6 medium-6' : '' }} small-12 columns">
               <div id="dyk-container">
                 <h3>Did you know?</h3>
                 <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>

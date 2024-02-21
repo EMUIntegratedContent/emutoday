@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-xs-12 col-sm-8 col-md-6 col-lg-9">
-        <p>You will only be presented stories that have the emutoday_175 image type and are live:</p>
+        <p>This story will be set as the feature story under the EMU 175 section on the hub page. You will only be presented stories that have the emutoday_175 image type and are live.</p>
       </div>
     </div>
     <hr/>
@@ -44,36 +44,64 @@
             </button>
           </p>
         </form>
-
-        <div id="emu175-stories">
-          <template v-if="!loadingQueue">
-            <template v-if="queueStories.length > 0">
-              <emu-175-story-pod
-                  :item="story"
-                  :key="'emu175-story-' + index"
-                  v-for="(story, index) in queueStories"
-              >
-              </emu-175-story-pod>
-              <ul class="pagination">
-                <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
-                  <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
-                </li>
-                <li v-for="pageNumber in totalPages" :class="{active: (pageNumber) == currentPage}" class="page-item">
-                  <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber }} <span
-                      v-if="(pageNumber) == currentPage" class="sr-only">(current)</span></a>
-                </li>
-                <li v-bind:class="{disabled: (currentPage == totalPages)}" class="page-item">
-                  <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
-                </li>
-              </ul>
+        <div class="row">
+          <div class="col-md-12 col-lg-6">
+            <div id="emu175-stories">
+              <template v-if="!loadingQueue">
+                <template v-if="queueStories.length > 0">
+                  <emu-175-story-pod
+                      :item="story"
+                      :key="'emu175-story-' + index + '-' + podIterator"
+                      v-for="(story, index) in queueStories"
+                      @toggle-emu175-story="handleToggleStory($event, story)"
+                  >
+                  </emu-175-story-pod>
+                  <ul class="pagination">
+                    <li v-bind:class="{disabled: (currentPage <= 1)}" class="page-item">
+                      <a href="#" @click.prevent="setPage(currentPage-1)" class="page-link" tabindex="-1">Previous</a>
+                    </li>
+                    <li v-for="pageNumber in totalPages" :class="{active: (pageNumber) == currentPage}" class="page-item">
+                      <a class="page-link" href="#" @click.prevent="setPage(pageNumber)">{{ pageNumber }} <span
+                          v-if="(pageNumber) == currentPage" class="sr-only">(current)</span></a>
+                    </li>
+                    <li v-bind:class="{disabled: (currentPage == totalPages)}" class="page-item">
+                      <a class="page-link" @click.prevent="setPage(currentPage+1)" href="#">Next</a>
+                    </li>
+                  </ul>
+                </template>
+                <template v-else>
+                  <p>There are no stories for the date range you've specified.</p>
+                </template>
+              </template>
+              <template v-else>
+                <p>Loading queue. Please Wait...</p>
+              </template>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-6">
+            <div v-if="showSave" style="margin-bottom: .25rem">
+              <input type="button" class="btn btn-success" value="Save" @click="saveEmu175Story">&nbsp;
+              <input type="button" class="btn btn-secondary" value="Cancel" @click="resetChanges">
+            </div>
+            <template v-if="emu175Story">
+              <img
+                  class="col-img"
+                  :alt="emu175Story.emu175_image[0].alt_text"
+                  :src="'/imagecache/emailsub/' + emu175Story.emu175_image[0].filename"/>
+              <div id="emu-175-main-info">
+                <h3 id="emu-175-main-title">{{ emu175Story.emu175_image[0].title }}</h3>
+                <p id="emu-175-main-teaser">{{ emu175Story.emu175_image[0].caption }}</p>
+                <p class="button-group">
+                  <a href="#" aira-label="stuff" class="bold-green-link">
+                    {{ emu175Story.emu175_image[0].moretext }}
+                  </a>
+                </p>
+              </div>
             </template>
-            <template v-else>
-              <p>There are no stories for the date range you've specified.</p>
-            </template>
-          </template>
-          <template v-else>
-            <p>Loading queue. Please Wait...</p>
-          </template>
+            <p v-else>
+              No story selected. Click the checkbox in a story pod to select it as the EMU 175 story.
+            </p>
+          </div>
         </div>
       </div><!-- /.col-md-12 -->
     </div><!-- ./row -->
@@ -104,6 +132,21 @@ span.item-type-icon:active, span.item-type-icon.active {
   color: #FF851B;
   border-bottom: 2px #FF851B dotted;
 }
+
+/*Media Queries*/
+@media only screen and (min-width: 610px) {
+  .two-column .column {
+    max-width: 49.9% !important;
+    width: 49.9%;
+
+  }
+
+  img.col-img {
+    max-width: 616px !important;
+    width: 100%;
+  }
+
+}
 </style>
 <script>
 import moment from 'moment'
@@ -111,6 +154,7 @@ import Emu175StoryPod from './Emu175StoryPod.vue'
 import Pagination from '../Pagination.vue'
 import flatpickr from 'vue-flatpickr-component'
 import 'flatpickr/dist/flatpickr.css'
+import {mapMutations, mapState} from "vuex"
 
 export default {
   mixins: [],
@@ -142,15 +186,20 @@ export default {
         altInput: true,
         dateFormat: "Y-m-d", // format sumbitted to the API
         enableTime: false
-      }
+      },
+      podIterator: 0,
+      showSave: false,
+      originalStory: null
     }
   },
   computed: {
+    ...mapState(['emu175Story']),
     totalPages: function () {
       return Math.ceil(this.queueStories.length / this.itemsPerPage)
     }
   },
   methods: {
+    ...mapMutations(['setEmu175Story']),
     toggleRange: function () {
       if (this.isEndDate) {
         this.isEndDate = false
@@ -177,9 +226,19 @@ export default {
       this.$http.get(routeurl)
           .then((response) => {
             this.queueStories = response.data.newdata.data
+
+            // Find the current story (if any) and set it in the store
+            const current175Story = this.queueStories.find((story) => {
+              return story.is_emu175_hub_story == 1
+            })
+            if(current175Story) {
+              this.setEmu175Story(current175Story)
+              this.originalStory = JSON.parse(JSON.stringify(current175Story))
+            }
+
             this.resultCount = this.queueStories.length
-            // this.setPage(1) // reset paginator
-            this.loadingQueue = false;
+            this.setPage(1) // reset paginator
+            this.loadingQueue = false
           })
           .catch((e) => {
             console.log(e)
@@ -189,6 +248,31 @@ export default {
       if (pageNumber > 0 && pageNumber <= this.totalPages) {
         this.currentPage = pageNumber
       }
+    },
+    saveEmu175Story () {
+      this.showSave = false
+      this.$http.post('/api/story/updateemu175', this.emu175Story ? this.emu175Story : null)
+          .then(() => {
+            this.showSave = false
+            this.fetchAllRecords()
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+    },
+    resetChanges () {
+      this.setEmu175Story(JSON.parse(JSON.stringify(this.originalStory)))
+      this.showSave = false
+      this.podIterator++
+    },
+    handleToggleStory(evt, story) {
+      this.showSave = true
+      if(evt) {
+        this.setEmu175Story(story)
+      } else {
+        this.setEmu175Story(null)
+      }
+      this.podIterator++
     }
   }
 }

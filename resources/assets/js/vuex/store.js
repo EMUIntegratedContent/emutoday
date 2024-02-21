@@ -39,7 +39,9 @@ const state = {
 	modalPosition: '',
 	selectedCalendarCategory: null,
 	// Email builder
-	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail))
+	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail)),
+	// EMU 175 (2024) story
+	emu175Story: null
 }
 const mutations = {
 	// A mutation receives the current state as the first argument
@@ -125,9 +127,6 @@ const mutations = {
 			state.emailBuilderEmail.otherStories.splice(state.emailBuilderEmail.otherStories.indexOf(story), 1)
 		}
 	},
-	removeEmu175Story (state) {
-		// TODO
-	},
 	resetEmailBuilderEmail (state) {
 		state.emailBuilderEmail = JSON.parse(JSON.stringify(defaultEmail))
 	},
@@ -148,6 +147,10 @@ const mutations = {
 	},
 	updateOtherStoriesOrder (state, { newIndex, oldIndex }) {
 		state.emailBuilderEmail.otherStories.splice(newIndex, 0, state.emailBuilderEmail.otherStories.splice(oldIndex, 1)[0]);
+	},
+	// EMU 175 (2024)
+	setEmu175Story (state, story) {
+		state.emu175Story = story
 	}
 }
 const actions = {
