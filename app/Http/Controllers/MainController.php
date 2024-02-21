@@ -198,6 +198,16 @@ class MainController extends Controller
     if($emu175Story) {
       $emu175StoryImg = $emu175Story->storyImages()->where('image_type', 'emu175')->first();
     }
+    // Open the file in resources/emu175_dyk.txt and get 3 random lines
+    $emu175DykFile = file(resource_path('emu175_dyk.txt'));
+    $emu175Dyk = [];
+    if($emu175DykFile) {
+      for ($i = 0; $i < 3; $i++) {
+        $emu175Dyk[] = $emu175DykFile[rand(0, count($emu175DykFile) - 1)];
+      }
+    }
+
+
 
     JavaScript::put([
         'jsis' => 'hi',
@@ -207,7 +217,7 @@ class MainController extends Controller
         'currentPage' => $page
     ]);
 
-    return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'currentHRAnnouncements', 'featuredevents', 'emu175StoryImg'));
+    return view('public.hub', compact('page', 'storyImages', 'heroImg', 'barImgs', 'tweets', 'currentStorysBasic', 'currentAnnouncements', 'topAnnouncement', 'events', 'currentStoryImageWithVideoTag', 'currentHRAnnouncements', 'featuredevents', 'emu175StoryImg', 'emu175Dyk'));
 
   }
 

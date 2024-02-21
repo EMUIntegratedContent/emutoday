@@ -135,10 +135,12 @@
       <div class="row">
         <div class="large-3 medium-3 small-12 columns" id="emu-175-logo-container">
           <div id="emu175-logo-container">
+            <a href="https://emich.edu" target="_blank">
             <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium">
             <span class="hide-for-medium">
               <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium" width="75" height="75">
             </span>
+            </a>
             <h2 class="hide-for-medium emu-175-heading">175th Anniversary</h2>
           </div>
         </div>
@@ -152,7 +154,8 @@
                 <img
                     id="emu-175-main-img"
                     alt="{{ $emu175StoryImg->alt_text ? $emu175StoryImg->alt_text : 'The image for a story celebrating EMU\'s 175th anniversary' }}"
-                    src="/imagecache/emu175/{{ $emu175StoryImg->filename }}"/>
+                    src="/imagecache/emu175/{{ $emu175StoryImg->filename }}"
+                />
                 <div id="emu-175-main-info">
                   <h3 id="emu-175-main-title">{{ $emu175StoryImg->title }}</h3>
                   <p id="emu-175-main-teaser">{{ $emu175StoryImg->caption }}</p>
@@ -170,11 +173,12 @@
             <div class="{{ $emu175StoryImg ? 'large-6 medium-6' : '' }} small-12 columns">
               <div id="dyk-container">
                 <h3>Did you know?</h3>
-                <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>
-                <hr>
-                <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>
-                <hr>
-                <p class="dyk-factoid">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aliquid amet aut, cum debitis dignissimosciis pariatur porro?</p>
+                @for($i = 0; $i < count($emu175Dyk); $i++)
+                  <p class="dyk-factoid">{{ $emu175Dyk[$i] }}</p>
+                  @if($i < count($emu175Dyk) - 1)
+                    <hr>
+                  @endif
+                @endfor
               </div>
             </div>
           </div>
