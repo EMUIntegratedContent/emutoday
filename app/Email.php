@@ -24,7 +24,10 @@ class Email extends Model
       'is_president_included',
       'exclude_events',
       'president_teaser',
-      'president_url'
+      'president_url',
+      'is_emu175_included',
+      'emu175_teaser',
+      'emu175_url',
   ];
 
   protected $casts = [

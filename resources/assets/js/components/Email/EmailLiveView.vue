@@ -178,14 +178,34 @@
                   </div>
                 </td>
               </tr>
+              <tr v-if="emailBuilderEmail.is_emu175_included">
+                <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
+                  <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU's logo celebrating 175 years."
+                       style="float:left; padding:0 15px 8px 0; width:109px"/>
+                  <h2 style="padding-top:0px;">
+                    <template v-if="emailBuilderEmail.emu175_url">
+                      <a v-if="emailBuilderEmail.emu175_url" :href="emailBuilderEmail.emu175_url">Celebrating EMU's 175th Anniversary &#10137;</a>
+                    </template>
+                    <template v-else>
+                      <span class="insufficient">Celebrating EMU 175th Anniversary [NO URL]</span>
+                    </template>
+                  </h2>
+                  <template v-if="emailBuilderEmail.emu175_teaser">
+                    <p style="font-size:1.1rem;">{{ emailBuilderEmail.emu175_teaser }}</p>
+                  </template>
+                  <template v-else>
+                    <p style="font-size:1.1rem;" class="insufficient">There is no teaser text provided. You must include
+                      this text when including an EMU 175 link.</p>
+                  </template>
+                </td>
+              </tr>
               <tr v-if="emailBuilderEmail.is_president_included">
                 <td valign="top" style="border-top: 3px double #97D700; min-height:136px; padding:15px">
                   <img src="/assets/imgs/email/president-jim-smith-2024-109x136.png" alt="EMU President Jim Smith"
                        style="float:left; padding:0 15px 8px 0; width:109px"/>
                   <h2 style="padding-top:0px;">
                     <template v-if="emailBuilderEmail.president_url">
-                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the
-                        President &#10137;</a>
+                      <a v-if="emailBuilderEmail.president_url" :href="emailBuilderEmail.president_url">From the President &#10137;</a>
                     </template>
                     <template v-else>
                       <span class="insufficient">From the President [NO URL]</span>

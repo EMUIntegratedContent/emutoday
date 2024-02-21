@@ -156,6 +156,12 @@ class EmailController extends ApiController
       $validationRules['president_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
     }
 
+    // The validator if there is a EMU 175 link being included in the email, a valid URL must be passed
+    if ($request->get('is_emu175_included')) {
+      $validationRules['emu175_teaser'] = 'required';
+      $validationRules['emu175_url'] = 'required|regex:/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+    }
+
     $validation = \Validator::make(Input::all(), $validationRules);
 
     if ($validation->fails()) {
@@ -177,6 +183,9 @@ class EmailController extends ApiController
       $email->exclude_events = $request->get('exclude_events', 0);
       $email->president_teaser = $request->get('president_teaser', null);
       $email->president_url = $request->get('president_url', null);
+      $email->is_emu175_included = $request->get('is_emu175_included', 0);
+      $email->emu175_teaser = $request->get('emu175_teaser', null);
+      $email->emu175_url = $request->get('emu175_url', null);
 
       // Sync announcements
       // tutuorial: https://laravel.com/docs/5.5/eloquent-relationships#updating-many-to-many-relationships
