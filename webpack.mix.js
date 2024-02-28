@@ -52,6 +52,7 @@ mix.combine([
 	'resources/assets/js/app.js'
 ], 'public/js/public-scripts.js');
 
+
 // Compile vue files
 mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js').vue();
 mix.js('resources/assets/js/vue-announcement-queue.js', 'public/js/vue-announcement-queue.js').vue();
