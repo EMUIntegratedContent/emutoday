@@ -48,6 +48,13 @@
       {!! Form::text('caption', null, ['class' => 'form-control input-sm']) !!}
       <span class="help-block">Small to Medium size text limited to a couple of lines</span>
     </div>
+    @if($storyImage->group == 'emutoday')
+    <div class="form-group">
+      {!! Form::label('link', 'External Link') !!}
+      {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
+      <span class="help-block">Fully qualified URL of YouTube video </span>
+    </div>
+    @endif
     <div class="form-group">
       {!! Form::label('moretext', 'More Text Link') !!}
       {!! Form::text('moretext', null, ['class' => 'form-control input-sm']) !!}
