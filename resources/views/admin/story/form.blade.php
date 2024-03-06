@@ -91,7 +91,7 @@
                                     @endforeach
                                 @endif
                             @endif
-
+                            
                             @if($currentOtherImages !== null)
                                 @if($currentOtherImages->count() > 0)
                                   {{-- there is at least 1 optional image in the collection

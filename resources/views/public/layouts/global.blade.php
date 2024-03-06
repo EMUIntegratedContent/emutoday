@@ -120,7 +120,7 @@
                                 <div class="large-7 medium-6 small-12 columns">
                                     <h1><a href="/hub">EMU <span style="color:#000000;">Today</span></a></h1>
                                     <div class="hide-for-large">
-                                        <img src="/assets/imgs/emu175/emu-175-green-100x100-logo.png" alt="EMU 175th Anniversary logo" id="emu-175-menu-logo"/>
+                                        <img src="/assets/imgs/emu175/emu-175-green-logo.png" alt="EMU 175th Anniversary logo" id="emu-175-menu-logo" width="100px"/>
                                     </div>
                                 </div><!-- large-9 -->
 
@@ -178,7 +178,7 @@
                                                    href="https://www.emueagles.com" target="_blank">Athletics</a></li>
                                         </ul>
                                         <div>
-                                            <img src="/assets/imgs/emu175/emu-175-green-100x100-logo.png" alt="EMU 175th Anniversary logo" id="emu-175-menu-logo"/>
+                                            <img src="/assets/imgs/emu175/emu-175-green-logo.png" alt="EMU 175th Anniversary logo" id="emu-175-menu-logo" width="100px"/>
                                         </div>
                                     </div>
                                 </nav>

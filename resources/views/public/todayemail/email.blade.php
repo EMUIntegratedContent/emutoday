@@ -134,7 +134,7 @@
         <tr>
             <td valign="top">
                 <div class="indent" style="border-top: 3px double #97D700;min-height: 136px;padding: 15px;margin-left: 1rem;margin-right: 1rem;">
-                    <img src="{{ url('/') }}/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU's logo celebrating its 175th Anniversary" width="109px" style="float:left; padding:0 15px 8px 0;">
+                    <img src="{{ url('/') }}/assets/imgs/emu175/emu-175-green-on-white-logo.png" alt="EMU's logo celebrating its 175th Anniversary" width="109px" style="float:left; padding:0 15px 0 0;">
                     <h2 style="padding-top: 5px;font-weight: 500;padding: 12px 0 3px;margin: 0;font-size: 22px;"><a href="{{ $email->emu175_url }}" style="color: #636363;text-decoration: none;">Celebrating EMU's 175th Anniversary &#10137;</a></h2>
                     <p style="padding-top: 8px;font-size: 0.9rem;padding: 0;margin: 0;">{{ $email->emu175_teaser }}</p>
                 </div>

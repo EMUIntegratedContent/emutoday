@@ -3635,7 +3635,7 @@ a.firefox:before {
 }
 
 #emu-175-container p {
-  font-size: 0.9rem;
+  /*font-size: 0.9rem;*/
   color: #eeeeee;
 }
 
@@ -3689,7 +3689,7 @@ a.firefox:before {
 }
 
 #dyk-container {
-  background: #42725d;
+  background: #444444;
   padding: 1.5rem;
   color: #eeeeee;
 }

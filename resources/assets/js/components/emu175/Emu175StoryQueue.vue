@@ -92,7 +92,11 @@
                 <h3 id="emu-175-main-title">{{ emu175Story.emu175_image[0].title }}</h3>
                 <p id="emu-175-main-teaser">{{ emu175Story.emu175_image[0].caption }}</p>
                 <p class="button-group">
-                  <a href="#" aira-label="stuff" class="bold-green-link">
+                  <a v-if="emu175Story.tags.find(t => t.name === 'external')" :href="emu175Story.emu175_image[0].link"
+                     target="_blank">
+                    {{ emu175Story.emu175_image[0].moretext }}
+                  </a>
+                  <a v-else :href="`/story/story/${emu175Story.id}`" aira-label="link to emu 175 story">
                     {{ emu175Story.emu175_image[0].moretext }}
                   </a>
                 </p>
@@ -164,9 +168,9 @@ export default {
     flatpickr
   },
   created() {
-    let twoWeeksEarlier = moment().subtract(2, 'w')
-    this.startdate = twoWeeksEarlier.format("YYYY-MM-DD")
-    this.enddate = twoWeeksEarlier.clone().add(4, 'w').format("YYYY-MM-DD")
+    let threeMonthsEarlier = moment().subtract(3, 'M')
+    this.startdate = threeMonthsEarlier.format("YYYY-MM-DD")
+    this.enddate = moment().format("YYYY-MM-DD")
     this.fetchAllRecords()
   },
   data: function () {
@@ -215,7 +219,7 @@ export default {
       if (this.startdate) {
         routeurl = routeurl + '/' + this.startdate
       } else {
-        routeurl = routeurl + '/' + moment().subtract(1, 'y').format("YYYY-MM-DD")
+        routeurl = routeurl + '/' + moment().subtract(3, 'm').format("YYYY-MM-DD")
       }
 
       // if a date range is set, get stories between the start date and end date
