@@ -4,6 +4,15 @@
   margin-bottom: 2rem;
 }
 
+#emu-175-container sup{
+  top: -0.9rem !important;
+  font-size: 60%;
+}
+
+#emu-175-container .bold-green-link {
+  color: #ffffff;
+}
+
 #emu-175-container p {
   /*font-size: 0.9rem;*/
   color: #eeeeee;
@@ -32,7 +41,7 @@
 }
 
 .emu-175-heading {
-  font-size: 4rem;
+  font-size: 3rem;
   display: inline-block;
   padding-bottom: 1rem;
   color: #fff;
@@ -44,7 +53,7 @@
 }
 
 #emu-175-logo-container > div {
-  margin-top: 1.5rem;
+  /*margin-top: 1.5rem;*/
 }
 
 #emu175-logo-container img {
@@ -53,7 +62,7 @@
 
 #emu-175-container .bold-green-link{
   text-transform: uppercase;
-  color: #97D700;
+  color: #ffffff;
   font-weight: 500;
 }
 
