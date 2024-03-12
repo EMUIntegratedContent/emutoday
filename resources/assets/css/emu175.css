@@ -32,15 +32,19 @@
 }
 
 .emu-175-heading {
-  font-size: 2rem;
+  font-size: 4rem;
   display: inline-block;
-  padding-bottom: 1.7rem;
+  padding-bottom: 1rem;
   color: #fff;
   text-transform: uppercase;
 }
 
 #emu175-container {
   color: #eeeeee;
+}
+
+#emu-175-logo-container > div {
+  margin-top: 1.5rem;
 }
 
 #emu175-logo-container img {
@@ -59,17 +63,25 @@
 }
 
 #dyk-container {
-  background: #444444;
+  background: #eeeeee;
   padding: 1.5rem;
-  color: #eeeeee;
+  color:#000000;
+}
+
+#dyk-container p {
+  color: #000000;
 }
 
 #dyk-container h3 {
+  color: #036937;
   margin-bottom: 1.3rem;
 }
 
 #dyk-container hr {
   margin: 1rem auto !important;
+  color: #036937;
+  background-color: #036937;
+  height: 1px;
 }
 
 #emu-175-main-container img {
