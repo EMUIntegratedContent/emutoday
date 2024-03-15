@@ -138,13 +138,13 @@
         </div>
         <div class="large-3 medium-3 small-12 columns" id="emu-175-logo-container">
           <div>
-            <a href="https://emich.edu" target="_blank">
+{{--            <a href="https://emich.edu" target="_blank">--}}
             <img src="/assets/imgs/emu175/emu-175-white-290x290-logo.png" alt="EMU 175 logo" class="show-for-medium" width="253">
             <span class="hide-for-medium">
-              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium" width="75" height="75">
+              <img src="/assets/imgs/emu175/emu-175-white-100x100-logo.png" alt="EMU 175 logo" class="hide-for-medium" width="75" height="75" style="margin-right: .5rem">
             </span>
-            </a>
-            <h2 class="hide-for-medium emu-175-heading">175<sup>th</sup> Anniversary</h2>
+{{--            </a>--}}
+            <h2 class="hide-for-medium emu-175-heading">EMU 175<sup>th</sup> Anniversary</h2>
           </div>
         </div>
         <div class="large-9 medium-9 small-12 columns">

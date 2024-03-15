@@ -105,7 +105,7 @@
 /* Medium and down */
 @media screen and (max-width: 63.9375em) {
   .emu-175-heading {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
   }
   #emu-175-menu-logo {
     width: 75px;
@@ -114,11 +114,14 @@
     left: 281px;
     display: block !important;
   }
+  #emu-175-container sup{
+    top: -0.6rem !important;
+    font-size: 60%;
+  }
   #emu-175-container {
     padding: 1rem 0;
   }
   #dyk-container {
-    background: none !important;
     color: #eeeeee;
     padding: 1rem .5rem .5rem .5rem;
   }
