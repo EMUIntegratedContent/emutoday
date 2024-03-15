@@ -106,6 +106,10 @@
                                                                    :class="emailBuilderEmail.is_president_included && (!emailBuilderEmail.president_url || !emailBuilderEmail.president_teaser) ? 'insufficient' : ''"
                                                                    @click="activeSubTab = 5">President</a>
                   </li>
+                  <li :class="{ 'active' : activeSubTab == 6 }"><a href="#emu-175-email" role="tab" data-toggle="tab"
+                                                                   :class="emailBuilderEmail.is_emu175_included && (!emailBuilderEmail.emu175_url || !emailBuilderEmail.emu175_teaser) ? 'insufficient' : ''"
+                                                                   @click="activeSubTab = 6">EMU 175</a>
+                  </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -158,6 +162,43 @@
                                  v-model="emailBuilderEmail.president_url"
                                  placeholder="https://emich.edu/president-statement"/>
                           <p v-if="formErrors.president_url" class="help-text invalid">The URL field is not valid.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
+                    </div><!-- ./row -->
+                  </div>
+                  <div class="tab-pane" id="emu-175-email">
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="presidentIncl">Include EMU 175th Anniversary information in this email?</label>
+                          &nbsp;
+                          <input
+                              type="checkbox"
+                              id="emu175Incl"
+                              v-model="emailBuilderEmail.is_emu175_included"
+                              :true-value="1"
+                              :false-value="0"
+                          >
+                        </div><!-- /input-group -->
+                      </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="emu175Teaser">Teaser text</label>
+                          <textarea class="form-control" id="emu175Teaser"
+                                    v-bind:class="[formErrors.emu175_teaser ? 'invalid-input' : '']"
+                                    v-model="emailBuilderEmail.emu175_teaser">{{ emailBuilderEmail.emu175_teaser }}</textarea>
+                          <p v-if="formErrors.emu175_teaser" class="help-text invalid">The teaser is required when
+                            including EMU 175th Anniversary information.</p>
+                        </div>
+                      </div><!-- /.col-md-12 -->
+                      <div class="col-xs-12">
+                        <div class="form-group">
+                          <label for="emu175Url">URL to EMU 175 information</label>
+                          <input type="text" class="form-control" id="emu175Url"
+                                 v-bind:class="[formErrors.emu175_url ? 'invalid-input' : '']"
+                                 v-model="emailBuilderEmail.emu175_url"
+                          />
+                          <p v-if="formErrors.emu175_url" class="help-text invalid">The URL field is not valid.</p>
                         </div>
                       </div><!-- /.col-md-12 -->
                     </div><!-- ./row -->
@@ -282,6 +323,18 @@
                       aria-hidden="true"></i> Email
                     {{ emailBuilderEmail.announcements.length > 0 ? 'has' : 'does not have' }} at
                     least one announcement.
+                  </li>
+                  <li class="list-group-item" v-if="emailBuilderEmail.is_emu175_included"><i
+                      :class="emailBuilderEmail.emu175_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
+                      aria-hidden="true"></i> Email {{ emailBuilderEmail.emu175_teaser ? 'has' : 'does not have' }}
+                    teaser text
+                    for the EMU 175 link.
+                  </li>
+                  <li class="list-group-item" v-if="emailBuilderEmail.is_emu175_included"><i
+                      :class="emailBuilderEmail.emu175_url ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
+                      aria-hidden="true"></i> Email {{ emailBuilderEmail.emu175_url ? 'has' : 'does not have' }} a
+                    URL to the
+                    for the EMU 175 link.
                   </li>
                   <li class="list-group-item" v-if="emailBuilderEmail.is_president_included"><i
                       :class="emailBuilderEmail.president_teaser ? 'fa fa-check-circle fa-3x' : 'fa fa-times-circle fa-3x'"
@@ -631,8 +684,8 @@ export default {
     progress: function () {
       let progress = 0
 
-      // Normal (NO presidential message, with events)
-      if (!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events) {
+      // Normal (NO presidential message, with events, NO EMU 175)
+      if (!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
         this.emailBuilderEmail.title ? progress += 13 : ''
         this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
         this.emailBuilderEmail.events.length > 0 ? progress += 15 : ''
@@ -641,8 +694,8 @@ export default {
         this.emailBuilderEmail.recipients.length > 0 ? progress += 14 : ''
         this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 13 : ''
       }
-      // Presidential message, with events
-      else if (this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events) {
+      // Presidential message, with events, NO EMU 175
+      else if (this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
         this.emailBuilderEmail.title ? progress += 12 : ''
         this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
         this.emailBuilderEmail.events.length > 0 ? progress += 11 : ''
@@ -653,8 +706,8 @@ export default {
         this.emailBuilderEmail.president_teaser ? progress += 8 : ''
         this.emailBuilderEmail.president_url ? progress += 8 : ''
       }
-      // Presidential message, NO events
-      else if (this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events) {
+      // Presidential message, NO events, NO EMU 175
+      else if (this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
         this.emailBuilderEmail.title ? progress += 13 : ''
         this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
         this.emailBuilderEmail.announcements.length > 0 ? progress += 15 : ''
@@ -664,8 +717,58 @@ export default {
         this.emailBuilderEmail.president_teaser ? progress += 6 : ''
         this.emailBuilderEmail.president_url ? progress += 6 : ''
       }
-      // NO presidential message, NO events
-      else if (!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events) {
+      // Presidential message, with events, WITH EMU 175
+      else if(this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
+        this.emailBuilderEmail.title ? progress += 14 : ''
+        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 12 : ''
+        this.emailBuilderEmail.events.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
+        this.emailBuilderEmail.president_teaser ? progress += 6 : ''
+        this.emailBuilderEmail.president_url ? progress += 6 : ''
+        this.emailBuilderEmail.emu175_teaser ? progress += 6 : ''
+        this.emailBuilderEmail.emu175_url ? progress += 6 : ''
+      }
+      // Presidential message, NO events, WITH EMU 175
+      else if(this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
+        this.emailBuilderEmail.title ? progress += 14 : ''
+        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 14 : ''
+        this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
+        this.emailBuilderEmail.president_teaser ? progress += 8 : ''
+        this.emailBuilderEmail.president_url ? progress += 8 : ''
+        this.emailBuilderEmail.emu175_teaser ? progress += 8 : ''
+        this.emailBuilderEmail.emu175_url ? progress += 8 : ''
+      }
+      // NO Presidential message, with events, WITH EMU 175
+      else if(!this.emailBuilderEmail.is_president_included && !this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
+        this.emailBuilderEmail.title ? progress += 14 : ''
+        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
+        this.emailBuilderEmail.events.length > 0 ? progress += 13 : ''
+        this.emailBuilderEmail.announcements.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.otherStories.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.recipients.length > 0 ? progress += 10 : ''
+        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 10 : ''
+        this.emailBuilderEmail.emu175_teaser ? progress += 9 : ''
+        this.emailBuilderEmail.emu175_url ? progress += 9 : ''
+      }
+      // NO Presidential message, NO events, WITH EMU 175
+      else if(!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && this.emailBuilderEmail.is_emu175_included) {
+        this.emailBuilderEmail.title ? progress += 15 : ''
+        this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 15 : ''
+        this.emailBuilderEmail.announcements.length > 0 ? progress += 12 : ''
+        this.emailBuilderEmail.otherStories.length > 0 ? progress += 12 : ''
+        this.emailBuilderEmail.recipients.length > 0 ? progress += 12 : ''
+        this.emailBuilderEmail.send_at && this.emailBuilderEmail.is_approved ? progress += 12 : ''
+        this.emailBuilderEmail.emu175_teaser ? progress += 12 : ''
+        this.emailBuilderEmail.emu175_url ? progress += 10 : ''
+      }
+      // NO presidential message, NO events, NO EMU 175
+      else if (!this.emailBuilderEmail.is_president_included && this.emailBuilderEmail.exclude_events && !this.emailBuilderEmail.is_emu175_included) {
         this.emailBuilderEmail.title ? progress += 16 : ''
         this.emailBuilderEmail.mainStories.length == 1 || this.emailBuilderEmail.mainStories.length == 3 ? progress += 17 : ''
         this.emailBuilderEmail.announcements.length > 0 ? progress += 17 : ''

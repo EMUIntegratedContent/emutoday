@@ -91,7 +91,7 @@
                                     @endforeach
                                 @endif
                             @endif
-
+                            
                             @if($currentOtherImages !== null)
                                 @if($currentOtherImages->count() > 0)
                                   {{-- there is at least 1 optional image in the collection
@@ -99,6 +99,8 @@
                                     @foreach($currentOtherImages as $currentOtherImage)
                                         @if($currentOtherImage->image_type == 'front')
                                             @include('admin.storyimages.subviews.frontimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
+                                        @elseif($currentOtherImage->image_type == 'emu175')
+                                            @include('admin.storyimages.subviews.emu175',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @else
                                             @include('admin.storyimages.subviews.otherimage',['storyImage' => $currentOtherImage, 'story_id' => $story->id, 'qtype'=> $qtype, 'gtype' => $gtype, 'stype'=>$stype ])
                                         @endif

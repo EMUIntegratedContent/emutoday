@@ -7,6 +7,7 @@ const defaultEmail = {
 	exclude_events: 0,
 	is_approved: false,
 	is_president_included: false,
+	is_emu175_included: false,
 	is_ready: false,
 	is_sent: 0,
 	mailgun_clicks: 0,
@@ -14,6 +15,8 @@ const defaultEmail = {
 	mailgun_spam: 0,
 	president_teaser: null,
 	president_url: null,
+	emu175_teaser: null,
+	emu175_url: null,
 	send_at: null,
 	subheading: null,
 	title: null,
@@ -36,7 +39,9 @@ const state = {
 	modalPosition: '',
 	selectedCalendarCategory: null,
 	// Email builder
-	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail))
+	emailBuilderEmail: JSON.parse(JSON.stringify(defaultEmail)),
+	// EMU 175 (2024) story
+	emu175Story: null
 }
 const mutations = {
 	// A mutation receives the current state as the first argument
@@ -142,6 +147,10 @@ const mutations = {
 	},
 	updateOtherStoriesOrder (state, { newIndex, oldIndex }) {
 		state.emailBuilderEmail.otherStories.splice(newIndex, 0, state.emailBuilderEmail.otherStories.splice(oldIndex, 1)[0]);
+	},
+	// EMU 175 (2024)
+	setEmu175Story (state, story) {
+		state.emu175Story = story
 	}
 }
 const actions = {

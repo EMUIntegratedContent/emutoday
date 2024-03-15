@@ -33,7 +33,8 @@ mix.combine([
 	'resources/assets/css/media-queries.css',
 	'resources/assets/css/basebar-styles.css',
 	'resources/assets/css/tweeks.css',
-	'resources/assets/css/ckeditor5-styles.css'
+	'resources/assets/css/ckeditor5-styles.css',
+	'resources/assets/css/emu175.css',
 ], 'public/css/public-styles.css')
 
 /*
@@ -50,6 +51,7 @@ mix.combine([
 	'node_modules/magnific-popup/dist/jquery.magnific-popup.js',
 	'resources/assets/js/app.js'
 ], 'public/js/public-scripts.js');
+
 
 // Compile vue files
 mix.js('resources/assets/js/vue-announcement-form.js', 'public/js/vue-announcement-form.js').vue();
@@ -80,6 +82,7 @@ mix.js('resources/assets/js/vue-story-form-wrapper.js', 'public/js/vue-story-for
 mix.js('resources/assets/js/vue-story-queue.js', 'public/js/vue-story-queue.js').vue();
 mix.js('resources/assets/js/vue-storyideas-form.js', 'public/js/vue-storyideas-form.js').vue();
 mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue();
+mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue();
 
 /*
 |--------------------------------------------------------------------------

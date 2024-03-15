@@ -15,6 +15,7 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
         $emailImageTypeIds = Imagetype::select('id')->where('type', 'email')->get();
         $smallImageTypeIds = Imagetype::select('id')->where('type', 'small')->get();
         $frontImageTypeIds = Imagetype::select('id')->where('type', 'front')->get();
+        $emu175ImageTypeIds = Imagetype::select('id')->where('type', 'emu175')->get();
 
         $author = Author::find($story->author_id);
 
@@ -48,7 +49,9 @@ class FractalStoryTransformerModel extends Fractal\TransformerAbstract
             'small_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text','alt_text')->whereIn('imagetype_id', $smallImageTypeIds)->get(), // need for email builder (sub-main stories)
             'email_images' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text','alt_text')->whereIn('imagetype_id', $emailImageTypeIds)->get(), // need for email builder (main stories)
             'full_url' => url('/') . '/story/' . $story->story_type . '/' . $story->id,
-            'edit_url' => url('/') . '/admin/queueall/story/' . $story->story_type . '/' . $story->id . '/edit'
+            'edit_url' => url('/') . '/admin/queueall/story/' . $story->story_type . '/' . $story->id . '/edit',
+            'is_emu175_hub_story' => $story->is_emu175_hub_story,
+            'emu175_image' => $story->storyImages()->select('image_path','filename','title','caption','teaser','moretext','link','link_text','alt_text')->whereIn('imagetype_id', $emu175ImageTypeIds)->get()
         ];
     }
 }
