@@ -201,13 +201,12 @@ class MainController extends Controller
     // Open the file in resources/emu175_dyk.txt and get 3 random lines
     $emu175DykFile = file(resource_path('emu175_dyk.txt'));
     $emu175Dyk = [];
-    if($emu175DykFile) {
-      for ($i = 0; $i < 3; $i++) {
-        $emu175Dyk[] = $emu175DykFile[rand(0, count($emu175DykFile) - 1)];
-      }
-    }
-
-
+		if($emu175DykFile) {
+			// Shuffle the lines
+			shuffle($emu175DykFile);
+			// Get the first three unique lines from the shuffled array
+			$emu175Dyk = array_slice($emu175DykFile, 0, 3);
+		}
 
     JavaScript::put([
         'jsis' => 'hi',
