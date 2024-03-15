@@ -8,6 +8,7 @@
 Homestead.yaml
 /nbproject
 /app/Http/Requests/oauth.php
+/resources/emu175_dyk.txt
 
 Vagrantfile
 *Homestead.yaml*
