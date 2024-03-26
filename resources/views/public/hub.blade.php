@@ -306,11 +306,11 @@
                     </div>
                   </div>
                   <div class="card small-12 medium-6 large-3 large-push-6 columns" data-equalizer-watch>
-                    <img src="/assets/imgs/placeholder/magazine-summer-2023.jpg" alt="The cover of the summer 2023 issue of EMU Magazine">
+                    <img src="/assets/imgs/placeholder/magazine-spring-2024.jpg" alt="The cover of the spring 2024 issue of EMU Magazine">
                     <div class="card-section">
-                      <p>A Common Thread: Fashion Marketing Innovation weaves a rich tapestry of engineering, technology and art.</p>
-                      <a class="bold-green-link" title="External link to the EMU Magazine summer 2023 issue."
-                         href="https://magazine.emich.edu/summer-2023/" target="blank">Read the latest issue</a>
+                      <p>Deep Dive: What lies beneath tells the truth about Lake Superior’s shipwrecks. </p>
+                      <a class="bold-green-link" title="External link to the issues of EMU Magazine."
+                         href="https://magazine.emich.edu/issues/" target="blank">Read the latest issue</a>
                     </div>
                   </div>
                   <div class="card small-12 medium-12 large-6 large-pull-3 columns" data-equalizer-watch>
