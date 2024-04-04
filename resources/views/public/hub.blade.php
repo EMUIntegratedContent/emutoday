@@ -160,7 +160,7 @@
                   <h3 id="emu-175-main-title">{{ $emu175StoryImg->title }}</h3>
                   <p id="emu-175-main-teaser">{{ $emu175StoryImg->caption }}</p>
                   <p class="button-group">
-                    @if($emu175StoryImg->story->tags()->first() && $emu175StoryImg->story->tags()->first()->name == 'external')
+                    @if(($emu175StoryImg->story->tags()->first() && $emu175StoryImg->story->tags()->first()->name == 'external') or $emu175StoryImg->story->story_type == 'external')
                       <a href="{{ $emu175StoryImg->link }}" target="_blank"
                          class="bold-green-link">{{ $emu175StoryImg->moretext }}</a>
                     @else

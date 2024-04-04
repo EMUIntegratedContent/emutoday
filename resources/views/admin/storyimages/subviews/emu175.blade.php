@@ -48,11 +48,11 @@
       {!! Form::text('caption', null, ['class' => 'form-control input-sm']) !!}
       <span class="help-block">Small to Medium size text limited to a couple of lines</span>
     </div>
-    @if($storyImage->group == 'emutoday')
+    @if($storyImage->group == 'emutoday' or $storyImage->group == 'external')
     <div class="form-group">
       {!! Form::label('link', 'External Link') !!}
       {!! Form::text('link', null, ['class' => 'form-control input-sm']) !!}
-      <span class="help-block">Fully qualified URL of YouTube video </span>
+      <span class="help-block">Fully qualified URL external link </span>
     </div>
     @endif
     <div class="form-group">
