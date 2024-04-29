@@ -6,7 +6,7 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN apt-get update && \
     apt-get install -y libonig-dev libzip-dev zip unzip git libpng-dev libfreetype6-dev libjpeg62-turbo-dev
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
-RUN docker-php-ext-install pdo_mysql mysqli zip gd
+RUN docker-php-ext-install pdo_mysql mysqli zip gd exif
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

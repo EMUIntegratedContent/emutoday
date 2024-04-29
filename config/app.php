@@ -151,9 +151,7 @@ return [
         /*
         * Vendor Specific Providers
         */
-        Collective\Html\HtmlServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
         Subfission\Cas\CasServiceProvider::class,
