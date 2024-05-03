@@ -3,7 +3,7 @@ INTCOMM NOTES 2024
 
 TODO: create intcomm model and controller
 
-
+https://inertiajs.com/  <== Vue + Laravel (no need for API routes)
 
 
 
