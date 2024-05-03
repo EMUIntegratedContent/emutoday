@@ -69,6 +69,8 @@
                     <li><a title="EMU Today campus announcements." href="/announcement">Announcements</a></li>
                     <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a>
                     </li>
+                    <li><a title="Submit your story ideas."
+                           href="{{ url('/experts') }}">INTCOMM (Change)</a></li>
                     <li><a title="Eastern Magazine's homepage" href="https://magazine.emich.edu">Eastern Magazine</a>
                     </li>
                     <li><a title="Eastern Experts are availble for interviews and speaking engagements."
@@ -76,8 +78,6 @@
                     <li><a title="Samples of external media coverage focused on Eastern Michigan University."
                            href="/mediahighlights">Media Highlights</a></li>
                     <li><a title="External link to WEMU." href="https://www.wemu.org" target="_blank">WEMU</a></li>
-                    <li><a title="External link to the EMU athletics page." href="https://www.emueagles.com/"
-                           target="_blank">Athletics</a></li>
                 </ul>
                 <ul class="tier3-menu vertical dropdown menu" data-dropdown-menu>
                     <li><a title="Subscribe to EMU Today" href="/subscribe">Subscribe to EMU Today</a></li>
@@ -163,6 +163,8 @@
                                             <li><a title="EMU Today campus news, press releases, and official statements."
                                                    class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a>
                                             </li>
+                                            <li><a title="Submit your story ideas."
+                                                   href="{{ url('/experts') }}">INTCOMM (Change)</a></li>
                                             <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern
                                                     Magazine</a></li>
                                             <li>
@@ -174,8 +176,6 @@
                                                    href="/mediahighlights">Media Highlights</a></li>
                                             <li><a title="External link to WEMU." href="https://www.wemu.org"
                                                    target="_blank">WEMU</a></li>
-                                            <li><a title="External link to EMU athletics site."
-                                                   href="https://www.emueagles.com" target="_blank">Athletics</a></li>
                                         </ul>
                                         <div>
                                             <img src="/assets/imgs/emu175/emu-175-green-logo.png" alt="EMU 175th Anniversary logo" id="emu-175-menu-logo" width="100px"/>

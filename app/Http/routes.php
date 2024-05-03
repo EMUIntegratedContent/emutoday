@@ -24,25 +24,41 @@ use Illuminate\Support\Facades\DB;
 | and give it the controller to call when that URI is requested.
 |
 */
+
+Route::get('/testoauth', function () {
+  return response()->json("Now that's what I call a secure API!");
+})->middleware('client_credentials');
+
+/***************
+ * Mailgun Webhook Routes
+ */
 Route::group(['prefix' => 'mailgun'], function () {
   Route::post('open', 'Api\MailgunApiController@postOpen');
   Route::post('click', 'Api\MailgunApiController@postClick');
   Route::post('spam', 'Api\MailgunApiController@postSpam');
 });
 
+/***************
+ * CAS Routes
+ */
 Route::get('/cas/logout', function () {
   Auth::logout();
   Session::flush();
   cas()->logout();
 })->middleware('auth');  //you MUST use 'auth' middleware and not 'auth.basic'. Otherwise, a user won't be logged out properly.
 
-# RSS Feeds
+/***************
+ * RSS Feed Routes
+ */
 Route::get('/feed/news/{type?}', 'Today\RSSFeedController@getNews')->name('rss_feed_news');
 Route::get('/feed/events/{type?}', 'Today\RSSFeedController@getEvents')->name('rss_feed_events');
 Route::get('/feed/announcements/{type?}', 'Today\RSSFeedController@getAnnouncements')->name('rss_feed_announcements');
 Route::get('/feed/minical/{minical?}', 'Today\RSSFeedController@getEventsICalMinical')->name('ical_events_minical');
 Route::get('/feed/ical', 'Today\RSSFeedController@getEventsICal')->name('ical_events');
 
+/***************
+ * External API Routes
+ */
 Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function () {
   Route::get('events/{limit?}/{startDate?}/{endDate?}/{miniCalendar?}', 'Api\ExternalApiController@getEvents');
   Route::get('hscevents/{limit?}/{startDate?}/{endDate?}', 'Api\ExternalApiController@getHscEvents');
@@ -57,6 +73,9 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
   Route::post('events/campuslife/new', 'Api\ExternalApiController@createCampusLifeEvent');
 });
 
+/***************
+ * Internal API Routes
+ */
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
   /* STORY IDEAS */
@@ -248,6 +267,7 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
   Route::resource('story', 'Api\StoryController');
 });
+// ^^ END API ROUTES
 
 Route::get('/', 'MainController@index')->name('home');
 Route::get('forthemedia', 'MainController@forTheMediaIndex');
@@ -316,6 +336,9 @@ Route::resource('experts', 'Today\ExpertsController');
 //        Route::get('{stype}/{story}/', 'PreviewController@story')->name('preview_story');
 //    });
 
+/***************
+ * Admin Routes
+ */
 Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::group(['prefix' => 'preview', 'middleware' => ['bindings']], function () {
     Route::get('experts/{id}', 'PreviewController@expert')->name('preview_experts');
@@ -466,11 +489,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
 
   Route::get('{qtype}/{gtype}/{stype}/{story}/edit', 'Admin\StoryTypeController@storyTypeEdit')->middleware('bindings');
 });
+// ^^ END ADMIN ROUTES
 
 Route::group(['prefix' => 'mediahighlights'], function () {
   Route::get('/', 'Today\MediaHighlightController@index')->name('mediahighlights_index');
 });
 
-Route::get('/testoauth', function () {
-  return response()->json("Now that's what I call a secure API!");
-})->middleware('client_credentials');
+Route::group(['prefix' => 'intcomm'], function () {
+  Route::get('/', 'Today\IntcommController@index')->name('intcomm_index');
+});
