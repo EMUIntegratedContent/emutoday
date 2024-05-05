@@ -266,6 +266,9 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::patch('story/archiveitem/{id}', 'Api\StoryController@archiveItem')->name('api_story_archiveitem');
   Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
   Route::resource('story', 'Api\StoryController');
+
+	/* Intcomm Posts */
+	Route::get('intcomm/posts', 'Api\IntcommPostController@getPosts')->name('api_intcomm_posts');
 });
 // ^^ END API ROUTES
 
@@ -471,6 +474,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
 
   // EMU 175
   Route::resource('emu175', 'Admin\EMU175Controller');
+
+	// Intcomm Posts
+	Route::resource('intcomm', 'Admin\IntcommPostController');
 
   Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
   Route::get('magazine/article/queuearticle', 'Admin\StoryTypeController@queueArticle')->name('admin_magazine_article_queue');
