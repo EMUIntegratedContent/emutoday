@@ -3,6 +3,7 @@
 namespace Emutoday\Http\Controllers\Api;
 
 
+use Emutoday\Http\Resources\IntcommPostResource;
 use Emutoday\IntcommPost;
 use Emutoday\User;
 use Illuminate\Http\Request;
@@ -25,17 +26,23 @@ class IntcommPostController extends ApiController{
 		$this->post = $post;
 	}
 
-	public function getPosts(){
-		$posts = $this->post->all();
-		$fractal = new Manager();
-		$fractal->setSerializer(new ArraySerializer());
-//		$resource = new Fractal\Resource\Collection($posts, new FractalEventTransformerModelFull);
-//		return $this->setStatusCode(200)
-//			->respond($fractal->createData($resource)->toArray());
-//			return $this->setStatusCode(200)
-//				->respond($posts);
+	public function getPosts(Request $request){
+		$fromDate = $request->get('fromDate');
+		$toDate = $request->get('toDate');
+		if($fromDate && $toDate){
+			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate . ' 23:59:59')->get();
+		} else if($fromDate) {
+			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
+		} else if($toDate){
+			$posts = $this->post->where('end_date', '<=', $toDate)->get();
+		} else {
+			$posts = $this->post->all();
+		}
+
+		// Paginate the results
+//		$posts = $posts->paginate(10);
 		// Respond with json data
-		return response()->json($posts);
+		return response()->json(IntcommPostResource::collection($posts));
 	}
 
 	/**

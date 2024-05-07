@@ -3,22 +3,20 @@
     <v-col cols="12">
       <!-- Date filter -->
       <form class="form-inline">
-        <div class="form-group">
-          <label>Starting <span v-if="isEndDate">between</span><span v-else>on or after</span><br>
-            <flatpickr
-                v-model="startdate"
-                id="startDatePicker"
-                :config="flatpickrConfig"
-                class="form-control"
-                name="startingDate"
-            >
-            </flatpickr>
-          </label>
-        </div>
-        <div v-if="isEndDate" class="form-group">
+        <label>Starting <span v-if="isEndDate">between</span><span v-else>on or after</span><br>
+          <flatpickr
+              v-model="startDate"
+              id="startDatePicker"
+              :config="flatpickrConfig"
+              class="form-control mr-2"
+              name="startingDate"
+          >
+          </flatpickr>
+        </label>
+        <template v-if="isEndDate">
           <label> and<br>
             <flatpickr
-                v-model="enddate"
+                v-model="endDate"
                 id="endDatePicker"
                 :config="flatpickrConfig"
                 class="form-control"
@@ -26,20 +24,22 @@
             >
             </flatpickr>
           </label>
-        </div>
-        <p>
-<!--          <button type="button" class="btn btn-sm btn-info" @click="fetchAllRecords">Filter</button>-->
-        </p>
-        <p>
-          <button href="#" id="rangetoggle" type="button" @click="toggleRange"><span
-              v-if="isEndDate"> - Remove </span><span
-              v-else> + Add </span>Range
-          </button>
-        </p>
+        </template>
+        <button href="#" id="rangetoggle" type="button" @click="toggleRange"><span
+            v-if="isEndDate"> - Remove </span><span
+            v-else> + Add </span>Range
+        </button>
+        <v-btn size="small" color="info" class="ml-4" @click="fetchPosts">Filter</v-btn>
       </form>
       <v-row>
-        <v-col cols="12" md="6">
-          <v-alert type="error">Wakka wakka wakka</v-alert>
+        <v-col cols="12">
+          <v-data-table
+              :headers="headers"
+              :items="posts"
+              :items-per-page="5"
+              class="elevation-1"
+              :loading="loadingPosts"
+          ></v-data-table>
         </v-col>
       </v-row>
     </v-col>
@@ -59,33 +59,41 @@ export default {
   },
   created () {
     let threeMonthsEarlier = moment().subtract(3, 'M')
-    this.startdate = threeMonthsEarlier.format("YYYY-MM-DD")
-    this.enddate = moment().format("YYYY-MM-DD")
+    this.startDate = threeMonthsEarlier.format("YYYY-MM-DD")
+    this.endDate = moment().format("YYYY-MM-DD")
     this.fetchPosts()
   },
   data: function () {
     return {
       currentDate: moment(),
-      startdate: null,
-      enddate: null,
+      startDate: null,
+      endDate: null,
       isEndDate: false,
       flatpickrConfig: {
         altFormat: "m/d/Y", // format the user sees
         altInput: true,
         dateFormat: "Y-m-d", // format sumbitted to the API
         enableTime: false
-      }
+      },
+      loadingPosts: false,
+      posts: []
     }
   },
   computed: {
     ...mapState([]),
+    headers: [
+      { title: 'Title', key: 'title' },
+      { title: 'Teaser', key: 'teaser' },
+      { title: 'Start Date', key: 'start_date' },
+      { title: 'End Date', key: 'end_date' },
+    ],
     totalPages: function () {
       return Math.ceil(this.queueStories.length / this.itemsPerPage)
     }
   },
   methods: {
     ...mapMutations([]),
-    toggleRange: function () {
+    toggleRange () {
       if (this.isEndDate) {
         this.isEndDate = false
       }
@@ -93,45 +101,42 @@ export default {
         this.isEndDate = true
       }
     },
-    fetchPosts: function () {
-      this.loadingQueue = true
+    async fetchPosts () {
+      this.loadingPosts = true
       let routeurl = '/api/intcomm/posts'
 
-      // // if a start date is set, get stories whose start_date is on or after this date
-      // if (this.startdate) {
-      //   routeurl = routeurl + '/' + this.startdate
-      // }
-      // else {
-      //   routeurl = routeurl + '/' + moment().subtract(3, 'm').format("YYYY-MM-DD")
-      // }
-      //
-      // // if a date range is set, get stories between the start date and end date
-      // if (this.isEndDate) {
-      //   routeurl = routeurl + '/' + this.enddate
-      // }
+      // if a start date is set, get stories whose start_date is on or after this date
+      if (this.startDate) {
+        routeurl = routeurl + '?fromDate=' + this.startDate
+      }
+      else {
+        routeurl = routeurl + '?fromDate=' + moment().subtract(3, 'm').format("YYYY-MM-DD")
+      }
 
-      this.$http.get(routeurl)
+      // if a date range is set, get stories between the start date and end date
+      if (this.isEndDate) {
+        routeurl = routeurl + '&toDate=' + this.endDate
+      }
+
+      await this.$http.get(routeurl)
       .then((r) => {
-        console.log(r)
-        // this.queueStories = response.data.newdata.data
-        //
-        // // Find the current story (if any) and set it in the store
-        // const current175Story = this.queueStories.find((story) => {
-        //   return story.is_emu175_hub_story == 1
-        // })
-        // if (current175Story) {
-        //   this.setEmu175Story(current175Story)
-        //   this.originalStory = JSON.parse(JSON.stringify(current175Story))
-        // }
-        //
+        this.posts = r.data
+
         // this.resultCount = this.queueStories.length
         // this.setPage(1) // reset paginator
-        // this.loadingQueue = false
+        this.loadingPosts = false
       })
       .catch((e) => {
         console.log(e)
       })
-    },
+    }
   }
 }
 </script>
+<style scoped>
+#rangetoggle {
+  color: #FF851B;
+  margin-left: 5px;
+  border-bottom: 2px #FF851B dotted;
+}
+</style>

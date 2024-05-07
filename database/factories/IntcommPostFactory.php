@@ -24,9 +24,9 @@ class IntcommPostFactory extends Factory
 					'start_date' => $this->faker->dateTimeThisMonth,
 					'end_date' => $this->faker->dateTimeThisMonth,
 					'submitted_by' => $this->faker->asciify('********'),
-					'status' => $this->faker->randomElement(['Draft', 'Submitted', 'Approved', 'Denied'])
-//					'created_at' => now(),
-//					'updated_at' => now()
+					'status' => $this->faker->randomElement(['Draft', 'Submitted', 'Approved', 'Denied']),
+					'created_at' => $this->faker->dateTimeThisMonth,
+					'updated_at' => $this->faker->dateTimeThisMonth
         ];
     }
 }
