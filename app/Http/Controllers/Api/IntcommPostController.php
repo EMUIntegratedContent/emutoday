@@ -26,16 +26,24 @@ class IntcommPostController extends ApiController{
 		$this->post = $post;
 	}
 
-	public function getPosts(Request $request){
+	/**
+	 * Display a listing of the resource.
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function index(Request $request){
 		$fromDate = $request->get('fromDate');
 		$toDate = $request->get('toDate');
 		if($fromDate && $toDate){
-			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate . ' 23:59:59')->get();
-		} else if($fromDate) {
+			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
+		}
+		else if($fromDate){
 			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
-		} else if($toDate){
+		}
+		else if($toDate){
 			$posts = $this->post->where('end_date', '<=', $toDate)->get();
-		} else {
+		}
+		else{
 			$posts = $this->post->all();
 		}
 
@@ -43,6 +51,14 @@ class IntcommPostController extends ApiController{
 //		$posts = $posts->paginate(10);
 		// Respond with json data
 		return response()->json(IntcommPostResource::collection($posts));
+	}
+
+	/**
+	 * Display the specified resource.
+	 */
+	public function show($postId){
+		$post = $this->post->findOrFail($postId);
+		return response()->json(IntcommPostResource::make($post));
 	}
 
 	/**

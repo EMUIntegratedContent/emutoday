@@ -78,6 +78,10 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
  */
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
+	/* Intcomm Posts */
+	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
+	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');
+
   /* STORY IDEAS */
   Route::resource('storyideas', 'Api\StoryIdeasController');
 
@@ -266,9 +270,6 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
   Route::patch('story/archiveitem/{id}', 'Api\StoryController@archiveItem')->name('api_story_archiveitem');
   Route::get('story/elevated', 'Api\StoryController@getElevatedStorys')->name('api_story_elevated');
   Route::resource('story', 'Api\StoryController');
-
-	/* Intcomm Posts */
-	Route::get('intcomm/posts', 'Api\IntcommPostController@getPosts')->name('api_intcomm_posts');
 });
 // ^^ END API ROUTES
 
@@ -476,7 +477,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::resource('emu175', 'Admin\EMU175Controller');
 
 	// Intcomm Posts
-	Route::resource('intcomm', 'Admin\IntcommPostController');
+	Route::resource('intcomm/posts', 'Admin\IntcommPostController');
 
   Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
   Route::get('magazine/article/queuearticle', 'Admin\StoryTypeController@queueArticle')->name('admin_magazine_article_queue');
@@ -502,5 +503,7 @@ Route::group(['prefix' => 'mediahighlights'], function () {
 });
 
 Route::group(['prefix' => 'intcomm'], function () {
-  Route::get('/', 'Today\IntcommController@index')->name('intcomm_index');
+//  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
+//  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
+	Route::resource('', 'Today\IntcommPostController');
 });

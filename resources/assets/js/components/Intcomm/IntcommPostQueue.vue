@@ -36,10 +36,14 @@
           <v-data-table
               :headers="headers"
               :items="posts"
-              :items-per-page="5"
+              :items-per-page="25"
               class="elevation-1"
               :loading="loadingPosts"
-          ></v-data-table>
+          >
+            <template #[`item.title`]="{ item }">
+              <a :href="`/admin/intcomm/posts/${item.postId}/edit`">{{ item.title }}</a>
+            </template>
+          </v-data-table>
         </v-col>
       </v-row>
     </v-col>
@@ -75,18 +79,18 @@ export default {
         dateFormat: "Y-m-d", // format sumbitted to the API
         enableTime: false
       },
+      headers: [
+        { title: 'Title', key: 'title' },
+        { title: 'Teaser', key: 'teaser' },
+        { title: 'Start Date', key: 'start_date' },
+        { title: 'End Date', key: 'end_date' },
+      ],
       loadingPosts: false,
       posts: []
     }
   },
   computed: {
     ...mapState([]),
-    headers: [
-      { title: 'Title', key: 'title' },
-      { title: 'Teaser', key: 'teaser' },
-      { title: 'Start Date', key: 'start_date' },
-      { title: 'End Date', key: 'end_date' },
-    ],
     totalPages: function () {
       return Math.ceil(this.queueStories.length / this.itemsPerPage)
     }

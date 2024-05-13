@@ -29,7 +29,7 @@ class IntcommPostController extends Controller
      */
     public function index()
     {
-			return view('admin.intcomm.index');
+			return view('admin.intcomm.posts.index');
     }
 
 //    /**
@@ -59,10 +59,10 @@ class IntcommPostController extends Controller
 //    /**
 //     * Show the form for editing the specified resource.
 //     */
-//    public function edit(IntcommPost $intcommPost)
-//    {
-//        //
-//    }
+    public function edit(IntcommPost $intcommPost)
+    {
+        return view('admin.intcomm.posts.edit', compact('intcommPost'));
+    }
 //
 //    /**
 //     * Update the specified resource in storage.

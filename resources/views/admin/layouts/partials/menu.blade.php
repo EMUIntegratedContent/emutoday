@@ -90,7 +90,15 @@
 </ul>
 </li>
 @endcan
-
+@can('admin', $currentUser)
+  <li class="treeview {{ set_active('admin/intcomm*') }}">
+    <a href="#"><i class="fa fa-sitemap"></i> <span>Intcomm</span></a>
+    <ul class="treeview-menu">
+      <li class="{{ set_active('admin/intcomm/posts*') }}"><a href="/admin/intcomm/posts"><i class="fa fa-list"></i> <span>List</span></a></li>
+{{--      <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>--}}
+    </ul>
+  </li>
+@endcan
 @can('admin', $currentUser)
 <li class="treeview {{ set_active('admin/page*') }}">
   <a href="#"><i class="fa fa-sitemap"></i> <span>Hub</span></a>
