@@ -4,6 +4,7 @@ namespace Emutoday\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Emutoday\Http\Resources\IntcommPostsImagesResource;
 
 class IntcommPostResource extends JsonResource
 {
@@ -24,7 +25,8 @@ class IntcommPostResource extends JsonResource
 				'submitted_by' => $this->submitted_by,
 				'status' => $this->status,
 				'created_at' => $this->created_at,
-				'updated_at' => $this->updated_at
+				'updated_at' => $this->updated_at,
+				'images' => IntcommPostsImagesResource::collection($this->images)
 			];
     }
 }

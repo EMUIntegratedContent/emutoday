@@ -57,7 +57,7 @@ class IntcommPostController extends ApiController{
 	 * Display the specified resource.
 	 */
 	public function show($postId){
-		$post = $this->post->findOrFail($postId);
+		$post = $this->post->with('images')->findOrFail($postId);
 		return response()->json(IntcommPostResource::make($post));
 	}
 

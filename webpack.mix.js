@@ -84,7 +84,7 @@ mix.combine([
 // mix.js('resources/assets/js/vue-storyideas-list.js', 'public/js/vue-storyideas-list.js').vue().version();
 // mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue().version().version();
 mix.js('resources/assets/js/vue-intcomm-queue.js', 'public/js/vue-intcomm-queue.js').vue().version().version();
-mix.js('resources/assets/js/vue-intcomm-post-admin-form.js', 'public/js/vue-intcomm-post-admin-form.js').vue().version().version();
+mix.js('resources/assets/js/vue-intcomm-post-form-wrapper-admin.js', 'public/js/vue-intcomm-post-form-wrapper-admin.js').vue().version().version();
 
 /*
 |--------------------------------------------------------------------------
