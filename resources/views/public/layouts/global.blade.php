@@ -70,7 +70,7 @@
                     <li><a title="EMU Today campus news, press releases, and official statements." href="/story/news">News</a>
                     </li>
                     <li><a title="Submit your story ideas."
-                           href="{{ url('/experts') }}">INTCOMM (Change)</a></li>
+                           href="{{ url('/intcomm') }}">INTCOMM (Change)</a></li>
                     <li><a title="Eastern Magazine's homepage" href="https://magazine.emich.edu">Eastern Magazine</a>
                     </li>
                     <li><a title="Eastern Experts are availble for interviews and speaking engagements."
@@ -164,7 +164,7 @@
                                                    class="{{ set_active('story/news')}}" href="{{ url('/story/news') }}">News</a>
                                             </li>
                                             <li><a title="Submit your story ideas."
-                                                   href="{{ url('/experts') }}">INTCOMM (Change)</a></li>
+                                                   href="{{ url('/intcomm') }}">INTCOMM (Change)</a></li>
                                             <li><a title="Eastern Magazine's homepage" href="{{ url('/magazine') }}">Eastern
                                                     Magazine</a></li>
                                             <li>

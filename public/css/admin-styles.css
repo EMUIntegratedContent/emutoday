@@ -9440,6 +9440,7 @@ a:focus {
 }
 .user-panel:after {
   clear: both;
+  min-height: 15px;
 }
 .user-panel:before,
 .user-panel:after {
