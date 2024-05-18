@@ -35,6 +35,7 @@ mix.combine([
 	'resources/assets/css/tweeks.css',
 	'resources/assets/css/ckeditor5-styles.css',
 	'resources/assets/css/emu175.css',
+	'resources/assets/css/intcomm-styles.css',
 ], 'public/css/public-styles.css').version()
 
 /*

@@ -100,8 +100,12 @@
           </v-row>
         </template>
         <IntcommPostImages :mode="mode"></IntcommPostImages>
-        <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
-        <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined">Cancel Changes</v-btn>
+        <v-row>
+          <v-col cols="12">
+            <v-btn type="submit" :loading="loadingPost" color="primary">Save Post</v-btn>
+            <v-btn type="button" :loading="loadingPost" color="secondary" variant="outlined">Cancel Changes</v-btn>
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-form>
