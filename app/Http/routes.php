@@ -505,6 +505,6 @@ Route::group(['prefix' => 'mediahighlights'], function () {
 Route::group(['prefix' => 'intcomm'], function () {
 //  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
 //  Route::get('/', 'Today\IntcommPostController@index')->name('intcomm_index');
-	Route::resource('/posts', 'Today\IntcommPostController');
+	Route::resource('/ideas', 'Today\IntcommIdeaController');
 	Route::resource('', 'Today\IntcommController');
 });

@@ -86,7 +86,7 @@ mix.combine([
 // mix.js('resources/assets/js/vue-emu-175.js', 'public/js/vue-emu-175.js').vue().version().version();
 mix.js('resources/assets/js/vue-intcomm-queue.js', 'public/js/vue-intcomm-queue.js').vue().version().version();
 mix.js('resources/assets/js/vue-intcomm-post-form-wrapper-admin.js', 'public/js/vue-intcomm-post-form-wrapper-admin.js').vue().version().version();
-mix.js('resources/assets/js/vue-intcomm-post-form-wrapper-public.js', 'public/js/vue-intcomm-post-form-wrapper-public.js').vue().version().version();
+mix.js('resources/assets/js/vue-intcomm-idea-form-wrapper-public.js', 'public/js/vue-intcomm-idea-form-wrapper-public.js').vue().version().version();
 
 /*
 |--------------------------------------------------------------------------
