@@ -1,4 +1,4 @@
-@extends('public.layouts.global') @section('title', 'Intcomm (CHANGE)') @section('content')
+@extends('public.layouts.global') @section('title', 'New Idea Intcomm (CHANGE)') @section('content')
     <div id="intcomm-area">
         <div class="row">
             <div class="large-12 medium-12 small-12 columns">
@@ -9,20 +9,24 @@
             <div class="large-3 medium-3 small-12 columns">
                 @include('public.intcomm.subviews.intcomm_nav')
             </div>
-            <div class="large-9 medium-9 small-12 columns ">
-                <div class="row"><div class="small-12 columns"><h1>INTCOMM (CHANGE)</h1>
-                        <p>Suggest stories for EMU Today.</p>
-                    </div></div>
-                <div class="row">
-                    <div class="large-12 medium-12 small-12 columns search-container">
-                        @include('public.intcomm.subviews.post_new')
+            <div class="large-9 medium-9 small-12 columns">
+                @if($user)
+                    <p>Hello, {{ $user }}</p>
+                    <div id="vue-intcomm-user-idea-form">
+                        <intcomm-idea-user-form
+                            netid="{{$user}}"
+                        ></intcomm-idea-user-form>
                     </div>
-                </div>
+                @else
+                    <div data-alert class="callout alert">
+                        Not logged in. You must be logged in to see this section.
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 @endsection
 @section('scriptsfooter')
     @parent
-    <script type="text/javascript" src="/js/vue-intcomm-idea-form-wrapper-public.js"></script>
+    <script type="text/javascript" src="/js/vue-intcomm-user-idea-form.js"></script>
 @endsection

@@ -2,18 +2,15 @@
 
 namespace Emutoday\Http\Controllers\Today;
 
-use Emutoday\Helpers\Interfaces\IBug;
-use Emutoday\Http\Requests\StoreIntcommPostRequest;
-use Emutoday\Http\Requests\UpdateIntcommPostRequest;
 use Emutoday\Http\Controllers\Controller;
-use Emutoday\IntcommPost;
-use Illuminate\Support\Facades\View;
+use Emutoday\IntcommIdea;
 
 class IntcommIdeaController extends Controller
 {
+		protected $idea;
 
-		public function __construct()
-		{
+		public function __construct(IntcommIdea $idea){
+			$this->idea = $idea;
 			$this->middleware('auth', []);
 		}
 
@@ -22,13 +19,11 @@ class IntcommIdeaController extends Controller
      */
     public function index()
     {
-			if (!\Auth::check()) {
-				cas()->user();
-				// get the user data
-//				dd(\Auth::user());
-				// The user is logged in...forward them to the admin form
+			$user = null;
+			if (\Auth::check()) {
+				$user = cas()->user();
 			}
-			return view('public.intcomm.ideas.index');
+			return view('public.intcomm.ideas.index', compact('user'));
     }
 
     /**
@@ -36,7 +31,12 @@ class IntcommIdeaController extends Controller
      */
     public function create()
     {
-        return view('public.intcomm.ideas.new');
+			$user = null;
+			if (\Auth::check()) {
+				$user = cas()->user();
+			}
+
+			return view('public.intcomm.ideas.new', compact('user'));
     }
 //
 //    /**
@@ -58,9 +58,15 @@ class IntcommIdeaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(IntcommPost $intcommPost)
+    public function edit(IntcommIdea $idea)
     {
-			return view('intcomm.edit', compact('intcommPost'));
+			$ideaId  = $idea->id;
+			$user = null;
+			if (\Auth::check()) {
+				$user = cas()->user();
+			}
+
+			return view('public.intcomm.ideas.edit', compact('ideaId', 'user'));
     }
 //
 //    /**

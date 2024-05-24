@@ -3,27 +3,16 @@
 namespace Emutoday\Http\Controllers\Api;
 
 
-use Emutoday\Http\Resources\IntcommPostResource;
-use Emutoday\IntcommPost;
+use Emutoday\Http\Resources\IntcommIdeaResource;
+use Emutoday\IntcommIdea;
 use Emutoday\User;
 use Illuminate\Http\Request;
 
-
-use Illuminate\Support\Facades\Request as Input;
-use Carbon\Carbon;
-
-use League\Fractal\Manager;
-use League\Fractal;
-use League\Fractal\Serializer\ArraySerializer;
-use League\Fractal\Serializer\DataArraySerializer;
-
-use Emutoday\Today\Transformers\FractalEventTransformerModelFull;
-
 class IntcommIdeaController extends ApiController{
-	protected $post;
+	protected $idea;
 
-	function __construct(IntcommIdea $post){
-		$this->post = $post;
+	function __construct(IntcommIdea $idea){
+		$this->idea = $idea;
 	}
 
 	/**
@@ -32,39 +21,46 @@ class IntcommIdeaController extends ApiController{
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function index(Request $request){
-		$fromDate = $request->get('fromDate');
-		$toDate = $request->get('toDate');
-		if($fromDate && $toDate){
-			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
+//		$fromDate = $request->get('fromDate');
+//		$toDate = $request->get('toDate');
+//		if($fromDate && $toDate){
+//			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
+//		}
+//		else if($fromDate){
+//			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
+//		}
+//		else if($toDate){
+//			$posts = $this->post->where('end_date', '<=', $toDate)->get();
+//		}
+//		else{
+//			$posts = $this->post->all();
+//		}
+
+		$netid = $request->get('netid');
+		if(!$netid){
+			return response()->json(['error' => 'Netid is required.'], 400);
 		}
-		else if($fromDate){
-			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
-		}
-		else if($toDate){
-			$posts = $this->post->where('end_date', '<=', $toDate)->get();
-		}
-		else{
-			$posts = $this->post->all();
-		}
+
+		$ideas = $this->idea->where('submitted_by', $netid)->get();
 
 		// Paginate the results
 //		$posts = $posts->paginate(10);
 		// Respond with json data
-		return response()->json(IntcommPostResource::collection($posts));
+		return response()->json(IntcommIdeaResource::collection($ideas));
 	}
 
 	/**
 	 * Display the specified resource.
 	 */
-	public function show($postId){
-		$post = $this->post->with('images')->findOrFail($postId);
-		return response()->json(IntcommPostResource::make($post));
+	public function show($ideaId){
+		$idea = $this->idea->with('images')->findOrFail($ideaId);
+		return response()->json(IntcommIdeaResource::make($idea));
 	}
 
 	/**
 	 * Get the specified post
 	 */
-	public function edit(IntcommPost $post){
+	public function edit(IntcommIdea $idea){
 //    $fractal = new Manager();
 //    $resource = new Fractal\Resource\Item($email, new FractalEmailTransformerModel);
 //

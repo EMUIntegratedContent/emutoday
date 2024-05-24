@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Emutoday\Http\Middleware\VerifyCsrfToken::class,
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+						\Illuminate\Routing\Middleware\SubstituteBindings::class
         ],
 
         'cors' => [
