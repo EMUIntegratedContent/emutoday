@@ -83,9 +83,9 @@
     </ul>
   </li>
   @can('edit_all', $currentUser)
-  <li><a href="/admin/storyideas"><i class="fa fa-lightbulb-o"></i>Ideas <span class="pull-right-container"></a></li>
+  <li><a href="/admin/storyideas"><i class="fa fa-lightbulb-o"></i>Ideas</a></li>
   @endcan
-  <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives <span class="pull-right-container"></a></li>
+  <li style="border-top:1px solid #cccccc"><a href="/admin/archive/queue/stories"><i class="fa fa-archive"></i>Archives</a></li>
   @endcan
 </ul>
 </li>
@@ -94,7 +94,8 @@
   <li class="treeview {{ set_active('admin/intcomm*') }}">
     <a href="#"><i class="fa fa-lightbulb-o"></i> <span>Intcomm</span></a>
     <ul class="treeview-menu">
-      <li class="{{ set_active('admin/intcomm/posts*') }}"><a href="/admin/intcomm/posts"><i class="fa fa-list"></i> <span>List</span></a></li>
+      <li class="{{ set_active('admin/intcomm') }}"><a href="/admin/intcomm"><i class="fa fa-list"></i> <span>Dashboard</span></a></li>
+      <li class="{{ set_active('admin/intcomm/posts*') }}"><a href="/admin/intcomm/posts"><i class="fa fa-lightbulb-o"></i> <span>Posts</span></a></li>
 {{--      <li class="{{ set_active('admin/page*') }}"><a href="/admin/page/form"><i class="fa fa-plus-square"></i> <span>Create</span></a></li>--}}
     </ul>
   </li>

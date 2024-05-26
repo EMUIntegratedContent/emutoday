@@ -1,5 +1,5 @@
 import { createApp } from "vue"
-import IntcommPostQueue from "./components/Intcomm/IntcommPostQueue.vue"
+import IntcommPostQueue from "./components/Intcomm/admin/IntcommPostQueue.vue"
 import axios from "axios"
 import store from './vuex/intcomm_store'
 

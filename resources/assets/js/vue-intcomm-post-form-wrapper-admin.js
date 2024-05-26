@@ -1,5 +1,5 @@
 import { createApp } from "vue"
-import IntcommPostFormWrapperAdmin from "./components/Intcomm/IntcommPostFormWrapperAdmin.vue"
+import IntcommPostFormWrapperAdmin from "./components/Intcomm/admin/IntcommPostFormWrapperAdmin.vue"
 import axios from "axios"
 import store from './vuex/intcomm_store'
 import CKEditor from '@ckeditor/ckeditor5-vue'

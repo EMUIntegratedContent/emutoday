@@ -78,9 +78,11 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
  */
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
-	/* Intcomm Posts */
+	/* Intcomm Ideas */
+	Route::get('intcomm/ideas/admin/{ideaId}', 'Api\IntcommIdeaAdminController@show')->name('api_intcomm_admin_idea');
 	Route::get('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@show')->name('api_intcomm_user_idea');
 	Route::get('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@index')->name('api_intcomm_user_ideas');
+	/* Intcomm Posts */
 	Route::get('intcomm/posts/{postId}', 'Api\IntcommPostController@show')->name('api_intcomm_post');
 	Route::get('intcomm/posts', 'Api\IntcommPostController@index')->name('api_intcomm_posts');
 
@@ -479,6 +481,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::resource('emu175', 'Admin\EMU175Controller');
 
 	// Intcomm Posts
+
+	Route::get('intcomm', 'Admin\IntcommController@dashboard')->name('admin_intcomm_dashboard');
+	Route::resource('intcomm/ideas', 'Admin\IntcommIdeaController');
 	Route::resource('intcomm/posts', 'Admin\IntcommPostController');
 
   Route::get('story/queueall', 'Admin\StoryTypeController@queueAll')->name('admin_story_queue');
