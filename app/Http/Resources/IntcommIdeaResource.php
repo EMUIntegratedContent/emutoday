@@ -22,9 +22,11 @@ class IntcommIdeaResource extends JsonResource
 				'content' => $this->content,
 				'submitted_by' => $this->submitted_by,
 				'status' => $this->status,
+				'archived' => $this->archived,
 				'created_at' => $this->created_at,
 				'updated_at' => $this->updated_at,
-				'images' => IntcommIdeasImagesResource::collection($this->images)
+				'images' => IntcommIdeasImagesResource::collection($this->images),
+				'associated_posts' => IntcommPostResource::collection($this->posts) // Posts that have the fk intcomm_idea_id = ideaId
 			];
     }
 }

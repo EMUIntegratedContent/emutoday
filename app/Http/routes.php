@@ -80,6 +80,10 @@ Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
 	/* Intcomm Ideas */
 	Route::get('intcomm/ideas/admin/{ideaId}', 'Api\IntcommIdeaAdminController@show')->name('api_intcomm_admin_idea');
+	Route::put('intcomm/ideas/admin/{ideaId}/archive', 'Api\IntcommIdeaAdminController@archive')->name('api_intcomm_admin_idea_archive');
+	Route::put('intcomm/ideas/admin/{ideaId}/unarchive', 'Api\IntcommIdeaAdminController@unarchive')->name('api_intcomm_admin_idea_unarchive');
+	Route::delete('intcomm/ideas/admin/{ideaId}', 'Api\IntcommIdeaAdminController@destroy')->name('api_intcomm_admin_idea_delete');
+	Route::post('intcomm/ideas/admin/{ideaId}/makepost', 'Api\IntcommIdeaAdminController@makepost')->name('api_intcomm_admin_makepost');
 	Route::get('intcomm/ideas/user/{ideaId}', 'Api\IntcommIdeaPublicController@show')->name('api_intcomm_user_idea');
 	Route::get('intcomm/ideas/user', 'Api\IntcommIdeaPublicController@index')->name('api_intcomm_user_ideas');
 	/* Intcomm Posts */
@@ -481,7 +485,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['bindings']], function () {
   Route::resource('emu175', 'Admin\EMU175Controller');
 
 	// Intcomm Posts
-
 	Route::get('intcomm', 'Admin\IntcommController@dashboard')->name('admin_intcomm_dashboard');
 	Route::resource('intcomm/ideas', 'Admin\IntcommIdeaController');
 	Route::resource('intcomm/posts', 'Admin\IntcommPostController');
