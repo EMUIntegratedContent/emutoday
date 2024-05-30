@@ -23,27 +23,41 @@ class IntcommIdeaAdminController extends ApiController{
 	 * @return \Illuminate\Http\JsonResponse
 	 */
 	public function index(Request $request){
-//		$fromDate = $request->get('fromDate');
-//		$toDate = $request->get('toDate');
-//		if($fromDate && $toDate){
-//			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
-//		}
-//		else if($fromDate){
-//			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
-//		}
-//		else if($toDate){
-//			$posts = $this->post->where('end_date', '<=', $toDate)->get();
-//		}
-//		else{
-//			$posts = $this->post->all();
-//		}
-
-		$netid = $request->get('netid');
-		if(!$netid){
-			return response()->json(['error' => 'Netid is required.'], 400);
+		$fromDate = $request->get('fromDate');
+		$toDate = $request->get('toDate');
+		if($fromDate && $toDate){
+			$ideas = $this->idea
+				->where('created_at', '>=', $fromDate)
+				->where('created_at', '<=', $toDate.' 23:59:59')
+				->where('is_submitted', '=', 1)
+				->where('archived', '=', 0)
+				->orderBy('created_at', 'desc')
+				->get();
 		}
-
-		$ideas = $this->idea->where('submitted_by', $netid)->get();
+		else if($fromDate){
+			$ideas = $this->idea
+				->where('created_at', '>=', $fromDate)
+				->where('is_submitted', '=', 1)
+				->where('archived', '=', 0)
+				->orderBy('created_at', 'desc')
+				->get();
+		}
+		else if($toDate){
+			$ideas = $this->idea
+				->where('created_at', '<=', $toDate)
+				->where('is_submitted', '=', 1)
+				->where('archived', '=', 0)
+				->orderBy('created_at', 'desc')
+				->get();
+		}
+		else{
+			$ideas = $this->idea
+				->where('status', '!=', 'Draft')
+				->where('is_submitted', '=', 1)
+				->where('archived', '=', 0)
+				->orderBy('created_at', 'desc')
+				->all();
+		}
 
 		// Paginate the results
 //		$posts = $posts->paginate(10);

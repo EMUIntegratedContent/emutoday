@@ -109,6 +109,30 @@
       </v-card-text>
     </v-card>
   </v-form>
+
+  <v-card v-if="post.associated_idea">
+    <v-toolbar density="compact" color="grey-darken-3" title="Associated Idea"></v-toolbar>
+    <v-card-text>
+      <v-row>
+        <v-col
+            :key="`idea-${post.associated_idea.ideaId}`"
+            class="d-flex child-flex bg-danger"
+            cols="12"
+            md="6"
+            lg="4"
+        >
+          <v-card>
+            <v-card-text>
+              <p class="text-h6"><v-chip label v-if="post.associated_idea.archived" color="warning" size="small" class="mr-3">Archived</v-chip>{{ post.associated_idea.title }}</p>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" :href="`/admin/intcomm/ideas/${post.associated_idea.id}`">Go to idea</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

@@ -79,6 +79,7 @@ Route::group(['prefix' => 'externalapi', 'middleware' => ['bindings']], function
 Route::group(['prefix' => 'api', 'middleware' => ['bindings']], function () {
 
 	/* Intcomm Ideas */
+	Route::get('intcomm/ideas/admin/ideas', 'Api\IntcommIdeaAdminController@index')->name('api_intcomm_admin_ideas');
 	Route::get('intcomm/ideas/admin/{ideaId}', 'Api\IntcommIdeaAdminController@show')->name('api_intcomm_admin_idea');
 	Route::put('intcomm/ideas/admin/{ideaId}/archive', 'Api\IntcommIdeaAdminController@archive')->name('api_intcomm_admin_idea_archive');
 	Route::put('intcomm/ideas/admin/{ideaId}/unarchive', 'Api\IntcommIdeaAdminController@unarchive')->name('api_intcomm_admin_idea_unarchive');

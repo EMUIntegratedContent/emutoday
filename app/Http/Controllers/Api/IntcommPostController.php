@@ -35,16 +35,16 @@ class IntcommPostController extends ApiController{
 		$fromDate = $request->get('fromDate');
 		$toDate = $request->get('toDate');
 		if($fromDate && $toDate){
-			$posts = $this->post->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
+			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->where('end_date', '<=', $toDate.' 23:59:59')->get();
 		}
 		else if($fromDate){
-			$posts = $this->post->where('start_date', '>=', $fromDate)->get();
+			$posts = $this->post->with('idea')->where('start_date', '>=', $fromDate)->get();
 		}
 		else if($toDate){
-			$posts = $this->post->where('end_date', '<=', $toDate)->get();
+			$posts = $this->post->with('idea')->where('end_date', '<=', $toDate)->get();
 		}
 		else{
-			$posts = $this->post->all();
+			$posts = $this->post->with('idea')->all();
 		}
 
 		// Paginate the results

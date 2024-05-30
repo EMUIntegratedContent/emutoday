@@ -56,6 +56,9 @@
                   <v-card-text>
                     <p>{{ post.teaser }}</p>
                   </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="primary" :href="`/admin/intcomm/posts/${post.postId}/edit`">Go to post</v-btn>
+                  </v-card-actions>
                 </v-card>
               </v-col>
             </v-row>
